@@ -1,107 +1,58 @@
 # BizPilot AI — Architecture v1.0
 
-**Status:** Phase 0 Final Canonical Draft  
 **Project:** BizPilot AI  
 **Document Type:** Architecture  
-**Owner:** MoOoH  
 **Version:** v1.0  
-**Phase:** Phase 0 — Documentation Lock
+**Status:** Final Canonical Draft  
+**Owner:** MoOoH  
+**Phase:** Phase 0 — Documentation Lock  
+**Last Updated:** 2026-05-03  
 
 ---
 
 ## 1. Architecture Purpose
 
-This document defines the canonical architecture for BizPilot AI MVP.
+This document defines the canonical architecture for BizPilot AI MVP and future expansion.
 
-BizPilot AI must be designed as:
+The system must support:
 
-**Generic Core + Industry Packs**
-
-The MVP uses only:
-
-**Cleaning Pack v1**
-
-The architecture must support future expansion without making the MVP heavy.
+- Universal smart intake forms
+- Editable industry templates
+- Cleaning-first go-to-market
+- AI lead conversion workflows
+- Multi-tenant security
+- Privacy-first behavior
+- Fast MVP execution
+- Future vertical expansion without major rewrites
 
 ---
 
-## 2. Architecture Summary
+## 2. Canonical Architecture Statement
 
-BizPilot AI has seven architecture layers:
+BizPilot AI is built as:
+
+**Universal Smart Intake Core + AI Lead Conversion Core + Editable Industry Templates**
+
+The first market template is:
+
+**Cleaning Smart Quote Template v1**
+
+The architecture must not hardcode BizPilot as only a cleaning product.
+
+---
+
+## 3. High-Level System Layers
+
+BizPilot AI has eight architecture layers:
 
 1. Core SaaS Layer
-2. Business Operating Core
-3. Industry Pack Layer
-4. Customer Interaction Layer
-5. AI Assistant Layer
-6. Owner Operations Layer
-7. Admin / Concierge Layer
-
----
-
-## 3. High-Level Architecture
-
-BizPilot AI:
-
-- Core SaaS Layer
-  - Supabase Auth
-  - Profiles
-  - Businesses
-  - Business Members
-  - Tenant Isolation
-  - RLS Policies
-  - Usage Tracking
-  - Billing Placeholder
-
-- Business Operating Core
-  - Business Profile
-  - Branding
-  - Services
-  - FAQ
-  - Service Areas
-  - Language / Tone
-  - Privacy Mode
-  - Consent Settings
-  - Industry Pack Activation
-
-- Industry Pack Layer
-  - Cleaning Pack v1
-    - Form Fields
-    - Validation Rules
-    - Missing Info Rules
-    - Reply Context
-    - Follow-up Context
-    - Demo Data
-
-- Customer Interaction Layer
-  - Public Branded Quote Page
-  - Lead Submission
-  - Consent Notice
-  - Success Page
-
-- AI Assistant Layer
-  - AI Service Abstraction
-  - Prompt Registry
-  - Lead Summary
-  - Reply Draft
-  - Follow-up Draft
-  - Missing Info Detection
-  - Suggested Next Action
-
-- Owner Operations Layer
-  - Owner Dashboard
-  - Lead List
-  - Lead Detail
-  - Status Management
-  - Copy Actions
-  - Owner Email Notification
-
-- Admin / Concierge Layer
-  - Demo Business Setup
-  - Customer Business Setup
-  - Pack Activation
-  - Privacy Configuration
-  - Support View
+2. Business Operating Layer
+3. Industry Template Layer
+4. Universal Intake Layer
+5. Lead Conversion Layer
+6. AI Assistant Layer
+7. Owner Workspace Layer
+8. Concierge / Sales Setup Layer
 
 ---
 
@@ -111,15 +62,15 @@ The Core SaaS Layer handles identity, tenancy, authorization, and platform-level
 
 Responsibilities:
 
-- user authentication
-- profile management
-- business creation
-- business membership
-- tenant isolation
-- role-based access
-- basic usage tracking
-- billing placeholder
-- protected dashboard access
+- Supabase Auth
+- User profiles
+- Business accounts
+- Business membership
+- Tenant isolation
+- RLS policies
+- Protected dashboard access
+- Usage tracking foundation
+- Subscription placeholder
 
 Core entities:
 
@@ -128,28 +79,26 @@ Core entities:
 - business_members
 - usage_events
 - subscriptions
-- reports
 
 ---
 
-## 5. Business Operating Core
+## 5. Business Operating Layer
 
-The Business Operating Core stores operational configuration for a business.
+The Business Operating Layer stores business configuration used by public intake pages, AI outputs, and lead workflows.
 
 Responsibilities:
 
-- business identity
-- branding
-- services
-- service areas
-- FAQs
-- language and tone
-- privacy mode
-- consent settings
-- active Industry Pack selection
-- default intake behavior
+- Business profile
+- Branding
+- Services
+- FAQ
+- Service areas
+- Language/tone
+- Privacy mode
+- Consent settings
+- Active template settings
 
-Core entities:
+Entities:
 
 - business_branding
 - business_services
@@ -157,38 +106,78 @@ Core entities:
 - business_service_areas
 - business_privacy_settings
 - business_consent_settings
-- business_industry_settings
+- business_template_settings
 
 ---
 
-## 6. Industry Pack Layer
+## 6. Industry Template Layer
 
-Industry Packs make the platform expandable.
+Industry templates provide reusable starting points for different service categories.
 
-An Industry Pack defines:
+A template defines:
 
-- form fields
-- service templates
-- default FAQ
+- Default fields
+- Field labels
+- Field types
+- Required/optional defaults
+- Field order
+- Missing information rules
 - AI prompt context
-- missing info rules
-- reply templates
-- follow-up templates
-- demo data
-- validation rules
-- industry wording
-- sales page copy
-- lead scoring hints later
+- Reply context
+- Follow-up context
+- Demo data
+- Industry wording
 
-The MVP includes only:
+MVP includes only:
 
-**Cleaning Pack v1**
+**Cleaning Smart Quote Template v1**
+
+Future templates:
+
+- Car Detailing
+- Salon / Beauty
+- Education / Tutoring
+- Home Services
+- Wellness
+- Repair Services
+
+Entities:
+
+- industry_templates
+- industry_template_fields
 
 ---
 
-## 7. Cleaning Pack v1 Architecture
+## 7. Universal Intake Layer
 
-Cleaning Pack v1 includes these locked form fields:
+The Universal Intake Layer renders dynamic public intake forms from configuration.
+
+Responsibilities:
+
+- Create intake forms
+- Configure intake fields
+- Render public form
+- Validate submissions
+- Store submission values
+- Convert submission into lead
+- Show success state
+- Respect privacy mode
+
+Entities:
+
+- intake_forms
+- intake_form_fields
+- intake_form_output_settings
+- intake_submissions
+- intake_submission_values
+
+The intake system must be configurable but not a full drag-and-drop builder in MVP.
+
+---
+
+## 8. Cleaning Smart Quote Template Architecture
+
+Cleaning Smart Quote Template v1 includes default fields:
 
 - cleaning_type
 - property_type
@@ -203,63 +192,50 @@ Cleaning Pack v1 includes these locked form fields:
 - customer_contact
 - notes
 
-Cleaning Pack v1 must define:
+The business or concierge workflow may customize:
 
-- required fields
-- optional fields
-- validation rules
-- missing info rules
-- prompt context
-- reply context
-- follow-up context
-- demo data
+- Label
+- Required/optional setting
+- Field order
+- Help text
+- Placeholder
+- Active/inactive field
+- Success message
 
----
-
-## 8. Customer Interaction Layer
-
-The Customer Interaction Layer is public and does not require customer login.
-
-Responsibilities:
-
-- resolve business by slug or domain
-- render branded quote page
-- show consent notice
-- collect Cleaning Pack v1 form data
-- validate form data
-- submit lead
-- show success state
-
-Public quote page must not read private dashboard data.
-
-Public quote page can only create leads for the resolved business.
+Advanced conditional logic is not part of MVP.
 
 ---
 
-## 9. Owner Operations Layer
+## 9. Lead Conversion Layer
 
-The Owner Operations Layer is private and authenticated.
+The Lead Conversion Layer transforms submissions into actionable lead workflows.
 
 Responsibilities:
 
-- show lead list
-- show lead detail
-- show AI outputs
-- allow status changes
-- provide copy-to-clipboard actions
-- display missing information
-- display suggested next action
-- support manual workflow
+- Lead creation
+- Lead status
+- Lead detail
+- Missing information
+- Lead Quality Score
+- Suggested Next Action
+- Lead action items
+- Follow-up state
+
+Entities:
+
+- leads
+- lead_action_items
+- lead_quality_scores
 
 Lead statuses:
 
 - New
 - Reviewed
 - Replied
+- Follow-Up Needed
 - Booked
 - Lost
-
-The dashboard must remain simple and not become a full CRM in MVP.
+- Archived
 
 ---
 
@@ -269,115 +245,152 @@ The AI Assistant Layer is server-side only.
 
 Responsibilities:
 
-- generate lead summaries
-- generate reply drafts
-- generate follow-up drafts
-- detect missing information
-- suggest next action
-- use business profile, services, FAQ, tone, and Cleaning Pack context
-- respect privacy mode
-- store AI outputs only when allowed
-
-AI components:
-
-- AI service abstraction
+- Lead summary generation
+- Reply draft generation
+- Follow-up draft generation
+- Missing-info detection
+- Suggested next action
+- Lead quality reasoning
+- Tone variants
 - Prompt Registry
-- structured output validation
-- fallback handling
-- privacy-aware persistence
+- Structured output validation
+- Privacy-aware persistence
+
+Entities:
+
+- ai_outputs
+- prompt_templates
+- prompt_versions
+- usage_events
 
 AI must not:
 
-- send messages
-- confirm bookings
-- invent pricing
-- invent availability
-- negotiate
-- speak directly to customers
-- replace the owner
+- Send messages automatically
+- Confirm bookings
+- Invent pricing
+- Invent availability
+- Negotiate
+- Speak directly to customers
+- Replace the business owner
 
 ---
 
-## 11. Admin / Concierge Layer
+## 11. Owner Workspace Layer
 
-The Admin / Concierge Layer enables service-first onboarding.
+The Owner Workspace is the private dashboard for business owners.
 
 Responsibilities:
 
-- create demo businesses
-- create customer businesses
-- configure profile
-- configure branding
-- configure services
-- configure FAQ
-- configure service areas
-- activate Cleaning Pack
-- configure privacy mode
-- configure consent settings
-- support onboarding
-- view support data only when privacy mode allows it
+- Lead list
+- Lead detail
+- Lead status management
+- Copy-to-clipboard actions
+- AI output review
+- Missing information display
+- Suggested next action display
+- Today’s Action Panel
 
-Admin access must be separated and restricted.
+The Owner Workspace must not become a full CRM in MVP.
 
 ---
 
-## 12. Privacy Architecture
+## 12. Today’s Action Panel Architecture
 
-Privacy mode must affect storage and visibility.
+Today’s Action Panel summarizes practical work.
 
-### 12.1 Standard Mode
+Inputs:
 
-Stores:
+- New leads
+- Leads not reviewed
+- Leads needing follow-up
+- Leads with missing information
+- Strong leads
+- Recently submitted leads
 
-- full lead data
+Outputs:
+
+- Simple action cards
+- Counts
+- Links to relevant lead details
+
+The goal is action clarity, not advanced analytics.
+
+---
+
+## 13. Concierge / Sales Setup Layer
+
+The Concierge Setup Layer supports done-for-you early onboarding.
+
+Responsibilities:
+
+- Create demo businesses
+- Create customer businesses
+- Configure profile
+- Configure branding
+- Add services
+- Add FAQs
+- Set service areas
+- Activate Cleaning template
+- Configure privacy mode
+- Configure consent notice
+- Prepare demo and sales flow
+
+This is not a full admin platform in MVP.
+
+It is a controlled internal workflow for early customer setup.
+
+---
+
+## 14. Public Page Architecture
+
+The public intake page:
+
+- Does not require customer login
+- Resolves business by public slug
+- Loads only public-safe business data
+- Renders active intake form
+- Shows consent notice
+- Validates customer input
+- Creates submission and lead
+- Shows success page
+
+The public page must not expose:
+
+- Private dashboard data
+- Other tenants’ records
 - AI outputs
-- status history
-- usage events
-
-### 12.2 Minimal Data Mode
-
-Stores:
-
-- minimum lead data required for workflow
-- business relationship
-- status
-- timestamp
-
-Free-text notes may be limited.
-
-### 12.3 Forward-Only Mode
-
-Behavior:
-
-- forward request to owner
-- avoid permanent full lead storage
-- optional deletion after 24/48 hours
-- minimal metadata only if needed
-- restrict admin/support visibility
+- Usage data
+- Business owner private information
 
 ---
 
-## 13. Consent Architecture
+## 15. Tenant Isolation Architecture
 
-The public quote page must show this canonical notice:
+Tenant isolation is mandatory.
 
-**By submitting this request, you agree that your information will be shared with [Business Name] to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.**
+Rules:
 
-The notice must be visible before submission.
+- Every tenant-owned operational table includes business_id.
+- A user can access only businesses where they are a business member.
+- Leads belong to one business.
+- Submissions belong to one business.
+- AI outputs belong to one business and one lead.
+- Public intake pages can create only scoped submissions/leads.
+- Public pages cannot read private tenant data.
+- Concierge/admin access is separated and restricted.
 
-Submission implies consent for:
+Tenant checks must happen at both:
 
-- sharing request information with the business
-- using BizPilot internally to prepare AI drafts
-- business owner reviewing and sending any message manually
+- Supabase RLS level
+- Server policy/service level
 
 ---
 
-## 14. Data Model
+## 16. RLS Architecture
 
-### 14.1 Core MVP Tables
+Supabase Row Level Security protects tenant data at the database layer.
 
-Core MVP tables:
+RLS must be enabled for:
 
 - profiles
 - businesses
@@ -388,159 +401,332 @@ Core MVP tables:
 - business_service_areas
 - business_privacy_settings
 - business_consent_settings
-- industry_packs
-- business_industry_settings
-- lead_forms
+- business_template_settings
+- intake_forms
+- intake_form_fields
+- intake_form_output_settings
+- intake_submissions
+- intake_submission_values
 - leads
-- lead_field_values
-- lead_messages
+- lead_action_items
+- lead_quality_scores
 - ai_outputs
 - usage_events
 - subscriptions
-- reports
 
-### 14.2 Future Tables
+RLS policy types:
 
-Future tables:
-
-- booking_requests
-- appointments
-- review_requests
-- content_projects
-- social_posts
-- campaigns
-- media_assets
-- integrations
-- automation_runs
-- audit_logs
-
-Future tables must not be implemented until the relevant future phase is approved.
+- Own profile access
+- Member business access
+- Member lead access
+- Scoped public insert
+- No public read of private data
+- Service-role only maintenance operations
 
 ---
 
-## 15. Tenant Isolation Rules
+## 17. Privacy Architecture
 
-Required rules:
+MVP privacy modes:
 
-- every tenant-owned operational record includes business_id
-- a user can access only businesses where they are a business_member
-- a lead belongs to exactly one business
-- AI outputs belong to a lead and a business
-- public quote page can create leads only for the resolved business slug
-- public quote page cannot read dashboard/private data
-- admin access is separated and restricted
-- Forward-Only Mode must not accidentally store full lead data
+1. Standard Mode
+2. Minimal Data Mode
+
+Future:
+
+3. Forward-Only Mode
+
+### 17.1 Standard Mode
+
+Stores:
+
+- Full submission values
+- Lead details
+- AI outputs
+- Status history
+- Usage events
+
+### 17.2 Minimal Data Mode
+
+Stores:
+
+- Minimum useful lead data
+- Business relationship
+- Status
+- Contact method
+- Created timestamp
+
+Limits:
+
+- Less free-text retention
+- More careful AI output storage
+
+### 17.3 Forward-Only Mode
+
+Future only.
+
+It may support forwarding request data to the owner and deleting or minimizing stored data after a retention window.
 
 ---
 
-## 16. RLS Policy Requirements
+## 18. Consent Architecture
 
-RLS must be enabled for tenant-owned tables.
+The public intake page must show the canonical consent notice:
 
-RLS must enforce:
+**By submitting this request, you agree that your information will be shared with [Business Name] to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.**
 
-- member-only business access
-- member-only lead access
-- member-only AI output access
-- scoped public insert for quote submission
-- no public read of private data
-- admin-only support behavior
-- privacy-aware data access
+Submission implies consent for:
 
-RLS is required in Phase 2.
+- Sharing request information with the business
+- BizPilot preparing internal AI drafts
+- Business owner reviewing and manually sending any message
 
 ---
 
-## 17. Notification Architecture
+## 19. Notification Architecture
 
 MVP required notification:
 
-- owner email notification for new lead
+- Owner email notification when a new lead is submitted
 
-MVP optional notification:
+MVP optional later:
 
-- customer confirmation email
+- Customer confirmation email
 
-Customer confirmation email can be added later.
+Future:
 
-The public success page is enough for first MVP validation.
+- Follow-up reminders
+- Weekly owner summary
+- SMS/WhatsApp only after validation
 
 ---
 
-## 18. Payment Architecture
+## 20. Payment Architecture
 
-MVP payment approach:
+MVP payment path:
 
 - Stripe Payment Links first
+- Basic subscription placeholder record
 - Stripe Billing later
 
-The system should include a basic subscription/billing placeholder but must not build a full billing engine in MVP.
+The app must not implement full in-app billing during MVP.
 
 ---
 
-## 19. Future Architecture Boundaries
+## 21. Data Model by Phase
 
-Future systems must not be built in MVP.
+### Phase 2 — Auth/Tenant
 
-Future architecture may support:
+- profiles
+- businesses
+- business_members
+
+### Phase 3 — Business + Template Configuration
+
+- business_branding
+- business_services
+- business_faqs
+- business_service_areas
+- business_privacy_settings
+- business_consent_settings
+- public_link_settings
+- industry_templates
+- industry_template_fields
+- business_template_settings
+
+### Phase 4 — Universal Intake Core
+
+- intake_forms
+- intake_form_fields
+- intake_form_output_settings
+- intake_submissions
+- intake_submission_values
+- leads
+
+### Phase 5 — Lead Workspace
+
+- lead_action_items
+- lead_quality_scores
+
+### Phase 6 — AI Core
+
+- ai_outputs
+- prompt_templates
+- prompt_versions
+- usage_events
+
+### Phase 7 — Sales Ready
+
+- subscriptions
+
+---
+
+## 22. Request Flows
+
+### 22.1 Public Submission Flow
+
+1. Customer opens public intake URL.
+2. System resolves business by slug.
+3. System loads public-safe business data.
+4. System loads active intake form.
+5. Customer submits form.
+6. Server validates input.
+7. System stores submission according to privacy mode.
+8. System creates lead.
+9. System creates initial lead action items.
+10. System shows success page.
+11. Owner sees lead in dashboard.
+
+### 22.2 Owner Review Flow
+
+1. Owner logs in.
+2. System resolves authenticated user.
+3. System resolves business membership.
+4. Owner opens dashboard.
+5. System loads tenant-scoped leads.
+6. Owner opens lead detail.
+7. Owner reviews missing info, quality score, and AI outputs.
+8. Owner copies reply or follow-up draft.
+9. Owner manually sends message outside BizPilot.
+10. Owner updates lead status.
+
+### 22.3 AI Generation Flow
+
+1. Lead exists.
+2. Server gathers permitted lead data.
+3. Server gathers business profile, services, FAQ, tone, and template context.
+4. AI Service selects prompt version.
+5. AI Provider returns structured output where useful.
+6. Output is validated.
+7. Output is stored according to privacy mode.
+8. Owner sees drafts and recommendations.
+
+---
+
+## 23. Deployment Architecture
+
+MVP deployment:
+
+- Next.js on Vercel
+- Supabase Cloud for Auth and PostgreSQL
+- Resend for email
+- Stripe Payment Links for payments
+- OpenAI API through server-side calls
+
+Docker and self-hosting are not part of MVP.
+
+They may be revisited later if scale, cost, or control requirements justify them.
+
+---
+
+## 24. Scalability Direction
+
+The architecture should scale in stages:
+
+### Stage 1 — MVP
+
+- Single Next.js app
+- Supabase Cloud
+- Vercel
+- Manual/concierge setup
+
+### Stage 2 — Early Paid Customers
+
+- Better monitoring
+- Stronger RLS testing
+- More template configuration
+- Improved AI prompts
+- Basic usage tracking
+
+### Stage 3 — Validated Growth
+
+- More templates
+- Booking Lite
+- Growth Studio Lite
+- Better reminders
+- Paid plans
+
+### Stage 4 — Scale
+
+- Dedicated background jobs if needed
+- Advanced analytics
+- More robust billing
+- Integrations
+- Self-hosting or hybrid infrastructure only if necessary
+
+---
+
+## 25. Future Architecture Boundaries
+
+Future only:
 
 - Booking Lite
-- second vertical pack
-- Growth Studio
-- campaigns
-- social drafts
-- review requests
-- integrations
-- automation runs
-- audit logs
-- white-label
-- marketplace
+- Car Detailing Template
+- Salon Template
+- Education Template
+- Growth Studio Lite
+- Review request drafts
+- Campaign drafts
+- Google Business content drafts
+- Integrations
+- White-label
+- Marketplace
+- AI Operator
 
-These are allowed only after validation.
+Do not implement these before validation.
 
 ---
 
-## 20. Strict Non-Goals / Not Now
+## 26. Strict Non-Goals / Not Now
 
 The architecture must not include MVP implementation for:
 
-- full CRM
-- full booking engine
-- payments inside app
-- invoice generation
+- Full CRM
+- Full booking engine
+- Full drag-and-drop builder
+- Advanced conditional form logic
+- Payments inside app
+- Invoice generation
 - WhatsApp API
 - Instagram API
 - Facebook Messenger API
 - SMS sending
-- auto outbound customer messaging
+- Auto outbound customer messaging
 - AI chatbot directly talking to customers
-- mobile app
-- marketplace
-- white-label
-- content studio
-- restaurant booking
-- multi-vertical build
+- Mobile app
+- Marketplace
+- White-label
+- Multi-vertical public launch
 - AI voice
-- fully automated pricing
-- custom AI model training
-- vector database
-- microservices
+- Fully automated pricing
+- Custom AI model training
+- Vector database
+- Microservices
 - Kubernetes
-- complex integrations
+- Complex integrations
 
 ---
 
-## 21. Definition of Done
+## 27. Definition of Done
 
 This document is complete when:
 
-- seven architecture layers are defined
-- Generic Core + Industry Packs is the canonical architecture
-- Cleaning Pack v1 is the only MVP pack
-- privacy architecture is defined
-- consent architecture is defined
-- tenant isolation rules are explicit
-- RLS requirements are explicit
-- AI architecture is server-side and draft-only
-- admin/concierge layer is included
-- roadmap architecture is separated from MVP
+- Universal Core + Industry Templates is the canonical architecture.
+- Cleaning Smart Quote Template v1 is the first GTM template.
+- Supabase-first architecture is locked.
+- Tenant isolation rules are explicit.
+- RLS requirements are explicit.
+- Dynamic intake architecture is defined without overbuilding.
+- Lead Conversion Layer is defined.
+- AI Assistant Layer is server-side and draft-only.
+- Privacy architecture is defined.
+- Concierge setup architecture is included.
+- Future systems are separated from MVP.
+
+---
+
+## 28. Approval Status
+
+**Status:** Pending MoOoH Approval
+
+After approval, this document becomes canonical for BizPilot AI architecture.

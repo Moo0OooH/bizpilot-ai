@@ -1,32 +1,33 @@
 # BizPilot AI — Engineering Standard v1.0
 
-**Status:** Phase 0 Final Canonical Draft  
 **Project:** BizPilot AI  
 **Document Type:** Engineering Standard  
-**Owner:** MoOoH  
 **Version:** v1.0  
-**Phase:** Phase 0 — Documentation Lock
+**Status:** Final Canonical Draft  
+**Owner:** MoOoH  
+**Phase:** Phase 0 — Documentation Lock  
+**Last Updated:** 2026-05-03  
 
 ---
 
 ## 1. Engineering Mission
 
-The engineering mission is to build a clean, secure, simple, scalable MVP that validates the business quickly without overengineering.
+Build a clean, secure, scalable, startup-grade MVP that can reach paying customers quickly without becoming overengineered.
 
-BizPilot must be:
+BizPilot AI must be:
 
-- simple enough for fast MVP execution
-- structured enough for future vertical expansion
-- secure enough for multi-tenant SaaS
-- reliable enough for early paying customers
-- modular enough to support Industry Packs
-- disciplined enough to avoid feature creep
+- Fast enough to validate with real cleaning businesses
+- Structured enough to support future vertical templates
+- Secure enough for multi-tenant SaaS
+- Simple enough for a solo founder to build and maintain
+- Modular enough to avoid future rewrites
+- Disciplined enough to avoid CRM and form-builder scope creep
 
 ---
 
 ## 2. Locked MVP Stack
 
-The MVP stack is locked as:
+The MVP stack is:
 
 - Next.js App Router
 - TypeScript
@@ -34,167 +35,231 @@ The MVP stack is locked as:
 - shadcn/ui
 - Supabase Auth
 - Supabase PostgreSQL
-- Supabase Storage only if needed
-- OpenAI API through AI service abstraction
+- Supabase Row Level Security
+- Supabase Storage only if needed later
+- OpenAI API through server-side AI service abstraction
 - Prompt Registry
-- structured outputs where useful
-- Resend
-- Stripe Payment Links first
-- Stripe Billing later
-- Vercel + Supabase hosting
+- Structured AI outputs where useful
+- Resend for owner email notifications
+- Stripe Payment Links for founding customer payments
+- Vercel for deployment
+- GitHub for source control
 
 ---
 
-## 3. Explicitly Removed From MVP
+## 3. Explicitly Removed From MVP Stack
 
-The following are not MVP decisions:
+The following are not part of the MVP stack:
 
 - Prisma
+- Docker-first local development
+- Local PostgreSQL as the main MVP path
 - Auth.js
 - Clerk
-- Docker-first as the main path
 - Kubernetes
-- microservices
-- vector database
-- custom model training
-- complex integrations
+- Microservices
+- Vector database
+- Custom AI model training
+- Complex workflow engine
+- Full Stripe Billing
 
-They can be reconsidered only after validation and only if there is a clear technical reason.
-
----
-
-## 4. Engineering Principles
-
-### 4.1 MVP First
-
-Build the smallest reliable product that can be sold to cleaning businesses.
-
-### 4.2 Generic Core, Specific Pack
-
-The core must not be hardcoded only for cleaning.
-
-Cleaning is the first Industry Pack, not the entire product.
-
-### 4.3 Server-Side Trust
-
-Business rules, tenant checks, AI generation, and data access must be enforced server-side.
-
-### 4.4 Human Review Required
-
-AI outputs are drafts.
-
-No automatic customer messaging is allowed in the MVP.
-
-### 4.5 Privacy by Design
-
-Privacy mode must affect storage, AI output handling, admin support visibility, and retention behavior.
-
-### 4.6 No Feature Leakage
-
-Roadmap features must not leak into MVP implementation.
+They can be reconsidered after validation only if there is a clear technical reason.
 
 ---
 
-## 5. Application Structure Standard
+## 4. Architecture Discipline
 
-The project should be organized around product domains, not random utility folders.
+BizPilot AI uses a modular monolith architecture.
 
-Required high-level areas:
+The project must not become a collection of random UI components calling external services directly.
+
+Canonical flow:
+
+**UI → Server Actions / Route Handlers → Services → Repositories → Supabase**
+
+AI flow:
+
+**UI → Server Action / Route Handler → AI Service → Prompt Registry → AI Provider → Validated Output → Persistence**
+
+---
+
+## 5. Core Engineering Principles
+
+### 5.1 MVP First
+
+Build the smallest reliable product that can be sold to early cleaning businesses.
+
+### 5.2 Universal Core, Template-Specific Entry
+
+The codebase must support universal intake configuration, but the first market template is cleaning.
+
+### 5.3 Server-Side Trust
+
+Business rules, tenant checks, AI calls, payment records, and privacy behavior must be enforced server-side.
+
+### 5.4 Human Review Required
+
+AI outputs are drafts. No automatic outbound messaging is allowed in MVP.
+
+### 5.5 Privacy by Design
+
+Privacy mode must affect storage, AI output persistence, admin visibility, and logging.
+
+### 5.6 No Feature Leakage
+
+Future roadmap features must not leak into MVP implementation.
+
+---
+
+## 6. Application Structure Standard
+
+Required top-level areas:
 
 - app
-- features
 - components
+- features
 - lib
 - server
-- services
-- repositories
-- policies
-- prompts
 - types
 - docs
+- supabase
 
-Recommended conceptual structure:
+Recommended structure:
 
-- app for routes and layouts
-- components for reusable UI
-- features for domain-specific UI and workflows
-- server for server-only logic
-- services for business logic
-- repositories for database access
-- policies for authorization and tenant rules
-- prompts for prompt registry definitions
-- lib for shared helpers
-- types for shared TypeScript types
-- docs for canonical documentation
+- `app` — routes, layouts, route groups
+- `components` — reusable UI components
+- `features` — domain-specific UI/workflow components
+- `server/services` — business workflows
+- `server/repositories` — database access
+- `server/policies` — authorization and tenant rules
+- `server/ai` — AI provider abstraction and AI orchestration
+- `server/prompts` — Prompt Registry
+- `lib` — shared helpers and configuration
+- `types` — shared TypeScript types
+- `supabase/migrations` — SQL migrations
+- `docs` — canonical documentation
+
+Business logic must not live inside random UI components.
 
 ---
 
-## 6. TypeScript Standard
+## 7. Domain Module Standard
+
+Core modules:
+
+- Auth / Profile
+- Business / Tenant
+- Business Branding
+- Services
+- FAQ / Knowledge
+- Privacy / Consent
+- Industry Templates
+- Intake Forms
+- Submissions
+- Leads
+- Lead Actions
+- AI Outputs
+- Usage Events
+- Notifications
+- Concierge Setup
+- Payment Placeholder
+
+Each module should have clear ownership and not mix unrelated responsibilities.
+
+---
+
+## 8. TypeScript Standard
 
 TypeScript must be strict.
 
-Required rules:
+Rules:
 
-- no implicit any
-- explicit return types for exported functions where useful
-- no business-critical untyped objects
-- no unsafe type casting unless justified
-- shared domain types must be centralized
-- API and AI outputs must be validated before use
+- No implicit `any`
+- No untyped business-critical objects
+- Explicit exported function return types where useful
+- Typed domain models
+- Validated external inputs
+- Validated AI outputs before use
+- No unsafe casting unless justified
+- Shared domain types centralized
 
 ---
 
-## 7. Data Access Standard
+## 9. Supabase Standard
 
-Database access must not be scattered inside UI components.
+Supabase is the MVP platform for:
+
+- Authentication
+- PostgreSQL database
+- Row Level Security
+- SQL migrations
+- Optional future storage
+
+Supabase client usage must follow these rules:
+
+- Browser client only for safe client-side needs
+- Server client for authenticated server operations
+- Service role key never exposed client-side
+- Server-side checks still required even with RLS
+- RLS must be enabled for tenant-owned tables
+
+---
+
+## 10. Database Access Standard
+
+Database access must be centralized.
 
 Rules:
 
-- UI components do not directly own business rules.
-- Repositories handle database operations.
+- UI components do not own database logic.
+- Repositories handle Supabase queries.
 - Services handle business workflows.
-- Policies enforce authorization.
-- Server actions or route handlers orchestrate requests.
-- Tenant isolation must be enforced with Supabase RLS and server-side checks.
+- Policies enforce authorization and tenant access.
+- Server actions or route handlers orchestrate calls.
+- RLS protects tenant data at the database layer.
+- Public intake submission must be write-scoped and safe.
 
 ---
 
-## 8. Multi-Tenant Standard
+## 11. Multi-Tenant Standard
 
-Every tenant-owned operational record must include business_id.
+Every tenant-owned operational record must include `business_id`.
 
-Examples:
+Tenant-owned records include:
 
+- business_branding
 - business_services
 - business_faqs
 - business_service_areas
 - business_privacy_settings
 - business_consent_settings
-- business_industry_settings
-- lead_forms
+- business_template_settings
+- intake_forms
+- intake_form_fields
+- intake_form_output_settings
+- intake_submissions
+- intake_submission_values
 - leads
-- lead_field_values
-- lead_messages
+- lead_action_items
+- lead_quality_scores
 - ai_outputs
 - usage_events
 - subscriptions
-- reports
 
-Access rules:
+Rules:
 
-- a user can only access businesses where they are a business_member
-- a lead belongs to exactly one business
-- AI outputs belong to a lead and a business
-- public quote page can create leads only for the resolved business slug
-- public quote page cannot read private dashboard data
-- admin access must be separated and restricted
-- Forward-Only Mode must not accidentally store full lead data
+- A user can access only businesses where they are a business member.
+- A lead belongs to exactly one business.
+- AI outputs belong to a lead and a business.
+- Public intake pages can create submissions only for the resolved business.
+- Public intake pages cannot read private dashboard data.
+- Admin/concierge access must be separated and restricted.
 
 ---
 
-## 9. Supabase RLS Standard
+## 12. RLS Standard
 
-Supabase RLS is required from Phase 2.
+Row Level Security is required from Phase 2.
 
 RLS must protect:
 
@@ -202,50 +267,76 @@ RLS must protect:
 - businesses
 - business_members
 - business settings
-- services
-- FAQs
-- service areas
+- templates and form configuration
+- submissions
 - leads
-- lead field values
 - AI outputs
 - usage events
-- subscription-related records
+- subscription placeholders
 
-Public quote submission must be carefully scoped.
+RLS must enforce:
 
-The public page may create a lead for a valid business, but it must not read dashboard data.
+- Member-only business access
+- Member-only lead access
+- Member-only AI output access
+- Scoped public insert for intake submission
+- No public read of private data
+- Admin-only support behavior when added
+- Privacy-aware data access
+
+RLS is not optional.
 
 ---
 
-## 10. Database Standard
+## 13. Database Phasing Standard
 
-### 10.1 Core MVP Tables
+Tables must be added by phase to avoid overbuilding.
 
-MVP database model includes:
+### Phase 2 — Auth/Tenant
 
 - profiles
 - businesses
 - business_members
+
+### Phase 3 — Business + Template Configuration
+
 - business_branding
 - business_services
 - business_faqs
 - business_service_areas
 - business_privacy_settings
 - business_consent_settings
-- industry_packs
-- business_industry_settings
-- lead_forms
+- public_link_settings
+- industry_templates
+- industry_template_fields
+- business_template_settings
+
+### Phase 4 — Universal Intake Core
+
+- intake_forms
+- intake_form_fields
+- intake_form_output_settings
+- intake_submissions
+- intake_submission_values
 - leads
-- lead_field_values
-- lead_messages
+
+### Phase 5 — Lead Workspace
+
+- lead_action_items
+- lead_quality_scores
+
+### Phase 6 — AI Core
+
 - ai_outputs
+- prompt_templates
+- prompt_versions
 - usage_events
+
+### Phase 7 — Sales Ready
+
 - subscriptions
-- reports
 
-### 10.2 Future Tables
-
-Future tables may include:
+Future-only tables:
 
 - booking_requests
 - appointments
@@ -258,128 +349,248 @@ Future tables may include:
 - automation_runs
 - audit_logs
 
-Future tables must not be built unless required by an approved future phase.
+---
+
+## 14. Universal Intake Engineering Standard
+
+The intake system must be dynamic but not overbuilt.
+
+MVP supports:
+
+- Form title
+- Form description
+- Field label
+- Field type
+- Required/optional
+- Field order
+- Placeholder
+- Help text
+- Active/inactive state
+- Success message
+- Consent notice
+
+MVP does not support:
+
+- Drag-and-drop builder
+- Complex conditional logic
+- Multi-step funnels
+- Visual workflow builder
+- Marketplace templates
+- Advanced analytics
 
 ---
 
-## 11. Privacy Engineering Standard
+## 15. Field Type Standard
 
-Privacy mode must affect implementation behavior.
+MVP field types:
 
-### 11.1 Standard Mode
+- short_text
+- long_text
+- email
+- phone
+- select
+- multi_select
+- number
+- date
+- time_window
+- yes_no
 
-Allowed:
+Future field types:
 
-- store full lead data
-- store AI outputs
-- store status history
-- store usage events
-
-### 11.2 Minimal Data Mode
-
-Allowed:
-
-- store only required lead fields
-- limit notes or sensitive free-text storage
-- store basic status and business relationship
-
-### 11.3 Forward-Only Mode
-
-Required behavior:
-
-- forward request to owner
-- avoid permanent full lead storage
-- optionally delete after 24/48 hours
-- store minimal technical metadata only when necessary
-- prevent support/admin view of full data unless explicitly allowed
+- file_upload
+- address_autocomplete
+- conditional_fields
+- payment_deposit
+- calendar_preference
 
 ---
 
-## 12. AI Engineering Standard
+## 16. Industry Template Standard
 
-AI must be implemented through an AI service abstraction.
+Industry templates are editable templates.
 
-The UI must not call OpenAI directly.
+A template defines:
+
+- Template name
+- Industry category
+- Default fields
+- Field ordering
+- Required/optional defaults
+- Missing-info rules
+- AI prompt context
+- Suggested reply context
+- Follow-up context
+- Demo data
+- Sales copy hints
+
+Templates must not hardcode the platform to one industry.
+
+The first template is:
+
+**Cleaning Smart Quote Template v1**
+
+---
+
+## 17. Lead Workspace Engineering Standard
+
+The lead workspace must stay simple.
+
+MVP includes:
+
+- Lead list
+- Lead detail
+- Status update
+- Missing info display
+- Lead Quality Score
+- Suggested Next Action
+- Copy actions
+- Today’s Action Panel
+- AI outputs
+
+It must not become a full CRM.
+
+---
+
+## 18. Lead Quality Standard
+
+Lead Quality Score can start rule-based.
+
+Categories:
+
+- Strong
+- Medium
+- Missing Info
+- Low Fit
+
+Inputs may include:
+
+- Required field completion
+- Contact information present
+- Preferred date present
+- Service area match
+- Notes quality
+- Service type selected
+
+AI can enhance the score in Phase 6.
+
+---
+
+## 19. AI Engineering Standard
+
+AI must be implemented through a server-side AI service abstraction.
 
 Required AI components:
 
 - AI service abstraction
 - Prompt Registry
-- structured output schema where useful
-- error fallback
-- privacy-aware storage behavior
-- logging without exposing sensitive customer content unnecessarily
+- Structured output schema where useful
+- Output validation
+- Error fallback
+- Privacy-aware persistence
+- Usage tracking
 
 AI output types:
 
-- lead summary
-- reply draft
-- follow-up draft
-- missing info detection
-- suggested next action
+- lead_summary
+- reply_draft
+- follow_up_draft
+- missing_info
+- suggested_next_action
+- lead_quality_reasoning
+- tone_variant
 
 AI must not:
 
-- auto-send
-- confirm booking
-- invent prices
-- invent availability
-- negotiate
-- directly message customers
-- replace owner decision
+- Auto-send
+- Confirm booking
+- Invent prices
+- Invent availability
+- Negotiate
+- Directly message customers
+- Replace owner decision
 
 ---
 
-## 13. Prompt Registry Standard
+## 20. Prompt Registry Standard
 
 Prompts must live in a Prompt Registry.
 
-Prompts must not be scattered across UI components.
-
 Each prompt entry should define:
 
-- prompt name
-- purpose
-- input context
-- expected output
-- output schema if structured
-- privacy handling notes
-- failure fallback
-- version
+- Prompt name
+- Version
+- Purpose
+- Input context
+- Expected output
+- Output schema if structured
+- Privacy handling notes
+- Failure fallback
 
-Prompt updates must be traceable.
+Prompts must not be scattered across UI components.
 
 ---
 
-## 14. Error Handling Standard
+## 21. Privacy Engineering Standard
 
-The MVP must handle errors clearly.
+MVP privacy modes:
+
+- Standard Mode
+- Minimal Data Mode
+
+Future mode:
+
+- Forward-Only Mode
+
+### Standard Mode
+
+Allowed:
+
+- Store full submission data
+- Store lead data
+- Store AI outputs
+- Store status and usage events
+
+### Minimal Data Mode
+
+Allowed:
+
+- Store minimum useful lead data
+- Limit free-text storage where appropriate
+- Store business relationship, status, and timestamps
+
+### Forward-Only Mode
+
+Future only.
+
+Not implemented in MVP.
+
+---
+
+## 22. Error Handling Standard
 
 Required error categories:
 
-- authentication errors
-- authorization errors
-- tenant access errors
-- validation errors
-- public form submission errors
-- AI generation errors
-- email delivery errors
-- payment link errors
-- unexpected server errors
+- Authentication error
+- Authorization error
+- Tenant access error
+- Validation error
+- Public form submission error
+- AI generation error
+- Email delivery error
+- Payment link error
+- Unexpected server error
 
 User-facing errors should be simple.
 
-Internal errors should be logged with enough diagnostic context without leaking sensitive data.
+Internal errors should be logged with diagnostic context without leaking sensitive data.
 
 ---
 
-## 15. Logging Standard
-
-Logs should support debugging without exposing unnecessary customer data.
+## 23. Logging Standard
 
 Logs may include:
 
-- request ID
+- request_id
 - business_id
 - user_id when authenticated
 - route/action name
@@ -387,139 +598,178 @@ Logs may include:
 - timestamp
 - operation status
 
-Logs should avoid full customer message content unless required for debugging and allowed by privacy mode.
+Logs should avoid:
+
+- Full customer messages
+- Secrets
+- API keys
+- Tokens
+- Payment details
+- Private contact details unless needed and allowed
 
 ---
 
-## 16. Email Standard
+## 24. Email Standard
 
 Resend is used for MVP email.
 
 Required MVP email:
 
-- owner email notification for new leads
+- Owner notification for new lead
 
-Optional MVP email:
+Optional later:
 
-- customer confirmation email
+- Customer confirmation email
+- Follow-up reminders
+- Weekly summary
 
-Customer confirmation email is optional because it introduces outbound communication and deliverability concerns.
-
-The MVP can start with a success page after quote submission.
+Customer confirmation email is not required in the first MVP because the public success page is enough for initial validation.
 
 ---
 
-## 17. Payment Standard
+## 25. Payment Standard
 
 Stripe Payment Links are used first.
 
-Stripe Billing comes later.
+MVP supports:
 
-The product must not build full subscription billing workflows in MVP unless needed after validation.
+- Setup fee payment link
+- Monthly payment link
+- Basic subscription placeholder record
 
-Payment-related implementation in MVP should support:
+Not MVP:
 
-- manual founding customer sales
-- setup fee collection
-- monthly payment link
-- basic subscription tracking placeholder
+- Full in-app billing
+- Stripe customer portal
+- Webhook-heavy subscription engine
+- Usage-based billing
 
 ---
 
-## 18. UI Engineering Standard
+## 26. UI Engineering Standard
 
-The UI should be clean, simple, and fast.
+The UI must be simple and conversion-focused.
 
 Rules:
 
-- mobile-first quote page
-- simple dashboard
-- minimal form friction
-- clear CTA
-- accessible form labels
-- clear loading states
-- clear success states
-- simple copy-to-clipboard actions
-- no unnecessary animations
-- no complex CRM-like interface in MVP
+- Mobile-first public intake page
+- Clear form labels
+- Low form friction
+- Clear consent notice
+- Clear success state
+- Simple dashboard
+- Strong empty states
+- Copy-to-clipboard actions
+- Today’s Action Panel visible
+- No unnecessary animations
+- No complex CRM UI
 
 ---
 
-## 19. Security Standard
+## 27. Security Standard
 
-Required security rules:
+Required rules:
 
-- all dashboard pages require authentication
-- all dashboard data requires business membership
-- public quote page has write-only lead creation behavior
-- admin/concierge access is separated
-- no client-side trust for tenant access
-- no AI keys exposed client-side
-- environment variables validated
-- sensitive data minimized according to privacy mode
+- Dashboard pages require authentication.
+- Dashboard data requires business membership.
+- Public intake page has scoped create behavior only.
+- Public page cannot read private dashboard data.
+- Admin/concierge access is separated.
+- No client-side trust for tenant access.
+- No AI keys exposed client-side.
+- Environment variables validated.
+- Sensitive data minimized according to privacy mode.
+- Service role key is never exposed to the browser.
 
 ---
 
-## 20. Phase Discipline Standard
+## 28. Testing Standard
 
-Every phase must be completed before moving to the next.
+Priority tests:
 
-Phase 1 is only technical foundation.
+- Auth flow
+- Business membership access
+- RLS policy behavior
+- Public intake submission
+- Tenant isolation
+- Lead creation
+- Lead status update
+- AI output validation
+- Privacy mode behavior
+- Owner notification behavior
+
+Tenant isolation tests are mandatory before real customer use.
+
+---
+
+## 29. Phase Discipline Standard
+
+No phase can begin until the previous phase meets its Definition of Done.
+
+Phase 1 is foundation only.
 
 Phase 1 must not include:
 
-- product features
-- business logic
-- lead workflows
+- Product features
+- Business logic
+- Lead workflows
 - AI generation
-- billing
-- customer-facing quote functionality
-- dashboard feature workflows
-
-This prevents foundation work from becoming uncontrolled product work.
+- Billing
+- Customer-facing quote functionality
+- Dashboard feature workflows
 
 ---
 
-## 21. Strict Non-Goals / Not Now
+## 30. Strict Non-Goals / Not Now
 
 The MVP must not include:
 
-- full CRM
-- full booking engine
-- payments inside product
-- invoice generation
+- Full CRM
+- Full booking engine
+- Payments inside product
+- Invoice generation
 - WhatsApp API
 - Instagram API
 - Facebook Messenger API
 - SMS sending
-- auto outbound customer messaging
+- Auto outbound customer messaging
 - AI chatbot directly talking to customers
-- mobile app
-- marketplace
-- white-label
-- content studio
-- restaurant booking
-- multi-vertical build
+- Mobile app
+- Marketplace
+- White-label
+- Full content studio
+- Restaurant booking
+- Multi-vertical public launch
 - AI voice
-- fully automated pricing
-- custom AI model training
-- vector database
-- microservices
+- Fully automated pricing
+- Custom AI model training
+- Vector database
+- Microservices
 - Kubernetes
-- complex integrations
+- Complex integrations
 
 ---
 
-## 22. Definition of Done
+## 31. Definition of Done
 
 This document is complete when:
 
-- the locked MVP stack is clear
-- removed technologies are explicit
-- multi-tenant and RLS rules are defined
-- AI service boundaries are defined
-- Prompt Registry is required
-- privacy engineering behavior is defined
-- Phase 1 no-feature rule is included
-- strict Non-Goals are included
-- engineering standards support fast MVP validation without overengineering
+- The Supabase-first MVP stack is locked.
+- Removed technologies are explicit.
+- Modular architecture boundaries are defined.
+- Universal intake rules are defined.
+- Editable industry template rules are defined.
+- Multi-tenant and RLS requirements are explicit.
+- AI service boundaries are defined.
+- Prompt Registry is required.
+- Privacy engineering behavior is defined.
+- Phase discipline is clear.
+- Strict Non-Goals prevent overbuilding.
+
+---
+
+## 32. Approval Status
+
+**Status:** Pending MoOoH Approval
+
+After approval, this document becomes canonical for BizPilot AI engineering work.

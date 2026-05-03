@@ -1,11 +1,12 @@
 # BizPilot AI — Build Plan v1.0
 
-**Status:** Phase 0 Final Canonical Draft  
 **Project:** BizPilot AI  
 **Document Type:** Build Plan  
-**Owner:** MoOoH  
 **Version:** v1.0  
-**Phase:** Phase 0 — Documentation Lock
+**Status:** Final Canonical Draft  
+**Owner:** MoOoH  
+**Phase:** Phase 0 — Documentation Lock  
+**Last Updated:** 2026-05-03  
 
 ---
 
@@ -13,11 +14,19 @@
 
 This document defines the phased execution plan for BizPilot AI.
 
-The build plan exists to prevent feature creep and keep the project focused on validation.
+The plan is designed to maximize startup success by balancing:
+
+- Speed to MVP
+- Product quality
+- Customer value
+- Technical scalability
+- Multi-tenant security
+- Scope control
+- Sales readiness
 
 The MVP strategy is:
 
-**Cleaning only. Smart Quote Page only. AI drafts only. Human review required. Concierge setup. Validate first. Expand later.**
+**Universal Smart Intake Core. Cleaning-first GTM. Editable Cleaning Template. AI drafts only. Human review required. Concierge setup. Validate before expansion.**
 
 ---
 
@@ -27,17 +36,18 @@ The locked phases are:
 
 1. Phase 0 — Documentation Lock
 2. Phase 1 — Project Foundation
-3. Phase 2 — Database/Auth Foundation
-4. Phase 3 — Business Operating Core
-5. Phase 4 — Smart Intake Core + Cleaning Pack
-6. Phase 5 — Owner Dashboard Basic
-7. Phase 6 — AI Assistant Core
-8. Phase 7 — Notifications + Concierge MVP Sales Version
-9. Phase 8 — Booking Lite
-10. Phase 9 — Second Vertical Pack
-11. Phase 10 — Growth Studio
+3. Phase 2 — Auth + Tenant Foundation
+4. Phase 3 — Business + Template Configuration Core
+5. Phase 4 — Universal Smart Intake Core + Cleaning Template
+6. Phase 5 — Lead Workspace + Today’s Action Panel
+7. Phase 6 — AI Lead Conversion Assistant
+8. Phase 7 — Sales-Ready MVP
+9. Validation Gate
+10. Phase 8 — Booking Lite
+11. Phase 9 — Second Vertical Template
+12. Phase 10 — Growth Studio Lite
 
-Phases 8–10 are not started until the MVP Validation Gate is passed.
+Phases 8–10 are future only and must not start until the Validation Gate is passed.
 
 ---
 
@@ -54,30 +64,32 @@ Create and approve the canonical documents that guide the project.
 - docs/architecture/BIZPILOT_ARCHITECTURE_v1.0.md
 - docs/product/BIZPILOT_BUILD_PLAN_v1.0.md
 
-### Requirements
+### Required Decisions
 
-Phase 0 must define:
+Phase 0 must lock:
 
-- product identity
-- MVP scope
-- architecture
-- engineering standard
-- build phases
-- privacy model
-- AI boundaries
-- validation gate
-- strict Non-Goals
+- Universal Smart Intake + AI Lead Conversion Core
+- Cleaning-first GTM
+- Editable Cleaning Smart Quote Template
+- Supabase-first MVP stack
+- AI Assistant, not AI Operator
+- Standard and Minimal Data privacy modes
+- Concierge setup workflow
+- Validation Gate
+- Strict Non-Goals
 
 ### Definition of Done
 
 Phase 0 is complete when:
 
-- all four documents are clean and consistent
-- MVP is limited to Cleaning Pack v1
-- Generic Core + Industry Packs is locked
-- stack is locked
-- strict Non-Goals are included
-- MoOoH approves the documents
+- All four documents are clean and consistent.
+- MVP scope is clear.
+- Supabase-first stack is locked.
+- Docker and Prisma are excluded from MVP.
+- Cleaning is the only GTM vertical.
+- The product core remains universal.
+- Strict Non-Goals are included.
+- MoOoH approves the documents.
 
 ---
 
@@ -89,19 +101,17 @@ Create the technical foundation only.
 
 ### Critical Rule
 
-Phase 1 must not include product features, business logic, lead workflows, AI generation, billing, or customer-facing quote functionality.
+Phase 1 must not include product features.
 
-Phase 1 only establishes the technical foundation.
+No:
 
-This means no:
-
-- lead submission
-- quote page functionality
-- business onboarding workflow
+- Lead submission
+- Quote page functionality
+- Business onboarding workflow
 - AI generation
-- payment workflow
-- owner dashboard feature logic
-- customer-facing product workflow
+- Payment workflow
+- Owner dashboard feature logic
+- Customer-facing product workflow
 
 ### Deliverables
 
@@ -109,33 +119,37 @@ This means no:
 - TypeScript strict configuration
 - Tailwind CSS setup
 - shadcn/ui setup
-- base folder structure
-- environment validation
-- Supabase client setup
-- lint/format/build scripts
-- base layout
-- base route groups
-- basic UI shell
-- project README skeleton
+- Base folder structure
+- Environment variable structure
+- Environment validation
+- Supabase client foundation
+- Lint script
+- Build script
+- Base layout
+- Base route groups
+- Basic UI shell
+- README skeleton
+- Git checkpoint
 
 ### Definition of Done
 
 Phase 1 is complete when:
 
-- app runs locally
-- TypeScript is strict
-- Tailwind works
-- shadcn/ui is installed
-- environment validation exists
-- Supabase client is configured but not used for product workflows
-- lint passes
-- build passes
-- folder structure is ready
-- no product features have been implemented
+- App runs locally.
+- TypeScript is strict.
+- Tailwind works.
+- shadcn/ui is installed.
+- Environment validation exists.
+- Supabase client is configured but not used for product workflows.
+- Lint passes.
+- Build passes.
+- Folder structure is ready.
+- README exists.
+- No product features have been implemented.
 
 ---
 
-## 5. Phase 2 — Database/Auth Foundation
+## 5. Phase 2 — Auth + Tenant Foundation
 
 ### Goal
 
@@ -149,94 +163,135 @@ Create secure authentication and tenant foundation.
 - businesses table
 - business_members table
 - RLS policies
-- tenant access policy
-- protected dashboard shell
-- basic authenticated layout
-- basic membership checks
+- Tenant access policy
+- Protected dashboard shell
+- Basic authenticated layout
+- Basic membership checks
+
+### Database Tables
+
+- profiles
+- businesses
+- business_members
 
 ### Requirements
 
 Phase 2 must include:
 
 - RLS enabled for tenant-owned tables
-- user-to-business relationship
-- business membership model
-- dashboard route protection
-- no public access to private tenant data
+- User-to-business relationship
+- Business membership model
+- Dashboard route protection
+- No public access to private tenant data
+- No lead/service/AI tables yet
 
 ### Definition of Done
 
 Phase 2 is complete when:
 
-- user can sign up/login
-- authenticated user can access protected shell
-- user cannot access businesses they do not belong to
-- RLS policies are active
-- business_members is working
-- tenant-safe foundation is ready for product features
+- User can sign up/login.
+- Authenticated user can access protected shell.
+- User can be associated with a business.
+- User cannot access businesses they do not belong to.
+- RLS policies are active.
+- business_members is working.
+- Tenant-safe foundation is ready for product features.
 
 ---
 
-## 6. Phase 3 — Business Operating Core
+## 6. Phase 3 — Business + Template Configuration Core
 
 ### Goal
 
-Build business configuration needed before lead intake.
+Build business configuration needed before public intake.
 
 ### Deliverables
 
-- business profile
-- branding
-- services
+- Business profile
+- Branding
+- Services
 - FAQ
-- service areas
-- language/tone
-- privacy mode
-- consent settings
-- selected industry pack = Cleaning
-- default intake behavior
+- Service areas
+- Language/tone preference
+- Privacy mode
+- Consent settings
+- Industry template seed
+- Cleaning template activation
+- Editable form configuration foundation
+
+### Database Tables
+
+- business_branding
+- business_services
+- business_faqs
+- business_service_areas
+- business_privacy_settings
+- business_consent_settings
+- industry_templates
+- industry_template_fields
+- business_template_settings
 
 ### Requirements
 
-The business configuration must support Cleaning Pack v1 but must not hardcode the whole platform to cleaning.
+The system must support Cleaning Template v1 without hardcoding the full platform to cleaning.
 
-The system must preserve the Generic Core + Industry Packs architecture.
+Editable template configuration must support:
+
+- Field label
+- Required/optional
+- Field order
+- Help text
+- Placeholder
+- Active/inactive state
+- Success message
+
+No drag-and-drop builder.
 
 ### Definition of Done
 
 Phase 3 is complete when:
 
-- owner can configure business profile
-- owner can configure brand basics
-- owner can add/edit services
-- owner can add/edit FAQ
-- owner can set service areas
-- owner can choose language/tone
-- owner can choose privacy mode
-- consent settings exist
-- Cleaning Pack can be selected as the active pack
-- configuration is tenant-safe
+- Owner can configure business profile.
+- Owner can configure brand basics.
+- Owner can add/edit services.
+- Owner can add/edit FAQ.
+- Owner can set service areas.
+- Owner can choose language/tone.
+- Owner can choose privacy mode.
+- Consent settings exist.
+- Cleaning template can be activated.
+- Editable template configuration exists.
+- Configuration is tenant-safe.
 
 ---
 
-## 7. Phase 4 — Smart Intake Core + Cleaning Pack
+## 7. Phase 4 — Universal Smart Intake Core + Cleaning Template
 
 ### Goal
 
-Build the public quote flow for Cleaning Pack v1.
+Build the public intake flow using the universal intake engine and Cleaning Template v1.
 
 ### Deliverables
 
-- public branded quote page
-- Cleaning Pack v1 form
-- form validation
-- lead submission
-- privacy mode behavior
-- consent notice
-- lead storage
-- success page
+- Dynamic form renderer
+- Public branded intake page
+- Cleaning Template v1 fields
+- Form validation
+- Consent notice
+- Submission storage
+- Lead creation
+- Privacy-aware storage
+- Success page
 
-### Cleaning Pack v1 Fields
+### Database Tables
+
+- intake_forms
+- intake_form_fields
+- intake_submissions
+- intake_submission_values
+- leads
+
+### Cleaning Template v1 Fields
 
 - cleaning_type
 - property_type
@@ -259,58 +314,100 @@ Build the public quote flow for Cleaning Pack v1.
 
 Phase 4 is complete when:
 
-- public quote page resolves correct business
-- form renders with Cleaning Pack v1 fields
-- consent notice is visible
-- lead can be submitted
-- lead is stored according to privacy mode
-- success page appears after submission
-- public quote page cannot read private dashboard data
-- no AI generation is required yet
+- Public intake page resolves the correct business.
+- Public page loads only public-safe data.
+- Dynamic form renders from configuration.
+- Cleaning Template v1 renders correctly.
+- Consent notice is visible.
+- Customer can submit a request.
+- Submission and lead are stored under the correct business.
+- Privacy mode is respected.
+- Success page appears after submission.
+- Public page cannot read private dashboard data.
+- No AI generation is required yet.
 
 ---
 
-## 8. Phase 5 — Owner Dashboard Basic
+## 8. Phase 5 — Lead Workspace + Today’s Action Panel
 
 ### Goal
 
-Build the basic owner workflow for reviewing leads.
+Build the basic owner workflow for reviewing and acting on leads.
 
 ### Deliverables
 
-- lead list
-- lead detail
-- lead status update
-- copy actions
-- mark reviewed
-- mark replied
-- mark booked
-- mark lost
-- basic filters
-- tenant-safe access
+- Lead list
+- Lead detail
+- Lead status update
+- Missing info placeholder/rule-based detection
+- Lead Quality Score placeholder/rule-based score
+- Suggested Next Action placeholder/rule-based action
+- Today’s Action Panel
+- Copy actions
+- Basic filters
+- Tenant-safe access
+
+### Database Tables
+
+- lead_action_items
+- lead_quality_scores
 
 ### Lead Statuses
 
 - New
 - Reviewed
 - Replied
+- Follow-Up Needed
 - Booked
 - Lost
+- Archived
+
+
+### Follow-Up Needed Rule
+
+A lead should be marked or suggested as Follow-Up Needed when:
+
+- Status is New for more than 24 hours
+- Status is Replied but not Booked after 48 hours
+- Missing information was requested but remains unresolved
+- Owner manually marks the lead for follow-up
+
+This is rule-based in MVP. No automatic customer messaging is allowed.
+
+### Lead Quality Score Rule
+
+MVP categories:
+
+- Strong
+- Good
+- Needs Info
+- Low Fit
+
+Starting logic:
+
+- Strong = contact + service + area + preferred timing + required fields complete
+- Good = contact + service + area complete, but some useful optional information is missing
+- Needs Info = one or more key quote details are missing
+- Low Fit = outside service area, unclear request, or poor match with offered services
 
 ### Definition of Done
 
 Phase 5 is complete when:
 
-- owner can view leads for their business
-- owner cannot view other businesses’ leads
-- owner can open lead detail
-- owner can update lead status
-- owner can copy relevant customer/contact information
-- dashboard remains simple and does not become a CRM
+- Owner can view leads for their business.
+- Owner cannot view other businesses’ leads.
+- Owner can open lead detail.
+- Owner can update lead status.
+- Owner can copy relevant customer/contact information.
+- Owner can see missing information.
+- Owner can see lead quality score.
+- Owner can see suggested next action.
+- Owner can see Today’s Action Panel.
+- Dashboard remains simple and does not become a CRM.
 
 ---
 
-## 9. Phase 6 — AI Assistant Core
+## 9. Phase 6 — AI Lead Conversion Assistant
 
 ### Goal
 
@@ -320,99 +417,115 @@ Add AI assistance to the existing lead workflow.
 
 - AI service abstraction
 - Prompt Registry
-- lead summary generation
-- reply draft generation
-- follow-up draft generation
-- missing info detection
-- suggested next action
-- structured outputs where useful
+- Prompt versioning
+- Lead summary generation
+- Reply draft generation
+- Follow-up draft generation
+- Missing info detection
+- Suggested next action
+- Lead quality reasoning
+- Tone variants
+- Structured outputs where useful
 - AI error fallback
 - AI output storage respecting privacy mode
+- Usage tracking
+
+### Database Tables
+
+- ai_outputs
+- prompt_templates
+- prompt_versions
+- usage_events
 
 ### AI Must Generate
 
-- lead summary
-- reply draft
-- follow-up draft
-- missing info detection
-- suggested next action
+- Lead summary
+- Reply draft
+- Follow-up draft
+- Missing info
+- Suggested next action
+- Lead quality reasoning
+- Tone variants
 
 ### AI Must Not
 
-- auto-send
-- confirm bookings
-- invent prices
-- invent availability
-- negotiate
-- talk directly to customers
-- replace owner decision
+- Auto-send
+- Confirm bookings
+- Invent prices
+- Invent availability
+- Negotiate
+- Talk directly to customers
+- Replace owner decision
 
 ### Definition of Done
 
 Phase 6 is complete when:
 
-- AI outputs are generated server-side
-- Prompt Registry is used
-- AI output format is consistent
-- AI failure has fallback behavior
-- AI output respects privacy mode
-- owner can review and copy drafts
-- no auto-send exists
+- AI outputs are generated server-side.
+- Prompt Registry is used.
+- AI output format is consistent.
+- AI failure has fallback behavior.
+- AI output respects privacy mode.
+- Owner can review and copy drafts.
+- Tone variants exist.
+- No auto-send exists.
 
 ---
 
-## 10. Phase 7 — Notifications + Concierge MVP Sales Version
+## 10. Phase 7 — Sales-Ready MVP
 
 ### Goal
 
-Make the MVP sales-ready for real early customers.
+Make the MVP ready for real early customers and paid validation.
 
 ### Required Deliverables
 
-- owner email notification
-- admin/concierge setup mode
-- demo business
-- sales-ready MVP
-- onboarding checklist
-- sales demo script
+- Owner email notification
+- Concierge setup workflow
+- Demo business
+- Sales-ready demo page
+- Onboarding checklist
+- Sales demo script
+- Before/after sales view
 - Stripe Payment Link support
+- Basic subscription placeholder
+- Founding customer workflow
 
-### Optional Deliverable
+### Database Table
 
-- customer confirmation email
-
-Customer confirmation email is optional in MVP.
-
-The success page after form submission is enough for first validation.
+- subscriptions
 
 ### Admin / Concierge Capabilities
 
-Admin can:
+Concierge can:
 
-- create demo businesses
-- create customer businesses
-- configure business profile
-- set branding
-- add services
-- add FAQ
-- set service areas
-- activate Cleaning Pack
-- choose privacy mode
-- configure consent settings
-- support onboarding manually
-- view support data only when privacy mode allows it
+- Create demo businesses
+- Create customer businesses
+- Configure business profile
+- Set branding
+- Add services
+- Add FAQ
+- Set service areas
+- Activate Cleaning template
+- Configure privacy mode
+- Configure consent settings
+- Prepare public intake link
+- Support onboarding manually
+
+This should not become a full admin platform.
 
 ### Definition of Done
 
 Phase 7 is complete when:
 
-- new lead triggers owner email notification
-- admin can set up a customer manually
-- demo business can be shown in sales
-- onboarding checklist exists
-- sales demo script exists
-- Stripe Payment Link can be used for founding customers
-- MVP can be sold to 1–3 cleaning businesses
+- New lead triggers owner email notification.
+- Concierge can set up a customer manually.
+- Demo business can be shown in sales.
+- Before/after value demo exists.
+- Onboarding checklist exists.
+- Sales demo script exists.
+- Stripe Payment Links can be used for founding customers.
+- MVP can be sold to 1–3 cleaning businesses.
 
 ---
 
@@ -423,21 +536,22 @@ Before starting Phase 8, Phase 9, or Phase 10, the following must be true:
 - 3 businesses onboarded
 - 30 real or semi-real leads submitted
 - 50% owner review rate
-- 30% AI draft usage or edit rate
+- 30% AI draft copy/edit usage
 - 1 paying or payment-ready customer
 
 If this gate is not passed, do not build new features.
 
 Review:
 
-- positioning
-- demo quality
-- onboarding friction
-- pricing
-- customer segment
-- form friction
+- Positioning
+- Demo quality
+- Onboarding friction
+- Pricing
+- Customer segment
+- Form friction
 - AI output quality
-- owner workflow
+- Owner workflow
+- Sales message
 
 ---
 
@@ -453,11 +567,17 @@ Only after MVP Validation Gate is passed.
 
 ### Possible Scope
 
-- booking request status
-- simple availability preference
-- manual booking confirmation
-- no full calendar engine
-- no automated booking confirmation
+- Owner-confirmed booking status
+- Preferred appointment note
+- Manual booking confirmation state
+- Simple calendar view later
+
+### Not Included
+
+- Full calendar engine
+- Automatic booking confirmation
+- Calendar sync
+- Dispatching
 
 ### Definition of Done
 
@@ -465,7 +585,7 @@ Defined later after validation.
 
 ---
 
-## 13. Phase 9 — Second Vertical Pack
+## 13. Phase 9 — Second Vertical Template
 
 ### Status
 
@@ -473,13 +593,25 @@ Future phase only.
 
 ### Start Condition
 
-Only after Cleaning Pack validation.
+Only after Cleaning Template validation.
 
 ### Recommended Order
 
 1. Car Detailing
 2. Salon / Beauty
-3. Home Services
+3. Education / Tutoring
+4. Home Services
+
+Each template should include:
+
+- Default fields
+- Required/optional rules
+- AI prompt context
+- Missing-info rules
+- Reply templates
+- Follow-up templates
+- Demo data
+- Sales copy
 
 ### Definition of Done
 
@@ -487,7 +619,7 @@ Defined later after validation.
 
 ---
 
-## 14. Phase 10 — Growth Studio
+## 14. Phase 10 — Growth Studio Lite
 
 ### Status
 
@@ -499,12 +631,18 @@ Only after real owner usage and validated demand.
 
 ### Possible Scope
 
-- review request drafts
-- caption generator
-- campaign drafts
-- seasonal promotion drafts
-- Google Business post drafts
-- social content drafts
+- Review request drafts
+- Google Business Profile post drafts
+- Seasonal promotion drafts
+- Follow-up campaign drafts
+- Simple social caption drafts
+
+### Not Included
+
+- Auto-posting
+- Social media integrations
+- Full content calendar
+- Multi-channel automation
 
 ### Definition of Done
 
@@ -512,37 +650,75 @@ Defined later after validation.
 
 ---
 
-## 15. Strict Non-Goals / Not Now
+## 15. Deployment Plan
 
-The MVP must not include:
+### MVP Development
 
-- full CRM
-- full booking engine
-- payments inside product
-- invoice generation
-- WhatsApp API
-- Instagram API
-- Facebook Messenger API
-- SMS sending
-- auto outbound customer messaging
-- AI chatbot directly talking to customers
-- mobile app
-- marketplace
-- white-label
-- content studio
-- restaurant booking
-- multi-vertical build
-- AI voice
-- fully automated pricing
-- custom AI model training
-- vector database
-- microservices
+- Local Next.js development
+- Supabase Cloud project
+- GitHub repository
+
+### First Deploy
+
+- Vercel for Next.js
+- Supabase Cloud for Auth and PostgreSQL
+- Resend for owner email
+- Stripe Payment Links for founding payments
+
+### Not Needed for MVP
+
+- VPS
+- AWS
+- Docker-first setup
 - Kubernetes
-- complex integrations
+- Self-hosted PostgreSQL
+- Supabase local stack
+
+These can be revisited after validation.
 
 ---
 
-## 16. Phase Control Rules
+## 16. Tooling by Phase
+
+### Phase 1
+
+- Node.js
+- pnpm
+- Git
+- VS Code
+- Next.js
+- TypeScript
+- Tailwind
+- shadcn/ui
+
+### Phase 2
+
+- Supabase project
+- Supabase Auth
+- Supabase SQL migrations
+- RLS policies
+
+### Phase 3–5
+
+- Supabase PostgreSQL
+- Next.js server actions / route handlers
+- Tenant-safe services and repositories
+
+### Phase 6
+
+- OpenAI API
+- Prompt Registry
+- Structured output validation
+
+### Phase 7
+
+- Resend
+- Stripe Payment Links
+- Vercel deployment
+
+---
+
+## 17. Phase Control Rules
 
 No phase can begin until the previous phase meets its Definition of Done.
 
@@ -550,14 +726,14 @@ Future phases are not started because they are exciting.
 
 Future phases are started only when:
 
-- the validation gate is passed
-- real customer behavior supports the need
-- the added feature supports revenue or retention
-- the feature does not break the narrow-entry strategy
+- Validation Gate is passed
+- Real customer behavior supports the need
+- The added feature supports revenue or retention
+- The feature does not break the narrow-entry strategy
 
 ---
 
-## 17. First Execution Goal
+## 18. First Execution Goal
 
 The first execution goal is:
 
@@ -566,26 +742,67 @@ The first execution goal is:
 Not:
 
 - 300 free users
-- multi-vertical launch
-- full automation
-- complex integrations
-- content platform
+- Multi-vertical launch
+- Full automation
+- Complex integrations
+- Full content platform
 - AI operator
+- Full CRM
 
 ---
 
-## 18. Definition of Done
+## 19. Strict Non-Goals / Not Now
+
+The MVP must not include:
+
+- Full CRM
+- Full booking engine
+- Full drag-and-drop builder
+- Advanced conditional form logic
+- Payments inside product
+- Invoice generation
+- WhatsApp API
+- Instagram API
+- Facebook Messenger API
+- SMS sending
+- Auto outbound customer messaging
+- AI chatbot directly talking to customers
+- Mobile app
+- Marketplace
+- White-label
+- Full content studio
+- Restaurant booking
+- Multi-vertical public launch
+- AI voice
+- Fully automated pricing
+- Custom AI model training
+- Vector database
+- Microservices
+- Kubernetes
+- Complex integrations
+
+---
+
+## 20. Build Plan Definition of Done
 
 This Build Plan is complete when:
 
-- all phases are clearly ordered
-- Phase 1 explicitly excludes product features
-- Phase 2 includes Auth, profiles, businesses, business_members, RLS, and protected dashboard shell
-- Phase 3 includes Business Operating Core and Cleaning Pack activation
-- Phase 4 includes Smart Intake Core and Cleaning Pack v1
-- Phase 5 puts dashboard before AI
-- Phase 6 adds AI only after lead workflow exists
-- Phase 7 makes MVP sales-ready
-- Phase 8–10 are future only
-- Validation Gate blocks premature expansion
-- strict Non-Goals are included
+- All phases are clearly ordered.
+- Phase 1 explicitly excludes product features.
+- Phase 2 includes Auth, profiles, businesses, business_members, RLS, and protected dashboard shell.
+- Phase 3 includes Business + Template Configuration Core.
+- Phase 4 includes Universal Smart Intake Core and Cleaning Template.
+- Phase 5 includes Lead Workspace and Today’s Action Panel.
+- Phase 6 adds AI only after lead workflow exists.
+- Phase 7 makes MVP sales-ready.
+- Phases 8–10 are future only.
+- Validation Gate blocks premature expansion.
+- Strict Non-Goals are included.
+
+---
+
+## 21. Approval Status
+
+**Status:** Pending MoOoH Approval
+
+After approval, this document becomes canonical for BizPilot AI build execution.
