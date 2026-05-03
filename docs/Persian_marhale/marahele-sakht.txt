@@ -1,0 +1,881 @@
+MoOoH، نتیجه نهایی من اینه: نسخه فعلی پروژه **قابل قفل شدن هست، اما فقط اگر با یک استاندارد مشخص بسته شود**. بهترین نسخه نهایی این نیست که BizPilot را از روز اول «همه‌کاره» بسازیم؛ بهترین نسخه اینه:
+
+# نسخه نهایی و بهینه BizPilot AI
+
+```text
+BizPilot AI = Generic AI Operating Core for Local Service Businesses
+Market Entry = Smart Quote Page + AI Reply Assistant for Cleaning Businesses
+Architecture = Generic Core + Industry Packs
+MVP = Cleaning Pack v1 only
+Expansion = فقط بعد از validation
+```
+
+این دقیقاً همان جهتی است که در سندهای فعلی هم شکل گرفته: vision بزرگ، ورود کوچک، MVP فقط Cleaning، و توسعه از طریق Industry Packs. در فایل اصلی هم پروژه با همین هویت تعریف شده: **Generic AI Operating Core + Cleaning Smart Quote MVP** و تأکید شده که ورود بازار باید با **Branded Smart Quote Page + AI Reply Assistant for Cleaning Businesses** باشد. 
+
+---
+
+## 1. تصمیم نهایی محصول
+
+### هویت داخلی
+
+```text
+AI Operating Core for local service businesses.
+```
+
+### محصول قابل فروش اول
+
+```text
+A branded smart quote page that turns cleaning requests into clean leads, AI reply drafts, and follow-up drafts.
+```
+
+### جمله فروش ساده
+
+```text
+Stop losing cleaning customers because of slow, messy, or incomplete replies.
+```
+
+این جمله خیلی بهتر از توضیح‌های سنگین مثل “AI Operating Core” برای مشتری cleaning است. در سند دوم هم همین نکته درست تشخیص داده شده که اصطلاحات فنی مثل intake یا operating core برای فروش اولیه سنگین هستند و باید customer-facing ساده‌تر شوند. 
+
+---
+
+## 2. چرا بازار هنوز ارزش دارد؟
+
+بازار cleaning واقعی و بزرگ است. Grand View Research بازار جهانی cleaning services را در سال 2025 حدود **442.09 میلیارد دلار** تخمین زده و پیش‌بینی کرده تا 2033 به **770.76 میلیارد دلار** برسد. ([Grand View Research][1])
+
+بازار کانادا هم برای شروع تو مهم است: طبق Grand View Research، بازار cleaning services در کانادا در 2025 حدود **19.69 میلیارد دلار** بوده و تا 2033 می‌تواند به حدود **33.85 میلیارد دلار** برسد. ([Grand View Research][2])
+
+بازار software مربوط به cleaning هم در حال رشد است. The Business Research Company اندازه بازار cleaning service software را **1.96 میلیارد دلار در 2025** و پیش‌بینی آن را **2.99 میلیارد دلار تا 2030** اعلام کرده است. ([The Business Research Company][3])
+
+پس مشکل بازار این نیست که demand وجود ندارد؛ مشکل اصلی این است که اگر محصول از اول شبیه CRM کامل، booking system، automation platform یا content studio شود، مسیر MVP سنگین و کند می‌شود.
+
+---
+
+## 3. قانون طلایی نهایی
+
+```text
+Big vision, narrow entry, validated expansion.
+```
+
+یعنی:
+
+```text
+Vision بزرگ باشد.
+MVP کوچک و قابل فروش باشد.
+Expansion فقط بعد از data واقعی انجام شود.
+```
+
+اگر از اول Cleaning + Car Detailing + Salon + Restaurant + Booking + WhatsApp + Instagram + Content Studio بسازیم، پروژه ریسک شکست بالا می‌گیرد.
+
+اگر فقط یک فرم ساده quote بسازیم، آینده ندارد.
+
+پس بهترین حالت:
+
+```text
+Generic Core + Industry Packs
+```
+
+---
+
+# 4. نسخه نهایی معماری محصول
+
+## Layer 1 — Generic Core
+
+این هسته برای همه service businessها مشترک می‌ماند:
+
+```text
+accounts
+profiles
+businesses
+business_members
+business profile
+branding
+services
+service areas
+FAQ
+privacy mode
+consent settings
+lead intake
+lead summary
+AI reply draft
+follow-up draft
+missing info detection
+owner dashboard
+admin/concierge setup
+prompt registry
+notification system
+industry pack activation
+usage tracking
+billing placeholder
+```
+
+## Layer 2 — Industry Packs
+
+هر industry فقط یک pack است، نه یک محصول جدا.
+
+هر Industry Pack باید شامل این‌ها باشد:
+
+```text
+form fields
+service templates
+default FAQ
+AI prompt context
+missing info rules
+reply templates
+follow-up templates
+demo data
+validation rules
+industry wording
+lead scoring hints later
+```
+
+## Layer 3 — First Pack
+
+برای MVP فقط:
+
+```text
+Cleaning Pack v1
+```
+
+موارد زیر فقط roadmap هستند:
+
+```text
+Car Detailing
+Salon
+Home Services
+Restaurant
+Booking Lite
+Growth Studio
+Campaign Engine
+AI Operator
+Integrations
+White-label
+Marketplace
+```
+
+---
+
+# 5. Cleaning Pack v1 نهایی و قفل‌شده
+
+فرم نباید خیلی طولانی باشد، چون customer رها می‌کند. نباید خیلی کوتاه باشد، چون lead ناقص می‌شود.
+
+فیلدهای نهایی:
+
+```text
+cleaning_type
+property_type
+bedrooms
+bathrooms
+square_footage_optional
+pets
+preferred_date
+preferred_time_window
+city_or_service_area
+customer_name
+customer_contact
+notes
+```
+
+این همان فیلدهایی است که در سند اصلاحی هم باید برای Cleaning Pack v1 قفل شوند. 
+
+---
+
+# 6. AI Strategy نهایی
+
+قانون اصلی:
+
+```text
+AI Assistant, not AI Operator.
+```
+
+یعنی AI در MVP فقط کمک می‌کند، تصمیم نمی‌گیرد و چیزی برای customer ارسال نمی‌کند.
+
+## AI در MVP انجام می‌دهد
+
+```text
+lead summary
+reply draft
+follow-up draft
+missing info detection
+suggested next action
+tone adjustment
+FAQ-aware response drafting
+```
+
+## AI در MVP انجام نمی‌دهد
+
+```text
+auto-send
+confirm booking
+invent pricing
+invent availability
+negotiate with customer
+talk directly to customer
+replace owner decision
+```
+
+این تصمیم خیلی مهم است، چون هم ریسک privacy را کم می‌کند، هم MVP را سریع‌تر قابل فروش می‌کند.
+
+---
+
+# 7. Privacy + Consent نهایی
+
+Privacy باید feature اصلی باشد، نه فقط متن حقوقی.
+
+## Standard Mode
+
+برای businessهایی که dashboard کامل می‌خواهند:
+
+```text
+lead data stored
+AI outputs stored
+status history stored
+basic usage stored
+```
+
+## Minimal Data Mode
+
+برای businessهایی که ذخیره کمتر می‌خواهند:
+
+```text
+name
+contact
+service type
+city/service area
+status
+created date
+business_id
+```
+
+## Forward-Only Mode
+
+برای businessهای حساس‌تر:
+
+```text
+forward request to owner
+no long-term full lead storage
+optional delete after 24/48 hours
+minimal technical metadata only if needed
+```
+
+## Consent Notice نهایی
+
+```text
+By submitting this request, you agree that your information will be shared with [Business Name] to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.
+```
+
+این باید روی public quote page باشد.
+
+---
+
+# 8. MVP نهایی
+
+MVP فقط این‌ها را دارد:
+
+```text
+Business signup/login
+Business profile
+Business branding
+Services setup
+FAQ setup
+Service areas
+Privacy mode
+Consent settings
+Selected Industry Pack = Cleaning
+Public branded quote page
+Cleaning Pack v1 form
+Lead submission
+Lead storage
+Lead dashboard
+Lead detail
+Lead status management
+AI lead summary
+AI reply draft
+AI follow-up draft
+Missing info detection
+Suggested next action
+Copy-to-clipboard
+Owner email notification
+Admin/Concierge Setup Mode
+Demo business mode
+Basic usage tracking
+Stripe Payment Link
+```
+
+---
+
+# 9. Strict Non-Goals / Not Now
+
+این‌ها در MVP ممنوع هستند:
+
+```text
+Full CRM
+Full booking engine
+Payments inside app
+Invoice generation
+WhatsApp API
+Instagram API
+Facebook Messenger API
+SMS sending
+Auto outbound messaging
+AI chatbot directly talking to customers
+Mobile app
+Marketplace
+White-label
+Content Studio
+Restaurant booking
+Multi-vertical build
+AI voice
+Fully automated pricing
+Custom AI model training
+Vector database
+Microservices
+Kubernetes
+Complex integrations
+```
+
+اگر مشتری اول گفت WhatsApp automation می‌خواهم، جواب درست:
+
+```text
+For now, BizPilot prepares the reply. You copy, edit, and send it manually. Automation comes after validation.
+```
+
+---
+
+# 10. Admin / Concierge Setup Mode
+
+این بخش برای درآمد اول حیاتی است.
+
+چون در شروع نباید self-serve کامل بسازیم. باید بتوانی ۳ مشتری اول را دستی setup کنی.
+
+Admin باید بتواند:
+
+```text
+create demo businesses
+create real customer businesses
+configure business profile
+set branding
+add services
+add FAQ
+set service areas
+activate Cleaning Pack
+choose privacy mode
+configure consent notice
+view support data only when privacy allows it
+onboard early customers manually
+```
+
+این یعنی product از اول برای فروش واقعی آماده می‌شود، حتی اگر هنوز self-serve کامل نباشد.
+
+---
+
+# 11. Tech Stack نهایی MVP
+
+برای سرعت، کیفیت، و هزینه منطقی:
+
+```text
+Next.js App Router
+TypeScript
+Tailwind CSS
+shadcn/ui
+Supabase Auth
+Supabase PostgreSQL
+Supabase Storage only if needed
+OpenAI API through AI service abstraction
+Prompt Registry
+Structured outputs where useful
+Resend
+Stripe Payment Links first
+Stripe Billing later
+Vercel + Supabase hosting
+```
+
+فعلاً استفاده نکن:
+
+```text
+Prisma
+Auth.js
+Clerk
+Docker-first as main path
+Kubernetes
+Microservices
+Vector DB
+Custom model training
+Complex integrations
+```
+
+دلیل: الان هدف، validation و فروش است، نه ساختن infrastructure سنگین.
+
+---
+
+# 12. Database MVP نهایی
+
+## Core Tables
+
+```text
+profiles
+businesses
+business_members
+business_branding
+business_services
+business_faqs
+business_service_areas
+business_privacy_settings
+business_consent_settings
+industry_packs
+business_industry_settings
+lead_forms
+leads
+lead_field_values
+lead_messages
+ai_outputs
+usage_events
+subscriptions
+reports
+```
+
+## Future Tables
+
+```text
+booking_requests
+appointments
+review_requests
+content_projects
+social_posts
+campaigns
+media_assets
+integrations
+automation_runs
+audit_logs
+```
+
+قانون مهم:
+
+```text
+Every tenant-owned operational record must include business_id.
+```
+
+---
+
+# 13. RLS و Tenant Isolation
+
+از همان اول باید جدی باشد:
+
+```text
+A user can only access businesses where they are a business_member.
+A lead belongs to exactly one business.
+AI outputs belong to a lead and a business.
+Public quote page can only create leads for the resolved business slug.
+Public quote page cannot read private dashboard data.
+Admin access must be separated and restricted.
+Forward-Only Mode must not accidentally store full lead data.
+```
+
+این بخش برای امنیت و آینده SaaS حیاتی است.
+
+---
+
+# 14. Build Plan نهایی
+
+## Phase 0 — Documentation Lock
+
+```text
+BIZPILOT_MASTER_BLUEPRINT_v1.0.md
+BIZPILOT_ENGINEERING_STANDARD_v1.0.md
+BIZPILOT_ARCHITECTURE_v1.0.md
+BIZPILOT_BUILD_PLAN_v1.0.md
+```
+
+## Phase 1 — Project Foundation
+
+```text
+Next.js App Router
+TypeScript strict
+Tailwind
+shadcn/ui
+base folder structure
+env validation
+Supabase client setup
+lint/format/build
+base layout
+```
+
+## Phase 2 — Database/Auth Foundation
+
+```text
+Supabase project
+Supabase Auth
+profiles
+businesses
+business_members
+RLS policies
+tenant access policy
+protected dashboard shell
+```
+
+## Phase 3 — Business Operating Core
+
+```text
+business profile
+branding
+services
+FAQ
+service areas
+language/tone
+privacy mode
+consent settings
+selected industry pack = Cleaning
+default intake behavior
+```
+
+## Phase 4 — Smart Intake Core + Cleaning Pack
+
+```text
+public branded quote page
+Cleaning Pack v1 form
+lead validation
+lead submission
+privacy mode behavior
+consent notice
+lead storage
+success page
+```
+
+## Phase 5 — Owner Dashboard Basic
+
+```text
+lead list
+lead detail
+lead status update
+copy actions
+mark reviewed/replied/booked/lost
+basic filters
+tenant-safe access
+```
+
+## Phase 6 — AI Assistant Core
+
+```text
+AI service abstraction
+Prompt Registry
+lead summary
+reply draft
+follow-up draft
+missing info detection
+suggested next action
+structured outputs
+AI error fallback
+AI output storage respecting privacy
+```
+
+## Phase 7 — Notifications + Concierge MVP Sales Version
+
+```text
+owner email notification
+admin/concierge setup mode
+demo business
+sales-ready MVP
+onboarding checklist
+sales demo script
+Stripe Payment Link
+```
+
+## Phase 8 — Booking Lite
+
+فقط بعد از validation.
+
+## Phase 9 — Second Vertical Pack
+
+بعد از Cleaning validation:
+
+```text
+Car Detailing first
+Salon second
+Home Services later
+```
+
+## Phase 10 — Growth Studio
+
+بعد از usage واقعی:
+
+```text
+review request drafts
+caption generator
+campaign drafts
+seasonal promotion drafts
+Google Business post drafts
+social content drafts
+```
+
+---
+
+# 15. Validation Gate نهایی
+
+قبل از Booking Lite، integrations، second vertical یا Growth Studio باید این gate پاس شود:
+
+```text
+3 businesses onboarded
+30 real or semi-real leads submitted
+50% owner review rate
+30% AI draft usage/edit rate
+1 paying or payment-ready customer
+```
+
+اگر این‌ها پاس نشد، مشکل با feature بیشتر حل نمی‌شود. باید بررسی شود:
+
+```text
+positioning
+demo quality
+onboarding friction
+pricing
+customer segment
+form friction
+AI output quality
+owner workflow
+```
+
+---
+
+# 16. مدل درآمد نهایی
+
+## Founding Customer Offer
+
+```text
+First 3 customers:
+$199 setup + $49/month
+```
+
+## After 3–5 customers
+
+```text
+$299 setup + $79/month
+```
+
+## After 10 customers
+
+```text
+$499 setup + $99/month
+```
+
+## Future Public Plans
+
+```text
+Starter: $99/month
+Pro: $199/month
+Growth: $299/month
+```
+
+مسیر پرداخت:
+
+```text
+Stripe Payment Links first.
+Stripe Billing later.
+```
+
+هدف اول:
+
+```text
+3 paying cleaning businesses
+```
+
+نه 300 کاربر رایگان.
+
+---
+
+# 17. GTM نهایی
+
+## ICP اول
+
+```text
+Small cleaning businesses with 1–10 people
+Owner answers messages manually
+Gets requests from Instagram, Facebook, Google, WhatsApp
+No proper quote form
+Slow response problem
+Wants more bookings
+Not ready for complex CRM
+```
+
+## Bad-fit Customer برای شروع
+
+```text
+Large franchise
+Needs full dispatch
+Needs custom integrations
+Wants WhatsApp automation immediately
+No incoming leads
+Needs enterprise approval
+Wants AI to replace staff
+```
+
+## کانال جذب اول
+
+```text
+Instagram DM
+Google Maps prospecting
+Loom personalized demo
+Cold email
+Facebook groups
+Short educational videos
+Referrals
+```
+
+## Sales Flow
+
+```text
+1. Find a cleaning business.
+2. Check if their quote/request flow is weak.
+3. Create a mini demo with their brand name.
+4. Send short outreach.
+5. Offer a free demo.
+6. Show messy request vs clean BizPilot lead.
+7. Offer 48h setup.
+8. Charge setup fee.
+9. Deliver.
+10. Ask for testimonial.
+```
+
+---
+
+# 18. ریسک‌های اصلی و راه‌حل
+
+## ریسک 1 — محصول بیش از حد بزرگ شود
+
+راه‌حل:
+
+```text
+MVP = Cleaning only + quote page + AI drafts.
+```
+
+## ریسک 2 — مشتری حاضر به پرداخت نباشد
+
+راه‌حل:
+
+```text
+Concierge setup + personalized demo + setup fee.
+```
+
+## ریسک 3 — AI جواب ضعیف بدهد
+
+راه‌حل:
+
+```text
+Prompt Registry
+Structured outputs
+FAQ-aware context
+Human review required
+No auto-send
+```
+
+## ریسک 4 — فرم برای customer طولانی شود
+
+راه‌حل:
+
+```text
+Cleaning Pack v1 fields locked.
+No extra fields unless validated.
+```
+
+## ریسک 5 — رقابت با CRMهای بزرگ
+
+راه‌حل:
+
+```text
+Do not sell as CRM.
+Sell as fast quote + reply assistant before CRM.
+```
+
+---
+
+# 19. تصمیم نهایی من
+
+این پروژه در نسخه درستش **قابل ساخت، قابل فروش، قابل توسعه و قابل دفاع است**.
+
+اما فقط اگر این خط را رعایت کنیم:
+
+```text
+Cleaning only.
+Smart Quote Page only.
+AI drafts only.
+Human review required.
+Concierge setup.
+Validate first.
+Expand later.
+```
+
+شانس موفقیت تقریبی:
+
+```text
+اگر همه‌چیز برای همه بسازیم: 25%–35%
+
+اگر همین مسیر narrow-entry را اجرا کنیم: 65%–75%
+
+اگر 3 مشتری پولی بگیریم و بعد از data واقعی توسعه بدهیم: 70%–82%
+
+اگر زود برویم سمت booking, integrations, content studio, multi-vertical, AI operator: زیر 30%
+```
+
+---
+
+# 20. نسخه قفل‌شده نهایی
+
+```text
+Project:
+BizPilot AI
+
+Internal Vision:
+Generic AI Operating Core for local service businesses.
+
+Market Entry:
+Smart Quote Page + AI Reply Assistant for Cleaning Businesses.
+
+First Customer Segment:
+Small cleaning businesses with manual message handling.
+
+Architecture:
+Generic Core + Industry Packs.
+
+MVP:
+Cleaning Pack v1 only.
+
+AI:
+Assistant, not Operator.
+Drafts only.
+No auto-send.
+
+Privacy:
+Standard Mode.
+Minimal Data Mode.
+Forward-Only Mode.
+Public Consent Notice.
+
+Business Model:
+Service-first.
+Concierge setup.
+Setup fee + monthly.
+Stripe Payment Links first.
+
+First Goal:
+3 paying cleaning businesses.
+
+Expansion:
+Only after validation gate.
+```
+
+## نتیجه نهایی
+
+```text
+Approved Strategy — Ready for Phase 0 Canonical Documents
+```
+
+قدم درست بعدی اینه که چهار سند نهایی را دقیقاً با همین استاندارد بسازیم:
+
+```text
+docs/product/BIZPILOT_MASTER_BLUEPRINT_v1.0.md
+docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.0.md
+docs/architecture/BIZPILOT_ARCHITECTURE_v1.0.md
+docs/product/BIZPILOT_BUILD_PLAN_v1.0.md
+```
+
+[1]: https://www.grandviewresearch.com/industry-analysis/cleaning-services-market-report?utm_source=chatgpt.com "Cleaning Services Market Size, Share | Industry Report, 2033"
+[2]: https://www.grandviewresearch.com/horizon/outlook/cleaning-services-market/canada?utm_source=chatgpt.com "Canada Cleaning Services Market Size & Outlook, 2033"
+[3]: https://www.thebusinessresearchcompany.com/report/cleaning-service-software-global-market-report?utm_source=chatgpt.com "Cleaning Service Software Market 2026 – Forecast Trends"
