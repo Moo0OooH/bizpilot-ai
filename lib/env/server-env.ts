@@ -12,6 +12,7 @@
  * Last Updated: 2026-05-04
  * Change Log:
  * - 2026-05-04: Created server env validation helper and added standard header.
+ * - 2026-05-04: Added explicit server-only env boundary notes for Phase 1.
  * ============================================================
  */
 
@@ -33,6 +34,7 @@ const optionalServerEnvKeys = [
   "STRIPE_WEBHOOK_SECRET",
 ] as const;
 
+// Server-only values must never be imported by client components.
 function readServerEnvValue(
   key: (typeof optionalServerEnvKeys)[number],
 ): string | undefined {

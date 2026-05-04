@@ -12,6 +12,7 @@
  * Last Updated: 2026-05-04
  * Change Log:
  * - 2026-05-04: Created public env validation helper and added standard header.
+ * - 2026-05-04: Added URL format validation for public environment values.
  * ============================================================
  */
 
@@ -32,6 +33,14 @@ function readPublicEnvValue(key: keyof PublicEnv): string | undefined {
   return value && value.trim().length > 0 ? value : undefined;
 }
 
+function assertValidUrl(key: keyof PublicEnv, value: string): void {
+  try {
+    new URL(value);
+  } catch {
+    throw new Error(`Invalid URL in public environment variable: ${key}`);
+  }
+}
+
 export function getPublicEnv(): PublicEnv {
   const missing = publicEnvKeys.filter((key) => !readPublicEnvValue(key));
 
@@ -39,11 +48,16 @@ export function getPublicEnv(): PublicEnv {
     throw new Error(`Missing public environment variables: ${missing.join(", ")}`);
   }
 
-  return {
+  const env = {
     NEXT_PUBLIC_APP_URL: readPublicEnvValue("NEXT_PUBLIC_APP_URL")!,
     NEXT_PUBLIC_SUPABASE_URL: readPublicEnvValue("NEXT_PUBLIC_SUPABASE_URL")!,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: readPublicEnvValue(
       "NEXT_PUBLIC_SUPABASE_ANON_KEY",
     )!,
   };
+
+  assertValidUrl("NEXT_PUBLIC_APP_URL", env.NEXT_PUBLIC_APP_URL);
+  assertValidUrl("NEXT_PUBLIC_SUPABASE_URL", env.NEXT_PUBLIC_SUPABASE_URL);
+
+  return env;
 }

@@ -69,7 +69,19 @@ scripts/
 pnpm install
 ```
 
+The project pins pnpm through `packageManager` in `package.json`.
+
 Create `.env.local` from `.env.example`.
+
+Required for Phase 1 local validation:
+
+```env
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=https://example.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=placeholder
+```
+
+Server-only keys are present in `.env.example` for future phases, but they are not required for Phase 1 feature work.
 
 ## Verification
 
