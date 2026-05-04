@@ -1,4 +1,4 @@
-import { getEnv } from "@/lib/env";
+import { getPublicEnv } from "@/lib/env/public-env";
 
 export type SupabaseClientConfig = {
   url: string;
@@ -6,7 +6,7 @@ export type SupabaseClientConfig = {
 };
 
 export function getSupabaseClientConfig(): SupabaseClientConfig {
-  const env = getEnv();
+  const env = getPublicEnv();
 
   return {
     url: env.NEXT_PUBLIC_SUPABASE_URL,
