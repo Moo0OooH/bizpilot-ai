@@ -12,21 +12,17 @@
  * Last Updated: 2026-05-04
  * Change Log:
  * - 2026-05-04: Updated wrapper to use public env validation and added standard header.
+ * - 2026-05-04: Delegated compatibility wrapper to the browser Supabase placeholder.
  * ============================================================
  */
 
-import { getPublicEnv } from "@/lib/env/public-env";
+import {
+  getSupabaseBrowserClientConfig,
+  type SupabaseBrowserClientConfig,
+} from "@/lib/supabase/client";
 
-export type SupabaseClientConfig = {
-  url: string;
-  anonKey: string;
-};
+export type SupabaseClientConfig = SupabaseBrowserClientConfig;
 
 export function getSupabaseClientConfig(): SupabaseClientConfig {
-  const env = getPublicEnv();
-
-  return {
-    url: env.NEXT_PUBLIC_SUPABASE_URL,
-    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  };
+  return getSupabaseBrowserClientConfig();
 }
