@@ -1,3 +1,20 @@
+/*
+============================================================
+File: app/globals.css
+Project: BizPilot AI
+Description: Defines global Tailwind and base CSS variables.
+Role: Provides Phase 1 global styling foundation for all routes.
+Related:
+- app/layout.tsx
+- app/page.tsx
+Author: MoOoH
+Created: 2026-05-02
+Last Updated: 2026-05-04
+Change Log:
+- 2026-05-04: Added standard project file header.
+============================================================
+*/
+
 @import "tailwindcss";
 
 :root {

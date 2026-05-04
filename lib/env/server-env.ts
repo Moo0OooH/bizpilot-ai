@@ -1,10 +1,18 @@
 /**
+ * ============================================================
  * File: lib/env/server-env.ts
  * Project: BizPilot AI
  * Description: Validates server-only environment variables for future server workflows.
+ * Role: Extends public env validation with optional server-side integration keys.
+ * Related:
+ * - lib/env/public-env.ts
+ * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
  * Last Updated: 2026-05-04
+ * Change Log:
+ * - 2026-05-04: Created server env validation helper and added standard header.
+ * ============================================================
  */
 
 import { getPublicEnv } from "@/lib/env/public-env";

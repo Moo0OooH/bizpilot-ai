@@ -1,10 +1,18 @@
 /**
+ * ============================================================
  * File: lib/supabase/server.ts
  * Project: BizPilot AI
  * Description: Holds server Supabase configuration for the Phase 1 foundation.
+ * Role: Provides server-side Supabase settings without implementing database workflows.
+ * Related:
+ * - lib/env/server-env.ts
+ * - lib/supabase/client.ts
  * Author: MoOoH
  * Created: 2026-05-04
  * Last Updated: 2026-05-04
+ * Change Log:
+ * - 2026-05-04: Created server Supabase config placeholder and added standard header.
+ * ============================================================
  */
 
 import { getServerEnv } from "@/lib/env/server-env";

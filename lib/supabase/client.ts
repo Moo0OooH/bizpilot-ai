@@ -1,10 +1,18 @@
 /**
+ * ============================================================
  * File: lib/supabase/client.ts
  * Project: BizPilot AI
  * Description: Holds browser Supabase client configuration for the Phase 1 foundation.
+ * Role: Provides browser-safe Supabase settings without creating auth or data workflows.
+ * Related:
+ * - lib/env/public-env.ts
+ * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
  * Last Updated: 2026-05-04
+ * Change Log:
+ * - 2026-05-04: Created browser Supabase config placeholder and added standard header.
+ * ============================================================
  */
 
 import { getPublicEnv } from "@/lib/env/public-env";

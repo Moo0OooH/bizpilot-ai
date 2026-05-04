@@ -1,10 +1,18 @@
 /**
+ * ============================================================
  * File: lib/env/public-env.ts
  * Project: BizPilot AI
  * Description: Validates public environment variables for the Phase 1 foundation.
+ * Role: Provides client-safe environment configuration used by browser-safe helpers.
+ * Related:
+ * - lib/env/server-env.ts
+ * - lib/supabase/client.ts
  * Author: MoOoH
  * Created: 2026-05-04
  * Last Updated: 2026-05-04
+ * Change Log:
+ * - 2026-05-04: Created public env validation helper and added standard header.
+ * ============================================================
  */
 
 type PublicEnv = {

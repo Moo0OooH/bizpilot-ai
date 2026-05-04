@@ -1,3 +1,20 @@
+/**
+ * ============================================================
+ * File: app/page.tsx
+ * Project: BizPilot AI
+ * Description: Renders the Phase 1 foundation home screen.
+ * Role: Provides a non-product UI shell that confirms foundation-only scope.
+ * Related:
+ * - app/layout.tsx
+ * - app/globals.css
+ * Author: MoOoH
+ * Created: 2026-05-02
+ * Last Updated: 2026-05-04
+ * Change Log:
+ * - 2026-05-04: Added standard project file header.
+ * ============================================================
+ */
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
