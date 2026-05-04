@@ -12,6 +12,7 @@
  * Last Updated: 2026-05-04
  * Change Log:
  * - 2026-05-04: Added standard project file header.
+ * - 2026-05-04: Aligned foundation page typography with UI standards.
  * ============================================================
  */
 
@@ -19,7 +20,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col justify-center px-6 py-16">
-        <p className="text-sm font-medium uppercase tracking-[0.18em] text-zinc-500">
+        <p className="text-sm font-medium uppercase tracking-normal text-zinc-500">
           BizPilot AI
         </p>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
