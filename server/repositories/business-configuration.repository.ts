@@ -12,6 +12,7 @@
  * Last Updated: 2026-05-05
  * Change Log:
  * - 2026-05-05: Created Phase 3 business configuration repository.
+ * - 2026-05-05: Added onboarding task reads and sync support.
  * ============================================================
  */
 
@@ -33,6 +34,8 @@ export type BusinessServiceRecord =
   Database["public"]["Tables"]["business_services"]["Row"];
 export type BusinessTemplateSettingsRecord =
   Database["public"]["Tables"]["business_template_settings"]["Row"];
+export type BusinessOnboardingTaskRecord =
+  Database["public"]["Tables"]["business_onboarding_tasks"]["Row"];
 export type IndustryTemplateFieldRecord =
   Database["public"]["Tables"]["industry_template_fields"]["Row"];
 export type IndustryTemplateRecord =
@@ -47,6 +50,7 @@ export type BusinessConfigurationRecord = Readonly<{
   branding: BusinessBrandingRecord | null;
   consentSettings: BusinessConsentSettingsRecord | null;
   faqs: BusinessFaqRecord[];
+  onboardingTasks: BusinessOnboardingTaskRecord[];
   privacySettings: BusinessPrivacySettingsRecord | null;
   serviceAreas: BusinessServiceAreaRecord[];
   services: BusinessServiceRecord[];
@@ -99,6 +103,7 @@ export async function getBusinessConfiguration(input: {
     privacySettings,
     serviceAreas,
     services,
+    onboardingTasks,
     templateSettings,
   ] = await Promise.all([
     input.supabase
@@ -132,6 +137,11 @@ export async function getBusinessConfiguration(input: {
       .eq("business_id", input.businessId)
       .order("sort_order", { ascending: true }),
     input.supabase
+      .from("business_onboarding_tasks")
+      .select("*")
+      .eq("business_id", input.businessId)
+      .order("sort_order", { ascending: true }),
+    input.supabase
       .from("business_template_settings")
       .select("*")
       .eq("business_id", input.businessId)
@@ -146,6 +156,7 @@ export async function getBusinessConfiguration(input: {
     throwIfError(privacySettings.error),
     throwIfError(serviceAreas.error),
     throwIfError(services.error),
+    throwIfError(onboardingTasks.error),
     throwIfError(templateSettings.error),
   ]);
 
@@ -153,6 +164,7 @@ export async function getBusinessConfiguration(input: {
     branding: branding.data,
     consentSettings: consentSettings.data,
     faqs: faqs.data ?? [],
+    onboardingTasks: onboardingTasks.data ?? [],
     privacySettings: privacySettings.data,
     serviceAreas: serviceAreas.data ?? [],
     services: services.data ?? [],
@@ -314,6 +326,42 @@ export async function upsertTemplateSettings(input: {
         template_id: input.templateId,
       },
       { onConflict: "business_id,template_id" },
+    );
+
+  await throwIfError(error);
+}
+
+export async function replaceBusinessOnboardingTasks(input: {
+  businessId: string;
+  supabase: SupabaseClient<Database>;
+  tasks: ReadonlyArray<{
+    complete: boolean;
+    label: string;
+    taskKey: string;
+  }>;
+}): Promise<void> {
+  await throwIfError(
+    (await input.supabase
+      .from("business_onboarding_tasks")
+      .delete()
+      .eq("business_id", input.businessId)).error,
+  );
+
+  if (input.tasks.length === 0) {
+    return;
+  }
+
+  const now = new Date().toISOString();
+  const { error } = await input.supabase
+    .from("business_onboarding_tasks")
+    .insert(
+      input.tasks.map((task, index) => ({
+        business_id: input.businessId,
+        completed_at: task.complete ? now : null,
+        label: task.label,
+        sort_order: (index + 1) * 10,
+        task_key: task.taskKey,
+      })),
     );
 
   await throwIfError(error);

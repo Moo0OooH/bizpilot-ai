@@ -13,6 +13,7 @@
  * Last Updated: 2026-05-05
  * Change Log:
  * - 2026-05-05: Created Phase 3 business configuration service and readiness scoring.
+ * - 2026-05-05: Added business profile updates and onboarding task synchronization.
  * ============================================================
  */
 
@@ -21,6 +22,7 @@ import { canManageBusiness } from "@/server/policies/business-membership.policy"
 import {
   getBusinessConfiguration,
   getCleaningTemplate,
+  replaceBusinessOnboardingTasks,
   replaceBusinessFaqs,
   replaceBusinessServiceAreas,
   replaceBusinessServices,
@@ -33,7 +35,10 @@ import {
   type CleaningTemplateRecord,
 } from "@/server/repositories/business-configuration.repository";
 import { listMembershipsForUser } from "@/server/repositories/business-members.repository";
-import type { BusinessRecord } from "@/server/repositories/businesses.repository";
+import {
+  updateBusinessProfile,
+  type BusinessRecord,
+} from "@/server/repositories/businesses.repository";
 import type { Json } from "@/types/database";
 
 export type BusinessReadinessScore = Readonly<{
@@ -43,6 +48,12 @@ export type BusinessReadinessScore = Readonly<{
     label: string;
   }>;
   total: number;
+}>;
+
+type ReadinessTask = Readonly<{
+  complete: boolean;
+  label: string;
+  taskKey: string;
 }>;
 
 export type BusinessConfigurationWorkspace = Readonly<{
@@ -56,6 +67,8 @@ export type BusinessConfigurationInput = Readonly<{
   accentColor: string;
   aiDisclosureEnabled: boolean;
   businessId: string;
+  businessName: string;
+  businessSlug: string;
   consentNotice: string;
   customTemplateName?: string;
   faqs: ReadonlyArray<{ answer: string; question: string }>;
@@ -72,6 +85,7 @@ export type BusinessConfigurationInput = Readonly<{
 }>;
 
 const colorPattern = /^#[0-9a-fA-F]{6}$/;
+const slugPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 function cleanOptionalText(value: string | undefined): string | undefined {
   const trimmed = value?.trim();
@@ -84,6 +98,36 @@ function assertHexColor(label: string, value: string): void {
   }
 }
 
+function normalizeSlug(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48);
+}
+
+function assertBusinessProfile(input: {
+  businessName: string;
+  businessSlug: string;
+}): { businessName: string; businessSlug: string } {
+  const businessName = input.businessName.trim();
+  const businessSlug = normalizeSlug(input.businessSlug);
+
+  if (businessName.length === 0) {
+    throw new Error("Business name is required.");
+  }
+
+  if (!slugPattern.test(businessSlug)) {
+    throw new Error("Business slug must contain lowercase letters, numbers, and hyphens.");
+  }
+
+  return {
+    businessName,
+    businessSlug,
+  };
+}
+
 function assertManageAccess(input: {
   businessId: string;
   memberships: Awaited<ReturnType<typeof listMembershipsForUser>>;
@@ -94,39 +138,117 @@ function assertManageAccess(input: {
   }
 }
 
-function calculateReadiness(
-  configuration: BusinessConfigurationRecord,
-): BusinessReadinessScore {
-  const items = [
+function getConfigurationReadinessTasks(input: {
+  business: BusinessRecord;
+  configuration: BusinessConfigurationRecord;
+}): ReadinessTask[] {
+  const { business, configuration } = input;
+
+  return [
+    {
+      complete: business.name.trim().length > 0 && slugPattern.test(business.slug),
+      label: "Business profile confirmed",
+      taskKey: "business_profile",
+    },
     {
       complete: Boolean(configuration.branding),
       label: "Branding configured",
+      taskKey: "branding",
     },
     {
       complete: configuration.services.length > 0,
       label: "At least one service added",
+      taskKey: "services",
     },
     {
       complete: configuration.serviceAreas.length > 0,
       label: "At least one service area added",
+      taskKey: "service_areas",
     },
     {
       complete: configuration.faqs.length > 0,
       label: "At least one FAQ added",
+      taskKey: "faqs",
     },
     {
       complete: Boolean(configuration.privacySettings),
       label: "Privacy mode selected",
+      taskKey: "privacy",
     },
     {
       complete: Boolean(configuration.consentSettings),
       label: "Consent notice configured",
+      taskKey: "consent",
     },
     {
       complete: Boolean(configuration.templateSettings),
       label: "Cleaning template activated",
+      taskKey: "cleaning_template",
     },
-  ] as const;
+  ];
+}
+
+function getInputReadinessTasks(input: {
+  business: BusinessRecord;
+  configuration: BusinessConfigurationInput;
+}): ReadinessTask[] {
+  const { business, configuration } = input;
+
+  return [
+    {
+      complete: business.name.trim().length > 0 && slugPattern.test(business.slug),
+      label: "Business profile confirmed",
+      taskKey: "business_profile",
+    },
+    {
+      complete: true,
+      label: "Branding configured",
+      taskKey: "branding",
+    },
+    {
+      complete: configuration.services.length > 0,
+      label: "At least one service added",
+      taskKey: "services",
+    },
+    {
+      complete: configuration.serviceAreas.length > 0,
+      label: "At least one service area added",
+      taskKey: "service_areas",
+    },
+    {
+      complete: configuration.faqs.length > 0,
+      label: "At least one FAQ added",
+      taskKey: "faqs",
+    },
+    {
+      complete: true,
+      label: "Privacy mode selected",
+      taskKey: "privacy",
+    },
+    {
+      complete: configuration.consentNotice.trim().length > 0,
+      label: "Consent notice configured",
+      taskKey: "consent",
+    },
+    {
+      complete: configuration.templateId.trim().length > 0,
+      label: "Cleaning template activated",
+      taskKey: "cleaning_template",
+    },
+  ];
+}
+
+function calculateReadiness(
+  business: BusinessRecord,
+  configuration: BusinessConfigurationRecord,
+): BusinessReadinessScore {
+  const items = getConfigurationReadinessTasks({
+    business,
+    configuration,
+  }).map((item) => ({
+    complete: item.complete,
+    label: item.label,
+  }));
 
   return {
     completed: items.filter((item) => item.complete).length,
@@ -151,7 +273,7 @@ export async function getBusinessConfigurationWorkspace(input: {
     business: input.business,
     cleaningTemplate,
     configuration,
-    readiness: calculateReadiness(configuration),
+    readiness: calculateReadiness(input.business, configuration),
   };
 }
 
@@ -160,6 +282,10 @@ export async function saveBusinessConfiguration(
 ): Promise<void> {
   assertHexColor("Primary color", input.primaryColor);
   assertHexColor("Accent color", input.accentColor);
+  const businessProfile = assertBusinessProfile({
+    businessName: input.businessName,
+    businessSlug: input.businessSlug,
+  });
 
   if (input.retainLeadsDays < 1 || input.retainLeadsDays > 3650) {
     throw new Error("Lead retention must be between 1 and 3650 days.");
@@ -180,6 +306,13 @@ export async function saveBusinessConfiguration(
   const logoUrl = cleanOptionalText(input.logoUrl);
   const privacyContactEmail = cleanOptionalText(input.privacyContactEmail);
   const customTemplateName = cleanOptionalText(input.customTemplateName);
+
+  const updatedBusiness = await updateBusinessProfile({
+    businessId: input.businessId,
+    name: businessProfile.businessName,
+    slug: businessProfile.businessSlug,
+    supabase,
+  });
 
   await Promise.all([
     upsertBusinessBranding({
@@ -225,4 +358,13 @@ export async function saveBusinessConfiguration(
       ...(customTemplateName ? { customName: customTemplateName } : {}),
     }),
   ]);
+
+  await replaceBusinessOnboardingTasks({
+    businessId: input.businessId,
+    supabase,
+    tasks: getInputReadinessTasks({
+      business: updatedBusiness,
+      configuration: input,
+    }),
+  });
 }

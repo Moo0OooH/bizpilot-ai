@@ -12,6 +12,7 @@
  * Last Updated: 2026-05-05
  * Change Log:
  * - 2026-05-05: Created Phase 3 business configuration save action.
+ * - 2026-05-05: Added business profile fields to the configuration save action.
  * ============================================================
  */
 
@@ -133,6 +134,8 @@ export async function saveBusinessConfigurationAction(
       accentColor: readRequiredFormValue(formData, "accentColor"),
       aiDisclosureEnabled: formData.get("aiDisclosureEnabled") === "on",
       businessId: readRequiredFormValue(formData, "businessId"),
+      businessName: readRequiredFormValue(formData, "businessName"),
+      businessSlug: readRequiredFormValue(formData, "businessSlug"),
       consentNotice: readRequiredFormValue(formData, "consentNotice"),
       faqs: readFaqs(readOptionalFormValue(formData, "faqs")),
       fieldOverrides: readFieldOverrides(formData),

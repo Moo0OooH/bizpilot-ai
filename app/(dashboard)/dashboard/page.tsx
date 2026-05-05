@@ -16,6 +16,7 @@
  * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
  * - 2026-05-04: Marked dashboard shell as request-time only.
  * - 2026-05-05: Added Phase 3 business configuration forms and readiness score.
+ * - 2026-05-05: Added editable business profile fields and setup task display.
  * ============================================================
  */
 
@@ -219,6 +220,27 @@ export default async function DashboardPage({
           </h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <label className="block text-sm font-medium text-zinc-800">
+              Business name
+              <input
+                className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={activeBusiness.name}
+                name="businessName"
+                required
+                type="text"
+              />
+            </label>
+            <label className="block text-sm font-medium text-zinc-800">
+              Public slug
+              <input
+                className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={activeBusiness.slug}
+                name="businessSlug"
+                pattern="[a-z0-9]+(-[a-z0-9]+)*"
+                required
+                type="text"
+              />
+            </label>
+            <label className="block text-sm font-medium text-zinc-800">
               Logo URL
               <input
                 className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
@@ -376,7 +398,7 @@ export default async function DashboardPage({
                   </span>
                   <span className="mt-1 block text-zinc-500">
                     {field.field_key}
-                    {field.is_required ? " · Required" : ""}
+                    {field.is_required ? " - Required" : ""}
                   </span>
                 </span>
                 <span className="flex items-center gap-2 text-zinc-700">
@@ -400,6 +422,29 @@ export default async function DashboardPage({
           Save configuration
         </button>
       </form>
+
+      {configuration.onboardingTasks.length > 0 ? (
+        <section className="border-t border-zinc-200 py-8">
+          <h2 className="text-base font-semibold text-zinc-950">
+            Setup task log
+          </h2>
+          <div className="mt-4 divide-y divide-zinc-200 border border-zinc-200">
+            {configuration.onboardingTasks.map((task) => (
+              <div
+                className="flex flex-col gap-1 p-4 text-sm sm:flex-row sm:items-center sm:justify-between"
+                key={task.id}
+              >
+                <span className="font-medium text-zinc-950">
+                  {task.label}
+                </span>
+                <span className="text-zinc-500">
+                  {task.completed_at ? "Completed" : "Open"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }
