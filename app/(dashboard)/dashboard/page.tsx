@@ -2,8 +2,8 @@
  * ============================================================
  * File: app/(dashboard)/dashboard/page.tsx
  * Project: BizPilot AI
- * Description: Renders the protected Phase 2 dashboard shell.
- * Role: Verifies auth and tenant membership without adding product dashboard logic.
+ * Description: Renders the protected Phase 3 business configuration workspace.
+ * Role: Lets owners configure business settings and the editable Cleaning template.
  * Related:
  * - server/services/auth.service.ts
  * - server/services/business.service.ts
@@ -15,18 +15,74 @@
  * - 2026-05-04: Created protected Phase 2 dashboard shell.
  * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
  * - 2026-05-04: Marked dashboard shell as request-time only.
+ * - 2026-05-05: Added Phase 3 business configuration forms and readiness score.
  * ============================================================
  */
 
 import { redirect } from "next/navigation";
 
+import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { signOutAction } from "@/server/actions/auth.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
+import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
+import type { Json } from "@/types/database";
 
 export const dynamic = "force-dynamic";
 
-export default async function DashboardPage() {
+type DashboardPageProps = Readonly<{
+  searchParams?: Promise<{
+    error?: string;
+    notice?: string;
+  }>;
+}>;
+
+function servicesToText(
+  services: Awaited<
+    ReturnType<typeof getBusinessConfigurationWorkspace>
+  >["configuration"]["services"],
+): string {
+  return services
+    .map((service) =>
+      service.description
+        ? `${service.name} | ${service.description}`
+        : service.name,
+    )
+    .join("\n");
+}
+
+function faqsToText(
+  faqs: Awaited<
+    ReturnType<typeof getBusinessConfigurationWorkspace>
+  >["configuration"]["faqs"],
+): string {
+  return faqs.map((faq) => `${faq.question} | ${faq.answer}`).join("\n");
+}
+
+function serviceAreasToText(
+  areas: Awaited<
+    ReturnType<typeof getBusinessConfigurationWorkspace>
+  >["configuration"]["serviceAreas"],
+): string {
+  return areas.map((area) => area.name).join("\n");
+}
+
+function readDisabledFields(value: Json): string[] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return [];
+  }
+
+  const disabledFields = value.disabledFields;
+
+  return Array.isArray(disabledFields)
+    ? disabledFields.filter((field): field is string => typeof field === "string")
+    : [];
+}
+
+export default async function DashboardPage({
+  searchParams,
+}: DashboardPageProps) {
+  const params = await searchParams;
   const user = await getCurrentUser();
 
   if (!user) {
@@ -36,6 +92,34 @@ export default async function DashboardPage() {
   const workspace = await getBusinessWorkspace({
     userId: user.id,
   });
+  const activeBusiness = workspace.businesses[0];
+
+  if (!activeBusiness) {
+    return (
+      <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-6 py-12">
+        <div className="border-b border-zinc-200 pb-8">
+          <p className="text-sm font-medium uppercase tracking-normal text-zinc-500">
+            BizPilot AI
+          </p>
+          <h1 className="mt-3 text-3xl font-semibold text-zinc-950">
+            Phase 3 configuration
+          </h1>
+          <p className="mt-3 text-sm leading-6 text-zinc-600">
+            No tenant business is available for this user yet.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  const configurationWorkspace = await getBusinessConfigurationWorkspace({
+    business: activeBusiness,
+  });
+  const { cleaningTemplate, configuration, readiness } =
+    configurationWorkspace;
+  const disabledFields = readDisabledFields(
+    configuration.templateSettings?.field_overrides ?? {},
+  );
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-6 py-12">
@@ -45,11 +129,12 @@ export default async function DashboardPage() {
             BizPilot AI
           </p>
           <h1 className="mt-3 text-3xl font-semibold text-zinc-950">
-            Tenant foundation
+            Business configuration
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-            This protected shell confirms Phase 2 auth, profile, business, and
-            membership access only. Product dashboard workflows start later.
+            Phase 3 configures the business profile, operating basics, privacy,
+            consent, and editable Cleaning template. Public intake and leads
+            start later.
           </p>
         </div>
         <form action={signOutAction}>
@@ -62,6 +147,18 @@ export default async function DashboardPage() {
         </form>
       </div>
 
+      {params?.notice ? (
+        <p className="mt-6 border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
+          {params.notice}
+        </p>
+      ) : null}
+
+      {params?.error ? (
+        <p className="mt-6 border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          {params.error}
+        </p>
+      ) : null}
+
       <section className="grid gap-4 py-8 sm:grid-cols-3">
         <div className="border border-zinc-200 p-4">
           <p className="text-sm text-zinc-500">Signed in as</p>
@@ -70,39 +167,239 @@ export default async function DashboardPage() {
           </p>
         </div>
         <div className="border border-zinc-200 p-4">
-          <p className="text-sm text-zinc-500">Businesses</p>
-          <p className="mt-2 text-2xl font-semibold text-zinc-950">
-            {workspace.businesses.length}
+          <p className="text-sm text-zinc-500">Active business</p>
+          <p className="mt-2 break-words text-sm font-medium text-zinc-950">
+            {activeBusiness.name}
           </p>
         </div>
         <div className="border border-zinc-200 p-4">
-          <p className="text-sm text-zinc-500">Memberships</p>
+          <p className="text-sm text-zinc-500">Readiness</p>
           <p className="mt-2 text-2xl font-semibold text-zinc-950">
-            {workspace.memberships.length}
+            {readiness.completed}/{readiness.total}
           </p>
         </div>
       </section>
 
-      <section className="border-t border-zinc-200 pt-8">
-        <h2 className="text-base font-semibold text-zinc-950">Businesses</h2>
-        <div className="mt-4 divide-y divide-zinc-200 border border-zinc-200">
-          {workspace.businesses.length > 0 ? (
-            workspace.businesses.map((business) => (
-              <div
-                className="flex flex-col gap-1 p-4 sm:flex-row sm:items-center sm:justify-between"
-                key={business.id}
+      <section className="border-t border-zinc-200 py-8">
+        <h2 className="text-base font-semibold text-zinc-950">
+          Readiness checklist
+        </h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {readiness.items.map((item) => (
+            <div className="border border-zinc-200 p-3 text-sm" key={item.label}>
+              <span
+                className={
+                  item.complete
+                    ? "font-medium text-emerald-700"
+                    : "font-medium text-zinc-500"
+                }
               >
-                <p className="font-medium text-zinc-950">{business.name}</p>
-                <p className="text-sm text-zinc-500">/{business.slug}</p>
-              </div>
-            ))
-          ) : (
-            <p className="p-4 text-sm text-zinc-600">
-              No tenant business is available for this user yet.
-            </p>
-          )}
+                {item.complete ? "Done" : "Open"}
+              </span>{" "}
+              <span className="text-zinc-700">{item.label}</span>
+            </div>
+          ))}
         </div>
       </section>
+
+      <form
+        action={saveBusinessConfigurationAction}
+        className="space-y-10 border-t border-zinc-200 py-8"
+      >
+        <input name="businessId" type="hidden" value={activeBusiness.id} />
+        <input
+          name="templateId"
+          type="hidden"
+          value={cleaningTemplate.template.id}
+        />
+
+        <section>
+          <h2 className="text-base font-semibold text-zinc-950">
+            Business profile
+          </h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm font-medium text-zinc-800">
+              Logo URL
+              <input
+                className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={configuration.branding?.logo_url ?? ""}
+                name="logoUrl"
+                type="url"
+              />
+            </label>
+            <label className="block text-sm font-medium text-zinc-800">
+              Template name
+              <input
+                className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={
+                  configuration.templateSettings?.custom_name ??
+                  cleaningTemplate.template.name
+                }
+                name="customTemplateName"
+                type="text"
+              />
+            </label>
+            <label className="block text-sm font-medium text-zinc-800">
+              Primary color
+              <input
+                className="mt-2 h-11 w-full border border-zinc-300 px-3 py-2"
+                defaultValue={
+                  configuration.branding?.primary_color ?? "#18181b"
+                }
+                name="primaryColor"
+                type="color"
+              />
+            </label>
+            <label className="block text-sm font-medium text-zinc-800">
+              Accent color
+              <input
+                className="mt-2 h-11 w-full border border-zinc-300 px-3 py-2"
+                defaultValue={configuration.branding?.accent_color ?? "#0f766e"}
+                name="accentColor"
+                type="color"
+              />
+            </label>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-base font-semibold text-zinc-950">
+            Operating basics
+          </h2>
+          <div className="mt-4 grid gap-4">
+            <label className="block text-sm font-medium text-zinc-800">
+              Services
+              <textarea
+                className="mt-2 min-h-32 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={servicesToText(configuration.services)}
+                name="services"
+              />
+            </label>
+            <label className="block text-sm font-medium text-zinc-800">
+              Service areas
+              <textarea
+                className="mt-2 min-h-24 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={serviceAreasToText(configuration.serviceAreas)}
+                name="serviceAreas"
+              />
+            </label>
+            <label className="block text-sm font-medium text-zinc-800">
+              FAQ
+              <textarea
+                className="mt-2 min-h-32 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={faqsToText(configuration.faqs)}
+                name="faqs"
+              />
+            </label>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-base font-semibold text-zinc-950">
+            Privacy and consent
+          </h2>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <label className="block text-sm font-medium text-zinc-800">
+              Privacy mode
+              <select
+                className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={
+                  configuration.privacySettings?.privacy_mode ?? "standard"
+                }
+                name="privacyMode"
+              >
+                <option value="standard">Standard</option>
+                <option value="minimal">Minimal data</option>
+                <option value="forward_only">Forward-only</option>
+              </select>
+            </label>
+            <label className="block text-sm font-medium text-zinc-800">
+              Lead retention days
+              <input
+                className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={
+                  configuration.privacySettings?.retain_leads_days ?? 365
+                }
+                min={1}
+                name="retainLeadsDays"
+                type="number"
+              />
+            </label>
+            <label className="block text-sm font-medium text-zinc-800 sm:col-span-2">
+              Privacy contact email
+              <input
+                className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={
+                  configuration.consentSettings?.privacy_contact_email ?? ""
+                }
+                name="privacyContactEmail"
+                type="email"
+              />
+            </label>
+            <label className="block text-sm font-medium text-zinc-800 sm:col-span-2">
+              Consent notice
+              <textarea
+                className="mt-2 min-h-28 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                defaultValue={
+                  configuration.consentSettings?.consent_notice ??
+                  "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending."
+                }
+                name="consentNotice"
+              />
+            </label>
+            <label className="flex items-center gap-3 text-sm font-medium text-zinc-800">
+              <input
+                defaultChecked={
+                  configuration.consentSettings?.ai_disclosure_enabled ?? true
+                }
+                name="aiDisclosureEnabled"
+                type="checkbox"
+              />
+              Show AI draft disclosure
+            </label>
+          </div>
+        </section>
+
+        <section>
+          <h2 className="text-base font-semibold text-zinc-950">
+            Cleaning template
+          </h2>
+          <div className="mt-4 divide-y divide-zinc-200 border border-zinc-200">
+            {cleaningTemplate.fields.map((field) => (
+              <label
+                className="flex items-start justify-between gap-4 p-4 text-sm"
+                key={field.id}
+              >
+                <span>
+                  <span className="font-medium text-zinc-950">
+                    {field.label}
+                  </span>
+                  <span className="mt-1 block text-zinc-500">
+                    {field.field_key}
+                    {field.is_required ? " · Required" : ""}
+                  </span>
+                </span>
+                <span className="flex items-center gap-2 text-zinc-700">
+                  <input
+                    defaultChecked={disabledFields.includes(field.field_key)}
+                    name="disabledFields"
+                    type="checkbox"
+                    value={field.field_key}
+                  />
+                  Hide
+                </span>
+              </label>
+            ))}
+          </div>
+        </section>
+
+        <button
+          className="bg-zinc-950 px-5 py-3 text-sm font-medium text-white"
+          type="submit"
+        >
+          Save configuration
+        </button>
+      </form>
     </main>
   );
 }

@@ -13,6 +13,7 @@
  * Change Log:
  * - 2026-05-04: Added standard project file header.
  * - 2026-05-04: Updated metadata description for Phase 2 tenant foundation.
+ * - 2026-05-05: Updated metadata description for Phase 3 configuration core.
  * ============================================================
  */
 
@@ -32,7 +33,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "BizPilot AI",
-  description: "Phase 2 auth and tenant foundation for BizPilot AI.",
+  description: "Phase 3 business configuration core for BizPilot AI.",
 };
 
 export default function RootLayout({

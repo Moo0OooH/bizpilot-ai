@@ -2,8 +2,8 @@
  * ============================================================
  * File: app/page.tsx
  * Project: BizPilot AI
- * Description: Renders the Phase 1 foundation home screen.
- * Role: Provides a non-product UI shell that confirms foundation-only scope.
+ * Description: Renders the current phase status home screen.
+ * Role: Confirms Phase 3 business configuration scope without public product workflows.
  * Related:
  * - app/layout.tsx
  * - app/globals.css
@@ -14,6 +14,7 @@
  * - 2026-05-04: Added standard project file header.
  * - 2026-05-04: Aligned foundation page typography with UI standards.
  * - 2026-05-04: Updated home screen status for Phase 2 tenant foundation.
+ * - 2026-05-05: Updated home screen status for Phase 3 configuration foundation.
  * ============================================================
  */
 
@@ -25,18 +26,18 @@ export default function Home() {
           BizPilot AI
         </p>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
-          Phase 2 Auth + Tenant Foundation
+          Phase 3 Business Configuration Core
         </h1>
         <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600">
-          Auth, profiles, businesses, memberships, RLS, and a protected
-          dashboard shell only. Product workflows, leads, templates, AI, email,
-          and billing remain out of scope.
+          Business profile, branding, services, FAQ, service areas, privacy,
+          consent, Cleaning template settings, and readiness scoring. Public
+          intake, leads, AI, email, and billing remain out of scope.
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
           {[
-            "Supabase Auth",
-            "Tenant RLS",
-            "Protected shell",
+            "Business config",
+            "Cleaning template",
+            "Readiness score",
           ].map((item) => (
             <div
               key={item}

@@ -1,6 +1,6 @@
 # BizPilot AI
 
-BizPilot AI is in Phase 2: Auth + Tenant Foundation.
+BizPilot AI is in Phase 3: Business + Template Configuration Core.
 
 The canonical product direction is locked in `docs/` as the v1.4 founder-grade package. Phase 1 is technical foundation only.
 
@@ -14,24 +14,38 @@ MVP = Editable Cleaning Smart Quote Template + Lead Conversion Desk + AI Drafts
 Operating Mode = Rule-first, AI-on-demand, cache-heavy, validation-first
 ```
 
-## Current Phase 2 Scope
+## Current Phase 3 Scope
 
 Allowed:
+
+- Business profile configuration
+- Branding configuration
+- Services, FAQ, and service areas
+- Privacy and consent settings
+- Vertical = Cleaning
+- Editable Cleaning Smart Quote Template
+- Business Readiness Score
+- RLS policies and RLS tests for configuration tables
+
+Forbidden:
+
+- Intake
+- Leads
+- AI
+- Billing
+- Drag-and-drop builder
+- Conditional logic
+- Multi-step funnel
+- Marketplace
+- Second vertical launch
+
+## Completed Phase 2 Scope
 
 - Supabase Auth sign-in/sign-up
 - `profiles`, `businesses`, and `business_members`
 - RLS policies and RLS tests
 - Protected dashboard shell
 - Business membership checks
-
-Forbidden:
-
-- Services
-- Templates
-- Intake
-- Leads
-- AI
-- Billing
 
 ## Completed Phase 1 Scope
 
@@ -120,6 +134,14 @@ pnpm dev
 - Dashboard is protected.
 - RLS tests pass.
 - Cross-tenant access is blocked.
+
+## Phase 3 Definition of Done
+
+- Business can configure profile.
+- Business can configure services, FAQ, service areas.
+- Cleaning template can be edited.
+- Business Readiness Score works.
+- RLS tests pass.
 
 ## Phase 1 Definition of Done
 
