@@ -2,8 +2,8 @@
  * ============================================================
  * File: lib/supabase/server.ts
  * Project: BizPilot AI
- * Description: Creates server-side Supabase clients for Phase 2 auth and tenant workflows.
- * Role: Provides request-scoped and service-role Supabase clients behind one boundary.
+ * Description: Provides server-side Supabase placeholder configuration for Phase 1.
+ * Role: Keeps server Supabase environment access centralized before auth is implemented.
  * Related:
  * - lib/env/server-env.ts
  * - lib/supabase/client.ts
@@ -14,12 +14,11 @@
  * - 2026-05-04: Created server Supabase config placeholder and added standard header.
  * - 2026-05-04: Clarified server-only placeholder boundary and returned immutable config.
  * - 2026-05-04: Added official Supabase SSR and service-role client factories.
+ * - 2026-05-04: Restored Phase 1 placeholder boundary and disabled real client creation.
  * ============================================================
  */
 
-import { createServerClient } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { getServerEnv } from "@/lib/env/server-env";
 import type { Database } from "@/types/database";
@@ -42,39 +41,12 @@ export function getSupabaseServerClientConfig(): SupabaseServerClientConfig {
   });
 }
 
-export async function createSupabaseServerClient() {
-  const config = getSupabaseServerClientConfig();
-  const cookieStore = await cookies();
-
-  return createServerClient<Database>(config.url, config.anonKey, {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll();
-      },
-      setAll(cookiesToSet) {
-        try {
-          cookiesToSet.forEach(({ name, options, value }) => {
-            cookieStore.set(name, value, options);
-          });
-        } catch {
-          // Server Components cannot always set cookies; middleware refreshes sessions.
-        }
-      },
-    },
-  });
+export async function createSupabaseServerClient(): Promise<
+  SupabaseClient<Database>
+> {
+  throw new Error("Supabase server client creation starts in Phase 2.");
 }
 
-export function createSupabaseServiceRoleClient() {
-  const config = getSupabaseServerClientConfig();
-
-  if (!config.serviceRoleKey) {
-    throw new Error("SUPABASE_SERVICE_ROLE_KEY is required for tenant setup.");
-  }
-
-  return createClient<Database>(config.url, config.serviceRoleKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  });
+export function createSupabaseServiceRoleClient(): SupabaseClient<Database> {
+  throw new Error("Supabase service-role client creation starts in Phase 2.");
 }
