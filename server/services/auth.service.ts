@@ -6,66 +6,25 @@
  * Role: Owns authentication workflow boundaries before tenant services run.
  * Related:
  * - server/actions/auth.actions.ts
- * - lib/supabase/rest.ts
- * - lib/supabase/session.ts
+ * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
  * Last Updated: 2026-05-04
  * Change Log:
  * - 2026-05-04: Created Phase 2 Supabase Auth service.
  * - 2026-05-04: Aligned auth DTOs with exact optional property types.
+ * - 2026-05-04: Migrated auth workflows to the official Supabase SDK.
  * ============================================================
  */
 
-import {
-  clearSupabaseSession,
-  readSupabaseSession,
-  writeSupabaseSession,
-  type SupabaseSession,
-} from "@/lib/supabase/session";
-import { requestSupabaseAuth } from "@/lib/supabase/rest";
+import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type AuthUser = Readonly<{
   email?: string;
   id: string;
 }>;
 
-type SupabaseAuthResponse = Readonly<{
-  access_token?: string;
-  expires_at?: number;
-  refresh_token?: string;
-  user?: {
-    email?: string;
-    id: string;
-  };
-}>;
-
-type SupabaseUserResponse = Readonly<{
-  email?: string;
-  id: string;
-}>;
-
-function toSession(response: SupabaseAuthResponse): SupabaseSession | null {
-  if (!response.access_token || !response.refresh_token) {
-    return null;
-  }
-
-  const session: SupabaseSession = {
-    accessToken: response.access_token,
-    refreshToken: response.refresh_token,
-  };
-
-  if (response.expires_at !== undefined) {
-    return {
-      ...session,
-      expiresAt: response.expires_at,
-    };
-  }
-
-  return session;
-}
-
-function toAuthUser(response: SupabaseUserResponse): AuthUser {
+function toAuthUser(response: { email?: string; id: string }): AuthUser {
   const user: AuthUser = {
     id: response.id,
   };
@@ -84,25 +43,21 @@ export async function signInWithPassword(input: {
   email: string;
   password: string;
 }): Promise<AuthUser> {
-  const response = await requestSupabaseAuth<SupabaseAuthResponse>(
-    "token?grant_type=password",
-    {
-      method: "POST",
-      body: {
-        email: input.email,
-        password: input.password,
-      },
-    },
-  );
-  const session = toSession(response);
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: input.email,
+    password: input.password,
+  });
 
-  if (!session || !response.user) {
-    throw new Error("Supabase did not return a sign-in session.");
+  if (error) {
+    throw new Error(error.message);
   }
 
-  await writeSupabaseSession(session);
+  if (!data.user) {
+    throw new Error("Supabase did not return a signed-in user.");
+  }
 
-  return toAuthUser(response.user);
+  return toAuthUser(data.user);
 }
 
 export async function signUpWithPassword(input: {
@@ -110,57 +65,46 @@ export async function signUpWithPassword(input: {
   email: string;
   password: string;
 }): Promise<{ user: AuthUser; sessionCreated: boolean }> {
-  const response = await requestSupabaseAuth<SupabaseAuthResponse>("signup", {
-    method: "POST",
-    body: {
-      email: input.email,
-      password: input.password,
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.signUp({
+    email: input.email,
+    password: input.password,
+    options: {
       data: {
-        display_name: input.displayName,
+        display_name: input.displayName ?? "",
       },
     },
   });
 
-  if (!response.user) {
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data.user) {
     throw new Error("Supabase did not return a signed-up user.");
   }
 
-  const session = toSession(response);
-
-  if (session) {
-    await writeSupabaseSession(session);
-  }
-
   return {
-    user: toAuthUser(response.user),
-    sessionCreated: Boolean(session),
+    user: toAuthUser(data.user),
+    sessionCreated: Boolean(data.session),
   };
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
-  const session = await readSupabaseSession();
+  const supabase = await createSupabaseServerClient();
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (error || !user) {
     return null;
   }
 
-  try {
-    const response = await requestSupabaseAuth<SupabaseUserResponse>("user", {
-      accessToken: session.accessToken,
-    });
-
-    return toAuthUser(response);
-  } catch {
-    await clearSupabaseSession();
-    return null;
-  }
-}
-
-export async function getCurrentAccessToken(): Promise<string | null> {
-  const session = await readSupabaseSession();
-  return session?.accessToken ?? null;
+  return toAuthUser(user);
 }
 
 export async function signOut(): Promise<void> {
-  await clearSupabaseSession();
+  const supabase = await createSupabaseServerClient();
+  await supabase.auth.signOut();
 }

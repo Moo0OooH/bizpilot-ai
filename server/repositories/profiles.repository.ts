@@ -12,30 +12,29 @@
  * Last Updated: 2026-05-04
  * Change Log:
  * - 2026-05-04: Created Phase 2 profiles repository.
+ * - 2026-05-04: Migrated profile reads to official Supabase SDK clients.
  * ============================================================
  */
 
-import { requestSupabaseTable } from "@/lib/supabase/rest";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export type ProfileRecord = Readonly<{
-  display_name: string | null;
-  id: string;
-  user_id: string;
-}>;
+import type { Database } from "@/types/database";
+
+export type ProfileRecord = Database["public"]["Tables"]["profiles"]["Row"];
 
 export async function getProfileByUserId(input: {
-  accessToken: string;
+  supabase: SupabaseClient<Database>;
   userId: string;
 }): Promise<ProfileRecord | null> {
-  const query = new URLSearchParams({
-    select: "id,user_id,display_name",
-    user_id: `eq.${input.userId}`,
-    limit: "1",
-  });
-  const profiles = await requestSupabaseTable<ProfileRecord[]>("profiles", {
-    accessToken: input.accessToken,
-    query: query.toString(),
-  });
+  const { data, error } = await input.supabase
+    .from("profiles")
+    .select("*")
+    .eq("user_id", input.userId)
+    .maybeSingle();
 
-  return profiles[0] ?? null;
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 }

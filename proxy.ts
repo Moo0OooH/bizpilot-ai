@@ -12,6 +12,7 @@
  * Last Updated: 2026-05-04
  * Change Log:
  * - 2026-05-04: Created Phase 2 dashboard proxy guard.
+ * - 2026-05-04: Awaited official Supabase SSR dashboard guard.
  * ============================================================
  */
 
@@ -19,7 +20,7 @@ import type { NextRequest } from "next/server";
 
 import { protectDashboardRequest } from "@/lib/supabase/middleware";
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   return protectDashboardRequest(request);
 }
 

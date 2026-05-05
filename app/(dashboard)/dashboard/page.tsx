@@ -13,30 +13,27 @@
  * Last Updated: 2026-05-04
  * Change Log:
  * - 2026-05-04: Created protected Phase 2 dashboard shell.
+ * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
+ * - 2026-05-04: Marked dashboard shell as request-time only.
  * ============================================================
  */
 
 import { redirect } from "next/navigation";
 
 import { signOutAction } from "@/server/actions/auth.actions";
-import {
-  getCurrentAccessToken,
-  getCurrentUser,
-} from "@/server/services/auth.service";
+import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 
-export default async function DashboardPage() {
-  const [user, accessToken] = await Promise.all([
-    getCurrentUser(),
-    getCurrentAccessToken(),
-  ]);
+export const dynamic = "force-dynamic";
 
-  if (!user || !accessToken) {
+export default async function DashboardPage() {
+  const user = await getCurrentUser();
+
+  if (!user) {
     redirect("/auth/sign-in");
   }
 
   const workspace = await getBusinessWorkspace({
-    accessToken,
     userId: user.id,
   });
 

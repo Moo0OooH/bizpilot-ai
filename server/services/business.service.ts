@@ -14,9 +14,14 @@
  * Change Log:
  * - 2026-05-04: Created Phase 2 business foundation service.
  * - 2026-05-04: Added service-role path for sign-up before confirmed sessions.
+ * - 2026-05-04: Migrated business workflows to official Supabase SDK clients.
  * ============================================================
  */
 
+import {
+  createSupabaseServerClient,
+  createSupabaseServiceRoleClient,
+} from "@/lib/supabase/server";
 import {
   createOwnerMembership,
   listMembershipsForUser,
@@ -45,23 +50,23 @@ function toSlug(value: string): string {
 }
 
 export async function createFoundingBusiness(input: {
-  accessToken?: string;
   businessName: string;
   ownerUserId: string;
   serviceRole?: boolean;
 }): Promise<BusinessRecord> {
+  const supabase = input.serviceRole
+    ? createSupabaseServiceRoleClient()
+    : await createSupabaseServerClient();
   const business = await createBusinessForOwner({
-    ...(input.accessToken ? { accessToken: input.accessToken } : {}),
     name: input.businessName,
     ownerUserId: input.ownerUserId,
-    ...(input.serviceRole !== undefined ? { serviceRole: input.serviceRole } : {}),
     slug: toSlug(input.businessName),
+    supabase,
   });
 
   await createOwnerMembership({
-    ...(input.accessToken ? { accessToken: input.accessToken } : {}),
     businessId: business.id,
-    ...(input.serviceRole !== undefined ? { serviceRole: input.serviceRole } : {}),
+    supabase,
     userId: input.ownerUserId,
   });
 
@@ -69,13 +74,13 @@ export async function createFoundingBusiness(input: {
 }
 
 export async function getBusinessWorkspace(input: {
-  accessToken: string;
   userId: string;
 }): Promise<BusinessWorkspace> {
+  const supabase = await createSupabaseServerClient();
   const [businesses, memberships] = await Promise.all([
-    listBusinessesForUser({ accessToken: input.accessToken }),
+    listBusinessesForUser({ supabase }),
     listMembershipsForUser({
-      accessToken: input.accessToken,
+      supabase,
       userId: input.userId,
     }),
   ]);

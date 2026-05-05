@@ -13,54 +13,50 @@
  * Change Log:
  * - 2026-05-04: Created Phase 2 businesses repository.
  * - 2026-05-04: Added server-only service-role option for sign-up tenant setup.
+ * - 2026-05-04: Migrated business data access to official Supabase SDK clients.
  * ============================================================
  */
 
-import { requestSupabaseTable } from "@/lib/supabase/rest";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export type BusinessRecord = Readonly<{
-  id: string;
-  name: string;
-  owner_user_id: string;
-  slug: string;
-}>;
+import type { Database } from "@/types/database";
+
+export type BusinessRecord = Database["public"]["Tables"]["businesses"]["Row"];
 
 export async function createBusinessForOwner(input: {
-  accessToken?: string;
   name: string;
   ownerUserId: string;
-  serviceRole?: boolean;
   slug: string;
+  supabase: SupabaseClient<Database>;
 }): Promise<BusinessRecord> {
-  const businesses = await requestSupabaseTable<BusinessRecord[]>("businesses", {
-    ...(input.accessToken ? { accessToken: input.accessToken } : {}),
-    method: "POST",
-    prefer: "return=representation",
-    ...(input.serviceRole !== undefined ? { serviceRole: input.serviceRole } : {}),
-    body: {
+  const { data, error } = await input.supabase
+    .from("businesses")
+    .insert({
       name: input.name,
       owner_user_id: input.ownerUserId,
       slug: input.slug,
-    },
-  });
+    })
+    .select("*")
+    .single();
 
-  if (!businesses[0]) {
-    throw new Error("Supabase did not return the created business.");
+  if (error) {
+    throw new Error(error.message);
   }
 
-  return businesses[0];
+  return data;
 }
 
 export async function listBusinessesForUser(input: {
-  accessToken: string;
+  supabase: SupabaseClient<Database>;
 }): Promise<BusinessRecord[]> {
-  const query = new URLSearchParams({
-    select: "id,name,slug,owner_user_id",
-    order: "created_at.asc",
-  });
+  const { data, error } = await input.supabase
+    .from("businesses")
+    .select("*")
+    .order("created_at", { ascending: true });
 
-  return requestSupabaseTable<BusinessRecord[]>("businesses", {
-    accessToken: input.accessToken,
-    query: query.toString(),
-  });
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 }

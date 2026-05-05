@@ -2,8 +2,8 @@
  * ============================================================
  * File: lib/supabase/client.ts
  * Project: BizPilot AI
- * Description: Holds browser Supabase client configuration for the Phase 1 foundation.
- * Role: Provides browser-safe Supabase settings without creating auth or data workflows.
+ * Description: Creates browser-safe Supabase clients for Phase 2 auth flows.
+ * Role: Provides the official Supabase browser client for client components when needed.
  * Related:
  * - lib/env/public-env.ts
  * - lib/supabase/server.ts
@@ -13,10 +13,14 @@
  * Change Log:
  * - 2026-05-04: Created browser Supabase config placeholder and added standard header.
  * - 2026-05-04: Clarified Phase 1 placeholder boundary and returned immutable config.
+ * - 2026-05-04: Added official Supabase browser client factory.
  * ============================================================
  */
 
+import { createBrowserClient } from "@supabase/ssr";
+
 import { getPublicEnv } from "@/lib/env/public-env";
+import type { Database } from "@/types/database";
 
 export type SupabaseBrowserClientConfig = Readonly<{
   url: string;
@@ -31,4 +35,10 @@ export function getSupabaseBrowserClientConfig(): SupabaseBrowserClientConfig {
     url: env.NEXT_PUBLIC_SUPABASE_URL,
     anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   });
+}
+
+export function createSupabaseBrowserClient() {
+  const config = getSupabaseBrowserClientConfig();
+
+  return createBrowserClient<Database>(config.url, config.anonKey);
 }

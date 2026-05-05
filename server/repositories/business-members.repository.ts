@@ -13,60 +13,54 @@
  * Change Log:
  * - 2026-05-04: Created Phase 2 business members repository.
  * - 2026-05-04: Added server-only service-role option for sign-up tenant setup.
+ * - 2026-05-04: Migrated membership data access to official Supabase SDK clients.
  * ============================================================
  */
 
-import { requestSupabaseTable } from "@/lib/supabase/rest";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
-export type BusinessMemberRole = "admin" | "concierge_limited" | "member" | "owner";
+import type { Database } from "@/types/database";
 
-export type BusinessMemberRecord = Readonly<{
-  business_id: string;
-  id: string;
-  role: BusinessMemberRole;
-  user_id: string;
-}>;
+export type BusinessMemberRecord =
+  Database["public"]["Tables"]["business_members"]["Row"];
+
+export type BusinessMemberRole = BusinessMemberRecord["role"];
 
 export async function createOwnerMembership(input: {
-  accessToken?: string;
   businessId: string;
-  serviceRole?: boolean;
+  supabase: SupabaseClient<Database>;
   userId: string;
 }): Promise<BusinessMemberRecord> {
-  const memberships = await requestSupabaseTable<BusinessMemberRecord[]>(
-    "business_members",
-    {
-      ...(input.accessToken ? { accessToken: input.accessToken } : {}),
-      method: "POST",
-      prefer: "return=representation",
-      ...(input.serviceRole !== undefined ? { serviceRole: input.serviceRole } : {}),
-      body: {
-        business_id: input.businessId,
-        user_id: input.userId,
-        role: "owner",
-      },
-    },
-  );
+  const { data, error } = await input.supabase
+    .from("business_members")
+    .insert({
+      business_id: input.businessId,
+      user_id: input.userId,
+      role: "owner",
+    })
+    .select("*")
+    .single();
 
-  if (!memberships[0]) {
-    throw new Error("Supabase did not return the created membership.");
+  if (error) {
+    throw new Error(error.message);
   }
 
-  return memberships[0];
+  return data;
 }
 
 export async function listMembershipsForUser(input: {
-  accessToken: string;
+  supabase: SupabaseClient<Database>;
   userId: string;
 }): Promise<BusinessMemberRecord[]> {
-  const query = new URLSearchParams({
-    select: "id,business_id,user_id,role",
-    user_id: `eq.${input.userId}`,
-    order: "created_at.asc",
-  });
+  const { data, error } = await input.supabase
+    .from("business_members")
+    .select("*")
+    .eq("user_id", input.userId)
+    .order("created_at", { ascending: true });
 
-  return requestSupabaseTable<BusinessMemberRecord[]>("business_members", {
-    accessToken: input.accessToken,
-    query: query.toString(),
-  });
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 }

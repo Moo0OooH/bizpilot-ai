@@ -16,6 +16,7 @@
  * - 2026-05-04: Created Phase 2 auth server actions.
  * - 2026-05-04: Kept Next.js redirects outside sign-up error handling.
  * - 2026-05-04: Added service-role tenant setup fallback for confirmed-email flows.
+ * - 2026-05-04: Removed manual access-token handling after Supabase SDK migration.
  * ============================================================
  */
 
@@ -24,7 +25,6 @@
 import { redirect } from "next/navigation";
 
 import {
-  getCurrentAccessToken,
   signInWithPassword,
   signOut,
   signUpWithPassword,
@@ -73,17 +73,10 @@ export async function signUpAction(formData: FormData): Promise<never> {
 
     sessionCreated = result.sessionCreated;
 
-    const accessToken = await getCurrentAccessToken();
-
-    if (sessionCreated && !accessToken) {
-      throw new Error("No authenticated session was available after sign-up.");
-    }
-
     await createFoundingBusiness({
-      ...(accessToken ? { accessToken } : {}),
       businessName,
       ownerUserId: result.user.id,
-      serviceRole: !accessToken,
+      serviceRole: !sessionCreated,
     });
   } catch (error) {
     redirectWithAuthError("/auth/sign-up", error);
