@@ -13,7 +13,6 @@
  * Change Log:
  * - 2026-05-04: Updated wrapper to use public env validation and added standard header.
  * - 2026-05-04: Delegated compatibility wrapper to the browser Supabase placeholder.
- * - 2026-05-04: Confirmed Phase 1 placeholder compatibility boundary.
  * ============================================================
  */
 
