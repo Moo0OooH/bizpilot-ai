@@ -13,6 +13,7 @@
  * Change Log:
  * - 2026-05-04: Added standard project file header.
  * - 2026-05-04: Aligned foundation page typography with UI standards.
+ * - 2026-05-04: Updated home screen status for Phase 2 tenant foundation.
  * ============================================================
  */
 
@@ -24,18 +25,18 @@ export default function Home() {
           BizPilot AI
         </p>
         <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-zinc-950 sm:text-5xl">
-          Phase 1 Project Foundation
+          Phase 2 Auth + Tenant Foundation
         </h1>
         <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600">
-          Technical foundation only. No product features, lead workflows, AI
-          generation, billing, or quote functionality are implemented in this
-          phase.
+          Auth, profiles, businesses, memberships, RLS, and a protected
+          dashboard shell only. Product workflows, leads, templates, AI, email,
+          and billing remain out of scope.
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-3">
           {[
-            "Next.js App Router",
-            "TypeScript strict",
-            "Tailwind CSS",
+            "Supabase Auth",
+            "Tenant RLS",
+            "Protected shell",
           ].map((item) => (
             <div
               key={item}
