@@ -19,6 +19,7 @@
  * - 2026-05-05: Added editable business profile fields and setup task display.
  * - 2026-05-05: Added Cleaning template label and required-field overrides.
  * - 2026-05-05: Persisted optional overrides for default-required template fields.
+ * - 2026-05-05: Clarified FAQ textarea format for persistent FAQ parsing.
  * ============================================================
  */
 
@@ -364,7 +365,11 @@ export default async function DashboardPage({
                 className="mt-2 min-h-32 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
                 defaultValue={faqsToText(configuration.faqs)}
                 name="faqs"
+                placeholder="Do you bring supplies? | Yes, we bring all standard supplies."
               />
+              <span className="mt-2 block text-xs leading-5 text-zinc-500">
+                One FAQ per line. Use: Question? | Answer
+              </span>
             </label>
           </div>
         </section>

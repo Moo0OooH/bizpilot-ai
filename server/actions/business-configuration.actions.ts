@@ -15,6 +15,8 @@
  * - 2026-05-05: Added business profile fields to the configuration save action.
  * - 2026-05-05: Added Cleaning template label and required-field overrides.
  * - 2026-05-05: Persisted optional overrides for default-required template fields.
+ * - 2026-05-05: Made FAQ parsing tolerant of common question/answer formats.
+ * - 2026-05-05: Added explicit error handling for invalid FAQ textarea content.
  * ============================================================
  */
 
@@ -71,19 +73,64 @@ function readServices(value: string | undefined) {
   });
 }
 
-function readFaqs(value: string | undefined) {
-  return readList(value)
-    .map((line) => {
-      const parts = line.split("|").map((item) => item.trim());
-      const question = parts[0] ?? "";
-      const answer = parts[1] ?? "";
+function splitFaqLine(line: string): { answer: string; question: string } {
+  const pipeIndex = line.indexOf("|");
 
-      return {
-        answer,
-        question,
-      };
-    })
-    .filter((faq) => faq.question.length > 0 && faq.answer.length > 0);
+  if (pipeIndex > -1) {
+    return {
+      answer: line.slice(pipeIndex + 1).trim(),
+      question: line.slice(0, pipeIndex).trim(),
+    };
+  }
+
+  const qMarkerIndex = line.search(/\?\s+/);
+
+  if (qMarkerIndex > -1) {
+    const questionEnd = qMarkerIndex + 1;
+
+    return {
+      answer: line.slice(questionEnd).trim().replace(/^[-:]\s*/, ""),
+      question: line.slice(0, questionEnd).trim(),
+    };
+  }
+
+  return {
+    answer: "",
+    question: line.trim(),
+  };
+}
+
+function readFaqs(value: string | undefined) {
+  const faqs: Array<{ answer: string; question: string }> = [];
+  let pendingQuestion: string | null = null;
+
+  for (const line of readList(value)) {
+    const questionOnly = line.match(/^q(?:uestion)?:\s*(.+)$/i);
+    const answerOnly = line.match(/^a(?:nswer)?:\s*(.+)$/i);
+
+    if (questionOnly?.[1]) {
+      pendingQuestion = questionOnly[1].trim();
+      continue;
+    }
+
+    if (answerOnly?.[1] && pendingQuestion) {
+      faqs.push({
+        answer: answerOnly[1].trim(),
+        question: pendingQuestion,
+      });
+      pendingQuestion = null;
+      continue;
+    }
+
+    const parsed = splitFaqLine(line.replace(/\s+a(nswer)?:\s*/i, " | "));
+
+    if (parsed.question.length > 0 && parsed.answer.length > 0) {
+      faqs.push(parsed);
+      pendingQuestion = null;
+    }
+  }
+
+  return faqs;
 }
 
 function readFieldOverrides(formData: FormData): Json {
@@ -154,6 +201,12 @@ export async function saveBusinessConfigurationAction(
       formData,
       "privacyContactEmail",
     );
+    const faqText = readOptionalFormValue(formData, "faqs");
+    const faqs = readFaqs(faqText);
+
+    if (faqText && faqs.length === 0) {
+      throw new Error("FAQ entries must include both a question and an answer.");
+    }
 
     await saveBusinessConfiguration({
       accentColor: readRequiredFormValue(formData, "accentColor"),
@@ -162,7 +215,7 @@ export async function saveBusinessConfigurationAction(
       businessName: readRequiredFormValue(formData, "businessName"),
       businessSlug: readRequiredFormValue(formData, "businessSlug"),
       consentNotice: readRequiredFormValue(formData, "consentNotice"),
-      faqs: readFaqs(readOptionalFormValue(formData, "faqs")),
+      faqs,
       fieldOverrides: readFieldOverrides(formData),
       primaryColor: readRequiredFormValue(formData, "primaryColor"),
       privacyMode: readPrivacyMode(
