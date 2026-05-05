@@ -7,12 +7,14 @@
  * Related:
  * - server/services/business-configuration.service.ts
  * - supabase/migrations/0002_business_template_configuration.sql
+ * - supabase/migrations/0003_business_template_field_overrides.sql
  * Author: MoOoH
  * Created: 2026-05-05
  * Last Updated: 2026-05-05
  * Change Log:
  * - 2026-05-05: Created Phase 3 business configuration repository.
  * - 2026-05-05: Added onboarding task reads and sync support.
+ * - 2026-05-05: Added business-level template field override merge and persistence.
  * ============================================================
  */
 
@@ -34,6 +36,8 @@ export type BusinessServiceRecord =
   Database["public"]["Tables"]["business_services"]["Row"];
 export type BusinessTemplateSettingsRecord =
   Database["public"]["Tables"]["business_template_settings"]["Row"];
+export type BusinessTemplateFieldRecord =
+  Database["public"]["Tables"]["business_template_fields"]["Row"];
 export type BusinessOnboardingTaskRecord =
   Database["public"]["Tables"]["business_onboarding_tasks"]["Row"];
 export type IndustryTemplateFieldRecord =
@@ -41,8 +45,14 @@ export type IndustryTemplateFieldRecord =
 export type IndustryTemplateRecord =
   Database["public"]["Tables"]["industry_templates"]["Row"];
 
+export type CleaningTemplateFieldRecord = IndustryTemplateFieldRecord & {
+  business_override_id: string | null;
+  is_hidden: boolean;
+  template_field_id: string;
+};
+
 export type CleaningTemplateRecord = Readonly<{
-  fields: IndustryTemplateFieldRecord[];
+  fields: CleaningTemplateFieldRecord[];
   template: IndustryTemplateRecord;
 }>;
 
@@ -57,6 +67,17 @@ export type BusinessConfigurationRecord = Readonly<{
   templateSettings: BusinessTemplateSettingsRecord | null;
 }>;
 
+export type BusinessTemplateFieldOverrideInput = Readonly<{
+  fieldKey: string;
+  helpTextOverride?: string;
+  isHidden: boolean;
+  isRequiredOverride?: boolean;
+  labelOverride?: string;
+  optionsOverride?: Json;
+  sortOrderOverride?: number;
+  templateFieldId: string;
+}>;
+
 async function throwIfError(error: { message: string } | null): Promise<void> {
   if (error) {
     throw new Error(error.message);
@@ -64,6 +85,7 @@ async function throwIfError(error: { message: string } | null): Promise<void> {
 }
 
 export async function getCleaningTemplate(input: {
+  businessId: string;
   supabase: SupabaseClient<Database>;
 }): Promise<CleaningTemplateRecord> {
   const { data: template, error: templateError } = await input.supabase
@@ -86,8 +108,36 @@ export async function getCleaningTemplate(input: {
 
   await throwIfError(fieldsError);
 
+  const { data: overrides, error: overridesError } = await input.supabase
+    .from("business_template_fields")
+    .select("*")
+    .eq("business_id", input.businessId);
+
+  await throwIfError(overridesError);
+
+  const overridesByFieldId = new Map(
+    (overrides ?? []).map((override) => [override.template_field_id, override]),
+  );
+  const mergedFields = (fields ?? [])
+    .map((field): CleaningTemplateFieldRecord => {
+      const override = overridesByFieldId.get(field.id);
+
+      return {
+        ...field,
+        business_override_id: override?.id ?? null,
+        help_text: override?.help_text_override ?? field.help_text,
+        is_hidden: override?.is_hidden ?? false,
+        is_required: override?.is_required_override ?? field.is_required,
+        label: override?.label_override ?? field.label,
+        options: override?.options_override ?? field.options,
+        sort_order: override?.sort_order_override ?? field.sort_order,
+        template_field_id: field.id,
+      };
+    })
+    .sort((left, right) => left.sort_order - right.sort_order);
+
   return {
-    fields: fields ?? [],
+    fields: mergedFields,
     template,
   };
 }
@@ -326,6 +376,41 @@ export async function upsertTemplateSettings(input: {
         template_id: input.templateId,
       },
       { onConflict: "business_id,template_id" },
+    );
+
+  await throwIfError(error);
+}
+
+export async function replaceBusinessTemplateFieldOverrides(input: {
+  businessId: string;
+  overrides: readonly BusinessTemplateFieldOverrideInput[];
+  supabase: SupabaseClient<Database>;
+}): Promise<void> {
+  await throwIfError(
+    (await input.supabase
+      .from("business_template_fields")
+      .delete()
+      .eq("business_id", input.businessId)).error,
+  );
+
+  if (input.overrides.length === 0) {
+    return;
+  }
+
+  const { error } = await input.supabase
+    .from("business_template_fields")
+    .insert(
+      input.overrides.map((override) => ({
+        business_id: input.businessId,
+        field_key: override.fieldKey,
+        help_text_override: override.helpTextOverride ?? null,
+        is_hidden: override.isHidden,
+        is_required_override: override.isRequiredOverride ?? null,
+        label_override: override.labelOverride ?? null,
+        options_override: override.optionsOverride ?? null,
+        sort_order_override: override.sortOrderOverride ?? null,
+        template_field_id: override.templateFieldId,
+      })),
     );
 
   await throwIfError(error);

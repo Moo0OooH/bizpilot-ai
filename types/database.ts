@@ -13,6 +13,7 @@
  * Change Log:
  * - 2026-05-04: Created Phase 2 database types for Supabase SDK clients.
  * - 2026-05-05: Added Phase 3 business and Cleaning template configuration tables.
+ * - 2026-05-05: Added business-level template field override table.
  * ============================================================
  */
 
@@ -289,6 +290,51 @@ export type Database = {
           id?: string;
           is_active?: boolean;
           template_id?: string;
+          updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
+      business_template_fields: {
+        Row: {
+          business_id: string;
+          created_at: Timestamp;
+          field_key: string;
+          help_text_override: string | null;
+          id: string;
+          is_hidden: boolean;
+          is_required_override: boolean | null;
+          label_override: string | null;
+          options_override: Json | null;
+          sort_order_override: number | null;
+          template_field_id: string;
+          updated_at: Timestamp;
+        };
+        Insert: {
+          business_id: string;
+          created_at?: Timestamp;
+          field_key: string;
+          help_text_override?: string | null;
+          id?: string;
+          is_hidden?: boolean;
+          is_required_override?: boolean | null;
+          label_override?: string | null;
+          options_override?: Json | null;
+          sort_order_override?: number | null;
+          template_field_id: string;
+          updated_at?: Timestamp;
+        };
+        Update: {
+          business_id?: string;
+          created_at?: Timestamp;
+          field_key?: string;
+          help_text_override?: string | null;
+          id?: string;
+          is_hidden?: boolean;
+          is_required_override?: boolean | null;
+          label_override?: string | null;
+          options_override?: Json | null;
+          sort_order_override?: number | null;
+          template_field_id?: string;
           updated_at?: Timestamp;
         };
         Relationships: [];

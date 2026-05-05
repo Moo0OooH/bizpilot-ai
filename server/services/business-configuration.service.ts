@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-05-05: Created Phase 3 business configuration service and readiness scoring.
  * - 2026-05-05: Added business profile updates and onboarding task synchronization.
+ * - 2026-05-05: Persisted Cleaning template field overrides through business-level rows.
  * ============================================================
  */
 
@@ -23,6 +24,7 @@ import {
   getBusinessConfiguration,
   getCleaningTemplate,
   replaceBusinessOnboardingTasks,
+  replaceBusinessTemplateFieldOverrides,
   replaceBusinessFaqs,
   replaceBusinessServiceAreas,
   replaceBusinessServices,
@@ -32,6 +34,7 @@ import {
   upsertTemplateSettings,
   type BusinessConfigurationRecord,
   type BusinessPrivacySettingsRecord,
+  type BusinessTemplateFieldOverrideInput,
   type CleaningTemplateRecord,
 } from "@/server/repositories/business-configuration.repository";
 import { listMembershipsForUser } from "@/server/repositories/business-members.repository";
@@ -80,6 +83,7 @@ export type BusinessConfigurationInput = Readonly<{
   retainLeadsDays: number;
   serviceAreas: readonly string[];
   services: ReadonlyArray<{ description?: string; name: string }>;
+  templateFieldOverrides: readonly BusinessTemplateFieldOverrideInput[];
   templateId: string;
   userId: string;
 }>;
@@ -266,7 +270,10 @@ export async function getBusinessConfigurationWorkspace(input: {
       businessId: input.business.id,
       supabase,
     }),
-    getCleaningTemplate({ supabase }),
+    getCleaningTemplate({
+      businessId: input.business.id,
+      supabase,
+    }),
   ]);
 
   return {
@@ -356,6 +363,11 @@ export async function saveBusinessConfiguration(
       supabase,
       templateId: input.templateId,
       ...(customTemplateName ? { customName: customTemplateName } : {}),
+    }),
+    replaceBusinessTemplateFieldOverrides({
+      businessId: input.businessId,
+      overrides: input.templateFieldOverrides,
+      supabase,
     }),
   ]);
 
