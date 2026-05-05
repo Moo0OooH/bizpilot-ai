@@ -13,6 +13,8 @@
  * Change Log:
  * - 2026-05-05: Created Phase 3 business configuration save action.
  * - 2026-05-05: Added business profile fields to the configuration save action.
+ * - 2026-05-05: Added Cleaning template label and required-field overrides.
+ * - 2026-05-05: Persisted optional overrides for default-required template fields.
  * ============================================================
  */
 
@@ -88,9 +90,32 @@ function readFieldOverrides(formData: FormData): Json {
   const disabledFields = formData
     .getAll("disabledFields")
     .filter((value): value is string => typeof value === "string");
+  const requiredFields = formData
+    .getAll("requiredFields")
+    .filter((value): value is string => typeof value === "string");
+  const defaultRequiredFields = formData
+    .getAll("defaultRequiredFields")
+    .filter((value): value is string => typeof value === "string");
+  const optionalFields = defaultRequiredFields.filter(
+    (field) => !requiredFields.includes(field),
+  );
+  const labels: Record<string, string> = {};
+
+  for (const [key, value] of formData.entries()) {
+    if (
+      key.startsWith("fieldLabel:") &&
+      typeof value === "string" &&
+      value.trim().length > 0
+    ) {
+      labels[key.replace("fieldLabel:", "")] = value.trim();
+    }
+  }
 
   return {
     disabledFields,
+    labels,
+    optionalFields,
+    requiredFields,
   };
 }
 

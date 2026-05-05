@@ -17,6 +17,8 @@
  * - 2026-05-04: Marked dashboard shell as request-time only.
  * - 2026-05-05: Added Phase 3 business configuration forms and readiness score.
  * - 2026-05-05: Added editable business profile fields and setup task display.
+ * - 2026-05-05: Added Cleaning template label and required-field overrides.
+ * - 2026-05-05: Persisted optional overrides for default-required template fields.
  * ============================================================
  */
 
@@ -80,6 +82,48 @@ function readDisabledFields(value: Json): string[] {
     : [];
 }
 
+function readRequiredFieldOverrides(value: Json): string[] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return [];
+  }
+
+  const requiredFields = value.requiredFields;
+
+  return Array.isArray(requiredFields)
+    ? requiredFields.filter((field): field is string => typeof field === "string")
+    : [];
+}
+
+function readOptionalFieldOverrides(value: Json): string[] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return [];
+  }
+
+  const optionalFields = value.optionalFields;
+
+  return Array.isArray(optionalFields)
+    ? optionalFields.filter((field): field is string => typeof field === "string")
+    : [];
+}
+
+function readLabelOverrides(value: Json): Record<string, string> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return {};
+  }
+
+  const labels = value.labels;
+
+  if (!labels || typeof labels !== "object" || Array.isArray(labels)) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(labels).filter(
+      (entry): entry is [string, string] => typeof entry[1] === "string",
+    ),
+  );
+}
+
 export default async function DashboardPage({
   searchParams,
 }: DashboardPageProps) {
@@ -119,6 +163,15 @@ export default async function DashboardPage({
   const { cleaningTemplate, configuration, readiness } =
     configurationWorkspace;
   const disabledFields = readDisabledFields(
+    configuration.templateSettings?.field_overrides ?? {},
+  );
+  const requiredFieldOverrides = readRequiredFieldOverrides(
+    configuration.templateSettings?.field_overrides ?? {},
+  );
+  const optionalFieldOverrides = readOptionalFieldOverrides(
+    configuration.templateSettings?.field_overrides ?? {},
+  );
+  const labelOverrides = readLabelOverrides(
     configuration.templateSettings?.field_overrides ?? {},
   );
 
@@ -388,20 +441,40 @@ export default async function DashboardPage({
           </h2>
           <div className="mt-4 divide-y divide-zinc-200 border border-zinc-200">
             {cleaningTemplate.fields.map((field) => (
-              <label
-                className="flex items-start justify-between gap-4 p-4 text-sm"
+              <div
+                className="grid gap-4 p-4 text-sm sm:grid-cols-[1fr_auto_auto]"
                 key={field.id}
               >
-                <span>
-                  <span className="font-medium text-zinc-950">
-                    {field.label}
-                  </span>
-                  <span className="mt-1 block text-zinc-500">
-                    {field.field_key}
-                    {field.is_required ? " - Required" : ""}
-                  </span>
-                </span>
-                <span className="flex items-center gap-2 text-zinc-700">
+                <label className="block font-medium text-zinc-800">
+                  {field.field_key}
+                  <input
+                    className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
+                    defaultValue={labelOverrides[field.field_key] ?? field.label}
+                    name={`fieldLabel:${field.field_key}`}
+                    type="text"
+                  />
+                  {field.is_required ? (
+                    <input
+                      name="defaultRequiredFields"
+                      type="hidden"
+                      value={field.field_key}
+                    />
+                  ) : null}
+                </label>
+                <label className="flex items-center gap-2 text-zinc-700">
+                  <input
+                    defaultChecked={
+                      requiredFieldOverrides.includes(field.field_key) ||
+                      (field.is_required &&
+                        !optionalFieldOverrides.includes(field.field_key))
+                    }
+                    name="requiredFields"
+                    type="checkbox"
+                    value={field.field_key}
+                  />
+                  Required
+                </label>
+                <label className="flex items-center gap-2 text-zinc-700">
                   <input
                     defaultChecked={disabledFields.includes(field.field_key)}
                     name="disabledFields"
@@ -409,8 +482,8 @@ export default async function DashboardPage({
                     value={field.field_key}
                   />
                   Hide
-                </span>
-              </label>
+                </label>
+              </div>
             ))}
           </div>
         </section>
