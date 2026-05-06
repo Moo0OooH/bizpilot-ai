@@ -7,14 +7,13 @@
  * Related:
  * - server/services/business-configuration.service.ts
  * - supabase/migrations/0002_business_template_configuration.sql
- * - supabase/migrations/0003_business_template_field_overrides.sql
  * Author: MoOoH
  * Created: 2026-05-05
  * Last Updated: 2026-05-05
  * Change Log:
  * - 2026-05-05: Created Phase 3 business configuration repository.
  * - 2026-05-05: Added onboarding task reads and sync support.
- * - 2026-05-05: Added business-level template field override merge and persistence.
+ * - 2026-05-05: Merged editable template field settings from business_template_settings.
  * ============================================================
  */
 
@@ -36,8 +35,6 @@ export type BusinessServiceRecord =
   Database["public"]["Tables"]["business_services"]["Row"];
 export type BusinessTemplateSettingsRecord =
   Database["public"]["Tables"]["business_template_settings"]["Row"];
-export type BusinessTemplateFieldRecord =
-  Database["public"]["Tables"]["business_template_fields"]["Row"];
 export type BusinessOnboardingTaskRecord =
   Database["public"]["Tables"]["business_onboarding_tasks"]["Row"];
 export type IndustryTemplateFieldRecord =
@@ -46,7 +43,6 @@ export type IndustryTemplateRecord =
   Database["public"]["Tables"]["industry_templates"]["Row"];
 
 export type CleaningTemplateFieldRecord = IndustryTemplateFieldRecord & {
-  business_override_id: string | null;
   is_hidden: boolean;
   template_field_id: string;
 };
@@ -67,21 +63,95 @@ export type BusinessConfigurationRecord = Readonly<{
   templateSettings: BusinessTemplateSettingsRecord | null;
 }>;
 
-export type BusinessTemplateFieldOverrideInput = Readonly<{
-  fieldKey: string;
-  helpTextOverride?: string;
-  isHidden: boolean;
-  isRequiredOverride?: boolean;
-  labelOverride?: string;
-  optionsOverride?: Json;
-  sortOrderOverride?: number;
-  templateFieldId: string;
+type TemplateFieldOverride = Readonly<{
+  helpText?: string;
+  isHidden?: boolean;
+  isRequired?: boolean;
+  label?: string;
+  options?: Json;
+  sortOrder?: number;
+}>;
+
+type TemplateFieldOverrides = Readonly<{
+  disabledFields?: string[];
+  fields?: Record<string, TemplateFieldOverride>;
+  labels?: Record<string, string>;
+  optionalFields?: string[];
+  requiredFields?: string[];
 }>;
 
 async function throwIfError(error: { message: string } | null): Promise<void> {
   if (error) {
     throw new Error(error.message);
   }
+}
+
+function isRecord(value: Json | undefined): value is Record<string, Json> {
+  return Boolean(value && typeof value === "object" && !Array.isArray(value));
+}
+
+function readStringMap(value: Json | undefined): Record<string, string> {
+  if (!isRecord(value)) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      (entry): entry is [string, string] => typeof entry[1] === "string",
+    ),
+  );
+}
+
+function readStringList(value: Json | undefined): string[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === "string")
+    : [];
+}
+
+function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides {
+  if (!isRecord(value)) {
+    return {};
+  }
+
+  const fields = isRecord(value.fields)
+    ? Object.fromEntries(
+        Object.entries(value.fields)
+          .filter((entry): entry is [string, Record<string, Json>] =>
+            isRecord(entry[1]),
+          )
+          .map(([fieldKey, override]) => [
+            fieldKey,
+            {
+              ...(typeof override.helpText === "string"
+                ? { helpText: override.helpText }
+                : {}),
+              ...(typeof override.isHidden === "boolean"
+                ? { isHidden: override.isHidden }
+                : {}),
+              ...(typeof override.isRequired === "boolean"
+                ? { isRequired: override.isRequired }
+                : {}),
+              ...(typeof override.label === "string"
+                ? { label: override.label }
+                : {}),
+              ...(override.options !== undefined
+                ? { options: override.options }
+                : {}),
+              ...(typeof override.sortOrder === "number"
+                ? { sortOrder: override.sortOrder }
+                : {}),
+            },
+          ]),
+      )
+    : {};
+
+  return {
+    disabledFields: readStringList(value.disabledFields),
+    fields,
+    labels: readStringMap(value.labels),
+    optionalFields: readStringList(value.optionalFields),
+    requiredFields: readStringList(value.requiredFields),
+  };
 }
 
 export async function getCleaningTemplate(input: {
@@ -108,29 +178,44 @@ export async function getCleaningTemplate(input: {
 
   await throwIfError(fieldsError);
 
-  const { data: overrides, error: overridesError } = await input.supabase
-    .from("business_template_fields")
-    .select("*")
-    .eq("business_id", input.businessId);
+  const { data: templateSettings, error: templateSettingsError } =
+    await input.supabase
+      .from("business_template_settings")
+      .select("field_overrides")
+      .eq("business_id", input.businessId)
+      .eq("template_id", template.id)
+      .maybeSingle();
 
-  await throwIfError(overridesError);
+  await throwIfError(templateSettingsError);
 
-  const overridesByFieldId = new Map(
-    (overrides ?? []).map((override) => [override.template_field_id, override]),
+  const overrides = readTemplateFieldOverrides(
+    templateSettings?.field_overrides ?? {},
   );
   const mergedFields = (fields ?? [])
     .map((field): CleaningTemplateFieldRecord => {
-      const override = overridesByFieldId.get(field.id);
+      const fieldOverride = overrides.fields?.[field.field_key];
+      const legacyLabel = overrides.labels?.[field.field_key];
+      const isLegacyRequired = overrides.requiredFields?.includes(
+        field.field_key,
+      );
+      const isLegacyOptional = overrides.optionalFields?.includes(
+        field.field_key,
+      );
+      const isLegacyHidden = overrides.disabledFields?.includes(
+        field.field_key,
+      );
+      const isRequired =
+        fieldOverride?.isRequired ??
+        (isLegacyRequired ? true : isLegacyOptional ? false : field.is_required);
 
       return {
         ...field,
-        business_override_id: override?.id ?? null,
-        help_text: override?.help_text_override ?? field.help_text,
-        is_hidden: override?.is_hidden ?? false,
-        is_required: override?.is_required_override ?? field.is_required,
-        label: override?.label_override ?? field.label,
-        options: override?.options_override ?? field.options,
-        sort_order: override?.sort_order_override ?? field.sort_order,
+        help_text: fieldOverride?.helpText ?? field.help_text,
+        is_hidden: fieldOverride?.isHidden ?? isLegacyHidden ?? false,
+        is_required: isRequired,
+        label: fieldOverride?.label ?? legacyLabel ?? field.label,
+        options: fieldOverride?.options ?? field.options,
+        sort_order: fieldOverride?.sortOrder ?? field.sort_order,
         template_field_id: field.id,
       };
     })
@@ -376,41 +461,6 @@ export async function upsertTemplateSettings(input: {
         template_id: input.templateId,
       },
       { onConflict: "business_id,template_id" },
-    );
-
-  await throwIfError(error);
-}
-
-export async function replaceBusinessTemplateFieldOverrides(input: {
-  businessId: string;
-  overrides: readonly BusinessTemplateFieldOverrideInput[];
-  supabase: SupabaseClient<Database>;
-}): Promise<void> {
-  await throwIfError(
-    (await input.supabase
-      .from("business_template_fields")
-      .delete()
-      .eq("business_id", input.businessId)).error,
-  );
-
-  if (input.overrides.length === 0) {
-    return;
-  }
-
-  const { error } = await input.supabase
-    .from("business_template_fields")
-    .insert(
-      input.overrides.map((override) => ({
-        business_id: input.businessId,
-        field_key: override.fieldKey,
-        help_text_override: override.helpTextOverride ?? null,
-        is_hidden: override.isHidden,
-        is_required_override: override.isRequiredOverride ?? null,
-        label_override: override.labelOverride ?? null,
-        options_override: override.optionsOverride ?? null,
-        sort_order_override: override.sortOrderOverride ?? null,
-        template_field_id: override.templateFieldId,
-      })),
     );
 
   await throwIfError(error);

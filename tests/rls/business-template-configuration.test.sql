@@ -13,7 +13,7 @@ Last Updated: 2026-05-05
 Change Log:
 - 2026-05-05: Created Phase 3 business configuration RLS baseline tests.
 - 2026-05-05: Expanded coverage for FAQs, branding, consent, template settings, and onboarding tasks.
-- 2026-05-05: Added business template field override RLS coverage.
+- 2026-05-05: Keeps editable template settings in business_template_settings.
 ============================================================
 */
 
@@ -151,37 +151,17 @@ values (
     where slug = 'cleaning-smart-quote-v1'
   ),
   'Custom Cleaning Quote',
-  '{"disabledFields":["pets"],"labels":{"notes":"Anything else?"}}'::jsonb
-);
-
-insert into public.business_template_fields (
-  business_id,
-  template_field_id,
-  field_key,
-  label_override,
-  is_required_override,
-  is_hidden,
-  help_text_override,
-  sort_order_override
-)
-values (
-  '40000000-0000-0000-0000-000000000001',
-  (
-    select id
-    from public.industry_template_fields
-    where field_key = 'notes'
-      and template_id = (
-        select id
-        from public.industry_templates
-        where slug = 'cleaning-smart-quote-v1'
-      )
-  ),
-  'notes',
-  'Anything else?',
-  false,
-  false,
-  'Owner-visible extra context prompt.',
-  120
+  '{
+    "fields": {
+      "notes": {
+        "label": "Anything else?",
+        "helpText": "Owner-visible extra context prompt.",
+        "isRequired": false,
+        "isHidden": false,
+        "sortOrder": 120
+      }
+    }
+  }'::jsonb
 );
 
 insert into public.business_onboarding_tasks (
@@ -229,10 +209,6 @@ begin
     raise exception 'Owner should read their template settings.';
   end if;
 
-  if (select count(*) from public.business_template_fields) <> 1 then
-    raise exception 'Owner should read their template field overrides.';
-  end if;
-
   if (select count(*) from public.business_onboarding_tasks) <> 1 then
     raise exception 'Owner should read their onboarding tasks.';
   end if;
@@ -275,10 +251,6 @@ begin
     raise exception 'Outsider must not read another tenant template settings.';
   end if;
 
-  if (select count(*) from public.business_template_fields) <> 0 then
-    raise exception 'Outsider must not read another tenant template field overrides.';
-  end if;
-
   if (select count(*) from public.business_onboarding_tasks) <> 0 then
     raise exception 'Outsider must not read another tenant onboarding tasks.';
   end if;
@@ -297,41 +269,6 @@ begin
     );
 
     raise exception 'Outsider must not insert FAQ rows for another tenant.';
-  exception
-    when insufficient_privilege then
-      null;
-  end;
-end;
-$$;
-
-do $$
-begin
-  begin
-    insert into public.business_template_fields (
-      business_id,
-      template_field_id,
-      field_key,
-      label_override,
-      is_hidden
-    )
-    values (
-      '40000000-0000-0000-0000-000000000001',
-      (
-        select id
-        from public.industry_template_fields
-        where field_key = 'notes'
-          and template_id = (
-            select id
-            from public.industry_templates
-            where slug = 'cleaning-smart-quote-v1'
-          )
-      ),
-      'notes',
-      'Outsider override',
-      false
-    );
-
-    raise exception 'Outsider must not insert template field overrides for another tenant.';
   exception
     when insufficient_privilege then
       null;

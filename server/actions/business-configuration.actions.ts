@@ -17,7 +17,7 @@
  * - 2026-05-05: Persisted optional overrides for default-required template fields.
  * - 2026-05-05: Made FAQ parsing tolerant of common question/answer formats.
  * - 2026-05-05: Added explicit error handling for invalid FAQ textarea content.
- * - 2026-05-05: Switched template field customization to business_template_fields rows.
+ * - 2026-05-05: Stores editable template field settings in business_template_settings.
  * ============================================================
  */
 
@@ -28,10 +28,8 @@ import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@/server/services/auth.service";
 import { saveBusinessConfiguration } from "@/server/services/business-configuration.service";
-import type {
-  BusinessPrivacySettingsRecord,
-  BusinessTemplateFieldOverrideInput,
-} from "@/server/repositories/business-configuration.repository";
+import type { BusinessPrivacySettingsRecord } from "@/server/repositories/business-configuration.repository";
+import type { Json } from "@/types/database";
 
 function readRequiredFormValue(formData: FormData, key: string): string {
   const value = formData.get(key);
@@ -152,46 +150,38 @@ function redirectWithConfigurationError(error: unknown): never {
   redirect(`/dashboard?error=${encodeURIComponent(message)}`);
 }
 
-function readTemplateFieldOverrides(
-  formData: FormData,
-): BusinessTemplateFieldOverrideInput[] {
-  return formData
-    .getAll("templateFieldIds")
-    .filter((value): value is string => typeof value === "string")
-    .map((templateFieldId) => {
-      const fieldKey = readRequiredFormValue(
-        formData,
-        `fieldKey:${templateFieldId}`,
-      );
-      const labelOverride = readRequiredFormValue(
-        formData,
-        `fieldLabel:${templateFieldId}`,
-      );
-      const helpTextOverride = readOptionalFormValue(
-        formData,
-        `fieldHelp:${templateFieldId}`,
-      );
-      const sortOrderValue = readOptionalFormValue(
-        formData,
-        `fieldSort:${templateFieldId}`,
-      );
-      const sortOrderOverride = sortOrderValue
-        ? Number.parseInt(sortOrderValue, 10)
-        : undefined;
+function readTemplateFieldOverrides(formData: FormData): Json {
+  const fields = Object.fromEntries(
+    formData
+      .getAll("templateFieldKeys")
+      .filter((value): value is string => typeof value === "string")
+      .map((fieldKey) => {
+        const label = readRequiredFormValue(formData, `fieldLabel:${fieldKey}`);
+        const helpText = readOptionalFormValue(formData, `fieldHelp:${fieldKey}`);
+        const sortOrderValue = readOptionalFormValue(
+          formData,
+          `fieldSort:${fieldKey}`,
+        );
+        const sortOrder = sortOrderValue
+          ? Number.parseInt(sortOrderValue, 10)
+          : undefined;
 
-      return {
-        fieldKey,
-        isHidden: formData.get(`fieldHidden:${templateFieldId}`) === "on",
-        isRequiredOverride:
-          formData.get(`fieldRequired:${templateFieldId}`) === "on",
-        labelOverride,
-        templateFieldId,
-        ...(helpTextOverride ? { helpTextOverride } : {}),
-        ...(sortOrderOverride !== undefined && Number.isFinite(sortOrderOverride)
-          ? { sortOrderOverride }
-          : {}),
-      };
-    });
+        return [
+          fieldKey,
+          {
+            isHidden: formData.get(`fieldHidden:${fieldKey}`) === "on",
+            isRequired: formData.get(`fieldRequired:${fieldKey}`) === "on",
+            label,
+            ...(helpText ? { helpText } : {}),
+            ...(sortOrder !== undefined && Number.isFinite(sortOrder)
+              ? { sortOrder }
+              : {}),
+          },
+        ];
+      }),
+  );
+
+  return { fields };
 }
 
 export async function saveBusinessConfigurationAction(
@@ -228,7 +218,7 @@ export async function saveBusinessConfigurationAction(
       businessSlug: readRequiredFormValue(formData, "businessSlug"),
       consentNotice: readRequiredFormValue(formData, "consentNotice"),
       faqs,
-      fieldOverrides: {},
+      fieldOverrides: readTemplateFieldOverrides(formData),
       primaryColor: readRequiredFormValue(formData, "primaryColor"),
       privacyMode: readPrivacyMode(
         readRequiredFormValue(formData, "privacyMode"),
@@ -239,7 +229,6 @@ export async function saveBusinessConfigurationAction(
       ),
       serviceAreas: readList(readOptionalFormValue(formData, "serviceAreas")),
       services: readServices(readOptionalFormValue(formData, "services")),
-      templateFieldOverrides: readTemplateFieldOverrides(formData),
       templateId: readRequiredFormValue(formData, "templateId"),
       userId: user.id,
       ...(customTemplateName ? { customTemplateName } : {}),

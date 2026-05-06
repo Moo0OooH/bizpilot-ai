@@ -294,51 +294,6 @@ export type Database = {
         };
         Relationships: [];
       };
-      business_template_fields: {
-        Row: {
-          business_id: string;
-          created_at: Timestamp;
-          field_key: string;
-          help_text_override: string | null;
-          id: string;
-          is_hidden: boolean;
-          is_required_override: boolean | null;
-          label_override: string | null;
-          options_override: Json | null;
-          sort_order_override: number | null;
-          template_field_id: string;
-          updated_at: Timestamp;
-        };
-        Insert: {
-          business_id: string;
-          created_at?: Timestamp;
-          field_key: string;
-          help_text_override?: string | null;
-          id?: string;
-          is_hidden?: boolean;
-          is_required_override?: boolean | null;
-          label_override?: string | null;
-          options_override?: Json | null;
-          sort_order_override?: number | null;
-          template_field_id: string;
-          updated_at?: Timestamp;
-        };
-        Update: {
-          business_id?: string;
-          created_at?: Timestamp;
-          field_key?: string;
-          help_text_override?: string | null;
-          id?: string;
-          is_hidden?: boolean;
-          is_required_override?: boolean | null;
-          label_override?: string | null;
-          options_override?: Json | null;
-          sort_order_override?: number | null;
-          template_field_id?: string;
-          updated_at?: Timestamp;
-        };
-        Relationships: [];
-      };
       businesses: {
         Row: {
           created_at: Timestamp;

@@ -20,7 +20,7 @@
  * - 2026-05-05: Added Cleaning template label and required-field overrides.
  * - 2026-05-05: Persisted optional overrides for default-required template fields.
  * - 2026-05-05: Clarified FAQ textarea format for persistent FAQ parsing.
- * - 2026-05-05: Loaded Cleaning template fields from business-level overrides.
+ * - 2026-05-05: Loads Cleaning template field edits from business_template_settings.
  * ============================================================
  */
 
@@ -385,12 +385,7 @@ export default async function DashboardPage({
                 key={field.id}
               >
                 <input
-                  name="templateFieldIds"
-                  type="hidden"
-                  value={field.template_field_id}
-                />
-                <input
-                  name={`fieldKey:${field.template_field_id}`}
+                  name="templateFieldKeys"
                   type="hidden"
                   value={field.field_key}
                 />
@@ -399,7 +394,7 @@ export default async function DashboardPage({
                   <input
                     className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
                     defaultValue={field.label}
-                    name={`fieldLabel:${field.template_field_id}`}
+                    name={`fieldLabel:${field.field_key}`}
                     required
                     type="text"
                   />
@@ -409,7 +404,7 @@ export default async function DashboardPage({
                   <input
                     className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
                     defaultValue={field.help_text ?? ""}
-                    name={`fieldHelp:${field.template_field_id}`}
+                    name={`fieldHelp:${field.field_key}`}
                     type="text"
                   />
                 </label>
@@ -418,14 +413,14 @@ export default async function DashboardPage({
                   <input
                     className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
                     defaultValue={field.sort_order}
-                    name={`fieldSort:${field.template_field_id}`}
+                    name={`fieldSort:${field.field_key}`}
                     type="number"
                   />
                 </label>
                 <label className="flex items-center gap-2 text-zinc-700">
                   <input
                     defaultChecked={field.is_required}
-                    name={`fieldRequired:${field.template_field_id}`}
+                    name={`fieldRequired:${field.field_key}`}
                     type="checkbox"
                   />
                   Required
@@ -433,7 +428,7 @@ export default async function DashboardPage({
                 <label className="flex items-center gap-2 text-zinc-700">
                   <input
                     defaultChecked={field.is_hidden}
-                    name={`fieldHidden:${field.template_field_id}`}
+                    name={`fieldHidden:${field.field_key}`}
                     type="checkbox"
                   />
                   Hide
