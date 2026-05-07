@@ -1,6 +1,6 @@
 # BizPilot AI
 
-BizPilot AI is in Phase 3: Business + Template Configuration Core.
+BizPilot AI is in Phase 4: Universal Smart Intake + Public Quote Link.
 
 The canonical product direction is locked in `docs/` as the v1.4 founder-grade package. Phase 1 is technical foundation only.
 
@@ -14,9 +14,31 @@ MVP = Editable Cleaning Smart Quote Template + Lead Conversion Desk + AI Drafts
 Operating Mode = Rule-first, AI-on-demand, cache-heavy, validation-first
 ```
 
-## Current Phase 3 Scope
+## Current Phase 4 Scope
 
 Allowed:
+
+- Public branded quote page
+- Dynamic Cleaning template rendering
+- Lead submission
+- Consent capture
+- Source tracking
+- Success page
+- Basic spam protection
+- Public-safe RLS policies and RLS tests
+
+Forbidden:
+
+- AI
+- Email
+- Billing
+- Drag-and-drop builder
+- Conditional logic
+- Multi-step funnel
+- Marketplace
+- Second vertical launch
+
+## Completed Phase 3 Scope
 
 - Business profile configuration
 - Branding configuration
@@ -26,18 +48,6 @@ Allowed:
 - Editable Cleaning Smart Quote Template
 - Business Readiness Score
 - RLS policies and RLS tests for configuration tables
-
-Forbidden:
-
-- Intake
-- Leads
-- AI
-- Billing
-- Drag-and-drop builder
-- Conditional logic
-- Multi-step funnel
-- Marketplace
-- Second vertical launch
 
 ## Completed Phase 2 Scope
 
@@ -141,6 +151,17 @@ pnpm dev
 - Business can configure services, FAQ, service areas.
 - Cleaning template can be edited.
 - Business Readiness Score works.
+- RLS tests pass.
+
+## Phase 4 Definition of Done
+
+- Public quote page works.
+- Dynamic fields render from config.
+- Lead submission works.
+- Lead belongs to correct business.
+- Source tracking works.
+- Consent version is captured.
+- Public page cannot read private data.
 - RLS tests pass.
 
 ## Phase 1 Definition of Done

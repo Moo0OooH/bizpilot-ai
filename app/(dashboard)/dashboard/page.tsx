@@ -2,15 +2,15 @@
  * ============================================================
  * File: app/(dashboard)/dashboard/page.tsx
  * Project: BizPilot AI
- * Description: Renders the protected Phase 3 business configuration workspace.
- * Role: Lets owners configure business settings and the editable Cleaning template.
+ * Description: Renders the protected business and public quote configuration workspace.
+ * Role: Lets owners configure business settings, the editable Cleaning template, and Phase 4 public quote link.
  * Related:
  * - server/services/auth.service.ts
  * - server/services/business.service.ts
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-06
  * Change Log:
  * - 2026-05-04: Created protected Phase 2 dashboard shell.
  * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
@@ -21,6 +21,7 @@
  * - 2026-05-05: Persisted optional overrides for default-required template fields.
  * - 2026-05-05: Clarified FAQ textarea format for persistent FAQ parsing.
  * - 2026-05-05: Loads Cleaning template field edits from business_template_settings.
+ * - 2026-05-06: Shows the Phase 4 public quote link generated from the business slug.
  * ============================================================
  */
 
@@ -121,9 +122,8 @@ export default async function DashboardPage({
             Business configuration
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-            Phase 3 configures the business profile, operating basics, privacy,
-            consent, and editable Cleaning template. Public intake and leads
-            start later.
+            Phase 4 keeps configuration editable and adds the public quote link
+            that renders this Cleaning template for customer submissions.
           </p>
         </div>
         <form action={signOutAction}>
@@ -167,6 +167,22 @@ export default async function DashboardPage({
             {readiness.completed}/{readiness.total}
           </p>
         </div>
+      </section>
+
+      <section className="border-t border-zinc-200 py-8">
+        <h2 className="text-base font-semibold text-zinc-950">
+          Public quote link
+        </h2>
+        <p className="mt-2 text-sm leading-6 text-zinc-600">
+          Save configuration after edits to refresh the public form fields,
+          consent version, and branding shown to customers.
+        </p>
+        <a
+          className="mt-4 inline-flex border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-800"
+          href={`/quote/${activeBusiness.slug}`}
+        >
+          Open /quote/{activeBusiness.slug}
+        </a>
       </section>
 
       <section className="border-t border-zinc-200 py-8">

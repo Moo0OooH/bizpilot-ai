@@ -2,19 +2,20 @@
  * ============================================================
  * File: server/services/business-configuration.service.ts
  * Project: BizPilot AI
- * Description: Coordinates Phase 3 business and Cleaning template configuration workflows.
- * Role: Validates tenant membership, normalizes owner input, and computes readiness state.
+ * Description: Coordinates business, Cleaning template, and public intake sync workflows.
+ * Role: Validates tenant membership, normalizes owner input, computes readiness, and syncs public quote config.
  * Related:
  * - server/actions/business-configuration.actions.ts
  * - server/repositories/business-configuration.repository.ts
  * - server/policies/business-membership.policy.ts
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-05-05
+ * Last Updated: 2026-05-06
  * Change Log:
  * - 2026-05-05: Created Phase 3 business configuration service and readiness scoring.
  * - 2026-05-05: Added business profile updates and onboarding task synchronization.
  * - 2026-05-05: Persisted Cleaning template field edits in business_template_settings.
+ * - 2026-05-06: Syncs Phase 4 public intake form, consent version, and public link after configuration saves.
  * ============================================================
  */
 
@@ -40,6 +41,11 @@ import {
   updateBusinessProfile,
   type BusinessRecord,
 } from "@/server/repositories/businesses.repository";
+import {
+  upsertConsentVersion,
+  upsertIntakeFormFromTemplate,
+  upsertPublicLinkVariant,
+} from "@/server/repositories/public-intake.repository";
 import type { Json } from "@/types/database";
 
 export type BusinessReadinessScore = Readonly<{
@@ -127,6 +133,12 @@ function assertBusinessProfile(input: {
     businessName,
     businessSlug,
   };
+}
+
+function getPublicIntakePrivacyMode(
+  value: BusinessPrivacySettingsRecord["privacy_mode"],
+): "minimal" | "standard" {
+  return value === "minimal" ? "minimal" : "standard";
 }
 
 function assertManageAccess(input: {
@@ -360,6 +372,37 @@ export async function saveBusinessConfiguration(
       supabase,
       templateId: input.templateId,
       ...(customTemplateName ? { customName: customTemplateName } : {}),
+    }),
+  ]);
+
+  const cleaningTemplate = await getCleaningTemplate({
+    businessId: input.businessId,
+    supabase,
+  });
+  const publicTemplateName =
+    customTemplateName ?? cleaningTemplate.template.name;
+
+  await Promise.all([
+    upsertPublicLinkVariant({
+      businessId: input.businessId,
+      displayName: updatedBusiness.name,
+      slug: updatedBusiness.slug,
+      supabase,
+    }),
+    upsertConsentVersion({
+      aiDisclosureEnabled: input.aiDisclosureEnabled,
+      businessId: input.businessId,
+      consentNotice: input.consentNotice,
+      supabase,
+      ...(privacyContactEmail ? { privacyContactEmail } : {}),
+    }),
+    upsertIntakeFormFromTemplate({
+      businessId: input.businessId,
+      fields: cleaningTemplate.fields,
+      formName: publicTemplateName,
+      privacyMode: getPublicIntakePrivacyMode(input.privacyMode),
+      supabase,
+      templateId: input.templateId,
     }),
   ]);
 
