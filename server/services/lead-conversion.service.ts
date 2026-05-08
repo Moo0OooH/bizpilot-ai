@@ -19,6 +19,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   completeLeadActionItem,
+  dismissOpenActionItemsForLead,
   getLeadById,
   getQualityScoreForLead,
   insertLeadActionItem,
@@ -153,6 +154,10 @@ function serviceAreaMatches(input: {
   );
 }
 
+function isTerminalLead(lead: LeadRecord): boolean {
+  return lead.status === "archived" || lead.status === "booked" || lead.status === "lost";
+}
+
 function calculateLeadQuality(input: {
   lead: LeadRecord;
   serviceAreas: string[];
@@ -219,15 +224,17 @@ function calculateLeadQuality(input: {
   const missingLabels = missingInfoKeys.map(
     (key) => missingInfoLabels[key] ?? key.replaceAll("_", " "),
   );
+  const explanation = !areaMatches
+    ? "Outside the configured service area. Details may be complete, but this lead is a low fit."
+    : missingLabels.length > 0
+      ? `Missing ${missingLabels.join(", ")}.`
+      : "Contact, service, area, timing, and quote details are present.";
 
   return {
     businessId: input.lead.business_id,
     completenessLabel,
     completenessScore,
-    explanation:
-      missingLabels.length > 0
-        ? `Missing ${missingLabels.join(", ")}.`
-        : "Contact, service, area, timing, and quote details are present.",
+    explanation,
     leadId: input.lead.id,
     missingInfoKeys,
     qualityLevel,
@@ -343,6 +350,22 @@ async function syncLeadState(input: {
           supabase: input.supabase,
         })
       : input.lead;
+
+  if (isTerminalLead(lead)) {
+    await dismissOpenActionItemsForLead({
+      businessId: lead.business_id,
+      leadId: lead.id,
+      supabase: input.supabase,
+    });
+
+    return {
+      action: null,
+      lead,
+      score,
+      submissionValues,
+    };
+  }
+
   const actionChoice = chooseAction({ lead, score });
   const actions = await listActionItemsForLead({
     leadId: lead.id,
@@ -355,18 +378,16 @@ async function syncLeadState(input: {
     ) ?? null;
   const action =
     openAction ??
-    (lead.status === "archived" || lead.status === "booked" || lead.status === "lost"
-      ? null
-      : await insertLeadActionItem({
-          actionType: actionChoice.actionType,
-          businessId: lead.business_id,
-          leadId: lead.id,
-          supabase: input.supabase,
-          title: actionChoice.title,
-          ...(actionChoice.actionType === "follow_up"
-            ? { dueAt: new Date().toISOString() }
-            : {}),
-        }));
+    (await insertLeadActionItem({
+      actionType: actionChoice.actionType,
+      businessId: lead.business_id,
+      leadId: lead.id,
+      supabase: input.supabase,
+      title: actionChoice.title,
+      ...(actionChoice.actionType === "follow_up"
+        ? { dueAt: new Date().toISOString() }
+        : {}),
+    }));
 
   return {
     action,

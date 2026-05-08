@@ -274,6 +274,23 @@ export async function completeLeadActionItem(input: {
   await throwIfError(error);
 }
 
+export async function dismissOpenActionItemsForLead(input: {
+  businessId: string;
+  leadId: string;
+  supabase: SupabaseClient<Database>;
+}): Promise<void> {
+  const { error } = await input.supabase
+    .from("lead_action_items")
+    .update({
+      status: "dismissed",
+    })
+    .eq("business_id", input.businessId)
+    .eq("lead_id", input.leadId)
+    .eq("status", "open");
+
+  await throwIfError(error);
+}
+
 export async function listEventsForLead(input: {
   leadId: string;
   supabase: SupabaseClient<Database>;

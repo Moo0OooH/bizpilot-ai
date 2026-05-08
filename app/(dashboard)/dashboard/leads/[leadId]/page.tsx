@@ -3,15 +3,16 @@
  * File: app/(dashboard)/dashboard/leads/[leadId]/page.tsx
  * Project: BizPilot AI
  * Description: Renders the Phase 5 owner lead detail workspace.
- * Role: Shows rule-based quality, missing info, SLA state, copy tracking, manual outcomes, and lead events.
+ * Role: Shows rule-based quality, fit notes, SLA state, copy tracking, manual outcomes, and lead events.
  * Related:
  * - server/actions/lead-conversion.actions.ts
  * - server/services/lead-conversion.service.ts
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-05-07
+ * Last Updated: 2026-05-08
  * Change Log:
  * - 2026-05-07: Created Phase 5 lead detail workflow page.
+ * - 2026-05-08: Clarified fit/completeness copy and removed mojibake separators.
  * ============================================================
  */
 
@@ -72,6 +73,13 @@ function jsonValueToText(value: Json): string {
   return JSON.stringify(value);
 }
 
+function detailCompletenessText(input: {
+  completenessLabel: string;
+  completenessScore: number;
+}): string {
+  return `${input.completenessScore}% details ${label(input.completenessLabel)}`;
+}
+
 export default async function LeadDetailPage({
   params,
   searchParams,
@@ -108,15 +116,18 @@ export default async function LeadDetailPage({
     <main className="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-12">
       <div className="flex flex-col gap-6 border-b border-zinc-200 pb-8 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <Link className="text-sm font-medium text-zinc-500" href="/dashboard/leads">
+          <Link
+            className="text-sm font-medium text-zinc-500"
+            href="/dashboard/leads"
+          >
             Back to leads
           </Link>
           <h1 className="mt-3 text-3xl font-semibold text-zinc-950">
             {detail.lead.customer_name ?? "Unnamed lead"}
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
-            {detail.lead.customer_contact ?? "No contact captured"} ·{" "}
-            {detail.lead.service_type ?? "Service not set"} ·{" "}
+            {detail.lead.customer_contact ?? "No contact captured"} -{" "}
+            {detail.lead.service_type ?? "Service not set"} -{" "}
             {detail.lead.city_or_service_area ?? "Area missing"}
           </p>
         </div>
@@ -152,8 +163,10 @@ export default async function LeadDetailPage({
             {label(detail.score.quality_level)}
           </p>
           <p className="mt-2 text-sm text-zinc-500">
-            {detail.score.completeness_score}% ·{" "}
-            {label(detail.score.completeness_label)}
+            {detailCompletenessText({
+              completenessLabel: detail.score.completeness_label,
+              completenessScore: detail.score.completeness_score,
+            })}
           </p>
         </div>
         <div className="border border-zinc-200 p-4">
@@ -190,7 +203,7 @@ export default async function LeadDetailPage({
       <section className="grid gap-8 border-t border-zinc-200 py-8 lg:grid-cols-[1.2fr_0.8fr]">
         <div>
           <h2 className="text-base font-semibold text-zinc-950">
-            Missing info
+            Lead fit notes
           </h2>
           <p className="mt-2 text-sm leading-6 text-zinc-600">
             {detail.score.explanation}
@@ -300,7 +313,7 @@ export default async function LeadDetailPage({
                       {action.title}
                     </span>
                     <span className="mt-1 block capitalize text-zinc-500">
-                      {label(action.action_type)} · {label(action.status)}
+                      {label(action.action_type)} - {label(action.status)}
                     </span>
                   </span>
                   {action.status === "open" ? (
