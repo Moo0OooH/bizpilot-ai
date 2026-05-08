@@ -1,6 +1,6 @@
 # BizPilot AI
 
-BizPilot AI is in Phase 4: Universal Smart Intake + Public Quote Link.
+BizPilot AI is in Phase 5: Lead Conversion Desk.
 
 The canonical product direction is locked in `docs/` as the v1.4 founder-grade package. Phase 1 is technical foundation only.
 
@@ -14,9 +14,39 @@ MVP = Editable Cleaning Smart Quote Template + Lead Conversion Desk + AI Drafts
 Operating Mode = Rule-first, AI-on-demand, cache-heavy, validation-first
 ```
 
-## Current Phase 4 Scope
+## Current Phase 5 Scope
 
 Allowed:
+
+- Owner lead list
+- Owner lead detail
+- Lead status display and updates
+- Rule-based Lead Quality Score
+- Rule-based Missing Info Detection
+- Response SLA State
+- Lead Events Timeline
+- Today's Action Panel
+- Follow-Up Needed rule
+- Copy actions that update timestamps
+- Manual Outcome Tracking
+- Revenue Recovery Proof basics
+- RLS tests for Phase 5 tables and policies
+
+Forbidden:
+
+- AI
+- Email
+- Billing
+- Booking engine
+- CRM expansion
+- Calendar sync
+- WhatsApp/SMS/Instagram APIs
+- Background workers
+- Second vertical launch
+- Growth Studio
+- Advanced analytics warehouse
+
+## Completed Phase 4 Scope
 
 - Public branded quote page
 - Dynamic Cleaning template rendering
@@ -26,17 +56,6 @@ Allowed:
 - Success page
 - Basic spam protection
 - Public-safe RLS policies and RLS tests
-
-Forbidden:
-
-- AI
-- Email
-- Billing
-- Drag-and-drop builder
-- Conditional logic
-- Multi-step funnel
-- Marketplace
-- Second vertical launch
 
 ## Completed Phase 3 Scope
 
@@ -134,6 +153,18 @@ pnpm typecheck
 pnpm build
 pnpm dev
 ```
+
+## Phase 5 Definition of Done
+
+- Owner sees only own leads.
+- Lead quality works.
+- Missing info works.
+- Response SLA works.
+- Timeline works.
+- Copy actions update timestamps.
+- Manual outcome can be set.
+- Revenue Recovery Proof summary appears.
+- RLS tests pass.
 
 ## Phase 2 Definition of Done
 
