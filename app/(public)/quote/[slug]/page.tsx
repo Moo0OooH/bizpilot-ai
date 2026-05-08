@@ -67,6 +67,10 @@ function inputTypeForField(fieldType: FieldRecord["field_type"]): string {
   return "text";
 }
 
+function getNumberMinimum(field: FieldRecord): number | undefined {
+  return field.field_type === "number" ? 0 : undefined;
+}
+
 function FieldInput({ field }: Readonly<{ field: FieldRecord }>) {
   const baseClass =
     "mt-2 w-full border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950";
@@ -111,6 +115,7 @@ function FieldInput({ field }: Readonly<{ field: FieldRecord }>) {
   return (
     <input
       className={baseClass}
+      min={getNumberMinimum(field)}
       name={`field:${field.field_key}`}
       required={field.is_required}
       type={inputTypeForField(field.field_type)}

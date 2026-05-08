@@ -90,7 +90,15 @@ const missingInfoLabels: Record<string, string> = {
 };
 
 function toText(value: Json | undefined): string {
-  return typeof value === "string" ? value.trim() : "";
+  if (typeof value === "string") {
+    return value.trim();
+  }
+
+  if (typeof value === "number" && Number.isFinite(value) && value >= 0) {
+    return String(value);
+  }
+
+  return "";
 }
 
 function hasText(value: Json | undefined): boolean {

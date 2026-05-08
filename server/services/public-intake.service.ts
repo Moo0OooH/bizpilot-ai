@@ -10,9 +10,10 @@
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-05-06
+ * Last Updated: 2026-05-07
  * Change Log:
  * - 2026-05-06: Created Phase 4 public intake service.
+ * - 2026-05-07: Added server-side non-negative validation for numeric quote fields.
  * ============================================================
  */
 
@@ -43,15 +44,33 @@ function cleanText(value: string | undefined): string {
   return value?.trim() ?? "";
 }
 
-function readFieldValue(value: string, fieldType: string): Json {
-  const trimmed = value.trim();
+function readFieldValue(input: {
+  fieldLabel: string;
+  fieldType: string;
+  value: string;
+}): Json {
+  const trimmed = input.value.trim();
 
-  if (fieldType === "boolean") {
+  if (input.fieldType === "boolean") {
     return trimmed === "on" || trimmed === "true";
   }
 
-  if (fieldType === "number") {
-    return trimmed.length > 0 ? Number(trimmed) : null;
+  if (input.fieldType === "number") {
+    if (trimmed.length === 0) {
+      return null;
+    }
+
+    const numberValue = Number(trimmed);
+
+    if (!Number.isFinite(numberValue)) {
+      throw new Error(`${input.fieldLabel} must be a valid number.`);
+    }
+
+    if (numberValue < 0) {
+      throw new Error(`${input.fieldLabel} cannot be negative.`);
+    }
+
+    return numberValue;
   }
 
   return trimmed.length > 0 ? trimmed : null;
@@ -78,10 +97,11 @@ function getSubmissionValues(input: {
   page: PublicIntakePageRecord;
 }): IntakeSubmissionValueInput[] {
   return input.page.fields.map((field) => {
-    const value = readFieldValue(
-      input.fieldValues[field.field_key] ?? "",
-      field.field_type,
-    );
+    const value = readFieldValue({
+      fieldLabel: field.label,
+      fieldType: field.field_type,
+      value: input.fieldValues[field.field_key] ?? "",
+    });
 
     if (field.is_required && (value === null || value === "")) {
       throw new Error(`${field.label} is required.`);
