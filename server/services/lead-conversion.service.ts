@@ -49,6 +49,8 @@ import type { Json } from "@/types/database";
 
 export type LeadDeskItem = Readonly<{
   action: LeadActionItemRecord | null;
+  primaryIssue: string;
+  recommendedAction: string;
   lead: LeadRecord;
   score: LeadQualityScoreRecord;
 }>;
@@ -63,6 +65,8 @@ export type LeadDetail = Readonly<{
   actions: LeadActionItemRecord[];
   events: LeadEventRecord[];
   lead: LeadRecord;
+  primaryIssue: string;
+  recommendedAction: string;
   recoveryProof: RevenueRecoveryProof;
   score: LeadQualityScoreRecord;
   submissionValues: IntakeSubmissionValueRecord[];
@@ -106,6 +110,15 @@ function hasText(value: Json | undefined): boolean {
   return toText(value).length > 0;
 }
 
+function normalizeComparableText(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function addHours(date: Date, hours: number): Date {
   return new Date(date.getTime() + hours * 60 * 60 * 1000);
 }
@@ -145,17 +158,32 @@ function serviceAreaMatches(input: {
     return true;
   }
 
-  const area = (
-    toText(input.values.city_or_service_area) || input.lead.city_or_service_area || ""
-  ).toLowerCase();
-
-  return input.serviceAreas.some((serviceArea) =>
-    area.includes(serviceArea.toLowerCase()),
+  const area = normalizeComparableText(
+    toText(input.values.city_or_service_area) ||
+      input.lead.city_or_service_area ||
+      "",
   );
+
+  return input.serviceAreas.some((serviceArea) => {
+    const normalizedServiceArea = normalizeComparableText(serviceArea);
+
+    return (
+      normalizedServiceArea.length > 0 &&
+      (area.includes(normalizedServiceArea) ||
+        normalizedServiceArea.includes(area))
+    );
+  });
 }
 
 function isTerminalLead(lead: LeadRecord): boolean {
   return lead.status === "archived" || lead.status === "booked" || lead.status === "lost";
+}
+
+function shouldSuppressOpenActions(input: {
+  lead: LeadRecord;
+  score: LeadQualityScoreRecord;
+}): boolean {
+  return isTerminalLead(input.lead) || input.score.quality_level === "low_fit";
 }
 
 function calculateLeadQuality(input: {
@@ -225,7 +253,7 @@ function calculateLeadQuality(input: {
     (key) => missingInfoLabels[key] ?? key.replaceAll("_", " "),
   );
   const explanation = !areaMatches
-    ? "Outside the configured service area. Details may be complete, but this lead is a low fit."
+    ? "Outside configured service area. Details can be complete while fit remains low."
     : missingLabels.length > 0
       ? `Missing ${missingLabels.join(", ")}.`
       : "Contact, service, area, timing, and quote details are present.";
@@ -238,6 +266,64 @@ function calculateLeadQuality(input: {
     leadId: input.lead.id,
     missingInfoKeys,
     qualityLevel,
+  };
+}
+
+function summarizeLeadDecision(input: {
+  lead: LeadRecord;
+  score: LeadQualityScoreRecord;
+}): { primaryIssue: string; recommendedAction: string } {
+  if (input.lead.status === "booked") {
+    return {
+      primaryIssue: "Outcome booked",
+      recommendedAction: "No open action",
+    };
+  }
+
+  if (input.lead.status === "lost" || input.lead.manual_outcome === "not_a_fit") {
+    return {
+      primaryIssue:
+        input.lead.manual_outcome === "not_a_fit"
+          ? "Manually marked not a fit"
+          : "Outcome lost",
+      recommendedAction: "No open action",
+    };
+  }
+
+  if (input.score.quality_level === "low_fit") {
+    return {
+      primaryIssue: input.score.explanation,
+      recommendedAction: "Archive or review service area",
+    };
+  }
+
+  if (input.score.missing_info_keys.length > 0) {
+    return {
+      primaryIssue: input.score.explanation,
+      recommendedAction: "Ask for missing info",
+    };
+  }
+
+  if (
+    input.lead.response_sla_state === "overdue" ||
+    input.lead.response_sla_state === "follow_up_due"
+  ) {
+    return {
+      primaryIssue: `Response state is ${input.lead.response_sla_state.replaceAll("_", " ")}.`,
+      recommendedAction: "Follow up today",
+    };
+  }
+
+  if (input.lead.first_reply_copied_at) {
+    return {
+      primaryIssue: "Reply copied, waiting for outcome.",
+      recommendedAction: "Mark booked/lost when known",
+    };
+  }
+
+  return {
+    primaryIssue: "Ready for owner reply.",
+    recommendedAction: "Reply now",
   };
 }
 
@@ -304,6 +390,8 @@ async function syncLeadState(input: {
 }): Promise<{
   action: LeadActionItemRecord | null;
   lead: LeadRecord;
+  primaryIssue: string;
+  recommendedAction: string;
   score: LeadQualityScoreRecord;
   submissionValues: IntakeSubmissionValueRecord[];
 }> {
@@ -351,7 +439,7 @@ async function syncLeadState(input: {
         })
       : input.lead;
 
-  if (isTerminalLead(lead)) {
+  if (shouldSuppressOpenActions({ lead, score })) {
     await dismissOpenActionItemsForLead({
       businessId: lead.business_id,
       leadId: lead.id,
@@ -361,6 +449,7 @@ async function syncLeadState(input: {
     return {
       action: null,
       lead,
+      ...summarizeLeadDecision({ lead, score }),
       score,
       submissionValues,
     };
@@ -392,6 +481,7 @@ async function syncLeadState(input: {
   return {
     action,
     lead,
+    ...summarizeLeadDecision({ lead, score }),
     score,
     submissionValues,
   };
@@ -454,6 +544,8 @@ export async function getLeadConversionDesk(input: {
     deskItems.push({
       action: synced.action,
       lead: synced.lead,
+      primaryIssue: synced.primaryIssue,
+      recommendedAction: synced.recommendedAction,
       score: synced.score,
     });
   }
@@ -562,6 +654,8 @@ export async function getLeadDetail(input: {
     actions,
     events,
     lead: synced.lead,
+    primaryIssue: synced.primaryIssue,
+    recommendedAction: synced.recommendedAction,
     recoveryProof: calculateRevenueRecoveryProof({
       actions: allActions,
       leads: allLeads,

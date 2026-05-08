@@ -168,6 +168,10 @@ export default async function LeadDetailPage({
               completenessScore: detail.score.completeness_score,
             })}
           </p>
+          <p className="mt-2 text-xs leading-5 text-zinc-500">
+            Fit and completeness are separate: a complete lead can still be low
+            fit.
+          </p>
         </div>
         <div className="border border-zinc-200 p-4">
           <p className="text-xs uppercase tracking-normal text-zinc-500">
@@ -206,7 +210,10 @@ export default async function LeadDetailPage({
             Lead fit notes
           </h2>
           <p className="mt-2 text-sm leading-6 text-zinc-600">
-            {detail.score.explanation}
+            {detail.primaryIssue}
+          </p>
+          <p className="mt-2 text-sm font-medium text-zinc-950">
+            Recommended action: {detail.recommendedAction}
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {detail.score.missing_info_keys.length > 0 ? (

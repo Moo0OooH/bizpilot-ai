@@ -9,9 +9,10 @@
  * - docs/product/BIZPILOT_BUILD_PLAN_v1.4.md
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-05-07
+ * Last Updated: 2026-05-08
  * Change Log:
  * - 2026-05-07: Created Phase 5 lead list and action panel.
+ * - 2026-05-08: Added decision reasons, recommended actions, and clearer list structure.
  * ============================================================
  */
 
@@ -37,6 +38,22 @@ function formatDate(value: string | null): string {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(new Date(value));
+}
+
+function qualityTone(qualityLevel: string): string {
+  if (qualityLevel === "strong") {
+    return "border-emerald-200 bg-emerald-50 text-emerald-800";
+  }
+
+  if (qualityLevel === "good") {
+    return "border-blue-200 bg-blue-50 text-blue-800";
+  }
+
+  if (qualityLevel === "needs_info") {
+    return "border-amber-200 bg-amber-50 text-amber-800";
+  }
+
+  return "border-zinc-300 bg-zinc-50 text-zinc-700";
 }
 
 export default async function LeadConversionDeskPage() {
@@ -164,11 +181,18 @@ export default async function LeadConversionDeskPage() {
 
       <section className="border-t border-zinc-200 py-8">
         <h2 className="text-base font-semibold text-zinc-950">Leads</h2>
-        <div className="mt-4 divide-y divide-zinc-200 border border-zinc-200">
+        <div className="mt-4 border border-zinc-200">
+          <div className="hidden grid-cols-[1.15fr_1fr_1.25fr_1fr_8rem] border-b border-zinc-200 bg-zinc-50 px-4 py-3 text-xs font-medium uppercase tracking-normal text-zinc-500 lg:grid">
+            <span>Customer</span>
+            <span>Request</span>
+            <span>Quality reason</span>
+            <span>Recommended action</span>
+            <span>Created</span>
+          </div>
           {desk.leads.length > 0 ? (
             desk.leads.map((item) => (
               <Link
-                className="grid gap-3 p-4 text-sm hover:bg-zinc-50 lg:grid-cols-[1.2fr_1fr_8rem_8rem_10rem]"
+                className="grid gap-4 border-b border-zinc-200 p-4 text-sm last:border-b-0 hover:bg-zinc-50 lg:grid-cols-[1.15fr_1fr_1.25fr_1fr_8rem]"
                 href={`/dashboard/leads/${item.lead.id}`}
                 key={item.lead.id}
               >
@@ -186,11 +210,29 @@ export default async function LeadConversionDeskPage() {
                     {item.lead.city_or_service_area ?? "Area missing"}
                   </span>
                 </span>
-                <span className="capitalize text-zinc-700">
-                  {label(item.score.quality_level)}
+                <span>
+                  <span
+                    className={`inline-flex border px-2 py-1 text-xs font-medium capitalize ${qualityTone(
+                      item.score.quality_level,
+                    )}`}
+                  >
+                    {label(item.score.quality_level)}
+                  </span>
+                  <span className="mt-2 block leading-5 text-zinc-600">
+                    {item.primaryIssue}
+                  </span>
+                  <span className="mt-1 block text-xs capitalize text-zinc-500">
+                    {item.score.completeness_score}% details{" "}
+                    {label(item.score.completeness_label)}
+                  </span>
                 </span>
-                <span className="capitalize text-zinc-700">
-                  {label(item.lead.response_sla_state)}
+                <span>
+                  <span className="block font-medium text-zinc-950">
+                    {item.recommendedAction}
+                  </span>
+                  <span className="mt-1 block capitalize text-zinc-500">
+                    {label(item.lead.response_sla_state)}
+                  </span>
                 </span>
                 <span className="text-zinc-500">
                   {formatDate(item.lead.created_at)}
