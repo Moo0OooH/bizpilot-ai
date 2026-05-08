@@ -2,8 +2,8 @@
  * ============================================================
  * File: types/database.ts
  * Project: BizPilot AI
- * Description: Defines the Phase 4 Supabase database type surface.
- * Role: Provides typed Supabase clients for auth, tenant, configuration, public intake, and lead tables.
+ * Description: Defines the Phase 5 Supabase database type surface.
+ * Role: Provides typed Supabase clients for auth, tenant, configuration, public intake, and lead conversion tables.
  * Related:
  * - supabase/migrations/0001_auth_tenant_foundation.sql
  * - lib/supabase/server.ts
@@ -15,6 +15,7 @@
  * - 2026-05-05: Added Phase 3 business and Cleaning template configuration tables.
  * - 2026-05-05: Aligned template field edits with business_template_settings.
  * - 2026-05-06: Added Phase 4 public intake, submission, lead, consent, and source tables.
+ * - 2026-05-07: Added Phase 5 lead conversion desk tables and lead workflow fields.
  * ============================================================
  */
 
@@ -679,6 +680,150 @@ export type Database = {
         };
         Relationships: [];
       };
+      lead_action_items: {
+        Row: {
+          action_type: "ask_info" | "follow_up" | "reply";
+          business_id: string;
+          completed_at: Timestamp | null;
+          created_at: Timestamp;
+          due_at: Timestamp | null;
+          id: string;
+          lead_id: string;
+          status: "completed" | "dismissed" | "open";
+          title: string;
+          updated_at: Timestamp;
+        };
+        Insert: {
+          action_type: "ask_info" | "follow_up" | "reply";
+          business_id: string;
+          completed_at?: Timestamp | null;
+          created_at?: Timestamp;
+          due_at?: Timestamp | null;
+          id?: string;
+          lead_id: string;
+          status?: "completed" | "dismissed" | "open";
+          title: string;
+          updated_at?: Timestamp;
+        };
+        Update: {
+          action_type?: "ask_info" | "follow_up" | "reply";
+          business_id?: string;
+          completed_at?: Timestamp | null;
+          created_at?: Timestamp;
+          due_at?: Timestamp | null;
+          id?: string;
+          lead_id?: string;
+          status?: "completed" | "dismissed" | "open";
+          title?: string;
+          updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
+      lead_events: {
+        Row: {
+          business_id: string;
+          created_at: Timestamp;
+          event_label: string;
+          event_type:
+            | "action_completed"
+            | "lead_created"
+            | "lead_viewed"
+            | "outcome_marked"
+            | "reply_copied"
+            | "score_calculated"
+            | "status_updated";
+          id: string;
+          lead_id: string;
+          metadata: Json;
+        };
+        Insert: {
+          business_id: string;
+          created_at?: Timestamp;
+          event_label: string;
+          event_type:
+            | "action_completed"
+            | "lead_created"
+            | "lead_viewed"
+            | "outcome_marked"
+            | "reply_copied"
+            | "score_calculated"
+            | "status_updated";
+          id?: string;
+          lead_id: string;
+          metadata?: Json;
+        };
+        Update: {
+          business_id?: string;
+          created_at?: Timestamp;
+          event_label?: string;
+          event_type?:
+            | "action_completed"
+            | "lead_created"
+            | "lead_viewed"
+            | "outcome_marked"
+            | "reply_copied"
+            | "score_calculated"
+            | "status_updated";
+          id?: string;
+          lead_id?: string;
+          metadata?: Json;
+        };
+        Relationships: [];
+      };
+      lead_quality_scores: {
+        Row: {
+          business_id: string;
+          calculated_at: Timestamp;
+          completeness_label:
+            | "complete"
+            | "mostly_complete"
+            | "needs_info"
+            | "poor";
+          completeness_score: number;
+          created_at: Timestamp;
+          explanation: string;
+          id: string;
+          lead_id: string;
+          missing_info_keys: string[];
+          quality_level: "good" | "low_fit" | "needs_info" | "strong";
+          updated_at: Timestamp;
+        };
+        Insert: {
+          business_id: string;
+          calculated_at?: Timestamp;
+          completeness_label:
+            | "complete"
+            | "mostly_complete"
+            | "needs_info"
+            | "poor";
+          completeness_score: number;
+          created_at?: Timestamp;
+          explanation: string;
+          id?: string;
+          lead_id: string;
+          missing_info_keys?: string[];
+          quality_level: "good" | "low_fit" | "needs_info" | "strong";
+          updated_at?: Timestamp;
+        };
+        Update: {
+          business_id?: string;
+          calculated_at?: Timestamp;
+          completeness_label?:
+            | "complete"
+            | "mostly_complete"
+            | "needs_info"
+            | "poor";
+          completeness_score?: number;
+          created_at?: Timestamp;
+          explanation?: string;
+          id?: string;
+          lead_id?: string;
+          missing_info_keys?: string[];
+          quality_level?: "good" | "low_fit" | "needs_info" | "strong";
+          updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
       leads: {
         Row: {
           business_id: string;
@@ -686,8 +831,31 @@ export type Database = {
           created_at: Timestamp;
           customer_contact: string | null;
           customer_name: string | null;
+          first_reply_copied_at: Timestamp | null;
+          first_response_latency: string | null;
+          first_viewed_at: Timestamp | null;
           id: string;
           intake_submission_id: string;
+          last_owner_action_at: Timestamp | null;
+          manual_outcome:
+            | "asked_info"
+            | "booked"
+            | "lost"
+            | "no_response"
+            | "not_a_fit"
+            | null;
+          response_sla_state:
+            | "follow_up_due"
+            | "new"
+            | "overdue"
+            | "reply_copied"
+            | "viewed";
+          response_status:
+            | "follow_up_due"
+            | "new"
+            | "overdue"
+            | "reply_copied"
+            | "viewed";
           service_type: string | null;
           source_channel: string | null;
           status:
@@ -706,8 +874,31 @@ export type Database = {
           created_at?: Timestamp;
           customer_contact?: string | null;
           customer_name?: string | null;
+          first_reply_copied_at?: Timestamp | null;
+          first_response_latency?: string | null;
+          first_viewed_at?: Timestamp | null;
           id?: string;
           intake_submission_id: string;
+          last_owner_action_at?: Timestamp | null;
+          manual_outcome?:
+            | "asked_info"
+            | "booked"
+            | "lost"
+            | "no_response"
+            | "not_a_fit"
+            | null;
+          response_sla_state?:
+            | "follow_up_due"
+            | "new"
+            | "overdue"
+            | "reply_copied"
+            | "viewed";
+          response_status?:
+            | "follow_up_due"
+            | "new"
+            | "overdue"
+            | "reply_copied"
+            | "viewed";
           service_type?: string | null;
           source_channel?: string | null;
           status?:
@@ -726,8 +917,31 @@ export type Database = {
           created_at?: Timestamp;
           customer_contact?: string | null;
           customer_name?: string | null;
+          first_reply_copied_at?: Timestamp | null;
+          first_response_latency?: string | null;
+          first_viewed_at?: Timestamp | null;
           id?: string;
           intake_submission_id?: string;
+          last_owner_action_at?: Timestamp | null;
+          manual_outcome?:
+            | "asked_info"
+            | "booked"
+            | "lost"
+            | "no_response"
+            | "not_a_fit"
+            | null;
+          response_sla_state?:
+            | "follow_up_due"
+            | "new"
+            | "overdue"
+            | "reply_copied"
+            | "viewed";
+          response_status?:
+            | "follow_up_due"
+            | "new"
+            | "overdue"
+            | "reply_copied"
+            | "viewed";
           service_type?: string | null;
           source_channel?: string | null;
           status?:

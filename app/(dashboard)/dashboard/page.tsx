@@ -26,6 +26,7 @@
  */
 
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { signOutAction } from "@/server/actions/auth.actions";
@@ -183,6 +184,12 @@ export default async function DashboardPage({
         >
           Open /quote/{activeBusiness.slug}
         </a>
+        <Link
+          className="ml-3 mt-4 inline-flex border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-800"
+          href="/dashboard/leads"
+        >
+          Open Lead Conversion Desk
+        </Link>
       </section>
 
       <section className="border-t border-zinc-200 py-8">
