@@ -42,6 +42,22 @@ type FieldRecord = NonNullable<
   Awaited<ReturnType<typeof getPublicIntakePage>>
 >["fields"][number];
 
+const appTimeZone = "America/New_York";
+
+function todayDateString(): string {
+  const parts = new Intl.DateTimeFormat("en", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: appTimeZone,
+    year: "numeric",
+  }).formatToParts(new Date());
+  const valueByType = Object.fromEntries(
+    parts.map((part) => [part.type, part.value]),
+  );
+
+  return `${valueByType.year}-${valueByType.month}-${valueByType.day}`;
+}
+
 function getOptions(value: Json): string[] {
   return Array.isArray(value)
     ? value.filter((item): item is string => typeof item === "string")
@@ -71,7 +87,21 @@ function getNumberMinimum(field: FieldRecord): number | undefined {
   return field.field_type === "number" ? 0 : undefined;
 }
 
-function FieldInput({ field }: Readonly<{ field: FieldRecord }>) {
+function getInputMinimum(input: {
+  field: FieldRecord;
+  todayDate: string;
+}): number | string | undefined {
+  if (input.field.field_type === "date") {
+    return input.todayDate;
+  }
+
+  return getNumberMinimum(input.field);
+}
+
+function FieldInput({
+  field,
+  todayDate,
+}: Readonly<{ field: FieldRecord; todayDate: string }>) {
   const baseClass =
     "mt-2 w-full border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950";
 
@@ -115,7 +145,7 @@ function FieldInput({ field }: Readonly<{ field: FieldRecord }>) {
   return (
     <input
       className={baseClass}
-      min={getNumberMinimum(field)}
+      min={getInputMinimum({ field, todayDate })}
       name={`field:${field.field_key}`}
       required={field.is_required}
       type={inputTypeForField(field.field_type)}
@@ -137,6 +167,7 @@ export default async function QuotePage({
 
   const primaryColor = page.branding?.primary_color ?? "#18181b";
   const accentColor = page.branding?.accent_color ?? "#0f766e";
+  const todayDate = todayDateString();
 
   return (
     <main className="min-h-screen bg-zinc-50 text-zinc-950">
@@ -216,7 +247,7 @@ export default async function QuotePage({
                 </span>
               ) : null}
               <input name="fieldKeys" type="hidden" value={field.field_key} />
-              <FieldInput field={field} />
+              <FieldInput field={field} todayDate={todayDate} />
             </label>
           ))}
         </div>

@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-05-06: Created Phase 4 public intake service.
  * - 2026-05-07: Added server-side non-negative validation for numeric quote fields.
+ * - 2026-05-08: Added server-side validation to reject past date fields.
  * ============================================================
  */
 
@@ -30,6 +31,8 @@ import {
 } from "@/server/repositories/public-intake.repository";
 import type { Json } from "@/types/database";
 
+const appTimeZone = "America/New_York";
+
 export type PublicIntakeSubmissionInput = Readonly<{
   consentAccepted: boolean;
   consentVersionId: string;
@@ -42,6 +45,30 @@ export type PublicIntakeSubmissionInput = Readonly<{
 
 function cleanText(value: string | undefined): string {
   return value?.trim() ?? "";
+}
+
+function todayDateString(): string {
+  const parts = new Intl.DateTimeFormat("en", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: appTimeZone,
+    year: "numeric",
+  }).formatToParts(new Date());
+  const valueByType = Object.fromEntries(
+    parts.map((part) => [part.type, part.value]),
+  );
+
+  return `${valueByType.year}-${valueByType.month}-${valueByType.day}`;
+}
+
+function isValidDateOnly(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  const parsed = new Date(`${value}T00:00:00.000Z`);
+
+  return parsed.toISOString().slice(0, 10) === value;
 }
 
 function readFieldValue(input: {
@@ -71,6 +98,22 @@ function readFieldValue(input: {
     }
 
     return numberValue;
+  }
+
+  if (input.fieldType === "date") {
+    if (trimmed.length === 0) {
+      return null;
+    }
+
+    if (!isValidDateOnly(trimmed)) {
+      throw new Error(`${input.fieldLabel} must be a valid date.`);
+    }
+
+    if (trimmed < todayDateString()) {
+      throw new Error(`${input.fieldLabel} cannot be in the past.`);
+    }
+
+    return trimmed;
   }
 
   return trimmed.length > 0 ? trimmed : null;
