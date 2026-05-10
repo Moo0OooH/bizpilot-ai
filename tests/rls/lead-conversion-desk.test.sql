@@ -9,9 +9,10 @@ Related:
 - docs/engineering/BIZPILOT_DATABASE_RLS_POLICY_BASELINE_v1.0.md
 Author: MoOoH
 Created: 2026-05-07
-Last Updated: 2026-05-07
+Last Updated: 2026-05-09
 Change Log:
 - 2026-05-07: Created Phase 5 RLS baseline tests.
+- 2026-05-09: Added explicit Owner A versus Owner B cross-tenant Phase 5 smoke checks.
 ============================================================
 */
 
@@ -238,6 +239,212 @@ begin
     where lead_id = '76000000-0000-0000-0000-000000000001'
   ) <> 1 then
     raise exception 'Owner should read own lead timeline event.';
+  end if;
+end;
+$$;
+
+select set_config('request.jwt.claim.sub', '70000000-0000-0000-0000-000000000002', true);
+select set_config('request.jwt.claim.role', 'authenticated', true);
+
+insert into public.businesses (id, name, slug, owner_user_id)
+values (
+  '71000000-0000-0000-0000-000000000002',
+  'Phase 5 Other Cleaning Co',
+  'phase-5-other-cleaning-co',
+  '70000000-0000-0000-0000-000000000002'
+);
+
+insert into public.business_members (business_id, user_id, role)
+values (
+  '71000000-0000-0000-0000-000000000002',
+  '70000000-0000-0000-0000-000000000002',
+  'owner'
+);
+
+insert into public.public_link_variants (
+  id,
+  business_id,
+  slug,
+  display_name
+)
+values (
+  '72000000-0000-0000-0000-000000000002',
+  '71000000-0000-0000-0000-000000000002',
+  'phase-5-other-cleaning-co',
+  'Phase 5 Other Cleaning Co'
+);
+
+insert into public.intake_forms (
+  id,
+  business_id,
+  template_id,
+  name
+)
+values (
+  '73000000-0000-0000-0000-000000000002',
+  '71000000-0000-0000-0000-000000000002',
+  (
+    select id
+    from public.industry_templates
+    where slug = 'cleaning-smart-quote-v1'
+  ),
+  'Other Cleaning Smart Quote'
+);
+
+insert into public.consent_versions (
+  id,
+  business_id,
+  version_label,
+  consent_notice
+)
+values (
+  '74000000-0000-0000-0000-000000000002',
+  '71000000-0000-0000-0000-000000000002',
+  'v1',
+  'Other customer information is shared for quote follow-up.'
+);
+
+insert into public.intake_submissions (
+  id,
+  business_id,
+  intake_form_id,
+  consent_version_id,
+  privacy_mode,
+  consent_accepted_at
+)
+values (
+  '75000000-0000-0000-0000-000000000002',
+  '71000000-0000-0000-0000-000000000002',
+  '73000000-0000-0000-0000-000000000002',
+  '74000000-0000-0000-0000-000000000002',
+  'standard',
+  now()
+);
+
+insert into public.leads (
+  id,
+  business_id,
+  intake_submission_id,
+  customer_name,
+  customer_contact,
+  service_type,
+  city_or_service_area,
+  manual_outcome
+)
+values (
+  '76000000-0000-0000-0000-000000000002',
+  '71000000-0000-0000-0000-000000000002',
+  '75000000-0000-0000-0000-000000000002',
+  'Other Phase 5 Customer',
+  'other-phase5@example.com',
+  'Standard clean',
+  'Laval',
+  'asked_info'
+);
+
+insert into public.lead_quality_scores (
+  id,
+  business_id,
+  lead_id,
+  quality_level,
+  completeness_score,
+  completeness_label,
+  missing_info_keys,
+  explanation
+)
+values (
+  '77000000-0000-0000-0000-000000000002',
+  '71000000-0000-0000-0000-000000000002',
+  '76000000-0000-0000-0000-000000000002',
+  'needs_info',
+  70,
+  'mostly_complete',
+  array['bathrooms'],
+  'Other business lead needs bathroom count.'
+);
+
+insert into public.lead_action_items (
+  id,
+  business_id,
+  lead_id,
+  action_type,
+  title
+)
+values (
+  '78000000-0000-0000-0000-000000000002',
+  '71000000-0000-0000-0000-000000000002',
+  '76000000-0000-0000-0000-000000000002',
+  'ask_info',
+  'Ask other lead for bathroom count'
+);
+
+insert into public.lead_events (
+  id,
+  business_id,
+  lead_id,
+  event_type,
+  event_label,
+  metadata
+)
+values (
+  '79000000-0000-0000-0000-000000000002',
+  '71000000-0000-0000-0000-000000000002',
+  '76000000-0000-0000-0000-000000000002',
+  'outcome_marked',
+  'Other outcome marked',
+  '{"manualOutcome":"asked_info"}'::jsonb
+);
+
+do $$
+begin
+  if (select count(*) from public.leads where id = '76000000-0000-0000-0000-000000000002') <> 1 then
+    raise exception 'Owner B should read own lead.';
+  end if;
+
+  if (select count(*) from public.lead_events where id = '79000000-0000-0000-0000-000000000002') <> 1 then
+    raise exception 'Owner B should read own lead timeline event.';
+  end if;
+end;
+$$;
+
+select set_config('request.jwt.claim.sub', '70000000-0000-0000-0000-000000000001', true);
+select set_config('request.jwt.claim.role', 'authenticated', true);
+
+do $$
+begin
+  if (select count(*) from public.leads where id = '76000000-0000-0000-0000-000000000002') <> 0 then
+    raise exception 'Owner A must not read Owner B lead, outcome, or private lead fields.';
+  end if;
+
+  if (select count(*) from public.lead_quality_scores where id = '77000000-0000-0000-0000-000000000002') <> 0 then
+    raise exception 'Owner A must not read Owner B lead quality activity.';
+  end if;
+
+  if (select count(*) from public.lead_action_items where id = '78000000-0000-0000-0000-000000000002') <> 0 then
+    raise exception 'Owner A must not read Owner B lead action items.';
+  end if;
+
+  if (select count(*) from public.lead_events where id = '79000000-0000-0000-0000-000000000002') <> 0 then
+    raise exception 'Owner A must not read Owner B timeline or notes-like event metadata.';
+  end if;
+end;
+$$;
+
+update public.leads
+set manual_outcome = 'booked'
+where id = '76000000-0000-0000-0000-000000000002';
+
+select set_config('request.jwt.claim.sub', '70000000-0000-0000-0000-000000000002', true);
+select set_config('request.jwt.claim.role', 'authenticated', true);
+
+do $$
+begin
+  if (
+    select manual_outcome
+    from public.leads
+    where id = '76000000-0000-0000-0000-000000000002'
+  ) <> 'asked_info' then
+    raise exception 'Owner A must not update Owner B lead outcome.';
   end if;
 end;
 $$;
