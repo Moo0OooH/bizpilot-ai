@@ -680,6 +680,69 @@ export type Database = {
         };
         Relationships: [];
       };
+      ai_outputs: {
+        Row: {
+          business_id: string;
+          cached_tokens: number;
+          created_at: Timestamp;
+          error_message: string | null;
+          estimated_cost: number;
+          id: string;
+          input_hash: string;
+          input_tokens: number;
+          lead_id: string;
+          model: string;
+          output: Json;
+          output_tokens: number;
+          output_type: "lead_conversion_bundle";
+          prompt_name: string;
+          prompt_version: string;
+          provider: "openai" | "rule_fallback";
+          status: "failed" | "fallback" | "generated";
+          updated_at: Timestamp;
+        };
+        Insert: {
+          business_id: string;
+          cached_tokens?: number;
+          created_at?: Timestamp;
+          error_message?: string | null;
+          estimated_cost?: number;
+          id?: string;
+          input_hash: string;
+          input_tokens?: number;
+          lead_id: string;
+          model: string;
+          output?: Json;
+          output_tokens?: number;
+          output_type: "lead_conversion_bundle";
+          prompt_name: string;
+          prompt_version: string;
+          provider?: "openai" | "rule_fallback";
+          status?: "failed" | "fallback" | "generated";
+          updated_at?: Timestamp;
+        };
+        Update: {
+          business_id?: string;
+          cached_tokens?: number;
+          created_at?: Timestamp;
+          error_message?: string | null;
+          estimated_cost?: number;
+          id?: string;
+          input_hash?: string;
+          input_tokens?: number;
+          lead_id?: string;
+          model?: string;
+          output?: Json;
+          output_tokens?: number;
+          output_type?: "lead_conversion_bundle";
+          prompt_name?: string;
+          prompt_version?: string;
+          provider?: "openai" | "rule_fallback";
+          status?: "failed" | "fallback" | "generated";
+          updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
       lead_action_items: {
         Row: {
           action_type: "ask_info" | "follow_up" | "reply";
@@ -959,6 +1022,63 @@ export type Database = {
             | "replied"
             | "reviewed";
           updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
+      usage_events: {
+        Row: {
+          business_id: string;
+          cached_tokens: number;
+          created_at: Timestamp;
+          estimated_cost: number;
+          event_type:
+            | "ai_bundle_failed"
+            | "ai_bundle_fallback"
+            | "ai_bundle_generated";
+          id: string;
+          input_tokens: number;
+          lead_id: string | null;
+          metadata: Json;
+          model: string;
+          operation_type: "lead_conversion_bundle";
+          output_tokens: number;
+          provider: "openai" | "rule_fallback";
+        };
+        Insert: {
+          business_id: string;
+          cached_tokens?: number;
+          created_at?: Timestamp;
+          estimated_cost?: number;
+          event_type:
+            | "ai_bundle_failed"
+            | "ai_bundle_fallback"
+            | "ai_bundle_generated";
+          id?: string;
+          input_tokens?: number;
+          lead_id?: string | null;
+          metadata?: Json;
+          model: string;
+          operation_type?: "lead_conversion_bundle";
+          output_tokens?: number;
+          provider: "openai" | "rule_fallback";
+        };
+        Update: {
+          business_id?: string;
+          cached_tokens?: number;
+          created_at?: Timestamp;
+          estimated_cost?: number;
+          event_type?:
+            | "ai_bundle_failed"
+            | "ai_bundle_fallback"
+            | "ai_bundle_generated";
+          id?: string;
+          input_tokens?: number;
+          lead_id?: string | null;
+          metadata?: Json;
+          model?: string;
+          operation_type?: "lead_conversion_bundle";
+          output_tokens?: number;
+          provider?: "openai" | "rule_fallback";
         };
         Relationships: [];
       };

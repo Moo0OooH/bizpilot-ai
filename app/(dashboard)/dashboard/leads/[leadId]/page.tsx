@@ -20,6 +20,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
+import { CopyButton } from "@/components/dashboard/copy-button";
 import {
   buttonClass,
   DashboardCard,
@@ -31,6 +32,7 @@ import {
   SectionHeader,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
+import { generateLeadAiBundleAction } from "@/server/actions/ai-lead-assistant.actions";
 import {
   completeActionItemAction,
   markLeadOutcomeAction,
@@ -38,6 +40,7 @@ import {
   updateLeadStatusAction,
 } from "@/server/actions/lead-conversion.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
+import { getLatestLeadAiOutput } from "@/server/services/ai/lead-conversion-assistant.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 import { getLeadDetail } from "@/server/services/lead-conversion.service";
 import type { Json } from "@/types/database";
@@ -124,6 +127,11 @@ export default async function LeadDetailPage({
   if (!detail) {
     notFound();
   }
+
+  const aiOutput = await getLatestLeadAiOutput({
+    business: activeBusiness,
+    leadId,
+  });
 
   return (
     <main className="space-y-5">
@@ -266,6 +274,106 @@ export default async function LeadDetailPage({
           </form>
         </DashboardCard>
       </section>
+
+      <DashboardCard className="p-4">
+        <SectionHeader
+          action={
+            <form action={generateLeadAiBundleAction}>
+              <input name="leadId" type="hidden" value={detail.lead.id} />
+              <button
+                className={aiOutput ? buttonClass : primaryButtonClass}
+                type="submit"
+              >
+                {aiOutput ? "Check for changes" : "Generate AI draft"}
+              </button>
+            </form>
+          }
+          description="On-demand assistant-only draft. Nothing is sent automatically."
+          title="AI lead assistant"
+        />
+        {aiOutput ? (
+          <div className="mt-4 grid gap-3 xl:grid-cols-[0.9fr_1.1fr]">
+            <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+              <p className="text-xs font-semibold text-slate-950">
+                Lead summary
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-700">
+                {aiOutput.output.leadSummary}
+              </p>
+              <div className="mt-3 grid gap-2 text-xs text-slate-600">
+                <p>
+                  <span className="font-semibold text-slate-950">
+                    Next action:
+                  </span>{" "}
+                  {aiOutput.output.suggestedNextAction}
+                </p>
+                <p>
+                  <span className="font-semibold text-slate-950">
+                    Missing info:
+                  </span>{" "}
+                  {aiOutput.output.missingInfoReasoning}
+                </p>
+                <p>
+                  <span className="font-semibold text-slate-950">
+                    Cost:
+                  </span>{" "}
+                  ${aiOutput.estimatedCost.toFixed(6)} estimated
+                </p>
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <StatusBadge
+                  tone={aiOutput.provider === "openai" ? "emerald" : "amber"}
+                >
+                  {aiOutput.provider === "openai"
+                    ? "Model generated"
+                    : "Rule fallback"}
+                </StatusBadge>
+                <StatusBadge tone="blue">{aiOutput.model}</StatusBadge>
+              </div>
+            </div>
+            <div className="grid gap-3">
+              <div className="rounded-lg border border-slate-200 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs font-semibold text-slate-950">
+                    Reply draft
+                  </p>
+                  <CopyButton
+                    label="Copy reply"
+                    value={aiOutput.output.replyDraft}
+                  />
+                </div>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                  {aiOutput.output.replyDraft}
+                </p>
+              </div>
+              <div className="rounded-lg border border-slate-200 p-3">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs font-semibold text-slate-950">
+                    Follow-up draft
+                  </p>
+                  <CopyButton
+                    label="Copy follow-up"
+                    value={aiOutput.output.followUpDraft}
+                  />
+                </div>
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                  {aiOutput.output.followUpDraft}
+                </p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-4 rounded-lg border border-dashed border-slate-200 bg-slate-50 p-4">
+            <p className="text-sm font-medium text-slate-950">
+              Generate a cached lead recovery bundle when you need it.
+            </p>
+            <p className="mt-1 text-sm leading-6 text-slate-600">
+              BizPilot will prepare a summary, reply draft, follow-up draft, and
+              next action for the owner to review before sending.
+            </p>
+          </div>
+        )}
+      </DashboardCard>
 
       <section className="grid gap-4 xl:grid-cols-2">
         <DashboardCard className="p-4">
