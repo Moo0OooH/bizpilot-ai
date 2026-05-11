@@ -1,208 +1,130 @@
 # BizPilot AI
 
-BizPilot AI is in Phase 5: Lead Conversion Desk.
+**Project:** BizPilot AI
+**Owner:** MoOoH
+**Current Phase:** Phase 5 stabilization / completion candidate
+**Product:** AI Quote Recovery & Lead Conversion Desk
+**GTM:** Cleaning-first
+**Last Updated:** 2026-05-11
 
-The canonical product direction is locked in `docs/` as the v1.4 founder-grade package. Phase 1 is technical foundation only.
+---
 
-## Locked Direction
+## Current Direction
 
 ```text
 BizPilot AI = AI Quote Recovery & Lead Conversion Desk
 Core = Universal Smart Intake Core + AI Lead Conversion Core
 GTM = Cleaning-first
-MVP = Editable Cleaning Smart Quote Template + Lead Conversion Desk + AI Drafts
-Operating Mode = Rule-first, AI-on-demand, cache-heavy, validation-first
+MVP = Editable Cleaning Smart Quote Template + Lead Conversion Desk
+Operating Mode = Rule-first, AI-on-demand later, cache-heavy, validation-first
+Business Mode = Done-for-you founding customer setup before self-serve SaaS
 ```
 
-## Current Phase 5 Scope
+BizPilot is not a simple form builder.
+BizPilot is not a full CRM.
+BizPilot is not a booking engine.
+BizPilot is not an AI operator.
 
-Allowed:
+BizPilot helps small cleaning businesses capture quote requests, organize leads, identify missing information, prioritize replies and follow-ups, and show lightweight recovery proof.
 
-- Owner lead list
-- Owner lead detail
-- Lead status display and updates
-- Rule-based Lead Quality Score
-- Rule-based Missing Info Detection
-- Response SLA State
-- Lead Events Timeline
-- Today's Action Panel
-- Follow-Up Needed rule
-- Copy actions that update timestamps
-- Manual Outcome Tracking
-- Revenue Recovery Proof basics
-- RLS tests for Phase 5 tables and policies
+---
 
-Forbidden:
+## Current Implementation Status
 
-- AI
-- Email
-- Billing
-- Booking engine
-- CRM expansion
-- Calendar sync
-- WhatsApp/SMS/Instagram APIs
-- Background workers
-- Second vertical launch
-- Growth Studio
-- Advanced analytics warehouse
+Phase 1 through Phase 4 are implemented.
 
-## Completed Phase 4 Scope
+Phase 5 is implemented and being stabilized before it is officially closed.
 
-- Public branded quote page
-- Dynamic Cleaning template rendering
-- Lead submission
-- Consent capture
-- Source tracking
-- Success page
-- Basic spam protection
-- Public-safe RLS policies and RLS tests
-
-## Completed Phase 3 Scope
-
-- Business profile configuration
-- Branding configuration
-- Services, FAQ, and service areas
-- Privacy and consent settings
-- Vertical = Cleaning
-- Editable Cleaning Smart Quote Template
-- Business Readiness Score
-- RLS policies and RLS tests for configuration tables
-
-## Completed Phase 2 Scope
-
-- Supabase Auth sign-in/sign-up
-- `profiles`, `businesses`, and `business_members`
-- RLS policies and RLS tests
-- Protected dashboard shell
-- Business membership checks
-
-## Completed Phase 1 Scope
-
-Allowed:
-
-- Next.js App Router foundation
-- TypeScript strict setup
-- Tailwind CSS setup
-- shadcn/ui-ready structure
-- Base folders
-- Environment validation
-- Supabase client/server placeholders
-- README skeleton
-- lint/build/dev scripts
-
-Forbidden:
-
-- Real auth flow
-- Database tables
-- Lead workflow
-- AI generation
-- Email sending
-- Billing
-- Public quote submission
-- Product dashboard logic
-
-## Structure
+The immediate goal is:
 
 ```text
-app/
-components/
-features/
-server/actions/
-server/services/
-server/repositories/
-server/policies/
-server/ai/
-lib/env/
-lib/supabase/
-lib/utils/
-prompts/registry/
-types/
-supabase/migrations/
-docs/
-tests/rls/
-tests/unit/
-tests/integration/
-scripts/
+Functional dashboard -> product-grade quote recovery cockpit
 ```
 
-## Setup
+Do not begin Phase 6 until Phase 5 closure checks are complete.
 
-```powershell
-pnpm install
+---
+
+## Canonical Routes
+
+```text
+/dashboard                     = Dashboard Overview
+/dashboard/configuration       = Business Configuration
+/dashboard/leads               = Lead Workspace
+/dashboard/leads/[leadId]      = Lead Detail
+/quote/[slug]                  = Public quote link
+/quote/[slug]/success          = Public quote success page
 ```
 
-The project pins pnpm through `packageManager` in `package.json`.
+Protected dashboard routes use the shared shell:
 
-Create `.env.local` from `.env.example`.
-
-Required for Phase 1 local validation:
-
-```env
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_SUPABASE_URL=https://example.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=placeholder
+```text
+app/(dashboard)/layout.tsx
+components/dashboard/dashboard-shell.tsx
+components/dashboard/dashboard-sidebar.tsx
+components/dashboard/dashboard-topbar.tsx
 ```
 
-Server-only keys are present in `.env.example` for future phases, but they are not required for Phase 1 feature work.
+Pages own page-specific content only.
+
+---
+
+## Phase 5 Closure Focus
+
+Allowed now:
+
+- Operational dashboard hierarchy
+- Needs Attention Strip
+- Recent Leads / lead recovery queue polish
+- Contextual right rail cleanup
+- Sidebar and header polish
+- CTA hierarchy
+- Responsive fixes
+- Business Configuration grouping
+- Outcome-focused microcopy
+- Minimal activity timeline and recovery proof already in Phase 5 scope
+
+Do not add now:
+
+- AI generation UX
+- Email sending
+- Billing
+- Booking or calendar
+- Integrations
+- Team management
+- Advanced analytics
+- Generic CRM modules
+- Second vertical
+- Automation workflows
+
+Use this product test for every change:
+
+```text
+Does this help the owner reply to quote requests faster and follow up better?
+```
+
+---
 
 ## Verification
 
 ```powershell
-pnpm lint
 pnpm typecheck
+pnpm lint
 pnpm build
-pnpm dev
 ```
 
-## Phase 5 Definition of Done
+Latest known checks passed on 2026-05-11.
 
-- Owner sees only own leads.
-- Lead quality works.
-- Missing info works.
-- Response SLA works.
-- Timeline works.
-- Copy actions update timestamps.
-- Manual outcome can be set.
-- Revenue Recovery Proof summary appears.
-- RLS tests pass.
+---
 
-## Phase 2 Definition of Done
+## Canonical Docs
 
-- User can sign up/login.
-- User profile exists.
-- Business exists.
-- User belongs to business.
-- Dashboard is protected.
-- RLS tests pass.
-- Cross-tenant access is blocked.
-
-## Phase 3 Definition of Done
-
-- Business can configure profile.
-- Business can configure services, FAQ, service areas.
-- Cleaning template can be edited.
-- Business Readiness Score works.
-- RLS tests pass.
-
-## Phase 4 Definition of Done
-
-- Public quote page works.
-- Dynamic fields render from config.
-- Lead submission works.
-- Lead belongs to correct business.
-- Source tracking works.
-- Consent version is captured.
-- Public page cannot read private data.
-- RLS tests pass.
-
-## Phase 1 Definition of Done
-
-- App runs locally.
-- Lint passes.
-- Build passes.
-- Folder structure exists.
-- Env example exists.
-- Supabase client placeholder exists.
-- README skeleton exists.
-- No product features are implemented.
-- Git commit pushed.
+- `docs/product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md`
+- `docs/product/BIZPILOT_BUILD_PLAN_v1.4.md`
+- `docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
+- `docs/product/BIZPILOT_SCORING_SPEC_v1.1.md`
+- `docs/architecture/BIZPILOT_ARCHITECTURE_v1.4.md`
+- `docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.4.md`
+- `docs/engineering/BIZPILOT_EXECUTION_ROADMAP_v1.4.md`
+- `docs/engineering/BIZPILOT_DATABASE_RLS_POLICY_BASELINE_v1.0.md`
+- `docs/security/BIZPILOT_PRIVACY_SECURITY_COMPLIANCE_BASELINE_v1.0.md`

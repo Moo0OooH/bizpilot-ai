@@ -58,9 +58,6 @@ const navigationGroups: NavigationGroup[] = [
         label: "Leads",
         match: (pathname) => pathname.startsWith("/dashboard/leads"),
       },
-      { icon: "C", label: "Customers" },
-      { icon: "K", label: "Calendar" },
-      { icon: "A", label: "Analytics" },
     ],
   },
   {
@@ -74,32 +71,23 @@ const navigationGroups: NavigationGroup[] = [
       },
     ],
   },
-  {
-    label: "System",
-    items: [
-      { icon: "T", label: "Team" },
-      { icon: "I", label: "Integrations" },
-      { icon: "$", label: "Billing" },
-      { icon: "G", label: "Settings" },
-    ],
-  },
 ];
 
 function navClass(isActive: boolean, isDisabled: boolean): string {
   if (isDisabled) {
-    return "flex h-8 items-center gap-2 rounded-md px-2 text-zinc-400";
+    return "flex h-9 items-center gap-3 rounded-[10px] px-3 text-white/35";
   }
 
   if (isActive) {
-    return "flex h-8 items-center gap-2 rounded-md bg-zinc-950 px-2 font-medium text-white shadow-sm";
+    return "flex h-9 items-center gap-3 rounded-[10px] bg-violet-600 px-3 font-medium text-white shadow-sm";
   }
 
-  return "flex h-8 items-center gap-2 rounded-md px-2 text-zinc-700 transition hover:bg-zinc-100 hover:text-zinc-950";
+  return "flex h-9 items-center gap-3 rounded-[10px] px-3 text-slate-300 transition hover:bg-white/[0.06] hover:text-white";
 }
 
 function NavIcon({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded border border-current/15 text-[10px] font-semibold">
+    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-current/15 text-[11px] font-semibold">
       {children}
     </span>
   );
@@ -111,19 +99,19 @@ export function DashboardSidebar({
 }: DashboardSidebarProps) {
   const pathname = usePathname();
   return (
-    <aside className="sticky top-0 hidden h-screen border-r border-zinc-200 bg-white lg:flex lg:flex-col">
-      <div className="border-b border-zinc-100 px-4 py-4">
-        <p className="text-sm font-semibold tracking-normal text-zinc-950">
+    <aside className="sticky top-0 hidden h-screen border-r border-black/20 bg-[#061522] text-white lg:flex lg:flex-col">
+      <div className="border-b border-white/10 px-4 py-4">
+        <p className="text-base font-semibold tracking-normal text-white">
           BizPilot AI
         </p>
-        <p className="mt-1 truncate text-xs text-zinc-500">
+        <p className="mt-1 truncate text-xs text-white/55">
           Quote recovery workspace
         </p>
       </div>
-      <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4 text-xs">
+      <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4 text-sm">
         {navigationGroups.map((group) => (
           <div key={group.label}>
-            <p className="px-2 text-[11px] font-semibold uppercase tracking-wide text-zinc-500">
+            <p className="px-3 text-xs font-semibold uppercase tracking-wide text-white/45">
               {group.label}
             </p>
             <div className="mt-2 grid gap-1">
@@ -151,11 +139,11 @@ export function DashboardSidebar({
           </div>
         ))}
       </nav>
-      <div className="border-t border-zinc-100 p-3 text-xs">
-        <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-2.5">
-          <p className="font-medium text-zinc-950">{activeBusinessName}</p>
-          <p className="mt-2 text-zinc-500">Signed in as</p>
-          <p className="mt-0.5 break-words text-zinc-800">{userLabel}</p>
+      <div className="space-y-3 border-t border-white/10 p-3 text-xs">
+        <div className="rounded-[14px] border border-white/10 bg-white/[0.06] p-3">
+          <p className="font-medium text-white">{activeBusinessName}</p>
+          <p className="mt-2 text-white/50">Signed in as</p>
+          <p className="mt-0.5 break-words text-white/80">{userLabel}</p>
         </div>
       </div>
     </aside>

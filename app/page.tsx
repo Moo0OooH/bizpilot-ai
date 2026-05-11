@@ -53,7 +53,7 @@ export default function Home() {
         <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-600">
           Public quote capture is live. Owners can now review leads, see
           rule-based quality and missing info, manage follow-up actions, and
-          track manual outcomes before AI drafts are added in Phase 6.
+          track manual outcomes while Phase 5 is stabilized.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link

@@ -1,7 +1,9 @@
 {
   "project": "BizPilot AI",
-  "version": "v1.4",
+  "version": "v1.4.1",
+  "status": "Phase 5 stabilization / completion candidate",
   "files": [
+    "MANIFEST.json",
     "README.md",
     "docs/BIZPILOT_FULL_CANONICAL_PACKAGE_v1.4.md",
     "docs/architecture/BIZPILOT_ARCHITECTURE_v1.4.md",
@@ -13,6 +15,7 @@
     "docs/operations/BIZPILOT_PHASE_1_START_CHECKLIST_v1.0.md",
     "docs/operations/BIZPILOT_RISK_REGISTER_AND_DECISION_RULES_v1.0.md",
     "docs/product/BIZPILOT_BUILD_PLAN_v1.4.md",
+    "docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md",
     "docs/product/BIZPILOT_DEMO_GENERATOR_AND_SALES_ASSETS_SPEC_v1.0.md",
     "docs/product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md",
     "docs/product/BIZPILOT_SCORING_SPEC_v1.1.md",

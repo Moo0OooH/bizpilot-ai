@@ -1,22 +1,32 @@
 # BizPilot AI — Build Plan v1.4
 
-**Project:** BizPilot AI  
-**Document Type:** Build Plan  
-**Version:** v1.4  
-**Status:** Final Founder-Grade Canonical Draft  
-**Owner:** MoOoH  
-**Phase:** Phase 0 Final Lock  
-**Last Updated:** 2026-05-03
+**Project:** BizPilot AI
+**Document Type:** Build Plan
+**Version:** v1.4
+**Status:** Final Founder-Grade Canonical Draft — Phase 5 Alignment Synced
+**Owner:** MoOoH
+**Phase:** Phase 5 Stabilization / Completion Candidate
+**Last Updated:** 2026-05-11
+
+---
+
+## Current Implementation Status — 2026-05-11
+
+Phase 1 through Phase 4 are implemented.
+
+Phase 5 is implemented and in stabilization / completion candidate status. The next step is Phase 5 closure checks: docs sync, operational dashboard copy cleanup, tenant-safe smoke testing, and `pnpm typecheck`, `pnpm lint`, and `pnpm build`.
+
+Phase 6 has not started. Do not add AI generation, email sending, billing, booking, integrations, generic CRM scope, or automation while closing Phase 5.
 
 ---
 
 ## 1. Build Strategy
 
-Build like a platform.  
-Ship like a simple cleaning lead recovery product.  
+Build like a platform.
+Ship like a simple cleaning lead recovery product.
 Sell like a done-for-you revenue recovery service.
 
-The goal is not to build everything.  
+The goal is not to build everything.
 The goal is to reach paying validation quickly with low server cost and controlled scope.
 
 ---
@@ -508,6 +518,83 @@ Possible scope:
 Do not build auto-posting or social APIs.
 
 ---
+
+## Dashboard IA / UX Patch — v1.4.1
+
+The following dashboard IA decisions are canonical and are detailed in:
+
+```text
+docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md
+```
+
+### Route Ownership
+
+```text
+/dashboard                     = Dashboard Overview
+/dashboard/configuration       = Business Configuration
+/dashboard/leads               = Leads
+/dashboard/leads/[leadId]      = Lead Detail
+```
+
+`/dashboard` is not Business Configuration.
+
+Business Configuration belongs to:
+
+```text
+/dashboard/configuration
+```
+
+### Dashboard Overview Content
+
+Dashboard Overview must include:
+
+- Business Readiness
+- Recent Leads
+- Today’s Actions
+- Public Quote Link
+- Quick Actions
+- Revenue Recovery Proof later
+
+### Navigation
+
+BizPilot uses two levels of navigation:
+
+- App-level navigation for main dashboard pages
+- Page-level navigation only inside the current page
+
+Active nav rules:
+
+```text
+/dashboard                => Dashboard Overview
+/dashboard/leads*         => Leads
+/dashboard/configuration  => Business Configuration
+```
+
+### Business Configuration UX
+
+Business Configuration should use a guided accordion setup model, not a raw form.
+
+It should include:
+
+- Business Basics
+- Branding
+- Services
+- Service Areas
+- FAQ
+- Quote Link and Public Page
+- Cleaning Template
+- Privacy and Consent
+- Preview and Publish Readiness
+
+The sticky bottom save bar belongs only to `/dashboard/configuration`.
+
+### Phase Mapping
+
+These decisions affect:
+
+- Phase 3: Business + Template Configuration Core
+- Phase 4: Public Quote Link preview and configuration
+- Phase 5: Dashboard Overview and Lead Conversion Desk
 
 ## 15. Definition of Done
 

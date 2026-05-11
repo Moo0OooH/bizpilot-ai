@@ -21,7 +21,6 @@ import { redirect } from "next/navigation";
 
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { getCurrentUser } from "@/server/services/auth.service";
-import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 
 export default async function DashboardLayout({
@@ -44,16 +43,10 @@ export default async function DashboardLayout({
     return children;
   }
 
-  const { readiness } = await getBusinessConfigurationWorkspace({
-    business: activeBusiness,
-  });
-
   return (
     <DashboardShell
       activeBusinessName={activeBusiness.name}
       businessSlug={activeBusiness.slug}
-      readinessCompleted={readiness.completed}
-      readinessTotal={readiness.total}
       userLabel={user.email ?? user.id}
     >
       {children}

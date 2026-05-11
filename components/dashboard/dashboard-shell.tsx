@@ -15,7 +15,6 @@
  * ============================================================
  */
 
-import { DashboardContextRail } from "./dashboard-context-rail";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { DashboardTopbar } from "./dashboard-topbar";
 
@@ -23,8 +22,6 @@ type DashboardShellProps = Readonly<{
   activeBusinessName: string;
   businessSlug: string;
   children: React.ReactNode;
-  readinessCompleted: number;
-  readinessTotal: number;
   userLabel: string;
 }>;
 
@@ -32,12 +29,10 @@ export function DashboardShell({
   activeBusinessName,
   businessSlug,
   children,
-  readinessCompleted,
-  readinessTotal,
   userLabel,
 }: DashboardShellProps) {
   return (
-    <main className="min-h-screen bg-zinc-50 text-zinc-950 lg:grid lg:grid-cols-[232px_minmax(0,1fr)]">
+    <main className="min-h-screen bg-slate-50 text-slate-950 lg:grid lg:grid-cols-[240px_minmax(0,1fr)]">
       <DashboardSidebar
         activeBusinessName={activeBusinessName}
         userLabel={userLabel}
@@ -50,14 +45,10 @@ export function DashboardShell({
           userLabel={userLabel}
         />
 
-        <div className="grid gap-5 px-4 py-5 pb-16 2xl:grid-cols-[minmax(0,1fr)_18rem]">
-          <div className="mx-auto w-full max-w-7xl min-w-0">{children}</div>
-          <DashboardContextRail
-            activeBusinessName={activeBusinessName}
-            businessSlug={businessSlug}
-            readinessCompleted={readinessCompleted}
-            readinessTotal={readinessTotal}
-          />
+        <div className="px-4 py-4 pb-10 sm:px-5">
+          <div className="mx-auto w-full max-w-[1200px] min-w-0">
+            {children}
+          </div>
         </div>
       </section>
     </main>

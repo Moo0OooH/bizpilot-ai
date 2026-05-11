@@ -29,11 +29,13 @@
 
 import { redirect } from "next/navigation";
 
+import { ConfigurationTabs } from "@/components/dashboard/configuration-tabs";
 import {
-  DashboardCard,
+  buttonClass,
   inputClass,
   labelClass,
   PageHeader,
+  textareaClass,
 } from "@/components/dashboard/dashboard-ui";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
@@ -79,72 +81,41 @@ function serviceAreasToText(
   return areas.map((area) => area.name).join("\n");
 }
 
-function AccordionCard({
+function ConfigurationPanel({
   children,
   description,
   id,
-  open = false,
   summary,
   title,
 }: Readonly<{
   children: React.ReactNode;
   description?: string;
   id?: string;
-  open?: boolean;
   summary?: string;
   title: string;
 }>) {
   return (
-    <details
-      className="group scroll-mt-4 rounded-md border border-zinc-200 bg-white p-2.5 shadow-sm"
+    <section
+      className="scroll-mt-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm"
       id={id}
-      name="business-configuration-section"
-      open={open}
     >
-      <summary className="grid cursor-pointer list-none gap-3 sm:grid-cols-[minmax(0,1fr)_12rem_auto] sm:items-start [&::-webkit-details-marker]:hidden">
-        <span className="min-w-0">
-          <span className="block text-sm font-semibold text-zinc-950">
-            {title}
-          </span>
+      <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_18rem] sm:items-start">
+        <div className="min-w-0">
+          <h2 className="text-sm font-semibold text-zinc-950">{title}</h2>
           {description ? (
-            <span className="mt-1 block text-xs leading-5 text-zinc-600">
+            <p className="mt-1 text-xs leading-5 text-zinc-600">
               {description}
-            </span>
+            </p>
           ) : null}
-        </span>
+        </div>
         {summary ? (
-          <span className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs leading-4 text-zinc-600">
+          <p className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs leading-4 text-zinc-600">
             {summary}
-          </span>
-        ) : (
-          <span />
-        )}
-        <span className="mt-0.5 rounded-md border border-zinc-200 bg-white px-2 py-0.5 text-xs font-medium text-zinc-600 group-open:hidden">
-          Configure
-        </span>
-        <span className="mt-0.5 hidden rounded-md border border-zinc-200 bg-white px-2 py-0.5 text-xs font-medium text-zinc-600 group-open:inline">
-          Done
-        </span>
-      </summary>
-      <div className="mt-2.5 border-t border-zinc-100 pt-2.5">{children}</div>
-    </details>
-  );
-}
-
-function PageSectionLink({
-  children,
-  href,
-}: Readonly<{
-  children: React.ReactNode;
-  href: string;
-}>) {
-  return (
-    <a
-      className="inline-flex h-8 items-center rounded-md px-3 text-xs font-medium text-zinc-600 transition hover:bg-zinc-100 hover:text-zinc-950 focus:bg-zinc-950 focus:text-white"
-      href={href}
-    >
-      {children}
-    </a>
+          </p>
+        ) : null}
+      </div>
+      <div className="mt-4 border-t border-zinc-100 pt-4">{children}</div>
+    </section>
   );
 }
 
@@ -195,6 +166,9 @@ export default async function DashboardPage({
   const visibleTemplateFieldCount = cleaningTemplate.fields.filter(
     (field) => !field.is_hidden,
   ).length;
+  const readinessPercent = Math.round(
+    (readiness.completed / Math.max(readiness.total, 1)) * 100,
+  );
 
   return (
     <>
@@ -217,46 +191,7 @@ export default async function DashboardPage({
           </p>
         ) : null}
 
-        <DashboardCard className="p-2">
-          <nav aria-label="Business configuration sections" className="flex flex-wrap gap-1">
-            <PageSectionLink href="#business-profile">Profile</PageSectionLink>
-            <PageSectionLink href="#branding">Branding</PageSectionLink>
-            <PageSectionLink href="#services-areas">Services</PageSectionLink>
-            <PageSectionLink href="#public-page">Public Page</PageSectionLink>
-            <PageSectionLink href="#cleaning-template-fields">
-              Quote Form
-            </PageSectionLink>
-            <PageSectionLink href="#faq">FAQ</PageSectionLink>
-            <PageSectionLink href="#privacy-consent">Privacy</PageSectionLink>
-            <PageSectionLink href="#setup-checklist">Readiness</PageSectionLink>
-          </nav>
-        </DashboardCard>
-
-        <section className="grid gap-3 sm:grid-cols-3">
-          <DashboardCard className="p-3">
-            <p className="text-xs text-zinc-500">Signed in as</p>
-            <p className="mt-0.5 break-words text-xs font-medium text-zinc-950">
-              {user.email ?? user.id}
-            </p>
-          </DashboardCard>
-          <DashboardCard className="p-3">
-            <p className="text-xs text-zinc-500">Active business</p>
-            <p className="mt-0.5 break-words text-xs font-medium text-zinc-950">
-              {activeBusiness.name}
-            </p>
-          </DashboardCard>
-          <DashboardCard className="p-3">
-            <p className="text-xs text-zinc-500">Readiness</p>
-            <p
-              className="mt-0.5 text-xs font-medium"
-              style={{ color: accentColor }}
-            >
-              {readiness.completed}/{readiness.total} setup tasks complete
-            </p>
-          </DashboardCard>
-        </section>
-
-          <form
+        <form
             action={saveBusinessConfigurationAction}
             className="space-y-3"
             id="business-configuration-form"
@@ -268,10 +203,171 @@ export default async function DashboardPage({
               value={cleaningTemplate.template.id}
             />
 
-            <AccordionCard
+          <section className="grid items-start gap-4 2xl:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="min-w-0">
+          <ConfigurationTabs
+            sections={[
+              { id: "configuration-overview", label: "Overview" },
+              { id: "business-profile", label: "Profile" },
+              { id: "branding", label: "Branding" },
+              { id: "services-areas", label: "Services" },
+              { id: "public-page", label: "Public Page" },
+              { id: "cleaning-template-fields", label: "Quote Form" },
+              { id: "faq", label: "FAQ" },
+              { id: "privacy-consent", label: "Privacy" },
+              { id: "setup-checklist", label: "Readiness" },
+            ]}
+          >
+            <ConfigurationPanel
+              description="A clean operating summary of the business identity, public quote link, setup health, and configured quote foundation."
+              id="configuration-overview"
+              summary={`${readiness.completed}/${readiness.total} setup items complete`}
+              title="Business setup overview"
+            >
+              <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]">
+                <div className="grid gap-4 lg:grid-cols-[18rem_minmax(0,1fr)]">
+                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+                    <div
+                      className="flex h-28 items-center justify-center overflow-hidden rounded-lg border bg-white"
+                      style={{ borderColor: accentColor }}
+                    >
+                      {logoUrl ? (
+                        <object
+                          aria-label="Logo preview"
+                          className="h-full max-h-28 w-full object-contain p-4"
+                          data={logoUrl}
+                        >
+                          <span className="text-xs text-zinc-500">
+                            Logo preview unavailable
+                          </span>
+                        </object>
+                      ) : (
+                        <span
+                          className="flex h-12 w-12 items-center justify-center rounded-lg text-sm font-semibold text-white"
+                          style={{ backgroundColor: primaryColor }}
+                        >
+                          BP
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-3 text-sm font-semibold text-zinc-950">
+                      {activeBusiness.name}
+                    </p>
+                    <p className="mt-1 break-all text-xs text-zinc-500">
+                      /quote/{activeBusiness.slug}
+                    </p>
+                    <div className="mt-3 flex gap-2">
+                      <span
+                        className="h-5 w-5 rounded-full border border-zinc-200"
+                        style={{ backgroundColor: primaryColor }}
+                      />
+                      <span
+                        className="h-5 w-5 rounded-full border border-zinc-200"
+                        style={{ backgroundColor: accentColor }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="rounded-lg border border-zinc-200 bg-white p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+                          Workspace readiness
+                        </p>
+                        <p className="mt-1 text-2xl font-semibold text-zinc-950">
+                          {readinessPercent}%
+                        </p>
+                      </div>
+                      <p className="text-right text-xs font-medium text-zinc-500">
+                        {readiness.completed}/{readiness.total} complete
+                      </p>
+                    </div>
+                    <div className="mt-4 h-2 overflow-hidden rounded-full bg-zinc-100">
+                      <div
+                        className="h-full rounded-full"
+                        style={{
+                          backgroundColor: accentColor,
+                          width: `${readinessPercent}%`,
+                        }}
+                      />
+                    </div>
+                    <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                      {[
+                        ["Profile", activeBusiness.name],
+                        ["Branding", logoUrl ? "Logo configured" : "Colors ready"],
+                        [
+                          "Services",
+                          `${configuration.services.length} service records`,
+                        ],
+                        [
+                          "Service areas",
+                          `${configuration.serviceAreas.length} covered areas`,
+                        ],
+                        [
+                          "Quote form",
+                          `${visibleTemplateFieldCount}/${cleaningTemplate.fields.length} visible questions`,
+                        ],
+                        ["FAQ", `${configuration.faqs.length} answers`],
+                        [
+                          "Privacy",
+                          configuration.privacySettings?.privacy_mode ?? "standard",
+                        ],
+                        ["Public link", `/quote/${activeBusiness.slug}`],
+                      ].map(([title, value]) => (
+                        <div
+                          className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2"
+                          key={title}
+                        >
+                          <p className="text-xs font-medium text-zinc-500">
+                            {title}
+                          </p>
+                          <p className="mt-1 truncate text-xs font-semibold text-zinc-950">
+                            {value}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+                  <p className="text-sm font-semibold text-zinc-950">
+                    Setup report
+                  </p>
+                  <div className="mt-3 grid gap-2">
+                    {readiness.items.map((item) => (
+                      <div
+                        className="flex items-center justify-between gap-3 rounded-md bg-white px-3 py-2 text-xs"
+                        key={item.label}
+                      >
+                        <span className="truncate text-zinc-700">
+                          {item.label}
+                        </span>
+                        <span
+                          className={
+                            item.complete
+                              ? "font-medium text-emerald-700"
+                              : "font-medium text-amber-700"
+                          }
+                        >
+                          {item.complete ? "Done" : "Open"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                  <a
+                    className={`${buttonClass} mt-4 w-full`}
+                    href={`/quote/${activeBusiness.slug}`}
+                  >
+                    Preview public quote
+                  </a>
+                </div>
+              </div>
+            </ConfigurationPanel>
+
+            <ConfigurationPanel
               description="Core identity used across the protected workspace and public quote link."
               id="business-profile"
-              open
               summary={`${activeBusiness.name} - /quote/${activeBusiness.slug}`}
               title="Business basics"
             >
@@ -310,9 +406,9 @@ export default async function DashboardPage({
                   />
                 </label>
               </div>
-            </AccordionCard>
+            </ConfigurationPanel>
 
-            <AccordionCard
+            <ConfigurationPanel
               description="Public-facing visual settings for the cleaning quote experience."
               id="branding"
               summary={logoUrl ? "Logo and colors configured" : "Add logo and colors"}
@@ -387,9 +483,9 @@ export default async function DashboardPage({
                   )}
                 </div>
               </div>
-            </AccordionCard>
+            </ConfigurationPanel>
 
-            <AccordionCard
+            <ConfigurationPanel
               description="Shareable customer quote page generated from the active business slug and quote form."
               id="public-page"
               summary={`/quote/${activeBusiness.slug}`}
@@ -415,40 +511,43 @@ export default async function DashboardPage({
                   Preview public page
                 </a>
               </div>
-            </AccordionCard>
+            </ConfigurationPanel>
 
-            <AccordionCard
+            <ConfigurationPanel
               description="Enter one city, neighborhood, or service region per line. Leads outside these areas may be marked as low fit."
               id="services-areas"
               summary={`${configuration.services.length} services - ${configuration.serviceAreas.length} areas`}
               title="Services & covered areas"
             >
-              <div className="grid gap-2.5 xl:grid-cols-2">
+              <div className="grid gap-4 xl:grid-cols-2">
                 <label className={labelClass}>
                   Services
                   <textarea
-                    className={`${inputClass} h-20 min-h-20 py-2`}
+                    className={`${textareaClass} min-h-28`}
                     defaultValue={servicesToText(configuration.services)}
                     name="services"
                   />
+                  <span className="mt-1 block text-xs leading-4 text-zinc-500">
+                    One service per line. Use: Service name | Optional note
+                  </span>
                 </label>
                 <label className={labelClass}>
                   Service areas
                   <textarea
-                    className={`${inputClass} h-20 min-h-20 py-2`}
+                    className={`${textareaClass} min-h-28`}
                     defaultValue={serviceAreasToText(
                       configuration.serviceAreas,
                     )}
                     name="serviceAreas"
                   />
                   <span className="mt-1 block text-xs leading-4 text-zinc-500">
-                    Example: Montréal, Laval, Longueuil, South Shore
+                    Example: Montreal, Laval, Longueuil, South Shore
                   </span>
                 </label>
               </div>
-            </AccordionCard>
+            </ConfigurationPanel>
 
-            <AccordionCard
+            <ConfigurationPanel
               description="Choose which customer questions appear on the public quote form and how they read."
               id="cleaning-template-fields"
               summary={`${visibleTemplateFieldCount}/${cleaningTemplate.fields.length} visible questions`}
@@ -564,9 +663,9 @@ export default async function DashboardPage({
                   </details>
                 ))}
               </div>
-            </AccordionCard>
+            </ConfigurationPanel>
 
-            <AccordionCard
+            <ConfigurationPanel
               description="Reusable customer questions and answers for the cleaning business profile."
               id="faq"
               summary={`${configuration.faqs.length} FAQs`}
@@ -584,9 +683,9 @@ export default async function DashboardPage({
                   One FAQ per line. Use: Question? | Answer
                 </span>
               </label>
-            </AccordionCard>
+            </ConfigurationPanel>
 
-            <AccordionCard
+            <ConfigurationPanel
               description="Consent and retention settings used by public quote submissions."
               id="privacy-consent"
               summary={`${configuration.privacySettings?.privacy_mode ?? "standard"} - ${
@@ -656,9 +755,9 @@ export default async function DashboardPage({
                   Show AI draft disclosure
                 </label>
               </div>
-            </AccordionCard>
+            </ConfigurationPanel>
 
-            <AccordionCard
+            <ConfigurationPanel
               description={`${readiness.completed}/${readiness.total} setup tasks complete.`}
               id="setup-checklist"
               summary={
@@ -687,12 +786,114 @@ export default async function DashboardPage({
                   </div>
                 ))}
               </div>
-            </AccordionCard>
+            </ConfigurationPanel>
+          </ConfigurationTabs>
+            </div>
 
-          </form>
+            <aside className="space-y-4 2xl:sticky 2xl:top-20">
+              <section className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+                <p className="text-sm font-semibold text-zinc-950">
+                  Workspace readiness
+                </p>
+                <p className="mt-1 text-xs text-zinc-500">
+                  {readiness.completed}/{readiness.total} setup items complete
+                </p>
+                <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-100">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      backgroundColor: accentColor,
+                      width: `${readinessPercent}%`,
+                    }}
+                  />
+                </div>
+                <div className="mt-3 grid gap-2">
+                  {readiness.items.slice(0, 6).map((item) => (
+                    <div
+                      className="flex items-center justify-between gap-3 rounded-md bg-zinc-50 px-3 py-2 text-xs"
+                      key={item.label}
+                    >
+                      <span className="truncate text-zinc-700">
+                        {item.label}
+                      </span>
+                      <span
+                        className={
+                          item.complete
+                            ? "font-medium text-emerald-700"
+                            : "font-medium text-amber-700"
+                        }
+                      >
+                        {item.complete ? "Done" : "Open"}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              <section className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+                <p className="text-sm font-semibold text-zinc-950">
+                  Branding preview
+                </p>
+                <div
+                  className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-lg border bg-zinc-50"
+                  style={{ borderColor: accentColor }}
+                >
+                  {logoUrl ? (
+                    <object
+                      aria-label="Logo preview"
+                      className="h-full max-h-24 w-full object-contain p-3"
+                      data={logoUrl}
+                    >
+                      <span className="text-xs text-zinc-500">
+                        Logo preview unavailable
+                      </span>
+                    </object>
+                  ) : (
+                    <span
+                      className="flex h-10 w-10 items-center justify-center rounded-lg text-xs font-semibold text-white"
+                      style={{ backgroundColor: primaryColor }}
+                    >
+                      BP
+                    </span>
+                  )}
+                </div>
+                <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500">
+                  <span
+                    className="h-5 w-5 rounded-full border border-zinc-200"
+                    style={{ backgroundColor: primaryColor }}
+                  />
+                  <span
+                    className="h-5 w-5 rounded-full border border-zinc-200"
+                    style={{ backgroundColor: accentColor }}
+                  />
+                  Public quote colors
+                </div>
+              </section>
+
+              <section className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+                <p className="text-sm font-semibold text-zinc-950">
+                  Public quote link
+                </p>
+                <p className="mt-1 text-xs leading-5 text-zinc-500">
+                  Save changes, then preview the customer-facing quote flow.
+                </p>
+                <p className="mt-3 break-all rounded-md bg-zinc-50 px-3 py-2 text-sm font-semibold text-zinc-950">
+                  /quote/{activeBusiness.slug}
+                </p>
+                <a
+                  className={`${buttonClass} mt-3 w-full`}
+                  href={`/quote/${activeBusiness.slug}`}
+                >
+                  Preview public page
+                </a>
+              </section>
+            </aside>
+          </section>
+
+        </form>
       </main>
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-zinc-200 bg-white/95 px-4 py-1.5 shadow-sm backdrop-blur">
-        <div className="mx-auto flex max-w-[1500px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[232px]">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[240px]">
           <p className="text-xs text-zinc-600">
             Save configuration after editing, then preview the public quote
             link.

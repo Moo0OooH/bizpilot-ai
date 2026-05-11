@@ -1,12 +1,22 @@
 # BizPilot AI — Architecture v1.4
 
-**Project:** BizPilot AI  
-**Document Type:** Architecture  
-**Version:** v1.4  
-**Status:** Final Founder-Grade Canonical Draft  
-**Owner:** MoOoH  
-**Phase:** Phase 0 Final Lock  
-**Last Updated:** 2026-05-03
+**Project:** BizPilot AI
+**Document Type:** Architecture
+**Version:** v1.4
+**Status:** Final Founder-Grade Canonical Draft — Phase 5 Alignment Synced
+**Owner:** MoOoH
+**Phase:** Phase 5 Stabilization / Completion Candidate
+**Last Updated:** 2026-05-11
+
+---
+
+## Current Implementation Status — 2026-05-11
+
+The protected dashboard architecture has reached Phase 5 stabilization / completion candidate status. The shared shell, dashboard overview, business configuration workspace, lead workspace, and lead detail routes are implemented.
+
+The next architecture step is Phase 5 closure verification, not Phase 6. Keep the product focused on quote request capture, lead organization, reply urgency, follow-up discipline, public quote link visibility, business readiness, and simple recovery proof.
+
+Phase 6 AI generation, email sending, billing, booking, integrations, and generic CRM expansion remain out of scope.
 
 ---
 
@@ -481,6 +491,74 @@ The MVP architecture must not include:
 - Background AI agents
 
 ---
+
+## Dashboard Shell and Information Architecture — v1.4.1
+
+Dashboard IA and UX decisions are canonical and detailed in:
+
+```text
+docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md
+```
+
+### Protected Dashboard Shell
+
+All protected dashboard pages must use the shared dashboard shell.
+
+Canonical files:
+
+```text
+app/(dashboard)/layout.tsx
+components/dashboard/dashboard-shell.tsx
+components/dashboard/dashboard-sidebar.tsx
+```
+
+The shell owns:
+
+- Protected dashboard frame
+- Sidebar
+- Shared dashboard header when applicable
+- App-level navigation
+- Common spacing and layout
+- Responsive dashboard structure
+
+Pages own only page-specific content.
+
+### Route Semantics
+
+```text
+/dashboard                     = Dashboard Overview
+/dashboard/configuration       = Business Configuration
+/dashboard/leads               = Leads
+/dashboard/leads/[leadId]      = Lead Detail
+```
+
+### Page Content Boundary
+
+Pages must not duplicate:
+
+- Sidebar
+- Global dashboard header
+- App-level navigation
+- Shell-level responsive layout logic
+
+### Right Rail Rule
+
+The right rail must be operational context only.
+
+Allowed:
+
+- Readiness hints
+- Quote link guidance
+- Lead context
+- Save status
+- Preview
+- Page-specific operational help
+
+Not allowed:
+
+- Duplicate app navigation
+- Repeated sidebar links
+- Unrelated marketing content
 
 ## 19. Definition of Done
 

@@ -1,11 +1,28 @@
 # BizPilot AI — Execution Roadmap v1.4
 
-**Project:** BizPilot AI  
-**Document Type:** Execution Roadmap  
-**Version:** v1.4  
-**Status:** Final Founder-Grade Canonical Draft  
-**Owner:** MoOoH  
-**Last Updated:** 2026-05-03
+**Project:** BizPilot AI
+**Document Type:** Execution Roadmap
+**Version:** v1.4
+**Status:** Final Founder-Grade Canonical Draft — Phase 5 Alignment Synced
+**Owner:** MoOoH
+**Current Phase:** Phase 5 Stabilization / Completion Candidate
+**Last Updated:** 2026-05-11
+
+---
+
+## Current Execution Status — 2026-05-11
+
+Phase 1 through Phase 4 are implemented. Phase 5 is implemented and currently in stabilization / completion candidate status.
+
+The immediate next step is Phase 5 closure checks:
+
+- keep dashboard copy operational and lead-recovery focused
+- confirm protected dashboard routes use the shared shell
+- verify Lead Conversion Desk workflows and tenant safety
+- run `pnpm typecheck`, `pnpm lint`, and `pnpm build`
+- complete manual smoke tests for dashboard, configuration, lead list, lead detail, and public quote link
+
+Do not begin Phase 6 until Phase 5 is explicitly closed.
 
 ---
 
@@ -184,4 +201,36 @@ The project is successful when a cleaning business says:
 ```text
 This helps me stop losing quote requests, reply faster, and follow up better.
 I’m willing to pay for it.
+```
+
+## Dashboard IA Execution Patch — v1.4.1
+
+Before implementing dashboard pages, follow:
+
+```text
+docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md
+```
+
+Canonical dashboard routes:
+
+```text
+/dashboard                     = Dashboard Overview
+/dashboard/configuration       = Business Configuration
+/dashboard/leads               = Leads
+/dashboard/leads/[leadId]      = Lead Detail
+```
+
+Required shared files:
+
+```text
+app/(dashboard)/layout.tsx
+components/dashboard/dashboard-shell.tsx
+components/dashboard/dashboard-sidebar.tsx
+```
+
+Implementation rule:
+
+```text
+Shell owns dashboard frame and navigation.
+Pages own page-specific content only.
 ```

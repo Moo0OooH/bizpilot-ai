@@ -533,6 +533,56 @@ The MVP must not include:
 
 ---
 
+## Dashboard UI Organization Standard — v1.4.1
+
+Dashboard UI decisions are canonical and detailed in:
+
+```text
+docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md
+```
+
+### Shared Shell Requirement
+
+Shared protected dashboard UI must live in:
+
+```text
+app/(dashboard)/layout.tsx
+components/dashboard/dashboard-shell.tsx
+components/dashboard/dashboard-sidebar.tsx
+```
+
+Rules:
+
+- Do not repeat sidebar/header code inside individual pages.
+- Do not place app-level navigation inside route pages.
+- Do not duplicate dashboard shell spacing/layout logic across pages.
+- Pages render page-specific content only.
+- Page-level navigation is allowed only inside the current page.
+
+### Route Ownership
+
+```text
+/dashboard                     = Dashboard Overview
+/dashboard/configuration       = Business Configuration
+/dashboard/leads               = Leads
+/dashboard/leads/[leadId]      = Lead Detail
+```
+
+### Server / Client Boundary
+
+Keep dashboard shell server-rendered where possible.
+
+Use client components for:
+
+- Interactive forms
+- Accordions
+- Inline customization
+- Copy buttons
+- Sticky save bars
+- Optimistic UI where useful
+
+Do not convert the entire dashboard shell to a client component unless required.
+
 ## 24. Definition of Done
 
 This document is complete when:
