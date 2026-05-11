@@ -136,12 +136,14 @@ export async function listQualityScoresForLeads(input: {
 }
 
 export async function getQualityScoreForLead(input: {
+  businessId: string;
   leadId: string;
   supabase: SupabaseClient<Database>;
 }): Promise<LeadQualityScoreRecord | null> {
   const { data, error } = await input.supabase
     .from("lead_quality_scores")
     .select("*")
+    .eq("business_id", input.businessId)
     .eq("lead_id", input.leadId)
     .maybeSingle();
 
@@ -182,12 +184,14 @@ export async function upsertLeadQualityScore(input: {
 }
 
 export async function listActionItemsForLead(input: {
+  businessId: string;
   leadId: string;
   supabase: SupabaseClient<Database>;
 }): Promise<LeadActionItemRecord[]> {
   const { data, error } = await input.supabase
     .from("lead_action_items")
     .select("*")
+    .eq("business_id", input.businessId)
     .eq("lead_id", input.leadId)
     .order("created_at", { ascending: false });
 
@@ -261,17 +265,25 @@ export async function completeLeadActionItem(input: {
   actionItemId: string;
   businessId: string;
   supabase: SupabaseClient<Database>;
-}): Promise<void> {
-  const { error } = await input.supabase
+}): Promise<LeadActionItemRecord> {
+  const { data, error } = await input.supabase
     .from("lead_action_items")
     .update({
       completed_at: new Date().toISOString(),
       status: "completed",
     })
     .eq("business_id", input.businessId)
-    .eq("id", input.actionItemId);
+    .eq("id", input.actionItemId)
+    .select("*")
+    .single();
 
   await throwIfError(error);
+
+  if (!data) {
+    throw new Error("Unable to complete lead action item.");
+  }
+
+  return data;
 }
 
 export async function dismissOpenActionItemsForLead(input: {
@@ -292,12 +304,14 @@ export async function dismissOpenActionItemsForLead(input: {
 }
 
 export async function listEventsForLead(input: {
+  businessId: string;
   leadId: string;
   supabase: SupabaseClient<Database>;
 }): Promise<LeadEventRecord[]> {
   const { data, error } = await input.supabase
     .from("lead_events")
     .select("*")
+    .eq("business_id", input.businessId)
     .eq("lead_id", input.leadId)
     .order("created_at", { ascending: false });
 
@@ -307,6 +321,7 @@ export async function listEventsForLead(input: {
 }
 
 export async function insertLeadEvent(input: {
+  actorUserId?: string | null | undefined;
   businessId: string;
   eventLabel: string;
   eventType: LeadEventType;
@@ -314,15 +329,44 @@ export async function insertLeadEvent(input: {
   metadata?: Json;
   supabase: SupabaseClient<Database>;
 }): Promise<void> {
-  const { error } = await input.supabase.from("lead_events").insert({
+  const row = {
+    actor_user_id: input.actorUserId ?? null,
     business_id: input.businessId,
     event_label: input.eventLabel,
     event_type: input.eventType,
     lead_id: input.leadId,
     metadata: input.metadata ?? {},
-  });
+  };
 
-  await throwIfError(error);
+  const { error } = await input.supabase.from("lead_events").insert(row);
+
+  if (
+    !error ||
+    (!error.message.includes("actor_user_id") &&
+      !error.message.includes("lead_events_event_type_check"))
+  ) {
+    await throwIfError(error);
+    return;
+  }
+
+  const legacyEventType =
+    input.eventType === "status_changed"
+      ? "status_updated"
+      : input.eventType === "follow_up_marked"
+        ? "action_completed"
+        : input.eventType;
+
+  const { error: legacyError } = await input.supabase
+    .from("lead_events")
+    .insert({
+      business_id: input.businessId,
+      event_label: input.eventLabel,
+      event_type: legacyEventType,
+      lead_id: input.leadId,
+      metadata: input.metadata ?? {},
+    } as Database["public"]["Tables"]["lead_events"]["Insert"]);
+
+  await throwIfError(legacyError);
 }
 
 export async function updateLeadWorkflow(input: {

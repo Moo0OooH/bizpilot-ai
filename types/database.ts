@@ -721,49 +721,55 @@ export type Database = {
       };
       lead_events: {
         Row: {
+          actor_user_id: string | null;
           business_id: string;
           created_at: Timestamp;
           event_label: string;
           event_type:
             | "action_completed"
+            | "follow_up_marked"
             | "lead_created"
             | "lead_viewed"
             | "outcome_marked"
             | "reply_copied"
             | "score_calculated"
-            | "status_updated";
+            | "status_changed";
           id: string;
           lead_id: string;
           metadata: Json;
         };
         Insert: {
+          actor_user_id?: string | null;
           business_id: string;
           created_at?: Timestamp;
           event_label: string;
           event_type:
             | "action_completed"
+            | "follow_up_marked"
             | "lead_created"
             | "lead_viewed"
             | "outcome_marked"
             | "reply_copied"
             | "score_calculated"
-            | "status_updated";
+            | "status_changed";
           id?: string;
           lead_id: string;
           metadata?: Json;
         };
         Update: {
+          actor_user_id?: string | null;
           business_id?: string;
           created_at?: Timestamp;
           event_label?: string;
           event_type?:
             | "action_completed"
+            | "follow_up_marked"
             | "lead_created"
             | "lead_viewed"
             | "outcome_marked"
             | "reply_copied"
             | "score_calculated"
-            | "status_updated";
+            | "status_changed";
           id?: string;
           lead_id?: string;
           metadata?: Json;

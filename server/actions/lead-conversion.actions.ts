@@ -89,7 +89,10 @@ async function getActiveBusinessForAction() {
     throw new Error("No active business is available.");
   }
 
-  return activeBusiness;
+  return {
+    activeBusiness,
+    actorUserId: user.id,
+  };
 }
 
 function redirectWithLeadError(leadId: string, error: unknown): never {
@@ -104,8 +107,11 @@ export async function updateLeadStatusAction(
   const leadId = readRequiredFormValue(formData, "leadId");
 
   try {
+    const { activeBusiness, actorUserId } = await getActiveBusinessForAction();
+
     await updateLeadStatus({
-      business: await getActiveBusinessForAction(),
+      actorUserId,
+      business: activeBusiness,
       leadId,
       status: readLeadStatus(readRequiredFormValue(formData, "status")),
     });
@@ -124,8 +130,11 @@ export async function markReplyCopiedAction(
   const leadId = readRequiredFormValue(formData, "leadId");
 
   try {
+    const { activeBusiness, actorUserId } = await getActiveBusinessForAction();
+
     await markReplyCopied({
-      business: await getActiveBusinessForAction(),
+      actorUserId,
+      business: activeBusiness,
       leadId,
     });
   } catch (error) {
@@ -143,8 +152,11 @@ export async function markLeadOutcomeAction(
   const leadId = readRequiredFormValue(formData, "leadId");
 
   try {
+    const { activeBusiness, actorUserId } = await getActiveBusinessForAction();
+
     await markLeadOutcome({
-      business: await getActiveBusinessForAction(),
+      actorUserId,
+      business: activeBusiness,
       leadId,
       manualOutcome: readManualOutcome(
         readRequiredFormValue(formData, "manualOutcome"),
@@ -165,9 +177,12 @@ export async function completeActionItemAction(
   const leadId = readRequiredFormValue(formData, "leadId");
 
   try {
+    const { activeBusiness, actorUserId } = await getActiveBusinessForAction();
+
     await completeActionItem({
+      actorUserId,
       actionItemId: readRequiredFormValue(formData, "actionItemId"),
-      business: await getActiveBusinessForAction(),
+      business: activeBusiness,
       leadId,
     });
   } catch (error) {

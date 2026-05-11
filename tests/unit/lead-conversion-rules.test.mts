@@ -172,6 +172,19 @@ describe("Lead Conversion Desk rules", () => {
         lead: { ...baseLead, response_sla_state: "overdue" },
         score: score(),
       }).actionType,
+      "reply",
+    );
+
+    assert.equal(
+      chooseAction({
+        lead: {
+          ...baseLead,
+          first_reply_copied_at: "2026-05-09T12:00:00.000Z",
+          response_sla_state: "follow_up_due",
+          status: "replied",
+        },
+        score: score(),
+      }).actionType,
       "follow_up",
     );
 

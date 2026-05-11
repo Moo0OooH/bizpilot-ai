@@ -88,6 +88,7 @@ function intervalSecondsBetween(start: string, end: string): string {
 }
 
 async function syncLeadState(input: {
+  actorUserId?: string | null | undefined;
   lead: LeadRecord;
   serviceAreaNames: string[];
   supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>;
@@ -110,9 +111,28 @@ async function syncLeadState(input: {
     submissionValues,
   });
   const previousScore = await getQualityScoreForLead({
+    businessId: input.lead.business_id,
     leadId: input.lead.id,
     supabase: input.supabase,
   });
+  const existingEvents = await listEventsForLead({
+    businessId: input.lead.business_id,
+    leadId: input.lead.id,
+    supabase: input.supabase,
+  });
+
+  if (!existingEvents.some((event) => event.event_type === "lead_created")) {
+    await insertLeadEvent({
+      actorUserId: input.actorUserId,
+      businessId: input.lead.business_id,
+      eventLabel: "Lead created",
+      eventType: "lead_created",
+      leadId: input.lead.id,
+      metadata: { sourceChannel: input.lead.source_channel },
+      supabase: input.supabase,
+    });
+  }
+
   const score = await upsertLeadQualityScore({
     score: scoreInput,
     supabase: input.supabase,
@@ -120,6 +140,7 @@ async function syncLeadState(input: {
 
   if (!previousScore) {
     await insertLeadEvent({
+      actorUserId: input.actorUserId,
       businessId: input.lead.business_id,
       eventLabel: "Lead quality calculated",
       eventType: "score_calculated",
@@ -161,6 +182,7 @@ async function syncLeadState(input: {
 
   const actionChoice = chooseAction({ lead, score });
   const actions = await listActionItemsForLead({
+    businessId: lead.business_id,
     leadId: lead.id,
     supabase: input.supabase,
   });
@@ -192,6 +214,7 @@ async function syncLeadState(input: {
 }
 
 export async function getLeadConversionDesk(input: {
+  actorUserId?: string | null | undefined;
   business: BusinessRecord;
 }): Promise<LeadConversionDesk> {
   const supabase = await createSupabaseServerClient();
@@ -210,6 +233,7 @@ export async function getLeadConversionDesk(input: {
 
   for (const lead of leads) {
     const synced = await syncLeadState({
+      actorUserId: input.actorUserId,
       lead,
       serviceAreaNames,
       supabase,
@@ -251,6 +275,7 @@ export async function getLeadConversionDesk(input: {
 }
 
 export async function getLeadDetail(input: {
+  actorUserId?: string | null | undefined;
   business: BusinessRecord;
   leadId: string;
 }): Promise<LeadDetail | null> {
@@ -288,6 +313,7 @@ export async function getLeadDetail(input: {
 
   if (!lead.first_viewed_at) {
     await insertLeadEvent({
+      actorUserId: input.actorUserId,
       businessId: input.business.id,
       eventLabel: "Lead viewed",
       eventType: "lead_viewed",
@@ -297,16 +323,19 @@ export async function getLeadDetail(input: {
   }
 
   const synced = await syncLeadState({
+    actorUserId: input.actorUserId,
     lead: viewedLead,
     serviceAreaNames: serviceAreas.map((area) => area.name),
     supabase,
   });
   const [actions, events, allLeads, allActions, allScores] = await Promise.all([
     listActionItemsForLead({
+      businessId: input.business.id,
       leadId: lead.id,
       supabase,
     }),
     listEventsForLead({
+      businessId: input.business.id,
       leadId: lead.id,
       supabase,
     }),
@@ -341,6 +370,7 @@ export async function getLeadDetail(input: {
 }
 
 export async function updateLeadStatus(input: {
+  actorUserId?: string | null | undefined;
   business: BusinessRecord;
   leadId: string;
   status: LeadStatus;
@@ -356,9 +386,10 @@ export async function updateLeadStatus(input: {
     supabase,
   });
   await insertLeadEvent({
+    actorUserId: input.actorUserId,
     businessId: input.business.id,
     eventLabel: `Status updated to ${input.status.replaceAll("_", " ")}`,
-    eventType: "status_updated",
+    eventType: "status_changed",
     leadId: input.leadId,
     metadata: { status: input.status },
     supabase,
@@ -366,6 +397,7 @@ export async function updateLeadStatus(input: {
 }
 
 export async function markReplyCopied(input: {
+  actorUserId?: string | null | undefined;
   business: BusinessRecord;
   leadId: string;
 }): Promise<void> {
@@ -397,6 +429,7 @@ export async function markReplyCopied(input: {
     supabase,
   });
   await insertLeadEvent({
+    actorUserId: input.actorUserId,
     businessId: input.business.id,
     eventLabel: "Reply copied",
     eventType: "reply_copied",
@@ -406,6 +439,7 @@ export async function markReplyCopied(input: {
 }
 
 export async function markLeadOutcome(input: {
+  actorUserId?: string | null | undefined;
   business: BusinessRecord;
   leadId: string;
   manualOutcome: LeadManualOutcome;
@@ -427,6 +461,7 @@ export async function markLeadOutcome(input: {
     supabase,
   });
   await insertLeadEvent({
+    actorUserId: input.actorUserId,
     businessId: input.business.id,
     eventLabel: `Outcome marked as ${input.manualOutcome.replaceAll("_", " ")}`,
     eventType: "outcome_marked",
@@ -437,12 +472,13 @@ export async function markLeadOutcome(input: {
 }
 
 export async function completeActionItem(input: {
+  actorUserId?: string | null | undefined;
   actionItemId: string;
   business: BusinessRecord;
   leadId: string;
 }): Promise<void> {
   const supabase = await createSupabaseServerClient();
-  await completeLeadActionItem({
+  const actionItem = await completeLeadActionItem({
     actionItemId: input.actionItemId,
     businessId: input.business.id,
     supabase,
@@ -456,9 +492,16 @@ export async function completeActionItem(input: {
     supabase,
   });
   await insertLeadEvent({
+    actorUserId: input.actorUserId,
     businessId: input.business.id,
-    eventLabel: "Action completed",
-    eventType: "action_completed",
+    eventLabel:
+      actionItem.action_type === "follow_up"
+        ? "Follow-up marked complete"
+        : "Action completed",
+    eventType:
+      actionItem.action_type === "follow_up"
+        ? "follow_up_marked"
+        : "action_completed",
     leadId: input.leadId,
     metadata: { actionItemId: input.actionItemId },
     supabase,

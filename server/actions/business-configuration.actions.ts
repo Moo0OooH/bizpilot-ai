@@ -5,7 +5,7 @@
  * Description: Provides Phase 3 business configuration server actions.
  * Role: Connects protected dashboard forms to tenant-safe configuration services.
  * Related:
- * - app/(dashboard)/dashboard/page.tsx
+ * - app/(dashboard)/dashboard/configuration/page.tsx
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-05
@@ -147,7 +147,7 @@ function readPrivacyMode(
 function redirectWithConfigurationError(error: unknown): never {
   const message =
     error instanceof Error ? error.message : "Business configuration failed.";
-  redirect(`/dashboard?error=${encodeURIComponent(message)}`);
+  redirect(`/dashboard/configuration?error=${encodeURIComponent(message)}`);
 }
 
 function readTemplateFieldOverrides(formData: FormData): Json {
@@ -240,5 +240,8 @@ export async function saveBusinessConfigurationAction(
   }
 
   revalidatePath("/dashboard");
-  redirect("/dashboard?notice=Business%20configuration%20saved.");
+  revalidatePath("/dashboard/configuration");
+  redirect(
+    "/dashboard/configuration?notice=Business%20configuration%20saved.",
+  );
 }

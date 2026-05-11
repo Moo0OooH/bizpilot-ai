@@ -310,7 +310,8 @@ export function chooseAction(input: {
 }): { actionType: RuleActionItem["action_type"]; title: string } {
   if (
     input.lead.response_sla_state === "follow_up_due" ||
-    input.lead.response_sla_state === "overdue"
+    input.lead.status === "replied" ||
+    Boolean(input.lead.first_reply_copied_at)
   ) {
     return {
       actionType: "follow_up",
@@ -327,7 +328,10 @@ export function chooseAction(input: {
 
   return {
     actionType: "reply",
-    title: "Reply to this lead",
+    title:
+      input.lead.response_sla_state === "overdue"
+        ? "Reply to overdue lead"
+        : "Reply to this lead",
   };
 }
 
