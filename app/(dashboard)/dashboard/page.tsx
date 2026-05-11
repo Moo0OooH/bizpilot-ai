@@ -20,6 +20,7 @@
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import type React from "react";
 
 import { CopyButton } from "@/components/dashboard/copy-button";
 import {
@@ -30,7 +31,6 @@ import {
   PageHeader,
   primaryButtonClass,
   QuickActionTile,
-  ResponseSlaBadge,
   RightRailPanel,
   SectionHeader,
   StatusBadge,
@@ -53,8 +53,40 @@ function formatDate(value: string | null): string {
   }).format(new Date(value));
 }
 
-function label(value: string): string {
-  return value.replaceAll("_", " ");
+function riskLabel(value: string): string {
+  if (value === "strong") {
+    return "Low";
+  }
+
+  if (value === "needs_info") {
+    return "Medium";
+  }
+
+  return "High";
+}
+
+function KpiIcon({
+  children,
+  tone,
+}: Readonly<{ children: React.ReactNode; tone: string }>) {
+  const toneClass =
+    tone === "emerald"
+      ? "bg-emerald-100 text-emerald-700"
+      : tone === "amber"
+        ? "bg-amber-100 text-amber-700"
+        : tone === "red"
+          ? "bg-red-100 text-red-700"
+          : tone === "blue"
+            ? "bg-blue-100 text-blue-700"
+            : "bg-violet-100 text-violet-700";
+
+  return (
+    <span
+      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${toneClass}`}
+    >
+      {children}
+    </span>
+  );
 }
 
 export default async function DashboardOverviewPage() {
@@ -153,7 +185,7 @@ export default async function DashboardOverviewPage() {
           };
 
   return (
-    <main className="space-y-3">
+    <main className="space-y-2.5">
       <PageHeader
         actions={
           <>
@@ -165,34 +197,34 @@ export default async function DashboardOverviewPage() {
             </Link>
           </>
         }
-        description="Here's what needs attention today."
+        description="See what needs attention, which leads are at risk, and what to do next."
         eyebrow="Overview"
         title="Dashboard Overview"
       />
 
-      <DashboardCard className="grid min-h-16 gap-2.5 p-3 lg:grid-cols-[9rem_repeat(3,minmax(0,1fr))] lg:items-center">
+      <DashboardCard className="grid min-h-14 gap-2 p-2.5 lg:grid-cols-[8rem_repeat(3,minmax(0,1fr))] lg:items-center">
         <div className="text-xs font-semibold leading-5 text-slate-950">
-          Needs your attention
+          Needs attention
         </div>
         {[
           {
-            detail: "Oldest risk in the lead desk",
+            detail: "Quote requests at risk",
             href: "/dashboard/leads",
-            label: "Overdue replies",
+            label: "Reply needed",
             tone: "red",
             value: overdueLeadCount,
           },
           {
             detail: "Due today",
             href: "/dashboard/leads",
-            label: "Follow-up due today",
+            label: "Follow-up due",
             tone: "amber",
             value: actionCounts.followUp,
           },
           {
             detail: "Not reviewed yet",
             href: "/dashboard/leads",
-            label: "New lead not reviewed",
+            label: "New quote request",
             tone: "violet",
             value: newLeadCount,
           },
@@ -226,63 +258,56 @@ export default async function DashboardOverviewPage() {
         ))}
       </DashboardCard>
 
-      <section className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_300px]">
-        <div className="space-y-3">
-          <section className="grid auto-rows-fr gap-3 md:grid-cols-2 xl:grid-cols-5">
-            <DashboardCard className="flex min-h-[168px] flex-col p-4">
-              <SectionHeader title="Business Readiness" />
-              <div className="mt-3 grid grid-cols-[4rem_minmax(0,1fr)] gap-3">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border-[7px] border-emerald-200 text-base font-semibold text-slate-950">
+      <section className="grid items-start gap-3 xl:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="space-y-2.5">
+          <section className="grid auto-rows-fr gap-2.5 md:grid-cols-2 xl:grid-cols-5">
+            <DashboardCard className="flex min-h-[176px] flex-col p-3">
+              <div className="flex items-start gap-2">
+                <KpiIcon tone="emerald">Q</KpiIcon>
+                <SectionHeader title="Quote link readiness" />
+              </div>
+              <div className="mt-2 grid grid-cols-[3rem_minmax(0,1fr)] gap-2.5">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border-[5px] border-emerald-200 text-xs font-semibold text-slate-950">
                   {readinessPercent}%
                 </div>
                 <div className="min-w-0">
                   <p className="text-xs font-semibold text-slate-950">
                     {missingReadinessItems.length === 0
-                      ? "Ready to share"
-                      : `${missingReadinessItems.length} setup tasks left`}
+                      ? "Ready"
+                      : `${missingReadinessItems.length} tasks left`}
                   </p>
-                  <div className="mt-1.5 grid gap-0.5 text-[11px] text-slate-600">
-                    {readiness.items.slice(0, 3).map((item) => (
-                      <span className="truncate" key={item.label}>
-                        <span
-                          className={
-                            item.complete
-                              ? "font-semibold text-emerald-700"
-                              : "font-semibold text-amber-700"
-                          }
-                        >
-                          {item.complete ? "Done" : "Open"}
-                        </span>{" "}
-                        {item.label}
-                      </span>
-                    ))}
-                  </div>
+                  <p className="mt-1 text-xs leading-4 text-slate-600">
+                    Public quote link is live.
+                  </p>
                 </div>
               </div>
               <Link
-                className={`${buttonClass} mt-auto w-full`}
+                className={`${buttonClass} mt-auto w-full whitespace-nowrap`}
                 href="/dashboard/configuration"
               >
-                View setup
+                Check setup
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[168px] flex-col p-4">
-              <SectionHeader title="Quote requests captured" />
-              <div className="mt-3 flex items-baseline gap-2">
-                <p className="text-2xl font-semibold leading-none text-slate-950">
+            <DashboardCard className="flex min-h-[176px] flex-col p-3">
+              <div className="flex items-start gap-2">
+                <KpiIcon tone="blue">L</KpiIcon>
+                <SectionHeader title="Quote requests" />
+              </div>
+              <div className="mt-2 flex items-baseline gap-2">
+                <p className="text-xl font-semibold leading-none text-slate-950">
                   {desk.recoveryProof.quoteRequestsCaptured}
                 </p>
                 <p className="text-xs font-medium text-slate-500">
                   captured
                 </p>
               </div>
-              <p className="mt-2 inline-flex w-fit rounded-full bg-emerald-50 px-2 py-1 text-[11px] font-medium text-emerald-700">
-                Public quote link is live
+              <p className="mt-1.5 inline-flex w-fit rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
+                Link is live
               </p>
               <svg
                 aria-hidden="true"
-                className="mt-2 h-9 w-full text-violet-600"
+                className="mt-1.5 h-6 w-full text-violet-600"
                 fill="none"
                 viewBox="0 0 180 56"
               >
@@ -293,21 +318,24 @@ export default async function DashboardOverviewPage() {
                   strokeWidth="3"
                 />
               </svg>
-              <Link className={`${buttonClass} mt-auto w-full`} href="/dashboard/leads">
-                View all leads
+              <Link className={`${buttonClass} mt-auto w-full whitespace-nowrap`} href="/dashboard/leads">
+                Open desk
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[168px] flex-col p-4">
-              <SectionHeader title="Replies needing attention" />
+            <DashboardCard className="flex min-h-[176px] flex-col p-3">
+              <div className="flex items-start gap-2">
+                <KpiIcon tone="amber">!</KpiIcon>
+                <SectionHeader title="Needs attention" />
+              </div>
               <p
-                className={`mt-3 text-2xl font-semibold leading-none ${
+                className={`mt-2 text-xl font-semibold leading-none ${
                   repliesNeedingAttention > 0 ? "text-red-700" : "text-emerald-700"
                 }`}
               >
                 {repliesNeedingAttention}
               </p>
-              <div className="mt-2 divide-y divide-slate-100 text-xs">
+              <div className="mt-1.5 divide-y divide-slate-100 text-xs">
                 {[
                   ["New", newLeadCount],
                   ["Follow-up due today", actionCounts.followUp],
@@ -315,7 +343,7 @@ export default async function DashboardOverviewPage() {
                   ["Replied", repliedLeadCount],
                 ].map(([title, value]) => (
                   <div
-                    className="flex items-center justify-between py-1"
+                    className="flex items-center justify-between py-0.5"
                     key={title}
                   >
                     <span className="text-slate-600">{title}</span>
@@ -323,20 +351,23 @@ export default async function DashboardOverviewPage() {
                   </div>
                 ))}
               </div>
-              <Link className={`${buttonClass} mt-auto w-full`} href="/dashboard/leads">
-                Open lead desk
+              <Link className={`${buttonClass} mt-auto w-full whitespace-nowrap`} href="/dashboard/leads">
+                Review
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[168px] flex-col p-4">
-              <SectionHeader title="Reply workflow proof" />
-              <p className="mt-3 text-2xl font-semibold leading-none text-slate-950">
+            <DashboardCard className="flex min-h-[176px] flex-col p-3">
+              <div className="flex items-start gap-2">
+                <KpiIcon tone="violet">R</KpiIcon>
+                <SectionHeader title="Reply proof" />
+              </div>
+              <p className="mt-2 text-xl font-semibold leading-none text-slate-950">
                 {replyCopiedCount}
               </p>
-              <p className="mt-1.5 text-xs leading-4 text-slate-500">
-                reply copies recorded in the desk
+              <p className="mt-1 text-xs leading-4 text-slate-500">
+                reply copies saved
               </p>
-              <div className="mt-3 h-1.5 rounded-full bg-slate-100">
+              <div className="mt-2 h-1.5 rounded-full bg-slate-100">
                 <div
                   className="h-full rounded-full bg-violet-600"
                   style={{
@@ -355,22 +386,25 @@ export default async function DashboardOverviewPage() {
                   }}
                 />
               </div>
-              <p className="mt-2 text-[11px] text-slate-500">
-                Phase 5 tracks owner response progress.
+              <p className="mt-1.5 text-[11px] text-slate-500">
+                Owner response tracking is active.
               </p>
-              <Link className={`${buttonClass} mt-auto w-full`} href="/dashboard/leads">
-                Open lead desk
+              <Link className={`${buttonClass} mt-auto w-full whitespace-nowrap`} href="/dashboard/leads">
+                Open desk
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[168px] flex-col p-4">
-              <SectionHeader title="Revenue recovery proof" />
-              <div className="mt-3 grid gap-1 text-xs">
+            <DashboardCard className="flex min-h-[176px] flex-col p-3">
+              <div className="flex items-start gap-2">
+                <KpiIcon tone="emerald">$</KpiIcon>
+                <SectionHeader title="Recovery proof" />
+              </div>
+              <div className="mt-2 grid gap-0.5 text-xs">
                 {[
-                  ["Quote requests captured", desk.recoveryProof.quoteRequestsCaptured],
+                  ["Requests captured", desk.recoveryProof.quoteRequestsCaptured],
                   ["Replies copied", replyCopiedCount],
                   ["Follow-ups due", desk.recoveryProof.followUpsDue],
-                  ["Follow-ups sent", desk.recoveryProof.followUpsCompleted],
+                  ["Follow-ups done", desk.recoveryProof.followUpsCompleted],
                   ["Booked", bookedCount],
                   ["Lost / closed", lostCount],
                 ].map(([title, value]) => (
@@ -383,13 +417,13 @@ export default async function DashboardOverviewPage() {
                   </div>
                 ))}
               </div>
-              <Link className={`${buttonClass} mt-auto w-full`} href="/dashboard/leads">
-                View lead desk
+              <Link className={`${buttonClass} mt-auto w-full whitespace-nowrap`} href="/dashboard/leads">
+                View leads
               </Link>
             </DashboardCard>
           </section>
 
-          <DashboardCard className="p-4" variant="elevated">
+          <DashboardCard className="p-3" variant="elevated">
             <SectionHeader
               action={
                 <Link
@@ -399,16 +433,15 @@ export default async function DashboardOverviewPage() {
                   View all leads
                 </Link>
               }
-              description="Newest quote requests, risk state, and the next owner action."
-              title="Recent Leads"
+              description="Newest requests, risk, and next action."
+              title="Lead Recovery Queue"
             />
-            <div className="mt-3 overflow-hidden rounded-lg border border-zinc-200">
-              <div className="hidden grid-cols-[1.05fr_0.72fr_0.68fr_0.7fr_0.74fr_0.68fr_0.95fr_0.72fr_2rem] bg-slate-50 px-3 py-2 text-[11px] font-medium uppercase tracking-wide text-slate-500 xl:grid">
+            <div className="mt-2 overflow-hidden rounded-lg border border-zinc-200">
+              <div className="hidden grid-cols-[1.25fr_0.72fr_0.8fr_0.6fr_0.7fr_1fr_0.72fr_2rem] bg-slate-50 px-3 py-1.5 text-[10px] font-medium uppercase tracking-wide text-slate-500 xl:grid">
                 <span>Customer</span>
                 <span>Service</span>
                 <span>Source</span>
-                <span>Quality</span>
-                <span>SLA</span>
+                <span>Risk</span>
                 <span>Status</span>
                 <span>Next action</span>
                 <span>Received</span>
@@ -417,7 +450,7 @@ export default async function DashboardOverviewPage() {
               {recentLeads.length > 0 ? (
                 recentLeads.map((item) => (
                   <Link
-                    className="grid min-h-14 gap-2 border-t border-slate-200 px-3 py-2 text-xs transition hover:bg-slate-50 xl:grid-cols-[1.05fr_0.72fr_0.68fr_0.7fr_0.74fr_0.68fr_0.95fr_0.72fr_2rem] xl:items-center"
+                    className="grid min-h-12 gap-2 border-t border-slate-200 px-3 py-1.5 text-xs transition hover:bg-slate-50 xl:grid-cols-[1.25fr_0.72fr_0.8fr_0.6fr_0.7fr_1fr_0.72fr_2rem] xl:items-center"
                     href={`/dashboard/leads/${item.lead.id}`}
                     key={item.lead.id}
                   >
@@ -444,17 +477,11 @@ export default async function DashboardOverviewPage() {
                             : "blue"
                       }
                     >
-                      {label(item.score.quality_level)}
+                      {riskLabel(item.score.quality_level)}
                     </StatusBadge>
-                    <ResponseSlaBadge value={item.lead.response_sla_state} />
                     <LeadStatusBadge value={item.lead.status} />
-                    <span>
-                      <span className="inline-flex rounded-md bg-slate-950 px-2 py-1 text-xs font-semibold text-white">
-                        {item.recommendedAction}
-                      </span>
-                      <span className="mt-1 block text-xs leading-4 text-slate-500">
-                        {item.primaryIssue}
-                      </span>
+                    <span className="truncate text-slate-700">
+                      {item.recommendedAction}
                     </span>
                     <span className="text-xs text-slate-500">
                       {formatDate(item.lead.created_at)}
@@ -476,41 +503,29 @@ export default async function DashboardOverviewPage() {
             </div>
           </DashboardCard>
 
-          <DashboardCard className="p-4">
+          <DashboardCard className="p-3">
             <SectionHeader
-              description="Fast owner shortcuts for the current Phase 5 workflow."
+              description="Three focused actions that support quote recovery."
               title="Quick Actions"
             />
-            <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-              <div className="flex min-h-14 items-center gap-2.5 rounded-[10px] border border-slate-200 bg-slate-50 px-3">
+            <div className="mt-2 grid gap-2 sm:grid-cols-3">
+              <div className="flex min-h-12 items-center gap-2.5 rounded-[10px] border border-slate-200 bg-slate-50 px-3">
                 <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-700">
                   C
                 </span>
                 <CopyButton label="Copy quote link" value={quotePath} />
               </div>
               <QuickActionTile
-                description="Edit quote form"
-                href="/dashboard/configuration"
-                icon="T"
-                title="Customize template"
-              />
-              <QuickActionTile
-                description="Logo, colors, text"
-                href="/dashboard/configuration"
-                icon="B"
-                title="Edit branding"
-              />
-              <QuickActionTile
-                description="Open lead desk"
+                description="Review waiting leads"
                 href="/dashboard/leads"
                 icon="L"
-                title="View leads"
+                title="Open Lead Desk"
               />
               <QuickActionTile
-                description="See live page"
-                href={quotePath}
-                icon="P"
-                title="Preview public page"
+                description="Form, link, and branding"
+                href="/dashboard/configuration"
+                icon="Q"
+                title="Customize quote page"
               />
             </div>
           </DashboardCard>
@@ -520,23 +535,23 @@ export default async function DashboardOverviewPage() {
           <RightRailPanel variant="priority">
             <SectionHeader
               description={`${actionCounts.reply + actionCounts.askInfo + actionCounts.followUp} items`}
-              title="Today's action queue"
+              title="Today's recovery queue"
             />
             <div className="mt-3 grid gap-2">
               {[
                 {
                   detail: `${actionCounts.reply} leads waiting`,
-                  label: "Reply",
+                  label: "Reply needed",
                   value: actionCounts.reply,
                 },
                 {
                   detail: `${actionCounts.askInfo} lead needs details`,
-                  label: "Ask info",
+                  label: "Missing info",
                   value: actionCounts.askInfo,
                 },
                 {
                   detail: `${actionCounts.followUp} follow-up due today`,
-                  label: "Follow-up",
+                  label: "Follow-up due",
                   value: actionCounts.followUp,
                 },
               ].map((action) => (
@@ -561,7 +576,7 @@ export default async function DashboardOverviewPage() {
               ))}
             </div>
             <Link className={`${buttonClass} mt-3 w-full`} href="/dashboard/leads">
-              Open action queue
+              Review waiting leads
             </Link>
           </RightRailPanel>
 
@@ -593,10 +608,10 @@ export default async function DashboardOverviewPage() {
             </div>
             <div className="mt-3 grid grid-cols-2 gap-2">
               <Link className={buttonClass} href="/dashboard/configuration">
-                Placement guide
+                Placement tips
               </Link>
               <Link className={buttonClass} href="/dashboard/configuration">
-                Edit link
+                Quote setup
               </Link>
             </div>
           </RightRailPanel>
@@ -620,15 +635,15 @@ export default async function DashboardOverviewPage() {
               {[
                 {
                   href: "/dashboard/configuration",
-                  title: "Place quote link",
+                  title: "Place quote link in one more channel",
                 },
                 {
                   href: "/dashboard/leads",
-                  title: "Review follow-up queue",
+                  title: "Review leads waiting for reply",
                 },
                 {
                   href: quotePath,
-                  title: "Check public quote page",
+                  title: "Check the customer quote page",
                 },
               ].map((resource) => (
                 <Link
