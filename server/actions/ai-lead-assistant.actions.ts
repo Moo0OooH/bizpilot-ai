@@ -37,13 +37,18 @@ function readRequiredFormValue(formData: FormData, key: string): string {
 function redirectWithLeadError(leadId: string, error: unknown): never {
   const rawMessage =
     error instanceof Error ? error.message : "AI assistant generation failed.";
-  const message =
+  let message = "AI assistant could not prepare a draft. Please try again.";
+
+  if (
     rawMessage.includes("ai_outputs") ||
     rawMessage.includes("usage_events") ||
     rawMessage.includes("relation") ||
     rawMessage.includes("schema cache")
-      ? "AI assistant storage is not ready. Apply the Phase 6 migration first."
-      : rawMessage;
+  ) {
+    message = "AI assistant storage is not ready. Apply the Phase 6 migration first.";
+  } else if (rawMessage === "Lead is not ready for AI assistance yet.") {
+    message = rawMessage;
+  }
 
   redirect(`/dashboard/leads/${leadId}?error=${encodeURIComponent(message)}`);
 }
@@ -77,7 +82,7 @@ export async function generateLeadAiBundleAction(
     notice =
       output.provider === "openai"
         ? "AI%20assistant%20draft%20generated."
-        : "AI%20fallback%20draft%20prepared.%20Add%20OPENAI_API_KEY%20for%20model%20generation.";
+        : "Fallback%20draft%20prepared.%20Model%20generation%20is%20not%20configured.";
   } catch (error) {
     redirectWithLeadError(leadId, error);
   }

@@ -288,15 +288,24 @@ export default async function LeadDetailPage({
               </button>
             </form>
           }
-          description="On-demand assistant-only draft. Nothing is sent automatically."
+          description="Manual, on-demand drafts for the owner to review and copy. Nothing is sent automatically."
           title="AI lead assistant"
         />
         {aiOutput ? (
           <div className="mt-4 grid gap-3 xl:grid-cols-[0.9fr_1.1fr]">
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
-              <p className="text-xs font-semibold text-slate-950">
-                Lead summary
-              </p>
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-xs font-semibold text-slate-950">
+                  Lead summary
+                </p>
+                <StatusBadge
+                  tone={aiOutput.provider === "openai" ? "emerald" : "amber"}
+                >
+                  {aiOutput.provider === "openai"
+                    ? "Model draft"
+                    : "Rule fallback"}
+                </StatusBadge>
+              </div>
               <p className="mt-2 text-sm leading-6 text-slate-700">
                 {aiOutput.output.leadSummary}
               </p>
@@ -315,21 +324,19 @@ export default async function LeadDetailPage({
                 </p>
                 <p>
                   <span className="font-semibold text-slate-950">
-                    Cost:
+                    Estimated cost:
                   </span>{" "}
-                  ${aiOutput.estimatedCost.toFixed(6)} estimated
+                  ${aiOutput.estimatedCost.toFixed(6)}
+                  {aiOutput.provider === "rule_fallback" ? " (fallback)" : ""}
                 </p>
               </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                <StatusBadge
-                  tone={aiOutput.provider === "openai" ? "emerald" : "amber"}
-                >
-                  {aiOutput.provider === "openai"
-                    ? "Model generated"
-                    : "Rule fallback"}
-                </StatusBadge>
-                <StatusBadge tone="blue">{aiOutput.model}</StatusBadge>
-              </div>
+              <p className="mt-3 rounded-md border border-slate-200 bg-white px-2.5 py-2 text-[11px] leading-5 text-slate-600">
+                Owner review required. BizPilot does not send messages, confirm
+                bookings, or invent pricing or availability.
+              </p>
+              <p className="mt-2 text-[11px] text-slate-500">
+                Source: {aiOutput.model}
+              </p>
             </div>
             <div className="grid gap-3">
               <div className="rounded-lg border border-slate-200 p-3">
@@ -365,12 +372,18 @@ export default async function LeadDetailPage({
         ) : (
           <div className="mt-4 rounded-lg border border-dashed border-slate-200 bg-slate-50 p-4">
             <p className="text-sm font-medium text-slate-950">
-              Generate a cached lead recovery bundle when you need it.
+              Generate a draft only when you are ready to review it.
             </p>
             <p className="mt-1 text-sm leading-6 text-slate-600">
               BizPilot will prepare a summary, reply draft, follow-up draft, and
-              next action for the owner to review before sending.
+              next action. The owner still reviews, copies, and sends manually.
             </p>
+            <div className="mt-3 grid gap-1.5 text-xs text-slate-600 sm:grid-cols-2">
+              <span>Manual generation only</span>
+              <span>No automatic sending</span>
+              <span>No booking confirmation</span>
+              <span>No invented pricing or availability</span>
+            </div>
           </div>
         )}
       </DashboardCard>
