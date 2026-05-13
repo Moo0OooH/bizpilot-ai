@@ -3,9 +3,10 @@
 **Project:** BizPilot AI
 **Owner:** MoOoH
 **Current Phase:** Phase 5 stabilized / completion candidate; Phase 6 foundation started
+**Standards Layer:** v1.5 foundation hardening active
 **Product:** AI Quote Recovery & Lead Conversion Desk
 **GTM:** Cleaning-first
-**Last Updated:** 2026-05-11
+**Last Updated:** 2026-05-13
 
 ---
 
@@ -115,19 +116,33 @@ pnpm lint
 pnpm build
 ```
 
-Latest known checks passed on 2026-05-11.
+Latest known checks passed on 2026-05-13 before v1.5 documentation sync.
 
 ---
 
 ## Canonical Docs
 
+### Active v1.5 Hardening Standards
+
+- `docs/BIZPILOT_FULL_CANONICAL_PACKAGE_v1.5.md`
+- `docs/reference/BIZPILOT_EXTERNAL_REFERENCE_BASELINE_v1.5.md`
+- `docs/operations/BIZPILOT_EXECUTIVE_AUDIT_AND_DECISION_v1.5.md`
+- `docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md`
+- `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
+- `docs/security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md`
+- `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md`
+- `docs/operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md`
+- `docs/operations/BIZPILOT_CODEX_IMPLEMENTATION_PROMPTS_v1.0.md`
+
+The v1.5 package is a hardening and standards upgrade. It does not expand MVP scope.
+
+### Active Product Strategy
+
 - `docs/product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md`
 - `docs/product/BIZPILOT_BUILD_PLAN_v1.4.md`
 - `docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
-- `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.0.md`
 - `docs/product/BIZPILOT_SCORING_SPEC_v1.1.md`
 - `docs/architecture/BIZPILOT_ARCHITECTURE_v1.4.md`
-- `docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.4.md`
 - `docs/engineering/BIZPILOT_EXECUTION_ROADMAP_v1.4.md`
-- `docs/engineering/BIZPILOT_DATABASE_RLS_POLICY_BASELINE_v1.0.md`
-- `docs/security/BIZPILOT_PRIVACY_SECURITY_COMPLIANCE_BASELINE_v1.0.md`
+
+Older v1.4/v1.0 standards remain for historical context unless superseded by v1.5.
