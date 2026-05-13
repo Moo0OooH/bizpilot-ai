@@ -1,7 +1,7 @@
 {
   "project": "BizPilot AI",
   "version": "v1.4.1",
-  "status": "Phase 5 stabilization / completion candidate",
+  "status": "Phase 5 stabilized / completion candidate; Phase 6 manual AI Lead Assistant foundation started",
   "files": [
     "MANIFEST.json",
     "README.md",
@@ -19,6 +19,7 @@
     "docs/product/BIZPILOT_DEMO_GENERATOR_AND_SALES_ASSETS_SPEC_v1.0.md",
     "docs/product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md",
     "docs/product/BIZPILOT_SCORING_SPEC_v1.1.md",
+    "docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.0.md",
     "docs/product/BIZPILOT_VALIDATION_DASHBOARD_SPEC_v1.1.md",
     "docs/product/BIZPILOT_VERTICAL_EXPANSION_PLAYBOOK_v1.0.md",
     "docs/security/BIZPILOT_PRIVACY_SECURITY_COMPLIANCE_BASELINE_v1.0.md"

@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Owner:** MoOoH
-**Current Phase:** Phase 5 stabilization / completion candidate
+**Current Phase:** Phase 5 stabilized / completion candidate; Phase 6 foundation started
 **Product:** AI Quote Recovery & Lead Conversion Desk
 **GTM:** Cleaning-first
 **Last Updated:** 2026-05-11
@@ -16,7 +16,7 @@ BizPilot AI = AI Quote Recovery & Lead Conversion Desk
 Core = Universal Smart Intake Core + AI Lead Conversion Core
 GTM = Cleaning-first
 MVP = Editable Cleaning Smart Quote Template + Lead Conversion Desk
-Operating Mode = Rule-first, AI-on-demand later, cache-heavy, validation-first
+Operating Mode = Rule-first, manual AI-on-demand foundation, cache-heavy, validation-first
 Business Mode = Done-for-you founding customer setup before self-serve SaaS
 ```
 
@@ -35,13 +35,15 @@ Phase 1 through Phase 4 are implemented.
 
 Phase 5 is implemented and being stabilized before it is officially closed.
 
+Phase 6 foundation has started with a manual, on-demand AI Lead Assistant. Full Phase 6 remains open.
+
 The immediate goal is:
 
 ```text
 Functional dashboard -> product-grade quote recovery cockpit
 ```
 
-Do not begin Phase 6 until Phase 5 closure checks are complete.
+Do not expand Phase 6 beyond the manual AI Lead Assistant foundation until Phase 5 closure and end-to-end manual QA are complete.
 
 ---
 
@@ -122,6 +124,7 @@ Latest known checks passed on 2026-05-11.
 - `docs/product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md`
 - `docs/product/BIZPILOT_BUILD_PLAN_v1.4.md`
 - `docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
+- `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.0.md`
 - `docs/product/BIZPILOT_SCORING_SPEC_v1.1.md`
 - `docs/architecture/BIZPILOT_ARCHITECTURE_v1.4.md`
 - `docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.4.md`

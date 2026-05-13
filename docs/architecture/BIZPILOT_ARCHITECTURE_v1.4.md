@@ -5,7 +5,7 @@
 **Version:** v1.4
 **Status:** Final Founder-Grade Canonical Draft — Phase 5 Alignment Synced
 **Owner:** MoOoH
-**Phase:** Phase 5 Stabilization / Completion Candidate
+**Phase:** Phase 5 Stabilization / Completion Candidate; Phase 6 Foundation Started
 **Last Updated:** 2026-05-11
 
 ---
@@ -14,9 +14,9 @@
 
 The protected dashboard architecture has reached Phase 5 stabilization / completion candidate status. The shared shell, dashboard overview, business configuration workspace, lead workspace, and lead detail routes are implemented.
 
-The next architecture step is Phase 5 closure verification, not Phase 6. Keep the product focused on quote request capture, lead organization, reply urgency, follow-up discipline, public quote link visibility, business readiness, and simple recovery proof.
+The next architecture step is end-to-end manual QA and demo readiness. Keep the product focused on quote request capture, lead organization, reply urgency, follow-up discipline, public quote link visibility, business readiness, and simple recovery proof.
 
-Phase 6 AI generation, email sending, billing, booking, integrations, and generic CRM expansion remain out of scope.
+Phase 6 foundation has started with a manual, on-demand AI Lead Assistant. Full Phase 6 remains open. AI auto-send, email sending, billing, booking, integrations, and generic CRM expansion remain out of scope.
 
 ---
 
