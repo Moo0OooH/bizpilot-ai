@@ -27,6 +27,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 - `docs/engineering/BIZPILOT_SERVICE_REPOSITORY_BOUNDARY_AUDIT_v1.0.md`
 - `docs/security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md`
 - `docs/security/BIZPILOT_AUTH_ROUTE_PROTECTION_AUDIT_v1.0.md`
+- `docs/security/BIZPILOT_RLS_AUDIT_REPORT_v1.0.md`
 - `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md`
 - `docs/operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md`
 - `docs/operations/BIZPILOT_CODEX_IMPLEMENTATION_PROMPTS_v1.0.md`
