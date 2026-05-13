@@ -9,12 +9,15 @@
  * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-13
  * Change Log:
  * - 2026-05-04: Created server env validation helper and added standard header.
  * - 2026-05-04: Added explicit server-only env boundary notes for Phase 1.
+ * - 2026-05-13: Enforced the server-only runtime boundary for private env reads.
  * ============================================================
  */
+
+import "server-only";
 
 import { getPublicEnv } from "@/lib/env/public-env";
 

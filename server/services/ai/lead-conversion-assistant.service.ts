@@ -9,15 +9,16 @@
  * - server/services/ai/prompt-registry.ts
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-11
+ * Last Updated: 2026-05-13
  * Change Log:
  * - 2026-05-11: Created on-demand lead conversion bundle generator with rule fallback.
+ * - 2026-05-13: Imported server env through the explicit server-only boundary.
  * ============================================================
  */
 
 import { createHash } from "node:crypto";
 
-import { getServerEnv } from "@/lib/env";
+import { getServerEnv } from "@/lib/env/server-env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   getAiOutputForLeadByHash,
