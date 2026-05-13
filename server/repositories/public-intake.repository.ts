@@ -10,11 +10,14 @@
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-05-06
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-06: Created Phase 4 public intake repository.
  * ============================================================
  */
+
+import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 

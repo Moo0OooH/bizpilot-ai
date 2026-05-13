@@ -9,12 +9,15 @@
  * - supabase/migrations/0001_auth_tenant_foundation.sql
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created Phase 2 profiles repository.
  * - 2026-05-04: Migrated profile reads to official Supabase SDK clients.
  * ============================================================
  */
+
+import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 

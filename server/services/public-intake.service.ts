@@ -10,13 +10,16 @@
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-05-07
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-06: Created Phase 4 public intake service.
  * - 2026-05-07: Added server-side non-negative validation for numeric quote fields.
  * - 2026-05-08: Added server-side validation to reject past date fields.
  * ============================================================
  */
+
+import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {

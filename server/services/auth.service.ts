@@ -9,13 +9,16 @@
  * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created Phase 2 Supabase Auth service.
  * - 2026-05-04: Aligned auth DTOs with exact optional property types.
  * - 2026-05-04: Migrated auth workflows to the official Supabase SDK.
  * ============================================================
  */
+
+import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 

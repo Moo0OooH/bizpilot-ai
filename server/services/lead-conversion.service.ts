@@ -10,11 +10,14 @@
  * - docs/product/BIZPILOT_SCORING_SPEC_v1.1.md
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-05-07
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-07: Created Phase 5 rule-first Lead Conversion Desk service.
  * ============================================================
  */
+
+import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {

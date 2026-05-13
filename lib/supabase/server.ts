@@ -9,13 +9,16 @@
  * - lib/supabase/client.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created server Supabase config placeholder and added standard header.
  * - 2026-05-04: Clarified server-only placeholder boundary and returned immutable config.
  * - 2026-05-04: Added official Supabase SSR and service-role client factories.
  * ============================================================
  */
+
+import "server-only";
 
 import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";

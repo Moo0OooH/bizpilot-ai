@@ -11,10 +11,13 @@
  * Created: 2026-05-11
  * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-11: Created on-demand lead conversion bundle generator with rule fallback.
  * - 2026-05-13: Imported server env through the explicit server-only boundary.
  * ============================================================
  */
+
+import "server-only";
 
 import { createHash } from "node:crypto";
 

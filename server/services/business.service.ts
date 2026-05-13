@@ -10,13 +10,16 @@
  * - server/policies/business-membership.policy.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created Phase 2 business foundation service.
  * - 2026-05-04: Added service-role path for sign-up before confirmed sessions.
  * - 2026-05-04: Migrated business workflows to official Supabase SDK clients.
  * ============================================================
  */
+
+import "server-only";
 
 import {
   createSupabaseServerClient,

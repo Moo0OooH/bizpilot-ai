@@ -9,13 +9,16 @@
  * - server/policies/business-membership.policy.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created Phase 2 business members repository.
  * - 2026-05-04: Added server-only service-role option for sign-up tenant setup.
  * - 2026-05-04: Migrated membership data access to official Supabase SDK clients.
  * ============================================================
  */
+
+import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 

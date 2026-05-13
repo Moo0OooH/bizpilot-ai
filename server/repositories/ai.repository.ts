@@ -9,11 +9,14 @@
  * - supabase/migrations/0009_ai_lead_conversion_assistant.sql
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-11
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-11: Created AI output cache and usage event repository helpers.
  * ============================================================
  */
+
+import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 

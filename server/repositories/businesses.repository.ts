@@ -9,14 +9,17 @@
  * - server/repositories/business-members.repository.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created Phase 2 businesses repository.
  * - 2026-05-04: Added server-only service-role option for sign-up tenant setup.
  * - 2026-05-04: Migrated business data access to official Supabase SDK clients.
  * - 2026-05-05: Added Phase 3 business profile update support.
  * ============================================================
  */
+
+import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 

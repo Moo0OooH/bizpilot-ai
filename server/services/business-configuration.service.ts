@@ -10,14 +10,17 @@
  * - server/policies/business-membership.policy.ts
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-05-06
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-05: Created Phase 3 business configuration service and readiness scoring.
  * - 2026-05-05: Added business profile updates and onboarding task synchronization.
  * - 2026-05-05: Persisted Cleaning template field edits in business_template_settings.
  * - 2026-05-06: Syncs Phase 4 public intake form, consent version, and public link after configuration saves.
  * ============================================================
  */
+
+import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { canManageBusiness } from "@/server/policies/business-membership.policy";

@@ -9,11 +9,14 @@
  * - docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.4.md
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-11
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-11: Created first lead conversion assistant prompt entry.
  * ============================================================
  */
+
+import "server-only";
 
 export type PromptRegistryEntry = Readonly<{
   approvedModel: string;

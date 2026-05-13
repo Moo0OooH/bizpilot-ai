@@ -11,11 +11,14 @@
  * Created: 2026-05-05
  * Last Updated: 2026-05-05
  * Change Log:
+ * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-05: Created Phase 3 business configuration repository.
  * - 2026-05-05: Added onboarding task reads and sync support.
  * - 2026-05-05: Merged editable template field settings from business_template_settings.
  * ============================================================
  */
+
+import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
