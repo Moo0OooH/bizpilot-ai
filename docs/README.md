@@ -23,6 +23,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 - `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
 - `docs/engineering/BIZPILOT_SUPABASE_CLIENT_ARCHITECTURE_v1.0.md`
 - `docs/engineering/BIZPILOT_SAFE_ERROR_HANDLING_STANDARD_v1.0.md`
+- `docs/engineering/BIZPILOT_SAFE_LOGGING_BASELINE_v1.0.md`
 - `docs/security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md`
 - `docs/security/BIZPILOT_AUTH_ROUTE_PROTECTION_AUDIT_v1.0.md`
 - `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md`
