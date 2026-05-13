@@ -103,12 +103,12 @@ function FieldInput({
   todayDate,
 }: Readonly<{ field: FieldRecord; todayDate: string }>) {
   const baseClass =
-    "mt-2 w-full border border-zinc-300 bg-white px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950";
+    "mt-2 w-full rounded-[10px] border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-950 focus:ring-2 focus:ring-zinc-950/10";
 
   if (field.field_type === "textarea") {
     return (
       <textarea
-        className={`${baseClass} min-h-28`}
+        className={`${baseClass} min-h-24`}
         name={`field:${field.field_key}`}
         required={field.is_required}
       />
@@ -172,17 +172,17 @@ export default async function QuotePage({
   return (
     <main className="min-h-screen bg-zinc-50 text-zinc-950">
       <section
-        className="border-b px-6 py-10"
+        className="border-b px-4 py-8 sm:px-6"
         style={{
           borderColor: accentColor,
         }}
       >
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
+        <div className="mx-auto flex w-full max-w-[700px] flex-col gap-4">
           <div>
             <p className="text-sm font-medium uppercase tracking-normal text-zinc-500">
               Quote request
             </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h1 className="mt-2 text-[28px] font-semibold leading-tight tracking-normal sm:text-[32px]">
               {page.publicLink.display_name}
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
@@ -195,7 +195,7 @@ export default async function QuotePage({
 
       <form
         action={submitPublicIntakeAction}
-        className="mx-auto w-full max-w-3xl space-y-6 px-6 py-8"
+        className="mx-auto w-full max-w-[700px] space-y-4 px-4 py-6 sm:px-6"
       >
         <input name="businessSlug" type="hidden" value={slug} />
         <input name="intakeFormId" type="hidden" value={page.form.id} />
@@ -229,10 +229,10 @@ export default async function QuotePage({
           </p>
         ) : null}
 
-        <div className="space-y-5">
+        <div className="space-y-3.5">
           {page.fields.map((field) => (
             <label
-              className="block border border-zinc-200 bg-white p-4 text-sm font-medium text-zinc-800"
+              className="block rounded-[12px] border border-zinc-200 bg-white p-3.5 text-sm font-medium text-zinc-800 shadow-sm"
               key={field.id}
             >
               <span>
@@ -252,7 +252,7 @@ export default async function QuotePage({
           ))}
         </div>
 
-        <label className="flex items-start gap-3 border border-zinc-200 bg-white p-4 text-sm leading-6 text-zinc-700">
+        <label className="flex items-start gap-3 rounded-[12px] border border-zinc-200 bg-white p-3.5 text-sm leading-6 text-zinc-700 shadow-sm">
           <input
             className="mt-1 h-4 w-4"
             name="consentAccepted"
@@ -271,7 +271,7 @@ export default async function QuotePage({
         </label>
 
         <button
-          className="w-full px-5 py-3 text-sm font-medium text-white sm:w-auto"
+          className="h-11 w-full rounded-[10px] px-5 text-sm font-semibold text-white sm:w-auto"
           style={{
             backgroundColor: primaryColor,
           }}

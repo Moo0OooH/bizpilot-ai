@@ -2,21 +2,29 @@
  * ============================================================
  * File: app/auth/sign-up/page.tsx
  * Project: BizPilot AI
- * Description: Renders the Phase 2 Supabase sign-up page.
- * Role: Creates an owner auth account and initial tenant business shell.
+ * Description: Renders the owner account creation page for the quote recovery workspace.
+ * Role: Creates owner access and the initial business workspace without exposing internal setup details.
  * Related:
  * - server/actions/auth.actions.ts
  * - app/auth/sign-in/page.tsx
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-12
  * Change Log:
  * - 2026-05-04: Created Phase 2 sign-up page.
+ * - 2026-05-12: Polished sign-up UI and replaced internal-facing copy.
  * ============================================================
  */
 
 import Link from "next/link";
 
+import { AuthSubmitButton } from "@/components/auth/auth-submit-button";
+import {
+  AuthCard,
+  AuthFieldIcon,
+  AuthShell,
+  authInputClassName,
+} from "@/components/auth/auth-ui";
 import { signUpAction } from "@/server/actions/auth.actions";
 
 type SignUpPageProps = Readonly<{
@@ -29,75 +37,103 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
   const params = await searchParams;
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-6 py-16">
-      <p className="text-sm font-medium uppercase tracking-normal text-zinc-500">
-        BizPilot AI
-      </p>
-      <h1 className="mt-3 text-3xl font-semibold text-zinc-950">
-        Create account
-      </h1>
-      <p className="mt-3 text-sm leading-6 text-zinc-600">
-        Phase 2 creates only the auth user, profile, business, and membership.
-      </p>
+    <AuthShell
+      cardWidthClassName="max-w-[600px]"
+      footer="Owner access for the BizPilot AI quote recovery workspace."
+    >
+      <AuthCard
+        subtitle="Set up owner access for your quote recovery workspace."
+        title="Create your workspace"
+      >
+        {params?.error ? (
+          <p
+            aria-live="assertive"
+            className="mt-5 rounded-[10px] border border-red-200 bg-red-50 px-3 py-2 text-sm leading-5 text-red-700"
+          >
+            {params.error}
+          </p>
+        ) : null}
 
-      {params?.error ? (
-        <p className="mt-6 border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-          {params.error}
+        <form action={signUpAction} className="mt-5 grid gap-3.5 sm:grid-cols-2">
+          <label className="grid gap-1.5 text-sm font-semibold text-slate-800">
+            Name
+            <span className="relative block">
+              <AuthFieldIcon type="name" />
+              <input
+                autoComplete="name"
+                className={authInputClassName}
+                name="displayName"
+                placeholder="Your name"
+                required
+                type="text"
+              />
+            </span>
+          </label>
+          <label className="grid gap-1.5 text-sm font-semibold text-slate-800">
+            Business name
+            <span className="relative block">
+              <AuthFieldIcon type="business" />
+              <input
+                autoComplete="organization"
+                className={authInputClassName}
+                name="businessName"
+                placeholder="Your business"
+                required
+                type="text"
+              />
+            </span>
+          </label>
+          <label className="grid gap-1.5 text-sm font-semibold text-slate-800">
+            Email
+            <span className="relative block">
+              <AuthFieldIcon type="email" />
+              <input
+                autoComplete="email"
+                className={authInputClassName}
+                name="email"
+                placeholder="you@example.com"
+                required
+                type="email"
+              />
+            </span>
+          </label>
+          <label className="grid gap-1.5 text-sm font-semibold text-slate-800">
+            Password
+            <span className="relative block">
+              <AuthFieldIcon type="password" />
+              <input
+                autoComplete="new-password"
+                className={authInputClassName}
+                minLength={8}
+                name="password"
+                placeholder="At least 8 characters"
+                required
+                type="password"
+              />
+            </span>
+          </label>
+
+          <div className="sm:col-span-2">
+            <AuthSubmitButton pendingLabel="Account created. Setting up your workspace...">
+              Create account
+            </AuthSubmitButton>
+          </div>
+        </form>
+
+        <p className="mt-3 text-center text-xs leading-5 text-slate-500">
+          You can configure your public quote link after creating your account.
         </p>
-      ) : null}
 
-      <form action={signUpAction} className="mt-8 space-y-5">
-        <label className="block text-sm font-medium text-zinc-800">
-          Name
-          <input
-            className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
-            name="displayName"
-            required
-            type="text"
-          />
-        </label>
-        <label className="block text-sm font-medium text-zinc-800">
-          Business name
-          <input
-            className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
-            name="businessName"
-            required
-            type="text"
-          />
-        </label>
-        <label className="block text-sm font-medium text-zinc-800">
-          Email
-          <input
-            className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
-            name="email"
-            required
-            type="email"
-          />
-        </label>
-        <label className="block text-sm font-medium text-zinc-800">
-          Password
-          <input
-            className="mt-2 w-full border border-zinc-300 px-3 py-2 text-base text-zinc-950 outline-none focus:border-zinc-950"
-            minLength={6}
-            name="password"
-            required
-            type="password"
-          />
-        </label>
-        <button
-          className="w-full bg-zinc-950 px-4 py-2.5 text-sm font-medium text-white"
-          type="submit"
-        >
-          Create account
-        </button>
-      </form>
-
-      <p className="mt-6 text-sm text-zinc-600">
-        Already have an account?{" "}
-        <Link className="font-medium text-zinc-950" href="/auth/sign-in">
-          Sign in
-        </Link>
-      </p>
-    </main>
+        <p className="mt-4 text-center text-sm text-slate-600">
+          Already have an account?{" "}
+          <Link
+            className="font-semibold text-violet-700 underline-offset-4 hover:underline"
+            href="/auth/sign-in"
+          >
+            Sign in
+          </Link>
+        </p>
+      </AuthCard>
+    </AuthShell>
   );
 }

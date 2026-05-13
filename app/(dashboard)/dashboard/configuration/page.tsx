@@ -96,7 +96,7 @@ function ConfigurationPanel({
 }>) {
   return (
     <section
-      className="scroll-mt-4 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm"
+      className="scroll-mt-4 rounded-lg border border-zinc-200 bg-white p-3.5 shadow-sm"
       id={id}
     >
       <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_18rem] sm:items-start">
@@ -114,7 +114,7 @@ function ConfigurationPanel({
           </p>
         ) : null}
       </div>
-      <div className="mt-4 border-t border-zinc-100 pt-4">{children}</div>
+      <div className="mt-3.5 border-t border-zinc-100 pt-3.5">{children}</div>
     </section>
   );
 }
@@ -144,7 +144,7 @@ export default async function DashboardPage({
           <p className="text-sm font-medium uppercase tracking-normal text-zinc-500">
             BizPilot AI
           </p>
-          <h1 className="mt-3 text-3xl font-semibold text-zinc-950">
+          <h1 className="mt-3 text-[26px] font-semibold text-zinc-950">
             Business configuration
           </h1>
           <p className="mt-3 text-sm leading-6 text-zinc-600">
@@ -172,7 +172,7 @@ export default async function DashboardPage({
 
   return (
     <>
-      <main className="space-y-5">
+      <main className="space-y-4">
         <PageHeader
           description={`Configure the cleaning quote experience, public link, consent, and owner-ready lead foundation for ${activeBusiness.name}.`}
           eyebrow="Business setup"
@@ -203,7 +203,7 @@ export default async function DashboardPage({
               value={cleaningTemplate.template.id}
             />
 
-          <section className="grid items-start gap-4 2xl:grid-cols-[minmax(0,1fr)_320px]">
+          <section className="grid items-start gap-3.5 2xl:grid-cols-[minmax(0,1fr)_320px]">
             <div className="min-w-0">
           <ConfigurationTabs
             sections={[
@@ -224,9 +224,9 @@ export default async function DashboardPage({
               summary={`${readiness.completed}/${readiness.total} setup items complete`}
               title="Business setup overview"
             >
-              <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]">
-                <div className="grid gap-4 lg:grid-cols-[18rem_minmax(0,1fr)]">
-                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+              <div className="grid gap-3.5 xl:grid-cols-[minmax(0,1fr)_20rem]">
+                <div className="grid gap-3.5 lg:grid-cols-[17rem_minmax(0,1fr)]">
+                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3.5">
                     <div
                       className="flex h-28 items-center justify-center overflow-hidden rounded-lg border bg-white"
                       style={{ borderColor: accentColor }}
@@ -268,13 +268,13 @@ export default async function DashboardPage({
                     </div>
                   </div>
 
-                  <div className="rounded-lg border border-zinc-200 bg-white p-4">
+                  <div className="rounded-lg border border-zinc-200 bg-white p-3.5">
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
                           Workspace readiness
                         </p>
-                        <p className="mt-1 text-2xl font-semibold text-zinc-950">
+                        <p className="mt-1 text-[22px] font-semibold text-zinc-950">
                           {readinessPercent}%
                         </p>
                       </div>
@@ -330,7 +330,7 @@ export default async function DashboardPage({
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3.5">
                   <p className="text-sm font-semibold text-zinc-950">
                     Setup report
                   </p>
@@ -519,7 +519,7 @@ export default async function DashboardPage({
               summary={`${configuration.services.length} services - ${configuration.serviceAreas.length} areas`}
               title="Services & covered areas"
             >
-              <div className="grid gap-4 xl:grid-cols-2">
+              <div className="grid gap-3.5 xl:grid-cols-2">
                 <label className={labelClass}>
                   Services
                   <textarea
@@ -790,8 +790,8 @@ export default async function DashboardPage({
           </ConfigurationTabs>
             </div>
 
-            <aside className="space-y-4 2xl:sticky 2xl:top-20">
-              <section className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+            <aside className="space-y-3 2xl:sticky 2xl:top-20">
+              <section className="rounded-lg border border-zinc-200 bg-white p-3.5 shadow-sm">
                 <p className="text-sm font-semibold text-zinc-950">
                   Workspace readiness
                 </p>
@@ -830,7 +830,7 @@ export default async function DashboardPage({
                 </div>
               </section>
 
-              <section className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+              <section className="rounded-lg border border-zinc-200 bg-white p-3.5 shadow-sm">
                 <p className="text-sm font-semibold text-zinc-950">
                   Branding preview
                 </p>
@@ -870,7 +870,7 @@ export default async function DashboardPage({
                 </div>
               </section>
 
-              <section className="rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+              <section className="rounded-lg border border-zinc-200 bg-white p-3.5 shadow-sm">
                 <p className="text-sm font-semibold text-zinc-950">
                   Public quote link
                 </p>

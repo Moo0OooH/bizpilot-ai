@@ -72,19 +72,19 @@ type EmptyStateProps = Readonly<{
 }>;
 
 export const buttonClass =
-  "inline-flex h-8 items-center justify-center rounded-[10px] border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 shadow-sm transition hover:border-slate-300 hover:bg-slate-50";
+  "inline-flex h-9 items-center justify-center rounded-[9px] border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 shadow-sm transition hover:border-slate-300 hover:bg-slate-50";
 
 export const primaryButtonClass =
-  "inline-flex h-8 items-center justify-center rounded-[10px] bg-slate-950 px-3 text-xs font-medium text-white shadow-sm transition hover:bg-slate-800";
+  "inline-flex h-9 items-center justify-center rounded-[9px] bg-slate-950 px-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800";
 
 export const ghostButtonClass =
-  "inline-flex h-8 items-center justify-center rounded-[10px] px-3 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950";
+  "inline-flex h-9 items-center justify-center rounded-[9px] px-3 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950";
 
 export const disabledButtonClass =
-  "inline-flex h-8 cursor-not-allowed items-center justify-center rounded-[10px] border border-slate-200 bg-slate-50 px-3 text-xs font-medium text-slate-400";
+  "inline-flex h-9 cursor-not-allowed items-center justify-center rounded-[9px] border border-slate-200 bg-slate-50 px-3 text-xs font-medium text-slate-400";
 
 export const inputClass =
-  "h-8 w-full rounded-[10px] border border-slate-200 bg-white px-3 text-xs text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-slate-950";
+  "h-9 w-full rounded-[9px] border border-slate-200 bg-white px-3 text-xs text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-slate-950";
 
 export const textareaClass =
   "w-full rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-xs text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-slate-950";
@@ -122,7 +122,7 @@ export function DashboardCard({
   variant = "default",
 }: CardProps) {
   return (
-    <section className={`rounded-[14px] border ${cardClass(variant)} ${className}`}>
+    <section className={`rounded-[12px] border ${cardClass(variant)} ${className}`}>
       {children}
     </section>
   );
@@ -135,14 +135,14 @@ export function PageHeader({
   title,
 }: PageHeaderProps) {
   return (
-    <header className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-start sm:justify-between">
+    <header className="flex flex-col gap-3 border-b border-slate-200 pb-3.5 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
         {eyebrow ? (
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-1 text-2xl font-semibold leading-8 tracking-normal text-slate-950">
+        <h1 className="mt-1 text-[26px] font-semibold leading-8 tracking-normal text-slate-950">
           {title}
         </h1>
         <p className="mt-1 max-w-3xl text-sm leading-5 text-slate-600">
@@ -193,9 +193,9 @@ export function MetricCard({
   }[tone];
 
   return (
-    <DashboardCard className="flex min-h-[136px] flex-col p-4">
+    <DashboardCard className="flex min-h-[120px] flex-col p-3.5">
       <p className="text-xs font-medium text-slate-500">{label}</p>
-      <p className={`mt-2 text-2xl font-semibold leading-7 ${accentClass}`}>
+      <p className={`mt-1.5 text-[22px] font-semibold leading-7 ${accentClass}`}>
         {value}
       </p>
       {detail ? (
@@ -219,7 +219,7 @@ export function KpiCard({ detail, label, value }: KpiCardProps) {
 export function StatusBadge({ children, tone = "neutral" }: StatusBadgeProps) {
   return (
     <span
-      className={`inline-flex h-6 max-w-full items-center justify-center rounded-full border px-2 text-xs font-medium capitalize leading-none ${toneClasses[tone]}`}
+      className={`inline-flex h-[22px] max-w-full items-center justify-center rounded-full border px-2 text-[11px] font-medium capitalize leading-none ${toneClasses[tone]}`}
     >
       <span className="truncate">{children}</span>
     </span>
@@ -290,7 +290,7 @@ export function RightRailPanel({
   variant = "default",
 }: CardProps) {
   return (
-    <DashboardCard className={`p-4 ${className}`} variant={variant}>
+    <DashboardCard className={`p-3.5 ${className}`} variant={variant}>
       {children}
     </DashboardCard>
   );
@@ -341,7 +341,7 @@ export function QuickActionTile({
   title?: string;
 }>) {
   const className =
-    "flex min-h-14 items-center gap-2.5 rounded-[10px] border px-3 text-left transition";
+    "flex min-h-12 items-center gap-2.5 rounded-[10px] border px-3 text-left transition";
   const content = title ? (
     <>
       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-700">
@@ -386,9 +386,9 @@ export function QuickActionTile({
 
 export function EmptyState({ action, children, title }: EmptyStateProps) {
   return (
-    <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-5 text-center">
+    <div className="rounded-lg border border-dashed border-zinc-300 bg-zinc-50 p-4 text-center">
       <p className="text-sm font-semibold text-zinc-950">{title}</p>
-      <p className="mx-auto mt-1 max-w-md text-sm leading-6 text-zinc-600">
+      <p className="mx-auto mt-1 max-w-md text-[13px] leading-5 text-zinc-600">
         {children}
       </p>
       {action ? <div className="mt-3">{action}</div> : null}

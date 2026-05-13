@@ -134,7 +134,7 @@ export default async function LeadDetailPage({
   });
 
   return (
-    <main className="space-y-5">
+    <main className="space-y-4">
       <PageHeader
         actions={
           <form action={markReplyCopiedAction}>
@@ -170,7 +170,7 @@ export default async function LeadDetailPage({
         </p>
       ) : null}
 
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           detail={detailCompletenessText({
             completenessLabel: detail.score.completeness_label,
@@ -198,19 +198,19 @@ export default async function LeadDetailPage({
         />
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-[1.15fr_0.85fr]">
-        <DashboardCard className="p-4">
+      <section className="grid gap-3.5 xl:grid-cols-[1.15fr_0.85fr]">
+        <DashboardCard className="p-3.5">
           <SectionHeader
             description="Rule-based fit notes and missing information."
             title="Customer context"
           />
-          <p className="mt-3 text-sm leading-6 text-zinc-600">
+          <p className="mt-2.5 text-[13px] leading-5 text-zinc-600">
             {detail.primaryIssue}
           </p>
-          <p className="mt-3 text-sm font-medium text-zinc-950">
+          <p className="mt-2.5 text-[13px] font-medium text-zinc-950">
             Recommended action: {detail.recommendedAction}
           </p>
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-2">
             {detail.score.missing_info_keys.length > 0 ? (
               detail.score.missing_info_keys.map((key) => (
                 <StatusBadge key={key} tone="amber">
@@ -225,14 +225,14 @@ export default async function LeadDetailPage({
           </div>
         </DashboardCard>
 
-        <DashboardCard className="p-4">
+        <DashboardCard className="p-3.5">
           <SectionHeader
             description="Owner-controlled status and outcome tracking."
             title="Lead controls"
           />
           <form
             action={updateLeadStatusAction}
-            className="mt-4 grid gap-2 sm:grid-cols-[1fr_auto]"
+            className="mt-3 grid gap-2 sm:grid-cols-[1fr_auto]"
           >
             <input name="leadId" type="hidden" value={detail.lead.id} />
             <select
@@ -275,7 +275,7 @@ export default async function LeadDetailPage({
         </DashboardCard>
       </section>
 
-      <DashboardCard className="p-4">
+      <DashboardCard className="p-3.5">
         <SectionHeader
           action={
             <form action={generateLeadAiBundleAction}>
@@ -292,7 +292,7 @@ export default async function LeadDetailPage({
           title="AI lead assistant"
         />
         {aiOutput ? (
-          <div className="mt-4 grid gap-3 xl:grid-cols-[0.9fr_1.1fr]">
+          <div className="mt-3 grid gap-3 xl:grid-cols-[0.9fr_1.1fr]">
             <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
               <div className="flex items-start justify-between gap-3">
                 <p className="text-xs font-semibold text-slate-950">
@@ -306,7 +306,7 @@ export default async function LeadDetailPage({
                     : "Rule fallback"}
                 </StatusBadge>
               </div>
-              <p className="mt-2 text-sm leading-6 text-slate-700">
+              <p className="mt-2 text-[13px] leading-5 text-slate-700">
                 {aiOutput.output.leadSummary}
               </p>
               <div className="mt-3 grid gap-2 text-xs text-slate-600">
@@ -349,7 +349,7 @@ export default async function LeadDetailPage({
                     value={aiOutput.output.replyDraft}
                   />
                 </div>
-                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                <p className="mt-2 whitespace-pre-wrap text-[13px] leading-5 text-slate-700">
                   {aiOutput.output.replyDraft}
                 </p>
               </div>
@@ -363,18 +363,18 @@ export default async function LeadDetailPage({
                     value={aiOutput.output.followUpDraft}
                   />
                 </div>
-                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">
+                <p className="mt-2 whitespace-pre-wrap text-[13px] leading-5 text-slate-700">
                   {aiOutput.output.followUpDraft}
                 </p>
               </div>
             </div>
           </div>
         ) : (
-          <div className="mt-4 rounded-lg border border-dashed border-slate-200 bg-slate-50 p-4">
-            <p className="text-sm font-medium text-slate-950">
+          <div className="mt-3 rounded-lg border border-dashed border-slate-200 bg-slate-50 p-3.5">
+            <p className="text-[13px] font-medium text-slate-950">
               Generate a draft only when you are ready to review it.
             </p>
-            <p className="mt-1 text-sm leading-6 text-slate-600">
+            <p className="mt-1 text-[13px] leading-5 text-slate-600">
               BizPilot will prepare a summary, reply draft, follow-up draft, and
               next action. The owner still reviews, copies, and sends manually.
             </p>
@@ -388,13 +388,13 @@ export default async function LeadDetailPage({
         )}
       </DashboardCard>
 
-      <section className="grid gap-4 xl:grid-cols-2">
-        <DashboardCard className="p-4">
+      <section className="grid gap-3.5 xl:grid-cols-2">
+        <DashboardCard className="p-3.5">
           <SectionHeader title="Quote details" />
           <div className="mt-3 divide-y divide-zinc-200 overflow-hidden rounded-lg border border-zinc-200">
             {detail.submissionValues.map((value) => (
               <div
-                className="grid gap-2 p-3 text-sm sm:grid-cols-[12rem_1fr]"
+                className="grid gap-2 p-2.5 text-[13px] sm:grid-cols-[12rem_1fr]"
                 key={value.id}
               >
                 <span className="font-medium text-zinc-700">
@@ -408,13 +408,13 @@ export default async function LeadDetailPage({
           </div>
         </DashboardCard>
 
-        <DashboardCard className="p-4">
+        <DashboardCard className="p-3.5">
           <SectionHeader title="Action items" />
           <div className="mt-3 divide-y divide-zinc-200 overflow-hidden rounded-lg border border-zinc-200">
             {detail.actions.length > 0 ? (
               detail.actions.map((action) => (
                 <div
-                  className="grid gap-3 p-3 text-sm sm:grid-cols-[1fr_auto]"
+                  className="grid gap-3 p-2.5 text-[13px] sm:grid-cols-[1fr_auto]"
                   key={action.id}
                 >
                   <span>
@@ -455,13 +455,13 @@ export default async function LeadDetailPage({
         </DashboardCard>
       </section>
 
-      <DashboardCard className="p-4">
+      <DashboardCard className="p-3.5">
         <SectionHeader title="Timeline" />
         <div className="mt-3 divide-y divide-zinc-200 overflow-hidden rounded-lg border border-zinc-200">
           {detail.events.length > 0 ? (
             detail.events.map((event) => (
               <div
-                className="grid gap-2 p-3 text-sm sm:grid-cols-[12rem_1fr]"
+                className="grid gap-2 p-2.5 text-[13px] sm:grid-cols-[12rem_1fr]"
                 key={event.id}
               >
                 <span className="text-zinc-500">

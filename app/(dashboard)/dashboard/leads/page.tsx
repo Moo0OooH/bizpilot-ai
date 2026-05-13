@@ -20,21 +20,16 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import { CopyButton } from "@/components/dashboard/copy-button";
+import { LeadWorkspaceQueue } from "@/components/dashboard/lead-workspace-queue";
 import {
   buttonClass,
   DashboardCard,
   EmptyState,
-  inputClass,
-  LeadQualityBadge,
-  LeadStatusBadge,
   MetricCard,
   PageHeader,
   primaryButtonClass,
-  ResponseSlaBadge,
   RightRailPanel,
   SectionHeader,
-  TabLink,
 } from "@/components/dashboard/dashboard-ui";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
@@ -89,7 +84,7 @@ export default async function LeadConversionDeskPage() {
   ).length;
 
   return (
-    <main className="space-y-5">
+    <main className="space-y-4">
       <PageHeader
         actions={
           <>
@@ -106,7 +101,7 @@ export default async function LeadConversionDeskPage() {
         title="Lead Workspace"
       />
 
-      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
+      <section className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-6">
         <MetricCard
           detail="Quote requests captured."
           label="Captured"
@@ -145,99 +140,16 @@ export default async function LeadConversionDeskPage() {
         />
       </section>
 
-      <section className="grid items-start gap-4 2xl:grid-cols-[minmax(0,1fr)_320px]">
-        <DashboardCard className="p-4" variant="elevated">
+      <section className="grid items-start gap-3.5 2xl:grid-cols-[minmax(0,1fr)_320px]">
+        <DashboardCard className="p-3.5" variant="elevated">
           <SectionHeader
             description="Operational queue for captured quote requests. Next action is the most important column."
             title="Lead recovery queue"
           />
-          <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-wrap gap-1 rounded-lg bg-zinc-100 p-1">
-              <TabLink active href="/dashboard/leads">
-                All
-              </TabLink>
-              <TabLink href="/dashboard/leads">New</TabLink>
-              <TabLink href="/dashboard/leads">Follow-up</TabLink>
-              <TabLink href="/dashboard/leads">Booked</TabLink>
-              <TabLink href="/dashboard/leads">Lost</TabLink>
-            </div>
-            <div className="w-full lg:w-72">
-              <input
-                className={inputClass}
-                placeholder="Search customers, services, areas"
-                readOnly
-                type="search"
-              />
-            </div>
-          </div>
-
-          <div className="mt-3 overflow-hidden rounded-lg border border-zinc-200">
-            <div className="hidden grid-cols-[1.1fr_0.75fr_0.85fr_0.78fr_0.78fr_0.78fr_0.7fr_1.1fr_0.8fr] border-b border-zinc-200 bg-zinc-50 px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-zinc-500 xl:grid">
-              <span>Customer</span>
-              <span>Service</span>
-              <span>Location</span>
-              <span>Quality</span>
-              <span>SLA</span>
-              <span>Status</span>
-              <span>Source</span>
-              <span>Next action</span>
-              <span>Created</span>
-            </div>
-            {desk.leads.length > 0 ? (
-              desk.leads.map((item) => (
-                <Link
-                  className="grid gap-3 border-b border-zinc-200 px-3 py-3 text-sm transition last:border-b-0 hover:bg-zinc-50 xl:grid-cols-[1.1fr_0.75fr_0.85fr_0.78fr_0.78fr_0.78fr_0.7fr_1.1fr_0.8fr] xl:items-center"
-                  href={`/dashboard/leads/${item.lead.id}`}
-                  key={item.lead.id}
-                >
-                  <span className="min-w-0">
-                    <span className="block truncate font-semibold text-zinc-950">
-                      {item.lead.customer_name ?? "Unnamed lead"}
-                    </span>
-                    <span className="mt-1 block truncate text-xs text-zinc-500">
-                      {item.lead.customer_contact ?? "No contact captured"}
-                    </span>
-                  </span>
-                  <span className="text-zinc-700">
-                    {item.lead.service_type ?? "Service not set"}
-                  </span>
-                  <span className="text-zinc-700">
-                    {item.lead.city_or_service_area ?? "Area missing"}
-                  </span>
-                  <LeadQualityBadge value={item.score.quality_level} />
-                  <ResponseSlaBadge value={item.lead.response_sla_state} />
-                  <LeadStatusBadge value={item.lead.status} />
-                  <span className="truncate text-xs text-zinc-500">
-                    {item.lead.source_channel ?? "Unknown"}
-                  </span>
-                  <span>
-                    <span className="inline-flex rounded-md bg-zinc-950 px-2 py-1 text-xs font-medium text-white">
-                      {item.recommendedAction}
-                    </span>
-                    <span className="mt-1 block text-xs leading-4 text-zinc-500">
-                      {item.primaryIssue}
-                    </span>
-                  </span>
-                  <span className="text-xs text-zinc-500">
-                    {formatDate(item.lead.created_at)}
-                  </span>
-                </Link>
-              ))
-            ) : (
-              <div className="p-4">
-                <EmptyState
-                  action={<CopyButton label="Copy quote link" value={quotePath} />}
-                  title="No quote requests yet"
-                >
-                  Share your public quote link on your website, Instagram bio,
-                  or Google Business Profile to start capturing leads.
-                </EmptyState>
-              </div>
-            )}
-          </div>
+          <LeadWorkspaceQueue leads={desk.leads} quotePath={quotePath} />
         </DashboardCard>
 
-        <aside className="space-y-4 2xl:sticky 2xl:top-20">
+        <aside className="space-y-3 2xl:sticky 2xl:top-20">
           <RightRailPanel variant="priority">
             <SectionHeader
               description="The queue is rule-based. BizPilot never sends automatically."
@@ -247,7 +159,7 @@ export default async function LeadConversionDeskPage() {
               {desk.todaysActions.length > 0 ? (
                 desk.todaysActions.slice(0, 6).map((action) => (
                   <Link
-                    className="grid gap-1 p-3 text-sm transition hover:bg-white"
+                    className="grid gap-1 p-2.5 text-[13px] transition hover:bg-white"
                     href={`/dashboard/leads/${action.lead_id}`}
                     key={action.id}
                   >
@@ -276,7 +188,7 @@ export default async function LeadConversionDeskPage() {
               description="A fast read on lead risk before filtering."
               title="SLA summary"
             />
-            <div className="mt-3 grid gap-2 text-sm">
+            <div className="mt-3 grid gap-2 text-[13px]">
               {[
                 ["New leads", newLeadCount],
                 ["Follow-up needed", followUpCount],
@@ -295,7 +207,7 @@ export default async function LeadConversionDeskPage() {
 
           <RightRailPanel>
             <SectionHeader
-              description="Use these tabs to keep the queue narrow."
+              description="Use the queue tabs and search to narrow visible leads."
               title="Filter summary"
             />
             <div className="mt-3 flex flex-wrap gap-2">

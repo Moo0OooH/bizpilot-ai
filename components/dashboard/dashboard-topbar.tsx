@@ -34,9 +34,9 @@ export function DashboardTopbar({
 }: DashboardTopbarProps) {
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="flex h-14 items-center gap-3 px-5">
+      <div className="flex h-14 items-center gap-3 px-5 lg:px-6">
         <button
-          className="inline-flex h-9 w-[170px] min-w-0 items-center gap-2 rounded-[10px] border border-slate-200 bg-white px-3 text-sm font-medium text-slate-900 shadow-sm"
+          className="inline-flex h-9 w-[170px] min-w-0 items-center gap-2 rounded-[9px] border border-slate-200 bg-white px-3 text-sm font-medium text-slate-900 shadow-sm"
           type="button"
         >
           <span className="flex h-6 w-6 items-center justify-center rounded-md bg-slate-950 text-[10px] font-semibold text-white">
@@ -46,7 +46,7 @@ export function DashboardTopbar({
           <span className="ml-auto text-slate-400">v</span>
         </button>
 
-        <div className="hidden h-9 min-w-0 max-w-[640px] flex-1 items-center rounded-[10px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-500 md:flex">
+        <div className="hidden h-9 min-w-0 max-w-[620px] flex-1 items-center rounded-[9px] border border-slate-200 bg-slate-50 px-3 text-sm text-slate-500 md:flex">
           Search leads, actions, and setup...
           <span className="ml-auto rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[11px] text-slate-400">
             /
@@ -62,14 +62,14 @@ export function DashboardTopbar({
           </Link>
           <button
             aria-label="Notifications"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-slate-200 bg-white text-sm font-medium text-slate-700 shadow-sm"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-[9px] border border-slate-200 bg-white text-sm font-medium text-slate-700 shadow-sm"
             type="button"
           >
             N
           </button>
           <form action={signOutAction}>
             <button
-              className="inline-flex h-9 max-w-[8rem] items-center justify-center rounded-[10px] border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 shadow-sm"
+              className="inline-flex h-9 max-w-[8rem] items-center justify-center rounded-[9px] border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 shadow-sm"
               title={userLabel}
               type="submit"
             >

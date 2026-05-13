@@ -5,18 +5,18 @@
 **Version:** v1.0
 **Status:** Final Canonical Draft — Phase 5 Alignment Synced
 **Owner:** MoOoH
-**Phase:** Phase 5 Stabilization / Completion Candidate
+**Phase:** Phase 5 Stabilization / Completion Candidate; Phase 6 Foundation Started
 **Last Updated:** 2026-05-11
 
 ---
 
 ## Current Phase Status — 2026-05-11
 
-The dashboard IA is implemented as part of Phase 5 stabilization. The current goal is Phase 5 closure, not Phase 6 expansion.
+The dashboard IA is implemented as part of Phase 5 stabilization. Phase 6 foundation has started with a manual, on-demand AI Lead Assistant. Full Phase 6 remains open.
 
 Dashboard copy and layout should stay focused on quote requests, reply urgency, follow-up discipline, public quote link visibility, business readiness, and recovery proof.
 
-Do not introduce AI generation, email sending, billing, booking, integrations, generic CRM scope, or upgrade-oriented marketing blocks in the Phase 5 dashboard.
+Do not introduce AI auto-send, email sending, billing, booking, integrations, generic CRM scope, or upgrade-oriented marketing blocks in the Phase 5 dashboard.
 
 ---
 
@@ -428,7 +428,7 @@ Lead detail should show:
 - Missing info
 - Lead quality explanation
 - Response SLA
-- Phase 6 AI draft placeholders only when clearly marked; no AI generation in Phase 5
+- Manual Phase 6 AI Lead Assistant only when scoped to lead detail; no AI auto-send, booking confirmation, or invented pricing/availability
 - Follow-up guidance
 - Manual outcome
 - Lead events timeline
