@@ -13,6 +13,12 @@
  * Last Updated: 2026-05-12
  * Change Log:
  * - 2026-05-12: Created shared auth shell, card, and field icon components.
+ * - 2026-05-12: Tightened auth density, accessibility, and production visual standards.
+ * - 2026-05-12: Added compact trusted auth depth and reduced 100% zoom vertical pressure.
+ * - 2026-05-12: Aligned auth visuals with the slate, emerald, and indigo brand direction.
+ * - 2026-05-12: Finalized production auth scale, spacing, and visual consistency.
+ * - 2026-05-12: Added subtle premium auth atmosphere and quiet depth.
+ * - 2026-05-12: Moved auth glows inside the shared surface for integrated warmth.
  * ============================================================
  */
 
@@ -36,25 +42,25 @@ type AuthFieldIconProps = Readonly<{
 
 const benefits = [
   {
-    body: "Turn your public quote link into clean, organized lead details.",
+    body: "Turn public quote requests into clean lead details.",
     icon: "chat",
-    title: "Capture every request",
+    title: "Capture requests",
   },
   {
-    body: "Review owner-safe reply guidance before sending anything yourself.",
+    body: "Review draft guidance before sending anything yourself.",
     icon: "checklist",
-    title: "Reply with confidence",
+    title: "Prepare replies",
   },
   {
-    body: "See which quote requests need attention next.",
+    body: "See which quote requests need attention today.",
     icon: "trend",
-    title: "Follow up before leads go cold",
+    title: "Follow up",
   },
 ] as const;
 
 function BrandMark() {
   return (
-    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[9px] bg-violet-600 text-xs font-bold text-white shadow-[0_10px_22px_rgba(109,40,217,0.18)]">
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#0F172A] text-xs font-semibold text-white shadow-[0_10px_22px_rgba(15,23,42,0.14)]">
       BP
     </span>
   );
@@ -75,7 +81,7 @@ function BrandLockup({ compact = false }: Readonly<{ compact?: boolean }>) {
           BIZPILOT AI
         </p>
         {compact ? (
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-violet-700">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-[#047857]">
             Quote recovery workspace
           </p>
         ) : null}
@@ -88,10 +94,10 @@ function BenefitIcon({
   icon,
 }: Readonly<{ icon: (typeof benefits)[number]["icon"] }>) {
   return (
-    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[9px] bg-violet-50 text-violet-700">
+    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A7F3D0]/70 bg-[#ECFDF5] text-[#047857] shadow-[0_6px_14px_rgba(15,23,42,0.05)]">
       <svg
         aria-hidden="true"
-        className="h-4 w-4"
+        className="h-3.5 w-3.5"
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
@@ -128,10 +134,10 @@ function BenefitIcon({
 
 function TrustIcon() {
   return (
-    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[8px] bg-violet-50 text-violet-700">
+    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#ECFDF5] text-[#047857]">
       <svg
         aria-hidden="true"
-        className="h-3.5 w-3.5"
+        className="h-3 w-3"
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
@@ -148,31 +154,30 @@ function TrustIcon() {
 
 function AuthBenefitPanel() {
   return (
-    <aside className="relative hidden flex-col justify-center xl:flex">
-      <div className="max-w-[410px]">
+    <aside className="relative hidden min-h-[460px] flex-col justify-center rounded-2xl border border-[#E2E8F0] bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(236,253,245,0.46)_100%)] p-4 shadow-[0_18px_42px_rgba(15,23,42,0.09),0_2px_8px_rgba(15,23,42,0.04)] xl:flex">
+      <div className="max-w-[360px]">
         <BrandLockup />
 
-        <p className="mt-4 inline-flex rounded-md bg-violet-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-violet-700">
-          Quote recovery workspace
+        <p className="mt-3 inline-flex rounded-lg border border-[#A7F3D0]/70 bg-[#ECFDF5] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#047857]">
+          Owner access
         </p>
 
-        <h1 className="mt-5 text-[28px] font-semibold leading-[1.12] tracking-normal text-slate-950">
+        <h1 className="mt-3 text-[23px] font-semibold leading-[1.12] tracking-normal text-[#0F172A]">
           Keep quote requests moving toward booked work.
         </h1>
-        <p className="mt-3 text-sm leading-6 text-slate-600">
-          Capture quote requests, review lead details, prepare replies, and
-          follow up from one focused workspace.
+        <p className="mt-2 max-w-[34rem] text-[13px] leading-5 text-[#475569]">
+          Capture quote requests, review lead details, prepare replies, and keep follow-ups visible from one focused workspace.
         </p>
 
-        <div className="mt-6 grid gap-3">
+        <div className="mt-3 grid gap-2">
           {benefits.map((benefit) => (
-            <div className="flex gap-3" key={benefit.title}>
+            <div className="flex gap-2.5" key={benefit.title}>
               <BenefitIcon icon={benefit.icon} />
               <div>
-                <p className="text-sm font-semibold text-slate-950">
+                <p className="text-[13px] font-semibold text-[#0F172A]">
                   {benefit.title}
                 </p>
-                <p className="mt-0.5 text-xs leading-[1.55] text-slate-600">
+                <p className="mt-0.5 text-xs leading-[1.45] text-[#475569]">
                   {benefit.body}
                 </p>
               </div>
@@ -180,15 +185,19 @@ function AuthBenefitPanel() {
           ))}
         </div>
 
-        <div className="mt-5 flex gap-2.5 rounded-[10px] border border-violet-100 bg-white/65 px-3 py-2.5 shadow-sm">
+        <div className="mt-3 flex gap-2.5 rounded-xl border border-[#A7F3D0]/60 bg-[#ECFDF5]/55 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
           <TrustIcon />
-          <p className="text-xs leading-[1.5] text-slate-600">
-            <span className="block font-semibold text-slate-950">
+          <p className="text-xs leading-[1.45] text-[#475569]">
+            <span className="block font-semibold text-[#0F172A]">
               Owner-controlled workspace
             </span>
-            Customer data stays inside your protected quote recovery flow.
-            BizPilot prepares drafts; you decide what to send.
+            BizPilot prepares drafts for review. You decide what to send.
           </p>
+        </div>
+
+        <div className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-2.5 py-1 text-[11px] font-medium text-[#6366F1]">
+          <span className="h-1.5 w-1.5 rounded-full bg-[#6366F1]" />
+          AI assistant stays review-only
         </div>
       </div>
     </aside>
@@ -201,18 +210,22 @@ export function AuthShell({
   footer,
 }: AuthShellProps) {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[linear-gradient(135deg,#f8fafc_0%,#f6f3ff_52%,#ffffff_100%)] px-4 py-4 text-slate-950 sm:px-6 lg:px-8">
-      <section className="mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-[1080px] items-center gap-8 xl:grid-cols-[minmax(0,410px)_minmax(0,1fr)]">
+    <main className="min-h-screen overflow-x-hidden bg-[#F8FAFC] px-4 py-4 text-[#0F172A] sm:px-6 lg:px-8">
+      <section className="relative mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-[1160px] items-center gap-4 overflow-hidden xl:grid-cols-[minmax(0,390px)_minmax(0,1fr)] xl:rounded-3xl xl:border xl:border-[#E2E8F0] xl:bg-[#FBFDFC] xl:p-3 xl:shadow-[0_22px_60px_rgba(15,23,42,0.10),0_3px_12px_rgba(15,23,42,0.04)]">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 hidden bg-[radial-gradient(circle_at_30%_72%,rgba(5,150,105,0.08),transparent_34%),radial-gradient(circle_at_72%_28%,rgba(99,102,241,0.075),transparent_32%),radial-gradient(circle_at_54%_54%,rgba(4,120,87,0.045),transparent_38%)] xl:block"
+        />
         <AuthBenefitPanel />
 
-        <section className={`mx-auto w-full ${cardWidthClassName}`}>
+        <section className={`relative z-10 mx-auto w-full ${cardWidthClassName}`}>
           <div className="mb-3 flex xl:hidden">
             <BrandLockup compact />
           </div>
 
           {children}
 
-          <p className="mt-3 text-center text-xs leading-5 text-slate-500">
+          <p className="mt-2 text-center text-xs leading-5 text-[#64748B]">
             {footer}
           </p>
         </section>
@@ -223,12 +236,12 @@ export function AuthShell({
 
 export function AuthCard({ children, subtitle, title }: AuthCardProps) {
   return (
-    <div className="rounded-[16px] border border-slate-200 bg-white/95 p-5 shadow-[0_14px_36px_rgba(15,23,42,0.08)] sm:p-6">
+    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-[0_20px_46px_rgba(15,23,42,0.11),0_3px_12px_rgba(15,23,42,0.05)] xl:shadow-[0_18px_40px_rgba(15,23,42,0.085),0_2px_10px_rgba(15,23,42,0.04)] sm:p-6">
       <div className="text-center">
-        <h2 className="text-[21px] font-semibold leading-7 tracking-normal text-slate-950">
+        <h2 className="text-[22px] font-semibold leading-7 tracking-normal text-[#0F172A]">
           {title}
         </h2>
-        <p className="mx-auto mt-2 max-w-sm text-sm leading-5 text-slate-600">
+        <p className="mx-auto mt-2 max-w-sm text-sm leading-5 text-[#475569]">
           {subtitle}
         </p>
       </div>
@@ -283,4 +296,4 @@ export function AuthFieldIcon({ type }: AuthFieldIconProps) {
 }
 
 export const authInputClassName =
-  "h-11 w-full rounded-[10px] border border-slate-200 bg-white pl-10 pr-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-slate-950 focus:ring-2 focus:ring-slate-950/10";
+  "h-[52px] w-full rounded-xl border border-[#E2E8F0] bg-white pl-11 pr-3 text-sm text-[#0F172A] shadow-[inset_0_1px_0_rgba(15,23,42,0.02)] outline-none transition placeholder:text-slate-400 focus:border-[#059669] focus:ring-2 focus:ring-[#059669]/25";

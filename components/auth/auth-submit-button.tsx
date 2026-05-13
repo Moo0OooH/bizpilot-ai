@@ -12,6 +12,10 @@
  * Last Updated: 2026-05-12
  * Change Log:
  * - 2026-05-12: Created shared auth submit button with form pending state.
+ * - 2026-05-12: Tightened button radius and loading behavior for auth QA.
+ * - 2026-05-12: Reduced auth button height for compact 100% zoom layouts.
+ * - 2026-05-12: Standardized production auth CTA scale and focus treatment.
+ * - 2026-05-12: Added quiet premium depth to the slate auth CTA.
  * ============================================================
  */
 
@@ -32,7 +36,7 @@ export function AuthSubmitButton({
 
   return (
     <button
-      className="h-11 w-full rounded-[10px] bg-slate-950 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-950/20 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-white/80"
+      className="h-12 w-full rounded-xl bg-[#0F172A] px-4 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(15,23,42,0.14)] transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#059669]/35 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-white/80"
       disabled={pending}
       type="submit"
     >

@@ -14,6 +14,8 @@
  * - 2026-05-04: Created Phase 2 sign-in page.
  * - 2026-05-11: Polished owner login UI and replaced internal-facing copy.
  * - 2026-05-12: Expanded the sign-in page into a production-ready owner access screen.
+ * - 2026-05-12: Tightened auth form copy, states, and layout to match UI/UX standards.
+ * - 2026-05-12: Standardized final production auth card scale and brand accents.
  * ============================================================
  */
 
@@ -40,7 +42,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
 
   return (
     <AuthShell
-      cardWidthClassName="max-w-[440px]"
+      cardWidthClassName="max-w-[540px]"
       footer="Secure owner access for your quote recovery workspace."
     >
       <AuthCard
@@ -50,7 +52,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
         {params?.notice ? (
           <p
             aria-live="polite"
-            className="mt-5 rounded-[10px] border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm leading-5 text-emerald-800"
+            className="mt-5 rounded-xl border border-[#A7F3D0]/70 bg-[#ECFDF5] px-3 py-2 text-sm leading-5 text-[#047857]"
           >
             {params.notice}
           </p>
@@ -59,13 +61,13 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
         {params?.error ? (
           <p
             aria-live="assertive"
-            className="mt-5 rounded-[10px] border border-red-200 bg-red-50 px-3 py-2 text-sm leading-5 text-red-700"
+            className="mt-5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm leading-5 text-red-700"
           >
             {params.error}
           </p>
         ) : null}
 
-        <form action={signInAction} className="mt-5 space-y-3.5">
+        <form action={signInAction} className="mt-5 space-y-4">
           <label className="grid gap-1.5 text-sm font-semibold text-slate-800">
             Email
             <span className="relative block">
@@ -97,15 +99,15 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             </span>
           </label>
 
-          <AuthSubmitButton pendingLabel="Signed in. Opening your workspace...">
+          <AuthSubmitButton pendingLabel="Opening workspace...">
             Sign in
           </AuthSubmitButton>
         </form>
 
-        <p className="mt-4 text-center text-sm text-slate-600">
+          <p className="mt-4 text-center text-sm text-[#475569]">
           Need an account?{" "}
           <Link
-            className="font-semibold text-violet-700 underline-offset-4 hover:underline"
+            className="font-semibold text-[#047857] underline-offset-4 hover:underline"
             href="/auth/sign-up"
           >
             Create one

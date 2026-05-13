@@ -13,6 +13,9 @@
  * Change Log:
  * - 2026-05-04: Created Phase 2 sign-up page.
  * - 2026-05-12: Polished sign-up UI and replaced internal-facing copy.
+ * - 2026-05-12: Constrained sign-up layout to auth standards and improved form guidance.
+ * - 2026-05-12: Compacted sign-up form to avoid 100% zoom scrolling.
+ * - 2026-05-12: Standardized final production auth card scale and helper treatment.
  * ============================================================
  */
 
@@ -38,17 +41,17 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
 
   return (
     <AuthShell
-      cardWidthClassName="max-w-[600px]"
+      cardWidthClassName="max-w-[580px]"
       footer="Owner access for the BizPilot AI quote recovery workspace."
     >
       <AuthCard
-        subtitle="Set up owner access for your quote recovery workspace."
+        subtitle="Create owner access and your first business workspace."
         title="Create your workspace"
       >
         {params?.error ? (
           <p
             aria-live="assertive"
-            className="mt-5 rounded-[10px] border border-red-200 bg-red-50 px-3 py-2 text-sm leading-5 text-red-700"
+            className="mt-5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm leading-5 text-red-700"
           >
             {params.error}
           </p>
@@ -113,21 +116,25 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
             </span>
           </label>
 
+          <p className="rounded-lg border border-[#A7F3D0]/70 bg-[#ECFDF5] px-2.5 py-1.5 text-xs leading-5 text-[#047857] sm:col-span-2">
+            Use at least 8 characters for your password.
+          </p>
+
           <div className="sm:col-span-2">
-            <AuthSubmitButton pendingLabel="Account created. Setting up your workspace...">
+            <AuthSubmitButton pendingLabel="Creating workspace...">
               Create account
             </AuthSubmitButton>
           </div>
         </form>
 
-        <p className="mt-3 text-center text-xs leading-5 text-slate-500">
+        <p className="mt-3 text-center text-xs leading-5 text-[#64748B]">
           You can configure your public quote link after creating your account.
         </p>
 
-        <p className="mt-4 text-center text-sm text-slate-600">
+        <p className="mt-3 text-center text-sm text-[#475569]">
           Already have an account?{" "}
           <Link
-            className="font-semibold text-violet-700 underline-offset-4 hover:underline"
+            className="font-semibold text-[#047857] underline-offset-4 hover:underline"
             href="/auth/sign-in"
           >
             Sign in
