@@ -15,6 +15,7 @@
     "docs/operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md",
     "docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md",
     "docs/engineering/BIZPILOT_SUPABASE_CLIENT_ARCHITECTURE_v1.0.md",
+    "docs/engineering/BIZPILOT_SAFE_ERROR_HANDLING_STANDARD_v1.0.md",
     "docs/engineering/BIZPILOT_DATABASE_RLS_POLICY_BASELINE_v1.0.md",
     "docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md",
     "docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.4.md",

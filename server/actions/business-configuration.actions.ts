@@ -6,11 +6,13 @@
  * Role: Connects protected dashboard forms to tenant-safe configuration services.
  * Related:
  * - app/(dashboard)/dashboard/configuration/page.tsx
+ * - server/errors/safe-error.ts
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-05-05
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Mapped configuration action failures to safe user-facing messages.
  * - 2026-05-05: Created Phase 3 business configuration save action.
  * - 2026-05-05: Added business profile fields to the configuration save action.
  * - 2026-05-05: Added Cleaning template label and required-field overrides.
@@ -26,6 +28,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { saveBusinessConfiguration } from "@/server/services/business-configuration.service";
 import type { BusinessPrivacySettingsRecord } from "@/server/repositories/business-configuration.repository";
@@ -145,8 +148,21 @@ function readPrivacyMode(
 }
 
 function redirectWithConfigurationError(error: unknown): never {
-  const message =
-    error instanceof Error ? error.message : "Business configuration failed.";
+  const message = getSafeUserErrorMessage({
+    allowMessage: (value) =>
+      value === "Business name is required." ||
+      value === "Business slug must contain lowercase letters, numbers, and hyphens." ||
+      value === "FAQ entries must include both a question and an answer." ||
+      value === "Invalid privacy mode." ||
+      value === "Lead retention must be between 1 and 3650 days." ||
+      value === "You do not have permission to manage this business." ||
+      value.endsWith(" must be a valid hex color."),
+    code: "CONFIGURATION_ERROR",
+    error,
+    fallbackMessage:
+      "We couldn't save the business configuration. Please review the form and try again.",
+  });
+
   redirect(`/dashboard/configuration?error=${encodeURIComponent(message)}`);
 }
 

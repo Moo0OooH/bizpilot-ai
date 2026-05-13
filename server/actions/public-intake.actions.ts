@@ -5,12 +5,14 @@
  * Description: Provides Phase 4 public intake submission server actions.
  * Role: Connects public quote forms to server-side validation and scoped lead creation.
  * Related:
+ * - server/errors/safe-error.ts
  * - server/services/public-intake.service.ts
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-05-06
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Mapped public intake failures to safe user-facing messages.
  * - 2026-05-06: Created public intake submission action.
  * ============================================================
  */
@@ -19,6 +21,7 @@
 
 import { redirect } from "next/navigation";
 
+import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { submitPublicIntake } from "@/server/services/public-intake.service";
 
 function readRequiredFormValue(formData: FormData, key: string): string {
@@ -46,8 +49,23 @@ function readOptionalFormValue(
 }
 
 function redirectWithIntakeError(slug: string, error: unknown): never {
-  const message =
-    error instanceof Error ? error.message : "Quote request submission failed.";
+  const message = getSafeUserErrorMessage({
+    allowMessage: (value) =>
+      value === "Consent is required before submitting." ||
+      value === "Submission rejected." ||
+      value === "The quote form changed. Please refresh and submit again." ||
+      value === "This quote link is not available." ||
+      value.endsWith(" is required.") ||
+      value.endsWith(" must be a valid number.") ||
+      value.endsWith(" cannot be negative.") ||
+      value.endsWith(" must be a valid date.") ||
+      value.endsWith(" cannot be in the past."),
+    code: "PUBLIC_INTAKE_ERROR",
+    error,
+    fallbackMessage:
+      "We couldn't submit the quote request. Please review the form and try again.",
+  });
+
   redirect(`/quote/${slug}?error=${encodeURIComponent(message)}`);
 }
 

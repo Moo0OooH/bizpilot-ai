@@ -5,12 +5,14 @@
  * Description: Provides Phase 6 AI Lead Conversion Assistant server actions.
  * Role: Runs on-demand, server-side lead AI generation for authenticated business members.
  * Related:
+ * - server/errors/safe-error.ts
  * - server/services/ai/lead-conversion-assistant.service.ts
  * - app/(dashboard)/dashboard/leads/[leadId]/page.tsx
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-11
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Mapped AI action failures to safe user-facing messages.
  * - 2026-05-11: Created on-demand AI bundle generation action.
  * ============================================================
  */
@@ -20,6 +22,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 import { generateLeadAiBundle } from "@/server/services/ai/lead-conversion-assistant.service";
@@ -37,7 +40,14 @@ function readRequiredFormValue(formData: FormData, key: string): string {
 function redirectWithLeadError(leadId: string, error: unknown): never {
   const rawMessage =
     error instanceof Error ? error.message : "AI assistant generation failed.";
-  let message = "AI assistant could not prepare a draft. Please try again.";
+  let message = getSafeUserErrorMessage({
+    allowMessage: (value) =>
+      value === "Lead is not ready for AI assistance yet." ||
+      value === "No active business is available.",
+    code: "AI_ASSISTANT_ERROR",
+    error,
+    fallbackMessage: "AI assistant could not prepare a draft. Please try again.",
+  });
 
   if (
     rawMessage.includes("ai_outputs") ||

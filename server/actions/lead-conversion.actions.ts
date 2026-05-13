@@ -6,11 +6,13 @@
  * Role: Connects protected owner lead workflow forms to tenant-safe services.
  * Related:
  * - app/(dashboard)/dashboard/leads/[leadId]/page.tsx
+ * - server/errors/safe-error.ts
  * - server/services/lead-conversion.service.ts
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-05-07
+ * Last Updated: 2026-05-13
  * Change Log:
+ * - 2026-05-13: Mapped lead workflow failures to safe user-facing messages.
  * - 2026-05-07: Created Lead Conversion Desk status, copy, action, and outcome actions.
  * ============================================================
  */
@@ -20,6 +22,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 import {
@@ -96,8 +99,17 @@ async function getActiveBusinessForAction() {
 }
 
 function redirectWithLeadError(leadId: string, error: unknown): never {
-  const message =
-    error instanceof Error ? error.message : "Lead workflow update failed.";
+  const message = getSafeUserErrorMessage({
+    allowMessage: (value) =>
+      value === "Invalid lead status." ||
+      value === "Invalid manual outcome." ||
+      value === "Lead not found." ||
+      value === "No active business is available.",
+    code: "LEAD_WORKFLOW_ERROR",
+    error,
+    fallbackMessage: "We couldn't update this lead. Please try again.",
+  });
+
   redirect(`/dashboard/leads/${leadId}?error=${encodeURIComponent(message)}`);
 }
 
