@@ -7,10 +7,14 @@
  * Related:
  * - server/repositories/ai.repository.ts
  * - server/services/ai/prompt-registry.ts
+ * - server/providers/ai/index.ts
+ * - server/services/ai/error-sanitizer.ts
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-05-15
  * Change Log:
+ * - 2026-05-15: Phase 15. Extracted raw OpenAI fetch into server/providers/ai/openai-provider.ts.
+ *   Service now depends on the AIProvider boundary and sanitizes persisted error metadata.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-11: Created on-demand lead conversion bundle generator with rule fallback.
  * - 2026-05-13: Imported server env through the explicit server-only boundary.
@@ -21,8 +25,11 @@ import "server-only";
 
 import { createHash } from "node:crypto";
 
-import { getServerEnv } from "@/lib/env/server-env";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  getDefaultAiProvider,
+  type AIProvider,
+} from "@/server/providers/ai";
 import {
   getAiOutputForLeadByHash,
   getLatestAiOutputForLead,
@@ -37,6 +44,7 @@ import {
   listSubmissionValuesForLead,
 } from "@/server/repositories/lead-conversion.repository";
 import { estimateAiCost, estimateTokens } from "@/server/services/ai/ai-cost";
+import { sanitizeAiFailureReason } from "@/server/services/ai/error-sanitizer";
 import { maskAiPromptValue } from "@/server/services/ai/privacy-filter";
 import {
   leadConversionBundleInstructions,
@@ -206,51 +214,8 @@ function fallbackBundle(input: {
   };
 }
 
-async function callOpenAi(input: {
-  apiKey: string;
-  context: string;
-  model: string;
-}): Promise<{ output: LeadConversionAiBundle; outputText: string }> {
-  const response = await fetch("https://api.openai.com/v1/responses", {
-    body: JSON.stringify({
-      input: input.context,
-      instructions: leadConversionBundleInstructions,
-      max_output_tokens: 900,
-      model: input.model,
-      text: {
-        format: {
-          name: leadConversionBundlePrompt.outputSchemaName,
-          schema: bundleSchema,
-          strict: true,
-          type: "json_schema",
-        },
-      },
-    }),
-    headers: {
-      Authorization: `Bearer ${input.apiKey}`,
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-  });
-
-  if (!response.ok) {
-    throw new Error(`OpenAI request failed with status ${response.status}.`);
-  }
-
-  const payload = (await response.json()) as { output_text?: string };
-  const outputText = payload.output_text;
-
-  if (!outputText) {
-    throw new Error("OpenAI response did not include output text.");
-  }
-
-  const parsed = JSON.parse(outputText) as unknown;
-
-  if (!isBundle(parsed)) {
-    throw new Error("OpenAI response did not match the lead bundle schema.");
-  }
-
-  return { output: parsed, outputText };
+function validateBundle(parsed: unknown): LeadConversionAiBundle | null {
+  return isBundle(parsed) ? parsed : null;
 }
 
 export async function getLatestLeadAiOutput(input: {
@@ -268,6 +233,7 @@ export async function getLatestLeadAiOutput(input: {
 }
 
 export async function generateLeadAiBundle(input: {
+  aiProvider?: AIProvider | null;
   business: BusinessRecord;
   leadId: string;
 }): Promise<LeadConversionAiOutput> {
@@ -314,19 +280,25 @@ export async function generateLeadAiBundle(input: {
     return parseAiOutput(cached)!;
   }
 
-  const env = getServerEnv();
+  const provider =
+    input.aiProvider === undefined ? getDefaultAiProvider() : input.aiProvider;
   const model = leadConversionBundlePrompt.approvedModel;
   const inputTokens = estimateTokens(context);
 
   try {
-    if (!env.OPENAI_API_KEY) {
-      throw new Error("OPENAI_API_KEY is not configured.");
+    if (!provider) {
+      throw new Error("AI provider is not configured.");
     }
 
-    const generated = await callOpenAi({
-      apiKey: env.OPENAI_API_KEY,
-      context,
+    const generated = await provider.generateStructuredBundle<LeadConversionAiBundle>({
+      inputContext: context,
+      instructions: leadConversionBundleInstructions,
       model,
+      schema: {
+        definition: bundleSchema,
+        name: leadConversionBundlePrompt.outputSchemaName,
+      },
+      validate: validateBundle,
     });
     const outputTokens = estimateTokens(generated.outputText);
     const estimatedCost = estimateAiCost({ inputTokens, outputTokens });
@@ -364,14 +336,14 @@ export async function generateLeadAiBundle(input: {
 
     return parseAiOutput(record)!;
   } catch (error) {
+    const sanitizedReason = sanitizeAiFailureReason(error);
     const output = fallbackBundle({ lead, qualityScore });
     const outputText = JSON.stringify(output);
     const outputTokens = estimateTokens(outputText);
     const record = await insertAiOutput({
       businessId: input.business.id,
       cachedTokens: 0,
-      errorMessage:
-        error instanceof Error ? error.message : "AI generation failed.",
+      errorMessage: sanitizedReason,
       estimatedCost: 0,
       inputHash,
       inputTokens,
@@ -393,9 +365,7 @@ export async function generateLeadAiBundle(input: {
       eventType: "ai_bundle_fallback",
       inputTokens,
       leadId: input.leadId,
-      metadata: {
-        reason: error instanceof Error ? error.message : "unknown",
-      },
+      metadata: { reason: sanitizedReason },
       model: "rule-fallback-v1",
       operationType: "lead_conversion_bundle",
       outputTokens,
