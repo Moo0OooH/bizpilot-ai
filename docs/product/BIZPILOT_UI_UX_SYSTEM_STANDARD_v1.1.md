@@ -411,3 +411,41 @@ A BizPilot UI page is done when:
 - It avoids fake claims and fake analytics.
 - It has complete states.
 - It feels like a polished quote recovery workspace.
+
+## Operational Calm UX Addendum v1.6
+
+The UI must communicate calm operational control for busy service business owners.
+
+### UX Feeling Target
+
+The user should feel:
+
+- “My leads are organized.”
+- “I know who needs a reply.”
+- “I am less likely to forget someone.”
+- “This is simple enough to use while busy.”
+
+### Required UX Qualities
+
+- readable at 100% zoom,
+- clear hierarchy,
+- low cognitive load,
+- practical status labels,
+- obvious next action,
+- calm empty states,
+- restrained accents,
+- dense but readable cards,
+- no unnecessary visual noise.
+
+### Avoid
+
+- glowing AI decorations,
+- excessive gradients,
+- excessive animation,
+- metric overload,
+- crowded admin-panel feel,
+- hidden primary actions.
+
+### Action Priority Rule
+
+Each lead/detail view must make the next best action visually obvious. Secondary actions must not compete with the primary response or follow-up action.

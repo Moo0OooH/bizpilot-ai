@@ -272,3 +272,29 @@ Acceptance:
 - No silent failures.
 - No new scope added.
 ```
+
+## Additional Codex Prompts — Strategic Alignment v1.6
+
+### Prompt 10 — Magic Moment Sample Lead Experience
+
+Implement a safe first-use/demo dashboard state for accounts with no real leads. Show a clearly labeled sample cleaning lead with urgency/status, AI-style summary, suggested reply draft, follow-up risk, and primary CTAs. Do not persist fake data as real customer data unless the existing architecture already supports a safe demo seed mode. Keep the owner in control. Add tests or QA notes.
+
+### Prompt 11 — Operational Calm UX Pass
+
+Perform a focused UI pass across dashboard overview, leads list, lead detail, configuration, and public quote pages. Improve spacing rhythm, hierarchy, density, empty states, CTA priority, status visibility, and 100% zoom readability. Do not change routes, auth, database schema, or business logic unless required for copy/empty state rendering.
+
+### Prompt 12 — Landing Page Pain-First Rewrite
+
+Rewrite landing and demo copy around cleaning quote recovery. Lead with “Stop losing cleaning quote requests” or equivalent pain-first language. Avoid presenting BizPilot as a generic AI platform, CRM, form builder, or automation suite. Include before/after workflow and founder-led setup offer.
+
+### Prompt 13 — Founder CRM Template
+
+Create a simple founder CRM artifact or internal page/spec for tracking outreach, conversations, demos, objections, willingness to pay, follow-up dates, and pilot status. Keep it simple and validation-focused. Do not build a full CRM product feature.
+
+### Prompt 14 — MVP Response Channel Boundary
+
+Audit the product flow and copy to ensure all outbound responses are owner-reviewed and manually sent through existing customer channels. AI may draft and summarize but must not send or make commitments. Update copy where needed.
+
+### Prompt 15 — Validation Metrics and Retention Tracking
+
+Add lightweight tracking or documentation for time-to-first-value, active quote link, weekly submissions, AI draft usage, follow-up usage, weekly active owners, pilot satisfaction, and retention status. Avoid advanced analytics; focus on founder-readable validation metrics.

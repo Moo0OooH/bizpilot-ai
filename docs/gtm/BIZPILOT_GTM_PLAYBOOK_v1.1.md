@@ -300,3 +300,66 @@ GTM is working when:
 - At least 30 leads are submitted
 - Owners copy or edit AI drafts
 - Public links are placed
+
+## GTM Addendum — Founder-Led Cleaning Validation v1.6
+
+### Active Positioning
+
+Primary message:
+
+> Stop losing cleaning quote requests.
+
+Secondary message:
+
+> Turn messy quote messages into organized leads, reply drafts, and follow-up actions.
+
+Avoid leading with “AI platform,” “CRM,” “operating system,” or “automation suite.”
+
+### Founder-Led Onboarding
+
+The first customers should be onboarded manually by the founder. The founder helps configure the quote page, service list, branding basics, sample lead, and first-week workflow.
+
+### Founder CRM Requirement
+
+Before serious outreach, maintain a simple Founder CRM with:
+
+- business name,
+- contact channel,
+- owner/contact name,
+- city,
+- current quote process,
+- current tools,
+- contacted date,
+- response status,
+- demo status,
+- objections,
+- willingness to pay,
+- follow-up date,
+- pilot status,
+- retention notes.
+
+A spreadsheet is acceptable until a real need for automation appears.
+
+### Weekly Customer Discovery Loop
+
+Minimum weekly target during validation:
+
+- 5 personalized outreach attempts,
+- 2 conversations or meaningful replies,
+- 1 demo attempt,
+- all objections and owner wording recorded.
+
+### Founder Demo Rule
+
+Demo the before/after workflow, not the feature list. The strongest demo is:
+
+- messy incoming quote request,
+- structured quote page,
+- organized lead,
+- AI summary,
+- owner-reviewed reply draft,
+- follow-up reminder.
+
+### Validation Gate
+
+Do not expand to a new vertical until at least 3 paying or payment-ready cleaning businesses show repeat usage and retention signals.

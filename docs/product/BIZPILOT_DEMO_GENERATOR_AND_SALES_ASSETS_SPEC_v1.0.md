@@ -102,3 +102,30 @@ This spec is complete when:
 - Required demo assets are defined.
 - Before/after view is defined.
 - Sales success criteria are defined.
+
+## Demo Addendum — Before/After Quote Recovery v1.6
+
+The demo must show the business outcome, not the feature list.
+
+### Required Demo Story
+
+Before BizPilot:
+
+- customer sends a vague quote request,
+- owner has to ask basic questions,
+- reply is delayed,
+- follow-up is forgotten.
+
+After BizPilot:
+
+- quote link captures structured details,
+- lead appears organized,
+- AI summary clarifies the job,
+- suggested reply helps the owner respond faster,
+- follow-up action reduces lost opportunities.
+
+### Demo Success Feeling
+
+The owner should say or feel:
+
+> “This would help me stop forgetting or losing quote requests.”

@@ -180,3 +180,23 @@ This cost policy is complete when:
 - Unit economics targets are defined.
 - Upgrade rules are defined.
 - Stop-build cost rules are defined.
+
+## Finance Addendum — Validation Economics v1.6
+
+Early revenue quality matters more than feature quantity.
+
+### Early Financial Validation Targets
+
+- 3 paying or payment-ready cleaning businesses,
+- setup fee accepted or strongly agreed,
+- monthly subscription accepted after trial/pilot,
+- clear owner statement of value,
+- repeat usage beyond onboarding.
+
+### Cost Discipline Rule
+
+Do not add usage-heavy automation, messaging infrastructure, advanced analytics, or multi-vertical AI complexity before retention is visible.
+
+### Retention Priority
+
+A small number of retained paying customers is more valuable than many free signups with no repeated usage.

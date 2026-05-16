@@ -159,3 +159,11 @@ This baseline is complete when:
 - Public insert rules are defined.
 - RLS tests are required by phase.
 - Migration naming is standardized.
+
+## Baseline Addendum — Database as Primary Boundary v1.6
+
+All current and future RLS baselines must follow this rule:
+
+> The database is the primary authorization boundary; app code is not sufficient by itself.
+
+For public intake flows, RLS/helper functions must validate active link state, business/form relationship, and allowed public field writability. Public insert policies must not rely only on frontend field filtering.

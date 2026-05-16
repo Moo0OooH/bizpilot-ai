@@ -95,3 +95,21 @@ This playbook is complete when:
 - Vertical order is defined.
 - Template requirements are defined.
 - Forbidden patterns are defined.
+
+## Vertical Lock Addendum v1.6
+
+Cleaning remains the only active MVP vertical.
+
+### No New Vertical Until
+
+- 3+ paying or payment-ready cleaning businesses exist,
+- repeat usage is visible,
+- retention is healthy,
+- onboarding is stable,
+- owner objections are understood,
+- at least one testimonial or strong qualitative proof exists,
+- quote-to-response workflow is validated.
+
+### Expansion Warning
+
+Expanding before validation weakens copy, demo quality, onboarding, AI prompts, support, and founder focus.

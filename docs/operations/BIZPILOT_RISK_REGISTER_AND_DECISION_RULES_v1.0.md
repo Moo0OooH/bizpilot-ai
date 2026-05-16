@@ -143,3 +143,29 @@ This risk register is complete when:
 - Mitigations are defined.
 - Continue/fix/stop rules are defined.
 - Decision cadence is defined.
+
+## Risk Addendum — v1.6 Business Survival Risks
+
+### Risk 8 — Product stays software-complete but sales-incomplete
+
+If the project keeps adding features without founder-led sales and customer discovery, it may become technically strong but commercially unvalidated.
+
+**Mitigation:** weekly outreach, demos, objection tracking, and pilot follow-up.
+
+### Risk 9 — First dashboard session fails to explain value
+
+If owners see an empty or configuration-heavy dashboard, they may not understand the value quickly.
+
+**Mitigation:** Magic Moment sample lead state and clear first-use CTA.
+
+### Risk 10 — Public quote abuse or RLS gap before trust is established
+
+A security issue in the public quote flow would damage trust before the product has traction.
+
+**Mitigation:** public quote hardening, explicit GRANT verification, RLS tests, abuse protection.
+
+### Risk 11 — AI becomes the product instead of the helper
+
+If AI becomes verbose, autonomous, or gimmicky, the product may lose trust.
+
+**Mitigation:** constrained, structured, owner-reviewed AI only.

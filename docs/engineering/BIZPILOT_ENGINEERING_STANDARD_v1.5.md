@@ -412,3 +412,25 @@ This engineering standard is satisfied when:
 - User-facing errors are clean.
 - UI passes 100% zoom acceptance.
 - MVP hardening checklist is complete before sales-ready launch.
+
+## Engineering Addendum — Strategic Execution Constraints v1.6
+
+Engineering decisions must support the active lead recovery MVP and avoid premature platform expansion.
+
+### Current Engineering Priorities
+
+1. Public quote security hardening.
+2. Database/RLS enforcement before app-only validation.
+3. Server-only and DTO boundaries.
+4. AI structured outputs and privacy controls.
+5. Magic Moment support through safe sample/demo data.
+6. Operational Calm UI implementation.
+7. Founder-led onboarding support before self-serve automation.
+
+### Feature Constraint
+
+Do not introduce architecture or abstractions solely for deferred features such as booking, invoices, direct message automation, multi-vertical packs, or marketplace workflows.
+
+### AI Coding Agent Rule
+
+When using Codex or another coding agent, tasks must be small, bounded, testable, and aligned with the active v1.6 priorities. The agent must not broaden scope beyond the prompt.

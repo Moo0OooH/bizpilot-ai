@@ -571,3 +571,28 @@ This architecture is complete when:
 - Cost Control Architecture is included.
 - RLS and tenant isolation are mandatory.
 - MVP avoids CRM, booking, and integration complexity.
+
+## Architecture Addendum — MVP Response and Recovery Flow v1.6
+
+The architecture remains layered and multi-tenant, but the active MVP workflow is narrowed to lead recovery and owner-controlled response assistance.
+
+### Active MVP Workflow
+
+1. Public quote page captures structured cleaning quote request.
+2. Database policies validate public access and tenant-safe writes.
+3. Lead workspace organizes the submitted request.
+4. AI assistant produces structured, concise, owner-reviewed summary/reply/follow-up drafts.
+5. Owner manually sends the response through the real customer channel.
+6. BizPilot tracks safe status metadata and follow-up state.
+
+### Response Channel Boundary
+
+Direct external message sending is not part of the MVP. The system may provide copy-ready drafts and status tracking, but the owner remains responsible for sending through email, Instagram DM, SMS/phone, or other existing channels.
+
+### Public Surface Priority
+
+The public quote path is the highest-risk surface because it combines anonymous access, public inserts, intake field mapping, and AI-adjacent workflows. Architecture decisions must treat this path as security-critical.
+
+### Demo-First Architecture Requirement
+
+The architecture must support a safe sample/demo lead state so the first dashboard experience is valuable even before real submissions exist.

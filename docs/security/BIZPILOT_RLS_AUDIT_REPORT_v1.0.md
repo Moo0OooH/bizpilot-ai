@@ -309,3 +309,11 @@ None. This phase was audit-only.
 - Role matrix design.
 - AI output and usage metadata privacy hardening.
 - Public quote abuse/rate-limit controls.
+
+## Audit Addendum — v1.6 Priority Interpretation
+
+The highest-priority RLS issue for MVP readiness is the public quote submission path, especially public insert policies and intake submission value validation.
+
+Before public pilot, verify that submitted field keys/field IDs are valid for the active intake form, visible/writable by the public flow, and scoped to the same business/public link context. The database must reject invalid or hidden fields even if app code fails to filter them.
+
+Add tests for invalid field key insertion, hidden field insertion, inactive link submission, cross-business submission mismatch, and anonymous read denial after insert.

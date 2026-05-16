@@ -484,3 +484,33 @@ This document is complete when:
 - Cleaning Template compact row UX is defined.
 - Branding preview rules are defined.
 - Active nav rules are defined.
+
+## UX Addendum — First Three-Minute Magic Moment v1.6
+
+The dashboard must not feel empty, confusing, or configuration-first during the first session.
+
+### Required First-Use State
+
+If the owner has no real leads yet, show a realistic sample cleaning lead with:
+
+- clear “sample” label,
+- lead type such as move-out cleaning or deep cleaning,
+- urgency/status badge,
+- AI summary,
+- suggested reply draft,
+- follow-up risk or next action,
+- CTA to review reply,
+- CTA to share/publish quote link.
+
+### First-Use Goal
+
+Within three minutes, the owner should understand:
+
+- what problem BizPilot solves,
+- what a useful lead looks like,
+- how AI helps without taking control,
+- what action to take next.
+
+### Empty State Rule
+
+Empty states must teach and guide. They must not leave the owner staring at blank tables or generic setup instructions.

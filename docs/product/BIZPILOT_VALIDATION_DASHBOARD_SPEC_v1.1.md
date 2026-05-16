@@ -176,3 +176,28 @@ This dashboard spec is complete when:
 - Time-to-Value is measurable.
 - Revenue Recovery Proof is defined.
 - Continue/fix/pivot criteria are explicit.
+
+## Validation Addendum — Retention-First Metrics v1.6
+
+The validation dashboard must prove repeat usefulness, not just activity.
+
+### Additional Required Metrics
+
+- time-to-first-value,
+- first quote link published/placed,
+- weekly active owners,
+- AI draft usage percentage,
+- follow-up usage percentage,
+- response status completion,
+- active quote links,
+- repeat weekly submissions,
+- pilot retention status,
+- pilot satisfaction notes.
+
+### Most Important Early Signal
+
+The most important validation signal is whether the first three paying or payment-ready businesses keep using BizPilot after setup.
+
+### Founder CRM Source
+
+During early validation, some metrics may be tracked manually in the Founder CRM until instrumentation is justified.

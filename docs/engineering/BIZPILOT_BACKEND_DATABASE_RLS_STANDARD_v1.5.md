@@ -405,3 +405,34 @@ This backend/database/RLS standard is satisfied when:
 - Security events exist for sensitive operations.
 - Service role access is server-only.
 - Supabase advisors have been reviewed before launch.
+
+## RLS Addendum — Public Quote Submission Hardening v1.6
+
+The public quote submission path is the highest-risk MVP surface and must be treated as security-critical.
+
+### Required Public Insert Controls
+
+For public intake submissions and values:
+
+- public inserts must be limited to active public links/forms,
+- submitted fields must correspond to allowed fields for the active form,
+- hidden/internal fields must not be publicly writable,
+- tenant/business association must be verified at the database policy/helper level,
+- app validation must not be the only enforcement layer,
+- rate limiting or abuse controls must be applied before broad public sharing,
+- honeypot/spam signals should be recorded safely without exposing sensitive internals.
+
+### Security Hierarchy
+
+Database policies and explicit GRANTs are the primary security boundary. Application validation and UI constraints are secondary defenses.
+
+### Test Requirement
+
+Every public quote RLS change must include or update RLS tests for:
+
+- valid public insert,
+- invalid business/form mismatch,
+- hidden field rejection,
+- invalid field key rejection,
+- inactive public link rejection,
+- cross-tenant read/write denial.

@@ -605,3 +605,37 @@ This build plan is complete when:
 - Cost control is explicit.
 - Expansion is blocked by validation.
 - Non-goals prevent overbuilding.
+
+## Build Plan Addendum — Sales-Ready MVP Alignment v1.6
+
+The current build plan remains valid, but the execution priority is now constrained by the strategic alignment overlay.
+
+### Immediate Priority Order
+
+1. Security/RLS/public quote hardening.
+2. First-three-minute Magic Moment.
+3. Operational Calm UX pass.
+4. Landing page rewrite around cleaning quote recovery.
+5. Founder-led onboarding workflow.
+6. Founder CRM/customer discovery tracking.
+7. Three real cleaning business pilots.
+8. Retention tracking.
+
+### Required Magic Moment Deliverable
+
+Before serious outreach, the dashboard must support a first-use or demo state with:
+
+- sample cleaning lead,
+- urgency/status tag,
+- AI summary,
+- suggested reply,
+- follow-up risk or follow-up prompt,
+- clear CTA to review reply and share quote link.
+
+### Execution Constraint
+
+Do not add new verticals, booking, invoices, direct messaging automation, or advanced analytics before the validation gate is passed.
+
+### Validation-Oriented Definition of Done
+
+A phase is not considered business-ready unless it improves speed-to-value, trust, customer understanding, security, or repeat usage.

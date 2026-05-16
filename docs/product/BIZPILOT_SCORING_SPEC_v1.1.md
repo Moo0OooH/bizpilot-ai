@@ -251,3 +251,23 @@ This spec is complete when:
 - Manual outcomes are defined.
 - Revenue recovery inputs are defined.
 - AI remains assistant-only.
+
+## Scoring Addendum — Lead Recovery Priority v1.6
+
+Scoring should support the Golden Product Rule by helping owners decide who needs attention first.
+
+### Priority Signals
+
+Lead priority should consider:
+
+- request urgency,
+- completeness of required quote information,
+- time since submission,
+- missing information that blocks quoting,
+- follow-up needed state,
+- response status,
+- potential fit for the business service area and service type.
+
+### Scoring Constraint
+
+Scores must not make automated commitments or business decisions. They are owner-facing guidance only.

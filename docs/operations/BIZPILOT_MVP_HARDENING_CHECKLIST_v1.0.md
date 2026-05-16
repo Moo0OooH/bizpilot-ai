@@ -205,3 +205,39 @@ Accepted Risk — with reason and owner/date
 ```
 
 No silent exceptions.
+
+## Hardening Addendum — Sales-Ready Priority Gate v1.6
+
+Before first serious sales outreach, complete or explicitly defer with risk approval:
+
+### Must Complete
+
+- public quote RLS hardening,
+- explicit GRANT verification,
+- public submit abuse protection,
+- honeypot/spam friction,
+- RLS test command wired into package scripts,
+- AI structured output validation,
+- AI metadata/error cleanup,
+- server-only/DTO boundary audit,
+- safe error messages for public quote/auth/dashboard actions,
+- Magic Moment sample lead state,
+- 100% zoom dashboard UX QA,
+- founder onboarding checklist.
+
+### Should Complete Early
+
+- CSP report-only,
+- security headers baseline,
+- Founder CRM spreadsheet/template,
+- landing copy rewrite,
+- validation metrics tracking.
+
+### Must Not Add Before Gate
+
+- booking,
+- invoices,
+- autonomous sending,
+- vertical expansion,
+- marketplace,
+- advanced analytics.

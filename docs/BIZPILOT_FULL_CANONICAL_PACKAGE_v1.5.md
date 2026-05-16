@@ -2649,3 +2649,11 @@ Acceptance:
 - No silent failures.
 - No new scope added.
 ```
+
+# v1.6 Strategic Alignment Overlay Notice
+
+The v1.5 canonical package remains preserved. For current MVP execution, apply `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` as the active overlay.
+
+The overlay narrows the current execution path to cleaning-first lead recovery, Magic Moment, public quote hardening, Operational Calm UX, founder-led onboarding, customer discovery, and retention.
+
+It does not remove the long-term platform vision. It prevents premature expansion before validation.

@@ -415,3 +415,26 @@ This standard is complete when BizPilot has:
 - Secret management rules.
 - Incident/deletion operational readiness.
 - A concrete security checklist before launch.
+
+## Security Addendum — MVP Hardening Priority v1.6
+
+### Highest-Risk Surface
+
+The public quote submission path is the highest-risk MVP surface because it combines anonymous access, public inserts, form/field mapping, lead creation, and AI-adjacent workflows.
+
+### Required Baseline Before Public Pilot
+
+- explicit GRANT review,
+- RLS helper validation for active public link and allowed fields,
+- abuse prevention for public submit actions,
+- honeypot or spam-friction mechanism,
+- safe error messages,
+- safe logging and AI metadata cleanup,
+- CSP report-only baseline,
+- security headers review,
+- secure cookie/session review,
+- CSRF review for mutation paths.
+
+### AI Privacy Rule
+
+AI output must be structured and validated. AI persistence must avoid raw provider errors, internal stack details, secrets, or customer-sensitive fragments. Store only safe operational metadata unless a deliberate product requirement says otherwise.

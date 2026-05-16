@@ -168,3 +168,11 @@ This baseline is complete when:
 - Logging rules are defined.
 - AI privacy rules are defined.
 - Secret handling is defined.
+
+## Privacy Addendum — Owner-Controlled Response Strategy v1.6
+
+The MVP must keep the owner in control of all outbound communication.
+
+AI may draft, summarize, classify, or suggest follow-ups, but it must not send messages, confirm bookings, quote final prices, promise availability, or make commitments without owner review.
+
+For privacy-sensitive AI calls, store only safe metadata and validated structured outputs needed for product functionality. Do not persist raw provider failure details or unnecessary customer-sensitive content.

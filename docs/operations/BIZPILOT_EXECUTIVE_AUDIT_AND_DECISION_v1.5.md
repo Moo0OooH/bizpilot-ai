@@ -179,3 +179,26 @@ Phase 5/6 stabilization
 ```
 
 If this discipline is followed, BizPilot has a credible path to becoming a paid local-service SaaS rather than another unfinished AI dashboard.
+
+## Executive Addendum — Strategic Decision v1.6
+
+### Updated Decision
+
+The project remains a strong candidate for a profitable niche SaaS if execution shifts from product completion to validated lead recovery, security readiness, founder-led onboarding, and retention.
+
+### Current Main Risk
+
+The main risk is no longer idea quality. The main risk is failing to validate real owner willingness to pay and repeat usage quickly enough.
+
+### Updated Go/No-Go Logic
+
+Proceed only if the next execution cycle prioritizes:
+
+1. security hardening,
+2. Magic Moment,
+3. operational calm UX,
+4. founder-led customer discovery,
+5. three cleaning pilot customers,
+6. retention tracking.
+
+Do not proceed into broad feature expansion until the validation gate is passed.

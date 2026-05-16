@@ -567,3 +567,54 @@ This document is complete when:
 - AI boundaries are explicit.
 - Validation Gate is explicit.
 - Strict Non-Goals are explicit.
+
+## Strategic Refocus Addendum — Active MVP Positioning v1.6
+
+This addendum preserves the original product blueprint while narrowing the current go-to-market and MVP execution.
+
+### Active MVP Identity
+
+For the current validation stage, BizPilot AI is best described as:
+
+> **A Lead Recovery & Response System for cleaning businesses.**
+
+Customer-facing shorthand:
+
+> **Quote Recovery Command Center for Cleaning Businesses.**
+
+The broader “AI operating system for local service businesses” remains a long-term vision, but it must not drive MVP copy, demo flow, or early sales conversations.
+
+### Golden Product Rule
+
+Every current feature must improve one of these outcomes:
+
+- response speed,
+- lead organization,
+- follow-up recovery,
+- owner clarity,
+- conversion probability.
+
+Features that do not clearly support these outcomes are deferred.
+
+### Updated Core Product Promise
+
+BizPilot helps cleaning business owners stop losing quote requests by turning scattered or incomplete inquiries into organized leads, AI-assisted replies, and follow-up actions that the owner controls.
+
+### Explicit Not-Now List
+
+The following are not part of the active MVP:
+
+- booking system,
+- invoices,
+- calendar sync,
+- WhatsApp automation,
+- autonomous AI reply sending,
+- marketplace,
+- campaign builder,
+- social media automation,
+- mobile app,
+- multi-industry expansion.
+
+### Active Success Definition
+
+The MVP is successful only if real owners use it repeatedly, reply faster, recover or better manage leads, and continue after setup. Technical completion alone is not success.
