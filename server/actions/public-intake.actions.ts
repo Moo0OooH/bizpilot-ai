@@ -19,10 +19,27 @@
 
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
+import {
+  hashClientIp,
+  RATE_LIMIT_EXCEEDED_MESSAGE,
+} from "@/server/services/abuse-protection.service";
 import { submitPublicIntake } from "@/server/services/public-intake.service";
+
+async function readRequestIpHash(): Promise<string> {
+  const requestHeaders = await headers();
+  const forwarded = requestHeaders.get("x-forwarded-for");
+  const firstForwarded = forwarded?.split(",")[0]?.trim();
+  const directIp =
+    firstForwarded && firstForwarded.length > 0
+      ? firstForwarded
+      : (requestHeaders.get("x-real-ip") ?? "");
+
+  return hashClientIp(directIp);
+}
 
 function readRequiredFormValue(formData: FormData, key: string): string {
   const value = formData.get(key);
@@ -55,6 +72,7 @@ function redirectWithIntakeError(slug: string, error: unknown): never {
       value === "Submission rejected." ||
       value === "The quote form changed. Please refresh and submit again." ||
       value === "This quote link is not available." ||
+      value === RATE_LIMIT_EXCEEDED_MESSAGE ||
       value.endsWith(" is required.") ||
       value.endsWith(" must be a valid number.") ||
       value.endsWith(" cannot be negative.") ||
@@ -86,12 +104,15 @@ export async function submitPublicIntakeAction(
       }),
     );
 
+    const ipHash = await readRequestIpHash();
+
     await submitPublicIntake({
       consentAccepted: formData.get("consentAccepted") === "on",
       consentVersionId: readRequiredFormValue(formData, "consentVersionId"),
       fieldValues,
       honeypot: readOptionalFormValue(formData, "companyWebsite"),
       intakeFormId: readRequiredFormValue(formData, "intakeFormId"),
+      ipHash,
       slug,
       source: {
         referrer: readOptionalFormValue(formData, "referrer"),

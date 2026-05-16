@@ -1173,6 +1173,14 @@ export type Database = {
         Args: { target_business_id: string };
         Returns: boolean;
       };
+      count_recent_public_submission_attempts: {
+        Args: {
+          target_business_id: string;
+          target_ip_hash: string;
+          target_window_minutes: number;
+        };
+        Returns: number;
+      };
       is_business_member: {
         Args: { target_business_id: string };
         Returns: boolean;
@@ -1180,6 +1188,15 @@ export type Database = {
       owns_business: {
         Args: { target_business_id: string };
         Returns: boolean;
+      };
+      record_public_submission_attempt: {
+        Args: {
+          target_business_id: string;
+          target_intake_form_id: string | null;
+          target_ip_hash: string;
+          target_reason: string;
+        };
+        Returns: void;
       };
     };
     Enums: Record<string, never>;

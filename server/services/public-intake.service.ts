@@ -23,6 +23,10 @@ import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
+  enforceSubmissionRateLimit,
+  recordPublicSubmissionAttempt,
+} from "@/server/services/abuse-protection.service";
+import {
   getPublicIntakePageBySlug,
   insertLeadSourceMetadata,
   insertPublicLead,
@@ -42,6 +46,7 @@ export type PublicIntakeSubmissionInput = Readonly<{
   fieldValues: Record<string, string>;
   honeypot?: string | undefined;
   intakeFormId: string;
+  ipHash: string;
   source: LeadSourceInput;
   slug: string;
 }>;
@@ -175,14 +180,6 @@ export async function getPublicIntakePage(input: {
 export async function submitPublicIntake(
   input: PublicIntakeSubmissionInput,
 ): Promise<void> {
-  if (cleanText(input.honeypot).length > 0) {
-    throw new Error("Submission rejected.");
-  }
-
-  if (!input.consentAccepted) {
-    throw new Error("Consent is required before submitting.");
-  }
-
   const supabase = await createSupabaseServerClient();
   const page = requirePublicPage(
     await getPublicIntakePageBySlug({
@@ -190,18 +187,82 @@ export async function submitPublicIntake(
       supabase,
     }),
   );
+  const businessId = page.publicLink.business_id;
+
+  // Rate limit first. The page is already resolved at this point so we have a
+  // real business_id to scope the count against. A rate-limit exception is
+  // also recorded so an attacker who keeps tripping the limit cannot keep
+  // probing without leaving an audit trail.
+  try {
+    await enforceSubmissionRateLimit({
+      businessId,
+      ipHash: input.ipHash,
+      supabase,
+    });
+  } catch (error) {
+    await recordPublicSubmissionAttempt({
+      businessId,
+      intakeFormId: page.form.id,
+      ipHash: input.ipHash,
+      reason: "rate_limit_exceeded",
+      supabase,
+    });
+    throw error;
+  }
+
+  if (cleanText(input.honeypot).length > 0) {
+    await recordPublicSubmissionAttempt({
+      businessId,
+      intakeFormId: page.form.id,
+      ipHash: input.ipHash,
+      reason: "honeypot_triggered",
+      supabase,
+    });
+    throw new Error("Submission rejected.");
+  }
+
+  if (!input.consentAccepted) {
+    await recordPublicSubmissionAttempt({
+      businessId,
+      intakeFormId: page.form.id,
+      ipHash: input.ipHash,
+      reason: "consent_missing",
+      supabase,
+    });
+    throw new Error("Consent is required before submitting.");
+  }
 
   if (
     page.form.id !== input.intakeFormId ||
     page.consentVersion.id !== input.consentVersionId
   ) {
+    await recordPublicSubmissionAttempt({
+      businessId,
+      intakeFormId: page.form.id,
+      ipHash: input.ipHash,
+      reason: "invalid_form",
+      supabase,
+    });
     throw new Error("The quote form changed. Please refresh and submit again.");
   }
 
-  const values = getSubmissionValues({
-    fieldValues: input.fieldValues,
-    page,
-  });
+  let values: IntakeSubmissionValueInput[];
+  try {
+    values = getSubmissionValues({
+      fieldValues: input.fieldValues,
+      page,
+    });
+  } catch (error) {
+    await recordPublicSubmissionAttempt({
+      businessId,
+      intakeFormId: page.form.id,
+      ipHash: input.ipHash,
+      reason: "invalid_field",
+      supabase,
+    });
+    throw error;
+  }
+
   const valueByKey = Object.fromEntries(
     values.map((value) => [value.fieldKey, value.value]),
   );
@@ -212,7 +273,7 @@ export async function submitPublicIntake(
     input.source.sourceChannel ?? input.source.utmSource ?? "public_quote_link";
 
   await insertPublicSubmission({
-    businessId: page.publicLink.business_id,
+    businessId,
     consentAcceptedAt,
     consentVersionId: page.consentVersion.id,
     intakeFormId: page.form.id,
@@ -222,14 +283,14 @@ export async function submitPublicIntake(
   });
 
   await insertPublicSubmissionValues({
-    businessId: page.publicLink.business_id,
+    businessId,
     submissionId,
     supabase,
     values,
   });
 
   await insertPublicLead({
-    businessId: page.publicLink.business_id,
+    businessId,
     cityOrServiceArea: jsonToText(valueByKey.city_or_service_area),
     customerContact: jsonToText(valueByKey.customer_contact),
     customerName: jsonToText(valueByKey.customer_name),
@@ -241,12 +302,20 @@ export async function submitPublicIntake(
   });
 
   await insertLeadSourceMetadata({
-    businessId: page.publicLink.business_id,
+    businessId,
     leadId,
     source: {
       ...input.source,
       sourceChannel,
     },
+    supabase,
+  });
+
+  await recordPublicSubmissionAttempt({
+    businessId,
+    intakeFormId: page.form.id,
+    ipHash: input.ipHash,
+    reason: "submission_completed",
     supabase,
   });
 }
