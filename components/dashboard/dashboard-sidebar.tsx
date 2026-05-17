@@ -11,9 +11,10 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-10
+ * Last Updated: 2026-05-17
  * Change Log:
  * - 2026-05-10: Created reusable dashboard sidebar shell component.
+ * - 2026-05-17: Tuned navigation for calm quote recovery positioning.
  * ============================================================
  */
 
@@ -43,8 +44,8 @@ const navigationGroups: NavigationGroup[] = [
     items: [
       {
         href: "/dashboard",
-        icon: "D",
-        label: "Dashboard",
+        icon: "O",
+        label: "Overview",
         match: (pathname) => pathname === "/dashboard",
       },
     ],
@@ -65,8 +66,8 @@ const navigationGroups: NavigationGroup[] = [
     items: [
       {
         href: "/dashboard/configuration",
-        icon: "B",
-        label: "Business Configuration",
+        icon: "Q",
+        label: "Quote Setup",
         match: (pathname) => pathname === "/dashboard/configuration",
       },
     ],
@@ -79,7 +80,7 @@ function navClass(isActive: boolean, isDisabled: boolean): string {
   }
 
   if (isActive) {
-    return "flex h-9 items-center gap-3 rounded-[10px] bg-violet-600 px-3 font-medium text-white shadow-sm";
+    return "flex h-9 items-center gap-3 rounded-[10px] bg-emerald-600 px-3 font-medium text-white shadow-sm";
   }
 
   return "flex h-9 items-center gap-3 rounded-[10px] px-3 text-slate-300 transition hover:bg-white/[0.06] hover:text-white";
@@ -99,13 +100,13 @@ export function DashboardSidebar({
 }: DashboardSidebarProps) {
   const pathname = usePathname();
   return (
-    <aside className="sticky top-0 hidden h-screen border-r border-black/20 bg-[#061522] text-white lg:flex lg:flex-col">
+    <aside className="dashboard-sidebar sticky top-0 hidden h-screen border-r text-white lg:flex lg:flex-col">
       <div className="border-b border-white/10 px-4 py-4">
         <p className="text-base font-semibold tracking-normal text-white">
-          BizPilot AI
+          BizPilot
         </p>
         <p className="mt-1 truncate text-xs text-white/55">
-          Quote recovery workspace
+          Calm quote recovery workspace
         </p>
       </div>
       <nav className="flex-1 space-y-5 overflow-y-auto px-3 py-4 text-sm">

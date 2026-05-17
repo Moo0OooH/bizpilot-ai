@@ -9,10 +9,11 @@
  * - app/(dashboard)/dashboard/page.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-11
+ * Last Updated: 2026-05-17
  * Change Log:
  * - 2026-05-10: Added reusable SaaS dashboard presentation primitives.
  * - 2026-05-11: Expanded primitives for a production-grade quote recovery cockpit.
+ * - 2026-05-17: Tuned primitives for calm dark operational dashboard surfaces.
  * ============================================================
  */
 
@@ -72,10 +73,10 @@ type EmptyStateProps = Readonly<{
 }>;
 
 export const buttonClass =
-  "inline-flex h-9 items-center justify-center rounded-[9px] border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 shadow-sm transition hover:border-slate-300 hover:bg-slate-50";
+  "inline-flex h-9 items-center justify-center rounded-[9px] border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 shadow-sm transition hover:border-emerald-400/50 hover:bg-slate-50";
 
 export const primaryButtonClass =
-  "inline-flex h-9 items-center justify-center rounded-[9px] bg-slate-950 px-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-slate-800";
+  "inline-flex h-9 items-center justify-center rounded-[9px] bg-emerald-600 px-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-500";
 
 export const ghostButtonClass =
   "inline-flex h-9 items-center justify-center rounded-[9px] px-3 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950";
@@ -110,7 +111,7 @@ function cardClass(variant: CardVariant): string {
     elevated: "border-slate-200 bg-white shadow-[0_12px_35px_rgba(15,23,42,0.08)]",
     muted: "border-slate-200 bg-slate-50 shadow-sm",
     priority:
-      "border-violet-200 bg-[linear-gradient(180deg,#ffffff_0%,#faf7ff_100%)] shadow-[0_12px_35px_rgba(109,40,217,0.10)]",
+      "border-emerald-200 bg-[linear-gradient(180deg,#ffffff_0%,#f0fdf4_100%)] shadow-[0_12px_35px_rgba(16,185,129,0.10)]",
   };
 
   return variants[variant];

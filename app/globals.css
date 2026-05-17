@@ -2,16 +2,17 @@
 ============================================================
 File: app/globals.css
 Project: BizPilot AI
-Description: Defines global Tailwind and base CSS variables.
-Role: Provides Phase 1 global styling foundation for all routes.
+Description: Defines global Tailwind, base CSS variables, and scoped dashboard themes.
+Role: Provides Phase 1 global styling foundation and Phase 17 dashboard theme polish.
 Related:
 - app/layout.tsx
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-05-04
+Last Updated: 2026-05-17
 Change Log:
 - 2026-05-04: Added standard project file header.
+- 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
 ============================================================
 */
 
@@ -33,4 +34,156 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+.biz-dashboard-light {
+  background:
+    radial-gradient(circle at top right, rgba(16, 185, 129, 0.08), transparent 32rem),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  color: #0f172a;
+}
+
+.biz-dashboard-light .dashboard-topbar {
+  border-color: rgba(203, 213, 225, 0.85);
+  background-color: rgba(255, 255, 255, 0.92);
+}
+
+.biz-dashboard-light .dashboard-business-switcher,
+.biz-dashboard-light .dashboard-topbar-search {
+  border-color: rgba(203, 213, 225, 0.9);
+  background-color: rgba(255, 255, 255, 0.88);
+  color: #0f172a;
+}
+
+.biz-dashboard-light .dashboard-topbar-search {
+  color: #64748b;
+}
+
+.biz-dashboard-light .dashboard-sidebar {
+  border-color: rgba(15, 23, 42, 0.08);
+  background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+}
+
+.biz-dashboard-dark {
+  background:
+    radial-gradient(circle at top right, rgba(16, 185, 129, 0.08), transparent 34rem),
+    linear-gradient(180deg, #09111c 0%, #07101a 45%, #050b12 100%);
+  color: #f8fafc;
+}
+
+.biz-dashboard-dark .dashboard-topbar {
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(7, 16, 26, 0.92);
+}
+
+.biz-dashboard-dark .dashboard-business-switcher,
+.biz-dashboard-dark .dashboard-topbar-search {
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #f8fafc;
+}
+
+.biz-dashboard-dark .dashboard-topbar-search {
+  color: #94a3b8;
+}
+
+.biz-dashboard-dark .dashboard-sidebar {
+  border-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.biz-dashboard-dark .bg-white,
+.biz-dashboard-dark .bg-slate-50,
+.biz-dashboard-dark .bg-zinc-50 {
+  background-color: rgba(15, 23, 42, 0.78);
+}
+
+.biz-dashboard-dark .bg-zinc-100,
+.biz-dashboard-dark .bg-slate-100 {
+  background-color: rgba(30, 41, 59, 0.9);
+}
+
+.biz-dashboard-dark .bg-emerald-50 {
+  background-color: rgba(6, 78, 59, 0.36);
+}
+
+.biz-dashboard-dark .bg-amber-50 {
+  background-color: rgba(120, 53, 15, 0.34);
+}
+
+.biz-dashboard-dark .bg-red-50 {
+  background-color: rgba(127, 29, 29, 0.34);
+}
+
+.biz-dashboard-dark .bg-blue-50 {
+  background-color: rgba(30, 58, 138, 0.34);
+}
+
+.biz-dashboard-dark .bg-violet-50 {
+  background-color: rgba(76, 29, 149, 0.34);
+}
+
+.biz-dashboard-dark .border-slate-200,
+.biz-dashboard-dark .border-zinc-200,
+.biz-dashboard-dark .border-emerald-200,
+.biz-dashboard-dark .border-amber-200,
+.biz-dashboard-dark .border-red-200,
+.biz-dashboard-dark .border-blue-200,
+.biz-dashboard-dark .border-violet-200 {
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+.biz-dashboard-dark .text-slate-950,
+.biz-dashboard-dark .text-zinc-950,
+.biz-dashboard-dark .text-slate-900,
+.biz-dashboard-dark .text-zinc-900,
+.biz-dashboard-dark .text-slate-800,
+.biz-dashboard-dark .text-zinc-800,
+.biz-dashboard-dark .text-slate-700,
+.biz-dashboard-dark .text-zinc-700 {
+  color: #f8fafc;
+}
+
+.biz-dashboard-dark .text-slate-600,
+.biz-dashboard-dark .text-zinc-600,
+.biz-dashboard-dark .text-slate-500,
+.biz-dashboard-dark .text-zinc-500 {
+  color: #94a3b8;
+}
+
+.biz-dashboard-dark .text-emerald-800,
+.biz-dashboard-dark .text-emerald-700 {
+  color: #86efac;
+}
+
+.biz-dashboard-dark .text-amber-800,
+.biz-dashboard-dark .text-amber-700 {
+  color: #fcd34d;
+}
+
+.biz-dashboard-dark .text-red-800,
+.biz-dashboard-dark .text-red-700 {
+  color: #fca5a5;
+}
+
+.biz-dashboard-dark .text-blue-800,
+.biz-dashboard-dark .text-blue-700 {
+  color: #93c5fd;
+}
+
+.biz-dashboard-dark .text-violet-800,
+.biz-dashboard-dark .text-violet-700 {
+  color: #c4b5fd;
+}
+
+.biz-dashboard-dark .shadow-sm,
+.biz-dashboard-dark .shadow-\[0_12px_35px_rgba\(15\,23\,42\,0\.08\)\],
+.biz-dashboard-dark .shadow-\[0_12px_35px_rgba\(109\,40\,217\,0\.10\)\] {
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+.biz-dashboard-dark input,
+.biz-dashboard-dark textarea,
+.biz-dashboard-dark select {
+  color: #f8fafc;
 }
