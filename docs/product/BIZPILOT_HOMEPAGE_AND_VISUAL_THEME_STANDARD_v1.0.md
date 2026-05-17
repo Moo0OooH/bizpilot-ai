@@ -33,6 +33,11 @@ Use the following visual system as the active direction:
 - Danger / urgent: `#EF4444`
 - AI accent: `#8B5CF6`
 
+Implementation rule: page-level styling should inherit from semantic CSS tokens
+before using literal colors. Global brand tokens use `--biz-*`; dashboard-scoped
+tokens use `--dash-*`. Changing the brand palette should mostly require updates
+to `app/globals.css`, not rewriting individual pages.
+
 ## 3. Color Usage Rules
 
 Emerald is reserved for primary actions, active states, selected navigation,
@@ -65,6 +70,8 @@ Dashboard:
 - Prioritize attention, leads, next actions, and owner review.
 - Avoid KPI overload and enterprise dashboard density.
 - Light/dark mode may exist, but status colors must keep the same meaning.
+- Dashboard cards, buttons, fields, topbar, and shell surfaces should inherit
+  from `--dash-*` tokens so light/dark themes stay aligned.
 
 Quote/auth pages:
 

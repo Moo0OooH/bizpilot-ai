@@ -48,8 +48,8 @@ export function DashboardShell({
           userLabel={userLabel}
         />
 
-        <div className="px-4 py-4 pb-10 sm:px-5 lg:px-6">
-          <div className="mx-auto w-full max-w-[1240px] min-w-0">
+        <div className="px-3 py-3 pb-8 sm:px-4 lg:px-5">
+          <div className="mx-auto w-full max-w-[1180px] min-w-0">
             {children}
           </div>
         </div>

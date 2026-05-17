@@ -73,22 +73,22 @@ type EmptyStateProps = Readonly<{
 }>;
 
 export const buttonClass =
-  "inline-flex h-9 items-center justify-center rounded-[9px] border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 shadow-sm transition hover:border-emerald-400/50 hover:bg-slate-50";
+  "biz-button-secondary inline-flex h-8 items-center justify-center rounded-[9px] border px-3 text-xs font-medium shadow-sm transition";
 
 export const primaryButtonClass =
-  "inline-flex h-9 items-center justify-center rounded-[9px] bg-emerald-600 px-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-700";
+  "biz-button-primary inline-flex h-8 items-center justify-center rounded-[9px] px-3.5 text-xs font-semibold shadow-sm transition";
 
 export const ghostButtonClass =
-  "inline-flex h-9 items-center justify-center rounded-[9px] px-3 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950";
+  "biz-button-ghost inline-flex h-8 items-center justify-center rounded-[9px] px-3 text-xs font-medium transition";
 
 export const disabledButtonClass =
-  "inline-flex h-9 cursor-not-allowed items-center justify-center rounded-[9px] border border-slate-200 bg-slate-50 px-3 text-xs font-medium text-slate-400";
+  "inline-flex h-8 cursor-not-allowed items-center justify-center rounded-[9px] border border-slate-200 bg-slate-50 px-3 text-xs font-medium text-slate-400";
 
 export const inputClass =
-  "h-9 w-full rounded-[9px] border border-slate-200 bg-white px-3 text-xs text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-600";
+  "biz-field h-8 w-full rounded-[9px] border px-3 text-xs outline-none transition placeholder:text-slate-400";
 
 export const textareaClass =
-  "w-full rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-xs text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-600";
+  "biz-field w-full rounded-[10px] border px-3 py-2 text-xs outline-none transition placeholder:text-slate-400";
 
 export const labelClass = "grid gap-1.5 text-xs font-medium text-slate-800";
 
@@ -107,10 +107,10 @@ function humanize(value: string): string {
 
 function cardClass(variant: CardVariant): string {
   const variants: Record<CardVariant, string> = {
-    default: "border-slate-200 bg-white shadow-sm",
-    elevated: "border-slate-200 bg-white shadow-[0_12px_35px_rgba(15,23,42,0.08)]",
-    muted: "border-slate-200 bg-slate-50 shadow-sm",
-    priority: "border-emerald-200 bg-emerald-50 shadow-sm",
+    default: "biz-card",
+    elevated: "biz-card biz-card-elevated",
+    muted: "biz-card-muted",
+    priority: "biz-card-priority",
   };
 
   return variants[variant];
@@ -135,17 +135,17 @@ export function PageHeader({
   title,
 }: PageHeaderProps) {
   return (
-    <header className="flex flex-col gap-3 border-b border-slate-200 pb-3.5 sm:flex-row sm:items-start sm:justify-between">
+    <header className="flex flex-col gap-2.5 border-b border-[var(--dash-border)] pb-3 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
         {eyebrow ? (
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <p className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-text-muted)]">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-1 text-[26px] font-semibold leading-8 tracking-normal text-slate-950">
+        <h1 className="mt-1 text-[24px] font-semibold leading-7 tracking-normal text-[var(--dash-text)]">
           {title}
         </h1>
-        <p className="mt-1 max-w-3xl text-sm leading-5 text-slate-600">
+        <p className="mt-1 max-w-3xl text-sm leading-5 text-[var(--dash-text-secondary)]">
           {description}
         </p>
       </div>
@@ -164,11 +164,11 @@ export function SectionHeader({
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h2 className="text-sm font-semibold leading-5 text-slate-950">
+        <h2 className="text-sm font-semibold leading-5 text-[var(--dash-text)]">
           {title}
         </h2>
         {description ? (
-          <p className="mt-0.5 text-xs leading-5 text-slate-600">{description}</p>
+          <p className="mt-0.5 text-xs leading-5 text-[var(--dash-text-secondary)]">{description}</p>
         ) : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}
@@ -193,7 +193,7 @@ export function MetricCard({
   }[tone];
 
   return (
-    <DashboardCard className="flex min-h-[120px] flex-col p-3.5">
+    <DashboardCard className="flex min-h-[108px] flex-col p-3">
       <p className="text-xs font-medium text-slate-500">{label}</p>
       <p className={`mt-1.5 text-[22px] font-semibold leading-7 ${accentClass}`}>
         {value}

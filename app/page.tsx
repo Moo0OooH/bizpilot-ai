@@ -309,7 +309,7 @@ function Footer() {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#07111C] text-white">
+    <div className="min-h-screen bg-[var(--biz-page-bg)] text-[var(--biz-page-text)]">
       <main className="mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8">
         {/* Nav */}
         <nav className="flex min-h-14 items-center justify-between gap-3 py-3">

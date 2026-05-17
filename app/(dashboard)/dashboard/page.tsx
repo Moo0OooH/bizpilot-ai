@@ -83,7 +83,7 @@ function KpiIcon({
 
   return (
     <span
-      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${toneClass}`}
+      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold ${toneClass}`}
     >
       {children}
     </span>
@@ -238,7 +238,7 @@ export default async function DashboardOverviewPage() {
           };
 
   return (
-    <main className="space-y-3.5">
+    <main className="space-y-3">
       <PageHeader
         actions={
           <>
@@ -259,7 +259,7 @@ export default async function DashboardOverviewPage() {
         <MagicMomentSampleCard quotePath={quotePath} />
       ) : null}
 
-      <DashboardCard className="grid min-h-14 gap-2 p-2.5 lg:grid-cols-[8rem_repeat(3,minmax(0,1fr))] lg:items-center">
+      <DashboardCard className="grid min-h-14 gap-2 p-2 lg:grid-cols-[7rem_repeat(3,minmax(0,1fr))] lg:items-center">
         <div className="text-xs font-semibold leading-5 text-slate-950">
           Needs attention
         </div>
@@ -294,10 +294,10 @@ export default async function DashboardOverviewPage() {
             <span
               className={
                 item.tone === "red"
-                  ? "flex h-8 w-8 items-center justify-center rounded-full bg-red-100 text-sm font-semibold text-red-700"
+                  ? "flex h-7 w-7 items-center justify-center rounded-full bg-red-100 text-xs font-semibold text-red-700"
                   : item.tone === "amber"
-                    ? "flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-sm font-semibold text-amber-700"
-                    : "flex h-8 w-8 items-center justify-center rounded-full bg-violet-100 text-sm font-semibold text-violet-700"
+                    ? "flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 text-xs font-semibold text-amber-700"
+                    : "flex h-7 w-7 items-center justify-center rounded-full bg-violet-100 text-xs font-semibold text-violet-700"
               }
             >
               {item.value}
@@ -318,13 +318,13 @@ export default async function DashboardOverviewPage() {
       <section className="grid items-start gap-3 xl:grid-cols-[minmax(0,1fr)_300px]">
         <div className="space-y-3">
           <section className="grid auto-rows-fr gap-2.5 md:grid-cols-2 xl:grid-cols-5">
-            <DashboardCard className="flex min-h-[154px] flex-col p-3">
+            <DashboardCard className="flex min-h-[138px] flex-col p-3">
               <div className="flex items-start gap-2">
                 <KpiIcon tone="emerald">Q</KpiIcon>
                 <SectionHeader title="Quote link readiness" />
               </div>
               <div className="mt-2 grid grid-cols-[3rem_minmax(0,1fr)] gap-2.5">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border-[5px] border-emerald-200 text-xs font-semibold text-slate-950">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full border-[4px] border-emerald-200 text-xs font-semibold text-slate-950">
                   {readinessPercent}%
                 </div>
                 <div className="min-w-0">
@@ -346,7 +346,7 @@ export default async function DashboardOverviewPage() {
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[154px] flex-col p-3">
+            <DashboardCard className="flex min-h-[138px] flex-col p-3">
               <div className="flex items-start gap-2">
                 <KpiIcon tone="blue">L</KpiIcon>
                 <SectionHeader title="Quote requests" />
@@ -380,7 +380,7 @@ export default async function DashboardOverviewPage() {
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[154px] flex-col p-3">
+            <DashboardCard className="flex min-h-[138px] flex-col p-3">
               <div className="flex items-start gap-2">
                 <KpiIcon tone="amber">!</KpiIcon>
                 <SectionHeader title="Needs attention" />
@@ -413,7 +413,7 @@ export default async function DashboardOverviewPage() {
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[154px] flex-col p-3">
+            <DashboardCard className="flex min-h-[138px] flex-col p-3">
               <div className="flex items-start gap-2">
                 <KpiIcon tone="violet">R</KpiIcon>
                 <SectionHeader title="Reply proof" />
@@ -451,7 +451,7 @@ export default async function DashboardOverviewPage() {
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[154px] flex-col p-3">
+            <DashboardCard className="flex min-h-[138px] flex-col p-3">
               <div className="flex items-start gap-2">
                 <KpiIcon tone="emerald">$</KpiIcon>
                 <SectionHeader title="Recovery proof" />

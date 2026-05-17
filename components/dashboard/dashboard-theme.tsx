@@ -76,7 +76,7 @@ export function DashboardThemeFrame({
   return (
     <DashboardThemeContext.Provider value={value}>
       <main
-        className={`${themeClass} min-h-screen text-slate-950 transition-colors lg:grid lg:grid-cols-[240px_minmax(0,1fr)]`}
+        className={`${themeClass} dashboard-frame min-h-screen transition-colors lg:grid lg:grid-cols-[224px_minmax(0,1fr)]`}
       >
         {children}
       </main>
@@ -90,7 +90,7 @@ export function DashboardThemeSelector() {
   return (
     <div
       aria-label="Dashboard theme"
-      className="hidden h-9 rounded-[9px] border border-slate-200 bg-white p-1 text-xs font-medium shadow-sm sm:inline-flex"
+      className="hidden h-8 rounded-[9px] border border-[var(--dash-border-strong)] bg-[var(--dash-surface-elevated)] p-1 text-xs font-medium shadow-sm sm:inline-flex"
       role="group"
     >
       {(["light", "dark"] as const).map((option) => (
@@ -98,8 +98,8 @@ export function DashboardThemeSelector() {
           aria-pressed={theme === option}
           className={
             theme === option
-              ? "rounded-md bg-emerald-600 px-2.5 text-white"
-              : "rounded-md px-2.5 text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+              ? "rounded-md bg-[var(--dash-primary)] px-2.5 text-white"
+              : "rounded-md px-2.5 text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
           }
           key={option}
           onClick={() => setTheme(option)}

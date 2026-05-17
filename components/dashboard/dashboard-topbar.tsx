@@ -37,19 +37,19 @@ export function DashboardTopbar({
 }: DashboardTopbarProps) {
   return (
     <header className="dashboard-topbar sticky top-0 z-20 border-b backdrop-blur">
-      <div className="flex min-h-14 items-center gap-2 px-4 py-2 sm:gap-3 lg:px-6">
+      <div className="flex min-h-12 items-center gap-2 px-3 py-1.5 sm:gap-2.5 lg:px-5">
         <button
-          className="dashboard-business-switcher inline-flex h-9 w-[145px] min-w-0 items-center gap-2 rounded-[9px] border px-3 text-sm font-medium shadow-sm sm:w-[170px]"
+          className="dashboard-business-switcher inline-flex h-8 w-[138px] min-w-0 items-center gap-2 rounded-[9px] border px-2.5 text-sm font-medium shadow-sm sm:w-[160px]"
           type="button"
         >
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-600 text-[10px] font-semibold text-white">
+          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[var(--dash-primary)] text-[10px] font-semibold text-white">
             BP
           </span>
           <span className="truncate">{activeBusinessName}</span>
           <span className="ml-auto text-slate-400">v</span>
         </button>
 
-        <div className="dashboard-topbar-search hidden h-9 min-w-0 max-w-[620px] flex-1 items-center rounded-[9px] border px-3 text-sm md:flex">
+        <div className="dashboard-topbar-search hidden h-8 min-w-0 max-w-[580px] flex-1 items-center rounded-[9px] border px-3 text-sm md:flex">
           Search leads, follow-ups, and quote requests...
           <span className="ml-auto rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[11px] text-slate-400">
             /
@@ -66,14 +66,14 @@ export function DashboardTopbar({
           </Link>
           <button
             aria-label="Notifications"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-[9px] border border-slate-200 bg-white text-sm font-medium text-slate-700 shadow-sm"
+            className="biz-button-secondary inline-flex h-8 w-8 items-center justify-center rounded-[9px] border text-sm font-medium shadow-sm"
             type="button"
           >
             N
           </button>
           <form action={signOutAction}>
             <button
-              className="inline-flex h-9 max-w-[5.5rem] items-center justify-center rounded-[9px] border border-slate-200 bg-white px-3 text-sm font-medium text-slate-800 shadow-sm sm:max-w-[8rem]"
+              className="biz-button-secondary inline-flex h-8 max-w-[5.5rem] items-center justify-center rounded-[9px] border px-3 text-sm font-medium shadow-sm sm:max-w-[8rem]"
               title={userLabel}
               type="submit"
             >
