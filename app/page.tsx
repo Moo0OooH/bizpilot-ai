@@ -495,12 +495,12 @@ export default function Home() {
           </div>
         </nav>
 
-        <section className="mx-auto grid w-full max-w-[1200px] gap-8 px-5 py-8 sm:px-7 lg:grid-cols-[0.92fr_0.98fr] lg:items-center lg:py-10">
+        <section className="mx-auto grid w-full max-w-[1200px] gap-10 px-5 py-8 sm:px-7 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:py-12">
           <div>
             <p className="inline-flex rounded-full border border-[#00d084]/24 bg-[#00d084]/8 px-3 py-1 text-xs font-bold text-[#00d084]">
               Built for cleaning businesses
             </p>
-            <h1 className="mt-5 max-w-[640px] text-[38px] font-black leading-[1.04] sm:text-[48px] lg:text-[54px] xl:text-[56px]">
+            <h1 className="mt-5 max-w-[700px] text-[42px] font-black leading-[1.02] sm:text-[56px] lg:text-[64px]">
               <span className="block">Every unanswered quote is a job </span>
               <span className="block text-[#e8d5b0]">your competitor just closed.</span>
             </h1>
@@ -542,14 +542,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div
-            className="relative w-full max-w-[700px] justify-self-center lg:max-w-[650px] lg:justify-self-end xl:max-w-[690px]"
-            id="workflow"
-          >
-            <div className="absolute -inset-4 rounded-[24px] border border-white/[0.06] bg-[radial-gradient(circle_at_72%_18%,rgba(0,208,132,0.045),transparent_18rem),linear-gradient(135deg,rgba(19,32,46,0.34),rgba(8,13,18,0.10))] shadow-[0_28px_80px_rgba(0,0,0,0.28)]" />
-            <div className="relative">
-              <DashboardPreview />
-            </div>
+          <div id="workflow">
+            <DashboardPreview />
           </div>
         </section>
 
