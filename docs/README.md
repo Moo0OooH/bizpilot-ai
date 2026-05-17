@@ -61,6 +61,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 - `docs/architecture/BIZPILOT_ARCHITECTURE_v1.4.md`
 - `docs/engineering/BIZPILOT_EXECUTION_ROADMAP_v1.4.md`
 - `docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
+- `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md`
 - `docs/product/BIZPILOT_SCORING_SPEC_v1.1.md`
 - `docs/product/BIZPILOT_VALIDATION_DASHBOARD_SPEC_v1.1.md`
 - `docs/gtm/BIZPILOT_GTM_PLAYBOOK_v1.1.md`

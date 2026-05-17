@@ -3,7 +3,7 @@
  * File: app/page.tsx
  * Project: BizPilot AI
  * Description: Renders the public pain-first BizPilot AI landing page.
- * Role: Communicates the cleaning quote recovery offer in 4 scannable folds.
+ * Role: Communicates the cleaning quote recovery offer in 5 compact folds.
  * Related:
  * - app/layout.tsx
  * - app/globals.css
@@ -13,9 +13,8 @@
  * Change Log:
  * - 2026-05-17: Rewrote the page around cleaning quote recovery and pilot-demo clarity.
  * - 2026-05-17: Tightened responsive landing structure, sections, and calm visual hierarchy.
- * - 2026-05-17: Density pass. Capped container at 1200px, trimmed hero scale, cut
- *   the pricing/quick-links blocks so the page reads as four clear folds:
- *   Hero / Why / How / Final CTA. Designed for scan in 5-8 seconds at 100% zoom.
+ * - 2026-05-17: Phase 17C pass. Added the Before/After transformation proof,
+ *   tightened nav and section density, and kept the page focused on quote recovery.
  * ============================================================
  */
 
@@ -26,6 +25,14 @@ const outcomes = [
   "AI-assisted replies",
   "Follow-up reminders",
   "Lead recovery",
+] as const;
+
+const transformation = [
+  ["Scattered DM", "Structured lead"],
+  ["Missing address or room count", "Property details captured"],
+  ["No preferred date visible", "Preferred date surfaced"],
+  ["Easy to forget", "Follow-up suggested"],
+  ["Owner guesses what to say", "AI reply ready to review"],
 ] as const;
 
 const lostReasons = [
@@ -67,10 +74,10 @@ const demoSteps = [
 ] as const;
 
 const priorityCards = [
-  ["New Quote Requests", "7", "text-emerald-300", "30% vs last 7 days"],
-  ["Needs Reply", "4", "text-red-300", "Urgent attention"],
-  ["At Risk", "3", "text-amber-300", "May be lost soon"],
-  ["AI Drafts Ready", "5", "text-violet-300", "Ready for review"],
+  ["New Quote Requests", "7", "text-emerald-300", "2 new since 8:00 AM"],
+  ["Needs Reply", "4", "text-red-300", "Oldest waiting 18h"],
+  ["At Risk", "3", "text-amber-300", "Follow up before evening"],
+  ["AI Drafts Ready", "5", "text-violet-300", "Owner review needed"],
 ] as const;
 
 function PrimaryCta({
@@ -104,7 +111,7 @@ function SecondaryCta({
 
 function DashboardPreview() {
   return (
-    <aside className="overflow-hidden rounded-[16px] border border-white/10 bg-white/[0.05] shadow-[0_18px_46px_rgba(0,0,0,0.28)]">
+    <aside className="overflow-hidden rounded-[16px] border border-white/10 bg-[#0b1728]/88 shadow-[0_18px_46px_rgba(0,0,0,0.26)]">
       <div className="grid lg:grid-cols-[8.5rem_1fr]">
         <div className="hidden border-r border-white/10 bg-black/20 p-3 lg:block">
           <div className="flex items-center gap-2 text-sm font-semibold">
@@ -179,8 +186,8 @@ function DashboardPreview() {
               </div>
               <div className="mt-2 divide-y divide-white/10">
                 {[
-                  ["Sarah J.", "Move-out cleaning - Friday", "High risk"],
-                  ["David L.", "Deep cleaning - This weekend", "Medium risk"],
+                  ["Sarah J.", "Move-out cleaning - Fri 3 PM", "High risk"],
+                  ["David L.", "Deep cleaning - Sat morning", "Medium risk"],
                 ].map(([name, request, risk]) => (
                   <div
                     className="grid grid-cols-[1fr_auto] gap-2 py-2 text-xs"
@@ -212,7 +219,7 @@ function DashboardPreview() {
                     <span>
                       <span className="block font-medium text-white">{lead}</span>
                       <span className="text-[10px] text-slate-400">
-                        {index === 0 ? "Regular cleaning" : "Move-in cleaning"}
+                        {index === 0 ? "Regular cleaning - today" : "Move-in cleaning"}
                       </span>
                     </span>
                     <span className="text-[10px] text-slate-400">{index + 1}h</span>
@@ -224,6 +231,63 @@ function DashboardPreview() {
         </div>
       </div>
     </aside>
+  );
+}
+
+function TransformationSection() {
+  return (
+    <section className="border-t border-white/10 py-8" id="transformation">
+      <div className="grid gap-4 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-normal text-emerald-300">
+            The first 3 minutes
+          </p>
+          <h2 className="mt-2 text-2xl font-semibold text-white sm:text-[28px]">
+            Turn quote chaos into a clear next action.
+          </h2>
+          <p className="mt-2 max-w-xl text-sm leading-6 text-slate-400">
+            BizPilot takes the messy request that would usually sit in a DM and
+            turns it into a lead the owner can review, reply to, and follow up on.
+          </p>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="rounded-[14px] border border-red-400/15 bg-red-500/[0.035] p-4">
+            <p className="text-xs font-semibold uppercase tracking-normal text-red-200">
+              Before BizPilot
+            </p>
+            <div className="mt-3 rounded-[10px] border border-white/10 bg-black/18 p-3 text-sm leading-6 text-slate-300">
+              &quot;Hi, how much for a move-out clean this week?&quot;
+            </div>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-400">
+              {transformation.map(([before]) => (
+                <li className="flex gap-2" key={before}>
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-red-300/80" />
+                  <span>{before}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="rounded-[14px] border border-emerald-400/18 bg-emerald-500/[0.045] p-4">
+            <p className="text-xs font-semibold uppercase tracking-normal text-emerald-200">
+              After BizPilot
+            </p>
+            <div className="mt-3 rounded-[10px] border border-white/10 bg-black/18 p-3 text-sm leading-6 text-slate-200">
+              Sarah J. - Move-out cleaning - Friday - AI reply ready
+            </div>
+            <ul className="mt-3 grid gap-2 text-sm text-slate-300">
+              {transformation.map(([, after]) => (
+                <li className="flex gap-2" key={after}>
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300" />
+                  <span>{after}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -255,10 +319,11 @@ export default function Home() {
             </span>
             BizPilot
           </Link>
-          <div className="hidden items-center gap-7 text-sm text-slate-300 lg:flex">
+          <div className="hidden items-center gap-5 text-sm text-slate-300 lg:flex">
             <a className="hover:text-white" href="#why">Features</a>
             <a className="hover:text-white" href="#how-it-works">How It Works</a>
-            <a className="hover:text-white" href="#cta">For Cleaning Businesses</a>
+            <a className="hover:text-white" href="#cta">Pricing</a>
+            <a className="hover:text-white" href="/dashboard">Demo</a>
           </div>
           <div className="flex items-center gap-2">
             <Link
@@ -277,7 +342,7 @@ export default function Home() {
         </nav>
 
         {/* Fold 1 - Hero */}
-        <section className="grid gap-8 py-10 sm:py-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,560px)] lg:items-center lg:gap-10">
+        <section className="grid gap-7 py-8 sm:py-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,540px)] lg:items-center lg:gap-9">
           <div>
             <p className="inline-flex rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs font-medium text-slate-300">
               For cleaning businesses
@@ -290,11 +355,11 @@ export default function Home() {
               BizPilot helps cleaning businesses respond faster, organize new
               quote requests, and follow up before customers disappear.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-5 flex flex-wrap gap-3">
               <PrimaryCta>Start Recovering Leads</PrimaryCta>
               <SecondaryCta>See Demo</SecondaryCta>
             </div>
-            <div className="mt-6 flex flex-wrap gap-5">
+            <div className="mt-5 flex flex-wrap gap-5">
               {outcomes.map((outcome) => (
                 <div
                   className="flex items-center gap-2 text-sm leading-6 text-slate-300"
@@ -310,8 +375,11 @@ export default function Home() {
           <DashboardPreview />
         </section>
 
-        {/* Fold 2 - Why */}
-        <section className="border-t border-white/10 py-10" id="why">
+        {/* Fold 2 - Transformation */}
+        <TransformationSection />
+
+        {/* Fold 3 - Why */}
+        <section className="border-t border-white/10 py-8" id="why">
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-white sm:text-[28px]">
               Why cleaning businesses lose leads
@@ -320,7 +388,7 @@ export default function Home() {
               It happens every day. BizPilot helps you fix it.
             </p>
           </div>
-          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {lostReasons.map((reason) => (
               <div
                 className="rounded-[14px] border border-white/10 bg-white/[0.04] p-4"
@@ -340,8 +408,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Fold 3 - How */}
-        <section className="border-t border-white/10 py-10" id="how-it-works">
+        {/* Fold 4 - How */}
+        <section className="border-t border-white/10 py-8" id="how-it-works">
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-white sm:text-[28px]">
               How BizPilot works
@@ -350,7 +418,7 @@ export default function Home() {
               A simple system to recover more leads and win more jobs.
             </p>
           </div>
-          <div className="mt-7 grid gap-3 lg:grid-cols-3">
+          <div className="mt-5 grid gap-3 lg:grid-cols-3">
             {demoSteps.map((step, index) => (
               <div
                 className="grid gap-3 rounded-[14px] border border-white/10 bg-white/[0.04] p-4 sm:grid-cols-[3rem_1fr] lg:grid-cols-1"
@@ -372,8 +440,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Fold 4 - Final CTA */}
-        <section className="border-t border-white/10 py-10" id="cta">
+        {/* Fold 5 - Final CTA */}
+        <section className="border-t border-white/10 py-8" id="cta">
           <div className="overflow-hidden rounded-[16px] border border-white/10 bg-[linear-gradient(90deg,rgba(16,185,129,0.16),rgba(255,255,255,0.05))] p-5 sm:p-6">
             <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
