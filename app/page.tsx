@@ -424,7 +424,7 @@ export default function Home() {
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(0,208,132,0.09),transparent_24rem),radial-gradient(circle_at_70%_12%,rgba(79,168,255,0.07),transparent_24rem),radial-gradient(circle_at_48%_42%,rgba(232,213,176,0.035),transparent_28rem)]" />
       <div className="relative">
         <nav className="border-b border-white/[0.07] bg-[#080d12]/88 backdrop-blur">
-          <div className="mx-auto flex min-h-16 w-full max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-7">
+          <div className="mx-auto flex min-h-[76px] w-full max-w-[1180px] items-center justify-between gap-4 px-5 sm:px-6 lg:px-8">
             <Link className="flex items-center gap-3 text-lg font-bold" href="/">
               <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#00d084] text-sm text-[#04110c]">
                 BP
@@ -451,16 +451,16 @@ export default function Home() {
           </div>
         </nav>
 
-        <section className="mx-auto grid w-full max-w-[1280px] gap-10 px-5 py-10 sm:px-7 lg:grid-cols-[minmax(0,0.92fr)_minmax(500px,0.88fr)] lg:items-center lg:py-8">
+        <section className="mx-auto grid w-full max-w-[1180px] gap-10 px-5 py-10 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(500px,0.88fr)] lg:items-center lg:px-8 lg:py-8">
           <div>
             <p className="inline-flex rounded-full border border-[#00d084]/24 bg-[#00d084]/8 px-3 py-1 text-xs font-bold text-[#00d084]">
               AI lead recovery for cleaning businesses
             </p>
-            <h1 className="mt-6 max-w-[620px] text-[48px] font-black leading-[0.98] sm:text-[64px] lg:text-[72px] xl:text-[78px]">
+            <h1 className="mt-6 max-w-[10.5ch] text-[clamp(44px,12vw,64px)] font-black leading-[0.94] sm:text-[clamp(52px,8vw,70px)] lg:text-[clamp(56px,5.4vw,76px)]">
               <span className="block">Every minute you wait, </span>
               <span className="block text-[#00d084]">another company gets the job.</span>
             </h1>
-            <p className="mt-6 max-w-[560px] text-base leading-7 text-[#7a90a4] sm:text-lg">
+            <p className="mt-6 max-w-[34ch] text-base leading-7 text-[#7a90a4] sm:text-lg">
               BizPilot captures quote requests from texts, DMs, Facebook, and
               email - then drafts AI replies for owner review so you can book
               jobs before competitors respond.
@@ -499,7 +499,7 @@ export default function Home() {
           </div>
 
           <div
-            className="relative w-full max-w-[650px] justify-self-center lg:max-w-[560px] lg:justify-self-end xl:max-w-[600px]"
+            className="relative w-full max-w-[560px] justify-self-center lg:justify-self-end"
             id="workflow"
           >
             <div className="absolute -inset-4 rounded-[24px] border border-white/[0.07] bg-[radial-gradient(circle_at_72%_18%,rgba(0,208,132,0.045),transparent_18rem),linear-gradient(135deg,rgba(19,32,46,0.36),rgba(8,13,18,0.14))] shadow-[0_28px_80px_rgba(0,0,0,0.30)]" />
@@ -510,7 +510,7 @@ export default function Home() {
         </section>
 
         <section className="border-y border-white/[0.07] bg-[#0d1520]/55">
-          <div className="mx-auto grid w-full max-w-[1200px] gap-0 px-5 py-5 sm:grid-cols-2 sm:px-7 lg:grid-cols-4">
+          <div className="mx-auto grid w-full max-w-[1180px] gap-0 px-5 py-5 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
             {proofStrip.map(([title, detail]) => (
               <div className="border-white/[0.07] py-4 sm:px-5 lg:border-l first:border-l-0" key={title}>
                 <p className="text-base font-bold text-[#eef2f6]">{title}</p>
@@ -520,7 +520,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1200px] px-5 py-12 sm:px-7" id="features">
+        <section className="mx-auto w-full max-w-[1180px] px-5 py-16 sm:px-6 lg:px-8 lg:py-[88px]" id="features">
           <SectionHeader title="Why cleaning businesses lose thousands in missed leads" />
           <div className="mt-7 grid gap-4 lg:grid-cols-3">
             {lostReasons.map((reason) => (
@@ -538,7 +538,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1200px] px-5 pb-12 sm:px-7">
+        <section className="mx-auto w-full max-w-[1180px] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-[88px]">
           <SectionHeader
             subtitle="BizPilot keeps the MVP focused: quote requests, reply drafts, follow-up, and owner review."
             title="Every service type. Every channel. One inbox."
@@ -560,7 +560,7 @@ export default function Home() {
         </section>
 
         <section className="border-y border-white/[0.07] bg-[#0d1520]/55">
-          <div className="mx-auto grid w-full max-w-[1200px] gap-6 px-5 py-12 sm:px-7 lg:grid-cols-[0.84fr_1.16fr] lg:items-center">
+          <div className="mx-auto grid w-full max-w-[1180px] gap-6 px-5 py-16 sm:px-6 lg:grid-cols-[0.84fr_1.16fr] lg:items-center lg:px-8 lg:py-[88px]">
             <div>
               <p className="text-xs font-bold uppercase text-[#00d084]">
                 The first 3 minutes
@@ -611,7 +611,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1200px] px-5 py-12 sm:px-7" id="how-it-works">
+        <section className="mx-auto w-full max-w-[1180px] px-5 py-16 sm:px-6 lg:px-8 lg:py-[88px]" id="how-it-works">
           <SectionHeader
             subtitle="One quiet workflow from quote request to reviewed follow-up."
             title="How BizPilot works"
@@ -642,7 +642,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1200px] px-5 pb-12 sm:px-7">
+        <section className="mx-auto w-full max-w-[1180px] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-[88px]">
           <div className="rounded-[18px] border border-white/[0.07] bg-[#111d2a] p-6 sm:p-7">
             <p className="text-xs font-bold uppercase text-[#435566]">
               Sample customer story
@@ -658,7 +658,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1200px] px-5 pb-12 sm:px-7" id="pricing">
+        <section className="mx-auto w-full max-w-[1180px] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-[88px]" id="pricing">
           <SectionHeader
             subtitle="Simple MVP pricing for owner-led validation."
             title="Start small. Upgrade when quote recovery becomes daily."
@@ -713,7 +713,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto w-full max-w-[1200px] px-5 pb-12 sm:px-7">
+        <section className="mx-auto w-full max-w-[1180px] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-[88px]">
           <div className="overflow-hidden rounded-[20px] border border-white/[0.07] bg-[radial-gradient(circle_at_20%_20%,rgba(0,208,132,0.12),transparent_18rem),linear-gradient(135deg,#111d2a,#0d1520)] p-7 sm:p-9">
             <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
@@ -730,7 +730,7 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-7">
+        <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-6 lg:px-8">
           <Footer />
         </div>
       </div>
