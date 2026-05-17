@@ -204,16 +204,16 @@ function IconGlyph({ name }: Readonly<{ name: IconName }>) {
 
 function DashboardPreview() {
   return (
-    <aside className="overflow-hidden rounded-[16px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,31,45,0.94),rgba(11,23,40,0.96))] shadow-[0_24px_65px_rgba(0,0,0,0.30)]">
-      <div className="grid lg:grid-cols-[8.5rem_1fr]">
-        <div className="hidden border-r border-white/10 bg-[#08121e]/82 p-3 lg:block">
+    <aside className="overflow-hidden rounded-[16px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,31,45,0.94),rgba(11,23,40,0.96))] shadow-[0_22px_58px_rgba(0,0,0,0.28)]">
+      <div className="grid lg:grid-cols-[7.75rem_1fr]">
+        <div className="hidden border-r border-white/10 bg-[#08121e]/82 p-2.5 lg:block">
           <div className="flex items-center gap-2 text-sm font-semibold">
             <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[var(--biz-primary)] text-[9px]">
               BP
             </span>
             BizPilot
           </div>
-          <div className="mt-6 grid gap-1.5 text-xs text-slate-300">
+          <div className="mt-5 grid gap-1.5 text-xs text-slate-300">
             {["Overview", "Leads", "Quote Setup", "Follow Ups"].map(
               (item, index) => (
                 <div
@@ -229,14 +229,14 @@ function DashboardPreview() {
               ),
             )}
           </div>
-          <div className="mt-12 text-[11px] text-slate-400">
+          <div className="mt-10 text-[11px] text-slate-400">
             <p className="font-medium text-white">Demo Cleaning Co.</p>
             <p>Quote link active</p>
           </div>
         </div>
 
-        <div className="p-4 sm:p-5">
-          <div className="flex flex-col gap-2 border-b border-white/10 pb-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="p-3.5 sm:p-4">
+          <div className="flex flex-col gap-2 border-b border-white/10 pb-2.5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-normal text-slate-400">
                 Dashboard preview
@@ -256,10 +256,10 @@ function DashboardPreview() {
             </Link>
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-2 xl:grid-cols-4">
+          <div className="mt-2.5 grid grid-cols-2 gap-2 xl:grid-cols-4">
             {priorityCards.map(([label, value, tone, detail]) => (
               <div
-                className="rounded-[10px] border border-white/10 bg-white/[0.045] p-2.5"
+                className="rounded-[10px] border border-white/10 bg-white/[0.045] p-2"
                 key={label}
               >
                 <p className="text-[11px] font-semibold text-white">{label}</p>
@@ -269,8 +269,8 @@ function DashboardPreview() {
             ))}
           </div>
 
-          <div className="mt-3 hidden gap-2 sm:grid xl:grid-cols-[1.35fr_0.9fr]">
-            <div className="rounded-[10px] border border-white/10 bg-white/[0.045] p-3">
+          <div className="mt-2.5 hidden gap-2 sm:grid xl:grid-cols-[1.35fr_0.9fr]">
+            <div className="rounded-[10px] border border-white/10 bg-white/[0.045] p-2.5">
               <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold text-white">
                   Priority: at-risk leads
@@ -298,7 +298,7 @@ function DashboardPreview() {
               </div>
             </div>
 
-            <div className="rounded-[10px] border border-white/10 bg-white/[0.045] p-3">
+            <div className="rounded-[10px] border border-white/10 bg-white/[0.045] p-2.5">
               <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold text-white">AI drafts ready</p>
                 <span className="text-[10px] text-violet-200">manual review</span>
@@ -405,9 +405,15 @@ function Footer() {
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[var(--biz-page-bg)] text-[var(--biz-page-text)]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_20%_10%,rgba(14,165,233,0.08),transparent_28rem),radial-gradient(circle_at_78%_8%,rgba(4,120,87,0.12),transparent_26rem)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-[430px] h-80 bg-[radial-gradient(circle_at_50%_0%,rgba(148,163,184,0.05),transparent_30rem)]" />
+    <div
+      className="relative min-h-screen overflow-hidden text-[var(--biz-page-text)]"
+      style={{
+        background:
+          "radial-gradient(circle at 42% 15%, rgba(45, 212, 191, 0.035), transparent 18rem), radial-gradient(circle at 56% 17%, rgba(99, 102, 241, 0.03), transparent 20rem), radial-gradient(circle at 72% 20%, rgba(4, 120, 87, 0.055), transparent 23rem), radial-gradient(circle at 30% 32%, rgba(245, 158, 11, 0.016), transparent 17rem), linear-gradient(180deg, var(--biz-page-bg) 0%, var(--biz-page-bg-deep) 100%)",
+      }}
+    >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_20%_10%,rgba(14,165,233,0.055),transparent_28rem),radial-gradient(circle_at_78%_8%,rgba(4,120,87,0.08),transparent_26rem)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-[390px] h-72 bg-[radial-gradient(circle_at_50%_0%,rgba(148,163,184,0.04),transparent_30rem)]" />
       <main className="relative mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8">
         {/* Nav */}
         <nav className="flex min-h-14 items-center justify-between gap-3 py-2.5">
@@ -440,16 +446,16 @@ export default function Home() {
         </nav>
 
         {/* Fold 1 - Hero */}
-        <section className="grid gap-7 py-7 sm:py-9 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,530px)] lg:items-center lg:gap-9">
-          <div>
+        <section className="grid gap-6 py-6 sm:py-7 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,500px)] lg:items-start lg:gap-8">
+          <div className="lg:pt-12">
             <p className="inline-flex rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs font-medium text-slate-300">
               For cleaning businesses
             </p>
-            <h1 className="mt-3 max-w-[600px] text-[35px] font-semibold leading-[1.06] tracking-normal sm:text-[42px] lg:text-[48px]">
+            <h1 className="mt-3 max-w-[560px] text-[34px] font-semibold leading-[1.06] tracking-normal sm:text-[40px] lg:text-[44px]">
               <span className="text-white">Stop losing cleaning </span>
               <span className="text-emerald-300">quote requests.</span>
             </h1>
-            <p className="mt-3 max-w-[540px] text-[15px] leading-[1.65] text-slate-300">
+            <p className="mt-3 max-w-[500px] text-[15px] leading-[1.6] text-slate-300">
               BizPilot helps cleaning businesses respond faster, organize new
               quote requests, and follow up before customers disappear.
             </p>

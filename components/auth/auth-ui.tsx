@@ -66,7 +66,10 @@ function BrandMark() {
   );
 }
 
-function BrandLockup({ compact = false }: Readonly<{ compact?: boolean }>) {
+function BrandLockup({
+  compact = false,
+  dark = false,
+}: Readonly<{ compact?: boolean; dark?: boolean }>) {
   return (
     <div
       className={`flex items-center gap-3 ${compact ? "justify-center" : ""}`}
@@ -76,7 +79,7 @@ function BrandLockup({ compact = false }: Readonly<{ compact?: boolean }>) {
         <p
           className={`font-semibold tracking-normal text-slate-950 ${
             compact ? "text-sm" : "text-base"
-          }`}
+          } ${dark ? "!text-white" : ""}`}
         >
           BIZPILOT AI
         </p>
@@ -154,18 +157,22 @@ function TrustIcon() {
 
 function AuthBenefitPanel() {
   return (
-    <aside className="relative hidden min-h-[460px] flex-col justify-center rounded-2xl border border-slate-200 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(236,253,245,0.42)_100%)] p-4 shadow-[0_18px_42px_rgba(15,23,42,0.09),0_2px_8px_rgba(15,23,42,0.04)] xl:flex">
-      <div className="max-w-[360px]">
-        <BrandLockup />
+    <aside className="relative hidden min-h-[430px] flex-col justify-center overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,31,45,0.96)_0%,rgba(6,17,31,0.98)_100%)] p-4 text-white shadow-[0_18px_42px_rgba(15,23,42,0.16),0_2px_8px_rgba(15,23,42,0.08)] xl:flex">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(16,185,129,0.16),transparent_16rem),radial-gradient(circle_at_82%_78%,rgba(99,102,241,0.10),transparent_18rem)]"
+      />
+      <div className="relative z-10 max-w-[360px]">
+        <BrandLockup dark />
 
         <p className="mt-3 inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--biz-primary)]">
           Owner access
         </p>
 
-        <h1 className="mt-3 text-[23px] font-semibold leading-[1.12] tracking-normal text-[#0F172A]">
+        <h1 className="mt-3 text-[23px] font-semibold leading-[1.12] tracking-normal text-white">
           Keep quote requests moving toward booked work.
         </h1>
-        <p className="mt-2 max-w-[34rem] text-[13px] leading-5 text-[#475569]">
+        <p className="mt-2 max-w-[34rem] text-[13px] leading-5 text-slate-300">
           Capture quote requests, review lead details, prepare replies, and keep follow-ups visible from one focused workspace.
         </p>
 
@@ -174,10 +181,10 @@ function AuthBenefitPanel() {
             <div className="flex gap-2.5" key={benefit.title}>
               <BenefitIcon icon={benefit.icon} />
               <div>
-                <p className="text-[13px] font-semibold text-[#0F172A]">
+                <p className="text-[13px] font-semibold text-white">
                   {benefit.title}
                 </p>
-                <p className="mt-0.5 text-xs leading-[1.45] text-[#475569]">
+                <p className="mt-0.5 text-xs leading-[1.45] text-slate-300">
                   {benefit.body}
                 </p>
               </div>
@@ -185,17 +192,17 @@ function AuthBenefitPanel() {
           ))}
         </div>
 
-        <div className="mt-3 flex gap-2.5 rounded-xl border border-emerald-200 bg-emerald-50/70 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+        <div className="mt-3 flex gap-2.5 rounded-xl border border-emerald-300/20 bg-emerald-500/[0.08] px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.10)]">
           <TrustIcon />
-          <p className="text-xs leading-[1.45] text-[#475569]">
-            <span className="block font-semibold text-[#0F172A]">
+          <p className="text-xs leading-[1.45] text-slate-300">
+            <span className="block font-semibold text-white">
               Owner-controlled workspace
             </span>
             BizPilot prepares drafts for review. You decide what to send.
           </p>
         </div>
 
-        <div className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-indigo-100 bg-indigo-50 px-2.5 py-1 text-[11px] font-medium text-[#6366F1]">
+        <div className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-violet-300/20 bg-violet-500/[0.10] px-2.5 py-1 text-[11px] font-medium text-violet-200">
           <span className="h-1.5 w-1.5 rounded-full bg-[#6366F1]" />
           AI assistant stays review-only
         </div>
@@ -210,8 +217,8 @@ export function AuthShell({
   footer,
 }: AuthShellProps) {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#eef2f7_100%)] px-4 py-4 text-[#0F172A] sm:px-6 lg:px-8">
-      <section className="relative mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-[1160px] items-center gap-4 overflow-hidden xl:grid-cols-[minmax(0,390px)_minmax(0,1fr)] xl:rounded-3xl xl:border xl:border-slate-200 xl:bg-[#FBFDFC] xl:p-3 xl:shadow-[0_22px_60px_rgba(15,23,42,0.10),0_3px_12px_rgba(15,23,42,0.04)]">
+    <main className="min-h-screen overflow-x-hidden bg-[linear-gradient(135deg,#06111f_0%,#0b1728_34%,#eef2f7_34%,#f8fafc_100%)] px-4 py-4 text-[#0F172A] sm:px-6 lg:px-8">
+      <section className="relative mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-[1120px] items-center gap-4 overflow-hidden xl:grid-cols-[minmax(0,370px)_minmax(0,1fr)] xl:rounded-3xl xl:border xl:border-slate-200 xl:bg-[#FBFDFC] xl:p-3 xl:shadow-[0_22px_60px_rgba(15,23,42,0.10),0_3px_12px_rgba(15,23,42,0.04)]">
         <div
           aria-hidden="true"
             className="pointer-events-none absolute inset-0 hidden bg-[radial-gradient(circle_at_30%_72%,rgba(4,120,87,0.08),transparent_34%),radial-gradient(circle_at_72%_28%,rgba(99,102,241,0.06),transparent_32%),radial-gradient(circle_at_54%_54%,rgba(15,23,42,0.035),transparent_38%)] xl:block"
