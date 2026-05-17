@@ -76,7 +76,7 @@ export const buttonClass =
   "inline-flex h-9 items-center justify-center rounded-[9px] border border-slate-200 bg-white px-3 text-xs font-medium text-slate-800 shadow-sm transition hover:border-emerald-400/50 hover:bg-slate-50";
 
 export const primaryButtonClass =
-  "inline-flex h-9 items-center justify-center rounded-[9px] bg-emerald-600 px-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-500";
+  "inline-flex h-9 items-center justify-center rounded-[9px] bg-emerald-600 px-3.5 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-700";
 
 export const ghostButtonClass =
   "inline-flex h-9 items-center justify-center rounded-[9px] px-3 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-950";
@@ -85,10 +85,10 @@ export const disabledButtonClass =
   "inline-flex h-9 cursor-not-allowed items-center justify-center rounded-[9px] border border-slate-200 bg-slate-50 px-3 text-xs font-medium text-slate-400";
 
 export const inputClass =
-  "h-9 w-full rounded-[9px] border border-slate-200 bg-white px-3 text-xs text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-slate-950";
+  "h-9 w-full rounded-[9px] border border-slate-200 bg-white px-3 text-xs text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-600";
 
 export const textareaClass =
-  "w-full rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-xs text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-slate-950";
+  "w-full rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-xs text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-emerald-600";
 
 export const labelClass = "grid gap-1.5 text-xs font-medium text-slate-800";
 
@@ -110,8 +110,7 @@ function cardClass(variant: CardVariant): string {
     default: "border-slate-200 bg-white shadow-sm",
     elevated: "border-slate-200 bg-white shadow-[0_12px_35px_rgba(15,23,42,0.08)]",
     muted: "border-slate-200 bg-slate-50 shadow-sm",
-    priority:
-      "border-emerald-200 bg-[linear-gradient(180deg,#ffffff_0%,#f0fdf4_100%)] shadow-[0_12px_35px_rgba(16,185,129,0.10)]",
+    priority: "border-emerald-200 bg-emerald-50 shadow-sm",
   };
 
   return variants[variant];
