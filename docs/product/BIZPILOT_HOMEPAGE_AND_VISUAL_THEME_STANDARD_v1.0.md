@@ -19,19 +19,28 @@ suite.
 
 Use the following visual system as the active direction:
 
-- Page dark base: `#06111F` or `#07111C`
-- Secondary surface: `#0B1728` or `#0D1824`
-- Elevated surface: `#121F2D`
-- Subtle border: `rgba(255,255,255,0.08)` or `rgba(148,163,184,0.16)`
-- Primary text: `#F8FAFC`
-- Secondary text: `#CBD5E1`
-- Muted text: `#94A3B8`
-- Primary emerald: `#047857`
-- Primary hover: `#059669`
-- Success: `#22C55E`
-- Warning / at-risk: `#F59E0B`
-- Danger / urgent: `#EF4444`
-- AI accent: `#8B5CF6`
+- Page dark base: `#080D12`
+- Secondary background: `#0D1520`
+- Elevated background: `#111D2A`
+- Card surface: `#0F1A24`
+- Elevated card surface: `#13202E`
+- Subtle border: `rgba(255,255,255,0.07)`
+- Medium border: `rgba(255,255,255,0.13)`
+- Strong border: `rgba(255,255,255,0.18)`
+- Primary text: `#EEF2F6`
+- Secondary text: `#7A90A4`
+- Muted text: `#435566`
+- Primary emerald: `#00D084`
+- Primary hover: `#00A868`
+- Emerald background: `rgba(0,208,132,0.08)`
+- Emerald border: `rgba(0,208,132,0.24)`
+- Warning / at-risk: `#FFAB00`
+- Warning background: `rgba(255,171,0,0.10)`
+- Danger / urgent: `#FF4757`
+- Danger background: `rgba(255,71,87,0.08)`
+- Warm loss accent: `#E8D5B0`
+- Blue accent: `#4FA8FF`
+- Blue background: `rgba(79,168,255,0.10)`
 
 Implementation rule: page-level styling should inherit from semantic CSS tokens
 before using literal colors. Global brand tokens use `--biz-*`; dashboard-scoped
@@ -52,15 +61,19 @@ Emerald is reserved for primary actions, active states, selected navigation,
 success confirmations, and healthy system status. Do not use emerald as broad
 decoration.
 
-Use mature emerald. Avoid bright startup green. Primary CTA and selected states
-can carry emerald; supporting dots, icons, and glows should be muted and sparse.
+Use mature emerald. Primary CTA and selected states can carry emerald;
+supporting dots, icons, and glows should be muted and sparse.
 
 Amber is reserved for at-risk leads, follow-up risk, or time-sensitive caution.
 
 Red is reserved for urgent, blocked, failed, or high-risk states.
 
-Violet is reserved for subtle AI-assisted status. It is not the brand color and
-must not dominate the interface.
+Warm loss accent is reserved for emotionally meaningful loss messaging, such as
+the homepage headline phrase "your competitor just closed." Do not use it as a
+general beige theme.
+
+Violet is reserved for subtle AI-assisted status only when needed. It is not the
+brand color and must not dominate the interface.
 
 Avoid heavy gradients, neon glow, purple-heavy branding, and decorative effects
 that make BizPilot feel less operational.
@@ -116,15 +129,19 @@ Quote/auth pages:
 
 The active homepage structure is:
 
-1. Hero: pain-first positioning and primary CTA.
-2. Before BizPilot / After BizPilot transformation.
+1. Hero: pain-first positioning, primary CTA, trust row, and dashboard proof.
+2. Soft proof strip using non-absolute operational benefits.
 3. Why cleaning businesses lose leads.
-4. How BizPilot works.
-5. Final CTA.
-6. Minimal footer.
+4. What BizPilot handles.
+5. Before BizPilot / After BizPilot transformation.
+6. How BizPilot works.
+7. Sample or verified customer story only.
+8. Simple MVP pricing.
+9. Final CTA.
+10. Minimal footer.
 
-Do not add testimonials, large pricing systems, extra charts, enterprise feature
-blocks, or unrelated marketing sections before pilot validation.
+Do not add large pricing systems, extra charts, enterprise feature blocks, or
+unrelated marketing sections before pilot validation.
 
 ## 7. Above-The-Fold Rules
 
@@ -137,7 +154,7 @@ The first viewport should communicate:
 
 The hero headline remains:
 
-> Stop losing cleaning quote requests.
+> Every unanswered quote is a job your competitor just closed.
 
 The primary CTA remains:
 
@@ -191,6 +208,10 @@ business owner recognizes:
 
 Avoid fake enterprise analytics, generic vanity metrics, complex charts, or
 anything that implies booking, auto-send, invoices, or calendar automation.
+
+Customer proof must be labeled honestly. If a quote, metric, or story is not
+verified customer evidence, label it as sample, demo, or example copy, or use
+softer operational wording instead of hard claims.
 
 ## 11. CTA Hierarchy
 
