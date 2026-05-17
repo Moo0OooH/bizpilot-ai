@@ -38,6 +38,14 @@ before using literal colors. Global brand tokens use `--biz-*`; dashboard-scoped
 tokens use `--dash-*`. Changing the brand palette should mostly require updates
 to `app/globals.css`, not rewriting individual pages.
 
+Use tokens by role:
+
+- `--biz-*`: brand and public marketing surfaces.
+- `--dash-*`: protected dashboard surfaces, controls, text, and status shells.
+- Page-specific business branding may influence public quote buttons and borders,
+  but the surrounding structure should still use BizPilot typography, spacing,
+  borders, and neutral surface logic.
+
 ## 3. Color Usage Rules
 
 Emerald is reserved for primary actions, active states, selected navigation,
@@ -57,7 +65,22 @@ must not dominate the interface.
 Avoid heavy gradients, neon glow, purple-heavy branding, and decorative effects
 that make BizPilot feel less operational.
 
-## 4. Page Mood Guidance
+## 4. Elevation Logic
+
+Dark UI quality comes from tonal layering first and shadows second:
+
+- Page background is the deepest navy.
+- Hero and dashboard preview shells are lifted slate/navy.
+- Cards sit on elevated surfaces with subtle borders.
+- Priority or active panels receive slightly stronger borders or softer accent
+  fills.
+- Shadows should be quiet and directional. In dark mode, do not rely on shadow
+  alone; raise the surface color slightly.
+
+Avoid flat near-black slabs, large black panels, and glassmorphism effects that
+make the product feel speculative instead of operational.
+
+## 5. Page Mood Guidance
 
 Marketing homepage:
 
@@ -86,8 +109,10 @@ Quote/auth pages:
 - These pages can remain neutral or light where appropriate.
 - Do not accidentally apply heavy dashboard dark styling to customer-facing
   quote pages or auth pages.
+- Even when light, they must use the same brand logic: slate typography, subtle
+  borders, mature emerald actions, restrained shadows, and compact spacing.
 
-## 5. Homepage Information Architecture
+## 6. Homepage Information Architecture
 
 The active homepage structure is:
 
@@ -101,7 +126,7 @@ The active homepage structure is:
 Do not add testimonials, large pricing systems, extra charts, enterprise feature
 blocks, or unrelated marketing sections before pilot validation.
 
-## 6. Above-The-Fold Rules
+## 7. Above-The-Fold Rules
 
 The first viewport should communicate:
 
@@ -118,7 +143,7 @@ The primary CTA remains:
 
 > Start Recovering Leads
 
-## 7. Density And Scannability Rules
+## 8. Density And Scannability Rules
 
 At 100% browser zoom, the homepage should feel compact and professional. Use
 section spacing that gives air without creating unnecessary scroll length.
@@ -135,7 +160,25 @@ Guidance:
   proof. The preview supports the message; it should not become the hero.
 - CTA rhythm should be clear: primary action first, secondary demo action quieter.
 
-## 8. Dashboard Preview Realism
+## 9. Icon Style Rules
+
+Icons should be simple line icons with consistent stroke weight, rounded caps,
+and restrained containers. Use icons to clarify workflow or status, not as
+decoration.
+
+Homepage icon containers:
+
+- Small, lifted, and consistent.
+- Emerald-tinted only when indicating the primary workflow or healthy action.
+- No playful illustrations, stock SaaS icon packs, or oversized decorative SVGs.
+
+Dashboard icon/initial containers:
+
+- Compact.
+- Status-specific.
+- Must not make the UI feel like a game, crypto tool, or analytics toy.
+
+## 10. Dashboard Preview Realism
 
 Homepage dashboard previews should use operational microcopy that a cleaning
 business owner recognizes:
@@ -149,7 +192,25 @@ business owner recognizes:
 Avoid fake enterprise analytics, generic vanity metrics, complex charts, or
 anything that implies booking, auto-send, invoices, or calendar automation.
 
-## 9. Before / After Rationale
+## 11. CTA Hierarchy
+
+Primary CTA:
+
+- Use mature emerald.
+- Reserved for the main action: Start Recovering Leads, Get Early Access, Review,
+  Open Lead Desk, or Save when contextually primary.
+
+Secondary CTA:
+
+- Border/surface treatment.
+- Quiet, useful, and visually subordinate.
+
+Tertiary actions:
+
+- Neutral text or ghost buttons.
+- No unnecessary emerald.
+
+## 12. Before / After Rationale
 
 The transformation section exists to show the Magic Moment before the owner
 starts a trial:
@@ -162,7 +223,7 @@ This section should make the owner think:
 
 > Finally, I can organize quote requests without chaos.
 
-## 10. Visual Avoid List
+## 13. Visual Avoid List
 
 Avoid:
 

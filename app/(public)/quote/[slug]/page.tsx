@@ -103,7 +103,7 @@ function FieldInput({
   todayDate,
 }: Readonly<{ field: FieldRecord; todayDate: string }>) {
   const baseClass =
-    "mt-2 w-full rounded-[10px] border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-950 outline-none transition placeholder:text-zinc-400 focus:border-zinc-950 focus:ring-2 focus:ring-zinc-950/10";
+    "mt-2 w-full rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-[var(--biz-primary)] focus:ring-2 focus:ring-emerald-600/15";
 
   if (field.field_type === "textarea") {
     return (
@@ -170,22 +170,22 @@ export default async function QuotePage({
   const todayDate = todayDateString();
 
   return (
-    <main className="min-h-screen bg-zinc-50 text-zinc-950">
+    <main className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#eef2f7_100%)] text-slate-950">
       <section
-        className="border-b px-4 py-8 sm:px-6"
+        className="border-b border-slate-200 bg-white/80 px-4 py-8 shadow-[0_10px_35px_rgba(15,23,42,0.04)] sm:px-6"
         style={{
           borderColor: accentColor,
         }}
       >
         <div className="mx-auto flex w-full max-w-[700px] flex-col gap-4">
           <div>
-            <p className="text-sm font-medium uppercase tracking-normal text-zinc-500">
+            <p className="text-sm font-medium uppercase tracking-normal text-slate-500">
               Quote request
             </p>
             <h1 className="mt-2 text-[28px] font-semibold leading-tight tracking-normal sm:text-[32px]">
               {page.publicLink.display_name}
             </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600">
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
               Share the details for your cleaning request. The business will
               review your request and follow up directly.
             </p>
@@ -232,7 +232,7 @@ export default async function QuotePage({
         <div className="space-y-3.5">
           {page.fields.map((field) => (
             <label
-              className="block rounded-[12px] border border-zinc-200 bg-white p-3.5 text-sm font-medium text-zinc-800 shadow-sm"
+              className="block rounded-[12px] border border-slate-200 bg-white p-3.5 text-sm font-medium text-slate-800 shadow-[0_10px_26px_rgba(15,23,42,0.045)]"
               key={field.id}
             >
               <span>
@@ -242,7 +242,7 @@ export default async function QuotePage({
                 ) : null}
               </span>
               {field.help_text ? (
-                <span className="mt-1 block text-xs leading-5 text-zinc-500">
+                <span className="mt-1 block text-xs leading-5 text-slate-500">
                   {field.help_text}
                 </span>
               ) : null}
@@ -252,7 +252,7 @@ export default async function QuotePage({
           ))}
         </div>
 
-        <label className="flex items-start gap-3 rounded-[12px] border border-zinc-200 bg-white p-3.5 text-sm leading-6 text-zinc-700 shadow-sm">
+        <label className="flex items-start gap-3 rounded-[12px] border border-slate-200 bg-white p-3.5 text-sm leading-6 text-slate-700 shadow-[0_10px_26px_rgba(15,23,42,0.045)]">
           <input
             className="mt-1 h-4 w-4"
             name="consentAccepted"
@@ -262,7 +262,7 @@ export default async function QuotePage({
           <span>
             {page.consentVersion.consent_notice}
             {page.consentVersion.ai_disclosure_enabled ? (
-              <span className="block pt-2 text-xs text-zinc-500">
+              <span className="block pt-2 text-xs text-slate-500">
                 BizPilot may help prepare internal AI drafts later, but the
                 business reviews messages before sending.
               </span>
@@ -271,7 +271,7 @@ export default async function QuotePage({
         </label>
 
         <button
-          className="h-11 w-full rounded-[10px] px-5 text-sm font-semibold text-white sm:w-auto"
+          className="h-11 w-full rounded-[10px] px-5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(4,120,87,0.18)] sm:w-auto"
           style={{
             backgroundColor: primaryColor,
           }}

@@ -21,6 +21,15 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+type IconName =
+  | "calendar"
+  | "chat"
+  | "clipboard"
+  | "inbox"
+  | "reply"
+  | "route"
+  | "spark";
+
 const outcomes = [
   "AI-assisted replies",
   "Follow-up reminders",
@@ -38,40 +47,55 @@ const transformation = [
 const lostReasons = [
   {
     detail: "Customers move on when replies take too long.",
-    icon: "S",
+    icon: "reply",
     title: "Slow replies",
   },
   {
     detail: "Quote requests get buried in chats and inboxes.",
-    icon: "M",
+    icon: "inbox",
     title: "Messy DMs and emails",
   },
   {
     detail: "You forget to follow up and lose the job.",
-    icon: "F",
+    icon: "calendar",
     title: "Missed follow-ups",
   },
   {
     detail: "Details are incomplete or hard to track.",
-    icon: "Q",
+    icon: "clipboard",
     title: "Quote chaos",
   },
-] as const;
+] satisfies ReadonlyArray<{
+  detail: string;
+  icon: IconName;
+  title: string;
+}>;
 
 const demoSteps = [
   {
-    detail: "From your public quote link.",
+    detail: "A customer shares the job details from your public quote link.",
+    icon: "chat",
+    meta: "Public quote link",
     title: "Customer submits a quote request",
   },
   {
-    detail: "AI summarizes the details and suggests the best response.",
-    title: "BizPilot organizes the lead",
+    detail: "BizPilot captures the service, timing, missing info, and next action.",
+    icon: "spark",
+    meta: "Structured lead",
+    title: "BizPilot prepares the next action",
   },
   {
-    detail: "Close more jobs before customers go elsewhere.",
+    detail: "You review the reply, contact the customer, and keep follow-up visible.",
+    icon: "route",
+    meta: "Owner-reviewed",
     title: "You reply faster and follow up",
   },
-] as const;
+] satisfies ReadonlyArray<{
+  detail: string;
+  icon: IconName;
+  meta: string;
+  title: string;
+}>;
 
 const priorityCards = [
   ["New quote requests", "7", "text-emerald-200", "2 unread since 8:00 AM"],
@@ -106,6 +130,75 @@ function SecondaryCta({
     >
       {children}
     </Link>
+  );
+}
+
+function IconGlyph({ name }: Readonly<{ name: IconName }>) {
+  return (
+    <svg
+      aria-hidden="true"
+      className="h-4 w-4"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="1.85"
+      viewBox="0 0 24 24"
+    >
+      {name === "calendar" ? (
+        <>
+          <path d="M7 3v4" />
+          <path d="M17 3v4" />
+          <path d="M4 8h16" />
+          <path d="M5 5h14v15H5z" />
+          <path d="M8 13h3" />
+          <path d="M8 16h6" />
+        </>
+      ) : null}
+      {name === "chat" ? (
+        <>
+          <path d="M5 6.5h14v9H9l-4 3.5z" />
+          <path d="M8.5 10h7" />
+          <path d="M8.5 13h4.5" />
+        </>
+      ) : null}
+      {name === "clipboard" ? (
+        <>
+          <path d="M8 5h8" />
+          <path d="M9 3h6v4H9z" />
+          <path d="M6 6h12v15H6z" />
+          <path d="M9 12h6" />
+          <path d="M9 16h4" />
+        </>
+      ) : null}
+      {name === "inbox" ? (
+        <>
+          <path d="M4 5h16v14H4z" />
+          <path d="m4 13 4 4h8l4-4" />
+          <path d="M8 9h8" />
+        </>
+      ) : null}
+      {name === "reply" ? (
+        <>
+          <path d="M9 10 5 14l4 4" />
+          <path d="M5 14h9a5 5 0 0 0 5-5V7" />
+        </>
+      ) : null}
+      {name === "route" ? (
+        <>
+          <path d="M6 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+          <path d="M18 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+          <path d="M8 16h4a4 4 0 0 0 0-8h4" />
+        </>
+      ) : null}
+      {name === "spark" ? (
+        <>
+          <path d="M12 3 9.8 9.8 3 12l6.8 2.2L12 21l2.2-6.8L21 12l-6.8-2.2z" />
+          <path d="M18 3v4" />
+          <path d="M16 5h4" />
+        </>
+      ) : null}
+    </svg>
   );
 }
 
@@ -400,7 +493,7 @@ export default function Home() {
                 key={reason.title}
               >
                 <span className="flex h-9 w-9 items-center justify-center rounded-full border border-emerald-300/18 bg-emerald-500/[0.075] text-sm font-semibold text-emerald-200">
-                  {reason.icon}
+                  <IconGlyph name={reason.icon} />
                 </span>
                 <h3 className="mt-3 text-sm font-semibold text-white">
                   {reason.title}
@@ -420,20 +513,29 @@ export default function Home() {
               How BizPilot works
             </h2>
             <p className="mt-2 text-sm text-slate-400">
-              A simple system to recover more leads and win more jobs.
+              One quiet workflow from quote request to reviewed follow-up.
             </p>
           </div>
-          <div className="mt-5 grid gap-3 lg:grid-cols-3">
+          <div className="relative mt-5 grid gap-3 lg:grid-cols-3">
+            <div className="pointer-events-none absolute left-[18%] right-[18%] top-11 hidden border-t border-dashed border-emerald-300/18 lg:block" />
             {demoSteps.map((step, index) => (
               <div
-                className="grid gap-3 rounded-[14px] border border-white/10 bg-[var(--biz-page-surface)]/68 p-4 shadow-[0_16px_38px_rgba(0,0,0,0.14)] sm:grid-cols-[3rem_1fr] lg:grid-cols-1"
+                className="relative grid gap-3 rounded-[14px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,31,45,0.86),rgba(11,23,40,0.72))] p-4 shadow-[0_16px_38px_rgba(0,0,0,0.14)] sm:grid-cols-[3rem_1fr] lg:grid-cols-1"
                 key={step.title}
               >
-                <span className="flex h-11 w-11 items-center justify-center rounded-full border border-emerald-300/18 bg-emerald-500/[0.075] text-sm font-semibold text-emerald-200">
-                  {index + 1}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-emerald-300/18 bg-emerald-500/[0.075] text-emerald-200">
+                    <IconGlyph name={step.icon} />
+                  </span>
+                  <span className="rounded-full border border-white/10 bg-white/[0.045] px-2 py-1 text-[11px] font-semibold uppercase tracking-normal text-slate-400">
+                    Step {index + 1}
+                  </span>
+                </div>
                 <span>
-                  <h3 className="text-base font-semibold leading-6 text-white">
+                  <p className="text-[11px] font-semibold uppercase tracking-normal text-emerald-200/90">
+                    {step.meta}
+                  </p>
+                  <h3 className="mt-1 text-base font-semibold leading-6 text-white">
                     {step.title}
                   </h3>
                   <p className="mt-1.5 text-sm leading-6 text-slate-400">

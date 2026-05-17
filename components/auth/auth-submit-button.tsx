@@ -36,7 +36,7 @@ export function AuthSubmitButton({
 
   return (
     <button
-      className="h-12 w-full rounded-xl bg-[#0F172A] px-4 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(15,23,42,0.14)] transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-[#059669]/35 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-white/80"
+      className="h-12 w-full rounded-xl bg-[var(--biz-primary)] px-4 text-sm font-semibold text-white shadow-[0_10px_22px_rgba(4,120,87,0.18)] transition hover:bg-[var(--biz-primary-hover)] focus:outline-none focus:ring-2 focus:ring-emerald-600/30 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-white/80"
       disabled={pending}
       type="submit"
     >

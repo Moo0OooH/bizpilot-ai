@@ -274,7 +274,7 @@ export function TabLink({ active = false, children, href }: TabLinkProps) {
     <Link
       className={
         active
-          ? "inline-flex h-8 items-center rounded-md bg-zinc-950 px-3 text-xs font-medium text-white"
+          ? "inline-flex h-8 items-center rounded-md bg-[var(--dash-primary)] px-3 text-xs font-medium text-white"
           : "inline-flex h-8 items-center rounded-md px-3 text-xs font-medium text-zinc-600 hover:bg-white hover:text-zinc-950"
       }
       href={href}

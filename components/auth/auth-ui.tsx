@@ -60,7 +60,7 @@ const benefits = [
 
 function BrandMark() {
   return (
-    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#0F172A] text-xs font-semibold text-white shadow-[0_10px_22px_rgba(15,23,42,0.14)]">
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[var(--biz-primary)] text-xs font-semibold text-white shadow-[0_10px_22px_rgba(4,120,87,0.18)]">
       BP
     </span>
   );
@@ -81,7 +81,7 @@ function BrandLockup({ compact = false }: Readonly<{ compact?: boolean }>) {
           BIZPILOT AI
         </p>
         {compact ? (
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-[#047857]">
+          <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--biz-primary)]">
             Quote recovery workspace
           </p>
         ) : null}
@@ -94,7 +94,7 @@ function BenefitIcon({
   icon,
 }: Readonly<{ icon: (typeof benefits)[number]["icon"] }>) {
   return (
-    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#A7F3D0]/70 bg-[#ECFDF5] text-[#047857] shadow-[0_6px_14px_rgba(15,23,42,0.05)]">
+    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 text-[var(--biz-primary)] shadow-[0_6px_14px_rgba(15,23,42,0.05)]">
       <svg
         aria-hidden="true"
         className="h-3.5 w-3.5"
@@ -134,7 +134,7 @@ function BenefitIcon({
 
 function TrustIcon() {
   return (
-    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#ECFDF5] text-[#047857]">
+    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-[var(--biz-primary)]">
       <svg
         aria-hidden="true"
         className="h-3 w-3"
@@ -154,11 +154,11 @@ function TrustIcon() {
 
 function AuthBenefitPanel() {
   return (
-    <aside className="relative hidden min-h-[460px] flex-col justify-center rounded-2xl border border-[#E2E8F0] bg-[linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(236,253,245,0.46)_100%)] p-4 shadow-[0_18px_42px_rgba(15,23,42,0.09),0_2px_8px_rgba(15,23,42,0.04)] xl:flex">
+    <aside className="relative hidden min-h-[460px] flex-col justify-center rounded-2xl border border-slate-200 bg-[linear-gradient(180deg,rgba(255,255,255,0.96)_0%,rgba(236,253,245,0.42)_100%)] p-4 shadow-[0_18px_42px_rgba(15,23,42,0.09),0_2px_8px_rgba(15,23,42,0.04)] xl:flex">
       <div className="max-w-[360px]">
         <BrandLockup />
 
-        <p className="mt-3 inline-flex rounded-lg border border-[#A7F3D0]/70 bg-[#ECFDF5] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#047857]">
+        <p className="mt-3 inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--biz-primary)]">
           Owner access
         </p>
 
@@ -185,7 +185,7 @@ function AuthBenefitPanel() {
           ))}
         </div>
 
-        <div className="mt-3 flex gap-2.5 rounded-xl border border-[#A7F3D0]/60 bg-[#ECFDF5]/55 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
+        <div className="mt-3 flex gap-2.5 rounded-xl border border-emerald-200 bg-emerald-50/70 px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.05)]">
           <TrustIcon />
           <p className="text-xs leading-[1.45] text-[#475569]">
             <span className="block font-semibold text-[#0F172A]">
@@ -210,11 +210,11 @@ export function AuthShell({
   footer,
 }: AuthShellProps) {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#F8FAFC] px-4 py-4 text-[#0F172A] sm:px-6 lg:px-8">
-      <section className="relative mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-[1160px] items-center gap-4 overflow-hidden xl:grid-cols-[minmax(0,390px)_minmax(0,1fr)] xl:rounded-3xl xl:border xl:border-[#E2E8F0] xl:bg-[#FBFDFC] xl:p-3 xl:shadow-[0_22px_60px_rgba(15,23,42,0.10),0_3px_12px_rgba(15,23,42,0.04)]">
+    <main className="min-h-screen overflow-x-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#eef2f7_100%)] px-4 py-4 text-[#0F172A] sm:px-6 lg:px-8">
+      <section className="relative mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-[1160px] items-center gap-4 overflow-hidden xl:grid-cols-[minmax(0,390px)_minmax(0,1fr)] xl:rounded-3xl xl:border xl:border-slate-200 xl:bg-[#FBFDFC] xl:p-3 xl:shadow-[0_22px_60px_rgba(15,23,42,0.10),0_3px_12px_rgba(15,23,42,0.04)]">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 hidden bg-[radial-gradient(circle_at_30%_72%,rgba(5,150,105,0.08),transparent_34%),radial-gradient(circle_at_72%_28%,rgba(99,102,241,0.075),transparent_32%),radial-gradient(circle_at_54%_54%,rgba(4,120,87,0.045),transparent_38%)] xl:block"
+            className="pointer-events-none absolute inset-0 hidden bg-[radial-gradient(circle_at_30%_72%,rgba(4,120,87,0.08),transparent_34%),radial-gradient(circle_at_72%_28%,rgba(99,102,241,0.06),transparent_32%),radial-gradient(circle_at_54%_54%,rgba(15,23,42,0.035),transparent_38%)] xl:block"
         />
         <AuthBenefitPanel />
 
@@ -236,7 +236,7 @@ export function AuthShell({
 
 export function AuthCard({ children, subtitle, title }: AuthCardProps) {
   return (
-    <div className="rounded-2xl border border-[#E2E8F0] bg-white p-5 shadow-[0_20px_46px_rgba(15,23,42,0.11),0_3px_12px_rgba(15,23,42,0.05)] xl:shadow-[0_18px_40px_rgba(15,23,42,0.085),0_2px_10px_rgba(15,23,42,0.04)] sm:p-6">
+    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_20px_46px_rgba(15,23,42,0.11),0_3px_12px_rgba(15,23,42,0.05)] xl:shadow-[0_18px_40px_rgba(15,23,42,0.085),0_2px_10px_rgba(15,23,42,0.04)] sm:p-6">
       <div className="text-center">
         <h2 className="text-[22px] font-semibold leading-7 tracking-normal text-[#0F172A]">
           {title}
@@ -296,4 +296,4 @@ export function AuthFieldIcon({ type }: AuthFieldIconProps) {
 }
 
 export const authInputClassName =
-  "h-[52px] w-full rounded-xl border border-[#E2E8F0] bg-white pl-11 pr-3 text-sm text-[#0F172A] shadow-[inset_0_1px_0_rgba(15,23,42,0.02)] outline-none transition placeholder:text-slate-400 focus:border-[#059669] focus:ring-2 focus:ring-[#059669]/25";
+  "h-[52px] w-full rounded-xl border border-slate-200 bg-white pl-11 pr-3 text-sm text-[#0F172A] shadow-[inset_0_1px_0_rgba(15,23,42,0.02)] outline-none transition placeholder:text-slate-400 focus:border-[var(--biz-primary)] focus:ring-2 focus:ring-emerald-600/20";

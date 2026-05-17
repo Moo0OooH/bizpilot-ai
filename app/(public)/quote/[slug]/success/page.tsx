@@ -36,15 +36,15 @@ export default async function QuoteSuccessPage({ params }: SuccessPageProps) {
   }
 
   return (
-    <main className="flex min-h-screen items-center bg-zinc-50 px-6 py-12 text-zinc-950">
-      <section className="mx-auto w-full max-w-2xl border border-zinc-200 bg-white p-8">
-        <p className="text-sm font-medium uppercase tracking-normal text-zinc-500">
+    <main className="flex min-h-screen items-center bg-[linear-gradient(180deg,#f8fafc_0%,#eef2f7_100%)] px-6 py-12 text-slate-950">
+      <section className="mx-auto w-full max-w-2xl rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_22px_55px_rgba(15,23,42,0.10)]">
+        <p className="text-sm font-medium uppercase tracking-normal text-[var(--biz-primary)]">
           Request submitted
         </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight">
           Thanks. {page.publicLink.display_name} received your quote request.
         </h1>
-        <p className="mt-4 text-sm leading-6 text-zinc-600">
+        <p className="mt-4 text-sm leading-6 text-slate-600">
           The business will review the details and follow up directly. No
           booking or price is confirmed until they contact you.
         </p>

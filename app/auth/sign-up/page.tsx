@@ -116,7 +116,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
             </span>
           </label>
 
-          <p className="rounded-lg border border-[#A7F3D0]/70 bg-[#ECFDF5] px-2.5 py-1.5 text-xs leading-5 text-[#047857] sm:col-span-2">
+          <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-xs leading-5 text-[var(--biz-primary)] sm:col-span-2">
             Use at least 8 characters for your password.
           </p>
 
@@ -134,7 +134,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
         <p className="mt-3 text-center text-sm text-[#475569]">
           Already have an account?{" "}
           <Link
-            className="font-semibold text-[#047857] underline-offset-4 hover:underline"
+            className="font-semibold text-[var(--biz-primary)] underline-offset-4 hover:underline"
             href="/auth/sign-in"
           >
             Sign in

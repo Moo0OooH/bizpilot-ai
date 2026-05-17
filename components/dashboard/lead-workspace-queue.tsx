@@ -95,7 +95,7 @@ function matchesSearch(item: LeadDeskItem, search: string): boolean {
 
 function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
   return (
-    <div className="grid gap-3 rounded-lg border border-dashed border-violet-200 bg-violet-50/60 p-3.5">
+    <div className="grid gap-3 rounded-lg border border-dashed border-violet-200 bg-violet-50/45 p-3.5">
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-800">
           Sample lead
@@ -161,7 +161,7 @@ export function LeadWorkspaceQueue({
             <button
               className={
                 activeFilter === filter.value
-                  ? "inline-flex h-8 items-center rounded-md bg-zinc-950 px-3 text-xs font-medium text-white"
+                  ? "inline-flex h-8 items-center rounded-md bg-[var(--dash-primary)] px-3 text-xs font-medium text-white"
                   : "inline-flex h-8 items-center rounded-md px-3 text-xs font-medium text-zinc-600 hover:bg-white hover:text-zinc-950"
               }
               key={filter.value}
@@ -228,7 +228,7 @@ export function LeadWorkspaceQueue({
                 {item.lead.source_channel ?? "Unknown"}
               </span>
               <span>
-                <span className="inline-flex rounded-md bg-zinc-950 px-2 py-0.5 text-xs font-medium text-white">
+                <span className="inline-flex rounded-md bg-[var(--dash-primary)] px-2 py-0.5 text-xs font-medium text-white">
                   {item.recommendedAction}
                 </span>
                 <span className="mt-0.5 block text-xs leading-4 text-zinc-500">
