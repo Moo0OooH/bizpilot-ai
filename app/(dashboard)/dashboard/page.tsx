@@ -10,11 +10,12 @@
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-11
+ * Last Updated: 2026-05-17
  * Change Log:
  * - 2026-05-10: Created Dashboard Overview as the default protected app page.
  * - 2026-05-11: Tightened dashboard alignment, card rhythm, and operational layout density.
  * - 2026-05-11: Upgraded overview into a quote recovery cockpit with priority actions.
+ * - 2026-05-17: Added first-use Magic Moment sample lead state for pilot demos.
  * ============================================================
  */
 
@@ -86,6 +87,58 @@ function KpiIcon({
     >
       {children}
     </span>
+  );
+}
+
+function MagicMomentSampleCard({ quotePath }: Readonly<{ quotePath: string }>) {
+  return (
+    <DashboardCard className="p-3.5" variant="priority">
+      <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr_auto] xl:items-center">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge tone="amber">Sample lead</StatusBadge>
+            <StatusBadge tone="red">Reply needed</StatusBadge>
+          </div>
+          <h2 className="mt-3 text-base font-semibold text-slate-950">
+            Maria needs a move-out cleaning quote by Friday
+          </h2>
+          <p className="mt-1 text-sm leading-5 text-slate-700">
+            This is a demo lead so a new owner sees the quote recovery workflow
+            before real requests arrive.
+          </p>
+        </div>
+
+        <div className="grid gap-2 text-xs text-slate-700 sm:grid-cols-3">
+          <div className="rounded-[10px] border border-violet-100 bg-white p-3">
+            <p className="font-semibold text-slate-950">AI-style summary</p>
+            <p className="mt-1 leading-5">
+              Move-out cleaning, 2-bedroom apartment, downtown area. Missing
+              preferred arrival window.
+            </p>
+          </div>
+          <div className="rounded-[10px] border border-violet-100 bg-white p-3">
+            <p className="font-semibold text-slate-950">Suggested reply</p>
+            <p className="mt-1 leading-5">
+              Ask for the best time window, then confirm the next step manually.
+            </p>
+          </div>
+          <div className="rounded-[10px] border border-violet-100 bg-white p-3">
+            <p className="font-semibold text-slate-950">Follow-up risk</p>
+            <p className="mt-1 leading-5">
+              Warm quote request. Reply today before the customer checks another
+              cleaner.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid gap-2 xl:w-40">
+          <Link className={primaryButtonClass} href="/dashboard/leads">
+            Review lead flow
+          </Link>
+          <CopyButton label="Copy quote link" value={quotePath} />
+        </div>
+      </div>
+    </DashboardCard>
   );
 }
 
@@ -201,6 +254,10 @@ export default async function DashboardOverviewPage() {
         eyebrow="Overview"
         title="Dashboard Overview"
       />
+
+      {recentLeads.length === 0 ? (
+        <MagicMomentSampleCard quotePath={quotePath} />
+      ) : null}
 
       <DashboardCard className="grid min-h-14 gap-2 p-2.5 lg:grid-cols-[8rem_repeat(3,minmax(0,1fr))] lg:items-center">
         <div className="text-xs font-semibold leading-5 text-slate-950">

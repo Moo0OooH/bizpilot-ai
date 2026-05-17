@@ -1,5 +1,23 @@
 "use client";
 
+/**
+ * ============================================================
+ * File: components/dashboard/lead-workspace-queue.tsx
+ * Project: BizPilot AI
+ * Description: Renders the interactive Lead Workspace queue table.
+ * Role: Provides filtering, search, tenant lead rows, and first-use sample guidance.
+ * Related:
+ * - app/(dashboard)/dashboard/leads/page.tsx
+ * - components/dashboard/dashboard-ui.tsx
+ * Author: MoOoH
+ * Created: 2026-05-11
+ * Last Updated: 2026-05-17
+ * Change Log:
+ * - 2026-05-11: Created the interactive lead queue.
+ * - 2026-05-17: Added Magic Moment empty state aligned to the pilot demo flow.
+ * ============================================================
+ */
+
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
@@ -73,6 +91,46 @@ function matchesSearch(item: LeadDeskItem, search: string): boolean {
   ]
     .filter((value): value is string => Boolean(value))
     .some((value) => value.toLowerCase().includes(normalizedSearch));
+}
+
+function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
+  return (
+    <div className="grid gap-3 rounded-lg border border-dashed border-violet-200 bg-violet-50/60 p-3.5">
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-800">
+          Sample lead
+        </span>
+        <span className="rounded-full border border-red-200 bg-red-50 px-2 py-1 text-[11px] font-medium text-red-700">
+          Reply needed
+        </span>
+      </div>
+      <div className="grid gap-3 lg:grid-cols-[1fr_1fr_auto] lg:items-center">
+        <div>
+          <p className="text-sm font-semibold text-zinc-950">
+            Maria Santos - move-out cleaning
+          </p>
+          <p className="mt-1 text-[13px] leading-5 text-zinc-700">
+            2-bedroom apartment, downtown. Wants help before Friday. Missing
+            preferred arrival window.
+          </p>
+        </div>
+        <div className="rounded-[10px] border border-violet-100 bg-white p-3 text-[13px] leading-5 text-zinc-700">
+          <span className="font-semibold text-zinc-950">Next action:</span> Ask
+          for the time window, then copy a concise owner-reviewed reply.
+        </div>
+        <div className="grid gap-2 sm:grid-cols-2 lg:w-44 lg:grid-cols-1">
+          <CopyButton label="Copy quote link" value={quotePath} />
+          <Link className={buttonClass} href="/dashboard/configuration">
+            Check setup
+          </Link>
+        </div>
+      </div>
+      <p className="text-xs leading-5 text-zinc-600">
+        This sample is not stored as customer data. It shows the workflow until
+        real quote requests arrive.
+      </p>
+    </div>
+  );
 }
 
 export function LeadWorkspaceQueue({
@@ -184,22 +242,26 @@ export function LeadWorkspaceQueue({
           ))
         ) : (
           <div className="p-4">
-            <EmptyState
-              action={
-                leads.length === 0 ? (
-                  <CopyButton label="Copy quote link" value={quotePath} />
-                ) : hasActiveFilter ? (
-                  <button className={buttonClass} onClick={clearFilters} type="button">
-                    Clear filters
-                  </button>
-                ) : undefined
-              }
-              title={leads.length === 0 ? "No quote requests yet" : "No leads found."}
-            >
-              {leads.length === 0
-                ? "Share your public quote link on your website, Instagram bio, or Google Business Profile to start capturing leads."
-                : "Try another search or clear filters."}
-            </EmptyState>
+            {leads.length === 0 ? (
+              <SampleLeadEmptyState quotePath={quotePath} />
+            ) : (
+              <EmptyState
+                action={
+                  hasActiveFilter ? (
+                    <button
+                      className={buttonClass}
+                      onClick={clearFilters}
+                      type="button"
+                    >
+                      Clear filters
+                    </button>
+                  ) : undefined
+                }
+                title="No leads found."
+              >
+                Try another search or clear filters.
+              </EmptyState>
+            )}
           </div>
         )}
       </div>

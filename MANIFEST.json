@@ -1,7 +1,7 @@
 {
   "project": "BizPilot AI",
   "version": "v1.5",
-  "status": "Phase 5 stabilized / completion candidate; Phase 6 manual AI Lead Assistant foundation started; v1.5 foundation hardening standards active",
+  "status": "Phase 17 manual QA and pilot readiness checklists added; Phase 5 stabilized / completion candidate; Phase 6 manual AI Lead Assistant foundation started; v1.5/v1.7 foundation hardening standards active",
   "files": [
     "MANIFEST.json",
     "README.md",
@@ -16,6 +16,9 @@
     "docs/operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md",
     "docs/operations/BIZPILOT_PHASE_10A_VENDOR_INDEPENDENCE_GAP_REPORT_v1.0.md",
     "docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md",
+    "docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v1.0.md",
+    "docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md",
+    "docs/operations/BIZPILOT_MAGIC_DEMO_FLOW_v1.0.md",
     "docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md",
     "docs/engineering/BIZPILOT_SUPABASE_CLIENT_ARCHITECTURE_v1.0.md",
     "docs/engineering/BIZPILOT_SAFE_ERROR_HANDLING_STANDARD_v1.0.md",

@@ -22,7 +22,7 @@ Older broad-platform language is preserved as long-term vision only. Current imp
 
 **Current standards layer:** v1.5 foundation hardening  
 **Product strategy layer:** v1.4 remains active unless superseded  
-**Last updated:** 2026-05-13
+**Last updated:** 2026-05-17
 
 ---
 
@@ -78,12 +78,16 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 - `docs/operations/BIZPILOT_PHASE_10A_VENDOR_INDEPENDENCE_GAP_REPORT_v1.0.md`
 - `docs/security/BIZPILOT_SUPABASE_EXPLICIT_GRANTS_AUDIT_v1.0.md`
+- `docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v1.0.md`
+- `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md`
+- `docs/operations/BIZPILOT_MAGIC_DEMO_FLOW_v1.0.md`
 
 ---
 
 ## Operations
 
 - `docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
+- `docs/operations/BIZPILOT_MAGIC_DEMO_FLOW_v1.0.md`
 
 ---
 

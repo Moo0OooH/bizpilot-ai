@@ -3,7 +3,7 @@
 **Version:** v1.0
 **Status:** Active
 **Owner:** MoOoH
-**Last Updated:** 2026-05-15
+**Last Updated:** 2026-05-17
 **Related:**
 - `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`
 - `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
@@ -42,7 +42,7 @@ The original `0003` migration was removed from the repository because keeping it
 
 ## Rules for new migrations
 
-1. **Preserve numbering.** New files must use the next available integer prefix (currently `0010`). Never rename or re-number an existing migration.
+1. **Preserve numbering.** New files must use the next available integer prefix (currently `0014`). Never rename or re-number an existing migration.
 2. **One concern per file.** A migration adds, alters, or removes a focused set of related tables, functions, policies, or grants. Cross-cutting changes go in separate files.
 3. **File header is mandatory.** Use the BizPilot SQL header format (path, project, description, role, related, author, created/updated, change log) as shown in the existing files.
 4. **Tables created here must include:**
