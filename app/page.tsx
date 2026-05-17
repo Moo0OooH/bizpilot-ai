@@ -293,7 +293,7 @@ function SecondaryCta({
 function DashboardPreview() {
   return (
     <aside className="overflow-hidden rounded-[18px] border border-white/[0.13] bg-[#0d1520] shadow-[0_30px_80px_rgba(0,0,0,0.32)]">
-      <div className="border-b border-white/[0.07] bg-[#13202e] px-4 py-3">
+      <div className="border-b border-white/[0.07] bg-[#13202e] px-4 py-2.5">
         <div className="flex gap-1.5">
           <span className="h-3 w-3 rounded-full bg-[#ff4757]" />
           <span className="h-3 w-3 rounded-full bg-[#ffab00]" />
@@ -301,21 +301,21 @@ function DashboardPreview() {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-[150px_1fr]">
-        <div className="hidden border-r border-white/[0.07] bg-[#0b1420] p-4 lg:block">
+      <div className="grid lg:grid-cols-[136px_1fr]">
+        <div className="hidden border-r border-white/[0.07] bg-[#0b1420] p-3.5 lg:block">
           <div className="flex items-center gap-2 font-bold text-[#eef2f6]">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00d084] text-xs text-[#04110c]">
               BP
             </span>
             BizPilot
           </div>
-          <div className="mt-6 grid gap-2 text-sm text-[#7a90a4]">
+          <div className="mt-5 grid gap-1.5 text-sm text-[#7a90a4]">
             {["Overview", "Leads", "Quote Setup", "Follow Ups"].map((item, index) => (
               <div
                 className={
                   index === 0
-                    ? "rounded-[9px] bg-[#00d084]/10 px-3 py-2 font-bold text-[#00d084]"
-                    : "rounded-[9px] px-3 py-2"
+                    ? "rounded-[9px] bg-[#00d084]/10 px-3 py-1.5 font-bold text-[#00d084]"
+                    : "rounded-[9px] px-3 py-1.5"
                 }
                 key={item}
               >
@@ -323,50 +323,50 @@ function DashboardPreview() {
               </div>
             ))}
           </div>
-          <div className="mt-20 rounded-[9px] border border-white/[0.07] bg-white/[0.035] p-3 text-xs text-[#7a90a4]">
+          <div className="mt-14 rounded-[9px] border border-white/[0.07] bg-white/[0.035] p-2.5 text-xs text-[#7a90a4]">
             <p className="font-bold text-[#eef2f6]">Demo Cleaning Co.</p>
             <p className="mt-1">Quote link active</p>
           </div>
         </div>
 
-        <div className="p-4 sm:p-5">
-          <div className="flex flex-col gap-3 border-b border-white/[0.07] pb-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="p-3.5 sm:p-4">
+          <div className="flex flex-col gap-3 border-b border-white/[0.07] pb-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="text-xs font-bold uppercase text-[#435566]">
                 Dashboard Preview
               </p>
-              <h2 className="mt-1 text-xl font-bold text-[#eef2f6]">
+              <h2 className="mt-1 text-lg font-bold text-[#eef2f6]">
                 Good morning, Alex
               </h2>
-              <p className="mt-1 max-w-sm text-sm leading-6 text-[#7a90a4]">
+              <p className="mt-1 max-w-sm text-sm leading-5 text-[#7a90a4]">
                 4 leads need a reply before they cool off.
               </p>
             </div>
             <Link
-              className="inline-flex h-10 items-center justify-center rounded-[9px] bg-[#00d084] px-4 text-sm font-bold text-[#04110c] hover:bg-[#00a868]"
+              className="inline-flex h-9 items-center justify-center rounded-[9px] bg-[#00d084] px-3.5 text-sm font-bold text-[#04110c] hover:bg-[#00a868]"
               href="/dashboard/leads"
             >
               Review queue
             </Link>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-2 xl:grid-cols-4">
+          <div className="mt-3 grid grid-cols-2 gap-2 xl:grid-cols-4">
             {statCards.map(([label, value, detail, tone]) => (
               <div
-                className="rounded-[10px] border border-white/[0.07] bg-[#0f1a24] p-3"
+                className="rounded-[10px] border border-white/[0.07] bg-[#0f1a24] p-2.5"
                 key={label}
               >
                 <p className="min-h-9 text-[12px] font-semibold leading-4 text-[#eef2f6]">
                   {label}
                 </p>
-                <p className={`mt-1 text-3xl font-bold leading-none ${tone}`}>{value}</p>
-                <p className="mt-2 text-xs leading-5 text-[#7a90a4]">{detail}</p>
+                <p className={`mt-1 text-2xl font-bold leading-none ${tone}`}>{value}</p>
+                <p className="mt-1.5 text-xs leading-5 text-[#7a90a4]">{detail}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-4 grid gap-3 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="rounded-[12px] border border-white/[0.07] bg-[#0f1a24] p-4">
+          <div className="mt-3 grid gap-2.5 lg:grid-cols-[1.08fr_0.92fr]">
+            <div className="rounded-[12px] border border-white/[0.07] bg-[#0f1a24] p-3">
               <div className="flex items-start justify-between gap-3">
                 <h3 className="text-sm font-bold text-[#eef2f6]">
                   Priority: at-risk leads
@@ -375,9 +375,9 @@ function DashboardPreview() {
                   LIVE
                 </span>
               </div>
-              <div className="mt-3 divide-y divide-white/[0.07]">
+              <div className="mt-2 divide-y divide-white/[0.07]">
                 {atRiskLeads.map(([name, request, risk, tone]) => (
-                  <div className="grid gap-2 py-3 text-sm" key={name}>
+                  <div className="grid gap-1.5 py-2.5 text-sm" key={name}>
                     <div>
                       <p className="font-bold text-[#eef2f6]">{name}</p>
                       <p className="text-xs leading-5 text-[#7a90a4]">{request}</p>
@@ -396,18 +396,18 @@ function DashboardPreview() {
               </div>
             </div>
 
-            <div className="rounded-[12px] border border-white/[0.07] bg-[#0f1a24] p-4">
+            <div className="rounded-[12px] border border-white/[0.07] bg-[#0f1a24] p-3">
               <div className="flex items-start justify-between gap-3">
                 <h3 className="text-sm font-bold text-[#eef2f6]">AI drafts ready</h3>
                 <span className="text-xs text-[#435566]">manual review</span>
               </div>
-              <div className="mt-3 grid gap-3">
+              <div className="mt-2.5 grid gap-2.5">
                 {draftLeads.map(([lead, detail, time]) => (
                   <div
-                    className="grid grid-cols-[2rem_1fr_auto] items-center gap-3 text-sm"
+                    className="grid grid-cols-[1.75rem_1fr_auto] items-center gap-2.5 text-sm"
                     key={lead}
                   >
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.08] text-xs font-bold text-[#7a90a4]">
+                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/[0.08] text-xs font-bold text-[#7a90a4]">
                       {lead.charAt(0)}
                     </span>
                     <span>
@@ -468,7 +468,7 @@ export default function Home() {
       <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(0,208,132,0.09),transparent_24rem),radial-gradient(circle_at_70%_12%,rgba(79,168,255,0.07),transparent_24rem),radial-gradient(circle_at_48%_42%,rgba(232,213,176,0.035),transparent_28rem)]" />
       <div className="relative">
         <nav className="border-b border-white/[0.07] bg-[#080d12]/88 backdrop-blur">
-          <div className="mx-auto flex min-h-16 w-full max-w-[1200px] items-center justify-between gap-4 px-5 sm:px-7">
+          <div className="mx-auto flex min-h-16 w-full max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-7">
             <Link className="flex items-center gap-3 text-lg font-bold" href="/">
               <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#00d084] text-sm text-[#04110c]">
                 BP
@@ -495,12 +495,12 @@ export default function Home() {
           </div>
         </nav>
 
-        <section className="mx-auto grid w-full max-w-[1200px] gap-10 px-5 py-8 sm:px-7 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:py-12">
+        <section className="mx-auto grid w-full max-w-[1280px] gap-8 px-5 py-7 sm:px-7 lg:grid-cols-[minmax(0,0.98fr)_minmax(560px,1.02fr)] lg:items-center lg:py-9">
           <div>
             <p className="inline-flex rounded-full border border-[#00d084]/24 bg-[#00d084]/8 px-3 py-1 text-xs font-bold text-[#00d084]">
               Built for cleaning businesses
             </p>
-            <h1 className="mt-5 max-w-[700px] text-[42px] font-black leading-[1.02] sm:text-[56px] lg:text-[64px]">
+            <h1 className="mt-5 max-w-[680px] text-[42px] font-black leading-[1.03] sm:text-[56px] lg:text-[60px] xl:text-[62px]">
               <span className="block">Every unanswered quote is a job </span>
               <span className="block text-[#e8d5b0]">your competitor just closed.</span>
             </h1>
@@ -527,7 +527,7 @@ export default function Home() {
                 </span>
                 ))}
             </div>
-            <div className="mt-7 max-w-[560px] rounded-[14px] border border-white/[0.07] bg-[#111d2a]/72 p-4 text-sm leading-6 text-[#7a90a4]">
+            <div className="mt-7 hidden max-w-[560px] rounded-[14px] border border-white/[0.07] bg-[#111d2a]/72 p-4 text-sm leading-6 text-[#7a90a4] 2xl:block">
               <p className="text-xs font-bold uppercase text-[#435566]">
                 Sample pilot scenario
               </p>
@@ -542,8 +542,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div id="workflow">
-            <DashboardPreview />
+          <div
+            className="relative w-full max-w-[720px] justify-self-center lg:max-w-[660px] lg:justify-self-end xl:max-w-[700px]"
+            id="workflow"
+          >
+            <div className="absolute -inset-4 rounded-[24px] border border-white/[0.07] bg-[radial-gradient(circle_at_72%_18%,rgba(0,208,132,0.045),transparent_18rem),linear-gradient(135deg,rgba(19,32,46,0.36),rgba(8,13,18,0.14))] shadow-[0_28px_80px_rgba(0,0,0,0.30)]" />
+            <div className="relative">
+              <DashboardPreview />
+            </div>
           </div>
         </section>
 
