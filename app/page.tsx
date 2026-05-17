@@ -74,10 +74,10 @@ const demoSteps = [
 ] as const;
 
 const priorityCards = [
-  ["New Quote Requests", "7", "text-emerald-300", "2 new since 8:00 AM"],
-  ["Needs Reply", "4", "text-red-300", "Oldest waiting 18h"],
-  ["At Risk", "3", "text-amber-300", "Follow up before evening"],
-  ["AI Drafts Ready", "5", "text-violet-300", "Owner review needed"],
+  ["New quote requests", "7", "text-emerald-200", "2 unread since 8:00 AM"],
+  ["Needs reply", "4", "text-red-200", "2 waiting over 3h"],
+  ["At risk", "3", "text-amber-200", "Follow up before 5 PM"],
+  ["AI drafts ready", "5", "text-violet-200", "Owner review needed"],
 ] as const;
 
 function PrimaryCta({
@@ -86,7 +86,7 @@ function PrimaryCta({
 }: Readonly<{ children: ReactNode; href?: string }>) {
   return (
     <Link
-      className="inline-flex h-11 items-center justify-center rounded-[10px] bg-emerald-600 px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 sm:min-w-[200px]"
+      className="inline-flex h-10 items-center justify-center rounded-[10px] bg-[var(--biz-primary)] px-5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(4,120,87,0.22)] transition hover:bg-[var(--biz-primary-hover)] sm:min-w-[190px]"
       href={href}
     >
       {children}
@@ -101,7 +101,7 @@ function SecondaryCta({
 }: Readonly<{ children: ReactNode; href?: string }>) {
   return (
     <Link
-      className="inline-flex h-11 items-center justify-center rounded-[10px] border border-white/15 bg-white/[0.04] px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-white/[0.08] sm:min-w-[140px]"
+      className="inline-flex h-10 items-center justify-center rounded-[10px] border border-white/12 bg-white/[0.035] px-5 text-sm font-semibold text-slate-200 shadow-sm transition hover:border-white/20 hover:bg-white/[0.06] sm:min-w-[132px]"
       href={href}
     >
       {children}
@@ -111,11 +111,11 @@ function SecondaryCta({
 
 function DashboardPreview() {
   return (
-    <aside className="overflow-hidden rounded-[16px] border border-white/10 bg-[#0b1728]/88 shadow-[0_18px_46px_rgba(0,0,0,0.26)]">
+    <aside className="overflow-hidden rounded-[16px] border border-white/10 bg-[linear-gradient(180deg,rgba(18,31,45,0.94),rgba(11,23,40,0.96))] shadow-[0_24px_65px_rgba(0,0,0,0.30)]">
       <div className="grid lg:grid-cols-[8.5rem_1fr]">
-        <div className="hidden border-r border-white/10 bg-black/20 p-3 lg:block">
+        <div className="hidden border-r border-white/10 bg-[#08121e]/82 p-3 lg:block">
           <div className="flex items-center gap-2 text-sm font-semibold">
-            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-emerald-600 text-[9px]">
+            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[var(--biz-primary)] text-[9px]">
               BP
             </span>
             BizPilot
@@ -138,7 +138,7 @@ function DashboardPreview() {
           </div>
           <div className="mt-12 text-[11px] text-slate-400">
             <p className="font-medium text-white">Demo Cleaning Co.</p>
-            <p>Owner</p>
+            <p>Quote link active</p>
           </div>
         </div>
 
@@ -152,21 +152,21 @@ function DashboardPreview() {
                 Good morning, Alex
               </h2>
               <p className="text-xs text-slate-400">
-                Here&apos;s what needs your attention today.
+                4 leads need a reply before they cool off.
               </p>
             </div>
             <Link
-              className="inline-flex h-8 items-center justify-center rounded-[8px] bg-emerald-600 px-3 text-xs font-semibold text-white"
+              className="inline-flex h-8 items-center justify-center rounded-[8px] bg-[var(--biz-primary)] px-3 text-xs font-semibold text-white"
               href="/dashboard/leads"
             >
-              Review Leads
+              Review queue
             </Link>
           </div>
 
-          <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-3 grid grid-cols-2 gap-2 xl:grid-cols-4">
             {priorityCards.map(([label, value, tone, detail]) => (
               <div
-                className="rounded-[10px] border border-white/10 bg-black/18 p-2.5"
+                className="rounded-[10px] border border-white/10 bg-white/[0.045] p-2.5"
                 key={label}
               >
                 <p className="text-[11px] font-semibold text-white">{label}</p>
@@ -176,18 +176,18 @@ function DashboardPreview() {
             ))}
           </div>
 
-          <div className="mt-3 grid gap-2 xl:grid-cols-[1.35fr_0.9fr]">
-            <div className="rounded-[10px] border border-white/10 bg-black/18 p-3">
+          <div className="mt-3 hidden gap-2 sm:grid xl:grid-cols-[1.35fr_0.9fr]">
+            <div className="rounded-[10px] border border-white/10 bg-white/[0.045] p-3">
               <div className="flex items-center justify-between">
                 <p className="text-xs font-semibold text-white">
-                  Priority: At Risk Leads
+                  Priority: at-risk leads
                 </p>
-                <span className="text-slate-500">-&gt;</span>
+                <span className="text-[10px] text-slate-500">Updated 12m ago</span>
               </div>
               <div className="mt-2 divide-y divide-white/10">
                 {[
-                  ["Sarah J.", "Move-out cleaning - Fri 3 PM", "High risk"],
-                  ["David L.", "Deep cleaning - Sat morning", "Medium risk"],
+                  ["Sarah J.", "Move-out cleaning - Fri 3 PM", "No reply in 18h"],
+                  ["David L.", "Deep cleaning - Sat morning", "Follow-up due"],
                 ].map(([name, request, risk]) => (
                   <div
                     className="grid grid-cols-[1fr_auto] gap-2 py-2 text-xs"
@@ -197,7 +197,7 @@ function DashboardPreview() {
                       <span className="block font-medium text-white">{name}</span>
                       <span className="text-[11px] text-slate-400">{request}</span>
                     </span>
-                    <span className="self-center rounded-full border border-amber-400/20 bg-amber-500/15 px-2 py-0.5 text-[10px] text-amber-200">
+                    <span className="self-center rounded-full border border-amber-400/20 bg-amber-500/12 px-2 py-0.5 text-[10px] text-amber-200">
                       {risk}
                     </span>
                   </div>
@@ -205,8 +205,11 @@ function DashboardPreview() {
               </div>
             </div>
 
-            <div className="rounded-[10px] border border-white/10 bg-black/18 p-3">
-              <p className="text-xs font-semibold text-white">AI Draft Ready</p>
+            <div className="rounded-[10px] border border-white/10 bg-white/[0.045] p-3">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-semibold text-white">AI drafts ready</p>
+                <span className="text-[10px] text-violet-200">manual review</span>
+              </div>
               <div className="mt-2 grid gap-2">
                 {["Emily K.", "James T.", "Olivia M."].map((lead, index) => (
                   <div
@@ -219,7 +222,7 @@ function DashboardPreview() {
                     <span>
                       <span className="block font-medium text-white">{lead}</span>
                       <span className="text-[10px] text-slate-400">
-                        {index === 0 ? "Regular cleaning - today" : "Move-in cleaning"}
+                        {index === 0 ? "Regular cleaning - today" : "Move-in - missing address"}
                       </span>
                     </span>
                     <span className="text-[10px] text-slate-400">{index + 1}h</span>
@@ -236,13 +239,13 @@ function DashboardPreview() {
 
 function TransformationSection() {
   return (
-    <section className="border-t border-white/10 py-8" id="transformation">
+    <section className="border-t border-white/10 py-7" id="transformation">
       <div className="grid gap-4 lg:grid-cols-[0.88fr_1.12fr] lg:items-center">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-normal text-emerald-300">
+          <p className="text-xs font-semibold uppercase tracking-normal text-emerald-200">
             The first 3 minutes
           </p>
-          <h2 className="mt-2 text-2xl font-semibold text-white sm:text-[28px]">
+          <h2 className="mt-2 text-2xl font-semibold text-white sm:text-[27px]">
             Turn quote chaos into a clear next action.
           </h2>
           <p className="mt-2 max-w-xl text-sm leading-6 text-slate-400">
@@ -252,11 +255,11 @@ function TransformationSection() {
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="rounded-[14px] border border-red-400/15 bg-red-500/[0.035] p-4">
+          <div className="rounded-[14px] border border-white/10 bg-[linear-gradient(180deg,rgba(239,68,68,0.055),rgba(255,255,255,0.035))] p-4">
             <p className="text-xs font-semibold uppercase tracking-normal text-red-200">
               Before BizPilot
             </p>
-            <div className="mt-3 rounded-[10px] border border-white/10 bg-black/18 p-3 text-sm leading-6 text-slate-300">
+            <div className="mt-3 rounded-[10px] border border-white/10 bg-[#08121e]/72 p-3 text-sm leading-6 text-slate-300">
               &quot;Hi, how much for a move-out clean this week?&quot;
             </div>
             <ul className="mt-3 grid gap-2 text-sm text-slate-400">
@@ -269,11 +272,11 @@ function TransformationSection() {
             </ul>
           </div>
 
-          <div className="rounded-[14px] border border-emerald-400/18 bg-emerald-500/[0.045] p-4">
+          <div className="rounded-[14px] border border-emerald-300/16 bg-[linear-gradient(180deg,rgba(4,120,87,0.12),rgba(255,255,255,0.035))] p-4">
             <p className="text-xs font-semibold uppercase tracking-normal text-emerald-200">
               After BizPilot
             </p>
-            <div className="mt-3 rounded-[10px] border border-white/10 bg-black/18 p-3 text-sm leading-6 text-slate-200">
+            <div className="mt-3 rounded-[10px] border border-white/10 bg-[#08121e]/72 p-3 text-sm leading-6 text-slate-200">
               Sarah J. - Move-out cleaning - Friday - AI reply ready
             </div>
             <ul className="mt-3 grid gap-2 text-sm text-slate-300">
@@ -309,12 +312,14 @@ function Footer() {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[var(--biz-page-bg)] text-[var(--biz-page-text)]">
-      <main className="mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8">
+    <div className="relative min-h-screen overflow-hidden bg-[var(--biz-page-bg)] text-[var(--biz-page-text)]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(circle_at_20%_10%,rgba(14,165,233,0.08),transparent_28rem),radial-gradient(circle_at_78%_8%,rgba(4,120,87,0.12),transparent_26rem)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-[430px] h-80 bg-[radial-gradient(circle_at_50%_0%,rgba(148,163,184,0.05),transparent_30rem)]" />
+      <main className="relative mx-auto w-full max-w-[1180px] px-4 sm:px-6 lg:px-8">
         {/* Nav */}
-        <nav className="flex min-h-14 items-center justify-between gap-3 py-3">
+        <nav className="flex min-h-14 items-center justify-between gap-3 py-2.5">
           <Link className="flex items-center gap-2 font-semibold" href="/">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-600 text-xs">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[var(--biz-primary)] text-xs">
               BP
             </span>
             BizPilot
@@ -327,13 +332,13 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2">
             <Link
-              className="hidden rounded-[10px] border border-white/15 bg-white/[0.04] px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/[0.08] sm:inline-flex"
+              className="hidden rounded-[10px] border border-white/12 bg-white/[0.035] px-3 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.06] sm:inline-flex"
               href="/dashboard"
             >
               See Demo
             </Link>
             <Link
-              className="rounded-[10px] bg-emerald-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 sm:px-4"
+              className="rounded-[10px] bg-[var(--biz-primary)] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[var(--biz-primary-hover)] sm:px-4"
               href="/auth/sign-in"
             >
               Get Early Access
@@ -342,30 +347,30 @@ export default function Home() {
         </nav>
 
         {/* Fold 1 - Hero */}
-        <section className="grid gap-7 py-8 sm:py-10 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,540px)] lg:items-center lg:gap-9">
+        <section className="grid gap-7 py-7 sm:py-9 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,530px)] lg:items-center lg:gap-9">
           <div>
             <p className="inline-flex rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs font-medium text-slate-300">
               For cleaning businesses
             </p>
-            <h1 className="mt-4 max-w-[620px] text-[36px] font-semibold leading-[1.08] tracking-normal sm:text-[44px] lg:text-[52px]">
+            <h1 className="mt-3 max-w-[600px] text-[35px] font-semibold leading-[1.06] tracking-normal sm:text-[42px] lg:text-[48px]">
               <span className="text-white">Stop losing cleaning </span>
-              <span className="text-emerald-400">quote requests.</span>
+              <span className="text-emerald-300">quote requests.</span>
             </h1>
-            <p className="mt-4 max-w-[560px] text-[15px] leading-7 text-slate-300">
+            <p className="mt-3 max-w-[540px] text-[15px] leading-[1.65] text-slate-300">
               BizPilot helps cleaning businesses respond faster, organize new
               quote requests, and follow up before customers disappear.
             </p>
-            <div className="mt-5 flex flex-wrap gap-3">
+            <div className="mt-4 flex flex-wrap gap-3">
               <PrimaryCta>Start Recovering Leads</PrimaryCta>
               <SecondaryCta>See Demo</SecondaryCta>
             </div>
-            <div className="mt-5 flex flex-wrap gap-5">
+            <div className="mt-4 flex flex-wrap gap-4">
               {outcomes.map((outcome) => (
                 <div
                   className="flex items-center gap-2 text-sm leading-6 text-slate-300"
                   key={outcome}
                 >
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-300/85" />
                   <span>{outcome}</span>
                 </div>
               ))}
@@ -379,9 +384,9 @@ export default function Home() {
         <TransformationSection />
 
         {/* Fold 3 - Why */}
-        <section className="border-t border-white/10 py-8" id="why">
+        <section className="border-t border-white/10 py-7" id="why">
           <div className="text-center">
-            <h2 className="text-2xl font-semibold text-white sm:text-[28px]">
+            <h2 className="text-2xl font-semibold text-white sm:text-[27px]">
               Why cleaning businesses lose leads
             </h2>
             <p className="mt-2 text-sm text-slate-400">
@@ -391,10 +396,10 @@ export default function Home() {
           <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {lostReasons.map((reason) => (
               <div
-                className="rounded-[14px] border border-white/10 bg-white/[0.04] p-4"
+                className="rounded-[14px] border border-white/10 bg-[var(--biz-page-surface)]/68 p-4 shadow-[0_16px_38px_rgba(0,0,0,0.14)]"
                 key={reason.title}
               >
-                <span className="flex h-9 w-9 items-center justify-center rounded-full border border-emerald-400/25 bg-emerald-500/10 text-sm font-semibold text-emerald-300">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full border border-emerald-300/18 bg-emerald-500/[0.075] text-sm font-semibold text-emerald-200">
                   {reason.icon}
                 </span>
                 <h3 className="mt-3 text-sm font-semibold text-white">
@@ -409,9 +414,9 @@ export default function Home() {
         </section>
 
         {/* Fold 4 - How */}
-        <section className="border-t border-white/10 py-8" id="how-it-works">
+        <section className="border-t border-white/10 py-7" id="how-it-works">
           <div className="text-center">
-            <h2 className="text-2xl font-semibold text-white sm:text-[28px]">
+            <h2 className="text-2xl font-semibold text-white sm:text-[27px]">
               How BizPilot works
             </h2>
             <p className="mt-2 text-sm text-slate-400">
@@ -421,10 +426,10 @@ export default function Home() {
           <div className="mt-5 grid gap-3 lg:grid-cols-3">
             {demoSteps.map((step, index) => (
               <div
-                className="grid gap-3 rounded-[14px] border border-white/10 bg-white/[0.04] p-4 sm:grid-cols-[3rem_1fr] lg:grid-cols-1"
+                className="grid gap-3 rounded-[14px] border border-white/10 bg-[var(--biz-page-surface)]/68 p-4 shadow-[0_16px_38px_rgba(0,0,0,0.14)] sm:grid-cols-[3rem_1fr] lg:grid-cols-1"
                 key={step.title}
               >
-                <span className="flex h-12 w-12 items-center justify-center rounded-full border border-emerald-400/20 bg-emerald-500/10 text-base font-semibold text-emerald-300">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full border border-emerald-300/18 bg-emerald-500/[0.075] text-sm font-semibold text-emerald-200">
                   {index + 1}
                 </span>
                 <span>
@@ -441,8 +446,8 @@ export default function Home() {
         </section>
 
         {/* Fold 5 - Final CTA */}
-        <section className="border-t border-white/10 py-8" id="cta">
-          <div className="overflow-hidden rounded-[16px] border border-white/10 bg-[linear-gradient(90deg,rgba(16,185,129,0.16),rgba(255,255,255,0.05))] p-5 sm:p-6">
+        <section className="border-t border-white/10 py-7" id="cta">
+          <div className="overflow-hidden rounded-[16px] border border-white/10 bg-[linear-gradient(90deg,rgba(4,120,87,0.15),rgba(18,31,45,0.92))] p-5 shadow-[0_20px_55px_rgba(0,0,0,0.22)] sm:p-6">
             <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
                 <h2 className="text-2xl font-semibold text-white">

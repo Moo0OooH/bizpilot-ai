@@ -21,11 +21,11 @@ Change Log:
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --biz-page-bg: #07111c;
+  --biz-page-bg: #06111f;
   --biz-page-bg-deep: #050b12;
   --biz-page-surface: #0b1728;
   --biz-page-surface-elevated: #101b28;
-  --biz-page-border: rgba(148, 163, 184, 0.16);
+  --biz-page-border: rgba(148, 163, 184, 0.15);
   --biz-page-text: #f8fafc;
   --biz-page-text-soft: #cbd5e1;
   --biz-page-text-muted: #94a3b8;
@@ -37,8 +37,8 @@ Change Log:
   --biz-text-primary: #f8fafc;
   --biz-text-secondary: #cbd5e1;
   --biz-text-muted: #94a3b8;
-  --biz-primary: #059669;
-  --biz-primary-hover: #047857;
+  --biz-primary: #047857;
+  --biz-primary-hover: #059669;
   --biz-success: #22c55e;
   --biz-warning: #f59e0b;
   --biz-danger: #ef4444;

@@ -26,8 +26,8 @@ Use the following visual system as the active direction:
 - Primary text: `#F8FAFC`
 - Secondary text: `#CBD5E1`
 - Muted text: `#94A3B8`
-- Primary emerald: `#059669`
-- Primary hover: `#047857`
+- Primary emerald: `#047857`
+- Primary hover: `#059669`
 - Success: `#22C55E`
 - Warning / at-risk: `#F59E0B`
 - Danger / urgent: `#EF4444`
@@ -43,6 +43,9 @@ to `app/globals.css`, not rewriting individual pages.
 Emerald is reserved for primary actions, active states, selected navigation,
 success confirmations, and healthy system status. Do not use emerald as broad
 decoration.
+
+Use mature emerald. Avoid bright startup green. Primary CTA and selected states
+can carry emerald; supporting dots, icons, and glows should be muted and sparse.
 
 Amber is reserved for at-risk leads, follow-up risk, or time-sensitive caution.
 
@@ -63,6 +66,10 @@ Marketing homepage:
 - Pain-first, conversion-focused, and easy to scan at 100% zoom.
 - Dashboard preview should look believable and operational, not like a fake SaaS
   illustration.
+- Preserve clear tonal levels: deepest page background, lifted hero/dashboard
+  surfaces, elevated cards, then slightly stronger active or priority states.
+- Atmospheric lighting must stay soft: weak navy/emerald radial light, restrained
+  shadows, no neon or cyberpunk glow.
 
 Dashboard:
 
@@ -124,8 +131,25 @@ Guidance:
 - Avoid oversized decorative panels.
 - Keep nav spacing intentional and restrained.
 - Make the page scannable in roughly 5-8 seconds.
+- Desktop hero headline should remain strong but not overpower the dashboard
+  proof. The preview supports the message; it should not become the hero.
+- CTA rhythm should be clear: primary action first, secondary demo action quieter.
 
-## 8. Before / After Rationale
+## 8. Dashboard Preview Realism
+
+Homepage dashboard previews should use operational microcopy that a cleaning
+business owner recognizes:
+
+- Waiting reply age.
+- New quote request timestamps.
+- Follow-up due windows.
+- Missing info hints.
+- Owner review required for AI drafts.
+
+Avoid fake enterprise analytics, generic vanity metrics, complex charts, or
+anything that implies booking, auto-send, invoices, or calendar automation.
+
+## 9. Before / After Rationale
 
 The transformation section exists to show the Magic Moment before the owner
 starts a trial:
@@ -138,7 +162,7 @@ This section should make the owner think:
 
 > Finally, I can organize quote requests without chaos.
 
-## 9. Visual Avoid List
+## 10. Visual Avoid List
 
 Avoid:
 
