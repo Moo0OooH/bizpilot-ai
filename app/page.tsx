@@ -35,10 +35,10 @@ type IconName =
 const trustItems = ["Free 14-day trial", "No credit card", "Setup in 5 minutes"] as const;
 
 const proofStrip = [
-  ["Reply faster", "Keep fresh quote requests visible before they cool off."],
-  ["Follow up consistently", "Every waiting lead keeps a clear next action."],
-  ["Review drafts in minutes", "AI prepares replies, the owner approves them."],
-  ["Keep every lead visible", "No more quote requests buried in scattered inboxes."],
+  ["Reply in minutes", "Fresh quote requests stay visible before they cool off."],
+  ["Follow up on time", "Waiting leads keep a clear next action and due window."],
+  ["Review AI drafts", "BizPilot prepares replies, the owner approves them."],
+  ["Keep leads in view", "No quote request disappears inside scattered messages."],
 ] as const;
 
 const lostReasons = [
@@ -46,25 +46,19 @@ const lostReasons = [
     detail:
       "Most customers contact 2-3 cleaners at once and book whoever replies first. A 4-hour delay can mean the job is gone.",
     icon: "reply",
-    title: "Slow replies lose jobs",
+    title: "Too slow to reply",
   },
   {
     detail:
-      "Instagram, Facebook, email, referrals - quote requests scatter everywhere without a system. One missed DM is one missed job.",
-    icon: "inbox",
-    title: "DMs get buried daily",
-  },
-  {
-    detail:
-      "You quote someone, hear nothing, and forget. Three days later they hired the competitor who sent one simple follow-up.",
+      "You quote someone, hear nothing, and move on. Three days later they hired the competitor who sent one simple reminder.",
     icon: "calendar",
-    title: "No follow-up = no job",
+    title: "Missed follow-ups",
   },
   {
     detail:
-      "Missing address, room count, or date turns one message into five. By then the customer may have found someone else.",
-    icon: "clipboard",
-    title: "Incomplete quotes stall",
+      "Texts, DMs, Facebook, referrals, and email scatter quote requests across too many places. One missed message is one missed job.",
+    icon: "inbox",
+    title: "Messages everywhere",
   },
 ] satisfies ReadonlyArray<{
   detail: string;
@@ -149,21 +143,48 @@ const pricingPlans = [
 ] as const;
 
 const statCards = [
-  ["New quote requests", "7", "2 unread since 8 AM", "text-[#00d084]"],
-  ["Needs reply", "4", "2 waiting over 3h", "text-[#ff4757]"],
-  ["At risk", "3", "Follow up before 5 PM", "text-[#ffab00]"],
-  ["AI drafts ready", "5", "Owner review needed", "text-[#eef2f6]"],
+  ["Lead received", "Now", "Sarah from Facebook", "text-[#00d084]"],
+  ["AI extracted", "23s", "Move-out clean - Friday", "text-[#4fa8ff]"],
+  ["Draft ready", "Review", "Owner approval needed", "text-[#eef2f6]"],
+  ["Follow-up set", "2h", "If no reply", "text-[#ffab00]"],
 ] as const;
 
-const atRiskLeads = [
-  ["Sarah J.", "Move-out cleaning - Fri 3 PM", "No reply in 18h", "red"],
-  ["David L.", "Deep cleaning - Sat morning", "Follow-up due", "amber"],
-] as const;
-
-const draftLeads = [
-  ["Emily K.", "Regular cleaning - today", "1h"],
-  ["James T.", "Move-in - missing addr", "2h"],
-  ["Olivia M.", "Move-in - missing addr", "3h"],
+const workflowCards = [
+  {
+    detail: "Sarah from Facebook",
+    icon: "chat",
+    meta: "Just now",
+    status: "Lead received",
+    tone: "blue",
+  },
+  {
+    detail: "Move-out cleaning - 3 bed - Friday",
+    icon: "spark",
+    meta: "00:12",
+    status: "AI extracts details",
+    tone: "neutral",
+  },
+  {
+    detail: "Personalized reply ready",
+    icon: "reply",
+    meta: "00:23",
+    status: "Draft reply ready",
+    tone: "green",
+  },
+  {
+    detail: "If no reply by 2 PM",
+    icon: "calendar",
+    meta: "2:00:00",
+    status: "Follow-up scheduled",
+    tone: "amber",
+  },
+  {
+    detail: "Move-out clean - owner reviewed",
+    icon: "check",
+    meta: "Today",
+    status: "Job booked",
+    tone: "green",
+  },
 ] as const;
 
 function IconGlyph({ name }: Readonly<{ name: IconName }>) {
@@ -290,136 +311,71 @@ function SecondaryCta({
   );
 }
 
-function DashboardPreview() {
+function WorkflowPreview() {
   return (
-    <aside className="overflow-hidden rounded-[18px] border border-white/[0.13] bg-[#0d1520] shadow-[0_30px_80px_rgba(0,0,0,0.32)]">
-      <div className="border-b border-white/[0.07] bg-[#13202e] px-4 py-2.5">
-        <div className="flex gap-1.5">
-          <span className="h-3 w-3 rounded-full bg-[#ff4757]" />
-          <span className="h-3 w-3 rounded-full bg-[#ffab00]" />
-          <span className="h-3 w-3 rounded-full bg-[#00d084]" />
+    <aside className="relative overflow-hidden rounded-[22px] border border-white/[0.10] bg-[linear-gradient(145deg,rgba(19,32,46,0.92),rgba(13,23,33,0.80))] p-5 shadow-[0_32px_90px_rgba(0,0,0,0.34)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_8%,rgba(0,208,132,0.09),transparent_16rem),radial-gradient(circle_at_10%_100%,rgba(79,168,255,0.06),transparent_14rem)]" />
+      <div className="relative">
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-xs font-bold uppercase text-[#435566]">
+            Live recovery workflow
+          </p>
+          <p className="font-mono text-xs text-[#00d084]">owner-reviewed</p>
         </div>
-      </div>
 
-      <div className="grid lg:grid-cols-[136px_1fr]">
-        <div className="hidden border-r border-white/[0.07] bg-[#0b1420] p-3.5 lg:block">
-          <div className="flex items-center gap-2 font-bold text-[#eef2f6]">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00d084] text-xs text-[#04110c]">
-              BP
-            </span>
-            BizPilot
-          </div>
-          <div className="mt-5 grid gap-1.5 text-sm text-[#7a90a4]">
-            {["Overview", "Leads", "Quote Setup", "Follow Ups"].map((item, index) => (
+        <div className="mt-5 grid gap-3">
+          {workflowCards.map((card, index) => (
+            <div className="relative" key={card.status}>
+              {index < workflowCards.length - 1 ? (
+                <span className="absolute left-5 top-12 h-5 border-l border-dashed border-white/[0.18]" />
+              ) : null}
               <div
                 className={
-                  index === 0
-                    ? "rounded-[9px] bg-[#00d084]/10 px-3 py-1.5 font-bold text-[#00d084]"
-                    : "rounded-[9px] px-3 py-1.5"
+                  card.tone === "green"
+                    ? "grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 rounded-[14px] border border-[#00d084]/30 bg-[#00d084]/10 p-3 shadow-[0_0_34px_rgba(0,208,132,0.07)] transition duration-200 hover:-translate-y-0.5"
+                    : "grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 rounded-[14px] border border-white/[0.08] bg-[#0f1a24]/90 p-3 transition duration-200 hover:-translate-y-0.5 hover:border-white/[0.14]"
                 }
-                key={item}
               >
-                {item}
+                <span
+                  className={
+                    card.tone === "green"
+                      ? "flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#00d084] text-[#04110c]"
+                      : card.tone === "amber"
+                        ? "flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#ffab00]/14 text-[#ffab00]"
+                        : card.tone === "blue"
+                          ? "flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#4fa8ff]/14 text-[#4fa8ff]"
+                          : "flex h-10 w-10 items-center justify-center rounded-[12px] bg-white/[0.07] text-[#7a90a4]"
+                  }
+                >
+                  <IconGlyph name={card.icon} />
+                </span>
+                <span>
+                  <span className="block text-sm font-bold text-[#eef2f6]">
+                    {card.status}
+                  </span>
+                  <span className="mt-0.5 block text-xs leading-5 text-[#7a90a4]">
+                    {card.detail}
+                  </span>
+                </span>
+                <span className="text-xs text-[#7a90a4]">{card.meta}</span>
               </div>
-            ))}
-          </div>
-          <div className="mt-14 rounded-[9px] border border-white/[0.07] bg-white/[0.035] p-2.5 text-xs text-[#7a90a4]">
-            <p className="font-bold text-[#eef2f6]">Demo Cleaning Co.</p>
-            <p className="mt-1">Quote link active</p>
-          </div>
+            </div>
+          ))}
         </div>
 
-        <div className="p-3.5 sm:p-4">
-          <div className="flex flex-col gap-3 border-b border-white/[0.07] pb-3 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p className="text-xs font-bold uppercase text-[#435566]">
-                Dashboard Preview
-              </p>
-              <h2 className="mt-1 text-lg font-bold text-[#eef2f6]">
-                Good morning, Alex
-              </h2>
-              <p className="mt-1 max-w-sm text-sm leading-5 text-[#7a90a4]">
-                4 leads need a reply before they cool off.
-              </p>
-            </div>
-            <Link
-              className="inline-flex h-9 items-center justify-center rounded-[9px] bg-[#00d084] px-3.5 text-sm font-bold text-[#04110c] hover:bg-[#00a868]"
-              href="/dashboard/leads"
+        <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {statCards.map(([label, value, detail, tone]) => (
+            <div
+              className="rounded-[12px] border border-white/[0.07] bg-white/[0.035] p-3"
+              key={label}
             >
-              Review queue
-            </Link>
-          </div>
-
-          <div className="mt-3 grid grid-cols-2 gap-2 xl:grid-cols-4">
-            {statCards.map(([label, value, detail, tone]) => (
-              <div
-                className="rounded-[10px] border border-white/[0.07] bg-[#0f1a24] p-2.5"
-                key={label}
-              >
-                <p className="min-h-9 text-[12px] font-semibold leading-4 text-[#eef2f6]">
-                  {label}
-                </p>
-                <p className={`mt-1 text-2xl font-bold leading-none ${tone}`}>{value}</p>
-                <p className="mt-1.5 text-xs leading-5 text-[#7a90a4]">{detail}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-3 grid gap-2.5 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="rounded-[12px] border border-white/[0.07] bg-[#0f1a24] p-3">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="text-sm font-bold text-[#eef2f6]">
-                  Priority: at-risk leads
-                </h3>
-                <span className="rounded-full border border-[#00d084]/25 bg-[#00d084]/10 px-2 py-1 text-[10px] font-bold text-[#00d084]">
-                  LIVE
-                </span>
-              </div>
-              <div className="mt-2 divide-y divide-white/[0.07]">
-                {atRiskLeads.map(([name, request, risk, tone]) => (
-                  <div className="grid gap-1.5 py-2.5 text-sm" key={name}>
-                    <div>
-                      <p className="font-bold text-[#eef2f6]">{name}</p>
-                      <p className="text-xs leading-5 text-[#7a90a4]">{request}</p>
-                    </div>
-                    <span
-                      className={
-                        tone === "red"
-                          ? "w-fit rounded px-2 py-1 text-[11px] font-bold text-[#ff4757] bg-[#ff4757]/10"
-                          : "w-fit rounded px-2 py-1 text-[11px] font-bold text-[#ffab00] bg-[#ffab00]/10"
-                      }
-                    >
-                      {risk}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <p className={`text-lg font-black leading-none ${tone}`}>{value}</p>
+              <p className="mt-2 text-[11px] font-bold leading-4 text-[#eef2f6]">
+                {label}
+              </p>
+              <p className="mt-1 text-[11px] leading-4 text-[#7a90a4]">{detail}</p>
             </div>
-
-            <div className="rounded-[12px] border border-white/[0.07] bg-[#0f1a24] p-3">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="text-sm font-bold text-[#eef2f6]">AI drafts ready</h3>
-                <span className="text-xs text-[#435566]">manual review</span>
-              </div>
-              <div className="mt-2.5 grid gap-2.5">
-                {draftLeads.map(([lead, detail, time]) => (
-                  <div
-                    className="grid grid-cols-[1.75rem_1fr_auto] items-center gap-2.5 text-sm"
-                    key={lead}
-                  >
-                    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/[0.08] text-xs font-bold text-[#7a90a4]">
-                      {lead.charAt(0)}
-                    </span>
-                    <span>
-                      <span className="block font-bold text-[#eef2f6]">{lead}</span>
-                      <span className="text-xs text-[#7a90a4]">{detail}</span>
-                    </span>
-                    <span className="text-xs text-[#435566]">{time}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </aside>
@@ -495,23 +451,23 @@ export default function Home() {
           </div>
         </nav>
 
-        <section className="mx-auto grid w-full max-w-[1280px] gap-8 px-5 py-7 sm:px-7 lg:grid-cols-[minmax(0,0.98fr)_minmax(560px,1.02fr)] lg:items-center lg:py-9">
+        <section className="mx-auto grid w-full max-w-[1280px] gap-10 px-5 py-10 sm:px-7 lg:grid-cols-[minmax(0,0.92fr)_minmax(500px,0.88fr)] lg:items-center lg:py-8">
           <div>
             <p className="inline-flex rounded-full border border-[#00d084]/24 bg-[#00d084]/8 px-3 py-1 text-xs font-bold text-[#00d084]">
-              Built for cleaning businesses
+              AI lead recovery for cleaning businesses
             </p>
-            <h1 className="mt-5 max-w-[680px] text-[42px] font-black leading-[1.03] sm:text-[56px] lg:text-[60px] xl:text-[62px]">
-              <span className="block">Every unanswered quote is a job </span>
-              <span className="block text-[#e8d5b0]">your competitor just closed.</span>
+            <h1 className="mt-6 max-w-[620px] text-[48px] font-black leading-[0.98] sm:text-[64px] lg:text-[72px] xl:text-[78px]">
+              <span className="block">Every minute you wait, </span>
+              <span className="block text-[#00d084]">another company gets the job.</span>
             </h1>
-            <p className="mt-5 max-w-[620px] text-base leading-7 text-[#7a90a4] sm:text-lg">
-              BizPilot turns scattered DMs and emails into structured leads with
-              AI-drafted replies - so you respond in under 2 minutes, close more
-              jobs, and never lose track of a follow-up again.
+            <p className="mt-6 max-w-[560px] text-base leading-7 text-[#7a90a4] sm:text-lg">
+              BizPilot captures quote requests from texts, DMs, Facebook, and
+              email - then drafts AI replies for owner review so you can book
+              jobs before competitors respond.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <PrimaryCta>Start Recovering Leads</PrimaryCta>
-              <SecondaryCta href="#workflow">See live workflow</SecondaryCta>
+              <PrimaryCta>Start booking faster</PrimaryCta>
+              <SecondaryCta href="#workflow">Watch 2-minute demo</SecondaryCta>
             </div>
             <p className="mt-3 flex items-center gap-2 text-sm text-[#435566]">
               <span className="h-2 w-2 rounded-full bg-[#ffab00]" />
@@ -527,7 +483,7 @@ export default function Home() {
                 </span>
                 ))}
             </div>
-            <div className="mt-7 hidden max-w-[560px] rounded-[14px] border border-white/[0.07] bg-[#111d2a]/72 p-4 text-sm leading-6 text-[#7a90a4] 2xl:block">
+            <div className="mt-7 hidden max-w-[560px] rounded-[14px] border border-white/[0.07] bg-[#111d2a]/72 p-4 text-sm leading-6 text-[#7a90a4]">
               <p className="text-xs font-bold uppercase text-[#435566]">
                 Sample pilot scenario
               </p>
@@ -543,12 +499,12 @@ export default function Home() {
           </div>
 
           <div
-            className="relative w-full max-w-[720px] justify-self-center lg:max-w-[660px] lg:justify-self-end xl:max-w-[700px]"
+            className="relative w-full max-w-[650px] justify-self-center lg:max-w-[560px] lg:justify-self-end xl:max-w-[600px]"
             id="workflow"
           >
             <div className="absolute -inset-4 rounded-[24px] border border-white/[0.07] bg-[radial-gradient(circle_at_72%_18%,rgba(0,208,132,0.045),transparent_18rem),linear-gradient(135deg,rgba(19,32,46,0.36),rgba(8,13,18,0.14))] shadow-[0_28px_80px_rgba(0,0,0,0.30)]" />
             <div className="relative">
-              <DashboardPreview />
+              <WorkflowPreview />
             </div>
           </div>
         </section>
@@ -565,8 +521,8 @@ export default function Home() {
         </section>
 
         <section className="mx-auto w-full max-w-[1200px] px-5 py-12 sm:px-7" id="features">
-          <SectionHeader title="Why cleaning businesses lose leads" />
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <SectionHeader title="Why cleaning businesses lose thousands in missed leads" />
+          <div className="mt-7 grid gap-4 lg:grid-cols-3">
             {lostReasons.map((reason) => (
               <article
                 className="rounded-[16px] border border-white/[0.07] bg-[#0f1a24] p-5"
