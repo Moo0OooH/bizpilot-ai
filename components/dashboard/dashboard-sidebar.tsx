@@ -77,19 +77,19 @@ const navigationGroups: NavigationGroup[] = [
 
 function navClass(isActive: boolean, isDisabled: boolean): string {
   if (isDisabled) {
-    return "flex h-10 items-center gap-3 rounded-[12px] px-3 text-white/35";
+    return "flex h-9 items-center gap-2.5 rounded-[11px] px-3 text-white/35";
   }
 
   if (isActive) {
-    return "flex h-10 items-center gap-3 rounded-[12px] border border-[#17D492]/18 bg-[#17D492]/14 px-3 font-semibold text-[#F5F7FA] shadow-[0_14px_34px_rgba(23,212,146,0.08)]";
+    return "flex h-9 items-center gap-2.5 rounded-[11px] border border-[#17D492]/18 bg-[#17D492]/14 px-3 font-semibold text-[#F5F7FA] shadow-[0_10px_26px_rgba(23,212,146,0.07)]";
   }
 
-  return "flex h-10 items-center gap-3 rounded-[12px] px-3 text-[rgba(245,247,250,0.62)] transition hover:bg-[rgba(23,212,146,0.08)] hover:text-[#F5F7FA]";
+  return "flex h-9 items-center gap-2.5 rounded-[11px] px-3 text-[rgba(245,247,250,0.62)] transition hover:bg-[rgba(23,212,146,0.08)] hover:text-[#F5F7FA]";
 }
 
 function NavIcon({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] border border-current/15 text-xs font-semibold">
+    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px] border border-current/15 text-[12px] font-semibold">
       {children}
     </span>
   );
@@ -102,21 +102,21 @@ export function DashboardSidebar({
   const pathname = usePathname();
   return (
     <aside className="dashboard-sidebar sticky top-0 hidden h-screen w-[260px] border-r text-white lg:flex lg:flex-col">
-      <div className="border-b border-white/10 px-5 py-5">
-        <p className="text-xl font-semibold tracking-normal text-white">
+      <div className="border-b border-white/10 px-5 py-4">
+        <p className="text-lg font-semibold tracking-normal text-white">
           BizPilot
         </p>
-        <p className="mt-2 truncate text-sm text-white/58">
+        <p className="mt-1.5 truncate text-[13px] text-white/58">
           Calm quote recovery workspace
         </p>
       </div>
-      <nav className="flex-1 space-y-6 overflow-y-auto px-3.5 py-6 text-sm">
+      <nav className="flex-1 space-y-5 overflow-y-auto px-3.5 py-5 text-[13px]">
         {navigationGroups.map((group) => (
           <div key={group.label}>
             <p className="px-3 text-[12px] font-semibold uppercase tracking-wide text-white/42">
               {group.label}
             </p>
-            <div className="mt-2.5 grid gap-1.5">
+            <div className="mt-2 grid gap-1">
               {group.items.map((item) => {
                 const isActive = item.match?.(pathname) ?? false;
                 const className = navClass(isActive, !item.href);
@@ -141,11 +141,11 @@ export function DashboardSidebar({
           </div>
         ))}
       </nav>
-      <div className="space-y-3 border-t border-white/10 p-4 text-sm">
-        <div className="rounded-[16px] border border-white/[0.08] bg-white/[0.035] p-3.5">
+      <div className="space-y-2 border-t border-white/10 p-3 text-[13px]">
+        <div className="rounded-[14px] border border-white/[0.08] bg-white/[0.03] p-3">
           <p className="truncate font-semibold text-white">{activeBusinessName}</p>
-          <p className="mt-2 text-[12px] text-white/42">Signed in as</p>
-          <p className="mt-0.5 break-words text-[13px] text-white/68">{userLabel}</p>
+          <p className="mt-1.5 text-[12px] text-white/42">Signed in as</p>
+          <p className="mt-0.5 break-words text-[12px] text-white/68">{userLabel}</p>
         </div>
       </div>
     </aside>

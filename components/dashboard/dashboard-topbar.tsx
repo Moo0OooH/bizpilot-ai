@@ -38,19 +38,19 @@ export function DashboardTopbar({
 }: DashboardTopbarProps) {
   return (
     <header className="dashboard-topbar sticky top-0 z-20 border-b backdrop-blur">
-      <div className="flex min-h-[68px] items-center gap-3 px-5 py-3 md:px-6 lg:px-8 2xl:px-10">
+      <div className="flex min-h-[58px] items-center gap-2.5 px-5 py-2 md:px-6 lg:px-8 2xl:px-10">
         <button
-          className="dashboard-business-switcher inline-flex h-10 w-[170px] min-w-0 items-center gap-2.5 rounded-[12px] border px-3 text-sm font-semibold shadow-sm sm:w-[210px]"
+          className="dashboard-business-switcher inline-flex h-9 w-[160px] min-w-0 items-center gap-2.5 rounded-[11px] border px-3 text-[13px] font-semibold shadow-sm sm:w-[205px]"
           type="button"
         >
-          <span className="flex h-7 w-7 items-center justify-center rounded-[9px] bg-[var(--dash-primary)] text-xs font-semibold text-[#03130c]">
+          <span className="flex h-6 w-6 items-center justify-center rounded-[8px] bg-[var(--dash-primary)] text-[12px] font-semibold text-[#03130c]">
             BP
           </span>
           <span className="truncate">{activeBusinessName}</span>
           <span className="ml-auto text-slate-400">v</span>
         </button>
 
-        <div className="dashboard-topbar-search hidden h-10 min-w-0 max-w-[620px] flex-1 items-center rounded-[12px] border px-4 text-sm md:flex">
+        <div className="dashboard-topbar-search hidden h-9 min-w-0 max-w-[620px] flex-1 items-center rounded-[11px] border px-3.5 text-[13px] md:flex">
           Search leads, follow-ups, and quote requests...
           <span className="ml-auto rounded-md border border-[var(--dash-border-strong)] bg-white/[0.04] px-1.5 py-0.5 text-xs text-[var(--dash-text-muted)]">
             /

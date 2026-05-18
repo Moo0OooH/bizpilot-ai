@@ -74,10 +74,10 @@ type EmptyStateProps = Readonly<{
 }>;
 
 export const buttonClass =
-  "biz-button-secondary inline-flex h-10 items-center justify-center rounded-[12px] border px-4 text-sm font-semibold shadow-sm transition";
+  "biz-button-secondary inline-flex h-9 items-center justify-center rounded-[11px] border px-3.5 text-[13px] font-semibold shadow-sm transition";
 
 export const primaryButtonClass =
-  "biz-button-primary inline-flex h-10 items-center justify-center rounded-[12px] px-4 text-sm font-semibold shadow-sm transition";
+  "biz-button-primary inline-flex h-9 items-center justify-center rounded-[11px] px-3.5 text-[13px] font-semibold shadow-sm transition";
 
 export const ghostButtonClass =
   "biz-button-ghost inline-flex h-10 items-center justify-center rounded-[12px] px-4 text-sm font-semibold transition";
@@ -122,7 +122,7 @@ export function DashboardCard({
   variant = "default",
 }: CardProps) {
   return (
-    <section className={`rounded-[18px] border ${cardClass(variant)} ${className}`}>
+    <section className={`rounded-[16px] border ${cardClass(variant)} ${className}`}>
       {children}
     </section>
   );
@@ -135,22 +135,22 @@ export function PageHeader({
   title,
 }: PageHeaderProps) {
   return (
-    <header className="flex flex-col gap-4 border-b border-[var(--dash-border)] pb-5 sm:flex-row sm:items-start sm:justify-between">
+    <header className="flex flex-col gap-3 border-b border-[var(--dash-border)] pb-4 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
         {eyebrow ? (
-          <p className="text-[13px] font-semibold uppercase tracking-wide text-[var(--dash-text-muted)]">
+          <p className="text-[12px] font-semibold uppercase tracking-wide text-[var(--dash-text-muted)]">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-2 text-[32px] font-semibold leading-[1.15] tracking-normal text-[var(--dash-text)]">
+        <h1 className="mt-1.5 text-[30px] font-semibold leading-[1.12] tracking-normal text-[var(--dash-text)]">
           {title}
         </h1>
-        <p className="mt-2 max-w-3xl text-[15px] leading-6 text-[var(--dash-text-secondary)]">
+        <p className="mt-1.5 max-w-3xl text-[14px] leading-5 text-[var(--dash-text-secondary)]">
           {description}
         </p>
       </div>
       {actions ? (
-        <div className="flex shrink-0 flex-wrap gap-2.5">{actions}</div>
+        <div className="flex shrink-0 flex-wrap gap-2">{actions}</div>
       ) : null}
     </header>
   );
@@ -164,11 +164,11 @@ export function SectionHeader({
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h2 className="text-[16px] font-semibold leading-6 text-[var(--dash-text)]">
+        <h2 className="text-[15px] font-semibold leading-5 text-[var(--dash-text)]">
           {title}
         </h2>
         {description ? (
-          <p className="mt-1 text-[14px] leading-5 text-[var(--dash-text-secondary)]">{description}</p>
+          <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">{description}</p>
         ) : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}
@@ -192,9 +192,9 @@ export function MetricCard({
   }[tone];
 
   return (
-    <DashboardCard className="flex min-h-[150px] flex-col p-5">
+    <DashboardCard className="flex min-h-[132px] flex-col p-4">
       <p className="text-[13px] font-medium text-slate-500">{label}</p>
-      <p className={`mt-2 text-[30px] font-semibold leading-none ${accentClass}`}>
+      <p className={`mt-2 text-[28px] font-semibold leading-none ${accentClass}`}>
         {value}
       </p>
       {detail ? (
