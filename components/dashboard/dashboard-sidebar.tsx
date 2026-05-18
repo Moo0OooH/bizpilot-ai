@@ -11,10 +11,11 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-17
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-10: Created reusable dashboard sidebar shell component.
  * - 2026-05-17: Tuned navigation for calm quote recovery positioning.
+ * - 2026-05-18: Rebalanced sidebar width, active states, and account treatment.
  * ============================================================
  */
 
@@ -76,19 +77,19 @@ const navigationGroups: NavigationGroup[] = [
 
 function navClass(isActive: boolean, isDisabled: boolean): string {
   if (isDisabled) {
-    return "flex h-8 items-center gap-2.5 rounded-[10px] px-3 text-white/35";
+    return "flex h-10 items-center gap-3 rounded-[12px] px-3 text-white/35";
   }
 
   if (isActive) {
-    return "flex h-8 items-center gap-2.5 rounded-[10px] bg-[var(--dash-primary)] px-3 font-medium text-white shadow-sm";
+    return "flex h-10 items-center gap-3 rounded-[12px] border border-[#17D492]/18 bg-[#17D492]/14 px-3 font-semibold text-[#F5F7FA] shadow-[0_14px_34px_rgba(23,212,146,0.08)]";
   }
 
-  return "flex h-8 items-center gap-2.5 rounded-[10px] px-3 text-slate-300 transition hover:bg-white/[0.06] hover:text-white";
+  return "flex h-10 items-center gap-3 rounded-[12px] px-3 text-[rgba(245,247,250,0.62)] transition hover:bg-[rgba(23,212,146,0.08)] hover:text-[#F5F7FA]";
 }
 
 function NavIcon({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-current/15 text-[11px] font-semibold">
+    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] border border-current/15 text-xs font-semibold">
       {children}
     </span>
   );
@@ -100,22 +101,22 @@ export function DashboardSidebar({
 }: DashboardSidebarProps) {
   const pathname = usePathname();
   return (
-    <aside className="dashboard-sidebar sticky top-0 hidden h-screen border-r text-white lg:flex lg:flex-col">
-      <div className="border-b border-white/10 px-4 py-3.5">
-        <p className="text-base font-semibold tracking-normal text-white">
+    <aside className="dashboard-sidebar sticky top-0 hidden h-screen w-[260px] border-r text-white lg:flex lg:flex-col">
+      <div className="border-b border-white/10 px-5 py-5">
+        <p className="text-xl font-semibold tracking-normal text-white">
           BizPilot
         </p>
-        <p className="mt-1 truncate text-xs text-white/55">
+        <p className="mt-2 truncate text-sm text-white/58">
           Calm quote recovery workspace
         </p>
       </div>
-      <nav className="flex-1 space-y-4 overflow-y-auto px-3 py-3.5 text-sm">
+      <nav className="flex-1 space-y-6 overflow-y-auto px-3.5 py-6 text-sm">
         {navigationGroups.map((group) => (
           <div key={group.label}>
-            <p className="px-3 text-xs font-semibold uppercase tracking-wide text-white/45">
+            <p className="px-3 text-[12px] font-semibold uppercase tracking-wide text-white/42">
               {group.label}
             </p>
-            <div className="mt-2 grid gap-1">
+            <div className="mt-2.5 grid gap-1.5">
               {group.items.map((item) => {
                 const isActive = item.match?.(pathname) ?? false;
                 const className = navClass(isActive, !item.href);
@@ -140,11 +141,11 @@ export function DashboardSidebar({
           </div>
         ))}
       </nav>
-      <div className="space-y-3 border-t border-white/10 p-3 text-xs">
-        <div className="rounded-[12px] border border-white/10 bg-white/[0.05] p-3">
-          <p className="font-medium text-white">{activeBusinessName}</p>
-          <p className="mt-2 text-white/50">Signed in as</p>
-          <p className="mt-0.5 break-words text-white/80">{userLabel}</p>
+      <div className="space-y-3 border-t border-white/10 p-4 text-sm">
+        <div className="rounded-[16px] border border-white/[0.08] bg-white/[0.035] p-3.5">
+          <p className="truncate font-semibold text-white">{activeBusinessName}</p>
+          <p className="mt-2 text-[12px] text-white/42">Signed in as</p>
+          <p className="mt-0.5 break-words text-[13px] text-white/68">{userLabel}</p>
         </div>
       </div>
     </aside>

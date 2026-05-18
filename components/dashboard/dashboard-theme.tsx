@@ -12,9 +12,10 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-05-17
- * Last Updated: 2026-05-17
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-17: Created persisted dark/light dashboard theme controls.
+ * - 2026-05-18: Set the protected workspace shell to the approved 260px sidebar rhythm.
  * ============================================================
  */
 
@@ -76,7 +77,7 @@ export function DashboardThemeFrame({
   return (
     <DashboardThemeContext.Provider value={value}>
       <main
-        className={`${themeClass} dashboard-frame min-h-screen transition-colors lg:grid lg:grid-cols-[224px_minmax(0,1fr)]`}
+        className={`${themeClass} dashboard-frame min-h-screen transition-colors lg:grid lg:grid-cols-[260px_minmax(0,1fr)]`}
       >
         {children}
       </main>

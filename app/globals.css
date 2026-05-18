@@ -3,16 +3,17 @@
 File: app/globals.css
 Project: BizPilot AI
 Description: Defines global Tailwind, base CSS variables, and scoped dashboard themes.
-Role: Provides Phase 1 global styling foundation and Phase 17 dashboard theme polish.
+Role: Provides Phase 1 global styling foundation and protected command-center visual system.
 Related:
 - app/layout.tsx
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-05-17
+Last Updated: 2026-05-18
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
+- 2026-05-18: Updated dashboard dark theme to the approved emerald/navy command-center direction.
 ============================================================
 */
 
@@ -123,26 +124,26 @@ body {
 }
 
 .biz-dashboard-dark {
-  --dash-bg: #080d12;
-  --dash-bg-soft: #0d1520;
-  --dash-surface: #0f1a24;
-  --dash-surface-muted: #111d2a;
-  --dash-surface-elevated: #13202e;
-  --dash-border: rgba(255, 255, 255, 0.07);
-  --dash-border-strong: rgba(255, 255, 255, 0.13);
-  --dash-text: #eef2f6;
-  --dash-text-secondary: #7a90a4;
-  --dash-text-muted: #435566;
-  --dash-primary: #00d084;
-  --dash-primary-hover: #00a868;
-  --dash-primary-soft: rgba(0, 208, 132, 0.08);
-  --dash-warning-soft: rgba(255, 171, 0, 0.1);
-  --dash-danger-soft: rgba(255, 71, 87, 0.08);
-  --dash-ai-soft: rgba(139, 92, 246, 0.14);
+  --dash-bg: #071018;
+  --dash-bg-soft: #071018;
+  --dash-surface: #0d1721;
+  --dash-surface-muted: rgba(13, 23, 33, 0.78);
+  --dash-surface-elevated: rgba(13, 23, 33, 0.92);
+  --dash-border: rgba(255, 255, 255, 0.08);
+  --dash-border-strong: rgba(255, 255, 255, 0.14);
+  --dash-text: #f5f7fa;
+  --dash-text-secondary: rgba(245, 247, 250, 0.72);
+  --dash-text-muted: rgba(245, 247, 250, 0.46);
+  --dash-primary: #17d492;
+  --dash-primary-hover: #21e6a0;
+  --dash-primary-soft: rgba(23, 212, 146, 0.08);
+  --dash-warning-soft: rgba(255, 184, 77, 0.12);
+  --dash-danger-soft: rgba(255, 92, 92, 0.1);
+  --dash-ai-soft: rgba(23, 212, 146, 0.08);
   background:
-    radial-gradient(circle at top right, rgba(0, 208, 132, 0.055), transparent 34rem),
-    linear-gradient(180deg, var(--dash-bg-soft) 0%, var(--dash-bg) 48%, #080d12 100%);
-  color: var(--biz-text-primary);
+    radial-gradient(circle at top right, rgba(23, 212, 146, 0.07), transparent 36rem),
+    linear-gradient(180deg, #071018 0%, #071018 52%, #050b12 100%);
+  color: var(--dash-text);
 }
 
 .dashboard-frame {
@@ -158,13 +159,13 @@ body {
 }
 
 .biz-card {
-  background: color-mix(in srgb, var(--dash-surface) 94%, transparent);
-  box-shadow: 0 14px 38px rgba(2, 6, 23, 0.08);
+  background: color-mix(in srgb, var(--dash-surface) 92%, transparent);
+  box-shadow: 0 18px 48px rgba(2, 6, 23, 0.12);
 }
 
 .biz-card-elevated {
   background: var(--dash-surface-elevated);
-  box-shadow: 0 18px 45px rgba(2, 6, 23, 0.1);
+  box-shadow: 0 22px 58px rgba(2, 6, 23, 0.14);
 }
 
 .biz-card-muted {
@@ -180,7 +181,7 @@ body {
 
 .biz-button-primary {
   background: var(--dash-primary);
-  color: #ffffff;
+  color: #03130c;
 }
 
 .biz-button-primary:hover {
@@ -194,8 +195,8 @@ body {
 }
 
 .biz-button-secondary:hover {
-  border-color: color-mix(in srgb, var(--dash-primary) 42%, var(--dash-border));
-  background: var(--dash-surface-muted);
+  border-color: rgba(23, 212, 146, 0.18);
+  background: rgba(23, 212, 146, 0.08);
 }
 
 .biz-button-ghost {
@@ -218,25 +219,25 @@ body {
 }
 
 .biz-dashboard-dark .dashboard-topbar {
-  border-color: rgba(255, 255, 255, 0.1);
-  background-color: rgba(7, 17, 28, 0.92);
+  border-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(7, 16, 24, 0.92);
 }
 
 .biz-dashboard-dark .dashboard-business-switcher,
 .biz-dashboard-dark .dashboard-topbar-search {
   border-color: rgba(255, 255, 255, 0.1);
-  background-color: rgba(255, 255, 255, 0.05);
-  color: var(--biz-text-primary);
+  background-color: rgba(13, 23, 33, 0.88);
+  color: var(--dash-text);
 }
 
 .biz-dashboard-dark .dashboard-topbar-search {
-  color: var(--biz-text-muted);
+  color: var(--dash-text-muted);
 }
 
 .biz-dashboard-dark .dashboard-sidebar {
   border-color: rgba(255, 255, 255, 0.1);
   background:
-    linear-gradient(180deg, rgba(8, 18, 30, 0.96), rgba(5, 11, 18, 0.96)),
+    linear-gradient(180deg, rgba(7, 16, 24, 0.98), rgba(5, 11, 18, 0.98)),
     var(--dash-bg);
 }
 
@@ -288,7 +289,7 @@ body {
 }
 
 .biz-dashboard-dark .bg-violet-100 {
-  background-color: rgba(139, 92, 246, 0.13);
+  background-color: rgba(23, 212, 146, 0.12);
 }
 
 .biz-dashboard-dark .bg-white\/70 {
@@ -328,7 +329,7 @@ body {
 .biz-dashboard-dark .text-zinc-800,
 .biz-dashboard-dark .text-slate-700,
 .biz-dashboard-dark .text-zinc-700 {
-  color: var(--biz-text-primary);
+  color: var(--dash-text);
 }
 
 .biz-dashboard-dark .text-slate-600,
@@ -336,22 +337,22 @@ body {
 .biz-dashboard-dark .text-slate-500,
 .biz-dashboard-dark .text-zinc-500,
 .biz-dashboard-dark .text-slate-400 {
-  color: var(--biz-text-muted);
+  color: var(--dash-text-muted);
 }
 
 .biz-dashboard-dark .text-emerald-800,
 .biz-dashboard-dark .text-emerald-700 {
-  color: #86efac;
+  color: #17d492;
 }
 
 .biz-dashboard-dark .text-amber-800,
 .biz-dashboard-dark .text-amber-700 {
-  color: #fcd34d;
+  color: #ffb84d;
 }
 
 .biz-dashboard-dark .text-red-800,
 .biz-dashboard-dark .text-red-700 {
-  color: #fca5a5;
+  color: #ffb4b4;
 }
 
 .biz-dashboard-dark .text-blue-800,
@@ -361,7 +362,23 @@ body {
 
 .biz-dashboard-dark .text-violet-800,
 .biz-dashboard-dark .text-violet-700 {
-  color: #c4b5fd;
+  color: #17d492;
+}
+
+.biz-dashboard-dark .text-violet-600 {
+  color: #17d492;
+}
+
+.biz-dashboard-dark .bg-violet-600,
+.biz-dashboard-dark .bg-emerald-500 {
+  background-color: #17d492;
+}
+
+.biz-dashboard-dark .hover\:bg-white:hover,
+.biz-dashboard-dark .hover\:bg-slate-50:hover,
+.biz-dashboard-dark .hover\:bg-zinc-50:hover {
+  border-color: rgba(23, 212, 146, 0.18);
+  background-color: rgba(23, 212, 146, 0.08);
 }
 
 .biz-dashboard-dark .shadow-sm,

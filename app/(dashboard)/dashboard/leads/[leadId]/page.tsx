@@ -330,11 +330,11 @@ export default async function LeadDetailPage({
                   {aiOutput.provider === "rule_fallback" ? " (fallback)" : ""}
                 </p>
               </div>
-              <p className="mt-3 rounded-md border border-slate-200 bg-white px-2.5 py-2 text-[11px] leading-5 text-slate-600">
+              <p className="mt-3 rounded-md border border-slate-200 bg-white px-2.5 py-2 text-xs leading-5 text-slate-600">
                 Owner review required. BizPilot does not send messages, confirm
                 bookings, or invent pricing or availability.
               </p>
-              <p className="mt-2 text-[11px] text-slate-500">
+              <p className="mt-2 text-xs text-slate-500">
                 Source: {aiOutput.model}
               </p>
             </div>

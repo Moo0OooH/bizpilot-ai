@@ -11,10 +11,11 @@
  * - components/dashboard/dashboard-ui.tsx
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-17
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-11: Created the interactive lead queue.
  * - 2026-05-17: Added Magic Moment empty state aligned to the pilot demo flow.
+ * - 2026-05-18: Improved dark table spacing, hover states, and emerald visual hierarchy.
  * ============================================================
  */
 
@@ -95,26 +96,26 @@ function matchesSearch(item: LeadDeskItem, search: string): boolean {
 
 function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
   return (
-    <div className="grid gap-3 rounded-lg border border-dashed border-violet-200 bg-violet-50/45 p-3.5">
+    <div className="grid gap-4 rounded-[16px] border border-dashed border-emerald-200 bg-emerald-50/45 p-5">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full border border-amber-200 bg-amber-50 px-2 py-1 text-[11px] font-medium text-amber-800">
+        <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800">
           Sample lead
         </span>
-        <span className="rounded-full border border-red-200 bg-red-50 px-2 py-1 text-[11px] font-medium text-red-700">
+        <span className="rounded-full border border-red-200 bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700">
           Reply needed
         </span>
       </div>
       <div className="grid gap-3 lg:grid-cols-[1fr_1fr_auto] lg:items-center">
         <div>
-          <p className="text-sm font-semibold text-zinc-950">
+          <p className="text-base font-semibold text-zinc-950">
             Maria Santos - move-out cleaning
           </p>
-          <p className="mt-1 text-[13px] leading-5 text-zinc-700">
+          <p className="mt-2 text-sm leading-6 text-zinc-700">
             2-bedroom apartment, downtown. Wants help before Friday. Missing
             preferred arrival window.
           </p>
         </div>
-        <div className="rounded-[10px] border border-violet-100 bg-white p-3 text-[13px] leading-5 text-zinc-700">
+        <div className="rounded-[14px] border border-emerald-100 bg-white p-4 text-sm leading-6 text-zinc-700">
           <span className="font-semibold text-zinc-950">Next action:</span> Ask
           for the time window, then copy a concise owner-reviewed reply.
         </div>
@@ -125,7 +126,7 @@ function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
           </Link>
         </div>
       </div>
-      <p className="text-xs leading-5 text-zinc-600">
+      <p className="text-sm leading-6 text-zinc-600">
         This sample is not stored as customer data. It shows the workflow until
         real quote requests arrive.
       </p>
@@ -155,14 +156,14 @@ export function LeadWorkspaceQueue({
 
   return (
     <>
-      <div className="mt-3 flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap gap-1 rounded-lg bg-zinc-100 p-1">
+      <div className="mt-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-wrap gap-1 rounded-[12px] bg-zinc-100 p-1">
           {filters.map((filter) => (
             <button
               className={
                 activeFilter === filter.value
-                  ? "inline-flex h-8 items-center rounded-md bg-[var(--dash-primary)] px-3 text-xs font-medium text-white"
-                  : "inline-flex h-8 items-center rounded-md px-3 text-xs font-medium text-zinc-600 hover:bg-white hover:text-zinc-950"
+                  ? "inline-flex h-8 items-center rounded-md bg-[var(--dash-primary)] px-3 text-sm font-semibold text-[#03130c]"
+                  : "inline-flex h-8 items-center rounded-md px-3 text-sm font-medium text-zinc-600 hover:bg-[rgba(23,212,146,0.08)] hover:text-zinc-950"
               }
               key={filter.value}
               onClick={() => setActiveFilter(filter.value)}
@@ -188,8 +189,8 @@ export function LeadWorkspaceQueue({
         </div>
       </div>
 
-      <div className="mt-3 overflow-hidden rounded-lg border border-zinc-200">
-        <div className="hidden grid-cols-[1.1fr_0.75fr_0.85fr_0.78fr_0.78fr_0.78fr_0.7fr_1.1fr_0.8fr] border-b border-zinc-200 bg-zinc-50 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-zinc-500 xl:grid">
+      <div className="mt-4 min-w-0 overflow-x-auto rounded-[16px] border border-zinc-200">
+        <div className="hidden min-w-[1480px] grid-cols-[minmax(220px,1.15fr)_140px_150px_110px_140px_150px_150px_minmax(220px,1fr)_150px] border-b border-zinc-200 bg-zinc-50 px-4 py-3 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 xl:grid">
           <span>Customer</span>
           <span>Service</span>
           <span>Location</span>
@@ -203,7 +204,7 @@ export function LeadWorkspaceQueue({
         {filteredLeads.length > 0 ? (
           filteredLeads.map((item) => (
             <Link
-              className="grid gap-2.5 border-b border-zinc-200 px-3 py-2.5 text-[13px] transition last:border-b-0 hover:bg-zinc-50 xl:min-h-[56px] xl:grid-cols-[1.1fr_0.75fr_0.85fr_0.78fr_0.78fr_0.78fr_0.7fr_1.1fr_0.8fr] xl:items-center"
+              className="grid gap-3 border-b border-zinc-200 px-4 py-3 text-sm transition last:border-b-0 hover:border-[rgba(23,212,146,0.18)] hover:bg-[rgba(23,212,146,0.08)] xl:min-h-[68px] xl:min-w-[1480px] xl:grid-cols-[minmax(220px,1.15fr)_140px_150px_110px_140px_150px_150px_minmax(220px,1fr)_150px] xl:items-center"
               href={`/dashboard/leads/${item.lead.id}`}
               key={item.lead.id}
             >
@@ -211,7 +212,7 @@ export function LeadWorkspaceQueue({
                 <span className="block truncate font-semibold text-zinc-950">
                   {item.lead.customer_name ?? "Unnamed lead"}
                 </span>
-                <span className="mt-0.5 block truncate text-xs text-zinc-500">
+                <span className="mt-1 block break-all text-[13px] leading-5 text-zinc-500">
                   {item.lead.customer_contact ?? "No contact captured"}
                 </span>
               </span>
@@ -224,18 +225,18 @@ export function LeadWorkspaceQueue({
               <LeadQualityBadge value={item.score.quality_level} />
               <ResponseSlaBadge value={item.lead.response_sla_state} />
               <LeadStatusBadge value={item.lead.status} />
-              <span className="truncate text-xs text-zinc-500">
+              <span className="break-words text-[13px] leading-5 text-zinc-500">
                 {item.lead.source_channel ?? "Unknown"}
               </span>
               <span>
-                <span className="inline-flex rounded-md bg-[var(--dash-primary)] px-2 py-0.5 text-xs font-medium text-white">
+                <span className="inline-flex rounded-md bg-[var(--dash-primary)] px-2.5 py-1 text-xs font-semibold text-[#03130c]">
                   {item.recommendedAction}
                 </span>
-                <span className="mt-0.5 block text-xs leading-4 text-zinc-500">
+                <span className="mt-1 block text-[13px] leading-5 text-zinc-500">
                   {item.primaryIssue}
                 </span>
               </span>
-              <span className="text-xs text-zinc-500">
+              <span className="text-[13px] leading-5 text-zinc-500">
                 {formatDate(item.lead.created_at)}
               </span>
             </Link>

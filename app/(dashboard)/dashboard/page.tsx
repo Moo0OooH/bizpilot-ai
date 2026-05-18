@@ -10,12 +10,13 @@
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-17
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-10: Created Dashboard Overview as the default protected app page.
  * - 2026-05-11: Tightened dashboard alignment, card rhythm, and operational layout density.
  * - 2026-05-11: Upgraded overview into a quote recovery cockpit with priority actions.
  * - 2026-05-17: Added first-use Magic Moment sample lead state for pilot demos.
+ * - 2026-05-18: Rebalanced overview into a premium Lead Recovery Command Center layout.
  * ============================================================
  */
 
@@ -79,11 +80,11 @@ function KpiIcon({
           ? "bg-red-100 text-red-700"
           : tone === "blue"
             ? "bg-blue-100 text-blue-700"
-            : "bg-violet-100 text-violet-700";
+            : "bg-emerald-100 text-emerald-700";
 
   return (
     <span
-      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold ${toneClass}`}
+      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${toneClass}`}
     >
       {children}
     </span>
@@ -92,37 +93,37 @@ function KpiIcon({
 
 function MagicMomentSampleCard({ quotePath }: Readonly<{ quotePath: string }>) {
   return (
-    <DashboardCard className="p-3.5" variant="priority">
-      <div className="grid gap-4 xl:grid-cols-[0.9fr_1.1fr_auto] xl:items-center">
+    <DashboardCard className="p-5" variant="priority">
+      <div className="grid gap-5 xl:grid-cols-[0.9fr_1.1fr_auto] xl:items-center">
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge tone="amber">Sample lead</StatusBadge>
             <StatusBadge tone="red">Reply needed</StatusBadge>
           </div>
-          <h2 className="mt-3 text-base font-semibold text-slate-950">
+          <h2 className="mt-4 text-[17px] font-semibold text-slate-950">
             Maria needs a move-out cleaning quote by Friday
           </h2>
-          <p className="mt-1 text-sm leading-5 text-slate-700">
+          <p className="mt-2 text-[15px] leading-6 text-slate-700">
             This is a demo lead so a new owner sees the quote recovery workflow
             before real requests arrive.
           </p>
         </div>
 
-        <div className="grid gap-2 text-xs text-slate-700 sm:grid-cols-3">
-          <div className="rounded-[10px] border border-violet-100 bg-white p-3">
+        <div className="grid gap-3 text-sm text-slate-700 sm:grid-cols-3">
+          <div className="rounded-[14px] border border-emerald-100 bg-white p-4">
             <p className="font-semibold text-slate-950">AI-style summary</p>
             <p className="mt-1 leading-5">
               Move-out cleaning, 2-bedroom apartment, downtown area. Missing
               preferred arrival window.
             </p>
           </div>
-          <div className="rounded-[10px] border border-violet-100 bg-white p-3">
+          <div className="rounded-[14px] border border-emerald-100 bg-white p-4">
             <p className="font-semibold text-slate-950">Suggested reply</p>
             <p className="mt-1 leading-5">
               Ask for the best time window, then confirm the next step manually.
             </p>
           </div>
-          <div className="rounded-[10px] border border-violet-100 bg-white p-3">
+          <div className="rounded-[14px] border border-emerald-100 bg-white p-4">
             <p className="font-semibold text-slate-950">Follow-up risk</p>
             <p className="mt-1 leading-5">
               Warm quote request. Reply today before the customer checks another
@@ -238,7 +239,7 @@ export default async function DashboardOverviewPage() {
           };
 
   return (
-    <main className="space-y-3">
+    <main className="space-y-5">
       <PageHeader
         actions={
           <>
@@ -259,8 +260,8 @@ export default async function DashboardOverviewPage() {
         <MagicMomentSampleCard quotePath={quotePath} />
       ) : null}
 
-      <DashboardCard className="grid min-h-14 gap-2 p-2 lg:grid-cols-[7rem_repeat(3,minmax(0,1fr))] lg:items-center">
-        <div className="text-xs font-semibold leading-5 text-slate-950">
+      <DashboardCard className="grid gap-3 p-4 lg:grid-cols-[9rem_repeat(3,minmax(0,1fr))] lg:items-center">
+        <div className="text-[15px] font-semibold leading-6 text-slate-950">
           Needs attention
         </div>
         {[
@@ -282,12 +283,12 @@ export default async function DashboardOverviewPage() {
             detail: "Not reviewed yet",
             href: "/dashboard/leads",
             label: "New quote request",
-            tone: "violet",
+            tone: "emerald",
             value: newLeadCount,
           },
         ].map((item) => (
           <Link
-            className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2.5 rounded-[10px] border border-slate-200 bg-slate-50 px-3 py-1.5 transition hover:bg-white hover:shadow-sm"
+            className="grid min-h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-[14px] border border-slate-200 bg-slate-50 px-4 py-2.5 transition hover:border-[rgba(23,212,146,0.18)] hover:bg-[rgba(23,212,146,0.08)]"
             href={item.href}
             key={item.label}
           >
@@ -297,16 +298,16 @@ export default async function DashboardOverviewPage() {
                   ? "flex h-7 w-7 items-center justify-center rounded-full bg-red-100 text-xs font-semibold text-red-700"
                   : item.tone === "amber"
                     ? "flex h-7 w-7 items-center justify-center rounded-full bg-amber-100 text-xs font-semibold text-amber-700"
-                    : "flex h-7 w-7 items-center justify-center rounded-full bg-violet-100 text-xs font-semibold text-violet-700"
+                    : "flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-700"
               }
             >
               {item.value}
             </span>
             <span className="min-w-0">
-              <span className="block truncate text-xs font-semibold text-slate-950">
+              <span className="block truncate text-[15px] font-semibold text-slate-950">
                 {item.label}
               </span>
-              <span className="block truncate text-[11px] text-slate-500">
+              <span className="block truncate text-[14px] text-slate-500">
                 {item.detail}
               </span>
             </span>
@@ -315,25 +316,25 @@ export default async function DashboardOverviewPage() {
         ))}
       </DashboardCard>
 
-      <section className="grid items-start gap-3 xl:grid-cols-[minmax(0,1fr)_300px]">
-        <div className="space-y-3">
-          <section className="grid auto-rows-fr gap-2.5 md:grid-cols-2 xl:grid-cols-5">
-            <DashboardCard className="flex min-h-[138px] flex-col p-3">
-              <div className="flex items-start gap-2">
+      <section className="grid min-w-0 items-start gap-5 2xl:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="min-w-0 space-y-5">
+          <section className="grid min-w-0 auto-rows-fr gap-4 md:grid-cols-2 xl:grid-cols-3 min-[1320px]:grid-cols-5">
+            <DashboardCard className="flex min-h-[190px] flex-col p-5">
+              <div className="flex items-start gap-3">
                 <KpiIcon tone="emerald">Q</KpiIcon>
                 <SectionHeader title="Quote link readiness" />
               </div>
-              <div className="mt-2 grid grid-cols-[3rem_minmax(0,1fr)] gap-2.5">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full border-[4px] border-emerald-200 text-xs font-semibold text-slate-950">
+              <div className="mt-5 grid grid-cols-[4rem_minmax(0,1fr)] gap-3">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full border-[5px] border-emerald-200 text-sm font-semibold text-slate-950">
                   {readinessPercent}%
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-slate-950">
+                  <p className="text-[15px] font-semibold text-slate-950">
                     {missingReadinessItems.length === 0
                       ? "Ready"
                       : `${missingReadinessItems.length} tasks left`}
                   </p>
-                  <p className="mt-1 text-xs leading-4 text-slate-600">
+                  <p className="mt-1 text-sm leading-5 text-slate-600">
                     Public quote link is live.
                   </p>
                 </div>
@@ -346,25 +347,25 @@ export default async function DashboardOverviewPage() {
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[138px] flex-col p-3">
-              <div className="flex items-start gap-2">
+            <DashboardCard className="flex min-h-[190px] flex-col p-5">
+              <div className="flex items-start gap-3">
                 <KpiIcon tone="blue">L</KpiIcon>
                 <SectionHeader title="Quote requests" />
               </div>
-              <div className="mt-2 flex items-baseline gap-2">
-                <p className="text-xl font-semibold leading-none text-slate-950">
+              <div className="mt-5 flex items-baseline gap-2">
+                <p className="text-[32px] font-semibold leading-none text-slate-950">
                   {desk.recoveryProof.quoteRequestsCaptured}
                 </p>
-                <p className="text-xs font-medium text-slate-500">
+                <p className="text-sm font-medium text-slate-500">
                   captured
                 </p>
               </div>
-              <p className="mt-1.5 inline-flex w-fit rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
+              <p className="mt-2 inline-flex w-fit rounded-full bg-emerald-50 px-2.5 py-1 text-[13px] font-medium text-emerald-700">
                 Link is live
               </p>
               <svg
                 aria-hidden="true"
-                className="mt-1.5 h-6 w-full text-violet-600"
+                className="mt-3 h-7 w-full text-emerald-700"
                 fill="none"
                 viewBox="0 0 180 56"
               >
@@ -380,19 +381,19 @@ export default async function DashboardOverviewPage() {
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[138px] flex-col p-3">
-              <div className="flex items-start gap-2">
+            <DashboardCard className="flex min-h-[190px] flex-col p-5">
+              <div className="flex items-start gap-3">
                 <KpiIcon tone="amber">!</KpiIcon>
                 <SectionHeader title="Needs attention" />
               </div>
               <p
-                className={`mt-2 text-xl font-semibold leading-none ${
+                className={`mt-5 text-[32px] font-semibold leading-none ${
                   repliesNeedingAttention > 0 ? "text-red-700" : "text-emerald-700"
                 }`}
               >
                 {repliesNeedingAttention}
               </p>
-              <div className="mt-1.5 divide-y divide-slate-100 text-xs">
+              <div className="mt-3 divide-y divide-slate-100 text-sm">
                 {[
                   ["New", newLeadCount],
                   ["Follow-up due today", actionCounts.followUp],
@@ -413,20 +414,20 @@ export default async function DashboardOverviewPage() {
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[138px] flex-col p-3">
-              <div className="flex items-start gap-2">
-                <KpiIcon tone="violet">R</KpiIcon>
+            <DashboardCard className="flex min-h-[190px] flex-col p-5">
+              <div className="flex items-start gap-3">
+                <KpiIcon tone="emerald">R</KpiIcon>
                 <SectionHeader title="Reply proof" />
               </div>
-              <p className="mt-2 text-xl font-semibold leading-none text-slate-950">
+              <p className="mt-5 text-[32px] font-semibold leading-none text-slate-950">
                 {replyCopiedCount}
               </p>
-              <p className="mt-1 text-xs leading-4 text-slate-500">
+              <p className="mt-2 text-sm leading-5 text-slate-500">
                 reply copies saved
               </p>
-              <div className="mt-2 h-1.5 rounded-full bg-slate-100">
+              <div className="mt-4 h-2 rounded-full bg-slate-100">
                 <div
-                  className="h-full rounded-full bg-violet-600"
+                  className="h-full rounded-full bg-emerald-500"
                   style={{
                     width: `${
                       desk.recoveryProof.quoteRequestsCaptured > 0
@@ -443,7 +444,7 @@ export default async function DashboardOverviewPage() {
                   }}
                 />
               </div>
-              <p className="mt-1.5 text-[11px] text-slate-500">
+              <p className="mt-3 text-[13px] leading-5 text-slate-500">
                 Owner response tracking is active.
               </p>
               <Link className={`${buttonClass} mt-auto w-full whitespace-nowrap`} href="/dashboard/leads">
@@ -451,12 +452,12 @@ export default async function DashboardOverviewPage() {
               </Link>
             </DashboardCard>
 
-            <DashboardCard className="flex min-h-[138px] flex-col p-3">
-              <div className="flex items-start gap-2">
+            <DashboardCard className="flex min-h-[190px] flex-col p-5">
+              <div className="flex items-start gap-3">
                 <KpiIcon tone="emerald">$</KpiIcon>
                 <SectionHeader title="Recovery proof" />
               </div>
-              <div className="mt-2 grid gap-0.5 text-xs">
+              <div className="mt-4 grid gap-1.5 text-sm">
                 {[
                   ["Requests captured", desk.recoveryProof.quoteRequestsCaptured],
                   ["Replies copied", replyCopiedCount],
@@ -480,11 +481,11 @@ export default async function DashboardOverviewPage() {
             </DashboardCard>
           </section>
 
-          <DashboardCard className="p-3" variant="elevated">
+          <DashboardCard className="p-5" variant="elevated">
             <SectionHeader
               action={
                 <Link
-                  className="text-sm font-medium text-violet-700 hover:text-violet-800"
+                  className="text-sm font-semibold text-emerald-700 hover:text-emerald-800"
                   href="/dashboard/leads"
                 >
                   View all leads
@@ -493,8 +494,8 @@ export default async function DashboardOverviewPage() {
               description="Newest requests, risk, and next action."
               title="Lead Recovery Queue"
             />
-            <div className="mt-2 overflow-hidden rounded-lg border border-zinc-200">
-              <div className="hidden grid-cols-[1.25fr_0.72fr_0.8fr_0.6fr_0.7fr_1fr_0.72fr_2rem] bg-slate-50 px-3 py-1.5 text-[10px] font-medium uppercase tracking-wide text-slate-500 xl:grid">
+            <div className="mt-4 overflow-hidden rounded-[16px] border border-zinc-200">
+              <div className="hidden grid-cols-[minmax(220px,1.15fr)_140px_150px_110px_150px_minmax(220px,1fr)_150px_40px] bg-slate-50 px-4 py-3 text-[12px] font-semibold uppercase tracking-wide text-slate-500 xl:grid">
                 <span>Customer</span>
                 <span>Service</span>
                 <span>Source</span>
@@ -507,7 +508,7 @@ export default async function DashboardOverviewPage() {
               {recentLeads.length > 0 ? (
                 recentLeads.map((item) => (
                   <Link
-                    className="grid min-h-12 gap-2 border-t border-slate-200 px-3 py-1.5 text-[13px] transition hover:bg-slate-50 xl:grid-cols-[1.25fr_0.72fr_0.8fr_0.6fr_0.7fr_1fr_0.72fr_2rem] xl:items-center"
+                    className="grid min-h-[64px] gap-3 border-t border-slate-200 px-4 py-3 text-sm transition hover:border-[rgba(23,212,146,0.18)] hover:bg-[rgba(23,212,146,0.08)] xl:grid-cols-[minmax(220px,1.15fr)_140px_150px_110px_150px_minmax(220px,1fr)_150px_40px] xl:items-center"
                     href={`/dashboard/leads/${item.lead.id}`}
                     key={item.lead.id}
                   >
@@ -515,14 +516,14 @@ export default async function DashboardOverviewPage() {
                       <span className="block truncate font-semibold text-slate-950">
                         {item.lead.customer_name ?? "Unnamed lead"}
                       </span>
-                      <span className="block truncate text-xs text-slate-500">
+                      <span className="block break-all text-[13px] leading-5 text-slate-500">
                         {item.lead.customer_contact ?? "No contact captured"}
                       </span>
                     </span>
                     <span className="text-slate-700">
                       {item.lead.service_type ?? "Service not set"}
                     </span>
-                    <span className="truncate text-slate-500">
+                    <span className="break-words text-slate-500">
                       {item.lead.source_channel ?? "Quote link"}
                     </span>
                     <StatusBadge
@@ -537,10 +538,10 @@ export default async function DashboardOverviewPage() {
                       {riskLabel(item.score.quality_level)}
                     </StatusBadge>
                     <LeadStatusBadge value={item.lead.status} />
-                    <span className="truncate text-slate-700">
+                    <span className="leading-5 text-slate-700">
                       {item.recommendedAction}
                     </span>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-[13px] leading-5 text-slate-500">
                       {formatDate(item.lead.created_at)}
                     </span>
                     <span className="text-right text-slate-400">...</span>
@@ -560,14 +561,14 @@ export default async function DashboardOverviewPage() {
             </div>
           </DashboardCard>
 
-          <DashboardCard className="p-3">
+          <DashboardCard className="p-5">
             <SectionHeader
               description="Three focused actions that support quote recovery."
               title="Quick Actions"
             />
-            <div className="mt-2 grid gap-2 sm:grid-cols-3">
-              <div className="flex min-h-12 items-center gap-2.5 rounded-[10px] border border-slate-200 bg-slate-50 px-3">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-semibold text-slate-700">
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              <div className="flex min-h-14 items-center gap-3 rounded-[14px] border border-slate-200 bg-slate-50 px-4">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-700">
                   C
                 </span>
                 <CopyButton label="Copy quote link" value={quotePath} />
@@ -588,7 +589,7 @@ export default async function DashboardOverviewPage() {
           </DashboardCard>
         </div>
 
-        <aside className="space-y-3 xl:sticky xl:top-16">
+        <aside className="min-w-0 space-y-5 2xl:sticky 2xl:top-24">
           <RightRailPanel variant="priority">
             <SectionHeader
               description={`${actionCounts.reply + actionCounts.askInfo + actionCounts.followUp} items`}
@@ -613,18 +614,18 @@ export default async function DashboardOverviewPage() {
                 },
               ].map((action) => (
                 <Link
-                  className="grid grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2.5 rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-xs shadow-sm transition hover:bg-slate-50"
+                className="grid min-h-[64px] grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-3 rounded-[14px] border border-slate-200 bg-white px-4 py-3 text-sm shadow-sm transition hover:border-[rgba(23,212,146,0.18)] hover:bg-[rgba(23,212,146,0.08)]"
                   href="/dashboard/leads"
                   key={action.label}
                 >
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-100 text-xs font-semibold text-violet-700">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-sm font-semibold text-emerald-700">
                     {action.value}
                   </span>
                   <span className="min-w-0">
                     <span className="block font-semibold text-slate-950">
                       {action.label}
                     </span>
-                    <span className="mt-0.5 block truncate text-[11px] text-slate-500">
+                    <span className="mt-1 block truncate text-[13px] text-slate-500">
                       {action.detail}
                     </span>
                   </span>
@@ -643,7 +644,7 @@ export default async function DashboardOverviewPage() {
               description="Share this link wherever customers ask for quotes."
               title="Public quote link"
             />
-            <p className="mt-3 break-all rounded-[10px] bg-violet-50 px-3 py-2 text-xs font-semibold text-violet-700">
+            <p className="mt-4 break-all rounded-[14px] bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">
               {quotePath}
             </p>
             <div className="mt-3 grid grid-cols-2 gap-2">
@@ -652,7 +653,7 @@ export default async function DashboardOverviewPage() {
                 Preview
               </Link>
             </div>
-            <div className="mt-3 text-[11px] text-slate-600">
+            <div className="mt-4 text-[13px] leading-5 text-slate-600">
               {quoteLinkPlacementProgress
                 ? "Placed in 1 of 2 recommended channels"
                 : "Not placed in recommended channels yet"}
@@ -678,7 +679,7 @@ export default async function DashboardOverviewPage() {
               description="Highest leverage action right now."
               title="Next best step"
             />
-            <p className="mt-3 text-xs leading-5 text-slate-700">
+            <p className="mt-4 text-sm leading-6 text-slate-700">
               {nextBestStep.description}
             </p>
             <Link className={`${buttonClass} mt-4 w-full`} href={nextBestStep.href}>
@@ -704,7 +705,7 @@ export default async function DashboardOverviewPage() {
                 },
               ].map((resource) => (
                 <Link
-                  className="flex items-center justify-between rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-violet-700 transition hover:bg-slate-50"
+                  className="flex items-center justify-between rounded-[14px] border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-emerald-700 transition hover:border-[rgba(23,212,146,0.18)] hover:bg-[rgba(23,212,146,0.08)]"
                   href={resource.href}
                   key={resource.title}
                 >

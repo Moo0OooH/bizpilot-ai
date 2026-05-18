@@ -573,7 +573,7 @@ export default async function DashboardPage({
                       type="hidden"
                       value={field.field_key}
                     />
-                    <summary className="grid cursor-pointer list-none gap-2 px-3 py-2 text-xs hover:bg-zinc-50 lg:grid-cols-[minmax(0,1fr)_6rem_5rem_7rem_4rem_6rem] lg:items-center [&::-webkit-details-marker]:hidden">
+                    <summary className="grid cursor-pointer list-none gap-2 px-3 py-2 text-xs transition hover:bg-[rgba(23,212,146,0.08)] lg:grid-cols-[minmax(0,1fr)_6rem_5rem_7rem_4rem_6rem] lg:items-center [&::-webkit-details-marker]:hidden">
                       <span className="min-w-0 truncate font-medium text-zinc-950">
                         {field.label}
                       </span>

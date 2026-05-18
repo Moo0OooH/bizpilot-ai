@@ -9,11 +9,12 @@
  * - docs/product/BIZPILOT_BUILD_PLAN_v1.4.md
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-05-11
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-07: Created Phase 5 lead list and action panel.
  * - 2026-05-08: Added decision reasons, recommended actions, and clearer list structure.
  * - 2026-05-11: Upgraded lead list into an operational quote recovery workspace.
+ * - 2026-05-18: Aligned lead workspace surfaces with the premium emerald dashboard system.
  * ============================================================
  */
 
@@ -84,7 +85,7 @@ export default async function LeadConversionDeskPage() {
   ).length;
 
   return (
-    <main className="space-y-4">
+    <main className="space-y-5">
       <PageHeader
         actions={
           <>
@@ -101,11 +102,11 @@ export default async function LeadConversionDeskPage() {
         title="Lead Workspace"
       />
 
-      <section className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-6">
+      <section className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
         <MetricCard
           detail="Quote requests captured."
           label="Captured"
-          tone="violet"
+          tone="emerald"
           value={desk.recoveryProof.quoteRequestsCaptured}
         />
         <MetricCard
@@ -140,8 +141,8 @@ export default async function LeadConversionDeskPage() {
         />
       </section>
 
-      <section className="grid items-start gap-3.5 2xl:grid-cols-[minmax(0,1fr)_320px]">
-        <DashboardCard className="p-3.5" variant="elevated">
+      <section className="grid min-w-0 items-start gap-5 2xl:grid-cols-[minmax(0,1fr)_340px]">
+        <DashboardCard className="min-w-0 p-5" variant="elevated">
           <SectionHeader
             description="Operational queue for captured quote requests. Next action is the most important column."
             title="Lead recovery queue"
@@ -149,17 +150,17 @@ export default async function LeadConversionDeskPage() {
           <LeadWorkspaceQueue leads={desk.leads} quotePath={quotePath} />
         </DashboardCard>
 
-        <aside className="space-y-3 2xl:sticky 2xl:top-20">
+        <aside className="min-w-0 space-y-5 2xl:sticky 2xl:top-24">
           <RightRailPanel variant="priority">
             <SectionHeader
               description="The queue is rule-based. BizPilot never sends automatically."
               title="Today's recovery queue"
             />
-            <div className="mt-3 divide-y divide-violet-100 overflow-hidden rounded-lg border border-violet-100 bg-white/70">
+            <div className="mt-4 divide-y divide-slate-200 overflow-hidden rounded-[16px] border border-slate-200 bg-white/70">
               {desk.todaysActions.length > 0 ? (
                 desk.todaysActions.slice(0, 6).map((action) => (
                   <Link
-                    className="grid gap-1 p-2.5 text-[13px] transition hover:bg-white"
+                    className="grid gap-1.5 p-4 text-sm transition hover:border-[rgba(23,212,146,0.18)] hover:bg-[rgba(23,212,146,0.08)]"
                     href={`/dashboard/leads/${action.lead_id}`}
                     key={action.id}
                   >
@@ -188,14 +189,14 @@ export default async function LeadConversionDeskPage() {
               description="A fast read on lead risk before filtering."
               title="SLA summary"
             />
-            <div className="mt-3 grid gap-2 text-[13px]">
+            <div className="mt-4 grid gap-3 text-sm">
               {[
                 ["New leads", newLeadCount],
                 ["Follow-up needed", followUpCount],
                 ["Overdue", overdueCount],
               ].map(([title, value]) => (
                 <div
-                  className="flex items-center justify-between rounded-md bg-zinc-50 px-3 py-2"
+                  className="flex items-center justify-between rounded-[12px] bg-zinc-50 px-4 py-3"
                   key={title}
                 >
                   <span className="text-zinc-600">{title}</span>
@@ -213,7 +214,7 @@ export default async function LeadConversionDeskPage() {
             <div className="mt-3 flex flex-wrap gap-2">
               {["All", "New", "Follow-up", "Booked", "Lost"].map((filter) => (
                 <span
-                  className="rounded-full border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs font-medium text-zinc-600"
+                  className="rounded-full border border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-medium text-zinc-600"
                   key={filter}
                 >
                   {filter}

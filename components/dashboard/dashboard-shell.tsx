@@ -9,11 +9,12 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-17
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-10: Created reusable protected dashboard shell.
  * - 2026-05-17: Applied the scoped calm dark dashboard theme.
  * - 2026-05-17: Added owner-selectable dashboard light/dark theme support.
+ * - 2026-05-18: Rebalanced dashboard shell scale, sidebar width, and content max width.
  * ============================================================
  */
 
@@ -48,8 +49,8 @@ export function DashboardShell({
           userLabel={userLabel}
         />
 
-        <div className="px-3 py-3 pb-8 sm:px-4 lg:px-5">
-          <div className="mx-auto w-full max-w-[1180px] min-w-0">
+        <div className="px-5 py-5 pb-10 md:px-6 lg:px-8 2xl:px-10">
+          <div className="mx-auto w-full max-w-[1320px] min-w-0">
             {children}
           </div>
         </div>
