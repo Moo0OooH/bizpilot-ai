@@ -45,13 +45,15 @@ This checklist converts the v1.6 strategic alignment into implementation-ready w
 
 ## E. Founder-Led GTM
 
-- [ ] Create Founder CRM spreadsheet/template.
-- [ ] Track contacted businesses.
-- [ ] Track objections and owner language.
-- [ ] Track demos and follow-ups.
-- [ ] Track willingness to pay.
-- [ ] Track pilot retention notes.
-- [ ] Use concierge onboarding for first customers.
+- [x] Create Founder CRM spreadsheet/template.
+- [x] Track contacted businesses.
+- [x] Track objections and owner language.
+- [x] Track demos and follow-ups.
+- [x] Track willingness to pay.
+- [x] Track pilot retention notes.
+- [x] Use concierge onboarding for first customers.
+
+Evidence: `artifacts/phase18/BizPilot_Phase18_Founder_CRM_Template.xlsx` and `docs/operations/BIZPILOT_PHASE_18_PILOT_OPERATING_GUIDE_v1.0.md`.
 
 ## F. AI Constraints
 

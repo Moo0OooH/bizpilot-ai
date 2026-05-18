@@ -89,6 +89,9 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 - `docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
 - `docs/operations/BIZPILOT_MAGIC_DEMO_FLOW_v1.0.md`
+- `docs/operations/BIZPILOT_PHASE_18_PILOT_OPERATING_GUIDE_v1.0.md`
+- `docs/operations/BIZPILOT_PHASE_18_WORK_LOG_v1.0.md`
+- `artifacts/phase18/BizPilot_Phase18_Founder_CRM_Template.xlsx`
 
 ---
 

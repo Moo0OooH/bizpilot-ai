@@ -1,7 +1,7 @@
 {
   "project": "BizPilot AI",
   "version": "v1.5",
-  "status": "Phase 17 Pilot Readiness Verification full pass; Phase 18 founder-led cleaning business pilot prep is next; v1.5/v1.7 foundation hardening standards active",
+  "status": "Phase 18 founder-led cleaning business pilot prep started; Founder CRM workbook and pilot operating guide added; v1.5/v1.7 foundation hardening standards active",
   "files": [
     "MANIFEST.json",
     "README.md",
@@ -19,6 +19,8 @@
     "docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v1.0.md",
     "docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md",
     "docs/operations/BIZPILOT_MAGIC_DEMO_FLOW_v1.0.md",
+    "docs/operations/BIZPILOT_PHASE_18_PILOT_OPERATING_GUIDE_v1.0.md",
+    "docs/operations/BIZPILOT_PHASE_18_WORK_LOG_v1.0.md",
     "docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md",
     "docs/engineering/BIZPILOT_SUPABASE_CLIENT_ARCHITECTURE_v1.0.md",
     "docs/engineering/BIZPILOT_SAFE_ERROR_HANDLING_STANDARD_v1.0.md",
@@ -47,6 +49,7 @@
     "docs/product/BIZPILOT_VALIDATION_DASHBOARD_SPEC_v1.1.md",
     "docs/product/BIZPILOT_VERTICAL_EXPANSION_PLAYBOOK_v1.0.md",
     "docs/security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md",
-    "docs/security/BIZPILOT_PRIVACY_SECURITY_COMPLIANCE_BASELINE_v1.0.md"
+    "docs/security/BIZPILOT_PRIVACY_SECURITY_COMPLIANCE_BASELINE_v1.0.md",
+    "artifacts/phase18/BizPilot_Phase18_Founder_CRM_Template.xlsx"
   ]
 }
