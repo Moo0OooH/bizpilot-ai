@@ -51,6 +51,20 @@ Track Phase 17 manual QA, pilot readiness, browser smoke testing, verification c
 - `pnpm test:unit` - PASS on 2026-05-18. Lead Conversion Desk rules: 6/6 pass.
 - `pnpm test:rls` - BLOCKED on 2026-05-18 in this shell because `DATABASE_URL` is not set. No RLS assertion failure was observed; the runner exited before connecting.
 - Browser smoke - PASS for `/`, `/auth/sign-in`, `/auth/sign-up`, unauthenticated `/dashboard` redirect to sign-in, authenticated dashboard, configuration save, public quote submit, lead workspace, lead detail, and AI fallback generation.
+- Owner-reported Phase 17 final verification - FULL PASS on 2026-05-18, including pilot readiness verification and health tests.
+
+## Final Sweep
+
+- Active Phase 17 blocker check: PASS. No unresolved active blocker found in Phase 17 docs after final sweep.
+- Historical pending references remain in `docs/operations/BIZPILOT_PHASE_10A_VENDOR_INDEPENDENCE_GAP_REPORT_v1.0.md`; these are preserved historical audit context, not current Phase 17 blockers.
+- Working tree note: `supabase/.temp/cli-latest` changed from `v2.98.2` to `v2.99.0` after Supabase tooling activity. Treat as tooling cache metadata unless intentionally committing CLI temp state.
+- Phase 18 scope guard: proceed to founder-led pilots with 3 cleaning businesses; do not add booking, billing, auto-send, SMS/WhatsApp automation, second vertical, or full CRM scope.
+
+## Phase 17 Exit Decision
+
+| Decision | Owner | Date | Evidence |
+| --- | --- | --- | --- |
+| Phase 17 Pilot Readiness Verification = FULL PASS | MoOoH | 2026-05-18 | Owner confirmation plus browser smoke, build/type/lint/unit verification, public quote submission, business configuration round-trip, lead workspace verification, and AI fallback verification. |
 
 ## Commit Scope
 
@@ -58,3 +72,4 @@ Track Phase 17 manual QA, pilot readiness, browser smoke testing, verification c
 - Include Phase 17 work log.
 - Include configuration section navigation fix.
 - Proposed commit: `chore(phase17): verify pilot readiness smoke`
+- Follow-up documentation commit: record Phase 17 full pass and manifest status update.

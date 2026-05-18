@@ -1,7 +1,7 @@
 {
   "project": "BizPilot AI",
   "version": "v1.5",
-  "status": "Phase 17 manual QA and pilot readiness checklists added; Phase 5 stabilized / completion candidate; Phase 6 manual AI Lead Assistant foundation started; v1.5/v1.7 foundation hardening standards active",
+  "status": "Phase 17 Pilot Readiness Verification full pass; Phase 18 founder-led cleaning business pilot prep is next; v1.5/v1.7 foundation hardening standards active",
   "files": [
     "MANIFEST.json",
     "README.md",
