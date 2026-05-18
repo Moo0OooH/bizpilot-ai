@@ -10,14 +10,20 @@
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-05-06
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-06: Created public quote page with dynamic form rendering.
+ * - 2026-05-18: Applied shared BizPilot landing theme tokens to the public quote page.
  * ============================================================
  */
 
 import { notFound } from "next/navigation";
 
+import {
+  BizPilotBrand,
+  BizPilotThemeShell,
+} from "@/components/ui/bizpilot-theme";
+import { bizColors, bizTheme } from "@/lib/design-tokens";
 import { submitPublicIntakeAction } from "@/server/actions/public-intake.actions";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
 import type { Json } from "@/types/database";
@@ -102,8 +108,7 @@ function FieldInput({
   field,
   todayDate,
 }: Readonly<{ field: FieldRecord; todayDate: string }>) {
-  const baseClass =
-    "mt-2 w-full rounded-[10px] border border-slate-200 bg-white px-3 py-2 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 focus:border-[var(--biz-primary)] focus:ring-2 focus:ring-emerald-600/15";
+  const baseClass = `${bizTheme.field} mt-2 px-3 py-2`;
 
   if (field.field_type === "textarea") {
     return (
@@ -118,7 +123,7 @@ function FieldInput({
   if (field.field_type === "boolean") {
     return (
       <input
-        className="mt-3 h-5 w-5"
+        className="mt-3 h-5 w-5 accent-[#17D492]"
         name={`field:${field.field_key}`}
         type="checkbox"
       />
@@ -165,37 +170,43 @@ export default async function QuotePage({
     notFound();
   }
 
-  const primaryColor = page.branding?.primary_color ?? "#18181b";
-  const accentColor = page.branding?.accent_color ?? "#0f766e";
+  const primaryColor = page.branding?.primary_color ?? bizColors.accent;
+  const accentColor = page.branding?.accent_color ?? bizColors.accent;
   const todayDate = todayDateString();
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#f8fafc_0%,#eef2f7_100%)] text-slate-950">
-      <section
-        className="border-b border-slate-200 bg-white/80 px-4 py-8 shadow-[0_10px_35px_rgba(15,23,42,0.04)] sm:px-6"
-        style={{
-          borderColor: accentColor,
-        }}
-      >
-        <div className="mx-auto flex w-full max-w-[700px] flex-col gap-4">
-          <div>
-            <p className="text-sm font-medium uppercase tracking-normal text-slate-500">
-              Quote request
+    <BizPilotThemeShell>
+      <section className="border-b border-white/[0.06] px-4 py-7 sm:px-6">
+        <div className="mx-auto flex w-full max-w-[760px] flex-col gap-6">
+          <BizPilotBrand compact subtitle="Quote request" />
+
+          <div className="rounded-[18px] border border-white/[0.08] bg-white/[0.035] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.16)] sm:p-6">
+            <p className="inline-flex items-center gap-2 rounded-full border border-[#17D492]/18 bg-[#17D492]/8 px-3 py-1 text-[11px] font-bold uppercase text-[#17D492]">
+              <span
+                className="h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: primaryColor }}
+              />
+              Cleaning quote request
             </p>
-            <h1 className="mt-2 text-[28px] font-semibold leading-tight tracking-normal sm:text-[32px]">
+            <h1 className="mt-4 text-[30px] font-bold leading-[1.05] tracking-[-0.03em] text-[#F5F7FA] sm:text-[36px]">
               {page.publicLink.display_name}
             </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-              Share the details for your cleaning request. The business will
-              review your request and follow up directly.
+            <p className={`mt-3 max-w-[44ch] text-sm leading-6 ${bizTheme.secondaryText}`}>
+              Share the details for your cleaning request. The business will review your request and follow up directly.
             </p>
+            <div
+              className="mt-5 h-px w-full opacity-70"
+              style={{
+                background: `linear-gradient(90deg, ${accentColor}, transparent)`,
+              }}
+            />
           </div>
         </div>
       </section>
 
       <form
         action={submitPublicIntakeAction}
-        className="mx-auto w-full max-w-[700px] space-y-4 px-4 py-6 sm:px-6"
+        className="mx-auto w-full max-w-[760px] space-y-4 px-4 py-6 sm:px-6"
       >
         <input name="businessSlug" type="hidden" value={slug} />
         <input name="intakeFormId" type="hidden" value={page.form.id} />
@@ -224,7 +235,7 @@ export default async function QuotePage({
         </label>
 
         {query?.error ? (
-          <p className="border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          <p className="rounded-[12px] border border-[#FF5C5C]/22 bg-[#FF5C5C]/10 p-3 text-sm text-[#FFB4B4]">
             {query.error}
           </p>
         ) : null}
@@ -232,17 +243,17 @@ export default async function QuotePage({
         <div className="space-y-3.5">
           {page.fields.map((field) => (
             <label
-              className="block rounded-[12px] border border-slate-200 bg-white p-3.5 text-sm font-medium text-slate-800 shadow-[0_10px_26px_rgba(15,23,42,0.045)]"
+              className="block rounded-[14px] border border-white/[0.08] bg-[rgba(13,23,33,0.78)] p-3.5 text-sm font-semibold text-[rgba(245,247,250,0.84)] shadow-[0_16px_44px_rgba(0,0,0,0.14)]"
               key={field.id}
             >
               <span>
                 {field.label}
                 {field.is_required ? (
-                  <span className="text-red-600"> *</span>
+                  <span className="text-[#FF5C5C]"> *</span>
                 ) : null}
               </span>
               {field.help_text ? (
-                <span className="mt-1 block text-xs leading-5 text-slate-500">
+                <span className={`mt-1 block text-xs leading-5 ${bizTheme.mutedText}`}>
                   {field.help_text}
                 </span>
               ) : null}
@@ -252,9 +263,9 @@ export default async function QuotePage({
           ))}
         </div>
 
-        <label className="flex items-start gap-3 rounded-[12px] border border-slate-200 bg-white p-3.5 text-sm leading-6 text-slate-700 shadow-[0_10px_26px_rgba(15,23,42,0.045)]">
+        <label className="flex items-start gap-3 rounded-[14px] border border-white/[0.08] bg-white/[0.035] p-3.5 text-sm leading-6 text-[rgba(245,247,250,0.72)] shadow-[0_16px_44px_rgba(0,0,0,0.12)]">
           <input
-            className="mt-1 h-4 w-4"
+            className="mt-1 h-4 w-4 accent-[#17D492]"
             name="consentAccepted"
             required
             type="checkbox"
@@ -262,7 +273,7 @@ export default async function QuotePage({
           <span>
             {page.consentVersion.consent_notice}
             {page.consentVersion.ai_disclosure_enabled ? (
-              <span className="block pt-2 text-xs text-slate-500">
+              <span className={`block pt-2 text-xs ${bizTheme.mutedText}`}>
                 BizPilot may help prepare internal AI drafts later, but the
                 business reviews messages before sending.
               </span>
@@ -271,15 +282,12 @@ export default async function QuotePage({
         </label>
 
         <button
-          className="h-11 w-full rounded-[10px] px-5 text-sm font-semibold text-white shadow-[0_12px_28px_rgba(4,120,87,0.18)] sm:w-auto"
-          style={{
-            backgroundColor: primaryColor,
-          }}
+          className={`${bizTheme.buttonPrimary} h-11 w-full px-6 text-sm sm:w-auto`}
           type="submit"
         >
           Submit quote request
         </button>
       </form>
-    </main>
+    </BizPilotThemeShell>
   );
 }

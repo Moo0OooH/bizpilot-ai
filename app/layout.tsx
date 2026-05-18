@@ -9,11 +9,12 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-05-17
  * Change Log:
  * - 2026-05-04: Added standard project file header.
  * - 2026-05-04: Updated metadata description for Phase 2 tenant foundation.
  * - 2026-05-05: Updated metadata description for Phase 3 configuration core.
+ * - 2026-05-17: Updated metadata for the quote recovery landing page.
  * ============================================================
  */
 
@@ -32,8 +33,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BizPilot AI",
-  description: "Phase 3 business configuration core for BizPilot AI.",
+  title: "BizPilot | Reply Before Competitors Do",
+  description:
+    "AI lead recovery for cleaning businesses. Capture quote requests, draft faster replies, and book more jobs before competitors respond.",
 };
 
 export default function RootLayout({

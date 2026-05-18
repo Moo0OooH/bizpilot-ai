@@ -92,6 +92,12 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ---
 
+## Design System
+
+- `docs/product/BIZPILOT_DESIGN_SYSTEM_SPEC_v1.0.md`
+
+---
+
 ## Superseded Or Historical Standards
 
 Keep older docs for context unless explicitly removed in a future documentation cleanup.

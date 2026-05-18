@@ -9,13 +9,14 @@
  * - app/auth/sign-in/page.tsx
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-12
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-04: Created Phase 2 sign-up page.
  * - 2026-05-12: Polished sign-up UI and replaced internal-facing copy.
  * - 2026-05-12: Constrained sign-up layout to auth standards and improved form guidance.
  * - 2026-05-12: Compacted sign-up form to avoid 100% zoom scrolling.
  * - 2026-05-12: Standardized final production auth card scale and helper treatment.
+ * - 2026-05-18: Applied the shared BizPilot dark landing theme to sign-up.
  * ============================================================
  */
 
@@ -27,6 +28,7 @@ import {
   AuthFieldIcon,
   AuthShell,
   authInputClassName,
+  authLabelClassName,
 } from "@/components/auth/auth-ui";
 import { signUpAction } from "@/server/actions/auth.actions";
 
@@ -41,7 +43,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
 
   return (
     <AuthShell
-      cardWidthClassName="max-w-[580px]"
+      cardWidthClassName="max-w-full sm:max-w-[580px]"
       footer="Owner access for the BizPilot AI quote recovery workspace."
     >
       <AuthCard
@@ -51,14 +53,14 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
         {params?.error ? (
           <p
             aria-live="assertive"
-            className="mt-5 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm leading-5 text-red-700"
+            className="mt-5 rounded-xl border border-[#FF5C5C]/22 bg-[#FF5C5C]/10 px-3 py-2 text-sm leading-5 text-[#FFB4B4]"
           >
             {params.error}
           </p>
         ) : null}
 
         <form action={signUpAction} className="mt-5 grid gap-3.5 sm:grid-cols-2">
-          <label className="grid gap-1.5 text-sm font-semibold text-slate-800">
+          <label className={authLabelClassName}>
             Name
             <span className="relative block">
               <AuthFieldIcon type="name" />
@@ -72,7 +74,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
               />
             </span>
           </label>
-          <label className="grid gap-1.5 text-sm font-semibold text-slate-800">
+          <label className={authLabelClassName}>
             Business name
             <span className="relative block">
               <AuthFieldIcon type="business" />
@@ -86,7 +88,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
               />
             </span>
           </label>
-          <label className="grid gap-1.5 text-sm font-semibold text-slate-800">
+          <label className={authLabelClassName}>
             Email
             <span className="relative block">
               <AuthFieldIcon type="email" />
@@ -100,7 +102,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
               />
             </span>
           </label>
-          <label className="grid gap-1.5 text-sm font-semibold text-slate-800">
+          <label className={authLabelClassName}>
             Password
             <span className="relative block">
               <AuthFieldIcon type="password" />
@@ -116,7 +118,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
             </span>
           </label>
 
-          <p className="rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-xs leading-5 text-[var(--biz-primary)] sm:col-span-2">
+          <p className="rounded-lg border border-[#17D492]/20 bg-[#17D492]/10 px-2.5 py-1.5 text-xs leading-5 text-[#17D492] sm:col-span-2">
             Use at least 8 characters for your password.
           </p>
 
@@ -127,14 +129,14 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
           </div>
         </form>
 
-        <p className="mt-3 text-center text-xs leading-5 text-[#64748B]">
+        <p className="mt-3 text-center text-xs leading-5 text-[rgba(245,247,250,0.46)]">
           You can configure your public quote link after creating your account.
         </p>
 
-        <p className="mt-3 text-center text-sm text-[#475569]">
+        <p className="mt-3 text-center text-sm text-[rgba(245,247,250,0.62)]">
           Already have an account?{" "}
           <Link
-            className="font-semibold text-[var(--biz-primary)] underline-offset-4 hover:underline"
+            className="font-semibold text-[#17D492] underline-offset-4 hover:underline"
             href="/auth/sign-in"
           >
             Sign in

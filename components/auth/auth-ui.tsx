@@ -3,14 +3,14 @@
  * File: components/auth/auth-ui.tsx
  * Project: BizPilot AI
  * Description: Provides shared auth page UI primitives for BizPilot owner access screens.
- * Role: Keeps sign-in and sign-up layouts consistent with the UI/UX System Standard.
+ * Role: Keeps sign-in and sign-up layouts consistent with the shared BizPilot dark theme.
  * Related:
  * - app/auth/sign-in/page.tsx
  * - app/auth/sign-up/page.tsx
  * - docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-12
- * Last Updated: 2026-05-12
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-12: Created shared auth shell, card, and field icon components.
  * - 2026-05-12: Tightened auth density, accessibility, and production visual standards.
@@ -19,10 +19,18 @@
  * - 2026-05-12: Finalized production auth scale, spacing, and visual consistency.
  * - 2026-05-12: Added subtle premium auth atmosphere and quiet depth.
  * - 2026-05-12: Moved auth glows inside the shared surface for integrated warmth.
+ * - 2026-05-18: Connected auth screens to shared BizPilot dark theme tokens.
  * ============================================================
  */
 
 import type { ReactNode } from "react";
+
+import {
+  BizPilotBrand,
+  BizPilotSurface,
+  BizPilotThemeShell,
+} from "@/components/ui/bizpilot-theme";
+import { bizTheme } from "@/lib/design-tokens";
 
 type AuthShellProps = Readonly<{
   cardWidthClassName: string;
@@ -42,65 +50,30 @@ type AuthFieldIconProps = Readonly<{
 
 const benefits = [
   {
-    body: "Turn public quote requests into clean lead details.",
+    body: "Quote requests arrive with source, service, timing, and urgency visible.",
     icon: "chat",
-    title: "Capture requests",
+    title: "Capture every request",
   },
   {
-    body: "Review draft guidance before sending anything yourself.",
+    body: "AI prepares reply drafts for review while owners stay in control.",
     icon: "checklist",
-    title: "Prepare replies",
+    title: "Reply before competitors",
   },
   {
-    body: "See which quote requests need attention today.",
+    body: "Missed replies and cold leads surface before the job disappears.",
     icon: "trend",
-    title: "Follow up",
+    title: "Recover missed jobs",
   },
 ] as const;
-
-function BrandMark() {
-  return (
-    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[var(--biz-primary)] text-xs font-semibold text-white shadow-[0_10px_22px_rgba(4,120,87,0.18)]">
-      BP
-    </span>
-  );
-}
-
-function BrandLockup({
-  compact = false,
-  dark = false,
-}: Readonly<{ compact?: boolean; dark?: boolean }>) {
-  return (
-    <div
-      className={`flex items-center gap-3 ${compact ? "justify-center" : ""}`}
-    >
-      <BrandMark />
-      <div>
-        <p
-          className={`font-semibold tracking-normal text-slate-950 ${
-            compact ? "text-sm" : "text-base"
-          } ${dark ? "!text-white" : ""}`}
-        >
-          BIZPILOT AI
-        </p>
-        {compact ? (
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-[var(--biz-primary)]">
-            Quote recovery workspace
-          </p>
-        ) : null}
-      </div>
-    </div>
-  );
-}
 
 function BenefitIcon({
   icon,
 }: Readonly<{ icon: (typeof benefits)[number]["icon"] }>) {
   return (
-    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 text-[var(--biz-primary)] shadow-[0_6px_14px_rgba(15,23,42,0.05)]">
+    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] border border-[#17D492]/20 bg-[#17D492]/10 text-[#17D492]">
       <svg
         aria-hidden="true"
-        className="h-3.5 w-3.5"
+        className="h-4 w-4"
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
@@ -135,56 +108,41 @@ function BenefitIcon({
   );
 }
 
-function TrustIcon() {
-  return (
-    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-[var(--biz-primary)]">
-      <svg
-        aria-hidden="true"
-        className="h-3 w-3"
-        fill="none"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-        viewBox="0 0 24 24"
-      >
-        <path d="M12 3 5 6v5c0 4.5 2.8 8 7 10 4.2-2 7-5.5 7-10V6z" />
-        <path d="m9.5 12 1.7 1.7 3.8-4" />
-      </svg>
-    </span>
-  );
-}
-
 function AuthBenefitPanel() {
   return (
-    <aside className="relative hidden min-h-[430px] flex-col justify-center overflow-hidden rounded-2xl border border-white/10 bg-[linear-gradient(180deg,rgba(18,31,45,0.96)_0%,rgba(6,17,31,0.98)_100%)] p-4 text-white shadow-[0_18px_42px_rgba(15,23,42,0.16),0_2px_8px_rgba(15,23,42,0.08)] xl:flex">
+    <aside className="relative hidden min-h-[440px] overflow-hidden rounded-[18px] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(13,23,33,0.94),rgba(7,16,24,0.98))] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.20)] xl:block">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_18%,rgba(16,185,129,0.16),transparent_16rem),radial-gradient(circle_at_82%_78%,rgba(99,102,241,0.10),transparent_18rem)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_20%,rgba(23,212,146,0.14),transparent_15rem),radial-gradient(circle_at_86%_82%,rgba(64,124,255,0.09),transparent_17rem)]"
       />
-      <div className="relative z-10 max-w-[360px]">
-        <BrandLockup dark />
+      <div className="relative flex h-full flex-col justify-between">
+        <div>
+          <BizPilotBrand subtitle="Owner access" />
 
-        <p className="mt-3 inline-flex rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--biz-primary)]">
-          Owner access
-        </p>
+          <p className="mt-5 inline-flex rounded-full border border-[#17D492]/20 bg-[#17D492]/8 px-3 py-1 text-[11px] font-bold uppercase text-[#17D492]">
+            Quote recovery workspace
+          </p>
 
-        <h1 className="mt-3 text-[23px] font-semibold leading-[1.12] tracking-normal text-white">
-          Keep quote requests moving toward booked work.
-        </h1>
-        <p className="mt-2 max-w-[34rem] text-[13px] leading-5 text-slate-300">
-          Capture quote requests, review lead details, prepare replies, and keep follow-ups visible from one focused workspace.
-        </p>
+          <h1 className="mt-4 max-w-[11ch] text-[28px] font-bold leading-[1.05] tracking-[-0.03em] text-[#F5F7FA]">
+            Stop letting warm leads go cold.
+          </h1>
+          <p className={`mt-3 max-w-[34ch] text-sm leading-6 ${bizTheme.secondaryText}`}>
+            Capture the request, review the AI draft, and move faster while the customer is still ready to book.
+          </p>
+        </div>
 
-        <div className="mt-3 grid gap-2">
+        <div className="mt-7 grid gap-3">
           {benefits.map((benefit) => (
-            <div className="flex gap-2.5" key={benefit.title}>
+            <div
+              className="flex gap-3 rounded-[14px] border border-white/[0.07] bg-white/[0.035] p-3"
+              key={benefit.title}
+            >
               <BenefitIcon icon={benefit.icon} />
               <div>
-                <p className="text-[13px] font-semibold text-white">
+                <p className="text-sm font-bold text-[#F5F7FA]">
                   {benefit.title}
                 </p>
-                <p className="mt-0.5 text-xs leading-[1.45] text-slate-300">
+                <p className={`mt-1 text-xs leading-5 ${bizTheme.secondaryText}`}>
                   {benefit.body}
                 </p>
               </div>
@@ -192,19 +150,11 @@ function AuthBenefitPanel() {
           ))}
         </div>
 
-        <div className="mt-3 flex gap-2.5 rounded-xl border border-emerald-300/20 bg-emerald-500/[0.08] px-3 py-2 shadow-[0_10px_24px_rgba(15,23,42,0.10)]">
-          <TrustIcon />
-          <p className="text-xs leading-[1.45] text-slate-300">
-            <span className="block font-semibold text-white">
-              Owner-controlled workspace
-            </span>
-            BizPilot prepares drafts for review. You decide what to send.
-          </p>
-        </div>
-
-        <div className="mt-2.5 inline-flex items-center gap-2 rounded-full border border-violet-300/20 bg-violet-500/[0.10] px-2.5 py-1 text-[11px] font-medium text-violet-200">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#6366F1]" />
-          AI assistant stays review-only
+        <div className="mt-4 rounded-[14px] border border-[#17D492]/18 bg-[#17D492]/8 p-3 text-xs leading-5 text-[rgba(245,247,250,0.72)]">
+          <span className="block font-bold text-[#F5F7FA]">
+            Review-only AI by design
+          </span>
+          BizPilot prepares operational drafts. The business decides what gets sent.
         </div>
       </div>
     </aside>
@@ -217,50 +167,46 @@ export function AuthShell({
   footer,
 }: AuthShellProps) {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[linear-gradient(135deg,#06111f_0%,#0b1728_34%,#eef2f7_34%,#f8fafc_100%)] px-4 py-4 text-[#0F172A] sm:px-6 lg:px-8">
-      <section className="relative mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-[1120px] items-center gap-4 overflow-hidden xl:grid-cols-[minmax(0,370px)_minmax(0,1fr)] xl:rounded-3xl xl:border xl:border-slate-200 xl:bg-[#FBFDFC] xl:p-3 xl:shadow-[0_22px_60px_rgba(15,23,42,0.10),0_3px_12px_rgba(15,23,42,0.04)]">
-        <div
-          aria-hidden="true"
-            className="pointer-events-none absolute inset-0 hidden bg-[radial-gradient(circle_at_30%_72%,rgba(4,120,87,0.08),transparent_34%),radial-gradient(circle_at_72%_28%,rgba(99,102,241,0.06),transparent_32%),radial-gradient(circle_at_54%_54%,rgba(15,23,42,0.035),transparent_38%)] xl:block"
-        />
+    <BizPilotThemeShell className="px-4 py-5 sm:px-6 lg:px-8">
+      <section className="mx-auto grid min-h-[calc(100vh-2.5rem)] w-full min-w-0 max-w-[1120px] items-center gap-5 xl:grid-cols-[minmax(0,390px)_minmax(0,1fr)]">
         <AuthBenefitPanel />
 
-        <section className={`relative z-10 mx-auto w-full ${cardWidthClassName}`}>
-          <div className="mb-3 flex xl:hidden">
-            <BrandLockup compact />
+        <section className={`relative z-10 mx-auto w-full min-w-0 ${cardWidthClassName}`}>
+          <div className="mb-4 flex xl:hidden">
+            <BizPilotBrand compact subtitle="Owner access" />
           </div>
 
           {children}
 
-          <p className="mt-2 text-center text-xs leading-5 text-[#64748B]">
+          <p className={`mt-3 text-center text-xs leading-5 ${bizTheme.mutedText}`}>
             {footer}
           </p>
         </section>
       </section>
-    </main>
+    </BizPilotThemeShell>
   );
 }
 
 export function AuthCard({ children, subtitle, title }: AuthCardProps) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_20px_46px_rgba(15,23,42,0.11),0_3px_12px_rgba(15,23,42,0.05)] xl:shadow-[0_18px_40px_rgba(15,23,42,0.085),0_2px_10px_rgba(15,23,42,0.04)] sm:p-6">
+    <BizPilotSurface className="w-full min-w-0 p-5 sm:p-6">
       <div className="text-center">
-        <h2 className="text-[22px] font-semibold leading-7 tracking-normal text-[#0F172A]">
+        <h2 className="text-[24px] font-bold leading-7 tracking-[-0.02em] text-[#F5F7FA]">
           {title}
         </h2>
-        <p className="mx-auto mt-2 max-w-sm text-sm leading-5 text-[#475569]">
+        <p className={`mx-auto mt-2 max-w-sm break-words text-sm leading-6 ${bizTheme.secondaryText}`}>
           {subtitle}
         </p>
       </div>
 
       {children}
-    </div>
+    </BizPilotSurface>
   );
 }
 
 export function AuthFieldIcon({ type }: AuthFieldIconProps) {
   return (
-    <span className="pointer-events-none absolute left-3 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center text-slate-400">
+    <span className="pointer-events-none absolute left-3 top-1/2 flex h-5 w-5 -translate-y-1/2 items-center justify-center text-[rgba(245,247,250,0.42)]">
       <svg
         aria-hidden="true"
         className="h-5 w-5"
@@ -302,5 +248,6 @@ export function AuthFieldIcon({ type }: AuthFieldIconProps) {
   );
 }
 
-export const authInputClassName =
-  "h-[52px] w-full rounded-xl border border-slate-200 bg-white pl-11 pr-3 text-sm text-[#0F172A] shadow-[inset_0_1px_0_rgba(15,23,42,0.02)] outline-none transition placeholder:text-slate-400 focus:border-[var(--biz-primary)] focus:ring-2 focus:ring-emerald-600/20";
+export const authInputClassName = `${bizTheme.field} h-[52px] pl-11 pr-3`;
+
+export const authLabelClassName = `grid gap-1.5 ${bizTheme.label}`;

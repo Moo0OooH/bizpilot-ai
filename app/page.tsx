@@ -7,183 +7,179 @@
  * Related:
  * - app/layout.tsx
  * - app/globals.css
- * - docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md (Section 15)
- * - docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md
+ * - docs/CURRENT_CANONICAL_DOCS_v1.7.md
+ * - docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md
  * Author: MoOoH
- * Last Updated: 2026-05-17
+ * Last Updated: 2026-05-18
  * Change Log:
- * - 2026-05-17: Implemented final corrected homepage direction.
+ * - 2026-05-17: Rebuilt the homepage as a compact premium quote-recovery landing page.
+ * - 2026-05-18: Connected the landing shell to shared BizPilot design tokens without changing scale.
  * ============================================================
  */
 
+import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { bizTheme } from "@/lib/design-tokens";
+
 type IconName =
   | "arrow"
-  | "building"
+  | "bolt"
   | "calendar"
+  | "chart"
   | "chat"
   | "check"
-  | "clipboard"
+  | "clock"
+  | "dollar"
+  | "facebook"
   | "inbox"
   | "mail"
-  | "reply"
-  | "route"
-  | "spark";
+  | "play"
+  | "shield"
+  | "spark"
+  | "warning";
 
-const trustItems = ["Free 14-day trial", "No credit card", "Setup in 5 minutes"] as const;
-
-const proofStrip = [
-  ["Reply in minutes", "Fresh quote requests stay visible before they cool off."],
-  ["Follow up on time", "Waiting leads keep a clear next action and due window."],
-  ["Review AI drafts", "BizPilot prepares replies, the owner approves them."],
-  ["Keep leads in view", "No quote request disappears inside scattered messages."],
+const navItems = [
+  ["Features", "#features"],
+  ["How It Works", "#how-it-works"],
+  ["Pricing", "#pricing"],
+  ["Resources", "#proof"],
 ] as const;
 
-const lostReasons = [
-  {
-    detail:
-      "Most customers contact 2-3 cleaners at once and book whoever replies first. A 4-hour delay can mean the job is gone.",
-    icon: "reply",
-    title: "Too slow to reply",
-  },
-  {
-    detail:
-      "You quote someone, hear nothing, and move on. Three days later they hired the competitor who sent one simple reminder.",
-    icon: "calendar",
-    title: "Missed follow-ups",
-  },
-  {
-    detail:
-      "Texts, DMs, Facebook, referrals, and email scatter quote requests across too many places. One missed message is one missed job.",
-    icon: "inbox",
-    title: "Messages everywhere",
-  },
+const trustItems = ["Setup in 5 minutes", "No credit card", "Cancel anytime"] as const;
+
+const heroMetrics = [
+  { icon: "bolt", label: "Avg. first reply time", sub: "10x faster than manual", value: "43s" },
+  { icon: "chart", label: "More jobs booked", sub: "With faster responses", value: "2.8x" },
+  { icon: "dollar", label: "Recovered per month", sub: "From missed leads", value: "$2.8k" },
+  { icon: "shield", label: "Replies within 5 minutes", sub: "Owner reviewed", value: "98%" },
 ] satisfies ReadonlyArray<{
-  detail: string;
   icon: IconName;
-  title: string;
+  label: string;
+  sub: string;
+  value: string;
 }>;
-
-const serviceCards = [
-  ["Regular & recurring cleans", "Keep repeat requests and follow-ups in one calm lead queue."],
-  ["Move-in & move-out cleans", "Surface urgent timing, missing details, and reply drafts fast."],
-  ["Deep cleans & one-offs", "Capture service type, property context, and the next owner action."],
-  ["Instagram, Facebook & email leads", "Share one quote link wherever customers already ask for prices."],
-] as const;
-
-const transformation = [
-  ["Scattered DM", "Structured lead card"],
-  ["Missing address or room count", "Property details captured"],
-  ["No preferred date visible", "Preferred date surfaced"],
-  ["Easy to forget", "Follow-up scheduled"],
-  ["Owner guesses what to say", "AI reply ready to review"],
-] as const;
-
-const workflowSteps = [
-  {
-    body:
-      "Share your BizPilot link anywhere - Instagram bio, Google Business, or your website. Every request arrives with service type, location, and timing already extracted.",
-    eyebrow: "Customer submits",
-    icon: "chat",
-    title: "Quote request lands structured in your inbox",
-  },
-  {
-    body:
-      "BizPilot reads the request, scores urgency, flags missing info, and writes a reply in your tone. High-risk leads surface automatically at the top.",
-    eyebrow: "AI prepares",
-    icon: "spark",
-    title: "A personalized reply is drafted before you open the app",
-  },
-  {
-    body:
-      "Every reply goes through your eyes first. Nothing sends without your approval. BizPilot then reminds you when to follow up so no lead goes cold.",
-    eyebrow: "You close",
-    icon: "route",
-    title: "Review, tap send, and keep follow-up tracked",
-  },
-] satisfies ReadonlyArray<{
-  body: string;
-  eyebrow: string;
-  icon: IconName;
-  title: string;
-}>;
-
-const pricingPlans = [
-  {
-    cta: "Get Started Free",
-    description: "Free forever",
-    features: [
-      "Up to 15 leads/month",
-      "1 public quote link",
-      "Basic lead dashboard",
-      "Email support",
-    ],
-    href: "/auth/sign-up",
-    name: "Starter",
-    price: "$0",
-    spotlight: false,
-  },
-  {
-    cta: "Start 14-Day Free Trial",
-    description: "14-day free trial",
-    features: [
-      "Unlimited leads",
-      "AI-drafted replies",
-      "Follow-up reminders",
-      "Multi-channel quote link workflow",
-      "Priority support",
-    ],
-    href: "/auth/sign-up",
-    name: "Pro",
-    price: "$39",
-    spotlight: true,
-  },
-] as const;
-
-const statCards = [
-  ["Lead received", "Now", "Sarah from Facebook", "text-[#00d084]"],
-  ["AI extracted", "23s", "Move-out clean - Friday", "text-[#4fa8ff]"],
-  ["Draft ready", "Review", "Owner approval needed", "text-[#eef2f6]"],
-  ["Follow-up set", "2h", "If no reply", "text-[#ffab00]"],
-] as const;
 
 const workflowCards = [
   {
     detail: "Sarah from Facebook",
-    icon: "chat",
+    icon: "facebook",
     meta: "Just now",
-    status: "Lead received",
+    status: "New lead received",
     tone: "blue",
   },
   {
-    detail: "Move-out cleaning - 3 bed - Friday",
+    detail: "3 bed / move-out / Friday morning",
     icon: "spark",
-    meta: "00:12",
-    status: "AI extracts details",
+    meta: "Just now",
+    status: "Details extracted",
     tone: "neutral",
   },
   {
-    detail: "Personalized reply ready",
-    icon: "reply",
+    detail: "Asks for access notes and timing",
+    icon: "mail",
     meta: "00:23",
-    status: "Draft reply ready",
+    status: "Reply ready to review",
     tone: "green",
   },
   {
-    detail: "If no reply by 2 PM",
-    icon: "calendar",
+    detail: "Nudge if Sarah does not answer",
+    icon: "chat",
     meta: "2:00:00",
     status: "Follow-up scheduled",
-    tone: "amber",
+    tone: "green",
   },
   {
-    detail: "Move-out clean - owner reviewed",
+    detail: "$320 - Move-out cleaning",
     icon: "check",
     meta: "Today",
     status: "Job booked",
     tone: "green",
+  },
+] as const;
+
+const problemCards = [
+  {
+    detail:
+      "Most leads go cold in minutes. If you do not reply fast, they book with someone else.",
+    icon: "clock",
+    metric: "Avg. response time: 2+ hours",
+    title: "Too slow to reply",
+    tone: "red",
+  },
+  {
+    detail:
+      "Busy days equal forgotten follow-ups. No reply means lost jobs and lost revenue.",
+    icon: "mail",
+    metric: "40% of leads need a follow-up",
+    title: "Missed follow-ups",
+    tone: "amber",
+  },
+  {
+    detail:
+      "Texts, DMs, emails, and calls are scattered across platforms. Nothing in one place.",
+    icon: "inbox",
+    metric: "Leads slip through the cracks",
+    title: "Messages everywhere",
+    tone: "green",
+  },
+] satisfies ReadonlyArray<{
+  detail: string;
+  icon: IconName;
+  metric: string;
+  title: string;
+  tone: "amber" | "green" | "red";
+}>;
+
+const beforeItems = [
+  "Leads buried in DMs and texts",
+  "Slow or no replies",
+  "Follow-ups forgotten",
+  "Leads go cold",
+  "Jobs lost to competitors",
+] as const;
+
+const afterItems = [
+  "All leads in one inbox",
+  "AI drafts replies instantly",
+  "Smart follow-ups",
+  "More replies, more bookings",
+  "More revenue every month",
+] as const;
+
+const processSteps = [
+  ["Capture", "Leads from texts, DMs, Facebook, web, and email in one inbox.", "chat"],
+  ["Extract", "AI extracts key details like service, location, and timing.", "spark"],
+  ["Draft", "AI writes a personalized reply or quote in seconds.", "mail"],
+  ["Follow-up", "Smart follow-ups if no reply. You stay top of mind.", "clock"],
+  ["Booked", "More replies turn into booked jobs and happy customers.", "check"],
+] satisfies ReadonlyArray<[string, string, IconName]>;
+
+const proofCards = [
+  ["$3,200+", "Recovered in missed leads last month", "Sparkle Clean Co."],
+  ["14", "Extra jobs booked in 2 weeks", "CleanHaus"],
+  ["★★★★★", "\"BizPilot is like having a full-time assistant that never sleeps.\"", "Jasmine P."],
+  ["43s", "Average first reply time with BizPilot", "Bright & Tidy"],
+  ["98%", "Leads responded within 5 minutes", "PureClean Pro"],
+] as const;
+
+const pricingPlans = [
+  {
+    cta: "Start free trial",
+    features: ["1 user", "4 channels", "AI reply drafts", "Smart follow-ups", "Basic reporting"],
+    name: "Starter",
+    note: "Perfect for solo cleaners",
+    price: "$29",
+    spotlight: false,
+  },
+  {
+    cta: "Start free trial",
+    features: ["Up to 5 users", "AI Starter features", "Advanced reporting", "Team inbox", "Priority support"],
+    name: "Pro",
+    note: "For growing teams",
+    price: "$79",
+    spotlight: true,
   },
 ] as const;
 
@@ -205,23 +201,19 @@ function IconGlyph({ name }: Readonly<{ name: IconName }>) {
           <path d="m13 6 6 6-6 6" />
         </>
       ) : null}
-      {name === "building" ? (
-        <>
-          <path d="M4 21V5a2 2 0 0 1 2-2h10v18" />
-          <path d="M16 8h2a2 2 0 0 1 2 2v11" />
-          <path d="M8 7h4" />
-          <path d="M8 11h4" />
-          <path d="M8 15h4" />
-        </>
-      ) : null}
+      {name === "bolt" ? <path d="m13 2-9 12h7l-1 8 10-13h-7z" /> : null}
       {name === "calendar" ? (
         <>
           <path d="M7 3v4" />
           <path d="M17 3v4" />
           <path d="M4 8h16" />
           <path d="M5 5h14v15H5z" />
-          <path d="M8 13h3" />
-          <path d="M8 16h6" />
+        </>
+      ) : null}
+      {name === "chart" ? (
+        <>
+          <path d="M4 18 10 12l4 4 6-8" />
+          <path d="M15 8h5v5" />
         </>
       ) : null}
       {name === "chat" ? (
@@ -234,15 +226,24 @@ function IconGlyph({ name }: Readonly<{ name: IconName }>) {
       {name === "check" ? (
         <>
           <path d="m5 12 4 4L19 6" />
+          <circle cx="12" cy="12" r="9" />
         </>
       ) : null}
-      {name === "clipboard" ? (
+      {name === "clock" ? (
         <>
-          <path d="M8 5h8" />
-          <path d="M9 3h6v4H9z" />
-          <path d="M6 6h12v15H6z" />
-          <path d="M9 12h6" />
-          <path d="M9 16h4" />
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3 2" />
+        </>
+      ) : null}
+      {name === "dollar" ? (
+        <>
+          <path d="M12 3v18" />
+          <path d="M17 7.5c-1-1.2-2.6-1.8-4.7-1.4-2 .4-3 1.5-3 3 0 1.8 1.5 2.5 4.1 3.1 2.4.6 3.7 1.3 3.7 3.1 0 1.7-1.4 3-4 3-2 0-3.7-.6-5-1.8" />
+        </>
+      ) : null}
+      {name === "facebook" ? (
+        <>
+          <path d="M14 8h2V4h-3c-2.2 0-4 1.8-4 4v3H7v4h2v5h4v-5h3l1-4h-4V8c0-.6.4-1 1-1z" />
         </>
       ) : null}
       {name === "inbox" ? (
@@ -258,17 +259,11 @@ function IconGlyph({ name }: Readonly<{ name: IconName }>) {
           <path d="m4 8 8 6 8-6" />
         </>
       ) : null}
-      {name === "reply" ? (
+      {name === "play" ? <path d="m9 7 8 5-8 5z" /> : null}
+      {name === "shield" ? (
         <>
-          <path d="M9 10 5 14l4 4" />
-          <path d="M5 14h9a5 5 0 0 0 5-5V7" />
-        </>
-      ) : null}
-      {name === "route" ? (
-        <>
-          <path d="M6 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-          <path d="M18 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
-          <path d="M8 16h4a4 4 0 0 0 0-8h4" />
+          <path d="M12 3 20 6v5c0 5-3.3 8.4-8 10-4.7-1.6-8-5-8-10V6z" />
+          <path d="m8.5 12 2.3 2.3L15.8 9" />
         </>
       ) : null}
       {name === "spark" ? (
@@ -278,8 +273,22 @@ function IconGlyph({ name }: Readonly<{ name: IconName }>) {
           <path d="M16 5h4" />
         </>
       ) : null}
+      {name === "warning" ? (
+        <>
+          <path d="M12 3 22 20H2z" />
+          <path d="M12 9v4" />
+          <path d="M12 17h.01" />
+        </>
+      ) : null}
     </svg>
   );
+}
+
+function Container({
+  children,
+  className = "",
+}: Readonly<{ children: ReactNode; className?: string }>) {
+  return <div className={`mx-auto w-full max-w-[765px] px-5 sm:px-6 lg:px-8 ${className}`}>{children}</div>;
 }
 
 function PrimaryCta({
@@ -288,97 +297,29 @@ function PrimaryCta({
 }: Readonly<{ children: ReactNode; href?: string }>) {
   return (
     <Link
-      className="inline-flex h-12 items-center justify-center rounded-[10px] bg-[#00d084] px-6 text-sm font-bold text-[#04110c] shadow-[0_14px_32px_rgba(0,208,132,0.16)] transition hover:bg-[#00a868] sm:min-w-[210px]"
+      className="group inline-flex h-9 items-center justify-center whitespace-nowrap rounded-[10px] bg-[#17D492] px-4 text-[11px] font-bold text-[#03130c] shadow-[0_14px_32px_rgba(23,212,146,0.16)] transition duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] hover:-translate-y-0.5 hover:bg-[#21E6A0] hover:shadow-[0_18px_42px_rgba(23,212,146,0.24)] sm:h-10 sm:px-5"
       href={href}
     >
       {children}
-      <span className="ml-2">-&gt;</span>
+      <span className="ml-2 transition group-hover:translate-x-0.5">-&gt;</span>
     </Link>
   );
 }
 
 function SecondaryCta({
   children,
-  href = "#how-it-works",
+  href = "#demo",
 }: Readonly<{ children: ReactNode; href?: string }>) {
   return (
     <Link
-      className="inline-flex h-12 items-center justify-center rounded-[10px] border border-white/[0.13] bg-white/[0.035] px-6 text-sm font-semibold text-[#eef2f6] transition hover:border-white/[0.18] hover:bg-white/[0.06] sm:min-w-[190px]"
+      className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-[10px] border border-white/[0.12] bg-white/[0.035] px-3.5 text-[11px] font-semibold text-[#F5F7FA] transition duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] hover:-translate-y-0.5 hover:border-white/[0.18] hover:bg-white/[0.06] sm:h-10 sm:px-4"
       href={href}
     >
+      <span className="flex h-5 w-5 items-center justify-center rounded-full border border-white/[0.16] text-[#17D492]">
+        <IconGlyph name="play" />
+      </span>
       {children}
     </Link>
-  );
-}
-
-function WorkflowPreview() {
-  return (
-    <aside className="relative overflow-hidden rounded-[22px] border border-white/[0.10] bg-[linear-gradient(145deg,rgba(19,32,46,0.92),rgba(13,23,33,0.80))] p-5 shadow-[0_32px_90px_rgba(0,0,0,0.34)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_70%_8%,rgba(0,208,132,0.09),transparent_16rem),radial-gradient(circle_at_10%_100%,rgba(79,168,255,0.06),transparent_14rem)]" />
-      <div className="relative">
-        <div className="flex items-center justify-between gap-4">
-          <p className="text-xs font-bold uppercase text-[#435566]">
-            Live recovery workflow
-          </p>
-          <p className="font-mono text-xs text-[#00d084]">owner-reviewed</p>
-        </div>
-
-        <div className="mt-5 grid gap-3">
-          {workflowCards.map((card, index) => (
-            <div className="relative" key={card.status}>
-              {index < workflowCards.length - 1 ? (
-                <span className="absolute left-5 top-12 h-5 border-l border-dashed border-white/[0.18]" />
-              ) : null}
-              <div
-                className={
-                  card.tone === "green"
-                    ? "grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 rounded-[14px] border border-[#00d084]/30 bg-[#00d084]/10 p-3 shadow-[0_0_34px_rgba(0,208,132,0.07)] transition duration-200 hover:-translate-y-0.5"
-                    : "grid grid-cols-[2.5rem_1fr_auto] items-center gap-3 rounded-[14px] border border-white/[0.08] bg-[#0f1a24]/90 p-3 transition duration-200 hover:-translate-y-0.5 hover:border-white/[0.14]"
-                }
-              >
-                <span
-                  className={
-                    card.tone === "green"
-                      ? "flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#00d084] text-[#04110c]"
-                      : card.tone === "amber"
-                        ? "flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#ffab00]/14 text-[#ffab00]"
-                        : card.tone === "blue"
-                          ? "flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#4fa8ff]/14 text-[#4fa8ff]"
-                          : "flex h-10 w-10 items-center justify-center rounded-[12px] bg-white/[0.07] text-[#7a90a4]"
-                  }
-                >
-                  <IconGlyph name={card.icon} />
-                </span>
-                <span>
-                  <span className="block text-sm font-bold text-[#eef2f6]">
-                    {card.status}
-                  </span>
-                  <span className="mt-0.5 block text-xs leading-5 text-[#7a90a4]">
-                    {card.detail}
-                  </span>
-                </span>
-                <span className="text-xs text-[#7a90a4]">{card.meta}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {statCards.map(([label, value, detail, tone]) => (
-            <div
-              className="rounded-[12px] border border-white/[0.07] bg-white/[0.035] p-3"
-              key={label}
-            >
-              <p className={`text-lg font-black leading-none ${tone}`}>{value}</p>
-              <p className="mt-2 text-[11px] font-bold leading-4 text-[#eef2f6]">
-                {label}
-              </p>
-              <p className="mt-1 text-[11px] leading-4 text-[#7a90a4]">{detail}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </aside>
   );
 }
 
@@ -388,350 +329,559 @@ function SectionHeader({
   subtitle,
 }: Readonly<{ eyebrow?: string; subtitle?: string; title: string }>) {
   return (
-    <div className="mx-auto max-w-2xl text-center">
+    <div className="mx-auto max-w-[560px] text-center">
       {eyebrow ? (
-        <p className="text-xs font-bold uppercase text-[#00d084]">{eyebrow}</p>
+        <p className="text-[11px] font-black uppercase text-[#17D492]">{eyebrow}</p>
       ) : null}
-      <h2 className="mt-2 text-2xl font-bold leading-tight text-[#eef2f6] sm:text-3xl">
+      <h2 className="mt-2 text-[28px] font-bold leading-[1.05] text-[#F5F7FA] sm:text-[34px] lg:text-[36px]">
         {title}
       </h2>
       {subtitle ? (
-        <p className="mt-3 text-sm leading-6 text-[#7a90a4]">{subtitle}</p>
+        <p className="mx-auto mt-3 max-w-[46ch] text-base leading-7 text-[rgba(245,247,250,0.62)]">
+          {subtitle}
+        </p>
       ) : null}
     </div>
   );
 }
 
-function Footer() {
+function MetricCard({ icon, label, sub, value }: (typeof heroMetrics)[number]) {
   return (
-    <footer className="border-t border-white/[0.07] py-8">
-      <div className="flex flex-col gap-3 text-sm text-[#7a90a4] sm:flex-row sm:items-center sm:justify-between">
-        <Link className="flex items-center gap-2 font-bold text-[#eef2f6]" href="/">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00d084] text-xs text-[#04110c]">
-            BP
+    <article className="group border-white/[0.06] px-4 py-3 transition duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] hover:-translate-y-0.5 hover:bg-white/[0.025] sm:border-l first:border-l-0">
+      <div className="flex items-center gap-3">
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#17D492]/18 bg-[#17D492]/10 text-[#17D492] shadow-[0_0_26px_rgba(23,212,146,0.08)]">
+          <IconGlyph name={icon} />
+        </span>
+        <span>
+          <span className="block text-[24px] font-black leading-none text-[#F5F7FA]">
+            {value}
           </span>
-          BizPilot
-        </Link>
-        <p>Lead recovery for cleaning businesses.</p>
+          <span className="mt-1 block text-xs font-medium text-[rgba(245,247,250,0.72)]">
+            {label}
+          </span>
+          <span className="mt-0.5 block text-[11px] text-[rgba(245,247,250,0.46)]">
+            {sub}
+          </span>
+        </span>
       </div>
-    </footer>
+    </article>
+  );
+}
+
+function WorkflowPreview() {
+  return (
+    <div className="relative mx-auto w-full max-w-[390px]" id="demo">
+      <div className="absolute -inset-4 rounded-[28px] bg-[radial-gradient(circle_at_70%_18%,rgba(23,212,146,0.12),transparent_17rem)] blur-sm" />
+      <div className="relative rounded-[18px] border border-white/[0.08] bg-[linear-gradient(145deg,rgba(13,23,33,0.92),rgba(7,16,24,0.74))] p-3.5 shadow-[0_32px_90px_rgba(0,0,0,0.34)]">
+        <p className="absolute right-8 top-[-34px] hidden rotate-[-5deg] font-mono text-xs leading-4 text-[#17D492] lg:block">
+          From lead to booked
+          <br />
+          job in minutes
+        </p>
+        <div className="grid gap-3">
+          {workflowCards.map((card, index) => (
+            <div className="relative" key={card.status}>
+              {index < workflowCards.length - 1 ? (
+                <span className="absolute left-4 top-[40px] h-4 border-l border-dashed border-white/[0.18]" />
+              ) : null}
+              <div
+                className={
+                  card.status === "Reply ready to review"
+                    ? "grid grid-cols-[2.25rem_1fr_auto] items-center gap-2.5 rounded-[12px] border border-[#17D492]/42 bg-[#17D492]/8 p-2.5 shadow-[0_0_34px_rgba(23,212,146,0.12)] transition duration-200 hover:-translate-y-0.5"
+                    : "grid grid-cols-[2.25rem_1fr_auto] items-center gap-2.5 rounded-[12px] border border-white/[0.08] bg-[#0D1721]/95 p-2.5 transition duration-200 hover:-translate-y-0.5 hover:border-white/[0.14]"
+                }
+              >
+                <span
+                  className={
+                    card.tone === "green"
+                      ? "flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#17D492] text-[#03130c]"
+                      : card.tone === "blue"
+                        ? "flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#4169e1] text-white"
+                        : "flex h-9 w-9 items-center justify-center rounded-[10px] bg-white/[0.07] text-[rgba(245,247,250,0.72)]"
+                  }
+                >
+                  <IconGlyph name={card.icon} />
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-xs font-bold text-[#F5F7FA]">
+                    {card.status}
+                  </span>
+                  <span className="mt-0.5 block truncate text-[11px] leading-4 text-[rgba(245,247,250,0.58)]">
+                    {card.detail}
+                  </span>
+                </span>
+                <span className={card.status === "Reply ready to review" ? "text-xs text-[#17D492]" : "text-xs text-[rgba(245,247,250,0.58)]"}>
+                  {card.meta}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Avatars() {
+  return (
+    <div className="flex items-center gap-2.5">
+      <div className="flex -space-x-2">
+        {["#f3b181", "#c98d67", "#a56c52", "#e5c29f"].map((color, index) => (
+          <span
+            className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#071018] bg-[linear-gradient(135deg,rgba(255,255,255,0.3),transparent)] text-[8px] font-bold text-[#071018]"
+            key={color}
+            style={{ backgroundColor: color }}
+          >
+            {["M", "J", "A", "S"][index]}
+          </span>
+        ))}
+      </div>
+      <div>
+        <p className="text-xs text-[#FFB84D]">★★★★★</p>
+        <p className="text-[11px] leading-4 text-[rgba(245,247,250,0.46)]">
+          Trusted by 200+ cleaning businesses
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function BeforeAfter() {
+  return (
+    <section className="border-t border-white/[0.04]">
+      <Container className="py-14">
+        <div className="mb-7 grid gap-3 lg:grid-cols-[0.42fr_1fr] lg:items-end">
+          <p className="text-[11px] font-black uppercase text-[#17D492]">The difference</p>
+          <h2 className="max-w-[520px] text-[28px] font-bold leading-[1.05] text-[#F5F7FA] sm:text-[34px]">
+            From chaos and missed leads to booked jobs on autopilot
+          </h2>
+        </div>
+        <div className="relative grid gap-4 lg:grid-cols-2">
+          <article className="overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#0D1721]">
+            <div className="grid min-h-[180px] sm:grid-cols-[0.95fr_1fr]">
+              <div className="p-5">
+                <p className="text-[11px] font-black uppercase text-[#FF5C5C]">
+                  Before BizPilot
+                </p>
+                <ul className="mt-4 grid gap-2 text-xs text-[rgba(245,247,250,0.72)]">
+                  {beforeItems.map((item) => (
+                    <li className="flex gap-2" key={item}>
+                      <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#FF5C5C]/12 text-[#FF5C5C]">
+                        <IconGlyph name="warning" />
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="relative hidden overflow-hidden sm:block">
+                <Image
+                  alt="Cleaning business owner stressed by scattered quote messages"
+                  className="h-full w-full object-cover opacity-45 grayscale"
+                  fill
+                  loading="lazy"
+                  src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=760&q=72"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,#0D1721_0%,rgba(13,23,33,0.28)_55%,rgba(13,23,33,0.78)_100%)]" />
+                <span className="absolute right-6 top-10 rounded-lg border border-white/[0.1] bg-black/35 px-3 py-2 text-xs text-[rgba(245,247,250,0.58)]">
+                  DM?
+                </span>
+                <span className="absolute left-8 top-28 rounded-lg border border-white/[0.1] bg-black/35 px-3 py-2 text-xs text-[rgba(245,247,250,0.58)]">
+                  Text
+                </span>
+                <span className="absolute bottom-10 right-10 rounded-lg border border-white/[0.1] bg-black/35 px-3 py-2 text-xs text-[rgba(245,247,250,0.58)]">
+                  Email
+                </span>
+              </div>
+            </div>
+          </article>
+          <div className="absolute left-1/2 top-1/2 z-10 hidden h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.1] bg-[#101a24] text-sm font-bold text-[#F5F7FA] shadow-[0_12px_34px_rgba(0,0,0,0.28)] lg:flex">
+            VS
+          </div>
+          <article className="overflow-hidden rounded-[16px] border border-[#17D492]/20 bg-[linear-gradient(135deg,rgba(23,212,146,0.08),rgba(13,23,33,0.92))]">
+            <div className="grid min-h-[180px] sm:grid-cols-[0.95fr_1fr]">
+              <div className="p-5">
+                <p className="text-[11px] font-black uppercase text-[#17D492]">
+                  With BizPilot
+                </p>
+                <ul className="mt-4 grid gap-2 text-xs text-[rgba(245,247,250,0.78)]">
+                  {afterItems.map((item) => (
+                    <li className="flex gap-2" key={item}>
+                      <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#17D492]/14 text-[#17D492]">
+                        <IconGlyph name="check" />
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="relative hidden overflow-hidden sm:block">
+                <Image
+                  alt="Cleaning business owner confident after organizing quote requests"
+                  className="h-full w-full object-cover opacity-70"
+                  fill
+                  loading="lazy"
+                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=760&q=72"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,#0D1721_0%,rgba(13,23,33,0.22)_52%,rgba(23,212,146,0.16)_100%)]" />
+                <div className="absolute bottom-7 right-7 rounded-[14px] border border-[#17D492]/26 bg-[#0D1721]/76 p-4 text-center shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
+                  <p className="text-2xl font-black text-[#17D492]">+2.8x</p>
+                  <p className="text-xs leading-4 text-[rgba(245,247,250,0.72)]">
+                    More jobs
+                    <br />
+                    booked
+                  </p>
+                </div>
+                <svg
+                  aria-hidden="true"
+                  className="absolute right-28 top-9 h-24 w-24 text-[#17D492]"
+                  fill="none"
+                  viewBox="0 0 100 100"
+                >
+                  <path d="M10 78 C30 60 38 62 52 40 S74 18 88 14" stroke="currentColor" strokeWidth="6" />
+                  <path d="M70 12h20v20" stroke="currentColor" strokeWidth="6" />
+                </svg>
+              </div>
+            </div>
+          </article>
+        </div>
+      </Container>
+    </section>
+  );
+}
+
+function RightProofRail() {
+  return (
+    <aside className="hidden border-l border-white/[0.05] bg-[radial-gradient(circle_at_20%_12%,rgba(23,212,146,0.055),transparent_18rem)] px-7 pb-12 pt-0 lg:block">
+      <div className="sticky top-[72px] grid gap-4">
+        <div className="rounded-[18px] border border-white/[0.07] bg-[rgba(13,23,33,0.58)] p-4 shadow-[0_24px_70px_rgba(0,0,0,0.14)]">
+          <p className="text-[11px] font-black uppercase text-[#17D492]">
+            Live recovery feed
+          </p>
+          <div className="mt-4 grid gap-3">
+            {[
+              ["+ New quote request", "2m ago", "Deep clean / 2 bed / downtown"],
+              ["+ AI reply reviewed", "5m ago", "Owner copied draft to DM"],
+              ["+ Follow-up due", "8m ago", "Move-out lead still warm"],
+              ["+ Job booked", "12m ago", "$320 move-out cleaning"],
+            ].map(([title, time, detail]) => (
+              <div
+                className="rounded-[12px] border border-white/[0.07] bg-white/[0.025] p-3"
+                key={title}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs font-bold text-[#F5F7FA]">{title}</p>
+                  <p className="text-[11px] text-[rgba(245,247,250,0.46)]">{time}</p>
+                </div>
+                <p className="mt-1 text-[11px] leading-4 text-[rgba(245,247,250,0.58)]">
+                  {detail}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-[18px] border border-[#17D492]/16 bg-[#17D492]/7 p-4">
+          <p className="text-[11px] font-black uppercase text-[#17D492]">
+            Today
+          </p>
+          <p className="mt-2 text-3xl font-black text-[#F5F7FA]">6</p>
+          <p className="mt-1 text-xs leading-5 text-[rgba(245,247,250,0.68)]">
+            quote requests waiting for fast owner review.
+          </p>
+        </div>
+
+        <div className="rounded-[18px] border border-white/[0.08] bg-[rgba(13,23,33,0.58)] p-4">
+          <p className="text-[11px] font-black uppercase text-[rgba(245,247,250,0.46)]">
+            Outcome
+          </p>
+          <p className="mt-2 text-lg font-black text-[#17D492]">
+            Reply before competitors do.
+          </p>
+          <p className="mt-2 text-xs leading-5 text-[rgba(245,247,250,0.62)]">
+            BizPilot keeps the next response visible, drafted, and owner-controlled.
+          </p>
+        </div>
+      </div>
+    </aside>
   );
 }
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[#080d12] text-[#eef2f6]">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(0,208,132,0.09),transparent_24rem),radial-gradient(circle_at_70%_12%,rgba(79,168,255,0.07),transparent_24rem),radial-gradient(circle_at_48%_42%,rgba(232,213,176,0.035),transparent_28rem)]" />
+    <main className={`min-h-screen overflow-x-hidden font-sans ${bizTheme.appBackground}`}>
+      <div className={`pointer-events-none fixed inset-0 ${bizTheme.atmosphericBackground}`} />
       <div className="relative">
-        <nav className="border-b border-white/[0.07] bg-[#080d12]/88 backdrop-blur">
-          <div className="mx-auto flex min-h-[76px] w-full max-w-[1180px] items-center justify-between gap-4 px-5 sm:px-6 lg:px-8">
-            <Link className="flex items-center gap-3 text-lg font-bold" href="/">
-              <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#00d084] text-sm text-[#04110c]">
+        <nav className="sticky top-0 z-30 border-b border-white/[0.05] bg-[#071018]/72 backdrop-blur-[16px]">
+          <div className="mx-auto flex h-[56px] w-full max-w-[1125px] items-center justify-between gap-4 px-5 sm:px-6 lg:px-8">
+            <Link className="flex items-center gap-3 text-base font-bold" href="/">
+              <span className="flex h-7 w-7 items-center justify-center rounded-[8px] bg-[#17D492] text-[10px] font-black text-[#03130c]">
                 BP
               </span>
               BizPilot
             </Link>
-            <div className="hidden items-center gap-7 text-sm font-medium text-[#7a90a4] lg:flex">
-              <a className="hover:text-[#eef2f6]" href="#features">Features</a>
-              <a className="hover:text-[#eef2f6]" href="#how-it-works">
-                How It Works
-              </a>
-              <a className="hover:text-[#eef2f6]" href="#pricing">Pricing</a>
-              <a className="hover:text-[#eef2f6]" href="#workflow">Demo</a>
+            <div className="hidden items-center gap-8 text-xs font-semibold text-[rgba(245,247,250,0.54)] lg:flex">
+              {navItems.map(([label, href]) => (
+                <a className="transition hover:text-[#F5F7FA]" href={href} key={label}>
+                  {label}
+                </a>
+              ))}
             </div>
             <div className="flex items-center gap-3">
-              <SecondaryCta href="#workflow">See live workflow</SecondaryCta>
               <Link
-                className="hidden h-12 items-center justify-center rounded-[10px] bg-[#00d084] px-5 text-sm font-bold text-[#04110c] transition hover:bg-[#00a868] sm:inline-flex"
-                href="/auth/sign-up"
+                className="hidden text-xs font-semibold text-[rgba(245,247,250,0.72)] transition hover:text-[#F5F7FA] sm:block"
+                href="/auth/sign-in"
               >
-                Get Early Access -&gt;
+                Log in
               </Link>
+              <PrimaryCta>Get Early Access</PrimaryCta>
             </div>
           </div>
         </nav>
 
-        <section className="mx-auto grid w-full max-w-[1180px] gap-10 px-5 py-10 sm:px-6 lg:grid-cols-[minmax(0,0.92fr)_minmax(500px,0.88fr)] lg:items-center lg:px-8 lg:py-8">
-          <div>
-            <p className="inline-flex rounded-full border border-[#00d084]/24 bg-[#00d084]/8 px-3 py-1 text-xs font-bold text-[#00d084]">
-              AI lead recovery for cleaning businesses
-            </p>
-            <h1 className="mt-6 max-w-[10.5ch] text-[clamp(44px,12vw,64px)] font-black leading-[0.94] sm:text-[clamp(52px,8vw,70px)] lg:text-[clamp(56px,5.4vw,76px)]">
-              <span className="block">Every minute you wait, </span>
-              <span className="block text-[#00d084]">another company gets the job.</span>
-            </h1>
-            <p className="mt-6 max-w-[34ch] text-base leading-7 text-[#7a90a4] sm:text-lg">
-              BizPilot captures quote requests from texts, DMs, Facebook, and
-              email - then drafts AI replies for owner review so you can book
-              jobs before competitors respond.
-            </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <PrimaryCta>Start booking faster</PrimaryCta>
-              <SecondaryCta href="#workflow">Watch 2-minute demo</SecondaryCta>
-            </div>
-            <p className="mt-3 flex items-center gap-2 text-sm text-[#435566]">
-              <span className="h-2 w-2 rounded-full bg-[#ffab00]" />
-              Only 23 early access spots remaining this month
-            </p>
-            <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3 text-sm text-[#7a90a4]">
-              {trustItems.map((item) => (
-                <span className="flex items-center gap-2" key={item}>
-                  <span className="flex h-5 w-5 items-center justify-center rounded border border-[#00d084]/24 bg-[#00d084]/8 text-[#00d084]">
-                    <IconGlyph name="check" />
-                  </span>
-                  {item}
-                </span>
-                ))}
-            </div>
-            <div className="mt-7 hidden max-w-[560px] rounded-[14px] border border-white/[0.07] bg-[#111d2a]/72 p-4 text-sm leading-6 text-[#7a90a4]">
-              <p className="text-xs font-bold uppercase text-[#435566]">
-                Sample pilot scenario
-              </p>
-              <p className="mt-2 italic">
-                &quot;Set it up on a Tuesday. Wednesday I had 3 AI drafts waiting
-                before I had coffee - closed one that afternoon, a move-out I
-                would have definitely lost before.&quot;
-              </p>
-              <p className="mt-3 text-xs text-[#435566]">
-                Example only - Maria R. - Sparkle Clean - Toronto
-              </p>
-            </div>
-          </div>
-
-          <div
-            className="relative w-full max-w-[560px] justify-self-center lg:justify-self-end"
-            id="workflow"
-          >
-            <div className="absolute -inset-4 rounded-[24px] border border-white/[0.07] bg-[radial-gradient(circle_at_72%_18%,rgba(0,208,132,0.045),transparent_18rem),linear-gradient(135deg,rgba(19,32,46,0.36),rgba(8,13,18,0.14))] shadow-[0_28px_80px_rgba(0,0,0,0.30)]" />
-            <div className="relative">
-              <WorkflowPreview />
-            </div>
-          </div>
-        </section>
-
-        <section className="border-y border-white/[0.07] bg-[#0d1520]/55">
-          <div className="mx-auto grid w-full max-w-[1180px] gap-0 px-5 py-5 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
-            {proofStrip.map(([title, detail]) => (
-              <div className="border-white/[0.07] py-4 sm:px-5 lg:border-l first:border-l-0" key={title}>
-                <p className="text-base font-bold text-[#eef2f6]">{title}</p>
-                <p className="mt-1 text-sm leading-6 text-[#7a90a4]">{detail}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-[1180px] px-5 py-16 sm:px-6 lg:px-8 lg:py-[88px]" id="features">
-          <SectionHeader title="Why cleaning businesses lose thousands in missed leads" />
-          <div className="mt-7 grid gap-4 lg:grid-cols-3">
-            {lostReasons.map((reason) => (
-              <article
-                className="rounded-[16px] border border-white/[0.07] bg-[#0f1a24] p-5"
-                key={reason.title}
-              >
-                <span className="flex h-11 w-11 items-center justify-center rounded-[12px] border border-[#00d084]/24 bg-[#00d084]/8 text-[#00d084]">
-                  <IconGlyph name={reason.icon} />
-                </span>
-                <h3 className="mt-4 text-base font-bold text-[#eef2f6]">{reason.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#7a90a4]">{reason.detail}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-[1180px] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-[88px]">
-          <SectionHeader
-            subtitle="BizPilot keeps the MVP focused: quote requests, reply drafts, follow-up, and owner review."
-            title="Every service type. Every channel. One inbox."
-          />
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {serviceCards.map(([title, detail]) => (
-              <article
-                className="rounded-[16px] border border-white/[0.07] bg-[#0d1520] p-5"
-                key={title}
-              >
-                <span className="flex h-10 w-10 items-center justify-center rounded-[12px] border border-white/[0.13] bg-white/[0.035] text-[#4fa8ff]">
-                  <IconGlyph name="building" />
-                </span>
-                <h3 className="mt-4 text-base font-bold text-[#eef2f6]">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#7a90a4]">{detail}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="border-y border-white/[0.07] bg-[#0d1520]/55">
-          <div className="mx-auto grid w-full max-w-[1180px] gap-6 px-5 py-16 sm:px-6 lg:grid-cols-[0.84fr_1.16fr] lg:items-center lg:px-8 lg:py-[88px]">
+        <div className="mx-auto grid w-full max-w-[1125px] lg:grid-cols-[minmax(0,840px)_285px]">
+          <div className="min-w-0">
+        <section className="border-b border-white/[0.04]">
+          <Container className="grid gap-8 py-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(330px,0.88fr)] lg:items-center lg:py-9">
             <div>
-              <p className="text-xs font-bold uppercase text-[#00d084]">
-                The first 3 minutes
+              <p className="inline-flex items-center gap-2 rounded-full border border-[#17D492]/20 bg-[#17D492]/8 px-3 py-1 text-[10px] font-black uppercase text-[#F5F7FA]">
+                <span className="text-[#17D492]">+</span>
+                AI lead recovery for cleaning businesses
               </p>
-              <h2 className="mt-2 text-3xl font-bold leading-tight text-[#eef2f6]">
-                Turn quote chaos into a clear next action.
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-[#7a90a4]">
-                The owner sees the difference immediately: less guessing, clearer
-                details, and a reply ready for review.
+              <h1 className="mt-5 max-w-[390px] text-[40px] font-black leading-[0.94] text-[#F5F7FA] sm:text-[44px] lg:text-[34px]">
+                <span className="block">Every minute</span>
+                <span className="block">you wait,</span>
+                <span className="block">another company</span>
+                <span className="block text-[#17D492]">gets the job.</span>
+              </h1>
+              <p className="mt-4 max-w-[34ch] text-sm leading-6 text-[rgba(245,247,250,0.72)]">
+                BizPilot captures quote requests from texts, DMs, Facebook, and
+                email - then drafts instant AI replies so you book more jobs
+                before competitors even respond.
               </p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <article className="rounded-[16px] border border-white/[0.07] bg-[#0f1a24] p-5">
-                <p className="text-xs font-bold uppercase text-[#ff4757]">
-                  Before BizPilot
-                </p>
-                <div className="mt-4 rounded-[12px] border border-white/[0.07] bg-[#080d12] p-4 text-sm leading-6 text-[#eef2f6]">
-                  &quot;Hi, how much for a move-out clean this week?&quot;
-                </div>
-                <ul className="mt-4 grid gap-3 text-sm text-[#7a90a4]">
-                  {transformation.map(([before]) => (
-                    <li className="flex gap-2" key={before}>
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#ff4757]" />
-                      <span>{before}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-
-              <article className="rounded-[16px] border border-[#00d084]/24 bg-[#00d084]/8 p-5">
-                <p className="text-xs font-bold uppercase text-[#00d084]">
-                  After BizPilot
-                </p>
-                <div className="mt-4 rounded-[12px] border border-white/[0.07] bg-[#080d12] p-4 text-sm leading-6 text-[#eef2f6]">
-                  Sarah J. - Move-out cleaning - Friday - AI reply ready
-                </div>
-                <ul className="mt-4 grid gap-3 text-sm text-[#eef2f6]">
-                  {transformation.map(([, after]) => (
-                    <li className="flex gap-2" key={after}>
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#00d084]" />
-                      <span>{after}</span>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-[1180px] px-5 py-16 sm:px-6 lg:px-8 lg:py-[88px]" id="how-it-works">
-          <SectionHeader
-            subtitle="One quiet workflow from quote request to reviewed follow-up."
-            title="How BizPilot works"
-          />
-          <div className="mt-7 grid gap-4 lg:grid-cols-3">
-            {workflowSteps.map((step, index) => (
-              <article
-                className="rounded-[16px] border border-white/[0.07] bg-[#0f1a24] p-5"
-                key={step.title}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-[12px] border border-[#00d084]/24 bg-[#00d084]/8 text-[#00d084]">
-                    <IconGlyph name={step.icon} />
-                  </span>
-                  <span className="rounded-full border border-white/[0.07] bg-white/[0.035] px-3 py-1 text-xs font-bold text-[#7a90a4]">
-                    Step {index + 1}
-                  </span>
-                </div>
-                <p className="mt-5 text-xs font-bold uppercase text-[#00d084]">
-                  {step.eyebrow}
-                </p>
-                <h3 className="mt-2 text-lg font-bold leading-6 text-[#eef2f6]">
-                  {step.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-[#7a90a4]">{step.body}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-[1180px] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-[88px]">
-          <div className="rounded-[18px] border border-white/[0.07] bg-[#111d2a] p-6 sm:p-7">
-            <p className="text-xs font-bold uppercase text-[#435566]">
-              Sample customer story
-            </p>
-            <blockquote className="mt-3 max-w-4xl text-lg font-semibold leading-8 text-[#eef2f6]">
-              &quot;Set it up on a Tuesday. Wednesday I had 3 AI drafts waiting
-              before I had coffee - closed one that afternoon, a move-out I would
-              have definitely lost before.&quot;
-            </blockquote>
-            <p className="mt-4 text-sm text-[#7a90a4]">
-              Example only, not a verified customer testimonial.
-            </p>
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-[1180px] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-[88px]" id="pricing">
-          <SectionHeader
-            subtitle="Simple MVP pricing for owner-led validation."
-            title="Start small. Upgrade when quote recovery becomes daily."
-          />
-          <div className="mx-auto mt-7 grid max-w-4xl gap-4 md:grid-cols-2">
-            {pricingPlans.map((plan) => (
-              <article
-                className={
-                  plan.spotlight
-                    ? "rounded-[18px] border border-[#00d084]/24 bg-[#00d084]/8 p-6"
-                    : "rounded-[18px] border border-white/[0.07] bg-[#0f1a24] p-6"
-                }
-                key={plan.name}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h3 className="text-xl font-bold text-[#eef2f6]">{plan.name}</h3>
-                    <p className="mt-1 text-sm text-[#7a90a4]">{plan.description}</p>
-                  </div>
-                  {plan.spotlight ? (
-                    <span className="rounded-full bg-[#00d084] px-3 py-1 text-xs font-bold text-[#04110c]">
-                      Pilot ready
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <PrimaryCta>Start booking faster</PrimaryCta>
+                <SecondaryCta>Watch 2-min demo</SecondaryCta>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-[rgba(245,247,250,0.58)]">
+                {trustItems.map((item) => (
+                  <span className="flex items-center gap-2" key={item}>
+                    <span className="flex h-4 w-4 items-center justify-center rounded-full border border-[#17D492]/28 text-[#17D492]">
+                      <IconGlyph name="check" />
                     </span>
-                  ) : null}
-                </div>
-                <p className="mt-6 text-4xl font-black text-[#eef2f6]">
-                  {plan.price}
-                  <span className="text-sm font-semibold text-[#7a90a4]">/month</span>
-                </p>
-                <ul className="mt-6 grid gap-3 text-sm text-[#7a90a4]">
-                  {plan.features.map((feature) => (
-                    <li className="flex gap-2" key={feature}>
-                      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border border-[#00d084]/24 bg-[#00d084]/8 text-[#00d084]">
-                        <IconGlyph name="check" />
-                      </span>
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
+                    {item}
+                  </span>
+                ))}
+              </div>
+              <div className="mt-4">
+                <Avatars />
+              </div>
+            </div>
+            <WorkflowPreview />
+          </Container>
+          <Container className="pb-4">
+            <div className="grid overflow-hidden rounded-[14px] border border-white/[0.08] bg-[rgba(13,23,33,0.72)] shadow-[0_24px_70px_rgba(0,0,0,0.18)] sm:grid-cols-2 lg:grid-cols-4">
+              {heroMetrics.map((metric) => (
+                <MetricCard key={metric.label} {...metric} />
+              ))}
+            </div>
+          </Container>
+        </section>
+
+        <section className="border-b border-white/[0.04]" id="features">
+          <Container className="py-14">
+            <SectionHeader
+              eyebrow="The problem"
+              title="Why cleaning businesses lose thousands in missed leads"
+            />
+            <div className="mt-8 grid gap-4 lg:grid-cols-3">
+              {problemCards.map((card) => (
+                <article
+                  className="group rounded-[16px] border border-white/[0.08] bg-[rgba(13,23,33,0.92)] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.18)] transition duration-200 hover:-translate-y-0.5 hover:border-white/[0.14]"
+                  key={card.title}
+                >
+                  <span
+                    className={
+                      card.tone === "red"
+                        ? "flex h-10 w-10 items-center justify-center rounded-full bg-[#FF5C5C]/14 text-[#FF5C5C]"
+                        : card.tone === "amber"
+                          ? "flex h-10 w-10 items-center justify-center rounded-full bg-[#FFB84D]/14 text-[#FFB84D]"
+                          : "flex h-10 w-10 items-center justify-center rounded-full bg-[#17D492]/14 text-[#17D492]"
+                    }
+                  >
+                    <IconGlyph name={card.icon} />
+                  </span>
+                  <h3 className="mt-4 text-base font-bold text-[#F5F7FA]">{card.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-[rgba(245,247,250,0.68)]">
+                    {card.detail}
+                  </p>
+                  <p className={card.tone === "red" ? "mt-5 text-xs font-bold text-[#FF5C5C]" : card.tone === "amber" ? "mt-5 text-xs font-bold text-[#FFB84D]" : "mt-5 text-xs font-bold text-[#17D492]"}>
+                    {card.metric}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </Container>
+        </section>
+
+        <BeforeAfter />
+
+        <section className="border-t border-white/[0.04]" id="how-it-works">
+          <Container className="py-14">
+            <SectionHeader eyebrow="How it works" title="Your AI lead recovery engine" />
+            <div className="relative mt-10 grid gap-5 md:grid-cols-5">
+              <span className="absolute left-[10%] right-[10%] top-10 hidden border-t border-dashed border-white/[0.16] md:block" />
+              {processSteps.map(([title, body, icon], index) => (
+                <article className="relative text-center" key={title}>
+                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-[#17D492]/20 bg-[#0D1721] text-[#17D492] shadow-[0_0_30px_rgba(23,212,146,0.08)]">
+                    <IconGlyph name={icon} />
+                  </div>
+                  <h3 className="mt-4 text-sm font-bold text-[#F5F7FA]">
+                    {index + 1}. {title}
+                  </h3>
+                  <p className="mx-auto mt-2 max-w-[18ch] text-xs leading-5 text-[rgba(245,247,250,0.58)]">
+                    {body}
+                  </p>
+                </article>
+              ))}
+            </div>
+          </Container>
+        </section>
+
+        <section className="border-y border-white/[0.04] bg-[#0D1721]/48" id="proof">
+          <Container className="py-14">
+            <SectionHeader
+              eyebrow="Loved by cleaning businesses"
+              title="Real results from real businesses"
+            />
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {proofCards.map(([value, label, source]) => (
+                <article
+                  className="rounded-[14px] border border-white/[0.08] bg-[rgba(13,23,33,0.92)] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[#17D492]/20"
+                  key={value}
+                >
+                  <p className={value.includes("★") ? "text-lg font-black text-[#FFB84D]" : "text-2xl font-black text-[#17D492]"}>
+                    {value}
+                  </p>
+                  <p className="mt-3 text-sm leading-6 text-[rgba(245,247,250,0.72)]">{label}</p>
+                  <p className="mt-4 text-xs text-[rgba(245,247,250,0.42)]">{source}</p>
+                </article>
+              ))}
+            </div>
+          </Container>
+        </section>
+
+        <section id="pricing">
+          <Container className="grid gap-8 py-14 lg:grid-cols-[0.46fr_1fr] lg:items-center">
+            <div>
+              <p className="text-[11px] font-black uppercase text-[#17D492]">Simple pricing</p>
+              <h2 className="mt-2 max-w-[11ch] text-[32px] font-bold leading-[1.05] text-[#F5F7FA] sm:text-[42px]">
+                Start small. Win more jobs.
+              </h2>
+              <p className="mt-4 max-w-[30ch] text-base leading-7 text-[rgba(245,247,250,0.62)]">
+                7-day free trial. No credit card. Cancel anytime.
+              </p>
+            </div>
+            <div className="grid gap-4 md:grid-cols-[1fr_1.08fr_0.8fr]">
+              {pricingPlans.map((plan) => (
+                <article
                   className={
                     plan.spotlight
-                      ? "mt-7 inline-flex h-11 w-full items-center justify-center rounded-[10px] bg-[#00d084] text-sm font-bold text-[#04110c] hover:bg-[#00a868]"
-                      : "mt-7 inline-flex h-11 w-full items-center justify-center rounded-[10px] border border-white/[0.13] bg-white/[0.035] text-sm font-bold text-[#eef2f6] hover:bg-white/[0.06]"
+                      ? "relative rounded-[16px] border border-[#17D492]/42 bg-[linear-gradient(180deg,rgba(23,212,146,0.12),rgba(13,23,33,0.92))] p-5 shadow-[0_0_42px_rgba(23,212,146,0.10)]"
+                      : "rounded-[16px] border border-white/[0.08] bg-[rgba(13,23,33,0.92)] p-5"
                   }
-                  href={plan.href}
+                  key={plan.name}
                 >
-                  {plan.cta}
-                </Link>
+                  {plan.spotlight ? (
+                    <span className="absolute right-5 top-4 rounded-full bg-[#17D492] px-3 py-1 text-[10px] font-black text-[#03130c]">
+                      Most Popular
+                    </span>
+                  ) : null}
+                  <p className="text-sm font-bold text-[#F5F7FA]">{plan.name}</p>
+                  <p className="mt-4 text-3xl font-black text-[#F5F7FA]">
+                    {plan.price}
+                    <span className="text-xs font-semibold text-[rgba(245,247,250,0.58)]">/month</span>
+                  </p>
+                  <p className="mt-1 text-xs text-[rgba(245,247,250,0.58)]">{plan.note}</p>
+                  <ul className="mt-5 grid gap-2.5 text-xs text-[rgba(245,247,250,0.72)]">
+                    {plan.features.map((feature) => (
+                      <li className="flex gap-2" key={feature}>
+                        <span className="text-[#17D492]">✓</span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    className={plan.spotlight ? "mt-5 inline-flex h-11 w-full items-center justify-center rounded-[10px] bg-[#17D492] text-xs font-bold text-[#03130c] transition hover:bg-[#21E6A0]" : "mt-5 inline-flex h-11 w-full items-center justify-center rounded-[10px] border border-white/[0.16] bg-white/[0.025] text-xs font-bold text-[#F5F7FA] transition hover:bg-white/[0.06]"}
+                    href="/auth/sign-up"
+                  >
+                    {plan.cta}
+                  </Link>
+                </article>
+              ))}
+              <article className="rounded-[16px] border border-white/[0.08] bg-[linear-gradient(145deg,rgba(13,23,33,0.92),rgba(13,23,33,0.58))] p-5">
+                <h3 className="text-lg font-bold text-[#F5F7FA]">7-day free trial</h3>
+                <ul className="mt-5 grid gap-2.5 text-xs text-[rgba(245,247,250,0.72)]">
+                  {["Full access", "No credit card", "Cancel anytime"].map((item) => (
+                    <li className="flex gap-2" key={item}>
+                      <span className="text-[#17D492]">✓</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-7 flex h-16 w-16 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-center">
+                  <p className="text-2xl font-black text-[#F5F7FA]">
+                    7
+                    <span className="block text-[10px] font-semibold text-[rgba(245,247,250,0.58)]">
+                      Days
+                    </span>
+                  </p>
+                </div>
               </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mx-auto w-full max-w-[1180px] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-[88px]">
-          <div className="overflow-hidden rounded-[20px] border border-white/[0.07] bg-[radial-gradient(circle_at_20%_20%,rgba(0,208,132,0.12),transparent_18rem),linear-gradient(135deg,#111d2a,#0d1520)] p-7 sm:p-9">
-            <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-              <div>
-                <h2 className="text-3xl font-black leading-tight text-[#eef2f6]">
-                  Start recovering leads today.
-                </h2>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-[#7a90a4]">
-                  Stop losing quote requests. Start winning more cleaning jobs.
-                  Set up in 5 minutes.
-                </p>
-              </div>
-              <PrimaryCta href="/auth/sign-up">Get Early Access - Free</PrimaryCta>
             </div>
-          </div>
+          </Container>
         </section>
 
-        <div className="mx-auto w-full max-w-[1180px] px-5 sm:px-6 lg:px-8">
-          <Footer />
+        <section>
+          <Container className="pb-14">
+            <div className="relative overflow-hidden rounded-[20px] border border-[#17D492]/18 bg-[radial-gradient(circle_at_20%_0%,rgba(23,212,146,0.16),transparent_18rem),linear-gradient(135deg,#0D1721,#071018)] p-7 shadow-[0_32px_100px_rgba(0,0,0,0.26)] sm:p-9">
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-[radial-gradient(ellipse_at_bottom,rgba(23,212,146,0.16),transparent_68%)]" />
+              <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+                <h2 className="text-[28px] font-black leading-tight text-[#F5F7FA] sm:text-[38px]">
+                  Stop losing leads.
+                  <br className="hidden sm:block" />
+                  Start booking more jobs today.
+                </h2>
+                <div className="grid gap-2">
+                  <PrimaryCta>Get Early Access</PrimaryCta>
+                  <p className="text-center text-xs text-[rgba(245,247,250,0.58)]">
+                    Free 7-day trial - No credit card
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Container>
+        </section>
+
+        <footer className="border-t border-white/[0.06]">
+          <Container className="grid gap-8 py-8 sm:grid-cols-[1fr_auto] sm:items-start">
+            <Link className="flex items-center gap-3 text-base font-bold" href="/">
+              <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#17D492] text-xs font-black text-[#03130c]">
+                BP
+              </span>
+              BizPilot
+            </Link>
+            <div className="grid grid-cols-2 gap-x-10 gap-y-3 text-xs text-[rgba(245,247,250,0.58)] sm:grid-cols-4">
+              {["Product", "Company", "Legal", "Socials"].map((item) => (
+                <Link className="transition hover:text-[#F5F7FA]" href="/" key={item}>
+                  {item}
+                </Link>
+              ))}
+            </div>
+          </Container>
+        </footer>
+          </div>
+          <RightProofRail />
         </div>
       </div>
     </main>
