@@ -2,15 +2,15 @@
  * ============================================================
  * File: app/(dashboard)/dashboard/configuration/page.tsx
  * Project: BizPilot AI
- * Description: Renders the protected business and public quote configuration workspace.
- * Role: Lets owners configure business settings, the editable Cleaning template, and public quote link.
+ * Description: Renders the protected Quote Setup workspace.
+ * Role: Lets owners configure the public quote page, services, form questions, AI guardrails, and privacy settings.
  * Related:
  * - server/services/auth.service.ts
  * - server/services/business.service.ts
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-09
+ * Last Updated: 2026-05-18
  * Change Log:
  * - 2026-05-04: Created protected Phase 2 dashboard shell.
  * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
@@ -96,31 +96,31 @@ function ConfigurationPanel({
 }>) {
   return (
     <section
-      className="scroll-mt-4 rounded-lg border border-zinc-200 bg-white p-3.5 shadow-sm"
+      className="scroll-mt-4 rounded-[24px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-[18px] shadow-[0_16px_44px_rgba(2,6,23,0.12)]"
       id={id}
     >
       <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_18rem] sm:items-start">
         <div className="min-w-0">
-          <h2 className="text-sm font-semibold text-zinc-950">{title}</h2>
+          <h2 className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">{title}</h2>
           {description ? (
-            <p className="mt-1 text-xs leading-5 text-zinc-600">
+            <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
               {description}
             </p>
           ) : null}
         </div>
         {summary ? (
-          <p className="rounded-md border border-zinc-200 bg-zinc-50 px-2 py-1 text-xs leading-4 text-zinc-600">
+          <p className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-xs leading-4 text-[var(--dash-text-secondary)]">
             {summary}
           </p>
         ) : null}
       </div>
-      <div className="mt-3.5 border-t border-zinc-100 pt-3.5">{children}</div>
+      <div className="mt-4 border-t border-[var(--dash-border)] pt-4">{children}</div>
     </section>
   );
 }
 
 const fieldInputClass =
-  "h-8 w-full rounded-md border border-zinc-300 bg-white px-2.5 text-xs text-zinc-950 outline-none focus:border-zinc-950";
+  "biz-field h-10 w-full rounded-[12px] border px-3 text-[13px] outline-none transition focus:border-[var(--dash-primary)]";
 
 export default async function DashboardPage({
   searchParams,
@@ -140,14 +140,14 @@ export default async function DashboardPage({
   if (!activeBusiness) {
     return (
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-6 py-12">
-        <div className="border-b border-zinc-200 pb-8">
-          <p className="text-sm font-medium uppercase tracking-normal text-zinc-500">
+        <div className="border-b border-[var(--dash-border)] pb-8">
+          <p className="text-sm font-medium uppercase tracking-normal text-[var(--dash-text-muted)]">
             BizPilot AI
           </p>
-          <h1 className="mt-3 text-[26px] font-semibold text-zinc-950">
-            Business configuration
+          <h1 className="mt-3 text-[26px] font-semibold text-[var(--dash-text)]">
+            Quote setup
           </h1>
-          <p className="mt-3 text-sm leading-6 text-zinc-600">
+          <p className="mt-3 text-sm leading-6 text-[var(--dash-text-secondary)]">
             No tenant business is available for this user yet.
           </p>
         </div>
@@ -176,17 +176,17 @@ export default async function DashboardPage({
         <PageHeader
           description={`Configure the cleaning quote experience, public link, consent, and owner-ready lead foundation for ${activeBusiness.name}.`}
           eyebrow="Business setup"
-          title="Business Configuration"
+          title="Quote Setup"
         />
 
         {params?.notice ? (
-          <p className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-800">
+          <p className="rounded-[14px] border border-emerald-300/35 bg-emerald-500/12 p-3 text-xs font-semibold text-emerald-700 dark:text-emerald-200">
             {params.notice}
           </p>
         ) : null}
 
         {params?.error ? (
-          <p className="rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700">
+          <p className="rounded-[14px] border border-red-300/35 bg-red-500/12 p-3 text-xs font-semibold text-red-700 dark:text-red-200">
             {params.error}
           </p>
         ) : null}
@@ -203,33 +203,34 @@ export default async function DashboardPage({
               value={cleaningTemplate.template.id}
             />
 
-          <section className="grid items-start gap-3.5 2xl:grid-cols-[minmax(0,1fr)_320px]">
+          <section className="grid items-start gap-4 2xl:grid-cols-[minmax(0,1fr)_320px]">
             <div className="min-w-0">
           <ConfigurationTabs
             sections={[
               { id: "configuration-overview", label: "Overview" },
-              { id: "business-profile", label: "Profile" },
-              { id: "branding", label: "Branding" },
+              { id: "business-profile", label: "Public Basics" },
+              { id: "cleaning-template-fields", label: "Form Questions" },
               { id: "services-areas", label: "Services" },
-              { id: "public-page", label: "Public Page" },
-              { id: "cleaning-template-fields", label: "Quote Form" },
-              { id: "faq", label: "FAQ" },
+              { id: "branding", label: "Branding" },
+              { id: "faq", label: "AI Instructions" },
+              { id: "public-page", label: "Public Link" },
+              { id: "notifications", label: "Notifications" },
               { id: "privacy-consent", label: "Privacy" },
               { id: "setup-checklist", label: "Readiness" },
             ]}
           >
             <ConfigurationPanel
-              description="A clean operating summary of the business identity, public quote link, setup health, and configured quote foundation."
+              description="A clean operating summary of the quote link, setup health, and public customer experience."
               id="configuration-overview"
               summary={`${readiness.completed}/${readiness.total} setup items complete`}
-              title="Business setup overview"
+              title="Quote setup overview"
             >
               <div className="grid gap-3.5 xl:grid-cols-[minmax(0,1fr)_20rem]">
                 <div className="grid gap-3.5 lg:grid-cols-[17rem_minmax(0,1fr)]">
-                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3.5">
+                  <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
                     <div
-                      className="flex h-28 items-center justify-center overflow-hidden rounded-lg border bg-white"
-                      style={{ borderColor: accentColor }}
+                      className="flex h-28 items-center justify-center overflow-hidden rounded-lg border bg-[var(--dash-surface)]"
+                      style={{ borderColor: "rgba(23,212,146,0.22)" }}
                     >
                       {logoUrl ? (
                         <object
@@ -237,7 +238,7 @@ export default async function DashboardPage({
                           className="h-full max-h-28 w-full object-contain p-4"
                           data={logoUrl}
                         >
-                          <span className="text-xs text-zinc-500">
+                          <span className="text-xs text-[var(--dash-text-muted)]">
                             Logo preview unavailable
                           </span>
                         </object>
@@ -250,43 +251,43 @@ export default async function DashboardPage({
                         </span>
                       )}
                     </div>
-                    <p className="mt-3 text-sm font-semibold text-zinc-950">
+                    <p className="mt-3 text-sm font-semibold text-[var(--dash-text)]">
                       {activeBusiness.name}
                     </p>
-                    <p className="mt-1 break-all text-xs text-zinc-500">
+                    <p className="mt-1 break-all text-xs text-[var(--dash-text-muted)]">
                       /quote/{activeBusiness.slug}
                     </p>
                     <div className="mt-3 flex gap-2">
                       <span
-                        className="h-5 w-5 rounded-full border border-zinc-200"
+                        className="h-5 w-5 rounded-full border border-[var(--dash-border)]"
                         style={{ backgroundColor: primaryColor }}
                       />
                       <span
-                        className="h-5 w-5 rounded-full border border-zinc-200"
+                        className="h-5 w-5 rounded-full border border-[var(--dash-border)]"
                         style={{ backgroundColor: accentColor }}
                       />
                     </div>
                   </div>
 
-                  <div className="rounded-lg border border-zinc-200 bg-white p-3.5">
+                  <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5">
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+                        <p className="text-xs font-medium uppercase tracking-wide text-[var(--dash-text-muted)]">
                           Workspace readiness
                         </p>
-                        <p className="mt-1 text-[22px] font-semibold text-zinc-950">
+                        <p className="mt-1 text-[22px] font-semibold text-[var(--dash-text)]">
                           {readinessPercent}%
                         </p>
                       </div>
-                      <p className="text-right text-xs font-medium text-zinc-500">
+                      <p className="text-right text-xs font-medium text-[var(--dash-text-muted)]">
                         {readiness.completed}/{readiness.total} complete
                       </p>
                     </div>
-                    <div className="mt-4 h-2 overflow-hidden rounded-full bg-zinc-100">
+                    <div className="mt-4 h-2 overflow-hidden rounded-full bg-[var(--dash-surface-muted)]">
                       <div
                         className="h-full rounded-full"
                         style={{
-                          backgroundColor: accentColor,
+                          backgroundColor: "#17D492",
                           width: `${readinessPercent}%`,
                         }}
                       />
@@ -315,13 +316,13 @@ export default async function DashboardPage({
                         ["Public link", `/quote/${activeBusiness.slug}`],
                       ].map(([title, value]) => (
                         <div
-                          className="rounded-md border border-zinc-200 bg-zinc-50 px-3 py-2"
+                          className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2"
                           key={title}
                         >
-                          <p className="text-xs font-medium text-zinc-500">
+                          <p className="text-xs font-medium text-[var(--dash-text-muted)]">
                             {title}
                           </p>
-                          <p className="mt-1 truncate text-xs font-semibold text-zinc-950">
+                          <p className="mt-1 truncate text-xs font-semibold text-[var(--dash-text)]">
                             {value}
                           </p>
                         </div>
@@ -330,24 +331,24 @@ export default async function DashboardPage({
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3.5">
-                  <p className="text-sm font-semibold text-zinc-950">
+                <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
+                  <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
                     Setup report
                   </p>
                   <div className="mt-3 grid gap-2">
                     {readiness.items.map((item) => (
                       <div
-                        className="flex items-center justify-between gap-3 rounded-md bg-white px-3 py-2 text-xs"
+                        className="flex items-center justify-between gap-3 rounded-md bg-[var(--dash-surface)] px-3 py-2 text-xs"
                         key={item.label}
                       >
-                        <span className="truncate text-zinc-700">
+                        <span className="truncate text-[var(--dash-text-secondary)]">
                           {item.label}
                         </span>
                         <span
                           className={
                             item.complete
-                              ? "font-medium text-emerald-700"
-                              : "font-medium text-amber-700"
+                              ? "font-medium text-emerald-700 dark:text-emerald-300"
+                              : "font-medium text-amber-700 dark:text-amber-300"
                           }
                         >
                           {item.complete ? "Done" : "Open"}
@@ -369,7 +370,7 @@ export default async function DashboardPage({
               description="Core identity used across the protected workspace and public quote link."
               id="business-profile"
               summary={`${activeBusiness.name} - /quote/${activeBusiness.slug}`}
-              title="Business basics"
+              title="Public quote basics"
             >
               <div className="grid gap-2.5 sm:grid-cols-3">
                 <label className={labelClass}>
@@ -414,7 +415,7 @@ export default async function DashboardPage({
               summary={logoUrl ? "Logo and colors configured" : "Add logo and colors"}
               title="Branding"
             >
-              <div className="grid gap-2.5 md:grid-cols-[minmax(0,1fr)_12rem]">
+              <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_16rem]">
                 <div className="grid gap-2.5 sm:grid-cols-3">
                   <label className={`${labelClass} sm:col-span-3`}>
                     Logo URL
@@ -428,7 +429,7 @@ export default async function DashboardPage({
                   <label className={labelClass}>
                     Primary color
                     <input
-                      className="mt-1 h-8 w-full rounded-md border border-zinc-300 px-2 py-1"
+                      className="mt-1 h-8 w-full rounded-md border border-[var(--dash-border-strong)] px-2 py-1"
                       defaultValue={primaryColor}
                       name="primaryColor"
                       type="color"
@@ -437,33 +438,46 @@ export default async function DashboardPage({
                   <label className={labelClass}>
                     Accent color
                     <input
-                      className="mt-1 h-8 w-full rounded-md border border-zinc-300 px-2 py-1"
+                      className="mt-1 h-8 w-full rounded-md border border-[var(--dash-border-strong)] px-2 py-1"
                       defaultValue={accentColor}
                       name="accentColor"
                       type="color"
                     />
                   </label>
-                  <div className="rounded-md border border-zinc-200 bg-zinc-50 p-2">
-                    <p className="text-xs font-medium text-zinc-700">
-                      Public form preview
+                  <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:col-span-3">
+                    <p className="text-xs font-medium text-[var(--dash-text-secondary)]">
+                      Where these colors apply
                     </p>
-                    <div
-                      className="mt-1.5 rounded-md px-3 py-1.5 text-center text-xs font-medium text-white"
-                      style={{ backgroundColor: primaryColor }}
-                    >
-                      Request a quote
+                    <div className="mt-2 overflow-hidden rounded-[12px] border border-[var(--dash-border)] bg-[#071018] p-3">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-xs font-semibold text-[#F5F7FA]">
+                          Public quote button
+                        </span>
+                        <span
+                          className="rounded-[10px] px-3 py-1.5 text-xs font-semibold text-white"
+                          style={{ backgroundColor: primaryColor }}
+                        >
+                          Submit quote request
+                        </span>
+                      </div>
+                      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[var(--dash-surface)]/10">
+                        <div
+                          className="h-full rounded-full"
+                          style={{ backgroundColor: accentColor, width: "62%" }}
+                        />
+                      </div>
                     </div>
-                    <div className="mt-2 flex items-center gap-2 text-xs text-zinc-600">
+                    <div className="mt-2 flex items-center gap-2 text-xs text-[var(--dash-text-secondary)]">
                       <span
-                        className="h-3 w-3 rounded-full border border-zinc-200"
+                        className="h-3 w-3 rounded-full border border-[var(--dash-border)]"
                         style={{ backgroundColor: accentColor }}
                       />
-                      Accent color
+                      Accent appears on progress, focus, and supporting highlights.
                     </div>
                   </div>
                 </div>
                 <div
-                  className="flex min-h-24 items-center justify-center overflow-hidden rounded-md border bg-zinc-50"
+                  className="flex min-h-24 items-center justify-center overflow-hidden rounded-md border bg-[var(--dash-surface-muted)]"
                   style={{ borderColor: accentColor }}
                 >
                   {logoUrl ? (
@@ -472,12 +486,12 @@ export default async function DashboardPage({
                       className="h-full max-h-24 w-full object-contain p-3"
                       data={logoUrl}
                     >
-                      <div className="px-3 text-center text-xs text-zinc-500">
+                      <div className="px-3 text-center text-xs text-[var(--dash-text-muted)]">
                         Logo preview unavailable
                       </div>
                     </object>
                   ) : (
-                    <div className="px-3 text-center text-xs text-zinc-500">
+                    <div className="px-3 text-center text-xs text-[var(--dash-text-muted)]">
                       Logo preview
                     </div>
                   )}
@@ -492,24 +506,71 @@ export default async function DashboardPage({
               title="Quote link and public page"
             >
               <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
-                <div className="rounded-md border border-zinc-200 bg-zinc-50 p-3">
-                  <p className="text-xs font-medium text-zinc-700">
+                <div className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                  <p className="text-xs font-medium text-[var(--dash-text-secondary)]">
                     Public quote link
                   </p>
-                  <p className="mt-1 break-all text-sm font-semibold text-zinc-950">
+                  <p className="mt-1 break-all text-sm font-semibold text-[var(--dash-text)]">
                     /quote/{activeBusiness.slug}
                   </p>
-                  <p className="mt-1 text-xs leading-5 text-zinc-500">
+                  <p className="mt-1 text-xs leading-5 text-[var(--dash-text-muted)]">
                     Save changes before previewing branding, consent, services,
                     and quote questions.
                   </p>
                 </div>
                 <a
-                  className="inline-flex h-8 items-center justify-center rounded-md border border-zinc-300 bg-white px-3 text-xs font-medium text-zinc-800"
+                  className="inline-flex h-8 items-center justify-center rounded-md border border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-3 text-xs font-medium text-[var(--dash-text)]"
                   href={`/quote/${activeBusiness.slug}`}
                 >
                   Preview public page
                 </a>
+              </div>
+            </ConfigurationPanel>
+
+            <ConfigurationPanel
+              description="MVP keeps notifications simple: owner email awareness only. SMS and WhatsApp stay disabled before validation."
+              id="notifications"
+              summary="Email active - SMS/WhatsApp disabled"
+              title="Notifications"
+            >
+              <div className="grid gap-2.5 sm:grid-cols-2">
+                <label className={labelClass}>
+                  Owner email
+                  <input
+                    className={inputClass}
+                    defaultValue={
+                      configuration.consentSettings?.privacy_contact_email ??
+                      "owner@example.com"
+                    }
+                    disabled
+                    type="email"
+                  />
+                </label>
+                <label className={labelClass}>
+                  New quote request
+                  <select className={inputClass} defaultValue="email_active" disabled>
+                    <option value="email_active">Email active</option>
+                    <option value="off">Off</option>
+                  </select>
+                </label>
+                <label className={labelClass}>
+                  SMS
+                  <input
+                    className={inputClass}
+                    defaultValue="Future - disabled"
+                    disabled
+                    type="text"
+                  />
+                </label>
+                <label className={labelClass}>
+                  WhatsApp
+                  <input
+                    className={inputClass}
+                    defaultValue="Future - disabled"
+                    disabled
+                    type="text"
+                  />
+                </label>
               </div>
             </ConfigurationPanel>
 
@@ -527,7 +588,7 @@ export default async function DashboardPage({
                     defaultValue={servicesToText(configuration.services)}
                     name="services"
                   />
-                  <span className="mt-1 block text-xs leading-4 text-zinc-500">
+                  <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
                     One service per line. Use: Service name | Optional note
                   </span>
                 </label>
@@ -540,7 +601,7 @@ export default async function DashboardPage({
                     )}
                     name="serviceAreas"
                   />
-                  <span className="mt-1 block text-xs leading-4 text-zinc-500">
+                  <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
                     Example: Montreal, Laval, Longueuil, South Shore
                   </span>
                 </label>
@@ -553,8 +614,8 @@ export default async function DashboardPage({
               summary={`${visibleTemplateFieldCount}/${cleaningTemplate.fields.length} visible questions`}
               title="Cleaning template"
             >
-              <div className="overflow-hidden rounded-md border border-zinc-200">
-                <div className="hidden grid-cols-[minmax(0,1fr)_6rem_5rem_7rem_4rem_6rem] items-center gap-2 border-b border-zinc-200 bg-zinc-50 px-3 py-1.5 text-xs font-medium uppercase tracking-normal text-zinc-500 lg:grid">
+              <div className="overflow-hidden rounded-md border border-[var(--dash-border)]">
+                <div className="hidden grid-cols-[minmax(0,1fr)_6rem_5rem_7rem_4rem_6rem] items-center gap-2 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-1.5 text-xs font-medium uppercase tracking-normal text-[var(--dash-text-muted)] lg:grid">
                   <span>Customer question</span>
                   <span>Type</span>
                   <span>Required</span>
@@ -564,7 +625,7 @@ export default async function DashboardPage({
                 </div>
                 {cleaningTemplate.fields.map((field) => (
                   <details
-                    className="group border-b border-zinc-200 bg-white last:border-b-0"
+                    className="group border-b border-[var(--dash-border)] bg-[var(--dash-surface)] last:border-b-0"
                     key={field.id}
                     name="public-quote-question"
                   >
@@ -574,41 +635,41 @@ export default async function DashboardPage({
                       value={field.field_key}
                     />
                     <summary className="grid cursor-pointer list-none gap-2 px-3 py-2 text-xs transition hover:bg-[rgba(23,212,146,0.08)] lg:grid-cols-[minmax(0,1fr)_6rem_5rem_7rem_4rem_6rem] lg:items-center [&::-webkit-details-marker]:hidden">
-                      <span className="min-w-0 truncate font-medium text-zinc-950">
+                      <span className="min-w-0 truncate font-medium text-[var(--dash-text)]">
                         {field.label}
                       </span>
-                      <span className="capitalize text-zinc-500">
+                      <span className="capitalize text-[var(--dash-text-muted)]">
                         {field.field_type.replaceAll("_", " ")}
                       </span>
                       <span
                         className={
                           field.is_required
-                            ? "text-emerald-700"
-                            : "text-zinc-500"
+                            ? "text-emerald-700 dark:text-emerald-300"
+                            : "text-[var(--dash-text-muted)]"
                         }
                       >
                         {field.is_required ? "Required" : "Optional"}
                       </span>
                       <span
                         className={
-                          field.is_hidden ? "text-zinc-500" : "text-emerald-700"
+                          field.is_hidden ? "text-[var(--dash-text-muted)]" : "text-emerald-700 dark:text-emerald-300"
                         }
                       >
                         {field.is_hidden ? "Not visible" : "Visible"}
                       </span>
-                      <span className="text-zinc-700">{field.sort_order}</span>
-                      <span className="text-left text-zinc-950 lg:text-right">
-                        <span className="inline-flex h-7 items-center rounded-md border border-zinc-300 bg-white px-2.5 text-xs font-medium group-open:hidden">
+                      <span className="text-[var(--dash-text-secondary)]">{field.sort_order}</span>
+                      <span className="text-left text-[var(--dash-text)] lg:text-right">
+                        <span className="inline-flex h-7 items-center rounded-md border border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-2.5 text-xs font-medium group-open:hidden">
                           Customize
                         </span>
-                        <span className="hidden h-7 items-center rounded-md border border-zinc-300 bg-white px-2.5 text-xs font-medium group-open:inline-flex">
+                        <span className="hidden h-7 items-center rounded-md border border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-2.5 text-xs font-medium group-open:inline-flex">
                           Close
                         </span>
                       </span>
                     </summary>
-                    <div className="border-t border-zinc-100 bg-zinc-50 px-3 py-2.5">
+                    <div className="border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5">
                       <div className="grid gap-2.5 lg:grid-cols-[1fr_1fr_5rem_6rem_8rem] lg:items-end">
-                        <label className="grid gap-1 text-xs font-medium text-zinc-800">
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
                           Customer-facing question
                           <input
                             className={fieldInputClass}
@@ -618,7 +679,7 @@ export default async function DashboardPage({
                             type="text"
                           />
                         </label>
-                        <label className="grid gap-1 text-xs font-medium text-zinc-800">
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
                           Helper text
                           <input
                             className={fieldInputClass}
@@ -627,7 +688,7 @@ export default async function DashboardPage({
                             type="text"
                           />
                         </label>
-                        <label className="grid gap-1 text-xs font-medium text-zinc-800">
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
                           Position
                           <input
                             className={fieldInputClass}
@@ -636,7 +697,7 @@ export default async function DashboardPage({
                             type="number"
                           />
                         </label>
-                        <label className="flex h-8 items-center gap-2 text-xs font-medium text-zinc-700">
+                        <label className="flex h-8 items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
                           <input
                             defaultChecked={field.is_required}
                             name={`fieldRequired:${field.field_key}`}
@@ -644,7 +705,7 @@ export default async function DashboardPage({
                           />
                           Required
                         </label>
-                        <label className="flex h-8 items-center gap-2 text-xs font-medium text-zinc-700">
+                        <label className="flex h-8 items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
                           <input
                             defaultChecked={!field.is_hidden}
                             name={`fieldHidden:${field.field_key}`}
@@ -669,7 +730,7 @@ export default async function DashboardPage({
               description="Reusable customer questions and answers for the cleaning business profile."
               id="faq"
               summary={`${configuration.faqs.length} FAQs`}
-              title="FAQ"
+              title="AI instructions and FAQ"
             >
               <label className={labelClass}>
                 FAQ
@@ -679,7 +740,7 @@ export default async function DashboardPage({
                   name="faqs"
                   placeholder="Do you bring supplies? | Yes, we bring all standard supplies."
                 />
-                <span className="mt-1 block text-xs leading-4 text-zinc-500">
+                <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
                   One FAQ per line. Use: Question? | Answer
                 </span>
               </label>
@@ -691,7 +752,7 @@ export default async function DashboardPage({
               summary={`${configuration.privacySettings?.privacy_mode ?? "standard"} - ${
                 configuration.privacySettings?.retain_leads_days ?? 365
               } days`}
-              title="Privacy and consent"
+              title="Privacy"
             >
               <div className="grid gap-2.5 sm:grid-cols-2">
                 <label className={labelClass}>
@@ -740,10 +801,15 @@ export default async function DashboardPage({
                       configuration.consentSettings?.consent_notice ??
                       "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending."
                     }
+                    minLength={20}
                     name="consentNotice"
+                    required
                   />
+                  <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
+                    Shown on the public quote page. If left blank, a safe default is saved so the consent version stays valid.
+                  </span>
                 </label>
-                <label className="flex h-8 items-center gap-2 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 text-xs font-medium text-zinc-800">
+                <label className="flex h-8 items-center gap-2 rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2.5 text-xs font-medium text-[var(--dash-text)]">
                   <input
                     defaultChecked={
                       configuration.consentSettings?.ai_disclosure_enabled ??
@@ -765,24 +831,24 @@ export default async function DashboardPage({
                   ? "Ready to share"
                   : "Setup in progress"
               }
-              title="Setup checklist"
+              title="Quote link readiness"
             >
               <div className="grid gap-1.5 sm:grid-cols-2">
                 {readiness.items.map((item) => (
                   <div
-                    className="rounded-md border border-zinc-200 bg-zinc-50 p-1.5 text-xs"
+                    className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-1.5 text-xs"
                     key={item.label}
                   >
                     <span
                       className={
                         item.complete
-                          ? "font-medium text-emerald-700"
-                          : "font-medium text-zinc-500"
+                          ? "font-medium text-emerald-700 dark:text-emerald-300"
+                          : "font-medium text-[var(--dash-text-muted)]"
                       }
                     >
                       {item.complete ? "Done" : "Open"}
                     </span>{" "}
-                    <span className="text-zinc-700">{item.label}</span>
+                    <span className="text-[var(--dash-text-secondary)]">{item.label}</span>
                   </div>
                 ))}
               </div>
@@ -791,18 +857,18 @@ export default async function DashboardPage({
             </div>
 
             <aside className="space-y-3 2xl:sticky 2xl:top-20">
-              <section className="rounded-lg border border-zinc-200 bg-white p-3.5 shadow-sm">
-                <p className="text-sm font-semibold text-zinc-950">
+              <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
+                <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
                   Workspace readiness
                 </p>
-                <p className="mt-1 text-xs text-zinc-500">
+                <p className="mt-1 text-xs text-[var(--dash-text-muted)]">
                   {readiness.completed}/{readiness.total} setup items complete
                 </p>
-                <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-100">
+                <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--dash-surface-muted)]">
                   <div
                     className="h-full rounded-full"
                     style={{
-                      backgroundColor: accentColor,
+                      backgroundColor: "#17D492",
                       width: `${readinessPercent}%`,
                     }}
                   />
@@ -810,17 +876,17 @@ export default async function DashboardPage({
                 <div className="mt-3 grid gap-2">
                   {readiness.items.slice(0, 6).map((item) => (
                     <div
-                      className="flex items-center justify-between gap-3 rounded-md bg-zinc-50 px-3 py-2 text-xs"
+                      className="flex items-center justify-between gap-3 rounded-md bg-[var(--dash-surface-muted)] px-3 py-2 text-xs"
                       key={item.label}
                     >
-                      <span className="truncate text-zinc-700">
+                      <span className="truncate text-[var(--dash-text-secondary)]">
                         {item.label}
                       </span>
                       <span
                         className={
                           item.complete
-                            ? "font-medium text-emerald-700"
-                            : "font-medium text-amber-700"
+                            ? "font-medium text-emerald-700 dark:text-emerald-300"
+                            : "font-medium text-amber-700 dark:text-amber-300"
                         }
                       >
                         {item.complete ? "Done" : "Open"}
@@ -830,13 +896,13 @@ export default async function DashboardPage({
                 </div>
               </section>
 
-              <section className="rounded-lg border border-zinc-200 bg-white p-3.5 shadow-sm">
-                <p className="text-sm font-semibold text-zinc-950">
+              <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
+                <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
                   Branding preview
                 </p>
                 <div
-                  className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-lg border bg-zinc-50"
-                  style={{ borderColor: accentColor }}
+                  className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-lg border bg-[var(--dash-surface-muted)]"
+                  style={{ borderColor: "rgba(23,212,146,0.22)" }}
                 >
                   {logoUrl ? (
                     <object
@@ -844,7 +910,7 @@ export default async function DashboardPage({
                       className="h-full max-h-24 w-full object-contain p-3"
                       data={logoUrl}
                     >
-                      <span className="text-xs text-zinc-500">
+                      <span className="text-xs text-[var(--dash-text-muted)]">
                         Logo preview unavailable
                       </span>
                     </object>
@@ -857,27 +923,27 @@ export default async function DashboardPage({
                     </span>
                   )}
                 </div>
-                <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500">
+                <div className="mt-3 flex items-center gap-2 text-xs text-[var(--dash-text-muted)]">
                   <span
-                    className="h-5 w-5 rounded-full border border-zinc-200"
+                    className="h-5 w-5 rounded-full border border-[var(--dash-border)]"
                     style={{ backgroundColor: primaryColor }}
                   />
                   <span
-                    className="h-5 w-5 rounded-full border border-zinc-200"
+                    className="h-5 w-5 rounded-full border border-[var(--dash-border)]"
                     style={{ backgroundColor: accentColor }}
                   />
                   Public quote colors
                 </div>
               </section>
 
-              <section className="rounded-lg border border-zinc-200 bg-white p-3.5 shadow-sm">
-                <p className="text-sm font-semibold text-zinc-950">
+              <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
+                <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
                   Public quote link
                 </p>
-                <p className="mt-1 text-xs leading-5 text-zinc-500">
+                <p className="mt-1 text-xs leading-5 text-[var(--dash-text-muted)]">
                   Save changes, then preview the customer-facing quote flow.
                 </p>
-                <p className="mt-3 break-all rounded-md bg-zinc-50 px-3 py-2 text-sm font-semibold text-zinc-950">
+                <p className="mt-3 break-all rounded-md bg-[var(--dash-surface-muted)] px-3 py-2 text-sm font-semibold text-[var(--dash-text)]">
                   /quote/{activeBusiness.slug}
                 </p>
                 <a
@@ -892,23 +958,23 @@ export default async function DashboardPage({
 
         </form>
       </main>
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-zinc-200 bg-white/95 px-4 py-1.5 shadow-sm backdrop-blur">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[240px]">
-          <p className="text-xs text-zinc-600">
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-4 py-2 shadow-[0_-18px_40px_rgba(0,0,0,0.18)] backdrop-blur">
+        <div className="mx-auto flex max-w-[1200px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[272px]">
+          <p className="text-xs text-[var(--dash-text-secondary)]">
             Save configuration after editing, then preview the public quote
             link.
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">
             <a
-              className="inline-flex h-7 items-center justify-center rounded-md border border-zinc-300 bg-white px-3 text-xs font-medium text-zinc-800"
+              className="biz-button-secondary inline-flex h-8 items-center justify-center rounded-[11px] border px-3 text-xs font-bold"
               href={`/quote/${activeBusiness.slug}`}
             >
               Open public quote link
             </a>
             <button
-              className="h-7 rounded-md px-4 text-xs font-medium text-white"
+              className="biz-button-primary h-8 rounded-[11px] px-4 text-xs font-bold"
               form="business-configuration-form"
-              style={{ backgroundColor: primaryColor }}
+              style={{ backgroundColor: "#17D492", color: "#03130c" }}
               type="submit"
             >
               Save configuration

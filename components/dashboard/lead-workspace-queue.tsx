@@ -4,83 +4,131 @@
  * ============================================================
  * File: components/dashboard/lead-workspace-queue.tsx
  * Project: BizPilot AI
- * Description: Renders the interactive Lead Workspace queue table.
- * Role: Provides filtering, search, tenant lead rows, and first-use sample guidance.
+ * Description: Interactive Lead Recovery Queue table.
+ * Role: Filters + sort + privacy-safe customer cell with avatar/initials; no horizontal scroll on common laptop widths; deterministic 5-row limit when used in the dashboard overview.
  * Related:
  * - app/(dashboard)/dashboard/leads/page.tsx
+ * - app/(dashboard)/dashboard/page.tsx
  * - components/dashboard/dashboard-ui.tsx
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-18
+ * Last Updated: 2026-05-19
  * Change Log:
- * - 2026-05-11: Created the interactive lead queue.
- * - 2026-05-17: Added Magic Moment empty state aligned to the pilot demo flow.
- * - 2026-05-18: Improved dark table spacing, hover states, and emerald visual hierarchy.
+ * - 2026-05-19: Rebuilt to match the approved index.html exactly — initials avatar, short customer name, no min-width horizontal scroll, single SectionHeader (page-level header lives on the route), and a `limit` prop for dashboard previews.
  * ============================================================
  */
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { CopyButton } from "@/components/dashboard/copy-button";
 import {
+  Avatar,
   buttonClass,
+  DashboardCard,
   EmptyState,
   inputClass,
-  LeadQualityBadge,
-  LeadStatusBadge,
-  ResponseSlaBadge,
+  shortCustomerName,
+  StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
+import { CopyButton } from "@/components/dashboard/copy-button";
 import type { LeadDeskItem } from "@/server/services/lead-conversion.service";
 
-type LeadFilter = "all" | "new" | "follow_up" | "booked" | "lost";
+type LeadFilter =
+  | "all"
+  | "needs_reply"
+  | "at_risk"
+  | "missing_info"
+  | "ai_ready"
+  | "reviewed"
+  | "won"
+  | "lost";
+
+type LeadSort = "newest" | "oldest" | "most_urgent";
 
 type LeadWorkspaceQueueProps = Readonly<{
+  /** When true, hide filter toolbar (overview preview mode). */
+  compact?: boolean;
   leads: LeadDeskItem[];
+  /** Hard cap on rendered rows — used by dashboard overview (5). */
+  limit?: number;
   quotePath: string;
 }>;
 
 const filters: ReadonlyArray<{ label: string; value: LeadFilter }> = [
-  { label: "All", value: "all" },
-  { label: "New", value: "new" },
-  { label: "Follow-up", value: "follow_up" },
-  { label: "Booked", value: "booked" },
+  { label: "All statuses", value: "all" },
+  { label: "Needs reply", value: "needs_reply" },
+  { label: "At risk", value: "at_risk" },
+  { label: "Missing info", value: "missing_info" },
+  { label: "AI draft ready", value: "ai_ready" },
+  { label: "Reviewed", value: "reviewed" },
+  { label: "Won", value: "won" },
   { label: "Lost", value: "lost" },
 ];
 
-function formatDate(value: string | null): string {
-  if (!value) {
-    return "Not yet";
-  }
+function formatAge(value: string | null): string {
+  if (!value) return "—";
+  const diffMinutes = Math.max(
+    0,
+    Math.round((Date.now() - new Date(value).getTime()) / 60000),
+  );
+  if (diffMinutes < 60) return `${Math.max(diffMinutes, 1)}m`;
+  const diffHours = Math.round(diffMinutes / 60);
+  if (diffHours < 24) return `${diffHours}h`;
+  const diffDays = Math.round(diffHours / 24);
+  if (diffDays < 7) return `${diffDays}d`;
+  return new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(
+    new Date(value),
+  );
+}
 
-  return new Intl.DateTimeFormat("en", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(new Date(value));
+function createdTimestamp(item: LeadDeskItem): number {
+  return item.lead.created_at ? new Date(item.lead.created_at).getTime() : 0;
+}
+
+function urgencyScore(item: LeadDeskItem): number {
+  if (item.lead.response_sla_state === "overdue") return 100;
+  if (item.score.quality_level === "needs_info") return 86;
+  if (item.lead.status === "new") return 80;
+  if (item.lead.status === "follow_up_needed") return 72;
+  if (item.action?.status === "open") return 65;
+  return 20;
 }
 
 function matchesFilter(item: LeadDeskItem, filter: LeadFilter): boolean {
-  if (filter === "all") {
-    return true;
-  }
-
-  if (filter === "follow_up") {
+  if (filter === "all") return true;
+  if (filter === "needs_reply") {
     return (
+      item.lead.status === "new" ||
       item.lead.status === "follow_up_needed" ||
-      item.lead.response_sla_state === "follow_up_due"
+      item.lead.response_sla_state === "new" ||
+      item.lead.response_sla_state === "overdue"
     );
   }
-
-  return item.lead.status === filter;
+  if (filter === "at_risk") return item.lead.response_sla_state === "overdue";
+  if (filter === "missing_info") return item.score.quality_level === "needs_info";
+  if (filter === "ai_ready") {
+    return (
+      item.lead.status === "new" ||
+      item.lead.status === "follow_up_needed" ||
+      item.action?.status === "open" ||
+      !item.lead.first_reply_copied_at
+    );
+  }
+  if (filter === "reviewed") {
+    return item.lead.status === "reviewed" || item.lead.status === "replied";
+  }
+  if (filter === "won") {
+    return item.lead.status === "booked" || item.lead.manual_outcome === "booked";
+  }
+  if (filter === "lost") {
+    return item.lead.status === "lost" || item.lead.manual_outcome === "lost";
+  }
+  return true;
 }
 
 function matchesSearch(item: LeadDeskItem, search: string): boolean {
   const normalizedSearch = search.trim().toLowerCase();
-
-  if (normalizedSearch.length === 0) {
-    return true;
-  }
-
+  if (normalizedSearch.length === 0) return true;
   return [
     item.lead.customer_name,
     item.lead.customer_contact,
@@ -89,183 +137,291 @@ function matchesSearch(item: LeadDeskItem, search: string): boolean {
     item.lead.city_or_service_area,
     item.recommendedAction,
     item.primaryIssue,
+    item.score.explanation,
   ]
     .filter((value): value is string => Boolean(value))
     .some((value) => value.toLowerCase().includes(normalizedSearch));
 }
 
-function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
+function sortLeads(leads: LeadDeskItem[], sort: LeadSort): LeadDeskItem[] {
+  return [...leads].sort((left, right) => {
+    if (sort === "oldest") {
+      return createdTimestamp(left) - createdTimestamp(right);
+    }
+    if (sort === "most_urgent") {
+      const urgencyDifference = urgencyScore(right) - urgencyScore(left);
+      return urgencyDifference !== 0
+        ? urgencyDifference
+        : createdTimestamp(right) - createdTimestamp(left);
+    }
+    return createdTimestamp(right) - createdTimestamp(left);
+  });
+}
+
+function displayStatus(item: LeadDeskItem): {
+  label: string;
+  tone: "amber" | "blue" | "emerald" | "neutral" | "red";
+} {
+  if (item.lead.status === "booked") return { label: "Won", tone: "emerald" };
+  if (item.lead.status === "lost") return { label: "Lost", tone: "neutral" };
+  if (item.lead.status === "archived") return { label: "Archived", tone: "neutral" };
+  if (item.lead.response_sla_state === "overdue") return { label: "At risk", tone: "red" };
+  if (item.score.quality_level === "needs_info") return { label: "Missing info", tone: "amber" };
+  if (item.lead.status === "reviewed" || item.lead.status === "replied") {
+    return { label: "Reviewed", tone: "neutral" };
+  }
+  return { label: "Needs reply", tone: "blue" };
+}
+
+function summarizeService(item: LeadDeskItem): string {
+  return item.lead.service_type ?? "Service not set";
+}
+
+function summarizeArea(item: LeadDeskItem): string {
+  return item.lead.city_or_service_area ?? "Area pending";
+}
+
+function CustomerCell({ item }: Readonly<{ item: LeadDeskItem }>) {
+  const sub = item.lead.customer_contact ?? summarizeService(item);
   return (
-    <div className="grid gap-4 rounded-[16px] border border-dashed border-emerald-200 bg-emerald-50/45 p-5">
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800">
-          Sample lead
+    <div className="flex min-w-0 items-center gap-2.5">
+      <Avatar name={item.lead.customer_name} size={36} />
+      <div className="min-w-0">
+        <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
+          {shortCustomerName(item.lead.customer_name)}
+        </p>
+        <p className="mt-0.5 truncate text-[12px] text-[var(--dash-text-muted)]">
+          {sub}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function LeadMobileCard({ item }: Readonly<{ item: LeadDeskItem }>) {
+  const status = displayStatus(item);
+  return (
+    <Link
+      className="grid gap-3 border-b border-[var(--dash-border)] p-3.5 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:hidden"
+      href={`/dashboard/leads/${item.lead.id}`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <CustomerCell item={item} />
+        <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
+      </div>
+      <div className="grid gap-2 sm:grid-cols-2">
+        <span className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
+          <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+            Service
+          </span>
+          <span className="mt-1 block truncate text-[var(--dash-text)]">
+            {summarizeService(item)}
+          </span>
         </span>
-        <span className="rounded-full border border-red-200 bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700">
-          Reply needed
+        <span className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
+          <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+            Location
+          </span>
+          <span className="mt-1 block truncate text-[var(--dash-text)]">
+            {summarizeArea(item)}
+          </span>
         </span>
       </div>
-      <div className="grid gap-3 lg:grid-cols-[1fr_1fr_auto] lg:items-center">
-        <div>
-          <p className="text-base font-semibold text-zinc-950">
-            Maria Santos - move-out cleaning
-          </p>
-          <p className="mt-2 text-sm leading-6 text-zinc-700">
-            2-bedroom apartment, downtown. Wants help before Friday. Missing
-            preferred arrival window.
-          </p>
+    </Link>
+  );
+}
+
+const COL_TEMPLATE =
+  "grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_120px_72px_minmax(0,1fr)]";
+
+function LeadDesktopRow({ item }: Readonly<{ item: LeadDeskItem }>) {
+  const status = displayStatus(item);
+  return (
+    <Link
+      className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] px-4 py-3 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:grid`}
+      href={`/dashboard/leads/${item.lead.id}`}
+    >
+      <CustomerCell item={item} />
+      <span className="truncate text-[var(--dash-text-secondary)]">
+        {summarizeService(item)}
+      </span>
+      <span className="truncate text-[var(--dash-text-secondary)]">
+        {summarizeArea(item)}
+      </span>
+      <span className="text-[var(--dash-text-muted)]">
+        {formatAge(item.lead.created_at)} ago
+      </span>
+      <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
+      <span className="min-w-0 truncate text-[var(--dash-text-secondary)]">
+        {item.recommendedAction}
+      </span>
+    </Link>
+  );
+}
+
+function LeadDesktopHeader() {
+  return (
+    <div
+      className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-4 py-3 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)] xl:grid`}
+    >
+      <span>Customer</span>
+      <span>Service</span>
+      <span>Location</span>
+      <span>Requested</span>
+      <span>Status</span>
+      <span>Next action</span>
+    </div>
+  );
+}
+
+function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
+  return (
+    <div className="grid gap-4 rounded-[20px] border border-dashed border-[rgba(20,184,166,0.28)] bg-[var(--dash-primary-soft)] p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <StatusBadge tone="amber">Sample lead</StatusBadge>
+        <StatusBadge tone="red">Reply needed</StatusBadge>
+        <StatusBadge tone="emerald">AI draft ready</StatusBadge>
+      </div>
+      <div className="grid items-center gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.9fr)_11rem]">
+        <div className="flex items-center gap-3">
+          <Avatar name="Maria Santos" size={44} tone="primary" />
+          <div>
+            <p className="text-[15px] font-black text-[var(--dash-text)]">
+              Maria S. — move-out cleaning
+            </p>
+            <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+              2-bedroom apartment, downtown. Needs help before Friday.
+            </p>
+          </div>
         </div>
-        <div className="rounded-[14px] border border-emerald-100 bg-white p-4 text-sm leading-6 text-zinc-700">
-          <span className="font-semibold text-zinc-950">Next action:</span> Ask
-          for the time window, then copy a concise owner-reviewed reply.
+        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+          <span className="font-black text-[var(--dash-text)]">Next action:</span>{" "}
+          Ask for the time window, then copy an owner-reviewed reply.
         </div>
-        <div className="grid gap-2 sm:grid-cols-2 lg:w-44 lg:grid-cols-1">
+        <div className="grid gap-2 lg:grid-cols-1">
           <CopyButton label="Copy quote link" value={quotePath} />
           <Link className={buttonClass} href="/dashboard/configuration">
             Check setup
           </Link>
         </div>
       </div>
-      <p className="text-sm leading-6 text-zinc-600">
-        This sample is not stored as customer data. It shows the workflow until
-        real quote requests arrive.
+      <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
+        Sample is not stored as customer data. It shows the workflow until real
+        quote requests arrive.
       </p>
     </div>
   );
 }
 
 export function LeadWorkspaceQueue({
+  compact = false,
   leads,
+  limit,
   quotePath,
 }: LeadWorkspaceQueueProps) {
   const [activeFilter, setActiveFilter] = useState<LeadFilter>("all");
   const [search, setSearch] = useState("");
+  const [sort, setSort] = useState<LeadSort>("most_urgent");
+
   const hasActiveFilter = activeFilter !== "all" || search.trim().length > 0;
-  const filteredLeads = useMemo(
-    () =>
+
+  const filteredLeads = useMemo(() => {
+    const sorted = sortLeads(
       leads.filter(
         (item) => matchesFilter(item, activeFilter) && matchesSearch(item, search),
       ),
-    [activeFilter, leads, search],
-  );
+      sort,
+    );
+    return typeof limit === "number" ? sorted.slice(0, limit) : sorted;
+  }, [activeFilter, leads, limit, search, sort]);
 
   function clearFilters() {
     setActiveFilter("all");
     setSearch("");
+    setSort("most_urgent");
   }
 
   return (
-    <>
-      <div className="mt-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-wrap gap-1 rounded-[12px] bg-zinc-100 p-1">
-          {filters.map((filter) => (
+    <DashboardCard className="overflow-hidden p-0" variant="elevated">
+      {!compact ? (
+        <div className="border-b border-[var(--dash-border)] p-4 sm:p-[18px]">
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              className={`${inputClass} min-w-0 flex-[1_1_240px]`}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search leads, city, service…"
+              type="search"
+              value={search}
+            />
+            <select
+              className={`${inputClass} flex-[0_0_180px]`}
+              onChange={(event) => setActiveFilter(event.target.value as LeadFilter)}
+              value={activeFilter}
+            >
+              {filters.map((filter) => (
+                <option key={filter.value} value={filter.value}>
+                  {filter.label}
+                </option>
+              ))}
+            </select>
+            <select
+              className={`${inputClass} flex-[0_0_160px]`}
+              onChange={(event) => setSort(event.target.value as LeadSort)}
+              value={sort}
+            >
+              <option value="most_urgent">Most urgent</option>
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+            </select>
             <button
-              className={
-                activeFilter === filter.value
-                  ? "inline-flex h-8 items-center rounded-md bg-[var(--dash-primary)] px-3 text-sm font-semibold text-[#03130c]"
-                  : "inline-flex h-8 items-center rounded-md px-3 text-sm font-medium text-zinc-600 hover:bg-[rgba(23,212,146,0.08)] hover:text-zinc-950"
-              }
-              key={filter.value}
-              onClick={() => setActiveFilter(filter.value)}
+              className={`${buttonClass} flex-[0_0_auto]`}
+              onClick={clearFilters}
               type="button"
             >
-              {filter.label}
+              Reset
             </button>
-          ))}
+          </div>
         </div>
-        <div className="flex w-full flex-col gap-2 sm:flex-row lg:w-auto">
-          <input
-            className={`${inputClass} lg:w-72`}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search name, contact, service, area"
-            type="search"
-            value={search}
-          />
-          {hasActiveFilter ? (
-            <button className={buttonClass} onClick={clearFilters} type="button">
-              Clear
-            </button>
-          ) : null}
-        </div>
-      </div>
+      ) : null}
 
-      <div className="mt-4 min-w-0 overflow-x-auto rounded-[16px] border border-zinc-200">
-        <div className="hidden min-w-[1480px] grid-cols-[minmax(220px,1.15fr)_140px_150px_110px_140px_150px_150px_minmax(220px,1fr)_150px] border-b border-zinc-200 bg-zinc-50 px-4 py-3 text-[12px] font-semibold uppercase tracking-wide text-zinc-500 xl:grid">
-          <span>Customer</span>
-          <span>Service</span>
-          <span>Location</span>
-          <span>Quality</span>
-          <span>SLA</span>
-          <span>Status</span>
-          <span>Source</span>
-          <span>Next action</span>
-          <span>Created</span>
-        </div>
+      <div className="min-w-0">
         {filteredLeads.length > 0 ? (
-          filteredLeads.map((item) => (
-            <Link
-              className="grid gap-3 border-b border-zinc-200 px-4 py-3 text-sm transition last:border-b-0 hover:border-[rgba(23,212,146,0.18)] hover:bg-[rgba(23,212,146,0.08)] xl:min-h-[68px] xl:min-w-[1480px] xl:grid-cols-[minmax(220px,1.15fr)_140px_150px_110px_140px_150px_150px_minmax(220px,1fr)_150px] xl:items-center"
-              href={`/dashboard/leads/${item.lead.id}`}
-              key={item.lead.id}
-            >
-              <span className="min-w-0">
-                <span className="block truncate font-semibold text-zinc-950">
-                  {item.lead.customer_name ?? "Unnamed lead"}
-                </span>
-                <span className="mt-1 block break-all text-[13px] leading-5 text-zinc-500">
-                  {item.lead.customer_contact ?? "No contact captured"}
-                </span>
-              </span>
-              <span className="text-zinc-700">
-                {item.lead.service_type ?? "Service not set"}
-              </span>
-              <span className="text-zinc-700">
-                {item.lead.city_or_service_area ?? "Area missing"}
-              </span>
-              <LeadQualityBadge value={item.score.quality_level} />
-              <ResponseSlaBadge value={item.lead.response_sla_state} />
-              <LeadStatusBadge value={item.lead.status} />
-              <span className="break-words text-[13px] leading-5 text-zinc-500">
-                {item.lead.source_channel ?? "Unknown"}
-              </span>
-              <span>
-                <span className="inline-flex rounded-md bg-[var(--dash-primary)] px-2.5 py-1 text-xs font-semibold text-[#03130c]">
-                  {item.recommendedAction}
-                </span>
-                <span className="mt-1 block text-[13px] leading-5 text-zinc-500">
-                  {item.primaryIssue}
-                </span>
-              </span>
-              <span className="text-[13px] leading-5 text-zinc-500">
-                {formatDate(item.lead.created_at)}
-              </span>
-            </Link>
-          ))
+          <>
+            <LeadDesktopHeader />
+            <div className="xl:hidden">
+              {filteredLeads.map((item) => (
+                <LeadMobileCard item={item} key={item.lead.id} />
+              ))}
+            </div>
+            <div className="hidden xl:block">
+              {filteredLeads.map((item) => (
+                <LeadDesktopRow item={item} key={item.lead.id} />
+              ))}
+            </div>
+          </>
         ) : (
           <div className="p-4">
             {leads.length === 0 ? (
               <SampleLeadEmptyState quotePath={quotePath} />
-            ) : (
+            ) : hasActiveFilter ? (
               <EmptyState
                 action={
-                  hasActiveFilter ? (
-                    <button
-                      className={buttonClass}
-                      onClick={clearFilters}
-                      type="button"
-                    >
-                      Clear filters
-                    </button>
-                  ) : undefined
+                  <button className={buttonClass} onClick={clearFilters} type="button">
+                    Clear filters
+                  </button>
                 }
-                title="No leads found."
+                title="No leads match those filters."
               >
-                Try another search or clear filters.
+                Try another search, clear filters, or sort by newest quote requests.
+              </EmptyState>
+            ) : (
+              <EmptyState title="No leads yet.">
+                Share your quote link to start capturing requests.
               </EmptyState>
             )}
           </div>
         )}
       </div>
-    </>
+    </DashboardCard>
   );
 }

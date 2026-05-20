@@ -104,6 +104,19 @@ function getInputMinimum(input: {
   return getNumberMinimum(input.field);
 }
 
+function isWideField(field: FieldRecord): boolean {
+  const key = field.field_key.toLowerCase();
+  return (
+    field.field_type === "textarea" ||
+    field.field_type === "boolean" ||
+    key.includes("note") ||
+    key.includes("message") ||
+    key.includes("contact") ||
+    key.includes("email") ||
+    key.includes("phone")
+  );
+}
+
 function FieldInput({
   field,
   todayDate,
@@ -133,13 +146,23 @@ function FieldInput({
   if (field.field_type === "select" || field.field_type === "time_window") {
     return (
       <select
-        className={baseClass}
+        className={`${baseClass} quote-dark-select`}
         name={`field:${field.field_key}`}
         required={field.is_required}
+        style={{
+          backgroundColor: "#0D1721",
+          color: "#F5F7FA",
+        }}
       >
-        <option value="">Select an option</option>
+        <option style={{ backgroundColor: "#0D1721", color: "#F5F7FA" }} value="">
+          Select an option
+        </option>
         {getOptions(field.options).map((option) => (
-          <option key={option} value={option}>
+          <option
+            key={option}
+            style={{ backgroundColor: "#0D1721", color: "#F5F7FA" }}
+            value={option}
+          >
             {toOptionLabel(option)}
           </option>
         ))}
@@ -176,23 +199,23 @@ export default async function QuotePage({
 
   return (
     <BizPilotThemeShell>
-      <section className="border-b border-white/[0.06] px-4 py-7 sm:px-6">
+      <section className="border-b border-white/[0.06] px-4 py-5 sm:px-6">
         <div className="mx-auto flex w-full max-w-[760px] flex-col gap-6">
           <BizPilotBrand compact subtitle="Quote request" />
 
-          <div className="rounded-[18px] border border-white/[0.08] bg-white/[0.035] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.16)] sm:p-6">
-            <p className="inline-flex items-center gap-2 rounded-full border border-[#17D492]/18 bg-[#17D492]/8 px-3 py-1 text-[11px] font-bold uppercase text-[#17D492]">
+          <div className="rounded-[18px] border border-white/[0.08] bg-white/[0.035] p-4 shadow-[0_24px_70px_rgba(0,0,0,0.16)] sm:p-5">
+            <p className="inline-flex items-center gap-2 rounded-full border border-[#17D492]/18 bg-[#17D492]/8 px-3 py-1 text-xs font-bold uppercase text-[#17D492]">
               <span
                 className="h-1.5 w-1.5 rounded-full"
                 style={{ backgroundColor: primaryColor }}
               />
               Cleaning quote request
             </p>
-            <h1 className="mt-4 text-[30px] font-bold leading-[1.05] tracking-[-0.03em] text-[#F5F7FA] sm:text-[36px]">
+            <h1 className="mt-3 text-[28px] font-bold leading-[1.05] tracking-[-0.03em] text-[#F5F7FA] sm:text-[32px]">
               {page.publicLink.display_name}
             </h1>
-            <p className={`mt-3 max-w-[44ch] text-sm leading-6 ${bizTheme.secondaryText}`}>
-              Share the details for your cleaning request. The business will review your request and follow up directly.
+            <p className={`mt-2 max-w-[54ch] text-sm leading-6 ${bizTheme.secondaryText}`}>
+              Share the details for your cleaning request. The business owner reviews every request and replies directly. No AI message is sent automatically.
             </p>
             <div
               className="mt-5 h-px w-full opacity-70"
@@ -206,7 +229,7 @@ export default async function QuotePage({
 
       <form
         action={submitPublicIntakeAction}
-        className="mx-auto w-full max-w-[760px] space-y-4 px-4 py-6 sm:px-6"
+        className="mx-auto w-full max-w-[860px] space-y-4 px-4 py-5 pb-10 sm:px-6"
       >
         <input name="businessSlug" type="hidden" value={slug} />
         <input name="intakeFormId" type="hidden" value={page.form.id} />
@@ -240,10 +263,12 @@ export default async function QuotePage({
           </p>
         ) : null}
 
-        <div className="space-y-3.5">
+        <div className="grid gap-3 md:grid-cols-2">
           {page.fields.map((field) => (
             <label
-              className="block rounded-[14px] border border-white/[0.08] bg-[rgba(13,23,33,0.78)] p-3.5 text-sm font-semibold text-[rgba(245,247,250,0.84)] shadow-[0_16px_44px_rgba(0,0,0,0.14)]"
+              className={`block rounded-[14px] border border-white/[0.08] bg-[rgba(13,23,33,0.78)] p-3 text-sm font-semibold text-[rgba(245,247,250,0.84)] shadow-[0_16px_44px_rgba(0,0,0,0.14)] ${
+                isWideField(field) ? "md:col-span-2" : ""
+              }`}
               key={field.id}
             >
               <span>
@@ -282,10 +307,10 @@ export default async function QuotePage({
         </label>
 
         <button
-          className={`${bizTheme.buttonPrimary} h-11 w-full px-6 text-sm sm:w-auto`}
+          className={`${bizTheme.buttonPrimary} h-12 w-full px-6 text-sm shadow-[0_18px_42px_rgba(23,212,146,0.18)] sm:w-auto`}
           type="submit"
         >
-          Submit quote request
+          Get my cleaning quote
         </button>
       </form>
     </BizPilotThemeShell>

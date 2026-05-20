@@ -179,6 +179,36 @@ body {
   box-shadow: 0 14px 38px rgba(2, 6, 23, 0.08);
 }
 
+/*
+ * AI Response Desk surfaces — used by lead detail Suggested Reply / Follow-up
+ * draft / AI Summary cards. Subtle radial accent communicates assistant scope
+ * without violating the Operational Calm UX rule against glow spam.
+ */
+.biz-card-ai {
+  border-color: rgba(20, 184, 166, 0.2);
+  background:
+    radial-gradient(circle at 0 0, rgba(20, 184, 166, 0.12), transparent 28%),
+    var(--dash-surface);
+}
+
+.biz-draft-box {
+  display: block;
+  padding: 15px;
+  border: 1px solid var(--dash-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--dash-text-secondary);
+  line-height: 1.62;
+  font-size: 13px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.biz-dashboard-light .biz-draft-box {
+  background: #f8fafc;
+  color: #334155;
+}
+
 .biz-button-primary {
   background: var(--dash-primary);
   color: #03130c;
@@ -284,14 +314,6 @@ body {
   background-color: rgba(96, 165, 250, 0.14);
 }
 
-.biz-dashboard-dark .bg-violet-50 {
-  background-color: var(--dash-ai-soft);
-}
-
-.biz-dashboard-dark .bg-violet-100 {
-  background-color: rgba(23, 212, 146, 0.12);
-}
-
 .biz-dashboard-dark .bg-white\/70 {
   background-color: rgba(18, 31, 45, 0.72);
 }
@@ -309,15 +331,13 @@ body {
 .biz-dashboard-dark .border-amber-200,
 .biz-dashboard-dark .border-amber-100,
 .biz-dashboard-dark .border-red-200,
-.biz-dashboard-dark .border-blue-200,
-.biz-dashboard-dark .border-violet-200 {
+.biz-dashboard-dark .border-blue-200 {
   border-color: var(--biz-border-subtle);
 }
 
 .biz-dashboard-dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
 .biz-dashboard-dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]),
-.biz-dashboard-dark .divide-zinc-200 > :not([hidden]) ~ :not([hidden]),
-.biz-dashboard-dark .divide-violet-100 > :not([hidden]) ~ :not([hidden]) {
+.biz-dashboard-dark .divide-zinc-200 > :not([hidden]) ~ :not([hidden]) {
   border-color: var(--dash-border);
 }
 
@@ -360,16 +380,6 @@ body {
   color: #93c5fd;
 }
 
-.biz-dashboard-dark .text-violet-800,
-.biz-dashboard-dark .text-violet-700 {
-  color: #17d492;
-}
-
-.biz-dashboard-dark .text-violet-600 {
-  color: #17d492;
-}
-
-.biz-dashboard-dark .bg-violet-600,
 .biz-dashboard-dark .bg-emerald-500 {
   background-color: #17d492;
 }
@@ -391,4 +401,48 @@ body {
 .biz-dashboard-dark textarea,
 .biz-dashboard-dark select {
   color: #f8fafc;
+}
+
+.quote-dark-select,
+.quote-dark-select option {
+  background-color: #0d1721;
+  color: #f5f7fa;
+}
+
+/* Phase 18A finishing pass: multi-device dashboard ergonomics. */
+.dashboard-mobile-nav {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+}
+
+.biz-dashboard-dark .text-sky-700,
+.biz-dashboard-dark .text-sky-600 {
+  color: #7dd3fc;
+}
+
+.biz-dashboard-dark .bg-sky-500\/12 {
+  background-color: rgba(14, 165, 233, 0.12);
+}
+
+.biz-dashboard-dark .border-sky-300\/35 {
+  border-color: rgba(125, 211, 252, 0.28);
+}
+
+.biz-dashboard-dark select option,
+.quote-dark-select option {
+  background-color: #0d1721;
+  color: #f5f7fa;
+}
+
+@media (max-width: 1023px) {
+  .dashboard-frame {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .biz-card,
+  .biz-card-muted,
+  .biz-card-priority {
+    border-radius: 16px;
+  }
 }

@@ -25,6 +25,16 @@ import { saveBusinessConfiguration } from "@/server/services/business-configurat
 import type { BusinessPrivacySettingsRecord } from "@/server/repositories/business-configuration.repository";
 import type { Json } from "@/types/database";
 
+/**
+ * Canonical consent notice fallback.
+ * Source: docs/security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md section 13
+ * and docs/product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md section 16.
+ * Used when the configuration form does not submit a consent notice so that
+ * public quote submissions always have a valid consent version on file.
+ */
+const CANONICAL_CONSENT_NOTICE =
+  "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.";
+
 function readRequiredFormValue(formData: FormData, key: string): string {
   const value = formData.get(key);
   if (typeof value !== "string" || value.trim().length === 0) {
@@ -192,7 +202,9 @@ export async function saveBusinessConfigurationAction(
       businessId: readRequiredFormValue(formData, "businessId"),
       businessName: readRequiredFormValue(formData, "businessName"),
       businessSlug: readRequiredFormValue(formData, "businessSlug"),
-      consentNotice: readRequiredFormValue(formData, "consentNotice"),
+      consentNotice:
+        readOptionalFormValue(formData, "consentNotice") ??
+        CANONICAL_CONSENT_NOTICE,
       faqs,
       fieldOverrides: readTemplateFieldOverrides(formData),
       primaryColor: readRequiredFormValue(formData, "primaryColor"),

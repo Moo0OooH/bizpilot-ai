@@ -5,30 +5,32 @@
  * File: components/dashboard/dashboard-sidebar.tsx
  * Project: BizPilot AI
  * Description: Renders the shared protected dashboard sidebar navigation.
- * Role: Provides route-aware app navigation for protected dashboard pages.
+ * Role: Provides route-aware app navigation for the Quote Recovery Command Center.
  * Related:
  * - components/dashboard/dashboard-shell.tsx
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-18
+ * Last Updated: 2026-05-19
  * Change Log:
- * - 2026-05-10: Created reusable dashboard sidebar shell component.
- * - 2026-05-17: Tuned navigation for calm quote recovery positioning.
- * - 2026-05-18: Rebalanced sidebar width, active states, and account treatment.
+ * - 2026-05-19: Matched approved index.html sidebar rhythm, brand block, active states, mobile nav, and quote-link readiness footer.
  * ============================================================
  */
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { CopyButton } from "./copy-button";
+import { StatusBadge } from "./dashboard-ui";
+
 type DashboardSidebarProps = Readonly<{
   activeBusinessName: string;
+  businessSlug: string;
   userLabel: string;
 }>;
 
 type NavigationItem = Readonly<{
-  href?: string;
+  href: string;
   icon: string;
   label: string;
   match?: (pathname: string) => boolean;
@@ -39,115 +41,177 @@ type NavigationGroup = Readonly<{
   label: string;
 }>;
 
-const navigationGroups: NavigationGroup[] = [
+const ownerNavigation: NavigationGroup[] = [
   {
-    label: "Overview",
+    label: "Owner workspace",
     items: [
       {
         href: "/dashboard",
-        icon: "O",
+        icon: "⌂",
         label: "Overview",
         match: (pathname) => pathname === "/dashboard",
       },
-    ],
-  },
-  {
-    label: "Workspace",
-    items: [
       {
         href: "/dashboard/leads",
-        icon: "L",
+        icon: "◎",
         label: "Leads",
         match: (pathname) => pathname.startsWith("/dashboard/leads"),
       },
-    ],
-  },
-  {
-    label: "Business setup",
-    items: [
       {
         href: "/dashboard/configuration",
-        icon: "Q",
+        icon: "▣",
         label: "Quote Setup",
-        match: (pathname) => pathname === "/dashboard/configuration",
+        match: (pathname) => pathname === "/dashboard/configuration" || pathname === "/dashboard/quote-setup",
+      },
+      {
+        href: "/dashboard/business-profile",
+        icon: "◈",
+        label: "Business Profile",
+        match: (pathname) => pathname === "/dashboard/business-profile",
+      },
+      {
+        href: "/dashboard/settings",
+        icon: "⚙",
+        label: "Settings",
+        match: (pathname) => pathname === "/dashboard/settings",
       },
     ],
   },
 ];
 
-function navClass(isActive: boolean, isDisabled: boolean): string {
-  if (isDisabled) {
-    return "flex h-9 items-center gap-2.5 rounded-[11px] px-3 text-white/35";
-  }
+const mobileNavigation: NavigationItem[] = ownerNavigation
+  .flatMap((group) => group.items)
+  .slice(0, 5);
 
+function navClass(isActive: boolean): string {
   if (isActive) {
-    return "flex h-9 items-center gap-2.5 rounded-[11px] border border-[#17D492]/18 bg-[#17D492]/14 px-3 font-semibold text-[#F5F7FA] shadow-[0_10px_26px_rgba(23,212,146,0.07)]";
+    return "flex min-h-11 items-center gap-3 rounded-[14px] border border-[rgba(20,184,166,0.34)] bg-[var(--dash-primary-soft)] px-3 font-bold text-[var(--dash-text)] shadow-[inset_0_0_0_1px_rgba(20,184,166,0.07)]";
   }
 
-  return "flex h-9 items-center gap-2.5 rounded-[11px] px-3 text-[rgba(245,247,250,0.62)] transition hover:bg-[rgba(23,212,146,0.08)] hover:text-[#F5F7FA]";
+  return "flex min-h-11 items-center gap-3 rounded-[14px] border border-transparent px-3 font-bold text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-border)] hover:bg-[rgba(148,163,184,0.08)] hover:text-[var(--dash-text)]";
 }
 
-function NavIcon({ children }: Readonly<{ children: React.ReactNode }>) {
+function NavIcon({ children, active }: Readonly<{ active: boolean; children: React.ReactNode }>) {
   return (
-    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px] border border-current/15 text-[12px] font-semibold">
+    <span
+      className={
+        active
+          ? "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[9px] bg-[rgba(20,184,166,0.22)] text-[13px] font-black"
+          : "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[9px] bg-[rgba(148,163,184,0.09)] text-[13px] font-black"
+      }
+    >
       {children}
     </span>
   );
 }
 
+function MobileNavLink({ item, pathname }: Readonly<{ item: NavigationItem; pathname: string }>) {
+  const isActive = item.match?.(pathname) ?? pathname === item.href;
+
+  return (
+    <Link
+      className={
+        isActive
+          ? "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[12px] bg-[var(--dash-primary-soft)] px-2 py-1.5 text-[var(--dash-primary)]"
+          : "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[12px] px-2 py-1.5 text-[var(--dash-text-muted)]"
+      }
+      href={item.href}
+    >
+      <span className="text-[12px] font-black">{item.icon}</span>
+      <span className="max-w-full truncate text-[10px] font-bold">{item.label}</span>
+    </Link>
+  );
+}
+
 export function DashboardSidebar({
   activeBusinessName,
+  businessSlug,
   userLabel,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
-  return (
-    <aside className="dashboard-sidebar sticky top-0 hidden h-screen w-[260px] border-r text-white lg:flex lg:flex-col">
-      <div className="border-b border-white/10 px-5 py-4">
-        <p className="text-lg font-semibold tracking-normal text-white">
-          BizPilot
-        </p>
-        <p className="mt-1.5 truncate text-[13px] text-white/58">
-          Calm quote recovery workspace
-        </p>
-      </div>
-      <nav className="flex-1 space-y-5 overflow-y-auto px-3.5 py-5 text-[13px]">
-        {navigationGroups.map((group) => (
-          <div key={group.label}>
-            <p className="px-3 text-[12px] font-semibold uppercase tracking-wide text-white/42">
-              {group.label}
-            </p>
-            <div className="mt-2 grid gap-1">
-              {group.items.map((item) => {
-                const isActive = item.match?.(pathname) ?? false;
-                const className = navClass(isActive, !item.href);
-                const content = (
-                  <>
-                    <NavIcon>{item.icon}</NavIcon>
-                    <span className="truncate">{item.label}</span>
-                  </>
-                );
+  const quotePath = `/quote/${businessSlug}`;
 
-                return item.href ? (
-                  <Link className={className} href={item.href} key={item.label}>
-                    {content}
-                  </Link>
-                ) : (
-                  <span className={className} key={item.label}>
-                    {content}
-                  </span>
-                );
-              })}
+  return (
+    <>
+      <aside className="dashboard-sidebar sticky top-0 hidden h-screen w-[272px] border-r px-[18px] py-[22px] lg:flex lg:flex-col">
+        <Link className="flex items-center gap-3 border-b border-[var(--dash-border)] px-2.5 pb-[18px]" href="/dashboard">
+          <span className="flex h-[42px] w-[42px] items-center justify-center rounded-[14px] bg-gradient-to-br from-[#2dd4bf] to-[#10b981] text-[18px] font-black text-[#022c22] shadow-[0_12px_28px_rgba(20,184,166,0.26)]">
+            B
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate text-[16px] font-black tracking-[-0.03em] text-[var(--dash-text)]">
+              BizPilot AI
+            </span>
+            <span className="mt-0.5 block truncate text-[12px] text-[var(--dash-text-muted)]">
+              Quote Recovery Desk
+            </span>
+          </span>
+        </Link>
+
+        <nav className="mt-5 flex-1 space-y-5 overflow-y-auto text-[14px]">
+          {ownerNavigation.map((group) => (
+            <div key={group.label}>
+              <p className="mx-2.5 mb-2 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
+                {group.label}
+              </p>
+              <div className="grid gap-1.5">
+                {group.items.map((item) => {
+                  const isActive = item.match?.(pathname) ?? pathname === item.href;
+
+                  return (
+                    <Link className={navClass(isActive)} href={item.href} key={item.label}>
+                      <NavIcon active={isActive}>{item.icon}</NavIcon>
+                      <span className="truncate">{item.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
+          ))}
+        </nav>
+
+        <div className="mt-auto grid gap-3">
+          <div className="rounded-[18px] border border-[var(--dash-border)] bg-[rgba(255,255,255,0.035)] p-[14px]">
+            <div className="mb-2.5 flex items-center justify-between gap-3 text-[12px] text-[var(--dash-text-muted)]">
+              <span>Quote link</span>
+              <StatusBadge tone="emerald">Active</StatusBadge>
+            </div>
+            <div className="mb-2.5 flex items-center justify-between gap-3 text-[12px] text-[var(--dash-text-muted)]">
+              <span>Plan</span>
+              <span className="font-bold text-[var(--dash-text-secondary)]">Pilot</span>
+            </div>
+            <CopyButton className="w-full" label="Copy quote link" value={quotePath} />
           </div>
-        ))}
-      </nav>
-      <div className="space-y-2 border-t border-white/10 p-3 text-[13px]">
-        <div className="rounded-[14px] border border-white/[0.08] bg-white/[0.03] p-3">
-          <p className="truncate font-semibold text-white">{activeBusinessName}</p>
-          <p className="mt-1.5 text-[12px] text-white/42">Signed in as</p>
-          <p className="mt-0.5 break-words text-[12px] text-white/68">{userLabel}</p>
+
+          <div
+            className="flex items-center gap-2.5 rounded-[14px] border border-[var(--dash-border)] bg-[rgba(255,255,255,0.035)] px-3 py-2.5 text-[12px]"
+            title={userLabel}
+          >
+            <span
+              aria-hidden
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--dash-primary-soft)] text-[11px] font-black text-[var(--dash-primary)]"
+            >
+              {activeBusinessName.charAt(0).toUpperCase()}
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate font-black text-[var(--dash-text)]">
+                {activeBusinessName}
+              </span>
+              <span className="mt-0.5 block truncate text-[var(--dash-text-muted)]">
+                Owner workspace
+              </span>
+            </span>
+          </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+
+      <nav className="dashboard-mobile-nav fixed inset-x-0 bottom-0 z-30 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-2 py-2 shadow-[0_-18px_40px_rgba(0,0,0,0.28)] backdrop-blur lg:hidden">
+        <div className="mx-auto flex max-w-xl gap-1">
+          {mobileNavigation.map((item) => (
+            <MobileNavLink item={item} key={item.href} pathname={pathname} />
+          ))}
+        </div>
+      </nav>
+    </>
   );
 }

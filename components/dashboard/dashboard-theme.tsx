@@ -1,97 +1,85 @@
 "use client";
 
 /**
- * ============================================================
  * File: components/dashboard/dashboard-theme.tsx
  * Project: BizPilot AI
- * Description: Provides owner-selectable dashboard light/dark theme state.
- * Role: Wraps the protected dashboard shell and exposes a compact theme selector.
- * Related:
- * - components/dashboard/dashboard-shell.tsx
- * - components/dashboard/dashboard-topbar.tsx
- * - app/globals.css
- * Author: MoOoH
- * Created: 2026-05-17
+ * Role: Hydration-safe dashboard theme provider and selector.
  * Last Updated: 2026-05-18
- * Change Log:
- * - 2026-05-17: Created persisted dark/light dashboard theme controls.
- * - 2026-05-18: Set the protected workspace shell to the approved 260px sidebar rhythm.
- * ============================================================
  */
 
 import {
   createContext,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
 
 type DashboardTheme = "dark" | "light";
-
-type DashboardThemeContextValue = Readonly<{
-  setTheme: (theme: DashboardTheme) => void;
+type ThemeContextValue = Readonly<{
+  setTheme: (nextTheme: DashboardTheme) => void;
   theme: DashboardTheme;
 }>;
 
-const storageKey = "bizpilot-dashboard-theme";
-const DashboardThemeContext = createContext<DashboardThemeContextValue | null>(
-  null,
-);
+export const DASHBOARD_THEME_COOKIE = "bizpilot-dashboard-theme";
+const STORAGE_KEY = "bizpilot-dashboard-theme";
+const MAX_AGE = 60 * 60 * 24 * 365;
 
-function readStoredTheme(): DashboardTheme {
-  if (typeof window === "undefined") {
-    return "dark";
-  }
+const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-  return window.localStorage.getItem(storageKey) === "light" ? "light" : "dark";
-}
-
-function useDashboardTheme(): DashboardThemeContextValue {
-  const value = useContext(DashboardThemeContext);
-
-  if (!value) {
-    throw new Error("DashboardThemeSelector must be used inside DashboardThemeFrame.");
-  }
-
-  return value;
+function persistTheme(nextTheme: DashboardTheme): void {
+  document.cookie = `${DASHBOARD_THEME_COOKIE}=${nextTheme}; path=/; max-age=${MAX_AGE}; samesite=lax`;
+  window.localStorage.setItem(STORAGE_KEY, nextTheme);
 }
 
 export function DashboardThemeFrame({
   children,
-}: Readonly<{ children: ReactNode }>) {
-  const [theme, setThemeState] = useState<DashboardTheme>(() => readStoredTheme());
+  initialTheme = "dark",
+}: Readonly<{ children: ReactNode; initialTheme?: DashboardTheme }>) {
+  const [theme, setThemeState] = useState<DashboardTheme>(initialTheme);
 
-  const value = useMemo<DashboardThemeContextValue>(
+  useEffect(() => {
+    persistTheme(initialTheme);
+  }, [initialTheme]);
+
+  const value = useMemo<ThemeContextValue>(
     () => ({
       setTheme: (nextTheme) => {
         setThemeState(nextTheme);
-        window.localStorage.setItem(storageKey, nextTheme);
+        persistTheme(nextTheme);
       },
       theme,
     }),
     [theme],
   );
+
   const themeClass = theme === "dark" ? "biz-dashboard-dark" : "biz-dashboard-light";
 
   return (
-    <DashboardThemeContext.Provider value={value}>
+    <ThemeContext.Provider value={value}>
       <main
-        className={`${themeClass} dashboard-frame min-h-screen transition-colors lg:grid lg:grid-cols-[260px_minmax(0,1fr)]`}
+        className={`${themeClass} dashboard-frame min-h-screen transition-colors lg:grid lg:grid-cols-[272px_minmax(0,1fr)]`}
       >
         {children}
       </main>
-    </DashboardThemeContext.Provider>
+    </ThemeContext.Provider>
   );
 }
 
 export function DashboardThemeSelector() {
-  const { setTheme, theme } = useDashboardTheme();
+  const context = useContext(ThemeContext);
+
+  if (!context) {
+    throw new Error("DashboardThemeSelector must be used inside DashboardThemeFrame.");
+  }
+
+  const { setTheme, theme } = context;
 
   return (
     <div
       aria-label="Dashboard theme"
-      className="hidden h-8 rounded-[9px] border border-[var(--dash-border-strong)] bg-[var(--dash-surface-elevated)] p-1 text-xs font-medium shadow-sm sm:inline-flex"
+      className="hidden h-9 rounded-[11px] border border-[var(--dash-border-strong)] bg-[var(--dash-surface-elevated)] p-1 text-xs font-semibold shadow-sm sm:inline-flex"
       role="group"
     >
       {(["light", "dark"] as const).map((option) => (
@@ -99,8 +87,8 @@ export function DashboardThemeSelector() {
           aria-pressed={theme === option}
           className={
             theme === option
-              ? "rounded-md bg-[var(--dash-primary)] px-2.5 text-white"
-              : "rounded-md px-2.5 text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
+              ? "rounded-[8px] bg-[var(--dash-primary)] px-2.5 text-[#03130c]"
+              : "rounded-[8px] px-2.5 text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
           }
           key={option}
           onClick={() => setTheme(option)}

@@ -2,26 +2,23 @@
  * ============================================================
  * File: components/dashboard/dashboard-ui.tsx
  * Project: BizPilot AI
- * Description: Shared dashboard UI primitives for the protected SaaS workspace.
- * Role: Provides reusable cards, headers, metrics, badges, rails, actions, and empty states.
+ * Description: Shared command-center UI primitives for the protected SaaS workspace.
+ * Role: Provides reusable cards, headers, metrics, badges, forms, rails, actions, and empty states.
  * Related:
  * - components/dashboard/dashboard-shell.tsx
  * - app/(dashboard)/dashboard/page.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-18
+ * Last Updated: 2026-05-19
  * Change Log:
- * - 2026-05-10: Added reusable SaaS dashboard presentation primitives.
- * - 2026-05-11: Expanded primitives for a production-grade quote recovery cockpit.
- * - 2026-05-17: Tuned primitives for calm dark operational dashboard surfaces.
- * - 2026-05-18: Increased dashboard readability and aligned accents to emerald.
+ * - 2026-05-19: Rebuilt primitives to follow the approved index.html Quote Recovery Command Center visual system.
  * ============================================================
  */
 
 import Link from "next/link";
 
-type CardVariant = "default" | "elevated" | "muted" | "priority";
-type Tone = "amber" | "blue" | "emerald" | "neutral" | "red";
+export type CardVariant = "default" | "elevated" | "muted" | "priority";
+export type Tone = "amber" | "blue" | "emerald" | "neutral" | "red";
 
 type CardProps = Readonly<{
   children: React.ReactNode;
@@ -31,21 +28,21 @@ type CardProps = Readonly<{
 
 type PageHeaderProps = Readonly<{
   actions?: React.ReactNode;
+  description: string;
   eyebrow?: string;
   title: string;
-  description: string;
 }>;
 
 type SectionHeaderProps = Readonly<{
   action?: React.ReactNode;
-  title: string;
   description?: string;
+  title: string;
 }>;
 
 type KpiCardProps = Readonly<{
+  detail?: string;
   label: string;
   value: string | number;
-  detail?: string;
 }>;
 
 type MetricCardProps = Readonly<{
@@ -74,35 +71,105 @@ type EmptyStateProps = Readonly<{
 }>;
 
 export const buttonClass =
-  "biz-button-secondary inline-flex h-9 items-center justify-center rounded-[11px] border px-3.5 text-[13px] font-semibold shadow-sm transition";
+  "biz-button-secondary inline-flex min-h-10 items-center justify-center gap-2 rounded-[13px] border px-3.5 py-2 text-[13px] font-bold leading-none shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
 
 export const primaryButtonClass =
-  "biz-button-primary inline-flex h-9 items-center justify-center rounded-[11px] px-3.5 text-[13px] font-semibold shadow-sm transition";
+  "biz-button-primary inline-flex min-h-10 items-center justify-center gap-2 rounded-[13px] px-3.5 py-2 text-[13px] font-bold leading-none shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
 
 export const ghostButtonClass =
-  "biz-button-ghost inline-flex h-10 items-center justify-center rounded-[12px] px-4 text-sm font-semibold transition";
+  "biz-button-ghost inline-flex min-h-10 items-center justify-center rounded-[13px] px-3.5 py-2 text-[13px] font-bold leading-none transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
 
 export const disabledButtonClass =
-  "inline-flex h-10 cursor-not-allowed items-center justify-center rounded-[12px] border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-400";
+  "inline-flex min-h-10 cursor-not-allowed items-center justify-center rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3.5 py-2 text-[13px] font-bold leading-none text-[var(--dash-text-muted)] opacity-60";
 
 export const inputClass =
-  "biz-field h-10 w-full rounded-[12px] border px-3.5 text-sm outline-none transition placeholder:text-slate-400";
+  "biz-field min-h-[42px] w-full rounded-[13px] border px-3.5 py-2 text-sm outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
 
 export const textareaClass =
-  "biz-field w-full rounded-[12px] border px-3.5 py-2.5 text-sm outline-none transition placeholder:text-slate-400";
+  "biz-field w-full rounded-[13px] border px-3.5 py-2.5 text-sm leading-6 outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
 
-export const labelClass = "grid gap-1.5 text-sm font-medium text-slate-800";
+export const labelClass =
+  "grid gap-1.5 text-sm font-semibold text-[var(--dash-text)]";
 
 const toneClasses: Record<Tone, string> = {
-  amber: "border-amber-200 bg-amber-50 text-amber-800",
-  blue: "border-blue-200 bg-blue-50 text-blue-800",
-  emerald: "border-emerald-200 bg-emerald-50 text-emerald-800",
-  neutral: "border-zinc-200 bg-zinc-50 text-zinc-700",
-  red: "border-red-200 bg-red-50 text-red-700",
+  amber:
+    "border-amber-300/35 bg-amber-500/12 text-amber-700 dark:text-amber-200",
+  blue: "border-sky-300/35 bg-sky-500/12 text-sky-700 dark:text-sky-200",
+  emerald:
+    "border-emerald-300/35 bg-emerald-500/12 text-emerald-700 dark:text-emerald-200",
+  neutral:
+    "border-[var(--dash-border-strong)] bg-[var(--dash-surface-muted)] text-[var(--dash-text-secondary)]",
+  red: "border-red-300/35 bg-red-500/12 text-red-700 dark:text-red-200",
+};
+
+const toneDotClasses: Record<Tone, string> = {
+  amber: "bg-amber-500",
+  blue: "bg-sky-500",
+  emerald: "bg-emerald-500",
+  neutral: "bg-[var(--dash-text-muted)]",
+  red: "bg-red-500",
 };
 
 function humanize(value: string): string {
   return value.replaceAll("_", " ");
+}
+
+/**
+ * Compact initials helper for avatars (max 2 chars).
+ * "Sarah Mansfield" -> "SM"; "Mohammad Ghoorchibeigi" -> "MG"; null -> "?".
+ */
+export function initials(value: string | null | undefined): string {
+  if (!value) return "?";
+  const parts = value.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "?";
+  if (parts.length === 1) {
+    return (parts[0]?.slice(0, 2) ?? "?").toUpperCase();
+  }
+  return `${parts[0]?.charAt(0) ?? ""}${parts[1]?.charAt(0) ?? ""}`.toUpperCase();
+}
+
+/**
+ * Privacy-aware short customer name for tables.
+ * "Sarah Mansfield" -> "Sarah M."; "Mohammad Ghoorchibeigi" -> "Mohammad G.".
+ * Single-word names pass through.
+ */
+export function shortCustomerName(value: string | null | undefined): string {
+  if (!value) return "Unnamed lead";
+  const parts = value.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "Unnamed lead";
+  if (parts.length === 1) return parts[0] ?? "Unnamed lead";
+  return `${parts[0]} ${(parts[1]?.charAt(0) ?? "").toUpperCase()}.`;
+}
+
+export type AvatarTone = "primary" | "soft";
+
+/**
+ * Index-aligned avatar — 42px primary teal gradient (lead detail headers) or
+ * soft slate variant for table rows. Renders only initials so customer PII is
+ * not pasted into UI surfaces by accident.
+ */
+export function Avatar({
+  name,
+  size = 36,
+  tone = "soft",
+}: Readonly<{ name: string | null | undefined; size?: number; tone?: AvatarTone }>) {
+  const base =
+    tone === "primary"
+      ? "bg-gradient-to-br from-[rgba(20,184,166,0.95)] to-[rgba(15,118,110,0.95)] text-white"
+      : "bg-[var(--dash-surface-muted)] text-[var(--dash-text)] border border-[var(--dash-border)]";
+  return (
+    <span
+      aria-hidden
+      className={`inline-flex shrink-0 items-center justify-center rounded-[14px] font-black ${base}`}
+      style={{
+        height: `${size}px`,
+        width: `${size}px`,
+        fontSize: `${Math.max(11, Math.round(size * 0.34))}px`,
+      }}
+    >
+      {initials(name)}
+    </span>
+  );
 }
 
 function cardClass(variant: CardVariant): string {
@@ -122,7 +189,9 @@ export function DashboardCard({
   variant = "default",
 }: CardProps) {
   return (
-    <section className={`rounded-[16px] border ${cardClass(variant)} ${className}`}>
+    <section
+      className={`min-w-0 overflow-hidden rounded-[24px] border ${cardClass(variant)} ${className}`}
+    >
       {children}
     </section>
   );
@@ -135,22 +204,22 @@ export function PageHeader({
   title,
 }: PageHeaderProps) {
   return (
-    <header className="flex flex-col gap-3 border-b border-[var(--dash-border)] pb-4 sm:flex-row sm:items-start sm:justify-between">
+    <header className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div className="min-w-0">
         {eyebrow ? (
-          <p className="text-[12px] font-semibold uppercase tracking-wide text-[var(--dash-text-muted)]">
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-1.5 text-[30px] font-semibold leading-[1.12] tracking-normal text-[var(--dash-text)]">
+        <h1 className="mt-1.5 text-[26px] font-extrabold leading-[1.1] tracking-[-0.04em] text-[var(--dash-text)] sm:text-[30px]">
           {title}
         </h1>
-        <p className="mt-1.5 max-w-3xl text-[14px] leading-5 text-[var(--dash-text-secondary)]">
+        <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-[var(--dash-text-secondary)]">
           {description}
         </p>
       </div>
       {actions ? (
-        <div className="flex shrink-0 flex-wrap gap-2">{actions}</div>
+        <div className="flex shrink-0 flex-wrap gap-2 md:justify-end">{actions}</div>
       ) : null}
     </header>
   );
@@ -164,11 +233,13 @@ export function SectionHeader({
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h2 className="text-[15px] font-semibold leading-5 text-[var(--dash-text)]">
+        <h2 className="text-[18px] font-extrabold leading-6 tracking-[-0.03em] text-[var(--dash-text)]">
           {title}
         </h2>
         {description ? (
-          <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">{description}</p>
+          <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+            {description}
+          </p>
         ) : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}
@@ -183,22 +254,29 @@ export function MetricCard({
   tone = "neutral",
   value,
 }: MetricCardProps) {
-  const accentClass = {
-    amber: "text-amber-700",
-    blue: "text-blue-700",
-    emerald: "text-emerald-700",
-    neutral: "text-zinc-950",
-    red: "text-red-700",
-  }[tone];
+  const accentClass: Record<Tone, string> = {
+    amber: "text-amber-600 dark:text-amber-300",
+    blue: "text-sky-600 dark:text-sky-300",
+    emerald: "text-emerald-600 dark:text-emerald-300",
+    neutral: "text-[var(--dash-text)]",
+    red: "text-red-600 dark:text-red-300",
+  };
 
   return (
-    <DashboardCard className="flex min-h-[132px] flex-col p-4">
-      <p className="text-[13px] font-medium text-slate-500">{label}</p>
-      <p className={`mt-2 text-[28px] font-semibold leading-none ${accentClass}`}>
+    <DashboardCard className="flex min-h-[146px] flex-col p-[18px]">
+      <div className="flex items-start justify-between gap-3">
+        <p className="text-[13px] font-bold text-[var(--dash-text-muted)]">
+          {label}
+        </p>
+        <span className={`mt-1 h-2 w-2 rounded-full ${toneDotClasses[tone]}`} />
+      </div>
+      <p className={`mt-[18px] text-[34px] font-black leading-none tracking-[-0.06em] ${accentClass[tone]}`}>
         {value}
       </p>
       {detail ? (
-        <p className="mt-2 text-[14px] leading-5 text-slate-500">{detail}</p>
+        <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          {detail}
+        </p>
       ) : null}
       {cta ? <div className="mt-auto pt-3">{cta}</div> : null}
     </DashboardCard>
@@ -218,9 +296,10 @@ export function KpiCard({ detail, label, value }: KpiCardProps) {
 export function StatusBadge({ children, tone = "neutral" }: StatusBadgeProps) {
   return (
     <span
-      className={`inline-flex min-h-6 max-w-full items-center justify-center rounded-full border px-2.5 py-1 text-xs font-medium capitalize leading-none ${toneClasses[tone]}`}
+      className={`inline-flex min-h-6 max-w-full items-center justify-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-extrabold leading-none ${toneClasses[tone]}`}
     >
-      <span className="truncate">{children}</span>
+      <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${toneDotClasses[tone]}`} />
+      <span className="truncate capitalize">{children}</span>
     </span>
   );
 }
@@ -273,8 +352,8 @@ export function TabLink({ active = false, children, href }: TabLinkProps) {
     <Link
       className={
         active
-          ? "inline-flex h-8 items-center rounded-md bg-[var(--dash-primary)] px-3 text-xs font-medium text-white"
-          : "inline-flex h-9 items-center rounded-md px-3 text-sm font-medium text-zinc-600 hover:bg-[rgba(23,212,146,0.08)] hover:text-zinc-950"
+          ? "inline-flex min-h-10 items-center rounded-full border border-[rgba(20,184,166,0.32)] bg-[var(--dash-primary-soft)] px-3 text-xs font-extrabold text-[var(--dash-text)]"
+          : "inline-flex min-h-10 items-center rounded-full border border-[var(--dash-border)] px-3 text-xs font-extrabold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]"
       }
       href={href}
     >
@@ -289,7 +368,7 @@ export function RightRailPanel({
   variant = "default",
 }: CardProps) {
   return (
-    <DashboardCard className={`p-3.5 ${className}`} variant={variant}>
+    <DashboardCard className={`p-[18px] ${className}`} variant={variant}>
       {children}
     </DashboardCard>
   );
@@ -310,15 +389,15 @@ export function PriorityAction({
 }>) {
   return (
     <Link
-      className={`grid gap-1 rounded-[10px] border px-3 py-2 transition hover:shadow-sm ${toneClasses[tone]}`}
+      className={`grid gap-1 rounded-[14px] border px-3 py-2.5 transition hover:-translate-y-0.5 hover:shadow-sm ${toneClasses[tone]}`}
       href={href}
     >
-        <span className="text-[12px] font-semibold uppercase tracking-wide">
+      <span className="text-[11px] font-extrabold uppercase tracking-[0.14em]">
         {label}
       </span>
       <span className="flex items-center justify-between gap-3">
-        <span className="text-sm font-medium">{children}</span>
-        <span className="text-lg font-semibold">{value}</span>
+        <span className="text-sm font-extrabold">{children}</span>
+        <span className="text-lg font-black">{value}</span>
       </span>
     </Link>
   );
@@ -340,22 +419,24 @@ export function QuickActionTile({
   title?: string;
 }>) {
   const className =
-    "flex min-h-14 items-center gap-3 rounded-[14px] border px-4 text-left transition";
+    "flex min-h-16 items-center gap-3 rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-4 py-3 text-left transition";
+
   const content = title ? (
     <>
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-slate-700">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[12px] bg-[var(--dash-primary-soft)] text-sm font-extrabold text-[var(--dash-primary)]">
         {icon ?? "A"}
       </span>
       <span className="min-w-0">
-        <span className="block truncate text-sm font-semibold text-slate-950">
+        <span className="block truncate text-sm font-extrabold text-[var(--dash-text)]">
           {title}
         </span>
         {description ? (
-          <span className="mt-1 block truncate text-[13px] text-slate-500">
+          <span className="mt-0.5 block text-[12px] leading-4 text-[var(--dash-text-secondary)]">
             {description}
           </span>
         ) : null}
       </span>
+      {children ? <span className="ml-auto shrink-0">{children}</span> : null}
     </>
   ) : (
     children
@@ -363,21 +444,14 @@ export function QuickActionTile({
 
   if (disabled || !href) {
     return (
-      <button
-        className={`${className} cursor-not-allowed border-slate-200 bg-slate-50 text-slate-400`}
-        disabled
-        type="button"
-      >
+      <div className={`${className} opacity-65`} aria-disabled="true">
         {content}
-      </button>
+      </div>
     );
   }
 
   return (
-    <Link
-      className={`${className} border-slate-200 bg-white text-slate-800 shadow-sm hover:border-[rgba(23,212,146,0.18)] hover:bg-[rgba(23,212,146,0.08)]`}
-      href={href}
-    >
+    <Link className={`${className} hover:border-[rgba(20,184,166,0.34)] hover:bg-[var(--dash-primary-soft)]`} href={href}>
       {content}
     </Link>
   );
@@ -385,12 +459,12 @@ export function QuickActionTile({
 
 export function EmptyState({ action, children, title }: EmptyStateProps) {
   return (
-    <div className="rounded-[16px] border border-dashed border-zinc-300 bg-zinc-50 p-5 text-center">
-      <p className="text-base font-semibold text-zinc-950">{title}</p>
-      <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-zinc-600">
+    <div className="rounded-[18px] border border-dashed border-[var(--dash-border-strong)] bg-[var(--dash-surface-muted)] p-5 text-center">
+      <p className="text-sm font-extrabold text-[var(--dash-text)]">{title}</p>
+      <p className="mx-auto mt-1 max-w-xl text-[13px] leading-5 text-[var(--dash-text-secondary)]">
         {children}
       </p>
-      {action ? <div className="mt-3">{action}</div> : null}
+      {action ? <div className="mt-4 flex justify-center">{action}</div> : null}
     </div>
   );
 }
