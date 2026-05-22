@@ -93,6 +93,43 @@ export async function signUpWithPassword(input: {
   };
 }
 
+export async function sendPasswordResetEmail(input: {
+  email: string;
+  redirectTo: string;
+}): Promise<void> {
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(input.email, {
+    redirectTo: input.redirectTo,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function updatePasswordFromReset(input: {
+  code?: string | undefined;
+  password: string;
+}): Promise<void> {
+  const supabase = await createSupabaseServerClient();
+
+  if (input.code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(input.code);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: input.password,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
 export async function getCurrentUser(): Promise<AuthUser | null> {
   const supabase = await createSupabaseServerClient();
   const {

@@ -1,16 +1,14 @@
 /**
  * ============================================================
- * File: app/auth/sign-in/page.tsx
+ * File: app/auth/reset-password/page.tsx
  * Project: BizPilot AI
- * Description: Owner sign-in screen — single centered card.
- * Role: Production owner access aligned with Design System v1.0 §10.2.
+ * Description: Password update page for Supabase recovery callbacks.
+ * Role: Completes owner password recovery through the existing Supabase SSR auth client.
  * Related:
  * - server/actions/auth.actions.ts
- * - components/auth/auth-ui.tsx
+ * - app/auth/forgot-password/page.tsx
  * Author: MoOoH
- * Last Updated: 2026-05-19
- * Change Log:
- * - 2026-05-19: Migrated to the single-centered-card AuthShell. Fixes scale/scroll issues from the previous split layout.
+ * Created: 2026-05-22
  * ============================================================
  */
 
@@ -24,38 +22,27 @@ import {
   authInputClassName,
   authLabelClassName,
 } from "@/components/auth/auth-ui";
-import { signInAction } from "@/server/actions/auth.actions";
+import { updatePasswordAction } from "@/server/actions/auth.actions";
 
-type SignInPageProps = Readonly<{
+type ResetPasswordPageProps = Readonly<{
   searchParams?: Promise<{
+    code?: string;
     error?: string;
-    notice?: string;
   }>;
 }>;
 
-export default async function SignInPage({ searchParams }: SignInPageProps) {
+export default async function ResetPasswordPage({
+  searchParams,
+}: ResetPasswordPageProps) {
   const params = await searchParams;
+  const code = params?.code?.trim() ?? "";
 
   return (
-    <AuthShell footer="Secure owner access for your Quote Recovery workspace.">
+    <AuthShell footer="Use a new password that is unique to BizPilot.">
       <AuthCard
-        subtitle="Manage quote requests, replies, and follow-ups from one place."
-        title="Sign in"
+        subtitle="Choose a new password for your owner workspace."
+        title="Set new password"
       >
-        {params?.notice ? (
-          <p
-            aria-live="polite"
-            className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
-            style={{
-              backgroundColor: "rgba(23,212,146,0.10)",
-              borderColor: "rgba(23,212,146,0.22)",
-              color: "#17D492",
-            }}
-          >
-            {params.notice}
-          </p>
-        ) : null}
-
         {params?.error ? (
           <p
             aria-live="assertive"
@@ -70,46 +57,21 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           </p>
         ) : null}
 
-        <form action={signInAction} className="mt-5 space-y-3.5">
-          <label className={authLabelClassName}>
-            <span style={{ color: "var(--biz-page-text-soft)" }}>Email</span>
-            <span className="relative block">
-              <AuthFieldIcon type="email" />
-              <input
-                autoComplete="email"
-                className={authInputClassName}
-                name="email"
-                placeholder="you@example.com"
-                required
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.04)",
-                  borderColor: "var(--biz-border-medium)",
-                  color: "var(--biz-page-text)",
-                }}
-                type="email"
-              />
-            </span>
-          </label>
+        <form action={updatePasswordAction} className="mt-5 space-y-3.5">
+          <input name="code" type="hidden" value={code} />
 
           <label className={authLabelClassName}>
-            <span className="flex items-center justify-between gap-3">
-              <span style={{ color: "var(--biz-page-text-soft)" }}>Password</span>
-              <Link
-                className="text-[11px] font-bold normal-case tracking-normal underline-offset-4 hover:underline"
-                href="/auth/forgot-password"
-                style={{ color: "#17D492" }}
-              >
-                Forgot password?
-              </Link>
+            <span style={{ color: "var(--biz-page-text-soft)" }}>
+              New password
             </span>
             <span className="relative block">
               <AuthFieldIcon type="password" />
               <input
-                autoComplete="current-password"
+                autoComplete="new-password"
                 className={authInputClassName}
-                minLength={6}
+                minLength={8}
                 name="password"
-                placeholder="Enter your password"
+                placeholder="At least 8 characters"
                 required
                 style={{
                   backgroundColor: "rgba(255,255,255,0.04)",
@@ -121,8 +83,31 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             </span>
           </label>
 
-          <AuthSubmitButton pendingLabel="Opening workspace…">
-            Sign in
+          <label className={authLabelClassName}>
+            <span style={{ color: "var(--biz-page-text-soft)" }}>
+              Confirm password
+            </span>
+            <span className="relative block">
+              <AuthFieldIcon type="password" />
+              <input
+                autoComplete="new-password"
+                className={authInputClassName}
+                minLength={8}
+                name="confirmPassword"
+                placeholder="Repeat your new password"
+                required
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.04)",
+                  borderColor: "var(--biz-border-medium)",
+                  color: "var(--biz-page-text)",
+                }}
+                type="password"
+              />
+            </span>
+          </label>
+
+          <AuthSubmitButton pendingLabel="Updating password...">
+            Update password
           </AuthSubmitButton>
         </form>
 
@@ -130,13 +115,13 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           className="mt-4 text-center text-[13px]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
-          Need an account?{" "}
+          Need a new reset link?{" "}
           <Link
             className="font-bold underline-offset-4 hover:underline"
-            href="/auth/sign-up"
+            href="/auth/forgot-password"
             style={{ color: "#17D492" }}
           >
-            Create one
+            Request again
           </Link>
         </p>
       </AuthCard>

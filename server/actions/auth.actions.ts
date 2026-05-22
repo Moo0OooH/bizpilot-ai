@@ -27,12 +27,18 @@
 
 import { redirect } from "next/navigation";
 
+import { getPublicEnv } from "@/lib/env/public-env";
 import {
+  sendPasswordResetEmail,
   signInWithPassword,
   signOut,
   signUpWithPassword,
+  updatePasswordFromReset,
 } from "@/server/services/auth.service";
 import { createFoundingBusiness } from "@/server/services/business.service";
+
+const PASSWORD_RESET_NOTICE =
+  "If an account exists, we'll send reset instructions.";
 
 function redirectWithSignInError(message: string): never {
   redirect(`/auth/sign-in?error=${encodeURIComponent(message)}`);
@@ -40,6 +46,20 @@ function redirectWithSignInError(message: string): never {
 
 function redirectWithSignUpError(message: string): never {
   redirect(`/auth/sign-up?error=${encodeURIComponent(message)}`);
+}
+
+function redirectWithForgotPasswordError(message: string): never {
+  redirect(`/auth/forgot-password?error=${encodeURIComponent(message)}`);
+}
+
+function redirectWithResetPasswordError(message: string, code?: string): never {
+  const searchParams = new URLSearchParams({ error: message });
+
+  if (code) {
+    searchParams.set("code", code);
+  }
+
+  redirect(`/auth/reset-password?${searchParams.toString()}`);
 }
 
 function readSignInEmail(formData: FormData): string {
@@ -53,6 +73,22 @@ function readSignInEmail(formData: FormData): string {
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     redirectWithSignInError("Enter a valid email address.");
+  }
+
+  return email;
+}
+
+function readPasswordResetEmail(formData: FormData): string {
+  const value = formData.get("email");
+
+  if (typeof value !== "string" || value.trim().length === 0) {
+    redirectWithForgotPasswordError("Enter your email address.");
+  }
+
+  const email = value.trim();
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    redirectWithForgotPasswordError("Enter a valid email address.");
   }
 
   return email;
@@ -136,6 +172,31 @@ function readSignUpPassword(formData: FormData): string {
   return password;
 }
 
+function readResetPassword(formData: FormData, code?: string): string {
+  const value = formData.get("password");
+
+  if (typeof value !== "string" || value.trim().length === 0) {
+    redirectWithResetPasswordError("Enter your new password.", code);
+  }
+
+  const password = value;
+
+  if (password.length < 8) {
+    redirectWithResetPasswordError(
+      "Use at least 8 characters for your password.",
+      code,
+    );
+  }
+
+  const confirmation = formData.get("confirmPassword");
+
+  if (typeof confirmation !== "string" || confirmation !== password) {
+    redirectWithResetPasswordError("Passwords do not match.", code);
+  }
+
+  return password;
+}
+
 function redirectWithCleanSignUpAuthError(error: unknown): never {
   const message = error instanceof Error ? error.message.toLowerCase() : "";
   const rateLimitHints = ["rate limit", "too many", "security purposes"];
@@ -181,6 +242,53 @@ export async function signInAction(formData: FormData): Promise<never> {
   }
 
   redirect("/dashboard");
+}
+
+export async function requestPasswordResetAction(
+  formData: FormData,
+): Promise<never> {
+  const email = readPasswordResetEmail(formData);
+  const redirectTo = new URL("/auth/reset-password", getPublicEnv().NEXT_PUBLIC_APP_URL)
+    .toString();
+
+  try {
+    await sendPasswordResetEmail({
+      email,
+      redirectTo,
+    });
+  } catch {
+    // Keep password reset non-enumerating. The user sees the same safe message
+    // whether the account exists, the provider throttles, or delivery fails.
+  }
+
+  redirect(
+    `/auth/forgot-password?notice=${encodeURIComponent(PASSWORD_RESET_NOTICE)}`,
+  );
+}
+
+export async function updatePasswordAction(formData: FormData): Promise<never> {
+  const rawCode = formData.get("code");
+  const code =
+    typeof rawCode === "string" && rawCode.trim().length > 0
+      ? rawCode.trim()
+      : undefined;
+  const password = readResetPassword(formData, code);
+
+  try {
+    await updatePasswordFromReset({
+      ...(code ? { code } : {}),
+      password,
+    });
+  } catch {
+    redirectWithResetPasswordError(
+      "This reset link is invalid or expired. Request a new password reset.",
+      code,
+    );
+  }
+
+  redirect(
+    "/auth/sign-in?notice=Password%20updated.%20Sign%20in%20with%20your%20new%20password.",
+  );
 }
 
 export async function signUpAction(formData: FormData): Promise<never> {

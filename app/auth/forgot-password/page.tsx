@@ -1,16 +1,14 @@
 /**
  * ============================================================
- * File: app/auth/sign-in/page.tsx
+ * File: app/auth/forgot-password/page.tsx
  * Project: BizPilot AI
- * Description: Owner sign-in screen — single centered card.
- * Role: Production owner access aligned with Design System v1.0 §10.2.
+ * Description: Password reset request page for owner accounts.
+ * Role: Starts Supabase password recovery without revealing whether an email exists.
  * Related:
  * - server/actions/auth.actions.ts
- * - components/auth/auth-ui.tsx
+ * - app/auth/reset-password/page.tsx
  * Author: MoOoH
- * Last Updated: 2026-05-19
- * Change Log:
- * - 2026-05-19: Migrated to the single-centered-card AuthShell. Fixes scale/scroll issues from the previous split layout.
+ * Created: 2026-05-22
  * ============================================================
  */
 
@@ -24,23 +22,25 @@ import {
   authInputClassName,
   authLabelClassName,
 } from "@/components/auth/auth-ui";
-import { signInAction } from "@/server/actions/auth.actions";
+import { requestPasswordResetAction } from "@/server/actions/auth.actions";
 
-type SignInPageProps = Readonly<{
+type ForgotPasswordPageProps = Readonly<{
   searchParams?: Promise<{
     error?: string;
     notice?: string;
   }>;
 }>;
 
-export default async function SignInPage({ searchParams }: SignInPageProps) {
+export default async function ForgotPasswordPage({
+  searchParams,
+}: ForgotPasswordPageProps) {
   const params = await searchParams;
 
   return (
-    <AuthShell footer="Secure owner access for your Quote Recovery workspace.">
+    <AuthShell footer="Password reset is handled through Supabase Auth email recovery.">
       <AuthCard
-        subtitle="Manage quote requests, replies, and follow-ups from one place."
-        title="Sign in"
+        subtitle="Enter your owner email and we'll send reset instructions if an account exists."
+        title="Reset password"
       >
         {params?.notice ? (
           <p
@@ -70,7 +70,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           </p>
         ) : null}
 
-        <form action={signInAction} className="mt-5 space-y-3.5">
+        <form action={requestPasswordResetAction} className="mt-5 space-y-3.5">
           <label className={authLabelClassName}>
             <span style={{ color: "var(--biz-page-text-soft)" }}>Email</span>
             <span className="relative block">
@@ -91,38 +91,8 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             </span>
           </label>
 
-          <label className={authLabelClassName}>
-            <span className="flex items-center justify-between gap-3">
-              <span style={{ color: "var(--biz-page-text-soft)" }}>Password</span>
-              <Link
-                className="text-[11px] font-bold normal-case tracking-normal underline-offset-4 hover:underline"
-                href="/auth/forgot-password"
-                style={{ color: "#17D492" }}
-              >
-                Forgot password?
-              </Link>
-            </span>
-            <span className="relative block">
-              <AuthFieldIcon type="password" />
-              <input
-                autoComplete="current-password"
-                className={authInputClassName}
-                minLength={6}
-                name="password"
-                placeholder="Enter your password"
-                required
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.04)",
-                  borderColor: "var(--biz-border-medium)",
-                  color: "var(--biz-page-text)",
-                }}
-                type="password"
-              />
-            </span>
-          </label>
-
-          <AuthSubmitButton pendingLabel="Opening workspace…">
-            Sign in
+          <AuthSubmitButton pendingLabel="Sending instructions...">
+            Send reset instructions
           </AuthSubmitButton>
         </form>
 
@@ -130,13 +100,13 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           className="mt-4 text-center text-[13px]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
-          Need an account?{" "}
+          Remembered your password?{" "}
           <Link
             className="font-bold underline-offset-4 hover:underline"
-            href="/auth/sign-up"
+            href="/auth/sign-in"
             style={{ color: "#17D492" }}
           >
-            Create one
+            Sign in
           </Link>
         </p>
       </AuthCard>
