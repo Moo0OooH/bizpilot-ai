@@ -57,6 +57,8 @@ OPENAI_API_KEY
 
 Do not set real secrets in `.env.example`, docs, screenshots, or chat.
 
+During the Vercel-domain transition, keep the current Vercel production URL in Supabase Auth Redirect URLs if reset emails may still be opened from that host.
+
 ## Production Migration Procedure
 
 1. Owner confirms the exact target Supabase project.
@@ -73,7 +75,12 @@ Do not set real secrets in `.env.example`, docs, screenshots, or chat.
 3. Deploy from the approved branch only.
 4. Run production smoke tests.
 5. Connect `bizpilo.com` in Vercel.
-6. Re-run smoke tests after DNS propagation.
+6. Wait for Vercel domain status to show Ready and SSL active.
+7. Set `NEXT_PUBLIC_APP_URL=https://bizpilo.com`.
+8. Set Supabase Auth Site URL to `https://bizpilo.com`.
+9. Add Supabase Auth Redirect URL `https://bizpilo.com/auth/reset-password`.
+10. Redeploy production.
+11. Re-run smoke tests after DNS propagation.
 
 ## Production Smoke Test Routes
 
@@ -82,6 +89,8 @@ Do not set real secrets in `.env.example`, docs, screenshots, or chat.
 /pricing
 /auth/sign-in
 /auth/sign-up
+/auth/forgot-password
+/auth/reset-password
 /admin
 /dashboard
 /dashboard/leads

@@ -25,10 +25,11 @@ Applies to late Phase 18 / production pilot preparation.
 
 ## Step 3 — Production Environment Variables
 Required:
-- `NEXT_PUBLIC_APP_URL`
+- `NEXT_PUBLIC_APP_URL=https://bizpilo.com` after the domain is live and SSL is active
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
+- `BIZPILOT_FOUNDER_EMAILS`
 - `OPENAI_API_KEY`
 - `RESEND_API_KEY` if email is enabled
 
@@ -36,6 +37,7 @@ Rules:
 - `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, and `RESEND_API_KEY` must stay server-only.
 - Never expose service role keys to client code.
 - Redeploy after environment variable changes.
+- Keep the Vercel production URL in Supabase Auth Redirect URLs during the domain transition if active users may still open old reset links.
 
 ## Step 4 — Supabase Production Project
 - Create or confirm production Supabase project.
@@ -44,6 +46,10 @@ Rules:
 - Confirm RLS enabled on tenant/public quote tables.
 - Run RLS tests against the intended database connection.
 - Confirm public quote submission path only exposes public-safe data.
+- Set Supabase Auth Site URL to `https://bizpilo.com` after SSL is active.
+- Add Supabase Auth Redirect URLs:
+  - `https://bizpilo.com/auth/reset-password`
+  - the current Vercel production URL `/auth/reset-password` until the domain cutover is fully verified
 
 ## Step 5 — DNS Connection
 Recommended:
@@ -58,11 +64,16 @@ Check:
 - `/pricing`
 - `/auth/sign-in`
 - `/auth/sign-up`
+- `/auth/forgot-password`
+- `/auth/reset-password`
+- `/admin`
 - `/quote/[slug]`
 - `/quote/[slug]/success`
 - `/dashboard`
 - `/dashboard/leads`
 - `/dashboard/configuration`
+- `/dashboard/business-profile`
+- `/dashboard/settings`
 
 ## Step 7 — Pilot Readiness Gate
 Before sending link to real prospects:
