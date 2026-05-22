@@ -29,6 +29,7 @@ import {
   listFounderUsageSignals,
   setFounderPublicLinksActive,
   updateFounderBusinessControls,
+  type FounderBusinessMemberRecord,
   type FounderBusinessStatus,
   type FounderPlanSlug,
 } from "@/server/repositories/founder-admin.repository";
@@ -50,6 +51,22 @@ export type FounderAdminBusiness = Readonly<{
   name: string;
 }>;
 
+export type FounderAdminUser = Readonly<{
+  businessAccessStatus: FounderBusinessStatus | null;
+  businessName: string | null;
+  createdAt: string;
+  email: string;
+  emailConfirmed: boolean;
+  isFounder: boolean;
+  lastSignInAt: string | null;
+  leadCount: number | null;
+  membershipRole: string | null;
+  membershipStatus: string | null;
+  planSlug: FounderPlanSlug | null;
+  publicLinkActive: boolean | null;
+  userId: string;
+}>;
+
 export type FounderAdminOverview = Readonly<{
   businesses: FounderAdminBusiness[];
   recentActions: ReadonlyArray<{
@@ -64,6 +81,8 @@ export type FounderAdminOverview = Readonly<{
     paymentReady: number;
     suspended: number;
   };
+  users: FounderAdminUser[];
+  usersResultLimit: number;
 }>;
 
 const planSlugs = new Set<FounderPlanSlug>([
@@ -156,6 +175,8 @@ export async function getFounderAdminOverview(input: {
   assertFounderUser(input.user);
 
   const supabase = createSupabaseServiceRoleClient();
+  const founderEmails = readFounderEmails();
+  const usersResultLimit = 1000;
   const [
     businesses,
     members,
@@ -171,7 +192,7 @@ export async function getFounderAdminOverview(input: {
     listFounderLeadSignals({ supabase }),
     listFounderUsageSignals({ supabase }),
     listFounderAdminLog({ supabase }),
-    supabase.auth.admin.listUsers({ page: 1, perPage: 1000 }),
+    supabase.auth.admin.listUsers({ page: 1, perPage: usersResultLimit }),
   ]);
 
   if (usersResult.error) {
@@ -186,7 +207,21 @@ export async function getFounderAdminOverview(input: {
   const usageCountByBusiness = countByBusiness(usageEvents);
   const latestLeadByBusiness = latestByBusiness(leads);
   const latestUsageByBusiness = latestByBusiness(usageEvents);
+  const businessById = new Map(businesses.map((business) => [business.id, business]));
+  const primaryMemberByUser = new Map<string, FounderBusinessMemberRecord>();
   const firstLinkByBusiness = new Map<string, { active: boolean; slug: string }>();
+
+  for (const member of members) {
+    const existing = primaryMemberByUser.get(member.user_id);
+
+    if (
+      !existing ||
+      member.role === "owner" ||
+      (existing.role !== "owner" && member.created_at < existing.created_at)
+    ) {
+      primaryMemberByUser.set(member.user_id, member);
+    }
+  }
 
   for (const link of links) {
     if (!firstLinkByBusiness.has(link.business_id) || link.is_active) {
@@ -222,6 +257,28 @@ export async function getFounderAdminOverview(input: {
       publicSlug: link?.slug ?? null,
       status: business.status,
       usageCount: usageCountByBusiness.get(business.id) ?? 0,
+      };
+  });
+
+  const users = usersResult.data.users.map((user) => {
+    const membership = primaryMemberByUser.get(user.id);
+    const business = membership ? businessById.get(membership.business_id) : undefined;
+    const link = business ? firstLinkByBusiness.get(business.id) : undefined;
+
+    return {
+      businessAccessStatus: business?.status ?? null,
+      businessName: business?.name ?? null,
+      createdAt: user.created_at,
+      email: user.email ?? user.id,
+      emailConfirmed: Boolean(user.email_confirmed_at ?? user.confirmed_at),
+      isFounder: Boolean(user.email && founderEmails.has(user.email.toLowerCase())),
+      lastSignInAt: user.last_sign_in_at ?? null,
+      leadCount: business ? (leadCountByBusiness.get(business.id) ?? 0) : null,
+      membershipRole: membership?.role ?? null,
+      membershipStatus: membership?.status ?? null,
+      planSlug: business?.plan_slug ?? null,
+      publicLinkActive: business ? (link?.active ?? false) : null,
+      userId: user.id,
     };
   });
 
@@ -245,6 +302,8 @@ export async function getFounderAdminOverview(input: {
         (business) => business.status === "suspended" || business.status === "cancelled",
       ).length,
     },
+    users,
+    usersResultLimit,
   };
 }
 

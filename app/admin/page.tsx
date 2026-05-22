@@ -38,6 +38,7 @@ import { getCurrentUser } from "@/server/services/auth.service";
 import {
   getFounderAdminOverview,
   type FounderAdminBusiness,
+  type FounderAdminUser,
 } from "@/server/services/founder-admin.service";
 
 export const dynamic = "force-dynamic";
@@ -122,6 +123,26 @@ function planTone(planSlug: PlanSlug) {
   }
 
   return "amber";
+}
+
+function userAccessTone(status: FounderAdminUser["businessAccessStatus"]) {
+  if (status === "active") {
+    return "emerald";
+  }
+
+  if (status === "suspended" || status === "cancelled") {
+    return "red";
+  }
+
+  if (status === "onboarding") {
+    return "amber";
+  }
+
+  return "neutral";
+}
+
+function formatUserValue(value: string | null): string {
+  return value ? value.replaceAll("_", " ") : "None";
 }
 
 function AdminNotice({
@@ -369,6 +390,109 @@ function BusinessControlCard({
   );
 }
 
+function FounderUsersSection({
+  limit,
+  users,
+}: Readonly<{ limit: number; users: FounderAdminUser[] }>) {
+  return (
+    <DashboardCard className="p-4 sm:p-5" variant="elevated">
+      <SectionHeader
+        action={<StatusBadge tone="blue">Total users: {users.length}</StatusBadge>}
+        description="Read-only Supabase Auth users joined to pilot business access where available."
+        title="Users"
+      />
+      {users.length >= limit ? (
+        <p className="mt-3 rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
+          Showing first {limit} users.
+        </p>
+      ) : null}
+      <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
+        {users.length > 0 ? (
+          users.map((user) => (
+            <div
+              className="grid gap-3 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm xl:grid-cols-[minmax(220px,1.25fr)_minmax(190px,1fr)_minmax(180px,0.9fr)_minmax(180px,0.9fr)] xl:items-center"
+              key={user.userId}
+            >
+              <div className="min-w-0">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <p className="truncate font-black text-[var(--dash-text)]">
+                    {user.email}
+                  </p>
+                  {user.isFounder ? (
+                    <StatusBadge tone="amber">Founder</StatusBadge>
+                  ) : null}
+                  <StatusBadge tone={user.emailConfirmed ? "emerald" : "amber"}>
+                    {user.emailConfirmed ? "Confirmed" : "Unconfirmed"}
+                  </StatusBadge>
+                </div>
+                <p className="mt-1 text-[12px] font-bold text-[var(--dash-text-muted)]">
+                  Created {formatDate(user.createdAt)}
+                </p>
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
+                  Business
+                </p>
+                <p className="mt-1 truncate font-black text-[var(--dash-text)]">
+                  {user.businessName ?? "No business linked"}
+                </p>
+                <p className="mt-1 text-[12px] font-bold capitalize text-[var(--dash-text-secondary)]">
+                  {formatUserValue(user.membershipRole)}
+                  {user.membershipStatus ? ` | ${formatUserValue(user.membershipStatus)}` : ""}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {user.planSlug ? (
+                  <StatusBadge tone={planTone(user.planSlug)}>
+                    {planLabels[user.planSlug]}
+                  </StatusBadge>
+                ) : (
+                  <StatusBadge>No plan</StatusBadge>
+                )}
+                <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
+                  {formatUserValue(user.businessAccessStatus)}
+                </StatusBadge>
+                <StatusBadge tone={user.publicLinkActive ? "emerald" : "neutral"}>
+                  {user.publicLinkActive === null
+                    ? "No quote link"
+                    : user.publicLinkActive
+                      ? "Quote active"
+                      : "Quote inactive"}
+                </StatusBadge>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-[12px] sm:max-w-sm">
+                <div className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
+                  <p className="font-black text-[var(--dash-text)]">
+                    {user.leadCount ?? "-"}
+                  </p>
+                  <p className="mt-0.5 font-bold text-[var(--dash-text-muted)]">
+                    Leads
+                  </p>
+                </div>
+                <div className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
+                  <p className="font-black text-[var(--dash-text)]">
+                    {formatDate(user.lastSignInAt)}
+                  </p>
+                  <p className="mt-0.5 font-bold text-[var(--dash-text-muted)]">
+                    Last sign-in
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="bg-[var(--dash-surface-muted)] px-4 py-5 text-center text-sm text-[var(--dash-text-secondary)]">
+            No users found.
+          </p>
+        )}
+      </div>
+    </DashboardCard>
+  );
+}
+
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   const [params, user] = await Promise.all([searchParams, getCurrentUser()]);
 
@@ -429,6 +553,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             value={overview.totals.suspended}
           />
         </section>
+
+        <FounderUsersSection
+          limit={overview.usersResultLimit}
+          users={overview.users}
+        />
 
         <section className="space-y-3">
           <SectionHeader
