@@ -24,11 +24,12 @@ import { signOutAction } from "@/server/actions/auth.actions";
 
 import { CopyButton } from "./copy-button";
 import { DashboardThemeSelector } from "./dashboard-theme";
-import { buttonClass } from "./dashboard-ui";
+import { buttonClass, ghostButtonClass } from "./dashboard-ui";
 
 type DashboardTopbarProps = Readonly<{
   activeBusinessName: string;
   businessSlug: string;
+  showFounderAdmin?: boolean;
   userLabel: string;
 }>;
 
@@ -89,6 +90,7 @@ function getPageContext(pathname: string): PageContext {
 export function DashboardTopbar({
   activeBusinessName,
   businessSlug,
+  showFounderAdmin = false,
   userLabel,
 }: DashboardTopbarProps) {
   const quotePath = `/quote/${businessSlug}`;
@@ -112,6 +114,11 @@ export function DashboardTopbar({
           <Link className={`${buttonClass} hidden lg:inline-flex`} href={quotePath}>
             Preview quote page
           </Link>
+          {showFounderAdmin ? (
+            <Link className={`${ghostButtonClass} hidden xl:inline-flex`} href="/admin">
+              Founder Admin
+            </Link>
+          ) : null}
           <DashboardThemeSelector />
           <div className="hidden min-w-0 max-w-[210px] rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-3 py-2 text-[13px] font-bold text-[var(--dash-text)] xl:block">
             <span className="block truncate">{activeBusinessName}</span>

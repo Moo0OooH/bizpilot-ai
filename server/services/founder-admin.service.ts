@@ -106,6 +106,15 @@ export function assertFounderUser(user: AuthUser | null): AuthUser {
   return user;
 }
 
+export function isFounderUser(user: AuthUser | null): boolean {
+  try {
+    assertFounderUser(user);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function countByBusiness(items: ReadonlyArray<{ business_id: string }>) {
   const counts = new Map<string, number>();
   for (const item of items) {

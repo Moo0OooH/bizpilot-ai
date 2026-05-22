@@ -15,6 +15,7 @@ import { buttonClass, DashboardCard } from "@/components/dashboard/dashboard-ui"
 import { signOutAction } from "@/server/actions/auth.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
+import { isFounderUser } from "@/server/services/founder-admin.service";
 
 export default async function DashboardLayout({
   children,
@@ -61,6 +62,7 @@ export default async function DashboardLayout({
       activeBusinessName={activeBusiness.name}
       businessSlug={activeBusiness.slug}
       initialTheme={initialTheme}
+      showFounderAdmin={isFounderUser(user)}
       userLabel={user.email ?? user.id}
     >
       {children}

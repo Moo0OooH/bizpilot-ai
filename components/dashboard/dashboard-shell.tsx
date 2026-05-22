@@ -16,6 +16,7 @@ type DashboardShellProps = Readonly<{
   businessSlug: string;
   children: React.ReactNode;
   initialTheme?: DashboardTheme;
+  showFounderAdmin?: boolean;
   userLabel: string;
 }>;
 
@@ -24,6 +25,7 @@ export function DashboardShell({
   businessSlug,
   children,
   initialTheme = "dark",
+  showFounderAdmin = false,
   userLabel,
 }: DashboardShellProps) {
   return (
@@ -37,6 +39,7 @@ export function DashboardShell({
         <DashboardTopbar
           activeBusinessName={activeBusinessName}
           businessSlug={businessSlug}
+          showFounderAdmin={showFounderAdmin}
           userLabel={userLabel}
         />
         <div className="px-4 py-4 pb-8 sm:px-5 md:px-6 lg:px-[28px] 2xl:px-[28px]">

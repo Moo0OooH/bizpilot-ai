@@ -28,6 +28,8 @@ type ResetPasswordPageProps = Readonly<{
   searchParams?: Promise<{
     code?: string;
     error?: string;
+    error_code?: string;
+    error_description?: string;
   }>;
 }>;
 
@@ -36,6 +38,10 @@ export default async function ResetPasswordPage({
 }: ResetPasswordPageProps) {
   const params = await searchParams;
   const code = params?.code?.trim() ?? "";
+  const callbackError = params?.error ?? params?.error_code ?? params?.error_description;
+  const errorMessage = callbackError
+    ? "This reset link is invalid or expired. Request a new password reset."
+    : undefined;
 
   return (
     <AuthShell footer="Use a new password that is unique to BizPilot.">
@@ -43,7 +49,7 @@ export default async function ResetPasswordPage({
         subtitle="Choose a new password for your owner workspace."
         title="Set new password"
       >
-        {params?.error ? (
+        {errorMessage ? (
           <p
             aria-live="assertive"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
@@ -53,7 +59,7 @@ export default async function ResetPasswordPage({
               color: "#FFB4B4",
             }}
           >
-            {params.error}
+            {errorMessage}
           </p>
         ) : null}
 
