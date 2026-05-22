@@ -40,6 +40,8 @@ import { createFoundingBusiness } from "@/server/services/business.service";
 
 const PASSWORD_RESET_NOTICE =
   "If an account exists, we'll send reset instructions.";
+const PASSWORD_RESET_RATE_LIMIT_MESSAGE =
+  "Too many reset requests. Please wait a few minutes and try again.";
 
 function redirectWithSignInError(message: string): never {
   redirect(`/auth/sign-in?error=${encodeURIComponent(message)}`);
@@ -180,6 +182,18 @@ function isRedirectConfigurationError(error: unknown): boolean {
   return (
     !providerErrorHints.some((hint) => details.includes(hint)) &&
     redirectErrorHints.some((hint) => details.includes(hint))
+  );
+}
+
+function isPasswordResetRateLimitError(error: unknown): boolean {
+  const { message, name, status } = getSupabaseErrorDiagnostics(error);
+  const details = `${message} ${name ?? ""} ${status ?? ""}`.toLowerCase();
+
+  return (
+    status === 429 ||
+    details.includes("rate limit") ||
+    details.includes("too many") ||
+    details.includes("security purposes")
   );
 }
 
@@ -380,6 +394,10 @@ export async function requestPasswordResetAction(
       error: diagnostics,
       redirectTo,
     });
+
+    if (isPasswordResetRateLimitError(error)) {
+      redirectWithForgotPasswordError(PASSWORD_RESET_RATE_LIMIT_MESSAGE);
+    }
 
     if (
       redirectTo !== configuredRedirectTo &&
