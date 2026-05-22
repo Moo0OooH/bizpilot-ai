@@ -16,7 +16,11 @@ Log requests for booking, billing, SMS, WhatsApp, auto-send, second verticals, o
 - Phase 17 evidence: `docs/operations/BIZPILOT_PHASE_17_WORK_LOG_v1.0.md`
 - GTM script: `docs/gtm/BIZPILOT_GTM_PLAYBOOK_v1.1.md`
 - Demo script: `docs/operations/BIZPILOT_MAGIC_DEMO_FLOW_v1.0.md`
+- Founder-led workflow: `docs/operations/BIZPILOT_PHASE_18_FOUNDER_LED_PILOT_WORKFLOW_v1.0.md`
+- Phase 18A standards audit: `docs/operations/BIZPILOT_PHASE_18A_STANDARDS_AUDIT_v1.0.md`
 - Backup/export posture: `docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
+- Domain deployment runbook: `docs/operations/BIZPILOT_DOMAIN_DEPLOYMENT_RUNBOOK_v1.0.md`
+- Production QA checklist: `docs/operations/BIZPILOT_PRODUCTION_QA_CHECKLIST_v1.0.md`
 
 ## Before Outreach
 

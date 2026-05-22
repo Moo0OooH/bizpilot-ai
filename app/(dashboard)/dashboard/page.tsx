@@ -150,20 +150,20 @@ export default async function DashboardOverviewPage() {
     "Ask for apartment size, preferred date, and access details before giving an estimate range.";
 
   return (
-    <main className="space-y-[18px]">
+    <main className="space-y-4">
       <DashboardCard
-        className="grid min-h-[242px] gap-5 border-[rgba(45,212,191,0.21)] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] md:p-[26px] xl:grid-cols-[minmax(0,1.25fr)_minmax(260px,0.75fr)] xl:items-stretch"
+        className="grid gap-4 border-[rgba(45,212,191,0.21)] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.22)] md:p-5 xl:grid-cols-[minmax(0,1.3fr)_minmax(260px,0.7fr)] xl:items-stretch"
         variant="priority"
       >
         <div className="min-w-0">
           <StatusBadge tone="emerald">Phase 18A · Pilot readiness</StatusBadge>
-          <h2 className="mt-[18px] max-w-3xl text-[30px] font-black leading-[1.04] tracking-[-0.055em] text-[var(--dash-text)] sm:text-[38px] lg:text-[42px]">
+          <h2 className="mt-3 max-w-3xl text-[24px] font-extrabold leading-[1.08] tracking-[-0.04em] text-[var(--dash-text)] sm:text-[28px] lg:text-[32px]">
             {attentionCount} quote requests need attention today.
           </h2>
-          <p className="mt-3 max-w-3xl text-[15px] leading-7 text-[var(--dash-text-secondary)]">
+          <p className="mt-2.5 max-w-2xl text-[13px] leading-6 text-[var(--dash-text-secondary)]">
             Reply while the customer is still comparing options. BizPilot surfaces urgent leads, drafts the response, and keeps the owner in control.
           </p>
-          <div className="mt-[22px] flex flex-wrap gap-2.5">
+          <div className="mt-4 flex flex-wrap gap-2">
             <Link className={primaryButtonClass} href={featuredLead ? `/dashboard/leads/${featuredLead.lead.id}` : "/dashboard/leads"}>
               Review urgent lead
             </Link>
@@ -173,33 +173,33 @@ export default async function DashboardOverviewPage() {
           </div>
         </div>
 
-        <div className="grid gap-3.5 rounded-[20px] border border-[rgba(45,212,191,0.18)] bg-[rgba(2,6,23,0.18)] p-[18px]">
-          <div className="flex min-w-0 items-center gap-3">
-            <Avatar name={featuredLeadName} size={42} tone="primary" />
+        <div className="grid gap-3 rounded-[16px] border border-[rgba(45,212,191,0.18)] bg-[rgba(2,6,23,0.18)] p-3.5">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <Avatar name={featuredLeadName} size={36} tone="primary" />
             <span className="min-w-0">
-              <span className="block truncate text-[16px] font-black text-[var(--dash-text)]">
+              <span className="block truncate text-[14px] font-extrabold text-[var(--dash-text)]">
                 {shortCustomerName(featuredLeadName)}
               </span>
-              <span className="mt-1 block text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+              <span className="mt-0.5 block truncate text-[12px] leading-4 text-[var(--dash-text-secondary)]">
                 {featuredLeadService} · {featuredLeadArea} · {featuredLeadAge}
               </span>
             </span>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5">
             <StatusBadge tone={atRiskCount > 0 ? "red" : "amber"}>At risk soon</StatusBadge>
             <StatusBadge tone="emerald">AI draft ready</StatusBadge>
             <StatusBadge tone={missingInfoCount > 0 ? "amber" : "neutral"}>
-              {missingInfoCount > 0 ? "Missing information" : "Ready to review"}
+              {missingInfoCount > 0 ? "Missing info" : "Ready"}
             </StatusBadge>
           </div>
-          <div className="rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
-            <span className="font-black text-[var(--dash-text)]">Suggested next action:</span>{" "}
+          <div className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            <span className="font-extrabold text-[var(--dash-text)]">Suggested next action:</span>{" "}
             {featuredNextAction}
           </div>
         </div>
       </DashboardCard>
 
-      <section className="grid gap-[18px] sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           detail="Last 7 days · healthy pilot signal"
           label="New quote requests"
@@ -226,9 +226,9 @@ export default async function DashboardOverviewPage() {
         />
       </section>
 
-      <section className="grid min-w-0 items-start gap-[18px] xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
-        <div className="grid min-w-0 gap-3.5">
-          <DashboardCard className="p-[18px]">
+      <section className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
+        <div className="grid min-w-0 gap-3">
+          <DashboardCard className="p-3.5">
             <SectionHeader
               action={
                 <Link className={buttonClass} href="/dashboard/leads">
@@ -238,7 +238,7 @@ export default async function DashboardOverviewPage() {
               description="The 5 most urgent quote requests. Open the full queue to filter, sort, and act on every lead."
               title="Lead Recovery Queue"
             />
-            <div className="mt-4">
+            <div className="mt-3">
               <LeadWorkspaceQueue
                 compact
                 leads={recentLeads}
@@ -248,29 +248,29 @@ export default async function DashboardOverviewPage() {
             </div>
           </DashboardCard>
 
-          <DashboardCard className="p-[18px]">
+          <DashboardCard className="p-3.5">
             <SectionHeader
               description="Operational timeline for quote recovery and owner actions."
               title="Recent Activity"
             />
-            <div className="mt-4 grid gap-3">
+            <div className="mt-3 grid gap-2">
               {recentLeads.length > 0 ? (
                 recentLeads.slice(0, 5).map((item) => (
                   <Link
-                    className="grid grid-cols-[36px_minmax(0,1fr)_auto] items-center gap-3 rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:bg-[var(--dash-primary-soft)]"
+                    className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5 transition hover:bg-[var(--dash-primary-soft)]"
                     href={`/dashboard/leads/${item.lead.id}`}
                     key={item.lead.id}
                   >
-                    <Avatar name={item.lead.customer_name} size={36} />
+                    <Avatar name={item.lead.customer_name} size={32} />
                     <span className="min-w-0">
-                      <span className="block truncate text-[13px] font-black text-[var(--dash-text)]">
+                      <span className="block truncate text-[12.5px] font-extrabold text-[var(--dash-text)]">
                         {shortCustomerName(item.lead.customer_name)}
                       </span>
-                      <span className="mt-0.5 block truncate text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                      <span className="mt-0.5 block truncate text-[11px] leading-4 text-[var(--dash-text-secondary)]">
                         {item.primaryIssue || item.recommendedAction}
                       </span>
                     </span>
-                    <span className="whitespace-nowrap text-[12px] text-[var(--dash-text-muted)]">
+                    <span className="whitespace-nowrap text-[11px] text-[var(--dash-text-muted)]">
                       {formatAge(item.lead.created_at)}
                     </span>
                   </Link>
@@ -285,7 +285,7 @@ export default async function DashboardOverviewPage() {
           </DashboardCard>
         </div>
 
-        <aside className="grid min-w-0 gap-3.5 xl:sticky xl:top-[92px]">
+        <aside className="grid min-w-0 gap-3 xl:sticky xl:top-[92px]">
           <RightRailPanel variant="priority">
             <SectionHeader
               action={<StatusBadge tone={missingReadinessItems.length === 0 ? "emerald" : "amber"}>{missingReadinessItems.length === 0 ? "Ready" : "Incomplete"}</StatusBadge>}

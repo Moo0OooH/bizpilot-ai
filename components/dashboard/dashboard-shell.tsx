@@ -39,7 +39,7 @@ export function DashboardShell({
           businessSlug={businessSlug}
           userLabel={userLabel}
         />
-        <div className="px-4 py-5 pb-10 sm:px-5 md:px-6 lg:px-[30px] 2xl:px-[30px]">
+        <div className="px-4 py-4 pb-8 sm:px-5 md:px-6 lg:px-[28px] 2xl:px-[28px]">
           <div className="mx-auto w-full max-w-[1220px] min-w-0">
             {children}
           </div>

@@ -2,888 +2,830 @@
  * ============================================================
  * File: app/page.tsx
  * Project: BizPilot AI
- * Description: Renders the public BizPilot AI landing page.
- * Role: Communicates the quote recovery offer for cleaning businesses.
+ * Description: Public homepage for the cleaning-first Quote Recovery Command Center.
+ * Role: Presents the pre-dashboard marketing surface without expanding product scope.
  * Related:
- * - app/layout.tsx
- * - app/globals.css
  * - docs/CURRENT_CANONICAL_DOCS_v1.7.md
- * - docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md
+ * - docs/operations/BIZPILOT_PHASE_18A_NEXT_TAB_HANDOFF_v1.0.md
+ * - components/public/marketing-ui.tsx
  * Author: MoOoH
- * Last Updated: 2026-05-18
- * Change Log:
- * - 2026-05-17: Rebuilt the homepage as a compact premium quote-recovery landing page.
- * - 2026-05-18: Connected the landing shell to shared BizPilot design tokens without changing scale.
+ * Last Updated: 2026-05-21
  * ============================================================
  */
 
-import Image from "next/image";
-import Link from "next/link";
-import type { ReactNode } from "react";
+import type { Metadata } from "next";
+import {
+  MarketingBadge,
+  MarketingButton,
+  MarketingCard,
+  MarketingFooter,
+  MarketingHeader,
+  MarketingIcon,
+  type MarketingIconName,
+  MarketingSectionTitle,
+  MarketingShell,
+  marketingBackground,
+  marketingTone,
+} from "@/components/public/marketing-ui";
 
-import { bizTheme } from "@/lib/design-tokens";
+export const metadata: Metadata = {
+  title: "BizPilot AI - Quote Recovery for Cleaning Businesses",
+  description:
+    "BizPilot captures cleaning quote requests, organizes every lead, drafts owner-reviewed replies, and keeps follow-ups visible without auto-sending anything.",
+};
 
-type IconName =
-  | "arrow"
-  | "bolt"
-  | "calendar"
-  | "chart"
-  | "chat"
-  | "check"
-  | "clock"
-  | "dollar"
-  | "facebook"
-  | "inbox"
-  | "mail"
-  | "play"
-  | "shield"
-  | "spark"
-  | "warning";
+type LeadTone = "new" | "info" | "draft" | "replied" | "risk";
 
-const navItems = [
-  ["Features", "#features"],
-  ["How It Works", "#how-it-works"],
-  ["Pricing", "#pricing"],
-  ["Resources", "#proof"],
-] as const;
-
-const trustItems = ["Setup in 5 minutes", "No credit card", "Cancel anytime"] as const;
-
-const heroMetrics = [
-  { icon: "bolt", label: "Avg. first reply time", sub: "10x faster than manual", value: "43s" },
-  { icon: "chart", label: "More jobs booked", sub: "With faster responses", value: "2.8x" },
-  { icon: "dollar", label: "Recovered per month", sub: "From missed leads", value: "$2.8k" },
-  { icon: "shield", label: "Replies within 5 minutes", sub: "Owner reviewed", value: "98%" },
-] satisfies ReadonlyArray<{
-  icon: IconName;
-  label: string;
-  sub: string;
-  value: string;
-}>;
-
-const workflowCards = [
-  {
-    detail: "Sarah from Facebook",
-    icon: "facebook",
-    meta: "Just now",
-    status: "New lead received",
-    tone: "blue",
-  },
-  {
-    detail: "3 bed / move-out / Friday morning",
-    icon: "spark",
-    meta: "Just now",
-    status: "Details extracted",
-    tone: "neutral",
-  },
-  {
-    detail: "Asks for access notes and timing",
-    icon: "mail",
-    meta: "00:23",
-    status: "Reply ready to review",
-    tone: "green",
-  },
-  {
-    detail: "Nudge if Sarah does not answer",
-    icon: "chat",
-    meta: "2:00:00",
-    status: "Follow-up scheduled",
-    tone: "green",
-  },
-  {
-    detail: "$320 - Move-out cleaning",
-    icon: "check",
-    meta: "Today",
-    status: "Job booked",
-    tone: "green",
-  },
-] as const;
-
-const problemCards = [
-  {
-    detail:
-      "Most leads go cold in minutes. If you do not reply fast, they book with someone else.",
-    icon: "clock",
-    metric: "Avg. response time: 2+ hours",
-    title: "Too slow to reply",
-    tone: "red",
-  },
-  {
-    detail:
-      "Busy days equal forgotten follow-ups. No reply means lost jobs and lost revenue.",
-    icon: "mail",
-    metric: "40% of leads need a follow-up",
-    title: "Missed follow-ups",
-    tone: "amber",
-  },
-  {
-    detail:
-      "Texts, DMs, emails, and calls are scattered across platforms. Nothing in one place.",
-    icon: "inbox",
-    metric: "Leads slip through the cracks",
-    title: "Messages everywhere",
-    tone: "green",
-  },
-] satisfies ReadonlyArray<{
+type LeadItem = Readonly<{
+  customer: string;
   detail: string;
-  icon: IconName;
-  metric: string;
-  title: string;
-  tone: "amber" | "green" | "red";
+  source: string;
+  status: string;
+  time: string;
+  tone: LeadTone;
 }>;
 
-const beforeItems = [
-  "Leads buried in DMs and texts",
-  "Slow or no replies",
-  "Follow-ups forgotten",
-  "Leads go cold",
-  "Jobs lost to competitors",
-] as const;
+type ProblemItem = Readonly<{
+  body: string;
+  icon: MarketingIconName;
+  title: string;
+  tone: LeadTone;
+}>;
 
-const afterItems = [
-  "All leads in one inbox",
-  "AI drafts replies instantly",
-  "Smart follow-ups",
-  "More replies, more bookings",
-  "More revenue every month",
-] as const;
+type FlowItem = Readonly<{
+  body: string;
+  icon: MarketingIconName;
+  kicker: string;
+  title: string;
+}>;
 
-const processSteps = [
-  ["Capture", "Leads from texts, DMs, Facebook, web, and email in one inbox.", "chat"],
-  ["Extract", "AI extracts key details like service, location, and timing.", "spark"],
-  ["Draft", "AI writes a personalized reply or quote in seconds.", "mail"],
-  ["Follow-up", "Smart follow-ups if no reply. You stay top of mind.", "clock"],
-  ["Booked", "More replies turn into booked jobs and happy customers.", "check"],
-] satisfies ReadonlyArray<[string, string, IconName]>;
-
-const proofCards = [
-  ["$3,200+", "Recovered in missed leads last month", "Sparkle Clean Co."],
-  ["14", "Extra jobs booked in 2 weeks", "CleanHaus"],
-  ["★★★★★", "\"BizPilot is like having a full-time assistant that never sleeps.\"", "Jasmine P."],
-  ["43s", "Average first reply time with BizPilot", "Bright & Tidy"],
-  ["98%", "Leads responded within 5 minutes", "PureClean Pro"],
-] as const;
-
-const pricingPlans = [
-  {
-    cta: "Start free trial",
-    features: ["1 user", "4 channels", "AI reply drafts", "Smart follow-ups", "Basic reporting"],
-    name: "Starter",
-    note: "Perfect for solo cleaners",
-    price: "$29",
-    spotlight: false,
+const leadToneStyles: Record<LeadTone, { accent: string; bg: string; border: string; text: string }> = {
+  draft: {
+    accent: marketingTone.blue,
+    bg: "rgba(84,167,255,0.12)",
+    border: "rgba(84,167,255,0.30)",
+    text: "#86C5FF",
   },
-  {
-    cta: "Start free trial",
-    features: ["Up to 5 users", "AI Starter features", "Advanced reporting", "Team inbox", "Priority support"],
-    name: "Pro",
-    note: "For growing teams",
-    price: "$79",
-    spotlight: true,
+  info: {
+    accent: marketingTone.gold,
+    bg: "rgba(246,184,75,0.13)",
+    border: "rgba(246,184,75,0.30)",
+    text: marketingTone.gold,
   },
-] as const;
+  new: {
+    accent: marketingTone.emerald,
+    bg: "rgba(23,212,146,0.12)",
+    border: "rgba(23,212,146,0.30)",
+    text: marketingTone.emerald,
+  },
+  replied: {
+    accent: "#2CE59C",
+    bg: "rgba(44,229,156,0.11)",
+    border: "rgba(44,229,156,0.28)",
+    text: "#58EBAF",
+  },
+  risk: {
+    accent: marketingTone.red,
+    bg: "rgba(255,95,102,0.12)",
+    border: "rgba(255,95,102,0.30)",
+    text: "#FF8C92",
+  },
+};
 
-function IconGlyph({ name }: Readonly<{ name: IconName }>) {
+function StatusPill({ status, tone }: Readonly<{ status: string; tone: LeadTone }>) {
+  const selected = leadToneStyles[tone];
+
   return (
-    <svg
-      aria-hidden="true"
-      className="h-4 w-4"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="1.8"
-      viewBox="0 0 24 24"
+    <span
+      className="inline-flex shrink-0 items-center rounded-full border px-2 py-1 text-[10px] font-black uppercase leading-none"
+      style={{ backgroundColor: selected.bg, borderColor: selected.border, color: selected.text }}
     >
-      {name === "arrow" ? (
-        <>
-          <path d="M5 12h14" />
-          <path d="m13 6 6 6-6 6" />
-        </>
-      ) : null}
-      {name === "bolt" ? <path d="m13 2-9 12h7l-1 8 10-13h-7z" /> : null}
-      {name === "calendar" ? (
-        <>
-          <path d="M7 3v4" />
-          <path d="M17 3v4" />
-          <path d="M4 8h16" />
-          <path d="M5 5h14v15H5z" />
-        </>
-      ) : null}
-      {name === "chart" ? (
-        <>
-          <path d="M4 18 10 12l4 4 6-8" />
-          <path d="M15 8h5v5" />
-        </>
-      ) : null}
-      {name === "chat" ? (
-        <>
-          <path d="M5 6.5h14v9H9l-4 3.5z" />
-          <path d="M8.5 10h7" />
-          <path d="M8.5 13h4.5" />
-        </>
-      ) : null}
-      {name === "check" ? (
-        <>
-          <path d="m5 12 4 4L19 6" />
-          <circle cx="12" cy="12" r="9" />
-        </>
-      ) : null}
-      {name === "clock" ? (
-        <>
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 7v5l3 2" />
-        </>
-      ) : null}
-      {name === "dollar" ? (
-        <>
-          <path d="M12 3v18" />
-          <path d="M17 7.5c-1-1.2-2.6-1.8-4.7-1.4-2 .4-3 1.5-3 3 0 1.8 1.5 2.5 4.1 3.1 2.4.6 3.7 1.3 3.7 3.1 0 1.7-1.4 3-4 3-2 0-3.7-.6-5-1.8" />
-        </>
-      ) : null}
-      {name === "facebook" ? (
-        <>
-          <path d="M14 8h2V4h-3c-2.2 0-4 1.8-4 4v3H7v4h2v5h4v-5h3l1-4h-4V8c0-.6.4-1 1-1z" />
-        </>
-      ) : null}
-      {name === "inbox" ? (
-        <>
-          <path d="M4 5h16v14H4z" />
-          <path d="m4 13 4 4h8l4-4" />
-          <path d="M8 9h8" />
-        </>
-      ) : null}
-      {name === "mail" ? (
-        <>
-          <path d="M4 6h16v12H4z" />
-          <path d="m4 8 8 6 8-6" />
-        </>
-      ) : null}
-      {name === "play" ? <path d="m9 7 8 5-8 5z" /> : null}
-      {name === "shield" ? (
-        <>
-          <path d="M12 3 20 6v5c0 5-3.3 8.4-8 10-4.7-1.6-8-5-8-10V6z" />
-          <path d="m8.5 12 2.3 2.3L15.8 9" />
-        </>
-      ) : null}
-      {name === "spark" ? (
-        <>
-          <path d="M12 3 9.8 9.8 3 12l6.8 2.2L12 21l2.2-6.8L21 12l-6.8-2.2z" />
-          <path d="M18 3v4" />
-          <path d="M16 5h4" />
-        </>
-      ) : null}
-      {name === "warning" ? (
-        <>
-          <path d="M12 3 22 20H2z" />
-          <path d="M12 9v4" />
-          <path d="M12 17h.01" />
-        </>
-      ) : null}
-    </svg>
+      {status}
+    </span>
   );
 }
 
-function Container({
-  children,
-  className = "",
-}: Readonly<{ children: ReactNode; className?: string }>) {
-  return <div className={`mx-auto w-full max-w-[765px] px-5 sm:px-6 lg:px-8 ${className}`}>{children}</div>;
-}
+function LeadRow({ item }: Readonly<{ item: LeadItem }>) {
+  const selected = leadToneStyles[item.tone];
 
-function PrimaryCta({
-  children,
-  href = "/auth/sign-up",
-}: Readonly<{ children: ReactNode; href?: string }>) {
   return (
-    <Link
-      className="group inline-flex h-9 items-center justify-center whitespace-nowrap rounded-[10px] bg-[#17D492] px-4 text-[11px] font-bold text-[#03130c] shadow-[0_14px_32px_rgba(23,212,146,0.16)] transition duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] hover:-translate-y-0.5 hover:bg-[#21E6A0] hover:shadow-[0_18px_42px_rgba(23,212,146,0.24)] sm:h-10 sm:px-5"
-      href={href}
+    <div
+      className="grid gap-3 rounded-[12px] border p-3 min-[520px]:grid-cols-[minmax(0,1fr)_auto] min-[520px]:items-start"
+      style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
     >
-      {children}
-      <span className="ml-2 transition group-hover:translate-x-0.5">-&gt;</span>
-    </Link>
-  );
-}
-
-function SecondaryCta({
-  children,
-  href = "#demo",
-}: Readonly<{ children: ReactNode; href?: string }>) {
-  return (
-    <Link
-      className="inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-[10px] border border-white/[0.12] bg-white/[0.035] px-3.5 text-[11px] font-semibold text-[#F5F7FA] transition duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] hover:-translate-y-0.5 hover:border-white/[0.18] hover:bg-white/[0.06] sm:h-10 sm:px-4"
-      href={href}
-    >
-      <span className="flex h-5 w-5 items-center justify-center rounded-full border border-white/[0.16] text-[#17D492]">
-        <IconGlyph name="play" />
-      </span>
-      {children}
-    </Link>
-  );
-}
-
-function SectionHeader({
-  eyebrow,
-  title,
-  subtitle,
-}: Readonly<{ eyebrow?: string; subtitle?: string; title: string }>) {
-  return (
-    <div className="mx-auto max-w-[560px] text-center">
-      {eyebrow ? (
-        <p className="text-[11px] font-black uppercase text-[#17D492]">{eyebrow}</p>
-      ) : null}
-      <h2 className="mt-2 text-[28px] font-bold leading-[1.05] text-[#F5F7FA] sm:text-[34px] lg:text-[36px]">
-        {title}
-      </h2>
-      {subtitle ? (
-        <p className="mx-auto mt-3 max-w-[46ch] text-base leading-7 text-[rgba(245,247,250,0.62)]">
-          {subtitle}
+      <div className="min-w-0">
+        <div className="flex min-w-0 items-center gap-2">
+          <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: selected.accent }} />
+          <p className="truncate text-[13px] font-black" style={{ color: marketingTone.text }}>
+            {item.customer}
+          </p>
+        </div>
+        <p className="mt-1 truncate text-[11px]" style={{ color: marketingTone.soft }}>
+          {item.detail}
         </p>
-      ) : null}
+        <p className="mt-1 truncate text-[10px]" style={{ color: marketingTone.muted }}>
+          From: {item.source}
+        </p>
+      </div>
+      <div className="flex items-center justify-between gap-3 min-[520px]:flex-col min-[520px]:items-end">
+        <span className="text-[10px] font-bold" style={{ color: marketingTone.muted }}>
+          {item.time}
+        </span>
+        <StatusPill status={item.status} tone={item.tone} />
+      </div>
     </div>
   );
 }
 
-function MetricCard({ icon, label, sub, value }: (typeof heroMetrics)[number]) {
-  return (
-    <article className="group border-white/[0.06] px-4 py-3 transition duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] hover:-translate-y-0.5 hover:bg-white/[0.025] sm:border-l first:border-l-0">
-      <div className="flex items-center gap-3">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#17D492]/18 bg-[#17D492]/10 text-[#17D492] shadow-[0_0_26px_rgba(23,212,146,0.08)]">
-          <IconGlyph name={icon} />
-        </span>
-        <span>
-          <span className="block text-[24px] font-black leading-none text-[#F5F7FA]">
-            {value}
-          </span>
-          <span className="mt-1 block text-xs font-medium text-[rgba(245,247,250,0.72)]">
-            {label}
-          </span>
-          <span className="mt-0.5 block text-[11px] text-[rgba(245,247,250,0.46)]">
-            {sub}
-          </span>
-        </span>
-      </div>
-    </article>
-  );
-}
+function HeroDesk() {
+  const leads: ReadonlyArray<LeadItem> = [
+    {
+      customer: "Sarah M.",
+      detail: "House cleaning - 2 bed / 1 bath",
+      source: "Instagram",
+      status: "New",
+      time: "2m ago",
+      tone: "new",
+    },
+    {
+      customer: "David L.",
+      detail: "Deep clean - Apartment",
+      source: "Web form",
+      status: "Info needed",
+      time: "21m ago",
+      tone: "info",
+    },
+    {
+      customer: "Emily R.",
+      detail: "Move-out clean",
+      source: "Google Business",
+      status: "Draft ready",
+      time: "42m ago",
+      tone: "draft",
+    },
+    {
+      customer: "Michelle T.",
+      detail: "Office cleaning - Weekly",
+      source: "Facebook",
+      status: "Replied",
+      time: "1h ago",
+      tone: "replied",
+    },
+  ];
 
-function WorkflowPreview() {
   return (
-    <div className="relative mx-auto w-full max-w-[390px]" id="demo">
-      <div className="absolute -inset-4 rounded-[28px] bg-[radial-gradient(circle_at_70%_18%,rgba(23,212,146,0.12),transparent_17rem)] blur-sm" />
-      <div className="relative rounded-[18px] border border-white/[0.08] bg-[linear-gradient(145deg,rgba(13,23,33,0.92),rgba(7,16,24,0.74))] p-3.5 shadow-[0_32px_90px_rgba(0,0,0,0.34)]">
-        <p className="absolute right-8 top-[-34px] hidden rotate-[-5deg] font-mono text-xs leading-4 text-[#17D492] lg:block">
-          From lead to booked
-          <br />
-          job in minutes
+    <MarketingCard
+      className="overflow-hidden p-4"
+      style={{
+        background:
+          "radial-gradient(circle at 4% 0%, rgba(45,212,191,0.16), transparent 22rem), linear-gradient(145deg, rgba(10,23,35,0.96), rgba(5,12,20,0.96))",
+        borderColor: "rgba(45,212,191,0.22)",
+      }}
+    >
+      <div className="flex items-center gap-2 px-1 pb-4">
+        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: marketingTone.emerald }} />
+        <p className="text-[15px] font-black" style={{ color: marketingTone.text }}>
+          Live Recovery Desk
         </p>
-        <div className="grid gap-3">
-          {workflowCards.map((card, index) => (
-            <div className="relative" key={card.status}>
-              {index < workflowCards.length - 1 ? (
-                <span className="absolute left-4 top-[40px] h-4 border-l border-dashed border-white/[0.18]" />
-              ) : null}
-              <div
-                className={
-                  card.status === "Reply ready to review"
-                    ? "grid grid-cols-[2.25rem_1fr_auto] items-center gap-2.5 rounded-[12px] border border-[#17D492]/42 bg-[#17D492]/8 p-2.5 shadow-[0_0_34px_rgba(23,212,146,0.12)] transition duration-200 hover:-translate-y-0.5"
-                    : "grid grid-cols-[2.25rem_1fr_auto] items-center gap-2.5 rounded-[12px] border border-white/[0.08] bg-[#0D1721]/95 p-2.5 transition duration-200 hover:-translate-y-0.5 hover:border-white/[0.14]"
-                }
-              >
-                <span
-                  className={
-                    card.tone === "green"
-                      ? "flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#17D492] text-[#03130c]"
-                      : card.tone === "blue"
-                        ? "flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#4169e1] text-white"
-                        : "flex h-9 w-9 items-center justify-center rounded-[10px] bg-white/[0.07] text-[rgba(245,247,250,0.72)]"
-                  }
-                >
-                  <IconGlyph name={card.icon} />
-                </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-xs font-bold text-[#F5F7FA]">
-                    {card.status}
-                  </span>
-                  <span className="mt-0.5 block truncate text-[11px] leading-4 text-[rgba(245,247,250,0.58)]">
-                    {card.detail}
-                  </span>
-                </span>
-                <span className={card.status === "Reply ready to review" ? "text-xs text-[#17D492]" : "text-xs text-[rgba(245,247,250,0.58)]"}>
-                  {card.meta}
-                </span>
-              </div>
-            </div>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="grid gap-2.5">
+          {leads.map((lead) => (
+            <LeadRow item={lead} key={lead.customer} />
           ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Avatars() {
-  return (
-    <div className="flex items-center gap-2.5">
-      <div className="flex -space-x-2">
-        {["#f3b181", "#c98d67", "#a56c52", "#e5c29f"].map((color, index) => (
-          <span
-            className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-[#071018] bg-[linear-gradient(135deg,rgba(255,255,255,0.3),transparent)] text-[8px] font-bold text-[#071018]"
-            key={color}
-            style={{ backgroundColor: color }}
-          >
-            {["M", "J", "A", "S"][index]}
-          </span>
-        ))}
-      </div>
-      <div>
-        <p className="text-xs text-[#FFB84D]">★★★★★</p>
-        <p className="text-[11px] leading-4 text-[rgba(245,247,250,0.46)]">
-          Trusted by 200+ cleaning businesses
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function BeforeAfter() {
-  return (
-    <section className="border-t border-white/[0.04]">
-      <Container className="py-14">
-        <div className="mb-7 grid gap-3 lg:grid-cols-[0.42fr_1fr] lg:items-end">
-          <p className="text-[11px] font-black uppercase text-[#17D492]">The difference</p>
-          <h2 className="max-w-[520px] text-[28px] font-bold leading-[1.05] text-[#F5F7FA] sm:text-[34px]">
-            From chaos and missed leads to booked jobs on autopilot
-          </h2>
-        </div>
-        <div className="relative grid gap-4 lg:grid-cols-2">
-          <article className="overflow-hidden rounded-[16px] border border-white/[0.08] bg-[#0D1721]">
-            <div className="grid min-h-[180px] sm:grid-cols-[0.95fr_1fr]">
-              <div className="p-5">
-                <p className="text-[11px] font-black uppercase text-[#FF5C5C]">
-                  Before BizPilot
-                </p>
-                <ul className="mt-4 grid gap-2 text-xs text-[rgba(245,247,250,0.72)]">
-                  {beforeItems.map((item) => (
-                    <li className="flex gap-2" key={item}>
-                      <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#FF5C5C]/12 text-[#FF5C5C]">
-                        <IconGlyph name="warning" />
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="relative hidden overflow-hidden sm:block">
-                <Image
-                  alt="Cleaning business owner stressed by scattered quote messages"
-                  className="h-full w-full object-cover opacity-45 grayscale"
-                  fill
-                  loading="lazy"
-                  src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=760&q=72"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,#0D1721_0%,rgba(13,23,33,0.28)_55%,rgba(13,23,33,0.78)_100%)]" />
-                <span className="absolute right-6 top-10 rounded-lg border border-white/[0.1] bg-black/35 px-3 py-2 text-xs text-[rgba(245,247,250,0.58)]">
-                  DM?
-                </span>
-                <span className="absolute left-8 top-28 rounded-lg border border-white/[0.1] bg-black/35 px-3 py-2 text-xs text-[rgba(245,247,250,0.58)]">
-                  Text
-                </span>
-                <span className="absolute bottom-10 right-10 rounded-lg border border-white/[0.1] bg-black/35 px-3 py-2 text-xs text-[rgba(245,247,250,0.58)]">
-                  Email
-                </span>
-              </div>
-            </div>
-          </article>
-          <div className="absolute left-1/2 top-1/2 z-10 hidden h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-white/[0.1] bg-[#101a24] text-sm font-bold text-[#F5F7FA] shadow-[0_12px_34px_rgba(0,0,0,0.28)] lg:flex">
-            VS
+          <div className="rounded-[10px] border px-3 py-2 text-center text-[11px] font-bold" style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
+            View all leads
           </div>
-          <article className="overflow-hidden rounded-[16px] border border-[#17D492]/20 bg-[linear-gradient(135deg,rgba(23,212,146,0.08),rgba(13,23,33,0.92))]">
-            <div className="grid min-h-[180px] sm:grid-cols-[0.95fr_1fr]">
-              <div className="p-5">
-                <p className="text-[11px] font-black uppercase text-[#17D492]">
-                  With BizPilot
-                </p>
-                <ul className="mt-4 grid gap-2 text-xs text-[rgba(245,247,250,0.78)]">
-                  {afterItems.map((item) => (
-                    <li className="flex gap-2" key={item}>
-                      <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#17D492]/14 text-[#17D492]">
-                        <IconGlyph name="check" />
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="relative hidden overflow-hidden sm:block">
-                <Image
-                  alt="Cleaning business owner confident after organizing quote requests"
-                  className="h-full w-full object-cover opacity-70"
-                  fill
-                  loading="lazy"
-                  src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=760&q=72"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,#0D1721_0%,rgba(13,23,33,0.22)_52%,rgba(23,212,146,0.16)_100%)]" />
-                <div className="absolute bottom-7 right-7 rounded-[14px] border border-[#17D492]/26 bg-[#0D1721]/76 p-4 text-center shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
-                  <p className="text-2xl font-black text-[#17D492]">+2.8x</p>
-                  <p className="text-xs leading-4 text-[rgba(245,247,250,0.72)]">
-                    More jobs
-                    <br />
-                    booked
-                  </p>
-                </div>
-                <svg
-                  aria-hidden="true"
-                  className="absolute right-28 top-9 h-24 w-24 text-[#17D492]"
-                  fill="none"
-                  viewBox="0 0 100 100"
-                >
-                  <path d="M10 78 C30 60 38 62 52 40 S74 18 88 14" stroke="currentColor" strokeWidth="6" />
-                  <path d="M70 12h20v20" stroke="currentColor" strokeWidth="6" />
-                </svg>
-              </div>
-            </div>
-          </article>
         </div>
-      </Container>
+
+        <div
+          className="rounded-[13px] border p-4"
+          style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="text-[15px] font-black" style={{ color: marketingTone.text }}>
+              Suggested reply
+            </h3>
+            <StatusPill status="AI draft" tone="new" />
+          </div>
+          <div className="mt-5 space-y-4 text-[13px] leading-6" style={{ color: marketingTone.soft }}>
+            <p>Hi Sarah,</p>
+            <p>
+              Thanks for reaching out. I would be happy to help with your house cleaning.
+            </p>
+            <p>To provide an accurate quote, could you share:</p>
+            <ul className="ml-4 list-disc space-y-1">
+              <li>Approx. size of your home?</li>
+              <li>How often would you like cleaning?</li>
+              <li>Any priority areas or special requests?</li>
+            </ul>
+            <p>Once I have a few details, I can send you a quick, tailored quote.</p>
+            <p>Best regards,<br />Clean Team</p>
+          </div>
+          <div className="mt-5 grid gap-2">
+            <MarketingButton className="h-10 w-full text-[12px]" href="/auth/sign-up">
+              Review reply
+            </MarketingButton>
+            <div className="grid gap-2 min-[520px]:grid-cols-2">
+              <button
+                className="h-10 rounded-[9px] border text-[12px] font-black"
+                style={{ borderColor: marketingTone.borderStrong, color: marketingTone.text }}
+                type="button"
+              >
+                Copy response
+              </button>
+              <button
+                className="h-10 rounded-[9px] border text-[12px] font-black"
+                style={{ borderColor: marketingTone.borderStrong, color: marketingTone.text }}
+                type="button"
+              >
+                Mark contacted
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </MarketingCard>
+  );
+}
+
+function HeroSection() {
+  return (
+    <section className="px-0 py-12">
+      <MarketingShell>
+        <div className="grid items-center gap-10 lg:grid-cols-[0.84fr_1.16fr]">
+          <div>
+            <MarketingBadge>For cleaning teams</MarketingBadge>
+            <h1 className="mt-6 max-w-[620px] text-[46px] font-black leading-[1.08]" style={{ color: marketingTone.text }}>
+              Stop losing cleaning jobs to slow replies.
+            </h1>
+            <p className="mt-5 max-w-[560px] text-[17px] leading-8" style={{ color: marketingTone.soft }}>
+              BizPilot captures quote requests, organizes every lead, and drafts owner-reviewed replies and follow-ups so cleaning businesses can respond faster without auto-sending anything.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <MarketingButton href="/auth/sign-up">
+                Start free recovery <MarketingIcon name="arrow" />
+              </MarketingButton>
+              <MarketingButton href="#recovery-flow" variant="secondary">
+                See how it works
+              </MarketingButton>
+            </div>
+            <div className="mt-7 grid gap-3 text-[13px]" style={{ color: marketingTone.soft }}>
+              {[
+                "Works with quote requests from multiple channels",
+                "AI drafts stay in your control",
+                "No auto-send, no fake pricing",
+              ].map((item) => (
+                <span className="flex items-center gap-3" key={item}>
+                  <span className="text-[#2DD4BF]">
+                    <MarketingIcon name="check" />
+                  </span>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+          <HeroDesk />
+        </div>
+      </MarketingShell>
     </section>
   );
 }
 
-function RightProofRail() {
+function MetricStrip() {
+  const metrics: ReadonlyArray<Readonly<{ icon: MarketingIconName; label: string; note: string; tone: LeadTone; value: string }>> = [
+    { icon: "radar", label: "Quote requests organized", note: "From all your channels", tone: "draft", value: "12" },
+    { icon: "briefcase", label: "Replies drafted", note: "Ready for your review", tone: "new", value: "8" },
+    { icon: "target", label: "Leads at risk", note: "Need your follow-up", tone: "risk", value: "3" },
+    { icon: "copy", label: "Auto-send messages", note: "You are in control", tone: "draft", value: "0" },
+  ];
+
   return (
-    <aside className="hidden border-l border-white/[0.05] bg-[radial-gradient(circle_at_20%_12%,rgba(23,212,146,0.055),transparent_18rem)] px-7 pb-12 pt-0 lg:block">
-      <div className="sticky top-[72px] grid gap-4">
-        <div className="rounded-[18px] border border-white/[0.07] bg-[rgba(13,23,33,0.58)] p-4 shadow-[0_24px_70px_rgba(0,0,0,0.14)]">
-          <p className="text-[11px] font-black uppercase text-[#17D492]">
-            Live recovery feed
-          </p>
-          <div className="mt-4 grid gap-3">
-            {[
-              ["+ New quote request", "2m ago", "Deep clean / 2 bed / downtown"],
-              ["+ AI reply reviewed", "5m ago", "Owner copied draft to DM"],
-              ["+ Follow-up due", "8m ago", "Move-out lead still warm"],
-              ["+ Job booked", "12m ago", "$320 move-out cleaning"],
-            ].map(([title, time, detail]) => (
-              <div
-                className="rounded-[12px] border border-white/[0.07] bg-white/[0.025] p-3"
-                key={title}
+    <section className="px-5 pb-10 sm:px-6">
+      <div
+        className="mx-auto grid w-full max-w-[1180px] gap-0 overflow-hidden rounded-[14px] border md:grid-cols-2 lg:grid-cols-4"
+        style={{
+          background: "linear-gradient(180deg, rgba(9,20,31,0.78), rgba(5,12,20,0.86))",
+          borderColor: marketingTone.border,
+        }}
+      >
+        {metrics.map((metric, index) => {
+          const selected = leadToneStyles[metric.tone];
+
+          return (
+            <div
+              className="flex min-w-0 items-center gap-4 border-b p-5 lg:border-b-0 lg:border-l lg:first:border-l-0"
+              key={metric.label}
+              style={{ borderColor: index === 0 ? "transparent" : marketingTone.border }}
+            >
+              <span
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[11px]"
+                style={{ backgroundColor: selected.bg, color: selected.text }}
               >
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs font-bold text-[#F5F7FA]">{title}</p>
-                  <p className="text-[11px] text-[rgba(245,247,250,0.46)]">{time}</p>
-                </div>
-                <p className="mt-1 text-[11px] leading-4 text-[rgba(245,247,250,0.58)]">
-                  {detail}
+                <MarketingIcon name={metric.icon} />
+              </span>
+              <div className="min-w-0">
+                <p className="text-[30px] font-black leading-none" style={{ color: marketingTone.text }}>
+                  {metric.value}
+                </p>
+                <p className="mt-2 text-[13px] font-black" style={{ color: marketingTone.text }}>
+                  {metric.label}
+                </p>
+                <p className="mt-1 text-[12px]" style={{ color: marketingTone.muted }}>
+                  {metric.note}
                 </p>
               </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="rounded-[18px] border border-[#17D492]/16 bg-[#17D492]/7 p-4">
-          <p className="text-[11px] font-black uppercase text-[#17D492]">
-            Today
-          </p>
-          <p className="mt-2 text-3xl font-black text-[#F5F7FA]">6</p>
-          <p className="mt-1 text-xs leading-5 text-[rgba(245,247,250,0.68)]">
-            quote requests waiting for fast owner review.
-          </p>
-        </div>
-
-        <div className="rounded-[18px] border border-white/[0.08] bg-[rgba(13,23,33,0.58)] p-4">
-          <p className="text-[11px] font-black uppercase text-[rgba(245,247,250,0.46)]">
-            Outcome
-          </p>
-          <p className="mt-2 text-lg font-black text-[#17D492]">
-            Reply before competitors do.
-          </p>
-          <p className="mt-2 text-xs leading-5 text-[rgba(245,247,250,0.62)]">
-            BizPilot keeps the next response visible, drafted, and owner-controlled.
-          </p>
-        </div>
+            </div>
+          );
+        })}
       </div>
-    </aside>
+    </section>
   );
 }
 
-export default function Home() {
+function ProblemSection() {
+  const problems: ReadonlyArray<ProblemItem> = [
+    {
+      body: "A quick response window vanishes. A slower reply feels like a no.",
+      icon: "clock",
+      title: "Reply delays turn intent into doubt",
+      tone: "risk",
+    },
+    {
+      body: "Instagram, Google, text, email. Valuable leads are missed.",
+      icon: "inbox",
+      title: "Scattered inboxes hide requests",
+      tone: "draft",
+    },
+    {
+      body: "No apartment size, no preferred date, no parking. You back and forth.",
+      icon: "warning",
+      title: "Missing details slow the sale",
+      tone: "info",
+    },
+    {
+      body: "The customer moved on. You may never know.",
+      icon: "radar",
+      title: "No follow-up means quiet loss",
+      tone: "draft",
+    },
+  ];
+
   return (
-    <main className={`min-h-screen overflow-x-hidden font-sans ${bizTheme.appBackground}`}>
-      <div className={`pointer-events-none fixed inset-0 ${bizTheme.atmosphericBackground}`} />
-      <div className="relative">
-        <nav className="sticky top-0 z-30 border-b border-white/[0.05] bg-[#071018]/72 backdrop-blur-[16px]">
-          <div className="mx-auto flex h-[56px] w-full max-w-[1125px] items-center justify-between gap-4 px-5 sm:px-6 lg:px-8">
-            <Link className="flex items-center gap-3 text-base font-bold" href="/">
-              <span className="flex h-7 w-7 items-center justify-center rounded-[8px] bg-[#17D492] text-[10px] font-black text-[#03130c]">
-                BP
-              </span>
-              BizPilot
-            </Link>
-            <div className="hidden items-center gap-8 text-xs font-semibold text-[rgba(245,247,250,0.54)] lg:flex">
-              {navItems.map(([label, href]) => (
-                <a className="transition hover:text-[#F5F7FA]" href={href} key={label}>
-                  {label}
-                </a>
-              ))}
+    <section className="px-5 py-8 sm:px-6" id="why">
+      <MarketingShell>
+        <MarketingSectionTitle
+          align="center"
+          title={
+            <>
+              The problem is not demand. It is <span style={{ color: marketingTone.emerald }}>response chaos.</span>
+            </>
+          }
+        />
+        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {problems.map((problem) => {
+            const selected = leadToneStyles[problem.tone];
+
+            return (
+              <MarketingCard className="p-5" key={problem.title}>
+                <span
+                  className="flex h-11 w-11 items-center justify-center rounded-[11px]"
+                  style={{ backgroundColor: selected.bg, color: selected.text }}
+                >
+                  <MarketingIcon name={problem.icon} />
+                </span>
+                <h3 className="mt-5 text-[17px] font-black leading-snug" style={{ color: marketingTone.text }}>
+                  {problem.title}
+                </h3>
+                <p className="mt-3 text-[13px] leading-6" style={{ color: marketingTone.soft }}>
+                  {problem.body}
+                </p>
+              </MarketingCard>
+            );
+          })}
+        </div>
+      </MarketingShell>
+    </section>
+  );
+}
+
+function RecoveryFlowSection() {
+  const flow: ReadonlyArray<FlowItem> = [
+    {
+      body: "Automatically pulls DMs, texts, forms into one place.",
+      icon: "link",
+      kicker: "Capture",
+      title: "Smart quote link",
+    },
+    {
+      body: "Every lead with missing info, urgency, and status.",
+      icon: "inbox",
+      kicker: "Organize",
+      title: "Lead recovery queue",
+    },
+    {
+      body: "AI prepares drafts. You edit, refine, and send manually.",
+      icon: "pen",
+      kicker: "Draft",
+      title: "Owner-reviewed AI replies",
+    },
+    {
+      body: "Built-in follow-ups for leads that go quiet.",
+      icon: "target",
+      kicker: "Recover",
+      title: "Follow-up radar",
+    },
+  ];
+
+  return (
+    <section className="px-5 py-10 sm:px-6" id="recovery-flow">
+      <MarketingShell>
+        <MarketingSectionTitle
+          align="center"
+          title={
+            <>
+              A quote recovery system built around <span style={{ color: marketingTone.emerald }}>one operational loop.</span>
+            </>
+          }
+        />
+        <div className="mt-8 grid gap-3 lg:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] lg:items-center">
+          {flow.map((item, index) => (
+            <div className="contents" key={item.title}>
+              <MarketingCard className="p-5">
+                <span
+                  className="flex h-12 w-12 items-center justify-center rounded-[12px]"
+                  style={{ backgroundColor: "rgba(45,212,191,0.12)", color: marketingTone.teal }}
+                >
+                  <MarketingIcon name={item.icon} />
+                </span>
+                <p className="mt-5 text-[11px] font-black uppercase" style={{ color: marketingTone.teal }}>
+                  {item.kicker}
+                </p>
+                <h3 className="mt-2 text-[17px] font-black" style={{ color: marketingTone.text }}>
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-[13px] leading-6" style={{ color: marketingTone.soft }}>
+                  {item.body}
+                </p>
+              </MarketingCard>
+              {index < flow.length - 1 ? (
+                <span className="hidden text-center lg:block" style={{ color: marketingTone.teal }}>
+                  <MarketingIcon name="arrow" />
+                </span>
+              ) : null}
             </div>
-            <div className="flex items-center gap-3">
-              <Link
-                className="hidden text-xs font-semibold text-[rgba(245,247,250,0.72)] transition hover:text-[#F5F7FA] sm:block"
-                href="/auth/sign-in"
+          ))}
+        </div>
+      </MarketingShell>
+    </section>
+  );
+}
+
+function CommandCenterMock() {
+  const queue: ReadonlyArray<LeadItem> = [
+    { customer: "Sarah M.", detail: "New request - 2m ago", source: "Instagram", status: "New", time: "", tone: "new" },
+    { customer: "David L.", detail: "Missing info - 21m ago", source: "Web form", status: "Info needed", time: "", tone: "info" },
+    { customer: "Emily R.", detail: "Draft ready - 42m ago", source: "Google", status: "Draft ready", time: "", tone: "draft" },
+    { customer: "Michelle T.", detail: "Replied - 1h ago", source: "Facebook", status: "Replied", time: "", tone: "replied" },
+    { customer: "Jason P.", detail: "At risk - 2h ago", source: "Website", status: "At risk", time: "", tone: "risk" },
+  ];
+
+  return (
+    <MarketingCard className="p-4" style={{ background: "linear-gradient(180deg, rgba(10,22,34,0.95), rgba(6,13,21,0.95))" }}>
+      <div className="grid gap-4 lg:grid-cols-[0.78fr_1.22fr]">
+        <div>
+          <div className="flex items-center justify-between">
+            <h3 className="text-[14px] font-black" style={{ color: marketingTone.text }}>
+              Lead queue
+            </h3>
+            <span className="text-[11px]" style={{ color: marketingTone.blue }}>
+              12 leads
+            </span>
+          </div>
+          <div className="mt-3 grid gap-2">
+            {queue.map((lead) => (
+              <div
+                className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-[10px] border p-2.5"
+                key={lead.customer}
+                style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
               >
-                Log in
-              </Link>
-              <PrimaryCta>Get Early Access</PrimaryCta>
+                <div className="min-w-0">
+                  <p className="truncate text-[12px] font-black" style={{ color: marketingTone.text }}>
+                    {lead.customer}
+                  </p>
+                  <p className="truncate text-[10px]" style={{ color: marketingTone.muted }}>
+                    {lead.detail}
+                  </p>
+                </div>
+                <StatusPill status={lead.status} tone={lead.tone} />
+              </div>
+            ))}
+            <div className="rounded-[10px] border px-3 py-2 text-center text-[11px] font-bold" style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
+              View all leads
             </div>
           </div>
-        </nav>
+        </div>
 
-        <div className="mx-auto grid w-full max-w-[1125px] lg:grid-cols-[minmax(0,840px)_285px]">
-          <div className="min-w-0">
-        <section className="border-b border-white/[0.04]">
-          <Container className="grid gap-8 py-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(330px,0.88fr)] lg:items-center lg:py-9">
-            <div>
-              <p className="inline-flex items-center gap-2 rounded-full border border-[#17D492]/20 bg-[#17D492]/8 px-3 py-1 text-[10px] font-black uppercase text-[#F5F7FA]">
-                <span className="text-[#17D492]">+</span>
-                AI lead recovery for cleaning businesses
+        <div>
+          <h3 className="text-[14px] font-black" style={{ color: marketingTone.text }}>
+            AI response desk
+          </h3>
+          <p className="mt-1 text-[12px]" style={{ color: marketingTone.soft }}>
+            Sarah M. - House cleaning
+          </p>
+          <div className="mt-4 grid gap-3">
+            <div className="rounded-[12px] border p-4" style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}>
+              <p className="text-[12px] font-black" style={{ color: marketingTone.text }}>
+                Summary
               </p>
-              <h1 className="mt-5 max-w-[390px] text-[40px] font-black leading-[0.94] text-[#F5F7FA] sm:text-[44px] lg:text-[34px]">
-                <span className="block">Every minute</span>
-                <span className="block">you wait,</span>
-                <span className="block">another company</span>
-                <span className="block text-[#17D492]">gets the job.</span>
-              </h1>
-              <p className="mt-4 max-w-[34ch] text-sm leading-6 text-[rgba(245,247,250,0.72)]">
-                BizPilot captures quote requests from texts, DMs, Facebook, and
-                email - then drafts instant AI replies so you book more jobs
-                before competitors even respond.
+              <p className="mt-2 text-[12px] leading-5" style={{ color: marketingTone.soft }}>
+                2 bed / 1 bath house. Looking for regular cleaning. Mentioned dog at home.
               </p>
-              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                <PrimaryCta>Start booking faster</PrimaryCta>
-                <SecondaryCta>Watch 2-min demo</SecondaryCta>
+            </div>
+            <div className="rounded-[12px] border p-4" style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}>
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-[12px] font-black" style={{ color: marketingTone.text }}>
+                  Draft reply
+                </p>
+                <StatusPill status="AI draft" tone="new" />
               </div>
-              <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-[rgba(245,247,250,0.58)]">
-                {trustItems.map((item) => (
+              <p className="mt-2 text-[12px] leading-5" style={{ color: marketingTone.soft }}>
+                Hi Sarah, thanks for reaching out. I would be happy to help with your home clean and fresh. To give you an accurate quote, could you share how often you would like cleaning and any priority areas?
+              </p>
+            </div>
+            <div className="rounded-[12px] border p-4" style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}>
+              <p className="text-[12px] font-black" style={{ color: marketingTone.text }}>
+                Missing info
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {["Home size", "Frequency", "Priority areas", "Parking"].map((item) => (
+                  <span className="rounded-full border px-2.5 py-1 text-[10px]" key={item} style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="rounded-[12px] border p-4" style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}>
+              <p className="text-[12px] font-black" style={{ color: marketingTone.text }}>
+                Suggested next action
+              </p>
+              <p className="mt-2 text-[12px]" style={{ color: marketingTone.soft }}>
+                Ask for home size and cleaning frequency.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 grid gap-2 md:grid-cols-4">
+        {["Review reply", "Copy response", "Mark contacted", "Share quote link"].map((item, index) => (
+          <button
+            className="h-10 rounded-[9px] border text-[12px] font-black"
+            key={item}
+            style={{
+              background: index === 0 ? "linear-gradient(135deg, #2DD4BF 0%, #17D492 100%)" : "transparent",
+              borderColor: index === 0 ? "transparent" : marketingTone.borderStrong,
+              color: index === 0 ? "#03130C" : marketingTone.text,
+            }}
+            type="button"
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+    </MarketingCard>
+  );
+}
+
+function CommandCenterSection() {
+  return (
+    <section className="px-5 py-10 sm:px-6">
+      <MarketingShell>
+        <div className="grid items-center gap-9 lg:grid-cols-[0.42fr_0.58fr]">
+          <div>
+            <p className="text-[12px] font-black uppercase" style={{ color: marketingTone.teal }}>
+              Your command center
+            </p>
+            <h2 className="mt-4 text-[32px] font-black leading-[1.13]" style={{ color: marketingTone.text }}>
+              The Quote Recovery Command Desk
+            </h2>
+            <p className="mt-5 text-[16px] leading-8" style={{ color: marketingTone.soft }}>
+              See every new request, understand what is missing, and respond with confidence.
+            </p>
+            <div className="mt-6 grid gap-3 text-[14px]" style={{ color: marketingTone.soft }}>
+              {["All channels in one place", "AI drafts ready to review", "Missing info highlighted", "Follow-up radar built in"].map((item) => (
+                <span className="flex items-center gap-3" key={item}>
+                  <span style={{ color: marketingTone.teal }}>
+                    <MarketingIcon name="check" />
+                  </span>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+          <CommandCenterMock />
+        </div>
+      </MarketingShell>
+    </section>
+  );
+}
+
+function BeforeAfterSection() {
+  const before = [
+    "Leads slip through the cracks",
+    "No structured intake",
+    "No follow-up reminders",
+    "No visibility or reliability",
+  ];
+  const after = [
+    "Leads organized in one recovery queue",
+    "Missing details highlighted",
+    "Owner-reviewed AI reply ready",
+    "Manual follow-up stays visible",
+  ];
+
+  return (
+    <section className="px-5 py-8 sm:px-6" id="comparison">
+      <MarketingShell>
+        <MarketingCard className="overflow-hidden">
+          <div className="grid lg:grid-cols-2">
+            <div className="grid gap-5 border-b p-6 lg:border-b-0 lg:border-r" style={{ borderColor: marketingTone.border }}>
+              <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_190px] md:items-center">
+                <div>
+                  <h3 className="text-[22px] font-black" style={{ color: marketingTone.red }}>
+                    Before BizPilot
+                  </h3>
+                  <div className="mt-4 grid gap-3 text-[14px]" style={{ color: marketingTone.soft }}>
+                    {before.map((item) => (
+                      <span className="flex items-center gap-3" key={item}>
+                        <span style={{ color: marketingTone.red }}>
+                          <MarketingIcon name="x" />
+                        </span>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div
+                  className="relative min-h-[128px] rounded-[13px] border p-4"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(84,167,255,0.12), rgba(255,95,102,0.10))",
+                    borderColor: marketingTone.border,
+                  }}
+                >
+                  <div className="absolute left-4 top-5 h-4 w-20 rounded bg-white/10" />
+                  <div className="absolute left-8 top-11 h-5 w-24 rounded bg-white/10" />
+                  <div className="absolute left-4 top-20 h-6 w-34 rounded bg-white/10" />
+                  <span className="absolute bottom-4 right-4 rounded-full border px-3 py-1 text-[12px] font-black uppercase" style={{ backgroundColor: "rgba(255,95,102,0.15)", borderColor: "rgba(255,95,102,0.30)", color: marketingTone.red }}>
+                    Missed
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid gap-5 p-6">
+              <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_190px] md:items-center">
+                <div>
+                  <h3 className="text-[22px] font-black" style={{ color: marketingTone.emerald }}>
+                    After BizPilot
+                  </h3>
+                  <div className="mt-4 grid gap-3 text-[14px]" style={{ color: marketingTone.soft }}>
+                    {after.map((item) => (
+                      <span className="flex items-center gap-3" key={item}>
+                        <span style={{ color: marketingTone.emerald }}>
+                          <MarketingIcon name="check" />
+                        </span>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div
+                  className="relative min-h-[128px] rounded-[13px] border p-4"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(45,212,191,0.14), rgba(23,212,146,0.12))",
+                    borderColor: "rgba(45,212,191,0.26)",
+                  }}
+                >
+                  {[0, 1, 2].map((item) => (
+                    <div className="mb-3 flex items-center gap-3" key={item}>
+                      <span className="flex h-5 w-5 items-center justify-center rounded" style={{ backgroundColor: "rgba(45,212,191,0.18)", color: marketingTone.teal }}>
+                        <MarketingIcon name="check" />
+                      </span>
+                      <span className="h-3 w-24 rounded bg-white/14" />
+                    </div>
+                  ))}
+                  <span className="absolute bottom-4 right-4 flex h-16 w-16 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #2DD4BF, #17D492)", color: "#03130C" }}>
+                    <MarketingIcon name="check" />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </MarketingCard>
+      </MarketingShell>
+    </section>
+  );
+}
+
+function TrustStrip() {
+  const items: ReadonlyArray<Readonly<{ body: string; icon: MarketingIconName; title: string }>> = [
+    { body: "We set everything up for you.", icon: "user", title: "Founder-led setup" },
+    { body: "Try it. See value. Decide.", icon: "calendar", title: "14-day no-risk pilot" },
+    { body: "One focus. One outcome.", icon: "briefcase", title: "Built for cleaning businesses first" },
+    { body: "You review, copy, and send.", icon: "shield", title: "AI stays under owner control" },
+    { body: "You stay in control.", icon: "lock", title: "No auto-send. No automation." },
+  ];
+
+  return (
+    <section className="px-5 py-8 sm:px-6">
+      <MarketingShell>
+        <MarketingCard className="grid overflow-hidden md:grid-cols-5">
+          {items.map((item, index) => (
+            <div
+              className="min-w-0 border-b p-5 text-center md:border-b-0 md:border-l md:first:border-l-0"
+              key={item.title}
+              style={{ borderColor: index === 0 ? "transparent" : marketingTone.border }}
+            >
+              <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-[12px]" style={{ backgroundColor: "rgba(45,212,191,0.10)", color: marketingTone.teal }}>
+                <MarketingIcon name={item.icon} />
+              </span>
+              <h3 className="mx-auto mt-4 max-w-[190px] text-[14px] font-black leading-snug" style={{ color: marketingTone.text }}>
+                {item.title}
+              </h3>
+              <p className="mt-2 text-[11px] leading-5" style={{ color: marketingTone.muted }}>
+                {item.body}
+              </p>
+            </div>
+          ))}
+        </MarketingCard>
+      </MarketingShell>
+    </section>
+  );
+}
+
+function FinalCtaSection() {
+  return (
+    <section className="px-5 py-8 sm:px-6">
+      <MarketingShell>
+        <MarketingCard
+          className="overflow-hidden p-7"
+          style={{
+            background:
+              "radial-gradient(circle at 8% 0%, rgba(45,212,191,0.22), transparent 26rem), linear-gradient(135deg, rgba(11,25,37,0.98), rgba(5,12,20,0.96))",
+            borderColor: "rgba(45,212,191,0.22)",
+          }}
+        >
+          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_390px]">
+            <div>
+              <h2 className="max-w-[620px] text-[36px] font-black leading-[1.12]" style={{ color: marketingTone.text }}>
+                Turn more cleaning quote requests into real conversations.
+              </h2>
+              <p className="mt-5 max-w-[640px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
+                Capture requests, ask for missing details, respond faster, and never lose a lead to silence again.
+              </p>
+            </div>
+            <div>
+              <div className="grid gap-3">
+                <MarketingButton className="w-full" href="/auth/sign-up">
+                  Start free recovery <MarketingIcon name="arrow" />
+                </MarketingButton>
+                <MarketingButton className="w-full" href="/pricing" variant="secondary">
+                  See pricing
+                </MarketingButton>
+              </div>
+              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[11px]" style={{ color: marketingTone.soft }}>
+                {["No credit card required", "14-day no-risk pilot", "Cancel anytime"].map((item) => (
                   <span className="flex items-center gap-2" key={item}>
-                    <span className="flex h-4 w-4 items-center justify-center rounded-full border border-[#17D492]/28 text-[#17D492]">
-                      <IconGlyph name="check" />
+                    <span style={{ color: marketingTone.teal }}>
+                      <MarketingIcon name="check" />
                     </span>
                     {item}
                   </span>
                 ))}
               </div>
-              <div className="mt-4">
-                <Avatars />
-              </div>
             </div>
-            <WorkflowPreview />
-          </Container>
-          <Container className="pb-4">
-            <div className="grid overflow-hidden rounded-[14px] border border-white/[0.08] bg-[rgba(13,23,33,0.72)] shadow-[0_24px_70px_rgba(0,0,0,0.18)] sm:grid-cols-2 lg:grid-cols-4">
-              {heroMetrics.map((metric) => (
-                <MetricCard key={metric.label} {...metric} />
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        <section className="border-b border-white/[0.04]" id="features">
-          <Container className="py-14">
-            <SectionHeader
-              eyebrow="The problem"
-              title="Why cleaning businesses lose thousands in missed leads"
-            />
-            <div className="mt-8 grid gap-4 lg:grid-cols-3">
-              {problemCards.map((card) => (
-                <article
-                  className="group rounded-[16px] border border-white/[0.08] bg-[rgba(13,23,33,0.92)] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.18)] transition duration-200 hover:-translate-y-0.5 hover:border-white/[0.14]"
-                  key={card.title}
-                >
-                  <span
-                    className={
-                      card.tone === "red"
-                        ? "flex h-10 w-10 items-center justify-center rounded-full bg-[#FF5C5C]/14 text-[#FF5C5C]"
-                        : card.tone === "amber"
-                          ? "flex h-10 w-10 items-center justify-center rounded-full bg-[#FFB84D]/14 text-[#FFB84D]"
-                          : "flex h-10 w-10 items-center justify-center rounded-full bg-[#17D492]/14 text-[#17D492]"
-                    }
-                  >
-                    <IconGlyph name={card.icon} />
-                  </span>
-                  <h3 className="mt-4 text-base font-bold text-[#F5F7FA]">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-[rgba(245,247,250,0.68)]">
-                    {card.detail}
-                  </p>
-                  <p className={card.tone === "red" ? "mt-5 text-xs font-bold text-[#FF5C5C]" : card.tone === "amber" ? "mt-5 text-xs font-bold text-[#FFB84D]" : "mt-5 text-xs font-bold text-[#17D492]"}>
-                    {card.metric}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        <BeforeAfter />
-
-        <section className="border-t border-white/[0.04]" id="how-it-works">
-          <Container className="py-14">
-            <SectionHeader eyebrow="How it works" title="Your AI lead recovery engine" />
-            <div className="relative mt-10 grid gap-5 md:grid-cols-5">
-              <span className="absolute left-[10%] right-[10%] top-10 hidden border-t border-dashed border-white/[0.16] md:block" />
-              {processSteps.map(([title, body, icon], index) => (
-                <article className="relative text-center" key={title}>
-                  <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-[#17D492]/20 bg-[#0D1721] text-[#17D492] shadow-[0_0_30px_rgba(23,212,146,0.08)]">
-                    <IconGlyph name={icon} />
-                  </div>
-                  <h3 className="mt-4 text-sm font-bold text-[#F5F7FA]">
-                    {index + 1}. {title}
-                  </h3>
-                  <p className="mx-auto mt-2 max-w-[18ch] text-xs leading-5 text-[rgba(245,247,250,0.58)]">
-                    {body}
-                  </p>
-                </article>
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        <section className="border-y border-white/[0.04] bg-[#0D1721]/48" id="proof">
-          <Container className="py-14">
-            <SectionHeader
-              eyebrow="Loved by cleaning businesses"
-              title="Real results from real businesses"
-            />
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-              {proofCards.map(([value, label, source]) => (
-                <article
-                  className="rounded-[14px] border border-white/[0.08] bg-[rgba(13,23,33,0.92)] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-[#17D492]/20"
-                  key={value}
-                >
-                  <p className={value.includes("★") ? "text-lg font-black text-[#FFB84D]" : "text-2xl font-black text-[#17D492]"}>
-                    {value}
-                  </p>
-                  <p className="mt-3 text-sm leading-6 text-[rgba(245,247,250,0.72)]">{label}</p>
-                  <p className="mt-4 text-xs text-[rgba(245,247,250,0.42)]">{source}</p>
-                </article>
-              ))}
-            </div>
-          </Container>
-        </section>
-
-        <section id="pricing">
-          <Container className="grid gap-8 py-14 lg:grid-cols-[0.46fr_1fr] lg:items-center">
-            <div>
-              <p className="text-[11px] font-black uppercase text-[#17D492]">Simple pricing</p>
-              <h2 className="mt-2 max-w-[11ch] text-[32px] font-bold leading-[1.05] text-[#F5F7FA] sm:text-[42px]">
-                Start small. Win more jobs.
-              </h2>
-              <p className="mt-4 max-w-[30ch] text-base leading-7 text-[rgba(245,247,250,0.62)]">
-                7-day free trial. No credit card. Cancel anytime.
-              </p>
-            </div>
-            <div className="grid gap-4 md:grid-cols-[1fr_1.08fr_0.8fr]">
-              {pricingPlans.map((plan) => (
-                <article
-                  className={
-                    plan.spotlight
-                      ? "relative rounded-[16px] border border-[#17D492]/42 bg-[linear-gradient(180deg,rgba(23,212,146,0.12),rgba(13,23,33,0.92))] p-5 shadow-[0_0_42px_rgba(23,212,146,0.10)]"
-                      : "rounded-[16px] border border-white/[0.08] bg-[rgba(13,23,33,0.92)] p-5"
-                  }
-                  key={plan.name}
-                >
-                  {plan.spotlight ? (
-                    <span className="absolute right-5 top-4 rounded-full bg-[#17D492] px-3 py-1 text-[10px] font-black text-[#03130c]">
-                      Most Popular
-                    </span>
-                  ) : null}
-                  <p className="text-sm font-bold text-[#F5F7FA]">{plan.name}</p>
-                  <p className="mt-4 text-3xl font-black text-[#F5F7FA]">
-                    {plan.price}
-                    <span className="text-xs font-semibold text-[rgba(245,247,250,0.58)]">/month</span>
-                  </p>
-                  <p className="mt-1 text-xs text-[rgba(245,247,250,0.58)]">{plan.note}</p>
-                  <ul className="mt-5 grid gap-2.5 text-xs text-[rgba(245,247,250,0.72)]">
-                    {plan.features.map((feature) => (
-                      <li className="flex gap-2" key={feature}>
-                        <span className="text-[#17D492]">✓</span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    className={plan.spotlight ? "mt-5 inline-flex h-11 w-full items-center justify-center rounded-[10px] bg-[#17D492] text-xs font-bold text-[#03130c] transition hover:bg-[#21E6A0]" : "mt-5 inline-flex h-11 w-full items-center justify-center rounded-[10px] border border-white/[0.16] bg-white/[0.025] text-xs font-bold text-[#F5F7FA] transition hover:bg-white/[0.06]"}
-                    href="/auth/sign-up"
-                  >
-                    {plan.cta}
-                  </Link>
-                </article>
-              ))}
-              <article className="rounded-[16px] border border-white/[0.08] bg-[linear-gradient(145deg,rgba(13,23,33,0.92),rgba(13,23,33,0.58))] p-5">
-                <h3 className="text-lg font-bold text-[#F5F7FA]">7-day free trial</h3>
-                <ul className="mt-5 grid gap-2.5 text-xs text-[rgba(245,247,250,0.72)]">
-                  {["Full access", "No credit card", "Cancel anytime"].map((item) => (
-                    <li className="flex gap-2" key={item}>
-                      <span className="text-[#17D492]">✓</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-7 flex h-16 w-16 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-center">
-                  <p className="text-2xl font-black text-[#F5F7FA]">
-                    7
-                    <span className="block text-[10px] font-semibold text-[rgba(245,247,250,0.58)]">
-                      Days
-                    </span>
-                  </p>
-                </div>
-              </article>
-            </div>
-          </Container>
-        </section>
-
-        <section>
-          <Container className="pb-14">
-            <div className="relative overflow-hidden rounded-[20px] border border-[#17D492]/18 bg-[radial-gradient(circle_at_20%_0%,rgba(23,212,146,0.16),transparent_18rem),linear-gradient(135deg,#0D1721,#071018)] p-7 shadow-[0_32px_100px_rgba(0,0,0,0.26)] sm:p-9">
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-[radial-gradient(ellipse_at_bottom,rgba(23,212,146,0.16),transparent_68%)]" />
-              <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-                <h2 className="text-[28px] font-black leading-tight text-[#F5F7FA] sm:text-[38px]">
-                  Stop losing leads.
-                  <br className="hidden sm:block" />
-                  Start booking more jobs today.
-                </h2>
-                <div className="grid gap-2">
-                  <PrimaryCta>Get Early Access</PrimaryCta>
-                  <p className="text-center text-xs text-[rgba(245,247,250,0.58)]">
-                    Free 7-day trial - No credit card
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Container>
-        </section>
-
-        <footer className="border-t border-white/[0.06]">
-          <Container className="grid gap-8 py-8 sm:grid-cols-[1fr_auto] sm:items-start">
-            <Link className="flex items-center gap-3 text-base font-bold" href="/">
-              <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#17D492] text-xs font-black text-[#03130c]">
-                BP
-              </span>
-              BizPilot
-            </Link>
-            <div className="grid grid-cols-2 gap-x-10 gap-y-3 text-xs text-[rgba(245,247,250,0.58)] sm:grid-cols-4">
-              {["Product", "Company", "Legal", "Socials"].map((item) => (
-                <Link className="transition hover:text-[#F5F7FA]" href="/" key={item}>
-                  {item}
-                </Link>
-              ))}
-            </div>
-          </Container>
-        </footer>
           </div>
-          <RightProofRail />
-        </div>
-      </div>
+        </MarketingCard>
+      </MarketingShell>
+    </section>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <main className="min-h-screen" style={{ background: marketingBackground, color: marketingTone.text }}>
+      <MarketingHeader />
+      <HeroSection />
+      <MetricStrip />
+      <ProblemSection />
+      <RecoveryFlowSection />
+      <CommandCenterSection />
+      <BeforeAfterSection />
+      <TrustStrip />
+      <FinalCtaSection />
+      <MarketingFooter />
     </main>
   );
 }

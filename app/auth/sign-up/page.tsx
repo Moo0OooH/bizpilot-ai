@@ -2,21 +2,15 @@
  * ============================================================
  * File: app/auth/sign-up/page.tsx
  * Project: BizPilot AI
- * Description: Renders the owner account creation page for the quote recovery workspace.
- * Role: Creates owner access and the initial business workspace without exposing internal setup details.
+ * Description: Owner account creation — single centered card with two-column form on sm+.
+ * Role: Production owner access aligned with Design System v1.0 §10.2.
  * Related:
  * - server/actions/auth.actions.ts
- * - app/auth/sign-in/page.tsx
+ * - components/auth/auth-ui.tsx
  * Author: MoOoH
- * Created: 2026-05-04
- * Last Updated: 2026-05-18
+ * Last Updated: 2026-05-19
  * Change Log:
- * - 2026-05-04: Created Phase 2 sign-up page.
- * - 2026-05-12: Polished sign-up UI and replaced internal-facing copy.
- * - 2026-05-12: Constrained sign-up layout to auth standards and improved form guidance.
- * - 2026-05-12: Compacted sign-up form to avoid 100% zoom scrolling.
- * - 2026-05-12: Standardized final production auth card scale and helper treatment.
- * - 2026-05-18: Applied the shared BizPilot dark landing theme to sign-up.
+ * - 2026-05-19: Migrated to the single-centered-card AuthShell. Fixed scale/scroll.
  * ============================================================
  */
 
@@ -42,10 +36,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
   const params = await searchParams;
 
   return (
-    <AuthShell
-      cardWidthClassName="max-w-full sm:max-w-[580px]"
-      footer="Owner access for the BizPilot AI quote recovery workspace."
-    >
+    <AuthShell footer="Owner access for the BizPilot AI Quote Recovery workspace.">
       <AuthCard
         subtitle="Create owner access and your first business workspace."
         title="Create your workspace"
@@ -53,15 +44,20 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
         {params?.error ? (
           <p
             aria-live="assertive"
-            className="mt-5 rounded-xl border border-[#FF5C5C]/22 bg-[#FF5C5C]/10 px-3 py-2 text-sm leading-5 text-[#FFB4B4]"
+            className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
+            style={{
+              backgroundColor: "rgba(255,92,92,0.10)",
+              borderColor: "rgba(255,92,92,0.22)",
+              color: "#FFB4B4",
+            }}
           >
             {params.error}
           </p>
         ) : null}
 
-        <form action={signUpAction} className="mt-5 grid gap-3.5 sm:grid-cols-2">
+        <form action={signUpAction} className="mt-5 grid gap-3 sm:grid-cols-2">
           <label className={authLabelClassName}>
-            Name
+            <span style={{ color: "var(--biz-page-text-soft)" }}>Name</span>
             <span className="relative block">
               <AuthFieldIcon type="name" />
               <input
@@ -70,12 +66,17 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
                 name="displayName"
                 placeholder="Your name"
                 required
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.04)",
+                  borderColor: "var(--biz-border-medium)",
+                  color: "var(--biz-page-text)",
+                }}
                 type="text"
               />
             </span>
           </label>
           <label className={authLabelClassName}>
-            Business name
+            <span style={{ color: "var(--biz-page-text-soft)" }}>Business name</span>
             <span className="relative block">
               <AuthFieldIcon type="business" />
               <input
@@ -84,12 +85,17 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
                 name="businessName"
                 placeholder="Your business"
                 required
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.04)",
+                  borderColor: "var(--biz-border-medium)",
+                  color: "var(--biz-page-text)",
+                }}
                 type="text"
               />
             </span>
           </label>
           <label className={authLabelClassName}>
-            Email
+            <span style={{ color: "var(--biz-page-text-soft)" }}>Email</span>
             <span className="relative block">
               <AuthFieldIcon type="email" />
               <input
@@ -98,12 +104,17 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
                 name="email"
                 placeholder="you@example.com"
                 required
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.04)",
+                  borderColor: "var(--biz-border-medium)",
+                  color: "var(--biz-page-text)",
+                }}
                 type="email"
               />
             </span>
           </label>
           <label className={authLabelClassName}>
-            Password
+            <span style={{ color: "var(--biz-page-text-soft)" }}>Password</span>
             <span className="relative block">
               <AuthFieldIcon type="password" />
               <input
@@ -113,31 +124,43 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
                 name="password"
                 placeholder="At least 8 characters"
                 required
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.04)",
+                  borderColor: "var(--biz-border-medium)",
+                  color: "var(--biz-page-text)",
+                }}
                 type="password"
               />
             </span>
           </label>
 
-          <p className="rounded-lg border border-[#17D492]/20 bg-[#17D492]/10 px-2.5 py-1.5 text-xs leading-5 text-[#17D492] sm:col-span-2">
+          <p
+            className="rounded-[10px] border px-2.5 py-1.5 text-[11px] leading-5 sm:col-span-2"
+            style={{
+              backgroundColor: "rgba(23,212,146,0.10)",
+              borderColor: "rgba(23,212,146,0.22)",
+              color: "#17D492",
+            }}
+          >
             Use at least 8 characters for your password.
           </p>
 
           <div className="sm:col-span-2">
-            <AuthSubmitButton pendingLabel="Creating workspace...">
+            <AuthSubmitButton pendingLabel="Creating workspace…">
               Create account
             </AuthSubmitButton>
           </div>
         </form>
 
-        <p className="mt-3 text-center text-xs leading-5 text-[rgba(245,247,250,0.46)]">
-          You can configure your public quote link after creating your account.
-        </p>
-
-        <p className="mt-3 text-center text-sm text-[rgba(245,247,250,0.62)]">
+        <p
+          className="mt-4 text-center text-[13px]"
+          style={{ color: "var(--biz-page-text-soft)" }}
+        >
           Already have an account?{" "}
           <Link
-            className="font-semibold text-[#17D492] underline-offset-4 hover:underline"
+            className="font-bold underline-offset-4 hover:underline"
             href="/auth/sign-in"
+            style={{ color: "#17D492" }}
           >
             Sign in
           </Link>

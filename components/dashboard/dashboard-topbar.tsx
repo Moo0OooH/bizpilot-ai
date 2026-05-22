@@ -97,12 +97,12 @@ export function DashboardTopbar({
 
   return (
     <header className="dashboard-topbar sticky top-0 z-20 border-b backdrop-blur">
-      <div className="flex min-h-[76px] min-w-0 items-center justify-between gap-4 px-4 py-2 sm:px-5 md:px-6 lg:px-[30px]">
+      <div className="flex min-h-[60px] min-w-0 items-center justify-between gap-3 px-4 py-2 sm:px-5 md:px-6 lg:px-[28px]">
         <div className="min-w-0">
-          <h1 className="truncate text-[22px] font-extrabold leading-[1.15] tracking-[-0.03em] text-[var(--dash-text)]">
+          <h1 className="truncate text-[16px] font-extrabold leading-[1.2] tracking-[-0.02em] text-[var(--dash-text)] sm:text-[17px]">
             {pageContext.title}
           </h1>
-          <p className="mt-1 hidden truncate text-[13px] leading-5 text-[var(--dash-text-muted)] sm:block">
+          <p className="mt-0.5 hidden truncate text-[11px] leading-4 text-[var(--dash-text-muted)] sm:block">
             {pageContext.subtitle}
           </p>
         </div>

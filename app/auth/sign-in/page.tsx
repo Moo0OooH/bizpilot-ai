@@ -2,21 +2,15 @@
  * ============================================================
  * File: app/auth/sign-in/page.tsx
  * Project: BizPilot AI
- * Description: Renders the owner sign-in page for the quote recovery workspace.
- * Role: Provides a polished owner login entry point without product dashboard logic.
+ * Description: Owner sign-in screen — single centered card.
+ * Role: Production owner access aligned with Design System v1.0 §10.2.
  * Related:
  * - server/actions/auth.actions.ts
- * - app/auth/sign-up/page.tsx
+ * - components/auth/auth-ui.tsx
  * Author: MoOoH
- * Created: 2026-05-04
- * Last Updated: 2026-05-18
+ * Last Updated: 2026-05-19
  * Change Log:
- * - 2026-05-04: Created Phase 2 sign-in page.
- * - 2026-05-11: Polished owner login UI and replaced internal-facing copy.
- * - 2026-05-12: Expanded the sign-in page into a production-ready owner access screen.
- * - 2026-05-12: Tightened auth form copy, states, and layout to match UI/UX standards.
- * - 2026-05-12: Standardized final production auth card scale and brand accents.
- * - 2026-05-18: Applied the shared BizPilot dark landing theme to sign-in.
+ * - 2026-05-19: Migrated to the single-centered-card AuthShell. Fixes scale/scroll issues from the previous split layout.
  * ============================================================
  */
 
@@ -43,18 +37,20 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   const params = await searchParams;
 
   return (
-    <AuthShell
-      cardWidthClassName="max-w-full sm:max-w-[540px]"
-      footer="Secure owner access for your quote recovery workspace."
-    >
+    <AuthShell footer="Secure owner access for your Quote Recovery workspace.">
       <AuthCard
         subtitle="Manage quote requests, replies, and follow-ups from one place."
-        title="Sign in to your workspace"
+        title="Sign in"
       >
         {params?.notice ? (
           <p
             aria-live="polite"
-            className="mt-5 rounded-xl border border-[#17D492]/20 bg-[#17D492]/10 px-3 py-2 text-sm leading-5 text-[#17D492]"
+            className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
+            style={{
+              backgroundColor: "rgba(23,212,146,0.10)",
+              borderColor: "rgba(23,212,146,0.22)",
+              color: "#17D492",
+            }}
           >
             {params.notice}
           </p>
@@ -63,15 +59,20 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
         {params?.error ? (
           <p
             aria-live="assertive"
-            className="mt-5 rounded-xl border border-[#FF5C5C]/22 bg-[#FF5C5C]/10 px-3 py-2 text-sm leading-5 text-[#FFB4B4]"
+            className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
+            style={{
+              backgroundColor: "rgba(255,92,92,0.10)",
+              borderColor: "rgba(255,92,92,0.22)",
+              color: "#FFB4B4",
+            }}
           >
             {params.error}
           </p>
         ) : null}
 
-        <form action={signInAction} className="mt-5 space-y-4">
+        <form action={signInAction} className="mt-5 space-y-3.5">
           <label className={authLabelClassName}>
-            Email
+            <span style={{ color: "var(--biz-page-text-soft)" }}>Email</span>
             <span className="relative block">
               <AuthFieldIcon type="email" />
               <input
@@ -80,13 +81,18 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
                 name="email"
                 placeholder="you@example.com"
                 required
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.04)",
+                  borderColor: "var(--biz-border-medium)",
+                  color: "var(--biz-page-text)",
+                }}
                 type="email"
               />
             </span>
           </label>
 
           <label className={authLabelClassName}>
-            Password
+            <span style={{ color: "var(--biz-page-text-soft)" }}>Password</span>
             <span className="relative block">
               <AuthFieldIcon type="password" />
               <input
@@ -96,21 +102,30 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
                 name="password"
                 placeholder="Enter your password"
                 required
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.04)",
+                  borderColor: "var(--biz-border-medium)",
+                  color: "var(--biz-page-text)",
+                }}
                 type="password"
               />
             </span>
           </label>
 
-          <AuthSubmitButton pendingLabel="Opening workspace...">
+          <AuthSubmitButton pendingLabel="Opening workspace…">
             Sign in
           </AuthSubmitButton>
         </form>
 
-        <p className="mt-4 text-center text-sm text-[rgba(245,247,250,0.62)]">
+        <p
+          className="mt-4 text-center text-[13px]"
+          style={{ color: "var(--biz-page-text-soft)" }}
+        >
           Need an account?{" "}
           <Link
-            className="font-semibold text-[#17D492] underline-offset-4 hover:underline"
+            className="font-bold underline-offset-4 hover:underline"
             href="/auth/sign-up"
+            style={{ color: "#17D492" }}
           >
             Create one
           </Link>

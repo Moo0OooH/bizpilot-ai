@@ -17,6 +17,7 @@
  * ============================================================
  */
 
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { DashboardThemeSelector } from "@/components/dashboard/dashboard-theme";
@@ -182,15 +183,15 @@ export default async function SettingsPage() {
           <DashboardCard className="p-[22px]">
             <SectionHeader title="Quick links" />
             <div className="mt-3 grid gap-2">
-              <a className={buttonClass} href="/dashboard/configuration">
+              <Link className={buttonClass} href="/dashboard/configuration">
                 Quote Setup
-              </a>
-              <a className={buttonClass} href="/dashboard/business-profile">
+              </Link>
+              <Link className={buttonClass} href="/dashboard/business-profile">
                 Business Profile
-              </a>
-              <a className={primaryButtonClass} href="/dashboard/leads">
+              </Link>
+              <Link className={primaryButtonClass} href="/dashboard/leads">
                 Open Lead Queue
-              </a>
+              </Link>
             </div>
           </DashboardCard>
         </aside>

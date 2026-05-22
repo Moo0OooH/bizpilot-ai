@@ -204,17 +204,17 @@ export function PageHeader({
   title,
 }: PageHeaderProps) {
   return (
-    <header className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+    <header className="flex flex-col gap-2.5 md:flex-row md:items-end md:justify-between">
       <div className="min-w-0">
         {eyebrow ? (
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+          <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-1.5 text-[26px] font-extrabold leading-[1.1] tracking-[-0.04em] text-[var(--dash-text)] sm:text-[30px]">
+        <h1 className="mt-1 text-[22px] font-extrabold leading-[1.15] tracking-[-0.03em] text-[var(--dash-text)] sm:text-[24px]">
           {title}
         </h1>
-        <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-[var(--dash-text-secondary)]">
+        <p className="mt-1 max-w-3xl text-[13px] leading-5 text-[var(--dash-text-secondary)]">
           {description}
         </p>
       </div>
@@ -233,11 +233,11 @@ export function SectionHeader({
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h2 className="text-[18px] font-extrabold leading-6 tracking-[-0.03em] text-[var(--dash-text)]">
+        <h2 className="text-[15px] font-extrabold leading-5 tracking-[-0.02em] text-[var(--dash-text)]">
           {title}
         </h2>
         {description ? (
-          <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
             {description}
           </p>
         ) : null}
@@ -263,22 +263,22 @@ export function MetricCard({
   };
 
   return (
-    <DashboardCard className="flex min-h-[146px] flex-col p-[18px]">
-      <div className="flex items-start justify-between gap-3">
-        <p className="text-[13px] font-bold text-[var(--dash-text-muted)]">
+    <DashboardCard className="flex min-h-[120px] flex-col p-3.5">
+      <div className="flex items-start justify-between gap-2">
+        <p className="text-[12px] font-bold text-[var(--dash-text-muted)]">
           {label}
         </p>
-        <span className={`mt-1 h-2 w-2 rounded-full ${toneDotClasses[tone]}`} />
+        <span className={`mt-1 h-1.5 w-1.5 rounded-full ${toneDotClasses[tone]}`} />
       </div>
-      <p className={`mt-[18px] text-[34px] font-black leading-none tracking-[-0.06em] ${accentClass[tone]}`}>
+      <p className={`mt-2.5 text-[26px] font-black leading-none tracking-[-0.04em] sm:text-[28px] ${accentClass[tone]}`}>
         {value}
       </p>
       {detail ? (
-        <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+        <p className="mt-1.5 text-[11px] leading-4 text-[var(--dash-text-secondary)]">
           {detail}
         </p>
       ) : null}
-      {cta ? <div className="mt-auto pt-3">{cta}</div> : null}
+      {cta ? <div className="mt-auto pt-2.5">{cta}</div> : null}
     </DashboardCard>
   );
 }
@@ -368,7 +368,7 @@ export function RightRailPanel({
   variant = "default",
 }: CardProps) {
   return (
-    <DashboardCard className={`p-[18px] ${className}`} variant={variant}>
+    <DashboardCard className={`p-3.5 ${className}`} variant={variant}>
       {children}
     </DashboardCard>
   );
