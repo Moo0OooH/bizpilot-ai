@@ -108,6 +108,23 @@ async function getPasswordResetRedirectTo(formData: FormData): Promise<string> {
   }
 }
 
+function getConfiguredPasswordResetRedirectTo(): string {
+  return new URL(
+    "/auth/reset-password",
+    getPublicEnv().NEXT_PUBLIC_APP_URL,
+  ).toString();
+}
+
+function isRedirectConfigurationError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message.toLowerCase() : "";
+
+  return (
+    message.includes("redirect") ||
+    message.includes("uri") ||
+    message.includes("url")
+  );
+}
+
 function readPasswordResetEmail(formData: FormData): string {
   const value = formData.get("email");
 
@@ -279,13 +296,39 @@ export async function requestPasswordResetAction(
 ): Promise<never> {
   const email = readPasswordResetEmail(formData);
   const redirectTo = await getPasswordResetRedirectTo(formData);
+  const configuredRedirectTo = getConfiguredPasswordResetRedirectTo();
 
   try {
     await sendPasswordResetEmail({
       email,
       redirectTo,
     });
-  } catch {
+  } catch (error) {
+    console.error("Password reset email request failed.", {
+      message: error instanceof Error ? error.message : "Unknown Supabase Auth error",
+      redirectTo,
+    });
+
+    if (
+      redirectTo !== configuredRedirectTo &&
+      isRedirectConfigurationError(error)
+    ) {
+      try {
+        await sendPasswordResetEmail({
+          email,
+          redirectTo: configuredRedirectTo,
+        });
+      } catch (fallbackError) {
+        console.error("Password reset email fallback request failed.", {
+          message:
+            fallbackError instanceof Error
+              ? fallbackError.message
+              : "Unknown Supabase Auth error",
+          redirectTo: configuredRedirectTo,
+        });
+      }
+    }
+
     // Keep password reset non-enumerating. The user sees the same safe message
     // whether the account exists, the provider throttles, or delivery fails.
   }
