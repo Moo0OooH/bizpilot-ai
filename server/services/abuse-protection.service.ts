@@ -32,7 +32,8 @@ export type AbuseAttemptReason =
   | "honeypot_triggered"
   | "consent_missing"
   | "invalid_form"
-  | "invalid_field";
+  | "invalid_field"
+  | "submitted_too_fast";
 
 export type RateLimitExceededError = Error & { readonly safeReason: "rate_limit_exceeded" };
 

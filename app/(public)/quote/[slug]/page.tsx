@@ -3,7 +3,7 @@
  * File: app/(public)/quote/[slug]/page.tsx
  * Project: BizPilot AI
  * Description: Public branded cleaning quote page.
- * Role: Renders public-safe business branding + a 3-step wizard intake form.
+ * Role: Renders public-safe business branding + a grouped intake form.
  * Related:
  * - components/public/quote-form-wizard.tsx
  * - server/actions/public-intake.actions.ts
@@ -14,7 +14,8 @@
  * Last Updated: 2026-05-19
  * Change Log:
  * - 2026-05-06: Created public quote page with dynamic form rendering.
- * - 2026-05-19: Replaced inline single-page form with the QuoteFormWizard (3-step grouped) for higher completion rate per UX research.
+ * - 2026-05-19: Replaced inline single-page form with grouped quote sections for higher completion rate per UX research.
+ * - 2026-05-22: Kept all grouped sections visible so public submit does not depend on client-side step navigation.
  * ============================================================
  */
 
@@ -95,7 +96,7 @@ export default async function QuotePage({
             <p
               className={`mt-1.5 max-w-[60ch] text-[13px] leading-5 ${bizTheme.secondaryText}`}
             >
-              A short 3-step form. The business owner reviews every request and
+              A short quote form. The business owner reviews every request and
               replies directly — nothing is sent automatically.
             </p>
             <div

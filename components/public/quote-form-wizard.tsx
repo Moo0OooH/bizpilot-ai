@@ -1,29 +1,26 @@
-"use client";
-
 /**
  * ============================================================
  * File: components/public/quote-form-wizard.tsx
  * Project: BizPilot AI
- * Description: 3-step grouped wizard for the public cleaning-quote form.
- * Role: Replaces the single-page scroll form with Service → When &amp; Where → Contact. Industry research (Klientboost, HubSpot, Unbounce) shows multi-step grouped wizards convert 2-4× better than single-page forms on 8+ field intakes while keeping mobile completion high. Matches the Operational Calm UX doctrine — no glow, no animation noise.
+ * Description: Grouped public cleaning-quote form.
+ * Role: Renders Service, When & where, and Contact sections with direct submit safety.
  * Related:
  * - app/(public)/quote/[slug]/page.tsx
  * - server/actions/public-intake.actions.ts
  * - docs/product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-19
+ * Last Updated: 2026-05-22
  * Change Log:
- * - 2026-05-19: Created. All fields stay mounted (display:none for inactive steps + dynamic `required`) so the server action still receives every value on final submit.
+ * - 2026-05-19: Created 3-step grouped public quote form.
+ * - 2026-05-22: Removed client-side step navigation dependency so public submissions cannot get stuck before submit.
  * ============================================================
  */
-
-import { useMemo, useRef, useState } from "react";
 
 import { submitPublicIntakeAction } from "@/server/actions/public-intake.actions";
 import type { getPublicIntakePage } from "@/server/services/public-intake.service";
 import type { Json } from "@/types/database";
-
-// ───────── Types & helpers ─────────
+import { SubmitAgeInput } from "./submit-age-input";
 
 type IntakePage = NonNullable<Awaited<ReturnType<typeof getPublicIntakePage>>>;
 type FieldRecord = IntakePage["fields"][number];
@@ -47,27 +44,32 @@ type StepConfig = Readonly<{
 
 const STEPS: ReadonlyArray<StepConfig> = [
   {
+    description: "A few quick details so the owner can prepare an accurate reply.",
     id: "service",
     label: "Service",
     title: "What kind of cleaning?",
-    description: "A few quick details so the owner can prepare an accurate reply.",
   },
   {
+    description: "Timing and location help the owner check availability and travel.",
     id: "when_where",
     label: "When & where",
     title: "When and where?",
-    description: "Timing and location help the owner check availability and travel.",
   },
   {
+    description:
+      "We pass these details directly to the business. Nothing is sent automatically.",
     id: "contact",
     label: "Contact",
     title: "How should the owner reach you?",
-    description: "We pass these details directly to the business — nothing is sent automatically.",
   },
 ];
 
+const FIELD_INPUT =
+  "h-11 w-full rounded-[10px] border border-white/[0.10] bg-[rgba(255,255,255,0.04)] px-3 text-[14px] text-[#F5F7FA] outline-none transition placeholder:text-[rgba(245,247,250,0.35)] focus:border-[#17D492] focus:ring-4 focus:ring-[rgba(23,212,146,0.15)]";
+
 function groupForField(field: FieldRecord): StepId {
   const key = field.field_key.toLowerCase();
+
   if (
     key.includes("service_type") ||
     key.includes("cleaning_type") ||
@@ -80,6 +82,7 @@ function groupForField(field: FieldRecord): StepId {
   ) {
     return "service";
   }
+
   if (
     key.includes("date") ||
     key.includes("time") ||
@@ -92,13 +95,26 @@ function groupForField(field: FieldRecord): StepId {
   ) {
     return "when_where";
   }
+
   return "contact";
+}
+
+function groupFields(fields: ReadonlyArray<FieldRecord>): Record<StepId, FieldRecord[]> {
+  const buckets: Record<StepId, FieldRecord[]> = {
+    contact: [],
+    service: [],
+    when_where: [],
+  };
+
+  fields.forEach((field) => buckets[groupForField(field)].push(field));
+  return buckets;
 }
 
 function inputTypeForField(fieldType: FieldRecord["field_type"]): string {
   if (fieldType === "phone") return "tel";
-  if (fieldType === "number" || fieldType === "date" || fieldType === "email")
+  if (fieldType === "number" || fieldType === "date" || fieldType === "email") {
     return fieldType;
+  }
   return "text";
 }
 
@@ -137,15 +153,10 @@ function isWideField(field: FieldRecord): boolean {
   );
 }
 
-// ───────── Atoms ─────────
-
-const FIELD_INPUT =
-  "h-11 w-full rounded-[10px] border border-white/[0.10] bg-[rgba(255,255,255,0.04)] px-3 text-[14px] text-[#F5F7FA] outline-none transition placeholder:text-[rgba(245,247,250,0.35)] focus:border-[#17D492] focus:ring-4 focus:ring-[rgba(23,212,146,0.15)]";
-
 function FieldInput({
   field,
-  todayDate,
   required,
+  todayDate,
 }: Readonly<{ field: FieldRecord; required: boolean; todayDate: string }>) {
   if (field.field_type === "textarea") {
     return (
@@ -156,6 +167,7 @@ function FieldInput({
       />
     );
   }
+
   if (field.field_type === "boolean") {
     return (
       <input
@@ -165,6 +177,7 @@ function FieldInput({
       />
     );
   }
+
   if (field.field_type === "select" || field.field_type === "time_window") {
     return (
       <select
@@ -189,6 +202,7 @@ function FieldInput({
       </select>
     );
   }
+
   return (
     <input
       className={FIELD_INPUT}
@@ -202,14 +216,11 @@ function FieldInput({
 
 function FieldRow({
   field,
-  isStepActive,
   todayDate,
 }: Readonly<{
   field: FieldRecord;
-  isStepActive: boolean;
   todayDate: string;
 }>) {
-  const required = field.is_required && isStepActive;
   const colSpan = isWideField(field) ? "md:col-span-2" : "";
 
   if (field.field_type === "boolean") {
@@ -217,7 +228,11 @@ function FieldRow({
       <label
         className={`flex items-center gap-3 rounded-[10px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] px-3 py-2.5 ${colSpan}`}
       >
-        <FieldInput field={field} required={required} todayDate={todayDate} />
+        <FieldInput
+          field={field}
+          required={field.is_required}
+          todayDate={todayDate}
+        />
         <span className="min-w-0">
           <span className="block text-[13px] font-bold text-[#F5F7FA]">
             {field.label}
@@ -243,7 +258,11 @@ function FieldRow({
           <span className="text-[#FF5C5C]"> *</span>
         ) : null}
       </span>
-      <FieldInput field={field} required={required} todayDate={todayDate} />
+      <FieldInput
+        field={field}
+        required={field.is_required}
+        todayDate={todayDate}
+      />
       {field.help_text ? (
         <span className="text-[11px] leading-4 text-[rgba(245,247,250,0.46)]">
           {field.help_text}
@@ -253,293 +272,19 @@ function FieldRow({
   );
 }
 
-function ProgressBar({
-  current,
-  steps,
-  onJump,
-}: Readonly<{
-  current: number;
-  onJump: (index: number) => void;
-  steps: ReadonlyArray<StepConfig>;
-}>) {
-  return (
-    <ol className="mb-5 grid grid-cols-3 gap-2" role="list">
-      {steps.map((step, index) => {
-        const isCurrent = index === current;
-        const isDone = index < current;
-        const canJumpBack = index < current;
-        return (
-          <li className="min-w-0" key={step.id}>
-            <button
-              aria-current={isCurrent ? "step" : undefined}
-              className="group flex w-full items-center gap-2 text-left disabled:cursor-not-allowed"
-              disabled={!canJumpBack}
-              onClick={() => onJump(index)}
-              type="button"
-            >
-              <span
-                aria-hidden
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-[12px] font-black transition"
-                style={
-                  isCurrent
-                    ? {
-                        backgroundColor: "rgba(20,184,166,0.18)",
-                        borderColor: "rgba(20,184,166,0.45)",
-                        color: "#2dd4bf",
-                      }
-                    : isDone
-                      ? {
-                          backgroundColor: "rgba(20,184,166,0.10)",
-                          borderColor: "rgba(20,184,166,0.30)",
-                          color: "#2dd4bf",
-                        }
-                      : {
-                          backgroundColor: "rgba(255,255,255,0.04)",
-                          borderColor: "rgba(255,255,255,0.10)",
-                          color: "rgba(245,247,250,0.46)",
-                        }
-                }
-              >
-                {isDone ? "✓" : index + 1}
-              </span>
-              <span className="min-w-0 leading-tight">
-                <span
-                  className="block truncate text-[12px] font-extrabold"
-                  style={{
-                    color: isCurrent || isDone ? "#F5F7FA" : "rgba(245,247,250,0.55)",
-                  }}
-                >
-                  {step.label}
-                </span>
-                <span
-                  className="block truncate text-[10px] uppercase tracking-[0.08em]"
-                  style={{ color: "rgba(245,247,250,0.46)" }}
-                >
-                  Step {index + 1} of {steps.length}
-                </span>
-              </span>
-            </button>
-            <div
-              aria-hidden
-              className="mt-1.5 h-0.5 w-full rounded-full"
-              style={{
-                background:
-                  isCurrent || isDone
-                    ? "linear-gradient(90deg, #14b8a6, #2dd4bf)"
-                    : "rgba(255,255,255,0.06)",
-              }}
-            />
-          </li>
-        );
-      })}
-    </ol>
-  );
-}
-
-// ───────── Wizard ─────────
-
-export function QuoteFormWizard({
-  page,
-  query,
-  slug,
-  todayDate,
-}: Readonly<{
-  page: IntakePage;
-  query: QueryParams | undefined;
-  slug: string;
-  todayDate: string;
-}>) {
-  const [step, setStep] = useState(0);
-  const formRef = useRef<HTMLFormElement | null>(null);
-
-  // Group fields once per render.
-  const groups = useMemo(() => {
-    const buckets: Record<StepId, FieldRecord[]> = {
-      service: [],
-      when_where: [],
-      contact: [],
-    };
-    page.fields.forEach((field) => buckets[groupForField(field)].push(field));
-    return buckets;
-  }, [page.fields]);
-
-  const isLast = step === STEPS.length - 1;
-
-  function validateStep(targetIndex: number): boolean {
-    const root = document.getElementById(`quote-step-${targetIndex}`);
-    if (!root) return true;
-    const controls = root.querySelectorAll<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >("input, select, textarea");
-    let firstInvalid:
-      | HTMLInputElement
-      | HTMLSelectElement
-      | HTMLTextAreaElement
-      | null = null;
-
-    for (const control of controls) {
-      if (!control.checkValidity()) {
-        firstInvalid = control;
-        break;
-      }
-    }
-
-    if (firstInvalid) {
-      firstInvalid.reportValidity();
-      firstInvalid.focus();
-      return false;
-    }
-
-    return true;
-  }
-
-  function goNext() {
-    if (validateStep(step)) {
-      setStep((current) => Math.min(STEPS.length - 1, current + 1));
-      requestAnimationFrame(() => {
-        formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    }
-  }
-
-  function goBack() {
-    setStep((current) => Math.max(0, current - 1));
-  }
-
-  // Intercept Enter / submit so a non-final step advances instead of submitting.
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    if (!isLast) {
-      event.preventDefault();
-      goNext();
-    }
-  }
-
-  return (
-    <form
-      action={submitPublicIntakeAction}
-      className="mx-auto w-full max-w-[720px] space-y-4 px-4 py-5 pb-10 sm:px-6"
-      onSubmit={handleSubmit}
-      ref={formRef}
-    >
-      {/* Hidden metadata — always present */}
-      <input name="businessSlug" type="hidden" value={slug} />
-      <input name="intakeFormId" type="hidden" value={page.form.id} />
-      <input
-        name="consentVersionId"
-        type="hidden"
-        value={page.consentVersion.id}
-      />
-      <input
-        name="sourceChannel"
-        type="hidden"
-        value={query?.source ?? "public_quote_link"}
-      />
-      <input name="referrer" type="hidden" value={query?.ref ?? ""} />
-      <input name="sourceUrl" type="hidden" value="" />
-      <input name="utmSource" type="hidden" value={query?.utm_source ?? ""} />
-      <input name="utmMedium" type="hidden" value={query?.utm_medium ?? ""} />
-      <input name="utmCampaign" type="hidden" value={query?.utm_campaign ?? ""} />
-      <label className="hidden">
-        Company website
-        <input autoComplete="off" name="companyWebsite" tabIndex={-1} />
-      </label>
-
-      {/* Field key registry — every field key submitted on every save. */}
-      {page.fields.map((field) => (
-        <input
-          key={field.id}
-          name="fieldKeys"
-          type="hidden"
-          value={field.field_key}
-        />
-      ))}
-
-      <ProgressBar current={step} onJump={(i) => setStep(i)} steps={STEPS} />
-
-      {/* Header for current step */}
-      <header className="space-y-1">
-        <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[rgba(245,247,250,0.55)]">
-          {STEPS[step]?.label}
-        </p>
-        <h2 className="text-[22px] font-extrabold leading-tight tracking-[-0.03em] text-[#F5F7FA]">
-          {STEPS[step]?.title}
-        </h2>
-        <p className="text-[13px] leading-5 text-[rgba(245,247,250,0.72)]">
-          {STEPS[step]?.description}
-        </p>
-      </header>
-
-      {/* Step panels — all mounted, only active is visible. */}
-      {STEPS.map((stepConfig, index) => {
-        const fields = groups[stepConfig.id];
-        const isStepActive = index === step;
-        return (
-          <section
-            aria-hidden={!isStepActive}
-            id={`quote-step-${index}`}
-            key={stepConfig.id}
-            style={{ display: isStepActive ? "block" : "none" }}
-          >
-            {fields.length > 0 ? (
-              <div className="grid gap-3 md:grid-cols-2">
-                {fields.map((field) => (
-                  <FieldRow
-                    field={field}
-                    isStepActive={isStepActive}
-                    key={field.id}
-                    todayDate={todayDate}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="rounded-[12px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] p-3 text-[13px] text-[rgba(245,247,250,0.55)]">
-                Nothing to fill on this step. Continue to the next.
-              </p>
-            )}
-
-            {/* Consent only on final step */}
-            {index === STEPS.length - 1 ? (
-              <ConsentBlock
-                aiDisclosureEnabled={page.consentVersion.ai_disclosure_enabled}
-                consentNotice={page.consentVersion.consent_notice}
-                isActive={isStepActive}
-              />
-            ) : null}
-          </section>
-        );
-      })}
-
-      {/* Server-rendered error (from redirect) */}
-      {query?.source === "rate_limited_demo" ? null : null}
-
-      {/* Navigation */}
-      <Navigation
-        canGoBack={step > 0}
-        isLast={isLast}
-        onBack={goBack}
-        onNext={goNext}
-      />
-    </form>
-  );
-}
-
-// ───────── Consent + Navigation ─────────
-
 function ConsentBlock({
   aiDisclosureEnabled,
   consentNotice,
-  isActive,
 }: Readonly<{
   aiDisclosureEnabled: boolean;
   consentNotice: string;
-  isActive: boolean;
 }>) {
   return (
     <label className="mt-4 flex items-start gap-3 rounded-[12px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] p-3 text-[12px] leading-5 text-[rgba(245,247,250,0.72)]">
       <input
         className="mt-0.5 h-4 w-4 shrink-0 accent-[#17D492]"
         name="consentAccepted"
-        required={isActive}
+        required
         type="checkbox"
       />
       <span>
@@ -555,65 +300,117 @@ function ConsentBlock({
   );
 }
 
-function Navigation({
-  canGoBack,
-  isLast,
-  onBack,
-  onNext,
+export function QuoteFormWizard({
+  page,
+  query,
+  slug,
+  todayDate,
 }: Readonly<{
-  canGoBack: boolean;
-  isLast: boolean;
-  onBack: () => void;
-  onNext: () => void;
+  page: IntakePage;
+  query: QueryParams | undefined;
+  slug: string;
+  todayDate: string;
 }>) {
+  const groups = groupFields(page.fields);
+
   return (
-    <div className="flex items-center gap-2 pt-1">
-      {canGoBack ? (
-        <button
-          className="inline-flex h-11 items-center justify-center rounded-[12px] border px-4 text-[13px] font-extrabold transition hover:-translate-y-0.5"
-          onClick={onBack}
-          style={{
-            backgroundColor: "rgba(255,255,255,0.04)",
-            borderColor: "rgba(255,255,255,0.14)",
-            color: "#F5F7FA",
-          }}
-          type="button"
-        >
-          ← Back
-        </button>
-      ) : null}
-      <div className="flex-1" />
-      {isLast ? (
+    <form
+      action={submitPublicIntakeAction}
+      className="mx-auto w-full max-w-[720px] space-y-4 px-4 py-5 pb-10 sm:px-6"
+    >
+      <input name="businessSlug" type="hidden" value={slug} />
+      <input name="intakeFormId" type="hidden" value={page.form.id} />
+      <input
+        name="consentVersionId"
+        type="hidden"
+        value={page.consentVersion.id}
+      />
+      <SubmitAgeInput />
+      <input
+        name="sourceChannel"
+        type="hidden"
+        value={query?.source ?? "public_quote_link"}
+      />
+      <input name="referrer" type="hidden" value={query?.ref ?? ""} />
+      <input name="sourceUrl" type="hidden" value="" />
+      <input name="utmSource" type="hidden" value={query?.utm_source ?? ""} />
+      <input name="utmMedium" type="hidden" value={query?.utm_medium ?? ""} />
+      <input name="utmCampaign" type="hidden" value={query?.utm_campaign ?? ""} />
+      <label className="hidden">
+        Company website
+        <input autoComplete="off" name="companyWebsite" tabIndex={-1} />
+      </label>
+
+      {page.fields.map((field) => (
+        <input
+          key={field.id}
+          name="fieldKeys"
+          type="hidden"
+          value={field.field_key}
+        />
+      ))}
+
+      {STEPS.map((step, index) => {
+        const fields = groups[step.id];
+
+        return (
+          <section
+            className="rounded-[16px] border border-white/[0.08] bg-[rgba(255,255,255,0.035)] p-4"
+            id={`quote-step-${index}`}
+            key={step.id}
+          >
+            <header className="mb-4 space-y-1">
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[rgba(245,247,250,0.55)]">
+                Step {index + 1} of {STEPS.length} - {step.label}
+              </p>
+              <h2 className="text-[21px] font-extrabold leading-tight tracking-[-0.03em] text-[#F5F7FA]">
+                {step.title}
+              </h2>
+              <p className="text-[13px] leading-5 text-[rgba(245,247,250,0.72)]">
+                {step.description}
+              </p>
+            </header>
+
+            {fields.length > 0 ? (
+              <div className="grid gap-3 md:grid-cols-2">
+                {fields.map((field) => (
+                  <FieldRow field={field} key={field.id} todayDate={todayDate} />
+                ))}
+              </div>
+            ) : (
+              <p className="rounded-[12px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] p-3 text-[13px] text-[rgba(245,247,250,0.55)]">
+                Nothing to fill on this section.
+              </p>
+            )}
+
+            {index === STEPS.length - 1 ? (
+              <ConsentBlock
+                aiDisclosureEnabled={page.consentVersion.ai_disclosure_enabled}
+                consentNotice={page.consentVersion.consent_notice}
+              />
+            ) : null}
+          </section>
+        );
+      })}
+
+      {query?.source === "rate_limited_demo" ? null : null}
+
+      <div className="flex justify-end pt-1">
         <button
           className="inline-flex h-11 min-w-[200px] items-center justify-center rounded-[12px] px-5 text-[14px] font-extrabold transition hover:-translate-y-0.5"
           style={{
             background: "linear-gradient(135deg, #14b8a6, #2dd4bf)",
-            color: "#022c22",
             boxShadow: "0 14px 30px rgba(20,184,166,0.22)",
+            color: "#022c22",
           }}
           type="submit"
         >
           Send quote request
         </button>
-      ) : (
-        <button
-          className="inline-flex h-11 min-w-[140px] items-center justify-center rounded-[12px] px-5 text-[13px] font-extrabold transition hover:-translate-y-0.5"
-          onClick={onNext}
-          style={{
-            background: "linear-gradient(135deg, #14b8a6, #2dd4bf)",
-            color: "#022c22",
-            boxShadow: "0 14px 30px rgba(20,184,166,0.22)",
-          }}
-          type="button"
-        >
-          Continue →
-        </button>
-      )}
-    </div>
+      </div>
+    </form>
   );
 }
 
-// Helper exports — used by the page wrapper if it ever wants to surface
-// the step list (analytics, breadcrumbs, etc.).
 export type { StepId };
 export const QUOTE_WIZARD_STEPS = STEPS;

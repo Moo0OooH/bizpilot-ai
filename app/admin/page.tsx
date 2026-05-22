@@ -1,0 +1,482 @@
+/**
+ * ============================================================
+ * File: app/admin/page.tsx
+ * Project: BizPilot AI
+ * Description: Internal founder-only admin console for manual pilot controls.
+ * Role: Lets the founder inspect businesses, plans, access state, quote link state, usage signals, and internal notes.
+ * Related:
+ * - server/actions/founder-admin.actions.ts
+ * - server/services/founder-admin.service.ts
+ * - docs/product/BIZPILOT_FOUNDER_ADMIN_CONSOLE_SPEC_v1.0.md
+ * Author: MoOoH
+ * Created: 2026-05-22
+ * Last Updated: 2026-05-22
+ * ============================================================
+ */
+
+import Link from "next/link";
+import { redirect } from "next/navigation";
+
+import {
+  buttonClass,
+  DashboardCard,
+  inputClass,
+  MetricCard,
+  PageHeader,
+  primaryButtonClass,
+  SectionHeader,
+  StatusBadge,
+  textareaClass,
+} from "@/components/dashboard/dashboard-ui";
+import {
+  updateFounderInternalNoteAction,
+  updateFounderPlanAction,
+  updateFounderQuoteLinkAction,
+  updateFounderStatusAction,
+} from "@/server/actions/founder-admin.actions";
+import { getCurrentUser } from "@/server/services/auth.service";
+import {
+  getFounderAdminOverview,
+  type FounderAdminBusiness,
+} from "@/server/services/founder-admin.service";
+
+export const dynamic = "force-dynamic";
+
+type AdminPageProps = Readonly<{
+  searchParams?: Promise<{
+    error?: string;
+    notice?: string;
+  }>;
+}>;
+
+type PlanSlug = FounderAdminBusiness["planSlug"];
+type BusinessStatus = FounderAdminBusiness["status"];
+
+const planOptions: ReadonlyArray<{ label: string; value: PlanSlug }> = [
+  { label: "Founder Pilot", value: "founder_pilot" },
+  { label: "Starter", value: "starter" },
+  { label: "Pro", value: "pro" },
+  { label: "Paused", value: "paused" },
+];
+
+const statusOptions: ReadonlyArray<{ label: string; value: BusinessStatus }> = [
+  { label: "Onboarding", value: "onboarding" },
+  { label: "Active", value: "active" },
+  { label: "Suspended", value: "suspended" },
+  { label: "Cancelled", value: "cancelled" },
+];
+
+const planLabels: Record<PlanSlug, string> = {
+  founder_pilot: "Founder Pilot",
+  paused: "Paused",
+  pro: "Pro",
+  starter: "Starter",
+};
+
+const statusLabels: Record<BusinessStatus, string> = {
+  active: "Active",
+  cancelled: "Cancelled",
+  onboarding: "Onboarding",
+  suspended: "Suspended",
+};
+
+function formatDate(value: string | null): string {
+  if (!value) {
+    return "No activity yet";
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(value));
+}
+
+function formatSlug(value: string | null): string {
+  return value ? `/quote/${value}` : "No quote link";
+}
+
+function statusTone(status: BusinessStatus) {
+  if (status === "active") {
+    return "emerald";
+  }
+
+  if (status === "suspended" || status === "cancelled") {
+    return "red";
+  }
+
+  return "amber";
+}
+
+function planTone(planSlug: PlanSlug) {
+  if (planSlug === "pro") {
+    return "emerald";
+  }
+
+  if (planSlug === "paused") {
+    return "red";
+  }
+
+  if (planSlug === "starter") {
+    return "blue";
+  }
+
+  return "amber";
+}
+
+function AdminNotice({
+  children,
+  tone,
+}: Readonly<{ children: React.ReactNode; tone: "error" | "notice" }>) {
+  const className =
+    tone === "error"
+      ? "border-red-300/35 bg-red-500/10 text-red-700 dark:text-red-100"
+      : "border-emerald-300/35 bg-emerald-500/10 text-emerald-700 dark:text-emerald-100";
+
+  return (
+    <p
+      aria-live={tone === "error" ? "assertive" : "polite"}
+      className={`rounded-[14px] border px-4 py-3 text-sm font-semibold ${className}`}
+    >
+      {children}
+    </p>
+  );
+}
+
+function getFounderAccessMessage(error: unknown): string {
+  const message =
+    error instanceof Error && error.message.trim().length > 0
+      ? error.message.trim()
+      : "";
+  const allowed = new Set([
+    "Founder admin requires sign-in.",
+    "Founder admin is not configured.",
+    "Founder admin access required.",
+  ]);
+
+  return allowed.has(message)
+    ? message
+    : "Founder admin is not available right now.";
+}
+
+function FounderAccessBlocked({ message }: Readonly<{ message: string }>) {
+  return (
+    <main className="min-h-screen bg-[var(--dash-bg)] px-4 py-8 text-[var(--dash-text)] sm:px-6 lg:px-8">
+      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-3xl items-center">
+        <DashboardCard className="p-6 sm:p-8" variant="priority">
+          <PageHeader
+            actions={<StatusBadge tone="amber">Internal only</StatusBadge>}
+            description="This console is reserved for founder operations and requires an explicit email allowlist."
+            eyebrow="Founder Admin"
+            title="Access unavailable"
+          />
+          <div className="mt-5 space-y-4 text-sm leading-6 text-[var(--dash-text-secondary)]">
+            <AdminNotice tone="error">{message}</AdminNotice>
+            <p>
+              Set `BIZPILOT_FOUNDER_EMAILS` on the server to the approved founder
+              email list, then sign in with one of those accounts.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Link className={buttonClass} href="/dashboard">
+                Back to dashboard
+              </Link>
+              <Link className={buttonClass} href="/auth/sign-in">
+                Sign in
+              </Link>
+            </div>
+          </div>
+        </DashboardCard>
+      </div>
+    </main>
+  );
+}
+
+function BusinessControlCard({
+  business,
+}: Readonly<{ business: FounderAdminBusiness }>) {
+  return (
+    <DashboardCard className="p-4 sm:p-5" variant="elevated">
+      <div className="grid gap-4 xl:grid-cols-[minmax(260px,1.05fr)_minmax(360px,1.5fr)]">
+        <div className="min-w-0 space-y-4">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="truncate text-lg font-black tracking-[-0.02em] text-[var(--dash-text)]">
+                {business.name}
+              </h2>
+              <StatusBadge tone={statusTone(business.status)}>
+                {statusLabels[business.status]}
+              </StatusBadge>
+              <StatusBadge tone={planTone(business.planSlug)}>
+                {planLabels[business.planSlug]}
+              </StatusBadge>
+            </div>
+            <p className="mt-1 truncate text-sm text-[var(--dash-text-muted)]">
+              Owner: {business.ownerEmail}
+            </p>
+          </div>
+
+          <dl className="grid grid-cols-2 gap-2 text-sm sm:grid-cols-3 xl:grid-cols-2">
+            <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <dt className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
+                Leads
+              </dt>
+              <dd className="mt-1 text-xl font-black text-[var(--dash-text)]">
+                {business.leadCount}
+              </dd>
+            </div>
+            <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <dt className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
+                AI usage
+              </dt>
+              <dd className="mt-1 text-xl font-black text-[var(--dash-text)]">
+                {business.usageCount}
+              </dd>
+            </div>
+            <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <dt className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
+                Users
+              </dt>
+              <dd className="mt-1 text-xl font-black text-[var(--dash-text)]">
+                {business.memberCount}
+              </dd>
+            </div>
+            <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <dt className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
+                Last activity
+              </dt>
+              <dd className="mt-1 text-sm font-black text-[var(--dash-text)]">
+                {formatDate(business.lastActivityAt)}
+              </dd>
+            </div>
+          </dl>
+
+          <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm">
+            <p className="font-black text-[var(--dash-text)]">
+              {formatSlug(business.publicSlug)}
+            </p>
+            <p className="mt-1 text-[var(--dash-text-secondary)]">
+              Quote link is {business.publicLinkActive ? "active" : "inactive"}.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-2">
+          <form
+            action={updateFounderPlanAction}
+            className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+          >
+            <input name="businessId" type="hidden" value={business.businessId} />
+            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+              Plan
+              <select
+                className={inputClass}
+                defaultValue={business.planSlug}
+                name="planSlug"
+              >
+                {planOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <input
+              className={`${inputClass} mt-2`}
+              name="note"
+              placeholder="Optional plan note"
+            />
+            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
+              Save plan
+            </button>
+          </form>
+
+          <form
+            action={updateFounderStatusAction}
+            className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+          >
+            <input name="businessId" type="hidden" value={business.businessId} />
+            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+              Access status
+              <select
+                className={inputClass}
+                defaultValue={business.status}
+                name="businessStatus"
+              >
+                {statusOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <input
+              className={`${inputClass} mt-2`}
+              name="note"
+              placeholder="Optional access note"
+            />
+            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
+              Save access
+            </button>
+          </form>
+
+          <form
+            action={updateFounderQuoteLinkAction}
+            className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+          >
+            <input name="businessId" type="hidden" value={business.businessId} />
+            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+              Public quote link
+              <select
+                className={inputClass}
+                defaultValue={business.publicLinkActive ? "true" : "false"}
+                name="quoteLinkActive"
+              >
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </label>
+            <input
+              className={`${inputClass} mt-2`}
+              name="note"
+              placeholder="Optional quote link note"
+            />
+            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
+              Save quote link
+            </button>
+          </form>
+
+          <form
+            action={updateFounderInternalNoteAction}
+            className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+          >
+            <input name="businessId" type="hidden" value={business.businessId} />
+            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+              Internal note
+              <textarea
+                className={`${textareaClass} min-h-[84px]`}
+                defaultValue={business.internalNote ?? ""}
+                name="internalNote"
+                placeholder="Objection, setup state, next founder follow-up"
+              />
+            </label>
+            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
+              Save note
+            </button>
+          </form>
+        </div>
+      </div>
+    </DashboardCard>
+  );
+}
+
+export default async function AdminPage({ searchParams }: AdminPageProps) {
+  const [params, user] = await Promise.all([searchParams, getCurrentUser()]);
+
+  if (!user) {
+    redirect("/auth/sign-in");
+  }
+
+  let overview;
+  try {
+    overview = await getFounderAdminOverview({ user });
+  } catch (error) {
+    return <FounderAccessBlocked message={getFounderAccessMessage(error)} />;
+  }
+
+  return (
+    <main className="min-h-screen bg-[var(--dash-bg)] px-4 py-5 text-[var(--dash-text)] sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl space-y-5">
+        <PageHeader
+          actions={
+            <div className="flex flex-wrap gap-2">
+              <StatusBadge tone="amber">Internal only</StatusBadge>
+              <Link className={buttonClass} href="/dashboard">
+                Owner dashboard
+              </Link>
+            </div>
+          }
+          description="Manual founder controls for pilots, plans, quote-link access, usage signals, and internal notes. Billing and customer messaging stay manual."
+          eyebrow="Founder Admin"
+          title="Pilot control console"
+        />
+
+        {params?.notice ? <AdminNotice tone="notice">{params.notice}</AdminNotice> : null}
+        {params?.error ? <AdminNotice tone="error">{params.error}</AdminNotice> : null}
+
+        <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <MetricCard
+            detail="All cleaning-business tenants visible to founder service role."
+            label="Businesses"
+            tone="blue"
+            value={overview.totals.businesses}
+          />
+          <MetricCard
+            detail="Onboarding or active businesses."
+            label="Active pilots"
+            tone="emerald"
+            value={overview.totals.activePilots}
+          />
+          <MetricCard
+            detail="Starter or Pro manual plans."
+            label="Payment-ready"
+            tone="amber"
+            value={overview.totals.paymentReady}
+          />
+          <MetricCard
+            detail="Suspended or cancelled access."
+            label="Paused access"
+            tone="red"
+            value={overview.totals.suspended}
+          />
+        </section>
+
+        <section className="space-y-3">
+          <SectionHeader
+            description="Change only the pilot control fields needed for manual operations."
+            title="Businesses"
+          />
+          {overview.businesses.length > 0 ? (
+            overview.businesses.map((business) => (
+              <BusinessControlCard business={business} key={business.businessId} />
+            ))
+          ) : (
+            <DashboardCard className="p-6 text-center text-sm text-[var(--dash-text-secondary)]">
+              No businesses found.
+            </DashboardCard>
+          )}
+        </section>
+
+        <DashboardCard className="p-4 sm:p-5" variant="priority">
+          <SectionHeader
+            description="Service-role writes land here after founder authorization."
+            title="Recent admin actions"
+          />
+          <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
+            {overview.recentActions.length > 0 ? (
+              overview.recentActions.map((action) => (
+                <div
+                  className="grid gap-1 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm sm:grid-cols-[160px_minmax(0,1fr)_140px] sm:items-center"
+                  key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
+                >
+                  <span className="font-black text-[var(--dash-text)]">
+                    {action.actionType.replaceAll("_", " ")}
+                  </span>
+                  <span className="truncate text-[var(--dash-text-secondary)]">
+                    {action.note ?? action.businessId ?? "No note"}
+                  </span>
+                  <span className="text-[12px] font-bold text-[var(--dash-text-muted)] sm:text-right">
+                    {formatDate(action.createdAt)}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p className="bg-[var(--dash-surface-muted)] px-4 py-5 text-center text-sm text-[var(--dash-text-secondary)]">
+                No admin actions logged yet.
+              </p>
+            )}
+          </div>
+        </DashboardCard>
+      </div>
+    </main>
+  );
+}

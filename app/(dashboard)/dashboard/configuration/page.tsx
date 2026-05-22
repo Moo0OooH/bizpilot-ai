@@ -119,6 +119,16 @@ function ConfigurationPanel({
   );
 }
 
+function LogoPreviewImage({
+  className,
+  logoUrl,
+}: Readonly<{ className: string; logoUrl: string }>) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- Customer logo URLs are arbitrary HTTPS assets; Next Image remote allowlists would block pilot setup previews.
+    <img alt="Logo preview" className={className} src={logoUrl} />
+  );
+}
+
 const fieldInputClass =
   "biz-field h-10 w-full rounded-[12px] border px-3 text-[13px] outline-none transition focus:border-[var(--dash-primary)]";
 
@@ -233,15 +243,10 @@ export default async function DashboardPage({
                       style={{ borderColor: "rgba(23,212,146,0.22)" }}
                     >
                       {logoUrl ? (
-                        <object
-                          aria-label="Logo preview"
+                        <LogoPreviewImage
                           className="h-full max-h-28 w-full object-contain p-4"
-                          data={logoUrl}
-                        >
-                          <span className="text-xs text-[var(--dash-text-muted)]">
-                            Logo preview unavailable
-                          </span>
-                        </object>
+                          logoUrl={logoUrl}
+                        />
                       ) : (
                         <span
                           className="flex h-12 w-12 items-center justify-center rounded-lg text-sm font-semibold text-white"
@@ -481,15 +486,10 @@ export default async function DashboardPage({
                   style={{ borderColor: accentColor }}
                 >
                   {logoUrl ? (
-                    <object
-                      aria-label="Logo preview"
+                    <LogoPreviewImage
                       className="h-full max-h-24 w-full object-contain p-3"
-                      data={logoUrl}
-                    >
-                      <div className="px-3 text-center text-xs text-[var(--dash-text-muted)]">
-                        Logo preview unavailable
-                      </div>
-                    </object>
+                      logoUrl={logoUrl}
+                    />
                   ) : (
                     <div className="px-3 text-center text-xs text-[var(--dash-text-muted)]">
                       Logo preview
@@ -905,15 +905,10 @@ export default async function DashboardPage({
                   style={{ borderColor: "rgba(23,212,146,0.22)" }}
                 >
                   {logoUrl ? (
-                    <object
-                      aria-label="Logo preview"
+                    <LogoPreviewImage
                       className="h-full max-h-24 w-full object-contain p-3"
-                      data={logoUrl}
-                    >
-                      <span className="text-xs text-[var(--dash-text-muted)]">
-                        Logo preview unavailable
-                      </span>
-                    </object>
+                      logoUrl={logoUrl}
+                    />
                   ) : (
                     <span
                       className="flex h-10 w-10 items-center justify-center rounded-lg text-xs font-semibold text-white"

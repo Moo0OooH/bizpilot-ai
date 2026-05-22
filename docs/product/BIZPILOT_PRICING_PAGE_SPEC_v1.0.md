@@ -57,3 +57,9 @@ Sell quote recovery and faster owner-reviewed responses, not generic AI software
 - No booking/invoice/CRM claims.
 - No complex annual/monthly toggle yet.
 - No Stripe Billing dependency before validation.
+- No pricing copy that implies booking, invoicing, SMS, WhatsApp, or auto-send.
+
+## Current Route Evidence
+
+- `app/pricing/page.tsx`
+- Public plan names align with manual `/admin` plan values: Founder Pilot, Starter, Pro.

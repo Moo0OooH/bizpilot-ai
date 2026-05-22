@@ -27,7 +27,10 @@ import {
   hashClientIp,
   RATE_LIMIT_EXCEEDED_MESSAGE,
 } from "@/server/services/abuse-protection.service";
-import { submitPublicIntake } from "@/server/services/public-intake.service";
+import {
+  SUBMISSION_TOO_FAST_MESSAGE,
+  submitPublicIntake,
+} from "@/server/services/public-intake.service";
 
 async function readRequestIpHash(): Promise<string> {
   const requestHeaders = await headers();
@@ -72,6 +75,7 @@ function redirectWithIntakeError(slug: string, error: unknown): never {
       value === "Submission rejected." ||
       value === "The quote form changed. Please refresh and submit again." ||
       value === "This quote link is not available." ||
+      value === SUBMISSION_TOO_FAST_MESSAGE ||
       value === RATE_LIMIT_EXCEEDED_MESSAGE ||
       value.endsWith(" is required.") ||
       value.endsWith(" must be a valid number.") ||
@@ -110,6 +114,7 @@ export async function submitPublicIntakeAction(
       consentAccepted: formData.get("consentAccepted") === "on",
       consentVersionId: readRequiredFormValue(formData, "consentVersionId"),
       fieldValues,
+      formRenderedAt: readOptionalFormValue(formData, "formRenderedAt"),
       honeypot: readOptionalFormValue(formData, "companyWebsite"),
       intakeFormId: readRequiredFormValue(formData, "intakeFormId"),
       ipHash,

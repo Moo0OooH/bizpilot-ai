@@ -4,12 +4,11 @@
 Define a lightweight internal console for MoOoH to manage pilot businesses, users, plans, and onboarding without building an enterprise admin product.
 
 ## Timing
-Build after:
-1. homepage/pricing/auth polish,
-2. dashboard Magic Moment stable,
-3. at least one real pilot business onboarded.
+Build before serious paid pilots or payment-ready trials so the founder can
+manually activate, pause, suspend, and annotate early businesses without
+touching the database directly.
 
-Recommended timing: late Phase 18 or start of Phase 19.
+Recommended timing: Phase 18C founder control layer.
 
 ## Route
 `/admin` or `/internal`
@@ -25,7 +24,7 @@ Recommended timing: late Phase 18 or start of Phase 19.
 - business name
 - owner email
 - plan
-- status: lead / onboarding / active pilot / paying / paused
+- status: onboarding / active / suspended / cancelled
 - quote link status
 - created_at
 - last activity
@@ -63,3 +62,8 @@ Manual plan assignment:
 - No automated billing engine.
 - No support ticketing system.
 - No bulk email automation.
+
+## Phase 18C Update
+
+Outreach and sales tracking can stay in the Founder CRM workbook first. Account
+control fields belong in `/admin` before real paid pilots.

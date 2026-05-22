@@ -125,8 +125,8 @@ Before hardening starts:
 
 ## 9. Security and Privacy
 
-- [ ] Security headers added.
-- [ ] CSP report-only or enforced decision made.
+- [x] Security headers added. 2026-05-22: `next.config.ts` sets CSP, Referrer-Policy, X-Content-Type-Options, X-Frame-Options, and Permissions-Policy.
+- [x] CSP report-only or enforced decision made. 2026-05-22: enforced MVP baseline verified locally on `/pricing`.
 - [ ] No real secrets in repo.
 - [ ] Secret scan performed.
 - [ ] Security event logging exists for sensitive failures/actions.

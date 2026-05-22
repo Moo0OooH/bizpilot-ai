@@ -46,36 +46,55 @@ type Plan = Readonly<{
 
 const plans: ReadonlyArray<Plan> = [
   {
-    cta: "Start founder setup",
+    cta: "Start founder pilot",
     description:
-      "For a small cleaning business that wants the quote link, lead queue, and owner-reviewed draft workflow set up cleanly.",
+      "For the first cleaning businesses validating the quote recovery workflow with founder-led setup and manual support.",
     features: [
-      "Branded public quote link",
-      "Cleaning services and service areas configured",
+      "14-day pilot workflow",
+      "Founder-led setup",
+      "Public quote page",
       "Lead recovery queue",
+      "AI summary",
       "AI reply drafts you review",
+      "AI follow-up drafts",
+      "Manual copy/send only",
+    ],
+    monthly: "14-day pilot",
+    name: "Founder Pilot",
+    recommended: true,
+    setup: "manual offer",
+  },
+  {
+    cta: "Choose Starter",
+    description:
+      "For an owner who wants one clean quote link, one lead workspace, and basic owner-reviewed AI drafts.",
+    features: [
+      "One quote page",
+      "Lead workspace",
+      "Basic AI drafts",
       "Manual follow-up visibility",
-      "14-day setup support",
+      "Basic branding",
+      "Founder setup guidance",
     ],
     monthly: "$49/mo",
-    name: "Founder Setup",
+    name: "Starter",
     setup: "$199 setup",
   },
   {
-    cta: "Choose Founder Plus",
+    cta: "Choose Pro",
     description:
-      "Recommended for owners who want deeper wording, FAQ, and follow-up tuning during the first pilot cycle.",
+      "For a cleaning business that wants stronger branding, deeper draft tuning, and priority setup support.",
     features: [
-      "Everything in Founder Setup",
+      "Everything in Starter",
+      "Stronger branded quote page",
       "Reply style and FAQ tuning",
-      "Missing-info question review",
-      "Quote link placement guidance",
-      "Weekly pilot check-in",
-      "Priority founder support",
+      "Follow-up draft tuning",
+      "Better lead organization",
+      "Priority setup",
+      "Simple usage insights",
     ],
     monthly: "$79/mo",
-    name: "Founder Plus",
-    recommended: true,
+    name: "Pro",
     setup: "$299 setup",
   },
 ];
@@ -95,7 +114,7 @@ function PricingHero() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <MarketingButton href="/auth/sign-up">
-                Start free recovery <MarketingIcon name="arrow" />
+                Start founder pilot <MarketingIcon name="arrow" />
               </MarketingButton>
               <MarketingButton href="/#recovery-flow" variant="secondary">
                 See workflow
@@ -208,7 +227,7 @@ function PricingPlans() {
           lead="The first pilots stay intentionally focused: quote capture, organized leads, safer drafts, and follow-up visibility."
           title="Pricing for cleaning quote recovery."
         />
-        <div className="mt-9 grid gap-5 lg:grid-cols-2">
+        <div className="mt-9 grid gap-5 lg:grid-cols-3">
           {plans.map((plan) => (
             <PlanCard key={plan.name} plan={plan} />
           ))}
@@ -340,8 +359,8 @@ function FaqSection() {
       answer:
         "No. AI drafts stay owner-reviewed. You review, edit, copy, and send from your own channel.",
     },
-    {
-      question: "What happens during the 14-day pilot?",
+            {
+      question: "What happens during the Founder Pilot?",
       answer:
         "The founder helps configure your quote page, service list, basic branding, intake questions, sample lead, and first-week workflow.",
     },
@@ -402,7 +421,7 @@ function PricingCta() {
               </p>
             </div>
             <MarketingButton href="/auth/sign-up">
-              Start free recovery <MarketingIcon name="arrow" />
+              Start founder pilot <MarketingIcon name="arrow" />
             </MarketingButton>
           </div>
         </MarketingCard>

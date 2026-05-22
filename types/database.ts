@@ -125,6 +125,7 @@ export type Database = {
           created_at: Timestamp;
           id: string;
           role: "admin" | "concierge_limited" | "member" | "owner";
+          status: "active" | "disabled";
           user_id: string;
         };
         Insert: {
@@ -132,6 +133,7 @@ export type Database = {
           created_at?: Timestamp;
           id?: string;
           role: "admin" | "concierge_limited" | "member" | "owner";
+          status?: "active" | "disabled";
           user_id: string;
         };
         Update: {
@@ -139,6 +141,7 @@ export type Database = {
           created_at?: Timestamp;
           id?: string;
           role?: "admin" | "concierge_limited" | "member" | "owner";
+          status?: "active" | "disabled";
           user_id?: string;
         };
         Relationships: [];
@@ -300,26 +303,98 @@ export type Database = {
         Row: {
           created_at: Timestamp;
           id: string;
+          internal_note: string | null;
           name: string;
           owner_user_id: string;
+          plan_expires_at: Timestamp | null;
+          plan_slug: "founder_pilot" | "paused" | "pro" | "starter";
+          plan_started_at: Timestamp;
           slug: string;
+          status: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at: Timestamp;
         };
         Insert: {
           created_at?: Timestamp;
           id?: string;
+          internal_note?: string | null;
           name: string;
           owner_user_id: string;
+          plan_expires_at?: Timestamp | null;
+          plan_slug?: "founder_pilot" | "paused" | "pro" | "starter";
+          plan_started_at?: Timestamp;
           slug: string;
+          status?: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at?: Timestamp;
         };
         Update: {
           created_at?: Timestamp;
           id?: string;
+          internal_note?: string | null;
           name?: string;
           owner_user_id?: string;
+          plan_expires_at?: Timestamp | null;
+          plan_slug?: "founder_pilot" | "paused" | "pro" | "starter";
+          plan_started_at?: Timestamp;
           slug?: string;
+          status?: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
+      admin_action_log: {
+        Row: {
+          action_type:
+            | "business_cancelled"
+            | "business_reactivated"
+            | "business_suspended"
+            | "internal_note_added"
+            | "plan_changed"
+            | "quote_link_disabled"
+            | "quote_link_enabled"
+            | "status_changed";
+          actor_user_id: string | null;
+          business_id: string | null;
+          created_at: Timestamp;
+          id: string;
+          new_values: Json;
+          note: string | null;
+          previous_values: Json;
+        };
+        Insert: {
+          action_type:
+            | "business_cancelled"
+            | "business_reactivated"
+            | "business_suspended"
+            | "internal_note_added"
+            | "plan_changed"
+            | "quote_link_disabled"
+            | "quote_link_enabled"
+            | "status_changed";
+          actor_user_id?: string | null;
+          business_id?: string | null;
+          created_at?: Timestamp;
+          id?: string;
+          new_values?: Json;
+          note?: string | null;
+          previous_values?: Json;
+        };
+        Update: {
+          action_type?:
+            | "business_cancelled"
+            | "business_reactivated"
+            | "business_suspended"
+            | "internal_note_added"
+            | "plan_changed"
+            | "quote_link_disabled"
+            | "quote_link_enabled"
+            | "status_changed";
+          actor_user_id?: string | null;
+          business_id?: string | null;
+          created_at?: Timestamp;
+          id?: string;
+          new_values?: Json;
+          note?: string | null;
+          previous_values?: Json;
         };
         Relationships: [];
       };

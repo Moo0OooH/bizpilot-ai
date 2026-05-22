@@ -27,6 +27,7 @@ type ServerEnv = ReturnType<typeof getPublicEnv> & {
   RESEND_API_KEY?: string;
   STRIPE_SECRET_KEY?: string;
   STRIPE_WEBHOOK_SECRET?: string;
+  BIZPILOT_FOUNDER_EMAILS?: string;
 };
 
 const optionalServerEnvKeys = [
@@ -35,6 +36,7 @@ const optionalServerEnvKeys = [
   "RESEND_API_KEY",
   "STRIPE_SECRET_KEY",
   "STRIPE_WEBHOOK_SECRET",
+  "BIZPILOT_FOUNDER_EMAILS",
 ] as const;
 
 // Server-only values must never be imported by client components.

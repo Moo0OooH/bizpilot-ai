@@ -28,13 +28,13 @@ Do not begin Phase 18 until these are true:
 
 | Gate | PASS | FAIL | Evidence |
 | --- | --- | --- | --- |
-| `pnpm test:rls` passes all 11 files. | [x] | [ ] | 2026-05-22: `pnpm test:rls` passed 11/11 against local `127.0.0.1:54322/postgres`. |
+| `pnpm test:rls` passes all files. | [x] | [ ] | 2026-05-22: `pnpm test:rls` passed 12/12 against local Supabase Postgres through a temporary Docker port proxy at `127.0.0.1:15432/postgres`; direct `54322` host publish was unavailable in Docker Desktop. |
 | `pnpm typecheck` is clean. | [x] | [ ] | 2026-05-22: `pnpm typecheck` passed. |
 | `pnpm build` succeeds. | [x] | [ ] | 2026-05-22: `pnpm build` passed with Next.js 16.2.4. |
-| Manual QA checklist is complete or explicitly risk-accepted. | [ ] | [x] | Phase 18A browser QA passed core routes, but target Supabase migration `0014` remains unresolved and should be risk-accepted or applied before pilot. |
+| Manual QA checklist is complete or explicitly risk-accepted. | [x] | [ ] | 2026-05-22 browser QA passed core routes with no application or console errors. Public quote submission was verified through the rendered Next form action after the quote-form and submit-age safety fixes. Target Supabase migrations `0014`, `0015`, and `0016` still need owner-approved target environment application before real pilots. |
 | Business configuration save round-trip works. | [x] | [ ] | 2026-05-22 browser QA: fresh QA workspace saved Quote Setup, then `/quote/spark-shine-phase18a-qa-1779420058961` became active. |
-| Public quote submission creates a tenant-scoped lead. | [x] | [ ] | 2026-05-22 browser QA: public quote submission created lead `c20fda35-a508-440d-85f0-186b003c4d74`; lead `business_id` matched the active public link tenant `1b8f3cc6-4967-4ffe-9490-533c1c34c68b`. |
-| AI remains manual, owner-reviewed, and non-sending. | [x] | [ ] | 2026-05-22 browser QA: lead detail shows "Manual, on-demand drafts. Nothing is sent automatically", "Owner reviewed", copy/status controls, and no send action. |
+| Public quote submission creates a tenant-scoped lead. | [x] | [ ] | 2026-05-22: `/quote/spark-shine-phase18a-qa-1779420058961` created lead `fee660c2-c3aa-43d5-a234-1c58502510b0`; lead `business_id` matched active public link tenant `1b8f3cc6-4967-4ffe-9490-533c1c34c68b`. Earlier browser QA also created lead `f2a2a970-4184-419a-8f85-faa063bf1292`. |
+| AI remains manual, owner-reviewed, and non-sending. | [x] | [ ] | 2026-05-22 browser QA: `/dashboard/leads/b98fb510-b9ec-4774-b30f-20cf8d9421e3` showed AI summary, missing info, reply draft, follow-up controls, and manual copy actions only (`Copy reply`, `Copy follow-up`). |
 
 ## 3. Infrastructure Readiness
 
@@ -45,14 +45,16 @@ Do not begin Phase 18 until these are true:
 | Supabase Security Advisor reviewed. | [ ] | [ ] |  |
 | Supabase Performance Advisor reviewed. | [ ] | [ ] |  |
 | Migrations `0010`, `0011`, `0012`, and `0013` are applied in the target project. | [ ] | [ ] |  |
-| Migration `0014_cleaning_template_contact_address_fields.sql` is applied in the target project. | [ ] | [x] | 2026-05-22: current app Supabase project did not contain `customer_phone`, `customer_email`, or `home_address` for `cleaning-smart-quote-v1`; owner must confirm target environment before applying. |
+| Migration `0014_cleaning_template_contact_address_fields.sql` is applied in the target project. | [ ] | [x] | 2026-05-22: applied and verified locally; `customer_phone`, `customer_email`, and `home_address` exist in local `industry_template_fields`. Owner must still confirm target Supabase environment before production/remote application. |
+| Migration `0015_business_access_plan_and_admin_log.sql` is applied in the target project. | [ ] | [x] | 2026-05-22: applied and verified locally; `businesses.plan_slug`, `businesses.status`, and `admin_action_log` exist locally. Owner must confirm target Supabase environment before production/remote application. |
+| Migration `0016_public_submission_minimum_submit_age_reason.sql` is applied in the target project. | [ ] | [x] | 2026-05-22: applied and verified locally; `public_submission_abuse_log_reason_check` accepts `submitted_too_fast`. Owner must confirm target Supabase environment before production/remote application. |
 | `public.public_can_insert_submission_value` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [ ] |  |
 | `public.record_public_submission_attempt` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [ ] |  |
 | `public.count_recent_public_submission_attempts` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [ ] |  |
 | RLS test cadence is documented if CI is not wired yet. | [ ] | [ ] |  |
 | No service-role key is present in browser/client code. | [ ] | [ ] |  |
-| Security headers/CSP baseline is configured or explicitly risk-accepted. | [ ] | [x] | 2026-05-22 standards audit: `next.config.ts` has no security headers/CSP baseline yet. |
-| Minimum submit-time heuristic is configured or explicitly risk-accepted. | [ ] | [x] | 2026-05-22 standards audit: honeypot and rate limit exist, but no submit-time heuristic was found. |
+| Security headers/CSP baseline is configured or explicitly risk-accepted. | [x] | [ ] | 2026-05-22: `next.config.ts` now sets CSP, Referrer-Policy, X-Content-Type-Options, X-Frame-Options, and Permissions-Policy. Verified on `http://127.0.0.1:3000/pricing` with `Invoke-WebRequest`. |
+| Minimum submit-time heuristic is configured or explicitly risk-accepted. | [x] | [ ] | 2026-05-22: public quote form now submits a hidden render-time marker; server rejects missing/too-fast submissions with safe copy and logs `submitted_too_fast`. Fast POST returned 303 error and created no lead; delayed POST created lead `fee660c2-c3aa-43d5-a234-1c58502510b0`. |
 
 ## 4. Environment and Secrets
 
@@ -62,7 +64,7 @@ Do not begin Phase 18 until these are true:
 | `.env.local` has service-role key only for server-side bootstrap use. | [x] | [ ] | 2026-05-22: service-role key is present; no browser/client service-role exposure was found in source search. |
 | `OPENAI_API_KEY` is present for model-backed demo testing. | [ ] | [x] | 2026-05-22: `OPENAI_API_KEY` is not set in `.env.local`; AI demo can still use fallback/manual evidence until key is provided. |
 | App still works with `OPENAI_API_KEY` unset through rule fallback. | [x] | [ ] | 2026-05-22: dashboard, quote submission, lead queue, and lead detail loaded with `OPENAI_API_KEY` unset. |
-| `.env.example` matches required env variables without real secrets. | [ ] | [ ] |  |
+| `.env.example` matches required env variables without real secrets. | [x] | [ ] | 2026-05-22: `.env.example` includes `BIZPILOT_FOUNDER_EMAILS` for founder-only `/admin`; no real secrets added. |
 | Secret scan performed before pilot branch/deploy. | [ ] | [ ] |  |
 | Supabase and GitHub owner/admin accounts use MFA. | [ ] | [ ] |  |
 
@@ -84,10 +86,12 @@ Do not begin Phase 18 until these are true:
 | --- | --- | --- | --- |
 | Demo business is configured as a cleaning business. | [ ] | [ ] |  |
 | Demo public quote link is active. | [x] | [ ] | 2026-05-22: QA quote link `/quote/spark-shine-phase18a-qa-1779420058961` active after Quote Setup save. |
-| Demo sample lead exists or can be created live. | [x] | [ ] | 2026-05-22: live QA lead `c20fda35-a508-440d-85f0-186b003c4d74` created from public quote submission. |
+| Demo sample lead exists or can be created live. | [x] | [ ] | 2026-05-22: live QA lead `fee660c2-c3aa-43d5-a234-1c58502510b0` created from public quote submission after the form and submit-age safety fixes. |
 | Dashboard shows a clear first-three-minute Magic Moment. | [x] | [ ] | 2026-05-22: `/dashboard` showed urgent lead review CTA, lead queue preview, quote link readiness, and manual owner control language. |
-| Lead detail includes summary, missing info, reply draft, and follow-up action. | [x] | [ ] | 2026-05-22: `/dashboard/leads/c20fda35-a508-440d-85f0-186b003c4d74` showed lead details, missing info, recommended action, AI summary panel, and action item. |
-| Founder can copy a reply but nothing is sent automatically. | [x] | [ ] | 2026-05-22: lead detail exposes copy/manual controls and states nothing is sent automatically. |
+| Lead detail includes summary, missing info, reply draft, and follow-up action. | [x] | [ ] | 2026-05-22: `/dashboard/leads/b98fb510-b9ec-4774-b30f-20cf8d9421e3` showed lead details, missing info, recommended action, AI summary panel, and copy-only follow-up controls. |
+| Founder can copy a reply but nothing is sent automatically. | [x] | [ ] | 2026-05-22: lead detail exposes `Copy reply` and `Copy follow-up`; no customer send action was present. |
+| Mini Founder Admin exists for manual plan/access control. | [x] | [ ] | 2026-05-22: `/admin` added as founder-only internal route with plan/status/quote-link/internal-note controls. Full data view requires `BIZPILOT_FOUNDER_EMAILS` and target migration `0015`. |
+| Public quote form can be submitted without client-side step navigation risk. | [x] | [ ] | 2026-05-22: public quote form was changed to visible Service / When & where / Contact sections with direct submit; final route QA confirmed the quote page rendered a submit-age value and the rendered Next form action created tenant-scoped lead `fee660c2-c3aa-43d5-a234-1c58502510b0`. |
 | Demo script leads with quote recovery, not generic AI platform language. | [ ] | [ ] |  |
 | Landing page or sales one-pager draft uses cleaning-first positioning. | [ ] | [ ] |  |
 
@@ -111,7 +115,7 @@ Do not begin Phase 18 until these are true:
 | Pilot price is selected, expected range `$29-$49/mo`. | [ ] | [x] | Owner decision still needed. |
 | Founder offer price is selected, expected range `$49-$99/mo`. | [ ] | [x] | GTM playbook recommends Founder Plus at `$299 setup + $79/mo`; owner must approve final pilot offer. |
 | Setup fee, if any, is decided. | [ ] | [x] | Owner decision still needed. |
-| Billing is manual for pilot; no Stripe implementation is required. | [ ] | [ ] |  |
+| Billing is manual for pilot; no Stripe implementation is required. | [x] | [ ] | 2026-05-22: `/admin` manual plan assignment and plan entitlement docs added; no Stripe Billing implementation added. |
 | Refund/cancellation handling is written down. | [ ] | [x] | Owner decision still needed. |
 | Owner knows this is a pilot and not a full CRM/booking product. | [ ] | [ ] |  |
 
@@ -119,7 +123,7 @@ Do not begin Phase 18 until these are true:
 
 | Item | PASS | FAIL | Notes |
 | --- | --- | --- | --- |
-| Support contact channel is defined. | [ ] | [ ] |  |
+| Support contact channel is defined. | [ ] | [x] | Support/internal notes workflow exists, but the actual support channel owner should use with customers is still an owner decision. |
 | Manual data deletion/minimization request process is documented or accepted as deferred risk. | [ ] | [ ] | Phase 14 remains deferred by owner preference. |
 | Privacy incident register process exists or is accepted as deferred risk. | [ ] | [ ] |  |
 | Public quote abuse response path is known. | [ ] | [ ] |  |

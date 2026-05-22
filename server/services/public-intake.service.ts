@@ -44,12 +44,18 @@ export type PublicIntakeSubmissionInput = Readonly<{
   consentAccepted: boolean;
   consentVersionId: string;
   fieldValues: Record<string, string>;
+  formRenderedAt?: string | undefined;
   honeypot?: string | undefined;
   intakeFormId: string;
   ipHash: string;
   source: LeadSourceInput;
   slug: string;
 }>;
+
+export const SUBMISSION_TOO_FAST_MESSAGE =
+  "Please wait a moment and submit the quote request again.";
+
+const MINIMUM_PUBLIC_SUBMIT_AGE_MS = 2500;
 
 function cleanText(value: string | undefined): string {
   return value?.trim() ?? "";
@@ -143,6 +149,20 @@ function requirePublicPage(
   return page;
 }
 
+function getSubmissionAgeMs(formRenderedAt: string | undefined): number | null {
+  if (!formRenderedAt) {
+    return null;
+  }
+
+  const renderedAtMs = Number(formRenderedAt);
+
+  if (!Number.isFinite(renderedAtMs) || renderedAtMs <= 0) {
+    return null;
+  }
+
+  return Date.now() - renderedAtMs;
+}
+
 function getSubmissionValues(input: {
   fieldValues: Record<string, string>;
   page: PublicIntakePageRecord;
@@ -219,6 +239,21 @@ export async function submitPublicIntake(
       supabase,
     });
     throw new Error("Submission rejected.");
+  }
+
+  const submissionAgeMs = getSubmissionAgeMs(input.formRenderedAt);
+  if (
+    submissionAgeMs === null ||
+    submissionAgeMs < MINIMUM_PUBLIC_SUBMIT_AGE_MS
+  ) {
+    await recordPublicSubmissionAttempt({
+      businessId,
+      intakeFormId: page.form.id,
+      ipHash: input.ipHash,
+      reason: "submitted_too_fast",
+      supabase,
+    });
+    throw new Error(SUBMISSION_TOO_FAST_MESSAGE);
   }
 
   if (!input.consentAccepted) {

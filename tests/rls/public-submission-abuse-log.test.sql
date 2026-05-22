@@ -6,6 +6,8 @@ Verifies anon cannot read/write the table directly; the two helpers
 (record_public_submission_attempt + count_recent_public_submission_attempts)
 do work; authenticated members only see their own rows.
 Last Updated: 2026-05-16
+Change Log:
+- 2026-05-22: Added submitted_too_fast helper coverage for minimum submit-age heuristic.
 */
 
 begin;
@@ -81,6 +83,21 @@ exception when others then
 end;
 $$;
 
+-- T2b: anon CAN log the minimum submit-age rejection reason.
+do $$
+begin
+  perform public.record_public_submission_attempt(
+    'c4000000-0000-0000-0000-00000000000a',
+    null,
+    'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+    'submitted_too_fast'
+  );
+exception when others then
+  raise exception 'T2b FAIL: submitted_too_fast should be an allowed abuse-log reason. SQLSTATE=%, MESSAGE=%',
+    sqlstate, sqlerrm;
+end;
+$$;
+
 -- T3: the helper silently ignores unknown business ids.
 -- Snapshot the count as superuser via a session variable, call as anon,
 -- then re-check as superuser. Stays simple inside each DO block.
@@ -131,7 +148,7 @@ end;
 $$;
 
 -- T4: count_recent_public_submission_attempts returns the expected count for anon.
--- The fixture from T2 inserted exactly one row for business A.
+-- The fixtures from T2 and T2b inserted two rows for business A.
 set local role anon;
 select set_config('request.jwt.claim.role', 'anon', true);
 
@@ -145,7 +162,7 @@ begin
     60
   );
   if observed <> 1 then
-    raise exception 'T4 FAIL: count_recent_public_submission_attempts should return 1, got %.',
+    raise exception 'T4 FAIL: count_recent_public_submission_attempts should return 1 for the honeypot ip hash, got %.',
       observed;
   end if;
 
@@ -156,6 +173,15 @@ begin
   );
   if observed <> 0 then
     raise exception 'T4 FAIL: count for a different ip_hash should be 0, got %.', observed;
+  end if;
+
+  observed := public.count_recent_public_submission_attempts(
+    'c4000000-0000-0000-0000-00000000000a',
+    'dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',
+    60
+  );
+  if observed <> 1 then
+    raise exception 'T4 FAIL: count for submitted_too_fast ip_hash should be 1, got %.', observed;
   end if;
 end;
 $$;
@@ -194,8 +220,8 @@ declare
 begin
   select count(*) into own_visible from public.public_submission_abuse_log
   where business_id = 'c4000000-0000-0000-0000-00000000000a';
-  if own_visible <> 1 then
-    raise exception 'T6 FAIL: owner A should see exactly 1 abuse_log row for own business, got %.',
+  if own_visible <> 2 then
+    raise exception 'T6 FAIL: owner A should see exactly 2 abuse_log rows for own business, got %.',
       own_visible;
   end if;
 

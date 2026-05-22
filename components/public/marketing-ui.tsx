@@ -150,7 +150,7 @@ export function MarketingIcon({ name }: Readonly<{ name: MarketingIconName }>) {
   return (
     <svg
       aria-hidden
-      className="h-4 w-4"
+      className="h-[1.1em] w-[1.1em]"
       fill="none"
       stroke="currentColor"
       strokeLinecap="round"
@@ -168,7 +168,7 @@ export function MarketingShell({
   className = "",
 }: Readonly<{ children: ReactNode; className?: string }>) {
   return (
-    <div className={`mx-auto w-full max-w-[1180px] px-5 sm:px-6 ${className}`}>
+    <div className={`mx-auto w-full max-w-[1200px] px-5 sm:px-6 ${className}`}>
       {children}
     </div>
   );
@@ -263,7 +263,7 @@ export function MarketingButton({
   variant?: ButtonVariant;
 }>) {
   const base =
-    "inline-flex h-12 items-center justify-center gap-3 whitespace-nowrap rounded-[10px] px-6 text-[14px] font-black transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(23,212,146,0.28)]";
+    "inline-flex h-11 items-center justify-center gap-3 whitespace-nowrap rounded-[10px] px-5 text-[13px] font-black transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(23,212,146,0.28)]";
 
   if (variant === "primary") {
     return (
@@ -348,7 +348,7 @@ export function MarketingHeader({ active = "home" }: Readonly<{ active?: "home" 
       className="sticky top-0 z-40 border-b backdrop-blur-xl"
       style={{ backgroundColor: "rgba(5,11,18,0.82)", borderColor: marketingTone.border }}
     >
-      <nav className="mx-auto flex h-[64px] w-full max-w-[1180px] items-center justify-between gap-4 px-5 sm:px-6">
+      <nav className="mx-auto flex h-[58px] w-full max-w-[1200px] items-center justify-between gap-4 px-5 sm:px-6">
         <MarketingBrand />
         <div className="hidden items-center gap-2 md:flex">
           {navItems.map((item) => {
@@ -394,7 +394,7 @@ export function MarketingFooter() {
 
   return (
     <footer className="border-t px-5 py-7 sm:px-6" style={{ borderColor: marketingTone.border }}>
-      <div className="mx-auto flex w-full max-w-[1180px] flex-col gap-5 text-[12px] md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-5 text-[12px] md:flex-row md:items-center md:justify-between">
         <MarketingBrand />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2" style={{ color: marketingTone.soft }}>
           {links.map((link) => (
@@ -423,17 +423,17 @@ export function MarketingSectionTitle({
   title: ReactNode;
 }>) {
   return (
-    <div className={align === "center" ? "mx-auto max-w-[760px] text-center" : "max-w-[760px]"}>
+    <div className={align === "center" ? "mx-auto max-w-[980px] text-center" : "max-w-[760px]"}>
       {eyebrow ? (
         <p className="text-[12px] font-black uppercase" style={{ color: marketingTone.teal }}>
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="mt-2 text-[32px] font-black leading-[1.12]" style={{ color: marketingTone.text }}>
+      <h2 className="mt-2 text-[28px] font-black leading-[1.12] sm:text-[32px]" style={{ color: marketingTone.text }}>
         {title}
       </h2>
       {lead ? (
-        <p className="mt-4 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
+        <p className="mt-4 text-[16px] leading-7" style={{ color: marketingTone.soft }}>
           {lead}
         </p>
       ) : null}
