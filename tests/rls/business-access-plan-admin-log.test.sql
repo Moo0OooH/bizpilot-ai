@@ -144,4 +144,54 @@ begin
 end;
 $$;
 
+reset role;
+
+update public.businesses
+set status = 'active',
+    plan_slug = 'paused'
+where id = 'd6000000-0000-0000-0000-000000000001';
+
+set local role authenticated;
+select set_config('request.jwt.claim.sub', 'd5000000-0000-0000-0000-000000000001', true);
+select set_config('request.jwt.claim.role', 'authenticated', true);
+
+do $$
+begin
+  if not public.is_business_member('d6000000-0000-0000-0000-000000000001') then
+    raise exception 'T4 FAIL: paused plan should retain authenticated member dashboard access for safe/limited account handling.';
+  end if;
+
+  if public.has_active_public_link('d6000000-0000-0000-0000-000000000001') then
+    raise exception 'T4 FAIL: paused plan should block active public quote helper even if a link row remains active.';
+  end if;
+end;
+$$;
+
+reset role;
+
+update public.businesses
+set status = 'cancelled',
+    plan_slug = 'founder_pilot'
+where id = 'd6000000-0000-0000-0000-000000000001';
+
+set local role authenticated;
+select set_config('request.jwt.claim.sub', 'd5000000-0000-0000-0000-000000000001', true);
+select set_config('request.jwt.claim.role', 'authenticated', true);
+
+do $$
+begin
+  if public.is_business_member('d6000000-0000-0000-0000-000000000001') then
+    raise exception 'T5 FAIL: cancelled business should block member helper.';
+  end if;
+
+  if public.has_active_public_link('d6000000-0000-0000-0000-000000000001') then
+    raise exception 'T5 FAIL: cancelled business should block public quote link helper.';
+  end if;
+
+  if (select count(*) from public.businesses) <> 0 then
+    raise exception 'T5 FAIL: cancelled business should not be visible to owner dashboard RLS.';
+  end if;
+end;
+$$;
+
 rollback;

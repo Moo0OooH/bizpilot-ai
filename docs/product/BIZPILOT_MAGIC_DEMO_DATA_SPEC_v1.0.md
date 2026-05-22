@@ -66,3 +66,24 @@ claim SMS/WhatsApp automation
 
 Phase 18A live QA created a real tenant-scoped lead and verified the manual AI/copy workflow. A reusable separated demo-data mechanism remains a planned gap before repeated sales demos.
 
+## Phase 18C UI Demo State
+
+The dashboard lead queue now includes a static, clearly labeled sample demo
+state when a tenant has zero real leads.
+
+This state shows:
+
+```text
+4 realistic cleaning leads
+urgency/status badges
+AI-style summary
+reply draft
+follow-up draft
+missing-info guidance
+suggested next action
+Review Reply / Copy Response / Mark Contacted / Share Quote Link controls
+```
+
+The sample state is UI-only. It is not inserted into `leads`,
+`intake_submissions`, or AI output tables, and it disappears as soon as real
+quote requests exist for the tenant.

@@ -23,6 +23,17 @@
 # misc
 .DS_Store
 *.pem
+*.zip
+*.rar
+*.7z
+*.tar
+*.tar.gz
+*.tmp
+*.temp
+artifacts/
+browser-profile/
+playwright-profile/
+screenshots/
 
 # debug
 npm-debug.log*

@@ -202,7 +202,7 @@ function HeroDesk() {
           className="rounded-[13px] border p-3"
           style={{
             background:
-              "radial-gradient(circle at 96% 4%, rgba(226,232,240,0.20), transparent 10rem), radial-gradient(circle at 88% 16%, rgba(246,184,75,0.16), transparent 9rem), linear-gradient(135deg, #252B2E 0%, #1A2025 45%, #0D131A 100%)",
+              "radial-gradient(circle at 96% 4%, rgba(226,232,240,0.24), transparent 10rem), radial-gradient(circle at 88% 16%, rgba(246,184,75,0.18), transparent 9rem), linear-gradient(135deg, #2A3033 0%, #1D252B 45%, #0E151D 100%)",
             borderColor: "rgba(148,203,226,0.30)",
             boxShadow:
               "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 1px rgba(34,211,238,0.08), 0 0 34px rgba(56,189,248,0.08)",
@@ -739,98 +739,97 @@ function CommandCenterSection() {
 }
 
 function BeforeAfterSection() {
-  const before = [
-    "Leads slip through the cracks",
-    "No structured intake",
-    "No follow-up reminders",
-    "No visibility or reliability",
-  ];
-  const after = [
-    "Leads organized in one recovery queue",
-    "Missing details highlighted",
-    "Owner-reviewed AI reply ready",
-    "Manual follow-up stays visible",
+  const before = ["DM: how much?", "No home size", "No service timing", "No access details", "No follow-up state"];
+  const after: ReadonlyArray<Readonly<{ action: string; detail: string }>> = [
+    { action: "House cleaning request organized", detail: "Service type" },
+    { action: "Ask before estimating time and crew", detail: "Home size" },
+    { action: "Match one-time, weekly, or biweekly cleaning", detail: "Frequency" },
+    { action: "Confirm parking, pets, and entry notes", detail: "Access" },
+    { action: "Keep the next manual touch visible", detail: "Follow-up" },
   ];
 
   return (
     <section className="px-5 py-7 sm:px-6" id="comparison">
       <MarketingShell>
-        <MarketingCard className="overflow-hidden">
-          <div className="grid lg:grid-cols-2">
-            <div className="grid gap-5 border-b p-6 lg:border-b-0 lg:border-r" style={{ borderColor: marketingTone.border }}>
-              <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_190px] md:items-center">
-                <div>
-                  <h3 className="text-[22px] font-black" style={{ color: marketingTone.red }}>
-                    Before BizPilot
-                  </h3>
-                  <div className="mt-4 grid gap-3 text-[14px]" style={{ color: marketingTone.soft }}>
-                    {before.map((item) => (
-                      <span className="flex items-center gap-3" key={item}>
-                        <span style={{ color: marketingTone.red }}>
-                          <MarketingIcon name="x" />
-                        </span>
-                        {item}
-                      </span>
-                    ))}
+        <div
+          className="overflow-hidden rounded-[20px] border p-5 sm:p-6"
+          style={{
+            background:
+              "radial-gradient(circle at 76% 10%, rgba(226,232,240,0.08), transparent 12rem), linear-gradient(135deg, rgba(48,55,58,0.56), rgba(10,22,34,0.94) 44%, rgba(12,25,38,0.94))",
+            borderColor: "rgba(148,203,226,0.18)",
+          }}
+        >
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_0.35fr_1.05fr] lg:items-center">
+            <div>
+              <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.red }}>
+                Before
+              </p>
+              <h2 className="mt-3 text-[28px] font-black leading-tight" style={{ color: marketingTone.text }}>
+                A warm lead arrives messy.
+              </h2>
+              <div className="mt-5 grid gap-2">
+                {before.map((item) => (
+                  <div
+                    className="flex items-center gap-3 rounded-[12px] border px-3 py-2 text-[13px]"
+                    key={item}
+                    style={{ backgroundColor: "rgba(255,95,102,0.07)", borderColor: "rgba(255,95,102,0.18)", color: marketingTone.soft }}
+                  >
+                    <span style={{ color: marketingTone.red }}>
+                      <MarketingIcon name="x" />
+                    </span>
+                    {item}
                   </div>
-                </div>
-                <div
-                  className="relative min-h-[128px] rounded-[13px] border p-4"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(84,167,255,0.12), rgba(255,95,102,0.10))",
-                    borderColor: marketingTone.border,
-                  }}
-                >
-                  <div className="absolute left-4 top-5 h-4 w-20 rounded bg-white/10" />
-                  <div className="absolute left-8 top-11 h-5 w-24 rounded bg-white/10" />
-                  <div className="absolute left-4 top-20 h-6 w-34 rounded bg-white/10" />
-                  <span className="absolute bottom-4 right-4 rounded-full border px-3 py-1 text-[12px] font-black uppercase" style={{ backgroundColor: "rgba(255,95,102,0.15)", borderColor: "rgba(255,95,102,0.30)", color: marketingTone.red }}>
-                    Missed
-                  </span>
-                </div>
+                ))}
               </div>
             </div>
 
-            <div className="grid gap-5 p-6">
-              <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_190px] md:items-center">
-                <div>
-                  <h3 className="text-[22px] font-black" style={{ color: marketingTone.emerald }}>
-                    After BizPilot
-                  </h3>
-                  <div className="mt-4 grid gap-3 text-[14px]" style={{ color: marketingTone.soft }}>
-                    {after.map((item) => (
-                      <span className="flex items-center gap-3" key={item}>
-                        <span style={{ color: marketingTone.emerald }}>
-                          <MarketingIcon name="check" />
-                        </span>
-                        {item}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+            <div className="flex justify-center">
+              <div
+                className="flex h-20 w-20 items-center justify-center rounded-full border text-[28px]"
+                style={{
+                  background: "linear-gradient(135deg, rgba(56,189,248,0.18), rgba(246,184,75,0.10))",
+                  borderColor: "rgba(148,203,226,0.24)",
+                  color: marketingTone.teal,
+                }}
+              >
+                <MarketingIcon name="arrow" />
+              </div>
+            </div>
+
+            <div>
+              <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
+                After
+              </p>
+              <h2 className="mt-3 text-[28px] font-black leading-tight" style={{ color: marketingTone.text }}>
+                BizPilot turns it into a next action.
+              </h2>
+              <div className="mt-5 grid gap-2">
                 <div
-                  className="relative min-h-[128px] rounded-[13px] border p-4"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(45,212,191,0.14), rgba(23,212,146,0.12))",
-                    borderColor: "rgba(45,212,191,0.26)",
-                  }}
+                  className="hidden px-3 text-[10px] font-black uppercase tracking-[0.14em] sm:grid sm:grid-cols-[0.55fr_1fr]"
+                  style={{ color: marketingTone.muted }}
                 >
-                  {[0, 1, 2].map((item) => (
-                    <div className="mb-3 flex items-center gap-3" key={item}>
-                      <span className="flex h-5 w-5 items-center justify-center rounded" style={{ backgroundColor: "rgba(45,212,191,0.18)", color: marketingTone.teal }}>
-                        <MarketingIcon name="check" />
-                      </span>
-                      <span className="h-3 w-24 rounded bg-white/14" />
-                    </div>
-                  ))}
-                  <span className="absolute bottom-4 right-4 flex h-16 w-16 items-center justify-center rounded-full" style={{ background: "linear-gradient(135deg, #2DD4BF, #17D492)", color: "#03130C" }}>
-                    <MarketingIcon name="check" />
-                  </span>
+                  <span>Recovered detail</span>
+                  <span>Service action</span>
                 </div>
+                {after.map((item) => (
+                  <div
+                    className="grid gap-1.5 rounded-[12px] border px-3 py-2 text-[13px] sm:grid-cols-[0.55fr_1fr] sm:items-center"
+                    key={item.detail}
+                    style={{ backgroundColor: "rgba(45,212,191,0.075)", borderColor: "rgba(45,212,191,0.20)", color: marketingTone.soft }}
+                  >
+                    <span className="flex items-center gap-2 font-black" style={{ color: marketingTone.teal }}>
+                      <MarketingIcon name="check" />
+                      {item.detail}
+                    </span>
+                    <span>
+                      {item.action}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        </MarketingCard>
+        </div>
       </MarketingShell>
     </section>
   );

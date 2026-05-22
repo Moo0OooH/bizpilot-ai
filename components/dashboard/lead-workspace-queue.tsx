@@ -27,6 +27,7 @@ import {
   DashboardCard,
   EmptyState,
   inputClass,
+  primaryButtonClass,
   shortCustomerName,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
@@ -274,7 +275,7 @@ function LeadDesktopHeader() {
   );
 }
 
-function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
+export function LegacySampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
   return (
     <div className="grid gap-4 rounded-[20px] border border-dashed border-[rgba(20,184,166,0.28)] bg-[var(--dash-primary-soft)] p-5">
       <div className="flex flex-wrap items-center gap-2">
@@ -308,6 +309,142 @@ function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
       <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
         Sample is not stored as customer data. It shows the workflow until real
         quote requests arrive.
+      </p>
+    </div>
+  );
+}
+
+const sampleLeads = [
+  {
+    area: "Downtown",
+    customer: "Maria Santos",
+    detail: "Move-out cleaning before Friday. Missing apartment size.",
+    followUpDraft:
+      "Hi Maria, just checking whether you still need help with the move-out clean. Send the apartment size and preferred time window and I can help prepare the next step.",
+    replyDraft:
+      "Hi Maria, thanks for reaching out. Could you send the apartment size, preferred cleaning date, and whether the unit will be empty?",
+    status: "Missing info",
+    tone: "amber" as const,
+  },
+  {
+    area: "Laval",
+    customer: "Daniel Roy",
+    detail: "Deep clean request with bedrooms, bathrooms, and timing included.",
+    followUpDraft:
+      "Hi Daniel, following up on your deep clean request. If the timing still works, the owner can review the details and respond with next steps.",
+    replyDraft:
+      "Hi Daniel, thanks for the details. I can review the request and follow up with a tailored estimate range after confirming access and priority areas.",
+    status: "Draft ready",
+    tone: "blue" as const,
+  },
+  {
+    area: "Plateau",
+    customer: "Nadia Khan",
+    detail: "Weekly cleaning lead went quiet after first reply.",
+    followUpDraft:
+      "Hi Nadia, just following up on your weekly cleaning request. If you are still comparing options, I can help answer any questions.",
+    replyDraft:
+      "Hi Nadia, thanks for asking about weekly cleaning. Could you confirm the home size, pets, and your preferred weekday?",
+    status: "Follow-up due",
+    tone: "red" as const,
+  },
+  {
+    area: "Westmount",
+    customer: "Office Manager",
+    detail: "Small office cleaning. Reply copied; waiting for owner outcome.",
+    followUpDraft:
+      "Hi, checking in on the office cleaning request. Let me know if you want to move forward or adjust the scope.",
+    replyDraft:
+      "Thanks for the office cleaning details. The owner will review the scope and respond manually with next steps.",
+    status: "Copied",
+    tone: "emerald" as const,
+  },
+];
+
+function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
+  const featured = sampleLeads[0]!;
+
+  return (
+    <div className="grid gap-4 rounded-[20px] border border-dashed border-[rgba(20,184,166,0.28)] bg-[var(--dash-primary-soft)] p-4 sm:p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <StatusBadge tone="amber">Sample demo state</StatusBadge>
+        <StatusBadge tone="red">Reply needed</StatusBadge>
+        <StatusBadge tone="emerald">AI draft ready</StatusBadge>
+        <StatusBadge tone="blue">Not stored</StatusBadge>
+      </div>
+
+      <div className="grid items-start gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.9fr)]">
+        <div className="flex items-center gap-3">
+          <Avatar name={featured.customer} size={44} tone="primary" />
+          <div>
+            <p className="text-[15px] font-black text-[var(--dash-text)]">
+              Maria S. - move-out cleaning
+            </p>
+            <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+              {featured.detail}
+            </p>
+          </div>
+        </div>
+        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+          <span className="font-black text-[var(--dash-text)]">AI summary:</span>{" "}
+          Warm quote request with urgency, but the owner needs home size and access details before estimating.
+        </div>
+      </div>
+
+      <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        {sampleLeads.map((lead) => (
+          <div
+            className="grid gap-2 rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3"
+            key={lead.customer}
+          >
+            <div className="flex min-w-0 items-start justify-between gap-2">
+              <div className="flex min-w-0 items-center gap-2.5">
+                <Avatar name={lead.customer} size={34} />
+                <span className="min-w-0">
+                  <span className="block truncate text-[13px] font-black text-[var(--dash-text)]">
+                    {shortCustomerName(lead.customer)}
+                  </span>
+                  <span className="mt-0.5 block truncate text-[12px] text-[var(--dash-text-muted)]">
+                    {lead.area}
+                  </span>
+                </span>
+              </div>
+              <StatusBadge tone={lead.tone}>{lead.status}</StatusBadge>
+            </div>
+            <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+              {lead.detail}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid gap-3 lg:grid-cols-2">
+        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+          <span className="font-black text-[var(--dash-text)]">Reply draft:</span>{" "}
+          {featured.replyDraft}
+        </div>
+        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+          <span className="font-black text-[var(--dash-text)]">Follow-up draft:</span>{" "}
+          {featured.followUpDraft}
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <Link className={primaryButtonClass} href="/dashboard/leads">
+          Review Reply
+        </Link>
+        <button className={buttonClass} disabled type="button">
+          Copy Response
+        </button>
+        <button className={buttonClass} disabled type="button">
+          Mark Contacted
+        </button>
+        <CopyButton label="Share Quote Link" value={quotePath} />
+      </div>
+
+      <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
+        This demo state is static UI only. It is not saved as a real lead and
+        disappears as soon as real quote requests arrive.
       </p>
     </div>
   );
