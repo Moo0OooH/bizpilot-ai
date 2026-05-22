@@ -420,6 +420,16 @@ function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
 
       <div className="grid gap-3 lg:grid-cols-2">
         <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+          <span className="font-black text-[var(--dash-text)]">Missing info:</span>{" "}
+          Ask for apartment size, whether the unit will be empty, access details,
+          and the preferred arrival window.
+        </div>
+        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+          <span className="font-black text-[var(--dash-text)]">Suggested next action:</span>{" "}
+          Review the reply draft, copy it manually, and send it through the
+          customer channel the owner already uses.
+        </div>
+        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
           <span className="font-black text-[var(--dash-text)]">Reply draft:</span>{" "}
           {featured.replyDraft}
         </div>
@@ -433,9 +443,7 @@ function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
         <Link className={primaryButtonClass} href="/dashboard/leads">
           Review Reply
         </Link>
-        <button className={buttonClass} disabled type="button">
-          Copy Response
-        </button>
+        <CopyButton label="Copy Response" value={featured.replyDraft} />
         <button className={buttonClass} disabled type="button">
           Mark Contacted
         </button>
