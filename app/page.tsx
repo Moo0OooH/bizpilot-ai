@@ -267,10 +267,10 @@ function HeroSection() {
               BizPilot captures quote requests, organizes every lead, and drafts owner-reviewed replies and follow-ups so cleaning businesses can respond faster without auto-sending anything.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <MarketingButton href="/auth/sign-up">
+              <MarketingButton className="px-4" href="/auth/sign-up">
                 Start free recovery <MarketingIcon name="arrow" />
               </MarketingButton>
-              <MarketingButton href="#recovery-flow" variant="secondary">
+              <MarketingButton className="px-4" href="#recovery-flow" variant="secondary">
                 See how it works
               </MarketingButton>
             </div>
@@ -913,16 +913,16 @@ function FinalCtaSection() {
             borderColor: "rgba(148,203,226,0.22)",
           }}
         >
-          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_390px]">
-            <div>
-              <h2 className="max-w-[620px] text-[36px] font-black leading-[1.12]" style={{ color: marketingTone.text }}>
+          <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,390px)]">
+            <div className="min-w-0">
+              <h2 className="max-w-[620px] text-[30px] font-black leading-[1.12] sm:text-[36px]" style={{ color: marketingTone.text }}>
                 Turn more cleaning quote requests into real conversations.
               </h2>
               <p className="mt-5 max-w-[640px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
                 Capture requests, ask for missing details, respond faster, and never lose a lead to silence again.
               </p>
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="grid gap-3">
                 <MarketingButton className="w-full" href="/auth/sign-up">
                   Start free recovery <MarketingIcon name="arrow" />

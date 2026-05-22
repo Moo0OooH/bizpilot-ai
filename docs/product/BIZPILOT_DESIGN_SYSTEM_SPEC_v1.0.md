@@ -1,540 +1,338 @@
-# BizPilot AI — Design System Spec
+﻿# BizPilot AI Design System Spec v1.1
 
-**Version:** v1.0
-**Status:** Pilot-ready handoff
-**Owner:** MoOoH
-**Scope:** Tokens, components, layout grid, breakpoints, per-page wireframes for the full BizPilot surface
-**Last Updated:** 2026-05-17
-**Related:**
-- `docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` (Section 6: Operational Calm UX, Section 15: Landing Page)
-- `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md`
-- `docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
+**Status:** Active
+**Last updated:** 2026-05-22
+**Scope:** Public pages, auth pages, public quote pages, dashboard pages, founder admin pages
+**Implementation references:** `components/public/marketing-ui.tsx`, `components/dashboard/dashboard-ui.tsx`, `app/globals.css`
 
----
+## 1. Product Design Intent
 
-## 1. Design intent
+BizPilot is a cleaning-first Quote Recovery Command Center. The interface should
+make a busy owner feel that requests are captured, details are organized,
+drafts are safer, and follow-up is visible.
 
-BizPilot must read like a calm operational tool for a busy local-service owner — not a crypto app, not a marketing landing, not an enterprise CRM. The product is a **Quote Recovery Command Center**. The visual system supports three jobs at once:
+The interface must not feel like:
 
-- Convince a cleaning-business owner in under three minutes that this tool will help them stop losing leads.
-- Let that same owner scan their inbox of quote requests in seconds, in good or poor lighting, on a phone or a 13-inch laptop, at 100% browser zoom.
-- Feel trustworthy enough that they paste a private quote link on Instagram or Google Business Profile without second-guessing.
+- a generic CRM,
+- a booking system,
+- an invoice product,
+- a marketplace,
+- a broad automation suite,
+- a crypto/neon dashboard,
+- an internal developer tool.
 
-The whole system is built around: dark navy surface, calm emerald accent for action and value, restrained type, generous-but-not-cinematic spacing, no decorative gradients, no glow.
+The current homepage is the frozen visual reference for public theme direction.
+Do not change the homepage just to align a new page.
 
----
+## 2. Token Sources
 
-## 2. Color tokens
-
-All colors are referenced by name in code (Tailwind class) and by role here. Use the role description to decide which token applies; never invent off-table colors.
-
-| Token | Hex | Tailwind | Role |
-| --- | --- | --- | --- |
-| `navy.base` | `#07101A` | `bg-[#07101a]` | App background, full page |
-| `navy.surface` | `#0E1B2C` | `bg-white/[0.04]` overlay | Card surface on navy |
-| `navy.surface-strong` | `#152437` | `bg-white/[0.06]` overlay | Hover card, nav pill |
-| `border.subtle` | `rgba(255,255,255,0.08)` | `border-white/10` | Default card border |
-| `border.muted` | `rgba(255,255,255,0.15)` | `border-white/15` | Input border |
-| `emerald.600` | `#059669` | `bg-emerald-600` | Primary CTA fill |
-| `emerald.500` | `#10B981` | `hover:bg-emerald-500` | Primary CTA hover |
-| `emerald.400` | `#34D399` | `text-emerald-400` | Accent in headlines, badges, success |
-| `emerald.300` | `#6EE7B7` | `text-emerald-300` | Eyebrow labels, small accent text |
-| `red.400` | `#F87171` | `text-red-400` | "Needs reply" stat, SLA overdue |
-| `red.300` | `#FCA5A5` | `text-red-300` | Danger badge text |
-| `amber.400` | `#FBBF24` | `text-amber-400` | "At risk", warn |
-| `amber.300` | `#FCD34D` | `text-amber-300` | Warn detail text |
-| `violet.300` | `#C4B5FD` | `text-violet-300` | AI drafts ready |
-| `slate.200` | `#E2E8F0` | `text-slate-200` | Body text on dark |
-| `slate.300` | `#CBD5E1` | `text-slate-300` | Secondary body text |
-| `slate.400` | `#94A3B8` | `text-slate-400` | Muted text, captions |
-| `slate.500` | `#64748B` | `text-slate-500` | Chevron, separator |
-| `white` | `#FFFFFF` | `text-white` | Primary text, headlines |
-
-**Semantic mappings (use these names in code, not raw hex):**
+Public marketing pages use:
 
 ```text
-bg.app              → navy.base
-bg.card             → white/[0.04]
-bg.card.hover       → white/[0.06]
-text.primary        → white
-text.secondary      → slate.300
-text.muted          → slate.400
-border.default      → white/10
-border.input        → white/15
-brand.primary       → emerald.600
-brand.accent        → emerald.400
-state.danger        → red.400
-state.warn          → amber.400
-state.success       → emerald.400
-state.info          → violet.300
+components/public/marketing-ui.tsx
+marketingTone
+marketingBackground
+MarketingShell
+MarketingCard
+MarketingButton
+MarketingBadge
+MarketingIcon
 ```
 
----
-
-## 3. Typography scale
-
-Font family: system-ui stack (Tailwind default). The product never embeds custom web fonts — keeps first-paint fast for owners on weak connections.
-
-| Token | Size | Weight | Line height | Use |
-| --- | --- | --- | --- | --- |
-| `text.display` | 52px desktop / 44px tablet / 36px mobile | 600 | 1.08 | Landing hero only |
-| `text.h2` | 28px desktop / 22px mobile | 600 | 1.2 | Section titles |
-| `text.h3` | 18px | 600 | 1.3 | Card titles, step titles |
-| `text.lead` | 15–16px | 400 | 1.7 | Hero subhead, lead paragraph |
-| `text.body` | 14–15px | 400 | 1.55 | Default body |
-| `text.small` | 13px | 400 | 1.5 | Table rows, helper text |
-| `text.caption` | 12px | 400 | 1.4 | Meta, timestamps |
-| `text.meta` | 11px uppercase, tracking 0.06em | 500 | 1.2 | Eyebrows, labels above stats |
-| `text.numeric.lg` | 32px | 600 | 1 | Stat card primary number |
-| `text.numeric.md` | 22px | 600 | 1 | Inline metric |
-
-Only two weights are used in product UI: **regular 400** and **semibold 600**. Never 700/800/900. Never italic.
-
----
-
-## 4. Spacing scale
-
-A single 4-px base grid, no half steps:
+Protected/dashboard/admin pages use:
 
 ```text
-0   2   4   6   8   12   16   20   24   32   40   48   56   64   80
+app/globals.css
+.biz-dashboard-dark
+--dash-*
+components/dashboard/dashboard-ui.tsx
 ```
 
-| Token | Px | Common use |
-| --- | --- | --- |
-| `sp.1` | 4 | Inline icon-to-text |
-| `sp.2` | 8 | Card padding small, label-input gap |
-| `sp.3` | 12 | Stat card padding, button padding-x |
-| `sp.4` | 16 | Card padding default, section gap mobile |
-| `sp.5` | 20 | Card padding desktop |
-| `sp.6` | 24 | Section padding-y mobile |
-| `sp.7` | 32 | Section padding-y desktop |
-| `sp.8` | 40 | Hero padding-y mobile |
-| `sp.9` | 48 | Hero padding-y desktop |
-| `sp.10` | 56 | Hero margin-bottom desktop |
-| `sp.11` | 64 | Major section break desktop |
-| `sp.12` | 80 | Reserved for full-bleed sections |
+When a founder/internal page is outside the dashboard route group, add
+`.biz-dashboard-dark` to the page frame and use `marketingBackground` as the
+outer background so it still matches the accepted public theme.
 
----
+## 3. Color System
 
-## 5. Radius and elevation
+### 3.1 Public Theme
 
-```text
-radius.sm   6px   chips, small inputs
-radius.md   10px  CTAs, buttons, pill nav items
-radius.lg   12px  inputs, small cards
-radius.xl   14px  feature cards, stat cards
-radius.2xl  16px  panel containers, dashboard preview, final CTA strip
-radius.full 9999  avatars, badges, status pills
-```
-
-Shadows are reserved for floating surfaces only:
-
-```text
-shadow.preview   0 22px 60px rgba(0,0,0,0.34)   landing dashboard preview
-shadow.modal     0 24px 80px rgba(0,0,0,0.5)    future modal (not yet used)
-```
-
-The app does not use shadow for cards or buttons on the navy surface — the dark background provides enough separation.
-
----
-
-## 6. Layout grid
-
-| Token | Value |
+| Role | Value |
 | --- | --- |
-| `container.max` | 1200px |
-| `container.padding.mobile` | 16px |
-| `container.padding.tablet` | 24px |
-| `container.padding.desktop` | 32px |
-| `hero.text.max` | 620px |
-| `hero.lead.max` | 560px |
-| `hero.preview.max` | 560px |
-| `auth.column.max` | 380px |
-| `quote.form.max` | 720px |
-| `dashboard.sidebar` | 152px |
+| Page base | `#050B12` |
+| Soft page base | `#07111C` |
+| Main text | `#F7FAFC` |
+| Secondary text | `rgba(247,250,252,0.76)` |
+| Muted text | `rgba(247,250,252,0.52)` |
+| Border | `rgba(255,255,255,0.10)` |
+| Strong border | `rgba(255,255,255,0.16)` |
+| Surface | `rgba(9,20,31,0.82)` |
+| Strong surface | `rgba(12,25,38,0.96)` |
+| Teal | `#2DD4BF` |
+| Emerald | `#17D492` |
+| Gold | `#F6B84B` |
+| Red | `#FF5F66` |
+| Blue | `#54A7FF` |
 
-Breakpoints (Tailwind defaults):
+### 3.2 Dashboard/Admin Dark Theme
 
-```text
-sm  640px   phones rotated, small tablets
-md  768px   tablets
-lg  1024px  laptops, desktop dashboard
-xl  1280px  wide desktops
-```
+| CSS variable | Value |
+| --- | --- |
+| `--dash-bg` | `#071018` |
+| `--dash-surface` | `#0d1721` |
+| `--dash-surface-muted` | `rgba(13,23,33,0.78)` |
+| `--dash-surface-elevated` | `rgba(13,23,33,0.92)` |
+| `--dash-border` | `rgba(255,255,255,0.08)` |
+| `--dash-border-strong` | `rgba(255,255,255,0.14)` |
+| `--dash-text` | `#f5f7fa` |
+| `--dash-text-secondary` | `rgba(245,247,250,0.72)` |
+| `--dash-text-muted` | `rgba(245,247,250,0.46)` |
+| `--dash-primary` | `#17d492` |
+| `--dash-primary-hover` | `#21e6a0` |
+| `--dash-primary-soft` | `rgba(23,212,146,0.08)` |
 
-**Reflow rules** (most important):
+### 3.3 State Meaning
 
-- Below `lg`: hero stacks vertically. Dashboard preview drops below the headline+CTA block.
-- Below `lg`: dashboard sidebar collapses to icon-only (`lg:block` shows it). Mobile nav exposes a single primary CTA + menu trigger.
-- Below `md`: "Why" cards stack to 1 column.
-- Below `sm`: stat-card grids stack to 1 column; lead-list row truncates the "Service" cell first.
+| State | Color role | Use |
+| --- | --- | --- |
+| Primary/action/success | Teal/Emerald | CTA, ready, active, healthy |
+| Attention/caution | Gold/Amber | at-risk, missing info, onboarding |
+| Danger/blocked | Red | suspended, cancelled, error, overdue |
+| Support/info | Blue | draft ready, informational status |
+| Neutral | Slate/white alpha | inactive, meta, supporting controls |
 
----
+Color must never be the only status signal. Use text and badge labels.
 
-## 7. Component variants
+## 4. Typography
 
-### 7.1 Primary CTA
-
-```text
-height        44px
-padding-x     20px
-radius        radius.md (10px)
-bg            emerald.600
-hover bg      emerald.500
-text          white, 14px, 600
-icon          optional trailing arrow at right
-min-width     200px on sm+
-```
-
-### 7.2 Secondary CTA
-
-```text
-height        44px
-padding-x     20px
-radius        radius.md (10px)
-bg            white/[0.04]
-border        0.5px white/15
-text          white, 14px, 600
-hover bg      white/[0.08]
-```
-
-### 7.3 Ghost button (sidebar, tab pill)
+Font family:
 
 ```text
-height        32px
-padding       6px 12px
-radius        radius.sm (6px)
-bg            transparent
-text          slate.300
-hover         text-white + bg white/[0.06]
-active        bg white/[0.08] + text-white + weight 600
+Geist Sans: var(--font-geist-sans)
+Geist Mono: var(--font-geist-mono), code only
 ```
 
-### 7.4 Eyebrow pill
+Accepted scale:
+
+| Token | Desktop | Mobile | Weight | Use |
+| --- | --- | --- | --- | --- |
+| Display | 40px-46px | 34px-36px | 900 | Public hero only |
+| Section H2 | 30px-36px | 28px-30px | 900 | Public sections, CTA bands |
+| Page H1 | 22px-28px | 22px-24px | 800-900 | Dashboard/admin page headers |
+| Card title | 15px-18px | 14px-17px | 800-900 | Cards, workflow steps |
+| Body | 13px-16px | 13px-15px | 400-700 | Paragraphs, rows, descriptions |
+| Meta | 10px-12px uppercase | 10px-11px | 800-900 | Eyebrows, labels, captions |
+| Button | 12px-13px | 12px-13px | 800-900 | Primary and secondary actions |
+
+Rules:
+
+- No viewport-width font sizing.
+- No negative letter spacing.
+- Use positive tracking only on uppercase meta labels.
+- Do not place hero-size type inside dashboard/admin cards.
+
+## 5. Spacing And Container
+
+Base layout:
 
 ```text
-display       inline-flex
-height        24px
-padding       4px 12px
-radius        radius.full
-bg            white/[0.06]
-border        0.5px white/10
-text          slate.300, 12px, 500
+container.max.public = 1200px
+container.max.admin = 1200px
+container.padding.mobile = 20px
+container.padding.desktop = 24px
+dashboard shell max width = route specific, usually 1200px-1480px
 ```
 
-### 7.5 Status badge
-
-| Tone | Fill | Border | Text |
-| --- | --- | --- | --- |
-| Success (new, ready) | emerald.500/15 | emerald.400/30 | emerald.300 |
-| Warn (at risk) | amber.500/15 | amber.400/20 | amber.300 |
-| Danger (overdue) | red.500/15 | red.400/20 | red.300 |
-| Info (AI ready) | violet.500/15 | violet.400/25 | violet.300 |
-| Neutral (archived) | white/[0.06] | white/10 | slate.300 |
-
-All badges: 11px text, 500 weight, padding 2px 8px, radius full.
-
-### 7.6 Card
+Common spacing:
 
 ```text
-bg          white/[0.04]
-border      0.5px white/10
-radius      radius.xl (14px)
-padding     16–20px
-hover       bg white/[0.06]
+section padding public: py-7 to py-10
+hero padding public: compact enough to fit the first fold at 1280 x 720
+card padding compact: 12px-16px
+card padding default: 20px-24px
+card padding feature/panel: 24px-32px
+grid gap compact: 8px-12px
+grid gap default: 16px-24px
 ```
 
-### 7.7 Stat card
+Acceptance:
+
+- 1280 x 720 desktop must have no horizontal overflow.
+- 390 x 844 mobile must have no horizontal overflow.
+- 100% browser zoom is the acceptance baseline.
+
+## 6. Radius And Elevation
+
+| Use | Radius |
+| --- | --- |
+| Small buttons and rows | 9px-13px |
+| Inputs | 12px-13px |
+| Cards | 14px-18px |
+| Major panels | 20px-24px |
+| Badges | 9999px |
+
+Elevation comes from surface tone and border first. Shadows are restrained:
 
 ```text
-inherits Card
-padding 12–16px
-label       text.meta (11px uppercase)
-value       text.numeric.lg in semantic color
-detail      text.caption in slate.400
+public card shadow: 0 24px 70px rgba(0,0,0,0.30)
+dashboard card shadow: subtle, inherited from .biz-card*
 ```
 
-### 7.8 Input
+## 7. Component Standards
+
+### 7.1 Public Header
+
+- Height: 58px.
+- Container: 1200px.
+- Brand at left, nav center on desktop, account actions right.
+- Mobile header uses short CTA `Start` to avoid overflow.
+
+### 7.2 Public Button
+
+Primary:
 
 ```text
-height        40px
-padding       8px 12px
-radius        radius.md (10px)
-bg            white/[0.05]
-border        0.5px white/15
-text          14px white
-placeholder   slate.400
-focus border  emerald.400
-focus ring    2px emerald.400/30
+height 44px
+radius 10px
+teal to emerald gradient
+dark text #03130C
+font 13px / 900
 ```
 
-Disabled state: `bg white/[0.02]`, `text slate.500`, no hover.
-
-### 7.9 Sidebar item
+Secondary:
 
 ```text
-height          32px
-padding         6px 12px
-radius          radius.sm (6px)
-default text    slate.300
-icon            16px outline, slate.400
-active bg       white/[0.08]
-active text     white, 500
-active icon     emerald.400
+height 44px
+radius 10px
+border marketingTone.borderStrong
+background rgba(255,255,255,0.035)
 ```
 
-### 7.10 Quote form field group
+### 7.3 Cards And Panels
+
+Use major panels for grouped experiences:
+
+- live recovery desk,
+- recovery snapshot,
+- response desk,
+- before/after recovery pass,
+- founder admin page header,
+- final CTA.
+
+Avoid long runs of identical cards. Vary layout by purpose.
+
+### 7.4 Forms
+
+Inputs:
+
+- visible label,
+- 42px-44px height,
+- 12px-13px radius,
+- visible focus ring,
+- clear error/notice region.
+
+Founder admin forms use dashboard form primitives. Auth forms use auth
+primitives. Public quote forms stay customer-simple.
+
+## 8. Route Surface Map
+
+### `/`
+
+Frozen reference. Use as the theme source. Do not edit unless the owner asks.
+
+### `/pricing`
+
+Public marketing surface. Must use `MarketingHeader`, `MarketingShell`,
+`MarketingCard`, `MarketingButton`, and `MarketingFooter`.
+
+### `/auth/sign-in`, `/auth/sign-up`, `/auth/forgot-password`, `/auth/reset-password`
+
+Centered owner access cards. Keep max width around 460px. Use dark navy base,
+emerald CTA, visible labels, and simple recovery/account copy.
+
+### `/quote/[slug]`
+
+Customer-facing public quote form. It may carry business branding, but it must
+keep BizPilot spacing, label quality, accessibility, and no internal language.
+
+### `/quote/[slug]/success`
+
+Simple confirmation page. Show what happened and what the customer should
+expect next.
+
+### `/admin`
+
+Internal founder surface. It must:
+
+- use `.biz-dashboard-dark`,
+- use `marketingBackground` for the outer page,
+- stay max-width 1200px,
+- use compact operational cards,
+- avoid public marketing nav,
+- never send customer messages,
+- never imply automated billing, booking, or messaging.
+
+### `/dashboard/*`
+
+Protected owner workspace. Keep operational density, left nav shell, compact
+cards, clear next actions, and owner-reviewed AI labels.
+
+## 9. Copy Rules
+
+Use real business language:
+
+- "quote requests",
+- "missing details",
+- "owner-reviewed draft",
+- "manual follow-up",
+- "recovery queue",
+- "public quote link",
+- "no auto-send".
+
+Avoid:
+
+- internal phase labels,
+- demo language without a demo label,
+- "sent" unless the system sent it,
+- fake analytics,
+- broad CRM language,
+- booking or invoice language.
+
+## 10. Accessibility And QA
+
+Every page must pass:
+
+- keyboard reachable controls,
+- visible focus state,
+- visible labels for inputs,
+- no color-only status,
+- no horizontal overflow at 1280 desktop and 390 mobile,
+- buttons do not wrap awkwardly,
+- body text readable at 100% zoom,
+- errors and notices are announced where appropriate.
+
+## 11. Verification Checklist
+
+Before accepting a frontend change:
 
 ```text
-label         text.meta in slate.300, margin-bottom 6px
-input         Component 7.8
-help text     text.caption in slate.400, margin-top 4px
-required *    emerald.400 inline after label
-group gap     16px between groups
+pnpm lint
+pnpm typecheck
+pnpm build
+pnpm test:unit
+browser QA at desktop 1280 x 720
+browser QA at mobile 390 x 844 for public/auth pages
 ```
 
----
+Run `pnpm test:rls` only when `DATABASE_URL` is set.
 
-## 8. Iconography
+## 12. Definition Of Done
 
-Outline icons only. Two libraries are acceptable: Heroicons Outline 24 and Tabler Outline. Choose **one** at implementation time and standardize. Do not mix.
+A page is design-system aligned when:
 
-| Use | Icon (Heroicons) | Stroke | Color |
-| --- | --- | --- | --- |
-| Inline in body text | matching name | 1.5px | inherit |
-| Nav / sidebar | `home`, `inbox`, `cog`, `bell` | 1.5px | slate.400 default, emerald.400 active |
-| Status decorations | `check-circle`, `exclamation-triangle`, `clock` | 1.5px | semantic color |
-| Trailing CTA arrow | `arrow-right` | 1.5px | inherit (white in CTA) |
-
-Never use emoji in product UI. Never use filled (solid) icons in body content.
-
----
-
-## 9. Motion
-
-Motion is restrained. Three durations only:
-
-```text
-fast    120ms   hover state transitions
-base    180ms   tab switch, panel open
-slow    260ms   page enter, modal in
-ease    cubic-bezier(0.4, 0, 0.2, 1)
-```
-
-No spring physics, no rotate, no scale beyond `0.98` for click feedback.
-
----
-
-## 10. Surface map per page
-
-Each entry lists the page route, primary surfaces, and zoning.
-
-### 10.1 Landing — `/`
-
-```text
-nav (56px, sticky)
-  | logo BizPilot       | Features · How · For Cleaning   | See Demo · Get Early Access
-hero (Fold 1, ~520px desktop)
-  | eyebrow pill: For cleaning businesses
-  | h1: Stop losing cleaning quote requests.   (emerald accent on "quote requests")
-  | lead: 2-line subhead
-  | [Primary CTA] [Secondary CTA]
-  | 3 outcome chips
-  |                     dashboard preview (panel, 560px max)
-why (Fold 2, ~360px)
-  | h2: Why cleaning businesses lose leads
-  | 4 cards: Slow replies · Messy DMs · Missed follow-ups · Quote chaos
-how (Fold 3, ~340px)
-  | h2: How BizPilot works
-  | 3 steps: Customer submits · BizPilot organizes · Owner replies
-cta (Fold 4, ~180px)
-  | h2: Start recovering leads today.
-  | one line subhead
-  | [Primary CTA]
-footer (~80px)
-  | logo strip + copyright
-```
-
-### 10.2 Sign in — `/auth/sign-in`
-
-```text
-nav (lightweight: logo only)
-center column (max 380px)
-  | h2: Sign in
-  | lead caption
-  | email input
-  | password input
-  | [Primary CTA full-width]
-  | secondary link: Create account
-```
-
-### 10.3 Sign up — `/auth/sign-up`
-
-```text
-nav (lightweight)
-center column (max 380px)
-  | h2: Create your workspace
-  | lead caption (mentions pilot pricing)
-  | name input
-  | business name input
-  | email input
-  | password input
-  | [Primary CTA full-width: Start free pilot]
-  | secondary link: Already have an account?
-```
-
-### 10.4 Public quote — `/quote/[slug]`
-
-```text
-top strip (~64px)
-  | owner logo + business name
-  | "Quick quote" badge
-form panel (max 720px, centered)
-  | h2: Request your cleaning quote
-  | lead: "We reply within 1 hour"
-  | dynamic intake fields (from intake_form_fields)
-  | consent notice (small text block)
-  | honeypot input (hidden, off-screen)
-  | [Primary CTA: Send quote request]
-trust strip
-  | small lock icon + privacy note
-```
-
-### 10.5 Quote success — `/quote/[slug]/success`
-
-```text
-center column (max 480px)
-  | check-circle icon (40px, emerald)
-  | h2: Request sent
-  | lead: "Sparkle Cleaning will reply within 1 hour"
-  | next-steps card (3 bullets)
-  | secondary link: Submit another quote
-```
-
-### 10.6 Dashboard overview — `/dashboard`
-
-```text
-sidebar (152px lg+)
-  | logo
-  | nav: Overview (active) · Leads · Quote setup · Follow-ups · Settings
-  | footer: business name + role
-main
-  | header bar: greeting + [New lead] CTA
-  | 4 stat cards in a row (new / reply / risk / AI)
-  | 2-panel split: at-risk leads (1.4fr) + AI drafts ready (0.9fr)
-  | quick actions row (3 chips)
-```
-
-### 10.7 Lead list — `/dashboard/leads`
-
-```text
-sidebar (as above)
-main
-  | header: "Leads" + filter pills (All · New · At risk · Replied · Lost)
-  | table list (Customer · Service · SLA state · Status badge)
-  | rows are clickable cards
-  | empty state shows quote-link share prompt
-```
-
-### 10.8 Lead detail — `/dashboard/leads/[id]`
-
-```text
-sidebar (as above)
-main
-  | back link + customer name + status badge + [Mark replied]
-  | 2-col grid (1.4fr · 0.6fr):
-  |   left: AI draft card with regenerate/tone variants
-  |         quote details card (key/value table)
-  |         message log card
-  |   right: timeline card (events)
-  |          outcome card (mark booked / lost / no-response)
-```
-
-### 10.9 Business configuration — `/dashboard/configuration`
-
-```text
-sidebar (as above)
-main
-  | page header + sticky [Save configuration] bar at viewport bottom
-  | tab nav: Overview · Profile · Branding · Services · Public Page · Quote Form · FAQ · Privacy · Readiness
-  | active panel content (all other panels remain MOUNTED in the DOM with hidden attribute,
-    so a single form submit captures every required field — see configuration-tabs.tsx fix)
-  | readiness sidebar (right column) summarises 8 setup items + public quote link
-```
-
----
-
-## 11. Light vs dark mode
-
-There is **no light mode** in the MVP. All surfaces are dark navy. A future light variant would only flip the surface tokens; brand color and semantic tones stay identical. Do not author components with conditional theming — the system is one mode.
-
----
-
-## 12. Accessibility floor
-
-- Color contrast: white-on-navy.base ≥ 14:1; slate.400-on-navy.base ≥ 5:1; emerald.400-on-navy.base ≥ 7:1.
-- Every interactive element has a visible focus ring (emerald.400/30, 2px).
-- Every form field has a `<label>` even when visually positioned as a placeholder; required fields announce `aria-required="true"`.
-- Tab order follows reading order. Modal/dropdown traps focus.
-- Icons inside buttons carry `aria-hidden="true"`; icon-only buttons carry `aria-label`.
-- 100% browser zoom is the design target. The page must remain usable up to 200% zoom on the dashboard surfaces; landing may degrade gracefully past that.
-
----
-
-## 13. Component naming for Figma handoff
-
-When recreating this in Figma, mirror the code names so designer and engineer share a vocabulary:
-
-```text
-Tokens / Color / brand / emerald-600
-Tokens / Color / surface / navy-base
-Tokens / Typography / display
-Tokens / Typography / h2
-Tokens / Spacing / 4 → 80
-Components / CTA / Primary
-Components / CTA / Secondary
-Components / Badge / Success | Warn | Danger | Info
-Components / Card / Default
-Components / Card / Stat
-Components / Input / Default
-Components / Input / Disabled
-Components / Sidebar / Item
-Components / Nav / Top
-Layouts / Container / 1200
-Layouts / Hero / Fold-1
-Pages / Landing
-Pages / Auth / Sign-in
-Pages / Auth / Sign-up
-Pages / Public / Quote
-Pages / Public / Quote success
-Pages / Dashboard / Overview
-Pages / Dashboard / Leads
-Pages / Dashboard / Lead detail
-Pages / Dashboard / Configuration
-```
-
----
-
-## 14. What is intentionally not in v1.0
-
-These will be added when the matching pilot data justifies them — not before:
-
-- Light mode tokens.
-- Onboarding tour overlays.
-- Multi-tenant business switcher UI (single-business owners do not need it yet).
-- Notification center / bell drawer (rate limit + abuse log produce no user-facing notifications yet).
-- Charts and data viz (no analytics surface in MVP scope).
-- Marketing-only press kit, blog header, change-log surface.
-
----
-
-## 15. Definition of Done
-
-A new page or component is "design-system-aligned" when:
-
-- It uses only tokens listed in Sections 2, 3, 4, 5.
-- It fits the container grid in Section 6 with no horizontal scroll at any documented breakpoint.
-- It uses only the component variants in Section 7 (or the spec is extended first).
-- It passes the accessibility floor in Section 12.
-- It is referenced under one of the headings in Section 10 or a new one is appended.
+- it supports quote recovery or founder pilot operations,
+- it uses the correct public or dashboard token source,
+- it fits the documented breakpoints,
+- it keeps owner/customer trust,
+- it does not expand MVP scope,
+- it has clear states and primary action hierarchy,
+- it passes the verification checklist.

@@ -1,258 +1,269 @@
-# BizPilot Homepage and Visual Theme Standard v1.0
+﻿# BizPilot Homepage and Visual Theme Standard v1.1
 
-**Status:** Active  
-**Last updated:** 2026-05-17  
-**Applies to:** Marketing homepage, dashboard shell, public quote pages, auth pages
+**Status:** Active canonical visual standard
+**Last updated:** 2026-05-22
+**Applies to:** `/`, `/pricing`, `/admin`, `/auth/*`, `/quote/[slug]`, `/quote/[slug]/success`, and any new pre-dashboard or founder-facing page
+**Source implementation:** `app/page.tsx`, `components/public/marketing-ui.tsx`, `app/admin/page.tsx`
 
-## 1. Approved Brand Direction
+## 1. Current Decision
 
-BizPilot is a calm lead recovery workspace for cleaning businesses. The product
-should feel trustworthy, operational, focused, and premium. It should help an
-overwhelmed owner feel that quote requests are organized, replies are easier,
-and follow-up is no longer slipping away.
+The homepage design is accepted as the visual reference. Do not keep changing
+`/` to make other pages fit. New or unfinished pages must adapt to the current
+homepage theme, not the other way around.
 
-BizPilot must not feel like a crypto interface, neon AI toy, generic CRM,
-enterprise admin console, booking system, invoice product, or broad automation
-suite.
+The product remains:
 
-## 2. Approved Color Tokens
+- cleaning quote recovery first,
+- owner-reviewed AI drafts only,
+- manual owner copy/send only,
+- founder-led pilot validation before feature expansion.
 
-Use the following visual system as the active direction:
+No visual design may imply booking, invoices, calendar automation, SMS/WhatsApp
+automation, marketplace scope, auto-send, or autonomous AI.
 
-- Page dark base: `#080D12`
-- Secondary background: `#0D1520`
-- Elevated background: `#111D2A`
-- Card surface: `#0F1A24`
-- Elevated card surface: `#13202E`
-- Subtle border: `rgba(255,255,255,0.07)`
-- Medium border: `rgba(255,255,255,0.13)`
-- Strong border: `rgba(255,255,255,0.18)`
-- Primary text: `#EEF2F6`
-- Secondary text: `#7A90A4`
-- Muted text: `#435566`
-- Primary emerald: `#00D084`
-- Primary hover: `#00A868`
-- Emerald background: `rgba(0,208,132,0.08)`
-- Emerald border: `rgba(0,208,132,0.24)`
-- Warning / at-risk: `#FFAB00`
-- Warning background: `rgba(255,171,0,0.10)`
-- Danger / urgent: `#FF4757`
-- Danger background: `rgba(255,71,87,0.08)`
-- Warm loss accent: `#E8D5B0`
-- Blue accent: `#4FA8FF`
-- Blue background: `rgba(79,168,255,0.10)`
+## 2. Brand Mood
 
-Implementation rule: page-level styling should inherit from semantic CSS tokens
-before using literal colors. Global brand tokens use `--biz-*`; dashboard-scoped
-tokens use `--dash-*`. Changing the brand palette should mostly require updates
-to `app/globals.css`, not rewriting individual pages.
+BizPilot should feel like a premium, calm recovery command center for cleaning
+business owners. The tone is operational and trustworthy, not playful, not
+generic SaaS, not enterprise analytics, and not crypto/neon.
 
-Use tokens by role:
+The user should immediately understand:
 
-- `--biz-*`: brand and public marketing surfaces.
-- `--dash-*`: protected dashboard surfaces, controls, text, and status shells.
-- Page-specific business branding may influence public quote buttons and borders,
-  but the surrounding structure should still use BizPilot typography, spacing,
-  borders, and neutral surface logic.
+- quote requests arrive from many channels,
+- missing details are detected,
+- AI drafts replies safely,
+- the owner approves and sends,
+- follow-up stays visible.
 
-## 3. Color Usage Rules
+## 3. Active Color Tokens
 
-Emerald is reserved for primary actions, active states, selected navigation,
-success confirmations, and healthy system status. Do not use emerald as broad
-decoration.
+Public marketing tokens live in `components/public/marketing-ui.tsx` as
+`marketingTone`.
 
-Use mature emerald. Primary CTA and selected states can carry emerald;
-supporting dots, icons, and glows should be muted and sparse.
+| Role | Token | Value |
+| --- | --- | --- |
+| Deep page base | `marketingTone.bg` | `#050B12` |
+| Soft page base | `marketingTone.bgSoft` | `#07111C` |
+| Primary text | `marketingTone.text` | `#F7FAFC` |
+| Secondary text | `marketingTone.soft` | `rgba(247,250,252,0.76)` |
+| Muted text | `marketingTone.muted` | `rgba(247,250,252,0.52)` |
+| Faint line | `marketingTone.faint` | `rgba(247,250,252,0.18)` |
+| Default border | `marketingTone.border` | `rgba(255,255,255,0.10)` |
+| Strong border | `marketingTone.borderStrong` | `rgba(255,255,255,0.16)` |
+| Surface | `marketingTone.surface` | `rgba(9,20,31,0.82)` |
+| Strong surface | `marketingTone.surfaceStrong` | `rgba(12,25,38,0.96)` |
+| Teal accent | `marketingTone.teal` | `#2DD4BF` |
+| Emerald CTA | `marketingTone.emerald` | `#17D492` |
+| Gold caution | `marketingTone.gold` | `#F6B84B` |
+| Red danger | `marketingTone.red` | `#FF5F66` |
+| Blue support | `marketingTone.blue` | `#54A7FF` |
 
-Amber is reserved for at-risk leads, follow-up risk, or time-sensitive caution.
+Dashboard and admin pages should use `--dash-*` variables, but their dark theme
+must visually align with these public tokens. Founder admin uses the dark
+dashboard variables over the public `marketingBackground`.
 
-Red is reserved for urgent, blocked, failed, or high-risk states.
+## 4. Background And Gradients
 
-Warm loss accent is reserved for emotionally meaningful loss messaging, such as
-the homepage headline phrase "your competitor just closed." Do not use it as a
-general beige theme.
+Use the final public page background:
 
-Violet is reserved for subtle AI-assisted status only when needed. It is not the
-brand color and must not dominate the interface.
+```text
+radial-gradient(circle at 7% 7%, rgba(45,212,191,0.13), transparent 24rem),
+radial-gradient(circle at 91% 2%, rgba(23,212,146,0.14), transparent 26rem),
+radial-gradient(circle at 47% 38%, rgba(84,167,255,0.06), transparent 34rem),
+linear-gradient(180deg, #07111C 0%, #050B12 52%, #04080E 100%)
+```
 
-Avoid heavy gradients, neon glow, purple-heavy branding, and decorative effects
-that make BizPilot feel less operational.
+Use gradients sparingly. They are allowed for:
 
-## 4. Elevation Logic
+- hero/product preview surfaces,
+- suggested reply surfaces,
+- final CTA surfaces,
+- founder/admin priority panels.
 
-Dark UI quality comes from tonal layering first and shadows second:
+Do not use random decorative blobs, heavy purple, or flat black slabs.
 
-- Page background is the deepest navy.
-- Hero and dashboard preview shells are lifted slate/navy.
-- Cards sit on elevated surfaces with subtle borders.
-- Priority or active panels receive slightly stronger borders or softer accent
-  fills.
-- Shadows should be quiet and directional. In dark mode, do not rely on shadow
-  alone; raise the surface color slightly.
+## 5. Suggested Reply Surface
 
-Avoid flat near-black slabs, large black panels, and glassmorphism effects that
-make the product feel speculative instead of operational.
+The accepted premium reply gradient is:
 
-## 5. Page Mood Guidance
+```text
+radial-gradient(circle at 96% 4%, rgba(226,232,240,0.24), transparent 10rem),
+radial-gradient(circle at 88% 16%, rgba(246,184,75,0.18), transparent 9rem),
+linear-gradient(135deg, #2A3033 0%, #1D252B 45%, #0E151D 100%)
+```
 
-Marketing homepage:
+Use this treatment only where the UI needs a special owner-reviewed AI reply or
+high-confidence response-desk moment. Do not apply it to every card.
 
-- Premium dark navy/slate base.
-- Subtle depth and radial atmosphere are allowed.
-- Pain-first, conversion-focused, and easy to scan at 100% zoom.
-- Dashboard preview should look believable and operational, not like a fake SaaS
-  illustration.
-- Preserve clear tonal levels: deepest page background, lifted hero/dashboard
-  surfaces, elevated cards, then slightly stronger active or priority states.
-- Atmospheric lighting must stay soft: weak navy/emerald radial light, restrained
-  shadows, no neon or cyberpunk glow.
+## 6. Typography
 
-Dashboard:
+Font family:
 
-- Darker, calmer, and less decorative than marketing.
-- Prioritize attention, leads, next actions, and owner review.
-- Avoid KPI overload and enterprise dashboard density.
-- Light/dark mode may exist, but status colors must keep the same meaning.
-- Dashboard cards, buttons, fields, topbar, and shell surfaces should inherit
-  from `--dash-*` tokens so light/dark themes stay aligned.
+```text
+Geist Sans via --font-geist-sans, fallback Arial/Helvetica/sans-serif
+Geist Mono via --font-geist-mono for code only
+```
 
-Quote/auth pages:
+Current public scale:
 
-- Clean, trustworthy, and simple.
-- These pages can remain neutral or light where appropriate.
-- Do not accidentally apply heavy dashboard dark styling to customer-facing
-  quote pages or auth pages.
-- Even when light, they must use the same brand logic: slate typography, subtle
-  borders, mature emerald actions, restrained shadows, and compact spacing.
+| Use | Desktop | Mobile | Weight | Line height |
+| --- | --- | --- | --- | --- |
+| Hero H1 | 40px accepted desktop | 34px-36px | 900 | 1.08 |
+| Major section H2 | 30px-36px | 28px-30px | 900 | 1.1-1.14 |
+| Card title | 15px-18px | 14px-17px | 800-900 | 1.2-1.3 |
+| Body | 13px-16px | 13px-15px | 400-700 | 1.55-1.75 |
+| Meta/eyebrow | 10px-12px uppercase | 10px-11px | 800-900 | 1.1-1.2 |
+| Buttons | 12px-13px | 12px-13px | 800-900 | compact |
 
-## 6. Homepage Information Architecture
+Rules:
 
-The active homepage structure is:
+- Do not scale type with viewport width.
+- Letter spacing is normal by default. Only uppercase meta labels use positive
+  tracking.
+- Large type is reserved for real page/section headers. Tool surfaces and cards
+  use compact headings.
 
-1. Hero: pain-first positioning, primary CTA, trust row, and dashboard proof.
-2. Soft proof strip using non-absolute operational benefits.
-3. Why cleaning businesses lose leads.
-4. What BizPilot handles.
-5. Before BizPilot / After BizPilot transformation.
-6. How BizPilot works.
-7. Sample or verified customer story only.
-8. Simple MVP pricing.
-9. Final CTA.
-10. Minimal footer.
+## 7. Layout And Sizing
 
-Do not add large pricing systems, extra charts, enterprise feature blocks, or
-unrelated marketing sections before pilot validation.
+Main public container:
 
-## 7. Above-The-Fold Rules
+```text
+max-width: 1200px
+mobile padding: 20px
+tablet/desktop padding: 24px
+```
 
-The first viewport should communicate:
+Accepted QA baselines:
 
-- The specific pain: cleaning quote requests are being lost.
-- The product category: lead recovery workspace for cleaning businesses.
-- The primary action: Start Recovering Leads.
-- A believable operational preview of what the owner will use.
+```text
+desktop: 1280 x 720, no horizontal overflow
+mobile: 390 x 844, no horizontal overflow
+browser zoom: 100%
+```
 
-The hero headline remains:
+Section rhythm:
 
-> Every unanswered quote is a job your competitor just closed.
+- Hero remains compact and should not require zooming out.
+- Section padding is usually `py-7` to `py-10` on public pages.
+- Dense operational panels may be 440px-560px tall if they contain real UI.
+- Avoid repeated same-size cards in consecutive sections. Vary structure with
+  snapshot strips, workflow rails, command panels, before/after panels, and CTA
+  bands.
 
-The primary CTA remains:
+## 8. Radius And Card Rules
 
-> Start Recovering Leads
+Current public UI uses:
 
-## 8. Density And Scannability Rules
+```text
+button radius: 10px
+small row radius: 11px-13px
+card radius: 14px-18px
+large panel radius: 20px-24px
+badge radius: full
+```
 
-At 100% browser zoom, the homepage should feel compact and professional. Use
-section spacing that gives air without creating unnecessary scroll length.
+Cards should feel lifted through surface tone, border, and restrained shadow.
+Do not nest card inside card unless the inner item is a real repeated object
+such as a lead row, form row, or response block.
 
-Guidance:
+## 9. Button Rules
 
-- Prefer compact folds over tall marketing blocks.
-- Keep cards proportional to their content.
-- Use tight but readable line lengths.
-- Avoid oversized decorative panels.
-- Keep nav spacing intentional and restrained.
-- Make the page scannable in roughly 5-8 seconds.
-- Desktop hero headline should remain strong but not overpower the dashboard
-  proof. The preview supports the message; it should not become the hero.
-- CTA rhythm should be clear: primary action first, secondary demo action quieter.
+Primary public CTA:
 
-## 9. Icon Style Rules
+```text
+height: 44px
+background: linear-gradient(135deg, #2DD4BF 0%, #17D492 100%)
+text: #03130C
+radius: 10px
+font: 13px / 900
+```
 
-Icons should be simple line icons with consistent stroke weight, rounded caps,
-and restrained containers. Use icons to clarify workflow or status, not as
-decoration.
-
-Homepage icon containers:
-
-- Small, lifted, and consistent.
-- Emerald-tinted only when indicating the primary workflow or healthy action.
-- No playful illustrations, stock SaaS icon packs, or oversized decorative SVGs.
-
-Dashboard icon/initial containers:
-
-- Compact.
-- Status-specific.
-- Must not make the UI feel like a game, crypto tool, or analytics toy.
-
-## 10. Dashboard Preview Realism
-
-Homepage dashboard previews should use operational microcopy that a cleaning
-business owner recognizes:
-
-- Waiting reply age.
-- New quote request timestamps.
-- Follow-up due windows.
-- Missing info hints.
-- Owner review required for AI drafts.
-
-Avoid fake enterprise analytics, generic vanity metrics, complex charts, or
-anything that implies booking, auto-send, invoices, or calendar automation.
-
-Customer proof must be labeled honestly. If a quote, metric, or story is not
-verified customer evidence, label it as sample, demo, or example copy, or use
-softer operational wording instead of hard claims.
-
-## 11. CTA Hierarchy
-
-Primary CTA:
-
-- Use mature emerald.
-- Reserved for the main action: Start Recovering Leads, Get Early Access, Review,
-  Open Lead Desk, or Save when contextually primary.
+Mobile header CTA may shorten to `Start`. Desktop header CTA remains
+`Start free recovery`.
 
 Secondary CTA:
 
-- Border/surface treatment.
-- Quiet, useful, and visually subordinate.
+```text
+height: 44px
+border: marketingTone.borderStrong
+background: rgba(255,255,255,0.035)
+text: marketingTone.text
+```
 
-Tertiary actions:
+Do not place more than one visually primary CTA in the same region.
 
-- Neutral text or ghost buttons.
-- No unnecessary emerald.
+## 10. Icon Rules
 
-## 12. Before / After Rationale
+Use the line icons from `MarketingIcon` or the dashboard icon system. Icons:
 
-The transformation section exists to show the Magic Moment before the owner
-starts a trial:
+- are outline only,
+- use consistent stroke weight,
+- sit in compact containers,
+- support meaning rather than decoration.
 
-- Before: messy quote message, missing details, scattered DMs, no follow-up.
-- After: structured lead, service type identified, property details captured,
-  preferred date visible, AI reply ready, and a clear next action.
+No emoji in product UI.
 
-This section should make the owner think:
+## 11. Current Homepage Structure
 
-> Finally, I can organize quote requests without chaos.
+The accepted homepage structure is:
 
-## 13. Visual Avoid List
+1. Header with brand, nav, sign-in, and primary CTA.
+2. Hero: cleaning pain, CTA pair, trust bullets, live recovery desk preview.
+3. Recovery snapshot strip.
+4. Leak map: demand is not the problem, response chaos is.
+5. One operational loop: capture, organize, draft, recover.
+6. Quote Recovery Desk command-center mock.
+7. Before/After recovery pass.
+8. Pilot terms strip.
+9. Final CTA band.
+10. Minimal footer.
+
+Do not add About, Blog, Contact, Features, Case Studies, or broad marketing
+pages before pilot validation.
+
+## 12. Admin And New Page Alignment
+
+New pages like `/admin` must use the same visual language:
+
+- dark base with public `marketingBackground`,
+- `max-width: 1200px`,
+- compact operational cards,
+- teal/emerald primary accents,
+- gold only for caution,
+- red only for blocked/danger states,
+- no fake analytics or customer-facing claims.
+
+Founder admin is internal and must not appear in public nav. It can use dashboard
+cards and forms, but the frame should match the final public theme.
+
+## 13. Copy Rules
+
+Approved public language should be direct and business-facing:
+
+- "Stop losing cleaning jobs to slow replies."
+- "Quote requests organized"
+- "Replies drafted"
+- "Leads at risk"
+- "Auto-send messages: 0"
+- "Owner-reviewed AI"
+- "Manual copy/send only"
 
 Avoid:
 
-- Crypto-like dark neon palettes.
-- Purple-heavy AI branding.
-- Abstract startup hero art.
-- Generic CRM positioning.
-- Over-animated sections.
-- Enterprise reporting dashboards.
-- Booking, invoice, calendar, SMS, WhatsApp, or marketplace cues.
-- Feature overload before customer validation.
+- internal phase names,
+- "AI magic",
+- fake customer proof,
+- "sent" unless BizPilot actually sent a message,
+- booking/invoice/calendar language.
+
+## 14. Definition Of Done
+
+A new page is visually aligned when:
+
+- it uses the active tokens above,
+- it fits 1280 desktop and 390 mobile with no horizontal overflow,
+- it keeps 100% browser zoom as the acceptance baseline,
+- it has a single clear primary action per region,
+- it uses real product language,
+- it does not expand product scope,
+- it passes lint, typecheck, build, and relevant unit tests.

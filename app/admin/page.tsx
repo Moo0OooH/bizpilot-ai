@@ -29,6 +29,10 @@ import {
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
 import {
+  marketingBackground,
+  marketingTone,
+} from "@/components/public/marketing-ui";
+import {
   updateFounderInternalNoteAction,
   updateFounderPlanAction,
   updateFounderQuoteLinkAction,
@@ -149,15 +153,24 @@ function AdminNotice({
   children,
   tone,
 }: Readonly<{ children: React.ReactNode; tone: "error" | "notice" }>) {
-  const className =
+  const style =
     tone === "error"
-      ? "border-red-300/35 bg-red-500/10 text-red-700 dark:text-red-100"
-      : "border-emerald-300/35 bg-emerald-500/10 text-emerald-700 dark:text-emerald-100";
+      ? {
+          backgroundColor: "rgba(255,95,102,0.10)",
+          borderColor: "rgba(255,95,102,0.24)",
+          color: "#FFB4B4",
+        }
+      : {
+          backgroundColor: "rgba(45,212,191,0.10)",
+          borderColor: "rgba(45,212,191,0.24)",
+          color: marketingTone.teal,
+        };
 
   return (
     <p
       aria-live={tone === "error" ? "assertive" : "polite"}
-      className={`rounded-[14px] border px-4 py-3 text-sm font-semibold ${className}`}
+      className="rounded-[14px] border px-4 py-3 text-sm font-semibold"
+      style={style}
     >
       {children}
     </p>
@@ -182,8 +195,11 @@ function getFounderAccessMessage(error: unknown): string {
 
 function FounderAccessBlocked({ message }: Readonly<{ message: string }>) {
   return (
-    <main className="min-h-screen bg-[var(--dash-bg)] px-4 py-8 text-[var(--dash-text)] sm:px-6 lg:px-8">
-      <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-3xl items-center">
+    <main
+      className="biz-dashboard-dark min-h-screen overflow-x-hidden px-5 py-7 text-[var(--dash-text)] sm:px-6"
+      style={{ background: marketingBackground }}
+    >
+      <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-[720px] items-center">
         <DashboardCard className="p-6 sm:p-8" variant="priority">
           <PageHeader
             actions={<StatusBadge tone="amber">Internal only</StatusBadge>}
@@ -508,21 +524,26 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--dash-bg)] px-4 py-5 text-[var(--dash-text)] sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl space-y-5">
-        <PageHeader
-          actions={
-            <div className="flex flex-wrap gap-2">
-              <StatusBadge tone="amber">Internal only</StatusBadge>
-              <Link className={buttonClass} href="/dashboard">
-                Owner dashboard
-              </Link>
-            </div>
-          }
-          description="Manual founder controls for pilots, plans, quote-link access, usage signals, and internal notes. Billing and customer messaging stay manual."
-          eyebrow="Founder Admin"
-          title="Pilot control console"
-        />
+    <main
+      className="biz-dashboard-dark min-h-screen overflow-x-hidden px-5 py-6 text-[var(--dash-text)] sm:px-6 lg:px-8"
+      style={{ background: marketingBackground }}
+    >
+      <div className="mx-auto max-w-[1200px] space-y-5">
+        <DashboardCard className="p-5 sm:p-6" variant="priority">
+          <PageHeader
+            actions={
+              <div className="flex flex-wrap gap-2">
+                <StatusBadge tone="amber">Internal only</StatusBadge>
+                <Link className={buttonClass} href="/dashboard">
+                  Owner dashboard
+                </Link>
+              </div>
+            }
+            description="Manual founder controls for pilots, plans, quote-link access, usage signals, and internal notes. Billing and customer messaging stay manual."
+            eyebrow="Founder Admin"
+            title="Pilot control console"
+          />
+        </DashboardCard>
 
         {params?.notice ? <AdminNotice tone="notice">{params.notice}</AdminNotice> : null}
         {params?.error ? <AdminNotice tone="error">{params.error}</AdminNotice> : null}

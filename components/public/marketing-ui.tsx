@@ -263,7 +263,7 @@ export function MarketingButton({
   variant?: ButtonVariant;
 }>) {
   const base =
-    "inline-flex h-11 items-center justify-center gap-3 whitespace-nowrap rounded-[10px] px-5 text-[13px] font-black transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(23,212,146,0.28)]";
+    "inline-flex h-11 max-w-full items-center justify-center gap-3 whitespace-nowrap rounded-[10px] px-5 text-[13px] font-black transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(23,212,146,0.28)]";
 
   if (variant === "primary") {
     return (
@@ -322,11 +322,11 @@ export function MarketingBrand() {
       >
         B
       </span>
-      <span className="hidden min-w-0 leading-tight min-[380px]:block">
+      <span className="hidden min-w-0 leading-tight min-[340px]:block">
         <span className="block text-[15px] font-black" style={{ color: marketingTone.text }}>
           BizPilot AI
         </span>
-        <span className="block text-[9px] font-black uppercase" style={{ color: marketingTone.muted }}>
+        <span className="hidden text-[9px] font-black uppercase sm:block" style={{ color: marketingTone.muted }}>
           Quote Recovery Command Center
         </span>
       </span>
@@ -374,8 +374,9 @@ export function MarketingHeader({ active = "home" }: Readonly<{ active?: "home" 
           >
             Sign in
           </Link>
-          <MarketingButton className="h-10 px-4 text-[13px]" href="/auth/sign-up">
-            Start free recovery
+          <MarketingButton className="h-10 px-3 text-[12px] sm:px-4 sm:text-[13px]" href="/auth/sign-up">
+            <span className="sm:hidden">Start</span>
+            <span className="hidden sm:inline">Start free recovery</span>
           </MarketingButton>
         </div>
       </nav>

@@ -12,6 +12,35 @@ Define the small internal founder console required before serious paid pilots. T
 
 The route must not appear in public marketing navigation or customer dashboard navigation.
 
+## Visual Standard
+
+The founder admin console is internal, but it must still use the accepted
+BizPilot visual system.
+
+Implementation requirements:
+
+```text
+outer frame: .biz-dashboard-dark
+background: marketingBackground from components/public/marketing-ui.tsx
+container max width: 1200px
+page padding: 20px mobile, 24px+ desktop
+cards: DashboardCard / MetricCard / SectionHeader primitives
+primary actions: dashboard primary button, emerald
+secondary actions: dashboard secondary button, raised dark surface
+status: text + badge, never color alone
+```
+
+Design rules:
+
+- Keep the page compact and operational, not like a generic admin template.
+- Use the same dark navy, teal/emerald, blue, gold, and red meanings as the
+  homepage and dashboard.
+- Do not use public marketing navigation on `/admin`.
+- Do not add fake charts or vanity analytics.
+- Do not imply automated messaging, billing, booking, or customer operations.
+- Use the homepage as the visual reference, but do not edit the homepage to
+  support admin styling.
+
 ## Access Standard
 
 - Founder-only.
@@ -106,4 +135,3 @@ cancelled
 - `server/repositories/founder-admin.repository.ts`
 - `supabase/migrations/0015_business_access_plan_and_admin_log.sql`
 - `tests/rls/business-access-plan-admin-log.test.sql`
-
