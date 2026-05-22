@@ -311,7 +311,7 @@ function MetricStrip() {
   return (
     <section className="px-5 pb-6 sm:px-6">
       <div
-        className="mx-auto grid w-full max-w-[1180px] overflow-hidden rounded-[18px] border lg:grid-cols-[1.15fr_1.85fr]"
+        className="mx-auto grid w-full max-w-[1200px] overflow-hidden rounded-[18px] border lg:grid-cols-[1.15fr_1.85fr]"
         style={{
           background:
             "linear-gradient(135deg, rgba(37,43,46,0.58) 0%, rgba(13,19,26,0.95) 48%, rgba(7,16,25,0.96) 100%)",
@@ -752,14 +752,14 @@ function BeforeAfterSection() {
     <section className="px-5 py-7 sm:px-6" id="comparison">
       <MarketingShell>
         <div
-          className="overflow-hidden rounded-[20px] border p-5 sm:p-6"
+          className="overflow-hidden rounded-[20px] border p-6 sm:p-8"
           style={{
             background:
               "radial-gradient(circle at 76% 10%, rgba(226,232,240,0.08), transparent 12rem), linear-gradient(135deg, rgba(48,55,58,0.56), rgba(10,22,34,0.94) 44%, rgba(12,25,38,0.94))",
             borderColor: "rgba(148,203,226,0.18)",
           }}
         >
-          <div className="grid gap-6 lg:grid-cols-[0.95fr_0.35fr_1.05fr] lg:items-center">
+          <div className="grid gap-7 lg:grid-cols-[minmax(0,0.94fr)_88px_minmax(0,1.06fr)] lg:items-center">
             <div>
               <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.red }}>
                 Before
@@ -770,7 +770,7 @@ function BeforeAfterSection() {
               <div className="mt-5 grid gap-2">
                 {before.map((item) => (
                   <div
-                    className="flex items-center gap-3 rounded-[12px] border px-3 py-2 text-[13px]"
+                    className="flex items-center gap-3 rounded-[12px] border px-4 py-2.5 text-[13px]"
                     key={item}
                     style={{ backgroundColor: "rgba(255,95,102,0.07)", borderColor: "rgba(255,95,102,0.18)", color: marketingTone.soft }}
                   >
@@ -813,7 +813,7 @@ function BeforeAfterSection() {
                 </div>
                 {after.map((item) => (
                   <div
-                    className="grid gap-1.5 rounded-[12px] border px-3 py-2 text-[13px] sm:grid-cols-[0.55fr_1fr] sm:items-center"
+                    className="grid gap-1.5 rounded-[12px] border px-4 py-2.5 text-[13px] sm:grid-cols-[0.48fr_1fr] sm:items-center"
                     key={item.detail}
                     style={{ backgroundColor: "rgba(45,212,191,0.075)", borderColor: "rgba(45,212,191,0.20)", color: marketingTone.soft }}
                   >
@@ -871,7 +871,7 @@ function TrustStrip() {
                   key={item.title}
                   style={{ borderColor: marketingTone.border }}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="grid gap-3">
                     <span
                       className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] text-[17px]"
                       style={{
@@ -884,7 +884,7 @@ function TrustStrip() {
                     >
                       <MarketingIcon name={item.icon} />
                     </span>
-                    <h3 className="text-[12px] font-black leading-snug" style={{ color: marketingTone.text }}>
+                    <h3 className="min-w-0 text-[12px] font-black leading-snug" style={{ color: marketingTone.text }}>
                       {item.title}
                     </h3>
                   </div>
