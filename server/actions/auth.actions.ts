@@ -115,13 +115,71 @@ function getConfiguredPasswordResetRedirectTo(): string {
   ).toString();
 }
 
+function getEmailDomain(email: string): string {
+  return email.split("@").at(1)?.toLowerCase() ?? "unknown";
+}
+
+function readErrorField(error: unknown, key: string): string | number | undefined {
+  if (!error || typeof error !== "object" || !(key in error)) {
+    return undefined;
+  }
+
+  const value = (error as Record<string, unknown>)[key];
+  return typeof value === "string" || typeof value === "number"
+    ? value
+    : undefined;
+}
+
+function getSupabaseErrorDiagnostics(error: unknown): {
+  message: string;
+  name?: string;
+  status?: string | number;
+} {
+  const message =
+    error instanceof Error
+      ? error.message
+      : (readErrorField(error, "message") ?? "Unknown Supabase Auth error");
+  const name =
+    error instanceof Error
+      ? error.name
+      : readErrorField(error, "name");
+  const status =
+    readErrorField(error, "status") ??
+    readErrorField(error, "statusCode") ??
+    readErrorField(error, "code");
+
+  return {
+    message: String(message),
+    ...(name ? { name: String(name) } : {}),
+    ...(status ? { status } : {}),
+  };
+}
+
 function isRedirectConfigurationError(error: unknown): boolean {
-  const message = error instanceof Error ? error.message.toLowerCase() : "";
+  const { message, name, status } = getSupabaseErrorDiagnostics(error);
+  const details = `${message} ${name ?? ""} ${status ?? ""}`.toLowerCase();
+  const providerErrorHints = [
+    "rate limit",
+    "too many",
+    "security purposes",
+    "smtp",
+    "provider",
+    "email rate",
+    "email not sent",
+  ];
+  const redirectErrorHints = [
+    "redirect",
+    "redirect_to",
+    "uri",
+    "url",
+    "allow",
+    "allowed",
+    "not allowed",
+  ];
 
   return (
-    message.includes("redirect") ||
-    message.includes("uri") ||
-    message.includes("url")
+    !providerErrorHints.some((hint) => details.includes(hint)) &&
+    redirectErrorHints.some((hint) => details.includes(hint))
   );
 }
 
@@ -295,17 +353,31 @@ export async function requestPasswordResetAction(
   formData: FormData,
 ): Promise<never> {
   const email = readPasswordResetEmail(formData);
+  const emailDomain = getEmailDomain(email);
   const redirectTo = await getPasswordResetRedirectTo(formData);
   const configuredRedirectTo = getConfiguredPasswordResetRedirectTo();
+
+  console.info("[auth:password-reset] request received", {
+    emailDomain,
+    fallbackRedirectTo: configuredRedirectTo,
+    primaryRedirectTo: redirectTo,
+  });
 
   try {
     await sendPasswordResetEmail({
       email,
       redirectTo,
     });
+    console.info("[auth:password-reset] primary attempt succeeded", {
+      emailDomain,
+      primaryRedirectTo: redirectTo,
+    });
   } catch (error) {
-    console.error("Password reset email request failed.", {
-      message: error instanceof Error ? error.message : "Unknown Supabase Auth error",
+    const diagnostics = getSupabaseErrorDiagnostics(error);
+
+    console.error("[auth:password-reset] primary attempt failed", {
+      emailDomain,
+      error: diagnostics,
       redirectTo,
     });
 
@@ -313,20 +385,37 @@ export async function requestPasswordResetAction(
       redirectTo !== configuredRedirectTo &&
       isRedirectConfigurationError(error)
     ) {
+      console.info("[auth:password-reset] fallback attempt started", {
+        emailDomain,
+        fallbackRedirectTo: configuredRedirectTo,
+      });
+
       try {
         await sendPasswordResetEmail({
           email,
           redirectTo: configuredRedirectTo,
         });
+        console.info("[auth:password-reset] fallback attempt succeeded", {
+          emailDomain,
+          fallbackRedirectTo: configuredRedirectTo,
+        });
       } catch (fallbackError) {
-        console.error("Password reset email fallback request failed.", {
-          message:
-            fallbackError instanceof Error
-              ? fallbackError.message
-              : "Unknown Supabase Auth error",
-          redirectTo: configuredRedirectTo,
+        console.error("[auth:password-reset] fallback attempt failed", {
+          emailDomain,
+          error: getSupabaseErrorDiagnostics(fallbackError),
+          fallbackRedirectTo: configuredRedirectTo,
         });
       }
+    } else {
+      console.info("[auth:password-reset] fallback attempt skipped", {
+        emailDomain,
+        fallbackRedirectTo: configuredRedirectTo,
+        primaryRedirectTo: redirectTo,
+        reason:
+          redirectTo === configuredRedirectTo
+            ? "primary and fallback redirects match"
+            : "primary error was not redirect allowlist style",
+      });
     }
 
     // Keep password reset non-enumerating. The user sees the same safe message
