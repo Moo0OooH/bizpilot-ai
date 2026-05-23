@@ -152,6 +152,7 @@ export function ResetPasswordForm({
 
       {state === "ready" ? (
         <form action={updatePasswordAction} className="mt-5 space-y-3.5">
+          <input name="authIntent" type="hidden" value="password-reset" />
           <input name="code" type="hidden" value={code} />
 
           {[
@@ -185,9 +186,9 @@ export function ResetPasswordForm({
           <p
             className="rounded-[10px] border px-2.5 py-1.5 text-[11px] leading-5"
             style={{
-              backgroundColor: "rgba(23,212,146,0.10)",
-              borderColor: "rgba(23,212,146,0.22)",
-              color: "#17D492",
+              backgroundColor: "rgba(255,255,255,0.04)",
+              borderColor: "var(--biz-border-medium)",
+              color: "var(--biz-page-text-soft)",
             }}
           >
             {copy.resetPasswordReuseHelp}

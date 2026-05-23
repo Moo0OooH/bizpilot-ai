@@ -65,7 +65,7 @@ export default async function ResetPasswordPage({
           className="mt-4 text-center text-[13px]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
-          {copy.needAccount}{" "}
+          {copy.needNewResetLink}{" "}
           <Link
             className="font-bold underline-offset-4 hover:underline"
             href="/auth/forgot-password"

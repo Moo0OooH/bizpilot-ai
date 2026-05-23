@@ -143,6 +143,7 @@ type AuthCopy = Readonly<{
   forgotPasswordTitle: string;
   name: string;
   needAccount: string;
+  needNewResetLink: string;
   newPassword: string;
   ownerAccess: string;
   password: string;
@@ -331,6 +332,7 @@ const englishCopy: BizPilotCopy = {
     forgotPasswordTitle: "Reset password",
     name: "Name",
     needAccount: "Need an account?",
+    needNewResetLink: "Need a new reset link?",
     newPassword: "New password",
     ownerAccess: "Owner access",
     password: "Password",
@@ -719,6 +721,7 @@ const frenchCopy: BizPilotCopy = {
     forgotPasswordTitle: "Réinitialiser le mot de passe",
     name: "Nom",
     needAccount: "Besoin d'un compte?",
+    needNewResetLink: "Besoin d'un nouveau lien?",
     newPassword: "Nouveau mot de passe",
     ownerAccess: "Accès propriétaire",
     password: "Mot de passe",

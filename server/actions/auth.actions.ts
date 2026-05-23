@@ -521,6 +521,7 @@ export async function requestPasswordResetAction(
 }
 
 export async function updatePasswordAction(formData: FormData): Promise<never> {
+  assertPasswordResetFormIntent(formData);
   const rawCode = formData.get("code");
   const code =
     typeof rawCode === "string" && rawCode.trim().length > 0
@@ -550,6 +551,8 @@ export async function updatePasswordAction(formData: FormData): Promise<never> {
       code,
     );
   }
+
+  await signOut();
 
   redirect(
     "/auth/sign-in?notice=Password%20updated.%20Sign%20in%20with%20your%20new%20password.",
