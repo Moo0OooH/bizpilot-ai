@@ -15,7 +15,6 @@
 import Link from "next/link";
 
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button";
-import { PasswordResetOriginInput } from "@/components/auth/password-reset-origin-input";
 import {
   AuthCard,
   AuthFieldIcon,
@@ -72,8 +71,6 @@ export default async function ForgotPasswordPage({
         ) : null}
 
         <form action={requestPasswordResetAction} className="mt-5 space-y-3.5">
-          <PasswordResetOriginInput />
-
           <label className={authLabelClassName}>
             <span style={{ color: "var(--biz-page-text-soft)" }}>Email</span>
             <span className="relative block">

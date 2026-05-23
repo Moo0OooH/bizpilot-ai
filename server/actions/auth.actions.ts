@@ -26,7 +26,6 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 
 import { getPublicEnv } from "@/lib/env/public-env";
 import {
@@ -65,17 +64,6 @@ function redirectWithResetPasswordError(message: string, code?: string): never {
   redirect(`/auth/reset-password?${searchParams.toString()}`);
 }
 
-function readOptionalText(formData: FormData, key: string): string | undefined {
-  const value = formData.get(key);
-
-  if (typeof value !== "string") {
-    return undefined;
-  }
-
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : undefined;
-}
-
 function readSignInEmail(formData: FormData): string {
   const value = formData.get("email");
 
@@ -90,24 +78,6 @@ function readSignInEmail(formData: FormData): string {
   }
 
   return email;
-}
-
-async function getPasswordResetRedirectTo(formData: FormData): Promise<string> {
-  const rawOrigin = readOptionalText(formData, "redirectOrigin");
-  const requestOrigin = (await headers()).get("origin") ?? undefined;
-  const fallbackOrigin = getPublicEnv().NEXT_PUBLIC_APP_URL;
-
-  try {
-    const originUrl = new URL(rawOrigin ?? requestOrigin ?? fallbackOrigin);
-
-    if (originUrl.protocol !== "http:" && originUrl.protocol !== "https:") {
-      throw new Error("Invalid password reset origin.");
-    }
-
-    return new URL("/auth/reset-password", originUrl.origin).toString();
-  } catch {
-    return new URL("/auth/reset-password", fallbackOrigin).toString();
-  }
 }
 
 function getConfiguredPasswordResetRedirectTo(): string {
@@ -368,7 +338,7 @@ export async function requestPasswordResetAction(
 ): Promise<never> {
   const email = readPasswordResetEmail(formData);
   const emailDomain = getEmailDomain(email);
-  const redirectTo = await getPasswordResetRedirectTo(formData);
+  const redirectTo = getConfiguredPasswordResetRedirectTo();
   const configuredRedirectTo = getConfiguredPasswordResetRedirectTo();
 
   console.info("[auth:password-reset] request received", {

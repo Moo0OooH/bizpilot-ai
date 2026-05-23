@@ -17,13 +17,38 @@
  */
 
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 import { protectDashboardRequest } from "@/lib/supabase/middleware";
 
 export async function proxy(request: NextRequest) {
+  if (
+    request.nextUrl.pathname === "/" &&
+    (request.nextUrl.searchParams.has("code") ||
+      request.nextUrl.searchParams.has("error") ||
+      request.nextUrl.searchParams.has("error_code"))
+  ) {
+    const resetUrl = new URL("/auth/reset-password", request.url);
+    const callbackKeys = ["code", "error", "error_code", "error_description"];
+
+    for (const key of callbackKeys) {
+      const value = request.nextUrl.searchParams.get(key);
+
+      if (value) {
+        resetUrl.searchParams.set(key, value);
+      }
+    }
+
+    return NextResponse.redirect(resetUrl);
+  }
+
+  if (request.nextUrl.pathname === "/") {
+    return NextResponse.next();
+  }
+
   return protectDashboardRequest(request);
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/", "/dashboard/:path*"],
 };
