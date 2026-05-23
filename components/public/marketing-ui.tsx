@@ -1,6 +1,15 @@
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
+import type { HomeNavCopy } from "@/lib/i18n/home-copy";
+import {
+  languageNativeLabels,
+  languageShortLabels,
+  supportedLanguages,
+  type SupportedLanguage,
+} from "@/lib/i18n/language";
+import { setInterfaceLanguageAction } from "@/server/actions/business-configuration.actions";
+
 export const marketingTone = {
   bg: "#050B12",
   bgSoft: "#07111C",
@@ -24,6 +33,20 @@ export const marketingBackground =
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 type BadgeTone = "teal" | "gold" | "blue" | "red" | "neutral";
+
+const defaultMarketingNavCopy: HomeNavCopy = {
+  brandSubtitle: "Quote Recovery Command Center",
+  comparison: "Comparison",
+  copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
+  faq: "FAQ",
+  flow: "How it works",
+  languageLabel: "Homepage language",
+  pricing: "Pricing",
+  signIn: "Sign in",
+  startFull: "Start free recovery",
+  startShort: "Start",
+  why: "Why BizPilot",
+};
 
 export type MarketingIconName =
   | "arrow"
@@ -308,7 +331,9 @@ export function MarketingButton({
   );
 }
 
-export function MarketingBrand() {
+export function MarketingBrand({
+  subtitle = defaultMarketingNavCopy.brandSubtitle,
+}: Readonly<{ subtitle?: string }>) {
   return (
     <Link className="inline-flex min-w-0 items-center gap-3" href="/">
       <span
@@ -327,20 +352,30 @@ export function MarketingBrand() {
           BizPilot AI
         </span>
         <span className="hidden text-[9px] font-black uppercase sm:block" style={{ color: marketingTone.muted }}>
-          Quote Recovery Command Center
+          {subtitle}
         </span>
       </span>
     </Link>
   );
 }
 
-export function MarketingHeader({ active = "home" }: Readonly<{ active?: "home" | "pricing" }>) {
+export function MarketingHeader({
+  active = "home",
+  copy = defaultMarketingNavCopy,
+  language,
+  redirectPath = "/",
+}: Readonly<{
+  active?: "home" | "pricing";
+  copy?: HomeNavCopy;
+  language?: SupportedLanguage;
+  redirectPath?: string;
+}>) {
   const navItems: ReadonlyArray<Readonly<{ href: string; label: string }>> = [
-    { href: "/#why", label: "Why BizPilot" },
-    { href: "/#recovery-flow", label: "How it works" },
-    { href: "/#comparison", label: "Comparison" },
-    { href: "/pricing", label: "Pricing" },
-    { href: "/pricing#faq", label: "FAQ" },
+    { href: "/#why", label: copy.why },
+    { href: "/#recovery-flow", label: copy.flow },
+    { href: "/#comparison", label: copy.comparison },
+    { href: "/pricing", label: copy.pricing },
+    { href: "/pricing#faq", label: copy.faq },
   ];
 
   return (
@@ -349,7 +384,7 @@ export function MarketingHeader({ active = "home" }: Readonly<{ active?: "home" 
       style={{ backgroundColor: "rgba(5,11,18,0.82)", borderColor: marketingTone.border }}
     >
       <nav className="mx-auto flex h-[58px] w-full max-w-[1200px] items-center justify-between gap-4 px-5 sm:px-6">
-        <MarketingBrand />
+        <MarketingBrand subtitle={copy.brandSubtitle} />
         <div className="hidden items-center gap-2 md:flex">
           {navItems.map((item) => {
             const selected = active === "pricing" && item.href === "/pricing";
@@ -367,16 +402,50 @@ export function MarketingHeader({ active = "home" }: Readonly<{ active?: "home" 
           })}
         </div>
         <div className="flex shrink-0 items-center gap-2">
+          {language ? (
+            <form
+              action={setInterfaceLanguageAction}
+              aria-label={copy.languageLabel}
+              className="hidden h-10 items-center rounded-[10px] border p-1 min-[420px]:flex"
+              style={{
+                backgroundColor: "rgba(255,255,255,0.035)",
+                borderColor: marketingTone.borderStrong,
+              }}
+            >
+              <input name="redirectTo" type="hidden" value={redirectPath} />
+              {supportedLanguages.map((option) => {
+                const selected = option === language;
+
+                return (
+                  <button
+                    aria-pressed={selected}
+                    className="h-8 rounded-[8px] px-2.5 text-[11px] font-black transition"
+                    key={option}
+                    name="language"
+                    style={{
+                      backgroundColor: selected ? marketingTone.emerald : "transparent",
+                      color: selected ? "#03130C" : marketingTone.text,
+                    }}
+                    title={languageNativeLabels[option]}
+                    type="submit"
+                    value={option}
+                  >
+                    {languageShortLabels[option]}
+                  </button>
+                );
+              })}
+            </form>
+          ) : null}
           <Link
             className="hidden h-10 items-center justify-center rounded-[10px] px-3 text-[13px] font-bold transition hover:bg-white/[0.05] lg:inline-flex"
             href="/auth/sign-in"
             style={{ color: marketingTone.soft }}
           >
-            Sign in
+            {copy.signIn}
           </Link>
           <MarketingButton className="h-10 px-3 text-[12px] sm:px-4 sm:text-[13px]" href="/auth/sign-up">
-            <span className="sm:hidden">Start</span>
-            <span className="hidden sm:inline">Start free recovery</span>
+            <span className="sm:hidden">{copy.startShort}</span>
+            <span className="hidden sm:inline">{copy.startFull}</span>
           </MarketingButton>
         </div>
       </nav>
@@ -384,19 +453,21 @@ export function MarketingHeader({ active = "home" }: Readonly<{ active?: "home" 
   );
 }
 
-export function MarketingFooter() {
+export function MarketingFooter({
+  copy = defaultMarketingNavCopy,
+}: Readonly<{ copy?: HomeNavCopy }>) {
   const links: ReadonlyArray<Readonly<{ href: string; label: string }>> = [
-    { href: "/#why", label: "Why BizPilot" },
-    { href: "/#recovery-flow", label: "How it works" },
-    { href: "/#comparison", label: "Comparison" },
-    { href: "/pricing", label: "Pricing" },
-    { href: "/pricing#faq", label: "FAQ" },
+    { href: "/#why", label: copy.why },
+    { href: "/#recovery-flow", label: copy.flow },
+    { href: "/#comparison", label: copy.comparison },
+    { href: "/pricing", label: copy.pricing },
+    { href: "/pricing#faq", label: copy.faq },
   ];
 
   return (
     <footer className="border-t px-5 py-7 sm:px-6" style={{ borderColor: marketingTone.border }}>
       <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-5 text-[12px] md:flex-row md:items-center md:justify-between">
-        <MarketingBrand />
+        <MarketingBrand subtitle={copy.brandSubtitle} />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2" style={{ color: marketingTone.soft }}>
           {links.map((link) => (
             <Link className="hover:opacity-80" href={link.href} key={link.href}>
@@ -405,7 +476,7 @@ export function MarketingFooter() {
           ))}
         </div>
         <span style={{ color: marketingTone.muted }}>
-          Copyright 2026 BizPilot AI. All rights reserved.
+          {copy.copyright}
         </span>
       </div>
     </footer>

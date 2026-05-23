@@ -24,6 +24,11 @@ import {
   localizeDefaultQuoteField,
   resolveConsentNoticeForLanguage,
 } from "../../lib/i18n/bizpilot-copy.ts";
+import {
+  getHomeCopy,
+  HOME_COPY_SOURCE_LANGUAGE,
+  homeCopyNamespaces,
+} from "../../lib/i18n/home-copy.ts";
 import { languageDefinitions, supportedLanguages } from "../../lib/i18n/language.ts";
 
 type CopyShape =
@@ -87,6 +92,20 @@ describe("BizPilot language copy", () => {
     }
   });
 
+  it("keeps homepage copy structurally synced for every supported language", () => {
+    assert.equal(HOME_COPY_SOURCE_LANGUAGE, "en");
+    const sourceCopy = getHomeCopy(HOME_COPY_SOURCE_LANGUAGE);
+    const sourceShape = copyShape(sourceCopy);
+
+    for (const language of supportedLanguages) {
+      assert.deepEqual(
+        copyShape(getHomeCopy(language)),
+        sourceShape,
+        `${language} homepage copy must match the ${HOME_COPY_SOURCE_LANGUAGE} homepage copy shape.`,
+      );
+    }
+  });
+
   it("keeps public copy namespaces explicit and complete", () => {
     assert.deepEqual(
       [...bizPilotCopyNamespaces],
@@ -103,6 +122,21 @@ describe("BizPilot language copy", () => {
         "aiFallback",
         "demo",
         "missingInfoLabels",
+      ],
+    );
+    assert.deepEqual(
+      [...homeCopyNamespaces],
+      [
+        "nav",
+        "hero",
+        "heroDesk",
+        "metrics",
+        "problem",
+        "recoveryFlow",
+        "commandCenter",
+        "beforeAfter",
+        "trust",
+        "finalCta",
       ],
     );
   });
