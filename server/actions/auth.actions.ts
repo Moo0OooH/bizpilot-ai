@@ -87,6 +87,13 @@ function getConfiguredPasswordResetRedirectTo(): string {
   ).toString();
 }
 
+function getConfiguredAuthCallbackRedirectTo(): string {
+  return new URL(
+    "/auth/callback",
+    getPublicEnv().NEXT_PUBLIC_APP_URL,
+  ).toString();
+}
+
 function getEmailDomain(email: string): string {
   return email.split("@").at(1)?.toLowerCase() ?? "unknown";
 }
@@ -459,6 +466,7 @@ export async function signUpAction(formData: FormData): Promise<never> {
     const result = await signUpWithPassword({
       displayName,
       email,
+      emailRedirectTo: getConfiguredAuthCallbackRedirectTo(),
       password,
     });
 

@@ -19,27 +19,26 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import {
+  copyAuthCallbackParams,
+  getRootAuthCallbackTargetPath,
+  hasRootAuthCallbackParams,
+} from "@/lib/auth/auth-callback-routing";
 import { protectDashboardRequest } from "@/lib/supabase/middleware";
 
 export async function proxy(request: NextRequest) {
   if (
     request.nextUrl.pathname === "/" &&
-    (request.nextUrl.searchParams.has("code") ||
-      request.nextUrl.searchParams.has("error") ||
-      request.nextUrl.searchParams.has("error_code"))
+    hasRootAuthCallbackParams(request.nextUrl)
   ) {
-    const resetUrl = new URL("/auth/reset-password", request.url);
-    const callbackKeys = ["code", "error", "error_code", "error_description"];
+    const callbackUrl = new URL(
+      getRootAuthCallbackTargetPath(request.nextUrl),
+      request.url,
+    );
 
-    for (const key of callbackKeys) {
-      const value = request.nextUrl.searchParams.get(key);
+    copyAuthCallbackParams(request.nextUrl, callbackUrl);
 
-      if (value) {
-        resetUrl.searchParams.set(key, value);
-      }
-    }
-
-    return NextResponse.redirect(resetUrl);
+    return NextResponse.redirect(callbackUrl);
   }
 
   if (request.nextUrl.pathname === "/") {

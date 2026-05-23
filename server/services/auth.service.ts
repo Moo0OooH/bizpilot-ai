@@ -65,6 +65,7 @@ export async function signInWithPassword(input: {
 
 export async function signUpWithPassword(input: {
   displayName?: string;
+  emailRedirectTo?: string;
   email: string;
   password: string;
 }): Promise<{ user: AuthUser; sessionCreated: boolean }> {
@@ -73,6 +74,9 @@ export async function signUpWithPassword(input: {
     email: input.email,
     password: input.password,
     options: {
+      ...(input.emailRedirectTo
+        ? { emailRedirectTo: input.emailRedirectTo }
+        : {}),
       data: {
         display_name: input.displayName ?? "",
       },
@@ -107,6 +111,15 @@ export async function sendPasswordResetEmail(input: {
   }
 }
 
+export async function exchangeAuthCodeForSession(code: string): Promise<void> {
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}
+
 export async function updatePasswordFromReset(input: {
   code?: string | undefined;
   password: string;
@@ -114,11 +127,7 @@ export async function updatePasswordFromReset(input: {
   const supabase = await createSupabaseServerClient();
 
   if (input.code) {
-    const { error } = await supabase.auth.exchangeCodeForSession(input.code);
-
-    if (error) {
-      throw new Error(error.message);
-    }
+    await exchangeAuthCodeForSession(input.code);
   }
 
   const { error } = await supabase.auth.updateUser({
