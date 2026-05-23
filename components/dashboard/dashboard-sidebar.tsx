@@ -11,12 +11,14 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-05-23
  * Change Log:
  * - 2026-05-19: Matched approved index.html sidebar rhythm, brand block, active states, mobile nav, and quote-link readiness footer.
+ * - 2026-05-23: Localized sidebar labels from the central BizPilot copy dictionary.
  * ============================================================
  */
 
+import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -26,6 +28,7 @@ import { StatusBadge } from "./dashboard-ui";
 type DashboardSidebarProps = Readonly<{
   activeBusinessName: string;
   businessSlug: string;
+  copy: BizPilotCopy["dashboard"];
   userLabel: string;
 }>;
 
@@ -41,47 +44,47 @@ type NavigationGroup = Readonly<{
   label: string;
 }>;
 
-const ownerNavigation: NavigationGroup[] = [
-  {
-    label: "Owner workspace",
-    items: [
-      {
-        href: "/dashboard",
-        icon: "⌂",
-        label: "Overview",
-        match: (pathname) => pathname === "/dashboard",
-      },
-      {
-        href: "/dashboard/leads",
-        icon: "◎",
-        label: "Leads",
-        match: (pathname) => pathname.startsWith("/dashboard/leads"),
-      },
-      {
-        href: "/dashboard/configuration",
-        icon: "▣",
-        label: "Quote Setup",
-        match: (pathname) => pathname === "/dashboard/configuration" || pathname === "/dashboard/quote-setup",
-      },
-      {
-        href: "/dashboard/business-profile",
-        icon: "◈",
-        label: "Business Profile",
-        match: (pathname) => pathname === "/dashboard/business-profile",
-      },
-      {
-        href: "/dashboard/settings",
-        icon: "⚙",
-        label: "Settings",
-        match: (pathname) => pathname === "/dashboard/settings",
-      },
-    ],
-  },
-];
-
-const mobileNavigation: NavigationItem[] = ownerNavigation
-  .flatMap((group) => group.items)
-  .slice(0, 5);
+function getOwnerNavigation(copy: BizPilotCopy["dashboard"]): NavigationGroup[] {
+  return [
+    {
+      label: copy.nav.ownerWorkspace,
+      items: [
+        {
+          href: "/dashboard",
+          icon: "⌂",
+          label: copy.nav.overview,
+          match: (pathname) => pathname === "/dashboard",
+        },
+        {
+          href: "/dashboard/leads",
+          icon: "◎",
+          label: copy.nav.leads,
+          match: (pathname) => pathname.startsWith("/dashboard/leads"),
+        },
+        {
+          href: "/dashboard/configuration",
+          icon: "▣",
+          label: copy.nav.quoteSetup,
+          match: (pathname) =>
+            pathname === "/dashboard/configuration" ||
+            pathname === "/dashboard/quote-setup",
+        },
+        {
+          href: "/dashboard/business-profile",
+          icon: "◈",
+          label: copy.nav.businessProfile,
+          match: (pathname) => pathname === "/dashboard/business-profile",
+        },
+        {
+          href: "/dashboard/settings",
+          icon: "⚙",
+          label: copy.nav.settings,
+          match: (pathname) => pathname === "/dashboard/settings",
+        },
+      ],
+    },
+  ];
+}
 
 function navClass(isActive: boolean): string {
   if (isActive) {
@@ -91,7 +94,10 @@ function navClass(isActive: boolean): string {
   return "flex min-h-11 items-center gap-3 rounded-[14px] border border-transparent px-3 font-bold text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-border)] hover:bg-[rgba(148,163,184,0.08)] hover:text-[var(--dash-text)]";
 }
 
-function NavIcon({ children, active }: Readonly<{ active: boolean; children: React.ReactNode }>) {
+function NavIcon({
+  active,
+  children,
+}: Readonly<{ active: boolean; children: React.ReactNode }>) {
   return (
     <span
       className={
@@ -105,7 +111,10 @@ function NavIcon({ children, active }: Readonly<{ active: boolean; children: Rea
   );
 }
 
-function MobileNavLink({ item, pathname }: Readonly<{ item: NavigationItem; pathname: string }>) {
+function MobileNavLink({
+  item,
+  pathname,
+}: Readonly<{ item: NavigationItem; pathname: string }>) {
   const isActive = item.match?.(pathname) ?? pathname === item.href;
 
   return (
@@ -118,7 +127,9 @@ function MobileNavLink({ item, pathname }: Readonly<{ item: NavigationItem; path
       href={item.href}
     >
       <span className="text-[12px] font-black">{item.icon}</span>
-      <span className="max-w-full truncate text-[10px] font-bold">{item.label}</span>
+      <span className="max-w-full truncate text-[10px] font-bold">
+        {item.label}
+      </span>
     </Link>
   );
 }
@@ -126,15 +137,21 @@ function MobileNavLink({ item, pathname }: Readonly<{ item: NavigationItem; path
 export function DashboardSidebar({
   activeBusinessName,
   businessSlug,
+  copy,
   userLabel,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
   const quotePath = `/quote/${businessSlug}`;
+  const navigation = getOwnerNavigation(copy);
+  const mobileNavigation = navigation.flatMap((group) => group.items).slice(0, 5);
 
   return (
     <>
-      <aside className="dashboard-sidebar sticky top-0 hidden h-screen w-[272px] border-r px-[18px] py-[22px] lg:flex lg:flex-col">
-        <Link className="flex items-center gap-3 border-b border-[var(--dash-border)] px-2.5 pb-[18px]" href="/dashboard">
+      <aside className="dashboard-sidebar sticky top-0 hidden h-screen w-[244px] border-r px-4 py-5 lg:flex lg:flex-col">
+        <Link
+          className="flex items-center gap-3 border-b border-[var(--dash-border)] px-2.5 pb-[18px]"
+          href="/dashboard"
+        >
           <span className="flex h-[42px] w-[42px] items-center justify-center rounded-[14px] bg-gradient-to-br from-[#2dd4bf] to-[#10b981] text-[18px] font-black text-[#022c22] shadow-[0_12px_28px_rgba(20,184,166,0.26)]">
             B
           </span>
@@ -143,13 +160,13 @@ export function DashboardSidebar({
               BizPilot AI
             </span>
             <span className="mt-0.5 block truncate text-[12px] text-[var(--dash-text-muted)]">
-              Quote Recovery Desk
+              {copy.nav.workspaceSubtitle}
             </span>
           </span>
         </Link>
 
         <nav className="mt-5 flex-1 space-y-5 overflow-y-auto text-[14px]">
-          {ownerNavigation.map((group) => (
+          {navigation.map((group) => (
             <div key={group.label}>
               <p className="mx-2.5 mb-2 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
                 {group.label}
@@ -159,7 +176,7 @@ export function DashboardSidebar({
                   const isActive = item.match?.(pathname) ?? pathname === item.href;
 
                   return (
-                    <Link className={navClass(isActive)} href={item.href} key={item.label}>
+                    <Link className={navClass(isActive)} href={item.href} key={item.href}>
                       <NavIcon active={isActive}>{item.icon}</NavIcon>
                       <span className="truncate">{item.label}</span>
                     </Link>
@@ -173,14 +190,20 @@ export function DashboardSidebar({
         <div className="mt-auto grid gap-3">
           <div className="rounded-[18px] border border-[var(--dash-border)] bg-[rgba(255,255,255,0.035)] p-[14px]">
             <div className="mb-2.5 flex items-center justify-between gap-3 text-[12px] text-[var(--dash-text-muted)]">
-              <span>Quote link</span>
-              <StatusBadge tone="emerald">Active</StatusBadge>
+              <span>{copy.actions.copyQuoteLink}</span>
+              <StatusBadge tone="emerald">{copy.status.active}</StatusBadge>
             </div>
             <div className="mb-2.5 flex items-center justify-between gap-3 text-[12px] text-[var(--dash-text-muted)]">
-              <span>Plan</span>
-              <span className="font-bold text-[var(--dash-text-secondary)]">Pilot</span>
+              <span>{copy.settings.plan}</span>
+              <span className="font-bold text-[var(--dash-text-secondary)]">
+                {copy.status.pilot}
+              </span>
             </div>
-            <CopyButton className="w-full" label="Copy quote link" value={quotePath} />
+            <CopyButton
+              className="w-full"
+              label={copy.actions.copyQuoteLink}
+              value={quotePath}
+            />
           </div>
 
           <div
@@ -198,7 +221,7 @@ export function DashboardSidebar({
                 {activeBusinessName}
               </span>
               <span className="mt-0.5 block truncate text-[var(--dash-text-muted)]">
-                Owner workspace
+                {copy.nav.ownerWorkspace}
               </span>
             </span>
           </div>

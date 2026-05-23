@@ -19,7 +19,12 @@
  */
 
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  readSupportedLanguage,
+} from "@/lib/i18n/language";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,14 +43,18 @@ export const metadata: Metadata = {
     "AI lead recovery for cleaning businesses. Capture quote requests, draft faster replies, and book more jobs before competitors respond.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const language = readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  );
+
   return (
     <html
-      lang="en"
+      lang={language}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

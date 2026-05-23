@@ -17,6 +17,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import {
@@ -24,10 +25,14 @@ import {
   isDefaultQuoteFieldLabel,
   resolveConsentNoticeForLanguage,
 } from "@/lib/i18n/bizpilot-copy";
-import { readSupportedLanguageOrThrow } from "@/lib/i18n/language";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  readSupportedLanguageOrThrow,
+} from "@/lib/i18n/language";
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { saveBusinessConfiguration } from "@/server/services/business-configuration.service";
+import { updateWorkspaceLanguage } from "@/server/services/business.service";
 import type { BusinessPrivacySettingsRecord } from "@/server/repositories/business-configuration.repository";
 import type { Json } from "@/types/database";
 
@@ -140,6 +145,27 @@ function redirectWithConfigurationError(error: unknown): never {
   redirect(`/dashboard/configuration?error=${encodeURIComponent(message)}`);
 }
 
+function readRedirectPath(formData: FormData, fallback: string): string {
+  const value = formData.get("redirectTo");
+  return typeof value === "string" && value.startsWith("/") ? value : fallback;
+}
+
+async function persistInterfaceLanguage(language: string): Promise<void> {
+  (await cookies()).set(INTERFACE_LANGUAGE_COOKIE, language, {
+    maxAge: 60 * 60 * 24 * 365,
+    path: "/",
+    sameSite: "lax",
+  });
+}
+
+function isMissingPreferredLanguageColumn(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.includes("preferred_language") &&
+    message.toLowerCase().includes("schema")
+  );
+}
+
 function readTemplateFieldOverrides(formData: FormData): Json {
   const fields = Object.fromEntries(
     formData
@@ -229,6 +255,7 @@ export async function saveBusinessConfigurationAction(
       ...(logoUrl ? { logoUrl } : {}),
       ...(privacyContactEmail ? { privacyContactEmail } : {}),
     });
+    await persistInterfaceLanguage(preferredLanguage);
   } catch (error) {
     redirectWithConfigurationError(error);
   }
@@ -238,6 +265,52 @@ export async function saveBusinessConfigurationAction(
   redirect(
     "/dashboard/configuration?notice=Business%20configuration%20saved.",
   );
+}
+
+export async function setInterfaceLanguageAction(
+  formData: FormData,
+): Promise<never> {
+  const language = readSupportedLanguageOrThrow(
+    readRequiredFormValue(formData, "language"),
+  );
+
+  await persistInterfaceLanguage(language);
+  redirect(readRedirectPath(formData, "/auth/sign-in"));
+}
+
+export async function updateWorkspaceLanguageAction(
+  formData: FormData,
+): Promise<never> {
+  const user = await getCurrentUser();
+  if (!user) redirect("/auth/sign-in");
+
+  const language = readSupportedLanguageOrThrow(
+    readRequiredFormValue(formData, "language"),
+  );
+  const redirectTo = readRedirectPath(formData, "/dashboard/settings");
+  await persistInterfaceLanguage(language);
+
+  try {
+    await updateWorkspaceLanguage({
+      businessId: readRequiredFormValue(formData, "businessId"),
+      language,
+      userId: user.id,
+    });
+  } catch (error) {
+    if (isMissingPreferredLanguageColumn(error)) {
+      console.warn("[WORKSPACE_LANGUAGE_COOKIE_FALLBACK]", error);
+      revalidatePath("/dashboard");
+      revalidatePath("/dashboard/settings");
+      revalidatePath("/dashboard/configuration");
+      redirect(redirectTo);
+    }
+    redirectWithConfigurationError(error);
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/settings");
+  revalidatePath("/dashboard/configuration");
+  redirect(redirectTo);
 }
 
 // File-size padding lines to match the original Windows allocation.

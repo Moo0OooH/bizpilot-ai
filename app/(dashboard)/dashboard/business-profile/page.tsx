@@ -2,22 +2,20 @@
  * ============================================================
  * File: app/(dashboard)/dashboard/business-profile/page.tsx
  * Project: BizPilot AI
- * Description: Business Profile workspace — identity + operating context.
- * Role: Owner-facing identity card kept separate from Quote Setup, matching the approved index.html two-card layout. Only fields that exist in the v1.5 schema today are editable; the rest are shown as roadmap placeholders so the visual matches the index without violating "no schema expansion" (Engineering Standard v1.5 §3).
+ * Description: Business Profile workspace, identity + operating context.
+ * Role: Owner-facing identity card kept separate from Quote Setup.
  * Related:
  * - app/(dashboard)/dashboard/configuration/page.tsx
  * - server/actions/business-configuration.actions.ts
  * - docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-05-19
- * Change Log:
- * - 2026-05-18: Created the Phase 18A Business Profile workspace.
- * - 2026-05-19: Rebuilt as a two-card layout mirroring the approved index.html — Business identity + Service area & operating notes — and clearly flagged future fields without touching the database schema.
+ * Last Updated: 2026-05-23
  * ============================================================
  */
 
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { CopyButton } from "@/components/dashboard/copy-button";
@@ -34,7 +32,12 @@ import {
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
-import { languageLabels, supportedLanguages } from "@/lib/i18n/language";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  languageLabels,
+  readSupportedLanguage,
+  supportedLanguages,
+} from "@/lib/i18n/language";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
@@ -79,6 +82,83 @@ function faqsToText(
   return faqs.map((faq) => `${faq.question} | ${faq.answer}`).join("\n");
 }
 
+function getBusinessProfileText(language: string) {
+  const fr = language === "fr-CA";
+
+  return {
+    accountEmailHelp: fr
+      ? "Courriel du compte - modifiez-le dans les reglages."
+      : "Account email - change it from Settings.",
+    aiNotes: fr
+      ? "Zone de service et notes operationnelles"
+      : "Service area & operating notes",
+    aiNotesDescription: fr
+      ? "Contexte qui aide le proprietaire et l'IA a preparer de meilleurs brouillons. Les garde-fous IA et FAQ restent dans Configuration."
+      : "Operating context that helps the owner and AI prepare better drafts. AI guardrails and FAQ details stay in Quote Setup.",
+    business: fr ? "Entreprise" : "Business",
+    businessIdentity: fr ? "Identite de l'entreprise" : "Business identity",
+    businessIdentityDescription: fr
+      ? "Identite utilisee dans le tableau de bord, la page publique et le contexte des brouillons IA."
+      : "Owner-facing identity used across the dashboard, public quote page, and AI draft context.",
+    businessName: fr ? "Nom de l'entreprise" : "Business name",
+    businessType: fr ? "Type d'entreprise" : "Business type",
+    cleaning: fr ? "Nettoyage" : "Cleaning",
+    description: fr
+      ? "Identite de l'entreprise et contexte operationnel. Cette section est separee de Configuration."
+      : "Business identity and operating context. This is separate from Quote Setup.",
+    futureDescription: fr
+      ? "Ces champs font partie du design approuve, mais ne sont pas encore relies a la base de donnees. Ils arriveront avec leur propre migration apres validation pilote."
+      : "These fields are part of the approved index design but are not yet wired to a database column. They will land with their own migration after pilot validation.",
+    futureFields: fr ? "Champs de feuille de route" : "Roadmap fields",
+    languageHelp: fr
+      ? "Utilisee pour la page publique et la langue des brouillons IA."
+      : "Used for the public quote page and AI draft language.",
+    logoUrl: fr ? "URL du logo" : "Logo URL",
+    notInMvp: fr ? "Hors MVP" : "Not in MVP",
+    oneAreaPerLine: fr
+      ? "Une zone par ligne. Utilise pour scorer les leads et expliquer la couverture."
+      : "One area per line. Used to score leads and explain coverage.",
+    openQuoteSetup: fr ? "Ouvrir Configuration" : "Open Quote Setup",
+    ownerEmail: fr
+      ? "Courriel proprietaire (lecture seule)"
+      : "Owner email (read-only)",
+    preferredLanguage: fr ? "Langue preferee" : "Preferred language",
+    previewQuotePage: fr
+      ? "Apercu page de soumission"
+      : "Preview Quote Page",
+    publicQuoteLink: fr ? "Lien public" : "Public quote link",
+    publicSlug: fr ? "Slug public" : "Public slug",
+    roadmapFields: fr
+      ? [
+          ["Nom public proprietaire", "Phase 18B"],
+          ["Telephone proprietaire", "Phase 18B"],
+          ["Site web public", "Phase 18B"],
+          ["Ville", "Phase 18B"],
+          ["Province", "Phase 18B"],
+          ["Heures de reponse", "Phase 18B"],
+        ]
+      : [
+          ["Owner display name", "Phase 18B"],
+          ["Owner phone", "Phase 18B"],
+          ["Public website", "Phase 18B"],
+          ["City", "Phase 18B"],
+          ["Province", "Phase 18B"],
+          ["Response hours", "Phase 18B"],
+        ],
+    save: fr ? "Enregistrer le profil" : "Save Business Profile",
+    saveNote: fr
+      ? "L'enregistrement conserve les changements d'identite. Les questions du formulaire se gerent dans Configuration."
+      : "Save persists identity changes. Quote-form questions are managed in Quote Setup.",
+    serviceAreas: fr ? "Zones desservies" : "Service areas",
+    templateName: fr
+      ? "Nom du modele de soumission"
+      : "Custom quote template name",
+    verticalHelp: fr
+      ? "La Phase 18A reste concentree sur le nettoyage. Les autres verticales restent verrouillees jusqu'a validation."
+      : "Phase 18A is cleaning-first. Other verticals are locked until the validation gate clears.",
+  };
+}
+
 export default async function BusinessProfilePage({
   searchParams,
 }: BusinessProfilePageProps) {
@@ -95,14 +175,20 @@ export default async function BusinessProfilePage({
     redirect("/dashboard");
   }
 
+  const activeLanguage = readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value ??
+      activeBusiness.preferred_language,
+  );
   const configurationWorkspace = await getBusinessConfigurationWorkspace({
-    business: activeBusiness,
+    business: { ...activeBusiness, preferred_language: activeLanguage },
   });
   const { cleaningTemplate, configuration } = configurationWorkspace;
   const quotePath = `/quote/${activeBusiness.slug}`;
   const primaryColor = configuration.branding?.primary_color ?? "#18181b";
   const accentColor = configuration.branding?.accent_color ?? "#0f766e";
-  const copy = getBizPilotCopy(activeBusiness.preferred_language);
+  const copy = getBizPilotCopy(activeLanguage);
+  const dashboardCopy = copy.dashboard;
+  const text = getBusinessProfileText(activeLanguage);
   const consentNotice =
     configuration.consentSettings?.consent_notice ??
     copy.quoteForm.consentNoticeDefault;
@@ -115,18 +201,21 @@ export default async function BusinessProfilePage({
       <PageHeader
         actions={
           <>
-            <CopyButton label="Copy quote link" value={quotePath} />
+            <CopyButton
+              label={dashboardCopy.actions.copyQuoteLink}
+              value={quotePath}
+            />
             <Link className={buttonClass} href="/dashboard/configuration">
-              Open Quote Setup
+              {text.openQuoteSetup}
             </Link>
             <Link className={primaryButtonClass} href={quotePath}>
-              Preview Quote Page
+              {text.previewQuotePage}
             </Link>
           </>
         }
-        description="Business identity and operating context. This is separate from Quote Setup."
-        eyebrow="Business"
-        title="Business Profile"
+        description={text.description}
+        eyebrow={text.business}
+        title={dashboardCopy.nav.businessProfile}
       />
 
       {params?.notice ? (
@@ -184,8 +273,16 @@ export default async function BusinessProfilePage({
         ) : null}
         {cleaningTemplate.fields.map((field) => (
           <span hidden key={field.field_key}>
-            <input name="templateFieldKeys" type="hidden" value={field.field_key} />
-            <input name={`fieldLabel:${field.field_key}`} type="hidden" value={field.label} />
+            <input
+              name="templateFieldKeys"
+              type="hidden"
+              value={field.field_key}
+            />
+            <input
+              name={`fieldLabel:${field.field_key}`}
+              type="hidden"
+              value={field.label}
+            />
             <input
               name={`fieldHelp:${field.field_key}`}
               type="hidden"
@@ -216,12 +313,12 @@ export default async function BusinessProfilePage({
         <section className="grid min-w-0 gap-4 xl:grid-cols-2">
           <DashboardCard className="p-[22px]" variant="elevated">
             <SectionHeader
-              description="Owner-facing identity used across the dashboard, public quote page, and AI draft context."
-              title="Business identity"
+              description={text.businessIdentityDescription}
+              title={text.businessIdentity}
             />
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <label className={labelClass}>
-                Business name
+                {text.businessName}
                 <input
                   className={inputClass}
                   defaultValue={activeBusiness.name}
@@ -231,7 +328,7 @@ export default async function BusinessProfilePage({
                 />
               </label>
               <label className={labelClass}>
-                Public slug
+                {text.publicSlug}
                 <input
                   className={inputClass}
                   defaultValue={activeBusiness.slug}
@@ -242,7 +339,7 @@ export default async function BusinessProfilePage({
                 />
               </label>
               <label className={`${labelClass} sm:col-span-2`}>
-                Custom quote template name
+                {text.templateName}
                 <input
                   className={inputClass}
                   defaultValue={
@@ -254,10 +351,10 @@ export default async function BusinessProfilePage({
                 />
               </label>
               <label className={labelClass}>
-                Preferred language
+                {text.preferredLanguage}
                 <select
                   className={inputClass}
-                  defaultValue={activeBusiness.preferred_language}
+                  defaultValue={activeLanguage}
                   name="preferredLanguage"
                   required
                 >
@@ -268,11 +365,11 @@ export default async function BusinessProfilePage({
                   ))}
                 </select>
                 <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
-                  Used for the public quote page and AI draft language.
+                  {text.languageHelp}
                 </span>
               </label>
               <label className={labelClass}>
-                Owner email (read-only)
+                {text.ownerEmail}
                 <input
                   className={inputClass}
                   defaultValue={user.email ?? user.id}
@@ -280,20 +377,19 @@ export default async function BusinessProfilePage({
                   type="email"
                 />
                 <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
-                  Account email — change it from Settings.
+                  {text.accountEmailHelp}
                 </span>
               </label>
               <label className={labelClass}>
-                Business type
+                {text.businessType}
                 <input
                   className={inputClass}
-                  defaultValue="Cleaning"
+                  defaultValue={text.cleaning}
                   disabled
                   type="text"
                 />
                 <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
-                  Phase 18A is cleaning-first. Other verticals are locked until
-                  the validation gate clears.
+                  {text.verticalHelp}
                 </span>
               </label>
             </div>
@@ -301,12 +397,12 @@ export default async function BusinessProfilePage({
 
           <DashboardCard className="p-[22px]">
             <SectionHeader
-              description="Operating context that helps the owner and AI prepare better drafts. AI guardrails and FAQ details stay in Quote Setup."
-              title="Service area & operating notes"
+              description={text.aiNotesDescription}
+              title={text.aiNotes}
             />
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <label className={labelClass}>
-                Logo URL
+                {text.logoUrl}
                 <input
                   className={inputClass}
                   defaultValue={configuration.branding?.logo_url ?? ""}
@@ -315,7 +411,7 @@ export default async function BusinessProfilePage({
                 />
               </label>
               <label className={labelClass}>
-                Public quote link
+                {text.publicQuoteLink}
                 <input
                   className={inputClass}
                   defaultValue={quotePath}
@@ -324,7 +420,7 @@ export default async function BusinessProfilePage({
                 />
               </label>
               <label className={`${labelClass} sm:col-span-2`}>
-                Service areas
+                {text.serviceAreas}
                 <textarea
                   className={`${textareaClass} min-h-28`}
                   defaultValue={serviceAreasToText(configuration.serviceAreas)}
@@ -332,7 +428,7 @@ export default async function BusinessProfilePage({
                   placeholder={"Montreal\nLaval\nLongueuil"}
                 />
                 <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
-                  One area per line. Used to score leads and explain coverage.
+                  {text.oneAreaPerLine}
                 </span>
               </label>
             </div>
@@ -341,18 +437,11 @@ export default async function BusinessProfilePage({
 
         <DashboardCard className="p-[22px]" variant="priority">
           <SectionHeader
-            description="These fields are part of the approved index design but are not yet wired to a database column. They will land with their own migration after pilot validation — adding them now would violate the v1.5 'no schema expansion mid-phase' rule."
-            title="Roadmap fields"
+            description={text.futureDescription}
+            title={text.futureFields}
           />
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              ["Owner display name", "Phase 18B"],
-              ["Owner phone", "Phase 18B"],
-              ["Public website", "Phase 18B"],
-              ["City", "Phase 18B"],
-              ["Province", "Phase 18B"],
-              ["Response hours", "Phase 18B"],
-            ].map(([title, badge]) => (
+            {text.roadmapFields.map(([title, badge]) => (
               <div
                 className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
                 key={title}
@@ -367,7 +456,7 @@ export default async function BusinessProfilePage({
                   className={`${disabledButtonClass} mt-3 w-full`}
                   type="button"
                 >
-                  Not in MVP
+                  {text.notInMvp}
                 </button>
               </div>
             ))}
@@ -376,11 +465,10 @@ export default async function BusinessProfilePage({
 
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3">
           <p className="text-[12px] text-[var(--dash-text-secondary)]">
-            Save persists identity changes. Quote-form questions are managed in
-            Quote Setup.
+            {text.saveNote}
           </p>
           <button className={primaryButtonClass} type="submit">
-            Save Business Profile
+            {text.save}
           </button>
         </div>
       </form>

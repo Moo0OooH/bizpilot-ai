@@ -18,6 +18,11 @@ import {
 
 type DashboardTheme = "dark" | "light";
 type ThemeContextValue = Readonly<{
+  labels: {
+    dark: string;
+    label: string;
+    light: string;
+  };
   setTheme: (nextTheme: DashboardTheme) => void;
   theme: DashboardTheme;
 }>;
@@ -36,7 +41,16 @@ function persistTheme(nextTheme: DashboardTheme): void {
 export function DashboardThemeFrame({
   children,
   initialTheme = "dark",
-}: Readonly<{ children: ReactNode; initialTheme?: DashboardTheme }>) {
+  labels = {
+    dark: "Dark",
+    label: "Dashboard theme",
+    light: "Light",
+  },
+}: Readonly<{
+  children: ReactNode;
+  initialTheme?: DashboardTheme;
+  labels?: ThemeContextValue["labels"];
+}>) {
   const [theme, setThemeState] = useState<DashboardTheme>(initialTheme);
 
   useEffect(() => {
@@ -45,13 +59,14 @@ export function DashboardThemeFrame({
 
   const value = useMemo<ThemeContextValue>(
     () => ({
+      labels,
       setTheme: (nextTheme) => {
         setThemeState(nextTheme);
         persistTheme(nextTheme);
       },
       theme,
     }),
-    [theme],
+    [labels, theme],
   );
 
   const themeClass = theme === "dark" ? "biz-dashboard-dark" : "biz-dashboard-light";
@@ -59,7 +74,7 @@ export function DashboardThemeFrame({
   return (
     <ThemeContext.Provider value={value}>
       <main
-        className={`${themeClass} dashboard-frame min-h-screen transition-colors lg:grid lg:grid-cols-[272px_minmax(0,1fr)]`}
+        className={`${themeClass} dashboard-frame min-h-screen transition-colors lg:grid lg:grid-cols-[244px_minmax(0,1fr)]`}
       >
         {children}
       </main>
@@ -74,11 +89,11 @@ export function DashboardThemeSelector() {
     throw new Error("DashboardThemeSelector must be used inside DashboardThemeFrame.");
   }
 
-  const { setTheme, theme } = context;
+  const { labels, setTheme, theme } = context;
 
   return (
     <div
-      aria-label="Dashboard theme"
+      aria-label={labels.label}
       className="hidden h-9 rounded-[11px] border border-[var(--dash-border-strong)] bg-[var(--dash-surface-elevated)] p-1 text-xs font-semibold shadow-sm sm:inline-flex"
       role="group"
     >
@@ -94,7 +109,7 @@ export function DashboardThemeSelector() {
           onClick={() => setTheme(option)}
           type="button"
         >
-          {option === "light" ? "Light" : "Dark"}
+          {option === "light" ? labels.light : labels.dark}
         </button>
       ))}
     </div>

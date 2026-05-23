@@ -9,10 +9,11 @@
  * - app/auth/forgot-password/page.tsx
  * Author: MoOoH
  * Created: 2026-05-22
+ * Last Updated: 2026-05-23
+ * Change Log:
+ * - 2026-05-23: Localized auth copy from the central language dictionary.
  * ============================================================
  */
-
-import Link from "next/link";
 
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button";
 import {
@@ -22,7 +23,14 @@ import {
   authInputClassName,
   authLabelClassName,
 } from "@/components/auth/auth-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  readSupportedLanguage,
+} from "@/lib/i18n/language";
 import { updatePasswordAction } from "@/server/actions/auth.actions";
+import { cookies } from "next/headers";
+import Link from "next/link";
 
 type ResetPasswordPageProps = Readonly<{
   searchParams?: Promise<{
@@ -37,17 +45,19 @@ export default async function ResetPasswordPage({
   searchParams,
 }: ResetPasswordPageProps) {
   const params = await searchParams;
+  const language = readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  );
+  const copy = getBizPilotCopy(language).auth;
   const code = params?.code?.trim() ?? "";
   const callbackError = params?.error ?? params?.error_code ?? params?.error_description;
-  const errorMessage = callbackError
-    ? "This reset link is invalid or expired. Request a new password reset."
-    : undefined;
+  const errorMessage = callbackError ? copy.resetInvalid : undefined;
 
   return (
-    <AuthShell footer="Use a new password that is unique to BizPilot.">
+    <AuthShell copy={copy} footer={copy.resetPasswordFooter} language={language} redirectPath="/auth/reset-password">
       <AuthCard
-        subtitle="Choose a new password for your owner workspace."
-        title="Set new password"
+        subtitle={copy.resetPasswordSubtitle}
+        title={copy.resetPasswordTitle}
       >
         {errorMessage ? (
           <p
@@ -66,54 +76,34 @@ export default async function ResetPasswordPage({
         <form action={updatePasswordAction} className="mt-5 space-y-3.5">
           <input name="code" type="hidden" value={code} />
 
-          <label className={authLabelClassName}>
-            <span style={{ color: "var(--biz-page-text-soft)" }}>
-              New password
-            </span>
-            <span className="relative block">
-              <AuthFieldIcon type="password" />
-              <input
-                autoComplete="new-password"
-                className={authInputClassName}
-                minLength={8}
-                name="password"
-                placeholder="At least 8 characters"
-                required
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.04)",
-                  borderColor: "var(--biz-border-medium)",
-                  color: "var(--biz-page-text)",
-                }}
-                type="password"
-              />
-            </span>
-          </label>
+          {[
+            ["password", copy.newPassword, copy.passwordHelp],
+            ["confirmPassword", copy.confirmPassword, copy.repeatNewPassword],
+          ].map(([name, label, placeholder]) => (
+            <label className={authLabelClassName} key={name}>
+              <span style={{ color: "var(--biz-page-text-soft)" }}>{label}</span>
+              <span className="relative block">
+                <AuthFieldIcon type="password" />
+                <input
+                  autoComplete="new-password"
+                  className={authInputClassName}
+                  minLength={8}
+                  name={name}
+                  placeholder={placeholder}
+                  required
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.04)",
+                    borderColor: "var(--biz-border-medium)",
+                    color: "var(--biz-page-text)",
+                  }}
+                  type="password"
+                />
+              </span>
+            </label>
+          ))}
 
-          <label className={authLabelClassName}>
-            <span style={{ color: "var(--biz-page-text-soft)" }}>
-              Confirm password
-            </span>
-            <span className="relative block">
-              <AuthFieldIcon type="password" />
-              <input
-                autoComplete="new-password"
-                className={authInputClassName}
-                minLength={8}
-                name="confirmPassword"
-                placeholder="Repeat your new password"
-                required
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.04)",
-                  borderColor: "var(--biz-border-medium)",
-                  color: "var(--biz-page-text)",
-                }}
-                type="password"
-              />
-            </span>
-          </label>
-
-          <AuthSubmitButton pendingLabel="Updating password...">
-            Update password
+          <AuthSubmitButton pendingLabel={copy.updatePasswordPending}>
+            {copy.updatePassword}
           </AuthSubmitButton>
         </form>
 
@@ -121,13 +111,13 @@ export default async function ResetPasswordPage({
           className="mt-4 text-center text-[13px]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
-          Need a new reset link?{" "}
+          {copy.needAccount}{" "}
           <Link
             className="font-bold underline-offset-4 hover:underline"
             href="/auth/forgot-password"
             style={{ color: "#17D492" }}
           >
-            Request again
+            {copy.requestAgain}
           </Link>
         </p>
       </AuthCard>

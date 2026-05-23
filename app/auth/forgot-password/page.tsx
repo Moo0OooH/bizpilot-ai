@@ -9,10 +9,11 @@
  * - app/auth/reset-password/page.tsx
  * Author: MoOoH
  * Created: 2026-05-22
+ * Last Updated: 2026-05-23
+ * Change Log:
+ * - 2026-05-23: Localized auth copy from the central language dictionary.
  * ============================================================
  */
-
-import Link from "next/link";
 
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button";
 import {
@@ -22,7 +23,14 @@ import {
   authInputClassName,
   authLabelClassName,
 } from "@/components/auth/auth-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  readSupportedLanguage,
+} from "@/lib/i18n/language";
 import { requestPasswordResetAction } from "@/server/actions/auth.actions";
+import { cookies } from "next/headers";
+import Link from "next/link";
 
 type ForgotPasswordPageProps = Readonly<{
   searchParams?: Promise<{
@@ -35,12 +43,16 @@ export default async function ForgotPasswordPage({
   searchParams,
 }: ForgotPasswordPageProps) {
   const params = await searchParams;
+  const language = readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  );
+  const copy = getBizPilotCopy(language).auth;
 
   return (
-    <AuthShell footer="Password reset is handled through Supabase Auth email recovery.">
+    <AuthShell copy={copy} footer={copy.forgotPasswordFooter} language={language} redirectPath="/auth/forgot-password">
       <AuthCard
-        subtitle="Enter your owner email and we'll send reset instructions if an account exists."
-        title="Reset password"
+        subtitle={copy.forgotPasswordSubtitle}
+        title={copy.forgotPasswordTitle}
       >
         {params?.notice ? (
           <p
@@ -72,7 +84,7 @@ export default async function ForgotPasswordPage({
 
         <form action={requestPasswordResetAction} className="mt-5 space-y-3.5">
           <label className={authLabelClassName}>
-            <span style={{ color: "var(--biz-page-text-soft)" }}>Email</span>
+            <span style={{ color: "var(--biz-page-text-soft)" }}>{copy.email}</span>
             <span className="relative block">
               <AuthFieldIcon type="email" />
               <input
@@ -91,8 +103,8 @@ export default async function ForgotPasswordPage({
             </span>
           </label>
 
-          <AuthSubmitButton pendingLabel="Sending instructions...">
-            Send reset instructions
+          <AuthSubmitButton pendingLabel={copy.resetRequestPending}>
+            {copy.resetRequestSubmit}
           </AuthSubmitButton>
         </form>
 
@@ -100,13 +112,13 @@ export default async function ForgotPasswordPage({
           className="mt-4 text-center text-[13px]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
-          Remembered your password?{" "}
+          {copy.forgotPasswordQuestion}{" "}
           <Link
             className="font-bold underline-offset-4 hover:underline"
             href="/auth/sign-in"
             style={{ color: "#17D492" }}
           >
-            Sign in
+            {copy.signIn}
           </Link>
         </p>
       </AuthCard>

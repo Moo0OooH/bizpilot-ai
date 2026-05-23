@@ -121,8 +121,122 @@ type QuoteFieldCopy = Readonly<{
   label: string;
 }>;
 
+type PageContextCopy = Readonly<{
+  subtitle: string;
+  title: string;
+}>;
+
+type AuthCopy = Readonly<{
+  backHome: string;
+  businessName: string;
+  confirmPassword: string;
+  createAccount: string;
+  createAccountPending: string;
+  createWorkspaceFooter: string;
+  createWorkspaceSubtitle: string;
+  createWorkspaceTitle: string;
+  email: string;
+  forgotPassword: string;
+  forgotPasswordFooter: string;
+  forgotPasswordQuestion: string;
+  forgotPasswordSubtitle: string;
+  forgotPasswordTitle: string;
+  name: string;
+  needAccount: string;
+  newPassword: string;
+  ownerAccess: string;
+  password: string;
+  passwordHelp: string;
+  repeatNewPassword: string;
+  requestAgain: string;
+  resetInvalid: string;
+  resetPasswordFooter: string;
+  resetPasswordSubtitle: string;
+  resetPasswordTitle: string;
+  resetRequestPending: string;
+  resetRequestSubmit: string;
+  signIn: string;
+  signInFooter: string;
+  signInPending: string;
+  signInQuestion: string;
+  signInSubtitle: string;
+  signInTitle: string;
+  updatePassword: string;
+  updatePasswordPending: string;
+  yourBusiness: string;
+  yourName: string;
+}>;
+
+type DashboardCopy = Readonly<{
+  actions: Readonly<{
+    copyQuoteLink: string;
+    openLeadQueue: string;
+    previewPublicPage: string;
+    previewQuotePage: string;
+    saveConfiguration: string;
+    signOut: string;
+  }>;
+  nav: Readonly<{
+    businessProfile: string;
+    leads: string;
+    overview: string;
+    ownerWorkspace: string;
+    quoteSetup: string;
+    settings: string;
+    workspaceSubtitle: string;
+  }>;
+  pages: Readonly<{
+    businessProfile: PageContextCopy;
+    configuration: PageContextCopy;
+    dashboard: PageContextCopy;
+    founder: PageContextCopy;
+    leadDetail: PageContextCopy;
+    leads: PageContextCopy;
+    settings: PageContextCopy;
+  }>;
+  settings: Readonly<{
+    account: string;
+    billing: string;
+    business: string;
+    future: string;
+    futureSections: string;
+    futureSectionsDescription: string;
+    guardrails: string;
+    guardrailsDescription: string;
+    guardrailItems: readonly string[];
+    integrations: string;
+    language: string;
+    languageDescription: string;
+    languageHelp: string;
+    manualBilling: string;
+    notInMvp: string;
+    plan: string;
+    quickLinks: string;
+    signedInAs: string;
+    teamMembers: string;
+    theme: string;
+    themeDescription: string;
+    themeHelp: string;
+    workspace: string;
+    workspaceDescription: string;
+  }>;
+  status: Readonly<{
+    active: string;
+    done: string;
+    open: string;
+    pilot: string;
+  }>;
+  theme: Readonly<{
+    dark: string;
+    label: string;
+    light: string;
+  }>;
+}>;
+
 export type BizPilotCopy = Readonly<{
   aiFallback: AiFallbackCopy;
+  auth: AuthCopy;
+  dashboard: DashboardCopy;
   demo: DemoCopy;
   intakeErrors: IntakeErrorCopy;
   leadRules: LeadRuleCopy;
@@ -159,6 +273,8 @@ export const BIZPILOT_COPY_SOURCE_LANGUAGE = DEFAULT_LANGUAGE;
 
 export const bizPilotCopyNamespaces = [
   "quotePage",
+  "auth",
+  "dashboard",
   "quoteForm",
   "quoteSuccess",
   "quoteFields",
@@ -191,6 +307,152 @@ const englishCopy: BizPilotCopy = {
       `Thanks for the ${service} request. ${missingText}`,
     toneFriendly: (service, missingText) =>
       `Hi, thanks so much for reaching out about ${service}. ${missingText}`,
+  },
+  auth: {
+    backHome: "Back home",
+    businessName: "Business name",
+    confirmPassword: "Confirm password",
+    createAccount: "Create account",
+    createAccountPending: "Creating workspace...",
+    createWorkspaceFooter:
+      "Owner access for the BizPilot AI Quote Recovery workspace.",
+    createWorkspaceSubtitle:
+      "Create owner access and your first business workspace.",
+    createWorkspaceTitle: "Create your workspace",
+    email: "Email",
+    forgotPassword: "Forgot password?",
+    forgotPasswordFooter:
+      "Password reset is handled through Supabase Auth email recovery.",
+    forgotPasswordQuestion: "Remembered your password?",
+    forgotPasswordSubtitle:
+      "Enter your owner email and we'll send reset instructions if an account exists.",
+    forgotPasswordTitle: "Reset password",
+    name: "Name",
+    needAccount: "Need an account?",
+    newPassword: "New password",
+    ownerAccess: "Owner access",
+    password: "Password",
+    passwordHelp: "Use at least 8 characters for your password.",
+    repeatNewPassword: "Repeat your new password",
+    requestAgain: "Request again",
+    resetInvalid:
+      "This reset link is invalid or expired. Request a new password reset.",
+    resetPasswordFooter: "Use a new password that is unique to BizPilot.",
+    resetPasswordSubtitle:
+      "Choose a new password for your owner workspace.",
+    resetPasswordTitle: "Set new password",
+    resetRequestPending: "Sending instructions...",
+    resetRequestSubmit: "Send reset instructions",
+    signIn: "Sign in",
+    signInFooter: "Secure owner access for your Quote Recovery workspace.",
+    signInPending: "Opening workspace...",
+    signInQuestion: "Already have an account?",
+    signInSubtitle:
+      "Manage quote requests, replies, and follow-ups from one place.",
+    signInTitle: "Sign in",
+    updatePassword: "Update password",
+    updatePasswordPending: "Updating password...",
+    yourBusiness: "Your business",
+    yourName: "Your name",
+  },
+  dashboard: {
+    actions: {
+      copyQuoteLink: "Copy quote link",
+      openLeadQueue: "Open Lead Queue",
+      previewPublicPage: "Preview public page",
+      previewQuotePage: "Preview quote page",
+      saveConfiguration: "Save configuration",
+      signOut: "Sign out",
+    },
+    nav: {
+      businessProfile: "Business Profile",
+      leads: "Leads",
+      overview: "Overview",
+      ownerWorkspace: "Owner workspace",
+      quoteSetup: "Quote Setup",
+      settings: "Settings",
+      workspaceSubtitle: "Quote Recovery Desk",
+    },
+    pages: {
+      businessProfile: {
+        subtitle: "Business identity and operating context",
+        title: "Business Profile",
+      },
+      configuration: {
+        subtitle:
+          "Public quote page, form questions, services, AI rules, and privacy",
+        title: "Quote Setup",
+      },
+      dashboard: {
+        subtitle: "Today's lead recovery snapshot",
+        title: "Dashboard",
+      },
+      founder: {
+        subtitle: "Phase 18B pilot tracking shell",
+        title: "Founder Admin Console",
+      },
+      leadDetail: {
+        subtitle: "Lead details, missing info, and owner-reviewed AI drafts",
+        title: "Lead Response Desk",
+      },
+      leads: {
+        subtitle: "Prioritize quote requests before customers move on",
+        title: "Lead Recovery Queue",
+      },
+      settings: {
+        subtitle: "Workspace, account, theme, and MVP boundaries",
+        title: "Settings",
+      },
+    },
+    settings: {
+      account: "Account",
+      billing: "Billing",
+      business: "Business",
+      future: "Future",
+      futureSections: "Future sections",
+      futureSectionsDescription:
+        "Roadmap placeholders stay visible but locked before validation.",
+      guardrails: "Phase 18A guardrails",
+      guardrailsDescription:
+        "What stays on while the pilot validates. Anything below is intentionally locked.",
+      guardrailItems: [
+        "No auto-send. AI drafts only; owner copies and sends manually.",
+        "No invented pricing or availability.",
+        "No booking, invoices, SMS, WhatsApp, or full CRM expansion.",
+        "Cleaning-first vertical until 3 paying/payment-ready businesses.",
+      ],
+      integrations: "Integrations",
+      language: "Workspace language",
+      languageDescription:
+        "One language controls dashboard labels, auth copy, quote-page defaults, and owner-reviewed AI draft language.",
+      languageHelp:
+        "Changing this updates the business language and the interface cookie used before sign-in.",
+      manualBilling: "Manual billing during Phase 18A.",
+      notInMvp: "Not in MVP",
+      plan: "Plan",
+      quickLinks: "Quick links",
+      signedInAs: "Signed in as",
+      teamMembers: "Team members",
+      theme: "Theme",
+      themeDescription:
+        "Hydration-safe theme. The first paint is resolved server-side.",
+      themeHelp:
+        "Dark mode remains the default operational view. Light mode is available for daytime use.",
+      workspace: "Workspace",
+      workspaceDescription:
+        "Workspace, account, theme, language, and future billing/team sections.",
+    },
+    status: {
+      active: "Active",
+      done: "Done",
+      open: "Open",
+      pilot: "Pilot",
+    },
+    theme: {
+      dark: "Dark",
+      label: "Dashboard theme",
+      light: "Light",
+    },
   },
   demo: {
     aiDraftReady: "AI draft ready",
@@ -430,6 +692,153 @@ const frenchCopy: BizPilotCopy = {
       `Merci pour votre demande de ${service}. ${missingText}`,
     toneFriendly: (service, missingText) =>
       `Bonjour, merci beaucoup pour votre demande concernant ${service}. ${missingText}`,
+  },
+  auth: {
+    backHome: "Retour",
+    businessName: "Nom de l'entreprise",
+    confirmPassword: "Confirmer le mot de passe",
+    createAccount: "Creer le compte",
+    createAccountPending: "Creation de l'espace...",
+    createWorkspaceFooter:
+      "Acces proprietaire pour l'espace Quote Recovery de BizPilot AI.",
+    createWorkspaceSubtitle:
+      "Creez l'acces proprietaire et votre premier espace d'entreprise.",
+    createWorkspaceTitle: "Creer votre espace",
+    email: "Courriel",
+    forgotPassword: "Mot de passe oublie?",
+    forgotPasswordFooter:
+      "La reinitialisation passe par le courriel de recuperation Supabase Auth.",
+    forgotPasswordQuestion: "Mot de passe retrouve?",
+    forgotPasswordSubtitle:
+      "Entrez votre courriel proprietaire. Nous enverrons les instructions si un compte existe.",
+    forgotPasswordTitle: "Reinitialiser le mot de passe",
+    name: "Nom",
+    needAccount: "Besoin d'un compte?",
+    newPassword: "Nouveau mot de passe",
+    ownerAccess: "Acces proprietaire",
+    password: "Mot de passe",
+    passwordHelp: "Utilisez au moins 8 caracteres pour votre mot de passe.",
+    repeatNewPassword: "Repetez le nouveau mot de passe",
+    requestAgain: "Demander a nouveau",
+    resetInvalid:
+      "Ce lien de reinitialisation est invalide ou expire. Demandez un nouveau lien.",
+    resetPasswordFooter: "Utilisez un mot de passe unique pour BizPilot.",
+    resetPasswordSubtitle:
+      "Choisissez un nouveau mot de passe pour votre espace proprietaire.",
+    resetPasswordTitle: "Definir un nouveau mot de passe",
+    resetRequestPending: "Envoi des instructions...",
+    resetRequestSubmit: "Envoyer les instructions",
+    signIn: "Connexion",
+    signInFooter: "Acces securise a votre espace Quote Recovery.",
+    signInPending: "Ouverture de l'espace...",
+    signInQuestion: "Vous avez deja un compte?",
+    signInSubtitle:
+      "Gerez les demandes de soumission, les reponses et les suivis au meme endroit.",
+    signInTitle: "Connexion",
+    updatePassword: "Mettre a jour le mot de passe",
+    updatePasswordPending: "Mise a jour...",
+    yourBusiness: "Votre entreprise",
+    yourName: "Votre nom",
+  },
+  dashboard: {
+    actions: {
+      copyQuoteLink: "Copier le lien",
+      openLeadQueue: "Ouvrir les leads",
+      previewPublicPage: "Voir la page publique",
+      previewQuotePage: "Apercu de la soumission",
+      saveConfiguration: "Enregistrer",
+      signOut: "Deconnexion",
+    },
+    nav: {
+      businessProfile: "Profil d'entreprise",
+      leads: "Leads",
+      overview: "Vue d'ensemble",
+      ownerWorkspace: "Espace proprietaire",
+      quoteSetup: "Configuration",
+      settings: "Reglages",
+      workspaceSubtitle: "Bureau Quote Recovery",
+    },
+    pages: {
+      businessProfile: {
+        subtitle: "Identite de l'entreprise et contexte operationnel",
+        title: "Profil d'entreprise",
+      },
+      configuration: {
+        subtitle:
+          "Page publique, questions, services, regles IA et confidentialite",
+        title: "Configuration",
+      },
+      dashboard: {
+        subtitle: "Vue d'aujourd'hui pour recuperer les leads",
+        title: "Tableau de bord",
+      },
+      founder: {
+        subtitle: "Console de suivi pilote Phase 18B",
+        title: "Console fondateur",
+      },
+      leadDetail: {
+        subtitle: "Details du lead, infos manquantes et brouillons IA revises",
+        title: "Bureau de reponse",
+      },
+      leads: {
+        subtitle:
+          "Priorisez les demandes avant que les clients passent a autre chose",
+        title: "File de recuperation",
+      },
+      settings: {
+        subtitle: "Espace, compte, theme et limites MVP",
+        title: "Reglages",
+      },
+    },
+    settings: {
+      account: "Compte",
+      billing: "Facturation",
+      business: "Entreprise",
+      future: "Futur",
+      futureSections: "Sections futures",
+      futureSectionsDescription:
+        "Les elements de feuille de route restent visibles mais verrouilles avant validation.",
+      guardrails: "Garde-fous Phase 18A",
+      guardrailsDescription:
+        "Ce qui reste actif pendant la validation pilote. Le reste est volontairement verrouille.",
+      guardrailItems: [
+        "Aucun envoi automatique. L'IA prepare seulement des brouillons.",
+        "Aucun prix ou disponibilite invente.",
+        "Pas de booking, factures, SMS, WhatsApp ou CRM complet.",
+        "Vertical nettoyage seulement jusqu'a 3 entreprises payantes ou pretes a payer.",
+      ],
+      integrations: "Integrations",
+      language: "Langue de l'espace",
+      languageDescription:
+        "Une seule langue controle le tableau de bord, l'authentification, les valeurs par defaut de la page publique et les brouillons IA.",
+      languageHelp:
+        "Ce changement met a jour la langue de l'entreprise et le cookie utilise avant connexion.",
+      manualBilling: "Facturation manuelle pendant la Phase 18A.",
+      notInMvp: "Hors MVP",
+      plan: "Forfait",
+      quickLinks: "Liens rapides",
+      signedInAs: "Connecte comme",
+      teamMembers: "Membres",
+      theme: "Theme",
+      themeDescription:
+        "Theme sans probleme d'hydratation. Le premier affichage est resolu cote serveur.",
+      themeHelp:
+        "Le mode sombre reste le mode operationnel par defaut. Le mode clair est disponible le jour.",
+      workspace: "Espace",
+      workspaceDescription:
+        "Espace, compte, theme, langue et futures sections de facturation/equipe.",
+    },
+    status: {
+      active: "Actif",
+      done: "Termine",
+      open: "Ouvert",
+      pilot: "Pilote",
+    },
+    theme: {
+      dark: "Sombre",
+      label: "Theme du tableau de bord",
+      light: "Clair",
+    },
   },
   demo: {
     aiDraftReady: "Brouillon IA prêt",

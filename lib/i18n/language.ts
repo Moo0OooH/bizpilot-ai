@@ -50,6 +50,7 @@ export const supportedLanguages = Object.keys(
 ) as SupportedLanguage[];
 
 export const DEFAULT_LANGUAGE: SupportedLanguage = "en";
+export const INTERFACE_LANGUAGE_COOKIE = "bizpilot-interface-language";
 
 export const languageLabels = Object.fromEntries(
   supportedLanguages.map((language) => [

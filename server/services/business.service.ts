@@ -33,6 +33,7 @@ import {
 import {
   createBusinessForOwner,
   listBusinessesForUser,
+  updateBusinessPreferredLanguage,
   type BusinessRecord,
 } from "@/server/repositories/businesses.repository";
 
@@ -52,6 +53,24 @@ function toSlug(value: string): string {
   return slug || `business-${Date.now()}`;
 }
 
+function withSlugSuffix(input: { baseSlug: string; suffix: string }): string {
+  const suffix = input.suffix.replace(/[^a-z0-9]/g, "").slice(0, 8);
+  const maxBaseLength = Math.max(1, 48 - suffix.length - 1);
+
+  return `${input.baseSlug.slice(0, maxBaseLength)}-${suffix}`;
+}
+
+function isUniqueSlugError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message.toLowerCase() : "";
+
+  return (
+    message.includes("duplicate key") ||
+    message.includes("unique constraint") ||
+    message.includes("businesses_slug") ||
+    message.includes("slug")
+  );
+}
+
 export async function createFoundingBusiness(input: {
   businessName: string;
   ownerUserId: string;
@@ -60,12 +79,32 @@ export async function createFoundingBusiness(input: {
   const supabase = input.serviceRole
     ? createSupabaseServiceRoleClient()
     : await createSupabaseServerClient();
-  const business = await createBusinessForOwner({
-    name: input.businessName,
-    ownerUserId: input.ownerUserId,
-    slug: toSlug(input.businessName),
-    supabase,
+  const baseSlug = toSlug(input.businessName);
+  const fallbackSlug = withSlugSuffix({
+    baseSlug,
+    suffix: input.ownerUserId,
   });
+  let business: BusinessRecord;
+
+  try {
+    business = await createBusinessForOwner({
+      name: input.businessName,
+      ownerUserId: input.ownerUserId,
+      slug: baseSlug,
+      supabase,
+    });
+  } catch (error) {
+    if (!isUniqueSlugError(error)) {
+      throw error;
+    }
+
+    business = await createBusinessForOwner({
+      name: input.businessName,
+      ownerUserId: input.ownerUserId,
+      slug: fallbackSlug,
+      supabase,
+    });
+  }
 
   await createOwnerMembership({
     businessId: business.id,
@@ -92,4 +131,31 @@ export async function getBusinessWorkspace(input: {
     businesses,
     memberships,
   };
+}
+
+export async function updateWorkspaceLanguage(input: {
+  businessId: string;
+  language: BusinessRecord["preferred_language"];
+  userId: string;
+}): Promise<BusinessRecord> {
+  const supabase = await createSupabaseServerClient();
+  const memberships = await listMembershipsForUser({
+    supabase,
+    userId: input.userId,
+  });
+  const canManage = memberships.some(
+    (membership) =>
+      membership.business_id === input.businessId &&
+      (membership.role === "owner" || membership.role === "admin"),
+  );
+
+  if (!canManage) {
+    throw new Error("You do not have permission to manage this business.");
+  }
+
+  return updateBusinessPreferredLanguage({
+    businessId: input.businessId,
+    preferredLanguage: input.language,
+    supabase,
+  });
 }

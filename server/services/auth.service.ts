@@ -68,7 +68,11 @@ export async function signUpWithPassword(input: {
   emailRedirectTo?: string;
   email: string;
   password: string;
-}): Promise<{ user: AuthUser; sessionCreated: boolean }> {
+}): Promise<{
+  identityCreated: boolean;
+  sessionCreated: boolean;
+  user: AuthUser;
+}> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.auth.signUp({
     email: input.email,
@@ -92,6 +96,8 @@ export async function signUpWithPassword(input: {
   }
 
   return {
+    identityCreated:
+      !Array.isArray(data.user.identities) || data.user.identities.length > 0,
     user: toAuthUser(data.user),
     sessionCreated: Boolean(data.session),
   };

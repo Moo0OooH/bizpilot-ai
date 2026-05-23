@@ -27,6 +27,7 @@
  * ============================================================
  */
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { ConfigurationTabs } from "@/components/dashboard/configuration-tabs";
@@ -38,7 +39,12 @@ import {
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
-import { languageLabels, supportedLanguages } from "@/lib/i18n/language";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  languageLabels,
+  readSupportedLanguage,
+  supportedLanguages,
+} from "@/lib/i18n/language";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
@@ -167,14 +173,45 @@ export default async function DashboardPage({
     );
   }
 
+  const activeLanguage = readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value ??
+      activeBusiness.preferred_language,
+  );
   const configurationWorkspace = await getBusinessConfigurationWorkspace({
-    business: activeBusiness,
+    business: { ...activeBusiness, preferred_language: activeLanguage },
   });
   const { cleaningTemplate, configuration, readiness } =
     configurationWorkspace;
   const primaryColor = configuration.branding?.primary_color ?? "#18181b";
   const accentColor = configuration.branding?.accent_color ?? "#0f766e";
-  const copy = getBizPilotCopy(activeBusiness.preferred_language);
+  const copy = getBizPilotCopy(activeLanguage);
+  const dashboardCopy = copy.dashboard;
+  const configurationTabs =
+    activeLanguage === "fr-CA"
+      ? {
+          ai: "Instructions IA",
+          basics: "Bases publiques",
+          branding: "Marque",
+          fields: "Questions",
+          link: "Lien public",
+          notifications: "Notifications",
+          overview: "Vue d'ensemble",
+          privacy: "Confidentialite",
+          readiness: "Pret",
+          services: "Services",
+        }
+      : {
+          ai: "AI Instructions",
+          basics: "Public Basics",
+          branding: "Branding",
+          fields: "Form Questions",
+          link: "Public Link",
+          notifications: "Notifications",
+          overview: "Overview",
+          privacy: "Privacy",
+          readiness: "Readiness",
+          services: "Services",
+        };
   const logoUrl = configuration.branding?.logo_url ?? "";
   const visibleTemplateFieldCount = cleaningTemplate.fields.filter(
     (field) => !field.is_hidden,
@@ -188,8 +225,8 @@ export default async function DashboardPage({
       <main className="space-y-4">
         <PageHeader
           description={`Configure the cleaning quote experience, public link, consent, and owner-ready lead foundation for ${activeBusiness.name}.`}
-          eyebrow="Business setup"
-          title="Quote Setup"
+          eyebrow={dashboardCopy.settings.workspace}
+          title={dashboardCopy.nav.quoteSetup}
         />
 
         {params?.notice ? (
@@ -220,16 +257,16 @@ export default async function DashboardPage({
             <div className="min-w-0">
           <ConfigurationTabs
             sections={[
-              { id: "configuration-overview", label: "Overview" },
-              { id: "business-profile", label: "Public Basics" },
-              { id: "cleaning-template-fields", label: "Form Questions" },
-              { id: "services-areas", label: "Services" },
-              { id: "branding", label: "Branding" },
-              { id: "faq", label: "AI Instructions" },
-              { id: "public-page", label: "Public Link" },
-              { id: "notifications", label: "Notifications" },
-              { id: "privacy-consent", label: "Privacy" },
-              { id: "setup-checklist", label: "Readiness" },
+              { id: "configuration-overview", label: configurationTabs.overview },
+              { id: "business-profile", label: configurationTabs.basics },
+              { id: "cleaning-template-fields", label: configurationTabs.fields },
+              { id: "services-areas", label: configurationTabs.services },
+              { id: "branding", label: configurationTabs.branding },
+              { id: "faq", label: configurationTabs.ai },
+              { id: "public-page", label: configurationTabs.link },
+              { id: "notifications", label: configurationTabs.notifications },
+              { id: "privacy-consent", label: configurationTabs.privacy },
+              { id: "setup-checklist", label: configurationTabs.readiness },
             ]}
           >
             <ConfigurationPanel
@@ -418,7 +455,7 @@ export default async function DashboardPage({
                   Preferred language
                   <select
                     className={inputClass}
-                    defaultValue={activeBusiness.preferred_language}
+                    defaultValue={activeLanguage}
                     name="preferredLanguage"
                     required
                   >
@@ -975,7 +1012,7 @@ export default async function DashboardPage({
         </form>
       </main>
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-4 py-2 shadow-[0_-18px_40px_rgba(0,0,0,0.18)] backdrop-blur">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[272px]">
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[244px]">
           <p className="text-xs text-[var(--dash-text-secondary)]">
             Save configuration after editing, then preview the public quote
             link.

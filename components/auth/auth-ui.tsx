@@ -2,26 +2,33 @@
  * ============================================================
  * File: components/auth/auth-ui.tsx
  * Project: BizPilot AI
- * Description: Auth page primitives — single centered card.
- * Role: Owner access screens follow Design System v1.0 §10.2 (centered auth card, max 460px). The previous split layout with a benefit panel introduced horizontal scroll and an oversized scale on common laptop widths.
+ * Description: Auth page primitives - single centered card.
+ * Role: Owner access screens follow Design System v1.0 section 10.2 and share localized copy primitives.
  * Related:
  * - app/auth/sign-in/page.tsx
  * - app/auth/sign-up/page.tsx
- * - docs/product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md §10.2
+ * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-05-12
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-05-23
  * Change Log:
- * - 2026-05-19: Rebuilt as single centered card. Removed AuthBenefitPanel and the xl:grid-cols split that caused scroll/scale issues. Kept brand mark, dark navy surface, emerald accents, accessible focus rings.
+ * - 2026-05-19: Rebuilt as single centered card. Removed the split layout that caused scroll/scale issues.
+ * - 2026-05-23: Added shared language switcher and localized auth chrome.
  * ============================================================
  */
 
+import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import { languageNativeLabels, supportedLanguages } from "@/lib/i18n/language";
+import { setInterfaceLanguageAction } from "@/server/actions/business-configuration.actions";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 type AuthShellProps = Readonly<{
   children: ReactNode;
+  copy: BizPilotCopy["auth"];
   footer?: string;
+  language: string;
+  redirectPath: string;
 }>;
 
 type AuthCardProps = Readonly<{
@@ -34,7 +41,7 @@ type AuthFieldIconProps = Readonly<{
   type: "business" | "email" | "name" | "password";
 }>;
 
-function BrandMark() {
+function BrandMark({ copy }: Readonly<{ copy: BizPilotCopy["auth"] }>) {
   return (
     <Link
       className="inline-flex items-center gap-2.5"
@@ -45,10 +52,9 @@ function BrandMark() {
         aria-hidden
         className="flex h-9 w-9 items-center justify-center rounded-[12px] text-base font-black"
         style={{
-          background:
-            "linear-gradient(135deg, #2dd4bf, #10b981)",
-          color: "#022c22",
+          background: "linear-gradient(135deg, #2dd4bf, #10b981)",
           boxShadow: "0 10px 22px rgba(20,184,166,0.22)",
+          color: "#022c22",
         }}
       >
         B
@@ -61,14 +67,20 @@ function BrandMark() {
           className="block text-[11px] uppercase tracking-[0.14em]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
-          Owner access
+          {copy.ownerAccess}
         </span>
       </span>
     </Link>
   );
 }
 
-export function AuthShell({ children, footer }: AuthShellProps) {
+export function AuthShell({
+  children,
+  copy,
+  footer,
+  language,
+  redirectPath,
+}: AuthShellProps) {
   return (
     <main
       className="flex min-h-screen flex-col items-center justify-center px-4 py-6 sm:px-6"
@@ -78,15 +90,40 @@ export function AuthShell({ children, footer }: AuthShellProps) {
         color: "var(--biz-page-text)",
       }}
     >
-      <div className="mb-5 flex w-full max-w-[460px] items-center justify-between">
-        <BrandMark />
-        <Link
-          className="text-[12px] font-bold"
-          href="/"
-          style={{ color: "var(--biz-page-text-soft)" }}
-        >
-          ← Back home
-        </Link>
+      <div className="mb-5 flex w-full max-w-[460px] items-center justify-between gap-3">
+        <BrandMark copy={copy} />
+        <div className="flex shrink-0 items-center gap-2">
+          <form
+            action={setInterfaceLanguageAction}
+            className="flex rounded-[10px] border border-[var(--biz-border-medium)] p-1"
+          >
+            <input name="redirectTo" type="hidden" value={redirectPath} />
+            {supportedLanguages.map((option) => (
+              <button
+                aria-pressed={language === option}
+                className={
+                  language === option
+                    ? "rounded-[7px] bg-[#17D492] px-2 py-1 text-[11px] font-black text-[#03130c]"
+                    : "rounded-[7px] px-2 py-1 text-[11px] font-bold"
+                }
+                key={option}
+                name="language"
+                title={languageNativeLabels[option]}
+                type="submit"
+                value={option}
+              >
+                {option === "fr-CA" ? "FR" : "EN"}
+              </button>
+            ))}
+          </form>
+          <Link
+            className="hidden text-[12px] font-bold sm:inline"
+            href="/"
+            style={{ color: "var(--biz-page-text-soft)" }}
+          >
+            ← {copy.backHome}
+          </Link>
+        </div>
       </div>
 
       <section className="w-full max-w-[460px]">{children}</section>

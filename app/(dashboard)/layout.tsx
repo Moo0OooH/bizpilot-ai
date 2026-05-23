@@ -12,6 +12,11 @@ import { redirect } from "next/navigation";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { DASHBOARD_THEME_COOKIE } from "@/components/dashboard/dashboard-theme";
 import { buttonClass, DashboardCard } from "@/components/dashboard/dashboard-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  readSupportedLanguage,
+} from "@/lib/i18n/language";
 import { signOutAction } from "@/server/actions/auth.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
@@ -54,13 +59,22 @@ export default async function DashboardLayout({
     );
   }
 
-  const themeCookie = (await cookies()).get(DASHBOARD_THEME_COOKIE)?.value;
+  const cookieStore = await cookies();
+  const themeCookie = cookieStore.get(DASHBOARD_THEME_COOKIE)?.value;
+  const activeLanguage = readSupportedLanguage(
+    cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value ??
+      activeBusiness.preferred_language,
+  );
   const initialTheme = themeCookie === "light" ? "light" : "dark";
+  const copy = getBizPilotCopy(activeLanguage).dashboard;
 
   return (
     <DashboardShell
       activeBusinessName={activeBusiness.name}
+      activeLanguage={activeLanguage}
+      businessId={activeBusiness.id}
       businessSlug={activeBusiness.slug}
+      copy={copy}
       initialTheme={initialTheme}
       showFounderAdmin={isFounderUser(user)}
       userLabel={user.email ?? user.id}

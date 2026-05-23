@@ -89,3 +89,24 @@ export async function updateBusinessProfile(input: {
 
   return data;
 }
+
+export async function updateBusinessPreferredLanguage(input: {
+  businessId: string;
+  preferredLanguage: BusinessRecord["preferred_language"];
+  supabase: SupabaseClient<Database>;
+}): Promise<BusinessRecord> {
+  const { data, error } = await input.supabase
+    .from("businesses")
+    .update({
+      preferred_language: input.preferredLanguage,
+    })
+    .eq("id", input.businessId)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+}

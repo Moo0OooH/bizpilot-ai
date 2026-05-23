@@ -92,6 +92,8 @@ describe("BizPilot language copy", () => {
       [...bizPilotCopyNamespaces],
       [
         "quotePage",
+        "auth",
+        "dashboard",
         "quoteForm",
         "quoteSuccess",
         "quoteFields",

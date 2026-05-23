@@ -41,6 +41,12 @@ const PASSWORD_RESET_NOTICE =
   "If an account exists, we'll send reset instructions.";
 const PASSWORD_RESET_RATE_LIMIT_MESSAGE =
   "Too many reset requests. Please wait a few minutes and try again.";
+const SIGN_UP_CHECK_EMAIL_NOTICE =
+  "Check your email to confirm your account. If this email is already registered, sign in instead.";
+const SIGN_UP_EMAIL_RATE_LIMIT_MESSAGE =
+  "Too many account creation attempts. Please wait a few minutes and try again.";
+const SIGN_UP_EMAIL_DELIVERY_MESSAGE =
+  "We couldn't send the confirmation email. Please wait a few minutes and try again.";
 
 function redirectWithSignInError(message: string): never {
   redirect(`/auth/sign-in?error=${encodeURIComponent(message)}`);
@@ -48,6 +54,10 @@ function redirectWithSignInError(message: string): never {
 
 function redirectWithSignUpError(message: string): never {
   redirect(`/auth/sign-up?error=${encodeURIComponent(message)}`);
+}
+
+function redirectWithSignInNotice(message: string): never {
+  redirect(`/auth/sign-in?notice=${encodeURIComponent(message)}`);
 }
 
 function redirectWithForgotPasswordError(message: string): never {
@@ -174,6 +184,34 @@ function isPasswordResetRateLimitError(error: unknown): boolean {
   );
 }
 
+function isEmailRateLimitError(error: unknown): boolean {
+  const { message, name, status } = getSupabaseErrorDiagnostics(error);
+  const details = `${message} ${name ?? ""} ${status ?? ""}`.toLowerCase();
+
+  return (
+    status === 429 ||
+    details.includes("rate limit") ||
+    details.includes("too many") ||
+    details.includes("security purposes") ||
+    details.includes("over email send rate limit") ||
+    details.includes("email rate limit")
+  );
+}
+
+function isEmailDeliveryError(error: unknown): boolean {
+  const { message, name, status } = getSupabaseErrorDiagnostics(error);
+  const details = `${message} ${name ?? ""} ${status ?? ""}`.toLowerCase();
+
+  return (
+    details.includes("confirmation email") ||
+    details.includes("email not sent") ||
+    details.includes("send email") ||
+    details.includes("sending email") ||
+    details.includes("smtp") ||
+    details.includes("provider")
+  );
+}
+
 function readPasswordResetEmail(formData: FormData): string {
   const value = formData.get("email");
 
@@ -294,8 +332,7 @@ function readResetPassword(formData: FormData, code?: string): string {
 }
 
 function redirectWithCleanSignUpAuthError(error: unknown): never {
-  const message = error instanceof Error ? error.message.toLowerCase() : "";
-  const rateLimitHints = ["rate limit", "too many", "security purposes"];
+  const message = getSupabaseErrorDiagnostics(error).message.toLowerCase();
 
   if (
     message.includes("already registered") ||
@@ -311,10 +348,12 @@ function redirectWithCleanSignUpAuthError(error: unknown): never {
     redirectWithSignUpError("Enter a valid email address.");
   }
 
-  if (rateLimitHints.some((hint) => message.includes(hint))) {
-    redirectWithSignUpError(
-      "Too many account creation attempts. Please wait a moment and try again.",
-    );
+  if (isEmailRateLimitError(error)) {
+    redirectWithSignUpError(SIGN_UP_EMAIL_RATE_LIMIT_MESSAGE);
+  }
+
+  if (isEmailDeliveryError(error)) {
+    redirectWithSignUpError(SIGN_UP_EMAIL_DELIVERY_MESSAGE);
   }
 
   if (message.includes("password") || message.includes("weak")) {
@@ -459,8 +498,15 @@ export async function signUpAction(formData: FormData): Promise<never> {
     message: "Enter your name.",
   });
   const email = readSignUpEmail(formData);
+  const emailDomain = getEmailDomain(email);
   const password = readSignUpPassword(formData);
+  let existingIdentityResponse = false;
   let sessionCreated = false;
+
+  console.info("[auth:signup] request received", {
+    callbackRedirectTo: getConfiguredAuthCallbackRedirectTo(),
+    emailDomain,
+  });
 
   try {
     const result = await signUpWithPassword({
@@ -472,19 +518,45 @@ export async function signUpAction(formData: FormData): Promise<never> {
 
     sessionCreated = result.sessionCreated;
 
-    await createFoundingBusiness({
-      businessName,
-      ownerUserId: result.user.id,
-      serviceRole: true,
+    console.info("[auth:signup] supabase signup succeeded", {
+      emailDomain,
+      identityCreated: result.identityCreated,
+      sessionCreated,
     });
+
+    if (!result.identityCreated) {
+      console.info("[auth:signup] workspace bootstrap skipped", {
+        emailDomain,
+        reason: "supabase did not create a new identity",
+      });
+      existingIdentityResponse = true;
+      sessionCreated = false;
+    } else {
+      await createFoundingBusiness({
+        businessName,
+        ownerUserId: result.user.id,
+        serviceRole: true,
+      });
+
+      console.info("[auth:signup] workspace bootstrap succeeded", {
+        emailDomain,
+        sessionCreated,
+      });
+    }
   } catch (error) {
+    console.error("[auth:signup] failed", {
+      emailDomain,
+      error: getSupabaseErrorDiagnostics(error),
+    });
     redirectWithCleanSignUpAuthError(error);
   }
 
+  if (existingIdentityResponse) {
+    redirectWithSignInNotice(SIGN_UP_CHECK_EMAIL_NOTICE);
+  }
+
   if (!sessionCreated) {
-    redirect(
-      "/auth/sign-in?notice=Check%20your%20email%20to%20confirm%20your%20account.",
-    );
+    redirectWithSignInNotice(SIGN_UP_CHECK_EMAIL_NOTICE);
   }
 
   redirect("/dashboard");

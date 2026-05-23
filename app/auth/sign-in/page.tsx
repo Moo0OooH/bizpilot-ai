@@ -2,19 +2,18 @@
  * ============================================================
  * File: app/auth/sign-in/page.tsx
  * Project: BizPilot AI
- * Description: Owner sign-in screen — single centered card.
- * Role: Production owner access aligned with Design System v1.0 §10.2.
+ * Description: Owner sign-in screen - single centered card.
+ * Role: Production owner access with cookie-driven interface language.
  * Related:
  * - server/actions/auth.actions.ts
  * - components/auth/auth-ui.tsx
  * Author: MoOoH
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-05-23
  * Change Log:
- * - 2026-05-19: Migrated to the single-centered-card AuthShell. Fixes scale/scroll issues from the previous split layout.
+ * - 2026-05-19: Migrated to the single-centered-card AuthShell.
+ * - 2026-05-23: Localized auth copy from the central language dictionary.
  * ============================================================
  */
-
-import Link from "next/link";
 
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button";
 import {
@@ -24,7 +23,14 @@ import {
   authInputClassName,
   authLabelClassName,
 } from "@/components/auth/auth-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  readSupportedLanguage,
+} from "@/lib/i18n/language";
 import { signInAction } from "@/server/actions/auth.actions";
+import { cookies } from "next/headers";
+import Link from "next/link";
 
 type SignInPageProps = Readonly<{
   searchParams?: Promise<{
@@ -35,13 +41,14 @@ type SignInPageProps = Readonly<{
 
 export default async function SignInPage({ searchParams }: SignInPageProps) {
   const params = await searchParams;
+  const language = readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  );
+  const copy = getBizPilotCopy(language).auth;
 
   return (
-    <AuthShell footer="Secure owner access for your Quote Recovery workspace.">
-      <AuthCard
-        subtitle="Manage quote requests, replies, and follow-ups from one place."
-        title="Sign in"
-      >
+    <AuthShell copy={copy} footer={copy.signInFooter} language={language} redirectPath="/auth/sign-in">
+      <AuthCard subtitle={copy.signInSubtitle} title={copy.signInTitle}>
         {params?.notice ? (
           <p
             aria-live="polite"
@@ -72,7 +79,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
 
         <form action={signInAction} className="mt-5 space-y-3.5">
           <label className={authLabelClassName}>
-            <span style={{ color: "var(--biz-page-text-soft)" }}>Email</span>
+            <span style={{ color: "var(--biz-page-text-soft)" }}>{copy.email}</span>
             <span className="relative block">
               <AuthFieldIcon type="email" />
               <input
@@ -93,13 +100,13 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
 
           <label className={authLabelClassName}>
             <span className="flex items-center justify-between gap-3">
-              <span style={{ color: "var(--biz-page-text-soft)" }}>Password</span>
+              <span style={{ color: "var(--biz-page-text-soft)" }}>{copy.password}</span>
               <Link
                 className="text-[11px] font-bold normal-case tracking-normal underline-offset-4 hover:underline"
                 href="/auth/forgot-password"
                 style={{ color: "#17D492" }}
               >
-                Forgot password?
+                {copy.forgotPassword}
               </Link>
             </span>
             <span className="relative block">
@@ -109,7 +116,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
                 className={authInputClassName}
                 minLength={6}
                 name="password"
-                placeholder="Enter your password"
+                placeholder={copy.password}
                 required
                 style={{
                   backgroundColor: "rgba(255,255,255,0.04)",
@@ -121,8 +128,8 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             </span>
           </label>
 
-          <AuthSubmitButton pendingLabel="Opening workspace…">
-            Sign in
+          <AuthSubmitButton pendingLabel={copy.signInPending}>
+            {copy.signIn}
           </AuthSubmitButton>
         </form>
 
@@ -130,13 +137,13 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           className="mt-4 text-center text-[13px]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
-          Need an account?{" "}
+          {copy.needAccount}{" "}
           <Link
             className="font-bold underline-offset-4 hover:underline"
             href="/auth/sign-up"
             style={{ color: "#17D492" }}
           >
-            Create one
+            {copy.createAccount}
           </Link>
         </p>
       </AuthCard>
