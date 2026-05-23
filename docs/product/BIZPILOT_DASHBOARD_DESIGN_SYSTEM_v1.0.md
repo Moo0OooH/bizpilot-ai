@@ -1,4 +1,4 @@
-﻿# BizPilot AI â€” Dashboard Design System v1.0
+# BizPilot AI - Dashboard Design System v1.0
 
 **Status:** Active canonical reference for every protected and public surface in the app
 **Scope:** Tokens, components, layout, typography, motion, accessibility, conflict-with-older-standards register
@@ -12,21 +12,21 @@
 
 The project already has three older visual standards:
 
-- `docs/product/BIZPILOT_DESIGN_SYSTEM_SPEC_v1.0.md` â€” the original "calm operational tool" tokens
-- `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md` â€” marketing-side color guidance
-- `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md` â€” density, accessibility, page rules
+- `docs/product/BIZPILOT_DESIGN_SYSTEM_SPEC_v1.0.md` - the original "calm operational tool" tokens
+- `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md` - marketing-side color guidance
+- `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md` - density, accessibility, page rules
 
-They remain valid, but the live dashboard has been rebuilt from the approved `index (7).html` prototype with a teal/navy command-center palette that supersedes the parts of those documents that disagree. This file records exactly what the implementation uses now so that every new page â€” protected or public â€” can match without guessing.
+They remain valid, but the live dashboard has been rebuilt from the approved `index (7).html` prototype with a teal/navy command-center palette that supersedes the parts of those documents that disagree. This file records exactly what the implementation uses now so that every new page - protected or public - can match without guessing.
 
 When this document and an older one conflict, this document wins for any **rendered chrome, surface, button, badge, form field, layout grid, or interactive component**. Older documents still win for **product scope, security, AI behavior, GTM, and validation gates** (per CURRENT_CANONICAL_DOCS_v1.7.md conflict resolution rules).
 
 ---
 
-## 2. Color tokens â€” single source of truth
+## 2. Color tokens - single source of truth
 
 Every dashboard surface uses `--dash-*` variables defined in `app/globals.css`. Marketing/public surfaces may use `--biz-*` (homepage tokens). Both palettes share the same brand teal.
 
-### 2.1 Dashboard dark (default) â€” `.biz-dashboard-dark`
+### 2.1 Dashboard dark (default) - `.biz-dashboard-dark`
 
 | Token | Hex / value | Role |
 | --- | --- | --- |
@@ -40,14 +40,14 @@ Every dashboard surface uses `--dash-*` variables defined in `app/globals.css`. 
 | `--dash-text` | `#f5f7fa` | Primary text |
 | `--dash-text-secondary` | `rgba(245, 247, 250, 0.72)` | Body copy |
 | `--dash-text-muted` | `rgba(245, 247, 250, 0.46)` | Captions, eyebrows |
-| `--dash-primary` | `#17d492` | Brand teal â€” primary CTA, brand mark, active nav |
+| `--dash-primary` | `#17d492` | Brand teal - primary CTA, brand mark, active nav |
 | `--dash-primary-hover` | `#21e6a0` | Hover state for primary CTA |
 | `--dash-primary-soft` | `rgba(23, 212, 146, 0.08)` | Active nav fill, hover wells |
 | `--dash-warning-soft` | `rgba(255, 184, 77, 0.12)` | Amber badge fill |
 | `--dash-danger-soft` | `rgba(255, 92, 92, 0.10)` | Red badge fill |
 | `--dash-ai-soft` | `rgba(23, 212, 146, 0.08)` | AI assistant card accent |
 
-### 2.2 Dashboard light â€” `.biz-dashboard-light`
+### 2.2 Dashboard light - `.biz-dashboard-light`
 
 Same role mapping with these overrides:
 
@@ -67,7 +67,7 @@ Same role mapping with these overrides:
 | `--dash-primary-hover` | `#047857` |
 | `--dash-primary-soft` | `rgba(5, 150, 105, 0.10)` |
 
-### 2.3 Homepage / public marketing â€” `--biz-*`
+### 2.3 Homepage / public marketing - `--biz-*`
 
 | Token | Hex |
 | --- | --- |
@@ -94,7 +94,7 @@ text-red-700    dark:text-red-300       (danger / Lost)
 text-sky-700    dark:text-sky-300       (info / Ready)
 ```
 
-The shared `StatusBadge` component (see Â§6) already applies these correctly.
+The shared `StatusBadge` component (see Section 6) already applies these correctly.
 
 ### 2.5 What is **banned**
 
@@ -107,17 +107,17 @@ To stay on-token the codebase forbids these patterns inside `app/(dashboard)/**`
 
 Any of the above must be replaced with the matching `--dash-*` token. Semantic emerald/amber/red are allowed **only** when paired with `dark:` variant.
 
-### 2.6 Allowed exception â€” `bg-white/[0.03-0.07]` overlays on dark surfaces
+### 2.6 Allowed exception - `bg-white/[0.03-0.07]` overlays on dark surfaces
 
 Public marketing and customer-facing pages render over `--biz-page-bg` (`#080d12`) rather than the dashboard tokens. On those surfaces the existing implementation uses small white-alpha overlays (`bg-white/[0.025]`, `bg-white/[0.035]`, `bg-white/[0.06]`, `bg-white/[0.07]`) to fake nested cards without dragging in a separate token.
 
 This is allowed because:
 
-- The opacity is low enough (â‰¤ 7%) that the rendered color matches `--dash-surface-muted` (`rgba(13,23,33,0.78)`) within 1 step of the lightness ramp.
-- The pattern only ever appears on top of an already-dark surface â€” never on a light page.
+- The opacity is low enough (<= 7%) that the rendered color matches `--dash-surface-muted` (`rgba(13,23,33,0.78)`) within 1 step of the lightness ramp.
+- The pattern only ever appears on top of an already-dark surface - never on a light page.
 - Switching them to literal CSS variables would force Tailwind to drop the opacity modifier and bloat globals.css with many one-off tokens.
 
-These overlays are **not** allowed on `app/(dashboard)/**` chrome â€” the dashboard always uses the explicit `--dash-surface-muted` / `--dash-surface-elevated` tokens through `DashboardCard`. The exception applies only to:
+These overlays are **not** allowed on `app/(dashboard)/**` chrome - the dashboard always uses the explicit `--dash-surface-muted` / `--dash-surface-elevated` tokens through `DashboardCard`. The exception applies only to:
 
 - `app/page.tsx` (homepage)
 - `app/(auth)/**` and `components/auth/**`
@@ -133,13 +133,13 @@ Font: system-ui stack via Tailwind default. No web font load.
 
 | Token | Size | Weight | Line height | Use |
 | --- | --- | --- | --- | --- |
-| `text.display` | 38â€“42px desktop / 30px mobile | 800 | 1.04 | Hero card headline |
-| `text.h1` | 26â€“30px | 800 | 1.1 | Page title (PageHeader) |
-| `text.h2` | 22â€“24px | 800 | 1.2 | Detail-header customer name |
+| `text.display` | 38-42px desktop / 30px mobile | 800 | 1.04 | Hero card headline |
+| `text.h1` | 26-30px | 800 | 1.1 | Page title (PageHeader) |
+| `text.h2` | 22-24px | 800 | 1.2 | Detail-header customer name |
 | `text.h3` | 18px | 800 | 1.3 | Section / card titles |
 | `text.lead` | 15px | 400 | 1.65 | Hero subhead, page description |
-| `text.body` | 13â€“14px | 400 | 1.55 | Default body |
-| `text.small` | 12â€“13px | 400 | 1.5 | Table cells, helper text |
+| `text.body` | 13-14px | 400 | 1.55 | Default body |
+| `text.small` | 12-13px | 400 | 1.5 | Table cells, helper text |
 | `text.meta` | 11px uppercase, tracking `0.14em` | 800 | 1.2 | Eyebrows, labels above stats |
 | `text.numeric.lg` | 34px | 850 | 1 | MetricCard primary number |
 
@@ -186,11 +186,11 @@ Tailwind breakpoints: `sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536`.
 ### 5.1 Dashboard shell grid
 
 ```
-app shell  â”€â”€â”€ lg+: grid-cols-[272px_minmax(0,1fr)]
-            â””â”€â”€ md-:  hidden sidebar, mobile bottom-nav (5 items)
+app shell  --- lg+: grid-cols-[272px_minmax(0,1fr)]
+            `--- md-:  hidden sidebar, mobile bottom-nav (5 items)
 
-main         â”€â”€â”€ max-w-[1220px] mx-auto px-[30px] py-7
-content     â”€â”€â”€ grid xl:grid-cols-[minmax(0,1fr)_320px]   (queue + right-rail)
+main         --- max-w-[1220px] mx-auto px-[30px] py-7
+content     --- grid xl:grid-cols-[minmax(0,1fr)_320px]   (queue + right-rail)
 ```
 
 ### 5.2 No horizontal scroll
@@ -198,7 +198,7 @@ content     â”€â”€â”€ grid xl:grid-cols-[minmax(0,1fr)_320px]   (
 Dashboard pages **must not** introduce horizontal scroll at `1280px @ 100% zoom`. This means:
 
 - No `min-w-[NNNpx]` on tables, grids, or rows
-- Use `grid-cols-[minmax(0,1fr)_â€¦]` (the `minmax(0,1fr)` is required to defeat content overflow)
+- Use `grid-cols-[minmax(0,1fr)_...]` (the `minmax(0,1fr)` is required to defeat content overflow)
 - Mobile (`<xl`) uses dedicated card layout, not a squeezed table
 - Test queue at exactly `1280px` and `1440px` before merging
 
@@ -216,11 +216,11 @@ Source: `components/dashboard/dashboard-ui.tsx`.
 
 CSS class mapping (in `globals.css`):
 
-- `biz-card` â€” default surface with subtle shadow
-- `biz-card-elevated` â€” slightly raised, for primary content
-- `biz-card-muted` â€” dim wells
-- `biz-card-priority` â€” emerald-tinted attention surface (hero card, recovery focus)
-- `biz-card-ai` â€” radial teal accent for AI Summary / Suggested reply / Follow-up draft cards
+- `biz-card` - default surface with subtle shadow
+- `biz-card-elevated` - slightly raised, for primary content
+- `biz-card-muted` - dim wells
+- `biz-card-priority` - emerald-tinted attention surface (hero card, recovery focus)
+- `biz-card-ai` - radial teal accent for AI Summary / Suggested reply / Follow-up draft cards
 
 Default radius: `24px`. Border: `--dash-border`. Padding owned by caller (use `p-[18px]` for body cards, `p-[22px]` for hero/detail cards).
 
@@ -231,12 +231,12 @@ Default radius: `24px`. Border: `--dash-border`. Padding owned by caller (use `p
   eyebrow="Leads"
   title="Lead Recovery Queue"
   description="Prioritize quote requests before customers move on."
-  actions={<><CopyButton â€¦ /><Link â€¦ /></>}
+  actions={<><CopyButton ... /><Link ... /></>}
 />
 ```
 
 - `eyebrow`: 11px uppercase, tracking `0.14em`, `--dash-text-muted`
-- `title`: 26â€“30px `font-extrabold`, `tracking-[-0.04em]`
+- `title`: 26-30px `font-extrabold`, `tracking-[-0.04em]`
 - `description`: 14px `leading-6`
 - Actions wrap on the right (md+) or below (sm)
 - **Exactly one `PageHeader` per route.** Inner cards must use `SectionHeader`.
@@ -244,7 +244,7 @@ Default radius: `24px`. Border: `--dash-border`. Padding owned by caller (use `p
 ### 6.3 `SectionHeader`
 
 ```tsx
-<SectionHeader title="â€¦" description="â€¦" action={â€¦} />
+<SectionHeader title="..." description="..." action={...} />
 ```
 
 - Used inside cards to label sections; never repeats the page title
@@ -276,9 +276,9 @@ Default radius: `24px`. Border: `--dash-border`. Padding owned by caller (use `p
 
 Specialized variants:
 
-- `LeadQualityBadge` â€” maps `strong / good / needs_info / low_fit` â†’ emerald / blue / amber / red
-- `LeadStatusBadge` â€” maps `new / reviewed / replied / follow_up_needed / booked / lost / archived`
-- `ResponseSlaBadge` â€” maps SLA state
+- `LeadQualityBadge` - maps `strong / good / needs_info / low_fit` -> emerald / blue / amber / red
+- `LeadStatusBadge` - maps `new / reviewed / replied / follow_up_needed / booked / lost / archived`
+- `ResponseSlaBadge` - maps SLA state
 
 ### 6.6 `Avatar` and name helpers
 
@@ -287,10 +287,10 @@ Specialized variants:
 <Avatar name={customer.name} size={52} tone="primary" /> // detail header
 ```
 
-- Renders only **initials** via `initials()` (max 2 chars) â€” never raw PII
-- Use `shortCustomerName("Mohammad Ghoorchibeigi") â†’ "Mohammad G."` for any customer-facing label rendered to the owner
+- Renders only **initials** via `initials()` (max 2 chars) - never raw PII
+- Use `shortCustomerName("Mohammad Ghoorchibeigi") -> "Mohammad G."` for any customer-facing label rendered to the owner
 
-These helpers exist for privacy alignment with Engineering Standard v1.5 Â§10 â€” the owner needs to recognize the lead, but the surface should not paste their full legal name into UI chrome.
+These helpers exist for privacy alignment with Engineering Standard v1.5 Section 10 - the owner needs to recognize the lead, but the surface should not paste their full legal name into UI chrome.
 
 ### 6.7 Button hierarchy
 
@@ -301,15 +301,15 @@ These helpers exist for privacy alignment with Engineering Standard v1.5 Â§10 
 | `ghostButtonClass` | `biz-button-ghost` | Low-emphasis utilities |
 | `disabledButtonClass` | n/a | Future / not-in-MVP placeholders |
 
-Heights: dashboard 40â€“44px, auth/public 44â€“48px. Radius `13px`.
+Heights: dashboard 40-44px, auth/public 44-48px. Radius `13px`.
 
 ### 6.8 Form fields
 
 | Class | Use |
 | --- | --- |
-| `inputClass` | Single-line input/select â€” 42px height, 13px text, `biz-field` background |
-| `textareaClass` | Multi-line input â€” same surface, `leading-6` |
-| `labelClass` | `grid gap-1.5 text-sm font-semibold` â€” wrap the field |
+| `inputClass` | Single-line input/select - 42px height, 13px text, `biz-field` background |
+| `textareaClass` | Multi-line input - same surface, `leading-6` |
+| `labelClass` | `grid gap-1.5 text-sm font-semibold` - wrap the field |
 
 All fields focus to `--dash-primary` with a 4px `--dash-primary-soft` ring (WCAG focus ring).
 
@@ -329,13 +329,13 @@ Padding-only wrapper around `DashboardCard`. Width-controlled by parent grid (ty
 
 ```
 <main className="space-y-4">
-  <PageHeader â€¦ />
+  <PageHeader ... />
   <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
     <div className="space-y-4">
-      â€¦ main content cards â€¦
+      ... main content cards ...
     </div>
     <aside className="space-y-4 xl:sticky xl:top-[92px]">
-      â€¦ right rail panels â€¦
+      ... right rail panels ...
     </aside>
   </section>
 </main>
@@ -347,7 +347,7 @@ Padding-only wrapper around `DashboardCard`. Width-controlled by parent grid (ty
 
 `DashboardCard variant="priority"` with `xl:grid-cols-[minmax(0,1.25fr)_minmax(260px,0.75fr)]`:
 
-- Left: eyebrow badge + 38â€“42px headline + 15px lead + two CTAs
+- Left: eyebrow badge + 38-42px headline + 15px lead + two CTAs
 - Right: featured lead avatar + identity + 3 badges + suggested action well
 
 ### 7.3 Configuration tabs
@@ -358,8 +358,8 @@ Single-active-tab. Hidden tabs remain mounted (`hidden` class) so their form inp
 
 ```
 <section className="grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
-  <div>â€¦ details, missing info, controls, notes â€¦</div>
-  <aside>â€¦ AI Summary, Suggested reply, Follow-up draft â€¦</aside>
+  <div>... details, missing info, controls, notes ...</div>
+  <aside>... AI Summary, Suggested reply, Follow-up draft ...</aside>
 </section>
 ```
 
@@ -372,9 +372,9 @@ Right aside uses `biz-card-ai` for the assistant surfaces.
 Three durations only:
 
 ```text
-fast 120ms â€” hover state transitions
-base 180ms â€” tab switch, fade-in
-slow 260ms â€” modal in
+fast 120ms - hover state transitions
+base 180ms - tab switch, fade-in
+slow 260ms - modal in
 ease cubic-bezier(0.4, 0, 0.2, 1)
 ```
 
@@ -384,14 +384,14 @@ No spring physics. No rotate. Click feedback `scale 0.98` only.
 
 ## 9. Accessibility floor
 
-- White-on-`--dash-bg` contrast: â‰¥ 14:1
-- `--dash-text-secondary` on `--dash-bg`: â‰¥ 5:1
+- White-on-`--dash-bg` contrast: >= 14:1
+- `--dash-text-secondary` on `--dash-bg`: >= 5:1
 - Every interactive element has a visible focus ring (4px `--dash-primary-soft`)
 - Every form field has a visible `<label>` (placeholder is never the only label)
 - Icons inside buttons carry `aria-hidden="true"`; icon-only buttons carry `aria-label`
 - Tab order follows reading order
 - 100% browser zoom is the design target; dashboards must remain usable to 200%
-- Color is never the only signal â€” always paired with text and shape
+- Color is never the only signal - always paired with text and shape
 
 ---
 
@@ -410,21 +410,21 @@ No spring physics. No rotate. Click feedback `scale 0.98` only.
 
 ---
 
-## 11. Conflict register â€” index prototype vs. existing standards
+## 11. Conflict register - index prototype vs. existing standards
 
 Each row records something the approved `index (7).html` did and how the live implementation decided.
 
 | Index does | Existing standard says | Decision | Doc citation |
 | --- | --- | --- | --- |
-| Dark **and** light theme toggle in topbar | Design System Spec v1.0 Â§11: "no light mode in MVP" | **Kept** the toggle. The dashboard cookie-driven `DashboardThemeSelector` makes it hydration-safe and Homepage & Visual Theme Standard v1.0 Â§5 explicitly permits "Light/dark mode may exist" for the dashboard. | `DESIGN_SYSTEM_SPEC_v1.0.md` Â§11 vs `HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md` Â§5 |
-| `CleanPro Montreal â–¾` multi-business switcher | Design System Spec v1.0 Â§14: "Multi-tenant business switcher UI (single-business owners do not need it yet)" | **Dropped** the dropdown. Sidebar mini-status shows the active business name. Switcher returns when multi-tenant ownership is real. | `DESIGN_SYSTEM_SPEC_v1.0.md` Â§14 |
-| AI reply card with a Send button | Master Blueprint v1.4 Â§8.4 + Engineering Standard v1.5 Â§10: "AI must not auto-send" | **Replaced** with Copy + "No Send button in MVP. Owner copies and sends manually." | `BIZPILOT_MASTER_BLUEPRINT_v1.4.md` Â§8.4, `BIZPILOT_ENGINEERING_STANDARD_v1.5.md` Â§10 |
-| Notifications panel with SMS / WhatsApp enabled | Strategic Alignment v1.6 Â§4 Not-Now List | Panel renders fields **disabled** with `Future â€” disabled`. Email is the only active channel. | `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` Â§4 |
-| Full customer legal name in table cells ("Sarah Mansfield") | Privacy / Security Standard v1.5 Â§11: "AI receives minimal necessary context" + general data-minimization | Display name shortened to `Sarah M.` via `shortCustomerName()`. Avatar shows initials only. Contact (email/phone) remains in the row because the owner must reach the customer. | `BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` Â§11 |
-| Founder admin showing live cross-tenant data | Backend RLS Standard v1.5 Â§3 + Vendor Independence Â§13 | Page renders with single-tenant accessible data + `TBD` placeholders and a `Not owner-facing` badge. Real cross-tenant aggregation requires a founder-only RLS policy first. | `BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md` Â§3 |
-| 7+ owner profile fields (phone, website, languages, response hours â€¦) | Engineering Standard v1.5 Â§3 + Vendor Independence Â§7: SQL-first migrations only | Identity fields without a column today appear as a separate "Roadmap fields" card with `Phase 18B` badges and disabled CTAs. The visual matches the index without unauthorized schema growth. | `BIZPILOT_ENGINEERING_STANDARD_v1.5.md` Â§3 |
-| Hero card with strong gradient + glow | Strategic Alignment v1.6 Â§6: "Operational Calm UX â€¦ no heavy gradients, no glow spam" | Hero uses two soft radial accents (â‰¤18% opacity) on `--dash-surface` â€” calm but distinctive. No box-shadow glow. | `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` Â§6 |
-| Recent Activity feed mixing system + customer messages | Privacy Standard v1.5 Â§11 (no raw customer content in logs) | Feed shows lead identifier + summary line only. No raw customer message text is rendered. | `BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` Â§11 |
+| Dark **and** light theme toggle in topbar | Design System Spec v1.0 Section 11: "no light mode in MVP" | **Kept** the toggle. The dashboard cookie-driven `DashboardThemeSelector` makes it hydration-safe and Homepage & Visual Theme Standard v1.0 Section 5 explicitly permits "Light/dark mode may exist" for the dashboard. | `DESIGN_SYSTEM_SPEC_v1.0.md` Section 11 vs `HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md` Section 5 |
+| `CleanPro Montreal v` multi-business switcher | Design System Spec v1.0 Section 14: "Multi-tenant business switcher UI (single-business owners do not need it yet)" | **Dropped** the dropdown. Sidebar mini-status shows the active business name. Switcher returns when multi-tenant ownership is real. | `DESIGN_SYSTEM_SPEC_v1.0.md` Section 14 |
+| AI reply card with a Send button | Master Blueprint v1.4 Section 8.4 + Engineering Standard v1.5 Section 10: "AI must not auto-send" | **Replaced** with Copy + "No Send button in MVP. Owner copies and sends manually." | `BIZPILOT_MASTER_BLUEPRINT_v1.4.md` Section 8.4, `BIZPILOT_ENGINEERING_STANDARD_v1.5.md` Section 10 |
+| Notifications panel with SMS / WhatsApp enabled | Strategic Alignment v1.6 Section 4 Not-Now List | Panel renders fields **disabled** with `Future - disabled`. Email is the only active channel. | `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` Section 4 |
+| Full customer legal name in table cells ("Sarah Mansfield") | Privacy / Security Standard v1.5 Section 11: "AI receives minimal necessary context" + general data-minimization | Display name shortened to `Sarah M.` via `shortCustomerName()`. Avatar shows initials only. Contact (email/phone) remains in the row because the owner must reach the customer. | `BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` Section 11 |
+| Founder admin showing live cross-tenant data | Backend RLS Standard v1.5 Section 3 + Vendor Independence Section 13 | Page renders with single-tenant accessible data + `TBD` placeholders and a `Not owner-facing` badge. Real cross-tenant aggregation requires a founder-only RLS policy first. | `BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md` Section 3 |
+| 7+ owner profile fields (phone, website, languages, response hours ...) | Engineering Standard v1.5 Section 3 + Vendor Independence Section 7: SQL-first migrations only | Identity fields without a column today appear as a separate "Roadmap fields" card with `Phase 18B` badges and disabled CTAs. The visual matches the index without unauthorized schema growth. | `BIZPILOT_ENGINEERING_STANDARD_v1.5.md` Section 3 |
+| Hero card with strong gradient + glow | Strategic Alignment v1.6 Section 6: "Operational Calm UX ... no heavy gradients, no glow spam" | Hero uses two soft radial accents (<=18% opacity) on `--dash-surface` - calm but distinctive. No box-shadow glow. | `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` Section 6 |
+| Recent Activity feed mixing system + customer messages | Privacy Standard v1.5 Section 11 (no raw customer content in logs) | Feed shows lead identifier + summary line only. No raw customer message text is rendered. | `BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` Section 11 |
 
 ---
 
@@ -432,10 +432,10 @@ Each row records something the approved `index (7).html` did and how the live im
 
 A new dashboard route is considered design-system-aligned when:
 
-- It mounts under `app/(dashboard)/â€¦` so it inherits `DashboardShell`
+- It mounts under `app/(dashboard)/...` so it inherits `DashboardShell`
 - It has exactly one `PageHeader` at the top
 - All chrome uses `--dash-*` tokens (no `bg-white / border-zinc / text-zinc / bg-slate / text-slate`)
-- Lists/tables use `grid-cols-[minmax(0,1fr)_â€¦]` and have no `min-w-[â€¦]` on tables/rows
+- Lists/tables use `grid-cols-[minmax(0,1fr)_...]` and have no `min-w-[...]` on tables/rows
 - Customer names use `shortCustomerName()` and avatars use `<Avatar>`
 - Forms use `inputClass / textareaClass / labelClass / buttonClass / primaryButtonClass`
 - Semantic colors include `dark:` modifiers
@@ -447,4 +447,4 @@ A new dashboard route is considered design-system-aligned when:
 
 ## 13. Maintenance
 
-When the approved prototype changes or a new conflict appears with an older standard, this document is updated **before** the implementation lands. Older standards are not edited; the conflict register at Â§11 records the decision so future contributors understand both sides.
+When the approved prototype changes or a new conflict appears with an older standard, this document is updated **before** the implementation lands. Older standards are not edited; the conflict register at Section 11 records the decision so future contributors understand both sides.

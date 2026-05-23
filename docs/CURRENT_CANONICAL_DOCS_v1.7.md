@@ -23,19 +23,23 @@ Read these first, in this exact order:
 1. `CURRENT_CANONICAL_DOCS_v1.7.md` — this file; active source-of-truth map.
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` — execution instructions for Cloud Code/Codex.
 3. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` — active strategic overlay.
-4. `product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md` — preserved product blueprint plus v1.6 addendum.
-5. `engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md` — active engineering standard.
-6. `security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` — active security/privacy standard.
-7. `engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md` — active backend/RLS hardening standard.
+4. `security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` — active security/privacy standard.
+5. `engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md` — active backend/RLS hardening standard.
+6. `engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md` — active engineering standard.
+7. `product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md` — preserved product blueprint plus v1.6 addendum.
 8. `product/BIZPILOT_BUILD_PLAN_v1.4.md` — active build plan with v1.6 alignment applied.
 9. `operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md` — hardening execution checklist.
 10. `operations/BIZPILOT_STRATEGIC_ALIGNMENT_IMPLEMENTATION_CHECKLIST_v1.6.md` — alignment checklist.
+11. `operations/BIZPILOT_REPO_INSPECTION_AND_READINESS_GAP_REPORT_v1.0.md` — current repo inspection and readiness truth table.
 
 ## Supporting Active Files
 
 ### Product and UX
 
 - `product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
+- `product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md`
+- `product/BIZPILOT_DESIGN_SYSTEM_SPEC_v1.0.md`
+- `product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md`
 - `product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md`
 - `product/BIZPILOT_VALIDATION_DASHBOARD_SPEC_v1.1.md`
 - `product/BIZPILOT_DEMO_GENERATOR_AND_SALES_ASSETS_SPEC_v1.0.md`
