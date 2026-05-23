@@ -26,8 +26,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 
-import { getPublicEnv } from "@/lib/env/public-env";
 import {
   sendPasswordResetEmail,
   signInWithPassword,
@@ -36,6 +36,7 @@ import {
   updatePasswordFromReset,
 } from "@/server/services/auth.service";
 import { createFoundingBusiness } from "@/server/services/business.service";
+import { safeLogger } from "@/server/logging/safe-logger";
 
 const PASSWORD_RESET_NOTICE =
   "If an account exists, we'll send reset instructions.";
@@ -114,7 +115,7 @@ function assertPasswordResetFormIntent(formData: FormData): void {
     formData.has("displayName") || formData.has("businessName");
 
   if (intent === AUTH_INTENT_SIGN_UP || hasSignUpOnlyFields) {
-    console.warn("[auth:password-reset] blocked sign-up payload");
+    safeLogger.warn("auth.password_reset.blocked_sign_up_payload");
     redirectWithSignUpError("Reload the sign-up page and try again.");
   }
 
@@ -123,18 +124,60 @@ function assertPasswordResetFormIntent(formData: FormData): void {
   }
 }
 
-function getConfiguredPasswordResetRedirectTo(): string {
-  return new URL(
-    "/auth/reset-password",
-    getPublicEnv().NEXT_PUBLIC_APP_URL,
-  ).toString();
+function readConfiguredAppUrl(): string | undefined {
+  const value = process.env.NEXT_PUBLIC_APP_URL;
+
+  if (!value || value.trim().length === 0) {
+    return undefined;
+  }
+
+  try {
+    return new URL(value).origin;
+  } catch {
+    return undefined;
+  }
 }
 
-function getConfiguredAuthCallbackRedirectTo(): string {
-  return new URL(
-    "/auth/callback",
-    getPublicEnv().NEXT_PUBLIC_APP_URL,
-  ).toString();
+function isSafeRequestHost(host: string): boolean {
+  const normalized = host.toLowerCase().split(":")[0] ?? "";
+
+  return (
+    normalized === "bizpilo.com" ||
+    normalized === "www.bizpilo.com" ||
+    normalized.endsWith(".vercel.app") ||
+    normalized === "localhost" ||
+    normalized === "127.0.0.1"
+  );
+}
+
+async function getAuthRedirectOrigin(): Promise<string> {
+  const configuredAppUrl = readConfiguredAppUrl();
+
+  if (configuredAppUrl) {
+    return configuredAppUrl;
+  }
+
+  const headerStore = await headers();
+  const host =
+    headerStore.get("x-forwarded-host") ??
+    headerStore.get("host");
+
+  if (!host || !isSafeRequestHost(host)) {
+    throw new Error("Missing NEXT_PUBLIC_APP_URL for auth redirects.");
+  }
+
+  const protocol =
+    headerStore.get("x-forwarded-proto") === "http" ? "http" : "https";
+
+  return `${protocol}://${host}`;
+}
+
+async function getConfiguredPasswordResetRedirectTo(): Promise<string> {
+  return new URL("/auth/reset-password", await getAuthRedirectOrigin()).toString();
+}
+
+async function getConfiguredAuthCallbackRedirectTo(): Promise<string> {
+  return new URL("/auth/callback", await getAuthRedirectOrigin()).toString();
 }
 
 function getEmailDomain(email: string): string {
@@ -268,6 +311,42 @@ function isEmailDeliveryError(error: unknown): boolean {
     details.includes("smtp") ||
     details.includes("provider")
   );
+}
+
+function getAuthErrorKind(error: unknown): string {
+  if (isPasswordResetRateLimitError(error) || isEmailRateLimitError(error)) {
+    return "email_rate_limit";
+  }
+
+  if (isRedirectConfigurationError(error)) {
+    return "redirect_configuration";
+  }
+
+  if (isEmailDeliveryError(error)) {
+    return "email_delivery";
+  }
+
+  if (isPasswordReuseError(error)) {
+    return "password_reuse";
+  }
+
+  if (isPasswordValidationError(error)) {
+    return "password_validation";
+  }
+
+  return "unknown";
+}
+
+function getAuthErrorLogMetadata(
+  error: unknown,
+): Record<string, string | number> {
+  const diagnostics = getSupabaseErrorDiagnostics(error);
+
+  return {
+    errorKind: getAuthErrorKind(error),
+    errorName: diagnostics.name ?? "unknown",
+    errorStatus: diagnostics.status ?? "unknown",
+  };
 }
 
 function readPasswordResetEmail(formData: FormData): string {
@@ -443,11 +522,11 @@ export async function requestPasswordResetAction(
   assertPasswordResetFormIntent(formData);
   const email = readPasswordResetEmail(formData);
   const emailDomain = getEmailDomain(email);
-  const redirectTo = getConfiguredPasswordResetRedirectTo();
-  const configuredRedirectTo = getConfiguredPasswordResetRedirectTo();
+  const redirectTo = await getConfiguredPasswordResetRedirectTo();
+  const configuredRedirectTo = redirectTo;
 
-  console.info("[auth:password-reset] request received", {
-    emailDomain,
+  safeLogger.info("auth.password_reset.request_received", {
+    domain: emailDomain,
     fallbackRedirectTo: configuredRedirectTo,
     primaryRedirectTo: redirectTo,
   });
@@ -457,16 +536,14 @@ export async function requestPasswordResetAction(
       email,
       redirectTo,
     });
-    console.info("[auth:password-reset] primary attempt succeeded", {
-      emailDomain,
+    safeLogger.info("auth.password_reset.primary_succeeded", {
+      domain: emailDomain,
       primaryRedirectTo: redirectTo,
     });
   } catch (error) {
-    const diagnostics = getSupabaseErrorDiagnostics(error);
-
-    console.error("[auth:password-reset] primary attempt failed", {
-      emailDomain,
-      error: diagnostics,
+    safeLogger.error("auth.password_reset.primary_failed", {
+      domain: emailDomain,
+      ...getAuthErrorLogMetadata(error),
       redirectTo,
     });
 
@@ -478,8 +555,8 @@ export async function requestPasswordResetAction(
       redirectTo !== configuredRedirectTo &&
       isRedirectConfigurationError(error)
     ) {
-      console.info("[auth:password-reset] fallback attempt started", {
-        emailDomain,
+      safeLogger.info("auth.password_reset.fallback_started", {
+        domain: emailDomain,
         fallbackRedirectTo: configuredRedirectTo,
       });
 
@@ -488,20 +565,20 @@ export async function requestPasswordResetAction(
           email,
           redirectTo: configuredRedirectTo,
         });
-        console.info("[auth:password-reset] fallback attempt succeeded", {
-          emailDomain,
+        safeLogger.info("auth.password_reset.fallback_succeeded", {
+          domain: emailDomain,
           fallbackRedirectTo: configuredRedirectTo,
         });
       } catch (fallbackError) {
-        console.error("[auth:password-reset] fallback attempt failed", {
-          emailDomain,
-          error: getSupabaseErrorDiagnostics(fallbackError),
+        safeLogger.error("auth.password_reset.fallback_failed", {
+          domain: emailDomain,
+          ...getAuthErrorLogMetadata(fallbackError),
           fallbackRedirectTo: configuredRedirectTo,
         });
       }
     } else {
-      console.info("[auth:password-reset] fallback attempt skipped", {
-        emailDomain,
+      safeLogger.info("auth.password_reset.fallback_skipped", {
+        domain: emailDomain,
         fallbackRedirectTo: configuredRedirectTo,
         primaryRedirectTo: redirectTo,
         reason:
@@ -578,7 +655,7 @@ export async function signUpAction(formData: FormData): Promise<never> {
   let sessionCreated = false;
 
   console.info("[auth:signup] request received", {
-    callbackRedirectTo: getConfiguredAuthCallbackRedirectTo(),
+    callbackRedirectTo: await getConfiguredAuthCallbackRedirectTo(),
     emailDomain,
   });
 
@@ -586,7 +663,7 @@ export async function signUpAction(formData: FormData): Promise<never> {
     const result = await signUpWithPassword({
       displayName,
       email,
-      emailRedirectTo: getConfiguredAuthCallbackRedirectTo(),
+      emailRedirectTo: await getConfiguredAuthCallbackRedirectTo(),
       password,
     });
 
