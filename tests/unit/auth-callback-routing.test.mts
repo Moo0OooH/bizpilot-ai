@@ -18,7 +18,11 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import {
+  AUTH_CALLBACK_EXCHANGE_NOTICE,
+  AUTH_CALLBACK_INVALID_ERROR,
   copyAuthCallbackParams,
+  getAuthCallbackFailureRedirect,
+  getAuthCallbackKind,
   getRootAuthCallbackTargetPath,
   getSafeAuthCallbackNextPath,
   hasRootAuthCallbackParams,
@@ -31,6 +35,16 @@ describe("Auth callback routing", () => {
 
     assert.equal(hasRootAuthCallbackParams(url), true);
     assert.equal(isRecoveryAuthCallback(url), false);
+    assert.equal(getAuthCallbackKind(url), "email_confirmation");
+    assert.equal(getRootAuthCallbackTargetPath(url), "/auth/callback");
+  });
+
+  it("classifies explicit signup callbacks without treating them as recovery", () => {
+    const url = new URL("https://bizpilo.com/?code=signup-code&type=signup");
+
+    assert.equal(hasRootAuthCallbackParams(url), true);
+    assert.equal(isRecoveryAuthCallback(url), false);
+    assert.equal(getAuthCallbackKind(url), "signup");
     assert.equal(getRootAuthCallbackTargetPath(url), "/auth/callback");
   });
 
@@ -41,6 +55,7 @@ describe("Auth callback routing", () => {
 
     assert.equal(hasRootAuthCallbackParams(url), true);
     assert.equal(isRecoveryAuthCallback(url), true);
+    assert.equal(getAuthCallbackKind(url), "recovery");
     assert.equal(getRootAuthCallbackTargetPath(url), "/auth/reset-password");
   });
 
@@ -66,5 +81,53 @@ describe("Auth callback routing", () => {
     );
     assert.equal(getSafeAuthCallbackNextPath("/admin"), "/dashboard");
     assert.equal(getSafeAuthCallbackNextPath("//evil.example"), "/dashboard");
+  });
+
+  it("uses a neutral sign-in notice when signup confirmation exchange fails", () => {
+    assert.deepEqual(
+      getAuthCallbackFailureRedirect({
+        callbackKind: "email_confirmation",
+        failureStage: "exchange_failed",
+      }),
+      {
+        key: "notice",
+        message: AUTH_CALLBACK_EXCHANGE_NOTICE,
+      },
+    );
+
+    assert.deepEqual(
+      getAuthCallbackFailureRedirect({
+        callbackKind: "signup",
+        failureStage: "provider_error",
+      }),
+      {
+        key: "notice",
+        message: AUTH_CALLBACK_EXCHANGE_NOTICE,
+      },
+    );
+  });
+
+  it("keeps missing confirmation codes and recovery failures invalid", () => {
+    assert.deepEqual(
+      getAuthCallbackFailureRedirect({
+        callbackKind: "email_confirmation",
+        failureStage: "missing_code",
+      }),
+      {
+        key: "error",
+        message: AUTH_CALLBACK_INVALID_ERROR,
+      },
+    );
+
+    assert.deepEqual(
+      getAuthCallbackFailureRedirect({
+        callbackKind: "recovery",
+        failureStage: "exchange_failed",
+      }),
+      {
+        key: "error",
+        message: AUTH_CALLBACK_INVALID_ERROR,
+      },
+    );
   });
 });
