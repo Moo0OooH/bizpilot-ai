@@ -651,33 +651,34 @@ export async function signUpAction(formData: FormData): Promise<never> {
   const email = readSignUpEmail(formData);
   const emailDomain = getEmailDomain(email);
   const password = readSignUpPassword(formData);
+  const callbackRedirectTo = await getConfiguredAuthCallbackRedirectTo();
   let existingIdentityResponse = false;
   let sessionCreated = false;
 
-  console.info("[auth:signup] request received", {
-    callbackRedirectTo: await getConfiguredAuthCallbackRedirectTo(),
-    emailDomain,
+  safeLogger.info("auth.signup.request_received", {
+    callbackRedirectTo,
+    domain: emailDomain,
   });
 
   try {
     const result = await signUpWithPassword({
       displayName,
       email,
-      emailRedirectTo: await getConfiguredAuthCallbackRedirectTo(),
+      emailRedirectTo: callbackRedirectTo,
       password,
     });
 
     sessionCreated = result.sessionCreated;
 
-    console.info("[auth:signup] supabase signup succeeded", {
-      emailDomain,
+    safeLogger.info("auth.signup.supabase_succeeded", {
+      domain: emailDomain,
       identityCreated: result.identityCreated,
       sessionCreated,
     });
 
     if (!result.identityCreated) {
-      console.info("[auth:signup] workspace bootstrap skipped", {
-        emailDomain,
+      safeLogger.info("auth.signup.workspace_bootstrap_skipped", {
+        domain: emailDomain,
         reason: "supabase did not create a new identity",
       });
       existingIdentityResponse = true;
@@ -689,15 +690,15 @@ export async function signUpAction(formData: FormData): Promise<never> {
         serviceRole: true,
       });
 
-      console.info("[auth:signup] workspace bootstrap succeeded", {
-        emailDomain,
+      safeLogger.info("auth.signup.workspace_bootstrap_succeeded", {
+        domain: emailDomain,
         sessionCreated,
       });
     }
   } catch (error) {
-    console.error("[auth:signup] failed", {
-      emailDomain,
-      error: getSupabaseErrorDiagnostics(error),
+    safeLogger.error("auth.signup.failed", {
+      domain: emailDomain,
+      ...getAuthErrorLogMetadata(error),
     });
     redirectWithCleanSignUpAuthError(error);
   }

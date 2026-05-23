@@ -30,6 +30,7 @@ import {
   readSupportedLanguageOrThrow,
 } from "@/lib/i18n/language";
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
+import { safeLogger } from "@/server/logging/safe-logger";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { saveBusinessConfiguration } from "@/server/services/business-configuration.service";
 import { updateWorkspaceLanguage } from "@/server/services/business.service";
@@ -124,8 +125,41 @@ function readPrivacyMode(
   throw new Error("Invalid privacy mode.");
 }
 
+function getConfigurationErrorName(error: unknown): string {
+  return error instanceof Error ? error.name : "unknown";
+}
+
+function getConfigurationErrorKind(error: unknown): string {
+  const message = error instanceof Error ? error.message.toLowerCase() : "";
+
+  if (message.includes("preferred_language") && message.includes("schema")) {
+    return "missing_preferred_language_column";
+  }
+
+  if (message.includes("permission")) {
+    return "permission";
+  }
+
+  if (message.includes("valid hex color")) {
+    return "validation_color";
+  }
+
+  if (
+    message.includes("required") ||
+    message.includes("invalid") ||
+    message.includes("retention")
+  ) {
+    return "validation";
+  }
+
+  return "unknown";
+}
+
 function redirectWithConfigurationError(error: unknown): never {
-  console.error("[CONFIG_SAVE_ERROR]", error);
+  safeLogger.error("business_configuration.save_failed", {
+    errorKind: getConfigurationErrorKind(error),
+    errorName: getConfigurationErrorName(error),
+  });
   const message = getSafeUserErrorMessage({
     allowMessage: (value) =>
       value === "Business name is required." ||
@@ -298,7 +332,10 @@ export async function updateWorkspaceLanguageAction(
     });
   } catch (error) {
     if (isMissingPreferredLanguageColumn(error)) {
-      console.warn("[WORKSPACE_LANGUAGE_COOKIE_FALLBACK]", error);
+      safeLogger.warn("business_configuration.language_cookie_fallback", {
+        errorKind: getConfigurationErrorKind(error),
+        errorName: getConfigurationErrorName(error),
+      });
       revalidatePath("/dashboard");
       revalidatePath("/dashboard/settings");
       revalidatePath("/dashboard/configuration");

@@ -5,7 +5,7 @@
 **Version:** v1.0  
 **Status:** Required Before Phase 18 Pilot  
 **Owner:** MoOoH  
-**Last Updated:** 2026-05-22
+**Last Updated:** 2026-05-23
 **Related:**
 - `docs/CURRENT_CANONICAL_DOCS_v1.7.md`
 - `docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
@@ -28,10 +28,10 @@ Do not begin Phase 18 until these are true:
 
 | Gate | PASS | FAIL | Evidence |
 | --- | --- | --- | --- |
-| `pnpm test:rls` passes all files. | [x] | [ ] | 2026-05-22: `pnpm test:rls` passed 12/12 against local Supabase Postgres through a temporary Docker port proxy at `127.0.0.1:15432/postgres`; direct `54322` host publish was unavailable in Docker Desktop. |
-| `pnpm typecheck` is clean. | [x] | [ ] | 2026-05-22: `pnpm typecheck` passed. |
-| `pnpm build` succeeds. | [x] | [ ] | 2026-05-22: `pnpm build` passed with Next.js 16.2.4. |
-| Manual QA checklist is complete or explicitly risk-accepted. | [x] | [ ] | 2026-05-22 browser QA passed core routes with no application or console errors. Public quote submission was verified through the rendered Next form action after the quote-form and submit-age safety fixes. Target Supabase migrations `0014`, `0015`, and `0016` still need owner-approved target environment application before real pilots. |
+| `pnpm test:rls` passes all files. | [x] | [ ] | Last known full RLS pass: 2026-05-22, 12/12 against local Supabase Postgres through temporary Docker proxy `127.0.0.1:15432/postgres`. 2026-05-23 rerun was environment-blocked because `DATABASE_URL` was not set; no RLS assertion failure was observed. |
+| `pnpm typecheck` is clean. | [x] | [ ] | 2026-05-23: `pnpm typecheck` passed. |
+| `pnpm build` succeeds. | [x] | [ ] | 2026-05-23: `pnpm build` passed with Next.js 16.2.4. |
+| Manual QA checklist is complete or explicitly risk-accepted. | [x] | [ ] | 2026-05-22 browser QA passed core routes with no application or console errors. Public quote submission was verified through the rendered Next form action after the quote-form and submit-age safety fixes. 2026-05-23 owner reported production migrations `0001` through `0017` were applied to `bizpilot-production`; final production auth/language smoke tests remain required before outreach. |
 | Business configuration save round-trip works. | [x] | [ ] | 2026-05-22 browser QA: fresh QA workspace saved Quote Setup, then `/quote/spark-shine-phase18a-qa-1779420058961` became active. |
 | Public quote submission creates a tenant-scoped lead. | [x] | [ ] | 2026-05-22: `/quote/spark-shine-phase18a-qa-1779420058961` created lead `fee660c2-c3aa-43d5-a234-1c58502510b0`; lead `business_id` matched active public link tenant `1b8f3cc6-4967-4ffe-9490-533c1c34c68b`. Earlier browser QA also created lead `f2a2a970-4184-419a-8f85-faa063bf1292`. |
 | AI remains manual, owner-reviewed, and non-sending. | [x] | [ ] | 2026-05-22 browser QA: `/dashboard/leads/b98fb510-b9ec-4774-b30f-20cf8d9421e3` showed AI summary, missing info, reply draft, follow-up controls, and manual copy actions only (`Copy reply`, `Copy follow-up`). |
@@ -44,10 +44,11 @@ Do not begin Phase 18 until these are true:
 | Supabase point-in-time recovery window is documented. | [ ] | [ ] |  |
 | Supabase Security Advisor reviewed. | [ ] | [ ] |  |
 | Supabase Performance Advisor reviewed. | [ ] | [ ] |  |
-| Migrations `0010`, `0011`, `0012`, and `0013` are applied in the target project. | [ ] | [ ] |  |
-| Migration `0014_cleaning_template_contact_address_fields.sql` is applied in the target project. | [ ] | [x] | 2026-05-22: applied and verified locally; `customer_phone`, `customer_email`, and `home_address` exist in local `industry_template_fields`. Owner must still confirm target Supabase environment before production/remote application. |
-| Migration `0015_business_access_plan_and_admin_log.sql` is applied in the target project. | [ ] | [x] | 2026-05-22: applied and verified locally; `businesses.plan_slug`, `businesses.status`, and `admin_action_log` exist locally. Owner must confirm target Supabase environment before production/remote application. |
-| Migration `0016_public_submission_minimum_submit_age_reason.sql` is applied in the target project. | [ ] | [x] | 2026-05-22: applied and verified locally; `public_submission_abuse_log_reason_check` accepts `submitted_too_fast`. Owner must confirm target Supabase environment before production/remote application. |
+| Migrations `0010`, `0011`, `0012`, and `0013` are applied in the target project. | [x] | [ ] | 2026-05-23: owner reported production migrations `0001` through `0017` were successfully applied to `bizpilot-production`. Repo-side independent verification still requires a safe production-equivalent connection or SQL screenshots from Supabase. |
+| Migration `0014_cleaning_template_contact_address_fields.sql` is applied in the target project. | [x] | [ ] | 2026-05-23: owner reported applied to `bizpilot-production`; previously verified locally with `customer_phone`, `customer_email`, and `home_address` template fields. |
+| Migration `0015_business_access_plan_and_admin_log.sql` is applied in the target project. | [x] | [ ] | 2026-05-23: owner reported applied to `bizpilot-production`; previously verified locally with `businesses.plan_slug`, `businesses.status`, and `admin_action_log`. |
+| Migration `0016_public_submission_minimum_submit_age_reason.sql` is applied in the target project. | [x] | [ ] | 2026-05-23: owner reported applied to `bizpilot-production`; previously verified locally with `submitted_too_fast` accepted by the abuse-log reason constraint. |
+| Migration `0017_business_preferred_language.sql` is applied in the target project. | [x] | [ ] | 2026-05-23: owner reported `0017_business_preferred_language` was run; final production smoke should verify preferred-language persistence and FR quote/AI behavior. |
 | `public.public_can_insert_submission_value` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [ ] |  |
 | `public.record_public_submission_attempt` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [ ] |  |
 | `public.count_recent_public_submission_attempts` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [ ] |  |
@@ -90,7 +91,8 @@ Do not begin Phase 18 until these are true:
 | Dashboard shows a clear first-three-minute Magic Moment. | [x] | [ ] | 2026-05-22: `/dashboard` showed urgent lead review CTA, lead queue preview, quote link readiness, and manual owner control language. |
 | Lead detail includes summary, missing info, reply draft, and follow-up action. | [x] | [ ] | 2026-05-22: `/dashboard/leads/b98fb510-b9ec-4774-b30f-20cf8d9421e3` showed lead details, missing info, recommended action, AI summary panel, and copy-only follow-up controls. |
 | Founder can copy a reply but nothing is sent automatically. | [x] | [ ] | 2026-05-22: lead detail exposes `Copy reply` and `Copy follow-up`; no customer send action was present. |
-| Mini Founder Admin exists for manual plan/access control. | [x] | [ ] | 2026-05-22: `/admin` added as founder-only internal route with plan/status/quote-link/internal-note controls. Full data view requires `BIZPILOT_FOUNDER_EMAILS` and target migration `0015`. |
+| Mini Founder Admin exists for manual plan/access control. | [x] | [ ] | 2026-05-22: `/admin` added as founder-only internal route with plan/status/quote-link/internal-note controls. Full data view requires `BIZPILOT_FOUNDER_EMAILS`; owner reported target migration `0015` is applied in production. |
+| MVP-safe English / Canadian French support is available. | [x] | [ ] | 2026-05-23: global language switching, business `preferred_language`, localized public quote/success/auth/home surfaces, and AI language guidance were implemented. Production smoke must verify one FR business end to end before outreach. |
 | Public quote form can be submitted without client-side step navigation risk. | [x] | [ ] | 2026-05-22: public quote form was changed to visible Service / When & where / Contact sections with direct submit; final route QA confirmed the quote page rendered a submit-age value and the rendered Next form action created tenant-scoped lead `fee660c2-c3aa-43d5-a234-1c58502510b0`. |
 | Demo script leads with quote recovery, not generic AI platform language. | [ ] | [ ] |  |
 | Landing page or sales one-pager draft uses cleaning-first positioning. | [ ] | [ ] |  |

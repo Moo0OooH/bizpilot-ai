@@ -5,7 +5,7 @@
 **Version:** v1.0
 **Status:** Phase 18A Pilot Readiness Evidence
 **Owner:** MoOoH
-**Last Updated:** 2026-05-22
+**Last Updated:** 2026-05-23
 **Related:**
 - `docs/CURRENT_CANONICAL_DOCS_v1.7.md`
 - `docs/AI_CODING_AGENT_START_HERE_v1.7.md`
@@ -56,8 +56,9 @@ Read and checked:
 
 | Gap | Standard Source | Risk | Next Action |
 | --- | --- | --- | --- |
-| Target Supabase environment is still not confirmed for migrations `0014`, `0015`, and `0016`. | Engineering Standard SQL-first migrations; Phase 18A handoff. | Local schema is ready, but production/remote pilot environment could drift if the owner has not approved the exact target. | Owner confirms target Supabase environment, then apply or verify `0014_cleaning_template_contact_address_fields.sql`, `0015_business_access_plan_and_admin_log.sql`, and `0016_public_submission_minimum_submit_age_reason.sql`. |
+| Production migration verification is owner-reported, not independently re-queried by this repo pass. | Engineering Standard SQL-first migrations; Phase 18A handoff. | Owner reported migrations `0001` through `0017` were successfully applied to `bizpilot-production`, but this local pass did not connect to production. | Before outreach, confirm key columns/functions/policies in Supabase SQL editor or provide a safe production-equivalent connection for inspection. |
 | `OPENAI_API_KEY` is not set in `.env.local`. | Engineering Standard AI provider; Manual QA Checklist. | Model-backed AI demo cannot be verified in this environment. | Provide key for model-backed demo QA, or keep demo on rule fallback and mark model-backed path unverified. |
+| Production auth/email provider reliability needs one final smoke pass. | Production QA Checklist. | Recent fixes separated signup confirmation, recovery, reset session clearing, and auth redirect origin handling; Supabase email rate limits and SMTP defaults can still block owner tests. | Test one fresh signup confirmation and one password reset on `https://bizpilo.com` after rate limits clear. |
 | Supabase plan tier and PITR window are not documented. | Backup/export strategy Section 10. | Backup posture is not fully decision-ready for real customer data. | Owner records project plan tier, PITR window, export storage location, and restore drill decision. |
 | Real pilot pricing and refund/cancellation wording are undecided. | GTM Playbook and Pilot Readiness Checklist. | Sales conversations can drift or promise inconsistent terms. | Owner approves pilot price, setup fee, trial, cancellation, and refund handling before outreach. |
 | 10 real cleaning prospects are not entered yet. | Strategic Alignment Update customer discovery loop. | Validation cannot start without real prospect pipeline. | Owner fills Founder CRM with at least 10 real cleaning businesses. |
@@ -74,10 +75,11 @@ These were checked and do not currently require new product scope:
 
 ## 6. Recommended Next Order
 
-1. Owner confirms target Supabase environment for migrations `0014`, `0015`, and `0016`.
-2. Apply/verify `0014`, `0015`, and `0016` in that environment.
-3. Record Supabase plan/PITR/export storage decisions.
-4. Decide pilot offer terms.
-5. Add 10 real prospects to Founder CRM.
-6. Run one final demo dry run using the real demo business details.
-7. Use the domain deployment runbook and production QA checklist only after the production environment target is decided.
+1. Re-run the local validation gates after any final code/doc hardening: lint, typecheck, unit tests, build, and local RLS if `DATABASE_URL` is available.
+2. Verify production migrations `0001` through `0017` by inspecting key functions, RLS, grants, `admin_action_log`, and `businesses.preferred_language` in `bizpilot-production`.
+3. Run one production auth smoke pass on `https://bizpilo.com`: signup confirmation, sign-in, forgot password, reset password, invalid/expired reset link.
+4. Run one production FR smoke pass: business preferred language `fr-CA`, public quote, validation error, success page, and AI drafts.
+5. Record Supabase plan/PITR/export storage decisions.
+6. Decide pilot offer terms.
+7. Add 10 real prospects to Founder CRM.
+8. Run one final demo dry run using the real demo business details.

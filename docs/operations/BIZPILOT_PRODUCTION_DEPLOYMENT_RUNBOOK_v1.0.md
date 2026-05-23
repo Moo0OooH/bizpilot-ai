@@ -35,6 +35,7 @@ Required migration verification:
 0014_cleaning_template_contact_address_fields.sql applied
 0015_business_access_plan_and_admin_log.sql applied
 0016_public_submission_minimum_submit_age_reason.sql applied
+0017_business_preferred_language.sql applied
 RLS helper functions current
 explicit grants reviewed
 Security Advisor reviewed
@@ -64,7 +65,7 @@ During the Vercel-domain transition, keep the current Vercel production URL in S
 1. Owner confirms the exact target Supabase project.
 2. Take or verify the latest backup/export according to the backup strategy.
 3. Apply migrations in numeric order only. Do not rename or skip files.
-4. Verify `0014`, `0015`, and `0016` with SQL inspection in the target project.
+4. Verify `0014`, `0015`, `0016`, and `0017` with SQL inspection in the target project.
 5. Run the RLS suite against a local production-equivalent database or restored staging clone. Do not run `pnpm test:rls` against the managed production database.
 6. Review Supabase Security Advisor and Performance Advisor before sharing the live quote link.
 

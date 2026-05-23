@@ -16,7 +16,9 @@ This phase does not add an external logging provider, database audit table, anal
 
 ## Current Audit Summary
 
-The current codebase has no active `console.log`, `console.info`, `console.warn`, or `console.error` usage in application, server, library, test, or script paths.
+Runtime application code should use `safeLogger` for server-side operational diagnostics. Direct `console.log`, `console.info`, `console.warn`, or `console.error` calls should not appear in app, component, library, action, service, or repository paths outside the logger implementation.
+
+CLI scripts and test runners may use console output for command-line progress and test results, provided they still avoid secrets and raw private payloads.
 
 Existing event-like persistence is limited to current product behavior:
 
@@ -68,6 +70,7 @@ Safe logs may include:
 - `leadId`
 - `submissionId`
 - `userId`
+- `domain` for email-domain-only auth diagnostics, never a full email address
 - `status`
 - `count`
 - `isPublic`

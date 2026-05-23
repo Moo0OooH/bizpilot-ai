@@ -24,8 +24,12 @@ Checklist before sending the live domain to pilot prospects.
 
 ## Auth
 - sign-up works
+- confirmation email opens `/auth/callback` and creates the owner workspace
 - sign-in works
 - sign-out works
+- forgot-password sends a recovery email without revealing whether the email exists
+- password reset opens `/auth/reset-password`, updates the password, clears the recovery session, and returns to sign-in
+- expired or reused reset links show a safe error
 - protected dashboard redirects correctly
 - logged-in user reaches dashboard
 
@@ -45,6 +49,13 @@ Checklist before sending the live domain to pilot prospects.
 - consent captured if required
 - success page shown
 - owner can see submitted lead
+
+## Language
+- EN/FR switch appears on public and auth surfaces
+- business preferred language persists for quote pages
+- quote form, validation errors, and success page render in the selected business language
+- AI summary, reply draft, follow-up draft, and missing-info guidance use the business preferred language
+- custom owner field labels are preserved when language changes
 
 ## AI
 - AI summary generated server-side

@@ -189,3 +189,40 @@ Do not add booking, billing automation, SMS/WhatsApp automation, AI auto-send, s
   - provide 10 real cleaning business prospects,
   - approve pilot price/setup fee/trial/refund handling,
   - provide/approve production demo business details and final homepage stop point.
+
+## Phase 18 Production Auth / Language / Readiness Reconciliation
+
+- Date: 2026-05-23
+- Operator: Codex
+- Scope: Final Phase 18 hardening and documentation truth sync only; no booking, invoices, calendar sync, SMS/WhatsApp/Instagram automation, AI auto-send, full CRM, mobile app, advanced analytics, or new product scope added.
+- Current production-facing auth state:
+  - signup uses `/auth/callback`,
+  - password recovery uses `/auth/reset-password`,
+  - recovery sessions are cleared after password update,
+  - reset links with invalid/expired/reused codes show safe errors,
+  - password reset rate limits show safe non-enumerating copy.
+- Current language state:
+  - global EN/FR switching exists,
+  - `0017_business_preferred_language.sql` adds business preferred language support,
+  - public quote, success, auth, homepage, and AI draft guidance have MVP-safe Canadian French support,
+  - future customer-facing copy changes should go through the shared dictionary so languages stay synchronized.
+- Owner reported production migrations `0001` through `0017` were successfully applied to `bizpilot-production`; this local pass still treats independent SQL verification as a remaining ops check.
+- Reconciled Phase 18 docs/checklists so stale "0014-0016 not applied" and old homepage-language-blocker statements no longer read as current truth.
+- Tightened runtime server diagnostics by moving auth/config action logs through `safeLogger` with email-domain-only auth metadata and no raw provider error objects, tokens, passwords, cookies, headers, or secrets.
+- Verification on 2026-05-23:
+  - `pnpm lint` passed.
+  - `pnpm typecheck` passed.
+  - `pnpm test:unit` passed 19/19, with existing Node module-type warnings only.
+  - `pnpm build` passed.
+  - `pnpm test:rls` was blocked because `DATABASE_URL` is not set in this shell; the runner exited before connecting, and no RLS assertion failure was observed.
+  - Git hygiene sweep found no tracked zip/rar/archive/artifact/browser-profile/screenshot/secret files other than safe `.env.example` placeholders.
+  - `.gitignore` covers env files, archives, temp files, generated artifacts, browser profiles, screenshots, Vercel state, and Supabase temp files.
+  - Tracked source search found server-only keys only in `.env.example`, `lib/env/server-env.ts`, `lib/supabase/server.ts`, and server AI provider wiring; no client-side service-role/OpenAI key usage was found.
+- Remaining before live outreach:
+  - run one production signup confirmation smoke test on `https://bizpilo.com`,
+  - run one production password reset smoke test after Supabase email rate limits clear,
+  - run one `fr-CA` business quote/success/AI smoke test,
+  - independently verify production functions/RLS/grants/admin log/preferred-language columns,
+  - decide Supabase plan/PITR/export/restore posture,
+  - decide pilot price/setup/trial/refund/cancellation terms,
+  - add 10 real cleaning business prospects and run the founder demo/outreach loop.
