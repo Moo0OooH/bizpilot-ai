@@ -48,7 +48,9 @@ Rules:
 - Confirm public quote submission path only exposes public-safe data.
 - Set Supabase Auth Site URL to `https://bizpilo.com` after SSL is active.
 - Add Supabase Auth Redirect URLs:
+  - `https://bizpilo.com/auth/callback`
   - `https://bizpilo.com/auth/reset-password`
+  - `https://bizpilo.com/auth/check-email`
   - the current Vercel production URL `/auth/reset-password` until the domain cutover is fully verified
 
 ## Step 5 — DNS Connection

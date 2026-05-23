@@ -56,8 +56,8 @@ function redirectWithSignUpError(message: string): never {
   redirect(`/auth/sign-up?error=${encodeURIComponent(message)}`);
 }
 
-function redirectWithSignInNotice(message: string): never {
-  redirect(`/auth/sign-in?notice=${encodeURIComponent(message)}`);
+function redirectWithCheckEmailNotice(message: string): never {
+  redirect(`/auth/check-email?notice=${encodeURIComponent(message)}`);
 }
 
 function redirectWithForgotPasswordError(message: string): never {
@@ -552,11 +552,11 @@ export async function signUpAction(formData: FormData): Promise<never> {
   }
 
   if (existingIdentityResponse) {
-    redirectWithSignInNotice(SIGN_UP_CHECK_EMAIL_NOTICE);
+    redirectWithCheckEmailNotice(SIGN_UP_CHECK_EMAIL_NOTICE);
   }
 
   if (!sessionCreated) {
-    redirectWithSignInNotice(SIGN_UP_CHECK_EMAIL_NOTICE);
+    redirectWithCheckEmailNotice(SIGN_UP_CHECK_EMAIL_NOTICE);
   }
 
   redirect("/dashboard");

@@ -46,7 +46,13 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
   const copy = getBizPilotCopy(language).auth;
 
   return (
-    <AuthShell copy={copy} footer={copy.createWorkspaceFooter} language={language} redirectPath="/auth/sign-up">
+    <AuthShell
+      copy={copy}
+      footer={copy.createWorkspaceFooter}
+      language={language}
+      maxWidthClassName="max-w-[650px]"
+      redirectPath="/auth/sign-up"
+    >
       <AuthCard
         subtitle={copy.createWorkspaceSubtitle}
         title={copy.createWorkspaceTitle}

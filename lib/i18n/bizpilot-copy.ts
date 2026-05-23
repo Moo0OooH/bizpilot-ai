@@ -153,6 +153,7 @@ type AuthCopy = Readonly<{
   resetPasswordFooter: string;
   resetPasswordSubtitle: string;
   resetPasswordTitle: string;
+  resetPreparing: string;
   resetRequestPending: string;
   resetRequestSubmit: string;
   signIn: string;
@@ -341,6 +342,7 @@ const englishCopy: BizPilotCopy = {
     resetPasswordSubtitle:
       "Choose a new password for your owner workspace.",
     resetPasswordTitle: "Set new password",
+    resetPreparing: "Preparing your secure reset session...",
     resetRequestPending: "Sending instructions...",
     resetRequestSubmit: "Send reset instructions",
     signIn: "Sign in",
@@ -726,6 +728,7 @@ const frenchCopy: BizPilotCopy = {
     resetPasswordSubtitle:
       "Choisissez un nouveau mot de passe pour votre espace proprietaire.",
     resetPasswordTitle: "Definir un nouveau mot de passe",
+    resetPreparing: "Preparation de votre session de reinitialisation...",
     resetRequestPending: "Envoi des instructions...",
     resetRequestSubmit: "Envoyer les instructions",
     signIn: "Connexion",

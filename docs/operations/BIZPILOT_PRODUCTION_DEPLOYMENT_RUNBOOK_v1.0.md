@@ -78,7 +78,10 @@ During the Vercel-domain transition, keep the current Vercel production URL in S
 6. Wait for Vercel domain status to show Ready and SSL active.
 7. Set `NEXT_PUBLIC_APP_URL=https://bizpilo.com`.
 8. Set Supabase Auth Site URL to `https://bizpilo.com`.
-9. Add Supabase Auth Redirect URL `https://bizpilo.com/auth/reset-password`.
+9. Add Supabase Auth Redirect URLs:
+   - `https://bizpilo.com/auth/callback`
+   - `https://bizpilo.com/auth/reset-password`
+   - `https://bizpilo.com/auth/check-email`
 10. Redeploy production.
 11. Re-run smoke tests after DNS propagation.
 

@@ -28,6 +28,7 @@ type AuthShellProps = Readonly<{
   copy: BizPilotCopy["auth"];
   footer?: string;
   language: string;
+  maxWidthClassName?: string;
   redirectPath: string;
 }>;
 
@@ -79,6 +80,7 @@ export function AuthShell({
   copy,
   footer,
   language,
+  maxWidthClassName = "max-w-[460px]",
   redirectPath,
 }: AuthShellProps) {
   return (
@@ -90,7 +92,7 @@ export function AuthShell({
         color: "var(--biz-page-text)",
       }}
     >
-      <div className="mb-5 flex w-full max-w-[460px] items-center justify-between gap-3">
+      <div className={`mb-5 flex w-full ${maxWidthClassName} items-center justify-between gap-3`}>
         <BrandMark copy={copy} />
         <div className="flex shrink-0 items-center gap-2">
           <form
@@ -126,11 +128,11 @@ export function AuthShell({
         </div>
       </div>
 
-      <section className="w-full max-w-[460px]">{children}</section>
+      <section className={`w-full ${maxWidthClassName}`}>{children}</section>
 
       {footer ? (
         <p
-          className="mt-4 max-w-[460px] text-center text-[11px] leading-5"
+          className={`mt-4 ${maxWidthClassName} text-center text-[11px] leading-5`}
           style={{ color: "var(--biz-page-text-muted)" }}
         >
           {footer}
@@ -215,7 +217,7 @@ export function AuthFieldIcon({ type }: AuthFieldIconProps) {
 }
 
 export const authInputClassName =
-  "h-11 w-full rounded-[12px] border pl-9 pr-3 text-[14px] outline-none transition placeholder:opacity-50 focus:border-[#17D492] focus:ring-4 focus:ring-[rgba(23,212,146,0.15)]";
+  "h-11 w-full rounded-[12px] border pl-9 pr-12 text-[14px] outline-none transition placeholder:opacity-50 focus:border-[#17D492] focus:ring-4 focus:ring-[rgba(23,212,146,0.15)]";
 
 export const authLabelClassName =
   "grid gap-1.5 text-[12px] font-bold uppercase tracking-[0.08em]";
