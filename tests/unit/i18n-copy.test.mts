@@ -16,6 +16,8 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import {
+  BIZPILOT_COPY_SOURCE_LANGUAGE,
+  bizPilotCopyNamespaces,
   getBizPilotCopy,
   getQuoteOptionLabel,
   isSafePublicIntakeMessage,
@@ -24,13 +26,82 @@ import {
 } from "../../lib/i18n/bizpilot-copy.ts";
 import { languageDefinitions, supportedLanguages } from "../../lib/i18n/language.ts";
 
+type CopyShape =
+  | string
+  | CopyShape[]
+  | {
+      [key: string]: CopyShape;
+    };
+
+function sortedEntries(value: Record<string, unknown>): [string, unknown][] {
+  return Object.entries(value).sort(([left], [right]) =>
+    left.localeCompare(right),
+  );
+}
+
+function copyShape(value: unknown): CopyShape {
+  if (Array.isArray(value)) {
+    return value.map(copyShape);
+  }
+
+  if (typeof value === "function") {
+    return `function:${value.length}`;
+  }
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      sortedEntries(value as Record<string, unknown>).map(([key, item]) => [
+        key,
+        copyShape(item),
+      ]),
+    );
+  }
+
+  return value === null ? "null" : typeof value;
+}
+
 describe("BizPilot language copy", () => {
   it("keeps supported languages in the central registry", () => {
-    assert.deepEqual(supportedLanguages, ["en", "fr-CA"]);
+    assert.equal(BIZPILOT_COPY_SOURCE_LANGUAGE, "en");
+    assert.equal(new Set(supportedLanguages).size, supportedLanguages.length);
+    assert.equal(supportedLanguages.includes("en"), true);
+    assert.equal(supportedLanguages.includes("fr-CA"), true);
+    assert.equal(languageDefinitions.en.nativeLabel, "English");
     assert.equal(languageDefinitions["fr-CA"].nativeLabel, "Français (Canada)");
     assert.equal(
       languageDefinitions["fr-CA"].aiInstruction,
       "Canadian French for a Quebec cleaning business",
+    );
+  });
+
+  it("keeps every supported language structurally synced with source copy", () => {
+    const sourceCopy = getBizPilotCopy(BIZPILOT_COPY_SOURCE_LANGUAGE);
+    const sourceShape = copyShape(sourceCopy);
+
+    for (const language of supportedLanguages) {
+      assert.deepEqual(
+        copyShape(getBizPilotCopy(language)),
+        sourceShape,
+        `${language} copy must match the ${BIZPILOT_COPY_SOURCE_LANGUAGE} copy shape.`,
+      );
+    }
+  });
+
+  it("keeps public copy namespaces explicit and complete", () => {
+    assert.deepEqual(
+      [...bizPilotCopyNamespaces],
+      [
+        "quotePage",
+        "quoteForm",
+        "quoteSuccess",
+        "quoteFields",
+        "optionLabels",
+        "intakeErrors",
+        "leadRules",
+        "aiFallback",
+        "demo",
+        "missingInfoLabels",
+      ],
     );
   });
 

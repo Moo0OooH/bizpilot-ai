@@ -19,6 +19,8 @@ BizPilot keeps MVP language support in a small, typed dictionary instead of a fu
 ## Guardrails
 
 - Do not branch on language in random UI files when a dictionary key is enough.
+- Keep English as the source copy shape. `tests/unit/i18n-copy.test.mts` compares every supported language against that source shape so missing keys, extra keys, mismatched arrays, and mismatched function arity fail in unit tests.
+- When English source copy changes, update every supported language in the same diff before merging.
 - Do not translate customer-provided text.
 - AI drafts must stay owner-reviewed and manual-send only in every language.
 - Public validation errors must remain safe and non-sensitive.

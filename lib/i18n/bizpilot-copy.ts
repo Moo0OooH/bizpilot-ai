@@ -155,6 +155,21 @@ export type BizPilotCopy = Readonly<{
   }>;
 }>;
 
+export const BIZPILOT_COPY_SOURCE_LANGUAGE = DEFAULT_LANGUAGE;
+
+export const bizPilotCopyNamespaces = [
+  "quotePage",
+  "quoteForm",
+  "quoteSuccess",
+  "quoteFields",
+  "optionLabels",
+  "intakeErrors",
+  "leadRules",
+  "aiFallback",
+  "demo",
+  "missingInfoLabels",
+] as const satisfies readonly (keyof BizPilotCopy)[];
+
 const englishCopy: BizPilotCopy = {
   aiFallback: {
     areaFallback: "your area",
