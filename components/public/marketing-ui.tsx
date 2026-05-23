@@ -191,7 +191,7 @@ export function MarketingShell({
   className = "",
 }: Readonly<{ children: ReactNode; className?: string }>) {
   return (
-    <div className={`mx-auto w-full max-w-[1200px] px-5 sm:px-6 ${className}`}>
+    <div className={`mx-auto w-full max-w-[1200px] px-4 sm:px-6 ${className}`}>
       {children}
     </div>
   );
@@ -257,7 +257,7 @@ export function MarketingBadge({
 
   return (
     <span
-      className="inline-flex max-w-full shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1 text-[11px] font-black uppercase leading-none"
+      className="inline-flex max-w-full shrink-0 items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-black uppercase leading-tight"
       style={{
         backgroundColor: selected.bg,
         borderColor: selected.border,
@@ -286,7 +286,7 @@ export function MarketingButton({
   variant?: ButtonVariant;
 }>) {
   const base =
-    "inline-flex h-11 max-w-full items-center justify-center gap-3 whitespace-nowrap rounded-[10px] px-5 text-[13px] font-black transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(23,212,146,0.28)]";
+    "inline-flex min-h-11 max-w-full min-w-0 items-center justify-center gap-3 rounded-[10px] px-5 text-center text-[13px] font-black leading-tight transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(23,212,146,0.28)]";
 
   if (variant === "primary") {
     return (
@@ -322,7 +322,7 @@ export function MarketingButton({
 
   return (
     <Link
-      className={`inline-flex items-center justify-center whitespace-nowrap rounded-[10px] px-3 py-2 text-[13px] font-bold transition hover:bg-white/[0.05] ${className}`}
+      className={`inline-flex min-w-0 items-center justify-center rounded-[10px] px-3 py-2 text-center text-[13px] font-bold leading-tight transition hover:bg-white/[0.05] ${className}`}
       href={href}
       style={{ color: marketingTone.soft }}
     >
@@ -383,7 +383,7 @@ export function MarketingHeader({
       className="sticky top-0 z-40 border-b backdrop-blur-xl"
       style={{ backgroundColor: "rgba(5,11,18,0.82)", borderColor: marketingTone.border }}
     >
-      <nav className="mx-auto flex h-[58px] w-full max-w-[1200px] items-center justify-between gap-4 px-5 sm:px-6">
+      <nav className="mx-auto flex min-h-[58px] w-full max-w-[1200px] items-center justify-between gap-3 px-3 py-2 sm:px-6">
         <MarketingBrand subtitle={copy.brandSubtitle} />
         <div className="hidden items-center gap-2 md:flex">
           {navItems.map((item) => {
@@ -406,7 +406,7 @@ export function MarketingHeader({
             <form
               action={setInterfaceLanguageAction}
               aria-label={copy.languageLabel}
-              className="hidden h-10 items-center rounded-[10px] border p-1 min-[420px]:flex"
+              className="flex h-9 items-center rounded-[10px] border p-1 sm:h-10"
               style={{
                 backgroundColor: "rgba(255,255,255,0.035)",
                 borderColor: marketingTone.borderStrong,
@@ -419,7 +419,7 @@ export function MarketingHeader({
                 return (
                   <button
                     aria-pressed={selected}
-                    className="h-8 rounded-[8px] px-2.5 text-[11px] font-black transition"
+                    className="h-7 rounded-[8px] px-2 text-[10px] font-black transition sm:h-8 sm:px-2.5 sm:text-[11px]"
                     key={option}
                     name="language"
                     style={{
@@ -443,7 +443,7 @@ export function MarketingHeader({
           >
             {copy.signIn}
           </Link>
-          <MarketingButton className="h-10 px-3 text-[12px] sm:px-4 sm:text-[13px]" href="/auth/sign-up">
+          <MarketingButton className="h-9 px-2.5 text-[11px] sm:h-10 sm:px-4 sm:text-[13px]" href="/auth/sign-up">
             <span className="sm:hidden">{copy.startShort}</span>
             <span className="hidden sm:inline">{copy.startFull}</span>
           </MarketingButton>

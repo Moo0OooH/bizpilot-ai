@@ -87,55 +87,55 @@ function getBusinessProfileText(language: string) {
 
   return {
     accountEmailHelp: fr
-      ? "Courriel du compte - modifiez-le dans les reglages."
+      ? "Courriel du compte - modifiez-le dans les réglages."
       : "Account email - change it from Settings.",
     aiNotes: fr
-      ? "Zone de service et notes operationnelles"
+      ? "Zone de service et notes opérationnelles"
       : "Service area & operating notes",
     aiNotesDescription: fr
-      ? "Contexte qui aide le proprietaire et l'IA a preparer de meilleurs brouillons. Les garde-fous IA et FAQ restent dans Configuration."
+      ? "Contexte qui aide le propriétaire et l'IA à préparer de meilleurs brouillons. Les garde-fous IA et FAQ restent dans Configuration."
       : "Operating context that helps the owner and AI prepare better drafts. AI guardrails and FAQ details stay in Quote Setup.",
     business: fr ? "Entreprise" : "Business",
-    businessIdentity: fr ? "Identite de l'entreprise" : "Business identity",
+    businessIdentity: fr ? "Identité de l'entreprise" : "Business identity",
     businessIdentityDescription: fr
-      ? "Identite utilisee dans le tableau de bord, la page publique et le contexte des brouillons IA."
+      ? "Identité utilisée dans le tableau de bord, la page publique et le contexte des brouillons IA."
       : "Owner-facing identity used across the dashboard, public quote page, and AI draft context.",
     businessName: fr ? "Nom de l'entreprise" : "Business name",
     businessType: fr ? "Type d'entreprise" : "Business type",
     cleaning: fr ? "Nettoyage" : "Cleaning",
     description: fr
-      ? "Identite de l'entreprise et contexte operationnel. Cette section est separee de Configuration."
+      ? "Identité de l'entreprise et contexte opérationnel. Cette section est séparée de Configuration."
       : "Business identity and operating context. This is separate from Quote Setup.",
     futureDescription: fr
-      ? "Ces champs font partie du design approuve, mais ne sont pas encore relies a la base de donnees. Ils arriveront avec leur propre migration apres validation pilote."
+      ? "Ces champs font partie du design approuvé, mais ne sont pas encore reliés à la base de données. Ils arriveront avec leur propre migration après validation pilote."
       : "These fields are part of the approved index design but are not yet wired to a database column. They will land with their own migration after pilot validation.",
     futureFields: fr ? "Champs de feuille de route" : "Roadmap fields",
     languageHelp: fr
-      ? "Utilisee pour la page publique et la langue des brouillons IA."
+      ? "Utilisée pour la page publique et la langue des brouillons IA."
       : "Used for the public quote page and AI draft language.",
     logoUrl: fr ? "URL du logo" : "Logo URL",
     notInMvp: fr ? "Hors MVP" : "Not in MVP",
     oneAreaPerLine: fr
-      ? "Une zone par ligne. Utilise pour scorer les leads et expliquer la couverture."
+      ? "Une zone par ligne. Utilisée pour scorer les leads et expliquer la couverture."
       : "One area per line. Used to score leads and explain coverage.",
     openQuoteSetup: fr ? "Ouvrir Configuration" : "Open Quote Setup",
     ownerEmail: fr
-      ? "Courriel proprietaire (lecture seule)"
+      ? "Courriel propriétaire (lecture seule)"
       : "Owner email (read-only)",
-    preferredLanguage: fr ? "Langue preferee" : "Preferred language",
+    preferredLanguage: fr ? "Langue préférée" : "Preferred language",
     previewQuotePage: fr
-      ? "Apercu page de soumission"
+      ? "Aperçu page de soumission"
       : "Preview Quote Page",
     publicQuoteLink: fr ? "Lien public" : "Public quote link",
     publicSlug: fr ? "Slug public" : "Public slug",
     roadmapFields: fr
       ? [
-          ["Nom public proprietaire", "Phase 18B"],
-          ["Telephone proprietaire", "Phase 18B"],
+          ["Nom public propriétaire", "Phase 18B"],
+          ["Téléphone propriétaire", "Phase 18B"],
           ["Site web public", "Phase 18B"],
           ["Ville", "Phase 18B"],
           ["Province", "Phase 18B"],
-          ["Heures de reponse", "Phase 18B"],
+          ["Heures de réponse", "Phase 18B"],
         ]
       : [
           ["Owner display name", "Phase 18B"],
@@ -147,14 +147,14 @@ function getBusinessProfileText(language: string) {
         ],
     save: fr ? "Enregistrer le profil" : "Save Business Profile",
     saveNote: fr
-      ? "L'enregistrement conserve les changements d'identite. Les questions du formulaire se gerent dans Configuration."
+      ? "L'enregistrement conserve les changements d'identité. Les questions du formulaire se gèrent dans Configuration."
       : "Save persists identity changes. Quote-form questions are managed in Quote Setup.",
     serviceAreas: fr ? "Zones desservies" : "Service areas",
     templateName: fr
-      ? "Nom du modele de soumission"
+      ? "Nom du modèle de soumission"
       : "Custom quote template name",
     verticalHelp: fr
-      ? "La Phase 18A reste concentree sur le nettoyage. Les autres verticales restent verrouillees jusqu'a validation."
+      ? "La Phase 18A reste concentrée sur le nettoyage. Les autres verticales restent verrouillées jusqu'à validation."
       : "Phase 18A is cleaning-first. Other verticals are locked until the validation gate clears.",
   };
 }

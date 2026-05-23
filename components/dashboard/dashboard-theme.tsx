@@ -74,7 +74,7 @@ export function DashboardThemeFrame({
   return (
     <ThemeContext.Provider value={value}>
       <main
-        className={`${themeClass} dashboard-frame min-h-screen transition-colors lg:grid lg:grid-cols-[244px_minmax(0,1fr)]`}
+        className={`${themeClass} dashboard-frame min-h-screen min-w-0 overflow-x-hidden transition-colors lg:grid lg:grid-cols-[244px_minmax(0,1fr)]`}
       >
         {children}
       </main>
@@ -94,7 +94,7 @@ export function DashboardThemeSelector() {
   return (
     <div
       aria-label={labels.label}
-      className="hidden h-9 rounded-[11px] border border-[var(--dash-border-strong)] bg-[var(--dash-surface-elevated)] p-1 text-xs font-semibold shadow-sm sm:inline-flex"
+      className="inline-flex h-9 rounded-[11px] border border-[var(--dash-border-strong)] bg-[var(--dash-surface-elevated)] p-1 text-xs font-semibold shadow-sm"
       role="group"
     >
       {(["light", "dark"] as const).map((option) => (

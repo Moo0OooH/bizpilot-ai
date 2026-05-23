@@ -43,7 +43,7 @@ export default async function CheckEmailPage({
   const notice =
     params?.notice ??
     (isFrench
-      ? "Verifiez votre courriel pour confirmer votre compte."
+      ? "Vérifiez votre courriel pour confirmer votre compte."
       : "Check your email to confirm your account.");
 
   return (
@@ -51,7 +51,7 @@ export default async function CheckEmailPage({
       copy={copy}
       footer={
         isFrench
-          ? "Le lien de confirmation ouvre ensuite votre espace proprietaire."
+          ? "Le lien de confirmation ouvre ensuite votre espace propriétaire."
           : "The confirmation link opens your owner workspace when it is ready."
       }
       language={language}
@@ -60,10 +60,10 @@ export default async function CheckEmailPage({
       <AuthCard
         subtitle={
           isFrench
-            ? "Nous avons envoye les prochaines etapes si ce courriel peut creer un espace BizPilot."
+            ? "Nous avons envoyé les prochaines étapes si ce courriel peut créer un espace BizPilot."
             : "We sent the next steps if this email can create a BizPilot workspace."
         }
-        title={isFrench ? "Verifiez votre courriel" : "Check your email"}
+        title={isFrench ? "Vérifiez votre courriel" : "Check your email"}
       >
         <p
           aria-live="polite"
@@ -96,7 +96,7 @@ export default async function CheckEmailPage({
               color: "var(--biz-page-text)",
             }}
           >
-            {isFrench ? "Creer avec un autre courriel" : "Use another email"}
+            {isFrench ? "Créer avec un autre courriel" : "Use another email"}
           </Link>
         </div>
       </AuthCard>

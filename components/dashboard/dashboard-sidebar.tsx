@@ -18,9 +18,10 @@
  * ============================================================
  */
 
-import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 
 import { CopyButton } from "./copy-button";
 import { StatusBadge } from "./dashboard-ui";
@@ -51,19 +52,19 @@ function getOwnerNavigation(copy: BizPilotCopy["dashboard"]): NavigationGroup[] 
       items: [
         {
           href: "/dashboard",
-          icon: "⌂",
+          icon: "O",
           label: copy.nav.overview,
           match: (pathname) => pathname === "/dashboard",
         },
         {
           href: "/dashboard/leads",
-          icon: "◎",
+          icon: "L",
           label: copy.nav.leads,
           match: (pathname) => pathname.startsWith("/dashboard/leads"),
         },
         {
           href: "/dashboard/configuration",
-          icon: "▣",
+          icon: "Q",
           label: copy.nav.quoteSetup,
           match: (pathname) =>
             pathname === "/dashboard/configuration" ||
@@ -71,13 +72,13 @@ function getOwnerNavigation(copy: BizPilotCopy["dashboard"]): NavigationGroup[] 
         },
         {
           href: "/dashboard/business-profile",
-          icon: "◈",
+          icon: "B",
           label: copy.nav.businessProfile,
           match: (pathname) => pathname === "/dashboard/business-profile",
         },
         {
           href: "/dashboard/settings",
-          icon: "⚙",
+          icon: "S",
           label: copy.nav.settings,
           match: (pathname) => pathname === "/dashboard/settings",
         },
@@ -102,8 +103,8 @@ function NavIcon({
     <span
       className={
         active
-          ? "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[9px] bg-[rgba(20,184,166,0.22)] text-[13px] font-black"
-          : "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[9px] bg-[rgba(148,163,184,0.09)] text-[13px] font-black"
+          ? "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[9px] bg-[rgba(20,184,166,0.22)] text-[11px] font-black"
+          : "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[9px] bg-[rgba(148,163,184,0.09)] text-[11px] font-black"
       }
     >
       {children}
@@ -121,13 +122,13 @@ function MobileNavLink({
     <Link
       className={
         isActive
-          ? "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[12px] bg-[var(--dash-primary-soft)] px-2 py-1.5 text-[var(--dash-primary)]"
-          : "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[12px] px-2 py-1.5 text-[var(--dash-text-muted)]"
+          ? "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[12px] bg-[var(--dash-primary-soft)] px-1.5 py-1.5 text-[var(--dash-primary)]"
+          : "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[12px] px-1.5 py-1.5 text-[var(--dash-text-muted)]"
       }
       href={item.href}
     >
-      <span className="text-[12px] font-black">{item.icon}</span>
-      <span className="max-w-full truncate text-[10px] font-bold">
+      <span className="text-[11px] font-black">{item.icon}</span>
+      <span className="max-w-full truncate text-[10px] font-bold leading-none">
         {item.label}
       </span>
     </Link>
@@ -143,7 +144,9 @@ export function DashboardSidebar({
   const pathname = usePathname();
   const quotePath = `/quote/${businessSlug}`;
   const navigation = getOwnerNavigation(copy);
-  const mobileNavigation = navigation.flatMap((group) => group.items).slice(0, 5);
+  const mobileNavigation = navigation
+    .flatMap((group) => group.items)
+    .slice(0, 5);
 
   return (
     <>
@@ -173,10 +176,15 @@ export function DashboardSidebar({
               </p>
               <div className="grid gap-1.5">
                 {group.items.map((item) => {
-                  const isActive = item.match?.(pathname) ?? pathname === item.href;
+                  const isActive =
+                    item.match?.(pathname) ?? pathname === item.href;
 
                   return (
-                    <Link className={navClass(isActive)} href={item.href} key={item.href}>
+                    <Link
+                      className={navClass(isActive)}
+                      href={item.href}
+                      key={item.href}
+                    >
                       <NavIcon active={isActive}>{item.icon}</NavIcon>
                       <span className="truncate">{item.label}</span>
                     </Link>

@@ -241,19 +241,19 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
     <section className="px-0 pb-5 pt-6">
       <MarketingShell>
         <div className="grid min-w-0 items-center gap-7 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
-          <div>
+          <div className="min-w-0">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
-            <h1 className="mt-5 max-w-[560px] text-[34px] font-black leading-[1.08] sm:text-[38px] xl:text-[40px]" style={{ color: marketingTone.text }}>
+            <h1 className="mt-5 max-w-[14ch] text-[30px] font-black leading-[1.08] min-[380px]:text-[34px] sm:max-w-[560px] sm:text-[38px] xl:text-[40px]" style={{ color: marketingTone.text }}>
               {copy.hero.title}
             </h1>
-            <p className="mt-4 max-w-[540px] text-[14.5px] leading-7" style={{ color: marketingTone.soft }}>
+            <p className="mt-4 max-w-[34ch] text-[14.5px] leading-7 sm:max-w-[540px]" style={{ color: marketingTone.soft }}>
               {copy.hero.body}
             </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <MarketingButton className="px-4" href="/auth/sign-up">
+            <div className="mt-6 grid gap-3 min-[430px]:flex min-[430px]:flex-wrap">
+              <MarketingButton className="w-full px-4 min-[430px]:w-auto" href="/auth/sign-up">
                 {copy.hero.primaryCta} <MarketingIcon name="arrow" />
               </MarketingButton>
-              <MarketingButton className="px-4" href="#recovery-flow" variant="secondary">
+              <MarketingButton className="w-full px-4 min-[430px]:w-auto" href="#recovery-flow" variant="secondary">
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
@@ -394,16 +394,16 @@ function ProblemSection({ copy }: Readonly<{ copy: HomeCopy["problem"] }>) {
   return (
     <section className="px-5 py-7 sm:px-6" id="why">
       <MarketingShell>
-        <div className="grid gap-7 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-          <div>
+        <div className="grid min-w-0 gap-7 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
+          <div className="min-w-0">
             <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
               {copy.eyebrow}
             </p>
-            <h2 className="mt-3 max-w-[520px] text-[30px] font-black leading-[1.1] sm:text-[34px]" style={{ color: marketingTone.text }}>
+            <h2 className="mt-3 max-w-[14ch] text-[26px] font-black leading-[1.1] sm:max-w-[520px] sm:text-[34px]" style={{ color: marketingTone.text }}>
               {copy.titlePrefix}{" "}
               <span style={{ color: marketingTone.emerald }}>{copy.titleHighlight}</span>
             </h2>
-            <p className="mt-4 max-w-[50ch] text-[14.5px] leading-7" style={{ color: marketingTone.soft }}>
+            <p className="mt-4 max-w-[34ch] text-[14.5px] leading-7 sm:max-w-[50ch]" style={{ color: marketingTone.soft }}>
               {copy.body}
             </p>
           </div>
@@ -485,7 +485,7 @@ function RecoveryFlowSection({
           }}
         >
           <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <h2 className="max-w-[760px] text-[30px] font-black leading-[1.12]" style={{ color: marketingTone.text }}>
+            <h2 className="max-w-[760px] text-[26px] font-black leading-[1.12] sm:text-[30px]" style={{ color: marketingTone.text }}>
               {copy.title}
             </h2>
             <MarketingBadge toneName="blue">{copy.badge}</MarketingBadge>
@@ -666,7 +666,7 @@ function CommandCenterSection({
               <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
                 {copy.eyebrow}
               </p>
-              <h2 className="mt-3 text-[30px] font-black leading-[1.12] sm:text-[34px]" style={{ color: marketingTone.text }}>
+              <h2 className="mt-3 text-[26px] font-black leading-[1.12] sm:text-[34px]" style={{ color: marketingTone.text }}>
                 {copy.title}
               </h2>
             </div>
@@ -721,7 +721,7 @@ function BeforeAfterSection({
 
             <div className="flex justify-center">
               <div
-                className="flex h-20 w-20 items-center justify-center rounded-full border text-[28px]"
+                className="flex h-14 w-14 items-center justify-center rounded-full border text-[22px] sm:h-20 sm:w-20 sm:text-[28px]"
                 style={{
                   background: "linear-gradient(135deg, rgba(56,189,248,0.18), rgba(246,184,75,0.10))",
                   borderColor: "rgba(148,203,226,0.24)",
@@ -855,7 +855,7 @@ function FinalCtaSection({ copy }: Readonly<{ copy: HomeCopy["finalCta"] }>) {
         >
           <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,390px)]">
             <div className="min-w-0">
-              <h2 className="max-w-[620px] text-[30px] font-black leading-[1.12] sm:text-[36px]" style={{ color: marketingTone.text }}>
+              <h2 className="max-w-[620px] text-[26px] font-black leading-[1.12] sm:text-[36px]" style={{ color: marketingTone.text }}>
                 {copy.title}
               </h2>
               <p className="mt-5 max-w-[640px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>

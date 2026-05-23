@@ -14,6 +14,8 @@
  */
 
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+
 import {
   MarketingBadge,
   MarketingButton,
@@ -27,6 +29,16 @@ import {
   marketingBackground,
   marketingTone,
 } from "@/components/public/marketing-ui";
+import { getHomeCopy } from "@/lib/i18n/home-copy";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  readSupportedLanguage,
+} from "@/lib/i18n/language";
+import {
+  getPricingCopy,
+  type PricingCopy,
+  type PricingPlanCopy,
+} from "@/lib/i18n/pricing-copy";
 
 export const metadata: Metadata = {
   title: "Pricing - BizPilot AI",
@@ -34,90 +46,31 @@ export const metadata: Metadata = {
     "Founder-led pricing for cleaning businesses that want a done-for-you quote recovery system with owner-reviewed AI drafts.",
 };
 
-type Plan = Readonly<{
-  cta: string;
-  description: string;
-  features: ReadonlyArray<string>;
-  monthly: string;
-  name: string;
-  recommended?: boolean;
-  setup: string;
-}>;
-
-const plans: ReadonlyArray<Plan> = [
-  {
-    cta: "Start founder pilot",
-    description:
-      "For the first cleaning businesses validating the quote recovery workflow with founder-led setup and manual support.",
-    features: [
-      "14-day pilot workflow",
-      "Founder-led setup",
-      "Public quote page",
-      "Lead recovery queue",
-      "AI summary",
-      "AI reply drafts you review",
-      "AI follow-up drafts",
-      "Manual copy/send only",
-    ],
-    monthly: "14-day pilot",
-    name: "Founder Pilot",
-    recommended: true,
-    setup: "manual offer",
-  },
-  {
-    cta: "Choose Starter",
-    description:
-      "For an owner who wants one clean quote link, one lead workspace, and basic owner-reviewed AI drafts.",
-    features: [
-      "One quote page",
-      "Lead workspace",
-      "Basic AI drafts",
-      "Manual follow-up visibility",
-      "Basic branding",
-      "Founder setup guidance",
-    ],
-    monthly: "$49/mo",
-    name: "Starter",
-    setup: "$199 setup",
-  },
-  {
-    cta: "Choose Pro",
-    description:
-      "For a cleaning business that wants stronger branding, deeper draft tuning, and priority setup support.",
-    features: [
-      "Everything in Starter",
-      "Stronger branded quote page",
-      "Reply style and FAQ tuning",
-      "Follow-up draft tuning",
-      "Better lead organization",
-      "Priority setup",
-      "Simple usage insights",
-    ],
-    monthly: "$79/mo",
-    name: "Pro",
-    setup: "$299 setup",
-  },
-];
-
-function PricingHero() {
+function PricingHero({ copy }: Readonly<{ copy: PricingCopy["hero"] }>) {
   return (
     <section className="px-5 py-14 sm:px-6">
       <MarketingShell>
-        <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <MarketingBadge>Founder pilot pricing</MarketingBadge>
-            <h1 className="mt-6 max-w-[680px] text-[46px] font-black leading-[1.08]" style={{ color: marketingTone.text }}>
-              Start with one workflow that can recover real cleaning jobs.
+        <div className="grid min-w-0 items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+          <div className="min-w-0">
+            <MarketingBadge>{copy.badge}</MarketingBadge>
+            <h1
+              className="mt-6 max-w-[15ch] text-[32px] font-black leading-[1.08] sm:max-w-[680px] sm:text-[40px] lg:text-[46px]"
+              style={{ color: marketingTone.text }}
+            >
+              {copy.title}
             </h1>
-            <p className="mt-5 max-w-[650px] text-[17px] leading-8" style={{ color: marketingTone.soft }}>
-              BizPilot is sold as a done-for-you quote recovery system: setup, quote link, organized leads, owner-reviewed AI drafts, and follow-up visibility. No auto-send, no booking system, no bloated CRM.
+            <p
+              className="mt-5 max-w-[34ch] text-[17px] leading-8 sm:max-w-[650px]"
+              style={{ color: marketingTone.soft }}
+            >
+              {copy.body}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <MarketingButton href="/auth/sign-up">
-                Start founder pilot <MarketingIcon name="arrow" />
+            <div className="mt-8 grid gap-3 min-[430px]:flex min-[430px]:flex-wrap">
+              <MarketingButton className="w-full min-[430px]:w-auto" href="/auth/sign-up">
+                {copy.primaryCta} <MarketingIcon name="arrow" />
               </MarketingButton>
-              <MarketingButton href="/#recovery-flow" variant="secondary">
-                See workflow
+              <MarketingButton className="w-full min-[430px]:w-auto" href="/#recovery-flow" variant="secondary">
+                {copy.secondaryCta}
               </MarketingButton>
             </div>
           </div>
@@ -130,19 +83,23 @@ function PricingHero() {
               borderColor: "rgba(45,212,191,0.24)",
             }}
           >
-            <p className="text-[12px] font-black uppercase" style={{ color: marketingTone.teal }}>
-              Pilot promise
+            <p
+              className="text-[12px] font-black uppercase"
+              style={{ color: marketingTone.teal }}
+            >
+              {copy.promise.eyebrow}
             </p>
-            <h2 className="mt-4 text-[31px] font-black leading-[1.14]" style={{ color: marketingTone.text }}>
-              You stay in control of every customer message.
+            <h2
+              className="mt-4 max-w-[16ch] text-[26px] font-black leading-[1.14] sm:max-w-none sm:text-[31px]"
+              style={{ color: marketingTone.text }}
+            >
+              {copy.promise.title}
             </h2>
-            <div className="mt-6 grid gap-3 text-[14px]" style={{ color: marketingTone.soft }}>
-              {[
-                "Owner reviews every AI draft",
-                "Nothing sends automatically",
-                "No invented prices or availability",
-                "Setup is guided by the founder",
-              ].map((item) => (
+            <div
+              className="mt-6 grid gap-3 text-[14px]"
+              style={{ color: marketingTone.soft }}
+            >
+              {copy.promise.bullets.map((item) => (
                 <span className="flex items-center gap-3" key={item}>
                   <span style={{ color: marketingTone.teal }}>
                     <MarketingIcon name="check" />
@@ -158,7 +115,10 @@ function PricingHero() {
   );
 }
 
-function PlanCard({ plan }: Readonly<{ plan: Plan }>) {
+function PlanCard({
+  plan,
+  recommendedLabel,
+}: Readonly<{ plan: PricingPlanCopy; recommendedLabel: string }>) {
   return (
     <MarketingCard
       className="relative flex h-full flex-col p-6"
@@ -174,34 +134,53 @@ function PlanCard({ plan }: Readonly<{ plan: Plan }>) {
     >
       {plan.recommended ? (
         <span
-          className="absolute right-5 top-5 rounded-full border px-3 py-1 text-[11px] font-black uppercase"
+          className="mb-4 inline-flex w-fit rounded-full border px-3 py-1 text-[11px] font-black uppercase sm:absolute sm:right-5 sm:top-5 sm:mb-0"
           style={{
             backgroundColor: "rgba(45,212,191,0.12)",
             borderColor: "rgba(45,212,191,0.30)",
             color: marketingTone.teal,
           }}
         >
-          Recommended
+          {recommendedLabel}
         </span>
       ) : null}
-      <p className="text-[13px] font-black uppercase" style={{ color: marketingTone.muted }}>
+      <p
+        className="text-[13px] font-black uppercase"
+        style={{ color: marketingTone.muted }}
+      >
         {plan.name}
       </p>
       <div className="mt-5 flex flex-wrap items-end gap-x-3 gap-y-1">
-        <span className="text-[40px] font-black leading-none" style={{ color: marketingTone.text }}>
+        <span
+          className="text-[40px] font-black leading-none"
+          style={{ color: marketingTone.text }}
+        >
           {plan.monthly}
         </span>
-        <span className="pb-1 text-[14px] font-bold" style={{ color: marketingTone.muted }}>
+        <span
+          className="pb-1 text-[14px] font-bold"
+          style={{ color: marketingTone.muted }}
+        >
           {plan.setup}
         </span>
       </div>
-      <p className="mt-5 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
+      <p
+        className="mt-5 text-[14px] leading-7"
+        style={{ color: marketingTone.soft }}
+      >
         {plan.description}
       </p>
       <ul className="mt-6 grid gap-3">
         {plan.features.map((feature) => (
-          <li className="flex items-start gap-3 text-[14px] leading-6" key={feature} style={{ color: marketingTone.soft }}>
-            <span className="mt-1 shrink-0" style={{ color: marketingTone.teal }}>
+          <li
+            className="flex items-start gap-3 text-[14px] leading-6"
+            key={feature}
+            style={{ color: marketingTone.soft }}
+          >
+            <span
+              className="mt-1 shrink-0"
+              style={{ color: marketingTone.teal }}
+            >
               <MarketingIcon name="check" />
             </span>
             {feature}
@@ -209,7 +188,11 @@ function PlanCard({ plan }: Readonly<{ plan: Plan }>) {
         ))}
       </ul>
       <div className="mt-8">
-        <MarketingButton className="w-full" href="/auth/sign-up" variant={plan.recommended ? "primary" : "secondary"}>
+        <MarketingButton
+          className="w-full"
+          href="/auth/sign-up"
+          variant={plan.recommended ? "primary" : "secondary"}
+        >
           {plan.cta}
         </MarketingButton>
       </div>
@@ -217,19 +200,23 @@ function PlanCard({ plan }: Readonly<{ plan: Plan }>) {
   );
 }
 
-function PricingPlans() {
+function PricingPlans({ copy }: Readonly<{ copy: PricingCopy["plans"] }>) {
   return (
     <section className="px-5 py-8 sm:px-6" id="plans">
       <MarketingShell>
         <MarketingSectionTitle
           align="center"
-          eyebrow="Simple founder offers"
-          lead="The first pilots stay intentionally focused: quote capture, organized leads, safer drafts, and follow-up visibility."
-          title="Pricing for cleaning quote recovery."
+          eyebrow={copy.eyebrow}
+          lead={copy.lead}
+          title={copy.title}
         />
-        <div className="mt-9 grid gap-5 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <PlanCard key={plan.name} plan={plan} />
+        <div className="mt-9 grid min-w-0 gap-5 lg:grid-cols-3">
+          {copy.items.map((plan) => (
+            <PlanCard
+              key={plan.name}
+              plan={plan}
+              recommendedLabel={copy.recommendedLabel}
+            />
           ))}
         </div>
       </MarketingShell>
@@ -237,29 +224,14 @@ function PricingPlans() {
   );
 }
 
-function IncludedSection() {
-  const items: ReadonlyArray<Readonly<{ body: string; icon: MarketingIconName; title: string }>> = [
-    {
-      body: "A branded quote page customers can use from your site, Instagram, Google profile, email, or saved reply.",
-      icon: "link",
-      title: "Quote link setup",
-    },
-    {
-      body: "Every request lands in a clear queue with status, urgency, source, and missing details.",
-      icon: "inbox",
-      title: "Lead recovery desk",
-    },
-    {
-      body: "BizPilot prepares replies and follow-ups. The owner reviews, edits, copies, and sends manually.",
-      icon: "pen",
-      title: "Owner-reviewed AI",
-    },
-    {
-      body: "First-week support helps tune questions, services, FAQs, and the owner workflow.",
-      icon: "user",
-      title: "Founder-led onboarding",
-    },
-  ];
+function IncludedSection({
+  copy,
+}: Readonly<{ copy: PricingCopy["included"] }>) {
+  const icons: readonly MarketingIconName[] = ["link", "inbox", "pen", "user"];
+  const items = copy.items.map((item, index) => ({
+    ...item,
+    icon: icons[index] ?? "link",
+  }));
 
   return (
     <section className="px-5 py-10 sm:px-6">
@@ -272,26 +244,51 @@ function IncludedSection() {
             borderColor: "rgba(45,212,191,0.22)",
           }}
         >
-          <div className="grid gap-8 lg:grid-cols-[0.62fr_1fr]">
-            <div>
-              <MarketingBadge>What you get</MarketingBadge>
-              <h2 className="mt-5 text-[34px] font-black leading-[1.12]" style={{ color: marketingTone.text }}>
-                A focused recovery workflow, not another software maze.
+          <div className="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,0.62fr)_minmax(0,1fr)]">
+            <div className="min-w-0">
+              <MarketingBadge>{copy.badge}</MarketingBadge>
+              <h2
+                className="mt-5 max-w-[16ch] text-[28px] font-black leading-[1.12] sm:max-w-none sm:text-[34px]"
+                style={{ color: marketingTone.text }}
+              >
+                {copy.title}
               </h2>
-              <p className="mt-5 text-[16px] leading-8" style={{ color: marketingTone.soft }}>
-                The offer is designed for cleaning owners who need faster response, cleaner intake, and follow-up visibility before they need a full operations platform.
+              <p
+                className="mt-5 max-w-[34ch] text-[16px] leading-8 sm:max-w-none"
+                style={{ color: marketingTone.soft }}
+              >
+                {copy.body}
               </p>
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid min-w-0 gap-4 md:grid-cols-2">
               {items.map((item) => (
-                <div className="rounded-[13px] border p-5" key={item.title} style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}>
-                  <span className="flex h-11 w-11 items-center justify-center rounded-[11px]" style={{ backgroundColor: "rgba(45,212,191,0.11)", color: marketingTone.teal }}>
+                <div
+                  className="rounded-[13px] border p-5"
+                  key={item.title}
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.035)",
+                    borderColor: marketingTone.border,
+                  }}
+                >
+                  <span
+                    className="flex h-11 w-11 items-center justify-center rounded-[11px]"
+                    style={{
+                      backgroundColor: "rgba(45,212,191,0.11)",
+                      color: marketingTone.teal,
+                    }}
+                  >
                     <MarketingIcon name={item.icon} />
                   </span>
-                  <h3 className="mt-5 text-[17px] font-black" style={{ color: marketingTone.text }}>
+                  <h3
+                    className="mt-5 text-[17px] font-black"
+                    style={{ color: marketingTone.text }}
+                  >
                     {item.title}
                   </h3>
-                  <p className="mt-3 text-[13px] leading-6" style={{ color: marketingTone.soft }}>
+                  <p
+                    className="mt-3 text-[13px] leading-6"
+                    style={{ color: marketingTone.soft }}
+                  >
                     {item.body}
                   </p>
                 </div>
@@ -304,29 +301,29 @@ function IncludedSection() {
   );
 }
 
-function GuardrailSection() {
-  const guardrails = [
-    "No auto-send",
-    "No invented cleaning prices",
-    "No booking confirmation",
-    "No SMS or WhatsApp automation in this pilot",
-    "No full CRM scope",
-  ];
-
+function GuardrailSection({
+  copy,
+}: Readonly<{ copy: PricingCopy["guardrails"] }>) {
   return (
     <section className="px-5 py-8 sm:px-6">
       <MarketingShell>
-        <MarketingCard className="grid gap-8 p-6 lg:grid-cols-[0.75fr_1fr] lg:items-center">
-          <div>
-            <p className="text-[12px] font-black uppercase" style={{ color: marketingTone.teal }}>
-              Built for trust
+        <MarketingCard className="grid min-w-0 gap-8 p-6 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1fr)] lg:items-center">
+          <div className="min-w-0">
+            <p
+              className="text-[12px] font-black uppercase"
+              style={{ color: marketingTone.teal }}
+            >
+              {copy.eyebrow}
             </p>
-            <h2 className="mt-4 text-[32px] font-black leading-[1.13]" style={{ color: marketingTone.text }}>
-              The assistant helps you reply faster. It does not become your operator.
+            <h2
+              className="mt-4 max-w-[16ch] text-[26px] font-black leading-[1.13] sm:max-w-none sm:text-[32px]"
+              style={{ color: marketingTone.text }}
+            >
+              {copy.title}
             </h2>
           </div>
           <div className="flex flex-wrap gap-2">
-            {guardrails.map((guardrail) => (
+            {copy.items.map((guardrail) => (
               <span
                 className="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-black"
                 key={guardrail}
@@ -347,46 +344,29 @@ function GuardrailSection() {
   );
 }
 
-function FaqSection() {
-  const items: ReadonlyArray<Readonly<{ answer: string; question: string }>> = [
-    {
-      question: "Is this a booking or invoice system?",
-      answer:
-        "No. The current product is focused on quote recovery before the job is booked: capture the request, identify missing details, prepare a reply draft, and keep follow-up visible.",
-    },
-    {
-      question: "Will BizPilot message customers automatically?",
-      answer:
-        "No. AI drafts stay owner-reviewed. You review, edit, copy, and send from your own channel.",
-    },
-            {
-      question: "What happens during the Founder Pilot?",
-      answer:
-        "The founder helps configure your quote page, service list, basic branding, intake questions, sample lead, and first-week workflow.",
-    },
-    {
-      question: "Why is there a setup fee?",
-      answer:
-        "The first version is done-for-you. Setup covers configuring the quote workflow around your cleaning business instead of handing you another empty tool.",
-    },
-  ];
-
+function FaqSection({ copy }: Readonly<{ copy: PricingCopy["faq"] }>) {
   return (
     <section className="px-5 py-10 sm:px-6" id="faq">
       <MarketingShell>
         <MarketingSectionTitle
           align="center"
-          eyebrow="FAQ"
-          title="Straight answers before you start."
+          eyebrow={copy.eyebrow}
+          title={copy.title}
         />
         <div className="mx-auto mt-8 grid max-w-[880px] gap-3">
-          {items.map((item) => (
+          {copy.items.map((item) => (
             <MarketingCard className="p-5" key={item.question}>
               <details>
-                <summary className="cursor-pointer list-none text-[16px] font-black" style={{ color: marketingTone.text }}>
+                <summary
+                  className="cursor-pointer list-none text-[16px] font-black"
+                  style={{ color: marketingTone.text }}
+                >
                   {item.question}
                 </summary>
-                <p className="mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
+                <p
+                  className="mt-3 text-[14px] leading-7"
+                  style={{ color: marketingTone.soft }}
+                >
                   {item.answer}
                 </p>
               </details>
@@ -398,7 +378,7 @@ function FaqSection() {
   );
 }
 
-function PricingCta() {
+function PricingCta({ copy }: Readonly<{ copy: PricingCopy["cta"] }>) {
   return (
     <section className="px-5 py-8 sm:px-6">
       <MarketingShell>
@@ -410,18 +390,24 @@ function PricingCta() {
             borderColor: "rgba(45,212,191,0.24)",
           }}
         >
-          <div className="grid items-center gap-7 lg:grid-cols-[1fr_auto]">
-            <div>
-              <MarketingBadge>Ready for pilot setup</MarketingBadge>
-              <h2 className="mt-4 max-w-[740px] text-[34px] font-black leading-[1.12]" style={{ color: marketingTone.text }}>
-                Start with the recovery workflow, then decide from real usage.
+          <div className="grid min-w-0 items-center gap-7 lg:grid-cols-[minmax(0,1fr)_auto]">
+            <div className="min-w-0">
+              <MarketingBadge>{copy.badge}</MarketingBadge>
+              <h2
+                className="mt-4 max-w-[16ch] text-[28px] font-black leading-[1.12] sm:max-w-[740px] sm:text-[34px]"
+                style={{ color: marketingTone.text }}
+              >
+                {copy.title}
               </h2>
-              <p className="mt-4 max-w-[680px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
-                The goal is simple: prove that faster, cleaner quote response helps your cleaning business recover more conversations.
+              <p
+                className="mt-4 max-w-[34ch] text-[16px] leading-8 sm:max-w-[680px]"
+                style={{ color: marketingTone.soft }}
+              >
+                {copy.body}
               </p>
             </div>
             <MarketingButton href="/auth/sign-up">
-              Start founder pilot <MarketingIcon name="arrow" />
+              {copy.button} <MarketingIcon name="arrow" />
             </MarketingButton>
           </div>
         </MarketingCard>
@@ -430,17 +416,31 @@ function PricingCta() {
   );
 }
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const language = readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  );
+  const pricingCopy = getPricingCopy(language);
+  const navCopy = getHomeCopy(language).nav;
+
   return (
-    <main className="min-h-screen" style={{ background: marketingBackground, color: marketingTone.text }}>
-      <MarketingHeader active="pricing" />
-      <PricingHero />
-      <PricingPlans />
-      <IncludedSection />
-      <GuardrailSection />
-      <FaqSection />
-      <PricingCta />
-      <MarketingFooter />
+    <main
+      className="min-h-screen overflow-x-hidden"
+      style={{ background: marketingBackground, color: marketingTone.text }}
+    >
+      <MarketingHeader
+        active="pricing"
+        copy={navCopy}
+        language={language}
+        redirectPath="/pricing"
+      />
+      <PricingHero copy={pricingCopy.hero} />
+      <PricingPlans copy={pricingCopy.plans} />
+      <IncludedSection copy={pricingCopy.included} />
+      <GuardrailSection copy={pricingCopy.guardrails} />
+      <FaqSection copy={pricingCopy.faq} />
+      <PricingCta copy={pricingCopy.cta} />
+      <MarketingFooter copy={navCopy} />
     </main>
   );
 }

@@ -91,8 +91,8 @@ export function DashboardTopbar({
 
   return (
     <header className="dashboard-topbar sticky top-0 z-20 border-b backdrop-blur">
-      <div className="flex min-h-[64px] min-w-0 items-center justify-between gap-3 px-4 py-2 sm:px-5 md:px-6 lg:px-[28px]">
-        <div className="min-w-0">
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 px-3 py-2 sm:min-h-[64px] sm:flex-nowrap sm:gap-3 sm:px-5 md:px-6 lg:px-[28px]">
+        <div className="min-w-0 flex-1 basis-[12rem]">
           <h1 className="truncate text-[16px] font-extrabold leading-[1.2] tracking-[-0.02em] text-[var(--dash-text)] sm:text-[17px]">
             {pageContext.title}
           </h1>
@@ -101,7 +101,7 @@ export function DashboardTopbar({
           </p>
         </div>
 
-        <div className="flex min-w-0 shrink-0 items-center justify-end gap-2">
+        <div className="flex min-w-0 basis-full items-center justify-between gap-2 sm:basis-auto sm:justify-end">
           <CopyButton
             className="hidden md:inline-flex"
             label={copy.actions.copyQuoteLink}
@@ -117,7 +117,7 @@ export function DashboardTopbar({
           ) : null}
           <form
             action={setInterfaceLanguageAction}
-            className="hidden h-10 items-center rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:flex"
+            className="flex h-9 items-center rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:h-10"
           >
             <input name="businessId" type="hidden" value={businessId} />
             <input name="redirectTo" type="hidden" value={pathname} />
@@ -144,7 +144,7 @@ export function DashboardTopbar({
           </div>
           <form action={signOutAction}>
             <button
-              className="biz-button-secondary inline-flex h-10 max-w-[5.5rem] items-center justify-center rounded-[13px] border px-3 text-[13px] font-bold shadow-sm sm:max-w-[8rem]"
+              className="biz-button-secondary inline-flex h-9 max-w-[5.5rem] items-center justify-center rounded-[13px] border px-3 text-[12px] font-bold shadow-sm sm:h-10 sm:max-w-[8rem] sm:text-[13px]"
               title={userLabel}
               type="submit"
             >

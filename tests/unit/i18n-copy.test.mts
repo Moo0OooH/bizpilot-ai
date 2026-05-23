@@ -29,6 +29,11 @@ import {
   HOME_COPY_SOURCE_LANGUAGE,
   homeCopyNamespaces,
 } from "../../lib/i18n/home-copy.ts";
+import {
+  getPricingCopy,
+  PRICING_COPY_SOURCE_LANGUAGE,
+  pricingCopyNamespaces,
+} from "../../lib/i18n/pricing-copy.ts";
 import { languageDefinitions, supportedLanguages } from "../../lib/i18n/language.ts";
 
 type CopyShape =
@@ -106,6 +111,20 @@ describe("BizPilot language copy", () => {
     }
   });
 
+  it("keeps pricing and FAQ copy structurally synced for every supported language", () => {
+    assert.equal(PRICING_COPY_SOURCE_LANGUAGE, "en");
+    const sourceCopy = getPricingCopy(PRICING_COPY_SOURCE_LANGUAGE);
+    const sourceShape = copyShape(sourceCopy);
+
+    for (const language of supportedLanguages) {
+      assert.deepEqual(
+        copyShape(getPricingCopy(language)),
+        sourceShape,
+        `${language} pricing copy must match the ${PRICING_COPY_SOURCE_LANGUAGE} pricing copy shape.`,
+      );
+    }
+  });
+
   it("keeps public copy namespaces explicit and complete", () => {
     assert.deepEqual(
       [...bizPilotCopyNamespaces],
@@ -138,6 +157,10 @@ describe("BizPilot language copy", () => {
         "trust",
         "finalCta",
       ],
+    );
+    assert.deepEqual(
+      [...pricingCopyNamespaces],
+      ["hero", "plans", "included", "guardrails", "faq", "cta"],
     );
   });
 
