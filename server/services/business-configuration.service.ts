@@ -87,6 +87,7 @@ export type BusinessConfigurationInput = Readonly<{
   primaryColor: string;
   privacyContactEmail?: string;
   privacyMode: BusinessPrivacySettingsRecord["privacy_mode"];
+  preferredLanguage: BusinessRecord["preferred_language"];
   retainLeadsDays: number;
   serviceAreas: readonly string[];
   services: ReadonlyArray<{ description?: string; name: string }>;
@@ -284,6 +285,7 @@ export async function getBusinessConfigurationWorkspace(input: {
     }),
     getCleaningTemplate({
       businessId: input.business.id,
+      preferredLanguage: input.business.preferred_language,
       supabase,
     }),
   ]);
@@ -329,6 +331,7 @@ export async function saveBusinessConfiguration(
   const updatedBusiness = await updateBusinessProfile({
     businessId: input.businessId,
     name: businessProfile.businessName,
+    preferredLanguage: input.preferredLanguage,
     slug: businessProfile.businessSlug,
     supabase,
   });
@@ -380,6 +383,7 @@ export async function saveBusinessConfiguration(
 
   const cleaningTemplate = await getCleaningTemplate({
     businessId: input.businessId,
+    preferredLanguage: updatedBusiness.preferred_language,
     supabase,
   });
   const publicTemplateName =
@@ -389,6 +393,7 @@ export async function saveBusinessConfiguration(
     upsertPublicLinkVariant({
       businessId: input.businessId,
       displayName: updatedBusiness.name,
+      preferredLanguage: updatedBusiness.preferred_language,
       slug: updatedBusiness.slug,
       supabase,
     }),

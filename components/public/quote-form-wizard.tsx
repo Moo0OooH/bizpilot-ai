@@ -20,6 +20,12 @@
 import { submitPublicIntakeAction } from "@/server/actions/public-intake.actions";
 import type { getPublicIntakePage } from "@/server/services/public-intake.service";
 import type { Json } from "@/types/database";
+import {
+  getBizPilotCopy,
+  getDefaultBizPilotCopy,
+  type BizPilotCopy,
+  type QuoteStepCopy,
+} from "@/lib/i18n/bizpilot-copy";
 import { SubmitAgeInput } from "./submit-age-input";
 
 type IntakePage = NonNullable<Awaited<ReturnType<typeof getPublicIntakePage>>>;
@@ -33,36 +39,7 @@ type QueryParams = Readonly<{
   utm_source?: string;
 }>;
 
-type StepId = "service" | "when_where" | "contact";
-
-type StepConfig = Readonly<{
-  description: string;
-  id: StepId;
-  label: string;
-  title: string;
-}>;
-
-const STEPS: ReadonlyArray<StepConfig> = [
-  {
-    description: "A few quick details so the owner can prepare an accurate reply.",
-    id: "service",
-    label: "Service",
-    title: "What kind of cleaning?",
-  },
-  {
-    description: "Timing and location help the owner check availability and travel.",
-    id: "when_where",
-    label: "When & where",
-    title: "When and where?",
-  },
-  {
-    description:
-      "We pass these details directly to the business. Nothing is sent automatically.",
-    id: "contact",
-    label: "Contact",
-    title: "How should the owner reach you?",
-  },
-];
+type StepId = QuoteStepCopy["id"];
 
 const FIELD_INPUT =
   "h-11 w-full rounded-[10px] border border-white/[0.10] bg-[rgba(255,255,255,0.04)] px-3 text-[14px] text-[#F5F7FA] outline-none transition placeholder:text-[rgba(245,247,250,0.35)] focus:border-[#17D492] focus:ring-4 focus:ring-[rgba(23,212,146,0.15)]";
@@ -154,10 +131,16 @@ function isWideField(field: FieldRecord): boolean {
 }
 
 function FieldInput({
+  copy,
   field,
   required,
   todayDate,
-}: Readonly<{ field: FieldRecord; required: boolean; todayDate: string }>) {
+}: Readonly<{
+  copy: BizPilotCopy;
+  field: FieldRecord;
+  required: boolean;
+  todayDate: string;
+}>) {
   if (field.field_type === "textarea") {
     return (
       <textarea
@@ -188,7 +171,7 @@ function FieldInput({
         style={{ backgroundColor: "#0D1721" }}
       >
         <option style={{ backgroundColor: "#0D1721" }} value="">
-          Select an option
+          {copy.quoteForm.selectPlaceholder}
         </option>
         {getOptions(field.options).map((option) => (
           <option
@@ -196,7 +179,7 @@ function FieldInput({
             style={{ backgroundColor: "#0D1721" }}
             value={option}
           >
-            {toOptionLabel(option)}
+            {copy.optionLabels[option] ?? toOptionLabel(option)}
           </option>
         ))}
       </select>
@@ -215,9 +198,11 @@ function FieldInput({
 }
 
 function FieldRow({
+  copy,
   field,
   todayDate,
 }: Readonly<{
+  copy: BizPilotCopy;
   field: FieldRecord;
   todayDate: string;
 }>) {
@@ -229,6 +214,7 @@ function FieldRow({
         className={`flex items-center gap-3 rounded-[10px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] px-3 py-2.5 ${colSpan}`}
       >
         <FieldInput
+          copy={copy}
           field={field}
           required={field.is_required}
           todayDate={todayDate}
@@ -259,6 +245,7 @@ function FieldRow({
         ) : null}
       </span>
       <FieldInput
+        copy={copy}
         field={field}
         required={field.is_required}
         todayDate={todayDate}
@@ -275,9 +262,11 @@ function FieldRow({
 function ConsentBlock({
   aiDisclosureEnabled,
   consentNotice,
+  copy,
 }: Readonly<{
   aiDisclosureEnabled: boolean;
   consentNotice: string;
+  copy: BizPilotCopy;
 }>) {
   return (
     <label className="mt-4 flex items-start gap-3 rounded-[12px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] p-3 text-[12px] leading-5 text-[rgba(245,247,250,0.72)]">
@@ -291,8 +280,7 @@ function ConsentBlock({
         {consentNotice}
         {aiDisclosureEnabled ? (
           <span className="mt-1.5 block text-[11px] text-[rgba(245,247,250,0.46)]">
-            BizPilot may help prepare internal AI drafts later, but the business
-            reviews messages before sending.
+            {copy.quoteForm.aiDisclosure}
           </span>
         ) : null}
       </span>
@@ -311,7 +299,9 @@ export function QuoteFormWizard({
   slug: string;
   todayDate: string;
 }>) {
+  const copy = getBizPilotCopy(page.publicLink.preferred_language);
   const groups = groupFields(page.fields);
+  const steps = copy.quoteForm.steps;
 
   return (
     <form
@@ -350,7 +340,7 @@ export function QuoteFormWizard({
         />
       ))}
 
-      {STEPS.map((step, index) => {
+      {steps.map((step, index) => {
         const fields = groups[step.id];
 
         return (
@@ -361,7 +351,7 @@ export function QuoteFormWizard({
           >
             <header className="mb-4 space-y-1">
               <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[rgba(245,247,250,0.55)]">
-                Step {index + 1} of {STEPS.length} - {step.label}
+                {copy.quoteForm.stepProgress(index + 1, steps.length, step.label)}
               </p>
               <h2 className="text-[21px] font-extrabold leading-tight tracking-[-0.03em] text-[#F5F7FA]">
                 {step.title}
@@ -374,19 +364,25 @@ export function QuoteFormWizard({
             {fields.length > 0 ? (
               <div className="grid gap-3 md:grid-cols-2">
                 {fields.map((field) => (
-                  <FieldRow field={field} key={field.id} todayDate={todayDate} />
+                  <FieldRow
+                    copy={copy}
+                    field={field}
+                    key={field.id}
+                    todayDate={todayDate}
+                  />
                 ))}
               </div>
             ) : (
               <p className="rounded-[12px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] p-3 text-[13px] text-[rgba(245,247,250,0.55)]">
-                Nothing to fill on this section.
+                {copy.quoteForm.emptySection}
               </p>
             )}
 
-            {index === STEPS.length - 1 ? (
+            {index === steps.length - 1 ? (
               <ConsentBlock
                 aiDisclosureEnabled={page.consentVersion.ai_disclosure_enabled}
                 consentNotice={page.consentVersion.consent_notice}
+                copy={copy}
               />
             ) : null}
           </section>
@@ -405,7 +401,7 @@ export function QuoteFormWizard({
           }}
           type="submit"
         >
-          Send quote request
+          {copy.quoteForm.submitButton}
         </button>
       </div>
     </form>
@@ -413,4 +409,4 @@ export function QuoteFormWizard({
 }
 
 export type { StepId };
-export const QUOTE_WIZARD_STEPS = STEPS;
+export const QUOTE_WIZARD_STEPS = getDefaultBizPilotCopy().quoteForm.steps;

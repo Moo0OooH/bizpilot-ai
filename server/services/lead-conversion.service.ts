@@ -46,6 +46,7 @@ import {
   type LeadStatus,
 } from "@/server/repositories/lead-conversion.repository";
 import type { BusinessRecord } from "@/server/repositories/businesses.repository";
+import { readSupportedLanguage } from "@/lib/i18n/language";
 import {
   calculateLeadQuality,
   calculateRevenueRecoveryProof,
@@ -92,6 +93,7 @@ function intervalSecondsBetween(start: string, end: string): string {
 
 async function syncLeadState(input: {
   actorUserId?: string | null | undefined;
+  language: BusinessRecord["preferred_language"];
   lead: LeadRecord;
   serviceAreaNames: string[];
   supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>;
@@ -109,6 +111,7 @@ async function syncLeadState(input: {
     supabase: input.supabase,
   });
   const scoreInput = calculateLeadQuality({
+    language: input.language,
     lead: input.lead,
     serviceAreas: input.serviceAreaNames,
     submissionValues,
@@ -177,13 +180,13 @@ async function syncLeadState(input: {
     return {
       action: null,
       lead,
-      ...summarizeLeadDecision({ lead, score }),
+      ...summarizeLeadDecision({ language: input.language, lead, score }),
       score,
       submissionValues,
     };
   }
 
-  const actionChoice = chooseAction({ lead, score });
+  const actionChoice = chooseAction({ language: input.language, lead, score });
   const actions = await listActionItemsForLead({
     businessId: lead.business_id,
     leadId: lead.id,
@@ -210,7 +213,7 @@ async function syncLeadState(input: {
   return {
     action,
     lead,
-    ...summarizeLeadDecision({ lead, score }),
+    ...summarizeLeadDecision({ language: input.language, lead, score }),
     score,
     submissionValues,
   };
@@ -232,11 +235,13 @@ export async function getLeadConversionDesk(input: {
     }),
   ]);
   const serviceAreaNames = serviceAreas.map((area) => area.name);
+  const language = readSupportedLanguage(input.business.preferred_language);
   const deskItems: LeadDeskItem[] = [];
 
   for (const lead of leads) {
     const synced = await syncLeadState({
       actorUserId: input.actorUserId,
+      language,
       lead,
       serviceAreaNames,
       supabase,
@@ -327,6 +332,7 @@ export async function getLeadDetail(input: {
 
   const synced = await syncLeadState({
     actorUserId: input.actorUserId,
+    language: readSupportedLanguage(input.business.preferred_language),
     lead: viewedLead,
     serviceAreaNames: serviceAreas.map((area) => area.name),
     supabase,

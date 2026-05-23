@@ -33,6 +33,8 @@ import {
   StatusBadge,
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import { languageLabels, supportedLanguages } from "@/lib/i18n/language";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
@@ -100,9 +102,10 @@ export default async function BusinessProfilePage({
   const quotePath = `/quote/${activeBusiness.slug}`;
   const primaryColor = configuration.branding?.primary_color ?? "#18181b";
   const accentColor = configuration.branding?.accent_color ?? "#0f766e";
+  const copy = getBizPilotCopy(activeBusiness.preferred_language);
   const consentNotice =
     configuration.consentSettings?.consent_notice ??
-    "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.";
+    copy.quoteForm.consentNoticeDefault;
   const privacyMode = configuration.privacySettings?.privacy_mode ?? "standard";
   const retainLeadsDays =
     configuration.privacySettings?.retain_leads_days ?? 365;
@@ -251,6 +254,24 @@ export default async function BusinessProfilePage({
                 />
               </label>
               <label className={labelClass}>
+                Preferred language
+                <select
+                  className={inputClass}
+                  defaultValue={activeBusiness.preferred_language}
+                  name="preferredLanguage"
+                  required
+                >
+                  {supportedLanguages.map((language) => (
+                    <option key={language} value={language}>
+                      {languageLabels[language]}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
+                  Used for the public quote page and AI draft language.
+                </span>
+              </label>
+              <label className={labelClass}>
                 Owner email (read-only)
                 <input
                   className={inputClass}
@@ -330,7 +351,6 @@ export default async function BusinessProfilePage({
               ["Public website", "Phase 18B"],
               ["City", "Phase 18B"],
               ["Province", "Phase 18B"],
-              ["Languages", "Phase 18B"],
               ["Response hours", "Phase 18B"],
             ].map(([title, badge]) => (
               <div

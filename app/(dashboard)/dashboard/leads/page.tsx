@@ -90,7 +90,11 @@ export default async function LeadConversionDeskPage() {
       />
 
       <section className="grid min-w-0 items-start gap-[18px] xl:grid-cols-[minmax(0,1fr)_320px]">
-        <LeadWorkspaceQueue leads={desk.leads} quotePath={quotePath} />
+        <LeadWorkspaceQueue
+          language={activeBusiness.preferred_language}
+          leads={desk.leads}
+          quotePath={quotePath}
+        />
 
         <aside className="min-w-0 space-y-[14px] xl:sticky xl:top-[92px]">
           <DashboardCard className="p-[18px]" variant="priority">

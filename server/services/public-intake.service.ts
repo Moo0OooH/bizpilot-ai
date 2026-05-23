@@ -21,6 +21,7 @@
 
 import "server-only";
 
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   enforceSubmissionRateLimit,
@@ -86,6 +87,7 @@ function isValidDateOnly(value: string): boolean {
 }
 
 function readFieldValue(input: {
+  copy: ReturnType<typeof getBizPilotCopy>;
   fieldLabel: string;
   fieldType: string;
   value: string;
@@ -104,11 +106,11 @@ function readFieldValue(input: {
     const numberValue = Number(trimmed);
 
     if (!Number.isFinite(numberValue)) {
-      throw new Error(`${input.fieldLabel} must be a valid number.`);
+      throw new Error(input.copy.intakeErrors.validNumber(input.fieldLabel));
     }
 
     if (numberValue < 0) {
-      throw new Error(`${input.fieldLabel} cannot be negative.`);
+      throw new Error(input.copy.intakeErrors.nonNegativeNumber(input.fieldLabel));
     }
 
     return numberValue;
@@ -120,11 +122,11 @@ function readFieldValue(input: {
     }
 
     if (!isValidDateOnly(trimmed)) {
-      throw new Error(`${input.fieldLabel} must be a valid date.`);
+      throw new Error(input.copy.intakeErrors.validDate(input.fieldLabel));
     }
 
     if (trimmed < todayDateString()) {
-      throw new Error(`${input.fieldLabel} cannot be in the past.`);
+      throw new Error(input.copy.intakeErrors.notPastDate(input.fieldLabel));
     }
 
     return trimmed;
@@ -143,7 +145,7 @@ function requirePublicPage(
   page: PublicIntakePageRecord | null,
 ): PublicIntakePageRecord {
   if (!page) {
-    throw new Error("This quote link is not available.");
+    throw new Error(getBizPilotCopy(null).intakeErrors.linkUnavailable);
   }
 
   return page;
@@ -164,18 +166,20 @@ function getSubmissionAgeMs(formRenderedAt: string | undefined): number | null {
 }
 
 function getSubmissionValues(input: {
+  copy: ReturnType<typeof getBizPilotCopy>;
   fieldValues: Record<string, string>;
   page: PublicIntakePageRecord;
 }): IntakeSubmissionValueInput[] {
   return input.page.fields.map((field) => {
     const value = readFieldValue({
+      copy: input.copy,
       fieldLabel: field.label,
       fieldType: field.field_type,
       value: input.fieldValues[field.field_key] ?? "",
     });
 
     if (field.is_required && (value === null || value === "")) {
-      throw new Error(`${field.label} is required.`);
+      throw new Error(input.copy.intakeErrors.fieldRequired(field.label));
     }
 
     return {
@@ -208,6 +212,7 @@ export async function submitPublicIntake(
     }),
   );
   const businessId = page.publicLink.business_id;
+  const copy = getBizPilotCopy(page.publicLink.preferred_language);
 
   // Rate limit first. The page is already resolved at this point so we have a
   // real business_id to scope the count against. A rate-limit exception is
@@ -238,7 +243,7 @@ export async function submitPublicIntake(
       reason: "honeypot_triggered",
       supabase,
     });
-    throw new Error("Submission rejected.");
+    throw new Error(copy.intakeErrors.rejected);
   }
 
   const submissionAgeMs = getSubmissionAgeMs(input.formRenderedAt);
@@ -253,7 +258,7 @@ export async function submitPublicIntake(
       reason: "submitted_too_fast",
       supabase,
     });
-    throw new Error(SUBMISSION_TOO_FAST_MESSAGE);
+    throw new Error(copy.intakeErrors.submittedTooFast);
   }
 
   if (!input.consentAccepted) {
@@ -264,7 +269,7 @@ export async function submitPublicIntake(
       reason: "consent_missing",
       supabase,
     });
-    throw new Error("Consent is required before submitting.");
+    throw new Error(copy.intakeErrors.consentRequired);
   }
 
   if (
@@ -278,12 +283,13 @@ export async function submitPublicIntake(
       reason: "invalid_form",
       supabase,
     });
-    throw new Error("The quote form changed. Please refresh and submit again.");
+    throw new Error(copy.intakeErrors.formChanged);
   }
 
   let values: IntakeSubmissionValueInput[];
   try {
     values = getSubmissionValues({
+      copy,
       fieldValues: input.fieldValues,
       page,
     });

@@ -29,6 +29,7 @@ import {
   listFounderUsageSignals,
   setFounderPublicLinksActive,
   updateFounderBusinessControls,
+  type FounderBusinessRecord,
   type FounderBusinessMemberRecord,
   type FounderBusinessStatus,
   type FounderPlanSlug,
@@ -44,6 +45,7 @@ export type FounderAdminBusiness = Readonly<{
   ownerEmail: string;
   planExpiresAt: string | null;
   planSlug: FounderPlanSlug;
+  preferredLanguage: FounderBusinessRecord["preferred_language"];
   publicLinkActive: boolean;
   publicSlug: string | null;
   status: FounderBusinessStatus;
@@ -63,6 +65,7 @@ export type FounderAdminUser = Readonly<{
   membershipRole: string | null;
   membershipStatus: string | null;
   planSlug: FounderPlanSlug | null;
+  preferredLanguage: FounderBusinessRecord["preferred_language"] | null;
   publicLinkActive: boolean | null;
   userId: string;
 }>;
@@ -253,6 +256,7 @@ export async function getFounderAdminOverview(input: {
       ownerEmail: ownerEmailById.get(business.owner_user_id) ?? business.owner_user_id,
       planExpiresAt: business.plan_expires_at,
       planSlug: business.plan_slug,
+      preferredLanguage: business.preferred_language,
       publicLinkActive: link?.active ?? false,
       publicSlug: link?.slug ?? null,
       status: business.status,
@@ -277,6 +281,7 @@ export async function getFounderAdminOverview(input: {
       membershipRole: membership?.role ?? null,
       membershipStatus: membership?.status ?? null,
       planSlug: business?.plan_slug ?? null,
+      preferredLanguage: business?.preferred_language ?? null,
       publicLinkActive: business ? (link?.active ?? false) : null,
       userId: user.id,
     };

@@ -21,6 +21,7 @@ import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
+import { localizeDefaultQuoteField } from "@/lib/i18n/bizpilot-copy";
 import type { CleaningTemplateFieldRecord } from "@/server/repositories/business-configuration.repository";
 import type { Database, Json } from "@/types/database";
 
@@ -72,6 +73,7 @@ function cleanOptionalText(value: string | undefined): string | null {
 export async function upsertPublicLinkVariant(input: {
   businessId: string;
   displayName: string;
+  preferredLanguage: PublicLinkVariantRecord["preferred_language"];
   slug: string;
   supabase: SupabaseClient<Database>;
 }): Promise<void> {
@@ -87,6 +89,7 @@ export async function upsertPublicLinkVariant(input: {
       business_id: input.businessId,
       display_name: input.displayName,
       is_active: true,
+      preferred_language: input.preferredLanguage,
       slug: input.slug,
     },
     { onConflict: "slug" },
@@ -231,11 +234,25 @@ export async function getPublicIntakePageBySlug(input: {
     .order("sort_order", { ascending: true });
 
   await throwIfError(fieldsError);
+  const localizedFields = (fields ?? []).map((field) => {
+    const localized = localizeDefaultQuoteField({
+      fieldKey: field.field_key,
+      helpText: field.help_text,
+      label: field.label,
+      language: publicLink.preferred_language,
+    });
+
+    return {
+      ...field,
+      help_text: localized.helpText,
+      label: localized.label,
+    };
+  });
 
   return {
     branding: branding.data,
     consentVersion: consentVersion.data,
-    fields: fields ?? [],
+    fields: localizedFields,
     form: form.data,
     publicLink,
   };
@@ -277,7 +294,7 @@ export async function insertPublicSubmissionValues(input: {
       business_id: input.businessId,
       field_key: value.fieldKey,
       field_label: value.fieldLabel,
-      field_value: value.value,
+      field_value: value.value ?? "",
       submission_id: input.submissionId,
     })),
   );

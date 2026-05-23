@@ -37,6 +37,8 @@ import {
   PageHeader,
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import { languageLabels, supportedLanguages } from "@/lib/i18n/language";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
@@ -172,6 +174,7 @@ export default async function DashboardPage({
     configurationWorkspace;
   const primaryColor = configuration.branding?.primary_color ?? "#18181b";
   const accentColor = configuration.branding?.accent_color ?? "#0f766e";
+  const copy = getBizPilotCopy(activeBusiness.preferred_language);
   const logoUrl = configuration.branding?.logo_url ?? "";
   const visibleTemplateFieldCount = cleaningTemplate.fields.filter(
     (field) => !field.is_hidden,
@@ -410,6 +413,24 @@ export default async function DashboardPage({
                     name="customTemplateName"
                     type="text"
                   />
+                </label>
+                <label className={labelClass}>
+                  Preferred language
+                  <select
+                    className={inputClass}
+                    defaultValue={activeBusiness.preferred_language}
+                    name="preferredLanguage"
+                    required
+                  >
+                    {supportedLanguages.map((language) => (
+                      <option key={language} value={language}>
+                        {languageLabels[language]}
+                      </option>
+                    ))}
+                  </select>
+                  <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
+                    Controls public quote copy and AI draft language.
+                  </span>
                 </label>
               </div>
             </ConfigurationPanel>
@@ -799,7 +820,7 @@ export default async function DashboardPage({
                     className={`${inputClass} h-20 min-h-20 py-2`}
                     defaultValue={
                       configuration.consentSettings?.consent_notice ??
-                      "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending."
+                      copy.quoteForm.consentNoticeDefault
                     }
                     minLength={20}
                     name="consentNotice"

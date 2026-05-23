@@ -25,6 +25,12 @@ import "server-only";
 
 import { createHash } from "node:crypto";
 
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  aiLanguageInstruction,
+  readSupportedLanguage,
+  type SupportedLanguage,
+} from "@/lib/i18n/language";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   getDefaultAiProvider,
@@ -153,6 +159,7 @@ function buildPromptContext(input: {
 }): string {
   const context = {
     business: {
+      preferredLanguage: input.business.preferred_language,
       name: input.business.name,
       vertical: "cleaning",
     },
@@ -185,33 +192,41 @@ function hashContext(value: string): string {
 }
 
 function fallbackBundle(input: {
+  language: SupportedLanguage;
   lead: NonNullable<Awaited<ReturnType<typeof getLeadById>>>;
   qualityScore: NonNullable<Awaited<ReturnType<typeof getQualityScoreForLead>>>;
 }): LeadConversionAiBundle {
-  const service = input.lead.service_type ?? "cleaning";
-  const area = input.lead.city_or_service_area ?? "your area";
+  const copy = getBizPilotCopy(input.language);
+  const service = input.lead.service_type ?? copy.aiFallback.serviceFallback;
+  const area = input.lead.city_or_service_area ?? copy.aiFallback.areaFallback;
   const missing = input.qualityScore.missing_info_keys;
-  const missingText =
-    missing.length > 0
-      ? `I need a few details first: ${missing.join(", ")}.`
-      : "I have the key details needed to reply.";
+  const missingText = copy.aiFallback.missingText(missing);
 
   return {
-    followUpDraft: `Hi, just following up on your ${service} quote request for ${area}. If you still need help, send me any missing details and I can help move this forward.`,
+    followUpDraft: copy.aiFallback.followUpDraft(service, area),
     leadQualityExplanation: input.qualityScore.explanation,
-    leadSummary: `This is a ${input.qualityScore.quality_level.replaceAll(
-      "_",
-      " ",
-    )} ${service} quote request for ${area}.`,
+    leadSummary: copy.aiFallback.leadSummary(
+      input.qualityScore.quality_level.replaceAll("_", " "),
+      service,
+      area,
+    ),
     missingInfoReasoning: missingText,
-    replyDraft: `Hi, thanks for reaching out about ${service}. ${missingText} Once I have that, I can review the request and follow up with the next step.`,
+    replyDraft: copy.aiFallback.replyDraft(service, missingText),
     suggestedNextAction:
-      missing.length > 0 ? "Ask for the missing quote details." : "Reply now while the lead is warm.",
+      missing.length > 0
+        ? copy.aiFallback.askMissingDetails
+        : copy.aiFallback.replyWarmLead,
     toneVariants: {
-      concise: `Thanks for the ${service} request. ${missingText}`,
-      friendly: `Hi, thanks so much for reaching out about ${service}. ${missingText}`,
+      concise: copy.aiFallback.toneConcise(service, missingText),
+      friendly: copy.aiFallback.toneFriendly(service, missingText),
     },
   };
+}
+
+function buildInstructions(language: SupportedLanguage): string {
+  return `${leadConversionBundleInstructions}
+- Write every output field in ${aiLanguageInstruction(language)}.
+- Keep the same manual-send guardrails in that language.`.trim();
 }
 
 function validateBundle(parsed: unknown): LeadConversionAiBundle | null {
@@ -255,6 +270,7 @@ export async function generateLeadAiBundle(input: {
     throw new Error("Lead is not ready for AI assistance yet.");
   }
 
+  const language = readSupportedLanguage(input.business.preferred_language);
   const submissionValues = await listSubmissionValuesForLead({
     businessId: input.business.id,
     lead,
@@ -292,7 +308,7 @@ export async function generateLeadAiBundle(input: {
 
     const generated = await provider.generateStructuredBundle<LeadConversionAiBundle>({
       inputContext: context,
-      instructions: leadConversionBundleInstructions,
+      instructions: buildInstructions(language),
       model,
       schema: {
         definition: bundleSchema,
@@ -337,7 +353,7 @@ export async function generateLeadAiBundle(input: {
     return parseAiOutput(record)!;
   } catch (error) {
     const sanitizedReason = sanitizeAiFailureReason(error);
-    const output = fallbackBundle({ lead, qualityScore });
+    const output = fallbackBundle({ language, lead, qualityScore });
     const outputText = JSON.stringify(output);
     const outputTokens = estimateTokens(outputText);
     const record = await insertAiOutput({

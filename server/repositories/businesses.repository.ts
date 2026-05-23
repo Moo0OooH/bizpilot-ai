@@ -68,6 +68,7 @@ export async function listBusinessesForUser(input: {
 export async function updateBusinessProfile(input: {
   businessId: string;
   name: string;
+  preferredLanguage: BusinessRecord["preferred_language"];
   slug: string;
   supabase: SupabaseClient<Database>;
 }): Promise<BusinessRecord> {
@@ -75,6 +76,7 @@ export async function updateBusinessProfile(input: {
     .from("businesses")
     .update({
       name: input.name,
+      preferred_language: input.preferredLanguage,
       slug: input.slug,
     })
     .eq("id", input.businessId)

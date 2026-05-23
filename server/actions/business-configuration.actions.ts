@@ -19,21 +19,17 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import {
+  isDefaultQuoteFieldHelpText,
+  isDefaultQuoteFieldLabel,
+  resolveConsentNoticeForLanguage,
+} from "@/lib/i18n/bizpilot-copy";
+import { readSupportedLanguageOrThrow } from "@/lib/i18n/language";
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { saveBusinessConfiguration } from "@/server/services/business-configuration.service";
 import type { BusinessPrivacySettingsRecord } from "@/server/repositories/business-configuration.repository";
 import type { Json } from "@/types/database";
-
-/**
- * Canonical consent notice fallback.
- * Source: docs/security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md section 13
- * and docs/product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md section 16.
- * Used when the configuration form does not submit a consent notice so that
- * public quote submissions always have a valid consent version on file.
- */
-const CANONICAL_CONSENT_NOTICE =
-  "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.";
 
 function readRequiredFormValue(formData: FormData, key: string): string {
   const value = formData.get(key);
@@ -132,6 +128,7 @@ function redirectWithConfigurationError(error: unknown): never {
         "Business slug must contain lowercase letters, numbers, and hyphens." ||
       value === "FAQ entries must include both a question and an answer." ||
       value === "Invalid privacy mode." ||
+      value === "Invalid preferred language." ||
       value === "Lead retention must be between 1 and 3650 days." ||
       value === "You do not have permission to manage this business." ||
       value.endsWith(" must be a valid hex color."),
@@ -151,6 +148,10 @@ function readTemplateFieldOverrides(formData: FormData): Json {
       .map((fieldKey) => {
         const label = readRequiredFormValue(formData, `fieldLabel:${fieldKey}`);
         const helpText = readOptionalFormValue(formData, `fieldHelp:${fieldKey}`);
+        const isCustomHelpText =
+          helpText !== undefined &&
+          !isDefaultQuoteFieldHelpText({ fieldKey, helpText });
+        const isCustomLabel = !isDefaultQuoteFieldLabel({ fieldKey, label });
         const sortOrderValue = readOptionalFormValue(
           formData,
           `fieldSort:${fieldKey}`,
@@ -163,8 +164,8 @@ function readTemplateFieldOverrides(formData: FormData): Json {
           {
             isHidden: formData.get(`fieldHidden:${fieldKey}`) === "on",
             isRequired: formData.get(`fieldRequired:${fieldKey}`) === "on",
-            label,
-            ...(helpText ? { helpText } : {}),
+            ...(isCustomLabel ? { label } : {}),
+            ...(isCustomHelpText ? { helpText } : {}),
             ...(sortOrder !== undefined && Number.isFinite(sortOrder)
               ? { sortOrder }
               : {}),
@@ -192,6 +193,9 @@ export async function saveBusinessConfigurationAction(
       "privacyContactEmail",
     );
     const faqText = readOptionalFormValue(formData, "faqs");
+    const preferredLanguage = readSupportedLanguageOrThrow(
+      readRequiredFormValue(formData, "preferredLanguage"),
+    );
     const faqs = readFaqs(faqText);
     if (faqText && faqs.length === 0) {
       throw new Error("FAQ entries must include both a question and an answer.");
@@ -202,15 +206,17 @@ export async function saveBusinessConfigurationAction(
       businessId: readRequiredFormValue(formData, "businessId"),
       businessName: readRequiredFormValue(formData, "businessName"),
       businessSlug: readRequiredFormValue(formData, "businessSlug"),
-      consentNotice:
-        readOptionalFormValue(formData, "consentNotice") ??
-        CANONICAL_CONSENT_NOTICE,
+      consentNotice: resolveConsentNoticeForLanguage({
+        language: preferredLanguage,
+        value: readOptionalFormValue(formData, "consentNotice"),
+      }),
       faqs,
       fieldOverrides: readTemplateFieldOverrides(formData),
       primaryColor: readRequiredFormValue(formData, "primaryColor"),
       privacyMode: readPrivacyMode(
         readRequiredFormValue(formData, "privacyMode"),
       ),
+      preferredLanguage,
       retainLeadsDays: Number.parseInt(
         readRequiredFormValue(formData, "retainLeadsDays"),
         10,

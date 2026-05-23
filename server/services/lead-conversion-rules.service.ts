@@ -16,6 +16,12 @@
  * ============================================================
  */
 
+import { getBizPilotCopy } from "../../lib/i18n/bizpilot-copy.ts";
+import {
+  readSupportedLanguage,
+  type SupportedLanguage,
+} from "../../lib/i18n/language.ts";
+
 export type RuleJson =
   | boolean
   | null
@@ -88,17 +94,6 @@ export type RevenueRecoveryProof = Readonly<{
 }>;
 
 type ValueMap = Record<string, RuleJson | undefined>;
-
-const missingInfoLabels: Record<string, string> = {
-  bathrooms: "bathrooms",
-  bedrooms: "bedrooms",
-  city_or_service_area: "service area",
-  cleaning_type: "cleaning type",
-  customer_contact: "contact details",
-  preferred_date: "preferred date",
-  preferred_time_window: "preferred time window",
-  property_type: "property type",
-};
 
 function toText(value: RuleJson | undefined): string {
   if (typeof value === "string") {
@@ -188,10 +183,13 @@ export function shouldSuppressOpenActions(input: {
 }
 
 export function calculateLeadQuality(input: {
+  language?: SupportedLanguage;
   lead: RuleLead;
   serviceAreas: readonly string[];
   submissionValues: readonly RuleSubmissionValue[];
 }): RuleQualityScore {
+  const language = readSupportedLanguage(input.language);
+  const copy = getBizPilotCopy(language);
   const values = valueMapFromSubmission(input.lead, input.submissionValues);
   const missingInfoKeys = [
     "customer_contact",
@@ -251,13 +249,13 @@ export function calculateLeadQuality(input: {
           ? "needs_info"
           : "poor";
   const missingLabels = missingInfoKeys.map(
-    (key) => missingInfoLabels[key] ?? key.replaceAll("_", " "),
+    (key) => copy.missingInfoLabels[key] ?? key.replaceAll("_", " "),
   );
   const explanation = !areaMatches
-    ? "Outside configured service area. Details can be complete while fit remains low."
+    ? copy.leadRules.lowFitExplanation
     : missingLabels.length > 0
-      ? `Missing ${missingLabels.join(", ")}.`
-      : "Contact, service, area, timing, and quote details are present.";
+      ? copy.leadRules.missingExplanation(missingLabels)
+      : copy.leadRules.completeExplanation;
 
   return {
     businessId: input.lead.business_id,
@@ -305,9 +303,12 @@ export function calculateSlaState(input: {
 }
 
 export function chooseAction(input: {
+  language?: SupportedLanguage;
   lead: RuleLead;
   score: RulePersistedQualityScore;
 }): { actionType: RuleActionItem["action_type"]; title: string } {
+  const copy = getBizPilotCopy(input.language);
+
   if (
     input.lead.response_sla_state === "follow_up_due" ||
     input.lead.status === "replied" ||
@@ -315,14 +316,14 @@ export function chooseAction(input: {
   ) {
     return {
       actionType: "follow_up",
-      title: "Follow up with this lead",
+      title: copy.leadRules.actionFollowUp,
     };
   }
 
   if (input.score.missing_info_keys.length > 0) {
     return {
       actionType: "ask_info",
-      title: "Ask for missing quote details",
+      title: copy.leadRules.actionAskInfo,
     };
   }
 
@@ -330,19 +331,22 @@ export function chooseAction(input: {
     actionType: "reply",
     title:
       input.lead.response_sla_state === "overdue"
-        ? "Reply to overdue lead"
-        : "Reply to this lead",
+        ? copy.leadRules.actionReplyOverdue
+        : copy.leadRules.actionReply,
   };
 }
 
 export function summarizeLeadDecision(input: {
+  language?: SupportedLanguage;
   lead: RuleLead;
   score: RulePersistedQualityScore;
 }): { primaryIssue: string; recommendedAction: string } {
+  const copy = getBizPilotCopy(input.language);
+
   if (input.lead.status === "booked") {
     return {
-      primaryIssue: "Outcome booked",
-      recommendedAction: "No open action",
+      primaryIssue: copy.leadRules.outcomeBooked,
+      recommendedAction: copy.leadRules.noOpenAction,
     };
   }
 
@@ -350,23 +354,23 @@ export function summarizeLeadDecision(input: {
     return {
       primaryIssue:
         input.lead.manual_outcome === "not_a_fit"
-          ? "Manually marked not a fit"
-          : "Outcome lost",
-      recommendedAction: "No open action",
+          ? copy.leadRules.manuallyMarkedNotFit
+          : copy.leadRules.outcomeLost,
+      recommendedAction: copy.leadRules.noOpenAction,
     };
   }
 
   if (input.score.quality_level === "low_fit") {
     return {
       primaryIssue: input.score.explanation,
-      recommendedAction: "Archive or review service area",
+      recommendedAction: copy.leadRules.archiveOrReviewArea,
     };
   }
 
   if (input.score.missing_info_keys.length > 0) {
     return {
       primaryIssue: input.score.explanation,
-      recommendedAction: "Ask for missing info",
+      recommendedAction: copy.leadRules.recommendedAskInfo,
     };
   }
 
@@ -375,21 +379,23 @@ export function summarizeLeadDecision(input: {
     input.lead.response_sla_state === "follow_up_due"
   ) {
     return {
-      primaryIssue: `Response state is ${input.lead.response_sla_state.replaceAll("_", " ")}.`,
-      recommendedAction: "Follow up today",
+      primaryIssue: copy.leadRules.responseState(
+        input.lead.response_sla_state.replaceAll("_", " "),
+      ),
+      recommendedAction: copy.leadRules.followUpToday,
     };
   }
 
   if (input.lead.first_reply_copied_at) {
     return {
-      primaryIssue: "Reply copied, waiting for outcome.",
-      recommendedAction: "Mark booked/lost when known",
+      primaryIssue: copy.leadRules.replyCopiedWaiting,
+      recommendedAction: copy.leadRules.markBookedLost,
     };
   }
 
   return {
-    primaryIssue: "Ready for owner reply.",
-    recommendedAction: "Reply now",
+    primaryIssue: copy.leadRules.readyForReply,
+    recommendedAction: copy.aiFallback.replyWarmLead,
   };
 }
 

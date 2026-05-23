@@ -27,6 +27,7 @@ import {
   BizPilotThemeShell,
 } from "@/components/ui/bizpilot-theme";
 import { bizColors, bizTheme } from "@/lib/design-tokens";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
 
 export const dynamic = "force-dynamic";
@@ -74,13 +75,14 @@ export default async function QuotePage({
 
   const primaryColor = page.branding?.primary_color ?? bizColors.accent;
   const accentColor = page.branding?.accent_color ?? bizColors.accent;
+  const copy = getBizPilotCopy(page.publicLink.preferred_language);
   const todayDate = todayDateString();
 
   return (
     <BizPilotThemeShell>
       <section className="border-b border-white/[0.06] px-4 py-4 sm:px-6">
         <div className="mx-auto flex w-full max-w-[720px] flex-col gap-3">
-          <BizPilotBrand compact subtitle="Quote request" />
+          <BizPilotBrand compact subtitle={copy.quotePage.subtitle} />
 
           <div className="rounded-[16px] border border-white/[0.08] bg-white/[0.035] p-4">
             <p className="inline-flex items-center gap-2 rounded-full border border-[#17D492]/20 bg-[#17D492]/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-[#17D492]">
@@ -88,7 +90,7 @@ export default async function QuotePage({
                 className="h-1.5 w-1.5 rounded-full"
                 style={{ backgroundColor: primaryColor }}
               />
-              Cleaning quote
+              {copy.quotePage.badge}
             </p>
             <h1 className="mt-2.5 text-[22px] font-extrabold leading-[1.1] tracking-[-0.03em] text-[#F5F7FA] sm:text-[26px]">
               {page.publicLink.display_name}
@@ -96,8 +98,7 @@ export default async function QuotePage({
             <p
               className={`mt-1.5 max-w-[60ch] text-[13px] leading-5 ${bizTheme.secondaryText}`}
             >
-              A short quote form. The business owner reviews every request and
-              replies directly — nothing is sent automatically.
+              {copy.quotePage.description}
             </p>
             <div
               className="mt-3 h-px w-full opacity-70"

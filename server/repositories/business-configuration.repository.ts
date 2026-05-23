@@ -22,6 +22,7 @@ import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
+import { localizeDefaultQuoteField } from "@/lib/i18n/bizpilot-copy";
 import type { Database, Json } from "@/types/database";
 
 export type BusinessBrandingRecord =
@@ -159,6 +160,7 @@ function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides {
 
 export async function getCleaningTemplate(input: {
   businessId: string;
+  preferredLanguage?: Database["public"]["Tables"]["businesses"]["Row"]["preferred_language"];
   supabase: SupabaseClient<Database>;
 }): Promise<CleaningTemplateRecord> {
   const { data: template, error: templateError } = await input.supabase
@@ -211,12 +213,21 @@ export async function getCleaningTemplate(input: {
         fieldOverride?.isRequired ??
         (isLegacyRequired ? true : isLegacyOptional ? false : field.is_required);
 
+      const label = fieldOverride?.label ?? legacyLabel ?? field.label;
+      const helpText = fieldOverride?.helpText ?? field.help_text;
+      const localized = localizeDefaultQuoteField({
+        fieldKey: field.field_key,
+        helpText,
+        label,
+        language: input.preferredLanguage,
+      });
+
       return {
         ...field,
-        help_text: fieldOverride?.helpText ?? field.help_text,
+        help_text: localized.helpText,
         is_hidden: fieldOverride?.isHidden ?? isLegacyHidden ?? false,
         is_required: isRequired,
-        label: fieldOverride?.label ?? legacyLabel ?? field.label,
+        label: localized.label,
         options: fieldOverride?.options ?? field.options,
         sort_order: fieldOverride?.sortOrder ?? field.sort_order,
         template_field_id: field.id,

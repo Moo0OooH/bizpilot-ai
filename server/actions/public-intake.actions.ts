@@ -22,6 +22,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { isSafePublicIntakeMessage } from "@/lib/i18n/bizpilot-copy";
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import {
   hashClientIp,
@@ -71,17 +72,9 @@ function readOptionalFormValue(
 function redirectWithIntakeError(slug: string, error: unknown): never {
   const message = getSafeUserErrorMessage({
     allowMessage: (value) =>
-      value === "Consent is required before submitting." ||
-      value === "Submission rejected." ||
-      value === "The quote form changed. Please refresh and submit again." ||
-      value === "This quote link is not available." ||
+      isSafePublicIntakeMessage(value) ||
       value === SUBMISSION_TOO_FAST_MESSAGE ||
-      value === RATE_LIMIT_EXCEEDED_MESSAGE ||
-      value.endsWith(" is required.") ||
-      value.endsWith(" must be a valid number.") ||
-      value.endsWith(" cannot be negative.") ||
-      value.endsWith(" must be a valid date.") ||
-      value.endsWith(" cannot be in the past."),
+      value === RATE_LIMIT_EXCEEDED_MESSAGE,
     code: "PUBLIC_INTAKE_ERROR",
     error,
     fallbackMessage:

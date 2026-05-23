@@ -197,6 +197,45 @@ describe("Lead Conversion Desk rules", () => {
     );
   });
 
+  it("localizes lead quality and rule guidance for Quebec French", () => {
+    const result = calculateLeadQuality({
+      language: "fr-CA",
+      lead: baseLead,
+      serviceAreas: ["Boucherville"],
+      submissionValues: completeValues.filter(
+        (value) => value.field_key !== "bathrooms",
+      ),
+    });
+
+    assert.equal(result.qualityLevel, "needs_info");
+    assert.match(result.explanation, /Il manque: salles de bain/);
+
+    assert.deepEqual(
+      summarizeLeadDecision({
+        language: "fr-CA",
+        lead: baseLead,
+        score: score({
+          explanation: result.explanation,
+          missing_info_keys: result.missingInfoKeys,
+          quality_level: "needs_info",
+        }),
+      }),
+      {
+        primaryIssue: result.explanation,
+        recommendedAction: "Demander les infos manquantes",
+      },
+    );
+
+    assert.equal(
+      chooseAction({
+        language: "fr-CA",
+        lead: baseLead,
+        score: score({ missing_info_keys: result.missingInfoKeys }),
+      }).title,
+      "Demander les détails manquants",
+    );
+  });
+
   it("calculates revenue recovery proof summary", () => {
     const proof = calculateRevenueRecoveryProof({
       actions: [

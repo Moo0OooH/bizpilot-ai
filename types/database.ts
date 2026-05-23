@@ -309,6 +309,7 @@ export type Database = {
           plan_expires_at: Timestamp | null;
           plan_slug: "founder_pilot" | "paused" | "pro" | "starter";
           plan_started_at: Timestamp;
+          preferred_language: "en" | "fr-CA";
           slug: string;
           status: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at: Timestamp;
@@ -322,6 +323,7 @@ export type Database = {
           plan_expires_at?: Timestamp | null;
           plan_slug?: "founder_pilot" | "paused" | "pro" | "starter";
           plan_started_at?: Timestamp;
+          preferred_language?: "en" | "fr-CA";
           slug: string;
           status?: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at?: Timestamp;
@@ -335,6 +337,7 @@ export type Database = {
           plan_expires_at?: Timestamp | null;
           plan_slug?: "founder_pilot" | "paused" | "pro" | "starter";
           plan_started_at?: Timestamp;
+          preferred_language?: "en" | "fr-CA";
           slug?: string;
           status?: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at?: Timestamp;
@@ -1188,6 +1191,7 @@ export type Database = {
           display_name: string;
           id: string;
           is_active: boolean;
+          preferred_language: "en" | "fr-CA";
           slug: string;
           updated_at: Timestamp;
         };
@@ -1197,6 +1201,7 @@ export type Database = {
           display_name: string;
           id?: string;
           is_active?: boolean;
+          preferred_language?: "en" | "fr-CA";
           slug: string;
           updated_at?: Timestamp;
         };
@@ -1206,6 +1211,7 @@ export type Database = {
           display_name?: string;
           id?: string;
           is_active?: boolean;
+          preferred_language?: "en" | "fr-CA";
           slug?: string;
           updated_at?: Timestamp;
         };

@@ -20,6 +20,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +40,7 @@ export default async function QuoteSuccessPage({ params }: SuccessPageProps) {
   }
 
   const businessName = page.publicLink.display_name;
+  const copy = getBizPilotCopy(page.publicLink.preferred_language);
   const quotePath = `/quote/${slug}`;
 
   return (
@@ -83,23 +85,21 @@ export default async function QuoteSuccessPage({ params }: SuccessPageProps) {
           className="mt-5 text-[11px] font-extrabold uppercase tracking-[0.14em]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
-          Request sent
+          {copy.quoteSuccess.requestSent}
         </p>
 
         <h1
           className="mt-2 text-[26px] font-extrabold leading-tight tracking-[-0.03em]"
           style={{ color: "var(--biz-page-text)" }}
         >
-          Thanks — {businessName} received your quote request.
+          {copy.quoteSuccess.title(businessName)}
         </h1>
 
         <p
           className="mt-3 text-sm leading-6"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
-          The business reviews every request manually. They will follow up
-          directly with the next step. Nothing is booked and no price is
-          confirmed yet.
+          {copy.quoteSuccess.body}
         </p>
 
         <div
@@ -113,17 +113,13 @@ export default async function QuoteSuccessPage({ params }: SuccessPageProps) {
             className="text-[12px] font-extrabold uppercase tracking-[0.14em]"
             style={{ color: "var(--biz-page-text-soft)" }}
           >
-            What happens next
+            {copy.quoteSuccess.nextTitle}
           </p>
           <ul
             className="grid gap-2 text-sm leading-6"
             style={{ color: "var(--biz-page-text)" }}
           >
-            {[
-              `${businessName} reviews your request and missing details.`,
-              "They prepare an owner-reviewed reply — no automatic messages.",
-              "You hear back through the contact you submitted.",
-            ].map((item, index) => (
+            {copy.quoteSuccess.steps(businessName).map((item, index) => (
               <li className="flex items-start gap-2" key={item}>
                 <span
                   aria-hidden="true"
@@ -150,7 +146,7 @@ export default async function QuoteSuccessPage({ params }: SuccessPageProps) {
               color: "#03130c",
             }}
           >
-            Submit another quote
+            {copy.quoteSuccess.submitAnother}
           </Link>
           <Link
             className="inline-flex h-11 flex-1 items-center justify-center rounded-[13px] border px-3.5 text-[13px] font-extrabold sm:flex-none sm:min-w-[140px]"
@@ -160,7 +156,7 @@ export default async function QuoteSuccessPage({ params }: SuccessPageProps) {
               color: "var(--biz-page-text)",
             }}
           >
-            Back home
+            {copy.quoteSuccess.backHome}
           </Link>
         </div>
 
@@ -168,8 +164,7 @@ export default async function QuoteSuccessPage({ params }: SuccessPageProps) {
           className="mt-5 text-center text-[11px]"
           style={{ color: "var(--biz-page-text-muted)" }}
         >
-          BizPilot AI helps {businessName} reply faster. The business stays in
-          control of every message.
+          {copy.quoteSuccess.footer(businessName)}
         </p>
       </section>
     </main>

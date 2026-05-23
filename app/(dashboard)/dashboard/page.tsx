@@ -241,6 +241,7 @@ export default async function DashboardOverviewPage() {
             <div className="mt-3">
               <LeadWorkspaceQueue
                 compact
+                language={activeBusiness.preferred_language}
                 leads={recentLeads}
                 limit={5}
                 quotePath={quotePath}

@@ -32,6 +32,7 @@ import {
   marketingBackground,
   marketingTone,
 } from "@/components/public/marketing-ui";
+import { languageLabels } from "@/lib/i18n/language";
 import {
   updateFounderInternalNoteAction,
   updateFounderPlanAction,
@@ -245,6 +246,9 @@ function BusinessControlCard({
               </StatusBadge>
               <StatusBadge tone={planTone(business.planSlug)}>
                 {planLabels[business.planSlug]}
+              </StatusBadge>
+              <StatusBadge tone="blue">
+                {languageLabels[business.preferredLanguage]}
               </StatusBadge>
             </div>
             <p className="mt-1 truncate text-sm text-[var(--dash-text-muted)]">
@@ -470,6 +474,11 @@ function FounderUsersSection({
                 <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
                   {formatUserValue(user.businessAccessStatus)}
                 </StatusBadge>
+                {user.preferredLanguage ? (
+                  <StatusBadge tone="blue">
+                    {languageLabels[user.preferredLanguage]}
+                  </StatusBadge>
+                ) : null}
                 <StatusBadge tone={user.publicLinkActive ? "emerald" : "neutral"}>
                   {user.publicLinkActive === null
                     ? "No quote link"

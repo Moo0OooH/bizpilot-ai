@@ -32,6 +32,8 @@ import {
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
 import { CopyButton } from "@/components/dashboard/copy-button";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import type { SupportedLanguage } from "@/lib/i18n/language";
 import type { LeadDeskItem } from "@/server/services/lead-conversion.service";
 
 type LeadFilter =
@@ -49,6 +51,7 @@ type LeadSort = "newest" | "oldest" | "most_urgent";
 type LeadWorkspaceQueueProps = Readonly<{
   /** When true, hide filter toolbar (overview preview mode). */
   compact?: boolean;
+  language?: SupportedLanguage | undefined;
   leads: LeadDeskItem[];
   /** Hard cap on rendered rows — used by dashboard overview (5). */
   limit?: number;
@@ -275,45 +278,6 @@ function LeadDesktopHeader() {
   );
 }
 
-export function LegacySampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
-  return (
-    <div className="grid gap-4 rounded-[20px] border border-dashed border-[rgba(20,184,166,0.28)] bg-[var(--dash-primary-soft)] p-5">
-      <div className="flex flex-wrap items-center gap-2">
-        <StatusBadge tone="amber">Sample lead</StatusBadge>
-        <StatusBadge tone="red">Reply needed</StatusBadge>
-        <StatusBadge tone="emerald">AI draft ready</StatusBadge>
-      </div>
-      <div className="grid items-center gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.9fr)_11rem]">
-        <div className="flex items-center gap-3">
-          <Avatar name="Maria Santos" size={44} tone="primary" />
-          <div>
-            <p className="text-[15px] font-black text-[var(--dash-text)]">
-              Maria S. — move-out cleaning
-            </p>
-            <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
-              2-bedroom apartment, downtown. Needs help before Friday.
-            </p>
-          </div>
-        </div>
-        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
-          <span className="font-black text-[var(--dash-text)]">Next action:</span>{" "}
-          Ask for the time window, then copy an owner-reviewed reply.
-        </div>
-        <div className="grid gap-2 lg:grid-cols-1">
-          <CopyButton label="Copy quote link" value={quotePath} />
-          <Link className={buttonClass} href="/dashboard/configuration">
-            Check setup
-          </Link>
-        </div>
-      </div>
-      <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
-        Sample is not stored as customer data. It shows the workflow until real
-        quote requests arrive.
-      </p>
-    </div>
-  );
-}
-
 const sampleLeads = [
   {
     area: "Downtown",
@@ -361,16 +325,20 @@ const sampleLeads = [
   },
 ];
 
-function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
+function SampleLeadEmptyState({
+  language,
+  quotePath,
+}: Readonly<{ language?: SupportedLanguage | undefined; quotePath: string }>) {
+  const copy = getBizPilotCopy(language);
   const featured = sampleLeads[0]!;
 
   return (
     <div className="grid gap-4 rounded-[20px] border border-dashed border-[rgba(20,184,166,0.28)] bg-[var(--dash-primary-soft)] p-4 sm:p-5">
       <div className="flex flex-wrap items-center gap-2">
-        <StatusBadge tone="amber">Sample demo state</StatusBadge>
-        <StatusBadge tone="red">Reply needed</StatusBadge>
-        <StatusBadge tone="emerald">AI draft ready</StatusBadge>
-        <StatusBadge tone="blue">Not stored</StatusBadge>
+        <StatusBadge tone="amber">{copy.demo.sampleDemoState}</StatusBadge>
+        <StatusBadge tone="red">{copy.demo.replyNeeded}</StatusBadge>
+        <StatusBadge tone="emerald">{copy.demo.aiDraftReady}</StatusBadge>
+        <StatusBadge tone="blue">{copy.demo.notStored}</StatusBadge>
       </div>
 
       <div className="grid items-start gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.9fr)]">
@@ -378,21 +346,23 @@ function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
           <Avatar name={featured.customer} size={44} tone="primary" />
           <div>
             <p className="text-[15px] font-black text-[var(--dash-text)]">
-              Maria S. - move-out cleaning
+              {copy.demo.featuredLeadTitle}
             </p>
             <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
-              {featured.detail}
+              {copy.demo.detailOne}
             </p>
           </div>
         </div>
         <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
-          <span className="font-black text-[var(--dash-text)]">AI summary:</span>{" "}
-          Warm quote request with urgency, but the owner needs home size and access details before estimating.
+          <span className="font-black text-[var(--dash-text)]">
+            {copy.demo.aiSummaryLabel}
+          </span>{" "}
+          {copy.demo.aiSummary}
         </div>
       </div>
 
       <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-        {sampleLeads.map((lead) => (
+        {sampleLeads.map((lead, index) => (
           <div
             className="grid gap-2 rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3"
             key={lead.customer}
@@ -405,14 +375,21 @@ function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
                     {shortCustomerName(lead.customer)}
                   </span>
                   <span className="mt-0.5 block truncate text-[12px] text-[var(--dash-text-muted)]">
-                    {lead.area}
+                    {copy.demo.sampleAreas[index] ?? lead.area}
                   </span>
                 </span>
               </div>
-              <StatusBadge tone={lead.tone}>{lead.status}</StatusBadge>
+              <StatusBadge tone={lead.tone}>
+                {copy.demo.sampleStatuses[index] ?? lead.status}
+              </StatusBadge>
             </div>
             <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-              {lead.detail}
+              {[
+                copy.demo.detailOne,
+                copy.demo.detailTwo,
+                copy.demo.detailThree,
+                copy.demo.detailFour,
+              ][index] ?? lead.detail}
             </p>
           </div>
         ))}
@@ -420,39 +397,36 @@ function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
 
       <div className="grid gap-3 lg:grid-cols-2">
         <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
-          <span className="font-black text-[var(--dash-text)]">Missing info:</span>{" "}
-          Ask for apartment size, whether the unit will be empty, access details,
-          and the preferred arrival window.
+          <span className="font-black text-[var(--dash-text)]">{copy.demo.missingInfoLabel}</span>{" "}
+          {copy.demo.missingInfo}
         </div>
         <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
-          <span className="font-black text-[var(--dash-text)]">Suggested next action:</span>{" "}
-          Review the reply draft, copy it manually, and send it through the
-          customer channel the owner already uses.
+          <span className="font-black text-[var(--dash-text)]">{copy.demo.suggestedNextActionLabel}</span>{" "}
+          {copy.demo.suggestedNextAction}
         </div>
         <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
-          <span className="font-black text-[var(--dash-text)]">Reply draft:</span>{" "}
-          {featured.replyDraft}
+          <span className="font-black text-[var(--dash-text)]">{copy.demo.replyDraftLabel}</span>{" "}
+          {copy.demo.replyDraft}
         </div>
         <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
-          <span className="font-black text-[var(--dash-text)]">Follow-up draft:</span>{" "}
-          {featured.followUpDraft}
+          <span className="font-black text-[var(--dash-text)]">{copy.demo.followUpLabel}</span>{" "}
+          {copy.demo.followUpDraft}
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
         <Link className={primaryButtonClass} href="/dashboard/leads">
-          Review Reply
+          {copy.demo.reviewReply}
         </Link>
-        <CopyButton label="Copy Response" value={featured.replyDraft} />
+        <CopyButton label={copy.demo.copyResponse} value={copy.demo.replyDraft} />
         <button className={buttonClass} disabled type="button">
-          Mark Contacted
+          {copy.demo.markContacted}
         </button>
-        <CopyButton label="Share Quote Link" value={quotePath} />
+        <CopyButton label={copy.demo.shareQuoteLink} value={quotePath} />
       </div>
 
       <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
-        This demo state is static UI only. It is not saved as a real lead and
-        disappears as soon as real quote requests arrive.
+        {copy.demo.disappearsNote}
       </p>
     </div>
   );
@@ -460,6 +434,7 @@ function SampleLeadEmptyState({ quotePath }: Readonly<{ quotePath: string }>) {
 
 export function LeadWorkspaceQueue({
   compact = false,
+  language,
   leads,
   limit,
   quotePath,
@@ -547,7 +522,7 @@ export function LeadWorkspaceQueue({
         ) : (
           <div className="p-4">
             {leads.length === 0 ? (
-              <SampleLeadEmptyState quotePath={quotePath} />
+              <SampleLeadEmptyState language={language} quotePath={quotePath} />
             ) : hasActiveFilter ? (
               <EmptyState
                 action={
