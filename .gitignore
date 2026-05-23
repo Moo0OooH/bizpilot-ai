@@ -34,6 +34,7 @@ artifacts/
 browser-profile/
 playwright-profile/
 screenshots/
+supabase/.temp/
 
 # debug
 npm-debug.log*
