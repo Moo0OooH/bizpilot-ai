@@ -72,6 +72,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
         ) : null}
 
         <form action={signUpAction} className="mt-5 grid gap-3 sm:grid-cols-2">
+          <input name="authIntent" type="hidden" value="sign-up" />
           {[
             ["displayName", copy.name, copy.yourName, "name", "text", "name"],
             [

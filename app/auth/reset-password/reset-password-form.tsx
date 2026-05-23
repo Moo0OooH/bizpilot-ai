@@ -182,6 +182,17 @@ export function ResetPasswordForm({
             </label>
           ))}
 
+          <p
+            className="rounded-[10px] border px-2.5 py-1.5 text-[11px] leading-5"
+            style={{
+              backgroundColor: "rgba(23,212,146,0.10)",
+              borderColor: "rgba(23,212,146,0.22)",
+              color: "#17D492",
+            }}
+          >
+            {copy.resetPasswordReuseHelp}
+          </p>
+
           <AuthSubmitButton pendingLabel={copy.updatePasswordPending}>
             {copy.updatePassword}
           </AuthSubmitButton>

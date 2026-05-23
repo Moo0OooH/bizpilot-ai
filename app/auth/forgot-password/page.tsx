@@ -83,6 +83,7 @@ export default async function ForgotPasswordPage({
         ) : null}
 
         <form action={requestPasswordResetAction} className="mt-5 space-y-3.5">
+          <input name="authIntent" type="hidden" value="password-reset" />
           <label className={authLabelClassName}>
             <span style={{ color: "var(--biz-page-text-soft)" }}>{copy.email}</span>
             <span className="relative block">

@@ -151,6 +151,7 @@ type AuthCopy = Readonly<{
   requestAgain: string;
   resetInvalid: string;
   resetPasswordFooter: string;
+  resetPasswordReuseHelp: string;
   resetPasswordSubtitle: string;
   resetPasswordTitle: string;
   resetPreparing: string;
@@ -339,6 +340,8 @@ const englishCopy: BizPilotCopy = {
     resetInvalid:
       "This reset link is invalid or expired. Request a new password reset.",
     resetPasswordFooter: "Use a new password that is unique to BizPilot.",
+    resetPasswordReuseHelp:
+      "Choose a new password. You cannot reuse your previous password.",
     resetPasswordSubtitle:
       "Choose a new password for your owner workspace.",
     resetPasswordTitle: "Set new password",
@@ -725,6 +728,8 @@ const frenchCopy: BizPilotCopy = {
     resetInvalid:
       "Ce lien de reinitialisation est invalide ou expire. Demandez un nouveau lien.",
     resetPasswordFooter: "Utilisez un mot de passe unique pour BizPilot.",
+    resetPasswordReuseHelp:
+      "Choisissez un nouveau mot de passe. Vous ne pouvez pas reutiliser l'ancien.",
     resetPasswordSubtitle:
       "Choisissez un nouveau mot de passe pour votre espace proprietaire.",
     resetPasswordTitle: "Definir un nouveau mot de passe",

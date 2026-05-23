@@ -41,12 +41,16 @@ const PASSWORD_RESET_NOTICE =
   "If an account exists, we'll send reset instructions.";
 const PASSWORD_RESET_RATE_LIMIT_MESSAGE =
   "Too many reset requests. Please wait a few minutes and try again.";
+const PASSWORD_REUSE_MESSAGE =
+  "You can't reuse your previous password. Choose a new password you have not used for this account.";
 const SIGN_UP_CHECK_EMAIL_NOTICE =
   "Check your email to confirm your account. If this email is already registered, sign in instead.";
 const SIGN_UP_EMAIL_RATE_LIMIT_MESSAGE =
   "Too many account creation attempts. Please wait a few minutes and try again.";
 const SIGN_UP_EMAIL_DELIVERY_MESSAGE =
   "We couldn't send the confirmation email. Please wait a few minutes and try again.";
+const AUTH_INTENT_SIGN_UP = "sign-up";
+const AUTH_INTENT_PASSWORD_RESET = "password-reset";
 
 function redirectWithSignInError(message: string): never {
   redirect(`/auth/sign-in?error=${encodeURIComponent(message)}`);
@@ -88,6 +92,35 @@ function readSignInEmail(formData: FormData): string {
   }
 
   return email;
+}
+
+function readAuthIntent(formData: FormData): string | undefined {
+  const value = formData.get("authIntent");
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : undefined;
+}
+
+function assertSignUpFormIntent(formData: FormData): void {
+  const intent = readAuthIntent(formData);
+  if (intent && intent !== AUTH_INTENT_SIGN_UP) {
+    redirectWithSignUpError("Reload the sign-up page and try again.");
+  }
+}
+
+function assertPasswordResetFormIntent(formData: FormData): void {
+  const intent = readAuthIntent(formData);
+  const hasSignUpOnlyFields =
+    formData.has("displayName") || formData.has("businessName");
+
+  if (intent === AUTH_INTENT_SIGN_UP || hasSignUpOnlyFields) {
+    console.warn("[auth:password-reset] blocked sign-up payload");
+    redirectWithSignUpError("Reload the sign-up page and try again.");
+  }
+
+  if (intent && intent !== AUTH_INTENT_PASSWORD_RESET) {
+    redirectWithForgotPasswordError("Reload the reset page and try again.");
+  }
 }
 
 function getConfiguredPasswordResetRedirectTo(): string {
@@ -181,6 +214,31 @@ function isPasswordResetRateLimitError(error: unknown): boolean {
     details.includes("rate limit") ||
     details.includes("too many") ||
     details.includes("security purposes")
+  );
+}
+
+function isPasswordReuseError(error: unknown): boolean {
+  const { message, name, status } = getSupabaseErrorDiagnostics(error);
+  const details = `${message} ${name ?? ""} ${status ?? ""}`.toLowerCase();
+
+  return (
+    details.includes("same password") ||
+    details.includes("same as") ||
+    details.includes("cannot be the same") ||
+    details.includes("must be different") ||
+    details.includes("should be different") ||
+    details.includes("different from the old")
+  );
+}
+
+function isPasswordValidationError(error: unknown): boolean {
+  const { message, name, status } = getSupabaseErrorDiagnostics(error);
+  const details = `${message} ${name ?? ""} ${status ?? ""}`.toLowerCase();
+
+  return (
+    status === 422 ||
+    details.includes("password") ||
+    details.includes("weak")
   );
 }
 
@@ -382,6 +440,7 @@ export async function signInAction(formData: FormData): Promise<never> {
 export async function requestPasswordResetAction(
   formData: FormData,
 ): Promise<never> {
+  assertPasswordResetFormIntent(formData);
   const email = readPasswordResetEmail(formData);
   const emailDomain = getEmailDomain(email);
   const redirectTo = getConfiguredPasswordResetRedirectTo();
@@ -474,7 +533,18 @@ export async function updatePasswordAction(formData: FormData): Promise<never> {
       ...(code ? { code } : {}),
       password,
     });
-  } catch {
+  } catch (error) {
+    if (isPasswordReuseError(error)) {
+      redirectWithResetPasswordError(PASSWORD_REUSE_MESSAGE, code);
+    }
+
+    if (isPasswordValidationError(error)) {
+      redirectWithResetPasswordError(
+        "Use a stronger new password with at least 8 characters.",
+        code,
+      );
+    }
+
     redirectWithResetPasswordError(
       "This reset link is invalid or expired. Request a new password reset.",
       code,
@@ -487,6 +557,7 @@ export async function updatePasswordAction(formData: FormData): Promise<never> {
 }
 
 export async function signUpAction(formData: FormData): Promise<never> {
+  assertSignUpFormIntent(formData);
   const businessName = readSignUpText({
     formData,
     key: "businessName",
