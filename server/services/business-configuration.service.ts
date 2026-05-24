@@ -56,6 +56,7 @@ export type BusinessReadinessScore = Readonly<{
   items: ReadonlyArray<{
     complete: boolean;
     label: string;
+    taskKey: string;
   }>;
   total: number;
 }>;
@@ -265,6 +266,7 @@ function calculateReadiness(
   }).map((item) => ({
     complete: item.complete,
     label: item.label,
+    taskKey: item.taskKey,
   }));
 
   return {

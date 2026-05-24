@@ -15,7 +15,7 @@ import { buttonClass, DashboardCard } from "@/components/dashboard/dashboard-ui"
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
-  readSupportedLanguage,
+  resolveWorkspaceInterfaceLanguage,
 } from "@/lib/i18n/language";
 import { signOutAction } from "@/server/actions/auth.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
@@ -33,28 +33,34 @@ export default async function DashboardLayout({
     redirect("/auth/sign-in");
   }
 
+  const cookieStore = await cookies();
   const workspace = await getBusinessWorkspace({ userId: user.id });
   const activeBusiness = workspace.businesses[0];
   if (!activeBusiness) {
     const accessSummary = await getWorkspaceAccessSummary({ userId: user.id });
     const isDeletionRequested =
       accessSummary?.lifecycleStatus === "deletion_requested";
+    const activeLanguage = resolveWorkspaceInterfaceLanguage({
+      cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+    });
+    const copy = getBizPilotCopy(activeLanguage).dashboard;
+    const accessCopy = copy.workspaceAccess;
 
     return (
       <main className="flex min-h-screen items-center justify-center bg-[var(--dash-bg)] px-4 py-8 text-[var(--dash-text)]">
         <DashboardCard className="max-w-xl p-6 sm:p-8" variant="priority">
           <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
-            Workspace access
+            {accessCopy.eyebrow}
           </p>
           <h1 className="mt-2 text-2xl font-black tracking-[-0.03em]">
             {isDeletionRequested
-              ? "Workspace deletion has been requested."
-              : "This workspace is paused or unavailable."}
+              ? accessCopy.deletionRequestedTitle
+              : accessCopy.pausedTitle}
           </h1>
           <p className="mt-3 text-sm leading-6 text-[var(--dash-text-secondary)]">
             {isDeletionRequested
-              ? "This business workspace is locked while the deletion request is reviewed. Your login account is not deleted automatically."
-              : "Your dashboard is currently blocked because no active business membership is available. Your data is retained; contact BizPilot support if this looks unexpected."}
+              ? accessCopy.deletionRequestedBody
+              : accessCopy.pausedBody}
           </p>
           {accessSummary ? (
             <p className="mt-3 rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm font-bold text-[var(--dash-text)]">
@@ -64,7 +70,7 @@ export default async function DashboardLayout({
           <div className="mt-5 flex flex-wrap gap-2">
             <form action={signOutAction}>
               <button className={buttonClass} type="submit">
-                Sign out
+                {copy.actions.signOut}
               </button>
             </form>
           </div>
@@ -73,14 +79,21 @@ export default async function DashboardLayout({
     );
   }
 
-  const cookieStore = await cookies();
   const themeCookie = cookieStore.get(DASHBOARD_THEME_COOKIE)?.value;
-  const activeLanguage = readSupportedLanguage(
-    cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value ??
-      activeBusiness.preferred_language,
-  );
+  const activeLanguage = resolveWorkspaceInterfaceLanguage({
+    businessLanguage: activeBusiness.preferred_language,
+    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
   const initialTheme = themeCookie === "light" ? "light" : "dark";
   const copy = getBizPilotCopy(activeLanguage).dashboard;
+  const shellCopy = {
+    actions: copy.actions,
+    nav: copy.nav,
+    pages: copy.pages,
+    settings: copy.settings,
+    status: copy.status,
+    theme: copy.theme,
+  };
 
   return (
     <DashboardShell
@@ -88,7 +101,7 @@ export default async function DashboardLayout({
       activeLanguage={activeLanguage}
       businessId={activeBusiness.id}
       businessSlug={activeBusiness.slug}
-      copy={copy}
+      copy={shellCopy}
       initialTheme={initialTheme}
       showFounderAdmin={isFounderUser(user)}
       userLabel={user.email ?? user.id}

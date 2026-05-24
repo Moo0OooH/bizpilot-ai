@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup and homepage conversion polish now added locally, but it is not approved for the first real customer pilot yet.
+BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup, homepage conversion polish, and dashboard i18n systemization now added locally, but it is not approved for the first real customer pilot yet.
 ```
 
 ## 2. Current Git State
@@ -27,6 +27,7 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Founder fake/test auth-user cleanup commit | `daa23c8 feat: add safe founder test auth user deletion` |
 | Smart intake routing future-doc commit | `27156c5 docs: capture smart intake routing future concept` |
 | Homepage conversion polish commit | `bd3d2a0 feat: sharpen homepage quote recovery conversion` |
+| Dashboard i18n systemization commit | This commit (`feat: systemize dashboard i18n`); run `git log -1 --oneline` for the current hash |
 | Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
 | Latest Vercel evidence commit | `9adde10 docs: record vercel production target evidence` |
 | Previous Phase 20 baseline | `39113f4 chore: record phase 20 pilot gate findings` |
@@ -150,6 +151,7 @@ Validation passed in Phase 20:
 - Founder Admin now has a repo-backed fake/test auth login deletion path guarded against founder accounts, production-customer users, and workspace owners. Migration `0020_founder_test_auth_user_cleanup.sql` extends the audit action constraint locally. It is not pushed, deployed, or applied to production yet. This was committed as `daa23c8`.
 - Smart Intake Routing was documented as a future product concept only. It is not approved for implementation and must not distract from the current cleaning quote-recovery MVP. This was committed as `27156c5`.
 - Homepage conversion polish tightened the hero, added an operational pain story, made the hero recovery visual outcome-first, added a live workflow demo, preserved the no-auto-send trust anchor, and updated homepage copy tests/standards. This was committed as `bd3d2a0`.
+- Dashboard i18n systemization made `businesses.preferred_language` the authenticated dashboard source of truth, moved visible dashboard overview/leads/configuration/settings/business-profile copy into the central dictionary, localized readiness task labels by `taskKey`, kept client shell copy serializable, and added regression tests against mojibake and local dashboard language branches. Evidence is recorded in `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
 - Signup confirmation smoke remains blocked because there is no safe inbox/mail-capture.
@@ -182,6 +184,15 @@ Latest validation after homepage conversion polish:
 - local browser QA viewport around 500px: no horizontal overflow detected,
 - production deploy: not triggered.
 
+Latest validation after dashboard i18n systemization:
+
+- `pnpm verify`: pass,
+- `pnpm test:unit`: pass, 45/45,
+- browser QA on `http://localhost:3000/dashboard`, `/dashboard/configuration`, and `/dashboard/leads`: rendered locally after fixing client serialization, no horizontal overflow at mobile-width viewport around 486px,
+- browser console on the tested route after the serialization fix: no current console errors,
+- production deploy: not triggered,
+- production SQL: not touched.
+
 ## 6. Important Working Tree Areas
 
 The Phase 21 implementation baseline was committed locally as `56b81a8`; evidence/operations/hygiene commits through `810e8c4` followed it. Later local continuation commits added founder fake/test auth cleanup (`daa23c8`), a future Smart Intake Routing doc (`27156c5`), and homepage conversion polish (`bd3d2a0`). Re-check `git status --short --branch` before any additional commit or push.
@@ -198,6 +209,7 @@ Important Phase 21 areas include:
 - database type updates.
 - founder fake/test auth login deletion UI/service/tests and migration `0020`,
 - homepage conversion polish in `app/page.tsx`, `lib/i18n/home-copy.ts`, and `app/globals.css`,
+- dashboard i18n systemization in `lib/i18n/bizpilot-copy.ts`, `lib/i18n/language.ts`, `app/(dashboard)/**`, and `components/dashboard/**`,
 - Smart Intake Routing future spec as docs-only / not approved for runtime implementation.
 
 Before committing:
@@ -391,8 +403,9 @@ Start here:
 11. `docs/security/BIZPILOT_BUSINESS_LIFECYCLE_AND_DELETION_POLICY_v1.0.md`
 12. `docs/operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 13. `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`
-14. `.github/workflows/ci.yml`
-15. `package.json`
+14. `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`
+15. `.github/workflows/ci.yml`
+16. `package.json`
 
 ## 9. Important Code/Migration Files
 
@@ -417,8 +430,21 @@ Inspect before commit:
 - `components/dashboard/workspace-deletion-request-form.tsx`
 - `components/admin/founder-test-cleanup-form.tsx`
 - `app/page.tsx`
+- `app/(dashboard)/layout.tsx`
+- `app/(dashboard)/dashboard/page.tsx`
+- `app/(dashboard)/dashboard/leads/page.tsx`
+- `app/(dashboard)/dashboard/configuration/page.tsx`
+- `app/(dashboard)/dashboard/business-profile/page.tsx`
+- `app/(dashboard)/dashboard/settings/page.tsx`
 - `app/globals.css`
+- `components/dashboard/dashboard-shell.tsx`
+- `components/dashboard/dashboard-sidebar.tsx`
+- `components/dashboard/dashboard-topbar.tsx`
+- `components/dashboard/lead-workspace-queue.tsx`
 - `lib/i18n/home-copy.ts`
+- `lib/i18n/bizpilot-copy.ts`
+- `lib/i18n/language.ts`
+- `tests/unit/i18n-copy.test.mts`
 - `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md`
 - `docs/product/BIZPILOT_SMART_INTAKE_ROUTING_FUTURE_SPEC_v1.0.md`
 
@@ -443,6 +469,7 @@ Inspect before commit:
 | Signup inbox blocker | `docs/readiness/PHASE_21H_SIGNUP_CONFIRMATION_SMOKE.md` |
 | Commercial terms blocker | `docs/business/PILOT_TERMS_DECISION_GATE.md` |
 | Founder auth-user cleanup and homepage polish | This handoff, `docs/operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`, `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md` |
+| Dashboard i18n systemization | `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`, `tests/unit/i18n-copy.test.mts` |
 
 ## 11. Next Tab Starter Prompt
 
@@ -459,6 +486,7 @@ Continue BizPilot Phase 21 from:
 - founder fake/test auth-user cleanup commit: daa23c8
 - smart intake routing future-doc commit: 27156c5
 - homepage conversion polish commit: bd3d2a0
+- dashboard i18n systemization commit: this commit (`feat: systemize dashboard i18n`); run `git log -1 --oneline`
 - latest GitHub evidence commit: 5a62e76
 - origin/main unchanged at 7fe0475
 - GitHub remote has only main/phase-19/phase-20 pushed; phase-21-production-alignment is local-only unless pushed later with approval
@@ -484,7 +512,7 @@ Owner decision:
 - do not reveal/pull secret env values unless explicitly approved and operationally necessary
 
 Current continuation state:
-Owner-run SQL verification already received: migration history table is missing, required columns passed, required functions passed, expected 0018 lifecycle/deletion objects passed, RLS-enabled status passed for all public tables, public RLS policy-list review found no obvious policy blocker, safe aggregate counts passed with leads/deletion rows at 0, and function definitions passed. Targeted function/grant verification found owner-only lifecycle helpers executable by anon; repo-backed migration 0019_lifecycle_helper_execute_grant_hardening.sql was then applied and verified in production with checked_functions = 6 and all_grant_checks_passed = true. Targeted constraint/template checks also passed for submitted_too_fast, fr-CA language constraints/index, and 0014 cleaning template fields. Founder fake/test auth-user deletion is repo-backed/local-verified only; production 0020 is not applied and deployment is not approved. Homepage conversion polish is local-verified and not deployed. Next production task remains quote/security smoke with synthetic data only after owner approval. Do not re-apply 0018 and do not add leads.source.
+Owner-run SQL verification already received: migration history table is missing, required columns passed, required functions passed, expected 0018 lifecycle/deletion objects passed, RLS-enabled status passed for all public tables, public RLS policy-list review found no obvious policy blocker, safe aggregate counts passed with leads/deletion rows at 0, and function definitions passed. Targeted function/grant verification found owner-only lifecycle helpers executable by anon; repo-backed migration 0019_lifecycle_helper_execute_grant_hardening.sql was then applied and verified in production with checked_functions = 6 and all_grant_checks_passed = true. Targeted constraint/template checks also passed for submitted_too_fast, fr-CA language constraints/index, and 0014 cleaning template fields. Founder fake/test auth-user deletion is repo-backed/local-verified only; production 0020 is not applied and deployment is not approved. Homepage conversion polish is local-verified and not deployed. Dashboard i18n systemization is local-verified and not deployed; authenticated dashboard language is now business-first instead of stale-cookie-first. Next production task remains quote/security smoke with synthetic data only after owner approval. Do not re-apply 0018 and do not add leads.source.
 ```
 
 ## 12. Current Final Decision

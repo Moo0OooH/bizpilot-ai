@@ -126,6 +126,330 @@ type PageContextCopy = Readonly<{
   title: string;
 }>;
 
+type DashboardBusinessProfileCopy = Readonly<{
+  accountEmailHelp: string;
+  aiNotes: string;
+  aiNotesDescription: string;
+  business: string;
+  businessIdentity: string;
+  businessIdentityDescription: string;
+  businessName: string;
+  businessType: string;
+  cleaning: string;
+  description: string;
+  futureDescription: string;
+  futureFields: string;
+  languageHelp: string;
+  logoUrl: string;
+  notInMvp: string;
+  oneAreaPerLine: string;
+  openQuoteSetup: string;
+  ownerEmail: string;
+  preferredLanguage: string;
+  previewQuotePage: string;
+  publicQuoteLink: string;
+  publicSlug: string;
+  roadmapFields: ReadonlyArray<readonly [string, string]>;
+  save: string;
+  saveNote: string;
+  serviceAreas: string;
+  templateName: string;
+  verticalHelp: string;
+}>;
+
+type DashboardConfigurationCopy = Readonly<{
+  bottomBar: Readonly<{
+    openPublicQuoteLink: string;
+    saveConfiguration: string;
+    text: string;
+  }>;
+  branding: Readonly<{
+    accentAppears: string;
+    accentColor: string;
+    addLogoAndColors: string;
+    colorsConfigured: string;
+    description: string;
+    logoAndColorsConfigured: string;
+    logoPreview: string;
+    logoUrl: string;
+    primaryColor: string;
+    publicQuoteButton: string;
+    submitQuoteRequest: string;
+    title: string;
+    whereColorsApply: string;
+  }>;
+  basics: Readonly<{
+    businessName: string;
+    description: string;
+    languageHelp: string;
+    preferredLanguage: string;
+    publicSlug: string;
+    templateName: string;
+    title: string;
+  }>;
+  fields: Readonly<{
+    close: string;
+    customerFacingQuestion: string;
+    customerQuestion: string;
+    customize: string;
+    description: string;
+    helperText: string;
+    hidden: string;
+    optional: string;
+    position: string;
+    required: string;
+    showOnPublicForm: string;
+    title: string;
+    type: string;
+    visible: string;
+    visibleOnForm: string;
+  }>;
+  faq: Readonly<{
+    description: string;
+    help: string;
+    label: string;
+    placeholder: string;
+    title: string;
+  }>;
+  headerDescription: (businessName: string) => string;
+  noBusinessDescription: string;
+  notifications: Readonly<{
+    description: string;
+    emailActive: string;
+    futureDisabled: string;
+    newQuoteRequest: string;
+    off: string;
+    ownerEmail: string;
+    summary: string;
+    title: string;
+  }>;
+  overview: Readonly<{
+    branding: string;
+    colorsReady: string;
+    complete: (completed: number, total: number) => string;
+    coveredAreas: (count: number) => string;
+    description: string;
+    done: string;
+    faqs: string;
+    logoConfigured: string;
+    open: string;
+    previewPublicQuote: string;
+    privacy: string;
+    profile: string;
+    publicLink: string;
+    quoteForm: string;
+    serviceAreas: string;
+    serviceRecords: (count: number) => string;
+    services: string;
+    setupReport: string;
+    summary: (completed: number, total: number) => string;
+    title: string;
+    visibleQuestions: (visible: number, total: number) => string;
+    workspaceReadiness: string;
+  }>;
+  privacy: Readonly<{
+    aiDisclosure: string;
+    consentHelp: string;
+    consentNotice: string;
+    description: string;
+    forwardOnly: string;
+    leadRetentionDays: string;
+    minimal: string;
+    privacyContactEmail: string;
+    privacyMode: string;
+    standard: string;
+    summary: (mode: string, days: number) => string;
+    title: string;
+  }>;
+  publicPage: Readonly<{
+    description: string;
+    previewPublicPage: string;
+    publicQuoteLink: string;
+    saveBeforePreview: string;
+    title: string;
+  }>;
+  readiness: Readonly<{
+    description: (completed: number, total: number) => string;
+    readyToShare: string;
+    setupInProgress: string;
+    title: string;
+  }>;
+  services: Readonly<{
+    areasHelp: string;
+    description: string;
+    serviceAreas: string;
+    services: string;
+    servicesHelp: string;
+    summary: (serviceCount: number, areaCount: number) => string;
+    title: string;
+  }>;
+  side: Readonly<{
+    brandingPreview: string;
+    publicQuoteColors: string;
+    publicQuoteLink: string;
+    saveThenPreview: string;
+    workspaceReadiness: string;
+  }>;
+  tabs: Readonly<{
+    ai: string;
+    basics: string;
+    branding: string;
+    fields: string;
+    link: string;
+    notifications: string;
+    overview: string;
+    privacy: string;
+    readiness: string;
+    services: string;
+  }>;
+}>;
+
+type DashboardLeadQueueCopy = Readonly<{
+  age: Readonly<{
+    ago: string;
+    day: (count: number) => string;
+    hour: (count: number) => string;
+    minute: (count: number) => string;
+    notAvailable: string;
+    olderDateLocale: string;
+  }>;
+  empty: Readonly<{
+    clearFilters: string;
+    filteredBody: string;
+    filteredTitle: string;
+    noLeadsBody: string;
+    noLeadsTitle: string;
+  }>;
+  fallbacks: Readonly<{
+    area: string;
+    service: string;
+  }>;
+  filters: Readonly<{
+    aiReady: string;
+    all: string;
+    atRisk: string;
+    lost: string;
+    missingInfo: string;
+    needsReply: string;
+    reviewed: string;
+    won: string;
+  }>;
+  headers: Readonly<{
+    customer: string;
+    location: string;
+    nextAction: string;
+    requested: string;
+    service: string;
+    status: string;
+  }>;
+  searchPlaceholder: string;
+  sorts: Readonly<{
+    mostUrgent: string;
+    newest: string;
+    oldest: string;
+  }>;
+  status: Readonly<{
+    archived: string;
+    atRisk: string;
+    lost: string;
+    missingInfo: string;
+    needsReply: string;
+    reviewed: string;
+    won: string;
+  }>;
+  reset: string;
+}>;
+
+type DashboardLeadsPageCopy = Readonly<{
+  active: string;
+  atRiskBadge: (count: number) => string;
+  focusAtRiskDescription: (count: number) => string;
+  focusHealthyDescription: string;
+  focusTitle: string;
+  lastSubmission: (age: string) => string;
+  missingInfoBadge: (count: number) => string;
+  newBadge: (count: number) => string;
+  openQuoteSetup: string;
+  quoteLinkHealth: string;
+  statusRulesBody: string;
+  statusRulesTitle: string;
+}>;
+
+type DashboardOverviewCopy = Readonly<{
+  aiControlBody: string;
+  aiControlBadges: readonly string[];
+  aiControlTitle: string;
+  atRiskSoon: string;
+  copyLink: string;
+  featuredFallbackAction: string;
+  featuredFallbackAge: string;
+  featuredFallbackArea: string;
+  featuredFallbackCustomer: string;
+  featuredFallbackService: string;
+  finishSetup: string;
+  heroBadge: string;
+  heroDescription: string;
+  heroTitle: (count: number) => string;
+  metrics: Readonly<{
+    aiDraftsReady: Readonly<{ detail: string; label: string }>;
+    atRiskLeads: Readonly<{ detail: string; label: string }>;
+    needsReply: Readonly<{ detail: string; label: string }>;
+    newQuoteRequests: Readonly<{ detail: string; label: string }>;
+  }>;
+  noWorkspaceBody: string;
+  noWorkspaceTitle: string;
+  openQueue: string;
+  readiness: Readonly<{
+    activeAndReady: string;
+    incomplete: string;
+    liveAndShareable: string;
+    needed: string;
+    ready: string;
+    tasksLeft: (count: number) => string;
+    title: string;
+  }>;
+  recentActivity: Readonly<{
+    description: string;
+    emptyBody: string;
+    emptyTitle: string;
+    title: string;
+  }>;
+  recoveryFocus: Readonly<{
+    description: (count: number) => string;
+    followUpDetail: (count: number) => string;
+    followUpTitle: string;
+    itemCount: (count: number) => string;
+    missingInfoDetail: (count: number) => string;
+    missingInfoTitle: string;
+    replyDetail: (count: number) => string;
+    replyTitle: string;
+    title: string;
+  }>;
+  reviewUrgentLead: string;
+  routine: Readonly<{
+    steps: ReadonlyArray<readonly [string, string, string]>;
+    title: string;
+  }>;
+  status: Readonly<{
+    aiDraftReady: string;
+    missingInfo: string;
+    ready: string;
+  }>;
+  suggestedNextAction: string;
+  queue: Readonly<{
+    description: string;
+    title: string;
+  }>;
+}>;
+
+type DashboardWorkspaceAccessCopy = Readonly<{
+  deletionRequestedBody: string;
+  deletionRequestedTitle: string;
+  eyebrow: string;
+  pausedBody: string;
+  pausedTitle: string;
+}>;
+
 type AuthCopy = Readonly<{
   backHome: string;
   businessName: string;
@@ -185,6 +509,11 @@ type DashboardCopy = Readonly<{
     saveConfiguration: string;
     signOut: string;
   }>;
+  businessProfile: DashboardBusinessProfileCopy;
+  configuration: DashboardConfigurationCopy;
+  leadQueue: DashboardLeadQueueCopy;
+  leadsPage: DashboardLeadsPageCopy;
+  overview: DashboardOverviewCopy;
   nav: Readonly<{
     businessProfile: string;
     leads: string;
@@ -203,6 +532,17 @@ type DashboardCopy = Readonly<{
     leads: PageContextCopy;
     settings: PageContextCopy;
   }>;
+  readinessTasks: Readonly<Record<
+    | "branding"
+    | "business_profile"
+    | "cleaning_template"
+    | "consent"
+    | "faqs"
+    | "privacy"
+    | "service_areas"
+    | "services",
+    string
+  >>;
   settings: Readonly<{
     account: string;
     billing: string;
@@ -210,6 +550,11 @@ type DashboardCopy = Readonly<{
     future: string;
     futureSections: string;
     futureSectionsDescription: string;
+    futureSectionHints: Readonly<{
+      billing: string;
+      integrations: string;
+      teamMembers: string;
+    }>;
     guardrails: string;
     guardrailsDescription: string;
     guardrailItems: readonly string[];
@@ -217,6 +562,24 @@ type DashboardCopy = Readonly<{
     language: string;
     languageDescription: string;
     languageHelp: string;
+    lifecycle: Readonly<{
+      deletionIneligibleBody: string;
+      deletionIneligibleTitle: string;
+      description: string;
+      lifecycleStatus: string;
+      lockBehavior: string;
+      lockBehaviorDescription: string;
+      title: string;
+    }>;
+    deletionForm: Readonly<{
+      acknowledgement: string;
+      body: string;
+      dataNotice: string;
+      dangerZone: string;
+      submit: string;
+      title: string;
+      typeBusinessName: string;
+    }>;
     manualBilling: string;
     notInMvp: string;
     plan: string;
@@ -240,6 +603,7 @@ type DashboardCopy = Readonly<{
     label: string;
     light: string;
   }>;
+  workspaceAccess: DashboardWorkspaceAccessCopy;
 }>;
 
 export type BizPilotCopy = Readonly<{
@@ -386,6 +750,371 @@ const englishCopy: BizPilotCopy = {
       saveConfiguration: "Save configuration",
       signOut: "Sign out",
     },
+    businessProfile: {
+      accountEmailHelp: "Account email - change it from Settings.",
+      aiNotes: "Service area & operating notes",
+      aiNotesDescription:
+        "Operating context that helps the owner and AI prepare better drafts. AI guardrails and FAQ details stay in Quote Setup.",
+      business: "Business",
+      businessIdentity: "Business identity",
+      businessIdentityDescription:
+        "Owner-facing identity used across the dashboard, public quote page, and AI draft context.",
+      businessName: "Business name",
+      businessType: "Business type",
+      cleaning: "Cleaning",
+      description:
+        "Business identity and operating context. This is separate from Quote Setup.",
+      futureDescription:
+        "These fields are part of the approved index design but are not yet wired to a database column. They will land with their own migration after pilot validation.",
+      futureFields: "Roadmap fields",
+      languageHelp: "Used for the public quote page and AI draft language.",
+      logoUrl: "Logo URL",
+      notInMvp: "Not in MVP",
+      oneAreaPerLine:
+        "One area per line. Used to score leads and explain coverage.",
+      openQuoteSetup: "Open Quote Setup",
+      ownerEmail: "Owner email (read-only)",
+      preferredLanguage: "Preferred language",
+      previewQuotePage: "Preview Quote Page",
+      publicQuoteLink: "Public quote link",
+      publicSlug: "Public slug",
+      roadmapFields: [
+        ["Owner display name", "Phase 18B"],
+        ["Owner phone", "Phase 18B"],
+        ["Public website", "Phase 18B"],
+        ["City", "Phase 18B"],
+        ["Province", "Phase 18B"],
+        ["Response hours", "Phase 18B"],
+      ],
+      save: "Save Business Profile",
+      saveNote:
+        "Save persists identity changes. Quote-form questions are managed in Quote Setup.",
+      serviceAreas: "Service areas",
+      templateName: "Custom quote template name",
+      verticalHelp:
+        "Phase 18A is cleaning-first. Other verticals are locked until the validation gate clears.",
+    },
+    configuration: {
+      basics: {
+        businessName: "Business name",
+        description:
+          "Core identity used across the protected workspace and public quote link.",
+        languageHelp: "Controls public quote copy and AI draft language.",
+        preferredLanguage: "Preferred language",
+        publicSlug: "Public slug",
+        templateName: "Template name",
+        title: "Public quote basics",
+      },
+      bottomBar: {
+        openPublicQuoteLink: "Open public quote link",
+        saveConfiguration: "Save configuration",
+        text: "Save configuration after editing, then preview the public quote link.",
+      },
+      branding: {
+        accentAppears:
+          "Accent appears on progress, focus, and supporting highlights.",
+        accentColor: "Accent color",
+        addLogoAndColors: "Add logo and colors",
+        colorsConfigured: "Colors ready",
+        description:
+          "Public-facing visual settings for the cleaning quote experience.",
+        logoAndColorsConfigured: "Logo and colors configured",
+        logoPreview: "Logo preview",
+        logoUrl: "Logo URL",
+        primaryColor: "Primary color",
+        publicQuoteButton: "Public quote button",
+        submitQuoteRequest: "Submit quote request",
+        title: "Branding",
+        whereColorsApply: "Where these colors apply",
+      },
+      fields: {
+        close: "Close",
+        customerFacingQuestion: "Customer-facing question",
+        customerQuestion: "Customer question",
+        customize: "Customize",
+        description:
+          "Choose which customer questions appear on the public quote form and how they read.",
+        helperText: "Helper text",
+        hidden: "Not visible",
+        optional: "Optional",
+        position: "Position",
+        required: "Required",
+        showOnPublicForm: "Show on public form",
+        title: "Cleaning template",
+        type: "Type",
+        visible: "Visible",
+        visibleOnForm: "Visible on form",
+      },
+      faq: {
+        description:
+          "Reusable customer questions and answers for the cleaning business profile.",
+        help: "One FAQ per line. Use: Question? | Answer",
+        label: "FAQ",
+        placeholder: "Do you bring supplies? | Yes, we bring all standard supplies.",
+        title: "AI instructions and FAQ",
+      },
+      headerDescription: (businessName) =>
+        `Configure the cleaning quote experience, public link, consent, and owner-ready lead foundation for ${businessName}.`,
+      noBusinessDescription: "No tenant business is available for this user yet.",
+      notifications: {
+        description:
+          "MVP keeps notifications simple: owner email awareness only. SMS and WhatsApp stay disabled before validation.",
+        emailActive: "Email active",
+        futureDisabled: "Future - disabled",
+        newQuoteRequest: "New quote request",
+        off: "Off",
+        ownerEmail: "Owner email",
+        summary: "Email active - SMS/WhatsApp disabled",
+        title: "Notifications",
+      },
+      overview: {
+        branding: "Branding",
+        colorsReady: "Colors ready",
+        complete: (completed, total) => `${completed}/${total} complete`,
+        coveredAreas: (count) => `${count} covered areas`,
+        description:
+          "A clean operating summary of the quote link, setup health, and public customer experience.",
+        done: "Done",
+        faqs: "FAQ",
+        logoConfigured: "Logo configured",
+        open: "Open",
+        previewPublicQuote: "Preview public quote",
+        privacy: "Privacy",
+        profile: "Profile",
+        publicLink: "Public link",
+        quoteForm: "Quote form",
+        serviceAreas: "Service areas",
+        serviceRecords: (count) => `${count} service records`,
+        services: "Services",
+        setupReport: "Setup report",
+        summary: (completed, total) => `${completed}/${total} setup items complete`,
+        title: "Quote setup overview",
+        visibleQuestions: (visible, total) => `${visible}/${total} visible questions`,
+        workspaceReadiness: "Workspace readiness",
+      },
+      privacy: {
+        aiDisclosure: "Show AI draft disclosure",
+        consentHelp:
+          "Shown on the public quote page. If left blank, a safe default is saved so the consent version stays valid.",
+        consentNotice: "Consent notice",
+        description: "Consent and retention settings used by public quote submissions.",
+        forwardOnly: "Forward-only",
+        leadRetentionDays: "Lead retention days",
+        minimal: "Minimal data",
+        privacyContactEmail: "Privacy contact email",
+        privacyMode: "Privacy mode",
+        standard: "Standard",
+        summary: (mode, days) => `${mode} - ${days} days`,
+        title: "Privacy",
+      },
+      publicPage: {
+        description:
+          "Shareable customer quote page generated from the active business slug and quote form.",
+        previewPublicPage: "Preview public page",
+        publicQuoteLink: "Public quote link",
+        saveBeforePreview:
+          "Save changes before previewing branding, consent, services, and quote questions.",
+        title: "Quote link and public page",
+      },
+      readiness: {
+        description: (completed, total) => `${completed}/${total} setup tasks complete.`,
+        readyToShare: "Ready to share",
+        setupInProgress: "Setup in progress",
+        title: "Quote link readiness",
+      },
+      services: {
+        areasHelp: "Example: Montreal, Laval, Longueuil, South Shore",
+        description:
+          "Enter one city, neighborhood, or service region per line. Leads outside these areas may be marked as low fit.",
+        serviceAreas: "Service areas",
+        services: "Services",
+        servicesHelp: "One service per line. Use: Service name | Optional note",
+        summary: (serviceCount, areaCount) =>
+          `${serviceCount} services - ${areaCount} areas`,
+        title: "Services & covered areas",
+      },
+      side: {
+        brandingPreview: "Branding preview",
+        publicQuoteColors: "Public quote colors",
+        publicQuoteLink: "Public quote link",
+        saveThenPreview:
+          "Save changes, then preview the customer-facing quote flow.",
+        workspaceReadiness: "Workspace readiness",
+      },
+      tabs: {
+        ai: "AI Instructions",
+        basics: "Public Basics",
+        branding: "Branding",
+        fields: "Form Questions",
+        link: "Public Link",
+        notifications: "Notifications",
+        overview: "Overview",
+        privacy: "Privacy",
+        readiness: "Readiness",
+        services: "Services",
+      },
+    },
+    leadQueue: {
+      age: {
+        ago: "ago",
+        day: (count) => `${count}d`,
+        hour: (count) => `${count}h`,
+        minute: (count) => `${count}m`,
+        notAvailable: "-",
+        olderDateLocale: "en",
+      },
+      empty: {
+        clearFilters: "Clear filters",
+        filteredBody:
+          "Try another search, clear filters, or sort by newest quote requests.",
+        filteredTitle: "No leads match those filters.",
+        noLeadsBody: "Share your quote link to start capturing requests.",
+        noLeadsTitle: "No leads yet.",
+      },
+      fallbacks: {
+        area: "Area pending",
+        service: "Service not set",
+      },
+      filters: {
+        aiReady: "AI draft ready",
+        all: "All statuses",
+        atRisk: "At risk",
+        lost: "Lost",
+        missingInfo: "Missing info",
+        needsReply: "Needs reply",
+        reviewed: "Reviewed",
+        won: "Won",
+      },
+      headers: {
+        customer: "Customer",
+        location: "Location",
+        nextAction: "Next action",
+        requested: "Requested",
+        service: "Service",
+        status: "Status",
+      },
+      reset: "Reset",
+      searchPlaceholder: "Search leads, city, service...",
+      sorts: {
+        mostUrgent: "Most urgent",
+        newest: "Newest",
+        oldest: "Oldest",
+      },
+      status: {
+        archived: "Archived",
+        atRisk: "At risk",
+        lost: "Lost",
+        missingInfo: "Missing info",
+        needsReply: "Needs reply",
+        reviewed: "Reviewed",
+        won: "Won",
+      },
+    },
+    leadsPage: {
+      active: "Active",
+      atRiskBadge: (count) => `${count} at risk`,
+      focusAtRiskDescription: (count) =>
+        `${count} lead${count === 1 ? "" : "s"} are at risk. Review them before reviewed or archived requests.`,
+      focusHealthyDescription:
+        "No at-risk leads right now. Keep checking new requests as they arrive.",
+      focusTitle: "Today's recovery focus",
+      lastSubmission: (age) => `Last submission: ${age}.`,
+      missingInfoBadge: (count) => `${count} missing info`,
+      newBadge: (count) => `${count} new`,
+      openQuoteSetup: "Open Quote Setup",
+      quoteLinkHealth: "Quote link health",
+      statusRulesBody:
+        "New -> Needs reply -> Reviewed / Won / Lost. AI drafts are owner-reviewed only; no automatic sending.",
+      statusRulesTitle: "Status rules",
+    },
+    overview: {
+      aiControlBody:
+        "BizPilot drafts replies, summaries, and follow-ups. Nothing is sent automatically.",
+      aiControlBadges: ["No auto-send", "No invented pricing", "Owner reviewed"],
+      aiControlTitle: "AI stays under your control",
+      atRiskSoon: "At risk soon",
+      copyLink: "Copy link",
+      featuredFallbackAction:
+        "Ask for apartment size, preferred date, and access details before giving an estimate range.",
+      featuredFallbackAge: "22m ago",
+      featuredFallbackArea: "Plateau",
+      featuredFallbackCustomer: "Sarah M.",
+      featuredFallbackService: "Move-out cleaning",
+      finishSetup: "Finish setup",
+      heroBadge: "Phase 18A · Pilot readiness",
+      heroDescription:
+        "Reply while the customer is still comparing options. BizPilot surfaces urgent leads, drafts the response, and keeps the owner in control.",
+      heroTitle: (count) => `${count} quote requests need attention today.`,
+      metrics: {
+        aiDraftsReady: {
+          detail: "Review before using. No auto-send.",
+          label: "AI drafts ready",
+        },
+        atRiskLeads: {
+          detail: "No reply after the recovery threshold",
+          label: "At risk leads",
+        },
+        needsReply: {
+          detail: "Waiting for owner response",
+          label: "Needs reply",
+        },
+        newQuoteRequests: {
+          detail: "Last 7 days · healthy pilot signal",
+          label: "New quote requests",
+        },
+      },
+      noWorkspaceBody:
+        "Create or join a business workspace before using the quote recovery desk.",
+      noWorkspaceTitle: "No business workspace yet.",
+      openQueue: "Open queue",
+      queue: {
+        description:
+          "The 5 most urgent quote requests. Open the full queue to filter, sort, and act on every lead.",
+        title: "Lead Recovery Queue",
+      },
+      readiness: {
+        activeAndReady: "Active and ready",
+        incomplete: "Incomplete",
+        liveAndShareable: "Public quote link is live and shareable.",
+        needed: "Needed",
+        ready: "Ready",
+        tasksLeft: (count) => `${count} tasks left`,
+        title: "Quote link readiness",
+      },
+      recentActivity: {
+        description: "Operational timeline for quote recovery and owner actions.",
+        emptyBody:
+          "New quote requests, AI summaries, review actions, and quote link copies will appear here.",
+        emptyTitle: "No recent activity yet.",
+        title: "Recent Activity",
+      },
+      recoveryFocus: {
+        description: (count) => `${count} items`,
+        followUpDetail: (count) => `${count} follow-up due today`,
+        followUpTitle: "Follow-up due",
+        itemCount: (count) => String(count),
+        missingInfoDetail: (count) => `${count} lead needs details`,
+        missingInfoTitle: "Missing info",
+        replyDetail: (count) => `${count} leads waiting`,
+        replyTitle: "Reply needed",
+        title: "Today's recovery focus",
+      },
+      reviewUrgentLead: "Review urgent lead",
+      routine: {
+        steps: [
+          ["1", "Review at-risk leads", "Start with overdue quote requests."],
+          ["2", "Copy AI replies", "Edit before sending manually."],
+          ["3", "Follow up unanswered requests", "Use owner-approved drafts."],
+        ],
+        title: "Owner routine suggestion",
+      },
+      status: {
+        aiDraftReady: "AI draft ready",
+        missingInfo: "Missing info",
+        ready: "Ready",
+      },
+      suggestedNextAction: "Suggested next action:",
+    },
     nav: {
       businessProfile: "Business Profile",
       leads: "Leads",
@@ -426,6 +1155,16 @@ const englishCopy: BizPilotCopy = {
         title: "Settings",
       },
     },
+    readinessTasks: {
+      branding: "Branding configured",
+      business_profile: "Business profile confirmed",
+      cleaning_template: "Cleaning template activated",
+      consent: "Consent notice configured",
+      faqs: "At least one FAQ added",
+      privacy: "Privacy mode selected",
+      service_areas: "At least one service area added",
+      services: "At least one service added",
+    },
     settings: {
       account: "Account",
       billing: "Billing",
@@ -434,6 +1173,11 @@ const englishCopy: BizPilotCopy = {
       futureSections: "Future sections",
       futureSectionsDescription:
         "Roadmap placeholders stay visible but locked before validation.",
+      futureSectionHints: {
+        billing: "Stripe Payment Links first",
+        integrations: "Webhooks deferred",
+        teamMembers: "Owner-only in pilot",
+      },
       guardrails: "Phase 18A guardrails",
       guardrailsDescription:
         "What stays on while the pilot validates. Anything below is intentionally locked.",
@@ -449,6 +1193,30 @@ const englishCopy: BizPilotCopy = {
         "One language controls dashboard labels, auth copy, quote-page defaults, and owner-reviewed AI draft language.",
       languageHelp:
         "Changing this updates the business language and the interface cookie used before sign-in.",
+      lifecycle: {
+        deletionIneligibleBody:
+          "This workspace is not currently eligible for a new deletion request, or your membership cannot request one.",
+        deletionIneligibleTitle: "Workspace deletion requests are owner-only.",
+        description:
+          "Owner-only workspace lifecycle controls. Login account deletion is separate.",
+        lifecycleStatus: "Lifecycle status",
+        lockBehavior: "Lock behavior",
+        lockBehaviorDescription:
+          "Deletion requests lock quote links, new submissions, and AI draft generation while review is pending.",
+        title: "Workspace lifecycle",
+      },
+      deletionForm: {
+        acknowledgement:
+          "I understand this requests workspace deletion review and does not automatically delete my login account.",
+        body:
+          "This will lock the business workspace, disable public quote links, block new quote submissions, and stop new AI draft generation. It does not delete your login account automatically.",
+        dangerZone: "Danger zone",
+        dataNotice:
+          "Customer data is not purged by this request. Final deletion and anonymization require a controlled review process.",
+        submit: "Request workspace deletion",
+        title: "Request workspace deletion",
+        typeBusinessName: "Type your business name to confirm",
+      },
       manualBilling: "Manual billing during Phase 18A.",
       notInMvp: "Not in MVP",
       plan: "Plan",
@@ -474,6 +1242,15 @@ const englishCopy: BizPilotCopy = {
       dark: "Dark",
       label: "Dashboard theme",
       light: "Light",
+    },
+    workspaceAccess: {
+      deletionRequestedBody:
+        "This business workspace is locked while the deletion request is reviewed. Your login account is not deleted automatically.",
+      deletionRequestedTitle: "Workspace deletion has been requested.",
+      eyebrow: "Workspace access",
+      pausedBody:
+        "Your dashboard is currently blocked because no active business membership is available. Your data is retained; contact BizPilot support if this looks unexpected.",
+      pausedTitle: "This workspace is paused or unavailable.",
     },
   },
   demo: {
@@ -784,6 +1561,382 @@ const frenchCopy: BizPilotCopy = {
       saveConfiguration: "Enregistrer",
       signOut: "Déconnexion",
     },
+    businessProfile: {
+      accountEmailHelp: "Courriel du compte - modifiez-le dans les réglages.",
+      aiNotes: "Zone de service et notes opérationnelles",
+      aiNotesDescription:
+        "Contexte qui aide le propriétaire et l'IA à préparer de meilleurs brouillons. Les garde-fous IA et FAQ restent dans Configuration.",
+      business: "Entreprise",
+      businessIdentity: "Identité de l'entreprise",
+      businessIdentityDescription:
+        "Identité utilisée dans le tableau de bord, la page publique et le contexte des brouillons IA.",
+      businessName: "Nom de l'entreprise",
+      businessType: "Type d'entreprise",
+      cleaning: "Nettoyage",
+      description:
+        "Identité de l'entreprise et contexte opérationnel. Cette section est séparée de Configuration.",
+      futureDescription:
+        "Ces champs font partie du design approuvé, mais ne sont pas encore reliés à la base de données. Ils arriveront avec leur propre migration après validation pilote.",
+      futureFields: "Champs de feuille de route",
+      languageHelp:
+        "Utilisée pour la page publique et la langue des brouillons IA.",
+      logoUrl: "URL du logo",
+      notInMvp: "Hors MVP",
+      oneAreaPerLine:
+        "Une zone par ligne. Utilisée pour scorer les leads et expliquer la couverture.",
+      openQuoteSetup: "Ouvrir Configuration",
+      ownerEmail: "Courriel propriétaire (lecture seule)",
+      preferredLanguage: "Langue préférée",
+      previewQuotePage: "Aperçu page de soumission",
+      publicQuoteLink: "Lien public",
+      publicSlug: "Slug public",
+      roadmapFields: [
+        ["Nom public propriétaire", "Phase 18B"],
+        ["Téléphone propriétaire", "Phase 18B"],
+        ["Site web public", "Phase 18B"],
+        ["Ville", "Phase 18B"],
+        ["Province", "Phase 18B"],
+        ["Heures de réponse", "Phase 18B"],
+      ],
+      save: "Enregistrer le profil",
+      saveNote:
+        "L'enregistrement conserve les changements d'identité. Les questions du formulaire se gèrent dans Configuration.",
+      serviceAreas: "Zones desservies",
+      templateName: "Nom du modèle de soumission",
+      verticalHelp:
+        "La Phase 18A reste concentrée sur le nettoyage. Les autres verticales restent verrouillées jusqu'à validation.",
+    },
+    configuration: {
+      basics: {
+        businessName: "Nom de l'entreprise",
+        description:
+          "Identité principale utilisée dans l'espace protégé et le lien public.",
+        languageHelp:
+          "Contrôle le texte de la page publique et la langue des brouillons IA.",
+        preferredLanguage: "Langue préférée",
+        publicSlug: "Slug public",
+        templateName: "Nom du modèle",
+        title: "Bases du lien public",
+      },
+      bottomBar: {
+        openPublicQuoteLink: "Ouvrir le lien public",
+        saveConfiguration: "Enregistrer",
+        text: "Enregistrez la configuration après les changements, puis prévisualisez le lien public.",
+      },
+      branding: {
+        accentAppears:
+          "L'accent apparaît sur la progression, le focus et les éléments de soutien.",
+        accentColor: "Couleur d'accent",
+        addLogoAndColors: "Ajouter logo et couleurs",
+        colorsConfigured: "Couleurs prêtes",
+        description:
+          "Réglages visuels publics pour l'expérience de soumission de nettoyage.",
+        logoAndColorsConfigured: "Logo et couleurs configurés",
+        logoPreview: "Aperçu du logo",
+        logoUrl: "URL du logo",
+        primaryColor: "Couleur principale",
+        publicQuoteButton: "Bouton de soumission public",
+        submitQuoteRequest: "Envoyer la demande",
+        title: "Marque",
+        whereColorsApply: "Où ces couleurs s'appliquent",
+      },
+      fields: {
+        close: "Fermer",
+        customerFacingQuestion: "Question visible par le client",
+        customerQuestion: "Question client",
+        customize: "Personnaliser",
+        description:
+          "Choisissez les questions affichées sur le formulaire public et leur formulation.",
+        helperText: "Texte d'aide",
+        hidden: "Non visible",
+        optional: "Optionnel",
+        position: "Position",
+        required: "Requis",
+        showOnPublicForm: "Afficher sur le formulaire public",
+        title: "Modèle de nettoyage",
+        type: "Type",
+        visible: "Visible",
+        visibleOnForm: "Visible sur le formulaire",
+      },
+      faq: {
+        description:
+          "Questions et réponses réutilisables pour le profil de l'entreprise de nettoyage.",
+        help: "Une FAQ par ligne. Format: Question? | Réponse",
+        label: "FAQ",
+        placeholder: "Apportez-vous les fournitures? | Oui, nous apportons les fournitures standards.",
+        title: "Instructions IA et FAQ",
+      },
+      headerDescription: (businessName) =>
+        `Configurez l'expérience de soumission, le lien public, le consentement et la base de récupération pour ${businessName}.`,
+      noBusinessDescription:
+        "Aucune entreprise locataire n'est disponible pour cet utilisateur.",
+      notifications: {
+        description:
+          "Le MVP garde les notifications simples: courriel propriétaire seulement. SMS et WhatsApp restent désactivés avant validation.",
+        emailActive: "Courriel actif",
+        futureDisabled: "Futur - désactivé",
+        newQuoteRequest: "Nouvelle demande",
+        off: "Désactivé",
+        ownerEmail: "Courriel propriétaire",
+        summary: "Courriel actif - SMS/WhatsApp désactivés",
+        title: "Notifications",
+      },
+      overview: {
+        branding: "Marque",
+        colorsReady: "Couleurs prêtes",
+        complete: (completed, total) => `${completed}/${total} complété`,
+        coveredAreas: (count) => `${count} zones couvertes`,
+        description:
+          "Résumé opérationnel du lien public, de la préparation et de l'expérience client.",
+        done: "Terminé",
+        faqs: "FAQ",
+        logoConfigured: "Logo configuré",
+        open: "Ouvert",
+        previewPublicQuote: "Aperçu du lien public",
+        privacy: "Confidentialité",
+        profile: "Profil",
+        publicLink: "Lien public",
+        quoteForm: "Formulaire",
+        serviceAreas: "Zones desservies",
+        serviceRecords: (count) => `${count} services`,
+        services: "Services",
+        setupReport: "Rapport de configuration",
+        summary: (completed, total) => `${completed}/${total} éléments complétés`,
+        title: "Vue d'ensemble de la configuration",
+        visibleQuestions: (visible, total) => `${visible}/${total} questions visibles`,
+        workspaceReadiness: "Préparation de l'espace",
+      },
+      privacy: {
+        aiDisclosure: "Afficher la divulgation IA",
+        consentHelp:
+          "Affiché sur la page publique. Si le champ est vide, une valeur sécuritaire est enregistrée pour garder le consentement valide.",
+        consentNotice: "Avis de consentement",
+        description:
+          "Réglages de consentement et de conservation pour les demandes publiques.",
+        forwardOnly: "Transfert seulement",
+        leadRetentionDays: "Jours de conservation",
+        minimal: "Données minimales",
+        privacyContactEmail: "Courriel de confidentialité",
+        privacyMode: "Mode de confidentialité",
+        standard: "Standard",
+        summary: (mode, days) => `${mode} - ${days} jours`,
+        title: "Confidentialité",
+      },
+      publicPage: {
+        description:
+          "Page de soumission partageable générée à partir du slug actif et du formulaire.",
+        previewPublicPage: "Aperçu public",
+        publicQuoteLink: "Lien public",
+        saveBeforePreview:
+          "Enregistrez les changements avant de prévisualiser la marque, le consentement, les services et les questions.",
+        title: "Lien public et page de soumission",
+      },
+      readiness: {
+        description: (completed, total) => `${completed}/${total} tâches complétées.`,
+        readyToShare: "Prêt à partager",
+        setupInProgress: "Configuration en cours",
+        title: "Préparation du lien public",
+      },
+      services: {
+        areasHelp: "Exemple: Montréal, Laval, Longueuil, Rive-Sud",
+        description:
+          "Entrez une ville, un quartier ou une région par ligne. Les leads hors zone peuvent être marqués comme moins compatibles.",
+        serviceAreas: "Zones desservies",
+        services: "Services",
+        servicesHelp: "Un service par ligne. Format: Nom du service | Note optionnelle",
+        summary: (serviceCount, areaCount) =>
+          `${serviceCount} services - ${areaCount} zones`,
+        title: "Services et zones couvertes",
+      },
+      side: {
+        brandingPreview: "Aperçu de la marque",
+        publicQuoteColors: "Couleurs du lien public",
+        publicQuoteLink: "Lien public",
+        saveThenPreview:
+          "Enregistrez les changements, puis prévisualisez le parcours client.",
+        workspaceReadiness: "Préparation de l'espace",
+      },
+      tabs: {
+        ai: "Instructions IA",
+        basics: "Bases publiques",
+        branding: "Marque",
+        fields: "Questions",
+        link: "Lien public",
+        notifications: "Notifications",
+        overview: "Vue d'ensemble",
+        privacy: "Confidentialité",
+        readiness: "Prêt",
+        services: "Services",
+      },
+    },
+    leadQueue: {
+      age: {
+        ago: "",
+        day: (count) => `${count} j`,
+        hour: (count) => `${count} h`,
+        minute: (count) => `${count} min`,
+        notAvailable: "-",
+        olderDateLocale: "fr-CA",
+      },
+      empty: {
+        clearFilters: "Réinitialiser",
+        filteredBody:
+          "Essayez une autre recherche, réinitialisez les filtres ou triez par demandes récentes.",
+        filteredTitle: "Aucun lead ne correspond à ces filtres.",
+        noLeadsBody:
+          "Partagez votre lien de soumission pour commencer à recevoir des demandes.",
+        noLeadsTitle: "Aucun lead pour l'instant.",
+      },
+      fallbacks: {
+        area: "Secteur à confirmer",
+        service: "Service non défini",
+      },
+      filters: {
+        aiReady: "Brouillon IA prêt",
+        all: "Tous les statuts",
+        atRisk: "À risque",
+        lost: "Perdu",
+        missingInfo: "Infos manquantes",
+        needsReply: "Réponse requise",
+        reviewed: "Révisé",
+        won: "Gagné",
+      },
+      headers: {
+        customer: "Client",
+        location: "Lieu",
+        nextAction: "Prochaine action",
+        requested: "Demandé",
+        service: "Service",
+        status: "Statut",
+      },
+      reset: "Réinitialiser",
+      searchPlaceholder: "Rechercher leads, ville, service...",
+      sorts: {
+        mostUrgent: "Plus urgent",
+        newest: "Plus récent",
+        oldest: "Plus ancien",
+      },
+      status: {
+        archived: "Archivé",
+        atRisk: "À risque",
+        lost: "Perdu",
+        missingInfo: "Infos manquantes",
+        needsReply: "Réponse requise",
+        reviewed: "Révisé",
+        won: "Gagné",
+      },
+    },
+    leadsPage: {
+      active: "Actif",
+      atRiskBadge: (count) => `${count} à risque`,
+      focusAtRiskDescription: (count) =>
+        `${count} lead${count === 1 ? "" : "s"} à risque. Révisez-les avant les demandes déjà révisées ou archivées.`,
+      focusHealthyDescription:
+        "Aucun lead à risque pour l'instant. Continuez à vérifier les nouvelles demandes.",
+      focusTitle: "Focus récupération du jour",
+      lastSubmission: (age) => `Dernière demande: ${age}.`,
+      missingInfoBadge: (count) => `${count} infos manquantes`,
+      newBadge: (count) => `${count} nouveau${count === 1 ? "" : "x"}`,
+      openQuoteSetup: "Ouvrir Configuration",
+      quoteLinkHealth: "Santé du lien public",
+      statusRulesBody:
+        "Nouveau -> Réponse requise -> Révisé / Gagné / Perdu. Les brouillons IA sont révisés par le propriétaire seulement; aucun envoi automatique.",
+      statusRulesTitle: "Règles de statut",
+    },
+    overview: {
+      aiControlBody:
+        "BizPilot prépare des réponses, résumés et suivis. Rien n'est envoyé automatiquement.",
+      aiControlBadges: [
+        "Aucun envoi automatique",
+        "Aucun prix inventé",
+        "Révisé par le propriétaire",
+      ],
+      aiControlTitle: "L'IA reste sous votre contrôle",
+      atRiskSoon: "Bientôt à risque",
+      copyLink: "Copier le lien",
+      featuredFallbackAction:
+        "Demander la taille du logement, la date souhaitée et les détails d'accès avant de donner une fourchette d'estimation.",
+      featuredFallbackAge: "22 min",
+      featuredFallbackArea: "Plateau",
+      featuredFallbackCustomer: "Sarah M.",
+      featuredFallbackService: "Nettoyage de déménagement",
+      finishSetup: "Terminer la configuration",
+      heroBadge: "Phase 18A · Préparation pilote",
+      heroDescription:
+        "Répondez pendant que le client compare encore ses options. BizPilot fait ressortir les leads urgents, prépare la réponse et garde le propriétaire en contrôle.",
+      heroTitle: (count) =>
+        `${count} demande${count === 1 ? "" : "s"} de soumission demandent votre attention aujourd'hui.`,
+      metrics: {
+        aiDraftsReady: {
+          detail: "Réviser avant utilisation. Aucun envoi automatique.",
+          label: "Brouillons IA prêts",
+        },
+        atRiskLeads: {
+          detail: "Aucune réponse après le seuil de récupération",
+          label: "Leads à risque",
+        },
+        needsReply: {
+          detail: "En attente d'une réponse du propriétaire",
+          label: "Réponse requise",
+        },
+        newQuoteRequests: {
+          detail: "7 derniers jours · signal pilote sain",
+          label: "Nouvelles demandes",
+        },
+      },
+      noWorkspaceBody:
+        "Créez ou rejoignez un espace d'entreprise avant d'utiliser le bureau de récupération.",
+      noWorkspaceTitle: "Aucun espace d'entreprise pour l'instant.",
+      openQueue: "Ouvrir la file",
+      queue: {
+        description:
+          "Les 5 demandes les plus urgentes. Ouvrez la file complète pour filtrer, trier et agir sur chaque lead.",
+        title: "File de récupération",
+      },
+      readiness: {
+        activeAndReady: "Actif et prêt",
+        incomplete: "Incomplet",
+        liveAndShareable: "Le lien public est actif et prêt à partager.",
+        needed: "Requis",
+        ready: "Prêt",
+        tasksLeft: (count) => `${count} tâche${count === 1 ? "" : "s"} restante${count === 1 ? "" : "s"}`,
+        title: "Préparation du lien public",
+      },
+      recentActivity: {
+        description:
+          "Chronologie opérationnelle des demandes et actions du propriétaire.",
+        emptyBody:
+          "Les nouvelles demandes, résumés IA, actions de révision et copies du lien apparaîtront ici.",
+        emptyTitle: "Aucune activité récente pour l'instant.",
+        title: "Activité récente",
+      },
+      recoveryFocus: {
+        description: (count) => `${count} élément${count === 1 ? "" : "s"}`,
+        followUpDetail: (count) => `${count} suivi dû aujourd'hui`,
+        followUpTitle: "Suivi dû",
+        itemCount: (count) => String(count),
+        missingInfoDetail: (count) => `${count} lead a besoin de détails`,
+        missingInfoTitle: "Infos manquantes",
+        replyDetail: (count) => `${count} leads en attente`,
+        replyTitle: "Réponse requise",
+        title: "Focus récupération du jour",
+      },
+      reviewUrgentLead: "Réviser le lead urgent",
+      routine: {
+        steps: [
+          ["1", "Réviser les leads à risque", "Commencer par les demandes en retard."],
+          ["2", "Copier les réponses IA", "Modifier avant l'envoi manuel."],
+          ["3", "Relancer les demandes sans réponse", "Utiliser les brouillons approuvés."],
+        ],
+        title: "Routine suggérée au propriétaire",
+      },
+      status: {
+        aiDraftReady: "Brouillon IA prêt",
+        missingInfo: "Infos manquantes",
+        ready: "Prêt",
+      },
+      suggestedNextAction: "Prochaine action suggérée:",
+    },
     nav: {
       businessProfile: "Profil d'entreprise",
       leads: "Leads",
@@ -825,6 +1978,16 @@ const frenchCopy: BizPilotCopy = {
         title: "Réglages",
       },
     },
+    readinessTasks: {
+      branding: "Marque configurée",
+      business_profile: "Profil d'entreprise confirmé",
+      cleaning_template: "Modèle de nettoyage activé",
+      consent: "Avis de consentement configuré",
+      faqs: "Au moins une FAQ ajoutée",
+      privacy: "Mode de confidentialité sélectionné",
+      service_areas: "Au moins une zone desservie ajoutée",
+      services: "Au moins un service ajouté",
+    },
     settings: {
       account: "Compte",
       billing: "Facturation",
@@ -833,6 +1996,11 @@ const frenchCopy: BizPilotCopy = {
       futureSections: "Sections futures",
       futureSectionsDescription:
         "Les éléments de feuille de route restent visibles mais verrouillés avant validation.",
+      futureSectionHints: {
+        billing: "Stripe Payment Links en premier",
+        integrations: "Webhooks reportés",
+        teamMembers: "Propriétaire seulement pendant le pilote",
+      },
       guardrails: "Garde-fous Phase 18A",
       guardrailsDescription:
         "Ce qui reste actif pendant la validation pilote. Le reste est volontairement verrouillé.",
@@ -848,6 +2016,31 @@ const frenchCopy: BizPilotCopy = {
         "Une seule langue contrôle le tableau de bord, l'authentification, les valeurs par défaut de la page publique et les brouillons IA.",
       languageHelp:
         "Ce changement met à jour la langue de l'entreprise et le cookie utilisé avant connexion.",
+      lifecycle: {
+        deletionIneligibleBody:
+          "Cet espace n'est pas admissible à une nouvelle demande de suppression, ou votre rôle ne peut pas en demander une.",
+        deletionIneligibleTitle:
+          "Les demandes de suppression d'espace sont réservées au propriétaire.",
+        description:
+          "Contrôles de cycle de vie réservés au propriétaire. La suppression du compte de connexion est séparée.",
+        lifecycleStatus: "Statut du cycle de vie",
+        lockBehavior: "Comportement du verrouillage",
+        lockBehaviorDescription:
+          "Les demandes de suppression verrouillent les liens de soumission, les nouvelles demandes et la génération de brouillons IA pendant la révision.",
+        title: "Cycle de vie de l'espace",
+      },
+      deletionForm: {
+        acknowledgement:
+          "Je comprends que ceci demande une révision de suppression de l'espace et ne supprime pas automatiquement mon compte de connexion.",
+        body:
+          "Cela verrouillera l'espace d'entreprise, désactivera les liens publics, bloquera les nouvelles demandes et arrêtera la génération de nouveaux brouillons IA. Cela ne supprime pas automatiquement votre compte de connexion.",
+        dangerZone: "Zone dangereuse",
+        dataNotice:
+          "Les données client ne sont pas supprimées par cette demande. La suppression finale et l'anonymisation exigent un processus de révision contrôlé.",
+        submit: "Demander la suppression de l'espace",
+        title: "Demander la suppression de l'espace",
+        typeBusinessName: "Tapez le nom de l'entreprise pour confirmer",
+      },
       manualBilling: "Facturation manuelle pendant la Phase 18A.",
       notInMvp: "Hors MVP",
       plan: "Forfait",
@@ -873,6 +2066,15 @@ const frenchCopy: BizPilotCopy = {
       dark: "Sombre",
       label: "Thème du tableau de bord",
       light: "Clair",
+    },
+    workspaceAccess: {
+      deletionRequestedBody:
+        "Cet espace d'entreprise est verrouillé pendant la révision de la demande de suppression. Votre compte de connexion n'est pas supprimé automatiquement.",
+      deletionRequestedTitle: "La suppression de l'espace a été demandée.",
+      eyebrow: "Accès à l'espace",
+      pausedBody:
+        "Votre tableau de bord est bloqué, car aucune adhésion active à une entreprise n'est disponible. Vos données sont conservées; contactez le support BizPilot si cela semble inattendu.",
+      pausedTitle: "Cet espace est suspendu ou indisponible.",
     },
   },
   demo: {

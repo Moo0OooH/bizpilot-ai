@@ -35,7 +35,7 @@ import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
   languageLabels,
-  readSupportedLanguage,
+  resolveWorkspaceInterfaceLanguage,
   supportedLanguages,
 } from "@/lib/i18n/language";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
@@ -82,83 +82,6 @@ function faqsToText(
   return faqs.map((faq) => `${faq.question} | ${faq.answer}`).join("\n");
 }
 
-function getBusinessProfileText(language: string) {
-  const fr = language === "fr-CA";
-
-  return {
-    accountEmailHelp: fr
-      ? "Courriel du compte - modifiez-le dans les réglages."
-      : "Account email - change it from Settings.",
-    aiNotes: fr
-      ? "Zone de service et notes opérationnelles"
-      : "Service area & operating notes",
-    aiNotesDescription: fr
-      ? "Contexte qui aide le propriétaire et l'IA à préparer de meilleurs brouillons. Les garde-fous IA et FAQ restent dans Configuration."
-      : "Operating context that helps the owner and AI prepare better drafts. AI guardrails and FAQ details stay in Quote Setup.",
-    business: fr ? "Entreprise" : "Business",
-    businessIdentity: fr ? "Identité de l'entreprise" : "Business identity",
-    businessIdentityDescription: fr
-      ? "Identité utilisée dans le tableau de bord, la page publique et le contexte des brouillons IA."
-      : "Owner-facing identity used across the dashboard, public quote page, and AI draft context.",
-    businessName: fr ? "Nom de l'entreprise" : "Business name",
-    businessType: fr ? "Type d'entreprise" : "Business type",
-    cleaning: fr ? "Nettoyage" : "Cleaning",
-    description: fr
-      ? "Identité de l'entreprise et contexte opérationnel. Cette section est séparée de Configuration."
-      : "Business identity and operating context. This is separate from Quote Setup.",
-    futureDescription: fr
-      ? "Ces champs font partie du design approuvé, mais ne sont pas encore reliés à la base de données. Ils arriveront avec leur propre migration après validation pilote."
-      : "These fields are part of the approved index design but are not yet wired to a database column. They will land with their own migration after pilot validation.",
-    futureFields: fr ? "Champs de feuille de route" : "Roadmap fields",
-    languageHelp: fr
-      ? "Utilisée pour la page publique et la langue des brouillons IA."
-      : "Used for the public quote page and AI draft language.",
-    logoUrl: fr ? "URL du logo" : "Logo URL",
-    notInMvp: fr ? "Hors MVP" : "Not in MVP",
-    oneAreaPerLine: fr
-      ? "Une zone par ligne. Utilisée pour scorer les leads et expliquer la couverture."
-      : "One area per line. Used to score leads and explain coverage.",
-    openQuoteSetup: fr ? "Ouvrir Configuration" : "Open Quote Setup",
-    ownerEmail: fr
-      ? "Courriel propriétaire (lecture seule)"
-      : "Owner email (read-only)",
-    preferredLanguage: fr ? "Langue préférée" : "Preferred language",
-    previewQuotePage: fr
-      ? "Aperçu page de soumission"
-      : "Preview Quote Page",
-    publicQuoteLink: fr ? "Lien public" : "Public quote link",
-    publicSlug: fr ? "Slug public" : "Public slug",
-    roadmapFields: fr
-      ? [
-          ["Nom public propriétaire", "Phase 18B"],
-          ["Téléphone propriétaire", "Phase 18B"],
-          ["Site web public", "Phase 18B"],
-          ["Ville", "Phase 18B"],
-          ["Province", "Phase 18B"],
-          ["Heures de réponse", "Phase 18B"],
-        ]
-      : [
-          ["Owner display name", "Phase 18B"],
-          ["Owner phone", "Phase 18B"],
-          ["Public website", "Phase 18B"],
-          ["City", "Phase 18B"],
-          ["Province", "Phase 18B"],
-          ["Response hours", "Phase 18B"],
-        ],
-    save: fr ? "Enregistrer le profil" : "Save Business Profile",
-    saveNote: fr
-      ? "L'enregistrement conserve les changements d'identité. Les questions du formulaire se gèrent dans Configuration."
-      : "Save persists identity changes. Quote-form questions are managed in Quote Setup.",
-    serviceAreas: fr ? "Zones desservies" : "Service areas",
-    templateName: fr
-      ? "Nom du modèle de soumission"
-      : "Custom quote template name",
-    verticalHelp: fr
-      ? "La Phase 18A reste concentrée sur le nettoyage. Les autres verticales restent verrouillées jusqu'à validation."
-      : "Phase 18A is cleaning-first. Other verticals are locked until the validation gate clears.",
-  };
-}
-
 export default async function BusinessProfilePage({
   searchParams,
 }: BusinessProfilePageProps) {
@@ -175,10 +98,10 @@ export default async function BusinessProfilePage({
     redirect("/dashboard");
   }
 
-  const activeLanguage = readSupportedLanguage(
-    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value ??
-      activeBusiness.preferred_language,
-  );
+  const activeLanguage = resolveWorkspaceInterfaceLanguage({
+    businessLanguage: activeBusiness.preferred_language,
+    cookieLanguage: (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
   const configurationWorkspace = await getBusinessConfigurationWorkspace({
     business: { ...activeBusiness, preferred_language: activeLanguage },
   });
@@ -188,7 +111,7 @@ export default async function BusinessProfilePage({
   const accentColor = configuration.branding?.accent_color ?? "#0f766e";
   const copy = getBizPilotCopy(activeLanguage);
   const dashboardCopy = copy.dashboard;
-  const text = getBusinessProfileText(activeLanguage);
+  const text = dashboardCopy.businessProfile;
   const consentNotice =
     configuration.consentSettings?.consent_notice ??
     copy.quoteForm.consentNoticeDefault;

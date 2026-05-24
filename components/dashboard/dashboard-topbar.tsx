@@ -18,7 +18,7 @@
  * ============================================================
  */
 
-import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import type { DashboardShellCopy } from "./dashboard-shell";
 import { languageShortLabels, supportedLanguages } from "@/lib/i18n/language";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -35,7 +35,7 @@ type DashboardTopbarProps = Readonly<{
   activeLanguage: string;
   businessId: string;
   businessSlug: string;
-  copy: BizPilotCopy["dashboard"];
+  copy: DashboardShellCopy;
   showFounderAdmin?: boolean;
   userLabel: string;
 }>;
@@ -47,7 +47,7 @@ type PageContext = Readonly<{
 
 function getPageContext(
   pathname: string,
-  copy: BizPilotCopy["dashboard"],
+  copy: DashboardShellCopy,
 ): PageContext {
   if (pathname.startsWith("/dashboard/leads/")) {
     return copy.pages.leadDetail;

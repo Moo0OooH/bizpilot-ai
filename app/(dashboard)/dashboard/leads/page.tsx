@@ -17,6 +17,7 @@
  */
 
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { CopyButton } from "@/components/dashboard/copy-button";
@@ -29,23 +30,31 @@ import {
   SectionHeader,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  resolveWorkspaceInterfaceLanguage,
+} from "@/lib/i18n/language";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 import { getLeadConversionDesk } from "@/server/services/lead-conversion.service";
 
 export const dynamic = "force-dynamic";
 
-function formatAgeShort(value: string | null): string {
-  if (!value) return "—";
+type LeadQueueCopy = ReturnType<typeof getBizPilotCopy>["dashboard"]["leadQueue"];
+
+function formatAgeShort(value: string | null, copy: LeadQueueCopy): string {
+  if (!value) return copy.age.notAvailable;
   const diffMinutes = Math.max(
     0,
     Math.round((Date.now() - new Date(value).getTime()) / 60000),
   );
-  if (diffMinutes < 60) return `${Math.max(diffMinutes, 1)} minutes ago`;
+  const suffix = copy.age.ago ? ` ${copy.age.ago}` : "";
+  if (diffMinutes < 60) return `${copy.age.minute(Math.max(diffMinutes, 1))}${suffix}`;
   const diffHours = Math.round(diffMinutes / 60);
-  if (diffHours < 24) return `${diffHours} hours ago`;
+  if (diffHours < 24) return `${copy.age.hour(diffHours)}${suffix}`;
   const diffDays = Math.round(diffHours / 24);
-  return `${diffDays} days ago`;
+  return `${copy.age.day(diffDays)}${suffix}`;
 }
 
 export default async function LeadConversionDeskPage() {
@@ -56,9 +65,17 @@ export default async function LeadConversionDeskPage() {
   const activeBusiness = workspace.businesses[0];
   if (!activeBusiness) redirect("/dashboard");
 
+  const activeLanguage = resolveWorkspaceInterfaceLanguage({
+    businessLanguage: activeBusiness.preferred_language,
+    cookieLanguage: (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
+  const copy = getBizPilotCopy(activeLanguage).dashboard;
+  const leadsCopy = copy.leadsPage;
+  const queueCopy = copy.leadQueue;
+
   const desk = await getLeadConversionDesk({
     actorUserId: user.id,
-    business: activeBusiness,
+    business: { ...activeBusiness, preferred_language: activeLanguage },
   });
 
   const quotePath = `/quote/${activeBusiness.slug}`;
@@ -78,20 +95,20 @@ export default async function LeadConversionDeskPage() {
       <PageHeader
         actions={
           <>
-            <CopyButton label="Copy quote link" value={quotePath} />
+            <CopyButton label={copy.actions.copyQuoteLink} value={quotePath} />
             <Link className={primaryButtonClass} href={quotePath}>
-              Preview quote page
+              {copy.actions.previewQuotePage}
             </Link>
           </>
         }
-        description="Prioritize quote requests before customers move on."
-        eyebrow="Leads"
-        title="Lead Recovery Queue"
+        description={copy.pages.leads.subtitle}
+        eyebrow={copy.nav.leads}
+        title={copy.pages.leads.title}
       />
 
       <section className="grid min-w-0 items-start gap-[18px] xl:grid-cols-[minmax(0,1fr)_320px]">
         <LeadWorkspaceQueue
-          language={activeBusiness.preferred_language}
+          language={activeLanguage}
           leads={desk.leads}
           quotePath={quotePath}
         />
@@ -101,29 +118,31 @@ export default async function LeadConversionDeskPage() {
             <SectionHeader
               description={
                 overdueCount > 0
-                  ? `${overdueCount} lead${overdueCount === 1 ? "" : "s"} are at risk. Review them before reviewed or archived requests.`
-                  : "No at-risk leads right now. Keep checking new requests as they arrive."
+                  ? leadsCopy.focusAtRiskDescription(overdueCount)
+                  : leadsCopy.focusHealthyDescription
               }
-              title="Today’s recovery focus"
+              title={leadsCopy.focusTitle}
             />
             <div className="mt-3 flex flex-wrap gap-2">
               <StatusBadge tone={overdueCount > 0 ? "red" : "neutral"}>
-                {overdueCount} at risk
+                {leadsCopy.atRiskBadge(overdueCount)}
               </StatusBadge>
               <StatusBadge tone={missingInfoCount > 0 ? "amber" : "neutral"}>
-                {missingInfoCount} missing info
+                {leadsCopy.missingInfoBadge(missingInfoCount)}
               </StatusBadge>
               <StatusBadge tone={newLeadCount > 0 ? "blue" : "neutral"}>
-                {newLeadCount} new
+                {leadsCopy.newBadge(newLeadCount)}
               </StatusBadge>
             </div>
           </DashboardCard>
 
           <DashboardCard className="p-[18px]">
             <SectionHeader
-              action={<StatusBadge tone="emerald">Active</StatusBadge>}
-              description={`Last submission: ${formatAgeShort(lastSubmissionAt)}.`}
-              title="Quote link health"
+              action={<StatusBadge tone="emerald">{leadsCopy.active}</StatusBadge>}
+              description={leadsCopy.lastSubmission(
+                formatAgeShort(lastSubmissionAt, queueCopy),
+              )}
+              title={leadsCopy.quoteLinkHealth}
             />
             <div className="mt-3 rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[13px] text-[var(--dash-text-secondary)]">
               <span className="break-all font-black text-[var(--dash-text)]">
@@ -131,20 +150,23 @@ export default async function LeadConversionDeskPage() {
               </span>
             </div>
             <div className="mt-3">
-              <CopyButton className="w-full" label="Copy quote link" value={quotePath} />
+              <CopyButton
+                className="w-full"
+                label={copy.actions.copyQuoteLink}
+                value={quotePath}
+              />
             </div>
           </DashboardCard>
 
           <DashboardCard className="p-[18px]">
-            <SectionHeader title="Status rules" />
+            <SectionHeader title={leadsCopy.statusRulesTitle} />
             <div className="my-3 h-px bg-[var(--dash-border)]" />
             <p className="text-[13px] leading-6 text-[var(--dash-text-secondary)]">
-              New → Needs reply → Reviewed / Won / Lost. AI drafts are
-              owner-reviewed only; no automatic sending.
+              {leadsCopy.statusRulesBody}
             </p>
             <div className="mt-3">
               <Link className={`${buttonClass} w-full`} href="/dashboard/configuration">
-                Open Quote Setup
+                {leadsCopy.openQuoteSetup}
               </Link>
             </div>
           </DashboardCard>

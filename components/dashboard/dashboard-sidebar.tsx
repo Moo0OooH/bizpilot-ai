@@ -21,7 +21,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import type { DashboardShellCopy } from "./dashboard-shell";
 
 import { CopyButton } from "./copy-button";
 import { StatusBadge } from "./dashboard-ui";
@@ -29,7 +29,7 @@ import { StatusBadge } from "./dashboard-ui";
 type DashboardSidebarProps = Readonly<{
   activeBusinessName: string;
   businessSlug: string;
-  copy: BizPilotCopy["dashboard"];
+  copy: DashboardShellCopy;
   userLabel: string;
 }>;
 
@@ -45,7 +45,7 @@ type NavigationGroup = Readonly<{
   label: string;
 }>;
 
-function getOwnerNavigation(copy: BizPilotCopy["dashboard"]): NavigationGroup[] {
+function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
   return [
     {
       label: copy.nav.ownerWorkspace,

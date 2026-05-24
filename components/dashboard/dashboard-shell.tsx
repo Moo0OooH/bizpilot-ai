@@ -12,6 +12,11 @@ import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 
 type DashboardTheme = "dark" | "light";
 
+export type DashboardShellCopy = Pick<
+  BizPilotCopy["dashboard"],
+  "actions" | "nav" | "pages" | "settings" | "status" | "theme"
+>;
+
 type DashboardShellProps = Readonly<{
   activeBusinessName: string;
   activeLanguage: string;
@@ -19,7 +24,7 @@ type DashboardShellProps = Readonly<{
   businessSlug: string;
   children: React.ReactNode;
   initialTheme?: DashboardTheme;
-  copy: BizPilotCopy["dashboard"];
+  copy: DashboardShellCopy;
   showFounderAdmin?: boolean;
   userLabel: string;
 }>;

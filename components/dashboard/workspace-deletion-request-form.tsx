@@ -18,8 +18,17 @@
 import { useMemo, useState } from "react";
 
 import { inputClass, primaryButtonClass } from "@/components/dashboard/dashboard-ui";
-import { BUSINESS_DELETION_ACKNOWLEDGEMENT } from "@/lib/business-deletion/confirmation";
 import { requestBusinessDeletionAction } from "@/server/actions/business-deletion.actions";
+
+type WorkspaceDeletionFormCopy = Readonly<{
+  acknowledgement: string;
+  body: string;
+  dangerZone: string;
+  dataNotice: string;
+  submit: string;
+  title: string;
+  typeBusinessName: string;
+}>;
 
 function normalizeConfirmation(value: string): string {
   return value.trim().replace(/\s+/g, " ");
@@ -28,9 +37,11 @@ function normalizeConfirmation(value: string): string {
 export function WorkspaceDeletionRequestForm({
   businessId,
   businessName,
+  copy,
 }: Readonly<{
   businessId: string;
   businessName: string;
+  copy: WorkspaceDeletionFormCopy;
 }>) {
   const [acknowledged, setAcknowledged] = useState(false);
   const [typedName, setTypedName] = useState("");
@@ -44,22 +55,19 @@ export function WorkspaceDeletionRequestForm({
   return (
     <details className="rounded-[14px] border border-red-400/30 bg-red-500/10 p-4">
       <summary className="cursor-pointer text-sm font-black text-red-700 dark:text-red-200">
-        Danger zone
+        {copy.dangerZone}
       </summary>
       <form action={requestBusinessDeletionAction} className="mt-4 grid gap-3">
         <input name="businessId" type="hidden" value={businessId} />
         <div className="rounded-[12px] border border-red-400/25 bg-[var(--dash-surface-muted)] p-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
           <p className="font-black text-[var(--dash-text)]">
-            Request workspace deletion
+            {copy.title}
           </p>
           <p className="mt-1">
-            This will lock the business workspace, disable public quote links,
-            block new quote submissions, and stop new AI draft generation. It
-            does not delete your login account automatically.
+            {copy.body}
           </p>
           <p className="mt-2">
-            Customer data is not purged by this request. Final deletion and
-            anonymization require a controlled review process.
+            {copy.dataNotice}
           </p>
         </div>
         <label className="flex gap-2 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
@@ -70,10 +78,10 @@ export function WorkspaceDeletionRequestForm({
             onChange={(event) => setAcknowledged(event.currentTarget.checked)}
             type="checkbox"
           />
-          <span>{BUSINESS_DELETION_ACKNOWLEDGEMENT}</span>
+          <span>{copy.acknowledgement}</span>
         </label>
         <label className="grid gap-1.5 text-sm font-semibold text-[var(--dash-text)]">
-          Type your business name to confirm
+          {copy.typeBusinessName}
           <span className="text-[12px] font-bold text-[var(--dash-text-muted)]">
             {businessName}
           </span>
@@ -89,7 +97,7 @@ export function WorkspaceDeletionRequestForm({
           disabled={!canSubmit}
           type="submit"
         >
-          Request workspace deletion
+          {copy.submit}
         </button>
       </form>
     </details>

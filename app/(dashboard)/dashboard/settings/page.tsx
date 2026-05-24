@@ -38,7 +38,7 @@ import { canUserRequestWorkspaceDeletion } from "@/lib/business-deletion/owner-e
 import {
   INTERFACE_LANGUAGE_COOKIE,
   languageLabels,
-  readSupportedLanguage,
+  resolveWorkspaceInterfaceLanguage,
   supportedLanguages,
 } from "@/lib/i18n/language";
 import { signOutAction } from "@/server/actions/auth.actions";
@@ -76,10 +76,10 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     })),
     userId: user.id,
   });
-  const activeLanguage = readSupportedLanguage(
-    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value ??
-      activeBusiness.preferred_language,
-  );
+  const activeLanguage = resolveWorkspaceInterfaceLanguage({
+    businessLanguage: activeBusiness.preferred_language,
+    cookieLanguage: (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
   const copy = getBizPilotCopy(activeLanguage).dashboard;
   const settingsCopy = copy.settings;
 
@@ -179,9 +179,9 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               <div className="my-3 h-px bg-[var(--dash-border)]" />
               <div className="space-y-2">
                 {[
-                  [settingsCopy.billing, "Stripe Payment Links first"],
-                  [settingsCopy.teamMembers, "Owner-only in pilot"],
-                  [settingsCopy.integrations, "Webhooks deferred"],
+                  [settingsCopy.billing, settingsCopy.futureSectionHints.billing],
+                  [settingsCopy.teamMembers, settingsCopy.futureSectionHints.teamMembers],
+                  [settingsCopy.integrations, settingsCopy.futureSectionHints.integrations],
                 ].map(([title, hint]) => (
                   <div
                     className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
@@ -227,14 +227,14 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
 
           <DashboardCard className="p-[22px]">
             <SectionHeader
-              description="Owner-only workspace lifecycle controls. Login account deletion is separate."
-              title="Workspace lifecycle"
+              description={settingsCopy.lifecycle.description}
+              title={settingsCopy.lifecycle.title}
             />
             <div className="my-3 h-px bg-[var(--dash-border)]" />
             <div className="mb-3 grid gap-2 sm:grid-cols-2">
               <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
-                  Lifecycle status
+                  {settingsCopy.lifecycle.lifecycleStatus}
                 </p>
                 <p className="mt-1 text-sm font-extrabold text-[var(--dash-text)]">
                   {activeBusiness.lifecycle_status.replaceAll("_", " ")}
@@ -242,11 +242,10 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               </div>
               <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
-                  Lock behavior
+                  {settingsCopy.lifecycle.lockBehavior}
                 </p>
                 <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  Deletion requests lock quote links, new submissions, and AI
-                  draft generation while review is pending.
+                  {settingsCopy.lifecycle.lockBehaviorDescription}
                 </p>
               </div>
             </div>
@@ -254,15 +253,15 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               <WorkspaceDeletionRequestForm
                 businessId={activeBusiness.id}
                 businessName={activeBusiness.name}
+                copy={settingsCopy.deletionForm}
               />
             ) : (
               <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                 <p className="text-sm font-extrabold text-[var(--dash-text)]">
-                  Workspace deletion requests are owner-only.
+                  {settingsCopy.lifecycle.deletionIneligibleTitle}
                 </p>
                 <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  This workspace is not currently eligible for a new deletion
-                  request, or your membership cannot request one.
+                  {settingsCopy.lifecycle.deletionIneligibleBody}
                 </p>
               </div>
             )}

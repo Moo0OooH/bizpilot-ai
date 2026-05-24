@@ -42,7 +42,7 @@ import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
   languageLabels,
-  readSupportedLanguage,
+  resolveWorkspaceInterfaceLanguage,
   supportedLanguages,
 } from "@/lib/i18n/language";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
@@ -150,12 +150,18 @@ export default async function DashboardPage({
     redirect("/auth/sign-in");
   }
 
+  const cookieStore = await cookies();
   const workspace = await getBusinessWorkspace({
     userId: user.id,
   });
   const activeBusiness = workspace.businesses[0];
 
   if (!activeBusiness) {
+    const fallbackLanguage = resolveWorkspaceInterfaceLanguage({
+      cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+    });
+    const fallbackCopy = getBizPilotCopy(fallbackLanguage).dashboard;
+
     return (
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-6 py-12">
         <div className="border-b border-[var(--dash-border)] pb-8">
@@ -163,20 +169,20 @@ export default async function DashboardPage({
             BizPilot AI
           </p>
           <h1 className="mt-3 text-[26px] font-semibold text-[var(--dash-text)]">
-            Quote setup
+            {fallbackCopy.pages.configuration.title}
           </h1>
           <p className="mt-3 text-sm leading-6 text-[var(--dash-text-secondary)]">
-            No tenant business is available for this user yet.
+            {fallbackCopy.configuration.noBusinessDescription}
           </p>
         </div>
       </main>
     );
   }
 
-  const activeLanguage = readSupportedLanguage(
-    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value ??
-      activeBusiness.preferred_language,
-  );
+  const activeLanguage = resolveWorkspaceInterfaceLanguage({
+    businessLanguage: activeBusiness.preferred_language,
+    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
   const configurationWorkspace = await getBusinessConfigurationWorkspace({
     business: { ...activeBusiness, preferred_language: activeLanguage },
   });
@@ -186,32 +192,12 @@ export default async function DashboardPage({
   const accentColor = configuration.branding?.accent_color ?? "#0f766e";
   const copy = getBizPilotCopy(activeLanguage);
   const dashboardCopy = copy.dashboard;
-  const configurationTabs =
-    activeLanguage === "fr-CA"
-      ? {
-          ai: "Instructions IA",
-          basics: "Bases publiques",
-          branding: "Marque",
-          fields: "Questions",
-          link: "Lien public",
-          notifications: "Notifications",
-          overview: "Vue d'ensemble",
-          privacy: "Confidentialite",
-          readiness: "Pret",
-          services: "Services",
-        }
-      : {
-          ai: "AI Instructions",
-          basics: "Public Basics",
-          branding: "Branding",
-          fields: "Form Questions",
-          link: "Public Link",
-          notifications: "Notifications",
-          overview: "Overview",
-          privacy: "Privacy",
-          readiness: "Readiness",
-          services: "Services",
-        };
+  const configurationTabs = dashboardCopy.configuration.tabs;
+  const configCopy = dashboardCopy.configuration;
+  const readinessLabel = (item: { label: string; taskKey: string }) =>
+    dashboardCopy.readinessTasks[
+      item.taskKey as keyof typeof dashboardCopy.readinessTasks
+    ] ?? item.label;
   const logoUrl = configuration.branding?.logo_url ?? "";
   const visibleTemplateFieldCount = cleaningTemplate.fields.filter(
     (field) => !field.is_hidden,
@@ -224,7 +210,7 @@ export default async function DashboardPage({
     <>
       <main className="space-y-4">
         <PageHeader
-          description={`Configure the cleaning quote experience, public link, consent, and owner-ready lead foundation for ${activeBusiness.name}.`}
+          description={configCopy.headerDescription(activeBusiness.name)}
           eyebrow={dashboardCopy.settings.workspace}
           title={dashboardCopy.nav.quoteSetup}
         />
@@ -270,10 +256,10 @@ export default async function DashboardPage({
             ]}
           >
             <ConfigurationPanel
-              description="A clean operating summary of the quote link, setup health, and public customer experience."
+              description={configCopy.overview.description}
               id="configuration-overview"
-              summary={`${readiness.completed}/${readiness.total} setup items complete`}
-              title="Quote setup overview"
+              summary={configCopy.overview.summary(readiness.completed, readiness.total)}
+              title={configCopy.overview.title}
             >
               <div className="grid gap-3.5 xl:grid-cols-[minmax(0,1fr)_20rem]">
                 <div className="grid gap-3.5 lg:grid-cols-[17rem_minmax(0,1fr)]">
@@ -318,14 +304,14 @@ export default async function DashboardPage({
                     <div className="flex items-center justify-between gap-3">
                       <div>
                         <p className="text-xs font-medium uppercase tracking-wide text-[var(--dash-text-muted)]">
-                          Workspace readiness
+                          {configCopy.overview.workspaceReadiness}
                         </p>
                         <p className="mt-1 text-[22px] font-semibold text-[var(--dash-text)]">
                           {readinessPercent}%
                         </p>
                       </div>
                       <p className="text-right text-xs font-medium text-[var(--dash-text-muted)]">
-                        {readiness.completed}/{readiness.total} complete
+                        {configCopy.overview.complete(readiness.completed, readiness.total)}
                       </p>
                     </div>
                     <div className="mt-4 h-2 overflow-hidden rounded-full bg-[var(--dash-surface-muted)]">
@@ -339,26 +325,34 @@ export default async function DashboardPage({
                     </div>
                     <div className="mt-4 grid gap-2 sm:grid-cols-2">
                       {[
-                        ["Profile", activeBusiness.name],
-                        ["Branding", logoUrl ? "Logo configured" : "Colors ready"],
+                        [configCopy.overview.profile, activeBusiness.name],
                         [
-                          "Services",
-                          `${configuration.services.length} service records`,
+                          configCopy.overview.branding,
+                          logoUrl
+                            ? configCopy.overview.logoConfigured
+                            : configCopy.overview.colorsReady,
                         ],
                         [
-                          "Service areas",
-                          `${configuration.serviceAreas.length} covered areas`,
+                          configCopy.overview.services,
+                          configCopy.overview.serviceRecords(configuration.services.length),
                         ],
                         [
-                          "Quote form",
-                          `${visibleTemplateFieldCount}/${cleaningTemplate.fields.length} visible questions`,
+                          configCopy.overview.serviceAreas,
+                          configCopy.overview.coveredAreas(configuration.serviceAreas.length),
                         ],
-                        ["FAQ", `${configuration.faqs.length} answers`],
                         [
-                          "Privacy",
+                          configCopy.overview.quoteForm,
+                          configCopy.overview.visibleQuestions(
+                            visibleTemplateFieldCount,
+                            cleaningTemplate.fields.length,
+                          ),
+                        ],
+                        [configCopy.overview.faqs, String(configuration.faqs.length)],
+                        [
+                          configCopy.overview.privacy,
                           configuration.privacySettings?.privacy_mode ?? "standard",
                         ],
-                        ["Public link", `/quote/${activeBusiness.slug}`],
+                        [configCopy.overview.publicLink, `/quote/${activeBusiness.slug}`],
                       ].map(([title, value]) => (
                         <div
                           className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2"
@@ -378,7 +372,7 @@ export default async function DashboardPage({
 
                 <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
                   <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
-                    Setup report
+                    {configCopy.overview.setupReport}
                   </p>
                   <div className="mt-3 grid gap-2">
                     {readiness.items.map((item) => (
@@ -387,7 +381,7 @@ export default async function DashboardPage({
                         key={item.label}
                       >
                         <span className="truncate text-[var(--dash-text-secondary)]">
-                          {item.label}
+                          {readinessLabel(item)}
                         </span>
                         <span
                           className={
@@ -396,7 +390,7 @@ export default async function DashboardPage({
                               : "font-medium text-amber-700 dark:text-amber-300"
                           }
                         >
-                          {item.complete ? "Done" : "Open"}
+                          {item.complete ? configCopy.overview.done : configCopy.overview.open}
                         </span>
                       </div>
                     ))}
@@ -405,21 +399,21 @@ export default async function DashboardPage({
                     className={`${buttonClass} mt-4 w-full`}
                     href={`/quote/${activeBusiness.slug}`}
                   >
-                    Preview public quote
+                    {configCopy.overview.previewPublicQuote}
                   </a>
                 </div>
               </div>
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description="Core identity used across the protected workspace and public quote link."
+              description={configCopy.basics.description}
               id="business-profile"
               summary={`${activeBusiness.name} - /quote/${activeBusiness.slug}`}
-              title="Public quote basics"
+              title={configCopy.basics.title}
             >
               <div className="grid gap-2.5 sm:grid-cols-3">
                 <label className={labelClass}>
-                  Business name
+                  {configCopy.basics.businessName}
                   <input
                     className={inputClass}
                     defaultValue={activeBusiness.name}
@@ -429,7 +423,7 @@ export default async function DashboardPage({
                   />
                 </label>
                 <label className={labelClass}>
-                  Public slug
+                  {configCopy.basics.publicSlug}
                   <input
                     className={inputClass}
                     defaultValue={activeBusiness.slug}
@@ -440,7 +434,7 @@ export default async function DashboardPage({
                   />
                 </label>
                 <label className={labelClass}>
-                  Template name
+                  {configCopy.basics.templateName}
                   <input
                     className={inputClass}
                     defaultValue={
@@ -452,7 +446,7 @@ export default async function DashboardPage({
                   />
                 </label>
                 <label className={labelClass}>
-                  Preferred language
+                  {configCopy.basics.preferredLanguage}
                   <select
                     className={inputClass}
                     defaultValue={activeLanguage}
@@ -466,22 +460,26 @@ export default async function DashboardPage({
                     ))}
                   </select>
                   <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
-                    Controls public quote copy and AI draft language.
+                    {configCopy.basics.languageHelp}
                   </span>
                 </label>
               </div>
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description="Public-facing visual settings for the cleaning quote experience."
+              description={configCopy.branding.description}
               id="branding"
-              summary={logoUrl ? "Logo and colors configured" : "Add logo and colors"}
-              title="Branding"
+              summary={
+                logoUrl
+                  ? configCopy.branding.logoAndColorsConfigured
+                  : configCopy.branding.addLogoAndColors
+              }
+              title={configCopy.branding.title}
             >
               <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_16rem]">
                 <div className="grid gap-2.5 sm:grid-cols-3">
                   <label className={`${labelClass} sm:col-span-3`}>
-                    Logo URL
+                    {configCopy.branding.logoUrl}
                     <input
                       className={inputClass}
                       defaultValue={logoUrl}
@@ -490,7 +488,7 @@ export default async function DashboardPage({
                     />
                   </label>
                   <label className={labelClass}>
-                    Primary color
+                    {configCopy.branding.primaryColor}
                     <input
                       className="mt-1 h-8 w-full rounded-md border border-[var(--dash-border-strong)] px-2 py-1"
                       defaultValue={primaryColor}
@@ -499,7 +497,7 @@ export default async function DashboardPage({
                     />
                   </label>
                   <label className={labelClass}>
-                    Accent color
+                    {configCopy.branding.accentColor}
                     <input
                       className="mt-1 h-8 w-full rounded-md border border-[var(--dash-border-strong)] px-2 py-1"
                       defaultValue={accentColor}
@@ -509,18 +507,18 @@ export default async function DashboardPage({
                   </label>
                   <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:col-span-3">
                     <p className="text-xs font-medium text-[var(--dash-text-secondary)]">
-                      Where these colors apply
+                      {configCopy.branding.whereColorsApply}
                     </p>
                     <div className="mt-2 overflow-hidden rounded-[12px] border border-[var(--dash-border)] bg-[#071018] p-3">
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-xs font-semibold text-[#F5F7FA]">
-                          Public quote button
+                          {configCopy.branding.publicQuoteButton}
                         </span>
                         <span
                           className="rounded-[10px] px-3 py-1.5 text-xs font-semibold text-white"
                           style={{ backgroundColor: primaryColor }}
                         >
-                          Submit quote request
+                          {configCopy.branding.submitQuoteRequest}
                         </span>
                       </div>
                       <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[var(--dash-surface)]/10">
@@ -535,7 +533,7 @@ export default async function DashboardPage({
                         className="h-3 w-3 rounded-full border border-[var(--dash-border)]"
                         style={{ backgroundColor: accentColor }}
                       />
-                      Accent appears on progress, focus, and supporting highlights.
+                      {configCopy.branding.accentAppears}
                     </div>
                   </div>
                 </div>
@@ -550,7 +548,7 @@ export default async function DashboardPage({
                     />
                   ) : (
                     <div className="px-3 text-center text-xs text-[var(--dash-text-muted)]">
-                      Logo preview
+                      {configCopy.branding.logoPreview}
                     </div>
                   )}
                 </div>
@@ -558,42 +556,41 @@ export default async function DashboardPage({
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description="Shareable customer quote page generated from the active business slug and quote form."
+              description={configCopy.publicPage.description}
               id="public-page"
               summary={`/quote/${activeBusiness.slug}`}
-              title="Quote link and public page"
+              title={configCopy.publicPage.title}
             >
               <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
                 <div className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                   <p className="text-xs font-medium text-[var(--dash-text-secondary)]">
-                    Public quote link
+                    {configCopy.publicPage.publicQuoteLink}
                   </p>
                   <p className="mt-1 break-all text-sm font-semibold text-[var(--dash-text)]">
                     /quote/{activeBusiness.slug}
                   </p>
                   <p className="mt-1 text-xs leading-5 text-[var(--dash-text-muted)]">
-                    Save changes before previewing branding, consent, services,
-                    and quote questions.
+                    {configCopy.publicPage.saveBeforePreview}
                   </p>
                 </div>
                 <a
                   className="inline-flex h-8 items-center justify-center rounded-md border border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-3 text-xs font-medium text-[var(--dash-text)]"
                   href={`/quote/${activeBusiness.slug}`}
                 >
-                  Preview public page
+                  {configCopy.publicPage.previewPublicPage}
                 </a>
               </div>
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description="MVP keeps notifications simple: owner email awareness only. SMS and WhatsApp stay disabled before validation."
+              description={configCopy.notifications.description}
               id="notifications"
-              summary="Email active - SMS/WhatsApp disabled"
-              title="Notifications"
+              summary={configCopy.notifications.summary}
+              title={configCopy.notifications.title}
             >
               <div className="grid gap-2.5 sm:grid-cols-2">
                 <label className={labelClass}>
-                  Owner email
+                  {configCopy.notifications.ownerEmail}
                   <input
                     className={inputClass}
                     defaultValue={
@@ -605,17 +602,17 @@ export default async function DashboardPage({
                   />
                 </label>
                 <label className={labelClass}>
-                  New quote request
+                  {configCopy.notifications.newQuoteRequest}
                   <select className={inputClass} defaultValue="email_active" disabled>
-                    <option value="email_active">Email active</option>
-                    <option value="off">Off</option>
+                    <option value="email_active">{configCopy.notifications.emailActive}</option>
+                    <option value="off">{configCopy.notifications.off}</option>
                   </select>
                 </label>
                 <label className={labelClass}>
                   SMS
                   <input
                     className={inputClass}
-                    defaultValue="Future - disabled"
+                    defaultValue={configCopy.notifications.futureDisabled}
                     disabled
                     type="text"
                   />
@@ -624,7 +621,7 @@ export default async function DashboardPage({
                   WhatsApp
                   <input
                     className={inputClass}
-                    defaultValue="Future - disabled"
+                    defaultValue={configCopy.notifications.futureDisabled}
                     disabled
                     type="text"
                   />
@@ -633,25 +630,28 @@ export default async function DashboardPage({
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description="Enter one city, neighborhood, or service region per line. Leads outside these areas may be marked as low fit."
+              description={configCopy.services.description}
               id="services-areas"
-              summary={`${configuration.services.length} services - ${configuration.serviceAreas.length} areas`}
-              title="Services & covered areas"
+              summary={configCopy.services.summary(
+                configuration.services.length,
+                configuration.serviceAreas.length,
+              )}
+              title={configCopy.services.title}
             >
               <div className="grid gap-3.5 xl:grid-cols-2">
                 <label className={labelClass}>
-                  Services
+                  {configCopy.services.services}
                   <textarea
                     className={`${textareaClass} min-h-28`}
                     defaultValue={servicesToText(configuration.services)}
                     name="services"
                   />
                   <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
-                    One service per line. Use: Service name | Optional note
+                    {configCopy.services.servicesHelp}
                   </span>
                 </label>
                 <label className={labelClass}>
-                  Service areas
+                  {configCopy.services.serviceAreas}
                   <textarea
                     className={`${textareaClass} min-h-28`}
                     defaultValue={serviceAreasToText(
@@ -660,26 +660,29 @@ export default async function DashboardPage({
                     name="serviceAreas"
                   />
                   <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
-                    Example: Montreal, Laval, Longueuil, South Shore
+                    {configCopy.services.areasHelp}
                   </span>
                 </label>
               </div>
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description="Choose which customer questions appear on the public quote form and how they read."
+              description={configCopy.fields.description}
               id="cleaning-template-fields"
-              summary={`${visibleTemplateFieldCount}/${cleaningTemplate.fields.length} visible questions`}
-              title="Cleaning template"
+              summary={configCopy.overview.visibleQuestions(
+                visibleTemplateFieldCount,
+                cleaningTemplate.fields.length,
+              )}
+              title={configCopy.fields.title}
             >
               <div className="overflow-hidden rounded-md border border-[var(--dash-border)]">
                 <div className="hidden grid-cols-[minmax(0,1fr)_6rem_5rem_7rem_4rem_6rem] items-center gap-2 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-1.5 text-xs font-medium uppercase tracking-normal text-[var(--dash-text-muted)] lg:grid">
-                  <span>Customer question</span>
-                  <span>Type</span>
-                  <span>Required</span>
-                  <span>Visible on form</span>
-                  <span>Position</span>
-                  <span className="text-right">Customize</span>
+                  <span>{configCopy.fields.customerQuestion}</span>
+                  <span>{configCopy.fields.type}</span>
+                  <span>{configCopy.fields.required}</span>
+                  <span>{configCopy.fields.visibleOnForm}</span>
+                  <span>{configCopy.fields.position}</span>
+                  <span className="text-right">{configCopy.fields.customize}</span>
                 </div>
                 {cleaningTemplate.fields.map((field) => (
                   <details
@@ -706,29 +709,33 @@ export default async function DashboardPage({
                             : "text-[var(--dash-text-muted)]"
                         }
                       >
-                        {field.is_required ? "Required" : "Optional"}
+                        {field.is_required
+                          ? configCopy.fields.required
+                          : configCopy.fields.optional}
                       </span>
                       <span
                         className={
                           field.is_hidden ? "text-[var(--dash-text-muted)]" : "text-emerald-700 dark:text-emerald-300"
                         }
                       >
-                        {field.is_hidden ? "Not visible" : "Visible"}
+                        {field.is_hidden
+                          ? configCopy.fields.hidden
+                          : configCopy.fields.visible}
                       </span>
                       <span className="text-[var(--dash-text-secondary)]">{field.sort_order}</span>
                       <span className="text-left text-[var(--dash-text)] lg:text-right">
                         <span className="inline-flex h-7 items-center rounded-md border border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-2.5 text-xs font-medium group-open:hidden">
-                          Customize
+                          {configCopy.fields.customize}
                         </span>
                         <span className="hidden h-7 items-center rounded-md border border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-2.5 text-xs font-medium group-open:inline-flex">
-                          Close
+                          {configCopy.fields.close}
                         </span>
                       </span>
                     </summary>
                     <div className="border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5">
                       <div className="grid gap-2.5 lg:grid-cols-[1fr_1fr_5rem_6rem_8rem] lg:items-end">
                         <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
-                          Customer-facing question
+                          {configCopy.fields.customerFacingQuestion}
                           <input
                             className={fieldInputClass}
                             defaultValue={field.label}
@@ -738,7 +745,7 @@ export default async function DashboardPage({
                           />
                         </label>
                         <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
-                          Helper text
+                          {configCopy.fields.helperText}
                           <input
                             className={fieldInputClass}
                             defaultValue={field.help_text ?? ""}
@@ -747,7 +754,7 @@ export default async function DashboardPage({
                           />
                         </label>
                         <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
-                          Position
+                          {configCopy.fields.position}
                           <input
                             className={fieldInputClass}
                             defaultValue={field.sort_order}
@@ -761,7 +768,7 @@ export default async function DashboardPage({
                             name={`fieldRequired:${field.field_key}`}
                             type="checkbox"
                           />
-                          Required
+                          {configCopy.fields.required}
                         </label>
                         <label className="flex h-8 items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
                           <input
@@ -770,7 +777,7 @@ export default async function DashboardPage({
                             type="checkbox"
                             value=""
                           />
-                          Show on public form
+                          {configCopy.fields.showOnPublicForm}
                           <input
                             name={`fieldHidden:${field.field_key}`}
                             type="hidden"
@@ -785,36 +792,37 @@ export default async function DashboardPage({
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description="Reusable customer questions and answers for the cleaning business profile."
+              description={configCopy.faq.description}
               id="faq"
               summary={`${configuration.faqs.length} FAQs`}
-              title="AI instructions and FAQ"
+              title={configCopy.faq.title}
             >
               <label className={labelClass}>
-                FAQ
+                {configCopy.faq.label}
                 <textarea
                   className={`${inputClass} h-24 min-h-24 py-2`}
                   defaultValue={faqsToText(configuration.faqs)}
                   name="faqs"
-                  placeholder="Do you bring supplies? | Yes, we bring all standard supplies."
+                  placeholder={configCopy.faq.placeholder}
                 />
                 <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
-                  One FAQ per line. Use: Question? | Answer
+                  {configCopy.faq.help}
                 </span>
               </label>
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description="Consent and retention settings used by public quote submissions."
+              description={configCopy.privacy.description}
               id="privacy-consent"
-              summary={`${configuration.privacySettings?.privacy_mode ?? "standard"} - ${
-                configuration.privacySettings?.retain_leads_days ?? 365
-              } days`}
-              title="Privacy"
+              summary={configCopy.privacy.summary(
+                configuration.privacySettings?.privacy_mode ?? "standard",
+                configuration.privacySettings?.retain_leads_days ?? 365,
+              )}
+              title={configCopy.privacy.title}
             >
               <div className="grid gap-2.5 sm:grid-cols-2">
                 <label className={labelClass}>
-                  Privacy mode
+                  {configCopy.privacy.privacyMode}
                   <select
                     className={inputClass}
                     defaultValue={
@@ -822,13 +830,13 @@ export default async function DashboardPage({
                     }
                     name="privacyMode"
                   >
-                    <option value="standard">Standard</option>
-                    <option value="minimal">Minimal data</option>
-                    <option value="forward_only">Forward-only</option>
+                    <option value="standard">{configCopy.privacy.standard}</option>
+                    <option value="minimal">{configCopy.privacy.minimal}</option>
+                    <option value="forward_only">{configCopy.privacy.forwardOnly}</option>
                   </select>
                 </label>
                 <label className={labelClass}>
-                  Lead retention days
+                  {configCopy.privacy.leadRetentionDays}
                   <input
                     className={inputClass}
                     defaultValue={
@@ -840,7 +848,7 @@ export default async function DashboardPage({
                   />
                 </label>
                 <label className={`${labelClass} sm:col-span-2`}>
-                  Privacy contact email
+                  {configCopy.privacy.privacyContactEmail}
                   <input
                     className={inputClass}
                     defaultValue={
@@ -852,7 +860,7 @@ export default async function DashboardPage({
                   />
                 </label>
                 <label className={`${labelClass} sm:col-span-2`}>
-                  Consent notice
+                  {configCopy.privacy.consentNotice}
                   <textarea
                     className={`${inputClass} h-20 min-h-20 py-2`}
                     defaultValue={
@@ -864,7 +872,7 @@ export default async function DashboardPage({
                     required
                   />
                   <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
-                    Shown on the public quote page. If left blank, a safe default is saved so the consent version stays valid.
+                    {configCopy.privacy.consentHelp}
                   </span>
                 </label>
                 <label className="flex h-8 items-center gap-2 rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2.5 text-xs font-medium text-[var(--dash-text)]">
@@ -876,20 +884,23 @@ export default async function DashboardPage({
                     name="aiDisclosureEnabled"
                     type="checkbox"
                   />
-                  Show AI draft disclosure
+                  {configCopy.privacy.aiDisclosure}
                 </label>
               </div>
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description={`${readiness.completed}/${readiness.total} setup tasks complete.`}
+              description={configCopy.readiness.description(
+                readiness.completed,
+                readiness.total,
+              )}
               id="setup-checklist"
               summary={
                 readiness.completed === readiness.total
-                  ? "Ready to share"
-                  : "Setup in progress"
+                  ? configCopy.readiness.readyToShare
+                  : configCopy.readiness.setupInProgress
               }
-              title="Quote link readiness"
+              title={configCopy.readiness.title}
             >
               <div className="grid gap-1.5 sm:grid-cols-2">
                 {readiness.items.map((item) => (
@@ -904,9 +915,11 @@ export default async function DashboardPage({
                           : "font-medium text-[var(--dash-text-muted)]"
                       }
                     >
-                      {item.complete ? "Done" : "Open"}
+                      {item.complete ? configCopy.overview.done : configCopy.overview.open}
                     </span>{" "}
-                    <span className="text-[var(--dash-text-secondary)]">{item.label}</span>
+                    <span className="text-[var(--dash-text-secondary)]">
+                      {readinessLabel(item)}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -917,10 +930,10 @@ export default async function DashboardPage({
             <aside className="space-y-3 2xl:sticky 2xl:top-20">
               <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
                 <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
-                  Workspace readiness
+                  {configCopy.side.workspaceReadiness}
                 </p>
                 <p className="mt-1 text-xs text-[var(--dash-text-muted)]">
-                  {readiness.completed}/{readiness.total} setup items complete
+                  {configCopy.overview.summary(readiness.completed, readiness.total)}
                 </p>
                 <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--dash-surface-muted)]">
                   <div
@@ -938,7 +951,7 @@ export default async function DashboardPage({
                       key={item.label}
                     >
                       <span className="truncate text-[var(--dash-text-secondary)]">
-                        {item.label}
+                        {readinessLabel(item)}
                       </span>
                       <span
                         className={
@@ -947,7 +960,7 @@ export default async function DashboardPage({
                             : "font-medium text-amber-700 dark:text-amber-300"
                         }
                       >
-                        {item.complete ? "Done" : "Open"}
+                        {item.complete ? configCopy.overview.done : configCopy.overview.open}
                       </span>
                     </div>
                   ))}
@@ -956,7 +969,7 @@ export default async function DashboardPage({
 
               <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
                 <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
-                  Branding preview
+                  {configCopy.side.brandingPreview}
                 </p>
                 <div
                   className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-lg border bg-[var(--dash-surface-muted)]"
@@ -985,16 +998,16 @@ export default async function DashboardPage({
                     className="h-5 w-5 rounded-full border border-[var(--dash-border)]"
                     style={{ backgroundColor: accentColor }}
                   />
-                  Public quote colors
+                  {configCopy.side.publicQuoteColors}
                 </div>
               </section>
 
               <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
                 <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
-                  Public quote link
+                  {configCopy.side.publicQuoteLink}
                 </p>
                 <p className="mt-1 text-xs leading-5 text-[var(--dash-text-muted)]">
-                  Save changes, then preview the customer-facing quote flow.
+                  {configCopy.side.saveThenPreview}
                 </p>
                 <p className="mt-3 break-all rounded-md bg-[var(--dash-surface-muted)] px-3 py-2 text-sm font-semibold text-[var(--dash-text)]">
                   /quote/{activeBusiness.slug}
@@ -1003,7 +1016,7 @@ export default async function DashboardPage({
                   className={`${buttonClass} mt-3 w-full`}
                   href={`/quote/${activeBusiness.slug}`}
                 >
-                  Preview public page
+                  {configCopy.publicPage.previewPublicPage}
                 </a>
               </section>
             </aside>
@@ -1014,15 +1027,14 @@ export default async function DashboardPage({
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-4 py-2 shadow-[0_-18px_40px_rgba(0,0,0,0.18)] backdrop-blur">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[244px]">
           <p className="text-xs text-[var(--dash-text-secondary)]">
-            Save configuration after editing, then preview the public quote
-            link.
+            {configCopy.bottomBar.text}
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">
             <a
               className="biz-button-secondary inline-flex h-8 items-center justify-center rounded-[11px] border px-3 text-xs font-bold"
               href={`/quote/${activeBusiness.slug}`}
             >
-              Open public quote link
+              {configCopy.bottomBar.openPublicQuoteLink}
             </a>
             <button
               className="biz-button-primary h-8 rounded-[11px] px-4 text-xs font-bold"
@@ -1030,7 +1042,7 @@ export default async function DashboardPage({
               style={{ backgroundColor: "#17D492", color: "#03130c" }}
               type="submit"
             >
-              Save configuration
+              {configCopy.bottomBar.saveConfiguration}
             </button>
           </div>
         </div>

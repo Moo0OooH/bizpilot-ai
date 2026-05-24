@@ -36,6 +36,8 @@ import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
 import type { LeadDeskItem } from "@/server/services/lead-conversion.service";
 
+type LeadQueueCopy = ReturnType<typeof getBizPilotCopy>["dashboard"]["leadQueue"];
+
 type LeadFilter =
   | "all"
   | "needs_reply"
@@ -58,31 +60,35 @@ type LeadWorkspaceQueueProps = Readonly<{
   quotePath: string;
 }>;
 
-const filters: ReadonlyArray<{ label: string; value: LeadFilter }> = [
-  { label: "All statuses", value: "all" },
-  { label: "Needs reply", value: "needs_reply" },
-  { label: "At risk", value: "at_risk" },
-  { label: "Missing info", value: "missing_info" },
-  { label: "AI draft ready", value: "ai_ready" },
-  { label: "Reviewed", value: "reviewed" },
-  { label: "Won", value: "won" },
-  { label: "Lost", value: "lost" },
+const filters: ReadonlyArray<{
+  copyKey: keyof LeadQueueCopy["filters"];
+  value: LeadFilter;
+}> = [
+  { copyKey: "all", value: "all" },
+  { copyKey: "needsReply", value: "needs_reply" },
+  { copyKey: "atRisk", value: "at_risk" },
+  { copyKey: "missingInfo", value: "missing_info" },
+  { copyKey: "aiReady", value: "ai_ready" },
+  { copyKey: "reviewed", value: "reviewed" },
+  { copyKey: "won", value: "won" },
+  { copyKey: "lost", value: "lost" },
 ];
 
-function formatAge(value: string | null): string {
-  if (!value) return "—";
+function formatAge(value: string | null, copy: LeadQueueCopy): string {
+  if (!value) return copy.age.notAvailable;
   const diffMinutes = Math.max(
     0,
     Math.round((Date.now() - new Date(value).getTime()) / 60000),
   );
-  if (diffMinutes < 60) return `${Math.max(diffMinutes, 1)}m`;
+  const suffix = copy.age.ago ? ` ${copy.age.ago}` : "";
+  if (diffMinutes < 60) return `${copy.age.minute(Math.max(diffMinutes, 1))}${suffix}`;
   const diffHours = Math.round(diffMinutes / 60);
-  if (diffHours < 24) return `${diffHours}h`;
+  if (diffHours < 24) return `${copy.age.hour(diffHours)}${suffix}`;
   const diffDays = Math.round(diffHours / 24);
-  if (diffDays < 7) return `${diffDays}d`;
-  return new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(
-    new Date(value),
-  );
+  if (diffDays < 7) return `${copy.age.day(diffDays)}${suffix}`;
+  return new Intl.DateTimeFormat(copy.age.olderDateLocale, {
+    dateStyle: "medium",
+  }).format(new Date(value));
 }
 
 function createdTimestamp(item: LeadDeskItem): number {
@@ -162,31 +168,34 @@ function sortLeads(leads: LeadDeskItem[], sort: LeadSort): LeadDeskItem[] {
   });
 }
 
-function displayStatus(item: LeadDeskItem): {
+function displayStatus(item: LeadDeskItem, copy: LeadQueueCopy): {
   label: string;
   tone: "amber" | "blue" | "emerald" | "neutral" | "red";
 } {
-  if (item.lead.status === "booked") return { label: "Won", tone: "emerald" };
-  if (item.lead.status === "lost") return { label: "Lost", tone: "neutral" };
-  if (item.lead.status === "archived") return { label: "Archived", tone: "neutral" };
-  if (item.lead.response_sla_state === "overdue") return { label: "At risk", tone: "red" };
-  if (item.score.quality_level === "needs_info") return { label: "Missing info", tone: "amber" };
+  if (item.lead.status === "booked") return { label: copy.status.won, tone: "emerald" };
+  if (item.lead.status === "lost") return { label: copy.status.lost, tone: "neutral" };
+  if (item.lead.status === "archived") return { label: copy.status.archived, tone: "neutral" };
+  if (item.lead.response_sla_state === "overdue") return { label: copy.status.atRisk, tone: "red" };
+  if (item.score.quality_level === "needs_info") return { label: copy.status.missingInfo, tone: "amber" };
   if (item.lead.status === "reviewed" || item.lead.status === "replied") {
-    return { label: "Reviewed", tone: "neutral" };
+    return { label: copy.status.reviewed, tone: "neutral" };
   }
-  return { label: "Needs reply", tone: "blue" };
+  return { label: copy.status.needsReply, tone: "blue" };
 }
 
-function summarizeService(item: LeadDeskItem): string {
-  return item.lead.service_type ?? "Service not set";
+function summarizeService(item: LeadDeskItem, copy: LeadQueueCopy): string {
+  return item.lead.service_type ?? copy.fallbacks.service;
 }
 
-function summarizeArea(item: LeadDeskItem): string {
-  return item.lead.city_or_service_area ?? "Area pending";
+function summarizeArea(item: LeadDeskItem, copy: LeadQueueCopy): string {
+  return item.lead.city_or_service_area ?? copy.fallbacks.area;
 }
 
-function CustomerCell({ item }: Readonly<{ item: LeadDeskItem }>) {
-  const sub = item.lead.customer_contact ?? summarizeService(item);
+function CustomerCell({
+  copy,
+  item,
+}: Readonly<{ copy: LeadQueueCopy; item: LeadDeskItem }>) {
+  const sub = item.lead.customer_contact ?? summarizeService(item, copy);
   return (
     <div className="flex min-w-0 items-center gap-2.5">
       <Avatar name={item.lead.customer_name} size={36} />
@@ -202,32 +211,35 @@ function CustomerCell({ item }: Readonly<{ item: LeadDeskItem }>) {
   );
 }
 
-function LeadMobileCard({ item }: Readonly<{ item: LeadDeskItem }>) {
-  const status = displayStatus(item);
+function LeadMobileCard({
+  copy,
+  item,
+}: Readonly<{ copy: LeadQueueCopy; item: LeadDeskItem }>) {
+  const status = displayStatus(item, copy);
   return (
     <Link
       className="grid gap-3 border-b border-[var(--dash-border)] p-3.5 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:hidden"
       href={`/dashboard/leads/${item.lead.id}`}
     >
       <div className="flex items-start justify-between gap-3">
-        <CustomerCell item={item} />
+        <CustomerCell copy={copy} item={item} />
         <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
       </div>
       <div className="grid gap-2 sm:grid-cols-2">
         <span className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
           <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
-            Service
+            {copy.headers.service}
           </span>
           <span className="mt-1 block truncate text-[var(--dash-text)]">
-            {summarizeService(item)}
+            {summarizeService(item, copy)}
           </span>
         </span>
         <span className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
           <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
-            Location
+            {copy.headers.location}
           </span>
           <span className="mt-1 block truncate text-[var(--dash-text)]">
-            {summarizeArea(item)}
+            {summarizeArea(item, copy)}
           </span>
         </span>
       </div>
@@ -238,22 +250,25 @@ function LeadMobileCard({ item }: Readonly<{ item: LeadDeskItem }>) {
 const COL_TEMPLATE =
   "grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_120px_72px_minmax(0,1fr)]";
 
-function LeadDesktopRow({ item }: Readonly<{ item: LeadDeskItem }>) {
-  const status = displayStatus(item);
+function LeadDesktopRow({
+  copy,
+  item,
+}: Readonly<{ copy: LeadQueueCopy; item: LeadDeskItem }>) {
+  const status = displayStatus(item, copy);
   return (
     <Link
       className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] px-4 py-3 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:grid`}
       href={`/dashboard/leads/${item.lead.id}`}
     >
-      <CustomerCell item={item} />
+      <CustomerCell copy={copy} item={item} />
       <span className="truncate text-[var(--dash-text-secondary)]">
-        {summarizeService(item)}
+        {summarizeService(item, copy)}
       </span>
       <span className="truncate text-[var(--dash-text-secondary)]">
-        {summarizeArea(item)}
+        {summarizeArea(item, copy)}
       </span>
       <span className="text-[var(--dash-text-muted)]">
-        {formatAge(item.lead.created_at)} ago
+        {formatAge(item.lead.created_at, copy)}
       </span>
       <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
       <span className="min-w-0 truncate text-[var(--dash-text-secondary)]">
@@ -263,17 +278,17 @@ function LeadDesktopRow({ item }: Readonly<{ item: LeadDeskItem }>) {
   );
 }
 
-function LeadDesktopHeader() {
+function LeadDesktopHeader({ copy }: Readonly<{ copy: LeadQueueCopy }>) {
   return (
     <div
       className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-4 py-3 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)] xl:grid`}
     >
-      <span>Customer</span>
-      <span>Service</span>
-      <span>Location</span>
-      <span>Requested</span>
-      <span>Status</span>
-      <span>Next action</span>
+      <span>{copy.headers.customer}</span>
+      <span>{copy.headers.service}</span>
+      <span>{copy.headers.location}</span>
+      <span>{copy.headers.requested}</span>
+      <span>{copy.headers.status}</span>
+      <span>{copy.headers.nextAction}</span>
     </div>
   );
 }
@@ -439,6 +454,8 @@ export function LeadWorkspaceQueue({
   limit,
   quotePath,
 }: LeadWorkspaceQueueProps) {
+  const copy = getBizPilotCopy(language);
+  const queueCopy = copy.dashboard.leadQueue;
   const [activeFilter, setActiveFilter] = useState<LeadFilter>("all");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<LeadSort>("most_urgent");
@@ -469,7 +486,7 @@ export function LeadWorkspaceQueue({
             <input
               className={`${inputClass} min-w-0 flex-[1_1_240px]`}
               onChange={(event) => setSearch(event.target.value)}
-              placeholder="Search leads, city, service…"
+              placeholder={queueCopy.searchPlaceholder}
               type="search"
               value={search}
             />
@@ -480,7 +497,7 @@ export function LeadWorkspaceQueue({
             >
               {filters.map((filter) => (
                 <option key={filter.value} value={filter.value}>
-                  {filter.label}
+                  {queueCopy.filters[filter.copyKey]}
                 </option>
               ))}
             </select>
@@ -489,16 +506,16 @@ export function LeadWorkspaceQueue({
               onChange={(event) => setSort(event.target.value as LeadSort)}
               value={sort}
             >
-              <option value="most_urgent">Most urgent</option>
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
+              <option value="most_urgent">{queueCopy.sorts.mostUrgent}</option>
+              <option value="newest">{queueCopy.sorts.newest}</option>
+              <option value="oldest">{queueCopy.sorts.oldest}</option>
             </select>
             <button
               className={`${buttonClass} flex-[0_0_auto]`}
               onClick={clearFilters}
               type="button"
             >
-              Reset
+              {queueCopy.reset}
             </button>
           </div>
         </div>
@@ -507,15 +524,15 @@ export function LeadWorkspaceQueue({
       <div className="min-w-0">
         {filteredLeads.length > 0 ? (
           <>
-            <LeadDesktopHeader />
+            <LeadDesktopHeader copy={queueCopy} />
             <div className="xl:hidden">
               {filteredLeads.map((item) => (
-                <LeadMobileCard item={item} key={item.lead.id} />
+                <LeadMobileCard copy={queueCopy} item={item} key={item.lead.id} />
               ))}
             </div>
             <div className="hidden xl:block">
               {filteredLeads.map((item) => (
-                <LeadDesktopRow item={item} key={item.lead.id} />
+                <LeadDesktopRow copy={queueCopy} item={item} key={item.lead.id} />
               ))}
             </div>
           </>
@@ -527,16 +544,16 @@ export function LeadWorkspaceQueue({
               <EmptyState
                 action={
                   <button className={buttonClass} onClick={clearFilters} type="button">
-                    Clear filters
+                    {queueCopy.empty.clearFilters}
                   </button>
                 }
-                title="No leads match those filters."
+                title={queueCopy.empty.filteredTitle}
               >
-                Try another search, clear filters, or sort by newest quote requests.
+                {queueCopy.empty.filteredBody}
               </EmptyState>
             ) : (
-              <EmptyState title="No leads yet.">
-                Share your quote link to start capturing requests.
+              <EmptyState title={queueCopy.empty.noLeadsTitle}>
+                {queueCopy.empty.noLeadsBody}
               </EmptyState>
             )}
           </div>

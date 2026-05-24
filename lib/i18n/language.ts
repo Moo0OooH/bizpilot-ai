@@ -84,6 +84,15 @@ export function readSupportedLanguage(value: unknown): SupportedLanguage {
   return isSupportedLanguage(value) ? value : DEFAULT_LANGUAGE;
 }
 
+export function resolveWorkspaceInterfaceLanguage(input: {
+  businessLanguage?: unknown;
+  cookieLanguage?: unknown;
+}): SupportedLanguage {
+  return isSupportedLanguage(input.businessLanguage)
+    ? input.businessLanguage
+    : readSupportedLanguage(input.cookieLanguage);
+}
+
 export function readSupportedLanguageOrThrow(value: string): SupportedLanguage {
   if (isSupportedLanguage(value)) {
     return value;

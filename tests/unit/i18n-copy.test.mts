@@ -13,6 +13,7 @@
  */
 
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import {
@@ -34,7 +35,11 @@ import {
   PRICING_COPY_SOURCE_LANGUAGE,
   pricingCopyNamespaces,
 } from "../../lib/i18n/pricing-copy.ts";
-import { languageDefinitions, supportedLanguages } from "../../lib/i18n/language.ts";
+import {
+  languageDefinitions,
+  resolveWorkspaceInterfaceLanguage,
+  supportedLanguages,
+} from "../../lib/i18n/language.ts";
 
 type CopyShape =
   | string
@@ -70,6 +75,28 @@ function copyShape(value: unknown): CopyShape {
   return value === null ? "null" : typeof value;
 }
 
+const userFacingSourceFiles = [
+  "lib/i18n/language.ts",
+  "lib/i18n/bizpilot-copy.ts",
+  "lib/i18n/home-copy.ts",
+  "lib/i18n/pricing-copy.ts",
+  "app/(dashboard)/layout.tsx",
+  "app/(dashboard)/dashboard/page.tsx",
+  "app/(dashboard)/dashboard/leads/page.tsx",
+  "app/(dashboard)/dashboard/settings/page.tsx",
+  "app/(dashboard)/dashboard/business-profile/page.tsx",
+  "app/(dashboard)/dashboard/configuration/page.tsx",
+  "components/dashboard/lead-workspace-queue.tsx",
+  "components/dashboard/workspace-deletion-request-form.tsx",
+] as const;
+
+const dashboardSourceFiles = userFacingSourceFiles.filter((file) =>
+  file.startsWith("app/(dashboard)") || file.startsWith("components/dashboard"),
+);
+
+const mojibakePattern =
+  /(?:\u00c3[\u0080-\u00bf]|\u00c2[\u0080-\u00bf]|\u00e2[\u0080-\uffff]|\ufffd)/u;
+
 describe("BizPilot language copy", () => {
   it("keeps supported languages in the central registry", () => {
     assert.equal(BIZPILOT_COPY_SOURCE_LANGUAGE, "en");
@@ -82,6 +109,50 @@ describe("BizPilot language copy", () => {
       languageDefinitions["fr-CA"].aiInstruction,
       "Canadian French for a Quebec cleaning business",
     );
+  });
+
+  it("uses workspace language as the authenticated dashboard source of truth", () => {
+    assert.equal(
+      resolveWorkspaceInterfaceLanguage({
+        businessLanguage: "fr-CA",
+        cookieLanguage: "en",
+      }),
+      "fr-CA",
+    );
+    assert.equal(
+      resolveWorkspaceInterfaceLanguage({
+        cookieLanguage: "fr-CA",
+      }),
+      "fr-CA",
+    );
+    assert.equal(
+      resolveWorkspaceInterfaceLanguage({
+        businessLanguage: "unsupported",
+        cookieLanguage: "unsupported",
+      }),
+      "en",
+    );
+  });
+
+  it("keeps localized user-facing source free from mojibake artifacts", () => {
+    for (const file of userFacingSourceFiles) {
+      assert.equal(
+        mojibakePattern.test(readFileSync(file, "utf8")),
+        false,
+        `${file} contains likely mojibake. Re-save as UTF-8 and keep visible copy in the dictionary.`,
+      );
+    }
+  });
+
+  it("keeps dashboard UI language branching out of routes and components", () => {
+    for (const file of dashboardSourceFiles) {
+      const source = readFileSync(file, "utf8");
+      assert.equal(
+        source.includes('=== "fr-CA"') || source.includes("=== 'fr-CA'"),
+        false,
+        `${file} should use getBizPilotCopy(...) instead of local language conditionals.`,
+      );
+    }
   });
 
   it("keeps every supported language structurally synced with source copy", () => {
