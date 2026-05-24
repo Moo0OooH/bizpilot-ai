@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot code/MVP is stable enough for founder-controlled synthetic demos, but it is not approved for the first real customer pilot yet. The owner now approves finishing database/security alignment quickly because there are no serious/real customer users yet.
+BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup and homepage conversion polish now added locally, but it is not approved for the first real customer pilot yet.
 ```
 
 ## 2. Current Git State
@@ -19,11 +19,14 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, but i
 | Item | Current value |
 | --- | --- |
 | Current branch | `phase-21-production-alignment` |
-| Current branch tip | `810e8c4 chore: declare package module type` at the last recorded handoff update. Re-run `git log -1 --oneline` before continuing. |
+| Current branch tip before this handoff refresh | `bd3d2a0 feat: sharpen homepage quote recovery conversion`. Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
-| Latest committed Phase 21 implementation | `56b81a8 feat: add lifecycle deletion and phase 21 security alignment` |
+| Latest committed Phase 21 implementation | `bd3d2a0 feat: sharpen homepage quote recovery conversion` |
+| Founder fake/test auth-user cleanup commit | `daa23c8 feat: add safe founder test auth user deletion` |
+| Smart intake routing future-doc commit | `27156c5 docs: capture smart intake routing future concept` |
+| Homepage conversion polish commit | `bd3d2a0 feat: sharpen homepage quote recovery conversion` |
 | Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
 | Latest Vercel evidence commit | `9adde10 docs: record vercel production target evidence` |
 | Previous Phase 20 baseline | `39113f4 chore: record phase 20 pilot gate findings` |
@@ -32,7 +35,7 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, but i
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
 | GitHub remote branches | `main` at `7fe0475`, `phase-19-readiness-findings` at `a27705f`, `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
-| Working tree after `810e8c4` | Clean at the last recorded status check |
+| Working tree after `bd3d2a0` | Handoff/docs refresh in progress at this update; re-check status before continuing |
 | Production deploy triggered in Phase 21 | No |
 
 Do not push to `origin/main` unless the owner explicitly approves it. Keep production deploy risk visible.
@@ -144,7 +147,9 @@ Validation passed in Phase 20:
 - No-cost CI workflow and cost/upgrade gate were added after GitHub evidence: `.github/workflows/ci.yml` and `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`. This was committed as `e690243`.
 - Production readiness runbooks and historical readiness docs were realigned with Phase 21 evidence so stale Phase 19C schema blockers no longer appear as current operational truth. This was committed as `ebd4a04`.
 - `package.json` now declares `"type": "module"` to remove Node's unit-test module-type warnings. `pnpm verify` passed after the change. This was committed as `810e8c4`.
-- Founder Admin now has a repo-backed fake/test auth login deletion path guarded against founder accounts, production-customer users, and workspace owners. Migration `0020_founder_test_auth_user_cleanup.sql` extends the audit action constraint locally. It is not pushed, deployed, or applied to production yet.
+- Founder Admin now has a repo-backed fake/test auth login deletion path guarded against founder accounts, production-customer users, and workspace owners. Migration `0020_founder_test_auth_user_cleanup.sql` extends the audit action constraint locally. It is not pushed, deployed, or applied to production yet. This was committed as `daa23c8`.
+- Smart Intake Routing was documented as a future product concept only. It is not approved for implementation and must not distract from the current cleaning quote-recovery MVP. This was committed as `27156c5`.
+- Homepage conversion polish tightened the hero, added an operational pain story, made the hero recovery visual outcome-first, added a live workflow demo, preserved the no-auto-send trust anchor, and updated homepage copy tests/standards. This was committed as `bd3d2a0`.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
 - Signup confirmation smoke remains blocked because there is no safe inbox/mail-capture.
@@ -169,9 +174,17 @@ Latest validation after the founder fake/test auth-user cleanup slice:
 - `pnpm test:rls`: pass, 13/13 through temporary local-only Docker proxy on `127.0.0.1:55432`,
 - temporary local-only Docker proxy removed after the RLS run.
 
+Latest validation after homepage conversion polish:
+
+- `pnpm verify`: pass,
+- `pnpm test:unit`: pass, 42/42,
+- local browser QA on `http://127.0.0.1:3000/`: hero and live workflow demo visible,
+- local browser QA viewport around 500px: no horizontal overflow detected,
+- production deploy: not triggered.
+
 ## 6. Important Working Tree Areas
 
-The Phase 21 implementation was committed locally as `56b81a8`; evidence/operations/hygiene commits through `810e8c4` followed it. Re-check `git status --short --branch` before any additional commit or push.
+The Phase 21 implementation baseline was committed locally as `56b81a8`; evidence/operations/hygiene commits through `810e8c4` followed it. Later local continuation commits added founder fake/test auth cleanup (`daa23c8`), a future Smart Intake Routing doc (`27156c5`), and homepage conversion polish (`bd3d2a0`). Re-check `git status --short --branch` before any additional commit or push.
 
 Important Phase 21 areas include:
 
@@ -183,6 +196,9 @@ Important Phase 21 areas include:
 - Phase 21 readiness docs,
 - pilot readiness checklist updates,
 - database type updates.
+- founder fake/test auth login deletion UI/service/tests and migration `0020`,
+- homepage conversion polish in `app/page.tsx`, `lib/i18n/home-copy.ts`, and `app/globals.css`,
+- Smart Intake Routing future spec as docs-only / not approved for runtime implementation.
 
 Before committing:
 
@@ -400,6 +416,11 @@ Inspect before commit:
 - `components/admin/founder-auth-user-delete-form.tsx`
 - `components/dashboard/workspace-deletion-request-form.tsx`
 - `components/admin/founder-test-cleanup-form.tsx`
+- `app/page.tsx`
+- `app/globals.css`
+- `lib/i18n/home-copy.ts`
+- `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md`
+- `docs/product/BIZPILOT_SMART_INTAKE_ROUTING_FUTURE_SPEC_v1.0.md`
 
 ## 10. Important Logs / Evidence
 
@@ -421,6 +442,7 @@ Inspect before commit:
 | OpenAI HTTP `429` blocker | `docs/readiness/PHASE_21G_OPENAI_REAL_KEY_VALIDATION.md` |
 | Signup inbox blocker | `docs/readiness/PHASE_21H_SIGNUP_CONFIRMATION_SMOKE.md` |
 | Commercial terms blocker | `docs/business/PILOT_TERMS_DECISION_GATE.md` |
+| Founder auth-user cleanup and homepage polish | This handoff, `docs/operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`, `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md` |
 
 ## 11. Next Tab Starter Prompt
 
@@ -433,7 +455,10 @@ Continue BizPilot Phase 21 from:
 - latest committed Phase 21 evidence/doc state: ebd4a04
 - latest committed Phase 21 hygiene state: 810e8c4
 - latest committed no-cost CI/cost-gate state: e690243
-- latest committed Phase 21 implementation: 56b81a8
+- latest committed Phase 21 implementation: bd3d2a0
+- founder fake/test auth-user cleanup commit: daa23c8
+- smart intake routing future-doc commit: 27156c5
+- homepage conversion polish commit: bd3d2a0
 - latest GitHub evidence commit: 5a62e76
 - origin/main unchanged at 7fe0475
 - GitHub remote has only main/phase-19/phase-20 pushed; phase-21-production-alignment is local-only unless pushed later with approval
@@ -458,8 +483,8 @@ Owner decision:
 - do not push main without explicit approval
 - do not reveal/pull secret env values unless explicitly approved and operationally necessary
 
-First task:
-Continue from the owner-run SQL verification already received: migration history table is missing, required columns passed, required functions passed, expected 0018 lifecycle/deletion objects passed, RLS-enabled status passed for all public tables, public RLS policy-list review found no obvious policy blocker, safe aggregate counts passed with leads/deletion rows at 0, and function definitions passed. Targeted function/grant verification found owner-only lifecycle helpers executable by anon; repo-backed migration 0019_lifecycle_helper_execute_grant_hardening.sql was then applied and verified in production with checked_functions = 6 and all_grant_checks_passed = true. Targeted constraint/template checks also passed for submitted_too_fast, fr-CA language constraints/index, and 0014 cleaning template fields. Next run production quote/security smoke with synthetic data only. Do not re-apply 0018 and do not add leads.source.
+Current continuation state:
+Owner-run SQL verification already received: migration history table is missing, required columns passed, required functions passed, expected 0018 lifecycle/deletion objects passed, RLS-enabled status passed for all public tables, public RLS policy-list review found no obvious policy blocker, safe aggregate counts passed with leads/deletion rows at 0, and function definitions passed. Targeted function/grant verification found owner-only lifecycle helpers executable by anon; repo-backed migration 0019_lifecycle_helper_execute_grant_hardening.sql was then applied and verified in production with checked_functions = 6 and all_grant_checks_passed = true. Targeted constraint/template checks also passed for submitted_too_fast, fr-CA language constraints/index, and 0014 cleaning template fields. Founder fake/test auth-user deletion is repo-backed/local-verified only; production 0020 is not applied and deployment is not approved. Homepage conversion polish is local-verified and not deployed. Next production task remains quote/security smoke with synthetic data only after owner approval. Do not re-apply 0018 and do not add leads.source.
 ```
 
 ## 12. Current Final Decision
@@ -468,4 +493,5 @@ Continue from the owner-run SQL verification already received: migration history
 Ready only for founder-controlled synthetic demos.
 Not ready for first real pilot customer with real customer data.
 Database/security alignment is owner-approved to finish now because there are no serious/real users yet.
+Founder fake/test auth-user cleanup and homepage conversion polish are local/repo-backed only until owner-approved push/deploy and production migration `0020` apply.
 ```
