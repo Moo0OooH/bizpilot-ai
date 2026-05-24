@@ -11,6 +11,9 @@
 - `docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
 - `docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v1.0.md`
 - `docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
+- `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
+- `docs/business/PILOT_OFFER_AND_PRICING_DECISIONS.md`
+- `docs/sales/FOUNDER_CRM_AND_OUTREACH_PLAYBOOK.md`
 - `docs/gtm/BIZPILOT_GTM_PLAYBOOK_v1.1.md`
 - `docs/finance/BIZPILOT_COST_CONTROL_AND_UNIT_ECONOMICS_v1.0.md`
 
@@ -22,13 +25,36 @@ This checklist decides whether BizPilot AI is ready to begin Phase 18: founder-l
 
 Pilot readiness is not feature expansion. It confirms that the current Lead Recovery & Response MVP is safe, focused, demoable, and operationally calm enough to put in front of real cleaning-business owners.
 
+## 1A. Phase 19H Final Readiness Status
+
+Use this table as the current truth before reading older pass/fail evidence rows.
+
+| Major Item | Status | Current Evidence |
+| --- | --- | --- |
+| Product scope lock | Pass | Cleaning-first quote recovery remains locked; no booking, invoicing, calendar, WhatsApp/SMS automation, Instagram API, full CRM, auto-send, or multi-vertical work was added. |
+| Baseline app validation | Pass | 2026-05-24 rerun passed `pnpm lint`, `pnpm typecheck`, `pnpm test:unit` (22/22), and `pnpm build`. |
+| Auth callback messaging | Pass | Commit `7fe0475` fixed misleading signup confirmation callback failure copy while preserving invalid/expired reset handling. |
+| Final production auth smoke | Open | Signup action no longer crashes, but Supabase rate limiting prevented final clean signup confirmation verification. Password reset should be re-smoked after rate limits clear. |
+| Production Supabase target/schema | Blocked | Owner reported migrations through `0017`, but Phase 19C/2026-05-24 probes against the Supabase host available from `.env.local` found missing current app columns and public quote hardening RPCs. Confirm actual Vercel production project, applied migrations, grants, and schema cache before real pilot data. |
+| Migrations `0014`-`0017` | Open | Do not treat old migration blockers as current facts; verify target project directly because owner-reported migration status conflicts with Phase 19C schema probes. |
+| fr-CA production quote flow | Blocked | Disposable fr-CA business/link/lead could not be created because the checked Supabase target did not match current multilingual schema. |
+| Backup/export runbook | Pass | Phase 19B runbook exists and documents export cadence, storage/access rules, restore procedure, deletion/export requests, privacy incident process, and git safety rules. |
+| PITR/export/restore execution | Blocked | PITR/storage require owner dashboard decisions; `pg_dump`, `psql`, and a restore target were unavailable; no restore drill was performed. |
+| AI fallback | Pass | Rule fallback remains owner-reviewed, manual copy/send only, and sanitized. |
+| OpenAI real-key model output | Blocked | No non-empty `OPENAI_API_KEY` was configured, so no model-backed output was generated or quality-checked. |
+| Pricing/offer documentation | Pass | Phase 19F decision doc exists and documents current `/pricing` mismatch and recommended draft. |
+| Final commercial terms | Owner decision required | Price/setup/trial/refund/cancellation/subscription start/support/payment collection are not owner-approved. |
+| Founder CRM setup | Pass | Phase 19G playbook and CSV template exist. |
+| Real customer validation | Owner decision required | No real prospects were supplied; 10 prospects, 20 outreach attempts, 5 demos, 3 pilot candidates, and 1 payment/setup-ready business remain owner execution. |
+| First real pilot customer readiness | Blocked | Not ready for real customer data until production schema, auth smoke, backup/restore posture, OpenAI/fallback decision, commercial terms, and real prospect pipeline are resolved. |
+
 ## 2. Entry Criteria
 
 Do not begin Phase 18 until these are true:
 
 | Gate | PASS | FAIL | Evidence |
 | --- | --- | --- | --- |
-| `pnpm test:rls` passes all files. | [x] | [ ] | Last known full RLS pass: 2026-05-22, 12/12 against local Supabase Postgres through temporary Docker proxy `127.0.0.1:15432/postgres`. 2026-05-23 rerun was environment-blocked because `DATABASE_URL` was not set; no RLS assertion failure was observed. |
+| `pnpm test:rls` passes all files. | [ ] | [x] | Last known full RLS pass: 2026-05-22, 12/12 against local Supabase Postgres through temporary Docker proxy `127.0.0.1:15432/postgres`. 2026-05-24 rerun loaded `DATABASE_URL` from `.env.local`, but the configured local Postgres target refused connection at `127.0.0.1:54322`; no current RLS pass can be claimed. |
 | `pnpm typecheck` is clean. | [x] | [ ] | 2026-05-23: `pnpm typecheck` passed. |
 | `pnpm build` succeeds. | [x] | [ ] | 2026-05-23: `pnpm build` passed with Next.js 16.2.4. |
 | Manual QA checklist is complete or explicitly risk-accepted. | [x] | [ ] | 2026-05-22 browser QA passed core routes with no application or console errors. Public quote submission was verified through the rendered Next form action after the quote-form and submit-age safety fixes. 2026-05-23 owner reported production migrations `0001` through `0017` were applied to `bizpilot-production`; final production auth/language smoke tests remain required before outreach. |
@@ -40,18 +66,18 @@ Do not begin Phase 18 until these are true:
 
 | Item | PASS | FAIL | Notes |
 | --- | --- | --- | --- |
-| Supabase project plan tier is documented. | [ ] | [ ] |  |
-| Supabase point-in-time recovery window is documented. | [ ] | [ ] |  |
+| Supabase project plan tier is documented. | [ ] | [x] | Phase 19B repo/CLI check could not determine plan tier. Owner must verify in Supabase dashboard for `bizpilot-production`; do not infer from code. |
+| Supabase point-in-time recovery window is documented. | [ ] | [x] | Phase 19B repo/CLI check could not determine PITR support or retention. Owner must record exact PITR status/window from Supabase dashboard before real pilot data. |
 | Supabase Security Advisor reviewed. | [ ] | [ ] |  |
 | Supabase Performance Advisor reviewed. | [ ] | [ ] |  |
-| Migrations `0010`, `0011`, `0012`, and `0013` are applied in the target project. | [x] | [ ] | 2026-05-23: owner reported production migrations `0001` through `0017` were successfully applied to `bizpilot-production`. Repo-side independent verification still requires a safe production-equivalent connection or SQL screenshots from Supabase. |
-| Migration `0014_cleaning_template_contact_address_fields.sql` is applied in the target project. | [x] | [ ] | 2026-05-23: owner reported applied to `bizpilot-production`; previously verified locally with `customer_phone`, `customer_email`, and `home_address` template fields. |
-| Migration `0015_business_access_plan_and_admin_log.sql` is applied in the target project. | [x] | [ ] | 2026-05-23: owner reported applied to `bizpilot-production`; previously verified locally with `businesses.plan_slug`, `businesses.status`, and `admin_action_log`. |
-| Migration `0016_public_submission_minimum_submit_age_reason.sql` is applied in the target project. | [x] | [ ] | 2026-05-23: owner reported applied to `bizpilot-production`; previously verified locally with `submitted_too_fast` accepted by the abuse-log reason constraint. |
-| Migration `0017_business_preferred_language.sql` is applied in the target project. | [x] | [ ] | 2026-05-23: owner reported `0017_business_preferred_language` was run; final production smoke should verify preferred-language persistence and FR quote/AI behavior. |
-| `public.public_can_insert_submission_value` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [ ] |  |
-| `public.record_public_submission_attempt` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [ ] |  |
-| `public.count_recent_public_submission_attempts` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [ ] |  |
+| Migrations `0010`, `0011`, `0012`, and `0013` are applied in the target project. | [ ] | [ ] | Status: Open. Owner reported production migrations `0001` through `0017` were applied to `bizpilot-production`, but repo-side independent verification still requires direct target SQL inspection or screenshots. |
+| Migration `0014_cleaning_template_contact_address_fields.sql` is applied in the target project. | [ ] | [ ] | Status: Open. Owner-reported applied and previously verified locally, but the actual production target still needs direct verification after Phase 19C schema drift. |
+| Migration `0015_business_access_plan_and_admin_log.sql` is applied in the target project. | [ ] | [x] | Status: Blocked on target verification. Owner-reported applied and previously verified locally, but Phase 19C probes against the checked Supabase host missed `businesses.internal_note` / `business_members.status`-related schema expected by current admin flow. |
+| Migration `0016_public_submission_minimum_submit_age_reason.sql` is applied in the target project. | [ ] | [ ] | Status: Open. Owner-reported applied and previously verified locally; direct target verification remains required. |
+| Migration `0017_business_preferred_language.sql` is applied in the target project. | [ ] | [x] | Status: Blocked on target verification. Owner-reported applied, but Phase 19C probes against the checked Supabase host found missing `businesses.preferred_language` and `public_link_variants.preferred_language`. |
+| `public.public_can_insert_submission_value` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [x] | 2026-05-24 anon RPC probe against the checked Supabase host returned `PGRST202`: function not found in PostgREST schema cache. |
+| `public.record_public_submission_attempt` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [x] | 2026-05-24 anon RPC probe against the checked Supabase host returned `PGRST202`: function not found in PostgREST schema cache. |
+| `public.count_recent_public_submission_attempts` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [x] | 2026-05-24 anon RPC probe against the checked Supabase host returned `PGRST202`: function not found in PostgREST schema cache. |
 | RLS test cadence is documented if CI is not wired yet. | [ ] | [ ] |  |
 | No service-role key is present in browser/client code. | [ ] | [ ] |  |
 | Security headers/CSP baseline is configured or explicitly risk-accepted. | [x] | [ ] | 2026-05-22: `next.config.ts` now sets CSP, Referrer-Policy, X-Content-Type-Options, X-Frame-Options, and Permissions-Policy. Verified on `http://127.0.0.1:3000/pricing` with `Invoke-WebRequest`. |
@@ -63,8 +89,8 @@ Do not begin Phase 18 until these are true:
 | --- | --- | --- | --- |
 | `.env.local` has valid Supabase URL and anon key. | [x] | [ ] | 2026-05-22: present and used for browser QA against the configured app project. |
 | `.env.local` has service-role key only for server-side bootstrap use. | [x] | [ ] | 2026-05-22: service-role key is present; no browser/client service-role exposure was found in source search. |
-| `OPENAI_API_KEY` is present for model-backed demo testing. | [ ] | [x] | 2026-05-22: `OPENAI_API_KEY` is not set in `.env.local`; AI demo can still use fallback/manual evidence until key is provided. |
-| App still works with `OPENAI_API_KEY` unset through rule fallback. | [x] | [ ] | 2026-05-22: dashboard, quote submission, lead queue, and lead detail loaded with `OPENAI_API_KEY` unset. |
+| `OPENAI_API_KEY` is present for model-backed demo testing. | [ ] | [x] | 2026-05-23 Phase 19D: `.env.local` exists and the `OPENAI_API_KEY` name is present, but the value is empty and process env does not provide a key. Real-key model dry run was blocked; do not mark model-backed AI ready. |
+| App still works with `OPENAI_API_KEY` unset through rule fallback. | [x] | [ ] | 2026-05-23 Phase 19D: fallback remains the only verified AI mode in this environment. Dashboard proof from earlier Phase 17 remains valid for fallback; full production dashboard re-smoke is still blocked by Phase 19C schema drift. |
 | `.env.example` matches required env variables without real secrets. | [x] | [ ] | 2026-05-22: `.env.example` includes `BIZPILOT_FOUNDER_EMAILS` for founder-only `/admin`; no real secrets added. |
 | Secret scan performed before pilot branch/deploy. | [ ] | [ ] |  |
 | Supabase and GitHub owner/admin accounts use MFA. | [ ] | [ ] |  |
@@ -74,11 +100,17 @@ Do not begin Phase 18 until these are true:
 | Item | PASS | FAIL | Notes |
 | --- | --- | --- | --- |
 | Backup/export strategy document reviewed. | [x] | [ ] | 2026-05-22 standards audit reviewed `BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`. |
+| Minimum backup/export/restore runbook exists. | [x] | [ ] | 2026-05-23 Phase 19B added `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` with export cadence, storage/access rules, schema/data backup commands, restore drill procedure, deletion/export request handling, privacy incident process, and git safety rules. |
 | Critical data tables are documented. | [x] | [ ] | Backup/export strategy Section 4 maps identity, tenant, configuration, public intake, submissions/leads, lead intelligence, AI artifacts, and reference tables. |
-| Manual export path is understood by the operator. | [ ] | [x] | Manual `pg_dump` path is outlined, but operator decision/storage location and first export are still open. |
-| Export storage location is decided and encrypted. | [ ] | [ ] |  |
+| Manual export path is understood by the operator. | [ ] | [x] | Phase 19B runbook documents schema-only and data export commands, but `pg_dump` and `psql` are not on PATH and no export has been performed. |
+| Export storage location is decided and encrypted. | [ ] | [x] | Owner decision still required. Runbook requires encrypted storage outside git and a named access list. |
+| PITR support and retention are recorded. | [ ] | [x] | Cannot be checked from repo/CLI. Owner must verify Supabase plan/PITR in dashboard and record exact result. |
+| Schema-only backup has been created and verified. | [ ] | [x] | Blocked on missing `pg_dump` and unavailable local DB connection. No dump created and no customer data printed. |
 | Auth migration risk is accepted for pilot. | [x] | [ ] | Backup/export strategy Section 8 accepts Supabase Auth migration risk for pilot. |
-| Restore drill is scheduled or explicitly deferred with reason. | [ ] | [x] | Backup/export strategy says restore procedure is placeholder only; owner decision still needed. |
+| Restore drill is scheduled or explicitly deferred with reason. | [ ] | [x] | Phase 19B restore drill not performed. Blockers: local `DATABASE_URL` points to `127.0.0.1` but connection is refused; `pg_dump` and `psql` are not installed; no approved staging restore target. |
+| Customer deletion/export request process is documented. | [x] | [ ] | Phase 19B runbook documents manual pilot process for customer deletion/minimization requests and customer export requests. |
+| Privacy incident process is documented. | [x] | [ ] | Phase 19B runbook documents private incident handling and register fields. The incident register itself must stay outside git if it contains personal data. |
+| Git ignore rules prevent backup/export dump commits. | [x] | [ ] | 2026-05-23: `.gitignore` now blocks BizPilot dump/export patterns and backup/restore temp folders while keeping migration SQL files trackable. |
 | Export is performed before first real pilot data is collected, or accepted as risk. | [ ] | [ ] |  |
 
 ## 6. Product and Demo Readiness
@@ -101,24 +133,33 @@ Do not begin Phase 18 until these are true:
 
 | Item | PASS | FAIL | Notes |
 | --- | --- | --- | --- |
-| 3+ cleaning businesses identified for outreach. | [ ] | [ ] |  |
-| Founder CRM spreadsheet/template exists. | [x] | [ ] | `artifacts/phase18/BizPilot_Phase18_Founder_CRM_Template.xlsx`. |
-| Outreach status is tracked. | [x] | [ ] | Founder CRM template includes demo/pilot status and next action fields. |
-| Owner objections and exact customer language are tracked. | [x] | [ ] | Founder CRM template includes objection and owner wording tracking; see Phase 18 founder-led workflow doc. |
-| Demo dates and follow-up dates are tracked. | [x] | [ ] | Founder CRM template supports contacted/demo/follow-up dates. |
-| Willingness-to-pay notes are tracked. | [x] | [ ] | Founder CRM template includes willingness-to-pay tracking. |
-| Pilot retention notes are tracked weekly. | [x] | [ ] | Weekly Loop and Pilot Retention sheets exist in Founder CRM template. |
-| Concierge onboarding checklist is ready for the first customer. | [x] | [ ] | Concierge Setup sheet exists in Founder CRM template. |
+| Founder/admin route is protected. | [x] | [ ] | 2026-05-23 Phase 19G code inspection: `/admin` redirects signed-out users to `/auth/sign-in`; founder service requires signed-in email to match `BIZPILOT_FOUNDER_EMAILS` before service-role overview/actions. |
+| Normal owners are blocked from founder admin data. | [x] | [ ] | Code-level guard exists through `assertFounderUser`; a production negative smoke with a non-founder owner account is still recommended before live outreach. |
+| Founder can create/view/update prospects in the app. | [ ] | [x] | No in-app prospect CRM exists. `/admin` is a founder-only pilot account/control console for existing businesses, users, plans, quote-link state, usage signals, and internal notes. Prospect tracking remains external by design. |
+| Founder CRM tracker template exists. | [x] | [ ] | 2026-05-23 Phase 19G added `docs/sales/FOUNDER_CRM_PROSPECT_TEMPLATE.csv` and `docs/sales/FOUNDER_CRM_AND_OUTREACH_PLAYBOOK.md`. The older workbook path `artifacts/phase18/BizPilot_Phase18_Founder_CRM_Template.xlsx` is not present in this workspace. |
+| Outreach status is tracked. | [x] | [ ] | Phase 19G CSV/playbook includes outreach status, contact channel, follow-up date, outcome, and next action. |
+| Owner objections and exact customer language are tracked. | [x] | [ ] | Phase 19G playbook requires exact owner wording and separates objections from feature requests. |
+| Demo dates and follow-up dates are tracked. | [x] | [ ] | CSV template includes `follow_up_date`; playbook defines demo tracking and follow-up rhythm. |
+| Willingness-to-pay notes are tracked. | [x] | [ ] | CSV template includes `willingness_to_pay`; playbook defines payment-ready rules. |
+| Pilot retention notes are tracked weekly. | [x] | [ ] | Existing operations docs define weekly pilot retention tracking; Phase 19G playbook adds weekly validation review. |
+| Concierge onboarding checklist is ready for the first customer. | [x] | [ ] | Existing Phase 18 workflow docs define onboarding steps; `/admin` can manage plan/access after a business exists. |
+| 10 real cleaning prospects entered. | [ ] | [x] | Owner action required. No real prospects were supplied in Phase 19G, so no real or fake prospect rows were added. |
+| 20 outreach attempts completed. | [ ] | [x] | Owner action required. |
+| 5 demo/conversation attempts completed. | [ ] | [x] | Owner action required. |
+| 3 strong pilot candidates identified. | [ ] | [x] | Owner action required after real outreach. |
+| 1 payment-ready or setup-ready business identified. | [ ] | [x] | Owner action required after real outreach and approved commercial terms. |
 
 ## 8. Pricing and Commercial Readiness
 
 | Item | PASS | FAIL | Notes |
 | --- | --- | --- | --- |
-| Pilot price is selected, expected range `$29-$49/mo`. | [ ] | [x] | Owner decision still needed. |
-| Founder offer price is selected, expected range `$49-$99/mo`. | [ ] | [x] | GTM playbook recommends Founder Plus at `$299 setup + $79/mo`; owner must approve final pilot offer. |
-| Setup fee, if any, is decided. | [ ] | [x] | Owner decision still needed. |
+| Pilot offer/pricing decision doc exists. | [x] | [ ] | 2026-05-23 Phase 19F added `docs/business/PILOT_OFFER_AND_PRICING_DECISIONS.md` with current public pricing evidence, recommended default, mismatch notes, and owner-approval checklist. |
+| Pricing locked for paid outreach. | [ ] | [x] | Not yet owner-approved. Recommended default is Founder Pilot at `$199 setup + $49/month`, but public `/pricing` currently shows Founder Pilot as `manual offer` / `14-day pilot` and puts `$199 setup + $49/mo` under Starter. Older GTM docs also call Founder Plus at `$299 setup + $79/mo` the recommended default. |
+| Setup fee, if any, is decided. | [ ] | [x] | Recommended default is `$199 setup`; owner approval still required before paid outreach. |
+| Trial yes/no is locked. | [ ] | [x] | Public Founder Pilot card says `14-day pilot`, but whether that is free, paid, credited, or simply an onboarding window is not approved. |
 | Billing is manual for pilot; no Stripe implementation is required. | [x] | [ ] | 2026-05-22: `/admin` manual plan assignment and plan entitlement docs added; no Stripe Billing implementation added. |
-| Refund/cancellation handling is written down. | [ ] | [x] | Owner decision still needed. |
+| Manual billing process is ready. | [ ] | [x] | Manual billing process is documented as invoice or separate Stripe Payment Link plus `/admin` plan assignment, but actual payment collection asset/process has not been verified. |
+| Refund/cancellation handling is locked. | [ ] | [x] | Phase 19F documents draft direction only; exact refund and cancellation wording remains owner-required. |
 | Owner knows this is a pilot and not a full CRM/booking product. | [ ] | [ ] |  |
 
 ## 9. Support and Incident Readiness
@@ -126,10 +167,10 @@ Do not begin Phase 18 until these are true:
 | Item | PASS | FAIL | Notes |
 | --- | --- | --- | --- |
 | Support contact channel is defined. | [ ] | [x] | Support/internal notes workflow exists, but the actual support channel owner should use with customers is still an owner decision. |
-| Manual data deletion/minimization request process is documented or accepted as deferred risk. | [ ] | [ ] | Phase 14 remains deferred by owner preference. |
-| Privacy incident register process exists or is accepted as deferred risk. | [ ] | [ ] |  |
+| Manual data deletion/minimization request process is documented or accepted as deferred risk. | [x] | [ ] | Phase 19B runbook documents the manual pilot process. Productized self-serve deletion remains deferred. |
+| Privacy incident register process exists or is accepted as deferred risk. | [x] | [ ] | Phase 19B runbook documents incident process and register fields. Any actual incident register with personal data must remain outside git. |
 | Public quote abuse response path is known. | [ ] | [ ] |  |
-| Owner-facing fallback plan exists if AI provider is unavailable. | [ ] | [ ] |  |
+| Owner-facing fallback plan exists if AI provider is unavailable. | [x] | [ ] | Phase 19D: rule fallback produces owner-reviewed drafts, labels fallback honestly, keeps manual copy/send only, and stores sanitized failure metadata. Real OpenAI output still requires a non-empty key. |
 | Rollback plan for deploy issues is documented. | [ ] | [ ] |  |
 
 ## 10. Validation Gate Before Expansion

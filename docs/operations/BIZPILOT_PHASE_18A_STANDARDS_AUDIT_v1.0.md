@@ -49,8 +49,8 @@ Read and checked:
 | App verification | Pass | `pnpm lint`, `pnpm typecheck`, `pnpm test:unit`, and `pnpm build` passed on 2026-05-22. |
 | Server-only secrets | Pass | `SUPABASE_SERVICE_ROLE_KEY` is read through `lib/env/server-env.ts` with `import "server-only"` and used through `lib/supabase/server.ts`. Source search did not find service-role usage in client components. |
 | Repository/service boundary | Pass | Supabase `.from(...)` calls are concentrated in repositories and server services. UI components do not own direct database workflows. |
-| Founder-led GTM support | Pass | Founder CRM workbook exists; Phase 18 founder workflow doc now covers outreach, demo, pilot offer decisions, and owner wording tracking. |
-| Backup/export baseline | Partial pass | Backup/export strategy exists and lists critical tables and manual export outline. Open decisions remain for plan tier, PITR window, storage location, and restore drill timing. |
+| Founder-led GTM support | Pass | Phase 19G added the current CSV prospect template and outreach playbook. The older workbook path is documented but the xlsx artifact is not present in this workspace. |
+| Backup/export baseline | Open | Backup/export strategy exists and lists critical tables and manual export outline. Open decisions remain for plan tier, PITR window, storage location, and restore drill timing. |
 
 ## 4. Gaps Before Real Pilot Traffic
 
@@ -72,6 +72,25 @@ These were checked and do not currently require new product scope:
 - Booking, invoices, full CRM, marketplace, mobile app, second vertical, and autonomous AI remain blocked.
 - Billing can stay manual for pilot; Stripe implementation is not required now.
 - AI can remain fallback-capable when `OPENAI_API_KEY` is unset, but model-backed QA remains separate.
+
+## 5A. Phase 19H Standards Sync
+
+This section updates the audit with Phase 19 evidence. It does not change the product scope.
+
+| Standards Area | Status | Current Evidence |
+| --- | --- | --- |
+| Scope lock | Pass | Phase 19 added readiness/docs/support artifacts only; no booking, invoices, SMS/WhatsApp automation, auto-send, full CRM, mobile app, or new vertical work was added. |
+| Auth safety | Pass | Signup/reset architecture remains separated. Commit `7fe0475` made callback copy safer for confirmed signup links whose session exchange fails. |
+| Production auth smoke | Open | Supabase throttling prevented final clean signup confirmation/reset-password smoke after latest auth callback messaging fix. |
+| Service-role boundary | Pass | Founder admin service uses service role only after `assertFounderUser`; `/admin` is sign-in and founder allowlist gated. |
+| Production schema/migrations | Blocked | Owner reported migrations through `0017`, but Phase 19C schema probes found the checked target missing language/admin columns. Treat target verification as blocked until the actual production project/schema cache is confirmed. |
+| Public quote fr-CA smoke | Blocked | Could not create a disposable fr-CA business/link/lead because the checked production schema did not match the current multilingual code. |
+| AI fallback safety | Pass | Fallback is sanitized and manual-send only. |
+| OpenAI real-key output | Blocked | Real OpenAI output was not verified because `OPENAI_API_KEY` is empty. |
+| Backup/export/privacy process | Pass | Runbook documents backup/export/restore, deletion/export requests, and privacy incident handling. |
+| Backup/export/restore execution | Blocked | No dump or restore drill was performed. |
+| Commercial readiness | Owner decision required | Pricing default is drafted, but final price/setup/trial/refund/cancellation/payment collection are not approved. |
+| Customer validation | Owner decision required | Templates/playbook exist; real prospects and outreach are not entered/completed. |
 
 ## 6. Recommended Next Order
 

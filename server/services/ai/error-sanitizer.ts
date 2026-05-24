@@ -50,6 +50,10 @@ export function sanitizeAiFailureReason(error: unknown): SanitizedAiFailureReaso
   }
 
   if (error instanceof Error) {
+    if (error.message === "AI provider is not configured.") {
+      return "ai_provider_not_configured";
+    }
+
     if (error.message === "Lead is not ready for AI assistance yet.") {
       return "ai_lead_not_ready";
     }

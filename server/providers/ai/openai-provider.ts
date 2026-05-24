@@ -28,6 +28,7 @@ import {
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const DEFAULT_MAX_OUTPUT_TOKENS = 900;
+const DEFAULT_REQUEST_TIMEOUT_MS = 20_000;
 
 export type OpenAiProviderConfig = Readonly<{
   apiKey: string;
@@ -70,6 +71,7 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
             "Content-Type": "application/json",
           },
           method: "POST",
+          signal: AbortSignal.timeout(DEFAULT_REQUEST_TIMEOUT_MS),
         });
       } catch (cause) {
         throw new AiProviderError({

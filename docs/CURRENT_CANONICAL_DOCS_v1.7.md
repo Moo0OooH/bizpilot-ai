@@ -71,8 +71,12 @@ Read these first, in this exact order:
 ### GTM, Operations, and Finance
 
 - `gtm/BIZPILOT_GTM_PLAYBOOK_v1.1.md`
+- `business/PILOT_OFFER_AND_PRICING_DECISIONS.md`
+- `sales/FOUNDER_CRM_AND_OUTREACH_PLAYBOOK.md`
+- `sales/FOUNDER_CRM_PROSPECT_TEMPLATE.csv`
 - `finance/BIZPILOT_COST_CONTROL_AND_UNIT_ECONOMICS_v1.0.md`
 - `operations/BIZPILOT_RISK_REGISTER_AND_DECISION_RULES_v1.0.md`
+- `ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
 - `operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
 - `operations/BIZPILOT_CODEX_IMPLEMENTATION_PROMPTS_v1.0.md`
 - `operations/BIZPILOT_EXECUTIVE_AUDIT_AND_DECISION_v1.5.md`
@@ -87,6 +91,10 @@ Read these first, in this exact order:
 - `operations/BIZPILOT_POST_DOMAIN_EXECUTION_ROADMAP_v1.0.md`
 - `operations/BIZPILOT_PRODUCTION_QA_CHECKLIST_v1.0.md`
 - `operations/BIZPILOT_PILOT_ONBOARDING_AND_FOUNDER_CRM_WORKFLOW_v1.0.md`
+- `readiness/PHASE_19_SUMMARY.md`
+- `readiness/PHASE_19_WORK_LOG.md`
+- `readiness/PHASE_19C_FR_CA_QUOTE_FLOW_SMOKE.md`
+- `readiness/PHASE_19D_OPENAI_REAL_KEY_DRY_RUN.md`
 
 ## Preserved Reference Files
 

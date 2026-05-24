@@ -3,6 +3,23 @@
 ## Purpose
 Checklist before sending the live domain to pilot prospects.
 
+## Phase 19H Actual QA Status
+
+| Area | Status | Evidence / Next Action |
+| --- | --- | --- |
+| Static/public route smoke | Pass | Recent production smoke covered `/`, `/pricing`, auth surfaces, mobile width, language switch, and no horizontal overflow. |
+| Build validation | Pass | Latest recorded `pnpm lint`, `pnpm typecheck`, `pnpm test:unit`, and `pnpm build` passed. |
+| Signup confirmation | Open | Signup production action no longer crashes, but Supabase throttling prevented final confirmation-email/callback verification after the latest callback messaging fix. |
+| Forgot/reset password | Open | Forgot-password production request was clicked; reset flow should be re-smoked after Supabase rate limits clear. |
+| Production Supabase schema | Blocked | Phase 19C found missing language/admin columns on the checked Supabase host. Confirm actual production target and schema before quote/dashboard smoke. |
+| fr-CA quote flow | Blocked | No disposable fr-CA business/link/lead could be created due schema drift. |
+| Dashboard lead workflow | Blocked | Requires valid production quote submission and lead creation after schema alignment. |
+| Tenant isolation production smoke | Blocked | Requires valid production test lead and second owner after schema alignment. |
+| OpenAI model-backed AI | Blocked | No non-empty `OPENAI_API_KEY`; no real model output was generated. |
+| AI fallback | Pass | Fallback path is verified by code/design and remains owner-reviewed/manual copy-send only. |
+| Backup/export/restore | Blocked | Runbook exists, but no dump or restore drill was performed; PITR/storage require owner decision. |
+| Customer validation readiness | Owner decision required | No real prospects supplied; outreach/demo targets remain owner execution. |
+
 ## Technical Checks
 - `pnpm lint`
 - `pnpm typecheck`

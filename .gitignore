@@ -30,11 +30,25 @@
 *.tar.gz
 *.tmp
 *.temp
+bizpilot-*.sql
+bizpilot-*.dump
+bizpilot-*.backup
+bizpilot-*.csv
+bizpilot-*.json
+*-export.sql
+*-export.csv
+*-export.json
+*-backup.sql
+*-backup.dump
+*-backup.backup
 artifacts/
+backups/
 browser-profile/
 playwright-profile/
+restore-drills/
 screenshots/
 supabase/.temp/
+tmp-backups/
 
 # debug
 npm-debug.log*

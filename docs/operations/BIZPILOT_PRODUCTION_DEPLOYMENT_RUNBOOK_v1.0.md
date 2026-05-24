@@ -10,6 +10,19 @@ Define the production path for moving BizPilot to a real pilot environment witho
 bizpilo.com
 ```
 
+## Phase 19H Current Deployment Status
+
+| Major Item | Status | Current Evidence |
+| --- | --- | --- |
+| Domain app route smoke | Pass | Recent production route smoke covered `/`, `/pricing`, auth pages, mobile width, language switch, and no horizontal overflow. |
+| Production auth | Open | Signup action no longer crashes and forgot-password production request was clicked, but Supabase email throttling prevented a final clean signup confirmation/reset smoke after the latest auth callback fix. |
+| Supabase production target | Blocked | Owner reported `bizpilot-production` with migrations through `0017`, but Phase 19C probes against the Supabase host available from local env found missing current schema columns. Confirm whether Vercel production uses a different project or fix the checked target. |
+| Migrations `0014`-`0017` | Open | Do not leave these as stale blockers, but do not mark them independently verified either. Direct SQL/schema verification on the actual production target is still required. |
+| fr-CA production quote flow | Blocked | Cannot certify until the actual production schema supports language/admin columns and a disposable fr-CA cleaning workspace can be created. |
+| Backup/export/restore | Blocked | Runbook exists, but PITR/export storage/restore target are not decided and no restore drill was performed. |
+| OpenAI model-backed demo | Blocked | No non-empty `OPENAI_API_KEY` was available in the checked environment; fallback-only behavior is the verified path. |
+| First real pilot data | Blocked | Do not collect real customer/pilot data until schema, auth, backup/restore, and commercial/customer-validation owner actions are resolved or explicitly risk-accepted. |
+
 ## Preflight
 
 Before production deployment:

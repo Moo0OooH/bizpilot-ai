@@ -8,6 +8,7 @@
 **Source standard:** `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`, Sections 14, 15
 **Related:**
 - `docs/operations/BIZPILOT_PHASE_10A_VENDOR_INDEPENDENCE_GAP_REPORT_v1.0.md`
+- `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
 - `supabase/migrations/README.md`
 
 ---
@@ -86,7 +87,20 @@ The reference class is documented for completeness but does not need to ride alo
 
 ## 5. Current backup posture (Supabase)
 
-The MVP runs on managed Supabase, which provides:
+Phase 19B update, 2026-05-23: the exact production Supabase plan tier, PITR support, and PITR retention window could not be verified from the repo or local CLI. Do not treat PITR as confirmed until the owner records the exact dashboard value in `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`.
+
+Managed Supabase projects may provide provider-managed backups and, depending on the exact plan/settings, point-in-time recovery. For BizPilot production, the current verified status is:
+
+| Capability | Verified status |
+| --- | --- |
+| Production project name | Owner-reported as `bizpilot-production` |
+| Production plan tier | Unknown from repo/CLI |
+| PITR supported | Unknown from repo/CLI |
+| PITR retention window | Unknown from repo/CLI |
+| First schema-only export | Not performed |
+| First restore drill | Not performed |
+
+Potential provider coverage, after owner verification:
 
 - Daily backups of the underlying PostgreSQL database on the project's plan.
 - Point-in-time recovery within the retention window of the project's plan.
@@ -104,7 +118,7 @@ What this does **not** cover:
 - Off-site, project-independent copies of customer data.
 - Encrypted, customer-portable archives.
 
-Action item: before pilot, confirm in writing which Supabase plan tier the BizPilot project is on, what its point-in-time recovery window is, and where that information is stored (recommended: short note in this document).
+Action item: before pilot, confirm in writing which Supabase plan tier the BizPilot project is on, what its point-in-time recovery window is, and where that information is stored. Use `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` as the operational source of truth.
 
 ---
 
