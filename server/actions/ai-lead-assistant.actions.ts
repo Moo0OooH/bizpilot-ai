@@ -23,6 +23,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
+import { WORKSPACE_LOCKED_FOR_NEW_WORK_MESSAGE } from "@/lib/business-lifecycle/lock";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 import { generateLeadAiBundle } from "@/server/services/ai/lead-conversion-assistant.service";
@@ -43,6 +44,7 @@ function redirectWithLeadError(leadId: string, error: unknown): never {
   let message = getSafeUserErrorMessage({
     allowMessage: (value) =>
       value === "Lead is not ready for AI assistance yet." ||
+      value === WORKSPACE_LOCKED_FOR_NEW_WORK_MESSAGE ||
       value === "No active business is available.",
     code: "AI_ASSISTANT_ERROR",
     error,

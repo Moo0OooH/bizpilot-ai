@@ -22,6 +22,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { DashboardThemeSelector } from "@/components/dashboard/dashboard-theme";
+import { WorkspaceDeletionRequestForm } from "@/components/dashboard/workspace-deletion-request-form";
 import {
   buttonClass,
   DashboardCard,
@@ -33,6 +34,7 @@ import {
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import { canUserRequestWorkspaceDeletion } from "@/lib/business-deletion/owner-eligibility";
 import {
   INTERFACE_LANGUAGE_COOKIE,
   languageLabels,
@@ -46,13 +48,34 @@ import { getBusinessWorkspace } from "@/server/services/business.service";
 
 export const dynamic = "force-dynamic";
 
-export default async function SettingsPage() {
-  const user = await getCurrentUser();
+type SettingsPageProps = Readonly<{
+  searchParams?: Promise<{
+    error?: string;
+    notice?: string;
+  }>;
+}>;
+
+export default async function SettingsPage({ searchParams }: SettingsPageProps) {
+  const [query, user] = await Promise.all([searchParams, getCurrentUser()]);
   if (!user) redirect("/auth/sign-in");
 
   const workspace = await getBusinessWorkspace({ userId: user.id });
   const activeBusiness = workspace.businesses[0];
   if (!activeBusiness) redirect("/dashboard");
+  const canRequestWorkspaceDeletion = canUserRequestWorkspaceDeletion({
+    business: {
+      lifecycleStatus: activeBusiness.lifecycle_status,
+      status: activeBusiness.status,
+    },
+    businessId: activeBusiness.id,
+    memberships: workspace.memberships.map((membership) => ({
+      businessId: membership.business_id,
+      role: membership.role,
+      status: membership.status,
+      userId: membership.user_id,
+    })),
+    userId: user.id,
+  });
   const activeLanguage = readSupportedLanguage(
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value ??
       activeBusiness.preferred_language,
@@ -67,6 +90,17 @@ export default async function SettingsPage() {
         eyebrow={settingsCopy.workspace}
         title={copy.pages.settings.title}
       />
+
+      {query?.notice ? (
+        <p className="rounded-[12px] border border-[#17D492]/25 bg-[#17D492]/10 p-3 text-sm font-semibold text-[#0F8F63] dark:text-[#8DF4C7]">
+          {query.notice}
+        </p>
+      ) : null}
+      {query?.error ? (
+        <p className="rounded-[12px] border border-red-400/25 bg-red-500/10 p-3 text-sm font-semibold text-red-700 dark:text-red-200">
+          {query.error}
+        </p>
+      ) : null}
 
       <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
         <div className="grid gap-4">
@@ -189,6 +223,49 @@ export default async function SettingsPage() {
                 </p>
               ))}
             </div>
+          </DashboardCard>
+
+          <DashboardCard className="p-[22px]">
+            <SectionHeader
+              description="Owner-only workspace lifecycle controls. Login account deletion is separate."
+              title="Workspace lifecycle"
+            />
+            <div className="my-3 h-px bg-[var(--dash-border)]" />
+            <div className="mb-3 grid gap-2 sm:grid-cols-2">
+              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+                  Lifecycle status
+                </p>
+                <p className="mt-1 text-sm font-extrabold text-[var(--dash-text)]">
+                  {activeBusiness.lifecycle_status.replaceAll("_", " ")}
+                </p>
+              </div>
+              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+                  Lock behavior
+                </p>
+                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  Deletion requests lock quote links, new submissions, and AI
+                  draft generation while review is pending.
+                </p>
+              </div>
+            </div>
+            {canRequestWorkspaceDeletion ? (
+              <WorkspaceDeletionRequestForm
+                businessId={activeBusiness.id}
+                businessName={activeBusiness.name}
+              />
+            ) : (
+              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                <p className="text-sm font-extrabold text-[var(--dash-text)]">
+                  Workspace deletion requests are owner-only.
+                </p>
+                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  This workspace is not currently eligible for a new deletion
+                  request, or your membership cannot request one.
+                </p>
+              </div>
+            )}
           </DashboardCard>
         </div>
 

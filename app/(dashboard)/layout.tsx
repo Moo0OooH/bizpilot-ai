@@ -19,7 +19,10 @@ import {
 } from "@/lib/i18n/language";
 import { signOutAction } from "@/server/actions/auth.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
-import { getBusinessWorkspace } from "@/server/services/business.service";
+import {
+  getBusinessWorkspace,
+  getWorkspaceAccessSummary,
+} from "@/server/services/business.service";
 import { isFounderUser } from "@/server/services/founder-admin.service";
 
 export default async function DashboardLayout({
@@ -33,6 +36,10 @@ export default async function DashboardLayout({
   const workspace = await getBusinessWorkspace({ userId: user.id });
   const activeBusiness = workspace.businesses[0];
   if (!activeBusiness) {
+    const accessSummary = await getWorkspaceAccessSummary({ userId: user.id });
+    const isDeletionRequested =
+      accessSummary?.lifecycleStatus === "deletion_requested";
+
     return (
       <main className="flex min-h-screen items-center justify-center bg-[var(--dash-bg)] px-4 py-8 text-[var(--dash-text)]">
         <DashboardCard className="max-w-xl p-6 sm:p-8" variant="priority">
@@ -40,13 +47,20 @@ export default async function DashboardLayout({
             Workspace access
           </p>
           <h1 className="mt-2 text-2xl font-black tracking-[-0.03em]">
-            This workspace is paused or unavailable.
+            {isDeletionRequested
+              ? "Workspace deletion has been requested."
+              : "This workspace is paused or unavailable."}
           </h1>
           <p className="mt-3 text-sm leading-6 text-[var(--dash-text-secondary)]">
-            Your dashboard is currently blocked because no active business
-            membership is available. Your data is retained; contact BizPilot
-            support if this looks unexpected.
+            {isDeletionRequested
+              ? "This business workspace is locked while the deletion request is reviewed. Your login account is not deleted automatically."
+              : "Your dashboard is currently blocked because no active business membership is available. Your data is retained; contact BizPilot support if this looks unexpected."}
           </p>
+          {accessSummary ? (
+            <p className="mt-3 rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm font-bold text-[var(--dash-text)]">
+              {accessSummary.businessName}
+            </p>
+          ) : null}
           <div className="mt-5 flex flex-wrap gap-2">
             <form action={signOutAction}>
               <button className={buttonClass} type="submit">

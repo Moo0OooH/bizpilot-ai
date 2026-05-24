@@ -27,6 +27,8 @@ export type FounderAdminActionType =
   Database["public"]["Tables"]["admin_action_log"]["Row"]["action_type"];
 export type FounderAdminLogRecord =
   Database["public"]["Tables"]["admin_action_log"]["Row"];
+export type FounderDeletionRequestRecord =
+  Database["public"]["Tables"]["business_deletion_requests"]["Row"];
 
 export type FounderBusinessMemberRecord =
   Database["public"]["Tables"]["business_members"]["Row"];
@@ -114,6 +116,19 @@ export async function listFounderAdminLog(input: {
     .select("*")
     .order("created_at", { ascending: false })
     .limit(input.limit ?? 20);
+
+  throwIfError(error);
+
+  return data ?? [];
+}
+
+export async function listFounderDeletionRequests(input: {
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderDeletionRequestRecord[]> {
+  const { data, error } = await input.supabase
+    .from("business_deletion_requests")
+    .select("*")
+    .order("requested_at", { ascending: false });
 
   throwIfError(error);
 

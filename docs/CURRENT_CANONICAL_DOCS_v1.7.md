@@ -32,6 +32,12 @@ Read these first, in this exact order:
 10. `operations/BIZPILOT_STRATEGIC_ALIGNMENT_IMPLEMENTATION_CHECKLIST_v1.6.md` — alignment checklist.
 11. `operations/BIZPILOT_REPO_INSPECTION_AND_READINESS_GAP_REPORT_v1.0.md` — current repo inspection and readiness truth table.
 
+Additional active lifecycle/deletion authorities:
+
+- `security/BIZPILOT_BUSINESS_LIFECYCLE_AND_DELETION_POLICY_v1.0.md`
+- `operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
+- `readiness/PHASE_19_BUSINESS_LIFECYCLE_DELETION_READINESS.md`
+
 ## Supporting Active Files
 
 ### Product and UX
@@ -65,6 +71,7 @@ Read these first, in this exact order:
 - `security/BIZPILOT_AUTH_ROUTE_PROTECTION_AUDIT_v1.0.md`
 - `security/BIZPILOT_PRIVACY_SECURITY_COMPLIANCE_BASELINE_v1.0.md`
 - `security/BIZPILOT_ACCESS_CONTROL_AND_SUSPENSION_STANDARD_v1.0.md`
+- `security/BIZPILOT_BUSINESS_LIFECYCLE_AND_DELETION_POLICY_v1.0.md`
 - `engineering/BIZPILOT_SAFE_LOGGING_BASELINE_v1.0.md`
 - `engineering/BIZPILOT_SAFE_ERROR_HANDLING_STANDARD_v1.0.md`
 
@@ -78,6 +85,7 @@ Read these first, in this exact order:
 - `operations/BIZPILOT_RISK_REGISTER_AND_DECISION_RULES_v1.0.md`
 - `ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
 - `operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
+- `operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 - `operations/BIZPILOT_CODEX_IMPLEMENTATION_PROMPTS_v1.0.md`
 - `operations/BIZPILOT_EXECUTIVE_AUDIT_AND_DECISION_v1.5.md`
 - `operations/BIZPILOT_PHASE_18_FOUNDER_LED_PILOT_WORKFLOW_v1.0.md`
@@ -93,6 +101,7 @@ Read these first, in this exact order:
 - `operations/BIZPILOT_PILOT_ONBOARDING_AND_FOUNDER_CRM_WORKFLOW_v1.0.md`
 - `readiness/PHASE_19_SUMMARY.md`
 - `readiness/PHASE_19_WORK_LOG.md`
+- `readiness/PHASE_19_BUSINESS_LIFECYCLE_DELETION_READINESS.md`
 - `readiness/PHASE_19C_FR_CA_QUOTE_FLOW_SMOKE.md`
 - `readiness/PHASE_19D_OPENAI_REAL_KEY_DRY_RUN.md`
 

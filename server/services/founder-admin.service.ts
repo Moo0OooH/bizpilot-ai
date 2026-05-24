@@ -24,6 +24,7 @@ import {
   listFounderAdminLog,
   listFounderBusinesses,
   listFounderBusinessMembers,
+  listFounderDeletionRequests,
   listFounderLeadSignals,
   listFounderPublicLinks,
   listFounderUsageSignals,
@@ -41,6 +42,8 @@ export type FounderAdminBusiness = Readonly<{
   internalNote: string | null;
   lastActivityAt: string | null;
   leadCount: number;
+  deletionRequestStatus: string | null;
+  lifecycleStatus: FounderBusinessRecord["lifecycle_status"];
   memberCount: number;
   ownerEmail: string;
   planExpiresAt: string | null;
@@ -48,8 +51,10 @@ export type FounderAdminBusiness = Readonly<{
   preferredLanguage: FounderBusinessRecord["preferred_language"];
   publicLinkActive: boolean;
   publicSlug: string | null;
+  slug: string;
   status: FounderBusinessStatus;
   usageCount: number;
+  workspaceKind: FounderBusinessRecord["workspace_kind"];
   name: string;
 }>;
 
@@ -187,6 +192,7 @@ export async function getFounderAdminOverview(input: {
     leads,
     usageEvents,
     recentActions,
+    deletionRequests,
     usersResult,
   ] = await Promise.all([
     listFounderBusinesses({ supabase }),
@@ -195,6 +201,7 @@ export async function getFounderAdminOverview(input: {
     listFounderLeadSignals({ supabase }),
     listFounderUsageSignals({ supabase }),
     listFounderAdminLog({ supabase }),
+    listFounderDeletionRequests({ supabase }),
     supabase.auth.admin.listUsers({ page: 1, perPage: usersResultLimit }),
   ]);
 
@@ -210,6 +217,9 @@ export async function getFounderAdminOverview(input: {
   const usageCountByBusiness = countByBusiness(usageEvents);
   const latestLeadByBusiness = latestByBusiness(leads);
   const latestUsageByBusiness = latestByBusiness(usageEvents);
+  const deletionRequestByBusiness = new Map(
+    deletionRequests.map((request) => [request.business_id, request]),
+  );
   const businessById = new Map(businesses.map((business) => [business.id, business]));
   const primaryMemberByUser = new Map<string, FounderBusinessMemberRecord>();
   const firstLinkByBusiness = new Map<string, { active: boolean; slug: string }>();
@@ -251,6 +261,9 @@ export async function getFounderAdminOverview(input: {
             : latestUsage
           : (latestLead ?? latestUsage ?? null),
       leadCount: leadCountByBusiness.get(business.id) ?? 0,
+      deletionRequestStatus:
+        deletionRequestByBusiness.get(business.id)?.status ?? null,
+      lifecycleStatus: business.lifecycle_status,
       memberCount: memberCountByBusiness.get(business.id) ?? 0,
       name: business.name,
       ownerEmail: ownerEmailById.get(business.owner_user_id) ?? business.owner_user_id,
@@ -259,8 +272,10 @@ export async function getFounderAdminOverview(input: {
       preferredLanguage: business.preferred_language,
       publicLinkActive: link?.active ?? false,
       publicSlug: link?.slug ?? null,
+      slug: business.slug,
       status: business.status,
       usageCount: usageCountByBusiness.get(business.id) ?? 0,
+      workspaceKind: business.workspace_kind,
       };
   });
 

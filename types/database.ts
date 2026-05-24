@@ -28,6 +28,35 @@ export type Json =
   | { [key: string]: Json | undefined };
 
 type Timestamp = string;
+type WorkspaceKind = "demo" | "founder_test" | "production_customer" | "seed";
+type BusinessLifecycleStatus =
+  | "active"
+  | "archived"
+  | "deleted"
+  | "deleting"
+  | "deletion_requested";
+type BusinessDeletionRequestStatus =
+  | "approved"
+  | "cancelled"
+  | "completed"
+  | "pending"
+  | "processing"
+  | "rejected";
+type BusinessDeletionRequestType = "production_deletion" | "test_cleanup";
+type BusinessDeletionReasonCode =
+  | "cleanup"
+  | "duplicate_workspace"
+  | "fake_test_data"
+  | "no_longer_needed"
+  | "other"
+  | "pilot_ended"
+  | "privacy_request"
+  | "switching_tools";
+type BusinessDeletionMode =
+  | "production_anonymization"
+  | "production_purge"
+  | "test_hard_purge";
+type BusinessDeletionActorType = "founder" | "owner" | "system";
 
 export type Database = {
   public: {
@@ -302,8 +331,12 @@ export type Database = {
       businesses: {
         Row: {
           created_at: Timestamp;
+          deleted_at: Timestamp | null;
+          deletion_requested_at: Timestamp | null;
           id: string;
           internal_note: string | null;
+          lifecycle_status: BusinessLifecycleStatus;
+          lifecycle_updated_at: Timestamp;
           name: string;
           owner_user_id: string;
           plan_expires_at: Timestamp | null;
@@ -313,11 +346,16 @@ export type Database = {
           slug: string;
           status: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at: Timestamp;
+          workspace_kind: WorkspaceKind;
         };
         Insert: {
           created_at?: Timestamp;
+          deleted_at?: Timestamp | null;
+          deletion_requested_at?: Timestamp | null;
           id?: string;
           internal_note?: string | null;
+          lifecycle_status?: BusinessLifecycleStatus;
+          lifecycle_updated_at?: Timestamp;
           name: string;
           owner_user_id: string;
           plan_expires_at?: Timestamp | null;
@@ -327,11 +365,16 @@ export type Database = {
           slug: string;
           status?: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at?: Timestamp;
+          workspace_kind?: WorkspaceKind;
         };
         Update: {
           created_at?: Timestamp;
+          deleted_at?: Timestamp | null;
+          deletion_requested_at?: Timestamp | null;
           id?: string;
           internal_note?: string | null;
+          lifecycle_status?: BusinessLifecycleStatus;
+          lifecycle_updated_at?: Timestamp;
           name?: string;
           owner_user_id?: string;
           plan_expires_at?: Timestamp | null;
@@ -341,6 +384,109 @@ export type Database = {
           slug?: string;
           status?: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at?: Timestamp;
+          workspace_kind?: WorkspaceKind;
+        };
+        Relationships: [];
+      };
+      business_deletion_requests: {
+        Row: {
+          approved_at: Timestamp | null;
+          approved_by_user_id: string | null;
+          business_id: string;
+          cancelled_at: Timestamp | null;
+          cancelled_by_user_id: string | null;
+          completed_at: Timestamp | null;
+          created_at: Timestamp;
+          id: string;
+          processing_started_at: Timestamp | null;
+          reason_code: BusinessDeletionReasonCode | null;
+          rejected_at: Timestamp | null;
+          request_type: BusinessDeletionRequestType;
+          requested_at: Timestamp;
+          requested_by_user_id: string;
+          status: BusinessDeletionRequestStatus;
+          updated_at: Timestamp;
+        };
+        Insert: {
+          approved_at?: Timestamp | null;
+          approved_by_user_id?: string | null;
+          business_id: string;
+          cancelled_at?: Timestamp | null;
+          cancelled_by_user_id?: string | null;
+          completed_at?: Timestamp | null;
+          created_at?: Timestamp;
+          id?: string;
+          processing_started_at?: Timestamp | null;
+          reason_code?: BusinessDeletionReasonCode | null;
+          rejected_at?: Timestamp | null;
+          request_type?: BusinessDeletionRequestType;
+          requested_at?: Timestamp;
+          requested_by_user_id: string;
+          status?: BusinessDeletionRequestStatus;
+          updated_at?: Timestamp;
+        };
+        Update: {
+          approved_at?: Timestamp | null;
+          approved_by_user_id?: string | null;
+          business_id?: string;
+          cancelled_at?: Timestamp | null;
+          cancelled_by_user_id?: string | null;
+          completed_at?: Timestamp | null;
+          created_at?: Timestamp;
+          id?: string;
+          processing_started_at?: Timestamp | null;
+          reason_code?: BusinessDeletionReasonCode | null;
+          rejected_at?: Timestamp | null;
+          request_type?: BusinessDeletionRequestType;
+          requested_at?: Timestamp;
+          requested_by_user_id?: string;
+          status?: BusinessDeletionRequestStatus;
+          updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
+      business_deletion_tombstones: {
+        Row: {
+          anonymized_tables: string[];
+          audit_version: string;
+          business_id: string;
+          completed_at: Timestamp;
+          completed_by_actor_type: BusinessDeletionActorType;
+          deletion_mode: BusinessDeletionMode;
+          deletion_request_id: string | null;
+          id: string;
+          purged_tables: string[];
+          reason_code: BusinessDeletionReasonCode | null;
+          retained_reason_code: string | null;
+          workspace_kind: WorkspaceKind;
+        };
+        Insert: {
+          anonymized_tables?: string[];
+          audit_version?: string;
+          business_id: string;
+          completed_at?: Timestamp;
+          completed_by_actor_type: BusinessDeletionActorType;
+          deletion_mode: BusinessDeletionMode;
+          deletion_request_id?: string | null;
+          id?: string;
+          purged_tables?: string[];
+          reason_code?: BusinessDeletionReasonCode | null;
+          retained_reason_code?: string | null;
+          workspace_kind: WorkspaceKind;
+        };
+        Update: {
+          anonymized_tables?: string[];
+          audit_version?: string;
+          business_id?: string;
+          completed_at?: Timestamp;
+          completed_by_actor_type?: BusinessDeletionActorType;
+          deletion_mode?: BusinessDeletionMode;
+          deletion_request_id?: string | null;
+          id?: string;
+          purged_tables?: string[];
+          reason_code?: BusinessDeletionReasonCode | null;
+          retained_reason_code?: string | null;
+          workspace_kind?: WorkspaceKind;
         };
         Relationships: [];
       };
@@ -348,13 +494,15 @@ export type Database = {
         Row: {
           action_type:
             | "business_cancelled"
+            | "business_deletion_requested"
             | "business_reactivated"
             | "business_suspended"
             | "internal_note_added"
             | "plan_changed"
             | "quote_link_disabled"
             | "quote_link_enabled"
-            | "status_changed";
+            | "status_changed"
+            | "test_workspace_cleanup_completed";
           actor_user_id: string | null;
           business_id: string | null;
           created_at: Timestamp;
@@ -366,13 +514,15 @@ export type Database = {
         Insert: {
           action_type:
             | "business_cancelled"
+            | "business_deletion_requested"
             | "business_reactivated"
             | "business_suspended"
             | "internal_note_added"
             | "plan_changed"
             | "quote_link_disabled"
             | "quote_link_enabled"
-            | "status_changed";
+            | "status_changed"
+            | "test_workspace_cleanup_completed";
           actor_user_id?: string | null;
           business_id?: string | null;
           created_at?: Timestamp;
@@ -384,13 +534,15 @@ export type Database = {
         Update: {
           action_type?:
             | "business_cancelled"
+            | "business_deletion_requested"
             | "business_reactivated"
             | "business_suspended"
             | "internal_note_added"
             | "plan_changed"
             | "quote_link_disabled"
             | "quote_link_enabled"
-            | "status_changed";
+            | "status_changed"
+            | "test_workspace_cleanup_completed";
           actor_user_id?: string | null;
           business_id?: string | null;
           created_at?: Timestamp;
@@ -1251,6 +1403,14 @@ export type Database = {
     Views: Record<string, never>;
     Functions: {
       can_manage_business: {
+        Args: { target_business_id: string };
+        Returns: boolean;
+      };
+      can_request_business_deletion: {
+        Args: { target_business_id: string };
+        Returns: boolean;
+      };
+      can_view_business_deletion_request: {
         Args: { target_business_id: string };
         Returns: boolean;
       };

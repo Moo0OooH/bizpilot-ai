@@ -17,6 +17,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { FounderTestCleanupForm } from "@/components/admin/founder-test-cleanup-form";
 import {
   buttonClass,
   DashboardCard,
@@ -45,11 +46,16 @@ import {
   type FounderAdminBusiness,
   type FounderAdminUser,
 } from "@/server/services/founder-admin.service";
+import {
+  dryRunFounderTestWorkspaceCleanup,
+  type FounderCleanupDryRun,
+} from "@/server/services/founder-test-cleanup.service";
 
 export const dynamic = "force-dynamic";
 
 type AdminPageProps = Readonly<{
   searchParams?: Promise<{
+    cleanupBusinessId?: string;
     error?: string;
     notice?: string;
   }>;
@@ -231,7 +237,11 @@ function FounderAccessBlocked({ message }: Readonly<{ message: string }>) {
 
 function BusinessControlCard({
   business,
-}: Readonly<{ business: FounderAdminBusiness }>) {
+  dryRun,
+}: Readonly<{
+  business: FounderAdminBusiness;
+  dryRun?: FounderCleanupDryRun | null;
+}>) {
   return (
     <DashboardCard className="p-4 sm:p-5" variant="elevated">
       <div className="grid gap-4 xl:grid-cols-[minmax(260px,1.05fr)_minmax(360px,1.5fr)]">
@@ -250,6 +260,23 @@ function BusinessControlCard({
               <StatusBadge tone="blue">
                 {languageLabels[business.preferredLanguage]}
               </StatusBadge>
+              <StatusBadge
+                tone={
+                  business.workspaceKind === "production_customer"
+                    ? "neutral"
+                    : "amber"
+                }
+              >
+                {business.workspaceKind.replaceAll("_", " ")}
+              </StatusBadge>
+              <StatusBadge tone="neutral">
+                {business.lifecycleStatus.replaceAll("_", " ")}
+              </StatusBadge>
+              {business.deletionRequestStatus ? (
+                <StatusBadge tone="red">
+                  deletion request {business.deletionRequestStatus}
+                </StatusBadge>
+              ) : null}
             </div>
             <p className="mt-1 truncate text-sm text-[var(--dash-text-muted)]">
               Owner: {business.ownerEmail}
@@ -299,6 +326,31 @@ function BusinessControlCard({
               Quote link is {business.publicLinkActive ? "active" : "inactive"}.
             </p>
           </div>
+
+          {dryRun ? (
+            <div className="rounded-[14px] border border-[#2DD4BF]/25 bg-[#2DD4BF]/10 p-3 text-sm">
+              <p className="font-black text-[var(--dash-text)]">
+                Cleanup dry run counts
+              </p>
+              <dl className="mt-2 grid grid-cols-2 gap-2 text-[12px]">
+                {Object.entries(dryRun.counts)
+                  .filter(([, count]) => count > 0)
+                  .map(([table, count]) => (
+                    <div
+                      className="rounded-[10px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2 py-1"
+                      key={table}
+                    >
+                      <dt className="truncate font-bold text-[var(--dash-text-muted)]">
+                        {table}
+                      </dt>
+                      <dd className="font-black text-[var(--dash-text)]">
+                        {count}
+                      </dd>
+                    </div>
+                  ))}
+              </dl>
+            </div>
+          ) : null}
         </div>
 
         <div className="grid gap-3 md:grid-cols-2">
@@ -404,6 +456,14 @@ function BusinessControlCard({
               Save note
             </button>
           </form>
+
+          <FounderTestCleanupForm
+            businessId={business.businessId}
+            businessName={business.name}
+            businessSlug={business.slug}
+            dryRunAvailable={dryRun?.businessId === business.businessId}
+            workspaceKind={business.workspaceKind}
+          />
         </div>
       </div>
     </DashboardCard>
@@ -532,6 +592,18 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     return <FounderAccessBlocked message={getFounderAccessMessage(error)} />;
   }
 
+  let dryRun: FounderCleanupDryRun | null = null;
+  if (params?.cleanupBusinessId) {
+    try {
+      dryRun = await dryRunFounderTestWorkspaceCleanup({
+        businessId: params.cleanupBusinessId,
+        user,
+      });
+    } catch {
+      dryRun = null;
+    }
+  }
+
   return (
     <main
       className="biz-dashboard-dark min-h-screen overflow-x-hidden px-5 py-6 text-[var(--dash-text)] sm:px-6 lg:px-8"
@@ -596,7 +668,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           />
           {overview.businesses.length > 0 ? (
             overview.businesses.map((business) => (
-              <BusinessControlCard business={business} key={business.businessId} />
+              <BusinessControlCard
+                business={business}
+                dryRun={
+                  dryRun?.businessId === business.businessId ? dryRun : null
+                }
+                key={business.businessId}
+              />
             ))
           ) : (
             <DashboardCard className="p-6 text-center text-sm text-[var(--dash-text-secondary)]">

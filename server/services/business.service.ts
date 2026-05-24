@@ -42,6 +42,12 @@ export type BusinessWorkspace = Readonly<{
   memberships: BusinessMemberRecord[];
 }>;
 
+export type WorkspaceAccessSummary = Readonly<{
+  businessName: string;
+  lifecycleStatus: BusinessRecord["lifecycle_status"];
+  status: BusinessRecord["status"];
+}> | null;
+
 function toSlug(value: string): string {
   const slug = value
     .trim()
@@ -131,6 +137,41 @@ export async function getBusinessWorkspace(input: {
     businesses,
     memberships,
   };
+}
+
+export async function getWorkspaceAccessSummary(input: {
+  userId: string;
+}): Promise<WorkspaceAccessSummary> {
+  const supabase = createSupabaseServiceRoleClient();
+  const memberships = await listMembershipsForUser({
+    supabase,
+    userId: input.userId,
+  });
+  const businessIds = memberships.map((membership) => membership.business_id);
+
+  if (businessIds.length === 0) {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from("businesses")
+    .select("id,name,status,lifecycle_status")
+    .in("id", businessIds)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const business = data?.[0];
+
+  return business
+    ? {
+        businessName: business.name,
+        lifecycleStatus: business.lifecycle_status,
+        status: business.status,
+      }
+    : null;
 }
 
 export async function updateWorkspaceLanguage(input: {

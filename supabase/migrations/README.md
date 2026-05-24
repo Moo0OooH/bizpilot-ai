@@ -31,6 +31,8 @@
 | `0015_business_access_plan_and_admin_log.sql` | Adds manual plan/access controls (`businesses.status`, `plan_slug`, plan dates, internal notes, `business_members.status`) plus service-role-only `admin_action_log` and active-business helper updates. |
 | `0016_public_submission_minimum_submit_age_reason.sql` | Extends `public_submission_abuse_log` reason constraint with `submitted_too_fast` for the minimum submit-age public quote protection. |
 | `0017_business_preferred_language.sql` | Adds `preferred_language` to `businesses` and public quote links for MVP-safe English / Canadian French support without changing RLS policies. |
+| `0018_business_lifecycle_deletion_foundation.sql` | Adds workspace classification, lifecycle status, owner-only deletion requests, non-PII deletion tombstones, helper functions, RLS policies, and explicit grants. No destructive deletion or purge job. |
+| `0019_lifecycle_helper_execute_grant_hardening.sql` | Tightens EXECUTE grants for the 0018 lifecycle/deletion helper functions by removing broad PUBLIC/anon execution and restating authenticated/service-role access. Grants-only; no data or policy changes. |
 
 ---
 
@@ -46,7 +48,7 @@ The original `0003` migration was removed from the repository because keeping it
 
 ## Rules for new migrations
 
-1. **Preserve numbering.** New files must use the next available integer prefix (currently `0018`). Never rename or re-number an existing migration.
+1. **Preserve numbering.** New files must use the next available integer prefix (currently `0020`). Never rename or re-number an existing migration.
 2. **One concern per file.** A migration adds, alters, or removes a focused set of related tables, functions, policies, or grants. Cross-cutting changes go in separate files.
 3. **File header is mandatory.** Use the BizPilot SQL header format (path, project, description, role, related, author, created/updated, change log) as shown in the existing files.
 4. **Tables created here must include:**

@@ -26,9 +26,29 @@ This checklist decides whether BizPilot AI is ready to begin Phase 18: founder-l
 
 Pilot readiness is not feature expansion. It confirms that the current Lead Recovery & Response MVP is safe, focused, demoable, and operationally calm enough to put in front of real cleaning-business owners.
 
-## 1A. Phase 19H Final Readiness Status
+## 1A. Phase 21 Current Pilot Gate Status
 
-Use this table as the current truth before reading older pass/fail evidence rows.
+Use this table as the current Phase 21 truth. It supersedes older Phase 19/20 probe results where the production target or local RLS state has changed.
+
+| Major Item | Status | Current Evidence |
+| --- | --- | --- |
+| Git/deploy safety | Pass | Phase 21 stayed on `phase-21-production-alignment` at `39113f4`; `origin/main` remains `7fe0475`; no production deploy was triggered. |
+| Baseline app validation | Pass | 2026-05-24 Phase 21 rerun passed `git diff --check`, `pnpm lint`, `pnpm typecheck`, `pnpm test:unit` (37/37), `pnpm test:rls` (13/13 through a temporary local-only Docker proxy), and `pnpm build`. |
+| Production target | Partial | Corrected target is `bizpilot-production` / `qfqendrqimqvkoojpjao` with app URL `https://bizpilo.com`. Vercel production env still requires owner confirmation. |
+| Backup/PITR/export/restore | Blocked for real customer data; risk-accepted for current no-real-user security alignment | Owner confirmed Supabase Free plan, scheduled backups unavailable, PITR not enabled/unavailable, manual export not done, and restore drill not done. Owner now states there are no serious/real users yet and approves finishing database/security phases quickly and accurately. |
+| Migration drift/history | Partially verified; still blocked for real customer data | Owner-run/Codex-run SQL verified required columns/functions, expected `0018` objects, RLS-enabled status for all 31 public tables, public RLS policy-list review, safe aggregate counts, function definitions, production `0019` grant hardening, and targeted constraints/template seeds. `supabase_migrations.schema_migrations` is missing, so production remains schema-without-standard-migration-history/manual drift. |
+| Migration `0018` lifecycle/deletion status | Object/RLS/policy/function/grant verification passed after `0019` | Owner reported manually applying `0018_business_lifecycle_deletion_foundation.sql` and receiving OK. Owner-run SQL verified expected lifecycle columns, deletion tables, helper functions, RLS-enabled status, deletion-request policies, and function definitions. `0019_lifecycle_helper_execute_grant_hardening.sql` was applied and verified to remove broad `anon` EXECUTE from owner-only lifecycle helpers. `supabase_migrations.schema_migrations` is missing, so treat as manual drift/schema-without-standard-migration-history. Do not re-apply blindly. |
+| Production migration apply | Grant-only `0019` applied/verified; broader apply still controlled | Owner approves repo-backed database/security alignment because there are no real customer users yet. Production `0019` apply returned `Success. No rows returned`; verification returned `checked_functions = 6`, `all_grant_checks_passed = true`. Do not add ad-hoc columns, do not add `leads.source`, do not replay `0018` blindly, and do not treat this as real pilot approval. |
+| Production public quote security | Blocked | Phase 21E was not run; requires closed migration/history/backup gates plus approved synthetic business/link setup. |
+| fr-CA production quote smoke | Blocked | Phase 21F was not run; depends on Phase 21E and approved synthetic fr-CA setup. |
+| OpenAI real-key validation | Blocked | Secure local env template had a key, but the single synthetic request returned HTTP `429`; no model output was generated or quality-checked. |
+| Signup confirmation smoke | Blocked | No safe test inbox/mail-capture path is available; no production signup request was sent; local callback-routing test passed 7/7. |
+| Pilot commercial terms | Owner decision required | Recommended default exists, but setup fee, monthly fee, trial, refund, cancellation, payment method, billing start, support promise, non-responsive customer handling, and pilot limit are not approved. |
+| First real pilot customer readiness | Blocked | Owner accepts no real pilot yet. Final Phase 21 decision remains: ready only for founder-controlled synthetic demos, not ready for real customer data. |
+
+## 1B. Phase 19H Historical Readiness Status
+
+The Phase 19 table below remains for context. Use Section 1A as the current Phase 21 gate status when the two disagree.
 
 | Major Item | Status | Current Evidence |
 | --- | --- | --- |
@@ -55,7 +75,7 @@ Do not begin Phase 18 until these are true:
 
 | Gate | PASS | FAIL | Evidence |
 | --- | --- | --- | --- |
-| `pnpm test:rls` passes all files. | [ ] | [x] | Last known full RLS pass: 2026-05-22, 12/12 against local Supabase Postgres through temporary Docker proxy `127.0.0.1:15432/postgres`. 2026-05-24 rerun loaded `DATABASE_URL` from `.env.local`, but the configured local Postgres target refused connection at `127.0.0.1:54322`; no current RLS pass can be claimed. |
+| `pnpm test:rls` passes all files. | [x] | [ ] | 2026-05-24 current rerun passed 13/13 against local Supabase Postgres through temporary local-only Docker proxy `127.0.0.1:55432/postgres` after applying local migration `0019_lifecycle_helper_execute_grant_hardening.sql`; the proxy was removed after the run. |
 | `pnpm typecheck` is clean. | [x] | [ ] | 2026-05-23: `pnpm typecheck` passed. |
 | `pnpm build` succeeds. | [x] | [ ] | 2026-05-23: `pnpm build` passed with Next.js 16.2.4. |
 | Manual QA checklist is complete or explicitly risk-accepted. | [x] | [ ] | 2026-05-22 browser QA passed core routes with no application or console errors. Public quote submission was verified through the rendered Next form action after the quote-form and submit-age safety fixes. 2026-05-23 owner reported production migrations `0001` through `0017` were applied to `bizpilot-production`; final production auth/language smoke tests remain required before outreach. |
@@ -72,13 +92,14 @@ Do not begin Phase 18 until these are true:
 | Supabase Security Advisor reviewed. | [ ] | [ ] |  |
 | Supabase Performance Advisor reviewed. | [ ] | [ ] |  |
 | Migrations `0010`, `0011`, `0012`, and `0013` are applied in the target project. | [ ] | [ ] | Status: Open. Owner reported production migrations `0001` through `0017` were applied to `bizpilot-production`, but repo-side independent verification still requires direct target SQL inspection or screenshots. |
-| Migration `0014_cleaning_template_contact_address_fields.sql` is applied in the target project. | [ ] | [ ] | Status: Open. Owner-reported applied and previously verified locally, but the actual production target still needs direct verification after Phase 19C schema drift. |
-| Migration `0015_business_access_plan_and_admin_log.sql` is applied in the target project. | [ ] | [x] | Status: Blocked on target verification. Owner-reported applied and previously verified locally, but Phase 19C probes against the checked Supabase host missed `businesses.internal_note` / `business_members.status`-related schema expected by current admin flow. |
-| Migration `0016_public_submission_minimum_submit_age_reason.sql` is applied in the target project. | [ ] | [ ] | Status: Open. Owner-reported applied and previously verified locally; direct target verification remains required. |
-| Migration `0017_business_preferred_language.sql` is applied in the target project. | [ ] | [x] | Status: Blocked on target verification. Owner-reported applied, but Phase 19C probes against the checked Supabase host found missing `businesses.preferred_language` and `public_link_variants.preferred_language`. |
-| `public.public_can_insert_submission_value` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [x] | 2026-05-24 anon RPC probe against the checked Supabase host returned `PGRST202`: function not found in PostgREST schema cache. |
-| `public.record_public_submission_attempt` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [x] | 2026-05-24 anon RPC probe against the checked Supabase host returned `PGRST202`: function not found in PostgREST schema cache. |
-| `public.count_recent_public_submission_attempts` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [ ] | [x] | 2026-05-24 anon RPC probe against the checked Supabase host returned `PGRST202`: function not found in PostgREST schema cache. |
+| Migration `0014_cleaning_template_contact_address_fields.sql` is applied in the target project. | [x] | [ ] | 2026-05-24 direct production SQL verified `customer_phone`, `customer_email`, and `home_address` exist on `cleaning-smart-quote-v1`, are active, and match expected type/required/sort-order metadata. Standard migration history is missing, so this is object verification rather than CLI migration-history proof. |
+| Migration `0015_business_access_plan_and_admin_log.sql` is applied in the target project. | [x] | [ ] | 2026-05-24 owner-run SQL on corrected production target verified `businesses.status`, `businesses.internal_note`, and `business_members.status` exist. Standard migration history is missing, so this is object verification rather than CLI migration-history proof. |
+| Migration `0016_public_submission_minimum_submit_age_reason.sql` is applied in the target project. | [x] | [ ] | 2026-05-24 direct production SQL verified `public_submission_abuse_log_reason_check` includes `submitted_too_fast`. Standard migration history is missing, so this is object verification rather than CLI migration-history proof. |
+| Migration `0017_business_preferred_language.sql` is applied in the target project. | [x] | [ ] | 2026-05-24 owner-run/direct production SQL verified `public_link_variants.preferred_language` exists, `businesses.preferred_language` was visible by earlier safe probe, both language constraints include `fr-CA`, and `businesses_preferred_language_idx` exists. Standard migration history is missing, so this is object verification rather than CLI migration-history proof. |
+| `public.public_can_insert_submission_value` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [x] | [ ] | 2026-05-24 owner-run SQL verified the function exists in `public`, is `security_definer`, has `search_path=public` and `row_security=off`, and grants EXECUTE to all three required roles. |
+| `public.record_public_submission_attempt` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [x] | [ ] | 2026-05-24 owner-run SQL verified the function exists in `public`, is `security_definer`, has `search_path=public` and `row_security=off`, is correctly `volatile`, and grants EXECUTE to all three required roles. |
+| `public.count_recent_public_submission_attempts` exists and grants EXECUTE to `anon`, `authenticated`, `service_role`. | [x] | [ ] | 2026-05-24 owner-run SQL verified the function exists in `public`, is `security_definer`, has `search_path=public` and `row_security=off`, is `stable`, and grants EXECUTE to all three required roles. |
+| `0019_lifecycle_helper_execute_grant_hardening.sql` is applied in the target project. | [x] | [ ] | 2026-05-24 production grant-only apply returned `Success. No rows returned`; verification returned `checked_functions = 6` and `all_grant_checks_passed = true`. |
 | RLS test cadence is documented if CI is not wired yet. | [ ] | [ ] |  |
 | No service-role key is present in browser/client code. | [ ] | [ ] |  |
 | Security headers/CSP baseline is configured or explicitly risk-accepted. | [x] | [ ] | 2026-05-22: `next.config.ts` now sets CSP, Referrer-Policy, X-Content-Type-Options, X-Frame-Options, and Permissions-Policy. Verified on `http://127.0.0.1:3000/pricing` with `Invoke-WebRequest`. |

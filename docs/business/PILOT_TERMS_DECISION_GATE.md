@@ -42,12 +42,19 @@ Recommendation only. Not final until owner approves it:
 ```text
 $199 setup
 $49/month
+No free trial
+Setup fee refundable before onboarding work starts
+No automatic refund after setup starts
+Cancel anytime before next billing cycle
+Stripe payment link or manual invoice
+Monthly billing starts after quote page/workspace is ready
 Cleaning quote page
 Lead recovery dashboard
 AI summary, reply draft, and follow-up draft
 Manual copy/send only
 Owner-reviewed AI drafts
-Founder support during pilot
+Founder support during pilot, best-effort 1-2 business days
+Pilot limit: first 3-5 cleaning businesses
 No auto-send
 No booking
 No invoicing
@@ -70,6 +77,7 @@ No SMS/WhatsApp automation
 | Excluded | Product scope is locked: no auto-send, booking, invoicing, calendar sync, WhatsApp/SMS automation, Instagram API, multi-vertical expansion, or full CRM. | Keep exclusions explicit in sales, onboarding, and any written offer. | Approved product guardrail | Approved |
 | Support promise | Current copy says founder-led setup and first-week support, but support channel, response expectation, and end date are not locked. | Founder support during pilot; no 24/7 or SLA promise unless owner approves exact wording. | Not final | Owner decision required |
 | Customer stops responding | Not locked in current docs. | Pause onboarding after reasonable follow-ups; do not promise unlimited setup/support without customer response. | Not final | Owner decision required |
+| Pilot customer limit | Not locked in current docs. | First 3-5 cleaning businesses. | Not final | Owner decision required |
 
 ## 5. Required Owner Approval Before Real Pilot
 
@@ -84,7 +92,8 @@ Before any real pilot starts, owner must approve:
 - [ ] billing start trigger,
 - [ ] included scope wording,
 - [ ] support promise and channel,
-- [ ] non-responsive customer handling.
+- [ ] non-responsive customer handling,
+- [ ] pilot customer limit.
 
 ## 6. Approved Guardrails
 

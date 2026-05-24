@@ -19,8 +19,6 @@
  * ============================================================
  */
 
-import { notFound } from "next/navigation";
-
 import { QuoteFormWizard } from "@/components/public/quote-form-wizard";
 import {
   BizPilotBrand,
@@ -48,6 +46,27 @@ type QuotePageProps = Readonly<{
 
 const appTimeZone = "America/New_York";
 
+function QuoteUnavailablePage() {
+  return (
+    <BizPilotThemeShell>
+      <main className="flex min-h-screen items-center justify-center px-4 py-10">
+        <section className="w-full max-w-[560px] rounded-[18px] border border-white/[0.08] bg-white/[0.035] p-6 text-center shadow-2xl shadow-black/20">
+          <BizPilotBrand compact subtitle="Quote recovery command center" />
+          <h1 className="mt-5 text-2xl font-extrabold tracking-[-0.03em] text-[#F5F7FA]">
+            Quote page unavailable
+          </h1>
+          <p
+            className={`mt-3 text-sm leading-6 ${bizTheme.secondaryText}`}
+          >
+            This quote page is not accepting requests right now. Please contact
+            the business directly if you need help with an existing request.
+          </p>
+        </section>
+      </main>
+    </BizPilotThemeShell>
+  );
+}
+
 function todayDateString(): string {
   const parts = new Intl.DateTimeFormat("en", {
     day: "2-digit",
@@ -70,7 +89,7 @@ export default async function QuotePage({
   const page = await getPublicIntakePage({ slug });
 
   if (!page) {
-    notFound();
+    return <QuoteUnavailablePage />;
   }
 
   const primaryColor = page.branding?.primary_color ?? bizColors.accent;

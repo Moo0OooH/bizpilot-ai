@@ -27,6 +27,10 @@ import { createHash } from "node:crypto";
 
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
+  isWorkspaceLockedForNewCustomerWork,
+  WORKSPACE_LOCKED_FOR_NEW_WORK_MESSAGE,
+} from "@/lib/business-lifecycle/lock";
+import {
   aiLanguageInstruction,
   readSupportedLanguage,
   type SupportedLanguage,
@@ -252,6 +256,10 @@ export async function generateLeadAiBundle(input: {
   business: BusinessRecord;
   leadId: string;
 }): Promise<LeadConversionAiOutput> {
+  if (isWorkspaceLockedForNewCustomerWork(input.business.lifecycle_status)) {
+    throw new Error(WORKSPACE_LOCKED_FOR_NEW_WORK_MESSAGE);
+  }
+
   const supabase = await createSupabaseServerClient();
   const [lead, qualityScore] = await Promise.all([
     getLeadById({

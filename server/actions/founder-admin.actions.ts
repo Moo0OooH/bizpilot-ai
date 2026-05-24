@@ -28,6 +28,10 @@ import {
   updateFounderQuoteLink,
   updateFounderStatus,
 } from "@/server/services/founder-admin.service";
+import {
+  dryRunFounderTestWorkspaceCleanup,
+  purgeFounderTestWorkspace,
+} from "@/server/services/founder-test-cleanup.service";
 
 function readRequiredFormValue(formData: FormData, key: string): string {
   const value = formData.get(key);
@@ -57,7 +61,12 @@ function redirectWithFounderAdminError(error: unknown): never {
       value === "Founder admin is not configured." ||
       value === "Founder admin access required." ||
       value === "Invalid plan." ||
-      value === "Invalid business status.",
+      value === "Invalid business status." ||
+      value === "Hard cleanup is blocked for production workspaces." ||
+      value === "Invalid cleanup mode." ||
+      value === "Run dry-run before final cleanup." ||
+      value === "Confirm that you understand this test cleanup." ||
+      value === "Type the exact business name or slug to confirm cleanup.",
     code: "UNKNOWN_ERROR",
     error,
     fallbackMessage: "Founder admin action could not be completed.",
@@ -144,4 +153,59 @@ export async function updateFounderInternalNoteAction(
 
   revalidatePath("/admin");
   redirect("/admin?notice=Internal%20note%20saved.");
+}
+
+export async function founderCleanupDryRunAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    const dryRun = await dryRunFounderTestWorkspaceCleanup({
+      businessId: readRequiredFormValue(formData, "businessId"),
+      user: await getCurrentUser(),
+    });
+    const total = Object.values(dryRun.counts).reduce(
+      (sum, value) => sum + value,
+      0,
+    );
+
+    revalidatePath("/admin");
+    redirect(
+      `/admin?notice=${encodeURIComponent(
+        `Dry run ready: ${total} rows across cleanup-scoped tables.`,
+      )}&cleanupBusinessId=${encodeURIComponent(dryRun.businessId)}`,
+    );
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
+}
+
+export async function founderTestWorkspaceCleanupAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    const result = await purgeFounderTestWorkspace({
+      acknowledged: formData.get("cleanupAcknowledgement") === "on",
+      businessId: readRequiredFormValue(formData, "businessId"),
+      cleanupMode: readRequiredFormValue(formData, "cleanupMode"),
+      dryRunConfirmed:
+        formData.get("dryRunConfirmedBusinessId") ===
+        readRequiredFormValue(formData, "businessId"),
+      finalConfirmed: formData.get("cleanupFinalConfirmation") === "on",
+      typedConfirmation: readRequiredFormValue(formData, "cleanupConfirmation"),
+      user: await getCurrentUser(),
+    });
+    const total = Object.values(result.counts).reduce(
+      (sum, value) => sum + value,
+      0,
+    );
+
+    revalidatePath("/admin");
+    redirect(
+      `/admin?notice=${encodeURIComponent(
+        `Test workspace cleanup completed: ${total} rows purged. Auth users were not deleted.`,
+      )}`,
+    );
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
 }
