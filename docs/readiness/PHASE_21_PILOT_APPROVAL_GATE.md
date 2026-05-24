@@ -13,12 +13,12 @@
 | Item | Result |
 | --- | --- |
 | Starting commit | `39113f4` |
-| Ending commit | `39113f4` |
+| Latest committed Phase 21 implementation | `56b81a8` |
 | Branch | `phase-21-production-alignment` |
 | Pushed | No |
 | `origin/main` changed | No; still `7fe0475` |
 | Production deploy triggered | No |
-| Working tree | Dirty; Phase 21 docs plus uncommitted lifecycle/deletion/founder-cleanup changes are present |
+| Working tree after `56b81a8` | Clean before Vercel evidence doc update |
 
 ## 2. Validation
 
@@ -35,7 +35,7 @@
 
 | Gate | Result |
 | --- | --- |
-| Target confirmed | Partial; corrected target is `bizpilot-production` / `qfqendrqimqvkoojpjao`, app URL `https://bizpilo.com`; Vercel production env still requires owner confirmation |
+| Target confirmed | Project/domain/env-presence confirmed; corrected Supabase target is `bizpilot-production` / `qfqendrqimqvkoojpjao`, app URL `https://bizpilo.com`; Vercel project is `moo0ooohs-projects/bizpilot-ai`, production deployment is Ready, aliases include `bizpilo.com`, and required env variable names exist encrypted for Production/Preview. Values were not pulled or revealed. |
 | Backup/PITR/export safety | Blocked for real customer data; owner confirmed Supabase Free plan, scheduled backups unavailable, PITR not enabled/unavailable, manual export not done, restore drill not done; owner risk-accepts this only for current no-real-customer-data security alignment |
 | Migration alignment | Owner-approved for repo-backed database/security closure; owner-run/Codex-run SQL confirms required columns/functions, expected `0018` objects, RLS-enabled status across all public tables, reviewed public RLS policies, safe aggregate counts, function definitions, `0019` grant hardening, and targeted constraints/template seeds. Standard migration history is missing |
 | Required columns | Passed owner-run SQL: `businesses.status`, `businesses.internal_note`, `business_members.status`, `public_link_variants.preferred_language`, `leads.source_channel` |
@@ -123,6 +123,7 @@ until all blockers below are closed.
 
 - no secrets committed,
 - no env files committed,
+- Vercel env values were not pulled or revealed,
 - no dumps committed,
 - no customer data committed,
 - no full emails/tokens committed,
@@ -157,4 +158,14 @@ Additional owner approval recorded on 2026-05-24:
 ```text
 Codex may edit the repo, run local validation, prepare commits on the current branch, and apply production grant-only migration 0019 in Supabase.
 Main push/deploy remains blocked without separate approval.
+```
+
+Additional Vercel evidence recorded on 2026-05-24:
+
+```text
+Vercel CLI authenticated as moo0oooh.
+Project inspect confirms moo0ooohs-projects/bizpilot-ai, project prj_EHGqbwmTvwDranhRNXAlEJ52z7uJ, Next.js root ".".
+Production deployment bizpilot-ezv7ttflm-moo0ooohs-projects.vercel.app is Ready and aliased to bizpilo.com.
+Required env variable names exist encrypted for Production/Preview.
+No env values were pulled or revealed.
 ```

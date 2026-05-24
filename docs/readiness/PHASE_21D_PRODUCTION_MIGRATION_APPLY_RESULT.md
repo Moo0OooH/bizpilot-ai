@@ -25,13 +25,13 @@ No ad-hoc schema changes were created by Codex. No `leads.source` column was add
 | Production app URL | `https://bizpilo.com` |
 | Supabase project ref | `qfqendrqimqvkoojpjao` |
 | Supabase project name | `bizpilot-production` |
-| Production target confirmed | Partially yes - owner provided project URL/screenshot and secure env template matches. Vercel production env still requires owner confirmation. |
+| Production target confirmed | Project/domain/env-presence confirmed - owner provided project URL/screenshots; Vercel CLI confirmed `moo0ooohs-projects/bizpilot-ai`, Ready production deployment, aliases including `bizpilo.com`, and required encrypted env variable names/scopes. Env values were not pulled or revealed. |
 
 ## 3. Preconditions
 
 | Required precondition | Status | Evidence / blocker |
 | --- | --- | --- |
-| Production target confirmed | Partial | Target ref/name are documented in Phase 21A. Vercel production env confirmation remains an owner action. |
+| Production target confirmed | Project/domain/env-presence confirmed | Target ref/name are documented in Phase 21A. Vercel project, production deployment, aliases, and required env variable names/scopes are verified without revealing values. |
 | DB data status confirmed | Owner-stated no real customer data | Owner states there are no serious/real users yet and current early-project data can be treated as disposable for security/alignment work. Rows were not independently inspected. |
 | PITR/backup/export status documented | Yes, and not safe for real customer data | Owner confirmed Supabase Free plan, scheduled backups unavailable, PITR not enabled/unavailable, manual export not done yet, restore drill not done. Owner accepts this risk only for current no-real-customer-data database/security alignment. |
 | Migration drift map completed | Yes | Phase 21B maps local migrations to requested objects and records safe PostgREST object probes. |

@@ -19,12 +19,12 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, but i
 | Item | Current value |
 | --- | --- |
 | Current branch | `phase-21-production-alignment` |
-| Current HEAD | `39113f475e450e7ca5bfd2e74e161285b724a8d8` |
-| Current HEAD short | `39113f4 chore: record phase 20 pilot gate findings` |
+| Latest committed Phase 21 implementation | `56b81a8 feat: add lifecycle deletion and phase 21 security alignment` |
+| Previous Phase 20 baseline | `39113f4 chore: record phase 20 pilot gate findings` |
 | `origin/main` | Unchanged at `7fe0475` |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
-| Working tree | Dirty; do not commit without inspection |
+| Working tree after `56b81a8` | Clean before Vercel evidence doc update |
 | Production deploy triggered in Phase 21 | No |
 
 Do not push to `origin/main` unless the owner explicitly approves it. Keep production deploy risk visible.
@@ -76,6 +76,11 @@ Do not add leads.source.
 | Production app URL | `https://bizpilo.com` |
 | Supabase plan | Free |
 | Vercel plan | Free / not upgraded |
+| Vercel project | `moo0ooohs-projects/bizpilot-ai` |
+| Vercel project ID | `prj_EHGqbwmTvwDranhRNXAlEJ52z7uJ` |
+| Vercel production deployment | `bizpilot-ezv7ttflm-moo0ooohs-projects.vercel.app`, Ready |
+| Vercel production aliases | `bizpilo.com`, `bizpilot-ai-gamma.vercel.app`, `bizpilot-ai-moo0ooohs-projects.vercel.app`, `bizpilot-ai-git-main-moo0ooohs-projects.vercel.app` |
+| Vercel env names/scopes | Required env names exist encrypted for Production/Preview; values were not pulled or revealed |
 | Scheduled backups | Not available on current plan |
 | PITR | Not enabled / unavailable |
 | Restore drill | Not done |
@@ -124,6 +129,7 @@ Validation passed in Phase 20:
 - Targeted function/grant verification found owner-only lifecycle helpers were still executable by `anon`, likely through broad default EXECUTE.
 - Owner approved production grant-only migration `0019_lifecycle_helper_execute_grant_hardening.sql`; Codex applied it through Supabase SQL Editor and verified `checked_functions = 6`, `all_grant_checks_passed = true`.
 - Targeted read-only constraint/template verification passed for `submitted_too_fast`, the `fr-CA` language constraints, `businesses_preferred_language_idx`, and the 0014 cleaning template fields `customer_phone`, `customer_email`, and `home_address`.
+- Vercel read-only verification confirmed authenticated CLI access, project linkage, production deployment status/aliases, and required encrypted env variable names/scopes. Env values were not pulled or revealed.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
 - Signup confirmation smoke remains blocked because there is no safe inbox/mail-capture.
@@ -142,7 +148,7 @@ The temporary local-only Docker proxy was removed after the RLS run.
 
 ## 6. Important Dirty Worktree Areas
 
-The working tree contains uncommitted docs and code. Do not assume it is ready to commit.
+The Phase 21 implementation was committed locally as `56b81a8`. Re-check `git status --short --branch` before any additional commit or push.
 
 Important dirty areas include:
 
@@ -393,9 +399,9 @@ Use this in the next tab:
 Continue BizPilot Phase 21 from:
 
 - branch: phase-21-production-alignment
-- HEAD: 39113f4
+- latest committed Phase 21 implementation: 56b81a8
 - origin/main unchanged at 7fe0475
-- working tree dirty; inspect before committing
+- re-check working tree before committing
 
 Read first:
 - docs/readiness/PHASE_21_NEXT_TAB_HANDOFF.md

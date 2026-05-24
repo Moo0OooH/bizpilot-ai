@@ -10,9 +10,9 @@
 
 ## 1. Purpose
 
-This gate confirms the production Supabase target and minimum backup/data-safety posture before any production migration, SQL, PostgREST cache reload, public quote smoke, or real pilot approval.
+This gate confirms the production Supabase/Vercel target and minimum backup/data-safety posture before production migration, SQL, PostgREST cache reload, public quote smoke, or real pilot approval.
 
-No production SQL was run. No migration was applied. No dump was created. No customer rows, secrets, database passwords, service role keys, anon keys, OpenAI keys, tokens, or full connection strings were printed or recorded.
+Production SQL has been limited to owner-approved grant-only migration `0019_lifecycle_helper_execute_grant_hardening.sql`. No dump was created. No customer rows, secrets, database passwords, service role keys, anon keys, OpenAI keys, tokens, or full connection strings were printed or recorded.
 
 ## 2. Production Target
 
@@ -27,6 +27,12 @@ No production SQL was run. No migration was applied. No dump was created. No cus
 | Supabase plan/compute shown by owner screenshot | Free project / Nano compute |
 | Owner-confirmed Supabase plan | Free |
 | Vercel plan | Free / not upgraded |
+| Vercel owner/project | `moo0ooohs-projects/bizpilot-ai` |
+| Vercel project ID | `prj_EHGqbwmTvwDranhRNXAlEJ52z7uJ` |
+| Vercel org/team ID | `team_vJYSqQIcvlHSX4LYCRnYzDXJ` |
+| Vercel framework/root | Next.js / `.` |
+| Vercel production deployment | `bizpilot-ezv7ttflm-moo0ooohs-projects.vercel.app`, target `production`, status `Ready` |
+| Vercel production aliases | `https://bizpilo.com`, `https://bizpilot-ai-gamma.vercel.app`, `https://bizpilot-ai-moo0ooohs-projects.vercel.app`, `https://bizpilot-ai-git-main-moo0ooohs-projects.vercel.app` |
 | Dashboard last migration shown by owner screenshot | No migrations |
 | Dashboard last backup shown by owner screenshot | No backups |
 
@@ -34,6 +40,10 @@ Evidence sources:
 
 - owner-provided Supabase project URL,
 - owner-provided Supabase dashboard screenshot,
+- owner-provided Vercel dashboard screenshot,
+- `vercel project inspect bizpilot-ai`,
+- `vercel inspect https://bizpilot-ezv7ttflm-moo0ooohs-projects.vercel.app`,
+- `vercel env ls`,
 - secure local Vercel env template outside the repo, inspected without printing secret values.
 
 ## 3. Environment Reconciliation
@@ -43,7 +53,8 @@ Evidence sources:
 | Secure Vercel env template outside repo | `NEXT_PUBLIC_SUPABASE_URL` host is `qfqendrqimqvkoojpjao.supabase.co` | Matches owner-provided production Supabase dashboard. |
 | Secure Vercel env template outside repo | `NEXT_PUBLIC_APP_URL` host is `bizpilo.com` | Matches production app URL. |
 | Local `.env.local` | `NEXT_PUBLIC_SUPABASE_URL` host is `cwiuajpbpyybxxtodpaq.supabase.co` | Does not match corrected production target; treat local env as stale or non-production until intentionally updated. |
-| Vercel dashboard production env | Not directly inspected in this run | Owner must confirm Vercel production env points to `qfqendrqimqvkoojpjao` before production SQL. |
+| Vercel project env names/scopes | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_APP_URL`, `BIZPILOT_FOUNDER_EMAILS`, and `OPENAI_API_KEY` exist as encrypted variables for Production and Preview | Required variable names/scopes are present. Values were not pulled or revealed, so secret handling remains clean. |
+| Deployed public bundle check | `https://bizpilo.com` returned HTTP 200; scanned homepage JS did not expose either the corrected or stale Supabase host | No value confirmation from public bundle. If runtime env mismatch is suspected, confirm through Vercel UI without sharing values or approve a controlled one-variable public-value check. |
 
 ## 4. Production Data Status
 
@@ -142,18 +153,18 @@ Risk accepted by owner for this early stage:
 
 ## 9. Manual Owner Action List
 
-Before any production SQL:
+Before any further production SQL, deploy, or real pilot:
 
-1. Confirm in Vercel dashboard that production `NEXT_PUBLIC_SUPABASE_URL` points to `qfqendrqimqvkoojpjao`.
-2. Confirm whether `bizpilot-production` contains real customer, prospect, owner, or only synthetic/test data.
+1. Vercel project, production deployment, aliases, and required env variable names/scopes are confirmed. Do not reveal or commit env values.
+2. Keep owner data classification recorded as no serious/real users; re-confirm before collecting real customer data.
 3. Confirm whether the owner wants to stay on Free for synthetic-only demos or upgrade before real pilot data.
-4. Decide whether to do a manual schema/data export before any SQL change, even while staying on Free.
+4. Decide whether to do a manual schema/data export before any further production write, even while staying on Free.
 5. Provide or approve a schema-only export path outside git.
 6. Provide an approved restore target or explicitly risk-accept no restore drill.
-7. Approve the exact repo migrations to apply in order. Owner has now approved database/security alignment in principle, but each already-manual migration such as `0018` must be verified before replay.
-8. Run production migration-history read-only verification through Supabase SQL editor or approved direct SQL.
-9. Apply repo migrations only after the above gates are recorded.
-10. Verify columns, functions/RPCs, grants, RLS policies, and PostgREST schema cache after migration.
+7. Do not re-apply `0018`; it is object-verified as manual drift/schema-without-standard-migration-history.
+8. Keep production migration history documented as unavailable because `supabase_migrations.schema_migrations` does not exist.
+9. Apply additional repo migrations only if a missing object is proven and the exact action is approved.
+10. Run production quote/security smoke with synthetic data only after explicit approval.
 
 Current owner decision recorded on 2026-05-24:
 
@@ -173,6 +184,14 @@ No ad-hoc columns.
 Do not add leads.source.
 Do not re-apply 0018 blindly; verify it because owner reported manual apply OK.
 No real customer pilot until backup/export decision is clear.
+```
+
+Additional owner decision recorded later on 2026-05-24:
+
+```text
+Codex is approved to inspect Vercel as needed.
+Production grant-only migration 0019 was approved, applied, and verified.
+Main push/deploy remains blocked without separate approval.
 ```
 
 ## 10. Final Status
