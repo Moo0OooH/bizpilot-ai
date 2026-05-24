@@ -19,12 +19,15 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, but i
 | Item | Current value |
 | --- | --- |
 | Current branch | `phase-21-production-alignment` |
+| Latest committed Phase 21 evidence/doc state | `9adde10 docs: record vercel production target evidence` |
 | Latest committed Phase 21 implementation | `56b81a8 feat: add lifecycle deletion and phase 21 security alignment` |
 | Previous Phase 20 baseline | `39113f4 chore: record phase 20 pilot gate findings` |
 | `origin/main` | Unchanged at `7fe0475` |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
-| Working tree after `56b81a8` | Clean before Vercel evidence doc update |
+| GitHub remote branches | `main` at `7fe0475`, `phase-19-readiness-findings` at `a27705f`, `phase-20-pilot-gate` at `39113f4` |
+| GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
+| Working tree after `9adde10` | Clean before GitHub evidence doc update |
 | Production deploy triggered in Phase 21 | No |
 
 Do not push to `origin/main` unless the owner explicitly approves it. Keep production deploy risk visible.
@@ -58,6 +61,8 @@ Still not allowed:
 - weakening RLS,
 - committing secrets, `.env` files, dumps, or customer data,
 - pushing `main` without approval.
+
+Owner also granted GitHub/Vercel/Supabase access for needed verification and continuation. Treat that as permission to inspect and continue repo-backed work, not as permission to push `main`, deploy production, reveal secrets, or start a real pilot.
 
 Current schema rule:
 
@@ -130,6 +135,7 @@ Validation passed in Phase 20:
 - Owner approved production grant-only migration `0019_lifecycle_helper_execute_grant_hardening.sql`; Codex applied it through Supabase SQL Editor and verified `checked_functions = 6`, `all_grant_checks_passed = true`.
 - Targeted read-only constraint/template verification passed for `submitted_too_fast`, the `fr-CA` language constraints, `businesses_preferred_language_idx`, and the 0014 cleaning template fields `customer_phone`, `customer_email`, and `home_address`.
 - Vercel read-only verification confirmed authenticated CLI access, project linkage, production deployment status/aliases, and required encrypted env variable names/scopes. Env values were not pulled or revealed.
+- GitHub read-only verification confirmed repo `Moo0OooH/bizpilot-ai` is public, default branch is `main`, remote `main` remains `7fe0475`, only Phase 19/20 branches are pushed, and no open PRs/issues/Actions runs are currently reported.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
 - Signup confirmation smoke remains blocked because there is no safe inbox/mail-capture.
@@ -385,6 +391,8 @@ Inspect before commit:
 | Migration apply decision / `0018` owner-reported manual apply | `docs/readiness/PHASE_21D_PRODUCTION_MIGRATION_APPLY_RESULT.md` |
 | Production `0019` grant-only apply/verification | `docs/readiness/PHASE_21D_PRODUCTION_MIGRATION_APPLY_RESULT.md` |
 | Production constraint/template verification | `docs/readiness/PHASE_21B_PRODUCTION_MIGRATION_DRIFT_MAP.md`, `docs/readiness/PHASE_21C_OWNER_SQL_VERIFICATION_PACK.md`, `docs/readiness/PHASE_21D_PRODUCTION_MIGRATION_APPLY_RESULT.md` |
+| Vercel production evidence | `docs/readiness/PHASE_21A_PRODUCTION_TARGET_AND_BACKUP_GATE.md`, `docs/readiness/PHASE_21_PILOT_APPROVAL_GATE.md` |
+| GitHub read-only evidence | `docs/readiness/PHASE_21_NEXT_TAB_HANDOFF.md`, `docs/readiness/PHASE_21_PILOT_APPROVAL_GATE.md` |
 | Public quote production blocker | `docs/readiness/PHASE_21E_PRODUCTION_PUBLIC_QUOTE_SECURITY.md` |
 | fr-CA production blocker | `docs/readiness/PHASE_21F_FR_CA_PRODUCTION_QUOTE_SMOKE.md` |
 | OpenAI HTTP `429` blocker | `docs/readiness/PHASE_21G_OPENAI_REAL_KEY_VALIDATION.md` |
@@ -399,8 +407,10 @@ Use this in the next tab:
 Continue BizPilot Phase 21 from:
 
 - branch: phase-21-production-alignment
+- latest committed Phase 21 evidence/doc state: 9adde10
 - latest committed Phase 21 implementation: 56b81a8
 - origin/main unchanged at 7fe0475
+- GitHub remote has only main/phase-19/phase-20 pushed; phase-21-production-alignment is local-only unless pushed later with approval
 - re-check working tree before committing
 
 Read first:
@@ -414,11 +424,13 @@ Owner decision:
 - no serious/real customer users yet
 - owner approves finishing repo-backed database/security alignment quickly
 - no real pilot yet
+- GitHub/Vercel/Supabase access is approved for needed verification and continuation
 - no ad-hoc schema patches
 - do not add leads.source
 - do not re-apply 0018 blindly; verify it first
 - do not commit secrets/env/dumps/customer data
 - do not push main without explicit approval
+- do not reveal/pull secret env values unless explicitly approved and operationally necessary
 
 First task:
 Continue from the owner-run SQL verification already received: migration history table is missing, required columns passed, required functions passed, expected 0018 lifecycle/deletion objects passed, RLS-enabled status passed for all public tables, public RLS policy-list review found no obvious policy blocker, safe aggregate counts passed with leads/deletion rows at 0, and function definitions passed. Targeted function/grant verification found owner-only lifecycle helpers executable by anon; repo-backed migration 0019_lifecycle_helper_execute_grant_hardening.sql was then applied and verified in production with checked_functions = 6 and all_grant_checks_passed = true. Targeted constraint/template checks also passed for submitted_too_fast, fr-CA language constraints/index, and 0014 cleaning template fields. Next run production quote/security smoke with synthetic data only. Do not re-apply 0018 and do not add leads.source.
