@@ -92,7 +92,7 @@
 - `readiness/PHASE_20F_FR_CA_QUOTE_FLOW_SMOKE.md` - 5735 bytes
 - `readiness/PHASE_20G_OPENAI_REAL_KEY_DRY_RUN.md` - 5653 bytes
 - `readiness/PHASE_20H_SIGNUP_CONFIRMATION_FINAL_SMOKE.md` - 5227 bytes
-- `readiness/PHASE_21_NEXT_TAB_HANDOFF.md` - 19727 bytes
+- `readiness/PHASE_21_NEXT_TAB_HANDOFF.md` - 20372 bytes
 - `readiness/PHASE_21_PILOT_APPROVAL_GATE.md` - 10266 bytes
 - `readiness/PHASE_21A_PRODUCTION_TARGET_AND_BACKUP_GATE.md` - 10518 bytes
 - `readiness/PHASE_21A_PRODUCTION_TARGET_AND_SAFETY_GATE.md` - 5867 bytes

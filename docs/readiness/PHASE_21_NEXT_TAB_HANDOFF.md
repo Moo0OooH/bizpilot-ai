@@ -19,8 +19,10 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, but i
 | Item | Current value |
 | --- | --- |
 | Current branch | `phase-21-production-alignment` |
-| Current branch tip | `e690243 ci: add no-cost validation and cost gate` at the last recorded handoff update. Re-run `git log -1 --oneline` before continuing. |
-| Latest committed Phase 21 evidence/doc state | `e690243 ci: add no-cost validation and cost gate` |
+| Current branch tip | `810e8c4 chore: declare package module type` at the last recorded handoff update. Re-run `git log -1 --oneline` before continuing. |
+| Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
+| Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
+| Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
 | Latest committed Phase 21 implementation | `56b81a8 feat: add lifecycle deletion and phase 21 security alignment` |
 | Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
 | Latest Vercel evidence commit | `9adde10 docs: record vercel production target evidence` |
@@ -30,7 +32,7 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, but i
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
 | GitHub remote branches | `main` at `7fe0475`, `phase-19-readiness-findings` at `a27705f`, `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
-| Working tree after `e690243` | Clean at the time of the CI/cost-gate commit |
+| Working tree after `810e8c4` | Clean at the last recorded status check |
 | Production deploy triggered in Phase 21 | No |
 
 Do not push to `origin/main` unless the owner explicitly approves it. Keep production deploy risk visible.
@@ -140,6 +142,8 @@ Validation passed in Phase 20:
 - Vercel read-only verification confirmed authenticated CLI access, project linkage, production deployment status/aliases, and required encrypted env variable names/scopes. Env values were not pulled or revealed. This was committed as `9adde10`.
 - GitHub read-only verification confirmed repo `Moo0OooH/bizpilot-ai` is public, default branch is `main`, remote `main` remains `7fe0475`, only Phase 19/20 branches are pushed, and no open PRs/issues/Actions runs are currently reported. This was committed as `5a62e76`.
 - No-cost CI workflow and cost/upgrade gate were added after GitHub evidence: `.github/workflows/ci.yml` and `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`. This was committed as `e690243`.
+- Production readiness runbooks and historical readiness docs were realigned with Phase 21 evidence so stale Phase 19C schema blockers no longer appear as current operational truth. This was committed as `ebd4a04`.
+- `package.json` now declares `"type": "module"` to remove Node's unit-test module-type warnings. `pnpm verify` passed after the change. This was committed as `810e8c4`.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
 - Signup confirmation smoke remains blocked because there is no safe inbox/mail-capture.
@@ -158,7 +162,7 @@ The temporary local-only Docker proxy was removed after the RLS run.
 
 ## 6. Important Working Tree Areas
 
-The Phase 21 implementation was committed locally as `56b81a8`; evidence/operations commits through `e690243` followed it. Re-check `git status --short --branch` before any additional commit or push.
+The Phase 21 implementation was committed locally as `56b81a8`; evidence/operations/hygiene commits through `810e8c4` followed it. Re-check `git status --short --branch` before any additional commit or push.
 
 Important Phase 21 areas include:
 
@@ -363,6 +367,7 @@ Start here:
 12. `docs/operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 13. `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`
 14. `.github/workflows/ci.yml`
+15. `package.json`
 
 ## 9. Important Code/Migration Files
 
@@ -413,7 +418,8 @@ Use this in the next tab:
 Continue BizPilot Phase 21 from:
 
 - branch: phase-21-production-alignment
-- latest committed Phase 21 evidence/doc state: e690243
+- latest committed Phase 21 evidence/doc state: ebd4a04
+- latest committed Phase 21 hygiene state: 810e8c4
 - latest committed no-cost CI/cost-gate state: e690243
 - latest committed Phase 21 implementation: 56b81a8
 - latest GitHub evidence commit: 5a62e76
