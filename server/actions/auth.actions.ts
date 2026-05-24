@@ -29,6 +29,7 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
 import {
+  getPasswordResetFlowErrorContext,
   sendPasswordResetEmail,
   signInWithPassword,
   signOut,
@@ -44,8 +45,6 @@ const PASSWORD_RESET_RATE_LIMIT_MESSAGE =
   "Too many reset requests. Please wait a few minutes and try again.";
 const PASSWORD_REUSE_MESSAGE =
   "You can't reuse your previous password. Choose a new password you have not used for this account.";
-const SIGN_UP_CHECK_EMAIL_NOTICE =
-  "Check your email to confirm your account. If this email is already registered, sign in instead.";
 const SIGN_UP_EMAIL_RATE_LIMIT_MESSAGE =
   "Too many account creation attempts. Please wait a few minutes and try again.";
 const SIGN_UP_EMAIL_DELIVERY_MESSAGE =
@@ -61,8 +60,8 @@ function redirectWithSignUpError(message: string): never {
   redirect(`/auth/sign-up?error=${encodeURIComponent(message)}`);
 }
 
-function redirectWithCheckEmailNotice(message: string): never {
-  redirect(`/auth/check-email?notice=${encodeURIComponent(message)}`);
+function redirectWithCheckEmail(): never {
+  redirect("/auth/check-email");
 }
 
 function redirectWithForgotPasswordError(message: string): never {
@@ -607,29 +606,51 @@ export async function updatePasswordAction(formData: FormData): Promise<never> {
   const password = readResetPassword(formData, code);
 
   try {
+    safeLogger.info("auth.password_update.request_received", {
+      hasRecoveryCode: Boolean(code),
+    });
+
     await updatePasswordFromReset({
       ...(code ? { code } : {}),
       password,
     });
   } catch (error) {
+    const resetContext = getPasswordResetFlowErrorContext(error);
+    const retryCode = resetContext.recoveryCodeExchanged ? undefined : code;
+
+    safeLogger.warn("auth.password_update.failed", {
+      flowStage: resetContext.stage ?? "unknown",
+      hasRecoveryCode: Boolean(code),
+      recoveryCodeExchanged: resetContext.recoveryCodeExchanged,
+      ...getAuthErrorLogMetadata(error),
+    });
+
     if (isPasswordReuseError(error)) {
-      redirectWithResetPasswordError(PASSWORD_REUSE_MESSAGE, code);
+      redirectWithResetPasswordError(PASSWORD_REUSE_MESSAGE, retryCode);
     }
 
     if (isPasswordValidationError(error)) {
       redirectWithResetPasswordError(
         "Use a stronger new password with at least 8 characters.",
-        code,
+        retryCode,
       );
     }
 
     redirectWithResetPasswordError(
       "This reset link is invalid or expired. Request a new password reset.",
-      code,
+      retryCode,
     );
   }
 
-  await signOut();
+  safeLogger.info("auth.password_update.succeeded", {
+    hadRecoveryCode: Boolean(code),
+  });
+
+  try {
+    await signOut();
+  } catch {
+    safeLogger.warn("auth.password_update.sign_out_skipped");
+  }
 
   redirect(
     "/auth/sign-in?notice=Password%20updated.%20Sign%20in%20with%20your%20new%20password.",
@@ -704,11 +725,11 @@ export async function signUpAction(formData: FormData): Promise<never> {
   }
 
   if (existingIdentityResponse) {
-    redirectWithCheckEmailNotice(SIGN_UP_CHECK_EMAIL_NOTICE);
+    redirectWithCheckEmail();
   }
 
   if (!sessionCreated) {
-    redirectWithCheckEmailNotice(SIGN_UP_CHECK_EMAIL_NOTICE);
+    redirectWithCheckEmail();
   }
 
   redirect("/dashboard");

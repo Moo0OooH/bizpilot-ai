@@ -129,6 +129,12 @@ type PageContextCopy = Readonly<{
 type AuthCopy = Readonly<{
   backHome: string;
   businessName: string;
+  checkEmailFooter: string;
+  checkEmailNotice: string;
+  checkEmailResetPassword: string;
+  checkEmailSubtitle: string;
+  checkEmailTitle: string;
+  checkEmailUseAnother: string;
   confirmPassword: string;
   createAccount: string;
   createAccountPending: string;
@@ -314,6 +320,15 @@ const englishCopy: BizPilotCopy = {
   auth: {
     backHome: "Back home",
     businessName: "Business name",
+    checkEmailFooter:
+      "Confirmation and reset links are handled through secure BizPilot auth email.",
+    checkEmailNotice:
+      "If this email can create a new workspace, we'll send confirmation instructions. If you've used this email before, sign in or reset your password.",
+    checkEmailResetPassword: "Reset password",
+    checkEmailSubtitle:
+      "We'll send the next step only when this email can create a new BizPilot workspace.",
+    checkEmailTitle: "Next steps",
+    checkEmailUseAnother: "Use another email",
     confirmPassword: "Confirm password",
     createAccount: "Create account",
     createAccountPending: "Creating workspace...",
@@ -703,6 +718,15 @@ const frenchCopy: BizPilotCopy = {
   auth: {
     backHome: "Retour",
     businessName: "Nom de l'entreprise",
+    checkEmailFooter:
+      "Les liens de confirmation et de réinitialisation passent par le courriel sécurisé de BizPilot.",
+    checkEmailNotice:
+      "Si ce courriel peut créer un nouvel espace, nous enverrons les instructions de confirmation. Si vous avez déjà utilisé ce courriel, connectez-vous ou réinitialisez votre mot de passe.",
+    checkEmailResetPassword: "Réinitialiser le mot de passe",
+    checkEmailSubtitle:
+      "Nous envoyons la prochaine étape seulement si ce courriel peut créer un nouvel espace BizPilot.",
+    checkEmailTitle: "Prochaines étapes",
+    checkEmailUseAnother: "Utiliser un autre courriel",
     confirmPassword: "Confirmer le mot de passe",
     createAccount: "Créer le compte",
     createAccountPending: "Création de l'espace...",

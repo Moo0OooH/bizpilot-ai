@@ -27,6 +27,42 @@ export type AuthUser = Readonly<{
   id: string;
 }>;
 
+export type PasswordResetFailureStage = "exchange" | "update";
+
+export class PasswordResetFlowError extends Error {
+  readonly recoveryCodeExchanged: boolean;
+  readonly stage: PasswordResetFailureStage;
+
+  constructor(
+    message: string,
+    input: {
+      recoveryCodeExchanged: boolean;
+      stage: PasswordResetFailureStage;
+    },
+  ) {
+    super(message);
+    this.name = "PasswordResetFlowError";
+    this.recoveryCodeExchanged = input.recoveryCodeExchanged;
+    this.stage = input.stage;
+  }
+}
+
+export function getPasswordResetFlowErrorContext(error: unknown): {
+  recoveryCodeExchanged: boolean;
+  stage?: PasswordResetFailureStage;
+} {
+  if (error instanceof PasswordResetFlowError) {
+    return {
+      recoveryCodeExchanged: error.recoveryCodeExchanged,
+      stage: error.stage,
+    };
+  }
+
+  return {
+    recoveryCodeExchanged: false,
+  };
+}
+
 function toAuthUser(response: { email?: string; id: string }): AuthUser {
   const user: AuthUser = {
     id: response.id,
@@ -122,7 +158,10 @@ export async function exchangeAuthCodeForSession(code: string): Promise<void> {
   const { error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
-    throw new Error(error.message);
+    throw new PasswordResetFlowError(error.message, {
+      recoveryCodeExchanged: false,
+      stage: "exchange",
+    });
   }
 }
 
@@ -131,9 +170,19 @@ export async function updatePasswordFromReset(input: {
   password: string;
 }): Promise<void> {
   const supabase = await createSupabaseServerClient();
+  let recoveryCodeExchanged = false;
 
   if (input.code) {
-    await exchangeAuthCodeForSession(input.code);
+    const { error } = await supabase.auth.exchangeCodeForSession(input.code);
+
+    if (error) {
+      throw new PasswordResetFlowError(error.message, {
+        recoveryCodeExchanged,
+        stage: "exchange",
+      });
+    }
+
+    recoveryCodeExchanged = true;
   }
 
   const { error } = await supabase.auth.updateUser({
@@ -141,7 +190,10 @@ export async function updatePasswordFromReset(input: {
   });
 
   if (error) {
-    throw new Error(error.message);
+    throw new PasswordResetFlowError(error.message, {
+      recoveryCodeExchanged,
+      stage: "update",
+    });
   }
 }
 

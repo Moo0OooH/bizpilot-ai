@@ -5,13 +5,14 @@
 **Version:** v1.0  
 **Status:** Required Before Phase 18 Pilot  
 **Owner:** MoOoH  
-**Last Updated:** 2026-05-23
+**Last Updated:** 2026-05-24
 **Related:**
 - `docs/CURRENT_CANONICAL_DOCS_v1.7.md`
 - `docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
 - `docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v1.0.md`
 - `docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
 - `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
+- `docs/business/PILOT_TERMS_DECISION_GATE.md`
 - `docs/business/PILOT_OFFER_AND_PRICING_DECISIONS.md`
 - `docs/sales/FOUNDER_CRM_AND_OUTREACH_PLAYBOOK.md`
 - `docs/gtm/BIZPILOT_GTM_PLAYBOOK_v1.1.md`
@@ -42,8 +43,8 @@ Use this table as the current truth before reading older pass/fail evidence rows
 | PITR/export/restore execution | Blocked | PITR/storage require owner dashboard decisions; `pg_dump`, `psql`, and a restore target were unavailable; no restore drill was performed. |
 | AI fallback | Pass | Rule fallback remains owner-reviewed, manual copy/send only, and sanitized. |
 | OpenAI real-key model output | Blocked | No non-empty `OPENAI_API_KEY` was configured, so no model-backed output was generated or quality-checked. |
-| Pricing/offer documentation | Pass | Phase 19F decision doc exists and documents current `/pricing` mismatch and recommended draft. |
-| Final commercial terms | Owner decision required | Price/setup/trial/refund/cancellation/subscription start/support/payment collection are not owner-approved. |
+| Pricing/offer documentation | Pass | Phase 19F decision doc and Phase 20 terms gate exist; both document current `/pricing` mismatch and recommended draft without treating it as final. |
+| Final commercial terms | Owner decision required | `docs/business/PILOT_TERMS_DECISION_GATE.md` blocks any real pilot until setup fee, monthly fee, trial, refund, cancellation, payment collection, billing start, included/excluded wording, support promise, and non-responsive customer handling are owner-approved. |
 | Founder CRM setup | Pass | Phase 19G playbook and CSV template exist. |
 | Real customer validation | Owner decision required | No real prospects were supplied; 10 prospects, 20 outreach attempts, 5 demos, 3 pilot candidates, and 1 payment/setup-ready business remain owner execution. |
 | First real pilot customer readiness | Blocked | Not ready for real customer data until production schema, auth smoke, backup/restore posture, OpenAI/fallback decision, commercial terms, and real prospect pipeline are resolved. |
@@ -154,6 +155,8 @@ Do not begin Phase 18 until these are true:
 | Item | PASS | FAIL | Notes |
 | --- | --- | --- | --- |
 | Pilot offer/pricing decision doc exists. | [x] | [ ] | 2026-05-23 Phase 19F added `docs/business/PILOT_OFFER_AND_PRICING_DECISIONS.md` with current public pricing evidence, recommended default, mismatch notes, and owner-approval checklist. |
+| Pilot terms decision gate exists. | [x] | [ ] | 2026-05-24 added `docs/business/PILOT_TERMS_DECISION_GATE.md`; it records recommended defaults as recommendations only and blocks real pilots until owner approval. |
+| All pilot business terms are owner-approved. | [ ] | [x] | Owner decision required for setup fee, monthly fee, trial, refund, cancellation, payment collection, billing start, included scope, support promise, and non-responsive customer handling. |
 | Pricing locked for paid outreach. | [ ] | [x] | Not yet owner-approved. Recommended default is Founder Pilot at `$199 setup + $49/month`, but public `/pricing` currently shows Founder Pilot as `manual offer` / `14-day pilot` and puts `$199 setup + $49/mo` under Starter. Older GTM docs also call Founder Plus at `$299 setup + $79/mo` the recommended default. |
 | Setup fee, if any, is decided. | [ ] | [x] | Recommended default is `$199 setup`; owner approval still required before paid outreach. |
 | Trial yes/no is locked. | [ ] | [x] | Public Founder Pilot card says `14-day pilot`, but whether that is free, paid, credited, or simply an onboarding window is not approved. |
@@ -167,6 +170,7 @@ Do not begin Phase 18 until these are true:
 | Item | PASS | FAIL | Notes |
 | --- | --- | --- | --- |
 | Support contact channel is defined. | [ ] | [x] | Support/internal notes workflow exists, but the actual support channel owner should use with customers is still an owner decision. |
+| Support promise is commercially approved. | [ ] | [x] | Phase 20 terms gate recommends founder support during the pilot, but support channel, response expectation, and end date remain owner decisions. |
 | Manual data deletion/minimization request process is documented or accepted as deferred risk. | [x] | [ ] | Phase 19B runbook documents the manual pilot process. Productized self-serve deletion remains deferred. |
 | Privacy incident register process exists or is accepted as deferred risk. | [x] | [ ] | Phase 19B runbook documents incident process and register fields. Any actual incident register with personal data must remain outside git. |
 | Public quote abuse response path is known. | [ ] | [ ] |  |
@@ -197,7 +201,7 @@ Manual QA is complete
 + backup/export risk is accepted
 + founder GTM tracking is ready
 + demo flow proves value in under 3 minutes
-+ pricing is decided
++ pricing and pilot terms are decided
 + no deferred item weakens RLS, privacy, or customer trust
 ```
 

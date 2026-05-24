@@ -1,9 +1,9 @@
 # BizPilot Backup, Export, and Restore Runbook
 
-**Phase:** 19B - Production Pilot Readiness and Customer Validation  
+**Phase:** 20B - Production DB Safety Gate
 **Status:** Not yet pilot-complete  
 **Owner:** MoOoH  
-**Last updated:** 2026-05-23  
+**Last updated:** 2026-05-24
 **Scope:** Minimum data safety process before real cleaning-business pilot data
 
 ## 1. Current Environment
@@ -35,6 +35,29 @@ The repo/CLI check on 2026-05-23 found:
 - `.gitignore` now ignores BizPilot backup/export dump patterns and temporary backup/restore folders without ignoring migration SQL files.
 
 Result: restore drill and manual dump are blocked until local Postgres tooling and a safe target database are available.
+
+## 2A. Phase 20B Production DB Safety Update
+
+The Phase 20B safety check on 2026-05-24 did not apply SQL and did not create a dump.
+
+| Safety item | Status | Evidence / blocker |
+| --- | --- | --- |
+| PITR enabled | Owner action required | Cannot be checked from repo files, public app responses, Supabase REST, or the available local CLI state. Owner must verify in Supabase dashboard. |
+| Backup retention window | Owner action required | Not available from repo/CLI. Owner must record exact retention/PITR window from Supabase dashboard. |
+| Production target | Not fully confirmed | Phase 20A found local env points at `cwiuajpbpyybxxtodpaq.supabase.co`, while Vercel production env values were not accessible from this run. |
+| Data classification | Unknown / possible real data | Phase 20A count/classification-only check found non-synthetic indicators; the checked DB must not be treated as disposable. |
+| Manual schema-only export | Blocked | `pg_dump` not installed, `psql` not installed, Supabase CLI not installed, no production DB connection string available, and local DB port `127.0.0.1:54322` refused connection. |
+| Manual data export | Blocked | Not owner-approved and not safe until export storage/access are recorded. |
+| Restore drill | Blocked | No schema dump, no data dump, no local/staging restore target, local DB refused connection. |
+| Export storage location | Open | No encrypted owner-approved storage location recorded yet. |
+| `.gitignore` dump protection | Pass | `git check-ignore -v` confirmed common BizPilot schema/data dump, export, backup, `backups/`, `tmp-backups/`, and `restore-drills/` sample paths are ignored. |
+| Production migration safety | Not approved | Do not apply migrations until PITR/backup/export posture and owner approval are recorded. |
+
+Phase 20B rule:
+
+```text
+If production contains real or possible-real data and no backup/PITR/export safety exists, do not apply production migrations.
+```
 
 ## 3. Required Owner Decisions Before Real Pilot Data
 
@@ -335,4 +358,3 @@ Phase 19B is complete only when:
 - Customer deletion/export request handling is documented.
 - Privacy incident process is documented.
 - Pilot readiness checklist reflects the current status.
-
