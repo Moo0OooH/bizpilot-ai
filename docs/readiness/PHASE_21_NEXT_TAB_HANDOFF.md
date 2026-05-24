@@ -19,8 +19,10 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, but i
 | Item | Current value |
 | --- | --- |
 | Current branch | `phase-21-production-alignment` |
+| Current branch tip | Run `git log -1 --oneline` before continuing; recent milestones are listed below. |
 | Latest committed Phase 21 evidence/doc state | `9adde10 docs: record vercel production target evidence` |
 | Latest committed Phase 21 implementation | `56b81a8 feat: add lifecycle deletion and phase 21 security alignment` |
+| Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
 | Previous Phase 20 baseline | `39113f4 chore: record phase 20 pilot gate findings` |
 | `origin/main` | Unchanged at `7fe0475` |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
@@ -136,6 +138,7 @@ Validation passed in Phase 20:
 - Targeted read-only constraint/template verification passed for `submitted_too_fast`, the `fr-CA` language constraints, `businesses_preferred_language_idx`, and the 0014 cleaning template fields `customer_phone`, `customer_email`, and `home_address`.
 - Vercel read-only verification confirmed authenticated CLI access, project linkage, production deployment status/aliases, and required encrypted env variable names/scopes. Env values were not pulled or revealed.
 - GitHub read-only verification confirmed repo `Moo0OooH/bizpilot-ai` is public, default branch is `main`, remote `main` remains `7fe0475`, only Phase 19/20 branches are pushed, and no open PRs/issues/Actions runs are currently reported.
+- No-cost CI workflow and cost/upgrade gate were added after GitHub evidence: `.github/workflows/ci.yml` and `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
 - Signup confirmation smoke remains blocked because there is no safe inbox/mail-capture.
@@ -357,6 +360,7 @@ Start here:
 10. `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
 11. `docs/security/BIZPILOT_BUSINESS_LIFECYCLE_AND_DELETION_POLICY_v1.0.md`
 12. `docs/operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
+13. `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`
 
 ## 9. Important Code/Migration Files
 
@@ -409,6 +413,7 @@ Continue BizPilot Phase 21 from:
 - branch: phase-21-production-alignment
 - latest committed Phase 21 evidence/doc state: 9adde10
 - latest committed Phase 21 implementation: 56b81a8
+- latest GitHub evidence commit: 5a62e76
 - origin/main unchanged at 7fe0475
 - GitHub remote has only main/phase-19/phase-20 pushed; phase-21-production-alignment is local-only unless pushed later with approval
 - re-check working tree before committing

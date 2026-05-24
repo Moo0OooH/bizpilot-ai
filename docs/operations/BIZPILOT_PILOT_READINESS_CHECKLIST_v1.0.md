@@ -32,7 +32,7 @@ Use this table as the current Phase 21 truth. It supersedes older Phase 19/20 pr
 
 | Major Item | Status | Current Evidence |
 | --- | --- | --- |
-| Git/deploy safety | Pass | Phase 21 stayed on `phase-21-production-alignment`; local commits `56b81a8` and `9adde10` were created; `origin/main` remains `7fe0475`; GitHub remote has only `main`, `phase-19-readiness-findings`, and `phase-20-pilot-gate` pushed; no production deploy was triggered. |
+| Git/deploy safety | Pass | Phase 21 stayed on `phase-21-production-alignment`; local commits `56b81a8`, `9adde10`, and `5a62e76` were created; `origin/main` remains `7fe0475`; GitHub remote has only `main`, `phase-19-readiness-findings`, and `phase-20-pilot-gate` pushed; no production deploy was triggered. |
 | Baseline app validation | Pass | 2026-05-24 Phase 21 rerun passed `git diff --check`, `pnpm lint`, `pnpm typecheck`, `pnpm test:unit` (37/37), `pnpm test:rls` (13/13 through a temporary local-only Docker proxy), and `pnpm build`. |
 | Production target | Project/domain/env-presence confirmed | Corrected target is `bizpilot-production` / `qfqendrqimqvkoojpjao` with app URL `https://bizpilo.com`. Vercel project `moo0ooohs-projects/bizpilot-ai` is linked, production deployment `bizpilot-ezv7ttflm-moo0ooohs-projects.vercel.app` is Ready, aliases include `bizpilo.com`, and required env variable names exist encrypted for Production/Preview. Env values were not pulled or revealed. |
 | Backup/PITR/export/restore | Blocked for real customer data; risk-accepted for current no-real-user security alignment | Owner confirmed Supabase Free plan, scheduled backups unavailable, PITR not enabled/unavailable, manual export not done, and restore drill not done. Owner now states there are no serious/real users yet and approves finishing database/security phases quickly and accurately. |
@@ -117,6 +117,7 @@ Do not begin Phase 18 until these are true:
 | Vercel production env variable names/scopes are present. | [x] | [ ] | 2026-05-24 `vercel env ls` confirmed `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_APP_URL`, `BIZPILOT_FOUNDER_EMAILS`, and `OPENAI_API_KEY` exist encrypted for Production and Preview. Values were not pulled or revealed. |
 | Secret scan performed before pilot branch/deploy. | [x] | [ ] | 2026-05-24 staged diff secret scan found no real secrets; only a documented local RLS README connection string had matched the broader workspace scan earlier. |
 | Supabase and GitHub owner/admin accounts use MFA. | [ ] | [ ] |  |
+| GitHub CI workflow exists for no-secret app validation. | [x] | [ ] | 2026-05-24 added `.github/workflows/ci.yml` to run lint, typecheck, unit tests, and build on `main`, `phase-*`, pull requests, and manual dispatch. RLS remains local-only until CI database setup is added safely. |
 
 ## 5. Backup and Export Readiness
 
