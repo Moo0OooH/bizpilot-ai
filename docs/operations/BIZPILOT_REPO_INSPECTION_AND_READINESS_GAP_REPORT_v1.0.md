@@ -5,7 +5,7 @@
 **Version:** v1.0
 **Status:** Active inspection snapshot
 **Owner:** MoOoH
-**Last Updated:** 2026-05-23
+**Last Updated:** 2026-05-24
 **Related:**
 - `docs/CURRENT_CANONICAL_DOCS_v1.7.md`
 - `docs/AI_CODING_AGENT_START_HERE_v1.7.md`
@@ -15,6 +15,21 @@
 - `supabase/migrations/README.md`
 
 ---
+
+## 0. Phase 21 Overlay
+
+This report began as the Phase 18 repository inspection snapshot. The Phase 21 evidence below is the current operational overlay and supersedes older production-target/schema notes in this file where they conflict.
+
+| Area | Current Phase 21 truth |
+| --- | --- |
+| Git branch | Active work is on `phase-21-production-alignment`; do not push `origin/main` without separate owner approval. |
+| Latest local validation | `pnpm verify` passed; `pnpm test:rls` passed 13/13 through a temporary local-only proxy; `git diff --check` passed. |
+| CI | `.github/workflows/ci.yml` now exists for no-secret lint/typecheck/unit/build validation on `main`, `phase-*`, PRs, and manual dispatch. It has not run remotely until an approved push occurs. |
+| Production target | Corrected production Supabase project is `bizpilot-production` / `qfqendrqimqvkoojpjao`; Vercel production project/deployment/aliases and required encrypted env names were verified without revealing values. |
+| Production schema/RLS | Required columns/functions, expected `0018` lifecycle/deletion objects, all-public-table RLS enablement, public policy list, safe aggregate counts, targeted constraints/seeds, and grant-only `0019` hardening are verified. |
+| Migration history | `supabase_migrations.schema_migrations` is missing, so production is treated as schema-without-standard-migration-history/manual drift. Do not replay `0018` blindly and do not add `leads.source`. |
+| Backup/PITR | Supabase Free plan has no scheduled backups/PITR available; no manual export or restore drill has been done. This blocks real customer data, but is risk-accepted only for no-real-user database/security alignment. |
+| Remaining pilot blockers | Production quote/security smoke, fr-CA smoke, signup inbox smoke, OpenAI 429 resolution, commercial terms, support channel, real prospect/customer validation, and real-data backup/export/restore decisions. |
 
 ## 1. Purpose
 

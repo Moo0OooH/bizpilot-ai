@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Continuation handoff for the next Codex tab
-**Status:** Continue Phase 21 database/security closure
+**Status:** Continue Phase 21 readiness closure
 **Owner:** MoOoH
 **Last Updated:** 2026-05-24
 
@@ -19,17 +19,18 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, but i
 | Item | Current value |
 | --- | --- |
 | Current branch | `phase-21-production-alignment` |
-| Current branch tip | Run `git log -1 --oneline` before continuing; recent milestones are listed below. |
-| Latest committed Phase 21 evidence/doc state | `9adde10 docs: record vercel production target evidence` |
+| Current branch tip | `e690243 ci: add no-cost validation and cost gate` at the last recorded handoff update. Re-run `git log -1 --oneline` before continuing. |
+| Latest committed Phase 21 evidence/doc state | `e690243 ci: add no-cost validation and cost gate` |
 | Latest committed Phase 21 implementation | `56b81a8 feat: add lifecycle deletion and phase 21 security alignment` |
 | Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
+| Latest Vercel evidence commit | `9adde10 docs: record vercel production target evidence` |
 | Previous Phase 20 baseline | `39113f4 chore: record phase 20 pilot gate findings` |
 | `origin/main` | Unchanged at `7fe0475` |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
 | GitHub remote branches | `main` at `7fe0475`, `phase-19-readiness-findings` at `a27705f`, `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
-| Working tree after `9adde10` | Clean before GitHub evidence doc update |
+| Working tree after `e690243` | Clean at the time of the CI/cost-gate commit |
 | Production deploy triggered in Phase 21 | No |
 
 Do not push to `origin/main` unless the owner explicitly approves it. Keep production deploy risk visible.
@@ -136,9 +137,9 @@ Validation passed in Phase 20:
 - Targeted function/grant verification found owner-only lifecycle helpers were still executable by `anon`, likely through broad default EXECUTE.
 - Owner approved production grant-only migration `0019_lifecycle_helper_execute_grant_hardening.sql`; Codex applied it through Supabase SQL Editor and verified `checked_functions = 6`, `all_grant_checks_passed = true`.
 - Targeted read-only constraint/template verification passed for `submitted_too_fast`, the `fr-CA` language constraints, `businesses_preferred_language_idx`, and the 0014 cleaning template fields `customer_phone`, `customer_email`, and `home_address`.
-- Vercel read-only verification confirmed authenticated CLI access, project linkage, production deployment status/aliases, and required encrypted env variable names/scopes. Env values were not pulled or revealed.
-- GitHub read-only verification confirmed repo `Moo0OooH/bizpilot-ai` is public, default branch is `main`, remote `main` remains `7fe0475`, only Phase 19/20 branches are pushed, and no open PRs/issues/Actions runs are currently reported.
-- No-cost CI workflow and cost/upgrade gate were added after GitHub evidence: `.github/workflows/ci.yml` and `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`.
+- Vercel read-only verification confirmed authenticated CLI access, project linkage, production deployment status/aliases, and required encrypted env variable names/scopes. Env values were not pulled or revealed. This was committed as `9adde10`.
+- GitHub read-only verification confirmed repo `Moo0OooH/bizpilot-ai` is public, default branch is `main`, remote `main` remains `7fe0475`, only Phase 19/20 branches are pushed, and no open PRs/issues/Actions runs are currently reported. This was committed as `5a62e76`.
+- No-cost CI workflow and cost/upgrade gate were added after GitHub evidence: `.github/workflows/ci.yml` and `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`. This was committed as `e690243`.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
 - Signup confirmation smoke remains blocked because there is no safe inbox/mail-capture.
@@ -155,11 +156,11 @@ Latest Phase 21 validation after local `0019` grant-hardening apply:
 
 The temporary local-only Docker proxy was removed after the RLS run.
 
-## 6. Important Dirty Worktree Areas
+## 6. Important Working Tree Areas
 
-The Phase 21 implementation was committed locally as `56b81a8`. Re-check `git status --short --branch` before any additional commit or push.
+The Phase 21 implementation was committed locally as `56b81a8`; evidence/operations commits through `e690243` followed it. Re-check `git status --short --branch` before any additional commit or push.
 
-Important dirty areas include:
+Important Phase 21 areas include:
 
 - business lifecycle/deletion UI and services,
 - founder test cleanup UI/services,
@@ -361,6 +362,7 @@ Start here:
 11. `docs/security/BIZPILOT_BUSINESS_LIFECYCLE_AND_DELETION_POLICY_v1.0.md`
 12. `docs/operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 13. `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`
+14. `.github/workflows/ci.yml`
 
 ## 9. Important Code/Migration Files
 
@@ -411,7 +413,8 @@ Use this in the next tab:
 Continue BizPilot Phase 21 from:
 
 - branch: phase-21-production-alignment
-- latest committed Phase 21 evidence/doc state: 9adde10
+- latest committed Phase 21 evidence/doc state: e690243
+- latest committed no-cost CI/cost-gate state: e690243
 - latest committed Phase 21 implementation: 56b81a8
 - latest GitHub evidence commit: 5a62e76
 - origin/main unchanged at 7fe0475

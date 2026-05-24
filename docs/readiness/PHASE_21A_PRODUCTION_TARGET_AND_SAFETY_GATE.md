@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Production target and data-safety gate
-**Status:** Blocked - target identified, production SQL not approved
+**Status:** Superseded historical snapshot - use `PHASE_21A_PRODUCTION_TARGET_AND_BACKUP_GATE.md`
 **Owner:** MoOoH
 **Last Updated:** 2026-05-24
 
@@ -13,6 +13,8 @@
 Phase 21A records the corrected production Supabase target evidence before any production migration, SQL, quote smoke, or pilot approval.
 
 No production SQL was applied. No migration was applied. No secret, token, key, full connection string, customer payload, prompt, dump, or env file content was printed or committed.
+
+Current note: this file is a historical Phase 21A snapshot from before Vercel/GitHub evidence and production `0019` grant hardening were completed. The active Phase 21A status is now recorded in `PHASE_21A_PRODUCTION_TARGET_AND_BACKUP_GATE.md`, and downstream current truth is recorded in `PHASE_21B_PRODUCTION_MIGRATION_DRIFT_MAP.md`, `PHASE_21D_PRODUCTION_MIGRATION_APPLY_RESULT.md`, and `PHASE_21_NEXT_TAB_HANDOFF.md`.
 
 ## 2. Production Target Evidence
 
@@ -79,7 +81,9 @@ That work was not applied to production and is not approved for production SQL. 
 
 ## 7. Phase 21A Decision
 
-Production target evidence is improved, but production migration remains blocked.
+Historical decision at the time of this snapshot: production target evidence was improved, but production migration remained blocked.
+
+Current Phase 21 update: the corrected production target is confirmed, Vercel project/deployment/env-name evidence is recorded, owner-approved grant-only migration `0019_lifecycle_helper_execute_grant_hardening.sql` has been applied and verified, and required columns/functions/RLS/policies/constraints/seeds are object-verified. Migration history remains unavailable because `supabase_migrations.schema_migrations` does not exist, and backup/PITR/export/restore remains blocked for real customer data.
 
 BizPilot remains:
 

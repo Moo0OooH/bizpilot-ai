@@ -3,22 +3,26 @@
 ## Purpose
 Checklist before sending the live domain to pilot prospects.
 
-## Phase 19H Actual QA Status
+## Phase 21 Current QA Status
+
+Use this table as the active production QA truth. Older Phase 19H/20 blockers remain useful history, but the corrected Phase 21 production target and SQL verification supersede the earlier schema-drift finding.
 
 | Area | Status | Evidence / Next Action |
 | --- | --- | --- |
-| Static/public route smoke | Pass | Recent production smoke covered `/`, `/pricing`, auth surfaces, mobile width, language switch, and no horizontal overflow. |
-| Build validation | Pass | Latest recorded `pnpm lint`, `pnpm typecheck`, `pnpm test:unit`, and `pnpm build` passed. |
-| Signup confirmation | Open | Signup production action no longer crashes, but Supabase throttling prevented final confirmation-email/callback verification after the latest callback messaging fix. |
-| Forgot/reset password | Open | Forgot-password production request was clicked; reset flow should be re-smoked after Supabase rate limits clear. |
-| Production Supabase schema | Blocked | Phase 19C found missing language/admin columns on the checked Supabase host. Confirm actual production target and schema before quote/dashboard smoke. |
-| fr-CA quote flow | Blocked | No disposable fr-CA business/link/lead could be created due schema drift. |
-| Dashboard lead workflow | Blocked | Requires valid production quote submission and lead creation after schema alignment. |
-| Tenant isolation production smoke | Blocked | Requires valid production test lead and second owner after schema alignment. |
-| OpenAI model-backed AI | Blocked | No non-empty `OPENAI_API_KEY`; no real model output was generated. |
+| Static/public route smoke | Pass | Production `https://bizpilo.com` returned HTTP 200 in Phase 21. Earlier route smoke covered `/`, `/pricing`, auth surfaces, mobile width, language switch, and no horizontal overflow. Re-run full browser smoke after the next approved production deploy. |
+| Local validation | Pass | Phase 21 local gates passed: `pnpm verify`, `pnpm test:rls` 13/13 through a temporary local-only proxy, and `git diff --check`. |
+| CI validation | Ready but not remote-run yet | `.github/workflows/ci.yml` now runs no-secret lint, typecheck, unit tests, and build on `main`, `phase-*`, PRs, and manual dispatch. It will run after an approved push. |
+| Signup confirmation | Blocked | No safe test inbox/mail-capture path is available; no production signup request was sent in Phase 21H. Local callback-routing unit test passed 7/7. |
+| Forgot/reset password | Open | Reset flow still needs one controlled production smoke with an approved inbox after signup-confirmation setup exists. |
+| Production Supabase schema/RLS | Object-verified; migration history unavailable | Corrected target `qfqendrqimqvkoojpjao` has required columns/functions, expected `0018` lifecycle/deletion objects, RLS enabled on all 31 public tables, 70 reviewed policies, targeted constraints/seeds, and verified `0019` grants. `supabase_migrations.schema_migrations` is missing, so treat production as schema-without-standard-migration-history/manual drift. |
+| Public quote security | Blocked | Phase 21E not run. Requires approved synthetic production business/link/session setup and cleanup policy. Use synthetic data only. |
+| fr-CA quote flow | Blocked | Phase 21F not run. Depends on Phase 21E and an approved disposable fr-CA cleaning link. |
+| Dashboard lead workflow | Blocked | Requires a valid synthetic production quote submission and founder/owner dashboard smoke. |
+| Tenant isolation production smoke | Blocked | Requires synthetic production lead plus a second synthetic owner account. Local RLS tests pass, but production browser smoke is still needed. |
+| OpenAI model-backed AI | Blocked | A real-key synthetic dry run returned HTTP `429`; no model output was generated or quality-checked. Owner/operator must check OpenAI quota/billing/model access before retry. |
 | AI fallback | Pass | Fallback path is verified by code/design and remains owner-reviewed/manual copy-send only. |
-| Backup/export/restore | Blocked | Runbook exists, but no dump or restore drill was performed; PITR/storage require owner decision. |
-| Customer validation readiness | Owner decision required | No real prospects supplied; outreach/demo targets remain owner execution. |
+| Backup/export/restore | Blocked for real customer data | Supabase Free plan has no scheduled backups/PITR available; no manual export or restore drill has been done. This is risk-accepted only for no-real-user database/security alignment, not real customer data. |
+| Customer validation readiness | Owner decision required | Real outreach, pilot terms approval, support channel, and commercial process remain owner execution. |
 
 ## Technical Checks
 - `pnpm lint`

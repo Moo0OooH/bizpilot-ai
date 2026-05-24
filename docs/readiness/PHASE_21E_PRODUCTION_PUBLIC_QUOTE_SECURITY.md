@@ -29,11 +29,11 @@ No production quote submission was created. No production lead was created. No p
 
 | Required precondition | Status | Evidence / blocker |
 | --- | --- | --- |
-| Production migrations aligned | No | Phase 21D did not apply migrations; migration history remains unverified. |
-| Required RPCs visible to PostgREST | Partial yes | Phase 21B safe probes showed the three public quote RPCs callable/visible with repo parameter names. Direct SQL verification is still required. |
-| Backup/safety documented | No | Phase 21A records unknown DB data status, unknown PITR, unknown backup retention, no schema export, and no restore drill. |
+| Production migrations aligned | Object-verified; history unavailable | Required public quote columns/functions, expected `0018` objects, RLS enablement, policies, function definitions, `0019` grants, and targeted constraints/seeds have been verified. `supabase_migrations.schema_migrations` is missing, so history remains unavailable/manual drift. |
+| Required RPCs visible to PostgREST | Yes by safe probe and direct SQL | Phase 21B safe probes showed the three public quote RPCs callable/visible with repo parameter names. Owner-run direct SQL verified required functions and grants. |
+| Backup/safety documented | Blocked for real customer data | Supabase Free plan has no scheduled backup/PITR available; no manual export or restore drill has been done. Owner risk-accepted this only for no-real-user database/security alignment. |
 | Test business/link available or safely created | No | No owner-approved synthetic production business/link setup is recorded. |
-| Owner approval for production data-bearing smoke | No | Not recorded. |
+| Owner approval for production data-bearing smoke | Broad access granted; exact synthetic setup still not recorded | Owner approved full Supabase/Vercel/GitHub access and production grant-only `0019`, but this smoke still needs the exact synthetic business/link/session plan and cleanup policy recorded before creating rows. |
 
 ## 4. Decision
 
@@ -42,7 +42,7 @@ No production quote submission was created. No production lead was created. No p
 Reason:
 
 ```text
-The preconditions for production data-bearing testing are not satisfied.
+The database/RLS preconditions are mostly satisfied by object verification, but the production data-bearing synthetic smoke still lacks a recorded test business/link/session plan, cleanup policy, and real-data backup posture.
 ```
 
 The safe local/RLS production-equivalent public quote verification from Phase 20 remains useful evidence, but it does not replace a production smoke after backup/migration/history gates are closed.
@@ -65,9 +65,9 @@ The safe local/RLS production-equivalent public quote verification from Phase 20
 | --- | --- | --- |
 | Inactive/disabled public quote link blocked | Not run | Requires synthetic inactive production link. |
 | Wrong business/form mismatch blocked | Not run | Requires controlled synthetic production forms/businesses. |
-| Unknown field key blocked | Not run | Should be covered by `public_can_insert_submission_value`; production direct SQL/policy verification still required. |
-| Hidden field value insert blocked | Not run | Should be covered by public submission-value RLS hardening; production direct SQL/policy verification still required. |
-| Field from another form blocked | Not run | Should be covered by public submission-value RLS hardening; production direct SQL/policy verification still required. |
+| Unknown field key blocked | Not run | Supported by `public_can_insert_submission_value` verification and local RLS tests; production browser/API smoke still required. |
+| Hidden field value insert blocked | Not run | Supported by public submission-value RLS hardening verification and local RLS tests; production browser/API smoke still required. |
+| Field from another form blocked | Not run | Supported by public submission-value RLS hardening verification and local RLS tests; production browser/API smoke still required. |
 | Too-fast submission blocked | Not run | Requires rate/min-submit-age test against production; do not spam production. |
 | Honeypot submission blocked | Not run | Requires controlled synthetic production submission. |
 | Malformed payload rejected safely | Not run | Requires controlled synthetic production request. |
@@ -89,15 +89,13 @@ These probes were metadata/RPC visibility checks only. They are not a full produ
 
 Before running the production public quote security smoke:
 
-1. Complete Phase 21A backup/PITR/export/restore safety or record explicit owner risk acceptance.
-2. Run Phase 21C owner SQL verification pack and review sanitized results.
-3. Close Phase 21D migration-history/schema reconciliation.
-4. Confirm required RPCs and RLS policies by direct SQL.
-5. Confirm owner approval for one controlled synthetic production quote test sequence.
-6. Create or identify a disposable synthetic cleaning business and quote link.
-7. Create or identify two synthetic owners for horizontal-access verification.
-8. Define cleanup policy for synthetic leads/submissions after the test.
-9. Space tests safely to avoid auth or quote rate-limit spam.
+1. Keep Phase 21A backup/PITR/export/restore blocked for real customer data, or record a fresh explicit owner risk acceptance for synthetic-only smoke.
+2. Use the Phase 21C/21D SQL evidence as the database/RLS preflight; do not re-apply `0018` blindly.
+3. Confirm the exact controlled synthetic production quote test sequence.
+4. Create or identify a disposable synthetic cleaning business and quote link.
+5. Create or identify two synthetic owners for horizontal-access verification.
+6. Define cleanup policy for synthetic leads/submissions after the test.
+7. Space tests safely to avoid auth or quote rate-limit spam.
 
 ## 9. Cleanup Policy
 
@@ -136,7 +134,7 @@ Not run.
 Final Phase 21E decision:
 
 ```text
-Blocked until production migration/history, backup/safety, owner approval, and synthetic test setup are complete.
+Blocked until synthetic production quote setup, cleanup policy, and backup/risk posture for the data-bearing smoke are recorded.
 ```
 
 BizPilot remains:

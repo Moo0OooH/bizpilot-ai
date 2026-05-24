@@ -10,18 +10,20 @@ Define the production path for moving BizPilot to a real pilot environment witho
 bizpilo.com
 ```
 
-## Phase 19H Current Deployment Status
+## Phase 21 Current Deployment Status
+
+Use this table as the active deployment truth. It supersedes older Phase 19H/20 production-target notes where they conflict with the corrected Phase 21 evidence.
 
 | Major Item | Status | Current Evidence |
 | --- | --- | --- |
-| Domain app route smoke | Pass | Recent production route smoke covered `/`, `/pricing`, auth pages, mobile width, language switch, and no horizontal overflow. |
-| Production auth | Open | Signup action no longer crashes and forgot-password production request was clicked, but Supabase email throttling prevented a final clean signup confirmation/reset smoke after the latest auth callback fix. |
-| Supabase production target | Blocked | Owner reported `bizpilot-production` with migrations through `0017`, but Phase 19C probes against the Supabase host available from local env found missing current schema columns. Confirm whether Vercel production uses a different project or fix the checked target. |
-| Migrations `0014`-`0017` | Open | Do not leave these as stale blockers, but do not mark them independently verified either. Direct SQL/schema verification on the actual production target is still required. |
-| fr-CA production quote flow | Blocked | Cannot certify until the actual production schema supports language/admin columns and a disposable fr-CA cleaning workspace can be created. |
-| Backup/export/restore | Blocked | Runbook exists, but PITR/export storage/restore target are not decided and no restore drill was performed. |
-| OpenAI model-backed demo | Blocked | No non-empty `OPENAI_API_KEY` was available in the checked environment; fallback-only behavior is the verified path. |
-| First real pilot data | Blocked | Do not collect real customer/pilot data until schema, auth, backup/restore, and commercial/customer-validation owner actions are resolved or explicitly risk-accepted. |
+| Domain app route smoke | Pass | Production `https://bizpilo.com` returned HTTP 200 in Phase 21. Earlier route smoke covered `/`, `/pricing`, auth pages, mobile width, language switch, and no horizontal overflow. |
+| Production auth | Blocked | Signup confirmation and reset need one controlled production smoke with an approved inbox/mail-capture path. No production signup was sent in Phase 21H. |
+| Supabase production target | Confirmed | Corrected project is `bizpilot-production` / `qfqendrqimqvkoojpjao`; Vercel project `moo0ooohs-projects/bizpilot-ai` has a Ready production deployment with aliases including `bizpilo.com`. Required env variable names exist encrypted for Production/Preview; values were not pulled or revealed. |
+| Migration/schema state | Object-verified; history unavailable | Required columns/functions, expected `0018` lifecycle/deletion objects, all-public-table RLS enablement, reviewed policies, safe aggregate counts, targeted constraints/seeds, and grant-only `0019` hardening are verified. `supabase_migrations.schema_migrations` is missing, so production remains schema-without-standard-migration-history/manual drift. Do not re-apply `0018` blindly. |
+| fr-CA production quote flow | Blocked | Schema support is now object-verified, but Phase 21F still needs an approved disposable fr-CA cleaning business/link and synthetic submission path. |
+| Backup/export/restore | Blocked for real customer data | Supabase Free plan has no scheduled backup/PITR available; no manual export or restore drill has been done. This is risk-accepted only for current no-real-user database/security alignment. |
+| OpenAI model-backed demo | Blocked | A real-key synthetic dry run returned HTTP `429`; no model output was generated or quality-checked. |
+| First real pilot data | Blocked | Do not collect real customer/pilot data until production quote/auth smoke, backup/export/restore posture, OpenAI decision, and commercial/customer-validation owner actions are resolved or explicitly approved. |
 
 ## Preflight
 
@@ -39,7 +41,7 @@ manual browser QA
 
 ## Supabase Checklist
 
-Confirm the target Supabase project before applying migrations.
+Confirm the target Supabase project before applying migrations or data-bearing smoke tests.
 
 Required migration verification:
 
@@ -49,6 +51,8 @@ Required migration verification:
 0015_business_access_plan_and_admin_log.sql applied
 0016_public_submission_minimum_submit_age_reason.sql applied
 0017_business_preferred_language.sql applied
+0018_business_lifecycle_deletion_foundation.sql object/RLS/function state verified, do not blindly replay
+0019_lifecycle_helper_execute_grant_hardening.sql applied and verified
 RLS helper functions current
 explicit grants reviewed
 Security Advisor reviewed
@@ -77,10 +81,12 @@ During the Vercel-domain transition, keep the current Vercel production URL in S
 
 1. Owner confirms the exact target Supabase project.
 2. Take or verify the latest backup/export according to the backup strategy.
-3. Apply migrations in numeric order only. Do not rename or skip files.
-4. Verify `0014`, `0015`, `0016`, and `0017` with SQL inspection in the target project.
-5. Run the RLS suite against a local production-equivalent database or restored staging clone. Do not run `pnpm test:rls` against the managed production database.
-6. Review Supabase Security Advisor and Performance Advisor before sharing the live quote link.
+3. Query migration history. If `supabase_migrations.schema_migrations` is missing, treat the database as schema-without-standard-migration-history/manual drift.
+4. Apply only missing existing repo migrations in numeric order after object verification and owner approval. Do not rename, skip, or replay verified migrations blindly.
+5. Do not create ad-hoc columns or guessed compatibility aliases such as `leads.source`; the repo schema uses `leads.source_channel`.
+6. Verify `0014` through `0019` by direct SQL object/function/grant/policy checks in the target project.
+7. Run the RLS suite against a local production-equivalent database or restored staging clone. Do not run `pnpm test:rls` against the managed production database.
+8. Review Supabase Security Advisor and Performance Advisor before sharing the live quote link.
 
 ## Vercel Deployment
 
@@ -98,6 +104,8 @@ During the Vercel-domain transition, keep the current Vercel production URL in S
    - `https://bizpilo.com/auth/check-email`
 10. Redeploy production.
 11. Re-run smoke tests after DNS propagation.
+
+Do not push to `origin/main` or trigger a production deployment from this Phase 21 branch without separate explicit owner approval. The current branch is repo-backed preparation and evidence, not an approved production deploy request.
 
 ## Production Smoke Test Routes
 

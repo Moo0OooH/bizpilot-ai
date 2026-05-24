@@ -3,7 +3,7 @@
 **Project:** BizPilot AI
 **Document Type:** Standards Audit
 **Version:** v1.0
-**Status:** Phase 18A Pilot Readiness Evidence
+**Status:** Historical Phase 18A Pilot Readiness Evidence
 **Owner:** MoOoH
 **Last Updated:** 2026-05-23
 **Related:**
@@ -19,6 +19,8 @@
 This audit cross-checks Phase 18A pilot readiness against the active standards so the project does not confuse "browser QA passed" with "everything needed before pilots is complete."
 
 No product scope was expanded during this audit.
+
+Current note: this is a historical Phase 18A/19H standards snapshot. For the active Phase 21 production-target/schema/RLS truth, use `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md`, `docs/readiness/PHASE_21B_PRODUCTION_MIGRATION_DRIFT_MAP.md`, `docs/readiness/PHASE_21D_PRODUCTION_MIGRATION_APPLY_RESULT.md`, and `docs/readiness/PHASE_21_NEXT_TAB_HANDOFF.md`.
 
 ## 2. Standards Read
 
@@ -83,7 +85,7 @@ This section updates the audit with Phase 19 evidence. It does not change the pr
 | Auth safety | Pass | Signup/reset architecture remains separated. Commit `7fe0475` made callback copy safer for confirmed signup links whose session exchange fails. |
 | Production auth smoke | Open | Supabase throttling prevented final clean signup confirmation/reset-password smoke after latest auth callback messaging fix. |
 | Service-role boundary | Pass | Founder admin service uses service role only after `assertFounderUser`; `/admin` is sign-in and founder allowlist gated. |
-| Production schema/migrations | Blocked | Owner reported migrations through `0017`, but Phase 19C schema probes found the checked target missing language/admin columns. Treat target verification as blocked until the actual production project/schema cache is confirmed. |
+| Production schema/migrations | Historical blocker, superseded by Phase 21 | At Phase 19H this was blocked by checked-target schema probes. Phase 21 later confirmed the corrected production target and verified the key objects directly; see Section 5B. |
 | Public quote fr-CA smoke | Blocked | Could not create a disposable fr-CA business/link/lead because the checked production schema did not match the current multilingual code. |
 | AI fallback safety | Pass | Fallback is sanitized and manual-send only. |
 | OpenAI real-key output | Blocked | Real OpenAI output was not verified because `OPENAI_API_KEY` is empty. |
@@ -92,13 +94,23 @@ This section updates the audit with Phase 19 evidence. It does not change the pr
 | Commercial readiness | Owner decision required | Pricing default is drafted, but final price/setup/trial/refund/cancellation/payment collection are not approved. |
 | Customer validation | Owner decision required | Templates/playbook exist; real prospects and outreach are not entered/completed. |
 
+## 5B. Phase 21 Superseding Note
+
+Phase 21 supersedes the Phase 19C production schema blocker recorded above:
+
+- corrected production Supabase target is `bizpilot-production` / `qfqendrqimqvkoojpjao`,
+- required columns/functions, expected `0018` lifecycle/deletion objects, RLS-enabled status, public policy list, function definitions, `0019` grants, and targeted constraints/seeds are verified,
+- `supabase_migrations.schema_migrations` is missing, so production remains schema-without-standard-migration-history/manual drift,
+- no real customer pilot is approved yet because backup/PITR/export/restore, production quote/auth smoke, OpenAI 429, commercial terms, and real customer validation remain unresolved.
+
 ## 6. Recommended Next Order
 
-1. Re-run the local validation gates after any final code/doc hardening: lint, typecheck, unit tests, build, and local RLS if `DATABASE_URL` is available.
-2. Verify production migrations `0001` through `0017` by inspecting key functions, RLS, grants, `admin_action_log`, and `businesses.preferred_language` in `bizpilot-production`.
-3. Run one production auth smoke pass on `https://bizpilo.com`: signup confirmation, sign-in, forgot password, reset password, invalid/expired reset link.
-4. Run one production FR smoke pass: business preferred language `fr-CA`, public quote, validation error, success page, and AI drafts.
+1. Re-run the local validation gates after any final code/doc hardening: `pnpm verify`, `pnpm test:rls`, and `git diff --check`.
+2. Run Phase 21E production public quote security smoke with synthetic data only after test setup/cleanup is recorded.
+3. Run Phase 21F fr-CA production quote smoke after Phase 21E passes.
+4. Run one production auth smoke pass on `https://bizpilo.com`: signup confirmation, sign-in, forgot password, reset password, invalid/expired reset link.
 5. Record Supabase plan/PITR/export storage decisions.
-6. Decide pilot offer terms.
-7. Add 10 real prospects to Founder CRM.
-8. Run one final demo dry run using the real demo business details.
+6. Resolve OpenAI HTTP `429` and review one synthetic model-backed output.
+7. Decide pilot offer terms.
+8. Add 10 real prospects to Founder CRM.
+9. Run one final demo dry run using the real demo business details.
