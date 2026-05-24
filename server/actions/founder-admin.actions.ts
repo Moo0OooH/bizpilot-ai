@@ -32,6 +32,7 @@ import {
   dryRunFounderTestWorkspaceCleanup,
   purgeFounderTestWorkspace,
 } from "@/server/services/founder-test-cleanup.service";
+import { deleteFounderTestAuthUser } from "@/server/services/founder-auth-user-cleanup.service";
 
 function readRequiredFormValue(formData: FormData, key: string): string {
   const value = formData.get(key);
@@ -66,7 +67,17 @@ function redirectWithFounderAdminError(error: unknown): never {
       value === "Invalid cleanup mode." ||
       value === "Run dry-run before final cleanup." ||
       value === "Confirm that you understand this test cleanup." ||
-      value === "Type the exact business name or slug to confirm cleanup.",
+      value === "Type the exact business name or slug to confirm cleanup." ||
+      value === "Invalid auth user cleanup mode." ||
+      value === "Confirm that you understand this auth user deletion." ||
+      value === "Type the exact auth user email or ID to confirm deletion." ||
+      value === "Founder admin cannot delete the signed-in founder account." ||
+      value === "Founder admin cannot delete a founder allowlist account." ||
+      value === "Delete or transfer owned workspaces before deleting this auth user." ||
+      value === "Auth user deletion is blocked for production workspaces." ||
+      value ===
+        "Auth user deletion is blocked until linked workspaces are marked as test, demo, or seed." ||
+      value === "Auth user not found.",
     code: "UNKNOWN_ERROR",
     error,
     fallbackMessage: "Founder admin action could not be completed.",
@@ -203,6 +214,33 @@ export async function founderTestWorkspaceCleanupAction(
     redirect(
       `/admin?notice=${encodeURIComponent(
         `Test workspace cleanup completed: ${total} rows purged. Auth users were not deleted.`,
+      )}`,
+    );
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
+}
+
+export async function founderTestAuthUserDeleteAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    const result = await deleteFounderTestAuthUser({
+      acknowledged: formData.get("authUserDeleteAcknowledgement") === "on",
+      cleanupMode: readRequiredFormValue(formData, "cleanupMode"),
+      finalConfirmed: formData.get("authUserDeleteFinalConfirmation") === "on",
+      targetUserId: readRequiredFormValue(formData, "targetUserId"),
+      typedConfirmation: readRequiredFormValue(
+        formData,
+        "authUserDeleteConfirmation",
+      ),
+      user: await getCurrentUser(),
+    });
+
+    revalidatePath("/admin");
+    redirect(
+      `/admin?notice=${encodeURIComponent(
+        `Test auth user deleted. Linked businesses at deletion time: ${result.linkedBusinessCount}.`,
       )}`,
     );
   } catch (error) {

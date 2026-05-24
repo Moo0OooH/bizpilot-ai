@@ -213,20 +213,43 @@ export async function setFounderPublicLinksActive(input: {
 export async function insertFounderAdminAction(input: {
   actionType: FounderAdminActionType;
   actorUserId: string;
-  businessId: string;
+  businessId: string | null;
   newValues: Json;
   note?: string | null;
   previousValues: Json;
   supabase: SupabaseClient<Database>;
+}): Promise<string> {
+  const { data, error } = await input.supabase
+    .from("admin_action_log")
+    .insert({
+      action_type: input.actionType,
+      actor_user_id: input.actorUserId,
+      business_id: input.businessId,
+      new_values: input.newValues,
+      note: input.note ?? null,
+      previous_values: input.previousValues,
+    })
+    .select("id")
+    .single();
+
+  throwIfError(error);
+
+  if (!data) {
+    throw new Error("Admin action log insert failed.");
+  }
+
+  return data.id;
+}
+
+export async function updateFounderAdminActionNewValues(input: {
+  actionId: string;
+  newValues: Json;
+  supabase: SupabaseClient<Database>;
 }): Promise<void> {
-  const { error } = await input.supabase.from("admin_action_log").insert({
-    action_type: input.actionType,
-    actor_user_id: input.actorUserId,
-    business_id: input.businessId,
-    new_values: input.newValues,
-    note: input.note ?? null,
-    previous_values: input.previousValues,
-  });
+  const { error } = await input.supabase
+    .from("admin_action_log")
+    .update({ new_values: input.newValues })
+    .eq("id", input.actionId);
 
   throwIfError(error);
 }

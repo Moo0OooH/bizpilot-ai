@@ -19,6 +19,10 @@ import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 import type { AuthUser } from "@/server/services/auth.service";
 import { getServerEnv } from "@/lib/env/server-env";
 import {
+  getFounderAuthUserDeletionBlock,
+  type FounderAuthUserDeletionBusinessContext,
+} from "@/lib/founder-cleanup/auth-user-deletion";
+import {
   getFounderBusiness,
   insertFounderAdminAction,
   listFounderAdminLog,
@@ -59,6 +63,8 @@ export type FounderAdminBusiness = Readonly<{
 }>;
 
 export type FounderAdminUser = Readonly<{
+  authEmail: string | null;
+  authDeletionBlockedReason: string | null;
   businessAccessStatus: FounderBusinessStatus | null;
   businessName: string | null;
   createdAt: string;
@@ -180,7 +186,7 @@ export function readFounderBusinessStatus(value: string): FounderBusinessStatus 
 export async function getFounderAdminOverview(input: {
   user: AuthUser | null;
 }): Promise<FounderAdminOverview> {
-  assertFounderUser(input.user);
+  const actor = assertFounderUser(input.user);
 
   const supabase = createSupabaseServiceRoleClient();
   const founderEmails = readFounderEmails();
@@ -221,10 +227,22 @@ export async function getFounderAdminOverview(input: {
     deletionRequests.map((request) => [request.business_id, request]),
   );
   const businessById = new Map(businesses.map((business) => [business.id, business]));
+  const businessesByOwner = new Map<string, FounderBusinessRecord[]>();
+  const membershipsByUser = new Map<string, FounderBusinessMemberRecord[]>();
   const primaryMemberByUser = new Map<string, FounderBusinessMemberRecord>();
   const firstLinkByBusiness = new Map<string, { active: boolean; slug: string }>();
 
+  for (const business of businesses) {
+    const existing = businessesByOwner.get(business.owner_user_id) ?? [];
+    existing.push(business);
+    businessesByOwner.set(business.owner_user_id, existing);
+  }
+
   for (const member of members) {
+    const existingMemberships = membershipsByUser.get(member.user_id) ?? [];
+    existingMemberships.push(member);
+    membershipsByUser.set(member.user_id, existingMemberships);
+
     const existing = primaryMemberByUser.get(member.user_id);
 
     if (
@@ -281,16 +299,53 @@ export async function getFounderAdminOverview(input: {
 
   const users = usersResult.data.users.map((user) => {
     const membership = primaryMemberByUser.get(user.id);
+    const userMemberships = membershipsByUser.get(user.id) ?? [];
+    const linkedBusinessById = new Map<
+      string,
+      FounderAuthUserDeletionBusinessContext
+    >();
+
+    for (const item of userMemberships) {
+      const linkedBusiness = businessById.get(item.business_id);
+
+      if (linkedBusiness) {
+        linkedBusinessById.set(linkedBusiness.id, {
+          businessId: linkedBusiness.id,
+          membershipRole: item.role,
+          ownerUserId: linkedBusiness.owner_user_id,
+          workspaceKind: linkedBusiness.workspace_kind,
+        });
+      }
+    }
+
+    for (const business of businessesByOwner.get(user.id) ?? []) {
+      if (!linkedBusinessById.has(business.id)) {
+        linkedBusinessById.set(business.id, {
+          businessId: business.id,
+          membershipRole: null,
+          ownerUserId: business.owner_user_id,
+          workspaceKind: business.workspace_kind,
+        });
+      }
+    }
     const business = membership ? businessById.get(membership.business_id) : undefined;
     const link = business ? firstLinkByBusiness.get(business.id) : undefined;
+    const isFounder = Boolean(user.email && founderEmails.has(user.email.toLowerCase()));
 
     return {
+      authEmail: user.email ?? null,
+      authDeletionBlockedReason: getFounderAuthUserDeletionBlock({
+        actorUserId: actor.id,
+        isFounderUser: isFounder,
+        linkedBusinesses: Array.from(linkedBusinessById.values()),
+        targetUserId: user.id,
+      }),
       businessAccessStatus: business?.status ?? null,
       businessName: business?.name ?? null,
       createdAt: user.created_at,
       email: user.email ?? user.id,
       emailConfirmed: Boolean(user.email_confirmed_at ?? user.confirmed_at),
-      isFounder: Boolean(user.email && founderEmails.has(user.email.toLowerCase())),
+      isFounder,
       lastSignInAt: user.last_sign_in_at ?? null,
       leadCount: business ? (leadCountByBusiness.get(business.id) ?? 0) : null,
       membershipRole: membership?.role ?? null,

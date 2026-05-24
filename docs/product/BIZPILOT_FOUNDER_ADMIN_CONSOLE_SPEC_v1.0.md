@@ -69,16 +69,17 @@ internal note
 
 ### Users
 
-Required visibility for the first version:
+Required visibility and controls:
 
 ```text
 owner email
 linked business
 member count
 active/disabled status through membership model
+fake/test auth user deletion control
 ```
 
-Full user administration is deferred until pilot validation proves the need.
+Full customer user administration is deferred until pilot validation proves the need. The current deletion control is intentionally limited to fake/test auth identities and must block founder accounts, production-customer users, and workspace owners.
 
 ### Plans
 
@@ -106,6 +107,7 @@ disable public quote link
 enable public quote link
 view usage counts
 add internal note
+delete fake/test auth login
 ```
 
 Every action must create an internal audit record.
@@ -124,6 +126,8 @@ cancelled
 - Suspending or cancelling a business disables public quote links.
 - Pausing a plan disables public quote links.
 - Data is retained unless the owner later approves a deletion/minimization workflow.
+- Fake/test auth login deletion is separate from workspace cleanup and must use double confirmation.
+- Auth user deletion must be blocked for founder allowlist accounts, production-customer users, and workspace owners.
 - The founder console must not send customer messages.
 - The founder console must not create bookings, invoices, or calendar events.
 

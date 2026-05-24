@@ -17,7 +17,7 @@ import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
 describe("Founder cleanup source safety", () => {
-  it("does not delete auth users by default", () => {
+  it("does not delete auth users from workspace cleanup", () => {
     const source = readFileSync(
       "server/services/founder-test-cleanup.service.ts",
       "utf8",
@@ -26,6 +26,32 @@ describe("Founder cleanup source safety", () => {
     assert.equal(source.includes("deleteUser("), false);
     assert.equal(source.includes(".auth.admin.deleteUser"), false);
     assert.equal(source.includes("auth_users_deleted: false"), true);
+  });
+
+  it("keeps auth user deletion in a separate guarded service", () => {
+    const source = readFileSync(
+      "server/services/founder-auth-user-cleanup.service.ts",
+      "utf8",
+    );
+    const form = readFileSync(
+      "components/admin/founder-auth-user-delete-form.tsx",
+      "utf8",
+    );
+
+    assert.equal(source.includes(".auth.admin.deleteUser"), true);
+    assert.equal(
+      source.includes("validateFounderAuthUserDeleteConfirmation"),
+      true,
+    );
+    assert.equal(source.includes("getFounderAuthUserDeletionBlock"), true);
+    assert.equal(source.includes('actionType: "test_auth_user_deleted"'), true);
+    assert.equal(source.includes("updateFounderAdminActionNewValues"), true);
+    assert.ok(
+      source.indexOf("const actionId = await insertFounderAdminAction") <
+        source.indexOf(".auth.admin.deleteUser"),
+    );
+    assert.equal(form.includes("createSupabaseServiceRoleClient"), false);
+    assert.equal(form.includes("@/lib/supabase/server"), false);
   });
 
   it("does not expose service-role helpers to the client cleanup form", () => {

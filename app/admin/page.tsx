@@ -17,6 +17,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import { FounderAuthUserDeleteForm } from "@/components/admin/founder-auth-user-delete-form";
 import { FounderTestCleanupForm } from "@/components/admin/founder-test-cleanup-form";
 import {
   buttonClass,
@@ -490,7 +491,7 @@ function FounderUsersSection({
         {users.length > 0 ? (
           users.map((user) => (
             <div
-              className="grid gap-3 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm xl:grid-cols-[minmax(220px,1.25fr)_minmax(190px,1fr)_minmax(180px,0.9fr)_minmax(180px,0.9fr)] xl:items-center"
+              className="grid gap-3 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm xl:grid-cols-[minmax(220px,1.2fr)_minmax(190px,0.95fr)_minmax(180px,0.85fr)_minmax(180px,0.85fr)_minmax(190px,0.8fr)] xl:items-center"
               key={user.userId}
             >
               <div className="min-w-0">
@@ -566,6 +567,12 @@ function FounderUsersSection({
                   </p>
                 </div>
               </div>
+
+              <FounderAuthUserDeleteForm
+                deletionBlockedReason={user.authDeletionBlockedReason}
+                targetEmail={user.authEmail}
+                targetUserId={user.userId}
+              />
             </div>
           ))
         ) : (

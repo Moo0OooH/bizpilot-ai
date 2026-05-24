@@ -53,6 +53,7 @@ Required migration verification:
 0017_business_preferred_language.sql applied
 0018_business_lifecycle_deletion_foundation.sql object/RLS/function state verified, do not blindly replay
 0019_lifecycle_helper_execute_grant_hardening.sql applied and verified
+0020_founder_test_auth_user_cleanup.sql pending production approval/apply if admin auth-user deletion is deployed
 RLS helper functions current
 explicit grants reviewed
 Security Advisor reviewed
@@ -84,7 +85,7 @@ During the Vercel-domain transition, keep the current Vercel production URL in S
 3. Query migration history. If `supabase_migrations.schema_migrations` is missing, treat the database as schema-without-standard-migration-history/manual drift.
 4. Apply only missing existing repo migrations in numeric order after object verification and owner approval. Do not rename, skip, or replay verified migrations blindly.
 5. Do not create ad-hoc columns or guessed compatibility aliases such as `leads.source`; the repo schema uses `leads.source_channel`.
-6. Verify `0014` through `0019` by direct SQL object/function/grant/policy checks in the target project.
+6. Verify `0014` through `0019`, and `0020` if deployed, by direct SQL object/function/grant/policy checks in the target project.
 7. Run the RLS suite against a local production-equivalent database or restored staging clone. Do not run `pnpm test:rls` against the managed production database.
 8. Review Supabase Security Advisor and Performance Advisor before sharing the live quote link.
 

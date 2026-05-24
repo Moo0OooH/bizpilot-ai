@@ -144,6 +144,7 @@ Validation passed in Phase 20:
 - No-cost CI workflow and cost/upgrade gate were added after GitHub evidence: `.github/workflows/ci.yml` and `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`. This was committed as `e690243`.
 - Production readiness runbooks and historical readiness docs were realigned with Phase 21 evidence so stale Phase 19C schema blockers no longer appear as current operational truth. This was committed as `ebd4a04`.
 - `package.json` now declares `"type": "module"` to remove Node's unit-test module-type warnings. `pnpm verify` passed after the change. This was committed as `810e8c4`.
+- Founder Admin now has a repo-backed fake/test auth login deletion path guarded against founder accounts, production-customer users, and workspace owners. Migration `0020_founder_test_auth_user_cleanup.sql` extends the audit action constraint locally. It is not pushed, deployed, or applied to production yet.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
 - Signup confirmation smoke remains blocked because there is no safe inbox/mail-capture.
@@ -159,6 +160,14 @@ Latest Phase 21 validation after local `0019` grant-hardening apply:
 - `pnpm build`: pass.
 
 The temporary local-only Docker proxy was removed after the RLS run.
+
+Latest validation after the founder fake/test auth-user cleanup slice:
+
+- `pnpm verify`: pass,
+- `pnpm test:unit`: pass, 42/42,
+- local migration `0020_founder_test_auth_user_cleanup.sql` applied to the local Supabase DB only,
+- `pnpm test:rls`: pass, 13/13 through temporary local-only Docker proxy on `127.0.0.1:55432`,
+- temporary local-only Docker proxy removed after the RLS run.
 
 ## 6. Important Working Tree Areas
 
@@ -375,9 +384,11 @@ Inspect before commit:
 
 - `supabase/migrations/0018_business_lifecycle_deletion_foundation.sql`
 - `supabase/migrations/0019_lifecycle_helper_execute_grant_hardening.sql`
+- `supabase/migrations/0020_founder_test_auth_user_cleanup.sql`
 - `tests/rls/business-lifecycle-deletion-foundation.test.sql`
 - `types/database.ts`
 - `server/actions/business-deletion.actions.ts`
+- `server/services/founder-auth-user-cleanup.service.ts`
 - `server/services/business-deletion.service.ts`
 - `server/services/founder-test-cleanup.service.ts`
 - `server/actions/founder-admin.actions.ts`
@@ -386,6 +397,7 @@ Inspect before commit:
 - `lib/business-deletion/*`
 - `lib/business-lifecycle/*`
 - `lib/founder-cleanup/*`
+- `components/admin/founder-auth-user-delete-form.tsx`
 - `components/dashboard/workspace-deletion-request-form.tsx`
 - `components/admin/founder-test-cleanup-form.tsx`
 

@@ -61,6 +61,7 @@ This approval allows repo-backed database/security alignment and verification. I
 | 0017 | `0017_business_preferred_language.sql` | Yes |
 | 0018 | `0018_business_lifecycle_deletion_foundation.sql` | No - dirty local worktree migration, not part of Phase 20 production-alignment baseline; owner later reported manual production apply OK |
 | 0019 | `0019_lifecycle_helper_execute_grant_hardening.sql` | No - new Phase 21 grant-hardening migration applied/verified in production after owner approval |
+| 0020 | `0020_founder_test_auth_user_cleanup.sql` | No - new Phase 21 admin cleanup migration; applied only to local DB for validation, not production |
 
 Do not re-apply `0018_business_lifecycle_deletion_foundation.sql` blindly. The owner reported it was manually applied and returned OK, and owner-run direct SQL later verified the expected lifecycle columns, deletion tables, and helper functions. Because `supabase_migrations.schema_migrations` does not exist, document this as manual drift/schema-without-standard-migration-history and reconcile intentionally.
 
@@ -87,6 +88,7 @@ Do not re-apply `0018_business_lifecycle_deletion_foundation.sql` blindly. The o
 | `business_deletion_requests` | `0018_business_lifecycle_deletion_foundation.sql` | Creates owner request table with RLS. | Verified by owner-run direct SQL: present in `public`, RLS enabled |
 | `business_deletion_tombstones` | `0018_business_lifecycle_deletion_foundation.sql` | Creates non-PII tombstone table intended for service-role/founder processing. | Verified by owner-run direct SQL: present in `public`, RLS enabled |
 | `can_request_business_deletion` | `0018_business_lifecycle_deletion_foundation.sql` | Creates lifecycle helper for owner deletion request eligibility. | Verified by owner-run direct SQL: present in `public` |
+| `admin_action_log` action `test_auth_user_deleted` | `0020_founder_test_auth_user_cleanup.sql` | Extends founder admin audit action constraint for fake/test auth login deletion. | Not production-applied; local validation only |
 
 The earlier `leads.source` wording is stale. Current repo schema and code use `leads.source_channel`.
 
@@ -168,6 +170,7 @@ The following probes used the corrected production project URL and the saved pub
 | `0017_business_preferred_language.sql` | Unknown; dashboard says no migration rows | `businesses.preferred_language`, `public_link_variants.preferred_language`, language constraints/index. | Yes for fr-CA smoke | Additive columns plus check constraints | Medium | Objects visible; do not re-apply until history/schema reconciliation |
 | `0018_business_lifecycle_deletion_foundation.sql` | Not recorded in standard history because `supabase_migrations.schema_migrations` is missing; objects verified present by owner-run SQL | Business lifecycle columns, deletion request/tombstone tables, lifecycle helpers, RLS policies, grants. | Not required for Phase 20 schema/RPC alignment, but now part of production schema and must be preserved | Object/RLS/policy verification passed; grant/function-definition review still pending | High if replayed blindly | Do not re-apply; record as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history |
 | `0019_lifecycle_helper_execute_grant_hardening.sql` | Applied/verified by direct production SQL, not recorded in standard history because `supabase_migrations.schema_migrations` is missing | Revokes broad PUBLIC/anon EXECUTE from owner-only lifecycle helper functions and restates authenticated/service-role grants. | Yes for least-privilege database/security closure | Grants-only; no data/table/policy change | Low | Closed for grant hardening: `checked_functions = 6`, `all_grant_checks_passed = true` |
+| `0020_founder_test_auth_user_cleanup.sql` | Not applied to production | Extends `admin_action_log` allowed action types for founder-only fake/test auth login deletion audit. | Needed only if the new Founder Admin auth-user cleanup UI is deployed | Constraint-only; no data/table/policy change | Low | Local validation passed; production apply requires separate approval/deploy path |
 
 ## 8. Missing Migrations And Missing Objects
 

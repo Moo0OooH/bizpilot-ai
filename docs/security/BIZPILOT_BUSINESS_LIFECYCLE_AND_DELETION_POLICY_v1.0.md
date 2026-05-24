@@ -97,8 +97,11 @@ Auth user deletion is allowed only through a separate account deletion or explic
 
 - verify the account is explicitly internal/test or a valid account deletion request exists,
 - verify the user has no other active business memberships,
+- block users linked to any `production_customer` workspace,
+- block users who own a workspace or hold an owner membership until that workspace is deleted/transferred first,
+- block founder allowlist accounts,
 - verify the user is not the current founder account,
-- require explicit founder/account confirmation,
+- require exact email/user-id confirmation and final founder acknowledgement,
 - log only non-PII audit evidence.
 
 If these safeguards are unavailable, do not delete `auth.users`.

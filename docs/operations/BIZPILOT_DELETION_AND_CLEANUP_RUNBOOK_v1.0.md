@@ -103,7 +103,34 @@ Write a `business_deletion_tombstones` row with:
 - purged table list,
 - no PII.
 
-Auth users are not deleted by default.
+Auth users are not deleted by workspace cleanup.
+
+## 4A. Test/Fake Auth User Deletion
+
+Use this path only for fake/test auth identities after workspace ownership is resolved.
+
+Allowed:
+
+- unlinked fake/test auth users,
+- non-founder users linked only to `founder_test`, `demo`, or `seed` workspaces,
+- non-owner memberships where deleting the auth identity will not orphan a workspace.
+
+Blocked:
+
+- the signed-in founder account,
+- any founder allowlist account,
+- any user linked to a `production_customer` workspace,
+- any user who owns a workspace or has an owner membership,
+- any attempt without exact email/user-id confirmation.
+
+Founder must confirm:
+
+- checkbox acknowledgement,
+- cleanup mode `test_auth_user_delete`,
+- exact auth user email or user ID typed,
+- final confirmation.
+
+The action uses `auth.admin.deleteUser` from server-only service-role code after founder authorization. It first writes an `admin_action_log` entry with `action_type = test_auth_user_deleted`, then marks that entry complete after the Supabase Auth deletion succeeds. This ordering makes a missing production `0020` constraint update fail before any auth identity is deleted. Log safe metadata only. Do not log passwords, tokens, confirmation links, full payloads, customer content, or service-role keys.
 
 ## 5. Production Deletion Request Review
 
@@ -161,11 +188,11 @@ Recommended production handling:
 - Attempt AI generation for a lead in a `deletion_requested`, `deleting`, or `deleted` workspace.
 - Confirm the response is safe and no new `ai_outputs`/`usage_events` are created.
 
-### Verify Auth Users Remain Intact
+### Verify Workspace Cleanup Does Not Delete Auth Users
 
 - Confirm `auth.users` rows for business members still exist after business deletion request/test cleanup.
-- Confirm no `auth.admin.deleteUser` operation was run.
-- If future account deletion is requested, verify no other active business memberships first.
+- Confirm no `auth.admin.deleteUser` operation was run by workspace cleanup.
+- If separate fake/test auth user deletion is requested, verify the target is not a founder, not an owner, and not linked to any production workspace.
 
 ### Verify Tombstone Has No PII
 

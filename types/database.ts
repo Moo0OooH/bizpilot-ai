@@ -502,6 +502,7 @@ export type Database = {
             | "quote_link_disabled"
             | "quote_link_enabled"
             | "status_changed"
+            | "test_auth_user_deleted"
             | "test_workspace_cleanup_completed";
           actor_user_id: string | null;
           business_id: string | null;
@@ -522,6 +523,7 @@ export type Database = {
             | "quote_link_disabled"
             | "quote_link_enabled"
             | "status_changed"
+            | "test_auth_user_deleted"
             | "test_workspace_cleanup_completed";
           actor_user_id?: string | null;
           business_id?: string | null;
@@ -542,6 +544,7 @@ export type Database = {
             | "quote_link_disabled"
             | "quote_link_enabled"
             | "status_changed"
+            | "test_auth_user_deleted"
             | "test_workspace_cleanup_completed";
           actor_user_id?: string | null;
           business_id?: string | null;
