@@ -80,6 +80,47 @@ body {
   overflow-x: hidden;
 }
 
+@keyframes homepage-demo-step-pulse {
+  0%,
+  82%,
+  100% {
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(0);
+  }
+  12%,
+  24% {
+    border-color: rgba(45, 212, 191, 0.34);
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes homepage-demo-meter-sweep {
+  0% {
+    transform: scaleX(0.18);
+    transform-origin: left;
+  }
+  46%,
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.homepage-demo-step {
+  animation: homepage-demo-step-pulse 7.2s ease-in-out infinite;
+}
+
+.homepage-demo-meter {
+  animation: homepage-demo-meter-sweep 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homepage-demo-step,
+  .homepage-demo-meter {
+    animation: none;
+  }
+}
+
 .biz-dashboard-light {
   --dash-bg: #f8fafc;
   --dash-bg-soft: #eef2f7;

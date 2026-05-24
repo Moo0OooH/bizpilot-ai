@@ -1,7 +1,7 @@
 ﻿# BizPilot Homepage and Visual Theme Standard v1.1
 
 **Status:** Active canonical visual standard
-**Last updated:** 2026-05-22
+**Last updated:** 2026-05-24
 **Applies to:** `/`, `/pricing`, `/admin`, `/auth/*`, `/quote/[slug]`, `/quote/[slug]/success`, and any new pre-dashboard or founder-facing page
 **Source implementation:** `app/page.tsx`, `components/public/marketing-ui.tsx`, `app/admin/page.tsx`
 
@@ -30,6 +30,7 @@ generic SaaS, not enterprise analytics, and not crypto/neon.
 The user should immediately understand:
 
 - quote requests arrive from many channels,
+- delayed replies cost real cleaning jobs,
 - missing details are detected,
 - AI drafts replies safely,
 - the owner approves and sends,
@@ -208,15 +209,17 @@ No emoji in product UI.
 The accepted homepage structure is:
 
 1. Header with brand, nav, sign-in, and primary CTA.
-2. Hero: cleaning pain, CTA pair, trust bullets, live recovery desk preview.
+2. Hero: cleaning pain, CTA pair, trust bullets, and outcome-first recovery desk preview.
 3. Recovery snapshot strip.
-4. Leak map: demand is not the problem, response chaos is.
-5. One operational loop: capture, organize, draft, recover.
-6. Quote Recovery Desk command-center mock.
-7. Before/After recovery pass.
-8. Pilot terms strip.
-9. Final CTA band.
-10. Minimal footer.
+4. Operational pain story: what a lost cleaning lead actually looks like.
+5. Leak map: demand is not the problem, response chaos is.
+6. One operational loop: capture, organize, draft, recover.
+7. Live workflow demo: incoming request, missing info, draft, follow-up.
+8. Quote Recovery Desk command-center mock.
+9. Before/After recovery pass.
+10. Pilot terms strip.
+11. Final CTA band.
+12. Minimal footer.
 
 Do not add About, Blog, Contact, Features, Case Studies, or broad marketing
 pages before pilot validation.
@@ -240,7 +243,9 @@ cards and forms, but the frame should match the final public theme.
 
 Approved public language should be direct and business-facing:
 
-- "Stop losing cleaning jobs to slow replies."
+- "Stop losing cleaning jobs one delayed reply at a time."
+- "Every delayed quote reply is a customer already comparing you to another cleaner."
+- "The lead was warm. The reply was late."
 - "Quote requests organized"
 - "Replies drafted"
 - "Leads at risk"

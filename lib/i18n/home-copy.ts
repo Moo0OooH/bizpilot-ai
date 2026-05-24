@@ -41,6 +41,11 @@ type HomeTextPair = Readonly<{
   title: string;
 }>;
 
+type HomeDetailPair = Readonly<{
+  label: string;
+  value: string;
+}>;
+
 export type HomeNavCopy = Readonly<{
   brandSubtitle: string;
   comparison: string;
@@ -105,6 +110,7 @@ export type HomeCopy = Readonly<{
     aiDraft: string;
     copyResponse: string;
     fromLabel: string;
+    journey: ReadonlyArray<HomeDetailPair>;
     leads: ReadonlyArray<HomeLeadCopy>;
     markContacted: string;
     reply: Readonly<{
@@ -119,6 +125,13 @@ export type HomeCopy = Readonly<{
     reviewReply: string;
     title: string;
     viewAll: string;
+  }>;
+  painStory: Readonly<{
+    body: string;
+    closing: string;
+    eyebrow: string;
+    items: readonly string[];
+    title: string;
   }>;
   metrics: Readonly<{
     eyebrow: string;
@@ -142,6 +155,21 @@ export type HomeCopy = Readonly<{
     items: ReadonlyArray<HomeTextPair>;
     title: string;
   }>;
+  workflowDemo: Readonly<{
+    body: string;
+    eyebrow: string;
+    outcome: string;
+    safety: string;
+    steps: ReadonlyArray<
+      Readonly<{
+        body: string;
+        kicker: string;
+        rows: ReadonlyArray<HomeDetailPair>;
+        title: string;
+      }>
+    >;
+    title: string;
+  }>;
 }>;
 
 export const HOME_COPY_SOURCE_LANGUAGE = DEFAULT_LANGUAGE;
@@ -151,8 +179,10 @@ export const homeCopyNamespaces = [
   "hero",
   "heroDesk",
   "metrics",
+  "painStory",
   "problem",
   "recoveryFlow",
+  "workflowDemo",
   "commandCenter",
   "beforeAfter",
   "trust",
@@ -269,28 +299,36 @@ const englishHomeCopy: HomeCopy = {
       "Cancel anytime",
     ],
     body:
-      "Capture requests, ask for missing details, respond faster, and never lose a lead to silence again.",
-    primaryCta: "Start free recovery",
+      "Start with one clean quote workflow: capture the request, recover missing details, review the draft, and send before the lead goes cold.",
+    primaryCta: "Start recovering quote requests",
     secondaryCta: "See pricing",
-    title: "Turn more cleaning quote requests into real conversations.",
+    title: "Make the next missed quote request much harder to lose.",
   },
   hero: {
-    badge: "For cleaning teams",
+    badge: "For cleaning teams losing leads to delayed replies",
     body:
-      "BizPilot captures quote requests, organizes every lead, and drafts owner-reviewed replies and follow-ups so cleaning businesses can respond faster without auto-sending anything.",
+      "Every delayed quote reply is a customer already comparing you to another cleaner. BizPilot organizes the request, highlights what is missing, and drafts the reply for you to review and send.",
     bullets: [
-      "Works with quote requests from multiple channels",
-      "AI drafts stay in your control",
-      "No auto-send, no fake pricing",
+      "See the customer request, source, urgency, and missing info",
+      "Review an AI-drafted reply before anything is sent",
+      "No auto-send, no fake pricing, no takeover",
     ],
-    primaryCta: "Start free recovery",
-    secondaryCta: "See how it works",
-    title: "Stop losing cleaning jobs to slow replies.",
+    primaryCta: "Start recovering missed quote requests",
+    secondaryCta: "See the quote recovery workflow",
+    title: "Stop losing cleaning jobs one delayed reply at a time.",
   },
   heroDesk: {
     aiDraft: "AI draft",
     copyResponse: "Copy response",
     fromLabel: "From",
+    journey: [
+      { label: "Request", value: "Move-out quote" },
+      { label: "Organized", value: "Source + deadline" },
+      { label: "Missing", value: "Square footage" },
+      { label: "Drafted", value: "Owner review" },
+      { label: "Sent", value: "Manual copy" },
+      { label: "Saved", value: "Lead stays warm" },
+    ],
     leads: [
       {
         customer: "Sarah M.",
@@ -370,6 +408,21 @@ const englishHomeCopy: HomeCopy = {
       },
     ],
   },
+  painStory: {
+    body:
+      "Most lost jobs do not feel lost in the moment. They look like a normal busy day until the customer has already booked another cleaner.",
+    closing:
+      "BizPilot keeps that request visible while there is still time to reply.",
+    eyebrow: "What losing a lead actually looks like",
+    items: [
+      "You finish a cleaning job.",
+      "You check Instagram three hours later.",
+      "A customer asked for a quote.",
+      "The request is missing square footage and access details.",
+      "They already messaged another company.",
+    ],
+    title: "The lead was warm. The reply was late.",
+  },
   nav: {
     brandSubtitle: "Quote Recovery Command Center",
     comparison: "Comparison",
@@ -437,6 +490,56 @@ const englishHomeCopy: HomeCopy = {
       },
     ],
     title: "One operational loop, built to keep warm leads moving.",
+  },
+  workflowDemo: {
+    body:
+      "A move-out cleaning request becomes an organized lead, a missing-info checklist, an owner-reviewed draft, and a follow-up reminder.",
+    eyebrow: "Live workflow",
+    outcome: "Owner-reviewed reply ready in 2 minutes.",
+    safety: "No customer message is sent without review.",
+    steps: [
+      {
+        body: "A realistic cleaning lead comes in from a simple quote link.",
+        kicker: "1 / Incoming",
+        rows: [
+          { label: "Service", value: "Move-out clean" },
+          { label: "Location", value: "Downtown Toronto" },
+          { label: "Urgency", value: "Before Friday" },
+        ],
+        title: "Sarah needs a move-out cleaning quote.",
+      },
+      {
+        body: "BizPilot flags what the owner needs before quoting.",
+        kicker: "2 / Missing info",
+        rows: [
+          { label: "Missing", value: "Square footage" },
+          { label: "Missing", value: "Parking/access" },
+          { label: "Risk", value: "Do not quote too early" },
+        ],
+        title: "The risky blanks are easy to see.",
+      },
+      {
+        body: "The reply asks for the right details without sending automatically.",
+        kicker: "3 / Draft",
+        rows: [
+          { label: "Intent", value: "Move-out clean" },
+          { label: "Need", value: "Fast quote" },
+          { label: "Review", value: "Owner approves" },
+        ],
+        title: "A useful reply is drafted for review.",
+      },
+      {
+        body: "If the customer goes quiet, the next manual touch stays visible.",
+        kicker: "4 / Follow-up",
+        rows: [
+          { label: "Status", value: "Waiting for customer" },
+          { label: "Follow-up", value: "Tomorrow" },
+          { label: "Goal", value: "Keep lead warm" },
+        ],
+        title: "The lead does not disappear after one reply.",
+      },
+    ],
+    title: "Watch a cleaning quote request become a ready-to-review reply.",
   },
   trust: {
     eyebrow: "Pilot terms",
@@ -617,6 +720,14 @@ const frenchHomeCopy: HomeCopy = {
     aiDraft: "Brouillon IA",
     copyResponse: "Copier la réponse",
     fromLabel: "Source",
+    journey: [
+      { label: "Demande", value: "Soumission depart" },
+      { label: "Organisee", value: "Source + delai" },
+      { label: "Manquant", value: "Pieds carres" },
+      { label: "Brouillon", value: "Revision" },
+      { label: "Envoyee", value: "Copie manuelle" },
+      { label: "Sauvee", value: "Lead garde chaud" },
+    ],
     leads: [
       {
         customer: "Sarah M.",
@@ -697,6 +808,21 @@ const frenchHomeCopy: HomeCopy = {
       },
     ],
   },
+  painStory: {
+    body:
+      "Les mandats perdus ne semblent pas toujours perdus sur le moment. Ils ressemblent a une journee chargee, jusqu'a ce que le client ait deja choisi une autre entreprise.",
+    closing:
+      "BizPilot garde la demande visible pendant qu'il reste encore le temps de repondre.",
+    eyebrow: "A quoi ressemble vraiment un lead perdu",
+    items: [
+      "Vous terminez un nettoyage.",
+      "Vous regardez Instagram trois heures plus tard.",
+      "Un client a demande une soumission.",
+      "Il manque les pieds carres et les details d'acces.",
+      "Il a deja ecrit a une autre entreprise.",
+    ],
+    title: "Le lead etait chaud. La reponse etait tardive.",
+  },
   nav: {
     brandSubtitle: "Centre de récupération des soumissions",
     comparison: "Comparaison",
@@ -765,6 +891,57 @@ const frenchHomeCopy: HomeCopy = {
     ],
     title:
       "Une boucle opérationnelle pour garder les leads chauds en mouvement.",
+  },
+  workflowDemo: {
+    body:
+      "Une demande de nettoyage de depart devient un lead organise, une liste d'infos manquantes, un brouillon revise par le proprietaire et un rappel de suivi.",
+    eyebrow: "Parcours en direct",
+    outcome: "Reponse prete a reviser en 2 minutes.",
+    safety: "Aucun message client n'est envoye sans revision.",
+    steps: [
+      {
+        body: "Un lead de nettoyage realiste arrive depuis un lien de soumission.",
+        kicker: "1 / Arrivee",
+        rows: [
+          { label: "Service", value: "Nettoyage depart" },
+          { label: "Lieu", value: "Centre-ville Toronto" },
+          { label: "Urgence", value: "Avant vendredi" },
+        ],
+        title: "Sarah veut une soumission de nettoyage de depart.",
+      },
+      {
+        body: "BizPilot montre ce qu'il faut confirmer avant de chiffrer.",
+        kicker: "2 / Infos",
+        rows: [
+          { label: "Manquant", value: "Pieds carres" },
+          { label: "Manquant", value: "Stationnement/acces" },
+          { label: "Risque", value: "Ne pas chiffrer trop tot" },
+        ],
+        title: "Les blancs risques sont visibles.",
+      },
+      {
+        body: "La reponse demande les bons details sans envoi automatique.",
+        kicker: "3 / Brouillon",
+        rows: [
+          { label: "Intention", value: "Nettoyage depart" },
+          { label: "Besoin", value: "Soumission rapide" },
+          { label: "Revision", value: "Proprietaire approuve" },
+        ],
+        title: "Une reponse utile est prete a reviser.",
+      },
+      {
+        body: "Si le client devient silencieux, le prochain suivi reste visible.",
+        kicker: "4 / Suivi",
+        rows: [
+          { label: "Statut", value: "En attente client" },
+          { label: "Suivi", value: "Demain" },
+          { label: "But", value: "Garder le lead chaud" },
+        ],
+        title: "Le lead ne disparait pas apres une reponse.",
+      },
+    ],
+    title:
+      "Voyez une demande de nettoyage devenir une reponse prete a reviser.",
   },
   trust: {
     eyebrow: "Conditions pilote",
