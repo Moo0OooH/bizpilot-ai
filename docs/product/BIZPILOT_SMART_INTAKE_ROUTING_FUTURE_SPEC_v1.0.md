@@ -1,8 +1,8 @@
 # BizPilot Smart Intake Routing Future Spec v1.0
 
 **Project:** BizPilot AI
-**Document Type:** Future product module specification
-**Status:** Proposed / Docs-only / Not approved for implementation
+**Document Type:** Product module specification and staged implementation note
+**Status:** Stage 1 Lite implemented locally; advanced routing remains gated
 **Last Updated:** 2026-05-24
 **Owner:** MoOoH
 **Current Pilot Status:** Founder-controlled synthetic demos only. Not ready for first real pilot customer with real customer data.
@@ -25,6 +25,8 @@ For the current cleaning-first BizPilot MVP, this should not become a full workf
 - routing reason,
 - owner/admin confirmation.
 
+Phase 21 now includes a deliberately small Stage 1 Lite implementation: rule-based priority, suggested queue, suggested reviewer, routing reasons, missing-info summary, and a next action on the owner lead detail page. It uses existing lead, score, SLA, and intake values only. It does not add migrations, rule-builder tables, auto-assignment, auto-send, external integrations, or healthcare/clinic support.
+
 The advanced future version may include routing rules, team queues, field priority weights, member routing profiles, and audit trails. That future version should only be built after production readiness gates pass and real customer discovery confirms routing pain.
 
 ---
@@ -46,16 +48,18 @@ BizPilot should keep its current product discipline:
 - no Instagram API,
 - no multi-vertical expansion yet.
 
-Smart Intake Routing is approved as a **future product concept**, not a current Phase 21 implementation task.
+Smart Intake Routing is approved as a staged product direction. The current Phase 21 implementation is limited to **Smart Intake Routing Lite** for cleaning quote recovery.
 
 Current decision:
 
 ```text
-Document now.
+Document the full direction.
+Implement only Stage 1 Lite locally.
 Validate through customer discovery.
-Do not implement runtime code yet.
 Do not add migrations yet.
-Do not add dashboard behavior yet.
+Do not add advanced rule-builder tables yet.
+Do not add automatic assignment yet.
+Do not add auto-send or external messaging.
 Do not expand vertical scope yet.
 ```
 
@@ -672,7 +676,9 @@ Consider implementation only after at least 3-5 real businesses confirm routing 
 
 ## 17. Build Gate
 
-Do not implement Smart Intake Routing until all of these are true:
+Stage 1 Lite is now implemented locally as a no-migration, no-auto-assignment dashboard suggestion layer.
+
+Do not implement advanced Smart Intake Routing until all of these are true:
 
 - production pilot gates pass,
 - production Supabase schema/RPC alignment is complete,
@@ -688,19 +694,19 @@ Do not implement Smart Intake Routing until all of these are true:
 
 ## 18. Recommended Roadmap
 
-### Stage 0 - Now
+### Stage 0 - Completed
 
-Docs only.
+Product direction captured in this spec.
 
 ```text
 Document future concept.
 Use in customer discovery.
-Do not implement runtime behavior.
+Keep advanced implementation gated.
 ```
 
-### Stage 1 - Simple Cleaning Signal
+### Stage 1 - Implemented Locally
 
-Potential later MVP-safe addition:
+Simple cleaning signal in the owner lead detail page:
 
 ```text
 Priority badge
@@ -708,6 +714,8 @@ Missing info summary
 Suggested queue text
 Routing reason text
 No actual assignment
+No new tables
+No production deploy in this step
 ```
 
 ### Stage 2 - Manual Suggested Routing
@@ -777,15 +785,14 @@ Smart Intake Routing must not distract from closing these gates.
 
 ## 21. Final Recommendation
 
-Approve this as a **future product direction** and add it to the product docs.
+Keep Smart Intake Routing as a staged product direction.
 
-Do not build it yet.
+The Stage 1 Lite signal is safe to keep in the local codebase because it is deterministic, owner-reviewed, no-migration, and cleaning-first. Do not build advanced routing, team queues, rule builders, or vertical packs until the build gate passes.
 
 Best next action:
 
 ```text
-Add this spec to docs/product.
-Reference it as a future module.
+Validate the Stage 1 Lite wording and usefulness during synthetic demos.
 Use the validation questions during customer discovery.
-Keep the current MVP scope unchanged.
+Keep advanced routing out of the current production pilot scope until real demand is confirmed.
 ```

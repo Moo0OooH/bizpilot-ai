@@ -82,6 +82,7 @@ const userFacingSourceFiles = [
   "lib/i18n/pricing-copy.ts",
   "app/(dashboard)/layout.tsx",
   "app/(dashboard)/dashboard/page.tsx",
+  "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
   "app/(dashboard)/dashboard/leads/page.tsx",
   "app/(dashboard)/dashboard/settings/page.tsx",
   "app/(dashboard)/dashboard/business-profile/page.tsx",

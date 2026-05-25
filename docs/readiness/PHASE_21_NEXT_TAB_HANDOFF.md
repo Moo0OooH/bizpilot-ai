@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup, homepage conversion polish, and dashboard i18n systemization now added locally, but it is not approved for the first real customer pilot yet.
+BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup, homepage conversion polish, dashboard i18n systemization, and Smart Intake Routing Lite now added locally, but it is not approved for the first real customer pilot yet.
 ```
 
 ## 2. Current Git State
@@ -19,7 +19,7 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Item | Current value |
 | --- | --- |
 | Current branch | `phase-21-production-alignment` |
-| Current branch tip before this handoff refresh | `bd3d2a0 feat: sharpen homepage quote recovery conversion`. Re-run `git log -1 --oneline` before continuing. |
+| Current branch tip before this handoff refresh | `86c1fd0 feat: systemize dashboard i18n`. Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
@@ -27,7 +27,8 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Founder fake/test auth-user cleanup commit | `daa23c8 feat: add safe founder test auth user deletion` |
 | Smart intake routing future-doc commit | `27156c5 docs: capture smart intake routing future concept` |
 | Homepage conversion polish commit | `bd3d2a0 feat: sharpen homepage quote recovery conversion` |
-| Dashboard i18n systemization commit | This commit (`feat: systemize dashboard i18n`); run `git log -1 --oneline` for the current hash |
+| Dashboard i18n systemization commit | `86c1fd0 feat: systemize dashboard i18n` |
+| Smart Intake Routing Lite commit | Pending at this handoff refresh; run `git log -1 --oneline` after commit |
 | Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
 | Latest Vercel evidence commit | `9adde10 docs: record vercel production target evidence` |
 | Previous Phase 20 baseline | `39113f4 chore: record phase 20 pilot gate findings` |
@@ -36,7 +37,7 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
 | GitHub remote branches | `main` at `7fe0475`, `phase-19-readiness-findings` at `a27705f`, `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
-| Working tree after `bd3d2a0` | Handoff/docs refresh in progress at this update; re-check status before continuing |
+| Working tree after `86c1fd0` | Smart Intake Routing Lite changes in progress at this update; re-check status before continuing |
 | Production deploy triggered in Phase 21 | No |
 
 Do not push to `origin/main` unless the owner explicitly approves it. Keep production deploy risk visible.
@@ -149,7 +150,8 @@ Validation passed in Phase 20:
 - Production readiness runbooks and historical readiness docs were realigned with Phase 21 evidence so stale Phase 19C schema blockers no longer appear as current operational truth. This was committed as `ebd4a04`.
 - `package.json` now declares `"type": "module"` to remove Node's unit-test module-type warnings. `pnpm verify` passed after the change. This was committed as `810e8c4`.
 - Founder Admin now has a repo-backed fake/test auth login deletion path guarded against founder accounts, production-customer users, and workspace owners. Migration `0020_founder_test_auth_user_cleanup.sql` extends the audit action constraint locally. It is not pushed, deployed, or applied to production yet. This was committed as `daa23c8`.
-- Smart Intake Routing was documented as a future product concept only. It is not approved for implementation and must not distract from the current cleaning quote-recovery MVP. This was committed as `27156c5`.
+- Smart Intake Routing was first documented as a future product concept in `27156c5`.
+- Smart Intake Routing Lite is now implemented locally as a deterministic cleaning-first suggestion layer in Lead Detail: priority, suggested queue, suggested reviewer, reasons, missing-info summary, and next action. It has no migration, no routing persistence, no auto-assignment, no auto-send, no external API usage, and no production deploy. Evidence is recorded in `docs/readiness/PHASE_21J_SMART_INTAKE_ROUTING_LITE.md`.
 - Homepage conversion polish tightened the hero, added an operational pain story, made the hero recovery visual outcome-first, added a live workflow demo, preserved the no-auto-send trust anchor, and updated homepage copy tests/standards. This was committed as `bd3d2a0`.
 - Dashboard i18n systemization made `businesses.preferred_language` the authenticated dashboard source of truth, moved visible dashboard overview/leads/configuration/settings/business-profile copy into the central dictionary, localized readiness task labels by `taskKey`, kept client shell copy serializable, and added regression tests against mojibake and local dashboard language branches. Evidence is recorded in `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
@@ -193,6 +195,19 @@ Latest validation after dashboard i18n systemization:
 - production deploy: not triggered,
 - production SQL: not touched.
 
+Latest validation after Smart Intake Routing Lite:
+
+- `pnpm test:unit`: pass, 48/48,
+- `pnpm typecheck`: pass,
+- `pnpm lint`: pass,
+- `pnpm build`: pass,
+- `git diff --check`: pass, CRLF warnings only,
+- changed-file secret scan: no key/token/private-key pattern matches,
+- browser QA on local `/dashboard/leads/[leadId]`: Smart Intake Routing panel visible,
+- browser QA viewport around 500px: no horizontal overflow,
+- production deploy: not triggered,
+- production SQL: not touched.
+
 ## 6. Important Working Tree Areas
 
 The Phase 21 implementation baseline was committed locally as `56b81a8`; evidence/operations/hygiene commits through `810e8c4` followed it. Later local continuation commits added founder fake/test auth cleanup (`daa23c8`), a future Smart Intake Routing doc (`27156c5`), and homepage conversion polish (`bd3d2a0`). Re-check `git status --short --branch` before any additional commit or push.
@@ -210,7 +225,7 @@ Important Phase 21 areas include:
 - founder fake/test auth login deletion UI/service/tests and migration `0020`,
 - homepage conversion polish in `app/page.tsx`, `lib/i18n/home-copy.ts`, and `app/globals.css`,
 - dashboard i18n systemization in `lib/i18n/bizpilot-copy.ts`, `lib/i18n/language.ts`, `app/(dashboard)/**`, and `components/dashboard/**`,
-- Smart Intake Routing future spec as docs-only / not approved for runtime implementation.
+- Smart Intake Routing Lite in `server/services/lead-conversion-rules.service.ts`, `server/services/lead-conversion.service.ts`, `app/(dashboard)/dashboard/leads/[leadId]/page.tsx`, central dashboard copy, and unit tests.
 
 Before committing:
 

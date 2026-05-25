@@ -20,6 +20,7 @@
  */
 
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { CopyButton } from "@/components/dashboard/copy-button";
@@ -30,15 +31,18 @@ import {
   disabledButtonClass,
   EmptyState,
   inputClass,
-  LeadStatusBadge,
   PageHeader,
   primaryButtonClass,
-  ResponseSlaBadge,
   SectionHeader,
   shortCustomerName,
   StatusBadge,
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  resolveWorkspaceInterfaceLanguage,
+} from "@/lib/i18n/language";
 import { generateLeadAiBundleAction } from "@/server/actions/ai-lead-assistant.actions";
 import {
   completeActionItemAction,
@@ -54,6 +58,10 @@ import type { Json } from "@/types/database";
 
 export const dynamic = "force-dynamic";
 
+type DashboardCopy = ReturnType<typeof getBizPilotCopy>["dashboard"];
+type LeadDetailCopy = DashboardCopy["leadDetail"];
+type LeadQueueCopy = DashboardCopy["leadQueue"];
+
 type LeadDetailPageProps = Readonly<{
   params: Promise<{
     leadId: string;
@@ -64,51 +72,60 @@ type LeadDetailPageProps = Readonly<{
   }>;
 }>;
 
-function label(value: string): string {
-  return value.replaceAll("_", " ");
+function label(value: string, copy?: Record<string, string>): string {
+  return copy?.[value] ?? value.replaceAll("_", " ");
 }
 
-function formatDate(value: string | null): string {
+function formatDate(
+  value: string | null,
+  detailCopy: LeadDetailCopy,
+  queueCopy: LeadQueueCopy,
+): string {
   if (!value) {
-    return "Not yet";
+    return detailCopy.notYet;
   }
 
-  return new Intl.DateTimeFormat("en", {
+  return new Intl.DateTimeFormat(queueCopy.age.olderDateLocale, {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(new Date(value));
 }
 
-function formatAge(value: string | null): string {
+function formatAge(
+  value: string | null,
+  detailCopy: LeadDetailCopy,
+  queueCopy: LeadQueueCopy,
+): string {
   if (!value) {
-    return "Not yet";
+    return detailCopy.notYet;
   }
 
   const diffMinutes = Math.max(
     0,
     Math.round((Date.now() - new Date(value).getTime()) / 60000),
   );
+  const suffix = queueCopy.age.ago ? ` ${queueCopy.age.ago}` : "";
 
   if (diffMinutes < 60) {
-    return `${Math.max(diffMinutes, 1)}m ago`;
+    return `${queueCopy.age.minute(Math.max(diffMinutes, 1))}${suffix}`;
   }
 
   const diffHours = Math.round(diffMinutes / 60);
 
   if (diffHours < 24) {
-    return `${diffHours}h ago`;
+    return `${queueCopy.age.hour(diffHours)}${suffix}`;
   }
 
-  return formatDate(value);
+  return formatDate(value, detailCopy, queueCopy);
 }
 
-function jsonValueToText(value: Json): string {
+function jsonValueToText(value: Json, detailCopy: LeadDetailCopy): string {
   if (value === null) {
-    return "Not provided";
+    return detailCopy.notProvided;
   }
 
   if (typeof value === "boolean") {
-    return value ? "Yes" : "No";
+    return value ? detailCopy.values.yes : detailCopy.values.no;
   }
 
   if (typeof value === "number" || typeof value === "string") {
@@ -116,6 +133,37 @@ function jsonValueToText(value: Json): string {
   }
 
   return JSON.stringify(value);
+}
+
+function statusTone(value: string) {
+  if (
+    value === "lost" ||
+    value === "archived" ||
+    value === "overdue" ||
+    value === "low_fit"
+  ) {
+    return "red";
+  }
+
+  if (value === "booked" || value === "replied" || value === "reply_copied") {
+    return "emerald";
+  }
+
+  if (value.includes("follow") || value === "asked_info") {
+    return "amber";
+  }
+
+  if (value === "new" || value === "reviewed" || value === "viewed") {
+    return "blue";
+  }
+
+  return "neutral";
+}
+
+function routingPriorityTone(value: string) {
+  if (value === "high") return "red";
+  if (value === "review") return "amber";
+  return "blue";
 }
 
 export default async function LeadDetailPage({
@@ -132,6 +180,7 @@ export default async function LeadDetailPage({
     redirect("/auth/sign-in");
   }
 
+  const cookieStore = await cookies();
   const workspace = await getBusinessWorkspace({ userId: user.id });
   const activeBusiness = workspace.businesses[0];
 
@@ -139,9 +188,22 @@ export default async function LeadDetailPage({
     redirect("/dashboard");
   }
 
+  const activeLanguage = resolveWorkspaceInterfaceLanguage({
+    businessLanguage: activeBusiness.preferred_language,
+    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
+  const dashboardCopy = getBizPilotCopy(activeLanguage).dashboard;
+  const missingInfoLabels = getBizPilotCopy(activeLanguage).missingInfoLabels;
+  const detailCopy = dashboardCopy.leadDetail;
+  const queueCopy = dashboardCopy.leadQueue;
+  const localizedBusiness = {
+    ...activeBusiness,
+    preferred_language: activeLanguage,
+  };
+
   const detail = await getLeadDetail({
     actorUserId: user.id,
-    business: activeBusiness,
+    business: localizedBusiness,
     leadId,
   });
 
@@ -150,16 +212,18 @@ export default async function LeadDetailPage({
   }
 
   const aiOutput = await getLatestLeadAiOutput({
-    business: activeBusiness,
+    business: localizedBusiness,
     leadId,
   });
 
-  const customerName = detail.lead.customer_name ?? "Unnamed lead";
-  const customerShort = shortCustomerName(detail.lead.customer_name);
-  const serviceType = detail.lead.service_type ?? "Service not set";
-  const cityArea = detail.lead.city_or_service_area ?? "Area missing";
-  const contact = detail.lead.customer_contact ?? "No contact captured";
-  const createdAge = formatAge(detail.lead.created_at);
+  const customerName = detail.lead.customer_name ?? detailCopy.fallbacks.unnamedLead;
+  const customerShort = detail.lead.customer_name
+    ? shortCustomerName(detail.lead.customer_name)
+    : detailCopy.fallbacks.unnamedLead;
+  const serviceType = detail.lead.service_type ?? detailCopy.fallbacks.service;
+  const cityArea = detail.lead.city_or_service_area ?? detailCopy.fallbacks.area;
+  const contact = detail.lead.customer_contact ?? detailCopy.fallbacks.contact;
+  const createdAge = formatAge(detail.lead.created_at, detailCopy, queueCopy);
   const slaTone =
     detail.lead.response_sla_state === "overdue"
       ? "red"
@@ -173,7 +237,7 @@ export default async function LeadDetailPage({
         className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--dash-text-muted)] transition hover:text-[var(--dash-text)]"
         href="/dashboard/leads"
       >
-        <span>&larr;</span> Back to Lead Recovery Queue
+        <span>&larr;</span> {detailCopy.backToQueue}
       </Link>
 
       <PageHeader
@@ -182,20 +246,24 @@ export default async function LeadDetailPage({
             <form action={markReplyCopiedAction}>
               <input name="leadId" type="hidden" value={detail.lead.id} />
               <button className={buttonClass} type="submit">
-                Mark Reply Copied
+                {detailCopy.markReplyCopied}
               </button>
             </form>
             <form action={markLeadOutcomeAction}>
               <input name="leadId" type="hidden" value={detail.lead.id} />
               <input name="manualOutcome" type="hidden" value="booked" />
               <button className={primaryButtonClass} type="submit">
-                Mark Won
+                {detailCopy.markWon}
               </button>
             </form>
           </>
         }
-        description={`${serviceType} request - ${cityArea} - received ${createdAge}`}
-        eyebrow="Lead Response Desk"
+        description={detailCopy.detailDescription(
+          serviceType,
+          cityArea,
+          createdAge,
+        )}
+        eyebrow={dashboardCopy.pages.leadDetail.title}
         title={customerShort}
       />
 
@@ -227,8 +295,12 @@ export default async function LeadDetailPage({
           </div>
 
           <div className="flex flex-wrap items-center gap-2 lg:justify-end">
-            <ResponseSlaBadge value={detail.lead.response_sla_state} />
-            <LeadStatusBadge value={detail.lead.status} />
+            <StatusBadge tone={slaTone}>
+              {label(detail.lead.response_sla_state, detailCopy.statusLabels)}
+            </StatusBadge>
+            <StatusBadge tone={statusTone(detail.lead.status)}>
+              {label(detail.lead.status, detailCopy.statusLabels)}
+            </StatusBadge>
             <StatusBadge tone={slaTone}>{createdAge}</StatusBadge>
           </div>
         </div>
@@ -240,21 +312,24 @@ export default async function LeadDetailPage({
           {/* Lead details (read-only fields) */}
           <DashboardCard className="p-[22px]">
             <SectionHeader
-              description="Quote intake values captured from the public form."
-              title="Lead details"
+              description={detailCopy.sections.leadDetailsDescription}
+              title={detailCopy.sections.leadDetailsTitle}
             />
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <ReadOnlyField label="Name" value={customerShort} />
-              <ReadOnlyField label="Contact" value={contact} />
-              <ReadOnlyField label="Service type" value={serviceType} />
-              <ReadOnlyField label="City / area" value={cityArea} />
+              <ReadOnlyField label={detailCopy.fields.name} value={customerShort} />
+              <ReadOnlyField label={detailCopy.fields.contact} value={contact} />
               <ReadOnlyField
-                label="Source"
-                value={detail.lead.source_channel ?? "Quote link"}
+                label={detailCopy.fields.serviceType}
+                value={serviceType}
+              />
+              <ReadOnlyField label={detailCopy.fields.cityArea} value={cityArea} />
+              <ReadOnlyField
+                label={detailCopy.fields.source}
+                value={detail.lead.source_channel ?? detailCopy.fallbacks.source}
               />
               <ReadOnlyField
-                label="Submitted"
-                value={formatDate(detail.lead.created_at)}
+                label={detailCopy.fields.submitted}
+                value={formatDate(detail.lead.created_at, detailCopy, queueCopy)}
               />
             </div>
 
@@ -262,14 +337,14 @@ export default async function LeadDetailPage({
               <>
                 <div className="my-4 h-px bg-[var(--dash-border)]" />
                 <p className="mb-3 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
-                  Quote intake fields
+                  {detailCopy.quoteIntakeFields}
                 </p>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {detail.submissionValues.map((value) => (
                     <ReadOnlyField
                       key={value.id}
                       label={value.field_label}
-                      value={jsonValueToText(value.field_value)}
+                      value={jsonValueToText(value.field_value, detailCopy)}
                     />
                   ))}
                 </div>
@@ -280,46 +355,118 @@ export default async function LeadDetailPage({
           {/* Missing info detected */}
           <DashboardCard className="p-[22px]">
             <SectionHeader
-              description="Ask these before estimating or promising availability."
-              title="Missing information detected"
+              description={detailCopy.missing.description}
+              title={detailCopy.missing.title}
             />
             <div className="mt-4 flex flex-wrap gap-2">
               {detail.score.missing_info_keys.length > 0 ? (
                 detail.score.missing_info_keys.map((key) => (
                   <StatusBadge key={key} tone="amber">
-                    {label(key)}
+                    {label(key, missingInfoLabels)}
                   </StatusBadge>
                 ))
               ) : (
                 <StatusBadge tone="emerald">
-                  No required quote details missing
+                  {detailCopy.missing.noRequiredMissing}
                 </StatusBadge>
               )}
             </div>
             <p className="mt-4 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
               <span className="font-bold text-[var(--dash-text)]">
-                Primary issue:
+                {detailCopy.labels.primaryIssue}:
               </span>{" "}
               {detail.primaryIssue}
             </p>
             <p className="mt-2 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
               <span className="font-bold text-[var(--dash-text)]">
-                Recommended action:
+                {detailCopy.labels.recommendedAction}:
               </span>{" "}
               {detail.recommendedAction}
+            </p>
+          </DashboardCard>
+
+          <DashboardCard className="p-[22px]" variant="priority">
+            <SectionHeader
+              description={detailCopy.routing.description}
+              title={detailCopy.routing.title}
+            />
+            <div className="mt-3 flex flex-wrap gap-2">
+              {detailCopy.routing.badges.map((badge) => (
+                <StatusBadge key={badge} tone="emerald">
+                  {badge}
+                </StatusBadge>
+              ))}
+            </div>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              <ReadOnlyField
+                label={detailCopy.routing.priorityLabel}
+                value={
+                  detailCopy.routing.priorities[
+                    detail.routingSuggestion.priority
+                  ] ?? detail.routingSuggestion.priority
+                }
+              />
+              <ReadOnlyField
+                label={detailCopy.routing.queueLabel}
+                value={
+                  detailCopy.routing.queues[
+                    detail.routingSuggestion.suggestedQueue
+                  ] ?? detail.routingSuggestion.suggestedQueue
+                }
+              />
+              <ReadOnlyField
+                label={detailCopy.routing.reviewerLabel}
+                value={
+                  detailCopy.routing.reviewers[
+                    detail.routingSuggestion.suggestedReviewer
+                  ] ?? detail.routingSuggestion.suggestedReviewer
+                }
+              />
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <StatusBadge
+                tone={routingPriorityTone(detail.routingSuggestion.priority)}
+              >
+                {detailCopy.routing.priorities[
+                  detail.routingSuggestion.priority
+                ] ?? detail.routingSuggestion.priority}
+              </StatusBadge>
+              {detail.routingSuggestion.reasonCodes.map((reason) => (
+                <StatusBadge key={reason} tone="blue">
+                  {detailCopy.routing.reasons[reason] ?? label(reason)}
+                </StatusBadge>
+              ))}
+            </div>
+            <p className="mt-4 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
+              <span className="font-bold text-[var(--dash-text)]">
+                {detailCopy.routing.nextActionLabel}:
+              </span>{" "}
+              {detailCopy.routing.nextActions[
+                detail.routingSuggestion.nextAction
+              ] ?? detail.routingSuggestion.nextAction}
+            </p>
+            <p className="mt-2 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
+              <span className="font-bold text-[var(--dash-text)]">
+                {detailCopy.routing.missingInfoLabel}:
+              </span>{" "}
+              {detail.routingSuggestion.missingInfoKeys.length > 0
+                ? detail.routingSuggestion.missingInfoKeys
+                    .map((key) => label(key, missingInfoLabels))
+                    .join(", ")
+                : detailCopy.routing.noMissingInfo}
             </p>
           </DashboardCard>
 
           {/* Owner controls — status + manual outcome */}
           <DashboardCard className="p-[22px]">
             <SectionHeader
-              description="Owner-controlled status and manual outcome tracking. Nothing changes automatically."
-              title="Lead controls"
+              description={detailCopy.sections.controlsDescription}
+              title={detailCopy.sections.controlsTitle}
             />
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <form action={updateLeadStatusAction} className="grid gap-2">
                 <span className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
-                  Status
+                  {detailCopy.labels.status}
                 </span>
                 <input name="leadId" type="hidden" value={detail.lead.id} />
                 <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
@@ -328,22 +475,32 @@ export default async function LeadDetailPage({
                     defaultValue={detail.lead.status}
                     name="status"
                   >
-                    <option value="new">New</option>
-                    <option value="reviewed">Reviewed</option>
-                    <option value="replied">Replied</option>
-                    <option value="follow_up_needed">Follow-up needed</option>
-                    <option value="booked">Booked</option>
-                    <option value="lost">Lost</option>
-                    <option value="archived">Archived</option>
+                    <option value="new">{detailCopy.statusLabels.new}</option>
+                    <option value="reviewed">
+                      {detailCopy.statusLabels.reviewed}
+                    </option>
+                    <option value="replied">
+                      {detailCopy.statusLabels.replied}
+                    </option>
+                    <option value="follow_up_needed">
+                      {detailCopy.statusLabels.follow_up_needed}
+                    </option>
+                    <option value="booked">
+                      {detailCopy.statusLabels.booked}
+                    </option>
+                    <option value="lost">{detailCopy.statusLabels.lost}</option>
+                    <option value="archived">
+                      {detailCopy.statusLabels.archived}
+                    </option>
                   </select>
                   <button className={buttonClass} type="submit">
-                    Save
+                    {detailCopy.save}
                   </button>
                 </div>
               </form>
               <form action={markLeadOutcomeAction} className="grid gap-2">
                 <span className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
-                  Manual outcome
+                  {detailCopy.labels.manualOutcome}
                 </span>
                 <input name="leadId" type="hidden" value={detail.lead.id} />
                 <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
@@ -352,14 +509,22 @@ export default async function LeadDetailPage({
                     defaultValue={detail.lead.manual_outcome ?? "booked"}
                     name="manualOutcome"
                   >
-                    <option value="booked">Booked</option>
-                    <option value="lost">Lost</option>
-                    <option value="no_response">No response</option>
-                    <option value="not_a_fit">Not a fit</option>
-                    <option value="asked_info">Asked info</option>
+                    <option value="booked">
+                      {detailCopy.statusLabels.booked}
+                    </option>
+                    <option value="lost">{detailCopy.statusLabels.lost}</option>
+                    <option value="no_response">
+                      {detailCopy.statusLabels.no_response}
+                    </option>
+                    <option value="not_a_fit">
+                      {detailCopy.statusLabels.not_a_fit}
+                    </option>
+                    <option value="asked_info">
+                      {detailCopy.statusLabels.asked_info}
+                    </option>
                   </select>
                   <button className={buttonClass} type="submit">
-                    Mark
+                    {detailCopy.mark}
                   </button>
                 </div>
               </form>
@@ -369,17 +534,16 @@ export default async function LeadDetailPage({
           {/* Owner notes (private). Storage TBD — local-only textarea for now. */}
           <DashboardCard className="p-[22px]">
             <SectionHeader
-              description="Private notes for pilot learning and follow-up quality. Storage will be wired in a later phase; the field is visible to remind the owner of what to track."
-              title="Owner notes"
+              description={detailCopy.ownerNotes.description}
+              title={detailCopy.ownerNotes.title}
             />
             <textarea
               className={`${textareaClass} mt-4 min-h-28`}
               defaultValue=""
-              placeholder="Add notes about this request, objections, pricing context, or follow-up outcome..."
+              placeholder={detailCopy.ownerNotes.placeholder}
             />
             <p className="mt-2 text-[11px] text-[var(--dash-text-muted)]">
-              Notes persistence is part of Phase 18B and is not yet stored
-              server-side.
+              {detailCopy.ownerNotes.persistenceNote}
             </p>
           </DashboardCard>
         </div>
@@ -395,12 +559,12 @@ export default async function LeadDetailPage({
                     className={aiOutput ? buttonClass : primaryButtonClass}
                     type="submit"
                   >
-                    {aiOutput ? "Regenerate" : "Generate AI draft"}
+                    {aiOutput ? detailCopy.ai.regenerate : detailCopy.ai.generate}
                   </button>
                 </form>
               }
-              description="Manual, on-demand drafts. Nothing is sent automatically."
-              title="AI Summary"
+              description={detailCopy.ai.manualDraftDescription}
+              title={detailCopy.ai.title}
             />
             {aiOutput ? (
               <>
@@ -409,10 +573,12 @@ export default async function LeadDetailPage({
                     tone={aiOutput.provider === "openai" ? "emerald" : "amber"}
                   >
                     {aiOutput.provider === "openai"
-                      ? "Model draft"
-                      : "Rule fallback"}
+                      ? detailCopy.ai.modelDraft
+                      : detailCopy.ai.ruleFallback}
                   </StatusBadge>
-                  <StatusBadge tone="blue">Owner review required</StatusBadge>
+                  <StatusBadge tone="blue">
+                    {detailCopy.ai.ownerReviewRequired}
+                  </StatusBadge>
                 </div>
                 <p className="mt-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
                   {aiOutput.output.leadSummary}
@@ -420,28 +586,29 @@ export default async function LeadDetailPage({
                 <div className="mt-4 grid gap-2 text-[12px] text-[var(--dash-text-secondary)]">
                   <p>
                     <span className="font-bold text-[var(--dash-text)]">
-                      Next action:
+                      {detailCopy.ai.nextAction}:
                     </span>{" "}
                     {aiOutput.output.suggestedNextAction}
                   </p>
                   <p>
                     <span className="font-bold text-[var(--dash-text)]">
-                      Missing info:
+                      {detailCopy.ai.missingInfo}:
                     </span>{" "}
                     {aiOutput.output.missingInfoReasoning}
                   </p>
                   <p className="text-[11px] text-[var(--dash-text-muted)]">
-                    Source: {aiOutput.model} - Est. cost $
+                    {detailCopy.ai.source}: {aiOutput.model} -{" "}
+                    {detailCopy.ai.estimatedCost} $
                     {aiOutput.estimatedCost.toFixed(6)}
-                    {aiOutput.provider === "rule_fallback" ? " (fallback)" : ""}
+                    {aiOutput.provider === "rule_fallback"
+                      ? ` (${detailCopy.ai.ruleFallback})`
+                      : ""}
                   </p>
                 </div>
               </>
             ) : (
               <p className="mt-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
-                Generate a draft when ready. BizPilot prepares a summary, reply
-                draft, follow-up draft, and next action. Owner reviews, copies,
-                and sends manually.
+                {detailCopy.ai.manualDraftDescription}
               </p>
             )}
           </DashboardCard>
@@ -449,37 +616,37 @@ export default async function LeadDetailPage({
           {aiOutput ? (
             <>
               <DashboardCard className="biz-card-ai p-[22px]">
-                <SectionHeader title="Suggested reply" />
+                <SectionHeader title={detailCopy.ai.suggestedReply} />
                 <pre className="biz-draft-box mt-3 whitespace-pre-wrap font-sans">
                   {aiOutput.output.replyDraft}
                 </pre>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <CopyButton
-                    label="Copy reply"
+                    label={detailCopy.ai.copyReply}
                     value={aiOutput.output.replyDraft}
                   />
                   <button
                     className={`${disabledButtonClass}`}
-                    title="Editing inline is a Phase 18B improvement."
+                    title={detailCopy.ai.editManuallyTitle}
                     type="button"
                   >
-                    Edit manually
+                    {detailCopy.ai.editManually}
                   </button>
                 </div>
                 <p className="mt-3 text-[11px] text-[var(--dash-text-muted)]">
-                  No Send button in MVP. Owner copies and sends manually.
+                  {detailCopy.ai.noSend}
                 </p>
               </DashboardCard>
 
               <DashboardCard className="p-[22px]">
-                <SectionHeader title="Follow-up draft" />
+                <SectionHeader title={detailCopy.ai.followUpDraft} />
                 <pre className="biz-draft-box mt-3 whitespace-pre-wrap font-sans">
                   {aiOutput.output.followUpDraft}
                 </pre>
                 <div className="mt-3">
                   <CopyButton
                     className="w-full"
-                    label="Copy follow-up"
+                    label={detailCopy.ai.copyFollowUp}
                     value={aiOutput.output.followUpDraft}
                   />
                 </div>
@@ -488,11 +655,16 @@ export default async function LeadDetailPage({
           ) : null}
 
           <DashboardCard className="p-[22px]">
-            <SectionHeader title="AI guardrails" />
+            <SectionHeader title={detailCopy.ai.guardrails} />
             <div className="mt-3 flex flex-wrap gap-2">
-              <StatusBadge tone="emerald">No auto-send</StatusBadge>
-              <StatusBadge tone="emerald">No invented pricing</StatusBadge>
-              <StatusBadge tone="blue">Owner reviewed</StatusBadge>
+              {detailCopy.ai.guardrailBadges.map((badge, index) => (
+                <StatusBadge
+                  key={badge}
+                  tone={index < 2 ? "emerald" : "blue"}
+                >
+                  {badge}
+                </StatusBadge>
+              ))}
             </div>
           </DashboardCard>
         </aside>
@@ -501,7 +673,7 @@ export default async function LeadDetailPage({
       {/* Action items + Timeline */}
       <section className="grid min-w-0 gap-4 xl:grid-cols-2">
         <DashboardCard className="p-[22px]">
-          <SectionHeader title="Action items" />
+          <SectionHeader title={detailCopy.actionItems} />
           <div className="mt-3 overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
             {detail.actions.length > 0 ? (
               detail.actions.map((action) => (
@@ -514,7 +686,8 @@ export default async function LeadDetailPage({
                       {action.title}
                     </span>
                     <span className="mt-0.5 block text-[12px] capitalize text-[var(--dash-text-secondary)]">
-                      {label(action.action_type)} - {label(action.status)}
+                      {label(action.action_type, detailCopy.statusLabels)} -{" "}
+                      {label(action.status, detailCopy.statusLabels)}
                     </span>
                   </span>
                   {action.status === "open" ? (
@@ -530,18 +703,20 @@ export default async function LeadDetailPage({
                         value={detail.lead.id}
                       />
                       <button className={buttonClass} type="submit">
-                        Complete
+                        {detailCopy.completeAction}
                       </button>
                     </form>
                   ) : (
-                    <StatusBadge tone="emerald">Done</StatusBadge>
+                    <StatusBadge tone="emerald">
+                      {detailCopy.copiedDone}
+                    </StatusBadge>
                   )}
                 </div>
               ))
             ) : (
               <div className="p-3">
-                <EmptyState title="No action items">
-                  Follow-up and reply tasks will appear here.
+                <EmptyState title={detailCopy.noActionItemsTitle}>
+                  {detailCopy.noActionItemsBody}
                 </EmptyState>
               </div>
             )}
@@ -549,7 +724,7 @@ export default async function LeadDetailPage({
         </DashboardCard>
 
         <DashboardCard className="p-[22px]">
-          <SectionHeader title="Timeline" />
+          <SectionHeader title={detailCopy.timeline} />
           <div className="mt-3 grid gap-3">
             {detail.events.length > 0 ? (
               detail.events.map((event) => (
@@ -565,17 +740,17 @@ export default async function LeadDetailPage({
                       {event.event_label}
                     </span>
                     <span className="mt-0.5 block text-[12px] capitalize text-[var(--dash-text-secondary)]">
-                      {label(event.event_type)}
+                      {label(event.event_type, detailCopy.statusLabels)}
                     </span>
                   </span>
                   <span className="whitespace-nowrap text-[12px] text-[var(--dash-text-muted)]">
-                    {formatAge(event.created_at)}
+                    {formatAge(event.created_at, detailCopy, queueCopy)}
                   </span>
                 </div>
               ))
             ) : (
-              <EmptyState title="No timeline events">
-                Lead activity will appear here as the owner reviews and acts.
+              <EmptyState title={detailCopy.noTimelineTitle}>
+                {detailCopy.noTimelineBody}
               </EmptyState>
             )}
           </div>

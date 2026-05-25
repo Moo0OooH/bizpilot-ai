@@ -360,6 +360,108 @@ type DashboardLeadQueueCopy = Readonly<{
   reset: string;
 }>;
 
+type DashboardLeadDetailCopy = Readonly<{
+  actionItems: string;
+  ai: Readonly<{
+    copyFollowUp: string;
+    copyReply: string;
+    editManually: string;
+    editManuallyTitle: string;
+    estimatedCost: string;
+    followUpDraft: string;
+    generate: string;
+    guardrails: string;
+    guardrailBadges: readonly string[];
+    manualDraftDescription: string;
+    missingInfo: string;
+    modelDraft: string;
+    nextAction: string;
+    noSend: string;
+    ownerReviewRequired: string;
+    regenerate: string;
+    ruleFallback: string;
+    source: string;
+    suggestedReply: string;
+    title: string;
+  }>;
+  backToQueue: string;
+  completeAction: string;
+  copiedDone: string;
+  detailDescription: (service: string, area: string, age: string) => string;
+  fields: Readonly<{
+    contact: string;
+    name: string;
+    serviceType: string;
+    cityArea: string;
+    source: string;
+    submitted: string;
+  }>;
+  fallbacks: Readonly<{
+    area: string;
+    contact: string;
+    service: string;
+    source: string;
+    unnamedLead: string;
+  }>;
+  labels: Readonly<{
+    manualOutcome: string;
+    primaryIssue: string;
+    recommendedAction: string;
+    status: string;
+  }>;
+  mark: string;
+  markReplyCopied: string;
+  markWon: string;
+  missing: Readonly<{
+    description: string;
+    noRequiredMissing: string;
+    title: string;
+  }>;
+  noActionItemsBody: string;
+  noActionItemsTitle: string;
+  noTimelineBody: string;
+  noTimelineTitle: string;
+  notProvided: string;
+  notYet: string;
+  ownerNotes: Readonly<{
+    description: string;
+    persistenceNote: string;
+    placeholder: string;
+    title: string;
+  }>;
+  quoteIntakeFields: string;
+  routing: Readonly<{
+    badges: readonly string[];
+    description: string;
+    missingInfoLabel: string;
+    nextActionLabel: string;
+    noMissingInfo: string;
+    priorityLabel: string;
+    priorities: Record<string, string>;
+    queueLabel: string;
+    queues: Record<string, string>;
+    reasonLabel: string;
+    reasons: Record<string, string>;
+    reviewerLabel: string;
+    reviewers: Record<string, string>;
+    nextActions: Record<string, string>;
+    title: string;
+  }>;
+  save: string;
+  sections: Readonly<{
+    controlsDescription: string;
+    controlsTitle: string;
+    leadDetailsDescription: string;
+    leadDetailsTitle: string;
+  }>;
+  statusLabels: Record<string, string>;
+  timeline: string;
+  values: Readonly<{
+    no: string;
+    yes: string;
+  }>;
+}>;
+
 type DashboardLeadsPageCopy = Readonly<{
   active: string;
   atRiskBadge: (count: number) => string;
@@ -511,6 +613,7 @@ type DashboardCopy = Readonly<{
   }>;
   businessProfile: DashboardBusinessProfileCopy;
   configuration: DashboardConfigurationCopy;
+  leadDetail: DashboardLeadDetailCopy;
   leadQueue: DashboardLeadQueueCopy;
   leadsPage: DashboardLeadsPageCopy;
   overview: DashboardOverviewCopy;
@@ -1008,6 +1111,179 @@ const englishCopy: BizPilotCopy = {
         needsReply: "Needs reply",
         reviewed: "Reviewed",
         won: "Won",
+      },
+    },
+    leadDetail: {
+      actionItems: "Action items",
+      ai: {
+        copyFollowUp: "Copy follow-up",
+        copyReply: "Copy reply",
+        editManually: "Edit manually",
+        editManuallyTitle: "Editing inline is a later workflow improvement.",
+        estimatedCost: "Est. cost",
+        followUpDraft: "Follow-up draft",
+        generate: "Generate AI draft",
+        guardrails: "AI guardrails",
+        guardrailBadges: [
+          "No auto-send",
+          "No invented pricing",
+          "Owner reviewed",
+        ],
+        manualDraftDescription:
+          "Generate a draft when ready. BizPilot prepares a summary, reply draft, follow-up draft, and next action. Owner reviews, copies, and sends manually.",
+        missingInfo: "Missing info",
+        modelDraft: "Model draft",
+        nextAction: "Next action",
+        noSend: "No Send button in MVP. Owner copies and sends manually.",
+        ownerReviewRequired: "Owner review required",
+        regenerate: "Regenerate",
+        ruleFallback: "Rule fallback",
+        source: "Source",
+        suggestedReply: "Suggested reply",
+        title: "AI Summary",
+      },
+      backToQueue: "Back to Lead Recovery Queue",
+      completeAction: "Complete",
+      copiedDone: "Done",
+      detailDescription: (service, area, age) =>
+        `${service} request - ${area} - received ${age}`,
+      fields: {
+        cityArea: "City / area",
+        contact: "Contact",
+        name: "Name",
+        serviceType: "Service type",
+        source: "Source",
+        submitted: "Submitted",
+      },
+      fallbacks: {
+        area: "Area missing",
+        contact: "No contact captured",
+        service: "Service not set",
+        source: "Quote link",
+        unnamedLead: "Unnamed lead",
+      },
+      labels: {
+        manualOutcome: "Manual outcome",
+        primaryIssue: "Primary issue",
+        recommendedAction: "Recommended action",
+        status: "Status",
+      },
+      mark: "Mark",
+      markReplyCopied: "Mark Reply Copied",
+      markWon: "Mark Won",
+      missing: {
+        description: "Ask these before estimating or promising availability.",
+        noRequiredMissing: "No required quote details missing",
+        title: "Missing information detected",
+      },
+      noActionItemsBody: "Follow-up and reply tasks will appear here.",
+      noActionItemsTitle: "No action items",
+      noTimelineBody:
+        "Lead activity will appear here as the owner reviews and acts.",
+      noTimelineTitle: "No timeline events",
+      notProvided: "Not provided",
+      notYet: "Not yet",
+      ownerNotes: {
+        description:
+          "Private notes for pilot learning and follow-up quality. Storage will be wired in a later phase; the field is visible to remind the owner of what to track.",
+        persistenceNote:
+          "Notes persistence is part of Phase 18B and is not yet stored server-side.",
+        placeholder:
+          "Add notes about this request, objections, pricing context, or follow-up outcome...",
+        title: "Owner notes",
+      },
+      quoteIntakeFields: "Quote intake fields",
+      routing: {
+        badges: ["Human review required", "No auto-assignment"],
+        description:
+          "Rule-based cleaning intake suggestion. Nothing is assigned or sent automatically.",
+        missingInfoLabel: "Missing info",
+        nextActionLabel: "Next action",
+        noMissingInfo: "No routing blockers found",
+        priorityLabel: "Priority",
+        priorities: {
+          high: "High priority",
+          review: "Review needed",
+          standard: "Standard priority",
+        },
+        queueLabel: "Suggested queue",
+        queues: {
+          commercial_cleaning: "Commercial Cleaning",
+          intake_review: "Intake Review",
+          move_out_cleaning: "Move-out Cleaning",
+          owner_review: "Owner Review",
+          recurring_opportunity: "Recurring Opportunity",
+        },
+        reasonLabel: "Reason",
+        reasons: {
+          commercial_request: "Commercial or office request",
+          follow_up_due: "Follow-up is due",
+          missing_required_info: "Required quote details are missing",
+          move_out_request: "Move-out cleaning request",
+          outside_service_area: "Outside configured service area",
+          preferred_date_soon: "Preferred date is soon",
+          ready_for_owner_reply: "Ready for owner reply",
+          recurring_request: "Recurring cleaning opportunity",
+          response_overdue: "Response is overdue",
+        },
+        reviewerLabel: "Suggested reviewer",
+        reviewers: {
+          owner: "Owner",
+        },
+        nextActions: {
+          ask_missing_info: "Ask for missing information before estimating.",
+          follow_up: "Follow up with the customer today.",
+          owner_review: "Review the request and prepare a manual reply.",
+          reply_fast: "Reply quickly while the customer is still comparing.",
+          review_service_area:
+            "Review the service area before quoting or archiving.",
+        },
+        title: "Smart Intake Routing",
+      },
+      save: "Save",
+      sections: {
+        controlsDescription:
+          "Owner-controlled status and manual outcome tracking. Nothing changes automatically.",
+        controlsTitle: "Lead controls",
+        leadDetailsDescription:
+          "Quote intake values captured from the public form.",
+        leadDetailsTitle: "Lead details",
+      },
+      statusLabels: {
+        archived: "Archived",
+        action_completed: "Action completed",
+        ask_info: "Ask info",
+        asked_info: "Asked info",
+        booked: "Booked",
+        completed: "Completed",
+        dismissed: "Dismissed",
+        follow_up: "Follow-up",
+        follow_up_due: "Follow-up due",
+        follow_up_marked: "Follow-up marked",
+        follow_up_needed: "Follow-up needed",
+        lead_created: "Lead created",
+        lead_viewed: "Lead viewed",
+        lost: "Lost",
+        low_fit: "Low fit",
+        new: "New",
+        no_response: "No response",
+        not_a_fit: "Not a fit",
+        open: "Open",
+        overdue: "Overdue",
+        outcome_marked: "Outcome marked",
+        reply: "Reply",
+        reply_copied_event: "Reply copied",
+        replied: "Replied",
+        reply_copied: "Reply copied",
+        reviewed: "Reviewed",
+        score_calculated: "Score calculated",
+        status_changed: "Status changed",
+        viewed: "Viewed",
+      },
+      timeline: "Timeline",
+      values: {
+        no: "No",
+        yes: "Yes",
       },
     },
     leadsPage: {
@@ -1824,6 +2100,185 @@ const frenchCopy: BizPilotCopy = {
         needsReply: "Réponse requise",
         reviewed: "Révisé",
         won: "Gagné",
+      },
+    },
+    leadDetail: {
+      actionItems: "Actions",
+      ai: {
+        copyFollowUp: "Copier le suivi",
+        copyReply: "Copier la réponse",
+        editManually: "Modifier manuellement",
+        editManuallyTitle:
+          "La modification intégrée est une amélioration de workflow future.",
+        estimatedCost: "Coût estimé",
+        followUpDraft: "Brouillon de suivi",
+        generate: "Générer un brouillon IA",
+        guardrails: "Garde-fous IA",
+        guardrailBadges: [
+          "Aucun envoi automatique",
+          "Aucun prix inventé",
+          "Révisé par le propriétaire",
+        ],
+        manualDraftDescription:
+          "Générez un brouillon quand vous êtes prêt. BizPilot prépare un résumé, une réponse, un suivi et la prochaine action. Le propriétaire révise, copie et envoie manuellement.",
+        missingInfo: "Infos manquantes",
+        modelDraft: "Brouillon modèle",
+        nextAction: "Prochaine action",
+        noSend:
+          "Aucun bouton Envoyer dans le MVP. Le propriétaire copie et envoie manuellement.",
+        ownerReviewRequired: "Révision propriétaire requise",
+        regenerate: "Regénérer",
+        ruleFallback: "Repli par règles",
+        source: "Source",
+        suggestedReply: "Réponse suggérée",
+        title: "Résumé IA",
+      },
+      backToQueue: "Retour à la file de récupération",
+      completeAction: "Compléter",
+      copiedDone: "Terminé",
+      detailDescription: (service, area, age) =>
+        `Demande ${service} - ${area} - reçue ${age}`,
+      fields: {
+        cityArea: "Ville / secteur",
+        contact: "Contact",
+        name: "Nom",
+        serviceType: "Type de service",
+        source: "Source",
+        submitted: "Soumis",
+      },
+      fallbacks: {
+        area: "Secteur manquant",
+        contact: "Aucun contact capturé",
+        service: "Service non défini",
+        source: "Lien de soumission",
+        unnamedLead: "Lead sans nom",
+      },
+      labels: {
+        manualOutcome: "Résultat manuel",
+        primaryIssue: "Point principal",
+        recommendedAction: "Action recommandée",
+        status: "Statut",
+      },
+      mark: "Marquer",
+      markReplyCopied: "Réponse copiée",
+      markWon: "Marquer gagné",
+      missing: {
+        description:
+          "Demandez ces détails avant d'estimer ou de promettre une disponibilité.",
+        noRequiredMissing: "Aucun détail requis ne manque",
+        title: "Informations manquantes détectées",
+      },
+      noActionItemsBody: "Les tâches de réponse et de suivi apparaîtront ici.",
+      noActionItemsTitle: "Aucune action",
+      noTimelineBody:
+        "L'activité du lead apparaîtra ici pendant la révision par le propriétaire.",
+      noTimelineTitle: "Aucun événement",
+      notProvided: "Non fourni",
+      notYet: "Pas encore",
+      ownerNotes: {
+        description:
+          "Notes privées pour apprendre pendant le pilote et améliorer les suivis. La sauvegarde sera reliée dans une phase future; le champ rappelle quoi suivre.",
+        persistenceNote:
+          "La sauvegarde des notes fait partie de la Phase 18B et n'est pas encore stockée côté serveur.",
+        placeholder:
+          "Ajoutez des notes sur la demande, les objections, le contexte de prix ou le résultat du suivi...",
+        title: "Notes propriétaire",
+      },
+      quoteIntakeFields: "Champs de soumission",
+      routing: {
+        badges: ["Révision humaine requise", "Aucune assignation automatique"],
+        description:
+          "Suggestion de routage par règles pour les demandes de nettoyage. Rien n'est assigné ou envoyé automatiquement.",
+        missingInfoLabel: "Infos manquantes",
+        nextActionLabel: "Prochaine action",
+        noMissingInfo: "Aucun blocage de routage détecté",
+        priorityLabel: "Priorité",
+        priorities: {
+          high: "Priorité élevée",
+          review: "Révision requise",
+          standard: "Priorité standard",
+        },
+        queueLabel: "File suggérée",
+        queues: {
+          commercial_cleaning: "Nettoyage commercial",
+          intake_review: "Révision intake",
+          move_out_cleaning: "Nettoyage de déménagement",
+          owner_review: "Révision propriétaire",
+          recurring_opportunity: "Occasion récurrente",
+        },
+        reasonLabel: "Raison",
+        reasons: {
+          commercial_request: "Demande commerciale ou bureau",
+          follow_up_due: "Suivi dû",
+          missing_required_info: "Détails requis manquants",
+          move_out_request: "Demande de nettoyage de déménagement",
+          outside_service_area: "Hors zone desservie configurée",
+          preferred_date_soon: "Date souhaitée bientôt",
+          ready_for_owner_reply: "Prêt pour une réponse propriétaire",
+          recurring_request: "Occasion de nettoyage récurrent",
+          response_overdue: "Réponse en retard",
+        },
+        reviewerLabel: "Réviseur suggéré",
+        reviewers: {
+          owner: "Propriétaire",
+        },
+        nextActions: {
+          ask_missing_info:
+            "Demander les informations manquantes avant d'estimer.",
+          follow_up: "Faire un suivi avec le client aujourd'hui.",
+          owner_review:
+            "Réviser la demande et préparer une réponse manuelle.",
+          reply_fast:
+            "Répondre vite pendant que le client compare encore.",
+          review_service_area:
+            "Vérifier la zone desservie avant de soumettre ou d'archiver.",
+        },
+        title: "Routage intelligent des demandes",
+      },
+      save: "Enregistrer",
+      sections: {
+        controlsDescription:
+          "Statut et résultat manuel contrôlés par le propriétaire. Rien ne change automatiquement.",
+        controlsTitle: "Contrôles du lead",
+        leadDetailsDescription:
+          "Valeurs capturées depuis le formulaire public.",
+        leadDetailsTitle: "Détails du lead",
+      },
+      statusLabels: {
+        archived: "Archivé",
+        action_completed: "Action complétée",
+        ask_info: "Demander infos",
+        asked_info: "Infos demandées",
+        booked: "Gagné",
+        completed: "Complété",
+        dismissed: "Ignoré",
+        follow_up: "Suivi",
+        follow_up_due: "Suivi dû",
+        follow_up_marked: "Suivi marqué",
+        follow_up_needed: "Suivi requis",
+        lead_created: "Lead créé",
+        lead_viewed: "Lead vu",
+        lost: "Perdu",
+        low_fit: "Peu compatible",
+        new: "Nouveau",
+        no_response: "Sans réponse",
+        not_a_fit: "Pas compatible",
+        open: "Ouvert",
+        overdue: "En retard",
+        outcome_marked: "Résultat marqué",
+        reply: "Réponse",
+        reply_copied_event: "Réponse copiée",
+        replied: "Répondu",
+        reply_copied: "Réponse copiée",
+        reviewed: "Révisé",
+        score_calculated: "Score calculé",
+        status_changed: "Statut modifié",
+        viewed: "Vu",
+      },
+      timeline: "Chronologie",
+      values: {
+        no: "Non",
+        yes: "Oui",
       },
     },
     leadsPage: {

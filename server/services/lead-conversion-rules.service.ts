@@ -93,6 +93,44 @@ export type RevenueRecoveryProof = Readonly<{
   strongLeadsActedOn: number;
 }>;
 
+export type SmartRoutingPriority = "high" | "review" | "standard";
+
+export type SmartRoutingQueue =
+  | "commercial_cleaning"
+  | "intake_review"
+  | "move_out_cleaning"
+  | "owner_review"
+  | "recurring_opportunity";
+
+export type SmartRoutingReviewer = "owner";
+
+export type SmartRoutingReason =
+  | "commercial_request"
+  | "follow_up_due"
+  | "missing_required_info"
+  | "move_out_request"
+  | "outside_service_area"
+  | "preferred_date_soon"
+  | "ready_for_owner_reply"
+  | "recurring_request"
+  | "response_overdue";
+
+export type SmartRoutingNextAction =
+  | "ask_missing_info"
+  | "follow_up"
+  | "owner_review"
+  | "reply_fast"
+  | "review_service_area";
+
+export type SmartIntakeRoutingSuggestion = Readonly<{
+  missingInfoKeys: string[];
+  nextAction: SmartRoutingNextAction;
+  priority: SmartRoutingPriority;
+  reasonCodes: SmartRoutingReason[];
+  suggestedQueue: SmartRoutingQueue;
+  suggestedReviewer: SmartRoutingReviewer;
+}>;
+
 type ValueMap = Record<string, RuleJson | undefined>;
 
 function toText(value: RuleJson | undefined): string {
@@ -139,6 +177,62 @@ function valueMapFromSubmission(
     cleaning_type: valueMap.cleaning_type ?? lead.service_type,
     customer_contact: valueMap.customer_contact ?? lead.customer_contact,
   };
+}
+
+function normalizedValueFromKeys(values: ValueMap, keys: readonly string[]): string {
+  return keys
+    .map((key) => normalizeComparableText(toText(values[key])))
+    .filter(Boolean)
+    .join(" ");
+}
+
+function hasAnySignal(input: string, signals: readonly string[]): boolean {
+  return signals.some((signal) => input.includes(signal));
+}
+
+function addReason(
+  reasons: SmartRoutingReason[],
+  reason: SmartRoutingReason,
+): void {
+  if (!reasons.includes(reason)) {
+    reasons.push(reason);
+  }
+}
+
+function preferredDateIsSoon(
+  value: RuleJson | undefined,
+  now: Date,
+): boolean {
+  const text = toText(value);
+
+  if (!text) {
+    return false;
+  }
+
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})/.exec(text);
+
+  if (dateOnly) {
+    const [, year, month, day] = dateOnly;
+    const targetDate = Date.UTC(Number(year), Number(month) - 1, Number(day));
+    const today = Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+    );
+    const daysUntil = Math.round((targetDate - today) / 86_400_000);
+
+    return daysUntil >= 0 && daysUntil <= 2;
+  }
+
+  const parsedDate = new Date(text);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return false;
+  }
+
+  const millisecondsUntil = parsedDate.getTime() - now.getTime();
+
+  return millisecondsUntil >= 0 && millisecondsUntil <= 48 * 60 * 60 * 1000;
 }
 
 export function serviceAreaMatches(input: {
@@ -396,6 +490,138 @@ export function summarizeLeadDecision(input: {
   return {
     primaryIssue: copy.leadRules.readyForReply,
     recommendedAction: copy.aiFallback.replyWarmLead,
+  };
+}
+
+export function calculateSmartIntakeRouting(input: {
+  lead: RuleLead;
+  now?: Date;
+  score: RulePersistedQualityScore;
+  serviceAreas: readonly string[];
+  submissionValues: readonly RuleSubmissionValue[];
+}): SmartIntakeRoutingSuggestion {
+  const now = input.now ?? new Date();
+  const values = valueMapFromSubmission(input.lead, input.submissionValues);
+  const reasons: SmartRoutingReason[] = [];
+  const areaMatches = serviceAreaMatches({
+    lead: input.lead,
+    serviceAreas: input.serviceAreas,
+    values,
+  });
+  const cleaningSignal = normalizedValueFromKeys(values, [
+    "cleaning_type",
+    "service_type",
+    "notes",
+  ]);
+  const propertySignal = normalizedValueFromKeys(values, [
+    "property_type",
+    "business_type",
+    "notes",
+  ]);
+  const frequencySignal = normalizedValueFromKeys(values, [
+    "frequency",
+    "cleaning_frequency",
+    "recurring",
+    "notes",
+  ]);
+  const isMoveOut = hasAnySignal(cleaningSignal, [
+    "move out",
+    "move in move out",
+    "moveout",
+  ]);
+  const isCommercial = hasAnySignal(`${cleaningSignal} ${propertySignal}`, [
+    "commercial",
+    "office",
+    "retail",
+    "business",
+  ]);
+  const isRecurring = hasAnySignal(frequencySignal, [
+    "biweekly",
+    "monthly",
+    "recurring",
+    "regular",
+    "weekly",
+    "yes",
+  ]);
+  const dateSoon = preferredDateIsSoon(values.preferred_date, now);
+  const hasMissingInfo = input.score.missing_info_keys.length > 0;
+
+  if (input.lead.response_sla_state === "overdue") {
+    addReason(reasons, "response_overdue");
+  }
+
+  if (input.lead.response_sla_state === "follow_up_due") {
+    addReason(reasons, "follow_up_due");
+  }
+
+  if (!areaMatches) {
+    addReason(reasons, "outside_service_area");
+  }
+
+  if (hasMissingInfo) {
+    addReason(reasons, "missing_required_info");
+  }
+
+  if (isMoveOut) {
+    addReason(reasons, "move_out_request");
+  }
+
+  if (dateSoon) {
+    addReason(reasons, "preferred_date_soon");
+  }
+
+  if (isCommercial) {
+    addReason(reasons, "commercial_request");
+  }
+
+  if (isRecurring) {
+    addReason(reasons, "recurring_request");
+  }
+
+  if (reasons.length === 0) {
+    addReason(reasons, "ready_for_owner_reply");
+  }
+
+  const priority: SmartRoutingPriority =
+    input.lead.response_sla_state === "overdue" ||
+    input.lead.response_sla_state === "follow_up_due" ||
+    isMoveOut ||
+    dateSoon
+      ? "high"
+      : !areaMatches || hasMissingInfo
+        ? "review"
+        : "standard";
+
+  const suggestedQueue: SmartRoutingQueue = !areaMatches
+    ? "owner_review"
+    : hasMissingInfo
+      ? "intake_review"
+      : isCommercial
+        ? "commercial_cleaning"
+        : isMoveOut
+          ? "move_out_cleaning"
+          : isRecurring
+            ? "recurring_opportunity"
+            : "owner_review";
+
+  const nextAction: SmartRoutingNextAction =
+    input.lead.response_sla_state === "follow_up_due"
+      ? "follow_up"
+      : !areaMatches
+        ? "review_service_area"
+        : hasMissingInfo
+          ? "ask_missing_info"
+          : priority === "high"
+            ? "reply_fast"
+            : "owner_review";
+
+  return {
+    missingInfoKeys: input.score.missing_info_keys,
+    nextAction,
+    priority,
+    reasonCodes: reasons,
+    suggestedQueue,
+    suggestedReviewer: "owner",
   };
 }
 

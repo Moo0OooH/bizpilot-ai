@@ -51,9 +51,11 @@ import {
   calculateLeadQuality,
   calculateRevenueRecoveryProof,
   calculateSlaState,
+  calculateSmartIntakeRouting,
   chooseAction,
   shouldSuppressOpenActions,
   summarizeLeadDecision,
+  type SmartIntakeRoutingSuggestion,
   type RevenueRecoveryProof,
 } from "@/server/services/lead-conversion-rules.service";
 
@@ -62,6 +64,7 @@ export type LeadDeskItem = Readonly<{
   primaryIssue: string;
   recommendedAction: string;
   lead: LeadRecord;
+  routingSuggestion: SmartIntakeRoutingSuggestion;
   score: LeadQualityScoreRecord;
 }>;
 
@@ -78,6 +81,7 @@ export type LeadDetail = Readonly<{
   primaryIssue: string;
   recommendedAction: string;
   recoveryProof: RevenueRecoveryProof;
+  routingSuggestion: SmartIntakeRoutingSuggestion;
   score: LeadQualityScoreRecord;
   submissionValues: IntakeSubmissionValueRecord[];
 }>;
@@ -102,6 +106,7 @@ async function syncLeadState(input: {
   lead: LeadRecord;
   primaryIssue: string;
   recommendedAction: string;
+  routingSuggestion: SmartIntakeRoutingSuggestion;
   score: LeadQualityScoreRecord;
   submissionValues: IntakeSubmissionValueRecord[];
 }> {
@@ -169,6 +174,12 @@ async function syncLeadState(input: {
           supabase: input.supabase,
         })
       : input.lead;
+  const routingSuggestion = calculateSmartIntakeRouting({
+    lead,
+    score,
+    serviceAreas: input.serviceAreaNames,
+    submissionValues,
+  });
 
   if (shouldSuppressOpenActions({ lead, score })) {
     await dismissOpenActionItemsForLead({
@@ -181,6 +192,7 @@ async function syncLeadState(input: {
       action: null,
       lead,
       ...summarizeLeadDecision({ language: input.language, lead, score }),
+      routingSuggestion,
       score,
       submissionValues,
     };
@@ -214,6 +226,7 @@ async function syncLeadState(input: {
     action,
     lead,
     ...summarizeLeadDecision({ language: input.language, lead, score }),
+    routingSuggestion,
     score,
     submissionValues,
   };
@@ -252,6 +265,7 @@ export async function getLeadConversionDesk(input: {
       lead: synced.lead,
       primaryIssue: synced.primaryIssue,
       recommendedAction: synced.recommendedAction,
+      routingSuggestion: synced.routingSuggestion,
       score: synced.score,
     });
   }
@@ -373,6 +387,7 @@ export async function getLeadDetail(input: {
       leads: allLeads,
       scores: allScores,
     }),
+    routingSuggestion: synced.routingSuggestion,
     score: synced.score,
     submissionValues: synced.submissionValues,
   };

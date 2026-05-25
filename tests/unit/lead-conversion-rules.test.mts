@@ -22,6 +22,7 @@ import {
   calculateLeadQuality,
   calculateRevenueRecoveryProof,
   calculateSlaState,
+  calculateSmartIntakeRouting,
   chooseAction,
   serviceAreaMatches,
   shouldSuppressOpenActions,
@@ -195,6 +196,73 @@ describe("Lead Conversion Desk rules", () => {
       }),
       true,
     );
+  });
+
+  it("suggests intake review for urgent move-out leads with missing info", () => {
+    const routing = calculateSmartIntakeRouting({
+      lead: {
+        ...baseLead,
+        service_type: "move_in_move_out",
+      },
+      now: new Date("2026-05-09T12:00:00.000Z"),
+      score: score({
+        missing_info_keys: ["square_footage_optional"],
+        quality_level: "needs_info",
+      }),
+      serviceAreas: ["Boucherville"],
+      submissionValues: [
+        ...completeValues,
+        { field_key: "cleaning_type", field_value: "move_in_move_out" },
+        { field_key: "preferred_date", field_value: "2026-05-10" },
+      ],
+    });
+
+    assert.equal(routing.priority, "high");
+    assert.equal(routing.suggestedQueue, "intake_review");
+    assert.equal(routing.suggestedReviewer, "owner");
+    assert.equal(routing.nextAction, "ask_missing_info");
+    assert.deepEqual(routing.missingInfoKeys, ["square_footage_optional"]);
+    assert.deepEqual(routing.reasonCodes, [
+      "missing_required_info",
+      "move_out_request",
+      "preferred_date_soon",
+    ]);
+  });
+
+  it("routes commercial requests to the commercial cleaning queue", () => {
+    const routing = calculateSmartIntakeRouting({
+      lead: baseLead,
+      now: new Date("2026-05-09T12:00:00.000Z"),
+      score: score(),
+      serviceAreas: ["Boucherville"],
+      submissionValues: [
+        ...completeValues,
+        { field_key: "property_type", field_value: "office" },
+      ],
+    });
+
+    assert.equal(routing.priority, "standard");
+    assert.equal(routing.suggestedQueue, "commercial_cleaning");
+    assert.equal(routing.nextAction, "owner_review");
+    assert.deepEqual(routing.reasonCodes, ["commercial_request"]);
+  });
+
+  it("keeps outside-service-area routing in owner review", () => {
+    const routing = calculateSmartIntakeRouting({
+      lead: { ...baseLead, city_or_service_area: "Laval" },
+      score: score({ quality_level: "low_fit" }),
+      serviceAreas: ["Boucherville"],
+      submissionValues: completeValues.map((value) =>
+        value.field_key === "city_or_service_area"
+          ? { ...value, field_value: "Laval" }
+          : value,
+      ),
+    });
+
+    assert.equal(routing.priority, "review");
+    assert.equal(routing.suggestedQueue, "owner_review");
+    assert.equal(routing.nextAction, "review_service_area");
+    assert.deepEqual(routing.reasonCodes, ["outside_service_area"]);
   });
 
   it("localizes lead quality and rule guidance for Quebec French", () => {
