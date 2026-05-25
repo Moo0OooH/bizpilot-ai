@@ -4,7 +4,7 @@
 **Date:** 2026-05-25
 **Branch:** `phase-21-production-alignment`  
 **Branch status:** pushed to `origin/phase-21-production-alignment`  
-**Latest checked implementation commit:** `0b67a81 feat: add public trust pages and interactive demo`
+**Latest checked implementation commit:** `6263ecb feat(admin): sharpen founder user controls`
 **Status:** Production is deployed for founder-controlled synthetic demos. Real customer pilot remains blocked.
 
 ---
@@ -61,7 +61,7 @@ It is not yet approved for real customer data or a real paying pilot because pro
 
 | Area | Current result |
 | --- | --- |
-| Git branch | `main` and `origin/phase-21-production-alignment` are aligned at `0b67a81` for the safe-gap implementation commit before this evidence-doc follow-up. |
+| Git branch | `main`, `origin/main`, and `origin/phase-21-production-alignment` are aligned at `6263ecb feat(admin): sharpen founder user controls` after the 2026-05-25 continuation sync. |
 | Main/production | `main` was pushed with owner approval, and production is deployed on `https://bizpilo.com`. |
 | Production target | Supabase target confirmed as `bizpilot-production` / `qfqendrqimqvkoojpjao`; Vercel project confirmed as `moo0ooohs-projects/bizpilot-ai`; production URL target is `https://bizpilo.com`. |
 | Migration history | Production standard CLI migration history is unavailable because `supabase_migrations.schema_migrations` is missing. Direct object verification is the accepted evidence path. |
@@ -289,6 +289,20 @@ Post-push production evidence:
 Pushed to origin/main and origin/phase-21-production-alignment
 Production marker: header Demo link to /#cleaning-demo present on https://bizpilo.com/
 Production public smoke after marker: pass, 9/9 routes
+```
+
+Continuation sync and validation on 2026-05-25:
+
+```txt
+Previous stale local HEAD preserved on backup/local-main-pre-origin-sync-20260525-190808.
+Dirty local work preserved in stash entry "pre-origin-main-sync dirty work 2026-05-25".
+main reset to validated origin/main at 6263ecb.
+origin/phase-21-production-alignment fast-forwarded from 2c16362 to 6263ecb.
+pnpm test:unit: pass, 59/59
+pnpm lint: pass
+pnpm typecheck: pass
+pnpm build: pass
+pnpm smoke:public -- --base-url=https://bizpilo.com: pass, 9/9 routes
 ```
 
 ## 6. What I Would Do Next

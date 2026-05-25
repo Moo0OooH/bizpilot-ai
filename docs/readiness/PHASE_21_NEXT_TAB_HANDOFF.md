@@ -56,7 +56,10 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
 | Item | Current value |
 | --- | --- |
 | Current branch | `main` (was merged from `phase-21-production-alignment` on 2026-05-25) |
-| Current branch tip at this handoff update | Implementation commit `0b67a81 feat: add public trust pages and interactive demo`; evidence-doc follow-up may be newer. Re-run `git log -1 --oneline` before continuing. |
+| Current validated HEAD | `6263ecb feat(admin): sharpen founder user controls` |
+| `origin/main` | `6263ecb` after 2026-05-25 continuation sync |
+| `origin/phase-21-production-alignment` | `6263ecb` after fast-forward sync from `2c16362` |
+| Current branch tip at this handoff update | `6263ecb feat(admin): sharpen founder user controls` after 2026-05-25 continuation sync. Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
@@ -81,12 +84,13 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
 | `.gitattributes` commit | `8bf3387 chore: add .gitattributes to enforce LF line endings` — eliminates 100+ phantom CRLF modifications |
 | Bootstrap fix commit | `5758a0b fix: bootstrap public quote setup on signup` — deployed to production |
 | Bootstrap fix deploy | Vercel deployment `dpl_Gmshk1QUmroam8v569rR1RupMWeY` (Ready) |
-| `origin/main` | `0b67a81` before the evidence-doc follow-up |
+| `origin/main` | `6263ecb` after 2026-05-25 continuation sync |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
-| GitHub remote branches | `main` and `phase-21-production-alignment` at `0b67a81` before the evidence-doc follow-up; `phase-19-readiness-findings` at `a27705f`; `phase-20-pilot-gate` at `39113f4` |
+| GitHub remote branches | `main` and `phase-21-production-alignment` aligned at `6263ecb` after the 2026-05-25 continuation sync; `phase-19-readiness-findings` at `a27705f`; `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
 | Working tree after `eddd331` | Clean after homepage workflow demo deploy; re-check status before continuing |
+| Working tree after 2026-05-25 continuation sync | Clean at `6263ecb`; stale local HEAD preserved on `backup/local-main-pre-origin-sync-20260525-190808`; dirty local work preserved in stash entry `pre-origin-main-sync dirty work 2026-05-25` |
 | Production deploy triggered in Phase 21 | Yes, with owner approval; current observed production deploy is `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo` |
 | Phase 21 branch pushed | Yes, `origin/phase-21-production-alignment` |
 
@@ -424,9 +428,12 @@ Do not paste key. Re-run only with synthetic cleaning lead.
 
 ### P0 - Deploy/Smoke Latest Safe-Gap Commit
 
-Latest safe-gap implementation is committed as `0b67a81 feat: add public trust pages and interactive demo` on top of `b7979cf feat(homepage): add interactive 7-step cleaning demo component and integration guide`.
+Safe-gap implementation is already deployed and production-smoked. The 2026-05-25
+continuation sync validated `6263ecb feat(admin): sharpen founder user controls`
+and fast-forwarded both `origin/main` and `origin/phase-21-production-alignment`
+to that commit.
 
-Next push should send both commits to `origin/main` and `origin/phase-21-production-alignment`, then verify Vercel production deploy and smoke:
+Continue to verify these routes after future production deploys:
 
 - `/`
 - `/privacy`
@@ -564,9 +571,9 @@ Use this in the next tab:
 Continue BizPilot Phase 21 from:
 
 - branch: main (phase-21 was merged and deployed on 2026-05-25)
-- latest implementation commit: 0b67a81 feat: add public trust pages and interactive demo
+- latest implementation commit: 6263ecb feat(admin): sharpen founder user controls
 - latest docs follow-up may be newer; run `git log -1 --oneline`
-- origin/main is at 0b67a81 before the evidence-doc follow-up
+- origin/main and origin/phase-21-production-alignment are aligned at 6263ecb after the 2026-05-25 continuation sync
 - production currently deployed: https://bizpilo.com at the last Ready Vercel production deployment before the safe-gap push
 - bootstrap fix deployed: 5758a0b fix: bootstrap public quote setup on signup
 - signup smoke: passed 2026-05-25 with synthetic disposable inbox

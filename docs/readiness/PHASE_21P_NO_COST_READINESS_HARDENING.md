@@ -92,6 +92,22 @@ https://bizpilo.com/ rendered the new header Demo navigation marker for /#cleani
 pnpm smoke:public -- --base-url=https://bizpilo.com passed after the marker appeared, 9/9 routes.
 ```
 
+Continuation validation on 2026-05-25:
+
+```text
+Local main was safely synced to origin/main at 6263ecb after preserving stale local work on a backup branch and stash.
+origin/main and origin/phase-21-production-alignment are aligned at 6263ecb.
+pnpm test:unit: pass, 59/59
+pnpm lint: pass
+pnpm typecheck: pass
+pnpm build: pass
+pnpm smoke:public -- --base-url=https://bizpilo.com: pass, 9/9 routes
+```
+
+Data-bearing production quote security, fr-CA, and horizontal-access smokes
+remain pending because they require approved synthetic owner sessions,
+synthetic workspace/link setup, and a cleanup/retain-evidence decision.
+
 ## 6. Current Decision
 
 ```text
