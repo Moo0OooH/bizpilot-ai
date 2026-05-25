@@ -31,6 +31,11 @@ Current continuation truth:
 - Documentation follow-up commit `d0c4539 docs: record signup bootstrap deploy status` was also pushed to `main` and deployed as Vercel deployment `dpl_7Z7kh6Z2PH9y2ho5QUtpyDrHCks6`.
 - Post-fix route smoke returned HTTP 200 for `https://bizpilo.com/` and `/auth/sign-up`.
 - A fresh post-fix signup retest was blocked by Supabase Auth rate limiting: `Too many account creation attempts. Please wait a few minutes and try again.`
+- Local RLS suite was re-run through a temporary local-only `127.0.0.1:55432` proxy against the running local Supabase stack: 13/13 passed; the proxy was removed after the run.
+- Production route smoke after the final observed deploy returned HTTP 200 for `/`, `/pricing`, `/auth/sign-in`, `/auth/sign-up`, `/auth/forgot-password`, `/auth/reset-password`, logged-out `/admin` redirect to sign-in, and an inactive/nonexistent quote slug. The inactive quote slug rendered the expected unavailable state.
+- Product configurability is now captured in `docs/product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`: current configurable sections, signup defaults, guardrails, and future no-hidden-automation backlog.
+- Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
+- fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production migration `0020` was not applied because a real production DB backup/export was not available from local tools.
 - OpenAI `429` and final pricing/terms remain owner-side blockers and were explicitly excluded from this pass.
 
