@@ -4,8 +4,8 @@
 **Date:** 2026-05-25
 **Branch:** `phase-21-production-alignment`  
 **Branch status:** pushed to `origin/phase-21-production-alignment`  
-**Latest checked commit:** `1be5235 docs: record rls environment blocker`
-**Status:** Local/repo work is stable for founder-controlled synthetic demos. Production main/deploy and real customer pilot remain blocked.
+**Latest checked commit:** `eddd331 feat: refine homepage workflow demo`
+**Status:** Production is deployed for founder-controlled synthetic demos. Real customer pilot remains blocked.
 
 ---
 
@@ -34,7 +34,8 @@ Current continuation truth:
 - Local RLS suite was re-run through a temporary local-only `127.0.0.1:55432` proxy against the running local Supabase stack: 13/13 passed; the proxy was removed after the run.
 - Production route smoke after the final observed deploy returned HTTP 200 for `/`, `/pricing`, `/auth/sign-in`, `/auth/sign-up`, `/auth/forgot-password`, `/auth/reset-password`, logged-out `/admin` redirect to sign-in, and an inactive/nonexistent quote slug. The inactive quote slug rendered the expected unavailable state.
 - Product configurability is now captured in `docs/product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`: current configurable sections, signup defaults, guardrails, and future no-hidden-automation backlog.
-- Homepage scale and workflow demo were revised: the hero uses a stronger professional scale, and the old animated list demo is now a tabbed end-to-end quote recovery walkthrough covering customer question, system flags, owner response, and follow-up.
+- Homepage scale and workflow demo were revised and deployed: commit `eddd331 feat: refine homepage workflow demo` reached Ready on Vercel deployment `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo`, aliased to `https://bizpilo.com`.
+- Production homepage smoke after `eddd331` returned HTTP 200 and confirmed the tabbed demo copy on `https://bizpilo.com`; browser QA at 375px width found no horizontal overflow and confirmed the Owner response tab switches panels.
 - OpenAI was rechecked after owner credit update. Vercel Production still has an empty `OPENAI_API_KEY` value; no model-backed request was made, and the temporary env pull was deleted outside the repo.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
@@ -55,8 +56,8 @@ It is not yet approved for real customer data or a real paying pilot because pro
 
 | Area | Current result |
 | --- | --- |
-| Git branch | `phase-21-production-alignment` is clean and pushed to origin. |
-| Main/production | `main` was not pushed, and no production deployment was triggered in this pass. |
+| Git branch | `main` and `origin/phase-21-production-alignment` are aligned at `eddd331`. |
+| Main/production | `main` was pushed with owner approval, and production is deployed on `https://bizpilo.com`. |
 | Production target | Supabase target confirmed as `bizpilot-production` / `qfqendrqimqvkoojpjao`; Vercel project confirmed as `moo0ooohs-projects/bizpilot-ai`; production URL target is `https://bizpilo.com`. |
 | Migration history | Production standard CLI migration history is unavailable because `supabase_migrations.schema_migrations` is missing. Direct object verification is the accepted evidence path. |
 | Required schema | Owner-run SQL verified required pilot columns and functions, including `leads.source_channel`. `leads.source` is intentionally absent and must not be added. |

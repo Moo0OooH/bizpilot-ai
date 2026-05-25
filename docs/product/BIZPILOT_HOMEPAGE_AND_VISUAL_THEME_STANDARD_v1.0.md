@@ -298,3 +298,13 @@ The tabbed demo must continue to show:
 - manual owner review,
 - privacy/consent awareness,
 - practical cleaning-business language.
+
+Production verification:
+
+- commit `eddd331 feat: refine homepage workflow demo`,
+- Vercel deployment `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo`,
+- `https://bizpilo.com/` returned HTTP 200 after deploy,
+- production HTML contained `Tabbed live demo`, `Customer question`, and
+  `Follow-up`,
+- browser QA at 375px width confirmed no horizontal overflow and tab switching
+  from the first panel to the Owner response panel.

@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot is production-deployed (main at 8bf3387 on https://bizpilo.com), signup confirmation smoke passed, the new-workspace quote-unavailable gap was fixed and deployed, .gitattributes was added to eliminate CRLF noise, and 53/53 unit tests pass — but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export, and commercial terms are still outstanding before the first real customer pilot.
+BizPilot is production-deployed (main at eddd331 on https://bizpilo.com), signup confirmation smoke passed, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked tabbed workflow demo, and 53/53 unit tests pass - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export, and commercial terms are still outstanding before the first real customer pilot.
 ```
 
 2026-05-25 continuation update:
@@ -33,7 +33,8 @@ BizPilot is production-deployed (main at 8bf3387 on https://bizpilo.com), signup
 - Local RLS suite was re-run through a temporary local-only `127.0.0.1:55432` proxy against the running local Supabase stack: 13/13 passed; the proxy was removed after the run.
 - Production route smoke returned HTTP 200 for `/`, `/pricing`, `/auth/sign-in`, `/auth/sign-up`, `/auth/forgot-password`, `/auth/reset-password`, logged-out `/admin` redirect to sign-in, and an inactive/nonexistent quote slug. The inactive quote slug rendered the expected unavailable state.
 - Product configurability is now captured in `docs/product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`: current configurable sections, signup defaults, guardrails, and future no-hidden-automation backlog.
-- Homepage scale and workflow demo were revised: the hero uses a stronger professional scale, and the old animated list demo is now a tabbed end-to-end quote recovery walkthrough covering customer question, system flags, owner response, and follow-up.
+- Homepage scale and workflow demo were revised and deployed: commit `eddd331 feat: refine homepage workflow demo` reached Ready on Vercel deployment `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo`, aliased to `https://bizpilo.com`.
+- Production homepage smoke after `eddd331` returned HTTP 200 and confirmed the tabbed demo copy on `https://bizpilo.com`; browser QA at 375px width found no horizontal overflow and confirmed the Owner response tab switches panels.
 - OpenAI was rechecked after owner credit update. Vercel Production still has an empty `OPENAI_API_KEY` value; no model-backed request was made, and the temporary env pull was deleted outside the repo.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
@@ -45,7 +46,7 @@ BizPilot is production-deployed (main at 8bf3387 on https://bizpilo.com), signup
 | Item | Current value |
 | --- | --- |
 | Current branch | `main` (was merged from `phase-21-production-alignment` on 2026-05-25) |
-| Current branch tip at this handoff update | `8bf3387 chore: add .gitattributes to enforce LF line endings`. Re-run `git log -1 --oneline` before continuing. |
+| Current branch tip at this handoff update | `eddd331 feat: refine homepage workflow demo`. Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
@@ -53,6 +54,7 @@ BizPilot is production-deployed (main at 8bf3387 on https://bizpilo.com), signup
 | Founder fake/test auth-user cleanup commit | `daa23c8 feat: add safe founder test auth user deletion` |
 | Smart intake routing future-doc commit | `27156c5 docs: capture smart intake routing future concept` |
 | Homepage conversion polish commit | `bd3d2a0 feat: sharpen homepage quote recovery conversion` |
+| Homepage workflow demo refinement commit | `eddd331 feat: refine homepage workflow demo` - deployed to production |
 | Dashboard i18n systemization commit | `86c1fd0 feat: systemize dashboard i18n` |
 | Smart Intake Routing Lite commit | `0007549 feat: add smart intake routing lite` |
 | Dashboard i18n/admin recovery commit | `7904a65 fix: repair dashboard language and admin cleanup controls` |
@@ -66,13 +68,13 @@ BizPilot is production-deployed (main at 8bf3387 on https://bizpilo.com), signup
 | `.gitattributes` commit | `8bf3387 chore: add .gitattributes to enforce LF line endings` — eliminates 100+ phantom CRLF modifications |
 | Bootstrap fix commit | `5758a0b fix: bootstrap public quote setup on signup` — deployed to production |
 | Bootstrap fix deploy | Vercel deployment `dpl_Gmshk1QUmroam8v569rR1RupMWeY` (Ready) |
-| `origin/main` | `862b716` (last pushed; `8bf3387` is local-only, awaiting push) |
+| `origin/main` | `eddd331` |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
-| GitHub remote branches | `main` at `7fe0475`, `phase-19-readiness-findings` at `a27705f`, `phase-20-pilot-gate` at `39113f4` |
+| GitHub remote branches | `main` and `phase-21-production-alignment` at `eddd331`; `phase-19-readiness-findings` at `a27705f`; `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
-| Working tree after `1be5235` | Clean before this 2026-05-25 handoff update; re-check status before continuing |
-| Production deploy triggered in Phase 21 | No |
+| Working tree after `eddd331` | Clean after homepage workflow demo deploy; re-check status before continuing |
+| Production deploy triggered in Phase 21 | Yes, with owner approval; current observed production deploy is `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo` |
 | Phase 21 branch pushed | Yes, `origin/phase-21-production-alignment` |
 
 Do not push to `origin/main` unless the owner explicitly approves it. Keep production deploy risk visible.
