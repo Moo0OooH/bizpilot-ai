@@ -31,7 +31,7 @@ It is not yet approved for real customer data or a real paying pilot because pro
 | Public quote security foundation | Local code and tests exist for public quote submit, abuse controls, source metadata, consent, lead conversion, and RLS helpers. Production smoke is still pending. |
 | Synthetic production smoke plan | Phase 21N now records the exact synthetic workspace, payload, sequence, cleanup choices, and owner approvals needed before production quote/fr-CA smokes. Execution is not approved. |
 | Dashboard language system | Authenticated dashboard language now uses workspace language as source of truth; EN/FR demo queue copy is centralized and tested. |
-| Founder admin | Founder console supports user/business overview, plan/status/link/internal note updates, workspace kind control, test/demo cleanup path, and guarded fake/test login deletion UI. |
+| Founder admin | Founder console supports user/business overview, plan/status/link/internal note updates, workspace kind control, production-safe cleanup warnings, test/demo cleanup path, and guarded fake/test login deletion UI. |
 | Homepage | Conversion polish exists locally: stronger pain/outcome story, workflow demo, and no-auto-send trust anchor. Not deployed to production. |
 | Smart Intake Routing | Future product spec exists; Lite deterministic cleaning-first suggestions exist in lead detail with no migration, no persistence, no auto-assignment, and no auto-send. |
 | Documentation | Phase 21 readiness docs, operations docs, product strategy docs, and handoff docs are updated through the latest local recovery pass. |
@@ -148,6 +148,7 @@ It is not yet approved for real customer data or a real paying pilot because pro
   - founder test,
   - demo,
   - seed.
+- Production-safe cleanup safety rail.
 - Test/demo cleanup dry-run and guarded execution path.
 - Guarded fake/test auth user deletion UI/service path.
 - Admin action logging foundation.
@@ -203,6 +204,7 @@ Latest local browser QA from the recovery pass:
 /dashboard/settings EN: English settings/future copy visible; French markers absent; no horizontal overflow.
 /dashboard/settings FR: French settings/future/guardrail copy visible; English markers absent; no horizontal overflow.
 /admin: local founder access screen reached; full admin visual QA blocked by missing local founder env.
+/admin after cleanup warning polish: founder access screen reached; "Founder admin is not configured" visible; no horizontal overflow at 1280px.
 ```
 
 Fresh validation after creating this consolidated document:

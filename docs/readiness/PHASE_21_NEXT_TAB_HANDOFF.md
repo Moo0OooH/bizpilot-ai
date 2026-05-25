@@ -156,6 +156,7 @@ Validation passed in Phase 20:
 - Production readiness runbooks and historical readiness docs were realigned with Phase 21 evidence so stale Phase 19C schema blockers no longer appear as current operational truth. This was committed as `ebd4a04`.
 - `package.json` now declares `"type": "module"` to remove Node's unit-test module-type warnings. `pnpm verify` passed after the change. This was committed as `810e8c4`.
 - Founder Admin now has a repo-backed fake/test auth login deletion path guarded against founder accounts, production-customer users, and workspace owners. Migration `0020_founder_test_auth_user_cleanup.sql` extends the audit action constraint locally. It is not pushed, deployed, or applied to production yet. This was committed as `daa23c8`.
+- Founder Admin cleanup UX now includes a production-safe safety rail, visible workspace-kind state in the cleanup panel, explicit production-customer hard-purge blocking copy, and a reminder that workspace cleanup never deletes Supabase Auth users. Auth-user deletion copy now states that missing production `0020` blocks before identity deletion.
 - Smart Intake Routing was first documented as a future product concept in `27156c5`.
 - Smart Intake Routing Lite is now implemented locally as a deterministic cleaning-first suggestion layer in Lead Detail: priority, suggested queue, suggested reviewer, reasons, missing-info summary, and next action. It has no migration, no routing persistence, no auto-assignment, no auto-send, no external API usage, and no production deploy. Evidence is recorded in `docs/readiness/PHASE_21J_SMART_INTAKE_ROUTING_LITE.md`.
 - Phase 21N now records the exact synthetic production smoke plan for Phase 21E/21F: disposable synthetic workspace shape, fake payload, positive/negative quote security sequence, fr-CA sequence, cleanup choices, and required owner approvals. It does not approve execution.
@@ -212,6 +213,18 @@ Latest validation after Smart Intake Routing Lite:
 - changed-file secret scan: no key/token/private-key pattern matches,
 - browser QA on local `/dashboard/leads/[leadId]`: Smart Intake Routing panel visible,
 - browser QA viewport around 500px: no horizontal overflow,
+- production deploy: not triggered,
+- production SQL: not touched.
+
+Latest validation after founder admin production-safe cleanup warning polish:
+
+- `pnpm test:unit`: pass, 51/51,
+- `pnpm typecheck`: pass,
+- `pnpm lint`: pass,
+- `pnpm build`: pass,
+- `git diff --check`: pass, CRLF warnings only,
+- changed-file secret scan: no key/token/private-key pattern matches,
+- browser QA on local `/admin`: founder access screen reached because local founder env is not configured; `Founder admin is not configured` visible; no horizontal overflow at 1280px,
 - production deploy: not triggered,
 - production SQL: not touched.
 

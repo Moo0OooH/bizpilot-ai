@@ -4,7 +4,7 @@
 **Document Type:** Operations runbook
 **Status:** Active operational runbook
 **Owner:** MoOoH
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25
 
 ---
 
@@ -36,14 +36,18 @@ Checklist:
 
 1. Sign in as a founder allowlisted by `BIZPILOT_FOUNDER_EMAILS`.
 2. Open the existing founder admin console.
-3. Locate the business card.
-4. Confirm `workspace_kind` is one of:
+3. Review the founder admin safety rail.
+4. Locate the business card.
+5. Confirm the UI shows the current workspace kind.
+6. Confirm `workspace_kind` is one of:
    - `founder_test`
    - `demo`
    - `seed`
-5. Confirm it is not a real customer or pilot workspace.
-6. Run dry-run cleanup.
-7. Review counts only.
+7. Confirm it is not a real customer or pilot workspace.
+8. Run dry-run cleanup.
+9. Review counts only.
+
+If the workspace is `production_customer`, the founder admin UI must keep hard purge blocked. Do not change the workspace kind unless the workspace is truly fake/test/demo/seed data and the reason is recorded in the admin note.
 
 Dry-run output may include table counts such as:
 
@@ -131,6 +135,8 @@ Founder must confirm:
 - final confirmation.
 
 The action uses `auth.admin.deleteUser` from server-only service-role code after founder authorization. It first writes an `admin_action_log` entry with `action_type = test_auth_user_deleted`, then marks that entry complete after the Supabase Auth deletion succeeds. This ordering makes a missing production `0020` constraint update fail before any auth identity is deleted. Log safe metadata only. Do not log passwords, tokens, confirmation links, full payloads, customer content, or service-role keys.
+
+Founder admin UI must keep auth identity deletion visually separate from workspace cleanup. Workspace cleanup never deletes Supabase Auth users.
 
 ## 5. Production Deletion Request Review
 

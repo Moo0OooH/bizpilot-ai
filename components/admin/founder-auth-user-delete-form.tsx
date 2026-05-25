@@ -67,6 +67,16 @@ export function FounderAuthUserDeleteForm({
       <form action={founderTestAuthUserDeleteAction} className="mt-3 grid gap-3">
         <input name="targetUserId" type="hidden" value={targetUserId} />
         <input name="cleanupMode" type="hidden" value="test_auth_user_delete" />
+        <div className="rounded-[10px] border border-amber-400/25 bg-amber-500/10 p-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          <p className="font-black text-[var(--dash-text)]">
+            Auth login deletion is separate from workspace cleanup.
+          </p>
+          <p className="mt-1">
+            The server writes the audit action before calling Supabase Auth
+            deletion, so a missing production `0020` constraint blocks the action
+            before the identity is deleted.
+          </p>
+        </div>
         {deletionBlockedReason ? (
           <div className="rounded-[10px] border border-red-400/25 bg-red-500/10 p-2 text-[12px] leading-5 text-red-200">
             <p className="font-black">{deletionBlockedReason}</p>

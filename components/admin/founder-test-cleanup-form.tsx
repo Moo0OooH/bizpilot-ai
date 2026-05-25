@@ -43,6 +43,7 @@ export function FounderTestCleanupForm({
   const [finalConfirmed, setFinalConfirmed] = useState(false);
   const [typedConfirmation, setTypedConfirmation] = useState("");
   const eligible = isCleanupEligibleWorkspaceKind(workspaceKind);
+  const workspaceKindLabel = workspaceKind.replaceAll("_", " ");
   const canPurge = useMemo(() => {
     const typed = normalizeFounderCleanupConfirmation(typedConfirmation);
 
@@ -70,11 +71,26 @@ export function FounderTestCleanupForm({
         Test/demo cleanup
       </summary>
       <div className="mt-3 grid gap-3">
-        <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-          Hard purge is available only for workspaces classified as founder_test,
-          demo, or seed. It is blocked for production_customer. Run dry-run
-          first; production customer deletion is a separate controlled process.
-        </p>
+        <div
+          className={
+            eligible
+              ? "rounded-[10px] border border-amber-400/25 bg-amber-500/10 p-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]"
+              : "rounded-[10px] border border-red-400/25 bg-red-500/10 p-2 text-[12px] leading-5 text-red-200"
+          }
+        >
+          <p className="font-black">
+            Workspace kind: {workspaceKindLabel}
+          </p>
+          <p className="mt-1 font-semibold">
+            {eligible
+              ? "Cleanup is still blocked until a dry-run is complete and the exact business name or slug is typed."
+              : "Hard purge is blocked for production_customer workspaces. Mark a workspace as Founder test, Demo, or Seed only after confirming it contains fake data."}
+          </p>
+          <p className="mt-1">
+            Workspace cleanup never deletes Supabase Auth users; fake/test login
+            deletion is a separate control and requires its own confirmation.
+          </p>
+        </div>
         <form action={founderCleanupDryRunAction}>
           <input name="businessId" type="hidden" value={businessId} />
           <button
@@ -82,7 +98,7 @@ export function FounderTestCleanupForm({
             disabled={!eligible}
             type="submit"
           >
-            Dry run cleanup
+            {eligible ? "Dry run cleanup" : "Dry run blocked for production"}
           </button>
         </form>
         <form action={founderTestWorkspaceCleanupAction} className="grid gap-3">

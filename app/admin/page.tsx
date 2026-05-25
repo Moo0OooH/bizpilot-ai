@@ -201,6 +201,47 @@ function AdminNotice({
   );
 }
 
+function FounderAdminSafetyRail() {
+  return (
+    <DashboardCard className="p-4 sm:p-5" variant="priority">
+      <SectionHeader
+        action={<StatusBadge tone="red">Production-safe controls</StatusBadge>}
+        description="Cleanup and auth deletion stay synthetic-only until a workspace is deliberately classified as non-production."
+        title="Safety rail"
+      />
+      <div className="mt-4 grid gap-3 text-sm leading-6 text-[var(--dash-text-secondary)] lg:grid-cols-3">
+        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+          <p className="font-black text-[var(--dash-text)]">
+            Production customer is locked
+          </p>
+          <p className="mt-1">
+            Hard cleanup and fake/test login deletion are blocked for production
+            customer workspaces and owner accounts.
+          </p>
+        </div>
+        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+          <p className="font-black text-[var(--dash-text)]">
+            Dry-run comes first
+          </p>
+          <p className="mt-1">
+            Test/demo cleanup requires a dry-run count, explicit acknowledgement,
+            and exact business name or slug confirmation.
+          </p>
+        </div>
+        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+          <p className="font-black text-[var(--dash-text)]">
+            Auth deletion is separate
+          </p>
+          <p className="mt-1">
+            Login deletion is audited before the Supabase Auth call. If production
+            `0020` is missing, the audit constraint blocks before deletion.
+          </p>
+        </div>
+      </div>
+    </DashboardCard>
+  );
+}
+
 function getFounderAccessMessage(error: unknown): string {
   const message =
     error instanceof Error && error.message.trim().length > 0
@@ -686,6 +727,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
         {params?.notice ? <AdminNotice tone="notice">{params.notice}</AdminNotice> : null}
         {params?.error ? <AdminNotice tone="error">{params.error}</AdminNotice> : null}
+
+        <FounderAdminSafetyRail />
 
         <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <MetricCard

@@ -45,10 +45,18 @@ Owner screenshots showed a real mismatch:
   - Added founder admin `Workspace kind` control.
   - Workspace kind can now be set to `Production customer`, `Founder test`, `Demo`, or `Seed`.
   - User delete controls now span the row instead of being buried in a narrow final column.
+  - Added a founder admin safety rail that keeps production-customer cleanup, dry-run requirements, and separate auth deletion behavior visible before destructive controls.
 
 - `components/admin/founder-auth-user-delete-form.tsx`
   - Blocked delete state is now explicit.
   - The form explains the safe path: mark fake workspace as non-production, then cleanup/transfer before auth deletion.
+  - The form now states that auth deletion is audited before the Supabase Auth delete call, so missing production `0020` blocks before identity deletion.
+
+- `components/admin/founder-test-cleanup-form.tsx`
+  - The cleanup panel now shows the current workspace kind.
+  - Production-customer workspaces show an explicit hard-purge block state.
+  - Eligible fake/test workspaces still require dry-run, acknowledgement, final confirmation, and exact business name or slug.
+  - The panel now reminds the founder that workspace cleanup never deletes Supabase Auth users.
 
 - `server/actions/founder-admin.actions.ts`
   - Added `updateFounderWorkspaceKindAction`.
@@ -66,6 +74,9 @@ Owner screenshots showed a real mismatch:
     - English demo sample leads do not contain French queue copy,
     - French demo sample leads do not contain English queue copy.
 
+- `tests/unit/founder-cleanup-safety-source.test.mts`
+  - Added regression coverage for visible production-safe cleanup warnings in founder admin UI.
+
 ## Validation
 
 Commands run:
@@ -82,7 +93,7 @@ git diff --check
 Results:
 
 - `pnpm verify`: pass
-- `pnpm test:unit`: pass, 50/50
+- `pnpm test:unit`: pass, 51/51 after the production-safe cleanup warning polish
 - `pnpm typecheck`: pass
 - `pnpm lint`: pass
 - `pnpm build`: pass
@@ -95,6 +106,7 @@ Browser QA on `http://localhost:3000`:
 - `/dashboard/settings` FR: page loads, French settings/future/guardrail copy visible, English future/settings markers absent, no horizontal overflow.
 - `/dashboard/settings` EN: page loads, English settings/future copy visible, French settings/future markers absent, no horizontal overflow.
 - `/admin`: local browser reached founder access screen, but full admin controls could not be visually tested locally because `BIZPILOT_FOUNDER_EMAILS` was not configured in the local dev environment.
+- `/admin` after cleanup warning polish: local browser reached the founder access screen, showed `Founder admin is not configured`, and had no horizontal overflow at 1280px. Full destructive-control visual QA still needs a founder-configured environment or deployed branch.
 
 ## Important behavior notes
 
@@ -105,6 +117,7 @@ Browser QA on `http://localhost:3000`:
   - owner-linked accounts require workspace cleanup or ownership transfer first,
   - production workspaces are blocked,
   - fake cleanup is only for `founder_test`, `demo`, or `seed`.
+- Founder admin now shows these cleanup/auth-deletion constraints before the operator reaches the destructive controls.
 
 ## Owner action path for fake/test account deletion
 

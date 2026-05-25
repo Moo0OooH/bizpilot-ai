@@ -81,6 +81,33 @@ describe("Founder cleanup source safety", () => {
     assert.equal(service.includes("Run dry-run before final cleanup."), true);
   });
 
+  it("keeps production-safe cleanup warnings visible in founder admin UI", () => {
+    const cleanupForm = readFileSync(
+      "components/admin/founder-test-cleanup-form.tsx",
+      "utf8",
+    );
+    const authDeleteForm = readFileSync(
+      "components/admin/founder-auth-user-delete-form.tsx",
+      "utf8",
+    );
+    const adminPage = readFileSync("app/admin/page.tsx", "utf8");
+
+    assert.equal(
+      cleanupForm.includes("Hard purge is blocked for production_customer"),
+      true,
+    );
+    assert.equal(
+      cleanupForm.includes("Workspace cleanup never deletes Supabase Auth users"),
+      true,
+    );
+    assert.equal(
+      authDeleteForm.includes("missing production `0020` constraint blocks"),
+      true,
+    );
+    assert.equal(adminPage.includes("FounderAdminSafetyRail"), true);
+    assert.equal(adminPage.includes("Production customer is locked"), true);
+  });
+
   it("dry-run counts rows without selecting customer content columns", () => {
     const source = readFileSync(
       "server/services/founder-test-cleanup.service.ts",
