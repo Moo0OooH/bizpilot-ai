@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI  
 **Date:** 2026-05-25  
-**Status:** Local validation passed; deploy verification pending after push  
+**Status:** Production deployed and smoked
 **Scope:** Safe public-surface gap closure, no production SQL, no secrets, no real customer data
 
 ---
@@ -66,6 +66,19 @@ Local validation passed:
 - Local HTTP smoke returned 200 for `/privacy`, `/security`, `/terms`
 - Browser QA at 375px width found no horizontal overflow for all three pages
 - Browser QA confirmed footer trust links and no-auto-send boundary language
+
+Production validation passed after commit `0b67a81 feat: add public trust pages
+and interactive demo` deployed to Vercel production deployment
+`dpl_H2EtZKwH5E24YTaWxz4JcT859kCF`:
+
+- `https://bizpilo.com/` returned HTTP 200 and contained `Step 1 of 7`.
+- `https://bizpilo.com/privacy` returned HTTP 200 and contained privacy-page
+  copy.
+- `https://bizpilo.com/security` returned HTTP 200 and contained security-page
+  copy.
+- `https://bizpilo.com/terms` returned HTTP 200 and contained pilot terms copy.
+- `https://bizpilo.com/pricing` returned HTTP 200 and contained staged pricing
+  copy.
 
 ## 5. Still Blocked
 

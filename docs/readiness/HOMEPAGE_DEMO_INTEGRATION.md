@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Implementation note
-**Status:** Applied and locally validated on 2026-05-25; deploy verification pending after push
+**Status:** Applied, deployed, and smoked on 2026-05-25
 **Owner:** MoOoH
 
 ---
@@ -50,7 +50,8 @@ Run before treating this as deployed:
 
 - `pnpm verify` - passed locally
 - browser QA at 375px for `/` - initial render/no-overflow passed
-- production smoke after Vercel deploy
+- production smoke after Vercel deploy - passed on
+  `dpl_H2EtZKwH5E24YTaWxz4JcT859kCF`
 
 No migration, no env change, no production SQL, and no real customer data are
 involved.

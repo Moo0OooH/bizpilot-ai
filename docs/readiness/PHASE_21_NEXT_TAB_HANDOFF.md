@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot is production-deployed (main at f4a8337 on https://bizpilo.com), signup confirmation smoke passed, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked tabbed workflow demo, staged commercial terms are approved, and 53/53 unit tests pass - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export, and signup email/custom SMTP posture are still outstanding before the first real customer pilot.
+BizPilot is production-deployed (main at 0b67a81 implementation state on https://bizpilo.com), signup confirmation smoke passed, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked interactive 7-step cleaning demo, staged commercial terms are approved, public trust pages are deployed, and 54/54 unit tests pass - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export, and signup email/custom SMTP posture are still outstanding before the first real customer pilot.
 ```
 
 2026-05-25 continuation update:
@@ -35,10 +35,10 @@ BizPilot is production-deployed (main at f4a8337 on https://bizpilo.com), signup
 - Product configurability is now captured in `docs/product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`: current configurable sections, signup defaults, guardrails, and future no-hidden-automation backlog.
 - Homepage scale and workflow demo were revised and deployed: commit `eddd331 feat: refine homepage workflow demo` reached Ready on Vercel deployment `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo`, aliased to `https://bizpilo.com`.
 - Production homepage smoke after `eddd331` returned HTTP 200 and confirmed the tabbed demo copy on `https://bizpilo.com`; browser QA at 375px width found no horizontal overflow and confirmed the Owner response tab switches panels.
-- Local homepage safe-gap work replaced the tab render with an interactive 7-step cleaning demo, tightened hero vertical spacing, reduced hero desk height, and updated the hero secondary CTA to `#cleaning-demo`. Deploy verification is pending after the next push.
+- Homepage safe-gap work replaced the tab render with an interactive 7-step cleaning demo, tightened hero vertical spacing, reduced hero desk height, and updated the hero secondary CTA to `#cleaning-demo`. It deployed to Vercel production deployment `dpl_H2EtZKwH5E24YTaWxz4JcT859kCF`; `https://bizpilo.com/` returned HTTP 200 and contained `Step 1 of 7`.
 - OpenAI was rechecked after owner credit update. Vercel Production still has an empty `OPENAI_API_KEY` value; no model-backed request was made, and the temporary env pull was deleted outside the repo.
 - Staged pilot terms are approved: first 1-5 pilot customers get free founder-led setup for 30/60-day feedback; customers 6-20 are `$149 setup + $49/month`; the standard post-proof offer is `$199 setup + $79/month`.
-- Safe public-trust gap pass added `/privacy`, `/security`, and `/terms` routes with EN/fr-CA copy, footer links, no-auto-send boundaries, and unit coverage for policy-copy structure. Local validation passed; deploy verification is pending until the trust-page commit is pushed.
+- Safe public-trust gap pass added `/privacy`, `/security`, and `/terms` routes with EN/fr-CA copy, footer links, no-auto-send boundaries, and unit coverage for policy-copy structure. Production smoke passed for all three routes on `https://bizpilo.com`.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production `0020` was not applied because a production DB backup/export was not available from local tools.
@@ -49,7 +49,7 @@ BizPilot is production-deployed (main at f4a8337 on https://bizpilo.com), signup
 | Item | Current value |
 | --- | --- |
 | Current branch | `main` (was merged from `phase-21-production-alignment` on 2026-05-25) |
-| Current branch tip at this handoff update | `feat: add public trust pages and interactive demo` (current local safe-gap commit; re-run `git log -1 --oneline` for exact hash). |
+| Current branch tip at this handoff update | Implementation commit `0b67a81 feat: add public trust pages and interactive demo`; evidence-doc follow-up may be newer. Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
@@ -59,7 +59,7 @@ BizPilot is production-deployed (main at f4a8337 on https://bizpilo.com), signup
 | Homepage conversion polish commit | `bd3d2a0 feat: sharpen homepage quote recovery conversion` |
 | Homepage workflow demo refinement commit | `eddd331 feat: refine homepage workflow demo` - deployed to production |
 | Staged pricing terms commit | `f4a8337 feat: align staged pilot pricing terms` - deployed to production |
-| Public trust pages and interactive demo commit | `feat: add public trust pages and interactive demo` - local validation passed; production smoke pending after push |
+| Public trust pages and interactive demo commit | `0b67a81 feat: add public trust pages and interactive demo` - deployed and smoked on production |
 | Dashboard i18n systemization commit | `86c1fd0 feat: systemize dashboard i18n` |
 | Smart Intake Routing Lite commit | `0007549 feat: add smart intake routing lite` |
 | Dashboard i18n/admin recovery commit | `7904a65 fix: repair dashboard language and admin cleanup controls` |
@@ -74,10 +74,10 @@ BizPilot is production-deployed (main at f4a8337 on https://bizpilo.com), signup
 | `.gitattributes` commit | `8bf3387 chore: add .gitattributes to enforce LF line endings` — eliminates 100+ phantom CRLF modifications |
 | Bootstrap fix commit | `5758a0b fix: bootstrap public quote setup on signup` — deployed to production |
 | Bootstrap fix deploy | Vercel deployment `dpl_Gmshk1QUmroam8v569rR1RupMWeY` (Ready) |
-| `origin/main` | `f4a8337` before pushing the homepage demo and public trust page commits |
+| `origin/main` | `0b67a81` before the evidence-doc follow-up |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
-| GitHub remote branches | `main` and `phase-21-production-alignment` at `f4a8337` before pushing the homepage demo and public trust page commits; `phase-19-readiness-findings` at `a27705f`; `phase-20-pilot-gate` at `39113f4` |
+| GitHub remote branches | `main` and `phase-21-production-alignment` at `0b67a81` before the evidence-doc follow-up; `phase-19-readiness-findings` at `a27705f`; `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
 | Working tree after `eddd331` | Clean after homepage workflow demo deploy; re-check status before continuing |
 | Production deploy triggered in Phase 21 | Yes, with owner approval; current observed production deploy is `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo` |
@@ -422,7 +422,7 @@ Do not paste key. Re-run only with synthetic cleaning lead.
 
 ### P0 - Deploy/Smoke Latest Safe-Gap Commit
 
-Latest local safe-gap work is committed as `feat: add public trust pages and interactive demo` on top of `b7979cf feat(homepage): add interactive 7-step cleaning demo component and integration guide`.
+Latest safe-gap implementation is committed as `0b67a81 feat: add public trust pages and interactive demo` on top of `b7979cf feat(homepage): add interactive 7-step cleaning demo component and integration guide`.
 
 Next push should send both commits to `origin/main` and `origin/phase-21-production-alignment`, then verify Vercel production deploy and smoke:
 
@@ -559,13 +559,14 @@ Use this in the next tab:
 Continue BizPilot Phase 21 from:
 
 - branch: main (phase-21 was merged and deployed on 2026-05-25)
-- latest local commit: feat: add public trust pages and interactive demo (run `git log -1 --oneline` for exact hash)
-- origin/main is at f4a8337 before pushing the homepage demo and public trust page commits
+- latest implementation commit: 0b67a81 feat: add public trust pages and interactive demo
+- latest docs follow-up may be newer; run `git log -1 --oneline`
+- origin/main is at 0b67a81 before the evidence-doc follow-up
 - production currently deployed: https://bizpilo.com at the last Ready Vercel production deployment before the safe-gap push
 - bootstrap fix deployed: 5758a0b fix: bootstrap public quote setup on signup
 - signup smoke: passed 2026-05-25 with synthetic disposable inbox
 - staged pricing terms deployed in f4a8337
-- public trust pages and interactive demo are locally validated; production smoke pending after push
+- public trust pages and interactive demo are deployed and production-smoked
 - 54/54 unit tests pass
 - pnpm verify passed locally
 
@@ -590,7 +591,7 @@ Owner decision:
 - do not reveal/pull secret env values unless explicitly approved and operationally necessary
 
 Current continuation state:
-Owner-run SQL verification already received: migration history table is missing, required columns passed, required functions passed, expected 0018 lifecycle/deletion objects passed, RLS-enabled status passed for all public tables, public RLS policy-list review found no obvious policy blocker, safe aggregate counts passed with leads/deletion rows at 0, and function definitions passed. Targeted function/grant verification found owner-only lifecycle helpers executable by anon; repo-backed migration 0019_lifecycle_helper_execute_grant_hardening.sql was then applied and verified in production with checked_functions = 6 and all_grant_checks_passed = true. Targeted constraint/template checks also passed for submitted_too_fast, fr-CA language constraints/index, and 0014 cleaning template fields. Founder fake/test auth-user deletion is repo-backed/local-verified only; production 0020 is not applied. Homepage has production-deployed conversion polish, and the current local safe-gap commit adds public trust pages plus the interactive cleaning demo. Next production task remains quote/security smoke with synthetic data only. Do not re-apply 0018 and do not add leads.source.
+Owner-run SQL verification already received: migration history table is missing, required columns passed, required functions passed, expected 0018 lifecycle/deletion objects passed, RLS-enabled status passed for all public tables, public RLS policy-list review found no obvious policy blocker, safe aggregate counts passed with leads/deletion rows at 0, and function definitions passed. Targeted function/grant verification found owner-only lifecycle helpers executable by anon; repo-backed migration 0019_lifecycle_helper_execute_grant_hardening.sql was then applied and verified in production with checked_functions = 6 and all_grant_checks_passed = true. Targeted constraint/template checks also passed for submitted_too_fast, fr-CA language constraints/index, and 0014 cleaning template fields. Founder fake/test auth-user deletion is repo-backed/local-verified only; production 0020 is not applied. Homepage interactive demo and public trust pages are deployed and smoked. Next production task remains quote/security smoke with synthetic data only. Do not re-apply 0018 and do not add leads.source.
 ```
 
 ## 12. Current Final Decision
@@ -600,7 +601,7 @@ Production-deployed on 2026-05-25 (main at f4a8337 before the safe-gap push / ht
 Bootstrap fix deployed: new signups now land with a working public quote page.
 Signup smoke passed with synthetic disposable inbox.
 Commercial terms are approved and deployed in f4a8337.
-Public trust pages and interactive homepage demo are locally validated; production deploy/smoke pending after push.
+Public trust pages and interactive homepage demo are deployed and production-smoked.
 Still not ready for first real pilot customer with real customer data.
 Remaining blockers: production quote security smoke, fr-CA smoke, OpenAI production key/output validation, backup/export posture, signup email/custom SMTP posture, production 0020 only after backup/export if still needed, and live admin visual QA with a founder-authorized session.
 ```
@@ -611,7 +612,7 @@ Start with this order:
 
 1. Run `git status --short --branch` in `E:\bizpilot-ai`.
 2. Confirm the branch is `main` (phase-21 was merged and deployed on 2026-05-25).
-3. Confirm the latest local commit is `feat: add public trust pages and interactive demo`. If `origin/main` is behind, run `git push origin main && git push origin main:phase-21-production-alignment`.
+3. Confirm the latest local commit with `git log -1 --oneline`. If `origin/main` is behind, run `git push origin main && git push origin main:phase-21-production-alignment`.
 4. Read `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md`.
 5. Read this handoff.
 6. Do not restart old Phase 19/20/21 investigations unless the current docs contradict the repo.
