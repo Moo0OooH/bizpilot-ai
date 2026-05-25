@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot is production-deployed on https://bizpilo.com, signup confirmation smoke passed once with a disposable synthetic inbox, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked interactive 7-step cleaning demo, staged commercial terms are approved, public trust pages are deployed, repeatable public route smoke passes locally and in production, and 59/59 unit tests pass after a source-integrity guard - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export/restore, and custom SMTP posture are still outstanding before the first real customer pilot.
+BizPilot is production-deployed on https://bizpilo.com, signup confirmation smoke passed once with a disposable synthetic inbox, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked interactive 7-step cleaning demo, staged commercial terms are approved, public trust pages are deployed, repeatable public route smoke passes locally and in production, `pnpm smoke:quote` now exists for approved synthetic quote-link checks, and 59/59 unit tests pass after a source-integrity guard - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export/restore, and custom SMTP posture are still outstanding before the first real customer pilot.
 ```
 
 2026-05-25 continuation update:
@@ -50,16 +50,23 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production `0020` was not applied because a production DB backup/export was not available from local tools.
 - Still not ready for real customer data or paid pilot.
+- 2026-05-25 latest continuation baseline: `main`, `origin/main`, and
+  `origin/phase-21-production-alignment` are aligned at
+  `f1c5346 test: add synthetic quote route smoke`.
+- Owner approved continuing all practical non-destructive readiness work from
+  the current environment. Continue to avoid secrets, real customer data,
+  destructive cleanup, RLS weakening, `leads.source`, blind `0018` replay, and
+  OpenAI debugging while the provider/account ticket remains open.
 
 ## 2. Current Git State
 
 | Item | Current value |
 | --- | --- |
 | Current branch | `main` (was merged from `phase-21-production-alignment` on 2026-05-25) |
-| Current validated HEAD | `6263ecb feat(admin): sharpen founder user controls` |
-| `origin/main` | `6263ecb` after 2026-05-25 continuation sync |
-| `origin/phase-21-production-alignment` | `6263ecb` after fast-forward sync from `2c16362` |
-| Current branch tip at this handoff update | `6263ecb feat(admin): sharpen founder user controls` after 2026-05-25 continuation sync. Re-run `git log -1 --oneline` before continuing. |
+| Current validated HEAD | `f1c5346 test: add synthetic quote route smoke` |
+| `origin/main` | `f1c5346` after 2026-05-25 continuation sync |
+| `origin/phase-21-production-alignment` | `f1c5346` after fast-forward sync |
+| Current branch tip at this handoff update | `f1c5346 test: add synthetic quote route smoke`. Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
@@ -84,13 +91,14 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
 | `.gitattributes` commit | `8bf3387 chore: add .gitattributes to enforce LF line endings` — eliminates 100+ phantom CRLF modifications |
 | Bootstrap fix commit | `5758a0b fix: bootstrap public quote setup on signup` — deployed to production |
 | Bootstrap fix deploy | Vercel deployment `dpl_Gmshk1QUmroam8v569rR1RupMWeY` (Ready) |
-| `origin/main` | `6263ecb` after 2026-05-25 continuation sync |
+| `origin/main` | `f1c5346` after 2026-05-25 continuation sync |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
-| GitHub remote branches | `main` and `phase-21-production-alignment` aligned at `6263ecb` after the 2026-05-25 continuation sync; `phase-19-readiness-findings` at `a27705f`; `phase-20-pilot-gate` at `39113f4` |
+| GitHub remote branches | `main` and `phase-21-production-alignment` aligned at `f1c5346` after the 2026-05-25 continuation sync; `phase-19-readiness-findings` at `a27705f`; `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
 | Working tree after `eddd331` | Clean after homepage workflow demo deploy; re-check status before continuing |
-| Working tree after 2026-05-25 continuation sync | Clean at `6263ecb`; stale local HEAD preserved on `backup/local-main-pre-origin-sync-20260525-190808`; dirty local work preserved in stash entry `pre-origin-main-sync dirty work 2026-05-25` |
+| Working tree after 2026-05-25 continuation sync | Clean at `f1c5346`; stale local HEAD preserved on `backup/local-main-pre-origin-sync-20260525-190808`; dirty local work preserved in stash entry `pre-origin-main-sync dirty work 2026-05-25` |
+| Working tree after quote-smoke tooling | Clean at `f1c5346` |
 | Production deploy triggered in Phase 21 | Yes, with owner approval; current observed production deploy is `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo` |
 | Phase 21 branch pushed | Yes, `origin/phase-21-production-alignment` |
 
@@ -429,9 +437,9 @@ Do not paste key. Re-run only with synthetic cleaning lead.
 ### P0 - Deploy/Smoke Latest Safe-Gap Commit
 
 Safe-gap implementation is already deployed and production-smoked. The 2026-05-25
-continuation sync validated `6263ecb feat(admin): sharpen founder user controls`
-and fast-forwarded both `origin/main` and `origin/phase-21-production-alignment`
-to that commit.
+continuation sync validated `f1c5346 test: add synthetic quote route smoke`
+and aligned both `origin/main` and `origin/phase-21-production-alignment` at
+that commit.
 
 Continue to verify these routes after future production deploys:
 
@@ -571,9 +579,9 @@ Use this in the next tab:
 Continue BizPilot Phase 21 from:
 
 - branch: main (phase-21 was merged and deployed on 2026-05-25)
-- latest implementation commit: 6263ecb feat(admin): sharpen founder user controls
+- latest implementation commit: f1c5346 test: add synthetic quote route smoke
 - latest docs follow-up may be newer; run `git log -1 --oneline`
-- origin/main and origin/phase-21-production-alignment are aligned at 6263ecb after the 2026-05-25 continuation sync
+- origin/main and origin/phase-21-production-alignment are aligned at f1c5346 after the 2026-05-25 continuation sync
 - production currently deployed: https://bizpilo.com at the last Ready Vercel production deployment before the safe-gap push
 - bootstrap fix deployed: 5758a0b fix: bootstrap public quote setup on signup
 - signup smoke: passed 2026-05-25 with synthetic disposable inbox

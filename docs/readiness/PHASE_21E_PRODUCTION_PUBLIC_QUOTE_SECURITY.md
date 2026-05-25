@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Production public quote security verification
-**Status:** Blocked - production test not run
+**Status:** Partial route smoke passed; data-bearing production smoke not run
 **Owner:** MoOoH
 **Last Updated:** 2026-05-25
 
@@ -14,6 +14,11 @@ This document records whether BizPilot's public quote submission flow was safely
 
 No production quote submission was created. No production lead was created. No production customer data was read. No real customer data was used. No security policy was weakened. No production SQL was run. No secrets, tokens, database passwords, service role keys, anon keys, OpenAI keys, full connection strings, full emails, or customer payloads were printed or recorded.
 
+2026-05-25 continuation note: `pnpm smoke:quote` now provides a safe
+synthetic quote-route smoke runner. It was run against production with an
+unavailable synthetic slug only. This is route-level evidence, not full
+data-bearing public quote security verification.
+
 ## 2. Environment
 
 | Item | Status |
@@ -23,7 +28,7 @@ No production quote submission was created. No production lead was created. No p
 | Supabase project name | `bizpilot-production` |
 | Test environment | Production |
 | Test data policy | Synthetic only |
-| Production public quote security test run? | No |
+| Production public quote security test run? | Partial route-only check |
 
 ## 3. Preconditions
 
@@ -32,17 +37,17 @@ No production quote submission was created. No production lead was created. No p
 | Production migrations aligned | Object-verified; history unavailable | Required public quote columns/functions, expected `0018` objects, RLS enablement, policies, function definitions, `0019` grants, and targeted constraints/seeds have been verified. `supabase_migrations.schema_migrations` is missing, so history remains unavailable/manual drift. |
 | Required RPCs visible to PostgREST | Yes by safe probe and direct SQL | Phase 21B safe probes showed the three public quote RPCs callable/visible with repo parameter names. Owner-run direct SQL verified required functions and grants. |
 | Backup/safety documented | Blocked for real customer data | Supabase Free plan has no scheduled backup/PITR available; no manual export or restore drill has been done. Owner risk-accepted this only for no-real-user database/security alignment. |
-| Test business/link available or safely created | No | Phase 21N now records the proposed synthetic workspace/link shape, but owner has not approved creating or using it. |
-| Owner approval for production data-bearing smoke | Broad access granted; exact execution approval still required | Owner approved full Supabase/Vercel/GitHub access and production grant-only `0019`. Phase 21N records the exact synthetic smoke plan, but execution still requires owner approval for deploy/URL, synthetic accounts, payload, and cleanup. |
+| Test business/link available or safely created | No active link available to Codex | Phase 21N records the proposed synthetic workspace/link shape. Owner broadly approved readiness work, but an active synthetic slug/session is still needed to perform data-bearing checks. |
+| Owner approval for production data-bearing smoke | Broad readiness approval granted; execution inputs still required | Owner approved practical non-destructive readiness work. Phase 21N records the exact synthetic smoke plan, but execution still requires synthetic accounts/sessions, active link, payload, and cleanup/retain-evidence decision. |
 
 ## 4. Decision
 
-**Do not run production public quote security tests yet.**
+**Do not run data-bearing production public quote security tests yet.**
 
 Reason:
 
 ```text
-The database/RLS preconditions are mostly satisfied by object verification, and Phase 21N now records a controlled test business/link/session plan plus cleanup options. The production data-bearing synthetic smoke still lacks owner approval to execute, an approved deploy/URL, approved synthetic accounts, and an owner cleanup decision.
+The database/RLS preconditions are mostly satisfied by object verification, and Phase 21N now records a controlled test business/link/session plan plus cleanup options. The production route-only unavailable-link check passed. The production data-bearing synthetic smoke still needs an active synthetic quote slug, synthetic owner sessions, fake payload, and cleanup/retain-evidence decision.
 ```
 
 The safe local/RLS production-equivalent public quote verification from Phase 20 remains useful evidence, but it does not replace a production smoke after backup/migration/history gates are closed.
@@ -63,7 +68,7 @@ The safe local/RLS production-equivalent public quote verification from Phase 20
 
 | Negative test | Result | Notes |
 | --- | --- | --- |
-| Inactive/disabled public quote link blocked | Not run | Requires synthetic inactive production link. |
+| Inactive/unavailable public quote link blocked | Pass - route-only | `pnpm smoke:quote -- --base-url=https://bizpilo.com --inactive-slug=phase-21-synthetic-unavailable-check` returned HTTP 200, rendered the safe unavailable state, and did not expose raw/internal markers. |
 | Wrong business/form mismatch blocked | Not run | Requires controlled synthetic production forms/businesses. |
 | Unknown field key blocked | Not run | Supported by `public_can_insert_submission_value` verification and local RLS tests; production browser/API smoke still required. |
 | Hidden field value insert blocked | Not run | Supported by public submission-value RLS hardening verification and local RLS tests; production browser/API smoke still required. |
@@ -109,32 +114,51 @@ When the production smoke is approved, the operator must record:
 - who approved cleanup,
 - whether cleanup itself touches production data.
 
-## 10. Issues Found
+## 10. Continuation Evidence
 
-No production public quote flow issue was found in Phase 21E because the production smoke was not run.
+2026-05-25 safe route-only smoke:
 
-Current blocker is operational/safety readiness, not a newly observed application defect.
+```text
+pnpm smoke:quote -- --base-url=https://bizpilo.com --inactive-slug=phase-21-synthetic-unavailable-check
+Result: pass, 1/1
+Production route: /quote/phase-21-synthetic-unavailable-check
+Expected state: safe unavailable quote page
+Raw/internal marker exposure: none detected by runner
+Production SQL: none
+Production data creation: none
+```
 
-## 11. Patches Made
+This closes only the inactive/unavailable public quote route check. It does
+not verify active submission, lead creation, dashboard visibility,
+`source_channel`, consent persistence, abuse controls, or horizontal access.
 
-No code patches were made for Phase 21E.
+## 11. Issues Found
+
+No production public quote flow issue was found in the route-only check.
+
+Current blocker is active synthetic test setup/session availability, not a newly observed application defect.
+
+## 12. Patches Made
+
+`pnpm smoke:quote` was added in `f1c5346` for approved synthetic public
+quote-link checks.
 
 No RLS changes were made.
 
 No production SQL was run.
 
-## 12. Final Status
+## 13. Final Status
 
 Production public quote security verification:
 
 ```text
-Not run.
+Partial route-only pass; full data-bearing smoke not run.
 ```
 
 Final Phase 21E decision:
 
 ```text
-Blocked until the Phase 21N synthetic production smoke plan is explicitly approved for execution, with deploy/URL, synthetic accounts, synthetic payload, and cleanup decision confirmed.
+Blocked until an active synthetic quote link, synthetic owner sessions, synthetic payload, and cleanup/retain-evidence decision are available.
 ```
 
 BizPilot remains:

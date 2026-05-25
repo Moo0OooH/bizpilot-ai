@@ -72,6 +72,7 @@ Usage:
 
 ```bash
 pnpm smoke:quote -- --active-slug=<approved-synthetic-active-slug>
+pnpm smoke:quote -- --inactive-slug=<approved-inactive-or-fake-slug>
 pnpm smoke:quote -- --base-url=https://bizpilo.com --active-slug=<approved-synthetic-active-slug> --inactive-slug=<approved-inactive-slug> --fr-slug=<approved-fr-ca-slug>
 ```
 
@@ -131,6 +132,16 @@ pnpm smoke:public -- --base-url=https://bizpilo.com: pass, 9/9 routes
 Data-bearing production quote security, fr-CA, and horizontal-access smokes
 remain pending because they require approved synthetic owner sessions,
 synthetic workspace/link setup, and a cleanup/retain-evidence decision.
+
+Quote-smoke tooling continuation on 2026-05-25:
+
+```text
+Commit f1c5346 added pnpm smoke:quote and was pushed to origin/main and origin/phase-21-production-alignment.
+The script is ready for approved synthetic slugs through --active-slug, --inactive-slug, and --fr-slug.
+It only fetches public quote routes and checks safe expected text plus raw/internal error markers.
+It does not submit forms, create leads, inspect secrets, or run production SQL.
+pnpm smoke:quote -- --base-url=https://bizpilo.com --inactive-slug=phase-21-synthetic-unavailable-check: pass, 1/1
+```
 
 ## 6. Current Decision
 

@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** fr-CA production quote flow smoke
-**Status:** Blocked - production smoke not run
+**Status:** Blocked - no approved active fr-CA synthetic quote link/session yet
 **Owner:** MoOoH
 **Last Updated:** 2026-05-25
 
@@ -20,9 +20,9 @@ No production quote submission was created. No production lead was created. No p
 | --- | --- | --- |
 | Production public quote security passed | No | Phase 21E is blocked/not run. |
 | Production migration/history alignment closed | Object-verified; history unavailable | Phase 21C/21D verified required columns/functions, expected `0018` objects, RLS status, policies, grants, and targeted constraints/seeds. `supabase_migrations.schema_migrations` is missing, so history remains unavailable/manual drift. |
-| Valid synthetic fr-CA cleaning business exists | Not confirmed | Phase 21N records the proposed disposable synthetic workspace shape, but owner has not approved creating or using it. |
-| Valid active public quote link exists | Not confirmed | Phase 21N records the planned disposable link shape; no approved production link is recorded yet. |
-| Owner approval for production data-bearing smoke | Broad access granted; exact execution approval still required | Owner approved full Supabase/Vercel/GitHub access. Phase 21N records the disposable fr-CA link/session/cleanup plan, but execution still requires explicit owner approval. |
+| Valid synthetic fr-CA cleaning business exists | Not confirmed | Phase 21N records the proposed disposable synthetic workspace shape, but Codex does not have an active fr-CA slug/session to test yet. |
+| Valid active public quote link exists | Not confirmed | `pnpm smoke:quote` supports `--fr-slug`, but no approved production fr-CA slug is recorded yet. |
+| Owner approval for production data-bearing smoke | Broad readiness approval granted; execution inputs still required | Owner approved practical non-destructive readiness work. Phase 21N records the disposable fr-CA link/session/cleanup plan, but execution still requires synthetic accounts/sessions, fr-CA slug, payload, and cleanup/retain-evidence decision. |
 
 ## 3. Test Matrix
 
@@ -46,6 +46,8 @@ No fr-CA production issue was observed because the smoke was not run.
 Current blockers are operational gates:
 
 - production public quote security is not verified,
+- `pnpm smoke:quote` is ready for an approved `--fr-slug`, but no active
+  synthetic fr-CA slug is available in the current context,
 - migration history is unavailable even though object/RLS/policy verification passed,
 - backup/PITR/export/restore safety is not complete for real customer data,
 - no approved synthetic fr-CA business/link exists yet,

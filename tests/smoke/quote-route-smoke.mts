@@ -62,15 +62,6 @@ function readCliValue(name: string): string | undefined {
   return undefined;
 }
 
-function readRequiredValue(name: string, envName: string): string {
-  const value = readCliValue(name) ?? process.env[envName];
-  if (!value || value.trim().length === 0) {
-    throw new Error(`Missing --${name} or ${envName}. Use only approved synthetic quote slugs.`);
-  }
-
-  return value.trim();
-}
-
 function readOptionalValue(name: string, envName: string): string | undefined {
   const value = readCliValue(name) ?? process.env[envName];
   const trimmed = value?.trim();
@@ -236,22 +227,27 @@ async function runCheck(
 }
 
 function buildChecks(): QuoteSmokeCheck[] {
-  const activeSlug = readRequiredValue("active-slug", "BIZPILOT_SMOKE_ACTIVE_QUOTE_SLUG");
+  const activeSlug = readOptionalValue(
+    "active-slug",
+    "BIZPILOT_SMOKE_ACTIVE_QUOTE_SLUG",
+  );
   const inactiveSlug = readOptionalValue(
     "inactive-slug",
     "BIZPILOT_SMOKE_INACTIVE_QUOTE_SLUG",
   );
   const frSlug = readOptionalValue("fr-slug", "BIZPILOT_SMOKE_FR_QUOTE_SLUG");
 
-  const checks: QuoteSmokeCheck[] = [
-    {
+  const checks: QuoteSmokeCheck[] = [];
+
+  if (activeSlug) {
+    checks.push({
       expectedText: ["What kind of cleaning?", "Send quote request"],
       name: "active synthetic quote link",
       path: quotePathFromSlug(activeSlug),
       rejectedText: ["Quote page unavailable"],
       status: 200,
-    },
-  ];
+    });
+  }
 
   if (inactiveSlug) {
     checks.push({
@@ -270,6 +266,12 @@ function buildChecks(): QuoteSmokeCheck[] {
       rejectedText: ["Quote page unavailable", "Send quote request"],
       status: 200,
     });
+  }
+
+  if (checks.length === 0) {
+    throw new Error(
+      "Provide at least one approved synthetic slug through --active-slug, --inactive-slug, or --fr-slug.",
+    );
   }
 
   return checks;

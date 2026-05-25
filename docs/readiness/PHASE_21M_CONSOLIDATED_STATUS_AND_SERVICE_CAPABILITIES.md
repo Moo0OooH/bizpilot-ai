@@ -4,7 +4,7 @@
 **Date:** 2026-05-25
 **Branch:** `phase-21-production-alignment`  
 **Branch status:** pushed to `origin/phase-21-production-alignment`  
-**Latest checked implementation commit:** `6263ecb feat(admin): sharpen founder user controls`
+**Latest checked implementation commit:** `f1c5346 test: add synthetic quote route smoke`
 **Status:** Production is deployed for founder-controlled synthetic demos. Real customer pilot remains blocked.
 
 ---
@@ -61,7 +61,7 @@ It is not yet approved for real customer data or a real paying pilot because pro
 
 | Area | Current result |
 | --- | --- |
-| Git branch | `main`, `origin/main`, and `origin/phase-21-production-alignment` are aligned at `6263ecb feat(admin): sharpen founder user controls` after the 2026-05-25 continuation sync. |
+| Git branch | `main`, `origin/main`, and `origin/phase-21-production-alignment` are aligned at `f1c5346 test: add synthetic quote route smoke` after the 2026-05-25 continuation sync. |
 | Main/production | `main` was pushed with owner approval, and production is deployed on `https://bizpilo.com`. |
 | Production target | Supabase target confirmed as `bizpilot-production` / `qfqendrqimqvkoojpjao`; Vercel project confirmed as `moo0ooohs-projects/bizpilot-ai`; production URL target is `https://bizpilo.com`. |
 | Migration history | Production standard CLI migration history is unavailable because `supabase_migrations.schema_migrations` is missing. Direct object verification is the accepted evidence path. |
@@ -303,6 +303,16 @@ pnpm lint: pass
 pnpm typecheck: pass
 pnpm build: pass
 pnpm smoke:public -- --base-url=https://bizpilo.com: pass, 9/9 routes
+```
+
+Quote-smoke tooling continuation on 2026-05-25:
+
+```txt
+f1c5346 test: add synthetic quote route smoke
+Added pnpm smoke:quote for approved synthetic public quote-link route checks.
+origin/main and origin/phase-21-production-alignment aligned at f1c5346.
+The runner does not create accounts, submit quote data, inspect secrets, or touch production SQL.
+Full production quote submission, fr-CA submission, dashboard visibility, and horizontal-access smokes still require approved synthetic owner sessions and fake payloads.
 ```
 
 ## 6. What I Would Do Next
