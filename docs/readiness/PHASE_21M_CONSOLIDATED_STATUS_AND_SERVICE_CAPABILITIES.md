@@ -11,7 +11,7 @@
 
 ## 2026-05-25 Production Continuation Update
 
-Owner approved production merge/deploy and synthetic smoke execution. OpenAI billing/quota/env remains owner-side; staged commercial pricing/terms are now approved for pilot cohorts, but real customer pilot execution remains blocked by production/data gates.
+Owner approved production merge/deploy and synthetic smoke execution. OpenAI real-output validation is paused while the owner waits for an OpenAI support-ticket response to a provider-side `insufficient_quota` / HTTP `429` result. Staged commercial pricing/terms are approved for pilot cohorts, but real customer pilot execution remains blocked by production/data gates.
 
 Current continuation truth:
 
@@ -37,12 +37,12 @@ Current continuation truth:
 - Homepage scale and workflow demo were revised and deployed: commit `eddd331 feat: refine homepage workflow demo` reached Ready on Vercel deployment `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo`, aliased to `https://bizpilo.com`.
 - Production homepage smoke after `eddd331` returned HTTP 200 and confirmed the tabbed demo copy on `https://bizpilo.com`; browser QA at 375px width found no horizontal overflow and confirmed the Owner response tab switches panels.
 - Homepage safe-gap work replaced the old tab render with an interactive 7-step cleaning demo and tightened the hero above-the-fold footprint. It deployed to Vercel production deployment `dpl_H2EtZKwH5E24YTaWxz4JcT859kCF`; `https://bizpilo.com/` returned HTTP 200 and contained `Step 1 of 7`.
-- OpenAI was rechecked after owner credit update. Vercel Production still has an empty `OPENAI_API_KEY` value; no model-backed request was made, and the temporary env pull was deleted outside the repo.
+- OpenAI was rechecked after owner credit update. Production now reaches OpenAI, but the provider returns HTTP `429` with safe subtype `ai_provider_quota_exceeded` / `insufficient_quota`. The owner opened an OpenAI support ticket, and model-backed output validation is paused until that provider-side issue is resolved.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production migration `0020` was not applied because a real production DB backup/export was not available from local tools.
 - Staged commercial terms are now approved: first 1-5 pilot customers get free setup for 30/60-day feedback; customers 6-20 are `$149 setup + $49/month`; the standard post-proof offer is `$199 setup + $79/month`.
-- OpenAI validation remains blocked because Vercel Production still has an empty `OPENAI_API_KEY`; no model-backed request was made.
+- OpenAI validation remains blocked by provider-side `insufficient_quota` / HTTP `429`. The app now logs safe request-start/failure metadata and records sanitized fallback reasons without printing secrets, prompts, customer payloads, or provider bodies.
 - Current safe-gap pass adds public `/privacy`, `/security`, and `/terms` trust pages with EN/fr-CA copy, footer links, and policy-copy structure tests. These pages clarify pilot-stage privacy, security, manual billing, no auto-send, and no-real-data boundaries. Production smoke for all three routes passed on `https://bizpilo.com`; evidence is recorded in `docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md`.
 - Phase 21P no-cost hardening added repeatable `pnpm smoke:public`, backup/export/restore decision matrix, and Auth email/custom SMTP integration plan. Local public smoke passed 9/9 routes on `http://127.0.0.1:3000`; production public smoke passed 9/9 routes on `https://bizpilo.com`; `pnpm verify` passed; local RLS passed 13/13 through a temporary local-only Docker proxy that was removed after the run.
 - Commit `68dba3e chore: add readiness smoke and ops plans` was pushed to `origin/main` and `origin/phase-21-production-alignment`. After the production marker appeared on `https://bizpilo.com/`, `pnpm smoke:public -- --base-url=https://bizpilo.com` passed 9/9 routes.
@@ -217,7 +217,7 @@ It is not yet approved for real customer data or a real paying pilot because pro
 | P0 | Production public quote security smoke | Partially run; blocked by onboarding gap | Synthetic signup worked, but new workspace quote URL rendered unavailable; local signup quote-bootstrap fix is in progress. |
 | P0 | fr-CA production quote smoke | Not run | Run after quote-bootstrap fix is deployed and quote security smoke passes. |
 | P0 | Signup confirmation smoke | Passed with synthetic inbox | Disposable inbox credentials/artifacts are stored outside repo and must not be printed or committed. |
-| P0 | OpenAI real output quality | Blocked by HTTP `429` | Resolve quota/billing/rate/model-access, then re-run one synthetic dry run. |
+| P0 | OpenAI real output quality | Paused on OpenAI ticket; blocked by `insufficient_quota` HTTP `429` | Wait for provider/account fix, then re-run one synthetic dry run. |
 | P0 | Backup/export posture | Not acceptable for real data | Supabase Free has no scheduled backups/PITR; do manual export/restore drill or upgrade before real customer data. |
 | P0 | Custom SMTP/Auth email posture | Not configured for real users | Configure dedicated transactional SMTP, verify DNS, then run signup and reset-password smoke with a safe inbox. |
 | P0 | Production `0020` apply | Not applied | Only needed if founder wants production fake/test auth user deletion now. Apply after explicit approval and verify. |
@@ -273,7 +273,7 @@ Latest Phase 21P no-cost hardening validation:
 pnpm smoke:public: pass locally against http://127.0.0.1:3000, 9/9 routes
 pnpm smoke:public -- --base-url=https://bizpilo.com: pass, 9/9 routes
 pnpm verify: pass
-pnpm test:unit within verify: pass, 54/54
+pnpm test:unit within verify: pass, 59/59 after source-integrity guard
 pnpm build within verify: pass
 pnpm test:rls: pass, 13/13 through temporary local-only Docker proxy on 127.0.0.1:55432
 git diff --check: pass, CRLF warnings only
@@ -299,7 +299,7 @@ Production public smoke after marker: pass, 9/9 routes
 4. Review/approve the Phase 21N synthetic production smoke plan.
 5. Run production public quote security smoke using synthetic data only.
 6. Run fr-CA production quote smoke.
-7. Resolve OpenAI `429` and run one real-key synthetic output dry run.
+7. Resume OpenAI validation after provider/support-ticket resolution and run one real-key synthetic output dry run.
 8. Provide a controlled inbox and run one signup confirmation smoke.
 9. Decide backup/export/upgrade plan before any real customer data.
 10. Commercial terms are finalized; keep payment collection blocked until technical/data gates close.
@@ -321,7 +321,7 @@ Production public smoke after marker: pass, 9/9 routes
 1. Decide whether to approve a PR/merge/deploy of `phase-21-production-alignment`.
 2. Decide whether to approve production migration `0020` for fake/test auth user deletion.
 3. Provide a safe test inbox/mail-capture for signup smoke.
-4. Resolve OpenAI quota/billing/rate-limit issue causing HTTP `429`.
+4. Resume OpenAI quota/billing validation after the provider-side ticket response for `insufficient_quota` HTTP `429`.
 5. Decide Supabase backup/export plan before real customer data.
 6. Configure a safe payment collection process only after production/data gates are closed.
 7. Approve exact synthetic production smoke plan before any live production testing.

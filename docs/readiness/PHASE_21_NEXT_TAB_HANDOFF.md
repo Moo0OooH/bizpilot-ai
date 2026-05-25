@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot is production-deployed on https://bizpilo.com, signup confirmation smoke passed once with a disposable synthetic inbox, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked interactive 7-step cleaning demo, staged commercial terms are approved, public trust pages are deployed, repeatable public route smoke passes locally and in production, and 54/54 unit tests pass - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export/restore, and custom SMTP posture are still outstanding before the first real customer pilot.
+BizPilot is production-deployed on https://bizpilo.com, signup confirmation smoke passed once with a disposable synthetic inbox, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked interactive 7-step cleaning demo, staged commercial terms are approved, public trust pages are deployed, repeatable public route smoke passes locally and in production, and 59/59 unit tests pass after a source-integrity guard - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export/restore, and custom SMTP posture are still outstanding before the first real customer pilot.
 ```
 
 2026-05-25 continuation update:
@@ -36,14 +36,14 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
 - Homepage scale and workflow demo were revised and deployed: commit `eddd331 feat: refine homepage workflow demo` reached Ready on Vercel deployment `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo`, aliased to `https://bizpilo.com`.
 - Production homepage smoke after `eddd331` returned HTTP 200 and confirmed the tabbed demo copy on `https://bizpilo.com`; browser QA at 375px width found no horizontal overflow and confirmed the Owner response tab switches panels.
 - Homepage safe-gap work replaced the tab render with an interactive 7-step cleaning demo, tightened hero vertical spacing, reduced hero desk height, and updated the hero secondary CTA to `#cleaning-demo`. It deployed to Vercel production deployment `dpl_H2EtZKwH5E24YTaWxz4JcT859kCF`; `https://bizpilo.com/` returned HTTP 200 and contained `Step 1 of 7`.
-- OpenAI was rechecked after owner credit update. Vercel Production still has an empty `OPENAI_API_KEY` value; no model-backed request was made, and the temporary env pull was deleted outside the repo.
+- OpenAI was rechecked after owner credit update. Production now reaches OpenAI, but the provider returns HTTP `429` with safe subtype `ai_provider_quota_exceeded` / `insufficient_quota`. The owner opened an OpenAI support ticket, and this gate is paused until the provider/account issue is resolved.
 - Staged pilot terms are approved: first 1-5 pilot customers get free founder-led setup for 30/60-day feedback; customers 6-20 are `$149 setup + $49/month`; the standard post-proof offer is `$199 setup + $79/month`.
 - Safe public-trust gap pass added `/privacy`, `/security`, and `/terms` routes with EN/fr-CA copy, footer links, no-auto-send boundaries, and unit coverage for policy-copy structure. Production smoke passed for all three routes on `https://bizpilo.com`.
 - Phase 21P no-cost hardening added `pnpm smoke:public`, `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`, `docs/operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`, and `docs/readiness/PHASE_21P_NO_COST_READINESS_HARDENING.md`.
 - Phase 21P implementation commit `68dba3e chore: add readiness smoke and ops plans` was pushed to `origin/main` and `origin/phase-21-production-alignment`.
 - `pnpm smoke:public` passed locally against `http://127.0.0.1:3000` with 9/9 routes.
 - `pnpm smoke:public -- --base-url=https://bizpilo.com` passed in production with 9/9 routes.
-- `pnpm verify` passed with 54/54 unit tests and a successful build.
+- `pnpm verify` passed with 54/54 unit tests and a successful build; a later source-integrity pass added one more unit test and passed 59/59 with lint/typecheck/build.
 - `pnpm test:rls` passed 13/13 through a temporary local-only `127.0.0.1:55432` Docker proxy; the proxy was removed after the run.
 - After the push, `https://bizpilo.com/` rendered the new header `Demo` marker for `/#cleaning-demo`, and production public smoke passed 9/9 routes again.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
@@ -413,17 +413,12 @@ Run only after production quote security passes:
 Current blocker:
 
 ```text
-OpenAI returned HTTP 429.
+OpenAI returned HTTP 429 with insufficient_quota.
 ```
 
-Owner must check:
-
-- billing,
-- quota,
-- rate limits,
-- model access,
-- correct project/org,
-- key active in runtime.
+Owner opened an OpenAI support ticket. Keep this workstream paused until the
+provider/account issue is resolved, then run exactly one synthetic cleaning-lead
+generation smoke.
 
 Do not paste key. Re-run only with synthetic cleaning lead.
 
@@ -577,7 +572,7 @@ Continue BizPilot Phase 21 from:
 - signup smoke: passed 2026-05-25 with synthetic disposable inbox
 - staged pricing terms deployed in f4a8337
 - public trust pages and interactive demo are deployed and production-smoked
-- 54/54 unit tests pass
+- 59/59 unit tests pass after source-integrity guard
 - pnpm verify passed locally
 
 Read first:
@@ -613,7 +608,7 @@ Signup smoke passed with synthetic disposable inbox.
 Commercial terms are approved and deployed in f4a8337.
 Public trust pages and interactive homepage demo are deployed and production-smoked.
 Still not ready for first real pilot customer with real customer data.
-Remaining blockers: production quote security smoke, fr-CA smoke, OpenAI production key/output validation, backup/export/restore posture, custom SMTP/Auth email posture, production 0020 only after backup/export if still needed, and live admin visual QA with a founder-authorized session.
+Remaining blockers: production quote security smoke, fr-CA smoke, OpenAI production output validation after support-ticket resolution, backup/export/restore posture, custom SMTP/Auth email posture, production 0020 only after backup/export if still needed, and live admin visual QA with a founder-authorized session.
 ```
 
 ## 13. Exact Follow Path For The Next Tab
@@ -633,7 +628,7 @@ Start with this order:
 11. Treat public trust pages and interactive homepage demo as locally validated until production smoke confirms them after deploy.
 12. Next useful technical step is production deploy verification for the latest safe-gap push.
 13. Next useful production-readiness step after deploy verification is synthetic production public quote security smoke.
-14. Do not use real customer data until backup/export, signup/custom SMTP, OpenAI, and production smokes are closed. Commercial terms are now approved, but that alone does not approve real customer data.
+14. Do not use real customer data until backup/export, signup/custom SMTP, OpenAI support-ticket resolution plus output smoke, and production smokes are closed. Commercial terms are now approved, but that alone does not approve real customer data.
 
 If the owner says to continue development rather than deploy, prioritize:
 
