@@ -32,6 +32,7 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Dashboard i18n/admin recovery commit | `7904a65 fix: repair dashboard language and admin cleanup controls` |
 | Consolidated status doc commit | `05e3d24 docs: consolidate phase 21 status` |
 | RLS environment blocker doc commit | `1be5235 docs: record rls environment blocker` |
+| Synthetic production smoke plan doc | `docs/readiness/PHASE_21N_SYNTHETIC_PRODUCTION_SMOKE_PLAN.md` |
 | Consolidated status doc | `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md` |
 | Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
 | Latest Vercel evidence commit | `9adde10 docs: record vercel production target evidence` |
@@ -157,6 +158,7 @@ Validation passed in Phase 20:
 - Founder Admin now has a repo-backed fake/test auth login deletion path guarded against founder accounts, production-customer users, and workspace owners. Migration `0020_founder_test_auth_user_cleanup.sql` extends the audit action constraint locally. It is not pushed, deployed, or applied to production yet. This was committed as `daa23c8`.
 - Smart Intake Routing was first documented as a future product concept in `27156c5`.
 - Smart Intake Routing Lite is now implemented locally as a deterministic cleaning-first suggestion layer in Lead Detail: priority, suggested queue, suggested reviewer, reasons, missing-info summary, and next action. It has no migration, no routing persistence, no auto-assignment, no auto-send, no external API usage, and no production deploy. Evidence is recorded in `docs/readiness/PHASE_21J_SMART_INTAKE_ROUTING_LITE.md`.
+- Phase 21N now records the exact synthetic production smoke plan for Phase 21E/21F: disposable synthetic workspace shape, fake payload, positive/negative quote security sequence, fr-CA sequence, cleanup choices, and required owner approvals. It does not approve execution.
 - Homepage conversion polish tightened the hero, added an operational pain story, made the hero recovery visual outcome-first, added a live workflow demo, preserved the no-auto-send trust anchor, and updated homepage copy tests/standards. This was committed as `bd3d2a0`.
 - Dashboard i18n systemization made `businesses.preferred_language` the authenticated dashboard source of truth, moved visible dashboard overview/leads/configuration/settings/business-profile copy into the central dictionary, localized readiness task labels by `taskKey`, kept client shell copy serializable, and added regression tests against mojibake and local dashboard language branches. Evidence is recorded in `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
@@ -425,8 +427,9 @@ Start here:
 13. `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`
 14. `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`
 15. `docs/readiness/PHASE_21L_DASHBOARD_I18N_ADMIN_RECOVERY.md`
-16. `.github/workflows/ci.yml`
-17. `package.json`
+16. `docs/readiness/PHASE_21N_SYNTHETIC_PRODUCTION_SMOKE_PLAN.md`
+17. `.github/workflows/ci.yml`
+18. `package.json`
 
 ## 9. Important Code/Migration Files
 
@@ -493,6 +496,7 @@ Inspect before commit:
 | Dashboard i18n systemization | `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`, `tests/unit/i18n-copy.test.mts` |
 | Dashboard i18n/admin recovery fix | `docs/readiness/PHASE_21L_DASHBOARD_I18N_ADMIN_RECOVERY.md`, `tests/unit/i18n-copy.test.mts` |
 | Consolidated completed/remaining/service-capability status | `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md` |
+| Synthetic production smoke plan | `docs/readiness/PHASE_21N_SYNTHETIC_PRODUCTION_SMOKE_PLAN.md` |
 | Owner-facing current status notes mirror | `C:/Users/mbeag/Downloads/BIZPILOT_CURRENT_STATUS_NOTES_2026-05-25.md` |
 
 ## 11. Next Tab Starter Prompt

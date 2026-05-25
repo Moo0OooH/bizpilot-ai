@@ -16,8 +16,8 @@ Use this table as the active production QA truth. Older Phase 19H/20 blockers re
 | Signup confirmation | Blocked | No safe test inbox/mail-capture path is available; no production signup request was sent in Phase 21H. Local callback-routing unit test passed 7/7. |
 | Forgot/reset password | Open | Reset flow still needs one controlled production smoke with an approved inbox after signup-confirmation setup exists. |
 | Production Supabase schema/RLS | Object-verified; migration history unavailable | Corrected target `qfqendrqimqvkoojpjao` has required columns/functions, expected `0018` lifecycle/deletion objects, RLS enabled on all 31 public tables, 70 reviewed policies, targeted constraints/seeds, and verified `0019` grants. `supabase_migrations.schema_migrations` is missing, so treat production as schema-without-standard-migration-history/manual drift. |
-| Public quote security | Blocked | Phase 21E not run. Requires approved synthetic production business/link/session setup and cleanup policy. Use synthetic data only. |
-| fr-CA quote flow | Blocked | Phase 21F not run. Depends on Phase 21E and an approved disposable fr-CA cleaning link. |
+| Public quote security | Blocked | Phase 21E not run. Phase 21N records the synthetic production smoke plan, but execution still requires owner approval for deploy/URL, accounts, payload, and cleanup. Use synthetic data only. |
+| fr-CA quote flow | Blocked | Phase 21F not run. Depends on Phase 21E and owner approval of the Phase 21N disposable fr-CA cleaning link/session plan. |
 | Dashboard lead workflow | Blocked | Requires a valid synthetic production quote submission and founder/owner dashboard smoke. |
 | Tenant isolation production smoke | Blocked | Requires synthetic production lead plus a second synthetic owner account. Local RLS tests pass, but production browser smoke is still needed. |
 | OpenAI model-backed AI | Blocked | A real-key synthetic dry run returned HTTP `429`; no model output was generated or quality-checked. Owner/operator must check OpenAI quota/billing/model access before retry. |

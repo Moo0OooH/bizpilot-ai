@@ -4,7 +4,7 @@
 **Document Type:** Production public quote security verification
 **Status:** Blocked - production test not run
 **Owner:** MoOoH
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25
 
 ---
 
@@ -32,8 +32,8 @@ No production quote submission was created. No production lead was created. No p
 | Production migrations aligned | Object-verified; history unavailable | Required public quote columns/functions, expected `0018` objects, RLS enablement, policies, function definitions, `0019` grants, and targeted constraints/seeds have been verified. `supabase_migrations.schema_migrations` is missing, so history remains unavailable/manual drift. |
 | Required RPCs visible to PostgREST | Yes by safe probe and direct SQL | Phase 21B safe probes showed the three public quote RPCs callable/visible with repo parameter names. Owner-run direct SQL verified required functions and grants. |
 | Backup/safety documented | Blocked for real customer data | Supabase Free plan has no scheduled backup/PITR available; no manual export or restore drill has been done. Owner risk-accepted this only for no-real-user database/security alignment. |
-| Test business/link available or safely created | No | No owner-approved synthetic production business/link setup is recorded. |
-| Owner approval for production data-bearing smoke | Broad access granted; exact synthetic setup still not recorded | Owner approved full Supabase/Vercel/GitHub access and production grant-only `0019`, but this smoke still needs the exact synthetic business/link/session plan and cleanup policy recorded before creating rows. |
+| Test business/link available or safely created | No | Phase 21N now records the proposed synthetic workspace/link shape, but owner has not approved creating or using it. |
+| Owner approval for production data-bearing smoke | Broad access granted; exact execution approval still required | Owner approved full Supabase/Vercel/GitHub access and production grant-only `0019`. Phase 21N records the exact synthetic smoke plan, but execution still requires owner approval for deploy/URL, synthetic accounts, payload, and cleanup. |
 
 ## 4. Decision
 
@@ -42,7 +42,7 @@ No production quote submission was created. No production lead was created. No p
 Reason:
 
 ```text
-The database/RLS preconditions are mostly satisfied by object verification, but the production data-bearing synthetic smoke still lacks a recorded test business/link/session plan, cleanup policy, and real-data backup posture.
+The database/RLS preconditions are mostly satisfied by object verification, and Phase 21N now records a controlled test business/link/session plan plus cleanup options. The production data-bearing synthetic smoke still lacks owner approval to execute, an approved deploy/URL, approved synthetic accounts, and an owner cleanup decision.
 ```
 
 The safe local/RLS production-equivalent public quote verification from Phase 20 remains useful evidence, but it does not replace a production smoke after backup/migration/history gates are closed.
@@ -91,7 +91,7 @@ Before running the production public quote security smoke:
 
 1. Keep Phase 21A backup/PITR/export/restore blocked for real customer data, or record a fresh explicit owner risk acceptance for synthetic-only smoke.
 2. Use the Phase 21C/21D SQL evidence as the database/RLS preflight; do not re-apply `0018` blindly.
-3. Confirm the exact controlled synthetic production quote test sequence.
+3. Review and approve `docs/readiness/PHASE_21N_SYNTHETIC_PRODUCTION_SMOKE_PLAN.md`.
 4. Create or identify a disposable synthetic cleaning business and quote link.
 5. Create or identify two synthetic owners for horizontal-access verification.
 6. Define cleanup policy for synthetic leads/submissions after the test.
@@ -134,7 +134,7 @@ Not run.
 Final Phase 21E decision:
 
 ```text
-Blocked until synthetic production quote setup, cleanup policy, and backup/risk posture for the data-bearing smoke are recorded.
+Blocked until the Phase 21N synthetic production smoke plan is explicitly approved for execution, with deploy/URL, synthetic accounts, synthetic payload, and cleanup decision confirmed.
 ```
 
 BizPilot remains:

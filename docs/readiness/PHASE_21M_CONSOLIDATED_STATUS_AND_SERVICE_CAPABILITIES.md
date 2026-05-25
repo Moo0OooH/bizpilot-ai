@@ -29,6 +29,7 @@ It is not yet approved for real customer data or a real paying pilot because pro
 | `0020` founder test auth cleanup | Repo-backed and locally validated only. Not applied to production yet. |
 | RLS posture | Owner-run SQL showed all 31 public tables have RLS enabled; disabled-RLS anti-query returned 0 rows; public policies were reviewed with no obvious blocker. |
 | Public quote security foundation | Local code and tests exist for public quote submit, abuse controls, source metadata, consent, lead conversion, and RLS helpers. Production smoke is still pending. |
+| Synthetic production smoke plan | Phase 21N now records the exact synthetic workspace, payload, sequence, cleanup choices, and owner approvals needed before production quote/fr-CA smokes. Execution is not approved. |
 | Dashboard language system | Authenticated dashboard language now uses workspace language as source of truth; EN/FR demo queue copy is centralized and tested. |
 | Founder admin | Founder console supports user/business overview, plan/status/link/internal note updates, workspace kind control, test/demo cleanup path, and guarded fake/test login deletion UI. |
 | Homepage | Conversion polish exists locally: stronger pain/outcome story, workflow demo, and no-auto-send trust anchor. Not deployed to production. |
@@ -222,13 +223,14 @@ RLS note: the repo has an RLS test runner and earlier Phase 21 evidence recorded
 1. Create a PR from `phase-21-production-alignment` to `main` for review, but do not merge yet.
 2. Decide whether production fake/test auth deletion is needed immediately. If yes, approve/apply `0020`, verify it, then deploy the branch.
 3. Deploy only after owner approval, then run live admin visual QA.
-4. Run production public quote security smoke using synthetic data only.
-5. Run fr-CA production quote smoke.
-6. Resolve OpenAI `429` and run one real-key synthetic output dry run.
-7. Provide a controlled inbox and run one signup confirmation smoke.
-8. Decide backup/export/upgrade plan before any real customer data.
-9. Finalize pilot terms.
-10. Only after those gates, approve a real customer pilot.
+4. Review/approve the Phase 21N synthetic production smoke plan.
+5. Run production public quote security smoke using synthetic data only.
+6. Run fr-CA production quote smoke.
+7. Resolve OpenAI `429` and run one real-key synthetic output dry run.
+8. Provide a controlled inbox and run one signup confirmation smoke.
+9. Decide backup/export/upgrade plan before any real customer data.
+10. Finalize pilot terms.
+11. Only after those gates, approve a real customer pilot.
 
 ## 7. Explicit Do-Not-Do List
 
