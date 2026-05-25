@@ -54,9 +54,12 @@ export type HomeNavCopy = Readonly<{
   flow: string;
   languageLabel: string;
   pricing: string;
+  privacy: string;
+  security: string;
   signIn: string;
   startFull: string;
   startShort: string;
+  terms: string;
   why: string;
 }>;
 
@@ -432,9 +435,12 @@ const englishHomeCopy: HomeCopy = {
     flow: "How it works",
     languageLabel: "Homepage language",
     pricing: "Pricing",
+    privacy: "Privacy",
+    security: "Security",
     signIn: "Sign in",
     startFull: "Start free recovery",
     startShort: "Start",
+    terms: "Terms",
     why: "Why BizPilot",
   },
   problem: {
@@ -856,9 +862,12 @@ const frenchHomeCopy: HomeCopy = {
     flow: "Fonctionnement",
     languageLabel: "Langue de la page d'accueil",
     pricing: "Prix",
+    privacy: "Confidentialite",
+    security: "Securite",
     signIn: "Connexion",
     startFull: "Démarrer la récupération",
     startShort: "Démarrer",
+    terms: "Conditions",
     why: "Pourquoi BizPilot",
   },
   problem: {

@@ -2,631 +2,506 @@
  * ============================================================
  * File: components/public/interactive-cleaning-demo.tsx
  * Project: BizPilot AI
- * Description: 7-step interactive cleaning demo section for the homepage.
- *   Replaces (or supplements) WorkflowDemoSection with a fully client-side
- *   step-through demo that works without the tabbed radio-button CSS hack.
- *
- * Usage in app/page.tsx:
- *   1. Import this component at the top of app/page.tsx:
- *        import { InteractiveCleaningDemoSection } from "@/components/public/interactive-cleaning-demo";
- *   2. In the HomePage JSX, replace <WorkflowDemoSection copy={copy.workflowDemo} />
- *      (or add after it) with:
- *        <InteractiveCleaningDemoSection language={language} />
- *
- * Hero above-fold fix (also in this file's companion guide):
- *   In HeroSection, change the outer <section> className from
- *     "px-0 pb-8 pt-8 sm:pb-10 sm:pt-10"
- *   to
- *     "px-0 pb-4 pt-5 sm:pb-6 sm:pt-6"
- *   to reduce vertical padding and keep the hero visible without scrolling.
- *
- * Author: BizPilot AI (reference output — apply manually)
- * Last Updated: 2026-05-25
+ * Description: Interactive 7-step cleaning quote recovery demo for homepage.
+ * Role: Shows the end-to-end customer/system/owner/follow-up workflow safely.
+ * Related:
+ * - app/page.tsx
+ * - components/public/marketing-ui.tsx
+ * - lib/i18n/language.ts
+ * Author: MoOoH
+ * Created: 2026-05-25
  * ============================================================
  */
 "use client";
 
-import { useState, useCallback } from "react";
-import { MarketingShell, marketingTone } from "@/components/public/marketing-ui";
+import { useMemo, useState } from "react";
+
+import {
+  MarketingBadge,
+  MarketingButton,
+  MarketingCard,
+  MarketingIcon,
+  MarketingShell,
+  marketingTone,
+} from "@/components/public/marketing-ui";
 import type { SupportedLanguage } from "@/lib/i18n/language";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 type DemoStep = Readonly<{
-  title: string;
-  note: string;
-  heading: string;
-  description: string;
-  rows: ReadonlyArray<readonly [string, string]>;
-  draftTitle: string;
+  detail: string;
   draft: string;
+  fields: ReadonlyArray<Readonly<{ label: string; value: string }>>;
+  guardrail: string;
   outcome: string;
-  safety: string;
+  title: string;
 }>;
 
 type DemoCopy = Readonly<{
+  cta: string;
   eyebrow: string;
-  sectionTitle: string;
-  lead: string;
-  stepLabel: (n: number, total: number) => string;
-  prevLabel: string;
-  nextLabel: string;
+  intro: string;
+  next: string;
+  previous: string;
+  stepLabel: (current: number, total: number) => string;
   steps: ReadonlyArray<DemoStep>;
+  title: string;
 }>;
 
-// ─── English copy ─────────────────────────────────────────────────────────────
-
-const EN_DEMO_COPY: DemoCopy = {
-  eyebrow: "Cleaning demo",
-  sectionTitle:
-    "Watch a cleaning quote request become a ready-to-review reply.",
-  lead:
-    "A customer needs a move-out cleaning quote for a 2-bedroom condo before Friday. Follow every step — no auto-send, no invented price, owner stays in control.",
-  stepLabel: (n, total) => `Step ${n} of ${total}`,
-  prevLabel: "Previous",
-  nextLabel: "Next step",
+const englishDemo: DemoCopy = {
+  cta: "See founder pilot terms",
+  eyebrow: "Live cleaning demo",
+  intro:
+    "Follow one realistic move-out cleaning quote request from customer question to follow-up. The system organizes the work; the owner stays in control.",
+  next: "Next",
+  previous: "Previous",
+  stepLabel: (current, total) => `Step ${current} of ${total}`,
+  title: "See exactly how BizPilot handles a messy quote request.",
   steps: [
     {
-      title: "Incoming quote request",
-      note: "A realistic cleaning lead arrives from a simple quote link.",
-      heading: "Sarah needs a move-out cleaning quote.",
-      description:
-        "She has a 2-bedroom condo, needs help before Friday morning, and expects a fast response.",
-      rows: [
-        ["Customer", "Sarah J."],
-        ["Job", "Move-out cleaning"],
-        ["Property", "2-bedroom condo"],
-        ["Timing", "Friday morning"],
-      ],
-      draftTitle: "Why this matters",
+      detail:
+        "A customer asks for a move-out cleaning quote and only gives partial details.",
       draft:
-        "The owner sees the job at a glance instead of piecing together details from scattered messages.",
-      outcome: "Lead captured before it gets lost.",
-      safety: "No auto-send. No real AI is required for this guided demo.",
+        "Sarah needs a move-out clean before Friday, but pricing would be risky without square footage, access, and appliance details.",
+      fields: [
+        { label: "Customer", value: "Sarah J." },
+        { label: "Request", value: "Move-out cleaning" },
+        { label: "Timing", value: "Before Friday" },
+      ],
+      guardrail: "No auto-send. No invented price.",
+      outcome: "The lead is captured before it disappears.",
+      title: "Customer question",
     },
     {
-      title: "Organized lead details",
-      note: "BizPilot turns the request into a clean workspace.",
-      heading: "The owner sees the important details first.",
-      description:
-        "Job type, timing, location, urgency, and contact context are organized in one place.",
-      rows: [
-        ["Service", "Move-out clean"],
-        ["Location", "Downtown Toronto"],
-        ["Urgency", "Fast reply needed"],
-        ["Source", "Quote link"],
-      ],
-      draftTitle: "Owner view",
+      detail:
+        "BizPilot turns the message into a structured lead record with source, status, and urgency.",
       draft:
-        "Instead of scrolling through DMs, the owner sees a clear lead card and can decide what to ask next.",
-      outcome: "The request becomes operational, not messy.",
-      safety: "The owner still decides the next step.",
+        "The owner sees the request in one place instead of piecing it together from email, DMs, or missed calls.",
+      fields: [
+        { label: "Source", value: "Quote link" },
+        { label: "Status", value: "New lead" },
+        { label: "Urgency", value: "Fast reply needed" },
+      ],
+      guardrail: "Organized lead data stays scoped to the business.",
+      outcome: "The request becomes operational.",
+      title: "Lead organized",
     },
     {
-      title: "Missing information",
-      note: "The system highlights what is needed before pricing.",
-      heading: "Missing details are easy to spot.",
-      description:
-        "BizPilot helps avoid guessing by showing what the owner should confirm before quoting.",
-      rows: [
-        ["Missing", "Square footage"],
-        ["Missing", "Parking / access"],
-        ["Missing", "Inside appliances?"],
-        ["Risk", "Do not quote too early"],
-      ],
-      draftTitle: "Before pricing",
+      detail:
+        "The system flags what is missing before the owner quotes or promises anything.",
       draft:
-        "Confirming missing info protects the owner from underquoting or promising the wrong scope.",
-      outcome: "The next reply becomes clearer.",
-      safety: "No invented prices. No booking promises.",
+        "Ask for square footage, parking/access, and inside-appliance cleaning before giving a final estimate.",
+      fields: [
+        { label: "Missing", value: "Square footage" },
+        { label: "Missing", value: "Access details" },
+        { label: "Risk", value: "Do not price too early" },
+      ],
+      guardrail: "No booking promise. No price guessing.",
+      outcome: "The owner knows what to confirm.",
+      title: "Missing details flagged",
     },
     {
-      title: "AI summary",
-      note: "The owner gets a short summary before replying.",
-      heading: "BizPilot summarizes the request.",
-      description:
-        "The summary explains what the customer wants and what needs review before the owner touches anything.",
-      rows: [
-        ["Intent", "Move-out clean"],
-        ["Deadline", "Before Friday"],
-        ["Need", "Fast quote"],
-        ["Review", "Confirm missing info"],
-      ],
-      draftTitle: "Summary",
+      detail:
+        "BizPilot prepares a short summary so the owner can understand the lead quickly.",
       draft:
-        "Sarah needs a move-out clean for a 2-bedroom condo before Friday. Confirm square footage, appliance cleaning, and access before pricing.",
-      outcome: "The owner can respond with context.",
-      safety: "AI assists, but the owner reviews.",
+        "Move-out cleaning request for a 2-bedroom condo before Friday. Customer appears ready to book after missing details are confirmed.",
+      fields: [
+        { label: "Intent", value: "Cleaning quote" },
+        { label: "Quality", value: "Warm lead" },
+        { label: "Next action", value: "Ask missing info" },
+      ],
+      guardrail: "AI assists. Owner reviews.",
+      outcome: "The lead is easier to prioritize.",
+      title: "System summary",
     },
     {
-      title: "Suggested reply draft",
-      note: "A practical draft ready for owner review.",
-      heading: "A reply is drafted — not sent automatically.",
-      description:
-        "BizPilot suggests a professional response that asks for the specific missing details, nothing more.",
-      rows: [
-        ["Tone", "Professional"],
-        ["Goal", "Get missing info"],
-        ["Action", "Owner reviews"],
-        ["Send", "Manual copy / send"],
-      ],
-      draftTitle: "Reply draft",
+      detail:
+        "The owner gets a useful reply draft that asks for only the details needed.",
       draft:
-        "Hi Sarah, thanks for reaching out. We can help with move-out cleaning. Could you confirm the approximate square footage, whether you need inside appliances cleaned, and whether parking is available?",
-      outcome: "Owner-reviewed reply ready in 2 minutes.",
-      safety: "No customer message is sent without owner review.",
+        "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, parking/access, and whether you need inside appliances cleaned?",
+      fields: [
+        { label: "Tone", value: "Professional" },
+        { label: "Action", value: "Owner review" },
+        { label: "Send mode", value: "Manual copy/send" },
+      ],
+      guardrail: "The message is not sent automatically.",
+      outcome: "A safer reply is ready faster.",
+      title: "Owner response drafted",
     },
     {
-      title: "Owner review and send",
-      note: "Control stays with the business owner.",
-      heading: "The owner reviews, edits, copies, and sends.",
-      description:
-        "The workflow is intentionally manual for trust, safety, and accurate customer communication.",
-      rows: [
-        ["Review", "Owner checks draft"],
-        ["Edit", "Adjust tone / details"],
-        ["Copy", "Manual"],
-        ["Send", "Owner-controlled"],
-      ],
-      draftTitle: "Control point",
+      detail:
+        "The owner edits, copies, and sends from their normal customer channel.",
       draft:
-        "BizPilot helps the owner move faster without taking over the conversation or making promises on their behalf.",
-      outcome: "Faster response, still human-reviewed.",
-      safety: "Manual copy / send only. Always.",
+        "BizPilot keeps the owner in the decision loop so the business never loses control of pricing, promises, or tone.",
+      fields: [
+        { label: "Review", value: "Owner checks draft" },
+        { label: "Edit", value: "Tone/details" },
+        { label: "Send", value: "Owner-controlled" },
+      ],
+      guardrail: "Manual copy/send only.",
+      outcome: "The customer gets a faster human-reviewed reply.",
+      title: "Owner review gate",
     },
     {
-      title: "Follow-up reminder",
-      note: "Warm leads do not disappear quietly.",
-      heading: "BizPilot keeps the next step visible.",
-      description:
-        "If Sarah does not respond, the owner has a clear follow-up draft and reminder — the lead does not go cold silently.",
-      rows: [
-        ["Status", "Waiting for customer"],
-        ["Follow-up", "Tomorrow"],
-        ["Draft", "Ready to review"],
-        ["Goal", "Keep lead warm"],
-      ],
-      draftTitle: "Follow-up draft",
+      detail:
+        "If the customer does not reply, BizPilot keeps the follow-up visible instead of letting the lead go cold.",
       draft:
-        "Hi Sarah, just checking in to see if you had a chance to confirm the square footage and access details. Happy to send over a quote once we have those.",
-      outcome: "The lead stays active instead of going cold.",
-      safety: "The owner chooses if and when to follow up.",
+        "Hi Sarah, just checking in. Once you confirm the square footage and access details, I can send the next step for your move-out clean.",
+      fields: [
+        { label: "Status", value: "Waiting" },
+        { label: "Follow-up", value: "Tomorrow" },
+        { label: "Draft", value: "Ready to review" },
+      ],
+      guardrail: "The owner decides if and when to follow up.",
+      outcome: "Warm leads stay visible.",
+      title: "Follow-up stays visible",
     },
   ],
 };
 
-// ─── French copy ──────────────────────────────────────────────────────────────
-
-const FR_DEMO_COPY: DemoCopy = {
-  eyebrow: "Démo nettoyage",
-  sectionTitle:
-    "Regardez une demande de soumission devenir une réponse prête à réviser.",
-  lead:
-    "Une cliente a besoin d'une soumission de nettoyage de départ pour un condo 2 chambres avant vendredi. Suivez chaque étape — aucun envoi automatique, aucun prix inventé, le propriétaire garde le contrôle.",
-  stepLabel: (n, total) => `Étape ${n} de ${total}`,
-  prevLabel: "Précédent",
-  nextLabel: "Étape suivante",
+const frenchDemo: DemoCopy = {
+  cta: "Voir les conditions pilote",
+  eyebrow: "Demo nettoyage",
+  intro:
+    "Suivez une demande realiste de nettoyage de depart, de la question client jusqu'au suivi. Le systeme organise; le proprietaire garde le controle.",
+  next: "Suivant",
+  previous: "Precedent",
+  stepLabel: (current, total) => `Etape ${current} de ${total}`,
+  title: "Voyez comment BizPilot traite une demande de soumission confuse.",
   steps: [
     {
-      title: "Nouvelle demande de soumission",
-      note: "Un prospect nettoyage arrive depuis un lien de soumission simple.",
-      heading: "Sarah a besoin d'une soumission de nettoyage de départ.",
-      description:
-        "Elle a un condo 2 chambres, veut le service avant vendredi matin et s'attend à une réponse rapide.",
-      rows: [
-        ["Cliente", "Sarah J."],
-        ["Travail", "Nettoyage de départ"],
-        ["Propriété", "Condo 2 chambres"],
-        ["Moment", "Vendredi matin"],
-      ],
-      draftTitle: "Pourquoi c'est important",
+      detail:
+        "Une cliente demande une soumission de nettoyage de depart avec seulement une partie des details.",
       draft:
-        "Le propriétaire comprend le travail rapidement au lieu de reconstituer les détails à partir de messages éparpillés.",
-      outcome: "Prospect capturé avant d'être perdu.",
-      safety:
-        "Aucun envoi automatique. Aucune vraie IA requise pour cette démo guidée.",
+        "Sarah veut un nettoyage de depart avant vendredi, mais le prix serait risque sans superficie, acces et details des electros.",
+      fields: [
+        { label: "Cliente", value: "Sarah J." },
+        { label: "Demande", value: "Nettoyage de depart" },
+        { label: "Moment", value: "Avant vendredi" },
+      ],
+      guardrail: "Aucun envoi automatique. Aucun prix invente.",
+      outcome: "Le lead est capture avant de disparaitre.",
+      title: "Question client",
     },
     {
-      title: "Détails organisés",
-      note: "BizPilot transforme la demande en espace de travail clair.",
-      heading: "Le propriétaire voit d'abord les détails importants.",
-      description:
-        "Type de travail, moment, lieu, urgence et contexte sont organisés au même endroit.",
-      rows: [
-        ["Service", "Nettoyage de départ"],
-        ["Lieu", "Centre-ville de Toronto"],
-        ["Urgence", "Réponse rapide requise"],
-        ["Source", "Lien de soumission"],
-      ],
-      draftTitle: "Vue propriétaire",
+      detail:
+        "BizPilot transforme le message en lead structure avec source, statut et urgence.",
       draft:
-        "Au lieu de parcourir des DM, le propriétaire voit une fiche claire et peut décider quoi demander ensuite.",
-      outcome: "La demande devient opérationnelle, pas désordonnée.",
-      safety: "Le propriétaire décide toujours de la prochaine étape.",
+        "Le proprietaire voit la demande au meme endroit au lieu de reconstruire le contexte depuis courriel, DM ou appels manques.",
+      fields: [
+        { label: "Source", value: "Lien de soumission" },
+        { label: "Statut", value: "Nouveau lead" },
+        { label: "Urgence", value: "Reponse rapide requise" },
+      ],
+      guardrail: "Les donnees restent limitees a l'entreprise.",
+      outcome: "La demande devient operationnelle.",
+      title: "Lead organise",
     },
     {
+      detail:
+        "Le systeme signale ce qui manque avant que le proprietaire donne un prix ou une promesse.",
+      draft:
+        "Demander superficie, stationnement/acces et nettoyage interieur des electros avant l'estimation finale.",
+      fields: [
+        { label: "Manquant", value: "Superficie" },
+        { label: "Manquant", value: "Details d'acces" },
+        { label: "Risque", value: "Ne pas chiffrer trop tot" },
+      ],
+      guardrail: "Aucune promesse de reservation. Aucun prix devine.",
+      outcome: "Le proprietaire sait quoi confirmer.",
       title: "Infos manquantes",
-      note: "Le système montre ce qu'il faut confirmer avant de donner un prix.",
-      heading: "Les détails manquants sont faciles à voir.",
-      description:
-        "BizPilot aide à éviter les devinettes en montrant quoi confirmer avant la soumission.",
-      rows: [
-        ["Manquant", "Superficie"],
-        ["Manquant", "Stationnement / accès"],
-        ["Manquant", "Intérieur des électros?"],
-        ["Risque", "Ne pas chiffrer trop tôt"],
-      ],
-      draftTitle: "Avant le prix",
-      draft:
-        "Confirmer les infos manquantes protège le propriétaire contre une sous-estimation ou une mauvaise portée.",
-      outcome: "La prochaine réponse devient plus claire.",
-      safety: "Aucun prix inventé. Aucune promesse de réservation.",
     },
     {
-      title: "Résumé IA",
-      note: "Le propriétaire reçoit un résumé court avant de répondre.",
-      heading: "BizPilot résume la demande.",
-      description:
-        "Le résumé explique ce que la cliente veut et ce qui doit être révisé avant que le propriétaire agisse.",
-      rows: [
-        ["Intention", "Nettoyage de départ"],
-        ["Échéance", "Avant vendredi"],
-        ["Besoin", "Soumission rapide"],
-        ["Révision", "Confirmer les infos"],
-      ],
-      draftTitle: "Résumé",
+      detail:
+        "BizPilot prepare un court resume pour que le proprietaire comprenne vite le lead.",
       draft:
-        "Sarah a besoin d'un nettoyage de départ pour un condo 2 chambres avant vendredi. Confirmer la superficie, les électros et l'accès avant le prix.",
-      outcome: "Le propriétaire peut répondre avec contexte.",
-      safety: "L'IA aide, mais le propriétaire révise.",
+        "Demande de nettoyage de depart pour un condo 2 chambres avant vendredi. La cliente semble prete apres confirmation des details manquants.",
+      fields: [
+        { label: "Intent", value: "Soumission nettoyage" },
+        { label: "Qualite", value: "Lead chaud" },
+        { label: "Action", value: "Demander les infos" },
+      ],
+      guardrail: "L'IA aide. Le proprietaire revise.",
+      outcome: "Le lead est plus facile a prioriser.",
+      title: "Resume systeme",
     },
     {
-      title: "Brouillon de réponse",
-      note: "Le brouillon est pratique et prêt à être révisé.",
-      heading: "Une réponse est préparée — sans envoi automatique.",
-      description:
-        "BizPilot suggère une réponse professionnelle qui demande les informations manquantes, rien de plus.",
-      rows: [
-        ["Ton", "Professionnel"],
-        ["Objectif", "Obtenir les infos"],
-        ["Action", "Révision propriétaire"],
-        ["Envoi", "Copier / envoyer manuel"],
-      ],
-      draftTitle: "Brouillon",
+      detail:
+        "Le proprietaire recoit un brouillon utile qui demande seulement les details necessaires.",
       draft:
-        "Bonjour Sarah, merci de nous avoir écrit. Nous pouvons vous aider avec le nettoyage de départ. Pouvez-vous confirmer la superficie approximative, si l'intérieur des électroménagers doit être nettoyé et si le stationnement est disponible?",
-      outcome: "Réponse révisée prête en 2 minutes.",
-      safety: "Aucun message client envoyé sans révision du propriétaire.",
+        "Bonjour Sarah, merci de nous avoir ecrit. Pouvez-vous confirmer la superficie approximative, l'acces/stationnement et si les electros doivent etre nettoyes?",
+      fields: [
+        { label: "Ton", value: "Professionnel" },
+        { label: "Action", value: "Revision proprietaire" },
+        { label: "Envoi", value: "Copier/envoyer manuel" },
+      ],
+      guardrail: "Le message n'est pas envoye automatiquement.",
+      outcome: "Une reponse plus sure est prete plus vite.",
+      title: "Reponse preparee",
     },
     {
-      title: "Révision et envoi",
-      note: "Le contrôle reste avec le propriétaire.",
-      heading: "Le propriétaire révise, modifie, copie et envoie.",
-      description:
-        "Le flux reste volontairement manuel pour la confiance, la sécurité et la précision.",
-      rows: [
-        ["Révision", "Le propriétaire vérifie"],
-        ["Modifier", "Ton / détails"],
-        ["Copier", "Manuel"],
-        ["Envoyer", "Contrôlé par le propriétaire"],
-      ],
-      draftTitle: "Point de contrôle",
+      detail:
+        "Le proprietaire modifie, copie et envoie depuis son canal client habituel.",
       draft:
-        "BizPilot aide le propriétaire à aller plus vite sans prendre le contrôle de la conversation ni faire des promesses à sa place.",
-      outcome: "Réponse plus rapide, toujours révisée par un humain.",
-      safety: "Copier / envoyer manuellement seulement. Toujours.",
+        "BizPilot garde le proprietaire dans la decision pour ne jamais perdre le controle des prix, promesses ou du ton.",
+      fields: [
+        { label: "Revision", value: "Le proprietaire verifie" },
+        { label: "Modifier", value: "Ton/details" },
+        { label: "Envoyer", value: "Controle proprietaire" },
+      ],
+      guardrail: "Copier/envoyer manuellement seulement.",
+      outcome: "Le client recoit une reponse plus rapide et revisee.",
+      title: "Gate proprietaire",
     },
     {
-      title: "Rappel de suivi",
-      note: "Les prospects chauds ne disparaissent pas en silence.",
-      heading: "BizPilot garde la prochaine étape visible.",
-      description:
-        "Si Sarah ne répond pas, le propriétaire a un brouillon de suivi et un rappel clair — le prospect ne refroidit pas silencieusement.",
-      rows: [
-        ["Statut", "En attente du client"],
-        ["Suivi", "Demain"],
-        ["Brouillon", "Prêt à réviser"],
-        ["Objectif", "Garder le prospect actif"],
-      ],
-      draftTitle: "Brouillon de suivi",
+      detail:
+        "Si la cliente ne repond pas, BizPilot garde le suivi visible au lieu de laisser refroidir le lead.",
       draft:
-        "Bonjour Sarah, je voulais simplement voir si vous aviez pu confirmer la superficie et les détails d'accès. Nous pourrons vous envoyer une soumission dès que nous aurons ces informations.",
-      outcome: "Le prospect reste actif au lieu de refroidir.",
-      safety: "Le propriétaire choisit si et quand faire le suivi.",
+        "Bonjour Sarah, je fais un suivi. Des que vous confirmez la superficie et les details d'acces, je peux vous envoyer la prochaine etape.",
+      fields: [
+        { label: "Statut", value: "En attente" },
+        { label: "Suivi", value: "Demain" },
+        { label: "Brouillon", value: "Pret a reviser" },
+      ],
+      guardrail: "Le proprietaire decide si et quand faire le suivi.",
+      outcome: "Les leads chauds restent visibles.",
+      title: "Suivi visible",
     },
   ],
 };
-
-// ─── Component ────────────────────────────────────────────────────────────────
 
 export function InteractiveCleaningDemoSection({
-  language = "en",
-}: Readonly<{ language?: SupportedLanguage }>) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const copy = language === "fr-CA" ? FR_DEMO_COPY : EN_DEMO_COPY;
-  const totalSteps = copy.steps.length;
-  const current = copy.steps[activeIndex]!;
-
-  const goTo = useCallback(
-    (index: number) => {
-      setActiveIndex(((index % totalSteps) + totalSteps) % totalSteps);
-    },
-    [totalSteps],
+  language,
+}: Readonly<{ language: SupportedLanguage }>) {
+  const copy = useMemo(
+    () => (language === "fr-CA" ? frenchDemo : englishDemo),
+    [language],
   );
-
+  const [activeIndex, setActiveIndex] = useState(0);
+  const fallbackStep = copy.steps[0];
+  if (!fallbackStep) {
+    return null;
+  }
+  const activeStep = copy.steps[activeIndex] ?? fallbackStep;
   const isFirst = activeIndex === 0;
-  const isLast = activeIndex === totalSteps - 1;
+  const isLast = activeIndex === copy.steps.length - 1;
 
   return (
     <section className="px-5 py-8 sm:px-6" id="cleaning-demo">
       <MarketingShell>
-        <div
-          className="overflow-hidden rounded-[22px] border"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(45,212,191,0.09), rgba(7,16,25,0.98) 40%, rgba(10,22,34,0.97) 100%)",
-            borderColor: "rgba(45,212,191,0.20)",
-          }}
+        <MarketingCard
+          className="overflow-hidden"
+          style={{ borderColor: "rgba(45,212,191,0.22)" }}
         >
-          {/* ── Section header ── */}
-          <div
-            className="border-b p-5 sm:p-6"
-            style={{ borderColor: marketingTone.border }}
-          >
-            <div className="mb-3 flex items-center gap-2">
-              <span
-                className="h-2 w-2 rounded-full"
-                style={{ backgroundColor: marketingTone.emerald }}
-              />
-              <p
-                className="text-[11px] font-black uppercase tracking-[0.16em]"
-                style={{ color: marketingTone.teal }}
-              >
-                {copy.eyebrow}
-              </p>
-            </div>
+          <div className="border-b p-5 sm:p-6" style={{ borderColor: marketingTone.border }}>
+            <MarketingBadge>{copy.eyebrow}</MarketingBadge>
             <h2
-              className="max-w-[640px] text-[26px] font-black leading-[1.1] sm:text-[34px]"
+              className="mt-5 max-w-[840px] text-[28px] font-black leading-[1.1] sm:text-[36px]"
               style={{ color: marketingTone.text }}
             >
-              {copy.sectionTitle}
+              {copy.title}
             </h2>
             <p
-              className="mt-3 max-w-[70ch] text-[14px] leading-7"
+              className="mt-4 max-w-[760px] text-[15px] leading-7"
               style={{ color: marketingTone.soft }}
             >
-              {copy.lead}
+              {copy.intro}
             </p>
           </div>
 
-          {/* ── Demo shell: sidebar + stage ── */}
-          <div className="grid lg:grid-cols-[0.42fr_0.58fr]">
-            {/* Sidebar — step navigation */}
-            <div
+          <div className="grid min-w-0 lg:grid-cols-[minmax(260px,0.42fr)_minmax(0,0.58fr)]">
+            <nav
+              aria-label={copy.eyebrow}
               className="border-b p-3 lg:border-b-0 lg:border-r"
               style={{ borderColor: marketingTone.border }}
             >
-              <nav aria-label="Demo steps">
-                <div className="grid gap-1.5">
-                  {copy.steps.map((step, i) => {
-                    const isActive = i === activeIndex;
+              <div className="grid gap-2">
+                {copy.steps.map((step, index) => {
+                  const selected = index === activeIndex;
 
-                    return (
-                      <button
-                        aria-current={isActive ? "true" : undefined}
-                        className="grid grid-cols-[26px_minmax(0,1fr)] items-start gap-3 rounded-[14px] border px-3 py-2.5 text-left transition-colors"
-                        key={step.title}
-                        onClick={() => goTo(i)}
-                        style={{
-                          backgroundColor: isActive
-                            ? "rgba(45,212,191,0.11)"
-                            : "rgba(255,255,255,0.025)",
-                          borderColor: isActive
-                            ? "rgba(45,212,191,0.32)"
-                            : marketingTone.border,
-                          cursor: "pointer",
-                        }}
-                        type="button"
-                      >
-                        {/* Step number bubble */}
-                        <span
-                          className="mt-0.5 flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full text-[11px] font-black"
-                          style={{
-                            backgroundColor: isActive
-                              ? marketingTone.teal
-                              : "rgba(255,255,255,0.07)",
-                            color: isActive
-                              ? "#0f2129"
-                              : marketingTone.muted,
-                          }}
-                        >
-                          {i + 1}
-                        </span>
-                        {/* Step text */}
-                        <span>
-                          <span
-                            className="block text-[12.5px] font-black leading-snug"
-                            style={{
-                              color: isActive
-                                ? marketingTone.text
-                                : marketingTone.soft,
-                            }}
-                          >
-                            {step.title}
-                          </span>
-                          <span
-                            className="mt-0.5 block text-[11px] leading-snug"
-                            style={{ color: marketingTone.muted }}
-                          >
-                            {step.note}
-                          </span>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </nav>
-            </div>
-
-            {/* Stage — dark teal gradient panel */}
-            <div
-              className="flex min-h-[600px] flex-col justify-between p-5 sm:p-6"
-              style={{
-                background:
-                  "linear-gradient(160deg, rgba(18,63,74,0.98) 0%, rgba(11,40,50,0.99) 52%, rgba(7,20,28,1) 100%)",
-              }}
-            >
-              {/* Content: step header + screen */}
-              <div aria-live="polite" className="grid gap-5">
-                {/* Step kicker pill */}
-                <div
-                  className="inline-flex w-fit items-center gap-2 rounded-full border px-3 py-1.5"
-                  style={{
-                    borderColor: "rgba(255,255,255,0.18)",
-                    backgroundColor: "rgba(255,255,255,0.09)",
-                  }}
-                >
-                  <span
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{ backgroundColor: marketingTone.emerald }}
-                  />
-                  <span
-                    className="text-[11px] font-black tracking-[0.1em]"
-                    style={{ color: "rgba(255,255,255,0.84)" }}
-                  >
-                    {copy.stepLabel(activeIndex + 1, totalSteps)}
-                  </span>
-                </div>
-
-                {/* Heading + description */}
-                <div>
-                  <h3
-                    className="text-[22px] font-black leading-[1.08] sm:text-[27px]"
-                    style={{ color: "#fff" }}
-                  >
-                    {current.heading}
-                  </h3>
-                  <p
-                    className="mt-2 max-w-[58ch] text-[13.5px] leading-6"
-                    style={{ color: "rgba(255,255,255,0.70)" }}
-                  >
-                    {current.description}
-                  </p>
-                </div>
-
-                {/* Screen: data rows + draft box */}
-                <div
-                  className="grid gap-2 rounded-[18px] border p-4"
-                  style={{
-                    borderColor: "rgba(255,255,255,0.13)",
-                    backgroundColor: "rgba(255,255,255,0.07)",
-                    backdropFilter: "blur(10px)",
-                  }}
-                >
-                  {current.rows.map(([label, value]) => (
-                    <div
-                      className="flex items-center justify-between gap-3 rounded-[11px] px-3 py-2"
-                      key={`${label}-${value}`}
-                      style={{ backgroundColor: "rgba(255,255,255,0.07)" }}
+                  return (
+                    <button
+                      aria-current={selected ? "step" : undefined}
+                      className="grid grid-cols-[28px_minmax(0,1fr)] items-start gap-3 rounded-[12px] border p-3 text-left transition hover:bg-white/[0.04]"
+                      key={step.title}
+                      onClick={() => setActiveIndex(index)}
+                      style={{
+                        backgroundColor: selected
+                          ? "rgba(45,212,191,0.12)"
+                          : "rgba(255,255,255,0.025)",
+                        borderColor: selected
+                          ? "rgba(45,212,191,0.34)"
+                          : marketingTone.border,
+                      }}
+                      type="button"
                     >
                       <span
-                        className="text-[12px] font-black"
-                        style={{ color: "rgba(255,255,255,0.56)" }}
+                        className="flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-black"
+                        style={{
+                          backgroundColor: selected
+                            ? marketingTone.teal
+                            : "rgba(255,255,255,0.08)",
+                          color: selected ? "#03130C" : marketingTone.soft,
+                        }}
                       >
-                        {label}
+                        {index + 1}
                       </span>
                       <span
-                        className="text-right text-[12.5px] font-black"
-                        style={{ color: "rgba(255,255,255,0.92)" }}
+                        className="text-[13px] font-black leading-snug"
+                        style={{ color: selected ? marketingTone.text : marketingTone.soft }}
                       >
-                        {value}
+                        {step.title}
                       </span>
-                    </div>
-                  ))}
+                    </button>
+                  );
+                })}
+              </div>
+            </nav>
 
-                  {/* Draft / insight box — white card */}
+            <div
+              aria-live="polite"
+              className="min-w-0 p-5 sm:p-6"
+              style={{
+                background:
+                  "linear-gradient(155deg, rgba(13,73,76,0.96), rgba(8,35,48,0.98) 54%, rgba(5,12,20,0.98))",
+              }}
+            >
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <span
+                  className="inline-flex rounded-full border px-3 py-1 text-[11px] font-black uppercase"
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.08)",
+                    borderColor: "rgba(255,255,255,0.18)",
+                    color: "rgba(255,255,255,0.76)",
+                  }}
+                >
+                  {copy.stepLabel(activeIndex + 1, copy.steps.length)}
+                </span>
+                <span
+                  className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-black"
+                  style={{
+                    backgroundColor: "rgba(23,212,146,0.13)",
+                    borderColor: "rgba(23,212,146,0.28)",
+                    color: "#9AF4CF",
+                  }}
+                >
+                  <MarketingIcon name="shield" />
+                  {activeStep.guardrail}
+                </span>
+              </div>
+
+              <h3
+                className="mt-5 text-[25px] font-black leading-[1.1] sm:text-[32px]"
+                style={{ color: "#FFFFFF" }}
+              >
+                {activeStep.title}
+              </h3>
+              <p
+                className="mt-3 max-w-[680px] text-[14px] leading-7"
+                style={{ color: "rgba(255,255,255,0.72)" }}
+              >
+                {activeStep.detail}
+              </p>
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                {activeStep.fields.map((field) => (
                   <div
-                    className="rounded-[14px] p-3.5"
+                    className="min-h-[74px] rounded-[12px] border p-3"
+                    key={`${field.label}-${field.value}`}
                     style={{
-                      backgroundColor: "#fff",
-                      boxShadow: "0 18px 44px rgba(0,0,0,0.20)",
+                      backgroundColor: "rgba(255,255,255,0.08)",
+                      borderColor: "rgba(255,255,255,0.14)",
                     }}
                   >
                     <p
-                      className="mb-1.5 text-[10.5px] font-black uppercase tracking-[0.13em]"
-                      style={{ color: "#0f766e" }}
+                      className="text-[11px] font-black uppercase"
+                      style={{ color: "rgba(255,255,255,0.54)" }}
                     >
-                      {current.draftTitle}
+                      {field.label}
                     </p>
                     <p
-                      className="text-[12.5px] leading-5"
-                      style={{ color: "#4b5563" }}
+                      className="mt-2 text-[13px] font-black leading-snug"
+                      style={{ color: "#FFFFFF" }}
                     >
-                      {current.draft}
+                      {field.value}
                     </p>
                   </div>
-                </div>
+                ))}
               </div>
 
-              {/* Footer: outcome + prev/next */}
               <div
-                className="mt-5 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between"
-                style={{ borderColor: "rgba(255,255,255,0.13)" }}
+                className="mt-5 rounded-[14px] p-4"
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  boxShadow: "0 22px 60px rgba(0,0,0,0.22)",
+                }}
               >
-                {/* Outcome text */}
-                <div>
-                  <p
-                    className="text-[13px] font-black"
-                    style={{ color: "#fff" }}
-                  >
-                    {current.outcome}
-                  </p>
-                  <p
-                    className="mt-0.5 text-[11px]"
-                    style={{ color: "rgba(255,255,255,0.54)" }}
-                  >
-                    {current.safety}
-                  </p>
-                </div>
+                <p
+                  className="text-[11px] font-black uppercase"
+                  style={{ color: "#0F766E" }}
+                >
+                  Owner review draft
+                </p>
+                <p
+                  className="mt-3 text-[14px] leading-7"
+                  style={{ color: "#374151" }}
+                >
+                  {activeStep.draft}
+                </p>
+              </div>
 
-                {/* Navigation buttons */}
-                <div className="flex shrink-0 gap-2">
+              <div
+                className="mt-5 flex flex-col gap-4 border-t pt-5 sm:flex-row sm:items-center sm:justify-between"
+                style={{ borderColor: "rgba(255,255,255,0.14)" }}
+              >
+                <p
+                  className="text-[14px] font-black"
+                  style={{ color: "#FFFFFF" }}
+                >
+                  {activeStep.outcome}
+                </p>
+                <div className="flex gap-2">
                   <button
-                    className="rounded-full border px-4 py-2 text-[12px] font-black transition-opacity"
+                    className="inline-flex min-h-10 items-center justify-center rounded-[10px] border px-4 text-[12px] font-black"
                     disabled={isFirst}
-                    onClick={() => goTo(activeIndex - 1)}
+                    onClick={() => setActiveIndex((value) => Math.max(0, value - 1))}
                     style={{
-                      backgroundColor: "rgba(255,255,255,0.09)",
-                      borderColor: "rgba(255,255,255,0.20)",
-                      color: "#fff",
+                      backgroundColor: "rgba(255,255,255,0.08)",
+                      borderColor: "rgba(255,255,255,0.18)",
+                      color: "#FFFFFF",
                       cursor: isFirst ? "not-allowed" : "pointer",
-                      opacity: isFirst ? 0.38 : 1,
+                      opacity: isFirst ? 0.45 : 1,
                     }}
                     type="button"
                   >
-                    {copy.prevLabel}
+                    {copy.previous}
                   </button>
                   <button
-                    className="rounded-full px-4 py-2 text-[12px] font-black transition-opacity"
+                    className="inline-flex min-h-10 items-center justify-center rounded-[10px] px-4 text-[12px] font-black"
                     disabled={isLast}
-                    onClick={() => goTo(activeIndex + 1)}
+                    onClick={() =>
+                      setActiveIndex((value) =>
+                        Math.min(copy.steps.length - 1, value + 1),
+                      )
+                    }
                     style={{
-                      backgroundColor: isLast
-                        ? "rgba(255,255,255,0.42)"
-                        : "#fff",
-                      color: "#0f3d4a",
+                      backgroundColor: "#FFFFFF",
+                      color: "#0F3D4A",
                       cursor: isLast ? "not-allowed" : "pointer",
                       opacity: isLast ? 0.55 : 1,
                     }}
                     type="button"
                   >
-                    {copy.nextLabel}
+                    {copy.next}
                   </button>
                 </div>
               </div>
             </div>
           </div>
+        </MarketingCard>
+
+        <div className="mt-5 flex justify-center">
+          <MarketingButton href="/pricing" variant="secondary">
+            {copy.cta}
+          </MarketingButton>
         </div>
       </MarketingShell>
     </section>

@@ -176,3 +176,20 @@ The MVP must keep the owner in control of all outbound communication.
 AI may draft, summarize, classify, or suggest follow-ups, but it must not send messages, confirm bookings, quote final prices, promise availability, or make commitments without owner review.
 
 For privacy-sensitive AI calls, store only safe metadata and validated structured outputs needed for product functionality. Do not persist raw provider failure details or unnecessary customer-sensitive content.
+
+## Public Trust Pages Addendum - 2026-05-25
+
+BizPilot now exposes public trust pages that make the pilot-stage boundaries clear
+before any real customer data is approved:
+
+- `/privacy` - explains intended quote-recovery data collection, consent,
+  minimization, tenant isolation, and request handling.
+- `/security` - summarizes public quote hardening, RLS/tenant isolation,
+  secret handling, AI owner-review boundaries, and the backup/export gate.
+- `/terms` - records founder-pilot scope, staged pricing, manual billing,
+  refund/cancellation boundaries, and no-guarantee language.
+
+These pages are not a substitute for legal review, a verified privacy mailbox,
+custom SMTP posture, or a restore drill. They close a public-page/documentation
+gap for founder-controlled synthetic demos and prepare the project for a cleaner
+pilot-readiness review.

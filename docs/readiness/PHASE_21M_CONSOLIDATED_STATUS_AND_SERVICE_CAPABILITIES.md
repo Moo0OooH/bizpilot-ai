@@ -4,7 +4,7 @@
 **Date:** 2026-05-25
 **Branch:** `phase-21-production-alignment`  
 **Branch status:** pushed to `origin/phase-21-production-alignment`  
-**Latest checked commit:** `eddd331 feat: refine homepage workflow demo`
+**Latest checked commit:** `feat: add public trust pages and interactive demo` (current local safe-gap commit; re-run `git log -1 --oneline` for exact hash)
 **Status:** Production is deployed for founder-controlled synthetic demos. Real customer pilot remains blocked.
 
 ---
@@ -36,12 +36,14 @@ Current continuation truth:
 - Product configurability is now captured in `docs/product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`: current configurable sections, signup defaults, guardrails, and future no-hidden-automation backlog.
 - Homepage scale and workflow demo were revised and deployed: commit `eddd331 feat: refine homepage workflow demo` reached Ready on Vercel deployment `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo`, aliased to `https://bizpilo.com`.
 - Production homepage smoke after `eddd331` returned HTTP 200 and confirmed the tabbed demo copy on `https://bizpilo.com`; browser QA at 375px width found no horizontal overflow and confirmed the Owner response tab switches panels.
+- Local homepage safe-gap work now replaces the old tab render with an interactive 7-step cleaning demo and tightens the hero above-the-fold footprint. Production deploy verification is pending after the next push.
 - OpenAI was rechecked after owner credit update. Vercel Production still has an empty `OPENAI_API_KEY` value; no model-backed request was made, and the temporary env pull was deleted outside the repo.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production migration `0020` was not applied because a real production DB backup/export was not available from local tools.
 - Staged commercial terms are now approved: first 1-5 pilot customers get free setup for 30/60-day feedback; customers 6-20 are `$149 setup + $49/month`; the standard post-proof offer is `$199 setup + $79/month`.
 - OpenAI validation remains blocked because Vercel Production still has an empty `OPENAI_API_KEY`; no model-backed request was made.
+- Current safe-gap pass adds public `/privacy`, `/security`, and `/terms` trust pages with EN/fr-CA copy, footer links, and policy-copy structure tests. These pages clarify pilot-stage privacy, security, manual billing, no auto-send, and no-real-data boundaries. Evidence is recorded in `docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md`.
 
 This update does not approve real customer data or a paid pilot.
 
@@ -57,7 +59,7 @@ It is not yet approved for real customer data or a real paying pilot because pro
 
 | Area | Current result |
 | --- | --- |
-| Git branch | `main` and `origin/phase-21-production-alignment` are aligned at `eddd331`. |
+| Git branch | Local `main` includes the safe-gap commit; `origin/main` and `origin/phase-21-production-alignment` were last confirmed at `f4a8337` before pushing the safe-gap commits. |
 | Main/production | `main` was pushed with owner approval, and production is deployed on `https://bizpilo.com`. |
 | Production target | Supabase target confirmed as `bizpilot-production` / `qfqendrqimqvkoojpjao`; Vercel project confirmed as `moo0ooohs-projects/bizpilot-ai`; production URL target is `https://bizpilo.com`. |
 | Migration history | Production standard CLI migration history is unavailable because `supabase_migrations.schema_migrations` is missing. Direct object verification is the accepted evidence path. |
@@ -70,7 +72,8 @@ It is not yet approved for real customer data or a real paying pilot because pro
 | Synthetic production smoke plan | Phase 21N now records the exact synthetic workspace, payload, sequence, cleanup choices, and owner approvals needed before production quote/fr-CA smokes. Execution is not approved. |
 | Dashboard language system | Authenticated dashboard language now uses workspace language as source of truth; EN/FR demo queue copy is centralized and tested. |
 | Founder admin | Founder console supports user/business overview, plan/status/link/internal note updates, workspace kind control, production-safe cleanup warnings, test/demo cleanup path, and guarded fake/test login deletion UI. |
-| Homepage | Conversion polish exists locally: stronger pain/outcome story, workflow demo, and no-auto-send trust anchor. Not deployed to production. |
+| Homepage | Conversion polish and tabbed workflow demo are deployed to production; local next commit replaces the tab render with an interactive 7-step cleaning demo pending deploy verification. |
+| Public trust pages | `/privacy`, `/security`, and `/terms` have been added locally with pilot-stage boundaries, staged pricing terms, no-hidden-automation language, and 375px browser QA. |
 | Smart Intake Routing | Future product spec exists; Lite deterministic cleaning-first suggestions exist in lead detail with no migration, no persistence, no auto-assignment, and no auto-send. |
 | Documentation | Phase 21 readiness docs, operations docs, product strategy docs, and handoff docs are updated through the latest local recovery pass. |
 

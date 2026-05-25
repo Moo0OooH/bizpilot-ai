@@ -27,6 +27,7 @@ import {
   marketingBackground,
   marketingTone,
 } from "@/components/public/marketing-ui";
+import { InteractiveCleaningDemoSection } from "@/components/public/interactive-cleaning-demo";
 import { getHomeCopy, type HomeCopy } from "@/lib/i18n/home-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
@@ -164,10 +165,10 @@ function HeroDesk({
         </p>
       </div>
 
-      <div className="mb-3 grid gap-2 sm:grid-cols-3">
-        {copy.journey.map((item, index) => (
+      <div className="mb-2 grid grid-cols-3 gap-2">
+        {copy.journey.slice(0, 3).map((item, index) => (
           <div
-            className="min-h-[64px] rounded-[10px] border px-3 py-2"
+            className="min-h-[52px] rounded-[10px] border px-3 py-2"
             key={`${item.label}-${item.value}`}
             style={{
               background:
@@ -187,9 +188,9 @@ function HeroDesk({
         ))}
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[0.92fr_1.08fr]">
-        <div className="grid gap-2.5">
-          {copy.leads.map((lead) => (
+      <div className="grid gap-3 xl:grid-cols-[0.92fr_1.08fr]">
+        <div className="grid gap-2">
+          {copy.leads.slice(0, 2).map((lead) => (
             <LeadRow fromLabel={copy.fromLabel} item={lead} key={lead.customer} />
           ))}
           <div className="rounded-[10px] border px-3 py-2 text-center text-[11px] font-bold" style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
@@ -213,7 +214,7 @@ function HeroDesk({
             </h3>
             <StatusPill status={copy.aiDraft} tone="new" />
           </div>
-          <div className="mt-3 space-y-2.5 text-[11.5px] leading-5" style={{ color: marketingTone.soft }}>
+          <div className="mt-2 space-y-2 text-[11.5px] leading-5" style={{ color: marketingTone.soft }}>
             <p>{copy.reply.greeting}</p>
             <p>{copy.reply.intro}</p>
             <p>{copy.reply.requestLine}</p>
@@ -261,7 +262,7 @@ function HeroDesk({
 
 function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
   return (
-    <section className="px-0 pb-8 pt-8 sm:pb-10 sm:pt-10">
+    <section className="px-0 pb-4 pt-5 sm:pb-6 sm:pt-6">
       <MarketingShell>
         <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)]">
           <div className="min-w-0">
@@ -276,7 +277,7 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
               <MarketingButton className="w-full px-4 min-[430px]:w-auto" href="/auth/sign-up">
                 {copy.hero.primaryCta} <MarketingIcon name="arrow" />
               </MarketingButton>
-              <MarketingButton className="w-full px-4 min-[430px]:w-auto" href="#recovery-flow" variant="secondary">
+              <MarketingButton className="w-full px-4 min-[430px]:w-auto" href="#cleaning-demo" variant="secondary">
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
@@ -616,167 +617,6 @@ function RecoveryFlowSection({
                 </p>
               </div>
             ))}
-          </div>
-        </div>
-      </MarketingShell>
-    </section>
-  );
-}
-
-function WorkflowDemoSection({
-  copy,
-}: Readonly<{ copy: HomeCopy["workflowDemo"] }>) {
-  return (
-    <section className="px-5 py-8 sm:px-6" id="demo">
-      <MarketingShell>
-        <div
-          className="min-w-0 overflow-hidden rounded-[22px] border"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(45,212,191,0.10), rgba(7,16,25,0.98) 42%, rgba(10,22,34,0.96) 100%)",
-            borderColor: "rgba(45,212,191,0.20)",
-          }}
-        >
-          <div className="grid gap-6 border-b p-5 sm:p-6 lg:grid-cols-[0.88fr_1.12fr] lg:items-end" style={{ borderColor: marketingTone.border }}>
-            <div className="min-w-0">
-              <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
-                {copy.eyebrow}
-              </p>
-              <h2 className="mt-3 max-w-[700px] text-[28px] font-black leading-[1.08] sm:text-[38px]" style={{ color: marketingTone.text }}>
-                {copy.title}
-              </h2>
-            </div>
-            <div className="min-w-0">
-              <p className="max-w-[62ch] text-[14.5px] leading-7" style={{ color: marketingTone.soft }}>
-                {copy.body}
-              </p>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div
-                  className="rounded-[12px] border px-4 py-3"
-                  style={{ backgroundColor: "rgba(45,212,191,0.08)", borderColor: "rgba(45,212,191,0.22)" }}
-                >
-                  <p className="text-[13px] font-black" style={{ color: marketingTone.teal }}>
-                    {copy.outcome}
-                  </p>
-                </div>
-                <div
-                  className="rounded-[12px] border px-4 py-3"
-                  style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
-                >
-                  <p className="text-[13px] font-bold leading-5" style={{ color: marketingTone.soft }}>
-                    {copy.safety}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="homepage-tabs grid min-w-0 lg:grid-cols-[320px_minmax(0,1fr)]">
-            {copy.steps.map((step, index) => (
-              <input
-                className="homepage-tab-radio"
-                defaultChecked={index === 0}
-                id={`workflow-tab-${index}`}
-                key={`input-${step.title}`}
-                name="workflow-tabs"
-                type="radio"
-              />
-            ))}
-
-            <div className="grid min-w-0 gap-2 border-b p-3 lg:border-b-0 lg:border-r" style={{ borderColor: marketingTone.border }}>
-              {copy.steps.map((step, index) => (
-                <label
-                  className="homepage-tab-label cursor-pointer rounded-[12px] border px-3 py-3"
-                  htmlFor={`workflow-tab-${index}`}
-                  key={`label-${step.title}`}
-                >
-                  <span className="flex items-center justify-between gap-3">
-                    <span className="text-[10px] font-black uppercase tracking-[0.14em]">
-                      {step.kicker}
-                    </span>
-                    <span className="homepage-tab-dot h-2.5 w-2.5 shrink-0 rounded-full" />
-                  </span>
-                  <span className="mt-2 block text-[14px] font-black leading-snug">
-                    {step.title}
-                  </span>
-                </label>
-              ))}
-            </div>
-
-            <div className="min-w-0 p-4 sm:p-5">
-              {copy.steps.map((step, index) => (
-                <div className="homepage-tab-panel min-w-0" key={`panel-${step.title}`}>
-                  <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
-                    <div
-                      className="rounded-[18px] border p-4 sm:p-5"
-                      style={{
-                        background:
-                          index === 2
-                            ? "linear-gradient(135deg, rgba(84,167,255,0.15), rgba(246,184,75,0.07))"
-                            : "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025))",
-                        borderColor: index === 2 ? "rgba(84,167,255,0.24)" : marketingTone.border,
-                      }}
-                    >
-                      <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
-                        {step.kicker}
-                      </p>
-                      <h3 className="mt-2 max-w-[640px] text-[22px] font-black leading-[1.12] sm:text-[28px]" style={{ color: marketingTone.text }}>
-                        {step.title}
-                      </h3>
-                      <p className="mt-3 max-w-[66ch] text-[13.5px] leading-7" style={{ color: marketingTone.soft }}>
-                        {step.body}
-                      </p>
-                      <div className="mt-5 grid gap-2 sm:grid-cols-3">
-                        {step.rows.map((row) => (
-                          <div
-                            className="rounded-[10px] border px-3 py-2.5"
-                            key={`${step.title}-${row.label}-${row.value}`}
-                            style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
-                          >
-                            <p className="text-[9.5px] font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.muted }}>
-                              {row.label}
-                            </p>
-                            <p className="mt-1 text-[12px] font-black leading-snug" style={{ color: marketingTone.text }}>
-                              {row.value}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="grid gap-3">
-                      {step.system.map((item) => (
-                        <div
-                          className="rounded-[13px] border p-3"
-                          key={`${step.title}-${item.label}`}
-                          style={{
-                            backgroundColor:
-                              item.tone === "risk"
-                                ? "rgba(255,95,102,0.08)"
-                                : item.tone === "info"
-                                  ? "rgba(246,184,75,0.08)"
-                                  : "rgba(45,212,191,0.07)",
-                            borderColor:
-                              item.tone === "risk"
-                                ? "rgba(255,95,102,0.24)"
-                                : item.tone === "info"
-                                  ? "rgba(246,184,75,0.22)"
-                                  : "rgba(45,212,191,0.20)",
-                          }}
-                        >
-                          <p className="text-[10px] font-black uppercase tracking-[0.13em]" style={{ color: leadToneStyles[item.tone].text }}>
-                            {item.label}
-                          </p>
-                          <p className="mt-2 text-[12.5px] font-bold leading-5" style={{ color: marketingTone.soft }}>
-                            {item.value}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </MarketingShell>
@@ -1157,7 +997,7 @@ export default async function HomePage() {
       <PainStorySection copy={copy.painStory} />
       <ProblemSection copy={copy.problem} />
       <RecoveryFlowSection copy={copy.recoveryFlow} />
-      <WorkflowDemoSection copy={copy.workflowDemo} />
+      <InteractiveCleaningDemoSection language={language} />
       <CommandCenterSection copy={copy.commandCenter} />
       <BeforeAfterSection copy={copy.beforeAfter} />
       <TrustStrip copy={copy.trust} />

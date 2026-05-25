@@ -1,0 +1,183 @@
+/**
+ * ============================================================
+ * File: components/public/policy-page.tsx
+ * Project: BizPilot AI
+ * Description: Shared renderer for public privacy, security, and terms pages.
+ * Role: Keeps trust pages visually consistent with the public marketing surface.
+ * Related:
+ * - lib/i18n/policy-copy.ts
+ * - app/privacy/page.tsx
+ * - app/security/page.tsx
+ * - app/terms/page.tsx
+ * Author: MoOoH
+ * Created: 2026-05-25
+ * ============================================================
+ */
+
+import {
+  MarketingBadge,
+  MarketingButton,
+  MarketingCard,
+  MarketingFooter,
+  MarketingHeader,
+  MarketingIcon,
+  MarketingSectionTitle,
+  MarketingShell,
+  marketingBackground,
+  marketingTone,
+} from "@/components/public/marketing-ui";
+import type { HomeNavCopy } from "@/lib/i18n/home-copy";
+import type { SupportedLanguage } from "@/lib/i18n/language";
+import type { PolicyPageCopy } from "@/lib/i18n/policy-copy";
+
+export function PolicyPage({
+  copy,
+  language,
+  navCopy,
+  pagePath,
+}: Readonly<{
+  copy: PolicyPageCopy;
+  language: SupportedLanguage;
+  navCopy: HomeNavCopy;
+  pagePath: string;
+}>) {
+  return (
+    <main
+      className="min-h-screen overflow-x-hidden"
+      style={{ background: marketingBackground, color: marketingTone.text }}
+    >
+      <MarketingHeader
+        copy={navCopy}
+        language={language}
+        redirectPath={pagePath}
+      />
+
+      <section className="px-5 pb-8 pt-10 sm:px-6 sm:pt-14">
+        <MarketingShell>
+          <div className="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(280px,0.42fr)] lg:items-start">
+            <div className="min-w-0">
+              <MarketingBadge>{copy.badge}</MarketingBadge>
+              <h1
+                className="mt-6 max-w-[820px] text-[34px] font-black leading-[1.06] sm:text-[44px]"
+                style={{ color: marketingTone.text }}
+              >
+                {copy.title}
+              </h1>
+              <p
+                className="mt-5 max-w-[720px] text-[16px] leading-8 sm:text-[17px]"
+                style={{ color: marketingTone.soft }}
+              >
+                {copy.body}
+              </p>
+              <p
+                className="mt-4 text-[12px] font-bold uppercase"
+                style={{ color: marketingTone.muted }}
+              >
+                {copy.effectiveDate}
+              </p>
+            </div>
+
+            <MarketingCard className="p-5">
+              <p
+                className="text-[12px] font-black uppercase"
+                style={{ color: marketingTone.teal }}
+              >
+                {copy.boundaryTitle}
+              </p>
+              <p
+                className="mt-3 text-[14px] leading-7"
+                style={{ color: marketingTone.soft }}
+              >
+                {copy.boundaryBody}
+              </p>
+            </MarketingCard>
+          </div>
+        </MarketingShell>
+      </section>
+
+      <section className="px-5 py-8 sm:px-6">
+        <MarketingShell>
+          <div className="grid min-w-0 gap-4 md:grid-cols-2">
+            {copy.sections.map((section) => (
+              <MarketingCard className="p-5" key={section.title}>
+                <span
+                  className="flex h-10 w-10 items-center justify-center rounded-[10px]"
+                  style={{
+                    backgroundColor: "rgba(45,212,191,0.11)",
+                    color: marketingTone.teal,
+                  }}
+                >
+                  <MarketingIcon name="shield" />
+                </span>
+                <h2
+                  className="mt-5 text-[18px] font-black leading-snug"
+                  style={{ color: marketingTone.text }}
+                >
+                  {section.title}
+                </h2>
+                <p
+                  className="mt-3 text-[14px] leading-7"
+                  style={{ color: marketingTone.soft }}
+                >
+                  {section.body}
+                </p>
+              </MarketingCard>
+            ))}
+          </div>
+        </MarketingShell>
+      </section>
+
+      {copy.references?.length ? (
+        <section className="px-5 py-8 sm:px-6">
+          <MarketingShell>
+            <MarketingSectionTitle
+              {...(copy.referenceEyebrow
+                ? { eyebrow: copy.referenceEyebrow }
+                : {})}
+              title={copy.referenceTitle ?? "References"}
+            />
+            <div className="mt-5 flex flex-wrap gap-3">
+              {copy.references.map((reference) => (
+                <a
+                  className="inline-flex min-h-10 items-center gap-2 rounded-[10px] border px-4 text-[13px] font-bold transition hover:bg-white/[0.05]"
+                  href={reference.href}
+                  key={reference.href}
+                  rel="noreferrer"
+                  style={{
+                    borderColor: marketingTone.borderStrong,
+                    color: marketingTone.soft,
+                  }}
+                  target="_blank"
+                >
+                  {reference.label}
+                  <MarketingIcon name="arrow" />
+                </a>
+              ))}
+            </div>
+          </MarketingShell>
+        </section>
+      ) : null}
+
+      <section className="px-5 py-8 sm:px-6">
+        <MarketingShell>
+          <MarketingCard
+            className="grid min-w-0 gap-5 p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
+            style={{ borderColor: "rgba(45,212,191,0.24)" }}
+          >
+            <p
+              className="max-w-[760px] text-[14px] leading-7"
+              style={{ color: marketingTone.soft }}
+            >
+              {copy.footerNote}
+            </p>
+            <MarketingButton href="/pricing" variant="secondary">
+              {navCopy.pricing}
+            </MarketingButton>
+          </MarketingCard>
+        </MarketingShell>
+      </section>
+
+      <MarketingFooter copy={navCopy} />
+    </main>
+  );
+}

@@ -36,6 +36,10 @@ import {
   pricingCopyNamespaces,
 } from "../../lib/i18n/pricing-copy.ts";
 import {
+  getPolicyCopy,
+  POLICY_COPY_SOURCE_LANGUAGE,
+} from "../../lib/i18n/policy-copy.ts";
+import {
   languageDefinitions,
   resolveWorkspaceInterfaceLanguage,
   supportedLanguages,
@@ -80,6 +84,7 @@ const userFacingSourceFiles = [
   "lib/i18n/bizpilot-copy.ts",
   "lib/i18n/home-copy.ts",
   "lib/i18n/pricing-copy.ts",
+  "lib/i18n/policy-copy.ts",
   "app/(dashboard)/layout.tsx",
   "app/(dashboard)/dashboard/page.tsx",
   "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
@@ -231,6 +236,20 @@ describe("BizPilot language copy", () => {
         copyShape(getPricingCopy(language)),
         sourceShape,
         `${language} pricing copy must match the ${PRICING_COPY_SOURCE_LANGUAGE} pricing copy shape.`,
+      );
+    }
+  });
+
+  it("keeps public policy copy structurally synced for every supported language", () => {
+    assert.equal(POLICY_COPY_SOURCE_LANGUAGE, "en");
+    const sourceCopy = getPolicyCopy(POLICY_COPY_SOURCE_LANGUAGE);
+    const sourceShape = copyShape(sourceCopy);
+
+    for (const language of supportedLanguages) {
+      assert.deepEqual(
+        copyShape(getPolicyCopy(language)),
+        sourceShape,
+        `${language} policy copy must match the ${POLICY_COPY_SOURCE_LANGUAGE} policy copy shape.`,
       );
     }
   });

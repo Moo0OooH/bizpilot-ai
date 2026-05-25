@@ -42,9 +42,12 @@ const defaultMarketingNavCopy: HomeNavCopy = {
   flow: "How it works",
   languageLabel: "Homepage language",
   pricing: "Pricing",
+  privacy: "Privacy",
+  security: "Security",
   signIn: "Sign in",
   startFull: "Start free recovery",
   startShort: "Start",
+  terms: "Terms",
   why: "Why BizPilot",
 };
 
@@ -462,6 +465,9 @@ export function MarketingFooter({
     { href: "/#comparison", label: copy.comparison },
     { href: "/pricing", label: copy.pricing },
     { href: "/pricing#faq", label: copy.faq },
+    { href: "/privacy", label: copy.privacy },
+    { href: "/security", label: copy.security },
+    { href: "/terms", label: copy.terms },
   ];
 
   return (

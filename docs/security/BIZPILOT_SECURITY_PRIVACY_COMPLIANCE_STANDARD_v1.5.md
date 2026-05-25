@@ -118,6 +118,17 @@ Required controls:
 - Consent capture.
 - Public RLS tests.
 
+Public trust surface:
+
+- Public `/privacy`, `/security`, and `/terms` routes must exist before real
+  pilot outreach.
+- These pages must state that BizPilot is owner-reviewed and does not auto-send,
+  book, invoice, or act as a hidden operator.
+- These pages must not claim completed legal compliance, completed restore
+  drills, or paid-pilot readiness before the relevant gates pass.
+- Footer links must keep the trust pages discoverable from public marketing and
+  pricing pages.
+
 ---
 
 ## 7. Security Headers and CSP
