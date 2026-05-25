@@ -88,6 +88,8 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 ## Operations
 
 - `docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
+- `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`
+- `docs/operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`
 - `docs/operations/BIZPILOT_MAGIC_DEMO_FLOW_v1.0.md`
 - `docs/operations/BIZPILOT_PHASE_18_PILOT_OPERATING_GUIDE_v1.0.md`
 - `docs/operations/BIZPILOT_PHASE_18_WORK_LOG_v1.0.md`

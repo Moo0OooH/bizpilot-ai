@@ -3,7 +3,7 @@
 **Phase:** 20B - Production DB Safety Gate
 **Status:** Not yet pilot-complete  
 **Owner:** MoOoH  
-**Last updated:** 2026-05-24
+**Last updated:** 2026-05-25
 **Scope:** Minimum data safety process before real cleaning-business pilot data
 
 ## 1. Current Environment
@@ -12,12 +12,34 @@
 | --- | --- |
 | Product scope | Cleaning-first Quote Recovery Command Center |
 | Production app domain | `https://bizpilo.com` |
-| Production Supabase project | Owner-reported as `bizpilot-production` |
-| Public Supabase host from local env | `cwiuajpbpyybxxtodpaq.supabase.co` |
+| Production Supabase project | `bizpilot-production` / `qfqendrqimqvkoojpjao` |
+| Public Supabase host from local env | Historical local env value was not authoritative for Phase 21 production; use `qfqendrqimqvkoojpjao.supabase.co` as the recorded production target |
 | Local database URL from local env | Present, host `127.0.0.1`, database `postgres` |
-| Production plan / PITR status | Unknown from repo/CLI; owner action required |
+| Production plan / PITR status | Supabase Free/no PITR posture recorded in Phase 21; not acceptable for real customer data |
 
 Do not infer the production Supabase plan from code, domain, or public URL. The plan tier and PITR retention window must be read from the Supabase dashboard or Supabase organization billing/settings by the owner.
+
+## 1A. Phase 21P No-Real-Data Decision
+
+The current accepted posture is:
+
+```text
+Synthetic founder demos are allowed.
+Real customer data and paid pilot execution are blocked until backup/export/restore
+is upgraded or drilled and recorded.
+```
+
+Current official-reference basis:
+
+- Supabase database backups: `https://supabase.com/docs/guides/platform/backups`
+- Supabase logical backup download guidance: `https://supabase.com/docs/guides/troubleshooting/download-logical-backups`
+
+The active decision matrix is now:
+
+- `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`
+
+Do not store exports in the repo. Do not print dump contents. Do not run a
+production data export until encrypted storage and access are recorded.
 
 ## 2. Phase 19B Verification Result
 
@@ -42,9 +64,9 @@ The Phase 20B safety check on 2026-05-24 did not apply SQL and did not create a 
 
 | Safety item | Status | Evidence / blocker |
 | --- | --- | --- |
-| PITR enabled | Owner action required | Cannot be checked from repo files, public app responses, Supabase REST, or the available local CLI state. Owner must verify in Supabase dashboard. |
-| Backup retention window | Owner action required | Not available from repo/CLI. Owner must record exact retention/PITR window from Supabase dashboard. |
-| Production target | Not fully confirmed | Phase 20A found local env points at `cwiuajpbpyybxxtodpaq.supabase.co`, while Vercel production env values were not accessible from this run. |
+| PITR enabled | Not enabled / not available on current posture | Phase 21 docs record Supabase Free/no PITR as acceptable only for synthetic demos. |
+| Backup retention window | Owner action required before real data | Exact dashboard value still must be recorded before pilot data. |
+| Production target | Confirmed in Phase 21 | `bizpilot-production` / `qfqendrqimqvkoojpjao`; do not use historical local env host as production truth. |
 | Data classification | Unknown / possible real data | Phase 20A count/classification-only check found non-synthetic indicators; the checked DB must not be treated as disposable. |
 | Manual schema-only export | Blocked | `pg_dump` not installed, `psql` not installed, Supabase CLI not installed, no production DB connection string available, and local DB port `127.0.0.1:54322` refused connection. |
 | Manual data export | Blocked | Not owner-approved and not safe until export storage/access are recorded. |

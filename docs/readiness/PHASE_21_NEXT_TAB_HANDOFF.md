@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot is production-deployed (main at 0b67a81 implementation state on https://bizpilo.com), signup confirmation smoke passed, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked interactive 7-step cleaning demo, staged commercial terms are approved, public trust pages are deployed, and 54/54 unit tests pass - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export, and signup email/custom SMTP posture are still outstanding before the first real customer pilot.
+BizPilot is production-deployed on https://bizpilo.com, signup confirmation smoke passed once with a disposable synthetic inbox, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked interactive 7-step cleaning demo, staged commercial terms are approved, public trust pages are deployed, repeatable public route smoke passes locally and in production, and 54/54 unit tests pass - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export/restore, and custom SMTP posture are still outstanding before the first real customer pilot.
 ```
 
 2026-05-25 continuation update:
@@ -39,6 +39,11 @@ BizPilot is production-deployed (main at 0b67a81 implementation state on https:/
 - OpenAI was rechecked after owner credit update. Vercel Production still has an empty `OPENAI_API_KEY` value; no model-backed request was made, and the temporary env pull was deleted outside the repo.
 - Staged pilot terms are approved: first 1-5 pilot customers get free founder-led setup for 30/60-day feedback; customers 6-20 are `$149 setup + $49/month`; the standard post-proof offer is `$199 setup + $79/month`.
 - Safe public-trust gap pass added `/privacy`, `/security`, and `/terms` routes with EN/fr-CA copy, footer links, no-auto-send boundaries, and unit coverage for policy-copy structure. Production smoke passed for all three routes on `https://bizpilo.com`.
+- Phase 21P no-cost hardening added `pnpm smoke:public`, `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`, `docs/operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`, and `docs/readiness/PHASE_21P_NO_COST_READINESS_HARDENING.md`.
+- `pnpm smoke:public` passed locally against `http://127.0.0.1:3000` with 9/9 routes.
+- `pnpm smoke:public -- --base-url=https://bizpilo.com` passed in production with 9/9 routes.
+- `pnpm verify` passed with 54/54 unit tests and a successful build.
+- `pnpm test:rls` passed 13/13 through a temporary local-only `127.0.0.1:55432` Docker proxy; the proxy was removed after the run.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production `0020` was not applied because a production DB backup/export was not available from local tools.
@@ -479,8 +484,11 @@ Start here:
 14. `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`
 15. `docs/readiness/PHASE_21L_DASHBOARD_I18N_ADMIN_RECOVERY.md`
 16. `docs/readiness/PHASE_21N_SYNTHETIC_PRODUCTION_SMOKE_PLAN.md`
-17. `.github/workflows/ci.yml`
-18. `package.json`
+17. `docs/readiness/PHASE_21P_NO_COST_READINESS_HARDENING.md`
+18. `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`
+19. `docs/operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`
+20. `.github/workflows/ci.yml`
+21. `package.json`
 
 ## 9. Important Code/Migration Files
 
@@ -603,7 +611,7 @@ Signup smoke passed with synthetic disposable inbox.
 Commercial terms are approved and deployed in f4a8337.
 Public trust pages and interactive homepage demo are deployed and production-smoked.
 Still not ready for first real pilot customer with real customer data.
-Remaining blockers: production quote security smoke, fr-CA smoke, OpenAI production key/output validation, backup/export posture, signup email/custom SMTP posture, production 0020 only after backup/export if still needed, and live admin visual QA with a founder-authorized session.
+Remaining blockers: production quote security smoke, fr-CA smoke, OpenAI production key/output validation, backup/export/restore posture, custom SMTP/Auth email posture, production 0020 only after backup/export if still needed, and live admin visual QA with a founder-authorized session.
 ```
 
 ## 13. Exact Follow Path For The Next Tab

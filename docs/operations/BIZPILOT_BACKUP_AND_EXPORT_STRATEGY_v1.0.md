@@ -4,7 +4,7 @@
 **Status:** Pilot-readiness skeleton
 **Owner:** MoOoH
 **Scope:** Database backup awareness, manual export procedure, restore placeholder, auth migration risk
-**Last Updated:** 2026-05-15
+**Last Updated:** 2026-05-25
 **Source standard:** `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`, Sections 14, 15
 **Related:**
 - `docs/operations/BIZPILOT_PHASE_10A_VENDOR_INDEPENDENCE_GAP_REPORT_v1.0.md`
@@ -87,16 +87,21 @@ The reference class is documented for completeness but does not need to ride alo
 
 ## 5. Current backup posture (Supabase)
 
-Phase 19B update, 2026-05-23: the exact production Supabase plan tier, PITR support, and PITR retention window could not be verified from the repo or local CLI. Do not treat PITR as confirmed until the owner records the exact dashboard value in `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`.
+Phase 21P update, 2026-05-25: the active production target is recorded as
+`bizpilot-production` / `qfqendrqimqvkoojpjao`. The current Free/no-PITR posture
+is acceptable only for founder-controlled synthetic demos. Real customer data is
+blocked until the backup/export/restore decision matrix is closed:
+`docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`.
 
 Managed Supabase projects may provide provider-managed backups and, depending on the exact plan/settings, point-in-time recovery. For BizPilot production, the current verified status is:
 
 | Capability | Verified status |
 | --- | --- |
-| Production project name | Owner-reported as `bizpilot-production` |
-| Production plan tier | Unknown from repo/CLI |
-| PITR supported | Unknown from repo/CLI |
-| PITR retention window | Unknown from repo/CLI |
+| Production project name | `bizpilot-production` |
+| Production project ref | `qfqendrqimqvkoojpjao` |
+| Production plan tier | Free/current low-cost posture; upgrade decision required before real data |
+| PITR supported | Not enabled for the current posture |
+| PITR retention window | Not available/recorded for current posture |
 | First schema-only export | Not performed |
 | First restore drill | Not performed |
 
@@ -118,7 +123,11 @@ What this does **not** cover:
 - Off-site, project-independent copies of customer data.
 - Encrypted, customer-portable archives.
 
-Action item: before pilot, confirm in writing which Supabase plan tier the BizPilot project is on, what its point-in-time recovery window is, and where that information is stored. Use `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` as the operational source of truth.
+Action item: before pilot, either upgrade and record the Supabase backup/PITR
+posture, or perform a manual logical export plus restore drill to a disposable
+non-production target. Use `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` and
+`docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md` as the
+operational source of truth.
 
 ---
 

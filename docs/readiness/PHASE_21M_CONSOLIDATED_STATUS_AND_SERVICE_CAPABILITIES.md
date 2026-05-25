@@ -44,6 +44,7 @@ Current continuation truth:
 - Staged commercial terms are now approved: first 1-5 pilot customers get free setup for 30/60-day feedback; customers 6-20 are `$149 setup + $49/month`; the standard post-proof offer is `$199 setup + $79/month`.
 - OpenAI validation remains blocked because Vercel Production still has an empty `OPENAI_API_KEY`; no model-backed request was made.
 - Current safe-gap pass adds public `/privacy`, `/security`, and `/terms` trust pages with EN/fr-CA copy, footer links, and policy-copy structure tests. These pages clarify pilot-stage privacy, security, manual billing, no auto-send, and no-real-data boundaries. Production smoke for all three routes passed on `https://bizpilo.com`; evidence is recorded in `docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md`.
+- Phase 21P no-cost hardening added repeatable `pnpm smoke:public`, backup/export/restore decision matrix, and Auth email/custom SMTP integration plan. Local public smoke passed 9/9 routes on `http://127.0.0.1:3000`; production public smoke passed 9/9 routes on `https://bizpilo.com`; `pnpm verify` passed; local RLS passed 13/13 through a temporary local-only Docker proxy that was removed after the run.
 
 This update does not approve real customer data or a paid pilot.
 
@@ -74,6 +75,9 @@ It is not yet approved for real customer data or a real paying pilot because pro
 | Founder admin | Founder console supports user/business overview, plan/status/link/internal note updates, workspace kind control, production-safe cleanup warnings, test/demo cleanup path, and guarded fake/test login deletion UI. |
 | Homepage | Interactive 7-step cleaning demo is deployed and smoked on production. |
 | Public trust pages | `/privacy`, `/security`, and `/terms` are deployed and smoked on production with pilot-stage boundaries, staged pricing terms, no-hidden-automation language, and 375px browser QA. |
+| Repeatable public smoke | `pnpm smoke:public` checks homepage, pricing, trust pages, and auth pages locally or against production without secrets or real data. |
+| Backup/export decision | Phase 21P decision matrix keeps Supabase Free/no-PITR acceptable only for synthetic demos; real data requires upgrade/export/restore drill. |
+| SMTP/Auth email plan | Phase 21P SMTP plan defines provider, DNS, Supabase Auth settings, safe inbox, and reset-password smoke requirements before real users. |
 | Smart Intake Routing | Future product spec exists; Lite deterministic cleaning-first suggestions exist in lead detail with no migration, no persistence, no auto-assignment, and no auto-send. |
 | Documentation | Phase 21 readiness docs, operations docs, product strategy docs, and handoff docs are updated through the latest local recovery pass. |
 
@@ -214,6 +218,7 @@ It is not yet approved for real customer data or a real paying pilot because pro
 | P0 | Signup confirmation smoke | Passed with synthetic inbox | Disposable inbox credentials/artifacts are stored outside repo and must not be printed or committed. |
 | P0 | OpenAI real output quality | Blocked by HTTP `429` | Resolve quota/billing/rate/model-access, then re-run one synthetic dry run. |
 | P0 | Backup/export posture | Not acceptable for real data | Supabase Free has no scheduled backups/PITR; do manual export/restore drill or upgrade before real customer data. |
+| P0 | Custom SMTP/Auth email posture | Not configured for real users | Configure dedicated transactional SMTP, verify DNS, then run signup and reset-password smoke with a safe inbox. |
 | P0 | Production `0020` apply | Not applied | Only needed if founder wants production fake/test auth user deletion now. Apply after explicit approval and verify. |
 | P0 | Fake/test production account cleanup | Not done | Requires deployed admin path plus `0020` if deleting auth users. |
 | P1 | Commercial terms | Approved for staged pilot cohorts | Keep public pricing/docs aligned; do not collect payment until production/data gates and payment process are ready. |
@@ -260,6 +265,21 @@ pnpm test:rls: not executed because DATABASE_URL is not set in the current shell
 ```
 
 RLS note: the repo has an RLS test runner and earlier Phase 21 evidence recorded a passing local RLS suite through a temporary local-only Docker proxy. For this final consolidation pass, the standalone RLS command stopped before connecting because the current shell does not define `DATABASE_URL`. This is an environment setup blocker, not a new application test failure.
+
+Latest Phase 21P no-cost hardening validation:
+
+```txt
+pnpm smoke:public: pass locally against http://127.0.0.1:3000, 9/9 routes
+pnpm smoke:public -- --base-url=https://bizpilo.com: pass, 9/9 routes
+pnpm verify: pass
+pnpm test:unit within verify: pass, 54/54
+pnpm build within verify: pass
+pnpm test:rls: pass, 13/13 through temporary local-only Docker proxy on 127.0.0.1:55432
+git diff --check: pass, CRLF warnings only
+changed-file secret scan: no secret values found; matches were env-name references and one false-positive text match on "permitted" in docs
+```
+
+The temporary local-only Docker proxy was removed after the RLS run.
 
 ## 6. What I Would Do Next
 

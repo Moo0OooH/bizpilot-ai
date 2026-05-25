@@ -97,11 +97,12 @@ Remaining blockers:
 
 ## 6. Next Safe Gap Pass
 
-Recommended next safe work:
+Phase 21P follow-up has started:
 
-1. Build a no-secret SMTP/Auth email posture runbook and provider decision matrix.
-2. Add a backup/export/restore decision checklist that distinguishes Free-plan
-   synthetic demos from real customer data.
-3. Re-run public route smoke after deployment.
+1. `pnpm smoke:public` now gives a repeatable no-secret public route smoke.
+2. `docs/operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`
+   records the custom SMTP/Auth email posture plan.
+3. `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`
+   records the synthetic-demo vs real-customer-data backup decision.
 4. Continue dashboard/admin visual QA only with synthetic/founder-authorized
    sessions.

@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Controlled production smoke execution plan
-**Status:** Ready for owner review; not approved to execute
+**Status:** Owner-approved for synthetic-only execution; data-bearing quote/fr-CA smoke not fully executed yet
 **Owner:** MoOoH
 **Last Updated:** 2026-05-25
 
@@ -12,7 +12,11 @@
 
 This plan defines the exact synthetic-only production smoke sequence needed after an approved deploy/merge path. It closes the planning gap recorded in Phase 21E/21F without creating production rows, applying production SQL, deploying, merging `main`, or using real customer data.
 
-No production action is approved by this document. It is an execution checklist for a later owner-approved run.
+This document is the execution checklist for synthetic-only production smoke.
+The owner later approved synthetic smoke execution, browser use, temporary safe
+inbox use, and no-real-data production verification. It still does not approve
+real customer data, production SQL, destructive cleanup, paid upgrades, or
+hidden automation.
 
 ## 2. Non-Negotiable Scope
 
@@ -36,7 +40,9 @@ Not allowed:
 
 ## 3. Required Owner Approval Before Execution
 
-Before Codex runs any production smoke, owner must approve these exact items:
+Owner has broadly approved synthetic-only production smoke. Before any
+data-bearing quote/fr-CA smoke run, confirm the specific disposable accounts,
+payload, and cleanup route being used in that run:
 
 | Approval item | Required owner decision |
 | --- | --- |
@@ -48,6 +54,11 @@ Before Codex runs any production smoke, owner must approve these exact items:
 | Cleanup | Choose retain-as-evidence or cleanup-through-approved-admin/service path. |
 | Signup inbox | Provide a safe inbox/mail-capture only if signup smoke is included in the same run. |
 | OpenAI retry | Confirm HTTP `429` is resolved before any real provider retry. |
+
+Phase 21P note: public route smoke is now automated through `pnpm smoke:public`
+and passed against `https://bizpilo.com` without creating accounts or quote data.
+The remaining Phase 21E/21F smoke is the data-bearing synthetic quote/security
+sequence below.
 
 ## 4. Recommended Synthetic Workspace Shape
 
@@ -155,9 +166,9 @@ Do not record:
 
 ```text
 Plan recorded.
-Execution not approved.
-Production deploy/main merge not approved.
-Production SQL not approved.
-Production data-bearing smoke not run.
+Owner approved synthetic execution.
+Public route smoke passed through `pnpm smoke:public`.
+Production SQL not approved by this document.
+Production data-bearing quote/fr-CA smoke not run.
 Ready only for founder-controlled synthetic demos.
 ```

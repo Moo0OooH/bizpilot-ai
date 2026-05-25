@@ -38,6 +38,7 @@ const defaultMarketingNavCopy: HomeNavCopy = {
   brandSubtitle: "Quote Recovery Command Center",
   comparison: "Comparison",
   copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
+  demo: "Demo",
   faq: "FAQ",
   flow: "How it works",
   languageLabel: "Homepage language",
@@ -376,6 +377,7 @@ export function MarketingHeader({
   const navItems: ReadonlyArray<Readonly<{ href: string; label: string }>> = [
     { href: "/#why", label: copy.why },
     { href: "/#recovery-flow", label: copy.flow },
+    { href: "/#cleaning-demo", label: copy.demo },
     { href: "/#comparison", label: copy.comparison },
     { href: "/pricing", label: copy.pricing },
     { href: "/pricing#faq", label: copy.faq },

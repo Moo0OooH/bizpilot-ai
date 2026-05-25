@@ -50,6 +50,7 @@ export type HomeNavCopy = Readonly<{
   brandSubtitle: string;
   comparison: string;
   copyright: string;
+  demo: string;
   faq: string;
   flow: string;
   languageLabel: string;
@@ -431,6 +432,7 @@ const englishHomeCopy: HomeCopy = {
     brandSubtitle: "Quote Recovery Command Center",
     comparison: "Comparison",
     copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
+    demo: "Demo",
     faq: "FAQ",
     flow: "How it works",
     languageLabel: "Homepage language",
@@ -858,6 +860,7 @@ const frenchHomeCopy: HomeCopy = {
     brandSubtitle: "Centre de récupération des soumissions",
     comparison: "Comparaison",
     copyright: "Copyright 2026 BizPilot AI. Tous droits réservés.",
+    demo: "Demo",
     faq: "FAQ",
     flow: "Fonctionnement",
     languageLabel: "Langue de la page d'accueil",
