@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup, homepage conversion polish, dashboard i18n systemization, Smart Intake Routing Lite, a consolidated Phase 21M status doc, and an owner-facing current-status notes file now updated, but it is not approved for the first real customer pilot yet.
+BizPilot is production-deployed (main at 8bf3387 on https://bizpilo.com), signup confirmation smoke passed, the new-workspace quote-unavailable gap was fixed and deployed, .gitattributes was added to eliminate CRLF noise, and 53/53 unit tests pass — but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export, and commercial terms are still outstanding before the first real customer pilot.
 ```
 
 2026-05-25 continuation update:
@@ -42,8 +42,8 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 
 | Item | Current value |
 | --- | --- |
-| Current branch | `phase-21-production-alignment` |
-| Current branch tip at this handoff update | `1be5235 docs: record rls environment blocker`. Re-run `git log -1 --oneline` before continuing. |
+| Current branch | `main` (was merged from `phase-21-production-alignment` on 2026-05-25) |
+| Current branch tip at this handoff update | `8bf3387 chore: add .gitattributes to enforce LF line endings`. Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
@@ -61,7 +61,10 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
 | Latest Vercel evidence commit | `9adde10 docs: record vercel production target evidence` |
 | Previous Phase 20 baseline | `39113f4 chore: record phase 20 pilot gate findings` |
-| `origin/main` | Unchanged at `7fe0475` |
+| `.gitattributes` commit | `8bf3387 chore: add .gitattributes to enforce LF line endings` — eliminates 100+ phantom CRLF modifications |
+| Bootstrap fix commit | `5758a0b fix: bootstrap public quote setup on signup` — deployed to production |
+| Bootstrap fix deploy | Vercel deployment `dpl_Gmshk1QUmroam8v569rR1RupMWeY` (Ready) |
+| `origin/main` | `862b716` (last pushed; `8bf3387` is local-only, awaiting push) |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
 | GitHub remote branches | `main` at `7fe0475`, `phase-19-readiness-findings` at `a27705f`, `phase-20-pilot-gate` at `39113f4` |
@@ -407,9 +410,20 @@ Owner must check:
 
 Do not paste key. Re-run only with synthetic cleaning lead.
 
+### P0 - Push .gitattributes commit to origin/main
+
+Local commit `8bf3387` adds `.gitattributes` (LF enforcement). It is currently ahead of `origin/main` by 1 commit. Push with:
+
+```bash
+git push origin main
+git push origin phase-21-production-alignment
+```
+
+This is a hygiene-only commit with no application code changes.
+
 ### P1 - Signup Confirmation Smoke
 
-Passed on 2026-05-25 with a synthetic disposable inbox. Do not log full email, credentials, confirmation link, or token.
+Passed on 2026-05-25 with a synthetic disposable inbox. Post-fix retest was blocked by Supabase Auth rate limiting. When limits clear, run a fresh signup → dashboard → quote page flow with the bootstrap fix active. Do not log full email, credentials, confirmation link, or token.
 
 ### P1 - Pilot Terms Approval
 
@@ -532,23 +546,15 @@ Use this in the next tab:
 ```md
 Continue BizPilot Phase 21 from:
 
-- branch: phase-21-production-alignment
-- latest checked commit: 1be5235 docs: record rls environment blocker
-- latest committed Phase 21 evidence/doc state: ebd4a04
-- latest committed Phase 21 hygiene state: 810e8c4
-- latest committed no-cost CI/cost-gate state: e690243
-- latest committed Phase 21 implementation: bd3d2a0
-- founder fake/test auth-user cleanup commit: daa23c8
-- smart intake routing future-doc commit: 27156c5
-- homepage conversion polish commit: bd3d2a0
-- dashboard i18n systemization commit: this commit (`feat: systemize dashboard i18n`); run `git log -1 --oneline`
-- dashboard i18n/admin recovery commit: this commit (`fix: repair dashboard language and admin cleanup controls`); run `git log -1 --oneline`
-- consolidated Phase 21M status doc: docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md
-- owner-facing current status notes mirror: C:/Users/mbeag/Downloads/BIZPILOT_CURRENT_STATUS_NOTES_2026-05-25.md
-- latest GitHub evidence commit: 5a62e76
-- origin/main unchanged at 7fe0475
-- phase-21-production-alignment has been pushed to origin; main is still not pushed/merged/deployed
-- re-check working tree before committing
+- branch: main (phase-21 was merged and deployed on 2026-05-25)
+- latest local commit: 8bf3387 chore: add .gitattributes to enforce LF line endings
+- origin/main is at 862b716 (1 commit behind local; push 8bf3387 first)
+- production deployed: https://bizpilo.com at dpl_7Z7kh6Z2PH9y2ho5QUtpyDrHCks6 (Ready)
+- bootstrap fix deployed: 5758a0b fix: bootstrap public quote setup on signup
+- signup smoke: passed 2026-05-25 with synthetic disposable inbox
+- .gitattributes: added locally in 8bf3387, not yet pushed to origin
+- 53/53 unit tests pass
+- git diff --check: 0 issues (CRLF noise eliminated by .gitattributes)
 
 Read first:
 - docs/readiness/PHASE_21_NEXT_TAB_HANDOFF.md
@@ -577,10 +583,12 @@ Owner-run SQL verification already received: migration history table is missing,
 ## 12. Current Final Decision
 
 ```text
-Ready only for founder-controlled synthetic demos.
-Not ready for first real pilot customer with real customer data.
-Database/security alignment is owner-approved to finish now because there are no serious/real users yet.
-Founder fake/test auth-user cleanup, homepage conversion polish, and dashboard i18n/admin recovery fixes are local/repo-backed only until owner-approved deploy and any required production migration apply.
+Production-deployed on 2026-05-25 (main at 8bf3387 / https://bizpilo.com).
+Bootstrap fix deployed: new signups now land with a working public quote page.
+Signup smoke passed with synthetic disposable inbox.
+.gitattributes added locally (8bf3387): push to origin/main to complete the hygiene fix.
+Still not ready for first real pilot customer with real customer data.
+Remaining owner-action blockers: push 8bf3387, full quote security smoke, fr-CA smoke, OpenAI 429, backup/export posture, commercial terms.
 ```
 
 ## 13. Exact Follow Path For The Next Tab
@@ -588,8 +596,8 @@ Founder fake/test auth-user cleanup, homepage conversion polish, and dashboard i
 Start with this order:
 
 1. Run `git status --short --branch` in `E:\bizpilot-ai`.
-2. Confirm the branch is `phase-21-production-alignment`.
-3. Confirm the latest commit is at or after `1be5235 docs: record rls environment blocker`.
+2. Confirm the branch is `main` (phase-21 was merged and deployed on 2026-05-25).
+3. Confirm the latest local commit is `8bf3387 chore: add .gitattributes to enforce LF line endings`. If `origin/main` is behind, run `git push origin main && git push origin phase-21-production-alignment`.
 4. Read `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md`.
 5. Read this handoff.
 6. Do not restart old Phase 19/20/21 investigations unless the current docs contradict the repo.
@@ -607,5 +615,4 @@ If the owner says to continue development rather than deploy, prioritize:
 1. admin/customer dashboard management controls for demo/sample/guideline visibility,
 2. production-safe fake/test cleanup UX polish,
 3. live admin visual QA once founder env or deployed branch is available,
-4. i18n expansion only through central dictionaries and tests,
-5. dashboard IA/design polish after the current gates stay green.
+4. i18n expansion only through central dictionaries an
