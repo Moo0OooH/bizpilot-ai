@@ -1,0 +1,24 @@
+# BizPilot AI — Git line-ending policy
+# All text files are stored with LF in the repository.
+# Checked-out on Windows they remain LF so diffs stay clean.
+
+# Auto-detect text files and normalize to LF
+* text=auto eol=lf
+
+# Explicitly mark binary files so git never touches their bytes
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.svg  binary
+*.pdf  binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+*.otf  binary
+*.eot  binary
+*.zip  binary
+*.gz   binary
+*.tar  binary
