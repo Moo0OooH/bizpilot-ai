@@ -30,8 +30,10 @@ import {
   listFounderBusinessMembers,
   listFounderDeletionRequests,
   listFounderLeadSignals,
+  listFounderProfilesByUserIds,
   listFounderPublicLinks,
   listFounderUsageSignals,
+  searchFounderProfilesByDisplayName,
   setFounderPublicLinksActive,
   updateFounderBusinessControls,
   type FounderBusinessRecord,
@@ -67,8 +69,10 @@ export type FounderAdminUser = Readonly<{
   authEmail: string | null;
   authDeletionBlockedReason: string | null;
   businessAccessStatus: FounderBusinessStatus | null;
+  businessId: string | null;
   businessName: string | null;
   createdAt: string;
+  displayName: string | null;
   email: string;
   emailConfirmed: boolean;
   isFounder: boolean;
@@ -76,6 +80,7 @@ export type FounderAdminUser = Readonly<{
   leadCount: number | null;
   membershipRole: string | null;
   membershipStatus: string | null;
+  phone: string | null;
   planSlug: FounderPlanSlug | null;
   preferredLanguage: FounderBusinessRecord["preferred_language"] | null;
   publicLinkActive: boolean | null;
@@ -97,7 +102,12 @@ export type FounderAdminOverview = Readonly<{
     suspended: number;
   };
   users: FounderAdminUser[];
-  usersResultLimit: number;
+  usersLastPage: number;
+  usersPage: number;
+  usersPageSize: number;
+  usersQuery: string;
+  usersSearchMode: "auth_filter" | "paged";
+  usersTotal: number;
 }>;
 
 const planSlugs = new Set<FounderPlanSlug>([
@@ -118,6 +128,103 @@ const workspaceKinds = new Set<FounderWorkspaceKind>([
   "demo",
   "seed",
 ]);
+const founderUserPageSizes = new Set([5, 10]);
+
+type FounderAuthUserRecord = Readonly<{
+  confirmed_at?: string;
+  created_at: string;
+  email?: string;
+  email_confirmed_at?: string;
+  id: string;
+  last_sign_in_at?: string;
+  phone?: string;
+  user_metadata?: Record<string, unknown>;
+}>;
+
+type FounderAuthUsersPage = Readonly<{
+  lastPage: number;
+  searchMode: "auth_filter" | "paged";
+  total: number;
+  users: FounderAuthUserRecord[];
+}>;
+
+function normalizeFounderSearch(value: string | null | undefined): string {
+  return (value ?? "").trim();
+}
+
+export function readFounderUserPage(value: string | null | undefined): number {
+  const page = Number.parseInt(value ?? "", 10);
+
+  return Number.isFinite(page) && page > 0 ? page : 1;
+}
+
+export function readFounderUserPageSize(value: string | null | undefined): number {
+  const pageSize = Number.parseInt(value ?? "", 10);
+
+  return founderUserPageSizes.has(pageSize) ? pageSize : 10;
+}
+
+function readUserMetadataText(
+  user: FounderAuthUserRecord,
+  keys: ReadonlyArray<string>,
+): string | null {
+  const metadata = user.user_metadata;
+
+  if (!metadata) {
+    return null;
+  }
+
+  for (const key of keys) {
+    const value = metadata[key];
+
+    if (typeof value === "string" && value.trim().length > 0) {
+      return value.trim();
+    }
+  }
+
+  return null;
+}
+
+function readFounderUserDisplayName(
+  user: FounderAuthUserRecord,
+  profileDisplayName: string | null | undefined,
+): string | null {
+  return (
+    profileDisplayName ??
+    readUserMetadataText(user, ["display_name", "full_name", "name"]) ??
+    null
+  );
+}
+
+function readFounderUserPhone(user: FounderAuthUserRecord): string | null {
+  const metadataPhone = readUserMetadataText(user, ["phone", "phone_number"]);
+
+  return user.phone && user.phone.trim().length > 0
+    ? user.phone.trim()
+    : metadataPhone;
+}
+
+function founderAuthUserMatchesQuery(input: {
+  displayName: string | null;
+  query: string;
+  user: FounderAuthUserRecord;
+}): boolean {
+  const query = input.query.toLowerCase();
+
+  if (!query) {
+    return true;
+  }
+
+  const values = [
+    input.displayName,
+    input.user.email,
+    input.user.id,
+    readFounderUserPhone(input.user),
+    readUserMetadataText(input.user, ["display_name", "full_name", "name"]),
+  ];
+
+  return values.some((value) => (value ?? "").toLowerCase().includes(query));
+}
 
 function readFounderEmails(): Set<string> {
   const env = getServerEnv();
@@ -198,14 +305,152 @@ export function readFounderWorkspaceKind(value: string): FounderWorkspaceKind {
   throw new Error("Invalid workspace kind.");
 }
 
+async function fetchFounderAuthUsersWithFilter(input: {
+  page: number;
+  pageSize: number;
+  query: string;
+}): Promise<FounderAuthUsersPage | null> {
+  const env = getServerEnv();
+
+  if (!env.SUPABASE_SERVICE_ROLE_KEY) {
+    return null;
+  }
+
+  const url = new URL("/auth/v1/admin/users", env.NEXT_PUBLIC_SUPABASE_URL);
+  url.searchParams.set("page", String(input.page));
+  url.searchParams.set("per_page", String(input.pageSize));
+  url.searchParams.set("filter", input.query);
+
+  const response = await fetch(url, {
+    cache: "no-store",
+    headers: {
+      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
+      authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
+    },
+  });
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const body = (await response.json()) as
+    | { users?: FounderAuthUserRecord[] }
+    | FounderAuthUserRecord[];
+  const users = Array.isArray(body) ? body : (body.users ?? []);
+  const totalHeader = response.headers.get("x-total-count");
+  const total = totalHeader ? Number.parseInt(totalHeader, 10) : users.length;
+  const safeTotal = Number.isFinite(total) ? total : users.length;
+
+  return {
+    lastPage: Math.max(1, Math.ceil(safeTotal / input.pageSize)),
+    searchMode: "auth_filter",
+    total: safeTotal,
+    users,
+  };
+}
+
+async function listFounderAuthUsers(input: {
+  page: number;
+  pageSize: number;
+  query: string;
+  supabase: ReturnType<typeof createSupabaseServiceRoleClient>;
+}): Promise<FounderAuthUsersPage> {
+  if (!input.query) {
+    const usersResult = await input.supabase.auth.admin.listUsers({
+      page: input.page,
+      perPage: input.pageSize,
+    });
+
+    if (usersResult.error) {
+      throw new Error(usersResult.error.message);
+    }
+
+    return {
+      lastPage: Math.max(1, usersResult.data.lastPage ?? 1),
+      searchMode: "paged",
+      total: usersResult.data.total ?? usersResult.data.users.length,
+      users: usersResult.data.users,
+    };
+  }
+
+  const [authFilterPage, profileMatches] = await Promise.all([
+    fetchFounderAuthUsersWithFilter({
+      page: input.page,
+      pageSize: input.pageSize,
+      query: input.query,
+    }),
+    searchFounderProfilesByDisplayName({
+      page: input.page,
+      pageSize: input.pageSize,
+      query: input.query,
+      supabase: input.supabase,
+    }),
+  ]);
+
+  const profileUsers = await Promise.all(
+    profileMatches.profiles.map(async (profile) => {
+      const result = await input.supabase.auth.admin.getUserById(profile.user_id);
+
+      if (result.error || !result.data.user) {
+        return null;
+      }
+
+      return result.data.user;
+    }),
+  );
+
+  const profileNameById = new Map(
+    profileMatches.profiles.map((profile) => [
+      profile.user_id,
+      profile.display_name,
+    ]),
+  );
+  const usersById = new Map<string, FounderAuthUserRecord>();
+
+  for (const user of authFilterPage?.users ?? []) {
+    usersById.set(user.id, user);
+  }
+
+  for (const user of profileUsers) {
+    if (user) {
+      usersById.set(user.id, user);
+    }
+  }
+
+  const users = Array.from(usersById.values()).filter((user) =>
+    founderAuthUserMatchesQuery({
+      displayName: profileNameById.get(user.id) ?? null,
+      query: input.query,
+      user,
+    }),
+  );
+  const total = Math.max(
+    users.length,
+    authFilterPage?.total ?? 0,
+    profileMatches.total,
+  );
+
+  return {
+    lastPage: Math.max(1, Math.ceil(total / input.pageSize)),
+    searchMode: authFilterPage ? "auth_filter" : "paged",
+    total,
+    users: users.slice(0, input.pageSize),
+  };
+}
+
 export async function getFounderAdminOverview(input: {
+  userPage?: number;
+  userPageSize?: number;
+  userQuery?: string;
   user: AuthUser | null;
 }): Promise<FounderAdminOverview> {
   const actor = assertFounderUser(input.user);
 
   const supabase = createSupabaseServiceRoleClient();
   const founderEmails = readFounderEmails();
-  const usersResultLimit = 1000;
+  const usersPage = input.userPage ?? 1;
+  const usersPageSize = input.userPageSize ?? 10;
+  const usersQuery = normalizeFounderSearch(input.userQuery);
   const [
     businesses,
     members,
@@ -223,15 +468,24 @@ export async function getFounderAdminOverview(input: {
     listFounderUsageSignals({ supabase }),
     listFounderAdminLog({ supabase }),
     listFounderDeletionRequests({ supabase }),
-    supabase.auth.admin.listUsers({ page: 1, perPage: usersResultLimit }),
+    listFounderAuthUsers({
+      page: usersPage,
+      pageSize: usersPageSize,
+      query: usersQuery,
+      supabase,
+    }),
   ]);
 
-  if (usersResult.error) {
-    throw new Error(usersResult.error.message);
-  }
+  const userProfiles = await listFounderProfilesByUserIds({
+    supabase,
+    userIds: usersResult.users.map((user) => user.id),
+  });
+  const profileDisplayNameByUserId = new Map(
+    userProfiles.map((profile) => [profile.user_id, profile.display_name]),
+  );
 
   const ownerEmailById = new Map(
-    usersResult.data.users.map((user) => [user.id, user.email ?? user.id]),
+    usersResult.users.map((user) => [user.id, user.email ?? user.id]),
   );
   const memberCountByBusiness = countByBusiness(members);
   const leadCountByBusiness = countByBusiness(leads);
@@ -312,7 +566,7 @@ export async function getFounderAdminOverview(input: {
       };
   });
 
-  const users = usersResult.data.users.map((user) => {
+  const users = usersResult.users.map((user) => {
     const membership = primaryMemberByUser.get(user.id);
     const userMemberships = membershipsByUser.get(user.id) ?? [];
     const linkedBusinessById = new Map<
@@ -343,9 +597,14 @@ export async function getFounderAdminOverview(input: {
         });
       }
     }
-    const business = membership ? businessById.get(membership.business_id) : undefined;
+    const business =
+      membership ? businessById.get(membership.business_id) : businessesByOwner.get(user.id)?.[0];
     const link = business ? firstLinkByBusiness.get(business.id) : undefined;
     const isFounder = Boolean(user.email && founderEmails.has(user.email.toLowerCase()));
+    const displayName = readFounderUserDisplayName(
+      user,
+      profileDisplayNameByUserId.get(user.id),
+    );
 
     return {
       authEmail: user.email ?? null,
@@ -356,8 +615,10 @@ export async function getFounderAdminOverview(input: {
         targetUserId: user.id,
       }),
       businessAccessStatus: business?.status ?? null,
+      businessId: business?.id ?? null,
       businessName: business?.name ?? null,
       createdAt: user.created_at,
+      displayName,
       email: user.email ?? user.id,
       emailConfirmed: Boolean(user.email_confirmed_at ?? user.confirmed_at),
       isFounder,
@@ -365,6 +626,7 @@ export async function getFounderAdminOverview(input: {
       leadCount: business ? (leadCountByBusiness.get(business.id) ?? 0) : null,
       membershipRole: membership?.role ?? null,
       membershipStatus: membership?.status ?? null,
+      phone: readFounderUserPhone(user),
       planSlug: business?.plan_slug ?? null,
       preferredLanguage: business?.preferred_language ?? null,
       publicLinkActive: business ? (link?.active ?? false) : null,
@@ -393,7 +655,12 @@ export async function getFounderAdminOverview(input: {
       ).length,
     },
     users,
-    usersResultLimit,
+    usersLastPage: usersResult.lastPage,
+    usersPage,
+    usersPageSize,
+    usersQuery,
+    usersSearchMode: usersResult.searchMode,
+    usersTotal: usersResult.total,
   };
 }
 

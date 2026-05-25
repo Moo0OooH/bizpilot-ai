@@ -45,6 +45,8 @@ import {
 import { getCurrentUser } from "@/server/services/auth.service";
 import {
   getFounderAdminOverview,
+  readFounderUserPage,
+  readFounderUserPageSize,
   type FounderAdminBusiness,
   type FounderAdminUser,
 } from "@/server/services/founder-admin.service";
@@ -55,12 +57,19 @@ import {
 
 export const dynamic = "force-dynamic";
 
+type AdminSearchParams = {
+  cleanupBusinessId?: string | undefined;
+  error?: string | undefined;
+  notice?: string | undefined;
+  userAccess?: string | undefined;
+  userConfirmed?: string | undefined;
+  userPage?: string | undefined;
+  userPageSize?: string | undefined;
+  userQuery?: string | undefined;
+};
+
 type AdminPageProps = Readonly<{
-  searchParams?: Promise<{
-    cleanupBusinessId?: string;
-    error?: string;
-    notice?: string;
-  }>;
+  searchParams?: Promise<AdminSearchParams>;
 }>;
 
 type PlanSlug = FounderAdminBusiness["planSlug"];
@@ -171,6 +180,96 @@ function userAccessTone(status: FounderAdminUser["businessAccessStatus"]) {
 
 function formatUserValue(value: string | null): string {
   return value ? value.replaceAll("_", " ") : "None";
+}
+
+function formatContactValue(value: string | null): string {
+  return value && value.trim().length > 0 ? value : "Not captured";
+}
+
+function normalizeSearch(value: string | null | undefined): string {
+  return (value ?? "").trim().toLowerCase();
+}
+
+function safeParam(value: string | undefined, fallback = "all"): string {
+  return value && value.trim().length > 0 ? value.trim() : fallback;
+}
+
+function matchesQuery(values: ReadonlyArray<string | null | undefined>, query: string) {
+  if (!query) {
+    return true;
+  }
+
+  return values.some((value) => normalizeSearch(value).includes(query));
+}
+
+function matchesUserFilters(user: FounderAdminUser, params: AdminSearchParams): boolean {
+  const query = normalizeSearch(params.userQuery);
+  const access = safeParam(params.userAccess);
+  const confirmed = safeParam(params.userConfirmed);
+
+  if (
+    !matchesQuery(
+      [
+        user.displayName,
+        user.email,
+        user.phone,
+        user.userId,
+        user.businessName,
+        user.membershipRole,
+        user.membershipStatus,
+      ],
+      query,
+    )
+  ) {
+    return false;
+  }
+
+  if (access === "unlinked" && user.businessName) {
+    return false;
+  }
+
+  if (access !== "all" && access !== "unlinked" && user.businessAccessStatus !== access) {
+    return false;
+  }
+
+  if (confirmed === "confirmed" && !user.emailConfirmed) {
+    return false;
+  }
+
+  if (confirmed === "unconfirmed" && user.emailConfirmed) {
+    return false;
+  }
+
+  if (confirmed === "founder" && !user.isFounder) {
+    return false;
+  }
+
+  return true;
+}
+
+function adminUsersHref(
+  params: AdminSearchParams,
+  updates: Partial<AdminSearchParams>,
+): string {
+  const merged: AdminSearchParams = {
+    userAccess: params.userAccess,
+    userConfirmed: params.userConfirmed,
+    userPage: params.userPage,
+    userPageSize: params.userPageSize,
+    userQuery: params.userQuery,
+    ...updates,
+  };
+  const search = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(merged)) {
+    if (value && value !== "all" && value !== "1") {
+      search.set(key, value);
+    }
+  }
+
+  const query = search.toString();
+
+  return query ? `/admin?${query}` : "/admin";
 }
 
 function AdminNotice({
@@ -562,32 +661,131 @@ function BusinessControlCard({
 }
 
 function FounderUsersSection({
-  limit,
+  businessById,
+  dryRun,
+  params,
+  shownUsers,
+  totalLoaded,
+  usersLastPage,
+  usersPage,
+  usersPageSize,
+  usersSearchMode,
+  usersTotal,
   users,
-}: Readonly<{ limit: number; users: FounderAdminUser[] }>) {
+}: Readonly<{
+  businessById: Map<string, FounderAdminBusiness>;
+  dryRun: FounderCleanupDryRun | null;
+  params: AdminSearchParams;
+  shownUsers: FounderAdminUser[];
+  totalLoaded: number;
+  users: FounderAdminUser[];
+  usersLastPage: number;
+  usersPage: number;
+  usersPageSize: number;
+  usersSearchMode: "auth_filter" | "paged";
+  usersTotal: number;
+}>) {
+  const hasPreviousPage = usersPage > 1;
+  const hasNextPage = usersPage < usersLastPage;
+
   return (
     <DashboardCard className="p-4 sm:p-5" variant="elevated">
-      <SectionHeader
-        action={<StatusBadge tone="blue">Total users: {users.length}</StatusBadge>}
-        description="Read-only Supabase Auth users joined to pilot business access where available."
-        title="Users"
-      />
-      {users.length >= limit ? (
-        <p className="mt-3 rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
-          Showing first {limit} users.
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(340px,0.55fr)] xl:items-start">
+        <SectionHeader
+          action={<StatusBadge tone="blue">{shownUsers.length} shown</StatusBadge>}
+          description="Search by name, email, phone, or user ID. The desk loads only 5-10 users per page so it stays usable at large auth-user counts."
+          title="Users"
+        />
+        <form className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_120px] xl:grid-cols-1" method="get">
+          <input name="userPage" type="hidden" value="1" />
+          <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+            Search users
+            <input
+              className={inputClass}
+              defaultValue={params.userQuery ?? ""}
+              name="userQuery"
+              placeholder="Name, email, phone"
+            />
+          </label>
+          <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+            Show
+            <select
+              className={inputClass}
+              defaultValue={String(usersPageSize)}
+              name="userPageSize"
+            >
+              <option value="5">5 users</option>
+              <option value="10">10 users</option>
+            </select>
+          </label>
+          <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+            Access
+            <select
+              className={inputClass}
+              defaultValue={safeParam(params.userAccess)}
+              name="userAccess"
+            >
+              <option value="all">All users</option>
+              <option value="active">Active access</option>
+              <option value="onboarding">Onboarding</option>
+              <option value="suspended">Suspended</option>
+              <option value="cancelled">Cancelled</option>
+              <option value="unlinked">No business linked</option>
+            </select>
+          </label>
+          <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+            Auth
+            <select
+              className={inputClass}
+              defaultValue={safeParam(params.userConfirmed)}
+              name="userConfirmed"
+            >
+              <option value="all">All auth states</option>
+              <option value="confirmed">Confirmed email</option>
+              <option value="unconfirmed">Unconfirmed email</option>
+              <option value="founder">Founder accounts</option>
+            </select>
+          </label>
+          <div className="flex flex-wrap gap-2">
+            <button className={primaryButtonClass} type="submit">
+              Search
+            </button>
+            <Link className={buttonClass} href="/admin">
+              Reset
+            </Link>
+          </div>
+        </form>
+      </div>
+
+      <div className="mt-4 grid gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)] sm:grid-cols-3">
+        <p className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
+          Page {usersPage} of {usersLastPage} - {usersTotal} auth users
         </p>
-      ) : null}
+        <p className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
+          Loaded {totalLoaded}; visible after filters {shownUsers.length}
+        </p>
+        <p className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
+          Search mode: {usersSearchMode === "auth_filter" ? "auth filter" : "paged"}
+        </p>
+      </div>
+
       <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
-        {users.length > 0 ? (
-          users.map((user) => (
-            <div
-              className="grid gap-3 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm xl:grid-cols-[minmax(220px,1.1fr)_minmax(190px,0.9fr)_minmax(240px,1fr)_minmax(190px,0.8fr)] xl:items-center"
+        {shownUsers.length > 0 ? (
+          shownUsers.map((user) => {
+            const linkedBusiness = user.businessId
+              ? (businessById.get(user.businessId) ?? null)
+              : null;
+
+            return (
+            <details
+              className="group bg-[var(--dash-surface-muted)]"
               key={user.userId}
             >
+              <summary className="grid cursor-pointer list-none gap-3 px-4 py-3 text-sm transition hover:bg-[rgba(23,212,146,0.045)] xl:grid-cols-[minmax(230px,1.1fr)_minmax(210px,0.9fr)_minmax(240px,1fr)_minmax(160px,0.65fr)_100px] xl:items-center">
               <div className="min-w-0">
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
                   <p className="truncate font-black text-[var(--dash-text)]">
-                    {user.email}
+                    {user.displayName ?? user.email}
                   </p>
                   {user.isFounder ? (
                     <StatusBadge tone="amber">Founder</StatusBadge>
@@ -597,7 +795,10 @@ function FounderUsersSection({
                   </StatusBadge>
                 </div>
                 <p className="mt-1 text-[12px] font-bold text-[var(--dash-text-muted)]">
-                  Created {formatDate(user.createdAt)}
+                  {user.email}
+                </p>
+                <p className="mt-1 text-[12px] font-bold text-[var(--dash-text-muted)]">
+                  Phone: {formatContactValue(user.phone)}
                 </p>
               </div>
 
@@ -639,7 +840,7 @@ function FounderUsersSection({
                 </StatusBadge>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-[12px] sm:max-w-sm">
+              <div className="grid grid-cols-2 gap-2 text-[12px]">
                 <div className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
                   <p className="font-black text-[var(--dash-text)]">
                     {user.leadCount ?? "-"}
@@ -658,41 +859,100 @@ function FounderUsersSection({
                 </div>
               </div>
 
-              <div className="xl:col-span-4">
+              <span className="justify-self-start rounded-full border border-[var(--dash-border)] px-3 py-1.5 text-[11px] font-black text-[var(--dash-text-secondary)] group-open:bg-[var(--dash-primary-soft)] group-open:text-[var(--dash-text)] xl:justify-self-end">
+                Modify
+              </span>
+              </summary>
+
+              <div className="grid gap-4 border-t border-[var(--dash-border)] bg-[rgba(255,255,255,0.018)] p-4">
+                {linkedBusiness ? (
+                  <BusinessControlCard
+                    business={linkedBusiness}
+                    dryRun={
+                      dryRun?.businessId === linkedBusiness.businessId
+                        ? dryRun
+                        : null
+                    }
+                  />
+                ) : (
+                  <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4 text-sm text-[var(--dash-text-secondary)]">
+                    No linked business controls for this auth user yet.
+                  </div>
+                )}
                 <FounderAuthUserDeleteForm
                   deletionBlockedReason={user.authDeletionBlockedReason}
                   targetEmail={user.authEmail}
                   targetUserId={user.userId}
                 />
               </div>
-            </div>
-          ))
+            </details>
+          );
+          })
         ) : (
           <p className="bg-[var(--dash-surface-muted)] px-4 py-5 text-center text-sm text-[var(--dash-text-secondary)]">
             No users found.
           </p>
         )}
       </div>
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="text-[12px] font-bold text-[var(--dash-text-muted)]">
+          {users.length > shownUsers.length
+            ? "Some loaded users are hidden by access/auth filters."
+            : "Use search to jump directly to a user instead of scrolling."}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {hasPreviousPage ? (
+            <Link
+              className={buttonClass}
+              href={adminUsersHref(params, {
+                userPage: String(usersPage - 1),
+                userPageSize: String(usersPageSize),
+              })}
+            >
+              Previous
+            </Link>
+          ) : null}
+          {hasNextPage ? (
+            <Link
+              className={buttonClass}
+              href={adminUsersHref(params, {
+                userPage: String(usersPage + 1),
+                userPageSize: String(usersPageSize),
+              })}
+            >
+              Next
+            </Link>
+          ) : null}
+        </div>
+      </div>
     </DashboardCard>
   );
 }
 
 export default async function AdminPage({ searchParams }: AdminPageProps) {
-  const [params, user] = await Promise.all([searchParams, getCurrentUser()]);
+  const [params = {}, user] = await Promise.all([searchParams, getCurrentUser()]);
 
   if (!user) {
     redirect("/auth/sign-in");
   }
 
+  const usersPage = readFounderUserPage(params.userPage);
+  const usersPageSize = readFounderUserPageSize(params.userPageSize);
   let overview;
   try {
-    overview = await getFounderAdminOverview({ user });
+    overview = await getFounderAdminOverview({
+      user,
+      userPage: usersPage,
+      userPageSize: usersPageSize,
+      ...(params.userQuery ? { userQuery: params.userQuery } : {}),
+    });
   } catch (error) {
     return <FounderAccessBlocked message={getFounderAccessMessage(error)} />;
   }
 
   let dryRun: FounderCleanupDryRun | null = null;
-  if (params?.cleanupBusinessId) {
+  if (params.cleanupBusinessId) {
     try {
       dryRun = await dryRunFounderTestWorkspaceCleanup({
         businessId: params.cleanupBusinessId,
@@ -702,6 +962,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       dryRun = null;
     }
   }
+  const businessById = new Map(
+    overview.businesses.map((business) => [business.businessId, business]),
+  );
+  const shownUsers = overview.users.filter((adminUser) =>
+    matchesUserFilters(adminUser, params),
+  );
 
   return (
     <main
@@ -725,17 +991,15 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           />
         </DashboardCard>
 
-        {params?.notice ? <AdminNotice tone="notice">{params.notice}</AdminNotice> : null}
-        {params?.error ? <AdminNotice tone="error">{params.error}</AdminNotice> : null}
-
-        <FounderAdminSafetyRail />
+        {params.notice ? <AdminNotice tone="notice">{params.notice}</AdminNotice> : null}
+        {params.error ? <AdminNotice tone="error">{params.error}</AdminNotice> : null}
 
         <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <MetricCard
-            detail="All cleaning-business tenants visible to founder service role."
-            label="Businesses"
+            detail="Auth users available through paged founder search."
+            label="Auth users"
             tone="blue"
-            value={overview.totals.businesses}
+            value={overview.usersTotal}
           />
           <MetricCard
             detail="Onboarding or active businesses."
@@ -758,31 +1022,20 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         </section>
 
         <FounderUsersSection
-          limit={overview.usersResultLimit}
+          businessById={businessById}
+          dryRun={dryRun}
+          params={params}
+          shownUsers={shownUsers}
+          totalLoaded={overview.users.length}
           users={overview.users}
+          usersLastPage={overview.usersLastPage}
+          usersPage={overview.usersPage}
+          usersPageSize={overview.usersPageSize}
+          usersSearchMode={overview.usersSearchMode}
+          usersTotal={overview.usersTotal}
         />
 
-        <section className="space-y-3">
-          <SectionHeader
-            description="Change only the pilot control fields needed for manual operations."
-            title="Businesses"
-          />
-          {overview.businesses.length > 0 ? (
-            overview.businesses.map((business) => (
-              <BusinessControlCard
-                business={business}
-                dryRun={
-                  dryRun?.businessId === business.businessId ? dryRun : null
-                }
-                key={business.businessId}
-              />
-            ))
-          ) : (
-            <DashboardCard className="p-6 text-center text-sm text-[var(--dash-text-secondary)]">
-              No businesses found.
-            </DashboardCard>
-          )}
-        </section>
+        <FounderAdminSafetyRail />
 
         <DashboardCard className="p-4 sm:p-5" variant="priority">
           <SectionHeader

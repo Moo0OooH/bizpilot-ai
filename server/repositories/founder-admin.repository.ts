@@ -30,6 +30,8 @@ export type FounderAdminLogRecord =
   Database["public"]["Tables"]["admin_action_log"]["Row"];
 export type FounderDeletionRequestRecord =
   Database["public"]["Tables"]["business_deletion_requests"]["Row"];
+export type FounderProfileRecord =
+  Database["public"]["Tables"]["profiles"]["Row"];
 
 export type FounderBusinessMemberRecord =
   Database["public"]["Tables"]["business_members"]["Row"];
@@ -134,6 +136,49 @@ export async function listFounderDeletionRequests(input: {
   throwIfError(error);
 
   return data ?? [];
+}
+
+export async function listFounderProfilesByUserIds(input: {
+  supabase: SupabaseClient<Database>;
+  userIds: string[];
+}): Promise<Array<Pick<FounderProfileRecord, "display_name" | "user_id">>> {
+  if (input.userIds.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await input.supabase
+    .from("profiles")
+    .select("user_id,display_name")
+    .in("user_id", input.userIds);
+
+  throwIfError(error);
+
+  return data ?? [];
+}
+
+export async function searchFounderProfilesByDisplayName(input: {
+  page: number;
+  pageSize: number;
+  query: string;
+  supabase: SupabaseClient<Database>;
+}): Promise<{
+  profiles: Array<Pick<FounderProfileRecord, "display_name" | "user_id">>;
+  total: number;
+}> {
+  const from = (input.page - 1) * input.pageSize;
+  const to = from + input.pageSize - 1;
+  const { count, data, error } = await input.supabase
+    .from("profiles")
+    .select("user_id,display_name", { count: "exact" })
+    .ilike("display_name", `%${input.query}%`)
+    .range(from, to);
+
+  throwIfError(error);
+
+  return {
+    profiles: data ?? [],
+    total: count ?? 0,
+  };
 }
 
 export async function getFounderBusiness(input: {
