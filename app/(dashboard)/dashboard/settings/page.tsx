@@ -62,10 +62,12 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
   const workspace = await getBusinessWorkspace({ userId: user.id });
   const activeBusiness = workspace.businesses[0];
   if (!activeBusiness) redirect("/dashboard");
+  const lifecycleStatus = activeBusiness.lifecycle_status ?? "active";
+  const businessStatus = activeBusiness.status ?? "active";
   const canRequestWorkspaceDeletion = canUserRequestWorkspaceDeletion({
     business: {
-      lifecycleStatus: activeBusiness.lifecycle_status,
-      status: activeBusiness.status,
+      lifecycleStatus,
+      status: businessStatus,
     },
     businessId: activeBusiness.id,
     memberships: workspace.memberships.map((membership) => ({
@@ -237,7 +239,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                   {settingsCopy.lifecycle.lifecycleStatus}
                 </p>
                 <p className="mt-1 text-sm font-extrabold text-[var(--dash-text)]">
-                  {activeBusiness.lifecycle_status.replaceAll("_", " ")}
+                  {lifecycleStatus.replaceAll("_", " ")}
                 </p>
               </div>
               <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">

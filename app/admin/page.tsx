@@ -40,6 +40,7 @@ import {
   updateFounderPlanAction,
   updateFounderQuoteLinkAction,
   updateFounderStatusAction,
+  updateFounderWorkspaceKindAction,
 } from "@/server/actions/founder-admin.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import {
@@ -64,6 +65,7 @@ type AdminPageProps = Readonly<{
 
 type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
+type WorkspaceKind = FounderAdminBusiness["workspaceKind"];
 
 const planOptions: ReadonlyArray<{ label: string; value: PlanSlug }> = [
   { label: "Founder Pilot", value: "founder_pilot" },
@@ -79,6 +81,13 @@ const statusOptions: ReadonlyArray<{ label: string; value: BusinessStatus }> = [
   { label: "Cancelled", value: "cancelled" },
 ];
 
+const workspaceKindOptions: ReadonlyArray<{ label: string; value: WorkspaceKind }> = [
+  { label: "Production customer", value: "production_customer" },
+  { label: "Founder test", value: "founder_test" },
+  { label: "Demo", value: "demo" },
+  { label: "Seed", value: "seed" },
+];
+
 const planLabels: Record<PlanSlug, string> = {
   founder_pilot: "Founder Pilot",
   paused: "Paused",
@@ -91,6 +100,13 @@ const statusLabels: Record<BusinessStatus, string> = {
   cancelled: "Cancelled",
   onboarding: "Onboarding",
   suspended: "Suspended",
+};
+
+const workspaceKindLabels: Record<WorkspaceKind, string> = {
+  demo: "Demo",
+  founder_test: "Founder test",
+  production_customer: "Production customer",
+  seed: "Seed",
 };
 
 function formatDate(value: string | null): string {
@@ -268,7 +284,7 @@ function BusinessControlCard({
                     : "amber"
                 }
               >
-                {business.workspaceKind.replaceAll("_", " ")}
+                {workspaceKindLabels[business.workspaceKind]}
               </StatusBadge>
               <StatusBadge tone="neutral">
                 {business.lifecycleStatus.replaceAll("_", " ")}
@@ -414,6 +430,39 @@ function BusinessControlCard({
           </form>
 
           <form
+            action={updateFounderWorkspaceKindAction}
+            className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+          >
+            <input name="businessId" type="hidden" value={business.businessId} />
+            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+              Workspace kind
+              <select
+                className={inputClass}
+                defaultValue={business.workspaceKind}
+                name="workspaceKind"
+              >
+                {workspaceKindOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+              Use Founder test, Demo, or Seed only for fake data before hard cleanup
+              or fake/test auth login deletion.
+            </p>
+            <input
+              className={`${inputClass} mt-2`}
+              name="note"
+              placeholder="Why this workspace is safe to mark non-production"
+            />
+            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
+              Save workspace kind
+            </button>
+          </form>
+
+          <form
             action={updateFounderQuoteLinkAction}
             className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
           >
@@ -491,7 +540,7 @@ function FounderUsersSection({
         {users.length > 0 ? (
           users.map((user) => (
             <div
-              className="grid gap-3 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm xl:grid-cols-[minmax(220px,1.2fr)_minmax(190px,0.95fr)_minmax(180px,0.85fr)_minmax(180px,0.85fr)_minmax(190px,0.8fr)] xl:items-center"
+              className="grid gap-3 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm xl:grid-cols-[minmax(220px,1.1fr)_minmax(190px,0.9fr)_minmax(240px,1fr)_minmax(190px,0.8fr)] xl:items-center"
               key={user.userId}
             >
               <div className="min-w-0">
@@ -568,11 +617,13 @@ function FounderUsersSection({
                 </div>
               </div>
 
-              <FounderAuthUserDeleteForm
-                deletionBlockedReason={user.authDeletionBlockedReason}
-                targetEmail={user.authEmail}
-                targetUserId={user.userId}
-              />
+              <div className="xl:col-span-4">
+                <FounderAuthUserDeleteForm
+                  deletionBlockedReason={user.authDeletionBlockedReason}
+                  targetEmail={user.authEmail}
+                  targetUserId={user.userId}
+                />
+              </div>
             </div>
           ))
         ) : (

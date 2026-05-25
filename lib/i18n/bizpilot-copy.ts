@@ -87,6 +87,18 @@ type AiFallbackCopy = Readonly<{
   toneFriendly: (service: string, missingText: string) => string;
 }>;
 
+type DemoLeadTone = "amber" | "blue" | "emerald" | "red";
+
+type DemoSampleLeadCopy = Readonly<{
+  area: string;
+  customer: string;
+  detail: string;
+  followUpDraft: string;
+  replyDraft: string;
+  status: string;
+  tone: DemoLeadTone;
+}>;
+
 type DemoCopy = Readonly<{
   aiDraftReady: string;
   aiSummary: string;
@@ -110,6 +122,7 @@ type DemoCopy = Readonly<{
   reviewReply: string;
   sampleAreas: readonly string[];
   sampleDemoState: string;
+  sampleLeads: readonly DemoSampleLeadCopy[];
   sampleStatuses: readonly string[];
   shareQuoteLink: string;
   suggestedNextAction: string;
@@ -1558,6 +1571,52 @@ const englishCopy: BizPilotCopy = {
     reviewReply: "Review Reply",
     sampleAreas: ["Downtown", "Laval", "Plateau", "Westmount"],
     sampleDemoState: "Sample demo state",
+    sampleLeads: [
+      {
+        area: "Downtown",
+        customer: "Maria Santos",
+        detail: "Move-out cleaning before Friday. Missing apartment size.",
+        followUpDraft:
+          "Hi Maria, just checking whether you still need help with the move-out clean. Send the apartment size and preferred time window and I can help prepare the next step.",
+        replyDraft:
+          "Hi Maria, thanks for reaching out. Could you send the apartment size, preferred cleaning date, and whether the unit will be empty?",
+        status: "Missing info",
+        tone: "amber",
+      },
+      {
+        area: "Laval",
+        customer: "Daniel Roy",
+        detail: "Deep clean request with bedrooms, bathrooms, and timing included.",
+        followUpDraft:
+          "Hi Daniel, following up on your deep clean request. If the timing still works, the owner can review the details and respond with next steps.",
+        replyDraft:
+          "Hi Daniel, thanks for the details. I can review the request and follow up with a tailored estimate range after confirming access and priority areas.",
+        status: "Draft ready",
+        tone: "blue",
+      },
+      {
+        area: "Plateau",
+        customer: "Nadia Khan",
+        detail: "Weekly cleaning lead went quiet after first reply.",
+        followUpDraft:
+          "Hi Nadia, just following up on your weekly cleaning request. If you are still comparing options, I can help answer any questions.",
+        replyDraft:
+          "Hi Nadia, thanks for asking about weekly cleaning. Could you confirm the home size, pets, and your preferred weekday?",
+        status: "Follow-up due",
+        tone: "red",
+      },
+      {
+        area: "Westmount",
+        customer: "Office Manager",
+        detail: "Small office cleaning. Reply copied; waiting for owner outcome.",
+        followUpDraft:
+          "Hi, checking in on the office cleaning request. Let me know if you want to move forward or adjust the scope.",
+        replyDraft:
+          "Thanks for the office cleaning details. The owner will review the scope and respond manually with next steps.",
+        status: "Copied",
+        tone: "emerald",
+      },
+    ],
     sampleStatuses: ["Missing info", "Draft ready", "Follow-up due", "Copied"],
     shareQuoteLink: "Share Quote Link",
     suggestedNextAction:
@@ -2564,6 +2623,56 @@ const frenchCopy: BizPilotCopy = {
     reviewReply: "Réviser la réponse",
     sampleAreas: ["Centre-ville", "Laval", "Plateau", "Westmount"],
     sampleDemoState: "État démo",
+    sampleLeads: [
+      {
+        area: "Centre-ville",
+        customer: "Maria Santos",
+        detail:
+          "Nettoyage de déménagement avant vendredi. Taille du logement manquante.",
+        followUpDraft:
+          "Bonjour Maria, je fais un suivi pour savoir si vous avez toujours besoin d'aide avec le nettoyage de déménagement. Envoyez la taille du logement et la plage horaire souhaitée, et je pourrai préparer la prochaine étape.",
+        replyDraft:
+          "Bonjour Maria, merci pour votre demande. Pouvez-vous m'envoyer la taille du logement, la date de nettoyage souhaitée et confirmer si l'unité sera vide?",
+        status: "Infos manquantes",
+        tone: "amber",
+      },
+      {
+        area: "Laval",
+        customer: "Daniel Roy",
+        detail:
+          "Grand ménage avec chambres, salles de bain et horaire déjà fournis.",
+        followUpDraft:
+          "Bonjour Daniel, je fais un suivi sur votre demande de grand ménage. Si l'horaire convient toujours, le propriétaire peut revoir les détails et vous répondre avec la prochaine étape.",
+        replyDraft:
+          "Bonjour Daniel, merci pour les détails. Je peux revoir la demande et préparer une fourchette d'estimation après confirmation de l'accès et des zones prioritaires.",
+        status: "Brouillon prêt",
+        tone: "blue",
+      },
+      {
+        area: "Plateau",
+        customer: "Nadia Khan",
+        detail:
+          "Demande de nettoyage hebdomadaire sans réponse après le premier suivi.",
+        followUpDraft:
+          "Bonjour Nadia, je fais un suivi sur votre demande de nettoyage hebdomadaire. Si vous comparez encore les options, je peux répondre à vos questions.",
+        replyDraft:
+          "Bonjour Nadia, merci pour votre demande de nettoyage hebdomadaire. Pouvez-vous confirmer la taille du logement, les animaux et le jour de semaine préféré?",
+        status: "Suivi dû",
+        tone: "red",
+      },
+      {
+        area: "Westmount",
+        customer: "Gestionnaire bureau",
+        detail:
+          "Petit bureau à nettoyer. Réponse copiée; résultat en attente.",
+        followUpDraft:
+          "Bonjour, je fais un suivi sur la demande de nettoyage du bureau. Dites-moi si vous voulez avancer ou ajuster l'étendue du travail.",
+        replyDraft:
+          "Merci pour les détails du nettoyage de bureau. Le propriétaire révisera l'étendue et répondra manuellement avec la prochaine étape.",
+        status: "Copié",
+        tone: "emerald",
+      },
+    ],
     sampleStatuses: ["Infos manquantes", "Brouillon prêt", "Suivi dû", "Copié"],
     shareQuoteLink: "Partager le lien",
     suggestedNextAction:

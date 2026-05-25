@@ -38,6 +38,7 @@ import {
   type FounderBusinessMemberRecord,
   type FounderBusinessStatus,
   type FounderPlanSlug,
+  type FounderWorkspaceKind,
 } from "@/server/repositories/founder-admin.repository";
 
 export type FounderAdminBusiness = Readonly<{
@@ -111,6 +112,12 @@ const businessStatuses = new Set<FounderBusinessStatus>([
   "suspended",
   "cancelled",
 ]);
+const workspaceKinds = new Set<FounderWorkspaceKind>([
+  "production_customer",
+  "founder_test",
+  "demo",
+  "seed",
+]);
 
 function readFounderEmails(): Set<string> {
   const env = getServerEnv();
@@ -181,6 +188,14 @@ export function readFounderBusinessStatus(value: string): FounderBusinessStatus 
   }
 
   throw new Error("Invalid business status.");
+}
+
+export function readFounderWorkspaceKind(value: string): FounderWorkspaceKind {
+  if (workspaceKinds.has(value as FounderWorkspaceKind)) {
+    return value as FounderWorkspaceKind;
+  }
+
+  throw new Error("Invalid workspace kind.");
 }
 
 export async function getFounderAdminOverview(input: {
@@ -462,6 +477,32 @@ export async function updateFounderStatus(input: {
     },
     note: input.note ?? null,
     previousValues: { status: before.status },
+    supabase,
+  });
+}
+
+export async function updateFounderWorkspaceKind(input: {
+  businessId: string;
+  note?: string;
+  user: AuthUser | null;
+  workspaceKind: FounderWorkspaceKind;
+}): Promise<void> {
+  const actor = assertFounderUser(input.user);
+  const supabase = createSupabaseServiceRoleClient();
+  const before = await getFounderBusiness({ businessId: input.businessId, supabase });
+  const after = await updateFounderBusinessControls({
+    businessId: input.businessId,
+    supabase,
+    workspaceKind: input.workspaceKind,
+  });
+
+  await insertFounderAdminAction({
+    actionType: "status_changed",
+    actorUserId: actor.id,
+    businessId: input.businessId,
+    newValues: { workspace_kind: after.workspace_kind },
+    note: input.note ?? null,
+    previousValues: { workspace_kind: before.workspace_kind },
     supabase,
   });
 }

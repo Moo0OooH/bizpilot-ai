@@ -55,17 +55,27 @@ export function FounderAuthUserDeleteForm({
   );
 
   return (
-    <details className="rounded-[14px] border border-red-400/25 bg-red-500/10 p-3">
+    <details
+      className="rounded-[14px] border border-red-400/25 bg-red-500/10 p-3"
+      open={!deletionBlockedReason}
+    >
       <summary className="cursor-pointer text-[12px] font-black text-red-700 dark:text-red-200">
-        Delete fake/test login
+        {deletionBlockedReason
+          ? "Fake/test login deletion blocked"
+          : "Delete fake/test login"}
       </summary>
       <form action={founderTestAuthUserDeleteAction} className="mt-3 grid gap-3">
         <input name="targetUserId" type="hidden" value={targetUserId} />
         <input name="cleanupMode" type="hidden" value="test_auth_user_delete" />
         {deletionBlockedReason ? (
-          <p className="rounded-[10px] border border-red-400/25 bg-red-500/10 p-2 text-[12px] font-bold text-red-200">
-            {deletionBlockedReason}
-          </p>
+          <div className="rounded-[10px] border border-red-400/25 bg-red-500/10 p-2 text-[12px] leading-5 text-red-200">
+            <p className="font-black">{deletionBlockedReason}</p>
+            <p className="mt-1 font-semibold">
+              For fake accounts linked to fake data, first mark the workspace as
+              Founder test, Demo, or Seed when safe, then run test/demo cleanup or
+              transfer owned workspaces before deleting the login.
+            </p>
+          </div>
         ) : null}
         <label className="flex gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
           <input

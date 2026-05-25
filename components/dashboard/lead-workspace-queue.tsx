@@ -293,59 +293,24 @@ function LeadDesktopHeader({ copy }: Readonly<{ copy: LeadQueueCopy }>) {
   );
 }
 
-const sampleLeads = [
-  {
-    area: "Downtown",
-    customer: "Maria Santos",
-    detail: "Move-out cleaning before Friday. Missing apartment size.",
-    followUpDraft:
-      "Hi Maria, just checking whether you still need help with the move-out clean. Send the apartment size and preferred time window and I can help prepare the next step.",
-    replyDraft:
-      "Hi Maria, thanks for reaching out. Could you send the apartment size, preferred cleaning date, and whether the unit will be empty?",
-    status: "Missing info",
-    tone: "amber" as const,
-  },
-  {
-    area: "Laval",
-    customer: "Daniel Roy",
-    detail: "Deep clean request with bedrooms, bathrooms, and timing included.",
-    followUpDraft:
-      "Hi Daniel, following up on your deep clean request. If the timing still works, the owner can review the details and respond with next steps.",
-    replyDraft:
-      "Hi Daniel, thanks for the details. I can review the request and follow up with a tailored estimate range after confirming access and priority areas.",
-    status: "Draft ready",
-    tone: "blue" as const,
-  },
-  {
-    area: "Plateau",
-    customer: "Nadia Khan",
-    detail: "Weekly cleaning lead went quiet after first reply.",
-    followUpDraft:
-      "Hi Nadia, just following up on your weekly cleaning request. If you are still comparing options, I can help answer any questions.",
-    replyDraft:
-      "Hi Nadia, thanks for asking about weekly cleaning. Could you confirm the home size, pets, and your preferred weekday?",
-    status: "Follow-up due",
-    tone: "red" as const,
-  },
-  {
-    area: "Westmount",
-    customer: "Office Manager",
-    detail: "Small office cleaning. Reply copied; waiting for owner outcome.",
-    followUpDraft:
-      "Hi, checking in on the office cleaning request. Let me know if you want to move forward or adjust the scope.",
-    replyDraft:
-      "Thanks for the office cleaning details. The owner will review the scope and respond manually with next steps.",
-    status: "Copied",
-    tone: "emerald" as const,
-  },
-];
-
 function SampleLeadEmptyState({
   language,
   quotePath,
 }: Readonly<{ language?: SupportedLanguage | undefined; quotePath: string }>) {
   const copy = getBizPilotCopy(language);
-  const featured = sampleLeads[0]!;
+  const sampleLeads = copy.demo.sampleLeads;
+  const [selectedLeadIndex, setSelectedLeadIndex] = useState(0);
+  const fallbackLead = {
+    area: copy.demo.sampleAreas[0] ?? "",
+    customer: copy.demo.featuredLeadTitle,
+    detail: copy.demo.detailOne,
+    followUpDraft: copy.demo.followUpDraft,
+    replyDraft: copy.demo.replyDraft,
+    status: copy.demo.sampleStatuses[0] ?? copy.demo.missingInfoLabel,
+    tone: "amber" as const,
+  };
+  const featured =
+    sampleLeads[selectedLeadIndex] ?? sampleLeads[0] ?? fallbackLead;
 
   return (
     <div className="grid gap-4 rounded-[20px] border border-dashed border-[rgba(20,184,166,0.28)] bg-[var(--dash-primary-soft)] p-4 sm:p-5">
@@ -361,10 +326,10 @@ function SampleLeadEmptyState({
           <Avatar name={featured.customer} size={44} tone="primary" />
           <div>
             <p className="text-[15px] font-black text-[var(--dash-text)]">
-              {copy.demo.featuredLeadTitle}
+              {shortCustomerName(featured.customer)}
             </p>
             <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
-              {copy.demo.detailOne}
+              {featured.detail}
             </p>
           </div>
         </div>
@@ -378,9 +343,16 @@ function SampleLeadEmptyState({
 
       <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         {sampleLeads.map((lead, index) => (
-          <div
-            className="grid gap-2 rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3"
+          <button
+            aria-pressed={selectedLeadIndex === index}
+            className={
+              selectedLeadIndex === index
+                ? "grid gap-2 rounded-[16px] border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 text-left shadow-[0_0_0_1px_var(--dash-primary-border)] transition"
+                : "grid gap-2 rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-left transition hover:border-[var(--dash-primary-border)] hover:bg-[var(--dash-primary-soft)]"
+            }
             key={lead.customer}
+            onClick={() => setSelectedLeadIndex(index)}
+            type="button"
           >
             <div className="flex min-w-0 items-start justify-between gap-2">
               <div className="flex min-w-0 items-center gap-2.5">
@@ -390,23 +362,16 @@ function SampleLeadEmptyState({
                     {shortCustomerName(lead.customer)}
                   </span>
                   <span className="mt-0.5 block truncate text-[12px] text-[var(--dash-text-muted)]">
-                    {copy.demo.sampleAreas[index] ?? lead.area}
+                    {lead.area}
                   </span>
                 </span>
               </div>
-              <StatusBadge tone={lead.tone}>
-                {copy.demo.sampleStatuses[index] ?? lead.status}
-              </StatusBadge>
+              <StatusBadge tone={lead.tone}>{lead.status}</StatusBadge>
             </div>
             <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-              {[
-                copy.demo.detailOne,
-                copy.demo.detailTwo,
-                copy.demo.detailThree,
-                copy.demo.detailFour,
-              ][index] ?? lead.detail}
+              {lead.detail}
             </p>
-          </div>
+          </button>
         ))}
       </div>
 
@@ -421,11 +386,11 @@ function SampleLeadEmptyState({
         </div>
         <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
           <span className="font-black text-[var(--dash-text)]">{copy.demo.replyDraftLabel}</span>{" "}
-          {copy.demo.replyDraft}
+          {featured.replyDraft}
         </div>
         <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
           <span className="font-black text-[var(--dash-text)]">{copy.demo.followUpLabel}</span>{" "}
-          {copy.demo.followUpDraft}
+          {featured.followUpDraft}
         </div>
       </div>
 
@@ -433,7 +398,7 @@ function SampleLeadEmptyState({
         <Link className={primaryButtonClass} href="/dashboard/leads">
           {copy.demo.reviewReply}
         </Link>
-        <CopyButton label={copy.demo.copyResponse} value={copy.demo.replyDraft} />
+        <CopyButton label={copy.demo.copyResponse} value={featured.replyDraft} />
         <button className={buttonClass} disabled type="button">
           {copy.demo.markContacted}
         </button>

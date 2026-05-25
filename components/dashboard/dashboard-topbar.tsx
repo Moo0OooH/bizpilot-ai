@@ -24,7 +24,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { signOutAction } from "@/server/actions/auth.actions";
-import { setInterfaceLanguageAction } from "@/server/actions/business-configuration.actions";
+import { updateWorkspaceLanguageAction } from "@/server/actions/business-configuration.actions";
 
 import { CopyButton } from "./copy-button";
 import { DashboardThemeSelector } from "./dashboard-theme";
@@ -116,7 +116,7 @@ export function DashboardTopbar({
             </Link>
           ) : null}
           <form
-            action={setInterfaceLanguageAction}
+            action={updateWorkspaceLanguageAction}
             className="flex h-9 items-center rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:h-10"
           >
             <input name="businessId" type="hidden" value={businessId} />

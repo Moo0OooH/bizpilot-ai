@@ -23,10 +23,12 @@ import { getCurrentUser } from "@/server/services/auth.service";
 import {
   readFounderBusinessStatus,
   readFounderPlanSlug,
+  readFounderWorkspaceKind,
   updateFounderInternalNote,
   updateFounderPlan,
   updateFounderQuoteLink,
   updateFounderStatus,
+  updateFounderWorkspaceKind,
 } from "@/server/services/founder-admin.service";
 import {
   dryRunFounderTestWorkspaceCleanup,
@@ -63,6 +65,7 @@ function redirectWithFounderAdminError(error: unknown): never {
       value === "Founder admin access required." ||
       value === "Invalid plan." ||
       value === "Invalid business status." ||
+      value === "Invalid workspace kind." ||
       value === "Hard cleanup is blocked for production workspaces." ||
       value === "Invalid cleanup mode." ||
       value === "Run dry-run before final cleanup." ||
@@ -124,6 +127,29 @@ export async function updateFounderStatusAction(formData: FormData): Promise<nev
 
   revalidatePath("/admin");
   redirect("/admin?notice=Status%20updated.");
+}
+
+export async function updateFounderWorkspaceKindAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    const user = await getCurrentUser();
+    const note = readOptionalFormValue(formData, "note");
+
+    await updateFounderWorkspaceKind({
+      businessId: readRequiredFormValue(formData, "businessId"),
+      user,
+      workspaceKind: readFounderWorkspaceKind(
+        readRequiredFormValue(formData, "workspaceKind"),
+      ),
+      ...(note ? { note } : {}),
+    });
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
+
+  revalidatePath("/admin");
+  redirect("/admin?notice=Workspace%20kind%20updated.");
 }
 
 export async function updateFounderQuoteLinkAction(

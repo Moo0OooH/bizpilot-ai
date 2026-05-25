@@ -419,8 +419,9 @@ Start here:
 12. `docs/operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 13. `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`
 14. `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`
-15. `.github/workflows/ci.yml`
-16. `package.json`
+15. `docs/readiness/PHASE_21L_DASHBOARD_I18N_ADMIN_RECOVERY.md`
+16. `.github/workflows/ci.yml`
+17. `package.json`
 
 ## 9. Important Code/Migration Files
 
@@ -485,6 +486,7 @@ Inspect before commit:
 | Commercial terms blocker | `docs/business/PILOT_TERMS_DECISION_GATE.md` |
 | Founder auth-user cleanup and homepage polish | This handoff, `docs/operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`, `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md` |
 | Dashboard i18n systemization | `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`, `tests/unit/i18n-copy.test.mts` |
+| Dashboard i18n/admin recovery fix | `docs/readiness/PHASE_21L_DASHBOARD_I18N_ADMIN_RECOVERY.md`, `tests/unit/i18n-copy.test.mts` |
 
 ## 11. Next Tab Starter Prompt
 
@@ -502,6 +504,7 @@ Continue BizPilot Phase 21 from:
 - smart intake routing future-doc commit: 27156c5
 - homepage conversion polish commit: bd3d2a0
 - dashboard i18n systemization commit: this commit (`feat: systemize dashboard i18n`); run `git log -1 --oneline`
+- dashboard i18n/admin recovery commit: this commit (`fix: repair dashboard language and admin cleanup controls`); run `git log -1 --oneline`
 - latest GitHub evidence commit: 5a62e76
 - origin/main unchanged at 7fe0475
 - GitHub remote has only main/phase-19/phase-20 pushed; phase-21-production-alignment is local-only unless pushed later with approval
@@ -527,7 +530,7 @@ Owner decision:
 - do not reveal/pull secret env values unless explicitly approved and operationally necessary
 
 Current continuation state:
-Owner-run SQL verification already received: migration history table is missing, required columns passed, required functions passed, expected 0018 lifecycle/deletion objects passed, RLS-enabled status passed for all public tables, public RLS policy-list review found no obvious policy blocker, safe aggregate counts passed with leads/deletion rows at 0, and function definitions passed. Targeted function/grant verification found owner-only lifecycle helpers executable by anon; repo-backed migration 0019_lifecycle_helper_execute_grant_hardening.sql was then applied and verified in production with checked_functions = 6 and all_grant_checks_passed = true. Targeted constraint/template checks also passed for submitted_too_fast, fr-CA language constraints/index, and 0014 cleaning template fields. Founder fake/test auth-user deletion is repo-backed/local-verified only; production 0020 is not applied and deployment is not approved. Homepage conversion polish is local-verified and not deployed. Dashboard i18n systemization is local-verified and not deployed; authenticated dashboard language is now business-first instead of stale-cookie-first. Next production task remains quote/security smoke with synthetic data only after owner approval. Do not re-apply 0018 and do not add leads.source.
+Owner-run SQL verification already received: migration history table is missing, required columns passed, required functions passed, expected 0018 lifecycle/deletion objects passed, RLS-enabled status passed for all public tables, public RLS policy-list review found no obvious policy blocker, safe aggregate counts passed with leads/deletion rows at 0, and function definitions passed. Targeted function/grant verification found owner-only lifecycle helpers executable by anon; repo-backed migration 0019_lifecycle_helper_execute_grant_hardening.sql was then applied and verified in production with checked_functions = 6 and all_grant_checks_passed = true. Targeted constraint/template checks also passed for submitted_too_fast, fr-CA language constraints/index, and 0014 cleaning template fields. Founder fake/test auth-user deletion is repo-backed/local-verified only; production 0020 is not applied and deployment is not approved. Homepage conversion polish is local-verified and not deployed. Dashboard i18n/admin recovery fixes are local-verified and not deployed: EN/FR topbar now updates workspace language, demo queue sample leads are centralized in copy, settings has lifecycle/status fallback for drifted rows, and founder admin has workspace-kind control for fake/test cleanup path. Next production task remains quote/security smoke with synthetic data only after owner approval. Do not re-apply 0018 and do not add leads.source.
 ```
 
 ## 12. Current Final Decision
@@ -536,5 +539,5 @@ Owner-run SQL verification already received: migration history table is missing,
 Ready only for founder-controlled synthetic demos.
 Not ready for first real pilot customer with real customer data.
 Database/security alignment is owner-approved to finish now because there are no serious/real users yet.
-Founder fake/test auth-user cleanup and homepage conversion polish are local/repo-backed only until owner-approved push/deploy and production migration `0020` apply.
+Founder fake/test auth-user cleanup, homepage conversion polish, and dashboard i18n/admin recovery fixes are local/repo-backed only until owner-approved deploy and any required production migration apply.
 ```

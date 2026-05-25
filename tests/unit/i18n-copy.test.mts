@@ -156,6 +156,44 @@ describe("BizPilot language copy", () => {
     }
   });
 
+  it("keeps dashboard language switching and demo leads centralized", () => {
+    const topbar = readFileSync(
+      "components/dashboard/dashboard-topbar.tsx",
+      "utf8",
+    );
+    const queue = readFileSync(
+      "components/dashboard/lead-workspace-queue.tsx",
+      "utf8",
+    );
+
+    assert.equal(topbar.includes("updateWorkspaceLanguageAction"), true);
+    assert.equal(topbar.includes("setInterfaceLanguageAction"), false);
+    assert.equal(queue.includes("copy.demo.sampleLeads"), true);
+    assert.equal(queue.includes("const sampleLeads = ["), false);
+  });
+
+  it("keeps demo queue sample leads in the selected language", () => {
+    const englishDemo = getBizPilotCopy("en").demo.sampleLeads
+      .map((lead) => `${lead.area} ${lead.customer} ${lead.detail} ${lead.status}`)
+      .join(" ");
+    const frenchDemo = getBizPilotCopy("fr-CA").demo.sampleLeads
+      .map((lead) => `${lead.area} ${lead.customer} ${lead.detail} ${lead.status}`)
+      .join(" ");
+
+    assert.equal(
+      /Nettoyage|Réponse|Brouillon|Infos manquantes|Suivi dû/u.test(
+        englishDemo,
+      ),
+      false,
+    );
+    assert.equal(
+      /Move-out|Deep clean|Weekly cleaning|Missing info|Draft ready|Follow-up due|Office Manager/u.test(
+        frenchDemo,
+      ),
+      false,
+    );
+  });
+
   it("keeps every supported language structurally synced with source copy", () => {
     const sourceCopy = getBizPilotCopy(BIZPILOT_COPY_SOURCE_LANGUAGE);
     const sourceShape = copyShape(sourceCopy);

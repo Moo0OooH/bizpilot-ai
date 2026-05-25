@@ -23,6 +23,7 @@ export type FounderBusinessRecord =
   Database["public"]["Tables"]["businesses"]["Row"];
 export type FounderBusinessStatus = FounderBusinessRecord["status"];
 export type FounderPlanSlug = FounderBusinessRecord["plan_slug"];
+export type FounderWorkspaceKind = FounderBusinessRecord["workspace_kind"];
 export type FounderAdminActionType =
   Database["public"]["Tables"]["admin_action_log"]["Row"]["action_type"];
 export type FounderAdminLogRecord =
@@ -161,6 +162,7 @@ export async function updateFounderBusinessControls(input: {
   planSlug?: FounderPlanSlug;
   status?: FounderBusinessStatus;
   supabase: SupabaseClient<Database>;
+  workspaceKind?: FounderWorkspaceKind;
 }): Promise<FounderBusinessRecord> {
   const update: Database["public"]["Tables"]["businesses"]["Update"] = {};
 
@@ -179,6 +181,10 @@ export async function updateFounderBusinessControls(input: {
 
   if (input.status !== undefined) {
     update.status = input.status;
+  }
+
+  if (input.workspaceKind !== undefined) {
+    update.workspace_kind = input.workspaceKind;
   }
 
   const { data, error } = await input.supabase
