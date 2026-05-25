@@ -2,14 +2,16 @@
  * ============================================================
  * File: components/public/interactive-cleaning-demo.tsx
  * Project: BizPilot AI
- * Description: Interactive 7-step cleaning quote recovery demo for homepage.
- * Role: Shows the end-to-end customer/system/owner/follow-up workflow safely.
+ * Description: Interactive 7-step cleaning quote demo for homepage.
+ *   Scenario: Maria C., move-in cleaning, 3-bed house, website form.
+ *   Completely distinct from the hero desk (Sarah M., move-out, Instagram).
+ * Role: Shows end-to-end customer/system/owner workflow with guardrails.
  * Related:
  * - app/page.tsx
  * - components/public/marketing-ui.tsx
  * - lib/i18n/language.ts
  * Author: MoOoH
- * Created: 2026-05-25
+ * Updated: 2026-05-25
  * ============================================================
  */
 "use client";
@@ -27,6 +29,7 @@ import type { SupportedLanguage } from "@/lib/i18n/language";
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 type FieldTone = "neutral" | "good" | "warn" | "risk";
+type DraftKind = "note" | "summary" | "draft" | "followup";
 
 type DemoField = Readonly<{
   label: string;
@@ -37,6 +40,7 @@ type DemoField = Readonly<{
 type DemoStep = Readonly<{
   detail: string;
   draft: string;
+  draftKind: DraftKind;
   fields: ReadonlyArray<DemoField>;
   guardrail: string;
   note: string;
@@ -49,7 +53,7 @@ type DemoCopy = Readonly<{
   customerMessage: string;
   customerName: string;
   cta: string;
-  draftLabel: string;
+  draftKinds: Record<DraftKind, string>;
   eyebrow: string;
   incomingLabel: string;
   intro: string;
@@ -60,157 +64,200 @@ type DemoCopy = Readonly<{
   title: string;
 }>;
 
-// ─── Field tone styles ────────────────────────────────────────────────────────
+// ─── Design tokens ────────────────────────────────────────────────────────────
 
-const FIELD_TONES: Record<FieldTone, { bg: string; border: string; label: string; value: string }> = {
+/** Field card colour system — bg / left-border / label / value */
+const FIELD_TONES: Record<
+  FieldTone,
+  { bg: string; accent: string; label: string; value: string }
+> = {
   neutral: {
-    bg: "rgba(255,255,255,0.08)",
-    border: "rgba(255,255,255,0.14)",
-    label: "rgba(255,255,255,0.52)",
+    bg: "rgba(255,255,255,0.06)",
+    accent: "rgba(255,255,255,0.22)",
+    label: "rgba(255,255,255,0.46)",
     value: "#FFFFFF",
   },
   good: {
-    bg: "rgba(45,212,191,0.14)",
-    border: "rgba(45,212,191,0.30)",
+    bg: "rgba(45,212,191,0.10)",
+    accent: "#2DD4BF",
     label: "#7DE8D9",
     value: "#DDFAF6",
   },
   warn: {
-    bg: "rgba(246,184,75,0.13)",
-    border: "rgba(246,184,75,0.28)",
+    bg: "rgba(246,184,75,0.10)",
+    accent: "#F6B84B",
     label: "#E0AA3E",
     value: "#FEF3CC",
   },
   risk: {
-    bg: "rgba(255,95,102,0.14)",
-    border: "rgba(255,95,102,0.28)",
+    bg: "rgba(255,95,102,0.10)",
+    accent: "#FF5F66",
     label: "#FF8C92",
     value: "#FFE5E6",
+  },
+};
+
+/** Draft-box chip colours — bg / text / dot */
+const DRAFT_KIND_TOKENS: Record<
+  DraftKind,
+  { bg: string; text: string; dot: string }
+> = {
+  note: {
+    bg: "rgba(255,255,255,0.09)",
+    text: "rgba(255,255,255,0.62)",
+    dot: "rgba(255,255,255,0.38)",
+  },
+  summary: {
+    bg: "rgba(45,212,191,0.13)",
+    text: "#7DE8D9",
+    dot: "#2DD4BF",
+  },
+  draft: {
+    bg: "rgba(246,184,75,0.13)",
+    text: "#E0AA3E",
+    dot: "#F6B84B",
+  },
+  followup: {
+    bg: "rgba(139,92,246,0.13)",
+    text: "#C4B5FD",
+    dot: "#8B5CF6",
   },
 };
 
 // ─── English copy ─────────────────────────────────────────────────────────────
 
 const englishDemo: DemoCopy = {
-  channelLabel: "via Instagram DM",
+  channelLabel: "via Website Form",
   customerMessage:
-    "Hi, how much for a move-out cleaning? I need it done before Friday — 2-bedroom condo in Downtown Toronto.",
-  customerName: "Sarah J.",
+    "Hi, just bought a house and need a thorough cleaning before we move furniture in. 3-bedroom house, needs to be done before Wednesday.",
+  customerName: "Maria C.",
   cta: "See founder pilot terms",
-  draftLabel: "Owner review draft",
-  eyebrow: "Live cleaning demo",
-  incomingLabel: "Incoming customer message",
+  draftKinds: {
+    note: "System note",
+    summary: "AI summary",
+    draft: "Reply draft",
+    followup: "Follow-up draft",
+  },
+  eyebrow: "Live walkthrough",
+  incomingLabel: "Incoming customer request",
   intro:
-    "Follow one realistic move-out cleaning quote request from customer question to follow-up. The system organizes the work; the owner stays in control.",
-  next: "Next",
-  previous: "Previous",
+    "Follow one real move-in cleaning request from the first message to follow-up. BizPilot organizes the work — the owner stays in control of every decision.",
+  next: "Next step",
+  previous: "Back",
   stepLabel: (current, total) => `Step ${current} of ${total}`,
-  title: "See exactly how BizPilot handles a messy quote request.",
+  title: "See how BizPilot turns a raw quote request into a clean, safe reply.",
   steps: [
     {
+      title: "Customer question",
+      note: "Lead captured before it disappears into an inbox.",
       detail:
-        "A customer asks for a move-out cleaning quote and only gives partial details. BizPilot captures the request and creates a structured lead record.",
+        "Maria just purchased a 3-bedroom house and needs a deep clean before the movers arrive. She reaches out through the website form with a tight deadline but no details on square footage or property condition.",
+      draftKind: "note",
       draft:
-        "Sarah needs a move-out clean before Friday, but pricing would be risky without square footage, access details, and appliance information.",
+        "New move-in cleaning request from Maria C. Property: 3-bed house, recently purchased. Timing: before Wednesday. Details still needed before any estimate can be given.",
       fields: [
-        { label: "Customer", value: "Sarah J.", tone: "neutral" },
-        { label: "Request", value: "Move-out cleaning", tone: "neutral" },
-        { label: "Timing", value: "Before Friday", tone: "warn" },
+        { label: "Customer", value: "Maria C.", tone: "neutral" },
+        { label: "Service", value: "Move-in cleaning", tone: "neutral" },
+        { label: "Deadline", value: "Before Wednesday", tone: "warn" },
       ],
       guardrail: "No auto-send. No invented price.",
-      note: "Lead captured before it disappears into an inbox.",
-      outcome: "The lead is organized before anything is promised.",
-      title: "Customer question",
+      outcome: "The lead is captured and structured before anything is promised.",
     },
     {
-      detail:
-        "BizPilot turns the scattered message into a clean lead record with source, status, and urgency — all in one place.",
-      draft:
-        "The owner sees the full request in one view instead of piecing it together from email, DMs, or missed calls.",
-      fields: [
-        { label: "Source", value: "Quote link", tone: "good" },
-        { label: "Status", value: "New lead", tone: "good" },
-        { label: "Urgency", value: "Fast reply needed", tone: "warn" },
-      ],
-      guardrail: "Organized lead data stays scoped to the business.",
-      note: "All channels feed one clean queue — no scattered DMs.",
-      outcome: "The request becomes operational, not messy.",
       title: "Lead organized",
+      note: "All channels feed one clean queue — no scattered forms.",
+      detail:
+        "BizPilot converts the website form submission into a structured lead record with source, status, and urgency tagged automatically. The owner sees the full context in one place instead of searching through email threads.",
+      draftKind: "note",
+      draft:
+        "Lead record created. Source: website form. Status: new. Urgency: high — 3-day window. Move-in job, likely deep-clean scope. Owner review required before any pricing.",
+      fields: [
+        { label: "Source", value: "Website form", tone: "good" },
+        { label: "Status", value: "New lead", tone: "good" },
+        { label: "Urgency", value: "High — 3-day window", tone: "warn" },
+      ],
+      guardrail: "Organized data stays scoped to the business.",
+      outcome: "The request becomes operational, not messy.",
     },
     {
+      title: "Missing details flagged",
+      note: "System spots the gaps before the owner makes any commitment.",
       detail:
-        "The system flags what is missing before the owner quotes or promises anything. Pricing too early is a common and costly mistake.",
+        "Before the owner quotes anything, BizPilot flags exactly what is missing. For a move-in clean, square footage and property condition determine the job scope entirely — guessing costs the business time and trust.",
+      draftKind: "note",
       draft:
-        "Ask for square footage, parking and access details, and inside-appliance cleaning before giving any estimate.",
+        "Do not price yet. Missing: approximate square footage, current property condition (post-construction / vacant / dusty), and whether cleaning products should be supplied.",
       fields: [
         { label: "Missing", value: "Square footage", tone: "warn" },
-        { label: "Missing", value: "Parking / access", tone: "warn" },
-        { label: "Risk", value: "Do not price too early", tone: "risk" },
+        { label: "Missing", value: "Property condition", tone: "warn" },
+        { label: "Risk", value: "No estimate yet", tone: "risk" },
       ],
       guardrail: "No booking promise. No price guessing.",
-      note: "System spots gaps before the owner makes any commitment.",
-      outcome: "The owner knows what to confirm before replying.",
-      title: "Missing details flagged",
+      outcome: "The owner knows exactly what to confirm before replying.",
     },
     {
+      title: "System summary",
+      note: "AI summarizes — the owner makes the call.",
       detail:
-        "BizPilot prepares a short summary so the owner can understand the lead instantly without re-reading the original message.",
+        "BizPilot prepares a short, structured brief so the owner can understand the lead quality and next steps at a glance — without re-reading the original message.",
+      draftKind: "summary",
       draft:
-        "Move-out cleaning for a 2-bedroom condo before Friday. Warm lead — ready to book once missing details are confirmed.",
+        "Move-in cleaning for a 3-bedroom house purchased recently. Deadline is Wednesday — tight but workable. Warm lead, clear intent, ready to book once square footage and condition are confirmed. Priority: reply within the hour.",
       fields: [
-        { label: "Intent", value: "Cleaning quote", tone: "good" },
-        { label: "Quality", value: "Warm lead", tone: "good" },
-        { label: "Next action", value: "Ask missing info", tone: "warn" },
+        { label: "Intent", value: "Move-in clean", tone: "good" },
+        { label: "Lead quality", value: "Warm", tone: "good" },
+        { label: "Next action", value: "Confirm missing info", tone: "warn" },
       ],
       guardrail: "AI assists. Owner reviews.",
-      note: "AI summarizes — the owner makes the call.",
       outcome: "The lead is easy to prioritize at a glance.",
-      title: "System summary",
     },
     {
+      title: "Reply drafted",
+      note: "A useful draft — not an auto-send.",
       detail:
-        "The owner gets a useful reply draft that asks for only the details needed. Nothing is sent automatically.",
+        "The owner gets a professionally worded reply that asks for only what is needed. It is friendly, specific, and does not guess at price or availability. Nothing leaves without the owner's decision.",
+      draftKind: "draft",
       draft:
-        "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, parking and access, and whether you need inside appliances cleaned?",
+        "Hi Maria, congratulations on your new home! We would love to help you get it ready before moving day. Could you share the approximate square footage and let us know the current condition of the property — we want to make sure we give you an accurate quote.",
       fields: [
-        { label: "Tone", value: "Professional", tone: "good" },
-        { label: "Action", value: "Owner review", tone: "good" },
+        { label: "Tone", value: "Warm and professional", tone: "good" },
+        { label: "Action", value: "Owner review required", tone: "good" },
         { label: "Send mode", value: "Manual copy / send", tone: "neutral" },
       ],
-      guardrail: "The message is not sent automatically.",
-      note: "A useful draft — not an auto-send.",
-      outcome: "A safer reply is ready faster.",
-      title: "Owner response drafted",
+      guardrail: "The message is never sent automatically.",
+      outcome: "A safer, better reply is ready in seconds.",
     },
     {
+      title: "Owner review gate",
+      note: "BizPilot never sends without the owner's explicit decision.",
       detail:
-        "The owner reviews, edits if needed, copies the reply, and sends from their normal customer channel.",
+        "The owner reads the draft, adjusts the tone or adds a detail if needed, copies the message, and sends it from their normal customer channel. BizPilot keeps the owner in the loop — no autonomous decisions.",
+      draftKind: "draft",
       draft:
-        "BizPilot keeps the owner in the decision loop so the business never loses control of pricing, promises, or tone.",
+        "Hi Maria, congrats on your new home! We would love to help get it move-in ready. Could you share the approximate square footage and the property's current condition? That lets us give you an accurate quote right away.",
       fields: [
-        { label: "Review", value: "Owner checks draft", tone: "neutral" },
-        { label: "Edit", value: "Tone / details", tone: "neutral" },
-        { label: "Send", value: "Owner-controlled", tone: "good" },
+        { label: "Review", value: "Owner reads draft", tone: "neutral" },
+        { label: "Edit", value: "Tone or details", tone: "neutral" },
+        { label: "Send", value: "Owner-controlled only", tone: "good" },
       ],
       guardrail: "Manual copy / send only. Always.",
-      note: "BizPilot never sends without the owner's explicit decision.",
-      outcome: "The customer gets a faster, human-reviewed reply.",
-      title: "Owner review gate",
+      outcome: "Maria receives a fast, human-reviewed reply.",
     },
     {
+      title: "Follow-up stays visible",
+      note: "Warm leads stay visible — no silent loss.",
       detail:
-        "If the customer does not reply, BizPilot keeps the follow-up visible so the lead does not quietly disappear.",
+        "If Maria does not reply by Tuesday morning, BizPilot keeps the follow-up visible on the owner's dashboard. A follow-up draft is ready — the owner decides if, when, and how to reach out.",
+      draftKind: "followup",
       draft:
-        "Hi Sarah, just checking in. Once you confirm the square footage and access details, I can send the next step for your move-out clean.",
+        "Hi Maria, just checking in — we want to make sure we can fit your cleaning in before Wednesday. If you can share the square footage, we can confirm availability and get you a quote today.",
       fields: [
-        { label: "Status", value: "Waiting for reply", tone: "warn" },
-        { label: "Follow-up", value: "Tomorrow", tone: "good" },
+        { label: "Status", value: "Awaiting reply", tone: "warn" },
+        { label: "Follow-up by", value: "Tuesday morning", tone: "good" },
         { label: "Draft", value: "Ready to review", tone: "good" },
       ],
       guardrail: "The owner decides if and when to follow up.",
-      note: "Warm leads stay visible — no silent loss.",
       outcome: "The lead stays active instead of going cold.",
-      title: "Follow-up stays visible",
     },
   ],
 };
@@ -218,125 +265,137 @@ const englishDemo: DemoCopy = {
 // ─── French copy ──────────────────────────────────────────────────────────────
 
 const frenchDemo: DemoCopy = {
-  channelLabel: "via Instagram DM",
+  channelLabel: "via formulaire web",
   customerMessage:
-    "Bonjour, combien pour un nettoyage de depart? J'ai besoin du service avant vendredi — condo 2 chambres au centre-ville de Toronto.",
-  customerName: "Sarah J.",
+    "Bonjour, je viens d'acheter une maison et j'ai besoin d'un grand menage avant qu'on deplace les meubles. Maison de 3 chambres, ca doit etre fait avant mercredi.",
+  customerName: "Maria C.",
   cta: "Voir les conditions pilote",
-  draftLabel: "Brouillon pour revision",
-  eyebrow: "Demo nettoyage",
-  incomingLabel: "Message entrant du client",
+  draftKinds: {
+    note: "Note systeme",
+    summary: "Resume IA",
+    draft: "Brouillon reponse",
+    followup: "Brouillon suivi",
+  },
+  eyebrow: "Demonstration en direct",
+  incomingLabel: "Demande entrante",
   intro:
-    "Suivez une demande realiste de nettoyage de depart, de la question client jusqu'au suivi. Le systeme organise; le proprietaire garde le controle.",
-  next: "Suivant",
-  previous: "Precedent",
+    "Suivez une vraie demande de nettoyage emmenagement, du premier message jusqu'au suivi. BizPilot organise le travail — le proprietaire garde le controle de chaque decision.",
+  next: "Etape suivante",
+  previous: "Retour",
   stepLabel: (current, total) => `Etape ${current} de ${total}`,
-  title: "Voyez comment BizPilot traite une demande de soumission confuse.",
+  title: "Voyez comment BizPilot transforme une demande brute en reponse claire et sure.",
   steps: [
     {
+      title: "Question client",
+      note: "Lead capture avant de disparaitre dans une boite de reception.",
       detail:
-        "Une cliente demande une soumission de nettoyage de depart avec seulement une partie des details. BizPilot capture la demande et cree un lead structure.",
+        "Maria vient d'acheter une maison de 3 chambres et a besoin d'un grand menage avant l'arrivee des demenageurs. Elle contacte via le formulaire web avec un delai serre mais sans details sur la superficie ni l'etat du logement.",
+      draftKind: "note",
       draft:
-        "Sarah veut un nettoyage avant vendredi, mais le prix serait risque sans superficie, details d'acces et information sur les electros.",
+        "Nouvelle demande de nettoyage emmenagement de Maria C. Propriete : maison 3 chambres, recemment achetee. Delai : avant mercredi. Details encore necessaires avant toute estimation.",
       fields: [
-        { label: "Cliente", value: "Sarah J.", tone: "neutral" },
-        { label: "Demande", value: "Nettoyage de depart", tone: "neutral" },
-        { label: "Moment", value: "Avant vendredi", tone: "warn" },
+        { label: "Cliente", value: "Maria C.", tone: "neutral" },
+        { label: "Service", value: "Nettoyage emmenagement", tone: "neutral" },
+        { label: "Delai", value: "Avant mercredi", tone: "warn" },
       ],
       guardrail: "Aucun envoi automatique. Aucun prix invente.",
-      note: "Lead capture avant de disparaitre dans une boite de reception.",
-      outcome: "Le lead est organise avant que quoi que ce soit soit promis.",
-      title: "Question client",
+      outcome: "Le lead est structure avant que quoi que ce soit soit promis.",
     },
     {
-      detail:
-        "BizPilot transforme le message en lead structure avec source, statut et urgence — tout au meme endroit.",
-      draft:
-        "Le proprietaire voit la demande complete dans une vue au lieu de reconstituer le contexte depuis courriel, DM ou appels manques.",
-      fields: [
-        { label: "Source", value: "Lien de soumission", tone: "good" },
-        { label: "Statut", value: "Nouveau lead", tone: "good" },
-        { label: "Urgence", value: "Reponse rapide requise", tone: "warn" },
-      ],
-      guardrail: "Les donnees du lead restent limitees a l'entreprise.",
-      note: "Tous les canaux alimentent une file propre — sans DM eparpilles.",
-      outcome: "La demande devient operationnelle, pas desordonnee.",
       title: "Lead organise",
+      note: "Tous les canaux alimentent une file propre.",
+      detail:
+        "BizPilot convertit la soumission du formulaire web en un lead structure avec source, statut et urgence tags automatiquement. Le proprietaire voit le contexte complet en un endroit au lieu de fouiller dans les fils de courriel.",
+      draftKind: "note",
+      draft:
+        "Lead cree. Source : formulaire web. Statut : nouveau. Urgence : elevee — fenetre de 3 jours. Travail d'emmenagement, portee probablement grand menage. Revision du proprietaire requise avant tout prix.",
+      fields: [
+        { label: "Source", value: "Formulaire web", tone: "good" },
+        { label: "Statut", value: "Nouveau lead", tone: "good" },
+        { label: "Urgence", value: "Elevee — 3 jours", tone: "warn" },
+      ],
+      guardrail: "Les donnees restent limitees a l'entreprise.",
+      outcome: "La demande devient operationnelle, pas desordonnee.",
     },
     {
+      title: "Infos manquantes",
+      note: "Le systeme repere les lacunes avant tout engagement.",
       detail:
-        "Le systeme signale ce qui manque avant que le proprietaire donne un prix ou une promesse. Chiffrer trop tot est une erreur courante et couteuse.",
+        "Avant que le proprietaire donne un prix, BizPilot signale exactement ce qui manque. Pour un nettoyage d'emmenagement, la superficie et l'etat du logement determinent entierement la portee du travail.",
+      draftKind: "note",
       draft:
-        "Demander superficie, stationnement/acces et nettoyage interieur des electros avant toute estimation.",
+        "Ne pas chiffrer pour l'instant. Manquant : superficie approximative, etat actuel du logement (post-construction / vacant / poussieres), et si les produits de nettoyage doivent etre fournis.",
       fields: [
         { label: "Manquant", value: "Superficie", tone: "warn" },
-        { label: "Manquant", value: "Stationnement / acces", tone: "warn" },
-        { label: "Risque", value: "Ne pas chiffrer trop tot", tone: "risk" },
+        { label: "Manquant", value: "Etat du logement", tone: "warn" },
+        { label: "Risque", value: "Aucune estimation", tone: "risk" },
       ],
       guardrail: "Aucune promesse. Aucun prix devine.",
-      note: "Le systeme repere les lacunes avant tout engagement.",
       outcome: "Le proprietaire sait quoi confirmer avant de repondre.",
-      title: "Infos manquantes",
     },
     {
+      title: "Resume systeme",
+      note: "L'IA resume — le proprietaire prend la decision.",
       detail:
-        "BizPilot prepare un court resume pour que le proprietaire comprenne le lead instantanement sans relire le message original.",
+        "BizPilot prepare un bref structure pour que le proprietaire comprenne la qualite du lead et les prochaines etapes d'un coup d'oeil — sans relire le message original.",
+      draftKind: "summary",
       draft:
-        "Nettoyage de depart pour un condo 2 chambres avant vendredi. Lead chaud — pret a reserver apres confirmation des details manquants.",
+        "Nettoyage d'emmenagement pour une maison de 3 chambres recemment achetee. Delai : mercredi — serre mais faisable. Lead chaud, intention claire, pret a reserver apres confirmation de la superficie et de l'etat. Priorite : repondre dans l'heure.",
       fields: [
-        { label: "Intention", value: "Soumission nettoyage", tone: "good" },
+        { label: "Intention", value: "Nettoyage emmenagement", tone: "good" },
         { label: "Qualite", value: "Lead chaud", tone: "good" },
-        { label: "Action", value: "Demander les infos", tone: "warn" },
+        { label: "Action", value: "Confirmer les infos", tone: "warn" },
       ],
       guardrail: "L'IA aide. Le proprietaire revise.",
-      note: "L'IA resume — le proprietaire prend la decision.",
       outcome: "Le lead est facile a prioriser d'un coup d'oeil.",
-      title: "Resume systeme",
     },
     {
+      title: "Reponse redigee",
+      note: "Un brouillon utile — pas un envoi automatique.",
       detail:
-        "Le proprietaire recoit un brouillon utile qui demande seulement les details necessaires. Rien n'est envoye automatiquement.",
+        "Le proprietaire recoit une reponse professionnelle qui demande seulement ce qui est necessaire. Elle est chaleureuse, precise et ne devine pas le prix ni la disponibilite. Rien ne part sans la decision du proprietaire.",
+      draftKind: "draft",
       draft:
-        "Bonjour Sarah, merci de nous avoir ecrit. Pouvez-vous confirmer la superficie approximative, l'acces/stationnement et si les electros doivent etre nettoyes?",
+        "Bonjour Maria, felicitations pour votre nouvelle maison ! On adorait vous aider a la preparer avant le jour du demenagement. Pourriez-vous partager la superficie approximative et l'etat actuel du logement — on veut s'assurer de vous donner une soumission precise.",
       fields: [
-        { label: "Ton", value: "Professionnel", tone: "good" },
+        { label: "Ton", value: "Chaleureux et professionnel", tone: "good" },
         { label: "Action", value: "Revision proprietaire", tone: "good" },
         { label: "Envoi", value: "Copier / envoyer manuel", tone: "neutral" },
       ],
-      guardrail: "Le message n'est pas envoye automatiquement.",
-      note: "Un brouillon utile — pas un envoi automatique.",
-      outcome: "Une reponse plus sure est prete plus vite.",
-      title: "Reponse preparee",
+      guardrail: "Le message n'est jamais envoye automatiquement.",
+      outcome: "Une reponse plus sure est prete en quelques secondes.",
     },
     {
+      title: "Gate proprietaire",
+      note: "BizPilot n'envoie jamais sans la decision du proprietaire.",
       detail:
-        "Le proprietaire revise, modifie si necessaire, copie la reponse et envoie depuis son canal client habituel.",
+        "Le proprietaire lit le brouillon, ajuste le ton ou ajoute un detail si necessaire, copie le message et l'envoie depuis son canal client habituel. BizPilot garde le proprietaire dans la boucle — aucune decision autonome.",
+      draftKind: "draft",
       draft:
-        "BizPilot garde le proprietaire dans la boucle de decision pour ne jamais perdre le controle des prix, promesses ou du ton.",
+        "Bonjour Maria, felicitations pour votre maison ! On adorait vous aider a la rendre prete pour l'emmenagement. Pourriez-vous partager la superficie approximative et l'etat actuel ? On pourra vous confirmer les disponibilites et la soumission rapidement.",
       fields: [
-        { label: "Revision", value: "Le proprietaire verifie", tone: "neutral" },
-        { label: "Modifier", value: "Ton / details", tone: "neutral" },
+        { label: "Revision", value: "Le proprietaire lit", tone: "neutral" },
+        { label: "Modifier", value: "Ton ou details", tone: "neutral" },
         { label: "Envoyer", value: "Controle proprietaire", tone: "good" },
       ],
       guardrail: "Copier / envoyer manuellement seulement. Toujours.",
-      note: "BizPilot n'envoie jamais sans la decision explicite du proprietaire.",
-      outcome: "Le client recoit une reponse plus rapide, revisee par un humain.",
-      title: "Gate proprietaire",
+      outcome: "Maria recoit une reponse rapide, revisee par un humain.",
     },
     {
+      title: "Suivi visible",
+      note: "Les leads chauds restent visibles — aucune perte silencieuse.",
       detail:
-        "Si la cliente ne repond pas, BizPilot garde le suivi visible pour que le lead ne disparaisse pas silencieusement.",
+        "Si Maria ne repond pas avant mardi matin, BizPilot garde le suivi visible dans le tableau de bord du proprietaire. Un brouillon de suivi est pret — le proprietaire decide si, quand et comment relancer.",
+      draftKind: "followup",
       draft:
-        "Bonjour Sarah, je fais un suivi. Des que vous confirmez la superficie et les details d'acces, je peux vous envoyer la prochaine etape.",
+        "Bonjour Maria, je fais un suivi rapide — on veut s'assurer de pouvoir planifier votre nettoyage avant mercredi. Si vous pouvez partager la superficie, on peut confirmer les disponibilites et vous envoyer une soumission aujourd'hui.",
       fields: [
         { label: "Statut", value: "En attente de reponse", tone: "warn" },
-        { label: "Suivi", value: "Demain", tone: "good" },
+        { label: "Suivi avant", value: "Mardi matin", tone: "good" },
         { label: "Brouillon", value: "Pret a reviser", tone: "good" },
       ],
       guardrail: "Le proprietaire decide si et quand faire le suivi.",
-      note: "Les leads chauds restent visibles — aucune perte silencieuse.",
       outcome: "Le lead reste actif au lieu de refroidir.",
-      title: "Suivi visible",
     },
   ],
 };
@@ -359,120 +418,132 @@ export function InteractiveCleaningDemoSection({
   const isFirst = activeIndex === 0;
   const isLast = activeIndex === copy.steps.length - 1;
   const progressPct = Math.round(((activeIndex + 1) / copy.steps.length) * 100);
+  const kindTokens = DRAFT_KIND_TOKENS[activeStep.draftKind];
+  const kindLabel = copy.draftKinds[activeStep.draftKind];
 
   return (
-    <section className="px-5 py-10 sm:px-6" id="cleaning-demo">
+    <section className="px-5 py-12 sm:px-6 sm:py-16" id="cleaning-demo">
       <MarketingShell>
-        {/* ── Section header ── */}
-        <div className="mb-7">
+        {/* ── Section header ────────────────────────────────────────────── */}
+        <div className="mb-10">
           <MarketingBadge>{copy.eyebrow}</MarketingBadge>
           <h2
-            className="mt-5 max-w-[820px] text-[28px] font-black leading-[1.1] sm:text-[38px]"
+            className="mt-5 max-w-[780px] text-[30px] font-black leading-[1.08] sm:text-[42px]"
             style={{ color: marketingTone.text }}
           >
             {copy.title}
           </h2>
           <p
-            className="mt-4 max-w-[700px] text-[15px] leading-7"
+            className="mt-4 max-w-[640px] text-[14px] leading-[1.8] sm:text-[15px]"
             style={{ color: marketingTone.soft }}
           >
             {copy.intro}
           </p>
         </div>
 
-        {/* ── Demo shell ── */}
+        {/* ── Demo shell ────────────────────────────────────────────────── */}
         <div
-          className="overflow-hidden rounded-[24px] border"
+          className="overflow-hidden rounded-[28px] border"
           style={{
             background:
-              "linear-gradient(135deg, rgba(14,42,55,0.97) 0%, rgba(7,20,32,0.99) 48%, rgba(5,12,20,0.99) 100%)",
-            borderColor: "rgba(45,212,191,0.24)",
+              "linear-gradient(150deg, rgba(10,36,50,0.98) 0%, rgba(6,18,30,0.99) 50%, rgba(3,10,20,1) 100%)",
+            borderColor: "rgba(45,212,191,0.20)",
             boxShadow:
-              "0 40px 100px rgba(0,0,0,0.36), 0 0 0 1px rgba(45,212,191,0.06)",
+              "0 48px 120px rgba(0,0,0,0.42), 0 0 0 1px rgba(45,212,191,0.05), inset 0 1px 0 rgba(255,255,255,0.04)",
           }}
         >
-          <div className="grid min-w-0 lg:grid-cols-[minmax(280px,0.40fr)_minmax(0,0.60fr)]">
-            {/* ── LEFT SIDEBAR ── */}
+          <div className="grid min-w-0 lg:grid-cols-[minmax(272px,0.38fr)_minmax(0,0.62fr)]">
+
+            {/* ════════════════════════════════════════════════════════════
+                LEFT SIDEBAR
+            ════════════════════════════════════════════════════════════ */}
             <div
               className="border-b lg:border-b-0 lg:border-r"
-              style={{ borderColor: "rgba(255,255,255,0.08)" }}
+              style={{ borderColor: "rgba(255,255,255,0.07)" }}
             >
+
               {/* Customer message bubble */}
-              <div
-                className="m-3 rounded-[18px] border p-4"
-                style={{
-                  background:
-                    "linear-gradient(135deg, rgba(45,212,191,0.12), rgba(23,212,146,0.06))",
-                  borderColor: "rgba(45,212,191,0.28)",
-                }}
-              >
-                <div className="mb-2.5 flex items-center gap-2">
-                  {/* Chat icon */}
-                  <span
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px]"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, rgba(45,212,191,0.30), rgba(23,212,146,0.18))",
-                      color: marketingTone.teal,
-                    }}
-                  >
-                    ✦
-                  </span>
-                  <span
-                    className="text-[10.5px] font-black uppercase tracking-[0.12em]"
-                    style={{ color: marketingTone.teal }}
-                  >
-                    {copy.incomingLabel}
-                  </span>
-                </div>
-                {/* Message bubble */}
+              <div className="p-4 pb-0">
                 <div
-                  className="rounded-[12px] p-3"
+                  className="rounded-[20px] border p-4"
                   style={{
-                    backgroundColor: "rgba(255,255,255,0.07)",
-                    borderLeft: `3px solid ${marketingTone.teal}`,
+                    background:
+                      "linear-gradient(135deg, rgba(45,212,191,0.09), rgba(23,212,146,0.04))",
+                    borderColor: "rgba(45,212,191,0.22)",
                   }}
                 >
-                  <p
-                    className="text-[13px] italic leading-[1.65]"
-                    style={{ color: "rgba(255,255,255,0.88)" }}
+                  {/* Incoming label */}
+                  <div className="mb-3 flex items-center gap-2">
+                    <span
+                      className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(45,212,191,0.28), rgba(23,212,146,0.16))",
+                      }}
+                    >
+                      <svg aria-hidden="true" fill="none" height="9" viewBox="0 0 10 10" width="9">
+                        <path d="M1 9 5 1l4 8H6.5L5 5 3.5 9H1Z" fill={marketingTone.teal} />
+                      </svg>
+                    </span>
+                    <span
+                      className="text-[10px] font-black uppercase tracking-[0.14em]"
+                      style={{ color: marketingTone.teal }}
+                    >
+                      {copy.incomingLabel}
+                    </span>
+                  </div>
+
+                  {/* Message bubble */}
+                  <blockquote
+                    className="rounded-[14px] p-3.5"
+                    style={{
+                      backgroundColor: "rgba(255,255,255,0.06)",
+                      borderLeft: `3px solid ${marketingTone.teal}`,
+                    }}
                   >
-                    &ldquo;{copy.customerMessage}&rdquo;
-                  </p>
-                </div>
-                <div className="mt-2.5 flex items-center gap-2">
-                  <span
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{ backgroundColor: marketingTone.emerald }}
-                  />
-                  <span
-                    className="text-[11px] font-black"
-                    style={{ color: marketingTone.muted }}
-                  >
-                    {copy.customerName} &middot; {copy.channelLabel}
-                  </span>
+                    <p
+                      className="text-[13px] italic leading-[1.7]"
+                      style={{ color: "rgba(255,255,255,0.86)" }}
+                    >
+                      &ldquo;{copy.customerMessage}&rdquo;
+                    </p>
+                  </blockquote>
+
+                  {/* Sender meta */}
+                  <div className="mt-3 flex items-center gap-2">
+                    <span
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{ backgroundColor: marketingTone.emerald }}
+                    />
+                    <span
+                      className="text-[11px] font-black"
+                      style={{ color: marketingTone.muted }}
+                    >
+                      {copy.customerName}&ensp;&middot;&ensp;{copy.channelLabel}
+                    </span>
+                  </div>
                 </div>
               </div>
 
               {/* Progress bar */}
-              <div className="mx-3 mb-3">
+              <div className="px-4 py-3">
                 <div
                   className="h-[3px] overflow-hidden rounded-full"
-                  style={{ backgroundColor: "rgba(255,255,255,0.07)" }}
+                  style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
                 >
                   <div
-                    className="h-full rounded-full transition-all duration-500"
+                    className="h-full rounded-full transition-all duration-500 ease-in-out"
                     style={{
                       width: `${progressPct}%`,
                       background:
-                        "linear-gradient(90deg, rgba(45,212,191,0.8), rgba(23,212,146,0.9))",
+                        "linear-gradient(90deg, rgba(45,212,191,0.72) 0%, rgba(23,212,146,0.88) 100%)",
                     }}
                   />
                 </div>
               </div>
 
               {/* Step navigation */}
-              <nav aria-label={copy.eyebrow} className="grid gap-1.5 p-3 pt-0">
+              <nav aria-label={copy.eyebrow} className="grid gap-1 px-3 pb-4">
                 {copy.steps.map((step, index) => {
                   const isActive = index === activeIndex;
                   const isPast = index < activeIndex;
@@ -480,132 +551,14 @@ export function InteractiveCleaningDemoSection({
                   return (
                     <button
                       aria-current={isActive ? "step" : undefined}
-                      className="grid grid-cols-[26px_minmax(0,1fr)] items-start gap-3 rounded-[14px] border px-3 py-2.5 text-left transition-colors"
+                      className="grid grid-cols-[28px_minmax(0,1fr)] items-start gap-3 rounded-[16px] border px-3 py-2.5 text-left transition-all duration-200"
                       key={step.title}
                       onClick={() => setActiveIndex(index)}
                       style={{
                         backgroundColor: isActive
-                          ? "rgba(45,212,191,0.13)"
+                          ? "rgba(45,212,191,0.10)"
                           : "transparent",
                         borderColor: isActive
-                          ? "rgba(45,212,191,0.35)"
+                          ? "rgba(45,212,191,0.28)"
                           : "transparent",
-                        cursor: "pointer",
-                      }}
-                      type="button"
-                    >
-                      {/* Number bubble */}
-                      <span
-                        className="mt-0.5 flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-full text-[11px] font-black"
-                        style={{
-                          backgroundColor: isActive
-                            ? marketingTone.teal
-                            : isPast
-                              ? "rgba(45,212,191,0.22)"
-                              : "rgba(255,255,255,0.07)",
-                          color: isActive
-                            ? "#052920"
-                            : isPast
-                              ? marketingTone.teal
-                              : marketingTone.muted,
-                        }}
-                      >
-                        {isPast ? "✓" : index + 1}
-                      </span>
-                      {/* Title + note */}
-                      <span>
-                        <span
-                          className="block text-[13px] font-black leading-snug"
-                          style={{
-                            color: isActive
-                              ? marketingTone.text
-                              : isPast
-                                ? "rgba(255,255,255,0.52)"
-                                : marketingTone.soft,
-                          }}
-                        >
-                          {step.title}
-                        </span>
-                        {isActive && (
-                          <span
-                            className="mt-1 block text-[11.5px] leading-snug"
-                            style={{ color: marketingTone.muted }}
-                          >
-                            {step.note}
-                          </span>
-                        )}
-                      </span>
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
-
-            {/* ── RIGHT STAGE ── */}
-            <div
-              aria-live="polite"
-              className="flex min-h-[680px] flex-col justify-between p-6 sm:p-7"
-              style={{
-                background:
-                  "linear-gradient(155deg, rgba(13,60,74,0.98) 0%, rgba(8,32,46,0.99) 52%, rgba(4,12,22,1) 100%)",
-              }}
-            >
-              {/* Stage content */}
-              <div className="grid gap-6">
-                {/* Top bar: step label + guardrail */}
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <span
-                    className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-black uppercase tracking-[0.08em]"
-                    style={{
-                      backgroundColor: "rgba(255,255,255,0.07)",
-                      borderColor: "rgba(255,255,255,0.16)",
-                      color: "rgba(255,255,255,0.72)",
-                    }}
-                  >
-                    <span
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ backgroundColor: marketingTone.emerald }}
-                    />
-                    {copy.stepLabel(activeIndex + 1, copy.steps.length)}
-                  </span>
-                  <span
-                    className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[11px] font-black"
-                    style={{
-                      backgroundColor: "rgba(23,212,146,0.10)",
-                      borderColor: "rgba(23,212,146,0.24)",
-                      color: "#9AF4CF",
-                    }}
-                  >
-                    <svg aria-hidden="true" fill="none" height="12" viewBox="0 0 14 14" width="12">
-                      <path d="M7 1L2 3.5v4c0 2.5 2 4.5 5 5.5 3-1 5-3 5-5.5v-4L7 1Z" stroke="currentColor" strokeLinejoin="round" strokeWidth="1.5" />
-                    </svg>
-                    {activeStep.guardrail}
-                  </span>
-                </div>
-
-                {/* Heading + detail */}
-                <div>
-                  <h3
-                    className="text-[26px] font-black leading-[1.08] sm:text-[32px]"
-                    style={{ color: "#FFFFFF" }}
-                  >
-                    {activeStep.title}
-                  </h3>
-                  <p
-                    className="mt-3 max-w-[62ch] text-[14px] leading-7"
-                    style={{ color: "rgba(255,255,255,0.68)" }}
-                  >
-                    {activeStep.detail}
-                  </p>
-                </div>
-
-                {/* Color-coded field cards */}
-                <div className="grid gap-2.5 sm:grid-cols-3">
-                  {activeStep.fields.map((field) => {
-                    const tone = FIELD_TONES[field.tone ?? "neutral"];
-
-                    return (
-                      <div
-                        className="min-h-[80px] rounded-[14px] border p-3.5"
-                        key={`${field.label}-${field.value}`}
-                        style={{
+                    
