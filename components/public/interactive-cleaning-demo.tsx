@@ -422,19 +422,19 @@ export function InteractiveCleaningDemoSection({
   const kindLabel = copy.draftKinds[activeStep.draftKind];
 
   return (
-    <section className="px-5 py-8 sm:px-6 sm:py-10" id="cleaning-demo">
+    <section className="px-5 py-12 sm:px-6 sm:py-16" id="cleaning-demo">
       <MarketingShell>
         {/* ── Section header ────────────────────────────────────────────── */}
-        <div className="mb-7">
+        <div className="mb-10">
           <MarketingBadge>{copy.eyebrow}</MarketingBadge>
           <h2
-            className="mt-4 max-w-[720px] text-[24px] font-black leading-[1.1] sm:text-[32px]"
+            className="mt-5 max-w-[780px] text-[30px] font-black leading-[1.08] sm:text-[42px]"
             style={{ color: marketingTone.text }}
           >
             {copy.title}
           </h2>
           <p
-            className="mt-3 max-w-[580px] text-[13px] leading-[1.75]"
+            className="mt-4 max-w-[640px] text-[14px] leading-[1.8] sm:text-[15px]"
             style={{ color: marketingTone.soft }}
           >
             {copy.intro}
@@ -526,7 +526,7 @@ export function InteractiveCleaningDemoSection({
               </div>
 
               {/* Progress bar */}
-              <div className="px-4 py-2">
+              <div className="px-4 py-3">
                 <div
                   className="h-[3px] overflow-hidden rounded-full"
                   style={{ backgroundColor: "rgba(255,255,255,0.06)" }}
@@ -561,4 +561,4 @@ export function InteractiveCleaningDemoSection({
                         borderColor: isActive
                           ? "rgba(45,212,191,0.28)"
                           : "transparent",
-                        cursor: "poin
+                    
