@@ -212,7 +212,10 @@ pnpm test:unit within verify: pass, 50/50
 pnpm build within verify: pass
 git diff --check: pass, CRLF warning only
 secret scan on changed docs: no matches
+pnpm test:rls: not executed because DATABASE_URL is not set in the current shell
 ```
+
+RLS note: the repo has an RLS test runner and earlier Phase 21 evidence recorded a passing local RLS suite through a temporary local-only Docker proxy. For this final consolidation pass, the standalone RLS command stopped before connecting because the current shell does not define `DATABASE_URL`. This is an environment setup blocker, not a new application test failure.
 
 ## 6. What I Would Do Next
 
