@@ -9,6 +9,31 @@
 
 ---
 
+## 2026-05-25 Production Continuation Update
+
+Owner approved production merge/deploy and synthetic smoke execution, excluding OpenAI billing/quota resolution and final commercial pricing/terms.
+
+Current continuation truth:
+
+- `main` has been fast-forwarded and pushed to `b10f1a4 fix: clarify founder cleanup safety controls`.
+- Production deploy was triggered and reached Ready on Vercel deployment `dpl_Ho33LNoDfvFAbSvnDDEBXmWXQW4X`.
+- Production aliases include `https://bizpilo.com`; the previous production deployment is recorded as the rollback target.
+- Rollback tags were pushed before merge/deploy:
+  - `backup/main-pre-phase21-20260525-004550`
+  - `backup/phase21-pre-production-20260525-004550`
+- Basic production HTTP/browser route smoke passed for `/`, `/pricing`, auth pages, and logged-out `/admin` redirect.
+- Signup confirmation smoke passed with a synthetic disposable inbox; credentials and confirmation artifacts were stored outside the repo and must not be committed or printed.
+- A newly confirmed synthetic owner reached `/dashboard`.
+- Production public quote smoke found a real onboarding gap: the new workspace public quote URL rendered `Quote page unavailable`.
+- Local fix in progress: signup now bootstraps a conservative default quote configuration, active public link, consent version, and intake form immediately after owner membership creation.
+- Local validation for that fix: `pnpm test:unit` 53/53, `pnpm typecheck`, and `pnpm lint` passed.
+- Production migration `0020` was not applied because a real production DB backup/export was not available from local tools.
+- OpenAI `429` and final pricing/terms remain owner-side blockers and were explicitly excluded from this pass.
+
+This update does not approve real customer data or a paid pilot.
+
+---
+
 ## 1. Final Truth Right Now
 
 BizPilot is now a coherent cleaning-first quote recovery product for founder-controlled synthetic demos. The repo has working foundations for public quote capture, owner dashboard review, AI-assisted drafts, manual send, French/English localization, founder admin controls, lifecycle/deletion guardrails, and documented production readiness gates.
@@ -167,10 +192,10 @@ It is not yet approved for real customer data or a real paying pilot because pro
 
 | Priority | Remaining item | Status | Needed action |
 | --- | --- | --- | --- |
-| P0 | Production deploy / main merge | Not done | Owner must approve exact deploy/merge step. |
-| P0 | Production public quote security smoke | Not run | Use a synthetic business/link and verify submit, rows, RLS behavior, and cleanup. |
-| P0 | fr-CA production quote smoke | Not run | Run after quote security smoke with synthetic fr-CA business/link. |
-| P0 | Signup confirmation smoke | Not run | Owner must provide safe test inbox/mail-capture and approve one production signup attempt. |
+| P0 | Production deploy / main merge | Done on 2026-05-25 | `main` pushed to `b10f1a4`; Vercel production deployment `dpl_Ho33LNoDfvFAbSvnDDEBXmWXQW4X` Ready. |
+| P0 | Production public quote security smoke | Partially run; blocked by onboarding gap | Synthetic signup worked, but new workspace quote URL rendered unavailable; local signup quote-bootstrap fix is in progress. |
+| P0 | fr-CA production quote smoke | Not run | Run after quote-bootstrap fix is deployed and quote security smoke passes. |
+| P0 | Signup confirmation smoke | Passed with synthetic inbox | Disposable inbox credentials/artifacts are stored outside repo and must not be printed or committed. |
 | P0 | OpenAI real output quality | Blocked by HTTP `429` | Resolve quota/billing/rate/model-access, then re-run one synthetic dry run. |
 | P0 | Backup/export posture | Not acceptable for real data | Supabase Free has no scheduled backups/PITR; do manual export/restore drill or upgrade before real customer data. |
 | P0 | Production `0020` apply | Not applied | Only needed if founder wants production fake/test auth user deletion now. Apply after explicit approval and verify. |

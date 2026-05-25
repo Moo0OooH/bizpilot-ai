@@ -31,11 +31,29 @@ import {
   type BusinessMemberRecord,
 } from "@/server/repositories/business-members.repository";
 import {
+  getCleaningTemplate,
+  replaceBusinessFaqs,
+  replaceBusinessOnboardingTasks,
+  replaceBusinessServiceAreas,
+  replaceBusinessServices,
+  upsertBusinessBranding,
+  upsertConsentSettings,
+  upsertPrivacySettings,
+  upsertTemplateSettings,
+} from "@/server/repositories/business-configuration.repository";
+import {
   createBusinessForOwner,
   listBusinessesForUser,
   updateBusinessPreferredLanguage,
   type BusinessRecord,
 } from "@/server/repositories/businesses.repository";
+import {
+  upsertConsentVersion,
+  upsertIntakeFormFromTemplate,
+  upsertPublicLinkVariant,
+} from "@/server/repositories/public-intake.repository";
+import type { Database } from "@/types/database";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type BusinessWorkspace = Readonly<{
   businesses: BusinessRecord[];
@@ -77,6 +95,115 @@ function isUniqueSlugError(error: unknown): boolean {
   );
 }
 
+async function bootstrapDefaultQuoteConfiguration(input: {
+  business: BusinessRecord;
+  supabase: SupabaseClient<Database>;
+}): Promise<void> {
+  const cleaningTemplate = await getCleaningTemplate({
+    businessId: input.business.id,
+    preferredLanguage: input.business.preferred_language,
+    supabase: input.supabase,
+  });
+  const consentNotice =
+    "By submitting this request, you agree that the business may contact you about your quote. AI may help draft owner-reviewed replies.";
+
+  await Promise.all([
+    upsertBusinessBranding({
+      accentColor: "#0f766e",
+      businessId: input.business.id,
+      primaryColor: "#18181b",
+      supabase: input.supabase,
+    }),
+    replaceBusinessServices({
+      businessId: input.business.id,
+      services: [
+        {
+          description: "Routine residential cleaning requests.",
+          name: "Standard cleaning",
+        },
+        {
+          description: "More detailed cleaning for move-outs or resets.",
+          name: "Deep cleaning",
+        },
+      ],
+      supabase: input.supabase,
+    }),
+    replaceBusinessFaqs({
+      businessId: input.business.id,
+      faqs: [
+        {
+          answer:
+            "Share the basics in the quote form and the owner can follow up with next steps.",
+          question: "How do I request a cleaning quote?",
+        },
+      ],
+      supabase: input.supabase,
+    }),
+    replaceBusinessServiceAreas({
+      areas: ["Primary service area"],
+      businessId: input.business.id,
+      supabase: input.supabase,
+    }),
+    upsertPrivacySettings({
+      businessId: input.business.id,
+      privacyMode: "standard",
+      retainLeadsDays: 365,
+      supabase: input.supabase,
+    }),
+    upsertConsentSettings({
+      aiDisclosureEnabled: true,
+      businessId: input.business.id,
+      consentNotice,
+      supabase: input.supabase,
+    }),
+    upsertTemplateSettings({
+      businessId: input.business.id,
+      fieldOverrides: { fields: {} },
+      supabase: input.supabase,
+      templateId: cleaningTemplate.template.id,
+    }),
+  ]);
+
+  await Promise.all([
+    upsertPublicLinkVariant({
+      businessId: input.business.id,
+      displayName: input.business.name,
+      preferredLanguage: input.business.preferred_language,
+      slug: input.business.slug,
+      supabase: input.supabase,
+    }),
+    upsertConsentVersion({
+      aiDisclosureEnabled: true,
+      businessId: input.business.id,
+      consentNotice,
+      supabase: input.supabase,
+    }),
+    upsertIntakeFormFromTemplate({
+      businessId: input.business.id,
+      fields: cleaningTemplate.fields,
+      formName: cleaningTemplate.template.name,
+      privacyMode: "standard",
+      supabase: input.supabase,
+      templateId: cleaningTemplate.template.id,
+    }),
+  ]);
+
+  await replaceBusinessOnboardingTasks({
+    businessId: input.business.id,
+    supabase: input.supabase,
+    tasks: [
+      { complete: true, label: "Business profile confirmed", taskKey: "business_profile" },
+      { complete: true, label: "Branding configured", taskKey: "branding" },
+      { complete: true, label: "At least one service added", taskKey: "services" },
+      { complete: true, label: "At least one service area added", taskKey: "service_areas" },
+      { complete: true, label: "At least one FAQ added", taskKey: "faqs" },
+      { complete: true, label: "Privacy mode selected", taskKey: "privacy" },
+      { complete: true, label: "Consent notice configured", taskKey: "consent" },
+      { complete: true, label: "Cleaning template activated", taskKey: "cleaning_template" },
+    ],
+  });
+}
+
 export async function createFoundingBusiness(input: {
   businessName: string;
   ownerUserId: string;
@@ -116,6 +243,11 @@ export async function createFoundingBusiness(input: {
     businessId: business.id,
     supabase,
     userId: input.ownerUserId,
+  });
+
+  await bootstrapDefaultQuoteConfiguration({
+    business,
+    supabase,
   });
 
   return business;

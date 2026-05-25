@@ -14,6 +14,21 @@
 BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup, homepage conversion polish, dashboard i18n systemization, Smart Intake Routing Lite, a consolidated Phase 21M status doc, and an owner-facing current-status notes file now updated, but it is not approved for the first real customer pilot yet.
 ```
 
+2026-05-25 continuation update:
+
+- Owner approved production merge/deploy and synthetic smoke execution, excluding OpenAI quota/billing work and final pricing/terms.
+- `main` was fast-forwarded and pushed to `b10f1a4 fix: clarify founder cleanup safety controls`.
+- Production deploy reached Ready on Vercel deployment `dpl_Ho33LNoDfvFAbSvnDDEBXmWXQW4X`.
+- Rollback tags were pushed: `backup/main-pre-phase21-20260525-004550` and `backup/phase21-pre-production-20260525-004550`.
+- Basic production route/browser smoke passed on `https://bizpilo.com`.
+- Synthetic signup confirmation smoke passed using a disposable inbox; inbox credentials and confirmation artifacts are outside the repo and must not be printed or committed.
+- The confirmed synthetic owner reached `/dashboard`.
+- Public quote smoke found an onboarding gap: a new workspace quote URL rendered `Quote page unavailable`.
+- Current local fix: signup bootstrap now creates default branding/services/FAQ/service area/privacy/consent/template settings, an active public link, consent version, intake form, and onboarding tasks after owner membership creation.
+- Local validation so far: `pnpm test:unit` 53/53, `pnpm typecheck`, and `pnpm lint` passed.
+- Production `0020` was not applied because a production DB backup/export was not available from local tools.
+- Still not ready for real customer data or paid pilot.
+
 ## 2. Current Git State
 
 | Item | Current value |
@@ -164,7 +179,7 @@ Validation passed in Phase 20:
 - Dashboard i18n systemization made `businesses.preferred_language` the authenticated dashboard source of truth, moved visible dashboard overview/leads/configuration/settings/business-profile copy into the central dictionary, localized readiness task labels by `taskKey`, kept client shell copy serializable, and added regression tests against mojibake and local dashboard language branches. Evidence is recorded in `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`.
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
-- Signup confirmation smoke remains blocked because there is no safe inbox/mail-capture.
+- Signup confirmation smoke passed on 2026-05-25 with a synthetic disposable inbox; credentials/artifacts are outside the repo and must not be printed or committed.
 - Pilot terms gate exists but is not owner-approved.
 
 Latest Phase 21 validation after local `0019` grant-hardening apply:
@@ -330,7 +345,7 @@ Not allowed:
 
 ### P1 - Production Public Quote Security
 
-Run only after DB/RPC/RLS alignment:
+Current 2026-05-25 result: synthetic signup/dashboard passed, but the new workspace quote URL rendered `Quote page unavailable`. Deploy the signup quote-bootstrap fix, then rerun:
 
 - active public quote link positive test,
 - lead and intake values created,
@@ -385,18 +400,7 @@ Do not paste key. Re-run only with synthetic cleaning lead.
 
 ### P1 - Signup Confirmation Smoke
 
-Current blocker:
-
-```text
-No safe test inbox or mail-capture path.
-```
-
-Owner must provide:
-
-- safe email alias, real test inbox, or mail-capture service,
-- approval for exactly one signup attempt.
-
-Do not log full email, confirmation link, or token.
+Passed on 2026-05-25 with a synthetic disposable inbox. Do not log full email, credentials, confirmation link, or token.
 
 ### P1 - Pilot Terms Approval
 
