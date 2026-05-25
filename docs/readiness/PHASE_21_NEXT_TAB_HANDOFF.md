@@ -26,6 +26,9 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 - Public quote smoke found an onboarding gap: a new workspace quote URL rendered `Quote page unavailable`.
 - Current local fix: signup bootstrap now creates default branding/services/FAQ/service area/privacy/consent/template settings, an active public link, consent version, intake form, and onboarding tasks after owner membership creation.
 - Local validation so far: `pnpm test:unit` 53/53, `pnpm typecheck`, and `pnpm lint` passed.
+- Fix commit `5758a0b fix: bootstrap public quote setup on signup` was pushed to `main` and deployed as Vercel deployment `dpl_Gmshk1QUmroam8v569rR1RupMWeY`.
+- Post-fix route smoke returned HTTP 200 for `/` and `/auth/sign-up`.
+- A fresh post-fix signup retest is temporarily blocked by Supabase Auth rate limiting: `Too many account creation attempts. Please wait a few minutes and try again.`
 - Production `0020` was not applied because a production DB backup/export was not available from local tools.
 - Still not ready for real customer data or paid pilot.
 

@@ -27,6 +27,9 @@ Current continuation truth:
 - Production public quote smoke found a real onboarding gap: the new workspace public quote URL rendered `Quote page unavailable`.
 - Local fix in progress: signup now bootstraps a conservative default quote configuration, active public link, consent version, and intake form immediately after owner membership creation.
 - Local validation for that fix: `pnpm test:unit` 53/53, `pnpm typecheck`, and `pnpm lint` passed.
+- Signup quote-bootstrap fix was committed as `5758a0b fix: bootstrap public quote setup on signup`, pushed to `main`, and deployed to production as Vercel deployment `dpl_Gmshk1QUmroam8v569rR1RupMWeY`.
+- Post-fix route smoke returned HTTP 200 for `https://bizpilo.com/` and `/auth/sign-up`.
+- A fresh post-fix signup retest was blocked by Supabase Auth rate limiting: `Too many account creation attempts. Please wait a few minutes and try again.`
 - Production migration `0020` was not applied because a real production DB backup/export was not available from local tools.
 - OpenAI `429` and final pricing/terms remain owner-side blockers and were explicitly excluded from this pass.
 
