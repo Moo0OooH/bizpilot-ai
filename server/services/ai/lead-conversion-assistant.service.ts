@@ -77,6 +77,7 @@ export type LeadConversionAiBundle = Readonly<{
 
 export type LeadConversionAiOutput = Readonly<{
   createdAt: string;
+  errorMessage: string | null;
   estimatedCost: number;
   inputTokens: number;
   model: string;
@@ -145,6 +146,7 @@ function parseAiOutput(record: AiOutputRecord | null): LeadConversionAiOutput | 
 
   return {
     createdAt: record.created_at,
+    errorMessage: record.error_message,
     estimatedCost: Number(record.estimated_cost),
     inputTokens: record.input_tokens,
     model: record.model,
@@ -293,6 +295,8 @@ export async function generateLeadAiBundle(input: {
   const inputHash = hashContext(
     `${leadConversionBundlePrompt.name}:${leadConversionBundlePrompt.version}:${context}`,
   );
+  const provider =
+    input.aiProvider === undefined ? getDefaultAiProvider() : input.aiProvider;
   const cached = await getAiOutputForLeadByHash({
     businessId: input.business.id,
     inputHash,
@@ -300,12 +304,10 @@ export async function generateLeadAiBundle(input: {
     supabase,
   });
 
-  if (cached) {
+  if (cached && (cached.provider === "openai" || !provider)) {
     return parseAiOutput(cached)!;
   }
 
-  const provider =
-    input.aiProvider === undefined ? getDefaultAiProvider() : input.aiProvider;
   const model = leadConversionBundlePrompt.approvedModel;
   const inputTokens = estimateTokens(context);
 

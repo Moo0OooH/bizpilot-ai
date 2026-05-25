@@ -94,7 +94,9 @@ export async function generateLeadAiBundleAction(
     notice =
       output.provider === "openai"
         ? "AI%20assistant%20draft%20generated."
-        : "Fallback%20draft%20prepared.%20Model%20generation%20is%20not%20configured.";
+        : output.errorMessage === "ai_provider_not_configured"
+          ? "Fallback%20draft%20prepared.%20Model%20generation%20is%20not%20configured."
+          : "Fallback%20draft%20prepared.%20Model%20generation%20did%20not%20complete.";
   } catch (error) {
     redirectWithLeadError(leadId, error);
   }
