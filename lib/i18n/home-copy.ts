@@ -165,6 +165,7 @@ export type HomeCopy = Readonly<{
         body: string;
         kicker: string;
         rows: ReadonlyArray<HomeDetailPair>;
+        system: ReadonlyArray<Readonly<{ label: string; tone: HomeLeadTone; value: string }>>;
         title: string;
       }>
     >;
@@ -493,53 +494,77 @@ const englishHomeCopy: HomeCopy = {
   },
   workflowDemo: {
     body:
-      "A move-out cleaning request becomes an organized lead, a missing-info checklist, an owner-reviewed draft, and a follow-up reminder.",
-    eyebrow: "Live workflow",
-    outcome: "Owner-reviewed reply ready in 2 minutes.",
-    safety: "No customer message is sent without review.",
+      "Use the tabs to follow one realistic quote request from messy customer question to flagged lead, owner alert, reviewed response, and follow-up. Every handoff stays visible and nothing is sent automatically.",
+    eyebrow: "Tabbed live demo",
+    outcome: "Owner-reviewed reply ready without guessing.",
+    safety: "Privacy, consent, and manual send stay visible in the flow.",
     steps: [
       {
-        body: "A realistic cleaning lead comes in from a simple quote link.",
-        kicker: "1 / Incoming",
+        body:
+          "A customer asks a vague pricing question. BizPilot captures the channel, keeps the original request intact, and turns it into a structured lead instead of letting it sit in an inbox.",
+        kicker: "1 / Customer question",
         rows: [
-          { label: "Service", value: "Move-out clean" },
-          { label: "Location", value: "Downtown Toronto" },
-          { label: "Urgency", value: "Before Friday" },
+          { label: "Customer asks", value: "How much for a move-out clean?" },
+          { label: "Source", value: "Instagram DM" },
+          { label: "System state", value: "New lead created" },
         ],
-        title: "Sarah needs a move-out cleaning quote.",
+        system: [
+          { label: "Capture", tone: "new", value: "Original text and source are preserved for owner review." },
+          { label: "Privacy", tone: "draft", value: "Only quote workflow fields are organized; no hidden external send happens." },
+          { label: "Next step", tone: "info", value: "Lead is ready for missing-info analysis." },
+        ],
+        title: "The messy request becomes a lead record.",
       },
       {
-        body: "BizPilot flags what the owner needs before quoting.",
-        kicker: "2 / Missing info",
+        body:
+          "The system flags the request before the owner quotes too early. Missing square footage, access details, preferred date, and urgency are surfaced as operational flags.",
+        kicker: "2 / Flags",
         rows: [
           { label: "Missing", value: "Square footage" },
-          { label: "Missing", value: "Parking/access" },
-          { label: "Risk", value: "Do not quote too early" },
+          { label: "Missing", value: "Parking and access" },
+          { label: "Risk", value: "Quote would be premature" },
         ],
-        title: "The risky blanks are easy to see.",
+        system: [
+          { label: "Flag", tone: "risk", value: "Needs info before price estimate." },
+          { label: "Priority", tone: "info", value: "Move-out timing makes the lead time-sensitive." },
+          { label: "Owner view", tone: "draft", value: "The queue shows why this lead needs review." },
+        ],
+        title: "The owner sees what is missing and why it matters.",
       },
       {
-        body: "The reply asks for the right details without sending automatically.",
-        kicker: "3 / Draft",
+        body:
+          "BizPilot drafts a response that asks only for the missing details needed to qualify the job. The owner sees the draft, edits if needed, then copies and sends through the real channel.",
+        kicker: "3 / Owner response",
         rows: [
-          { label: "Intent", value: "Move-out clean" },
-          { label: "Need", value: "Fast quote" },
-          { label: "Review", value: "Owner approves" },
+          { label: "Draft asks", value: "Size, date, access" },
+          { label: "Control", value: "Owner approves" },
+          { label: "Send mode", value: "Manual copy/send" },
         ],
-        title: "A useful reply is drafted for review.",
+        system: [
+          { label: "AI scope", tone: "draft", value: "Drafting support only; no autonomous customer message." },
+          { label: "Safety", tone: "new", value: "No fake price is generated without required context." },
+          { label: "Seller action", tone: "info", value: "Copy reply, send in Instagram, mark contacted." },
+        ],
+        title: "The seller gets a useful draft, not an auto-send.",
       },
       {
-        body: "If the customer goes quiet, the next manual touch stays visible.",
+        body:
+          "After the owner replies, the lead stays in a clean follow-up state. If the customer does not answer, BizPilot keeps the next manual touch visible so the warm lead does not disappear.",
         kicker: "4 / Follow-up",
         rows: [
           { label: "Status", value: "Waiting for customer" },
           { label: "Follow-up", value: "Tomorrow" },
-          { label: "Goal", value: "Keep lead warm" },
+          { label: "Outcome", value: "Lead stays warm" },
         ],
-        title: "The lead does not disappear after one reply.",
+        system: [
+          { label: "Follow-up", tone: "new", value: "Next manual touch is visible in the queue." },
+          { label: "Audit", tone: "draft", value: "Owner action stays separate from AI draft state." },
+          { label: "Boundary", tone: "risk", value: "No booking, invoice, SMS, WhatsApp, or calendar automation is implied." },
+        ],
+        title: "The warm lead stays visible after the first reply.",
       },
     ],
-    title: "Watch a cleaning quote request become a ready-to-review reply.",
+    title: "Watch the full quote recovery process, tab by tab.",
   },
   trust: {
     eyebrow: "Pilot terms",
@@ -894,54 +919,77 @@ const frenchHomeCopy: HomeCopy = {
   },
   workflowDemo: {
     body:
-      "Une demande de nettoyage de depart devient un lead organise, une liste d'infos manquantes, un brouillon revise par le proprietaire et un rappel de suivi.",
-    eyebrow: "Parcours en direct",
-    outcome: "Reponse prete a reviser en 2 minutes.",
-    safety: "Aucun message client n'est envoye sans revision.",
+      "Suivez une demande realiste, de la question client au lead signale, a l'avis au proprietaire, a la reponse revisee et au suivi. Rien n'est envoye automatiquement.",
+    eyebrow: "Demo par onglets",
+    outcome: "Reponse prete a reviser sans deviner.",
+    safety: "Confidentialite, consentement et envoi manuel restent visibles.",
     steps: [
       {
-        body: "Un lead de nettoyage realiste arrive depuis un lien de soumission.",
-        kicker: "1 / Arrivee",
+        body:
+          "Un client pose une question vague sur le prix. BizPilot garde la demande originale, capte le canal et cree un lead structure au lieu de le laisser dans une boite de reception.",
+        kicker: "1 / Question client",
         rows: [
-          { label: "Service", value: "Nettoyage depart" },
-          { label: "Lieu", value: "Centre-ville Toronto" },
-          { label: "Urgence", value: "Avant vendredi" },
+          { label: "Question", value: "Combien pour un depart?" },
+          { label: "Source", value: "DM Instagram" },
+          { label: "Etat", value: "Nouveau lead cree" },
         ],
-        title: "Sarah veut une soumission de nettoyage de depart.",
+        system: [
+          { label: "Capture", tone: "new", value: "Le texte original et la source restent visibles." },
+          { label: "Confidentialite", tone: "draft", value: "Seulement les champs de soumission sont organises." },
+          { label: "Prochaine etape", tone: "info", value: "Analyse des infos manquantes." },
+        ],
+        title: "La demande vague devient un lead.",
       },
       {
-        body: "BizPilot montre ce qu'il faut confirmer avant de chiffrer.",
-        kicker: "2 / Infos",
+        body:
+          "Le systeme signale ce qui manque avant que le proprietaire donne un prix trop tot: pieds carres, acces, date souhaitee et urgence.",
+        kicker: "2 / Signaux",
         rows: [
           { label: "Manquant", value: "Pieds carres" },
           { label: "Manquant", value: "Stationnement/acces" },
-          { label: "Risque", value: "Ne pas chiffrer trop tot" },
+          { label: "Risque", value: "Prix premature" },
         ],
-        title: "Les blancs risques sont visibles.",
+        system: [
+          { label: "Signal", tone: "risk", value: "Infos requises avant estimation." },
+          { label: "Priorite", tone: "info", value: "Le depart rend le lead sensible au temps." },
+          { label: "Vue vendeur", tone: "draft", value: "La file explique pourquoi reviser." },
+        ],
+        title: "Le proprietaire voit ce qui manque.",
       },
       {
-        body: "La reponse demande les bons details sans envoi automatique.",
-        kicker: "3 / Brouillon",
+        body:
+          "BizPilot prepare une reponse qui demande les bons details. Le proprietaire revise, ajuste au besoin, puis copie et envoie dans le vrai canal.",
+        kicker: "3 / Reponse",
         rows: [
-          { label: "Intention", value: "Nettoyage depart" },
-          { label: "Besoin", value: "Soumission rapide" },
-          { label: "Revision", value: "Proprietaire approuve" },
+          { label: "Demande", value: "Taille, date, acces" },
+          { label: "Controle", value: "Revision proprietaire" },
+          { label: "Envoi", value: "Copie manuelle" },
         ],
-        title: "Une reponse utile est prete a reviser.",
+        system: [
+          { label: "Scope IA", tone: "draft", value: "Aide a la redaction seulement." },
+          { label: "Securite", tone: "new", value: "Aucun prix invente sans contexte." },
+          { label: "Action vendeur", tone: "info", value: "Copier, envoyer, marquer contacte." },
+        ],
+        title: "Le vendeur obtient un brouillon utile.",
       },
       {
-        body: "Si le client devient silencieux, le prochain suivi reste visible.",
+        body:
+          "Apres la reponse, le lead garde un etat clair. Si le client ne repond pas, le prochain suivi manuel reste visible.",
         kicker: "4 / Suivi",
         rows: [
           { label: "Statut", value: "En attente client" },
           { label: "Suivi", value: "Demain" },
-          { label: "But", value: "Garder le lead chaud" },
+          { label: "Resultat", value: "Lead garde chaud" },
         ],
-        title: "Le lead ne disparait pas apres une reponse.",
+        system: [
+          { label: "Suivi", tone: "new", value: "La prochaine touche manuelle reste visible." },
+          { label: "Audit", tone: "draft", value: "Action proprietaire separee du brouillon IA." },
+          { label: "Limite", tone: "risk", value: "Pas de reservation, facture, SMS, WhatsApp ou calendrier." },
+        ],
+        title: "Le lead chaud reste visible.",
       },
     ],
-    title:
-      "Voyez une demande de nettoyage devenir une reponse prete a reviser.",
+    title: "Voyez tout le processus de recuperation, onglet par onglet.",
   },
   trust: {
     eyebrow: "Conditions pilote",

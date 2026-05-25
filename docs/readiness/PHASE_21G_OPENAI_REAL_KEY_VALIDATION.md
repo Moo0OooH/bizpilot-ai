@@ -2,9 +2,9 @@
 
 **Project:** BizPilot AI
 **Document Type:** OpenAI real-key dry run result
-**Status:** Blocked - provider returned HTTP 429
+**Status:** Blocked - production OpenAI env value is still empty after owner credit update
 **Owner:** MoOoH
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25
 
 ---
 
@@ -15,6 +15,29 @@ This document records whether BizPilot's AI lead assistant was validated with a 
 No real customer data was used. No prompt text, customer payload, API key, token, provider response body, full email, database password, service role key, anon key, or full connection string was printed or recorded. No `.env` file was committed. No production database writes were performed.
 
 ## 2. Key Configuration
+
+### 2026-05-25 Production Env Recheck
+
+Owner reported OpenAI credit/quota was updated. Codex checked the Vercel
+Production environment through a temporary env pull stored outside the repo.
+The temporary file was deleted after inspection, and no secret value was printed.
+
+Result:
+
+```text
+OPENAI_API_KEY exists in Production env names but has empty value.
+No model-backed request was made from this environment.
+```
+
+Interpretation:
+
+- Billing/credit may now be fixed at the OpenAI account level.
+- BizPilot production still cannot use OpenAI until a real non-empty
+  `OPENAI_API_KEY` is configured in Vercel Production.
+- Do not commit or paste the key. Set it through the Vercel environment variable
+  UI/CLI secret path, then redeploy or trigger a fresh production build.
+
+### 2026-05-24 Real-Key Attempt
 
 | Source | OPENAI_API_KEY status |
 | --- | --- |

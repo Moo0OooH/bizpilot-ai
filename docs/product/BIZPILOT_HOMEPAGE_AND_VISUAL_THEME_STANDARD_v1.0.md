@@ -214,7 +214,7 @@ The accepted homepage structure is:
 4. Operational pain story: what a lost cleaning lead actually looks like.
 5. Leak map: demand is not the problem, response chaos is.
 6. One operational loop: capture, organize, draft, recover.
-7. Live workflow demo: incoming request, missing info, draft, follow-up.
+7. Tabbed live workflow demo: customer question, system flags, owner response, follow-up.
 8. Quote Recovery Desk command-center mock.
 9. Before/After recovery pass.
 10. Pilot terms strip.
@@ -272,3 +272,29 @@ A new page is visually aligned when:
 - it uses real product language,
 - it does not expand product scope,
 - it passes lint, typecheck, build, and relevant unit tests.
+
+## 15. 2026-05-25 Homepage Scale And Demo Revision
+
+The homepage has been revised so the first viewport and process demo feel more
+like a professional product surface:
+
+- hero H1 scale now reaches 48px desktop and remains readable on mobile,
+- hero layout uses a more balanced product/copy split,
+- body copy width is constrained so the page does not feel stretched,
+- workflow demo is a real tabbed product walkthrough rather than an animated list,
+- tabs show the end-to-end process:
+  - customer question,
+  - system flags,
+  - owner-reviewed response,
+  - follow-up state,
+- each tab separates customer data, system interpretation, seller action, and
+  safety boundary.
+
+The tabbed demo must continue to show:
+
+- no auto-send,
+- no invented pricing,
+- no booking/invoice/calendar/SMS/WhatsApp scope,
+- manual owner review,
+- privacy/consent awareness,
+- practical cleaning-business language.

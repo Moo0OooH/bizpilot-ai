@@ -114,6 +114,64 @@ body {
   animation: homepage-demo-meter-sweep 2.8s ease-in-out infinite;
 }
 
+.homepage-tab-radio {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.homepage-tab-label {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.028);
+  color: rgba(247, 250, 252, 0.7);
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.homepage-tab-label:hover {
+  border-color: rgba(45, 212, 191, 0.24);
+  background: rgba(45, 212, 191, 0.06);
+  color: #f7fafc;
+}
+
+.homepage-tab-dot {
+  background: rgba(247, 250, 252, 0.32);
+}
+
+.homepage-tab-panel {
+  display: none;
+}
+
+.homepage-tabs:has(#workflow-tab-0:checked) label[for="workflow-tab-0"],
+.homepage-tabs:has(#workflow-tab-1:checked) label[for="workflow-tab-1"],
+.homepage-tabs:has(#workflow-tab-2:checked) label[for="workflow-tab-2"],
+.homepage-tabs:has(#workflow-tab-3:checked) label[for="workflow-tab-3"] {
+  border-color: rgba(45, 212, 191, 0.34);
+  background: linear-gradient(135deg, rgba(45, 212, 191, 0.16), rgba(84, 167, 255, 0.055));
+  color: #f7fafc;
+  transform: translateY(-1px);
+}
+
+.homepage-tabs:has(#workflow-tab-0:checked) label[for="workflow-tab-0"] .homepage-tab-dot,
+.homepage-tabs:has(#workflow-tab-1:checked) label[for="workflow-tab-1"] .homepage-tab-dot,
+.homepage-tabs:has(#workflow-tab-2:checked) label[for="workflow-tab-2"] .homepage-tab-dot,
+.homepage-tabs:has(#workflow-tab-3:checked) label[for="workflow-tab-3"] .homepage-tab-dot {
+  background: #2dd4bf;
+  box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.12);
+}
+
+.homepage-tabs:has(#workflow-tab-0:checked) .homepage-tab-panel:nth-of-type(1),
+.homepage-tabs:has(#workflow-tab-1:checked) .homepage-tab-panel:nth-of-type(2),
+.homepage-tabs:has(#workflow-tab-2:checked) .homepage-tab-panel:nth-of-type(3),
+.homepage-tabs:has(#workflow-tab-3:checked) .homepage-tab-panel:nth-of-type(4) {
+  display: block;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .homepage-demo-step,
   .homepage-demo-meter {

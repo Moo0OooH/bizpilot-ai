@@ -261,15 +261,15 @@ function HeroDesk({
 
 function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
   return (
-    <section className="px-0 pb-5 pt-6">
+    <section className="px-0 pb-8 pt-8 sm:pb-10 sm:pt-10">
       <MarketingShell>
-        <div className="grid min-w-0 items-center gap-7 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
+        <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)]">
           <div className="min-w-0">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
-            <h1 className="mt-5 max-w-[14ch] text-[30px] font-black leading-[1.08] min-[380px]:text-[34px] sm:max-w-[560px] sm:text-[38px] xl:text-[40px]" style={{ color: marketingTone.text }}>
+            <h1 className="mt-5 max-w-[620px] text-[34px] font-black leading-[1.05] min-[380px]:text-[38px] sm:text-[44px] xl:text-[48px]" style={{ color: marketingTone.text }}>
               {copy.hero.title}
             </h1>
-            <p className="mt-4 max-w-[34ch] text-[14.5px] leading-7 sm:max-w-[540px]" style={{ color: marketingTone.soft }}>
+            <p className="mt-5 max-w-[590px] text-[15px] leading-7 sm:text-[16px] sm:leading-8" style={{ color: marketingTone.soft }}>
               {copy.hero.body}
             </p>
             <div className="mt-6 grid gap-3 min-[430px]:flex min-[430px]:flex-wrap">
@@ -280,7 +280,7 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
-            <div className="mt-5 grid gap-2.5 text-[12px]" style={{ color: marketingTone.soft }}>
+            <div className="mt-6 grid gap-2.5 text-[12.5px]" style={{ color: marketingTone.soft }}>
               {copy.hero.bullets.map((item) => (
                 <span className="flex items-center gap-3" key={item}>
                   <span className="text-[#2DD4BF]">
@@ -627,94 +627,156 @@ function WorkflowDemoSection({
   copy,
 }: Readonly<{ copy: HomeCopy["workflowDemo"] }>) {
   return (
-    <section className="px-5 py-7 sm:px-6" id="demo">
+    <section className="px-5 py-8 sm:px-6" id="demo">
       <MarketingShell>
         <div
-          className="grid min-w-0 gap-6 overflow-hidden rounded-[18px] border p-5 lg:grid-cols-[0.76fr_1.24fr]"
+          className="min-w-0 overflow-hidden rounded-[22px] border"
           style={{
             background:
-              "linear-gradient(135deg, rgba(37,43,46,0.52), rgba(7,16,25,0.98) 44%, rgba(10,22,34,0.96) 100%)",
-            borderColor: "rgba(148,203,226,0.18)",
+              "linear-gradient(135deg, rgba(45,212,191,0.10), rgba(7,16,25,0.98) 42%, rgba(10,22,34,0.96) 100%)",
+            borderColor: "rgba(45,212,191,0.20)",
           }}
         >
-          <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
-              {copy.eyebrow}
-            </p>
-            <h2 className="mt-3 max-w-[620px] text-[26px] font-black leading-[1.1] sm:text-[34px]" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </h2>
-            <p className="mt-4 max-w-[58ch] text-[14.5px] leading-7" style={{ color: marketingTone.soft }}>
-              {copy.body}
-            </p>
-            <div
-              className="mt-5 rounded-[10px] border p-4"
-              style={{ backgroundColor: "rgba(45,212,191,0.08)", borderColor: "rgba(45,212,191,0.22)" }}
-            >
-              <p className="text-[16px] font-black" style={{ color: marketingTone.teal }}>
-                {copy.outcome}
+          <div className="grid gap-6 border-b p-5 sm:p-6 lg:grid-cols-[0.88fr_1.12fr] lg:items-end" style={{ borderColor: marketingTone.border }}>
+            <div className="min-w-0">
+              <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
+                {copy.eyebrow}
               </p>
-              <p className="mt-2 text-[12px] leading-5" style={{ color: marketingTone.soft }}>
-                {copy.safety}
+              <h2 className="mt-3 max-w-[700px] text-[28px] font-black leading-[1.08] sm:text-[38px]" style={{ color: marketingTone.text }}>
+                {copy.title}
+              </h2>
+            </div>
+            <div className="min-w-0">
+              <p className="max-w-[62ch] text-[14.5px] leading-7" style={{ color: marketingTone.soft }}>
+                {copy.body}
               </p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div
+                  className="rounded-[12px] border px-4 py-3"
+                  style={{ backgroundColor: "rgba(45,212,191,0.08)", borderColor: "rgba(45,212,191,0.22)" }}
+                >
+                  <p className="text-[13px] font-black" style={{ color: marketingTone.teal }}>
+                    {copy.outcome}
+                  </p>
+                </div>
+                <div
+                  className="rounded-[12px] border px-4 py-3"
+                  style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
+                >
+                  <p className="text-[13px] font-bold leading-5" style={{ color: marketingTone.soft }}>
+                    {copy.safety}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="grid min-w-0 gap-3">
+          <div className="homepage-tabs grid min-w-0 lg:grid-cols-[320px_minmax(0,1fr)]">
             {copy.steps.map((step, index) => (
-              <div
-                className="homepage-demo-step rounded-[12px] border p-4"
-                key={step.title}
-                style={{
-                  animationDelay: `${index * 680}ms`,
-                  background:
-                    index === 2
-                      ? "linear-gradient(135deg, rgba(84,167,255,0.14), rgba(246,184,75,0.07))"
-                      : "rgba(255,255,255,0.035)",
-                  borderColor: index === 2 ? "rgba(84,167,255,0.24)" : marketingTone.border,
-                }}
-              >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.muted }}>
-                      {step.kicker}
-                    </p>
-                    <h3 className="mt-1 text-[16px] font-black leading-snug" style={{ color: marketingTone.text }}>
-                      {step.title}
-                    </h3>
-                    <p className="mt-2 max-w-[60ch] text-[12px] leading-5" style={{ color: marketingTone.soft }}>
-                      {step.body}
-                    </p>
-                  </div>
-                  <span
-                    className="homepage-demo-meter h-2 min-w-[86px] rounded-full"
-                    aria-hidden
-                    style={{
-                      background:
-                        index === 3
-                          ? "linear-gradient(90deg, rgba(45,212,191,0.92), rgba(23,212,146,0.42))"
-                          : "linear-gradient(90deg, rgba(246,184,75,0.82), rgba(84,167,255,0.30))",
-                    }}
-                  />
-                </div>
-                <div className="mt-3 grid gap-2 sm:grid-cols-3">
-                  {step.rows.map((row) => (
-                    <div
-                      className="rounded-[8px] border px-3 py-2"
-                      key={`${step.title}-${row.label}-${row.value}`}
-                      style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
-                    >
-                      <p className="text-[9px] font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.muted }}>
-                        {row.label}
-                      </p>
-                      <p className="mt-1 text-[11px] font-black leading-snug" style={{ color: marketingTone.text }}>
-                        {row.value}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <input
+                className="homepage-tab-radio"
+                defaultChecked={index === 0}
+                id={`workflow-tab-${index}`}
+                key={`input-${step.title}`}
+                name="workflow-tabs"
+                type="radio"
+              />
             ))}
+
+            <div className="grid min-w-0 gap-2 border-b p-3 lg:border-b-0 lg:border-r" style={{ borderColor: marketingTone.border }}>
+              {copy.steps.map((step, index) => (
+                <label
+                  className="homepage-tab-label cursor-pointer rounded-[12px] border px-3 py-3"
+                  htmlFor={`workflow-tab-${index}`}
+                  key={`label-${step.title}`}
+                >
+                  <span className="flex items-center justify-between gap-3">
+                    <span className="text-[10px] font-black uppercase tracking-[0.14em]">
+                      {step.kicker}
+                    </span>
+                    <span className="homepage-tab-dot h-2.5 w-2.5 shrink-0 rounded-full" />
+                  </span>
+                  <span className="mt-2 block text-[14px] font-black leading-snug">
+                    {step.title}
+                  </span>
+                </label>
+              ))}
+            </div>
+
+            <div className="min-w-0 p-4 sm:p-5">
+              {copy.steps.map((step, index) => (
+                <div className="homepage-tab-panel min-w-0" key={`panel-${step.title}`}>
+                  <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
+                    <div
+                      className="rounded-[18px] border p-4 sm:p-5"
+                      style={{
+                        background:
+                          index === 2
+                            ? "linear-gradient(135deg, rgba(84,167,255,0.15), rgba(246,184,75,0.07))"
+                            : "linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.025))",
+                        borderColor: index === 2 ? "rgba(84,167,255,0.24)" : marketingTone.border,
+                      }}
+                    >
+                      <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
+                        {step.kicker}
+                      </p>
+                      <h3 className="mt-2 max-w-[640px] text-[22px] font-black leading-[1.12] sm:text-[28px]" style={{ color: marketingTone.text }}>
+                        {step.title}
+                      </h3>
+                      <p className="mt-3 max-w-[66ch] text-[13.5px] leading-7" style={{ color: marketingTone.soft }}>
+                        {step.body}
+                      </p>
+                      <div className="mt-5 grid gap-2 sm:grid-cols-3">
+                        {step.rows.map((row) => (
+                          <div
+                            className="rounded-[10px] border px-3 py-2.5"
+                            key={`${step.title}-${row.label}-${row.value}`}
+                            style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
+                          >
+                            <p className="text-[9.5px] font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.muted }}>
+                              {row.label}
+                            </p>
+                            <p className="mt-1 text-[12px] font-black leading-snug" style={{ color: marketingTone.text }}>
+                              {row.value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-3">
+                      {step.system.map((item) => (
+                        <div
+                          className="rounded-[13px] border p-3"
+                          key={`${step.title}-${item.label}`}
+                          style={{
+                            backgroundColor:
+                              item.tone === "risk"
+                                ? "rgba(255,95,102,0.08)"
+                                : item.tone === "info"
+                                  ? "rgba(246,184,75,0.08)"
+                                  : "rgba(45,212,191,0.07)",
+                            borderColor:
+                              item.tone === "risk"
+                                ? "rgba(255,95,102,0.24)"
+                                : item.tone === "info"
+                                  ? "rgba(246,184,75,0.22)"
+                                  : "rgba(45,212,191,0.20)",
+                          }}
+                        >
+                          <p className="text-[10px] font-black uppercase tracking-[0.13em]" style={{ color: leadToneStyles[item.tone].text }}>
+                            {item.label}
+                          </p>
+                          <p className="mt-2 text-[12.5px] font-bold leading-5" style={{ color: marketingTone.soft }}>
+                            {item.value}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </MarketingShell>

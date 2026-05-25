@@ -33,6 +33,8 @@ BizPilot is production-deployed (main at 8bf3387 on https://bizpilo.com), signup
 - Local RLS suite was re-run through a temporary local-only `127.0.0.1:55432` proxy against the running local Supabase stack: 13/13 passed; the proxy was removed after the run.
 - Production route smoke returned HTTP 200 for `/`, `/pricing`, `/auth/sign-in`, `/auth/sign-up`, `/auth/forgot-password`, `/auth/reset-password`, logged-out `/admin` redirect to sign-in, and an inactive/nonexistent quote slug. The inactive quote slug rendered the expected unavailable state.
 - Product configurability is now captured in `docs/product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`: current configurable sections, signup defaults, guardrails, and future no-hidden-automation backlog.
+- Homepage scale and workflow demo were revised: the hero uses a stronger professional scale, and the old animated list demo is now a tabbed end-to-end quote recovery walkthrough covering customer question, system flags, owner response, and follow-up.
+- OpenAI was rechecked after owner credit update. Vercel Production still has an empty `OPENAI_API_KEY` value; no model-backed request was made, and the temporary env pull was deleted outside the repo.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production `0020` was not applied because a production DB backup/export was not available from local tools.
@@ -615,4 +617,5 @@ If the owner says to continue development rather than deploy, prioritize:
 1. admin/customer dashboard management controls for demo/sample/guideline visibility,
 2. production-safe fake/test cleanup UX polish,
 3. live admin visual QA once founder env or deployed branch is available,
-4. i18n expansion only through central dictionaries an
+4. i18n expansion only through central dictionaries and tests,
+5. dashboard IA/design polish after the current gates stay green.
