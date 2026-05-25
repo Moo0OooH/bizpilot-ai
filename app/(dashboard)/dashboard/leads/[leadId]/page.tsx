@@ -604,6 +604,12 @@ export default async function LeadDetailPage({
                       ? ` (${detailCopy.ai.ruleFallback})`
                       : ""}
                   </p>
+                  {aiOutput.provider === "rule_fallback" &&
+                  aiOutput.errorMessage ? (
+                    <p className="text-[11px] text-[var(--dash-text-muted)]">
+                      {detailCopy.ai.fallbackReason}: {aiOutput.errorMessage}
+                    </p>
+                  ) : null}
                 </div>
               </>
             ) : (

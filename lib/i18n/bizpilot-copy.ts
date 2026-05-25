@@ -381,6 +381,7 @@ type DashboardLeadDetailCopy = Readonly<{
     editManually: string;
     editManuallyTitle: string;
     estimatedCost: string;
+    fallbackReason: string;
     followUpDraft: string;
     generate: string;
     guardrails: string;
@@ -1134,6 +1135,7 @@ const englishCopy: BizPilotCopy = {
         editManually: "Edit manually",
         editManuallyTitle: "Editing inline is a later workflow improvement.",
         estimatedCost: "Est. cost",
+        fallbackReason: "AI fallback reason",
         followUpDraft: "Follow-up draft",
         generate: "Generate AI draft",
         guardrails: "AI guardrails",
@@ -2170,6 +2172,7 @@ const frenchCopy: BizPilotCopy = {
         editManuallyTitle:
           "La modification intégrée est une amélioration de workflow future.",
         estimatedCost: "Coût estimé",
+        fallbackReason: "Raison du repli IA",
         followUpDraft: "Brouillon de suivi",
         generate: "Générer un brouillon IA",
         guardrails: "Garde-fous IA",

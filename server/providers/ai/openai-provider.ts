@@ -25,6 +25,7 @@ import {
   type GenerateStructuredBundleInput,
   type GenerateStructuredBundleOutput,
 } from "@/server/providers/ai/ai-provider";
+import { extractOpenAiResponseText } from "@/server/providers/ai/openai-response-parser";
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const DEFAULT_MAX_OUTPUT_TOKENS = 900;
@@ -83,6 +84,11 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
       }
 
       if (!response.ok) {
+        console.warn("[ai:openai] request failed", {
+          requestId: response.headers.get("x-request-id"),
+          status: response.status,
+        });
+
         throw new AiProviderError({
           code: AI_PROVIDER_ERROR_CODES.requestFailed,
           message: `OpenAI request failed with status ${response.status}.`,
@@ -90,10 +96,14 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
         });
       }
 
-      const payload = (await response.json()) as { output_text?: string };
-      const outputText = payload.output_text;
+      const payload = await response.json();
+      const outputText = extractOpenAiResponseText(payload);
 
       if (!outputText) {
+        console.warn("[ai:openai] response had no extractable output text", {
+          requestId: response.headers.get("x-request-id"),
+        });
+
         throw new AiProviderError({
           code: AI_PROVIDER_ERROR_CODES.emptyOutput,
           message: "OpenAI response did not include output text.",
@@ -105,6 +115,10 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
       try {
         parsed = JSON.parse(outputText);
       } catch (cause) {
+        console.warn("[ai:openai] response text was not valid JSON", {
+          requestId: response.headers.get("x-request-id"),
+        });
+
         throw new AiProviderError({
           cause,
           code: AI_PROVIDER_ERROR_CODES.invalidSchema,
@@ -116,6 +130,10 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
       const validated = input.validate(parsed);
 
       if (validated === null) {
+        console.warn("[ai:openai] response JSON failed schema validation", {
+          requestId: response.headers.get("x-request-id"),
+        });
+
         throw new AiProviderError({
           code: AI_PROVIDER_ERROR_CODES.invalidSchema,
           message: "OpenAI response did not match the expected schema.",
