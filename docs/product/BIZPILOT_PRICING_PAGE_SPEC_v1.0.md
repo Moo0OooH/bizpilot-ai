@@ -28,8 +28,9 @@ Sell quote recovery and faster owner-reviewed responses, not generic AI software
 
 ## Suggested Offers
 ### Founder Pilot
-- 14-day pilot
-- founder-led setup
+- first 1-5 pilot customers
+- $0 founder-led setup
+- 30- and 60-day feedback commitment
 - quote page setup
 - lead recovery dashboard
 - AI summary/reply/follow-up drafts
@@ -37,6 +38,9 @@ Sell quote recovery and faster owner-reviewed responses, not generic AI software
 - limited pilot seats
 
 ### Starter
+- customers 6-20
+- $149 setup
+- $49/month
 - public quote page
 - lead workspace
 - AI reply drafts
@@ -44,6 +48,9 @@ Sell quote recovery and faster owner-reviewed responses, not generic AI software
 - basic support
 
 ### Pro
+- after first 20 customers or after credible proof is collected
+- $199 setup
+- $79/month
 - stronger branded quote page
 - follow-up drafts
 - more customization

@@ -2,9 +2,9 @@
 
 **Project:** BizPilot AI
 **Document Type:** Pilot terms decision gate
-**Status:** Owner decision required before any real pilot starts
+**Status:** Staged commercial terms approved; real pilot still blocked by production/data gates
 **Owner:** MoOoH
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25
 **Related:**
 - `docs/business/PILOT_OFFER_AND_PRICING_DECISIONS.md`
 - `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md`
@@ -19,9 +19,9 @@
 
 This gate prevents BizPilot from starting a real pilot without clear commercial terms.
 
-Do not accept payment, onboard a real cleaning business, collect real customer data, or position the offer as final until every business-term row marked **Owner decision required** is resolved by the owner.
+Do not accept payment, onboard a real cleaning business, or collect real customer data until the remaining production, backup/export, OpenAI, SMTP/signup, and smoke-test gates are closed.
 
-This document does not invent final decisions. It records current evidence, recommended defaults, and the owner-approval gap.
+This document records the owner-approved staged commercial terms for the first pilot cohorts. The terms approval closes the pricing mismatch, but it does not approve a real customer pilot by itself.
 
 ## 2. Current Pricing Evidence
 
@@ -30,31 +30,38 @@ Current sources checked:
 | Source | Current evidence |
 | --- | --- |
 | `app/pricing/page.tsx` | Renders public pricing route from `lib/i18n/pricing-copy.ts`. |
-| `lib/i18n/pricing-copy.ts` | Founder Pilot shows `14-day pilot` / `manual offer`; Starter shows `$199 setup` / `$49/mo`; Pro shows `$299 setup` / `$79/mo`. |
-| `docs/business/PILOT_OFFER_AND_PRICING_DECISIONS.md` | Records the mismatch and recommends the lower-friction `$199 setup + $49/month` as a draft only. |
+| `lib/i18n/pricing-copy.ts` | Founder Pilot shows free setup for first 1-5 pilot customers with a feedback commitment; Starter shows `$149 setup` / `$49/mo`; Pro shows `$199 setup` / `$79/mo`. |
+| `docs/business/PILOT_OFFER_AND_PRICING_DECISIONS.md` | Older recommendation source; superseded by this staged owner-approved gate for pilot execution. |
 | `docs/product/BIZPILOT_PLAN_ENTITLEMENTS_AND_MANUAL_BILLING_SPEC_v1.0.md` | Manual billing only; invoice or separate Stripe Payment Link; refund, trial length, and cancellation require owner decision. |
 | `docs/product/BIZPILOT_PRICING_PAGE_SPEC_v1.0.md` | Pricing page must avoid billing automation, booking, invoice, CRM, SMS, WhatsApp, and auto-send claims. |
 
-## 3. Recommended Default
+## 3. Approved Staged Terms
 
-Recommendation only. Not final until owner approves it:
+Approved owner direction for pilot packaging:
 
 ```text
-$199 setup
+Customers 1-5
+$0 setup
+Feedback commitment required at 30 and 60 days
+Goal: collect honest usage proof, objections, recovered-lead evidence, and testimonials
+
+Customers 6-20
+$149 setup
 $49/month
-No free trial
-Setup fee refundable before onboarding work starts
-No automatic refund after setup starts
-Cancel anytime before next billing cycle
-Stripe payment link or manual invoice
-Monthly billing starts after quote page/workspace is ready
+
+After 20 customers / after credible proof
+$199 setup
+$79/month
+
+Manual invoice or separate Stripe Payment Link only
+No in-app billing automation
+Monthly billing starts after setup is complete and quote page/workspace is ready
 Cleaning quote page
 Lead recovery dashboard
 AI summary, reply draft, and follow-up draft
 Manual copy/send only
 Owner-reviewed AI drafts
 Founder support during pilot, best-effort 1-2 business days
-Pilot limit: first 3-5 cleaning businesses
 No auto-send
 No booking
 No invoicing
@@ -66,34 +73,43 @@ No SMS/WhatsApp automation
 
 | Decision | Current evidence | Recommended default | Final terms status | Owner approval status |
 | --- | --- | --- | --- | --- |
-| Setup fee | Starter card and Phase 19F draft show `$199 setup`; Founder Pilot card still says `manual offer`. | `$199 setup` | Not final | Owner decision required |
-| Monthly fee | Starter card and Phase 19F draft show `$49/mo`; Founder Pilot card still says `14-day pilot`. | `$49/month` | Not final | Owner decision required |
-| Trial | Public Founder Pilot says `14-day pilot`, but free/paid/credited/no-trial meaning is not approved. | No separate free trial unless owner explicitly approves one. | Not final | Owner decision required |
-| Refund | Plan/manual billing spec says refund handling requires owner decision. | Define a simple written refund rule before taking payment. | Not final | Owner decision required |
-| Cancellation | Phase 19F has draft direction only; exact cutoff and customer wording are not approved. | Allow cancellation before monthly continuation if pilot is not useful, with exact cutoff approved by owner. | Not final | Owner decision required |
-| Payment collection | Manual billing documented; actual invoice or Stripe Payment Link asset/process is not verified. | Manual invoice or Stripe Payment Link; no in-app billing automation. | Not final | Owner decision required |
-| Billing start | Not locked in current docs. | Start monthly billing after setup is complete and quote page is launched, unless owner chooses another trigger. | Not final | Owner decision required |
-| Included | Pricing/docs align around quote page, lead dashboard, AI summary/reply/follow-up drafts, manual copy/send, and founder-led setup/support. | Include focused quote recovery workflow plus founder support during pilot. | Not final commercial packaging | Owner decision required |
+| Setup fee | Owner approved staged pricing. | Customers 1-5: `$0`; customers 6-20: `$149`; after 20 customers: `$199`. | Final for pilot cohorts | Approved |
+| Monthly fee | Owner approved staged pricing. | Customers 1-5: feedback pilot/no paid monthly offer until converted; customers 6-20: `$49/month`; after 20 customers: `$79/month`. | Final for pilot cohorts | Approved |
+| Trial | First 1-5 customers are feedback pilots, not a generic free trial. | Free setup in exchange for 30/60 day feedback. | Final for first cohort | Approved |
+| Refund | Paid setup does not start until customer accepts the written offer. | Setup fee refundable before onboarding work starts; no automatic refund after setup work starts. | Final for pilot cohorts | Approved |
+| Cancellation | Simple early-stage policy. | Cancel before next monthly cycle; no long-term contract. | Final for pilot cohorts | Approved |
+| Payment collection | Manual billing documented; actual invoice or Stripe Payment Link asset/process still must be created before collecting payment. | Manual invoice or Stripe Payment Link; no in-app billing automation. | Process pending, terms approved | Approved terms / process pending |
+| Billing start | Owner-approved default. | Monthly billing starts after quote page/workspace is ready. | Final for pilot cohorts | Approved |
+| Included | Pricing/docs align around quote page, lead dashboard, AI summary/reply/follow-up drafts, manual copy/send, and founder-led setup/support. | Include focused quote recovery workflow plus founder support during pilot. | Final commercial packaging | Approved |
 | Excluded | Product scope is locked: no auto-send, booking, invoicing, calendar sync, WhatsApp/SMS automation, Instagram API, multi-vertical expansion, or full CRM. | Keep exclusions explicit in sales, onboarding, and any written offer. | Approved product guardrail | Approved |
-| Support promise | Current copy says founder-led setup and first-week support, but support channel, response expectation, and end date are not locked. | Founder support during pilot; no 24/7 or SLA promise unless owner approves exact wording. | Not final | Owner decision required |
-| Customer stops responding | Not locked in current docs. | Pause onboarding after reasonable follow-ups; do not promise unlimited setup/support without customer response. | Not final | Owner decision required |
-| Pilot customer limit | Not locked in current docs. | First 3-5 cleaning businesses. | Not final | Owner decision required |
+| Support promise | Owner approved founder-led early support without enterprise SLA. | Founder support during pilot; best-effort 1-2 business days; no 24/7 SLA. | Final for pilot cohorts | Approved |
+| Customer stops responding | Owner approved practical early-stage handling. | Pause onboarding after reasonable follow-ups; do not promise unlimited setup/support without customer response. | Final for pilot cohorts | Approved |
+| Pilot customer limit | Owner approved staged cohorts. | First 1-5 feedback pilots, customers 6-20 paid Starter, then standard paid Pro. | Final for pilot cohorts | Approved |
 
 ## 5. Required Owner Approval Before Real Pilot
 
-Before any real pilot starts, owner must approve:
+Before any real pilot starts, the following business terms are now approved:
 
-- [ ] exact setup fee,
-- [ ] exact monthly fee,
-- [ ] trial yes/no and trial meaning,
-- [ ] refund policy,
-- [ ] cancellation policy,
-- [ ] payment collection method,
-- [ ] billing start trigger,
-- [ ] included scope wording,
-- [ ] support promise and channel,
-- [ ] non-responsive customer handling,
-- [ ] pilot customer limit.
+- [x] exact staged setup fee,
+- [x] exact staged monthly fee,
+- [x] first-cohort feedback pilot meaning,
+- [x] refund policy,
+- [x] cancellation policy,
+- [x] payment collection method,
+- [x] billing start trigger,
+- [x] included scope wording,
+- [x] support promise and channel,
+- [x] non-responsive customer handling,
+- [x] pilot customer limit.
+
+Remaining non-business gates still block real customer data and paid pilot execution:
+
+- production quote security smoke,
+- fr-CA production quote smoke,
+- signup confirmation flow with stable safe inbox/custom SMTP posture,
+- OpenAI real-output validation with a non-empty production key,
+- production backup/export/restore posture,
+- any paid-payment asset/process needed before collecting money.
 
 ## 6. Approved Guardrails
 
@@ -117,9 +133,9 @@ Owner-reviewed AI drafts only
 | Decision | Status |
 | --- | --- |
 | Real pilot may start with real customer data | No |
-| Business terms are fully approved | No |
+| Business terms are fully approved | Yes, for staged pilot cohorts |
 | Payment may be collected | No |
-| Recommended default may be used in internal planning | Yes, as recommendation only |
-| Recommended default may be presented as final offer | No, not until owner approval |
+| Staged terms may be used in internal planning | Yes |
+| Staged terms may be presented as final offer | Yes, only after production/data gates allow real pilot outreach |
 
-Final gate: **Owner decision required.**
+Final gate: **Commercial terms approved; technical/data readiness still required.**

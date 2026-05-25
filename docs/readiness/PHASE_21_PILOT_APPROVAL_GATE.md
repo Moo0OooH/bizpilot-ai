@@ -89,7 +89,7 @@
 | Billing start approved | No |
 | Support promise approved | No |
 | Pilot limit approved | No |
-| Current terms status | Owner decision required |
+| Current terms status | Staged commercial terms approved; execution still blocked by production/data gates |
 | Real pilot decision | Owner accepts no real pilot yet |
 
 ## 8. Final Decision
@@ -120,7 +120,7 @@ until all blockers below are closed.
 | fr-CA production smoke not run | Provide/approve synthetic fr-CA business/link after Phase 21E passes | Run Phase 21F |
 | OpenAI real-key output blocked | Resolve OpenAI HTTP `429` through quota/billing/rate-limit/model-access check | Re-run one synthetic dry run |
 | Signup confirmation blocked | Provide safe inbox/mail-capture path | Run exactly one signup smoke |
-| Commercial terms not approved | Approve setup fee, monthly fee, trial, refund, cancellation, payment, billing start, support, pilot limit | Update terms gate/checklist |
+| Payment/pilot execution still blocked | Staged terms are approved, but payment collection and real customer onboarding require production/data gates, SMTP/signup posture, OpenAI validation, and backup/export readiness | Keep pilot outreach/payment paused until those gates pass |
 
 ## 10. Security Notes
 

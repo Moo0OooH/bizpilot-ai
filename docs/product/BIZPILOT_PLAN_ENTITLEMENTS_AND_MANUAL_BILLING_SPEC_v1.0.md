@@ -11,8 +11,9 @@ Define pilot-stage plans and access rules without adding a billing engine. BizPi
 For first validation customers.
 
 ```text
-14-day pilot
-founder-led setup
+first 1-5 pilot customers
+$0 founder-led setup
+30- and 60-day feedback commitment
 public quote page
 lead recovery dashboard
 AI summary
@@ -27,6 +28,9 @@ limited support
 For a simple cleaning-business workflow.
 
 ```text
+customers 6-20
+$149 setup
+$49/month
 1 quote page
 lead workspace
 basic AI drafts
@@ -39,6 +43,9 @@ basic branding
 For a stronger paid pilot/customer.
 
 ```text
+after first 20 customers or after credible proof
+$199 setup
+$79/month
 stronger branded quote page
 more customization
 follow-up drafts
@@ -63,7 +70,9 @@ owner message shown
 - No automated billing dependency before validation.
 - Payment may be collected through invoice or a separate Stripe Payment Link.
 - Plan assignment is changed manually from `/admin`.
-- Billing disputes, refund handling, trial length, and cancellation policy require owner decision before real paid pilots.
+- Staged pilot terms are approved in `docs/business/PILOT_TERMS_DECISION_GATE.md`.
+- Before collecting payment, create or verify the manual invoice or Stripe Payment Link process.
+- Real paid pilots remain blocked until production/data readiness gates are closed.
 
 ## Entitlement Rules
 
@@ -81,4 +90,3 @@ owner message shown
 - No invoice generation inside BizPilot.
 - No usage-based billing automation.
 - No autonomous AI operator behavior.
-

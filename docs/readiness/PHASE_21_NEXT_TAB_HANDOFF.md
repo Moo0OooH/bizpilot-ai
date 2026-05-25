@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot is production-deployed (main at eddd331 on https://bizpilo.com), signup confirmation smoke passed, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked tabbed workflow demo, and 53/53 unit tests pass - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export, and commercial terms are still outstanding before the first real customer pilot.
+BizPilot is production-deployed (main at eddd331 on https://bizpilo.com), signup confirmation smoke passed, the new-workspace quote-unavailable gap was fixed and deployed, the homepage has a production-smoked tabbed workflow demo, staged commercial terms are approved, and 53/53 unit tests pass - but full production quote security smoke, fr-CA smoke, OpenAI validation, backup/export, and signup email/custom SMTP posture are still outstanding before the first real customer pilot.
 ```
 
 2026-05-25 continuation update:
@@ -36,6 +36,7 @@ BizPilot is production-deployed (main at eddd331 on https://bizpilo.com), signup
 - Homepage scale and workflow demo were revised and deployed: commit `eddd331 feat: refine homepage workflow demo` reached Ready on Vercel deployment `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo`, aliased to `https://bizpilo.com`.
 - Production homepage smoke after `eddd331` returned HTTP 200 and confirmed the tabbed demo copy on `https://bizpilo.com`; browser QA at 375px width found no horizontal overflow and confirmed the Owner response tab switches panels.
 - OpenAI was rechecked after owner credit update. Vercel Production still has an empty `OPENAI_API_KEY` value; no model-backed request was made, and the temporary env pull was deleted outside the repo.
+- Staged pilot terms are approved: first 1-5 pilot customers get free founder-led setup for 30/60-day feedback; customers 6-20 are `$149 setup + $49/month`; the standard post-proof offer is `$199 setup + $79/month`.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production `0020` was not applied because a production DB backup/export was not available from local tools.
@@ -196,7 +197,7 @@ Validation passed in Phase 20:
 - Docs now say: do not re-apply `0018` blindly; treat it as manual drift/schema-without-standard-migration-history unless a later approved repair process creates migration history.
 - OpenAI real-key test attempted once with synthetic data and returned HTTP `429`; no model output was generated.
 - Signup confirmation smoke passed on 2026-05-25 with a synthetic disposable inbox; credentials/artifacts are outside the repo and must not be printed or committed.
-- Pilot terms gate exists but is not owner-approved.
+- Pilot terms gate is now owner-approved for staged cohorts; real pilot execution remains blocked by production/data gates.
 
 Latest Phase 21 validation after local `0019` grant-hardening apply:
 
@@ -434,7 +435,7 @@ Passed on 2026-05-25 with a synthetic disposable inbox. Post-fix retest was bloc
 Current blocker:
 
 ```text
-Recommended terms exist, but owner has not approved final terms.
+Staged pilot terms are approved, but real customer pilot execution is still blocked by production/data gates.
 ```
 
 Owner must approve or edit:
@@ -592,7 +593,7 @@ Bootstrap fix deployed: new signups now land with a working public quote page.
 Signup smoke passed with synthetic disposable inbox.
 .gitattributes added locally (8bf3387): push to origin/main to complete the hygiene fix.
 Still not ready for first real pilot customer with real customer data.
-Remaining owner-action blockers: push 8bf3387, full quote security smoke, fr-CA smoke, OpenAI 429, backup/export posture, commercial terms.
+Remaining blockers: production quote security smoke, fr-CA smoke, OpenAI production key/output validation, backup/export posture, signup email/custom SMTP posture, production 0020 only after backup/export if still needed, and live admin visual QA with a founder-authorized session.
 ```
 
 ## 13. Exact Follow Path For The Next Tab
@@ -612,7 +613,7 @@ Start with this order:
 11. Treat homepage conversion polish, dashboard i18n/admin recovery, founder fake/test auth deletion, and Smart Intake Routing Lite as branch work, not production-deployed work.
 12. Next useful technical step is PR/merge/deploy planning, but main merge/deploy needs explicit owner approval.
 13. Next useful production-readiness step after deploy approval is synthetic production public quote security smoke.
-14. Do not use real customer data until backup/export, signup, OpenAI, production smokes, and commercial terms are closed.
+14. Do not use real customer data until backup/export, signup/custom SMTP, OpenAI, and production smokes are closed. Commercial terms are now approved, but that alone does not approve real customer data.
 
 If the owner says to continue development rather than deploy, prioritize:
 

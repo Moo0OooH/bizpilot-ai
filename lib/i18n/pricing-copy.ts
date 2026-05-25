@@ -190,25 +190,27 @@ const englishPricingCopy: PricingCopy = {
         description:
           "For the first cleaning businesses validating the quote recovery workflow with founder-led setup and manual support.",
         features: [
-          "14-day pilot workflow",
-          "Founder-led setup",
+          "First 1-5 pilot customers",
+          "Free founder-led setup",
           "Public quote page",
           "Lead recovery queue",
           "AI summary",
           "AI reply drafts you review",
           "AI follow-up drafts",
+          "30- and 60-day feedback required",
           "Manual copy/send only",
         ],
-        monthly: "14-day pilot",
+        monthly: "$0 setup pilot",
         name: "Founder Pilot",
         recommended: true,
-        setup: "manual offer",
+        setup: "feedback commitment",
       },
       {
         cta: "Choose Starter",
         description:
-          "For an owner who wants one clean quote link, one lead workspace, and basic owner-reviewed AI drafts.",
+          "For early customers after the first proof points are collected: one clean quote link, one lead workspace, and owner-reviewed AI drafts.",
         features: [
+          "Pilot customers 6-20",
           "One quote page",
           "Lead workspace",
           "Basic AI drafts",
@@ -218,13 +220,14 @@ const englishPricingCopy: PricingCopy = {
         ],
         monthly: "$49/mo",
         name: "Starter",
-        setup: "$199 setup",
+        setup: "$149 setup",
       },
       {
         cta: "Choose Pro",
         description:
-          "For a cleaning business that wants stronger branding, deeper draft tuning, and priority setup support.",
+          "For the standard paid offer after early testimonials prove that quote recovery is working.",
         features: [
+          "After first 20 customers",
           "Everything in Starter",
           "Stronger branded quote page",
           "Reply style and FAQ tuning",
@@ -235,7 +238,7 @@ const englishPricingCopy: PricingCopy = {
         ],
         monthly: "$79/mo",
         name: "Pro",
-        setup: "$299 setup",
+        setup: "$199 setup",
       },
     ],
     lead:
@@ -347,25 +350,27 @@ const frenchPricingCopy: PricingCopy = {
         description:
           "Pour les premières entreprises de nettoyage qui valident le workflow de récupération avec configuration fondatrice et soutien manuel.",
         features: [
-          "Workflow pilote de 14 jours",
-          "Configuration guidée par le fondateur",
+          "Clients pilotes 1 a 5",
+          "Configuration fondateur gratuite",
           "Page publique de soumission",
           "File de récupération des leads",
           "Résumé IA",
           "Brouillons de réponse IA à réviser",
           "Brouillons de suivi IA",
+          "Feedback requis a 30 et 60 jours",
           "Copie/envoi manuel seulement",
         ],
-        monthly: "Pilote de 14 jours",
+        monthly: "Setup pilote a 0 $",
         name: "Pilote fondateur",
         recommended: true,
-        setup: "offre manuelle",
+        setup: "engagement de feedback",
       },
       {
         cta: "Choisir Starter",
         description:
-          "Pour un propriétaire qui veut un lien de soumission clair, un espace lead et des brouillons IA de base révisés par le propriétaire.",
+          "Pour les premiers clients apres les premieres preuves: un lien de soumission clair, un espace lead et des brouillons IA revises par le proprietaire.",
         features: [
+          "Clients pilotes 6 a 20",
           "Une page de soumission",
           "Espace lead",
           "Brouillons IA de base",
@@ -375,13 +380,14 @@ const frenchPricingCopy: PricingCopy = {
         ],
         monthly: "49 $/mois",
         name: "Starter",
-        setup: "199 $ setup",
+        setup: "149 $ setup",
       },
       {
         cta: "Choisir Pro",
         description:
-          "Pour une entreprise de nettoyage qui veut un branding plus fort, un réglage plus fin des brouillons et un soutien prioritaire.",
+          "Pour l'offre payante standard apres que les premiers temoignages prouvent que la recuperation des soumissions fonctionne.",
         features: [
+          "Apres les 20 premiers clients",
           "Tout ce qui est inclus dans Starter",
           "Page de soumission plus fortement brandée",
           "Réglage du style de réponse et des FAQ",
@@ -392,7 +398,7 @@ const frenchPricingCopy: PricingCopy = {
         ],
         monthly: "79 $/mois",
         name: "Pro",
-        setup: "299 $ setup",
+        setup: "199 $ setup",
       },
     ],
     lead:
@@ -410,4 +416,3 @@ const pricingCopyByLanguage: Record<SupportedLanguage, PricingCopy> = {
 export function getPricingCopy(language: unknown): PricingCopy {
   return pricingCopyByLanguage[readSupportedLanguage(language)];
 }
-

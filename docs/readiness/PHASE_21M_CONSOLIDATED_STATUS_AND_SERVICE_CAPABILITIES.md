@@ -11,7 +11,7 @@
 
 ## 2026-05-25 Production Continuation Update
 
-Owner approved production merge/deploy and synthetic smoke execution, excluding OpenAI billing/quota resolution and final commercial pricing/terms.
+Owner approved production merge/deploy and synthetic smoke execution. OpenAI billing/quota/env remains owner-side; staged commercial pricing/terms are now approved for pilot cohorts, but real customer pilot execution remains blocked by production/data gates.
 
 Current continuation truth:
 
@@ -40,7 +40,8 @@ Current continuation truth:
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production migration `0020` was not applied because a real production DB backup/export was not available from local tools.
-- OpenAI `429` and final pricing/terms remain owner-side blockers and were explicitly excluded from this pass.
+- Staged commercial terms are now approved: first 1-5 pilot customers get free setup for 30/60-day feedback; customers 6-20 are `$149 setup + $49/month`; the standard post-proof offer is `$199 setup + $79/month`.
+- OpenAI validation remains blocked because Vercel Production still has an empty `OPENAI_API_KEY`; no model-backed request was made.
 
 This update does not approve real customer data or a paid pilot.
 
@@ -50,7 +51,7 @@ This update does not approve real customer data or a paid pilot.
 
 BizPilot is now a coherent cleaning-first quote recovery product for founder-controlled synthetic demos. The repo has working foundations for public quote capture, owner dashboard review, AI-assisted drafts, manual send, French/English localization, founder admin controls, lifecycle/deletion guardrails, and documented production readiness gates.
 
-It is not yet approved for real customer data or a real paying pilot because production behavior smokes, signup email smoke, OpenAI real-output validation, backup/export posture, and commercial terms are still open.
+It is not yet approved for real customer data or a real paying pilot because production behavior smokes, signup email/custom SMTP posture, OpenAI real-output validation, and backup/export posture are still open. Commercial terms are now approved but cannot be executed against real customer data until those gates close.
 
 ## 2. What Is Completed and Locked
 
@@ -212,7 +213,7 @@ It is not yet approved for real customer data or a real paying pilot because pro
 | P0 | Backup/export posture | Not acceptable for real data | Supabase Free has no scheduled backups/PITR; do manual export/restore drill or upgrade before real customer data. |
 | P0 | Production `0020` apply | Not applied | Only needed if founder wants production fake/test auth user deletion now. Apply after explicit approval and verify. |
 | P0 | Fake/test production account cleanup | Not done | Requires deployed admin path plus `0020` if deleting auth users. |
-| P1 | Commercial terms | Not final | Decide setup fee, monthly fee, trial, refund, cancellation, billing start, payment method, support promise, and pilot limit. |
+| P1 | Commercial terms | Approved for staged pilot cohorts | Keep public pricing/docs aligned; do not collect payment until production/data gates and payment process are ready. |
 | P1 | Live admin visual QA | Not fully done | Needs founder-configured env or deployed branch. Local reached founder access screen only. |
 | P1 | Production horizontal-access smoke | Not run | Run with synthetic accounts/businesses before real pilot. |
 | P1 | GitHub PR/merge workflow | Not opened | Create PR from `phase-21-production-alignment` when owner wants review/merge. |
@@ -268,7 +269,7 @@ RLS note: the repo has an RLS test runner and earlier Phase 21 evidence recorded
 7. Resolve OpenAI `429` and run one real-key synthetic output dry run.
 8. Provide a controlled inbox and run one signup confirmation smoke.
 9. Decide backup/export/upgrade plan before any real customer data.
-10. Finalize pilot terms.
+10. Commercial terms are finalized; keep payment collection blocked until technical/data gates close.
 11. Only after those gates, approve a real customer pilot.
 
 ## 7. Explicit Do-Not-Do List
@@ -289,5 +290,5 @@ RLS note: the repo has an RLS test runner and earlier Phase 21 evidence recorded
 3. Provide a safe test inbox/mail-capture for signup smoke.
 4. Resolve OpenAI quota/billing/rate-limit issue causing HTTP `429`.
 5. Decide Supabase backup/export plan before real customer data.
-6. Finalize pilot pricing and terms.
+6. Configure a safe payment collection process only after production/data gates are closed.
 7. Approve exact synthetic production smoke plan before any live production testing.
