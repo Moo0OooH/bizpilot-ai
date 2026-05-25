@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Continuation handoff for the next Codex tab
-**Status:** Continue Phase 21 readiness closure
+**Status:** Continue Phase 21 readiness closure from consolidated Phase 21M state
 **Owner:** MoOoH
 **Last Updated:** 2026-05-24
 
@@ -11,7 +11,7 @@
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup, homepage conversion polish, dashboard i18n systemization, and Smart Intake Routing Lite now added locally, but it is not approved for the first real customer pilot yet.
+BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup, homepage conversion polish, dashboard i18n systemization, Smart Intake Routing Lite, and a consolidated Phase 21M status doc now added on `phase-21-production-alignment`, but it is not approved for the first real customer pilot yet.
 ```
 
 ## 2. Current Git State
@@ -19,7 +19,7 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Item | Current value |
 | --- | --- |
 | Current branch | `phase-21-production-alignment` |
-| Current branch tip before this handoff refresh | `86c1fd0 feat: systemize dashboard i18n`. Re-run `git log -1 --oneline` before continuing. |
+| Current branch tip before Phase 21M doc | `7904a65 fix: repair dashboard language and admin cleanup controls`. Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
@@ -28,7 +28,9 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Smart intake routing future-doc commit | `27156c5 docs: capture smart intake routing future concept` |
 | Homepage conversion polish commit | `bd3d2a0 feat: sharpen homepage quote recovery conversion` |
 | Dashboard i18n systemization commit | `86c1fd0 feat: systemize dashboard i18n` |
-| Smart Intake Routing Lite commit | Pending at this handoff refresh; run `git log -1 --oneline` after commit |
+| Smart Intake Routing Lite commit | `0007549 feat: add smart intake routing lite` |
+| Dashboard i18n/admin recovery commit | `7904a65 fix: repair dashboard language and admin cleanup controls` |
+| Consolidated status doc | `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md` |
 | Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
 | Latest Vercel evidence commit | `9adde10 docs: record vercel production target evidence` |
 | Previous Phase 20 baseline | `39113f4 chore: record phase 20 pilot gate findings` |
@@ -37,8 +39,9 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
 | GitHub remote branches | `main` at `7fe0475`, `phase-19-readiness-findings` at `a27705f`, `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
-| Working tree after `86c1fd0` | Smart Intake Routing Lite changes in progress at this update; re-check status before continuing |
+| Working tree after `7904a65` | Clean before Phase 21M doc update; re-check status before continuing |
 | Production deploy triggered in Phase 21 | No |
+| Phase 21 branch pushed | Yes, `origin/phase-21-production-alignment` |
 
 Do not push to `origin/main` unless the owner explicitly approves it. Keep production deploy risk visible.
 
@@ -487,6 +490,7 @@ Inspect before commit:
 | Founder auth-user cleanup and homepage polish | This handoff, `docs/operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`, `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md` |
 | Dashboard i18n systemization | `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`, `tests/unit/i18n-copy.test.mts` |
 | Dashboard i18n/admin recovery fix | `docs/readiness/PHASE_21L_DASHBOARD_I18N_ADMIN_RECOVERY.md`, `tests/unit/i18n-copy.test.mts` |
+| Consolidated completed/remaining/service-capability status | `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md` |
 
 ## 11. Next Tab Starter Prompt
 
@@ -505,9 +509,10 @@ Continue BizPilot Phase 21 from:
 - homepage conversion polish commit: bd3d2a0
 - dashboard i18n systemization commit: this commit (`feat: systemize dashboard i18n`); run `git log -1 --oneline`
 - dashboard i18n/admin recovery commit: this commit (`fix: repair dashboard language and admin cleanup controls`); run `git log -1 --oneline`
+- consolidated Phase 21M status doc: docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md
 - latest GitHub evidence commit: 5a62e76
 - origin/main unchanged at 7fe0475
-- GitHub remote has only main/phase-19/phase-20 pushed; phase-21-production-alignment is local-only unless pushed later with approval
+- phase-21-production-alignment has been pushed to origin; main is still not pushed/merged/deployed
 - re-check working tree before committing
 
 Read first:

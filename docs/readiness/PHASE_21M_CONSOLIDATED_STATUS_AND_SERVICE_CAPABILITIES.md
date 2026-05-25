@@ -1,0 +1,249 @@
+# Phase 21M - Consolidated Status and Service Capabilities
+
+**Project:** BizPilot AI  
+**Date:** 2026-05-24  
+**Branch:** `phase-21-production-alignment`  
+**Branch status:** pushed to `origin/phase-21-production-alignment`  
+**Latest checked commit:** `7904a65 fix: repair dashboard language and admin cleanup controls`  
+**Status:** Local/repo work is stable for founder-controlled synthetic demos. Production main/deploy and real customer pilot remain blocked.
+
+---
+
+## 1. Final Truth Right Now
+
+BizPilot is now a coherent cleaning-first quote recovery product for founder-controlled synthetic demos. The repo has working foundations for public quote capture, owner dashboard review, AI-assisted drafts, manual send, French/English localization, founder admin controls, lifecycle/deletion guardrails, and documented production readiness gates.
+
+It is not yet approved for real customer data or a real paying pilot because production behavior smokes, signup email smoke, OpenAI real-output validation, backup/export posture, and commercial terms are still open.
+
+## 2. What Is Completed and Locked
+
+| Area | Current result |
+| --- | --- |
+| Git branch | `phase-21-production-alignment` is clean and pushed to origin. |
+| Main/production | `main` was not pushed, and no production deployment was triggered in this pass. |
+| Production target | Supabase target confirmed as `bizpilot-production` / `qfqendrqimqvkoojpjao`; Vercel project confirmed as `moo0ooohs-projects/bizpilot-ai`; production URL target is `https://bizpilo.com`. |
+| Migration history | Production standard CLI migration history is unavailable because `supabase_migrations.schema_migrations` is missing. Direct object verification is the accepted evidence path. |
+| Required schema | Owner-run SQL verified required pilot columns and functions, including `leads.source_channel`. `leads.source` is intentionally absent and must not be added. |
+| `0018` lifecycle/deletion foundation | Direct object verification passed. Do not blindly re-apply `0018`. |
+| `0019` grant hardening | Approved, applied, and verified in production. Owner-only lifecycle helper grants were hardened. |
+| `0020` founder test auth cleanup | Repo-backed and locally validated only. Not applied to production yet. |
+| RLS posture | Owner-run SQL showed all 31 public tables have RLS enabled; disabled-RLS anti-query returned 0 rows; public policies were reviewed with no obvious blocker. |
+| Public quote security foundation | Local code and tests exist for public quote submit, abuse controls, source metadata, consent, lead conversion, and RLS helpers. Production smoke is still pending. |
+| Dashboard language system | Authenticated dashboard language now uses workspace language as source of truth; EN/FR demo queue copy is centralized and tested. |
+| Founder admin | Founder console supports user/business overview, plan/status/link/internal note updates, workspace kind control, test/demo cleanup path, and guarded fake/test login deletion UI. |
+| Homepage | Conversion polish exists locally: stronger pain/outcome story, workflow demo, and no-auto-send trust anchor. Not deployed to production. |
+| Smart Intake Routing | Future product spec exists; Lite deterministic cleaning-first suggestions exist in lead detail with no migration, no persistence, no auto-assignment, and no auto-send. |
+| Documentation | Phase 21 readiness docs, operations docs, product strategy docs, and handoff docs are updated through the latest local recovery pass. |
+
+## 3. Current Service Capabilities
+
+### Public Site
+
+- Marketing homepage focused on cleaning quote recovery.
+- Pricing page with founder/pilot positioning.
+- Public quote link route at `/quote/[slug]`.
+- Public quote success route at `/quote/[slug]/success`.
+- English and Canadian French public copy foundations.
+
+### Authentication
+
+- Sign up.
+- Sign in.
+- Forgot password.
+- Reset password.
+- Auth callback handling with query/hash preservation tests.
+- Check-email page after signup.
+- Protected dashboard routes.
+
+### Owner Dashboard
+
+- Dashboard overview with daily lead recovery snapshot.
+- KPI cards for new quote requests, needs reply, at-risk leads, and AI drafts ready.
+- Lead Recovery Queue preview.
+- Quote link readiness checklist.
+- Recent activity / operational widgets where data exists.
+- Sidebar navigation for Overview, Leads, Quote Setup, Business Profile, and Settings.
+- Dark/light theme toggle.
+- EN/FR workspace language toggle.
+- Copy quote link and preview quote page actions.
+
+### Leads and Lead Detail
+
+- Lead list / queue route at `/dashboard/leads`.
+- Lead detail route at `/dashboard/leads/[leadId]`.
+- Lead status and response workflow fields.
+- Source channel support through `source_channel`.
+- Missing-info detection.
+- Recommended next action.
+- Smart Intake Routing Lite suggestion:
+  - priority,
+  - suggested queue,
+  - suggested reviewer,
+  - reasons,
+  - missing info summary,
+  - next action.
+- Manual lead status updates.
+- Manual outcome tracking.
+- Action item updates.
+
+### AI Assistant Behavior
+
+- AI summary / reply / follow-up generation path.
+- Deterministic fallback if provider call fails.
+- Owner-reviewed drafts only.
+- Manual copy/send only.
+- No auto-send.
+- No booking, invoices, SMS, WhatsApp, Instagram API, or calendar automation in the current product.
+- Provider error sanitization and low-cardinality failure handling are implemented by code inspection.
+
+### Quote Setup and Business Configuration
+
+- Business basics.
+- Branding.
+- Services.
+- Service areas.
+- Custom intake fields.
+- FAQ.
+- Privacy/consent settings.
+- Public link readiness task model.
+- Business preferred language.
+- Save/update server actions.
+
+### Public Quote Intake
+
+- Multi-step quote form.
+- Business/public link lookup.
+- Active link gating.
+- Consent version handling.
+- Required field handling.
+- Honeypot/min-submit-age style abuse protection.
+- Public submission attempt recording.
+- Rate-limit helper path.
+- Intake submission, submission values, lead, and lead source metadata creation.
+
+### Settings
+
+- Account panel.
+- Workspace language update.
+- Theme control.
+- Workspace summary.
+- Quick links.
+- Future sections intentionally locked:
+  - billing,
+  - team members,
+  - integrations.
+- Phase guardrails visible in the owner workspace.
+- Workspace deletion/lifecycle request foundation.
+
+### Founder Admin
+
+- Founder access gate.
+- User list and business list.
+- Business plan/status controls.
+- Quote link active/inactive control.
+- Internal note control.
+- Workspace kind control:
+  - production customer,
+  - founder test,
+  - demo,
+  - seed.
+- Test/demo cleanup dry-run and guarded execution path.
+- Guarded fake/test auth user deletion UI/service path.
+- Admin action logging foundation.
+
+### Data, Security, and Operations
+
+- Tenant-aware tables for businesses, members, public links, forms, submissions, leads, AI outputs, settings, events, and lifecycle/deletion records.
+- RLS policies for authenticated member access and scoped public inserts.
+- Service role usage is isolated to server/founder cleanup paths.
+- Explicit grant hardening through `0019`.
+- Unit tests for i18n, auth callback, lead conversion rules, public intake safety, founder cleanup safety, and related business rules.
+- RLS test suite exists for local database verification.
+- No-cost validation and cost gate are documented.
+
+## 4. What Remains Before Real Customer Pilot
+
+| Priority | Remaining item | Status | Needed action |
+| --- | --- | --- | --- |
+| P0 | Production deploy / main merge | Not done | Owner must approve exact deploy/merge step. |
+| P0 | Production public quote security smoke | Not run | Use a synthetic business/link and verify submit, rows, RLS behavior, and cleanup. |
+| P0 | fr-CA production quote smoke | Not run | Run after quote security smoke with synthetic fr-CA business/link. |
+| P0 | Signup confirmation smoke | Not run | Owner must provide safe test inbox/mail-capture and approve one production signup attempt. |
+| P0 | OpenAI real output quality | Blocked by HTTP `429` | Resolve quota/billing/rate/model-access, then re-run one synthetic dry run. |
+| P0 | Backup/export posture | Not acceptable for real data | Supabase Free has no scheduled backups/PITR; do manual export/restore drill or upgrade before real customer data. |
+| P0 | Production `0020` apply | Not applied | Only needed if founder wants production fake/test auth user deletion now. Apply after explicit approval and verify. |
+| P0 | Fake/test production account cleanup | Not done | Requires deployed admin path plus `0020` if deleting auth users. |
+| P1 | Commercial terms | Not final | Decide setup fee, monthly fee, trial, refund, cancellation, billing start, payment method, support promise, and pilot limit. |
+| P1 | Live admin visual QA | Not fully done | Needs founder-configured env or deployed branch. Local reached founder access screen only. |
+| P1 | Production horizontal-access smoke | Not run | Run with synthetic accounts/businesses before real pilot. |
+| P1 | GitHub PR/merge workflow | Not opened | Create PR from `phase-21-production-alignment` when owner wants review/merge. |
+| P2 | Four more languages | Not started | Add only through central i18n dictionaries plus structure/mixing tests. |
+| P2 | Customer dashboard management toggles | Partially conceptual | Decide owner/founder controls for sample/demo/guideline visibility and build after current gates. |
+
+## 5. Current Health Check Evidence
+
+Latest full local validation from the recovery pass:
+
+```txt
+pnpm verify: pass
+pnpm test:unit: pass, 50/50
+pnpm typecheck: pass
+pnpm lint: pass
+pnpm build: pass
+git diff --check: pass, CRLF warnings only
+secret scan on changed files: no secrets found
+```
+
+Latest local browser QA from the recovery pass:
+
+```txt
+/dashboard EN: English dashboard and demo queue visible; French markers absent; no horizontal overflow.
+/dashboard FR: French dashboard and demo queue visible after workspace-language submit; English queue title absent; no horizontal overflow.
+/dashboard/settings EN: English settings/future copy visible; French markers absent; no horizontal overflow.
+/dashboard/settings FR: French settings/future/guardrail copy visible; English markers absent; no horizontal overflow.
+/admin: local founder access screen reached; full admin visual QA blocked by missing local founder env.
+```
+
+Fresh validation after creating this consolidated document:
+
+```txt
+pnpm verify: pass
+pnpm test:unit within verify: pass, 50/50
+pnpm build within verify: pass
+git diff --check: pass, CRLF warning only
+secret scan on changed docs: no matches
+```
+
+## 6. What I Would Do Next
+
+1. Create a PR from `phase-21-production-alignment` to `main` for review, but do not merge yet.
+2. Decide whether production fake/test auth deletion is needed immediately. If yes, approve/apply `0020`, verify it, then deploy the branch.
+3. Deploy only after owner approval, then run live admin visual QA.
+4. Run production public quote security smoke using synthetic data only.
+5. Run fr-CA production quote smoke.
+6. Resolve OpenAI `429` and run one real-key synthetic output dry run.
+7. Provide a controlled inbox and run one signup confirmation smoke.
+8. Decide backup/export/upgrade plan before any real customer data.
+9. Finalize pilot terms.
+10. Only after those gates, approve a real customer pilot.
+
+## 7. Explicit Do-Not-Do List
+
+- Do not push `main` without explicit owner approval.
+- Do not deploy production without explicit owner approval.
+- Do not start a real customer pilot yet.
+- Do not add `leads.source`; the app uses `leads.source_channel`.
+- Do not blindly re-apply `0018`.
+- Do not commit secrets, env files, dumps, or customer data.
+- Do not weaken RLS for convenience.
+- Do not add auto-send, booking, invoices, SMS, WhatsApp, Instagram API, or calendar automation as hidden scope.
+
+## 8. Owner Action List
+
+1. Decide whether to approve a PR/merge/deploy of `phase-21-production-alignment`.
+2. Decide whether to approve production migration `0020` for fake/test auth user deletion.
+3. Provide a safe test inbox/mail-capture for signup smoke.
+4. Resolve OpenAI quota/billing/rate-limit issue causing HTTP `429`.
+5. Decide Supabase backup/export plan before real customer data.
+6. Finalize pilot pricing and terms.
+7. Approve exact synthetic production smoke plan before any live production testing.
