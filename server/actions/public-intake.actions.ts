@@ -23,6 +23,11 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { isSafePublicIntakeMessage } from "@/lib/i18n/bizpilot-copy";
+import {
+  DEFAULT_LANGUAGE,
+  readSupportedLanguage,
+  type SupportedLanguage,
+} from "@/lib/i18n/language";
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import {
   hashClientIp,
@@ -69,25 +74,45 @@ function readOptionalFormValue(
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
-function redirectWithIntakeError(slug: string, error: unknown): never {
+function quoteLanguageSuffix(language: SupportedLanguage): string {
+  return language === DEFAULT_LANGUAGE
+    ? ""
+    : `?language=${encodeURIComponent(language)}`;
+}
+
+function redirectWithIntakeError(
+  input: {
+    error: unknown;
+    language: SupportedLanguage;
+    slug: string;
+  },
+): never {
   const message = getSafeUserErrorMessage({
     allowMessage: (value) =>
       isSafePublicIntakeMessage(value) ||
       value === SUBMISSION_TOO_FAST_MESSAGE ||
       value === RATE_LIMIT_EXCEEDED_MESSAGE,
     code: "PUBLIC_INTAKE_ERROR",
-    error,
+    error: input.error,
     fallbackMessage:
       "We couldn't submit the quote request. Please review the form and try again.",
   });
+  const search = new URLSearchParams({ error: message });
 
-  redirect(`/quote/${slug}?error=${encodeURIComponent(message)}`);
+  if (input.language !== DEFAULT_LANGUAGE) {
+    search.set("language", input.language);
+  }
+
+  redirect(`/quote/${input.slug}?${search.toString()}`);
 }
 
 export async function submitPublicIntakeAction(
   formData: FormData,
 ): Promise<never> {
   const slug = readRequiredFormValue(formData, "businessSlug");
+  const language = readSupportedLanguage(
+    readOptionalFormValue(formData, "language"),
+  );
 
   try {
     const fieldKeys = formData
@@ -111,6 +136,7 @@ export async function submitPublicIntakeAction(
       honeypot: readOptionalFormValue(formData, "companyWebsite"),
       intakeFormId: readRequiredFormValue(formData, "intakeFormId"),
       ipHash,
+      language,
       slug,
       source: {
         referrer: readOptionalFormValue(formData, "referrer"),
@@ -122,8 +148,8 @@ export async function submitPublicIntakeAction(
       },
     });
   } catch (error) {
-    redirectWithIntakeError(slug, error);
+    redirectWithIntakeError({ error, language, slug });
   }
 
-  redirect(`/quote/${slug}/success`);
+  redirect(`/quote/${slug}/success${quoteLanguageSuffix(language)}`);
 }

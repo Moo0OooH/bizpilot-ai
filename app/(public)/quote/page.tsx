@@ -3,7 +3,7 @@
  * File: app/(public)/quote/page.tsx
  * Project: BizPilot AI
  * Description: Base public quote route for incomplete quote links.
- * Role: Renders a localized safe state instead of a generic 404.
+ * Role: Renders an end-customer safe state instead of leaking owner/admin language settings.
  * Related:
  * - app/(public)/quote/[slug]/page.tsx
  * - components/public/quote-unavailable.tsx
@@ -12,21 +12,27 @@
  * ============================================================
  */
 
-import { cookies } from "next/headers";
-
 import { QuoteUnavailable } from "@/components/public/quote-unavailable";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
+  DEFAULT_LANGUAGE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
 
 export const dynamic = "force-dynamic";
 
-export default async function QuoteBasePage() {
-  const cookieStore = await cookies();
-  const language = readSupportedLanguage(
-    cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
-  );
+type QuoteBasePageProps = Readonly<{
+  searchParams?: Promise<{
+    language?: string;
+  }>;
+}>;
 
-  return <QuoteUnavailable language={language} />;
+export default async function QuoteBasePage({
+  searchParams,
+}: QuoteBasePageProps) {
+  const query = await searchParams;
+  const language = query?.language
+    ? readSupportedLanguage(query.language)
+    : DEFAULT_LANGUAGE;
+
+  return <QuoteUnavailable language={language} pathname="/quote" />;
 }

@@ -22,6 +22,7 @@
 import "server-only";
 
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import type { SupportedLanguage } from "@/lib/i18n/language";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   enforceSubmissionRateLimit,
@@ -49,6 +50,7 @@ export type PublicIntakeSubmissionInput = Readonly<{
   honeypot?: string | undefined;
   intakeFormId: string;
   ipHash: string;
+  language: SupportedLanguage;
   source: LeadSourceInput;
   slug: string;
 }>;
@@ -212,7 +214,7 @@ export async function submitPublicIntake(
     }),
   );
   const businessId = page.publicLink.business_id;
-  const copy = getBizPilotCopy(page.publicLink.preferred_language);
+  const copy = getBizPilotCopy(input.language);
 
   // Rate limit first. The page is already resolved at this point so we have a
   // real business_id to scope the count against. A rate-limit exception is

@@ -21,11 +21,16 @@ import {
 } from "@/components/ui/bizpilot-theme";
 import { bizTheme } from "@/lib/design-tokens";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
-import type { SupportedLanguage } from "@/lib/i18n/language";
+import {
+  languageShortLabels,
+  supportedLanguages,
+  type SupportedLanguage,
+} from "@/lib/i18n/language";
 
 export function QuoteUnavailable({
   language,
-}: Readonly<{ language: SupportedLanguage }>) {
+  pathname,
+}: Readonly<{ language: SupportedLanguage; pathname: string }>) {
   const copy = getBizPilotCopy(language).quotePage;
 
   return (
@@ -39,6 +44,32 @@ export function QuoteUnavailable({
           <p className={`mt-3 text-sm leading-6 ${bizTheme.secondaryText}`}>
             {copy.unavailableBody}
           </p>
+          <div className="mt-5 flex justify-center">
+            <div className="inline-flex rounded-[12px] border border-white/[0.10] bg-white/[0.035] p-1">
+              {supportedLanguages.map((option) => {
+                const selected = option === language;
+
+                return (
+                  <Link
+                    aria-current={selected ? "page" : undefined}
+                    className="inline-flex h-8 min-w-10 items-center justify-center rounded-[9px] px-3 text-[11px] font-black"
+                    href={
+                      option === "en"
+                        ? pathname
+                        : `${pathname}?language=${encodeURIComponent(option)}`
+                    }
+                    key={option}
+                    style={{
+                      backgroundColor: selected ? "var(--biz-primary)" : "transparent",
+                      color: selected ? "#03130c" : "#F5F7FA",
+                    }}
+                  >
+                    {languageShortLabels[option]}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
           <Link
             className="mt-5 inline-flex h-11 items-center justify-center rounded-[13px] px-4 text-sm font-extrabold"
             href="/"

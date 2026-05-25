@@ -21,6 +21,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  DEFAULT_LANGUAGE,
+  readSupportedLanguage,
+} from "@/lib/i18n/language";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
 
 export const dynamic = "force-dynamic";
@@ -29,10 +33,21 @@ type SuccessPageProps = Readonly<{
   params: Promise<{
     slug: string;
   }>;
+  searchParams?: Promise<{
+    language?: string;
+  }>;
 }>;
 
-export default async function QuoteSuccessPage({ params }: SuccessPageProps) {
+function quoteLanguageSuffix(language: string): string {
+  return language === DEFAULT_LANGUAGE ? "" : `?language=${encodeURIComponent(language)}`;
+}
+
+export default async function QuoteSuccessPage({
+  params,
+  searchParams,
+}: SuccessPageProps) {
   const { slug } = await params;
+  const query = await searchParams;
   const page = await getPublicIntakePage({ slug });
 
   if (!page) {
@@ -40,8 +55,9 @@ export default async function QuoteSuccessPage({ params }: SuccessPageProps) {
   }
 
   const businessName = page.publicLink.display_name;
-  const copy = getBizPilotCopy(page.publicLink.preferred_language);
-  const quotePath = `/quote/${slug}`;
+  const language = readSupportedLanguage(query?.language);
+  const copy = getBizPilotCopy(language);
+  const quotePath = `/quote/${slug}${quoteLanguageSuffix(language)}`;
 
   return (
     <main

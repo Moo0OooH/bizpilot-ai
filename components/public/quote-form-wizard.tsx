@@ -26,6 +26,7 @@ import {
   type BizPilotCopy,
   type QuoteStepCopy,
 } from "@/lib/i18n/bizpilot-copy";
+import type { SupportedLanguage } from "@/lib/i18n/language";
 import { SubmitAgeInput } from "./submit-age-input";
 
 type IntakePage = NonNullable<Awaited<ReturnType<typeof getPublicIntakePage>>>;
@@ -33,6 +34,7 @@ type FieldRecord = IntakePage["fields"][number];
 
 type QueryParams = Readonly<{
   ref?: string;
+  language?: string;
   source?: string;
   utm_campaign?: string;
   utm_medium?: string;
@@ -289,17 +291,19 @@ function ConsentBlock({
 }
 
 export function QuoteFormWizard({
+  language,
   page,
   query,
   slug,
   todayDate,
 }: Readonly<{
+  language: SupportedLanguage;
   page: IntakePage;
   query: QueryParams | undefined;
   slug: string;
   todayDate: string;
 }>) {
-  const copy = getBizPilotCopy(page.publicLink.preferred_language);
+  const copy = getBizPilotCopy(language);
   const groups = groupFields(page.fields);
   const steps = copy.quoteForm.steps;
 
@@ -309,6 +313,7 @@ export function QuoteFormWizard({
       className="mx-auto w-full max-w-[720px] space-y-4 px-4 py-5 pb-10 sm:px-6"
     >
       <input name="businessSlug" type="hidden" value={slug} />
+      <input name="language" type="hidden" value={language} />
       <input name="intakeFormId" type="hidden" value={page.form.id} />
       <input
         name="consentVersionId"
