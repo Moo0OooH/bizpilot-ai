@@ -37,6 +37,7 @@ export type GenerateStructuredBundleInput<T> = Readonly<{
 }>;
 
 export type GenerateStructuredBundleOutput<T> = Readonly<{
+  model: string;
   output: T;
   outputText: string;
 }>;
@@ -53,9 +54,12 @@ export interface AIProvider {
  * The lead conversion assistant maps these to safe persisted metadata.
  */
 export const AI_PROVIDER_ERROR_CODES = {
+  authFailed: "ai_provider_auth_failed",
   emptyOutput: "ai_provider_empty_output",
   invalidSchema: "ai_provider_invalid_schema",
   notConfigured: "ai_provider_not_configured",
+  quotaExceeded: "ai_provider_quota_exceeded",
+  rateLimited: "ai_provider_rate_limited",
   requestFailed: "ai_provider_request_failed",
 } as const;
 

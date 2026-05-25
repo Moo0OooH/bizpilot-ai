@@ -27,16 +27,22 @@ import {
 
 export type SanitizedAiFailureReason =
   | "ai_provider_not_configured"
+  | "ai_provider_auth_failed"
   | "ai_provider_request_failed"
+  | "ai_provider_quota_exceeded"
+  | "ai_provider_rate_limited"
   | "ai_provider_empty_output"
   | "ai_provider_invalid_schema"
   | "ai_lead_not_ready"
   | "ai_unknown_failure";
 
 const SAFE_REASON_BY_CODE: Readonly<Record<AiProviderErrorCode, SanitizedAiFailureReason>> = {
+  [AI_PROVIDER_ERROR_CODES.authFailed]: "ai_provider_auth_failed",
   [AI_PROVIDER_ERROR_CODES.emptyOutput]: "ai_provider_empty_output",
   [AI_PROVIDER_ERROR_CODES.invalidSchema]: "ai_provider_invalid_schema",
   [AI_PROVIDER_ERROR_CODES.notConfigured]: "ai_provider_not_configured",
+  [AI_PROVIDER_ERROR_CODES.quotaExceeded]: "ai_provider_quota_exceeded",
+  [AI_PROVIDER_ERROR_CODES.rateLimited]: "ai_provider_rate_limited",
   [AI_PROVIDER_ERROR_CODES.requestFailed]: "ai_provider_request_failed",
 };
 
