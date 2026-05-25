@@ -746,6 +746,10 @@ export type BizPilotCopy = Readonly<{
     badge: string;
     description: string;
     subtitle: string;
+    unavailableBody: string;
+    unavailableCta: string;
+    unavailableSubtitle: string;
+    unavailableTitle: string;
   }>;
   quoteSuccess: Readonly<{
     backHome: string;
@@ -1787,6 +1791,11 @@ const englishCopy: BizPilotCopy = {
     description:
       "A short quote form. The business owner reviews every request and replies directly - nothing is sent automatically.",
     subtitle: "Quote request",
+    unavailableBody:
+      "This quote page is not accepting requests right now. Check that the link is complete, or contact the business directly if you need help with an existing request.",
+    unavailableCta: "Back to BizPilot",
+    unavailableSubtitle: "Quote request",
+    unavailableTitle: "Quote page unavailable",
   },
   quoteSuccess: {
     backHome: "Back home",
@@ -2847,6 +2856,11 @@ const frenchCopy: BizPilotCopy = {
     description:
       "Un court formulaire de soumission. Le propriétaire révise chaque demande et répond directement - rien n'est envoyé automatiquement.",
     subtitle: "Demande de soumission",
+    unavailableBody:
+      "Cette page de soumission n'accepte pas de demandes en ce moment. Vérifiez que le lien est complet ou contactez l'entreprise directement si vous avez besoin d'aide pour une demande existante.",
+    unavailableCta: "Retour à BizPilot",
+    unavailableSubtitle: "Demande de soumission",
+    unavailableTitle: "Page de soumission indisponible",
   },
   quoteSuccess: {
     backHome: "Retour à l'accueil",

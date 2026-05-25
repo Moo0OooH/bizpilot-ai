@@ -36,6 +36,8 @@ import {
 } from "@/components/public/marketing-ui";
 import { languageLabels } from "@/lib/i18n/language";
 import {
+  founderPasswordResetAction,
+  founderTemporaryPasswordAction,
   updateFounderInternalNoteAction,
   updateFounderPlanAction,
   updateFounderQuoteLinkAction,
@@ -65,6 +67,7 @@ type AdminSearchParams = {
   userConfirmed?: string | undefined;
   userPage?: string | undefined;
   userPageSize?: string | undefined;
+  userPriority?: string | undefined;
   userQuery?: string | undefined;
 };
 
@@ -117,6 +120,33 @@ const workspaceKindLabels: Record<WorkspaceKind, string> = {
   production_customer: "Production customer",
   seed: "Seed",
 };
+const userPriorityOptions = [
+  {
+    description: "Access, auth, quote, and activity risks.",
+    label: "Needs attention",
+    value: "attention",
+  },
+  {
+    description: "Signed up but email is not confirmed.",
+    label: "Unconfirmed",
+    value: "unconfirmed",
+  },
+  {
+    description: "Auth accounts with no linked business.",
+    label: "No business",
+    value: "no_business",
+  },
+  {
+    description: "Suspended or cancelled business access.",
+    label: "Paused access",
+    value: "paused",
+  },
+  {
+    description: "Linked business has no active public quote link.",
+    label: "Quote off",
+    value: "quote_off",
+  },
+] as const;
 
 function formatDate(value: string | null): string {
   if (!value) {
@@ -206,6 +236,7 @@ function matchesUserFilters(user: FounderAdminUser, params: AdminSearchParams): 
   const query = normalizeSearch(params.userQuery);
   const access = safeParam(params.userAccess);
   const confirmed = safeParam(params.userConfirmed);
+  const priority = safeParam(params.userPriority);
 
   if (
     !matchesQuery(
@@ -244,7 +275,75 @@ function matchesUserFilters(user: FounderAdminUser, params: AdminSearchParams): 
     return false;
   }
 
+  return matchesUserPriority(user, priority);
+}
+
+function getUserPriorityScore(user: FounderAdminUser): number {
+  if (!user.emailConfirmed) {
+    return 100;
+  }
+
+  if (user.businessAccessStatus === "suspended" || user.businessAccessStatus === "cancelled") {
+    return 90;
+  }
+
+  if (!user.businessName) {
+    return 80;
+  }
+
+  if (user.publicLinkActive === false) {
+    return 70;
+  }
+
+  if (!user.lastSignInAt) {
+    return 60;
+  }
+
+  if (user.businessAccessStatus === "onboarding") {
+    return 50;
+  }
+
+  return 10;
+}
+
+function matchesUserPriority(user: FounderAdminUser, priority: string): boolean {
+  if (priority === "unconfirmed") {
+    return !user.emailConfirmed;
+  }
+
+  if (priority === "no_business") {
+    return !user.businessName;
+  }
+
+  if (priority === "paused") {
+    return user.businessAccessStatus === "suspended" || user.businessAccessStatus === "cancelled";
+  }
+
+  if (priority === "quote_off") {
+    return user.publicLinkActive === false;
+  }
+
+  if (priority === "attention") {
+    return getUserPriorityScore(user) >= 50;
+  }
+
   return true;
+}
+
+function priorityCount(users: FounderAdminUser[], priority: string): number {
+  return users.filter((user) => matchesUserPriority(user, priority)).length;
+}
+
+function sortUsersByPriority(users: FounderAdminUser[]): FounderAdminUser[] {
+  return [...users].sort((left, right) => {
+    const scoreDifference = getUserPriorityScore(right) - getUserPriorityScore(left);
+
+    if (scoreDifference !== 0) {
+      return scoreDifference;
+    }
+
+    return right.createdAt.localeCompare(left.createdAt);
+  });
 }
 
 function adminUsersHref(
@@ -256,6 +355,7 @@ function adminUsersHref(
     userConfirmed: params.userConfirmed,
     userPage: params.userPage,
     userPageSize: params.userPageSize,
+    userPriority: params.userPriority,
     userQuery: params.userQuery,
     ...updates,
   };
@@ -660,6 +760,60 @@ function BusinessControlCard({
   );
 }
 
+function FounderPasswordControls({
+  user,
+}: Readonly<{ user: FounderAdminUser }>) {
+  return (
+    <div className="grid gap-3 rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 md:grid-cols-2">
+      <form action={founderPasswordResetAction} className="grid gap-2">
+        <input name="targetUserId" type="hidden" value={user.userId} />
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Reset password
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Sends the standard reset email to {user.authEmail ?? "this auth user"}.
+          </p>
+        </div>
+        <button className={buttonClass} disabled={!user.authEmail} type="submit">
+          Send reset email
+        </button>
+      </form>
+
+      <form action={founderTemporaryPasswordAction} className="grid gap-2">
+        <input name="targetUserId" type="hidden" value={user.userId} />
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Temporary password
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Use only after identity check. The password is never written to logs.
+          </p>
+        </div>
+        <input
+          autoComplete="new-password"
+          className={inputClass}
+          minLength={12}
+          name="temporaryPassword"
+          placeholder="12+ character temporary password"
+          type="text"
+        />
+        <label className="flex items-start gap-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
+          <input
+            className="mt-0.5 h-4 w-4 accent-[#17D492]"
+            name="temporaryPasswordAcknowledgement"
+            type="checkbox"
+          />
+          <span>Share securely and ask the user to change it after sign-in.</span>
+        </label>
+        <button className={primaryButtonClass} type="submit">
+          Set temporary password
+        </button>
+      </form>
+    </div>
+  );
+}
+
 function FounderUsersSection({
   businessById,
   dryRun,
@@ -687,89 +841,132 @@ function FounderUsersSection({
 }>) {
   const hasPreviousPage = usersPage > 1;
   const hasNextPage = usersPage < usersLastPage;
+  const selectedPriority = safeParam(params.userPriority);
 
   return (
-    <DashboardCard className="p-4 sm:p-5" variant="elevated">
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(340px,0.55fr)] xl:items-start">
+    <DashboardCard className="space-y-4 p-4 sm:p-5" variant="elevated">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <SectionHeader
           action={<StatusBadge tone="blue">{shownUsers.length} shown</StatusBadge>}
-          description="Search by name, email, phone, or user ID. The desk loads only 5-10 users per page so it stays usable at large auth-user counts."
-          title="Users"
+          description="Search by name, email, phone, or user ID. Only 5-10 auth users load per page, then priority filters tighten the view."
+          title="User control desk"
         />
-        <form className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_120px] xl:grid-cols-1" method="get">
-          <input name="userPage" type="hidden" value="1" />
-          <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-            Search users
-            <input
-              className={inputClass}
-              defaultValue={params.userQuery ?? ""}
-              name="userQuery"
-              placeholder="Name, email, phone"
-            />
-          </label>
-          <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-            Show
-            <select
-              className={inputClass}
-              defaultValue={String(usersPageSize)}
-              name="userPageSize"
-            >
-              <option value="5">5 users</option>
-              <option value="10">10 users</option>
-            </select>
-          </label>
-          <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-            Access
-            <select
-              className={inputClass}
-              defaultValue={safeParam(params.userAccess)}
-              name="userAccess"
-            >
-              <option value="all">All users</option>
-              <option value="active">Active access</option>
-              <option value="onboarding">Onboarding</option>
-              <option value="suspended">Suspended</option>
-              <option value="cancelled">Cancelled</option>
-              <option value="unlinked">No business linked</option>
-            </select>
-          </label>
-          <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-            Auth
-            <select
-              className={inputClass}
-              defaultValue={safeParam(params.userConfirmed)}
-              name="userConfirmed"
-            >
-              <option value="all">All auth states</option>
-              <option value="confirmed">Confirmed email</option>
-              <option value="unconfirmed">Unconfirmed email</option>
-              <option value="founder">Founder accounts</option>
-            </select>
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <button className={primaryButtonClass} type="submit">
-              Search
-            </button>
-            <Link className={buttonClass} href="/admin">
-              Reset
-            </Link>
-          </div>
-        </form>
+        <div className="flex flex-wrap gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
+          <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
+            Page {usersPage} / {usersLastPage}
+          </span>
+          <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
+            {usersTotal} auth users
+          </span>
+          <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
+            {usersSearchMode === "auth_filter" ? "Search indexed" : "Paged"}
+          </span>
+        </div>
       </div>
 
-      <div className="mt-4 grid gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)] sm:grid-cols-3">
-        <p className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
-          Page {usersPage} of {usersLastPage} - {usersTotal} auth users
-        </p>
-        <p className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
-          Loaded {totalLoaded}; visible after filters {shownUsers.length}
-        </p>
-        <p className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
-          Search mode: {usersSearchMode === "auth_filter" ? "auth filter" : "paged"}
-        </p>
+      <div className="grid gap-2 md:grid-cols-3 xl:grid-cols-5">
+        <Link
+          className={
+            selectedPriority === "all"
+              ? "rounded-[14px] border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 text-sm font-black text-[var(--dash-text)]"
+              : "rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm font-black text-[var(--dash-text-secondary)]"
+          }
+          href={adminUsersHref(params, { userPage: "1", userPriority: undefined })}
+        >
+          All loaded
+          <span className="mt-1 block text-[12px] text-[var(--dash-text-muted)]">
+            {totalLoaded} users
+          </span>
+        </Link>
+        {userPriorityOptions.map((option) => (
+          <Link
+            className={
+              selectedPriority === option.value
+                ? "rounded-[14px] border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 text-sm font-black text-[var(--dash-text)]"
+                : "rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm font-black text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-primary-border)] hover:bg-[var(--dash-primary-soft)]"
+            }
+            href={adminUsersHref(params, {
+              userPage: "1",
+              userPriority: option.value,
+            })}
+            key={option.value}
+          >
+            {option.label}
+            <span className="mt-1 block text-[12px] text-[var(--dash-text-muted)]">
+              {priorityCount(users, option.value)} loaded
+            </span>
+            <span className="mt-1 block text-[11px] font-bold leading-4 text-[var(--dash-text-muted)]">
+              {option.description}
+            </span>
+          </Link>
+        ))}
       </div>
 
-      <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
+      <form
+        className="grid gap-3 rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 lg:grid-cols-[minmax(240px,1fr)_120px_160px_160px_auto] lg:items-end"
+        method="get"
+      >
+        <input name="userPage" type="hidden" value="1" />
+        <input name="userPriority" type="hidden" value={selectedPriority} />
+        <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+          Search users
+          <input
+            className={inputClass}
+            defaultValue={params.userQuery ?? ""}
+            name="userQuery"
+            placeholder="Name, email, phone"
+          />
+        </label>
+        <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+          Show
+          <select
+            className={inputClass}
+            defaultValue={String(usersPageSize)}
+            name="userPageSize"
+          >
+            <option value="5">5 users</option>
+            <option value="10">10 users</option>
+          </select>
+        </label>
+        <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+          Access
+          <select
+            className={inputClass}
+            defaultValue={safeParam(params.userAccess)}
+            name="userAccess"
+          >
+            <option value="all">All users</option>
+            <option value="active">Active access</option>
+            <option value="onboarding">Onboarding</option>
+            <option value="suspended">Suspended</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="unlinked">No business linked</option>
+          </select>
+        </label>
+        <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+          Auth
+          <select
+            className={inputClass}
+            defaultValue={safeParam(params.userConfirmed)}
+            name="userConfirmed"
+          >
+            <option value="all">All auth states</option>
+            <option value="confirmed">Confirmed email</option>
+            <option value="unconfirmed">Unconfirmed email</option>
+            <option value="founder">Founder accounts</option>
+          </select>
+        </label>
+        <div className="flex flex-wrap gap-2">
+          <button className={primaryButtonClass} type="submit">
+            Search
+          </button>
+          <Link className={buttonClass} href="/admin">
+            Reset
+          </Link>
+        </div>
+      </form>
+
+      <div className="divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
         {shownUsers.length > 0 ? (
           shownUsers.map((user) => {
             const linkedBusiness = user.businessId
@@ -879,6 +1076,7 @@ function FounderUsersSection({
                     No linked business controls for this auth user yet.
                   </div>
                 )}
+                <FounderPasswordControls user={user} />
                 <FounderAuthUserDeleteForm
                   deletionBlockedReason={user.authDeletionBlockedReason}
                   targetEmail={user.authEmail}
@@ -965,8 +1163,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const businessById = new Map(
     overview.businesses.map((business) => [business.businessId, business]),
   );
-  const shownUsers = overview.users.filter((adminUser) =>
-    matchesUserFilters(adminUser, params),
+  const shownUsers = sortUsersByPriority(
+    overview.users.filter((adminUser) => matchesUserFilters(adminUser, params)),
   );
 
   return (

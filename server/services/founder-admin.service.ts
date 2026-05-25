@@ -15,13 +15,16 @@
 
 import "server-only";
 
+import { randomUUID } from "node:crypto";
+
+import { getServerEnv } from "@/lib/env/server-env";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 import type { AuthUser } from "@/server/services/auth.service";
-import { getServerEnv } from "@/lib/env/server-env";
 import {
   getFounderAuthUserDeletionBlock,
   type FounderAuthUserDeletionBusinessContext,
 } from "@/lib/founder-cleanup/auth-user-deletion";
+import { safeLogger } from "@/server/logging/safe-logger";
 import {
   getFounderBusiness,
   insertFounderAdminAction,
@@ -129,6 +132,7 @@ const workspaceKinds = new Set<FounderWorkspaceKind>([
   "seed",
 ]);
 const founderUserPageSizes = new Set([5, 10]);
+const minimumTemporaryPasswordLength = 12;
 
 type FounderAuthUserRecord = Readonly<{
   confirmed_at?: string;
@@ -162,6 +166,14 @@ export function readFounderUserPageSize(value: string | null | undefined): numbe
   const pageSize = Number.parseInt(value ?? "", 10);
 
   return founderUserPageSizes.has(pageSize) ? pageSize : 10;
+}
+
+export function readFounderTemporaryPassword(value: string): string {
+  if (value.length < minimumTemporaryPasswordLength) {
+    throw new Error("Use at least 12 characters for the temporary password.");
+  }
+
+  return value;
 }
 
 function readUserMetadataText(
@@ -224,6 +236,55 @@ function founderAuthUserMatchesQuery(input: {
   ];
 
   return values.some((value) => (value ?? "").toLowerCase().includes(query));
+}
+
+function shortTraceId(value: string): string {
+  return value.slice(0, 8);
+}
+
+function assertPasswordTargetAllowed(input: {
+  actor: AuthUser;
+  founderEmails: Set<string>;
+  targetEmail: string | null;
+  targetUserId: string;
+}): void {
+  if (input.actor.id === input.targetUserId) {
+    throw new Error("Founder admin cannot change the signed-in account password here.");
+  }
+
+  if (input.targetEmail && input.founderEmails.has(input.targetEmail.toLowerCase())) {
+    throw new Error("Founder admin cannot change a founder allowlist account password here.");
+  }
+}
+
+function logFounderAuthAdminFailure(input: {
+  actionName: string;
+  actorUserId: string;
+  error: unknown;
+  eventId: string;
+  targetUserId: string;
+}): void {
+  safeLogger.error("founder_admin.auth_action_failed", {
+    action_name: input.actionName,
+    actor_user_id: input.actorUserId,
+    admin_event_id: input.eventId,
+    error_name: input.error instanceof Error ? input.error.name : "unknown",
+    target_user_id: input.targetUserId,
+  });
+}
+
+function logFounderAuthAdminSuccess(input: {
+  actionName: string;
+  actorUserId: string;
+  eventId: string;
+  targetUserId: string;
+}): void {
+  safeLogger.info("founder_admin.auth_action_completed", {
+    action_name: input.actionName,
+    actor_user_id: input.actorUserId,
+    admin_event_id: input.eventId,
+    target_user_id: input.targetUserId,
+  });
 }
 
 function readFounderEmails(): Set<string> {
@@ -662,6 +723,112 @@ export async function getFounderAdminOverview(input: {
     usersSearchMode: usersResult.searchMode,
     usersTotal: usersResult.total,
   };
+}
+
+export async function requestFounderUserPasswordReset(input: {
+  targetUserId: string;
+  user: AuthUser | null;
+}): Promise<string> {
+  const actor = assertFounderUser(input.user);
+  const supabase = createSupabaseServiceRoleClient();
+  const eventId = randomUUID();
+
+  try {
+    const { data, error } = await supabase.auth.admin.getUserById(input.targetUserId);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    const target = data.user;
+    const targetEmail = target.email?.trim() ?? null;
+
+    if (!targetEmail) {
+      throw new Error("Target user does not have an email address.");
+    }
+
+    const env = getServerEnv();
+    const { error: resetError } = await supabase.auth.resetPasswordForEmail(targetEmail, {
+      redirectTo: new URL("/auth/reset-password", env.NEXT_PUBLIC_APP_URL).toString(),
+    });
+
+    if (resetError) {
+      throw new Error(resetError.message);
+    }
+
+    logFounderAuthAdminSuccess({
+      actionName: "password_reset_requested",
+      actorUserId: actor.id,
+      eventId,
+      targetUserId: input.targetUserId,
+    });
+
+    return shortTraceId(eventId);
+  } catch (error) {
+    logFounderAuthAdminFailure({
+      actionName: "password_reset_requested",
+      actorUserId: actor.id,
+      error,
+      eventId,
+      targetUserId: input.targetUserId,
+    });
+    throw error;
+  }
+}
+
+export async function setFounderUserTemporaryPassword(input: {
+  targetUserId: string;
+  temporaryPassword: string;
+  user: AuthUser | null;
+}): Promise<string> {
+  const actor = assertFounderUser(input.user);
+  const supabase = createSupabaseServiceRoleClient();
+  const eventId = randomUUID();
+
+  try {
+    const { data, error } = await supabase.auth.admin.getUserById(input.targetUserId);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    const target = data.user;
+    const targetEmail = target.email?.trim() ?? null;
+
+    assertPasswordTargetAllowed({
+      actor,
+      founderEmails: readFounderEmails(),
+      targetEmail,
+      targetUserId: input.targetUserId,
+    });
+
+    const { error: updateError } = await supabase.auth.admin.updateUserById(
+      input.targetUserId,
+      { password: input.temporaryPassword },
+    );
+
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
+
+    logFounderAuthAdminSuccess({
+      actionName: "temporary_password_set",
+      actorUserId: actor.id,
+      eventId,
+      targetUserId: input.targetUserId,
+    });
+
+    return shortTraceId(eventId);
+  } catch (error) {
+    logFounderAuthAdminFailure({
+      actionName: "temporary_password_set",
+      actorUserId: actor.id,
+      error,
+      eventId,
+      targetUserId: input.targetUserId,
+    });
+    throw error;
+  }
 }
 
 export async function updateFounderPlan(input: {

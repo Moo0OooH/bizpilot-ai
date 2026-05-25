@@ -23,7 +23,10 @@ import { getCurrentUser } from "@/server/services/auth.service";
 import {
   readFounderBusinessStatus,
   readFounderPlanSlug,
+  readFounderTemporaryPassword,
   readFounderWorkspaceKind,
+  requestFounderUserPasswordReset,
+  setFounderUserTemporaryPassword,
   updateFounderInternalNote,
   updateFounderPlan,
   updateFounderQuoteLink,
@@ -80,13 +83,65 @@ function redirectWithFounderAdminError(error: unknown): never {
       value === "Auth user deletion is blocked for production workspaces." ||
       value ===
         "Auth user deletion is blocked until linked workspaces are marked as test, demo, or seed." ||
-      value === "Auth user not found.",
+      value === "Auth user not found." ||
+      value === "Target user does not have an email address." ||
+      value === "Use at least 12 characters for the temporary password." ||
+      value === "Confirm that you will share this temporary password securely." ||
+      value === "Founder admin cannot change the signed-in account password here." ||
+      value === "Founder admin cannot change a founder allowlist account password here.",
     code: "UNKNOWN_ERROR",
     error,
     fallbackMessage: "Founder admin action could not be completed.",
   });
 
   redirect(`/admin?error=${encodeURIComponent(message)}`);
+}
+
+export async function founderPasswordResetAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    const traceId = await requestFounderUserPasswordReset({
+      targetUserId: readRequiredFormValue(formData, "targetUserId"),
+      user: await getCurrentUser(),
+    });
+
+    revalidatePath("/admin");
+    redirect(
+      `/admin?notice=${encodeURIComponent(
+        `Password reset email requested. Trace ${traceId}.`,
+      )}`,
+    );
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
+}
+
+export async function founderTemporaryPasswordAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    if (formData.get("temporaryPasswordAcknowledgement") !== "on") {
+      throw new Error("Confirm that you will share this temporary password securely.");
+    }
+
+    const traceId = await setFounderUserTemporaryPassword({
+      targetUserId: readRequiredFormValue(formData, "targetUserId"),
+      temporaryPassword: readFounderTemporaryPassword(
+        readRequiredFormValue(formData, "temporaryPassword"),
+      ),
+      user: await getCurrentUser(),
+    });
+
+    revalidatePath("/admin");
+    redirect(
+      `/admin?notice=${encodeURIComponent(
+        `Temporary password set. Share it securely and ask the user to change it after sign-in. Trace ${traceId}.`,
+      )}`,
+    );
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
 }
 
 export async function updateFounderPlanAction(formData: FormData): Promise<never> {

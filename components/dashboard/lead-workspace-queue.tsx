@@ -412,6 +412,39 @@ function SampleLeadEmptyState({
   );
 }
 
+function LeadQueueEmptyStarter({
+  language,
+  quotePath,
+}: Readonly<{ language?: SupportedLanguage | undefined; quotePath: string }>) {
+  const copy = getBizPilotCopy(language);
+  const queueCopy = copy.dashboard.leadQueue;
+
+  return (
+    <div className="grid gap-4 rounded-[20px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4 sm:p-5">
+      <EmptyState title={queueCopy.empty.noLeadsTitle}>
+        {queueCopy.empty.noLeadsBody}
+      </EmptyState>
+      <div className="flex flex-wrap justify-center gap-2">
+        <CopyButton label={copy.demo.shareQuoteLink} value={quotePath} />
+        <Link className={buttonClass} href="/dashboard/quote-setup">
+          {copy.dashboard.nav.quoteSetup}
+        </Link>
+      </div>
+      <details className="rounded-[16px] border border-dashed border-[rgba(20,184,166,0.28)] bg-[rgba(20,184,166,0.06)]">
+        <summary className="cursor-pointer list-none px-4 py-3 text-sm font-black text-[var(--dash-text)]">
+          {copy.demo.sampleDemoState}
+          <span className="ml-2 text-[12px] font-bold text-[var(--dash-text-muted)]">
+            {copy.demo.notStored}
+          </span>
+        </summary>
+        <div className="border-t border-[rgba(20,184,166,0.18)] p-3">
+          <SampleLeadEmptyState language={language} quotePath={quotePath} />
+        </div>
+      </details>
+    </div>
+  );
+}
+
 export function LeadWorkspaceQueue({
   compact = false,
   language,
@@ -504,7 +537,7 @@ export function LeadWorkspaceQueue({
         ) : (
           <div className="p-4">
             {leads.length === 0 ? (
-              <SampleLeadEmptyState language={language} quotePath={quotePath} />
+              <LeadQueueEmptyStarter language={language} quotePath={quotePath} />
             ) : hasActiveFilter ? (
               <EmptyState
                 action={
