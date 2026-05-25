@@ -80,6 +80,14 @@ changed-file secret scan: no secret values found; matches were env-name referenc
 
 The temporary RLS proxy was removed after the run.
 
+Post-push production evidence:
+
+```text
+Commit 68dba3e was pushed to origin/main and origin/phase-21-production-alignment.
+https://bizpilo.com/ rendered the new header Demo navigation marker for /#cleaning-demo.
+pnpm smoke:public -- --base-url=https://bizpilo.com passed after the marker appeared, 9/9 routes.
+```
+
 ## 6. Current Decision
 
 ```text

@@ -45,6 +45,7 @@ Current continuation truth:
 - OpenAI validation remains blocked because Vercel Production still has an empty `OPENAI_API_KEY`; no model-backed request was made.
 - Current safe-gap pass adds public `/privacy`, `/security`, and `/terms` trust pages with EN/fr-CA copy, footer links, and policy-copy structure tests. These pages clarify pilot-stage privacy, security, manual billing, no auto-send, and no-real-data boundaries. Production smoke for all three routes passed on `https://bizpilo.com`; evidence is recorded in `docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md`.
 - Phase 21P no-cost hardening added repeatable `pnpm smoke:public`, backup/export/restore decision matrix, and Auth email/custom SMTP integration plan. Local public smoke passed 9/9 routes on `http://127.0.0.1:3000`; production public smoke passed 9/9 routes on `https://bizpilo.com`; `pnpm verify` passed; local RLS passed 13/13 through a temporary local-only Docker proxy that was removed after the run.
+- Commit `68dba3e chore: add readiness smoke and ops plans` was pushed to `origin/main` and `origin/phase-21-production-alignment`. After the production marker appeared on `https://bizpilo.com/`, `pnpm smoke:public -- --base-url=https://bizpilo.com` passed 9/9 routes.
 
 This update does not approve real customer data or a paid pilot.
 
@@ -280,6 +281,15 @@ changed-file secret scan: no secret values found; matches were env-name referenc
 ```
 
 The temporary local-only Docker proxy was removed after the RLS run.
+
+Post-push production evidence:
+
+```txt
+68dba3e chore: add readiness smoke and ops plans
+Pushed to origin/main and origin/phase-21-production-alignment
+Production marker: header Demo link to /#cleaning-demo present on https://bizpilo.com/
+Production public smoke after marker: pass, 9/9 routes
+```
 
 ## 6. What I Would Do Next
 

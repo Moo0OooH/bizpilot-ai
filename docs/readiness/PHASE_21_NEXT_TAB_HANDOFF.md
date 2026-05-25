@@ -40,10 +40,12 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
 - Staged pilot terms are approved: first 1-5 pilot customers get free founder-led setup for 30/60-day feedback; customers 6-20 are `$149 setup + $49/month`; the standard post-proof offer is `$199 setup + $79/month`.
 - Safe public-trust gap pass added `/privacy`, `/security`, and `/terms` routes with EN/fr-CA copy, footer links, no-auto-send boundaries, and unit coverage for policy-copy structure. Production smoke passed for all three routes on `https://bizpilo.com`.
 - Phase 21P no-cost hardening added `pnpm smoke:public`, `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`, `docs/operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`, and `docs/readiness/PHASE_21P_NO_COST_READINESS_HARDENING.md`.
+- Phase 21P implementation commit `68dba3e chore: add readiness smoke and ops plans` was pushed to `origin/main` and `origin/phase-21-production-alignment`.
 - `pnpm smoke:public` passed locally against `http://127.0.0.1:3000` with 9/9 routes.
 - `pnpm smoke:public -- --base-url=https://bizpilo.com` passed in production with 9/9 routes.
 - `pnpm verify` passed with 54/54 unit tests and a successful build.
 - `pnpm test:rls` passed 13/13 through a temporary local-only `127.0.0.1:55432` Docker proxy; the proxy was removed after the run.
+- After the push, `https://bizpilo.com/` rendered the new header `Demo` marker for `/#cleaning-demo`, and production public smoke passed 9/9 routes again.
 - Full live admin visual QA remains blocked until a founder-authorized production session is available. Logged-out `/admin` redirect smoke passed.
 - fr-CA production quote smoke remains blocked until an active synthetic fr-CA public quote link can be created after signup/Auth rate limiting clears.
 - Production `0020` was not applied because a production DB backup/export was not available from local tools.
