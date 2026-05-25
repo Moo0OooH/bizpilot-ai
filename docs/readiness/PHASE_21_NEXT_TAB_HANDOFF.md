@@ -63,10 +63,10 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
 | Item | Current value |
 | --- | --- |
 | Current branch | `main` (was merged from `phase-21-production-alignment` on 2026-05-25) |
-| Current validated HEAD | `f1c5346 test: add synthetic quote route smoke` |
-| `origin/main` | `f1c5346` after 2026-05-25 continuation sync |
-| `origin/phase-21-production-alignment` | `f1c5346` after fast-forward sync |
-| Current branch tip at this handoff update | `f1c5346 test: add synthetic quote route smoke`. Re-run `git log -1 --oneline` before continuing. |
+| Latest validated continuation baseline | `0b89880 docs: prepare phase 21q readiness continuation`; a newer documentation-only evidence follow-up may exist. |
+| `origin/main` at latest validation | `0b89880` after 2026-05-25 continuation sync |
+| `origin/phase-21-production-alignment` at latest validation | `0b89880` after fast-forward sync |
+| Current branch tip at this handoff update | Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
@@ -91,14 +91,15 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
 | `.gitattributes` commit | `8bf3387 chore: add .gitattributes to enforce LF line endings` — eliminates 100+ phantom CRLF modifications |
 | Bootstrap fix commit | `5758a0b fix: bootstrap public quote setup on signup` — deployed to production |
 | Bootstrap fix deploy | Vercel deployment `dpl_Gmshk1QUmroam8v569rR1RupMWeY` (Ready) |
-| `origin/main` | `f1c5346` after 2026-05-25 continuation sync |
+| `origin/main` | `0b89880` at latest validation; re-run `git rev-parse --short origin/main` before continuing |
 | Phase 19 branch | `origin/phase-19-readiness-findings` contains `a27705f` |
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
-| GitHub remote branches | `main` and `phase-21-production-alignment` aligned at `f1c5346` after the 2026-05-25 continuation sync; `phase-19-readiness-findings` at `a27705f`; `phase-20-pilot-gate` at `39113f4` |
+| GitHub remote branches | `main` and `phase-21-production-alignment` aligned at `0b89880` at latest validation; `phase-19-readiness-findings` at `a27705f`; `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
 | Working tree after `eddd331` | Clean after homepage workflow demo deploy; re-check status before continuing |
 | Working tree after 2026-05-25 continuation sync | Clean at `f1c5346`; stale local HEAD preserved on `backup/local-main-pre-origin-sync-20260525-190808`; dirty local work preserved in stash entry `pre-origin-main-sync dirty work 2026-05-25` |
 | Working tree after quote-smoke tooling | Clean at `f1c5346` |
+| Working tree after Phase 21Q starter docs | Clean at latest validation; re-check before continuing. |
 | Production deploy triggered in Phase 21 | Yes, with owner approval; current observed production deploy is `dpl_7oDm6M7w2eiCV2LdWfX4xkqubqyo` |
 | Phase 21 branch pushed | Yes, `origin/phase-21-production-alignment` |
 

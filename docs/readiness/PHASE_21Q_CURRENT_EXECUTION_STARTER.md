@@ -34,10 +34,10 @@ The current verified baseline is:
 ```text
 Repo: E:\bizpilot-ai
 Current branch: main
-HEAD: f1c5346 test: add synthetic quote route smoke
-origin/main: f1c5346
-origin/phase-21-production-alignment: f1c5346
-Working tree at handoff creation: clean
+Latest validated continuation baseline before this note: 0b89880 docs: prepare phase 21q readiness continuation
+origin/main at validation: 0b89880
+origin/phase-21-production-alignment at validation: 0b89880
+Current branch tip may be a newer documentation-only evidence follow-up; run git log -1 --oneline.
 Production: https://bizpilo.com is live
 ```
 
@@ -47,6 +47,7 @@ Recent continuation commits after `2c16362` include:
 6263ecb feat(admin): sharpen founder user controls
 44f18e6 docs: record phase 21p continuation sync
 f1c5346 test: add synthetic quote route smoke
+0b89880 docs: prepare phase 21q readiness continuation
 ```
 
 ## 3. Product Truth
@@ -182,3 +183,21 @@ Report:
 - any new docs/tests/tooling,
 - commit/push status,
 - exact remaining owner actions before real data.
+
+## 10. Latest Validation
+
+2026-05-25 continuation validation after `f1c5346`:
+
+```text
+pnpm verify: pass
+pnpm test:unit within verify: pass, 59/59
+pnpm smoke:public -- --base-url=http://127.0.0.1:3000: pass, 9/9
+pnpm smoke:public -- --base-url=https://bizpilo.com: pass, 9/9
+pnpm smoke:quote -- --base-url=https://bizpilo.com --inactive-slug=phase-21-synthetic-unavailable-check: pass, 1/1
+pnpm test:rls: not run because DATABASE_URL is not set in the current shell
+```
+
+RLS note: previous Phase 21 evidence records a local RLS pass through a
+temporary local-only proxy. In the current shell, the RLS runner stops before
+connecting because `DATABASE_URL` is absent. Treat that as an environment setup
+blocker, not an application regression.
