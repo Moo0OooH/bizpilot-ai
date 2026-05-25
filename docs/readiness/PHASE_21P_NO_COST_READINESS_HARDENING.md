@@ -18,6 +18,8 @@ automation are introduced by this pass.
 ## 2. Implemented In This Pass
 
 - Added `pnpm smoke:public` for repeatable public-route smoke checks.
+- Added `pnpm smoke:quote` for approved synthetic public quote-link route
+  checks without secrets, SQL, or real data.
 - Added backup/export/restore decision matrix:
   `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`.
 - Added Auth email/custom SMTP integration plan:
@@ -55,6 +57,28 @@ pnpm smoke:public -- --base-url=https://bizpilo.com
 
 The script does not create accounts, submit quote data, inspect secrets, or
 touch production SQL.
+
+## 4.1 Quote Route Smoke Coverage
+
+The quote route runner checks only owner-approved synthetic links:
+
+- active quote link loads the public form,
+- inactive or unavailable quote link renders the safe unavailable state,
+- optional fr-CA quote link renders French Canadian quote copy,
+- raw/internal database, env, service-role, and framework error markers are not
+  exposed in the response body.
+
+Usage:
+
+```bash
+pnpm smoke:quote -- --active-slug=<approved-synthetic-active-slug>
+pnpm smoke:quote -- --base-url=https://bizpilo.com --active-slug=<approved-synthetic-active-slug> --inactive-slug=<approved-inactive-slug> --fr-slug=<approved-fr-ca-slug>
+```
+
+The script does not create accounts, submit quote data, inspect secrets, or
+touch production SQL. Full lead creation, dashboard visibility, and
+horizontal-access smokes still require founder-approved synthetic owner
+sessions and manual/browser execution.
 
 ## 4. Current Real-Pilot Blockers After This Pass
 
