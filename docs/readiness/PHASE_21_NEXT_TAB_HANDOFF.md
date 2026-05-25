@@ -4,14 +4,14 @@
 **Document Type:** Continuation handoff for the next Codex tab
 **Status:** Continue Phase 21 readiness closure from consolidated Phase 21M state
 **Owner:** MoOoH
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-25
 
 ---
 
 ## 1. Current One-Line Truth
 
 ```text
-BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup, homepage conversion polish, dashboard i18n systemization, Smart Intake Routing Lite, and a consolidated Phase 21M status doc now added on `phase-21-production-alignment`, but it is not approved for the first real customer pilot yet.
+BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with repo-backed founder admin cleanup, homepage conversion polish, dashboard i18n systemization, Smart Intake Routing Lite, a consolidated Phase 21M status doc, and an owner-facing current-status notes file now updated, but it is not approved for the first real customer pilot yet.
 ```
 
 ## 2. Current Git State
@@ -19,7 +19,7 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Item | Current value |
 | --- | --- |
 | Current branch | `phase-21-production-alignment` |
-| Current branch tip before Phase 21M doc | `7904a65 fix: repair dashboard language and admin cleanup controls`. Re-run `git log -1 --oneline` before continuing. |
+| Current branch tip at this handoff update | `1be5235 docs: record rls environment blocker`. Re-run `git log -1 --oneline` before continuing. |
 | Latest committed Phase 21 hygiene state | `810e8c4 chore: declare package module type` |
 | Latest committed Phase 21 evidence/doc state | `ebd4a04 docs: align production readiness runbooks` |
 | Latest committed no-cost CI/cost-gate state | `e690243 ci: add no-cost validation and cost gate` |
@@ -30,6 +30,8 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Dashboard i18n systemization commit | `86c1fd0 feat: systemize dashboard i18n` |
 | Smart Intake Routing Lite commit | `0007549 feat: add smart intake routing lite` |
 | Dashboard i18n/admin recovery commit | `7904a65 fix: repair dashboard language and admin cleanup controls` |
+| Consolidated status doc commit | `05e3d24 docs: consolidate phase 21 status` |
+| RLS environment blocker doc commit | `1be5235 docs: record rls environment blocker` |
 | Consolidated status doc | `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md` |
 | Latest GitHub evidence commit | `5a62e76 docs: record github repository evidence` |
 | Latest Vercel evidence commit | `9adde10 docs: record vercel production target evidence` |
@@ -39,7 +41,7 @@ BizPilot code/MVP is stable enough for founder-controlled synthetic demos, with 
 | Phase 20 branch | `origin/phase-20-pilot-gate` contains `39113f4` |
 | GitHub remote branches | `main` at `7fe0475`, `phase-19-readiness-findings` at `a27705f`, `phase-20-pilot-gate` at `39113f4` |
 | GitHub open PRs/issues/actions | 0 open PRs, 0 open issues, 0 Actions runs reported by public GitHub API |
-| Working tree after `7904a65` | Clean before Phase 21M doc update; re-check status before continuing |
+| Working tree after `1be5235` | Clean before this 2026-05-25 handoff update; re-check status before continuing |
 | Production deploy triggered in Phase 21 | No |
 | Phase 21 branch pushed | Yes, `origin/phase-21-production-alignment` |
 
@@ -491,6 +493,7 @@ Inspect before commit:
 | Dashboard i18n systemization | `docs/readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`, `tests/unit/i18n-copy.test.mts` |
 | Dashboard i18n/admin recovery fix | `docs/readiness/PHASE_21L_DASHBOARD_I18N_ADMIN_RECOVERY.md`, `tests/unit/i18n-copy.test.mts` |
 | Consolidated completed/remaining/service-capability status | `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md` |
+| Owner-facing current status notes mirror | `C:/Users/mbeag/Downloads/BIZPILOT_CURRENT_STATUS_NOTES_2026-05-25.md` |
 
 ## 11. Next Tab Starter Prompt
 
@@ -500,6 +503,7 @@ Use this in the next tab:
 Continue BizPilot Phase 21 from:
 
 - branch: phase-21-production-alignment
+- latest checked commit: 1be5235 docs: record rls environment blocker
 - latest committed Phase 21 evidence/doc state: ebd4a04
 - latest committed Phase 21 hygiene state: 810e8c4
 - latest committed no-cost CI/cost-gate state: e690243
@@ -510,6 +514,7 @@ Continue BizPilot Phase 21 from:
 - dashboard i18n systemization commit: this commit (`feat: systemize dashboard i18n`); run `git log -1 --oneline`
 - dashboard i18n/admin recovery commit: this commit (`fix: repair dashboard language and admin cleanup controls`); run `git log -1 --oneline`
 - consolidated Phase 21M status doc: docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md
+- owner-facing current status notes mirror: C:/Users/mbeag/Downloads/BIZPILOT_CURRENT_STATUS_NOTES_2026-05-25.md
 - latest GitHub evidence commit: 5a62e76
 - origin/main unchanged at 7fe0475
 - phase-21-production-alignment has been pushed to origin; main is still not pushed/merged/deployed
@@ -517,6 +522,7 @@ Continue BizPilot Phase 21 from:
 
 Read first:
 - docs/readiness/PHASE_21_NEXT_TAB_HANDOFF.md
+- docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md
 - docs/readiness/PHASE_21_PILOT_APPROVAL_GATE.md
 - docs/readiness/PHASE_21A_PRODUCTION_TARGET_AND_BACKUP_GATE.md
 - docs/readiness/PHASE_21B_PRODUCTION_MIGRATION_DRIFT_MAP.md
@@ -546,3 +552,30 @@ Not ready for first real pilot customer with real customer data.
 Database/security alignment is owner-approved to finish now because there are no serious/real users yet.
 Founder fake/test auth-user cleanup, homepage conversion polish, and dashboard i18n/admin recovery fixes are local/repo-backed only until owner-approved deploy and any required production migration apply.
 ```
+
+## 13. Exact Follow Path For The Next Tab
+
+Start with this order:
+
+1. Run `git status --short --branch` in `E:\bizpilot-ai`.
+2. Confirm the branch is `phase-21-production-alignment`.
+3. Confirm the latest commit is at or after `1be5235 docs: record rls environment blocker`.
+4. Read `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md`.
+5. Read this handoff.
+6. Do not restart old Phase 19/20/21 investigations unless the current docs contradict the repo.
+7. Treat `leads.source_channel` as the source field. Do not add `leads.source`.
+8. Treat `0018` as object-verified/manual-drift. Do not blindly re-apply it.
+9. Treat `0019` as production-applied/verified.
+10. Treat `0020` as repo-backed/local-verified only until owner explicitly approves production apply.
+11. Treat homepage conversion polish, dashboard i18n/admin recovery, founder fake/test auth deletion, and Smart Intake Routing Lite as branch work, not production-deployed work.
+12. Next useful technical step is PR/merge/deploy planning, but main merge/deploy needs explicit owner approval.
+13. Next useful production-readiness step after deploy approval is synthetic production public quote security smoke.
+14. Do not use real customer data until backup/export, signup, OpenAI, production smokes, and commercial terms are closed.
+
+If the owner says to continue development rather than deploy, prioritize:
+
+1. admin/customer dashboard management controls for demo/sample/guideline visibility,
+2. production-safe fake/test cleanup UX polish,
+3. live admin visual QA once founder env or deployed branch is available,
+4. i18n expansion only through central dictionaries and tests,
+5. dashboard IA/design polish after the current gates stay green.

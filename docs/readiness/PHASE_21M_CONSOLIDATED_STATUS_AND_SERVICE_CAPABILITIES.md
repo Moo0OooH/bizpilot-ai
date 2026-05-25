@@ -1,10 +1,10 @@
 # Phase 21M - Consolidated Status and Service Capabilities
 
 **Project:** BizPilot AI  
-**Date:** 2026-05-24  
+**Date:** 2026-05-25
 **Branch:** `phase-21-production-alignment`  
 **Branch status:** pushed to `origin/phase-21-production-alignment`  
-**Latest checked commit:** `7904a65 fix: repair dashboard language and admin cleanup controls`  
+**Latest checked commit:** `1be5235 docs: record rls environment blocker`
 **Status:** Local/repo work is stable for founder-controlled synthetic demos. Production main/deploy and real customer pilot remain blocked.
 
 ---
