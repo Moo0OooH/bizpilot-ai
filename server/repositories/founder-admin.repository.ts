@@ -23,6 +23,8 @@ export type FounderBusinessRecord =
   Database["public"]["Tables"]["businesses"]["Row"];
 export type FounderBusinessStatus = FounderBusinessRecord["status"];
 export type FounderPlanSlug = FounderBusinessRecord["plan_slug"];
+export type FounderSessionTimeoutMode =
+  FounderBusinessRecord["session_timeout_mode"];
 export type FounderWorkspaceKind = FounderBusinessRecord["workspace_kind"];
 export type FounderAdminActionType =
   Database["public"]["Tables"]["admin_action_log"]["Row"]["action_type"];
@@ -111,14 +113,20 @@ export async function listFounderUsageSignals(input: {
 }
 
 export async function listFounderAdminLog(input: {
+  businessId?: string;
   limit?: number;
   supabase: SupabaseClient<Database>;
 }): Promise<FounderAdminLogRecord[]> {
-  const { data, error } = await input.supabase
+  let query = input.supabase
     .from("admin_action_log")
     .select("*")
-    .order("created_at", { ascending: false })
-    .limit(input.limit ?? 20);
+    .order("created_at", { ascending: false });
+
+  if (input.businessId) {
+    query = query.eq("business_id", input.businessId);
+  }
+
+  const { data, error } = await query.limit(input.limit ?? 20);
 
   throwIfError(error);
 
@@ -205,6 +213,8 @@ export async function updateFounderBusinessControls(input: {
   internalNote?: string | null;
   planExpiresAt?: string | null;
   planSlug?: FounderPlanSlug;
+  sessionTimeoutMinutes?: number | null;
+  sessionTimeoutMode?: FounderSessionTimeoutMode;
   status?: FounderBusinessStatus;
   supabase: SupabaseClient<Database>;
   workspaceKind?: FounderWorkspaceKind;
@@ -222,6 +232,14 @@ export async function updateFounderBusinessControls(input: {
   if (input.planSlug !== undefined) {
     update.plan_slug = input.planSlug;
     update.plan_started_at = new Date().toISOString();
+  }
+
+  if (input.sessionTimeoutMode !== undefined) {
+    update.session_timeout_mode = input.sessionTimeoutMode;
+    update.session_timeout_minutes =
+      input.sessionTimeoutMode === "after_duration"
+        ? (input.sessionTimeoutMinutes ?? 480)
+        : null;
   }
 
   if (input.status !== undefined) {

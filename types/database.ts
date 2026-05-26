@@ -29,6 +29,7 @@ export type Json =
 
 type Timestamp = string;
 type WorkspaceKind = "demo" | "founder_test" | "production_customer" | "seed";
+type SessionTimeoutMode = "after_duration" | "always_on";
 type BusinessLifecycleStatus =
   | "active"
   | "archived"
@@ -343,6 +344,8 @@ export type Database = {
           plan_slug: "founder_pilot" | "paused" | "pro" | "starter";
           plan_started_at: Timestamp;
           preferred_language: "en" | "fr-CA";
+          session_timeout_minutes: number | null;
+          session_timeout_mode: SessionTimeoutMode;
           slug: string;
           status: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at: Timestamp;
@@ -362,6 +365,8 @@ export type Database = {
           plan_slug?: "founder_pilot" | "paused" | "pro" | "starter";
           plan_started_at?: Timestamp;
           preferred_language?: "en" | "fr-CA";
+          session_timeout_minutes?: number | null;
+          session_timeout_mode?: SessionTimeoutMode;
           slug: string;
           status?: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at?: Timestamp;
@@ -381,6 +386,8 @@ export type Database = {
           plan_slug?: "founder_pilot" | "paused" | "pro" | "starter";
           plan_started_at?: Timestamp;
           preferred_language?: "en" | "fr-CA";
+          session_timeout_minutes?: number | null;
+          session_timeout_mode?: SessionTimeoutMode;
           slug?: string;
           status?: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at?: Timestamp;
@@ -498,10 +505,13 @@ export type Database = {
             | "business_reactivated"
             | "business_suspended"
             | "internal_note_added"
+            | "password_reset_requested"
             | "plan_changed"
             | "quote_link_disabled"
             | "quote_link_enabled"
+            | "session_policy_changed"
             | "status_changed"
+            | "temporary_password_set"
             | "test_auth_user_deleted"
             | "test_workspace_cleanup_completed";
           actor_user_id: string | null;
@@ -519,10 +529,13 @@ export type Database = {
             | "business_reactivated"
             | "business_suspended"
             | "internal_note_added"
+            | "password_reset_requested"
             | "plan_changed"
             | "quote_link_disabled"
             | "quote_link_enabled"
+            | "session_policy_changed"
             | "status_changed"
+            | "temporary_password_set"
             | "test_auth_user_deleted"
             | "test_workspace_cleanup_completed";
           actor_user_id?: string | null;
@@ -540,10 +553,13 @@ export type Database = {
             | "business_reactivated"
             | "business_suspended"
             | "internal_note_added"
+            | "password_reset_requested"
             | "plan_changed"
             | "quote_link_disabled"
             | "quote_link_enabled"
+            | "session_policy_changed"
             | "status_changed"
+            | "temporary_password_set"
             | "test_auth_user_deleted"
             | "test_workspace_cleanup_completed";
           actor_user_id?: string | null;

@@ -39,14 +39,27 @@ import {
   searchFounderProfilesByDisplayName,
   setFounderPublicLinksActive,
   updateFounderBusinessControls,
+  type FounderAdminActionType,
   type FounderBusinessRecord,
+  type FounderAdminLogRecord,
   type FounderBusinessMemberRecord,
   type FounderBusinessStatus,
   type FounderPlanSlug,
+  type FounderSessionTimeoutMode,
   type FounderWorkspaceKind,
 } from "@/server/repositories/founder-admin.repository";
 
+export type FounderAdminActionSummary = Readonly<{
+  actionType: string;
+  createdAt: string;
+  id: string;
+  newValues: FounderAdminLogRecord["new_values"];
+  note: string | null;
+  previousValues: FounderAdminLogRecord["previous_values"];
+}>;
+
 export type FounderAdminBusiness = Readonly<{
+  actionLog: FounderAdminActionSummary[];
   businessId: string;
   createdAt: string;
   internalNote: string | null;
@@ -61,6 +74,8 @@ export type FounderAdminBusiness = Readonly<{
   preferredLanguage: FounderBusinessRecord["preferred_language"];
   publicLinkActive: boolean;
   publicSlug: string | null;
+  sessionTimeoutMinutes: number | null;
+  sessionTimeoutMode: FounderSessionTimeoutMode;
   slug: string;
   status: FounderBusinessStatus;
   usageCount: number;
@@ -131,8 +146,13 @@ const workspaceKinds = new Set<FounderWorkspaceKind>([
   "demo",
   "seed",
 ]);
+const sessionTimeoutModes = new Set<FounderSessionTimeoutMode>([
+  "after_duration",
+  "always_on",
+]);
 const founderUserPageSizes = new Set([5, 10]);
 const minimumTemporaryPasswordLength = 12;
+const sessionTimeoutMinuteOptions = new Set([15, 30, 60, 240, 480, 720, 1440, 10080]);
 
 type FounderAuthUserRecord = Readonly<{
   confirmed_at?: string;
@@ -174,6 +194,26 @@ export function readFounderTemporaryPassword(value: string): string {
   }
 
   return value;
+}
+
+export function readFounderSessionTimeoutMode(
+  value: string,
+): FounderSessionTimeoutMode {
+  if (sessionTimeoutModes.has(value as FounderSessionTimeoutMode)) {
+    return value as FounderSessionTimeoutMode;
+  }
+
+  throw new Error("Choose a valid sign-out policy.");
+}
+
+export function readFounderSessionTimeoutMinutes(value: string): number {
+  const minutes = Number.parseInt(value, 10);
+
+  if (sessionTimeoutMinuteOptions.has(minutes)) {
+    return minutes;
+  }
+
+  throw new Error("Choose a valid sign-out duration.");
 }
 
 function readUserMetadataText(
@@ -287,6 +327,71 @@ function logFounderAuthAdminSuccess(input: {
   });
 }
 
+async function listFounderTraceBusinessIdsForUser(input: {
+  supabase: ReturnType<typeof createSupabaseServiceRoleClient>;
+  targetUserId: string;
+}): Promise<string[]> {
+  const [memberResult, ownedBusinessResult] = await Promise.all([
+    input.supabase
+      .from("business_members")
+      .select("business_id")
+      .eq("user_id", input.targetUserId),
+    input.supabase
+      .from("businesses")
+      .select("id")
+      .eq("owner_user_id", input.targetUserId),
+  ]);
+
+  if (memberResult.error) {
+    throw new Error(memberResult.error.message);
+  }
+
+  if (ownedBusinessResult.error) {
+    throw new Error(ownedBusinessResult.error.message);
+  }
+
+  return Array.from(
+    new Set([
+      ...(memberResult.data ?? []).map((membership) => membership.business_id),
+      ...(ownedBusinessResult.data ?? []).map((business) => business.id),
+    ]),
+  );
+}
+
+async function insertFounderAuthActionLogs(input: {
+  actionType: Extract<
+    FounderAdminActionType,
+    "password_reset_requested" | "temporary_password_set"
+  >;
+  actorUserId: string;
+  eventId: string;
+  supabase: ReturnType<typeof createSupabaseServiceRoleClient>;
+  targetEmail: string | null;
+  targetUserId: string;
+}): Promise<void> {
+  const businessIds = await listFounderTraceBusinessIdsForUser({
+    supabase: input.supabase,
+    targetUserId: input.targetUserId,
+  });
+
+  await Promise.all(
+    businessIds.map((businessId) =>
+      insertFounderAdminAction({
+        actionType: input.actionType,
+        actorUserId: input.actorUserId,
+        businessId,
+        newValues: {
+          admin_event_id: shortTraceId(input.eventId),
+          target_email: input.targetEmail,
+          target_user_id: input.targetUserId,
+        },
+        previousValues: {},
+        supabase: input.supabase,
+      }),
+    ),
+  );
+}
+
 function readFounderEmails(): Set<string> {
   const env = getServerEnv();
   return new Set(
@@ -340,6 +445,19 @@ function latestByBusiness(items: ReadonlyArray<{ business_id: string; created_at
     }
   }
   return latest;
+}
+
+function mapFounderAdminAction(
+  action: FounderAdminLogRecord,
+): FounderAdminActionSummary {
+  return {
+    actionType: action.action_type,
+    createdAt: action.created_at,
+    id: action.id,
+    newValues: action.new_values,
+    note: action.note,
+    previousValues: action.previous_values,
+  };
 }
 
 export function readFounderPlanSlug(value: string): FounderPlanSlug {
@@ -527,7 +645,7 @@ export async function getFounderAdminOverview(input: {
     listFounderPublicLinks({ supabase }),
     listFounderLeadSignals({ supabase }),
     listFounderUsageSignals({ supabase }),
-    listFounderAdminLog({ supabase }),
+    listFounderAdminLog({ limit: 100, supabase }),
     listFounderDeletionRequests({ supabase }),
     listFounderAuthUsers({
       page: usersPage,
@@ -553,6 +671,7 @@ export async function getFounderAdminOverview(input: {
   const usageCountByBusiness = countByBusiness(usageEvents);
   const latestLeadByBusiness = latestByBusiness(leads);
   const latestUsageByBusiness = latestByBusiness(usageEvents);
+  const actionLogByBusiness = new Map<string, FounderAdminActionSummary[]>();
   const deletionRequestByBusiness = new Map(
     deletionRequests.map((request) => [request.business_id, request]),
   );
@@ -593,12 +712,23 @@ export async function getFounderAdminOverview(input: {
     }
   }
 
+  for (const action of recentActions) {
+    if (!action.business_id) {
+      continue;
+    }
+
+    const existingActions = actionLogByBusiness.get(action.business_id) ?? [];
+    existingActions.push(mapFounderAdminAction(action));
+    actionLogByBusiness.set(action.business_id, existingActions);
+  }
+
   const overviewBusinesses = businesses.map((business) => {
     const latestLead = latestLeadByBusiness.get(business.id);
     const latestUsage = latestUsageByBusiness.get(business.id);
     const link = firstLinkByBusiness.get(business.id);
 
     return {
+      actionLog: actionLogByBusiness.get(business.id)?.slice(0, 12) ?? [],
       businessId: business.id,
       createdAt: business.created_at,
       internalNote: business.internal_note,
@@ -620,6 +750,8 @@ export async function getFounderAdminOverview(input: {
       preferredLanguage: business.preferred_language,
       publicLinkActive: link?.active ?? false,
       publicSlug: link?.slug ?? null,
+      sessionTimeoutMinutes: business.session_timeout_minutes ?? null,
+      sessionTimeoutMode: business.session_timeout_mode ?? "always_on",
       slug: business.slug,
       status: business.status,
       usageCount: usageCountByBusiness.get(business.id) ?? 0,
@@ -756,6 +888,15 @@ export async function requestFounderUserPasswordReset(input: {
       throw new Error(resetError.message);
     }
 
+    await insertFounderAuthActionLogs({
+      actionType: "password_reset_requested",
+      actorUserId: actor.id,
+      eventId,
+      supabase,
+      targetEmail,
+      targetUserId: input.targetUserId,
+    });
+
     logFounderAuthAdminSuccess({
       actionName: "password_reset_requested",
       actorUserId: actor.id,
@@ -810,6 +951,15 @@ export async function setFounderUserTemporaryPassword(input: {
     if (updateError) {
       throw new Error(updateError.message);
     }
+
+    await insertFounderAuthActionLogs({
+      actionType: "temporary_password_set",
+      actorUserId: actor.id,
+      eventId,
+      supabase,
+      targetEmail,
+      targetUserId: input.targetUserId,
+    });
 
     logFounderAuthAdminSuccess({
       actionName: "temporary_password_set",
@@ -963,6 +1113,45 @@ export async function updateFounderQuoteLink(input: {
     newValues: { public_link_active: input.active },
     note: input.note ?? null,
     previousValues: {},
+    supabase,
+  });
+}
+
+export async function updateFounderSessionPolicy(input: {
+  businessId: string;
+  note?: string;
+  sessionTimeoutMinutes: number | null;
+  sessionTimeoutMode: FounderSessionTimeoutMode;
+  user: AuthUser | null;
+}): Promise<void> {
+  const actor = assertFounderUser(input.user);
+  const supabase = createSupabaseServiceRoleClient();
+  const before = await getFounderBusiness({ businessId: input.businessId, supabase });
+  const nextMinutes =
+    input.sessionTimeoutMode === "after_duration"
+      ? (input.sessionTimeoutMinutes ?? 480)
+      : null;
+
+  const after = await updateFounderBusinessControls({
+    businessId: input.businessId,
+    sessionTimeoutMinutes: nextMinutes,
+    sessionTimeoutMode: input.sessionTimeoutMode,
+    supabase,
+  });
+
+  await insertFounderAdminAction({
+    actionType: "session_policy_changed",
+    actorUserId: actor.id,
+    businessId: input.businessId,
+    newValues: {
+      session_timeout_minutes: after.session_timeout_minutes,
+      session_timeout_mode: after.session_timeout_mode,
+    },
+    note: input.note ?? null,
+    previousValues: {
+      session_timeout_minutes: before.session_timeout_minutes ?? null,
+      session_timeout_mode: before.session_timeout_mode ?? "always_on",
+    },
     supabase,
   });
 }

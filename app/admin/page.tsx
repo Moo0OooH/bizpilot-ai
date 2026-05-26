@@ -40,6 +40,7 @@ import {
   updateFounderInternalNoteAction,
   updateFounderPlanAction,
   updateFounderQuoteLinkAction,
+  updateFounderSessionPolicyAction,
   updateFounderStatusAction,
   updateFounderWorkspaceKindAction,
 } from "@/server/actions/founder-admin.actions";
@@ -48,6 +49,7 @@ import {
   getFounderAdminOverview,
   readFounderUserPage,
   readFounderUserPageSize,
+  type FounderAdminActionSummary,
   type FounderAdminBusiness,
   type FounderAdminUser,
 } from "@/server/services/founder-admin.service";
@@ -76,6 +78,7 @@ type AdminPageProps = Readonly<{
 
 type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
+type SessionTimeoutMode = FounderAdminBusiness["sessionTimeoutMode"];
 type WorkspaceKind = FounderAdminBusiness["workspaceKind"];
 
 const planOptions: ReadonlyArray<{ label: string; value: PlanSlug }> = [
@@ -99,6 +102,25 @@ const workspaceKindOptions: ReadonlyArray<{ label: string; value: WorkspaceKind 
   { label: "Seed", value: "seed" },
 ];
 
+const sessionTimeoutModeOptions: ReadonlyArray<{
+  label: string;
+  value: SessionTimeoutMode;
+}> = [
+  { label: "Always on", value: "always_on" },
+  { label: "Sign out after duration", value: "after_duration" },
+];
+
+const sessionTimeoutOptions: ReadonlyArray<{ label: string; value: number }> = [
+  { label: "15 minutes", value: 15 },
+  { label: "30 minutes", value: 30 },
+  { label: "1 hour", value: 60 },
+  { label: "4 hours", value: 240 },
+  { label: "8 hours", value: 480 },
+  { label: "12 hours", value: 720 },
+  { label: "24 hours", value: 1440 },
+  { label: "7 days", value: 10080 },
+];
+
 const planLabels: Record<PlanSlug, string> = {
   founder_pilot: "Founder Pilot",
   paused: "Paused",
@@ -119,6 +141,26 @@ const workspaceKindLabels: Record<WorkspaceKind, string> = {
   production_customer: "Production customer",
   seed: "Seed",
 };
+
+const adminActionLabels: Readonly<Record<string, string>> = {
+  business_cancelled: "Business cancelled",
+  business_deletion_requested: "Deletion requested",
+  business_reactivated: "Business reactivated",
+  business_suspended: "Business suspended",
+  internal_note_added: "Internal note saved",
+  password_reset_requested: "Password reset requested",
+  plan_changed: "Plan changed",
+  quote_link_disabled: "Quote link disabled",
+  quote_link_enabled: "Quote link enabled",
+  session_policy_changed: "Session policy changed",
+  status_changed: "Workspace status changed",
+  temporary_password_set: "Temporary password set",
+  test_auth_user_deleted: "Test auth user deleted",
+  test_workspace_cleanup_completed: "Test workspace cleanup",
+};
+
+const controlPanelClass =
+  "rounded-[18px] border border-[var(--dash-border)] bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)]";
 
 type UserPriorityOption = Readonly<{
   description: string;
@@ -195,8 +237,111 @@ function formatDate(value: string | null): string {
   }).format(new Date(value));
 }
 
+function formatDateTime(value: string | null): string {
+  if (!value) {
+    return "No activity yet";
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(value));
+}
+
 function formatSlug(value: string | null): string {
   return value ? `/quote/${value}` : "No quote link";
+}
+
+function formatDuration(minutes: number): string {
+  if (minutes < 60) {
+    return `${minutes} minutes`;
+  }
+
+  if (minutes % 1440 === 0) {
+    const days = minutes / 1440;
+    return days === 1 ? "1 day" : `${days} days`;
+  }
+
+  if (minutes % 60 === 0) {
+    const hours = minutes / 60;
+    return hours === 1 ? "1 hour" : `${hours} hours`;
+  }
+
+  return `${minutes} minutes`;
+}
+
+function sessionPolicyLabel(
+  mode: SessionTimeoutMode,
+  minutes: number | null,
+): string {
+  if (mode === "after_duration") {
+    return `Sign out after ${formatDuration(minutes ?? 480)}`;
+  }
+
+  return "Always on";
+}
+
+function humanizeAdminKey(value: string): string {
+  return value
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function formatAdminJsonValue(value: unknown): string {
+  if (value === null || value === undefined) {
+    return "empty";
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "on" : "off";
+  }
+
+  if (typeof value === "number") {
+    return String(value);
+  }
+
+  if (typeof value === "string") {
+    return value.replaceAll("_", " ");
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => formatAdminJsonValue(item)).join(", ");
+  }
+
+  if (typeof value === "object") {
+    const entries = Object.entries(value as Record<string, unknown>);
+
+    if (entries.length === 0) {
+      return "no prior value";
+    }
+
+    return entries
+      .map(([key, item]) => `${humanizeAdminKey(key)}: ${formatAdminJsonValue(item)}`)
+      .join("; ");
+  }
+
+  return String(value);
+}
+
+function formatActionChange(action: FounderAdminActionSummary): string {
+  if (action.actionType === "internal_note_added") {
+    return action.newValues &&
+      typeof action.newValues === "object" &&
+      "internal_note_present" in action.newValues
+      ? "Internal note presence changed"
+      : "Internal note saved";
+  }
+
+  return `${formatAdminJsonValue(action.previousValues)} -> ${formatAdminJsonValue(
+    action.newValues,
+  )}`;
+}
+
+function shortActionId(value: string): string {
+  return value.slice(0, 8);
 }
 
 function statusTone(status: BusinessStatus) {
@@ -546,6 +691,115 @@ function FounderAccessBlocked({ message }: Readonly<{ message: string }>) {
   );
 }
 
+function FounderSessionPolicyForm({
+  business,
+}: Readonly<{ business: FounderAdminBusiness }>) {
+  return (
+    <form action={updateFounderSessionPolicyAction} className={controlPanelClass}>
+      <input name="businessId" type="hidden" value={business.businessId} />
+      <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+        Session policy
+        <select
+          className={inputClass}
+          defaultValue={business.sessionTimeoutMode}
+          name="sessionTimeoutMode"
+        >
+          {sessionTimeoutModeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="mt-2 grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+        Sign-out duration
+        <select
+          className={inputClass}
+          defaultValue={business.sessionTimeoutMinutes ?? 480}
+          name="sessionTimeoutMinutes"
+        >
+          {sessionTimeoutOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <input
+        className={`${inputClass} mt-2`}
+        name="note"
+        placeholder="Reason owner can trace later"
+      />
+      <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+        Checked on the next dashboard request. Every policy edit is written to the
+        customer system log.
+      </p>
+      <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
+        Save session policy
+      </button>
+    </form>
+  );
+}
+
+function FounderSystemChangeLog({
+  actions,
+}: Readonly<{ actions: FounderAdminActionSummary[] }>) {
+  return (
+    <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)] md:col-span-2">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Customer system change log
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Owner-visible trail for founder/admin changes, with trace IDs for
+            support verification.
+          </p>
+        </div>
+        <StatusBadge tone="blue">{actions.length} logged</StatusBadge>
+      </div>
+
+      <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
+        {actions.length > 0 ? (
+          actions.map((action) => (
+            <div
+              className="grid gap-2 bg-[var(--dash-surface-muted)] px-4 py-3 text-[12px] sm:grid-cols-[150px_minmax(0,1fr)_105px] sm:items-start"
+              key={action.id}
+            >
+              <div>
+                <p className="font-black text-[var(--dash-text)]">
+                  {adminActionLabels[action.actionType] ??
+                    humanizeAdminKey(action.actionType)}
+                </p>
+                <p className="mt-1 font-bold text-[var(--dash-text-muted)]">
+                  {formatDateTime(action.createdAt)}
+                </p>
+              </div>
+              <div className="min-w-0">
+                <p className="break-words font-semibold leading-5 text-[var(--dash-text-secondary)]">
+                  {formatActionChange(action)}
+                </p>
+                {action.note ? (
+                  <p className="mt-1 break-words leading-5 text-[var(--dash-text-muted)]">
+                    Note: {action.note}
+                  </p>
+                ) : null}
+              </div>
+              <span className="rounded-full border border-[var(--dash-border)] bg-white px-3 py-1.5 text-center font-black text-[var(--dash-text-secondary)]">
+                #{shortActionId(action.id)}
+              </span>
+            </div>
+          ))
+        ) : (
+          <p className="bg-[var(--dash-surface-muted)] px-4 py-5 text-center text-sm text-[var(--dash-text-secondary)]">
+            No system changes logged for this customer yet.
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function BusinessControlCard({
   business,
   dryRun,
@@ -582,6 +836,12 @@ function BusinessControlCard({
               </StatusBadge>
               <StatusBadge tone="neutral">
                 {business.lifecycleStatus.replaceAll("_", " ")}
+              </StatusBadge>
+              <StatusBadge tone={business.sessionTimeoutMode === "always_on" ? "emerald" : "amber"}>
+                {sessionPolicyLabel(
+                  business.sessionTimeoutMode,
+                  business.sessionTimeoutMinutes,
+                )}
               </StatusBadge>
               {business.deletionRequestStatus ? (
                 <StatusBadge tone="red">
@@ -638,6 +898,18 @@ function BusinessControlCard({
             </p>
           </div>
 
+          <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 text-sm">
+            <p className="font-black text-[var(--dash-text)]">
+              {sessionPolicyLabel(
+                business.sessionTimeoutMode,
+                business.sessionTimeoutMinutes,
+              )}
+            </p>
+            <p className="mt-1 text-[var(--dash-text-secondary)]">
+              Owner sessions follow this policy on dashboard requests.
+            </p>
+          </div>
+
           {dryRun ? (
             <div className="rounded-[18px] border border-[#2DD4BF]/25 bg-[#2DD4BF]/10 p-4 text-sm">
               <p className="font-black text-[var(--dash-text)]">
@@ -667,7 +939,7 @@ function BusinessControlCard({
         <div className="grid gap-4 md:grid-cols-2">
           <form
             action={updateFounderPlanAction}
-            className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)]"
+            className={controlPanelClass}
           >
             <input name="businessId" type="hidden" value={business.businessId} />
             <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
@@ -696,7 +968,7 @@ function BusinessControlCard({
 
           <form
             action={updateFounderStatusAction}
-            className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)]"
+            className={controlPanelClass}
           >
             <input name="businessId" type="hidden" value={business.businessId} />
             <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
@@ -725,7 +997,7 @@ function BusinessControlCard({
 
           <form
             action={updateFounderWorkspaceKindAction}
-            className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)]"
+            className={controlPanelClass}
           >
             <input name="businessId" type="hidden" value={business.businessId} />
             <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
@@ -758,7 +1030,7 @@ function BusinessControlCard({
 
           <form
             action={updateFounderQuoteLinkAction}
-            className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)]"
+            className={controlPanelClass}
           >
             <input name="businessId" type="hidden" value={business.businessId} />
             <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
@@ -784,7 +1056,7 @@ function BusinessControlCard({
 
           <form
             action={updateFounderInternalNoteAction}
-            className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)]"
+            className={controlPanelClass}
           >
             <input name="businessId" type="hidden" value={business.businessId} />
             <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
@@ -801,6 +1073,8 @@ function BusinessControlCard({
             </button>
           </form>
 
+          <FounderSessionPolicyForm business={business} />
+
           <FounderTestCleanupForm
             businessId={business.businessId}
             businessName={business.name}
@@ -808,6 +1082,8 @@ function BusinessControlCard({
             dryRunAvailable={dryRun?.businessId === business.businessId}
             workspaceKind={business.workspaceKind}
           />
+
+          <FounderSystemChangeLog actions={business.actionLog} />
         </div>
       </div>
     </DashboardCard>
@@ -1321,13 +1597,14 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                   key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
                 >
                   <span className="font-black text-[var(--dash-text)]">
-                    {action.actionType.replaceAll("_", " ")}
+                    {adminActionLabels[action.actionType] ??
+                      humanizeAdminKey(action.actionType)}
                   </span>
                   <span className="truncate text-[var(--dash-text-secondary)]">
                     {action.note ?? action.businessId ?? "No note"}
                   </span>
                   <span className="text-[12px] font-bold text-[var(--dash-text-muted)] sm:text-right">
-                    {formatDate(action.createdAt)}
+                    {formatDateTime(action.createdAt)}
                   </span>
                 </div>
               ))

@@ -23,6 +23,55 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getSupabaseServerClientConfig } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
 
+type SessionPolicyBusiness = Partial<
+  Pick<
+    Database["public"]["Tables"]["businesses"]["Row"],
+    "session_timeout_minutes" | "session_timeout_mode"
+  >
+>;
+
+function sessionPolicyExpired(input: {
+  business: SessionPolicyBusiness | null | undefined;
+  lastSignInAt: string | null | undefined;
+  now: number;
+}): boolean {
+  if (input.business?.session_timeout_mode !== "after_duration") {
+    return false;
+  }
+
+  const minutes = input.business.session_timeout_minutes;
+  if (!minutes || minutes < 1 || !input.lastSignInAt) {
+    return false;
+  }
+
+  const signedInAt = Date.parse(input.lastSignInAt);
+  if (!Number.isFinite(signedInAt)) {
+    return false;
+  }
+
+  return input.now - signedInAt >= minutes * 60 * 1000;
+}
+
+function redirectToSignIn(input: {
+  nextPath: string;
+  requestUrl: string;
+  response: NextResponse;
+}): NextResponse {
+  const signInUrl = new URL("/auth/sign-in", input.requestUrl);
+  signInUrl.searchParams.set("next", input.nextPath);
+  signInUrl.searchParams.set(
+    "notice",
+    "Your session ended based on workspace security settings.",
+  );
+
+  const redirectResponse = NextResponse.redirect(signInUrl);
+  for (const cookie of input.response.cookies.getAll()) {
+    redirectResponse.cookies.set(cookie);
+  }
+
+  return redirectResponse;
+}
+
 export async function protectDashboardRequest(
   request: NextRequest,
 ): Promise<NextResponse> {
@@ -65,5 +114,29 @@ export async function protectDashboardRequest(
     return NextResponse.redirect(signInUrl);
   }
 
-  return NextResponse.next();
+  const { data: businesses, error } = await supabase
+    .from("businesses")
+    .select("*")
+    .order("created_at", { ascending: true })
+    .limit(1);
+  const activeBusiness = businesses?.[0] as SessionPolicyBusiness | undefined;
+
+  if (
+    !error &&
+    sessionPolicyExpired({
+      business: activeBusiness,
+      lastSignInAt: user.last_sign_in_at,
+      now: Date.now(),
+    })
+  ) {
+    await supabase.auth.signOut();
+
+    return redirectToSignIn({
+      nextPath: request.nextUrl.pathname,
+      requestUrl: request.url,
+      response,
+    });
+  }
+
+  return response;
 }

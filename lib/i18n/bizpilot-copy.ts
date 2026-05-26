@@ -688,6 +688,23 @@ type DashboardCopy = Readonly<{
       lockBehaviorDescription: string;
       title: string;
     }>;
+    sessionPolicy: Readonly<{
+      afterDuration: (minutes: number) => string;
+      alwaysOn: string;
+      description: string;
+      managedByFounder: string;
+      title: string;
+    }>;
+    systemHistory: Readonly<{
+      actions: Readonly<Record<string, string>>;
+      changeFallback: string;
+      description: string;
+      emptyBody: string;
+      emptyTitle: string;
+      noteLabel: string;
+      title: string;
+      traceLabel: string;
+    }>;
     deletionForm: Readonly<{
       acknowledgement: string;
       body: string;
@@ -1499,6 +1516,47 @@ const englishCopy: BizPilotCopy = {
         lockBehaviorDescription:
           "Deletion requests lock quote links, new submissions, and AI draft generation while review is pending.",
         title: "Workspace lifecycle",
+      },
+      sessionPolicy: {
+        afterDuration: (minutes) =>
+          minutes >= 1440
+            ? `Sign out after ${minutes / 1440} day${minutes === 1440 ? "" : "s"}`
+            : minutes >= 60
+              ? `Sign out after ${minutes / 60} hour${minutes === 60 ? "" : "s"}`
+              : `Sign out after ${minutes} minutes`,
+        alwaysOn: "Always on",
+        description:
+          "Founder-managed sign-out policy for this workspace. Changes are logged below for traceability.",
+        managedByFounder:
+          "Managed by BizPilot founder support. The policy is checked on dashboard requests.",
+        title: "Session security",
+      },
+      systemHistory: {
+        actions: {
+          business_cancelled: "Business cancelled",
+          business_deletion_requested: "Deletion requested",
+          business_reactivated: "Business reactivated",
+          business_suspended: "Business suspended",
+          internal_note_added: "Support note saved",
+          password_reset_requested: "Password reset requested",
+          plan_changed: "Plan changed",
+          quote_link_disabled: "Quote link disabled",
+          quote_link_enabled: "Quote link enabled",
+          session_policy_changed: "Session policy changed",
+          status_changed: "Workspace status changed",
+          temporary_password_set: "Temporary password set",
+          test_auth_user_deleted: "Test login deleted",
+          test_workspace_cleanup_completed: "Test workspace cleanup",
+        },
+        changeFallback: "Workspace setting changed",
+        description:
+          "A traceable owner view of founder/admin changes that affected this workspace.",
+        emptyBody:
+          "When BizPilot founder support changes plan, access, quote links, or session policy, the event appears here.",
+        emptyTitle: "No system changes logged yet.",
+        noteLabel: "Note",
+        title: "System change history",
+        traceLabel: "Trace",
       },
       deletionForm: {
         acknowledgement:
@@ -2554,6 +2612,47 @@ const frenchCopy: BizPilotCopy = {
         lockBehaviorDescription:
           "Les demandes de suppression verrouillent les liens de soumission, les nouvelles demandes et la génération de brouillons IA pendant la révision.",
         title: "Cycle de vie de l'espace",
+      },
+      sessionPolicy: {
+        afterDuration: (minutes) =>
+          minutes >= 1440
+            ? `Déconnexion après ${minutes / 1440} jour${minutes === 1440 ? "" : "s"}`
+            : minutes >= 60
+              ? `Déconnexion après ${minutes / 60} heure${minutes === 60 ? "" : "s"}`
+              : `Déconnexion après ${minutes} minutes`,
+        alwaysOn: "Toujours actif",
+        description:
+          "Politique de déconnexion gérée par le fondateur pour cet espace. Les changements sont consignés ci-dessous.",
+        managedByFounder:
+          "Géré par le support fondateur BizPilot. La politique est vérifiée lors des requêtes du tableau de bord.",
+        title: "Sécurité de session",
+      },
+      systemHistory: {
+        actions: {
+          business_cancelled: "Entreprise annulée",
+          business_deletion_requested: "Suppression demandée",
+          business_reactivated: "Entreprise réactivée",
+          business_suspended: "Entreprise suspendue",
+          internal_note_added: "Note support enregistrée",
+          password_reset_requested: "Réinitialisation du mot de passe demandée",
+          plan_changed: "Forfait modifié",
+          quote_link_disabled: "Lien de soumission désactivé",
+          quote_link_enabled: "Lien de soumission activé",
+          session_policy_changed: "Politique de session modifiée",
+          status_changed: "Statut de l'espace modifié",
+          temporary_password_set: "Mot de passe temporaire défini",
+          test_auth_user_deleted: "Connexion test supprimée",
+          test_workspace_cleanup_completed: "Nettoyage d'espace test",
+        },
+        changeFallback: "Paramètre de l'espace modifié",
+        description:
+          "Vue traçable, côté propriétaire, des changements fondateur/admin qui ont touché cet espace.",
+        emptyBody:
+          "Quand le support fondateur BizPilot change le forfait, l'accès, les liens de soumission ou la politique de session, l'événement apparaît ici.",
+        emptyTitle: "Aucun changement système enregistré.",
+        noteLabel: "Note",
+        title: "Historique des changements système",
+        traceLabel: "Trace",
       },
       deletionForm: {
         acknowledgement:

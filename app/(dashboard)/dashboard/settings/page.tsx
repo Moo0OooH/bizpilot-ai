@@ -45,6 +45,10 @@ import { signOutAction } from "@/server/actions/auth.actions";
 import { updateWorkspaceLanguageAction } from "@/server/actions/business-configuration.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
+import {
+  getOwnerSystemChangeLog,
+  type OwnerSystemChangeLogItem,
+} from "@/server/services/owner-system-log.service";
 
 export const dynamic = "force-dynamic";
 
@@ -54,6 +58,74 @@ type SettingsPageProps = Readonly<{
     notice?: string;
   }>;
 }>;
+
+function formatSettingsDate(value: string): string {
+  return new Intl.DateTimeFormat("en-US", {
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(value));
+}
+
+function formatSettingsJsonValue(value: unknown): string {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  if (typeof value === "boolean") {
+    return value ? "on" : "off";
+  }
+
+  if (typeof value === "number") {
+    return String(value);
+  }
+
+  if (typeof value === "string") {
+    return value.replaceAll("_", " ");
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => formatSettingsJsonValue(item)).join(", ");
+  }
+
+  if (typeof value === "object") {
+    return Object.entries(value as Record<string, unknown>)
+      .map(([key, item]) => `${key.replaceAll("_", " ")}: ${formatSettingsJsonValue(item)}`)
+      .join("; ");
+  }
+
+  return String(value);
+}
+
+function formatOwnerActionChange(action: OwnerSystemChangeLogItem): string {
+  if (action.actionType === "internal_note_added") {
+    return "Support note updated";
+  }
+
+  const previous = formatSettingsJsonValue(action.previousValues);
+  const next = formatSettingsJsonValue(action.newValues);
+
+  if (!previous && !next) {
+    return "";
+  }
+
+  return previous ? `${previous} -> ${next}` : next;
+}
+
+function formatSessionPolicyLabel(input: {
+  alwaysOn: string;
+  afterDuration: (minutes: number) => string;
+  minutes: number | null;
+  mode: string | null | undefined;
+}): string {
+  if (input.mode === "after_duration") {
+    return input.afterDuration(input.minutes ?? 480);
+  }
+
+  return input.alwaysOn;
+}
 
 export default async function SettingsPage({ searchParams }: SettingsPageProps) {
   const [query, user] = await Promise.all([searchParams, getCurrentUser()]);
@@ -84,6 +156,16 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
   });
   const copy = getBizPilotCopy(activeLanguage).dashboard;
   const settingsCopy = copy.settings;
+  const systemChangeLog = await getOwnerSystemChangeLog({
+    businessId: activeBusiness.id,
+    userId: user.id,
+  });
+  const sessionPolicy = formatSessionPolicyLabel({
+    afterDuration: settingsCopy.sessionPolicy.afterDuration,
+    alwaysOn: settingsCopy.sessionPolicy.alwaysOn,
+    minutes: activeBusiness.session_timeout_minutes ?? null,
+    mode: activeBusiness.session_timeout_mode ?? "always_on",
+  });
 
   return (
     <main className="space-y-4">
@@ -175,6 +257,25 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
 
             <DashboardCard className="p-[22px]">
               <SectionHeader
+                description={settingsCopy.sessionPolicy.description}
+                title={settingsCopy.sessionPolicy.title}
+              />
+              <div className="my-3 h-px bg-[var(--dash-border)]" />
+              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+                  {settingsCopy.sessionPolicy.title}
+                </p>
+                <p className="mt-1 text-sm font-extrabold text-[var(--dash-text)]">
+                  {sessionPolicy}
+                </p>
+                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  {settingsCopy.sessionPolicy.managedByFounder}
+                </p>
+              </div>
+            </DashboardCard>
+
+            <DashboardCard className="p-[22px]">
+              <SectionHeader
                 description={settingsCopy.futureSectionsDescription}
                 title={settingsCopy.futureSections}
               />
@@ -224,6 +325,56 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                   {item}
                 </p>
               ))}
+            </div>
+          </DashboardCard>
+
+          <DashboardCard className="p-[22px]">
+            <SectionHeader
+              description={settingsCopy.systemHistory.description}
+              title={settingsCopy.systemHistory.title}
+            />
+            <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
+              {systemChangeLog.length > 0 ? (
+                systemChangeLog.map((action) => (
+                  <div
+                    className="grid gap-2 bg-[var(--dash-surface-muted)] px-4 py-3 text-[12px] sm:grid-cols-[160px_minmax(0,1fr)_100px]"
+                    key={action.id}
+                  >
+                    <div>
+                      <p className="font-extrabold text-[var(--dash-text)]">
+                        {settingsCopy.systemHistory.actions[action.actionType] ??
+                          settingsCopy.systemHistory.changeFallback}
+                      </p>
+                      <p className="mt-1 font-semibold text-[var(--dash-text-muted)]">
+                        {formatSettingsDate(action.createdAt)}
+                      </p>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="break-words leading-5 text-[var(--dash-text-secondary)]">
+                        {formatOwnerActionChange(action) ||
+                          settingsCopy.systemHistory.changeFallback}
+                      </p>
+                      {action.note ? (
+                        <p className="mt-1 break-words leading-5 text-[var(--dash-text-muted)]">
+                          {settingsCopy.systemHistory.noteLabel}: {action.note}
+                        </p>
+                      ) : null}
+                    </div>
+                    <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-3 py-1.5 text-center font-extrabold text-[var(--dash-text-secondary)]">
+                      {settingsCopy.systemHistory.traceLabel} {action.id.slice(0, 8)}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <div className="bg-[var(--dash-surface-muted)] px-4 py-5 text-center">
+                  <p className="text-sm font-extrabold text-[var(--dash-text)]">
+                    {settingsCopy.systemHistory.emptyTitle}
+                  </p>
+                  <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                    {settingsCopy.systemHistory.emptyBody}
+                  </p>
+                </div>
+              )}
             </div>
           </DashboardCard>
 

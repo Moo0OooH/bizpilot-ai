@@ -34,6 +34,7 @@
 | `0018_business_lifecycle_deletion_foundation.sql` | Adds workspace classification, lifecycle status, owner-only deletion requests, non-PII deletion tombstones, helper functions, RLS policies, and explicit grants. No destructive deletion or purge job. |
 | `0019_lifecycle_helper_execute_grant_hardening.sql` | Tightens EXECUTE grants for the 0018 lifecycle/deletion helper functions by removing broad PUBLIC/anon execution and restating authenticated/service-role access. Grants-only; no data or policy changes. |
 | `0020_founder_test_auth_user_cleanup.sql` | Extends the service-role-only founder admin audit log action-type constraint to permit safe fake/test auth user cleanup auditing. Constraint-only; no data or policy changes. |
+| `0021_session_policy_and_owner_audit.sql` | Adds founder-controlled workspace sign-out policy fields and extends founder admin audit actions for session policy and password-support traceability. |
 
 ---
 
@@ -49,7 +50,7 @@ The original `0003` migration was removed from the repository because keeping it
 
 ## Rules for new migrations
 
-1. **Preserve numbering.** New files must use the next available integer prefix (currently `0021`). Never rename or re-number an existing migration.
+1. **Preserve numbering.** New files must use the next available integer prefix (currently `0022`). Never rename or re-number an existing migration.
 2. **One concern per file.** A migration adds, alters, or removes a focused set of related tables, functions, policies, or grants. Cross-cutting changes go in separate files.
 3. **File header is mandatory.** Use the BizPilot SQL header format (path, project, description, role, related, author, created/updated, change log) as shown in the existing files.
 4. **Tables created here must include:**

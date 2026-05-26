@@ -23,6 +23,8 @@ import { getCurrentUser } from "@/server/services/auth.service";
 import {
   readFounderBusinessStatus,
   readFounderPlanSlug,
+  readFounderSessionTimeoutMinutes,
+  readFounderSessionTimeoutMode,
   readFounderTemporaryPassword,
   readFounderWorkspaceKind,
   requestFounderUserPasswordReset,
@@ -30,6 +32,7 @@ import {
   updateFounderInternalNote,
   updateFounderPlan,
   updateFounderQuoteLink,
+  updateFounderSessionPolicy,
   updateFounderStatus,
   updateFounderWorkspaceKind,
 } from "@/server/services/founder-admin.service";
@@ -86,6 +89,8 @@ function redirectWithFounderAdminError(error: unknown): never {
       value === "Auth user not found." ||
       value === "Target user does not have an email address." ||
       value === "Use at least 12 characters for the temporary password." ||
+      value === "Choose a valid sign-out policy." ||
+      value === "Choose a valid sign-out duration." ||
       value === "Confirm that you will share this temporary password securely." ||
       value === "Founder admin cannot change the signed-in account password here." ||
       value === "Founder admin cannot change a founder allowlist account password here.",
@@ -226,6 +231,37 @@ export async function updateFounderQuoteLinkAction(
 
   revalidatePath("/admin");
   redirect("/admin?notice=Quote%20link%20updated.");
+}
+
+export async function updateFounderSessionPolicyAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    const user = await getCurrentUser();
+    const note = readOptionalFormValue(formData, "note");
+    const sessionTimeoutMode = readFounderSessionTimeoutMode(
+      readRequiredFormValue(formData, "sessionTimeoutMode"),
+    );
+
+    await updateFounderSessionPolicy({
+      businessId: readRequiredFormValue(formData, "businessId"),
+      sessionTimeoutMinutes:
+        sessionTimeoutMode === "after_duration"
+          ? readFounderSessionTimeoutMinutes(
+              readRequiredFormValue(formData, "sessionTimeoutMinutes"),
+            )
+          : null,
+      sessionTimeoutMode,
+      user,
+      ...(note ? { note } : {}),
+    });
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/dashboard/settings");
+  redirect("/admin?notice=Session%20policy%20updated.");
 }
 
 export async function updateFounderInternalNoteAction(
