@@ -9,7 +9,14 @@ export type FeatureCategory =
   | "scheduling"
   | "settings";
 
-export type FeatureLevel = "admin" | "core" | "custom" | "founder" | "pilot" | "plus";
+export type FeatureLevel =
+  | "admin"
+  | "core"
+  | "custom"
+  | "founder"
+  | "pilot"
+  | "plus"
+  | "premium";
 
 export type FeatureState =
   | "blocked_external"
@@ -29,6 +36,8 @@ export type FeatureKey =
   | "fr_ca_language"
   | "founder_admin_controls"
   | "invoices_payments"
+  | "customer_contact_list"
+  | "lead_source_attribution_analytics"
   | "quote_link_intake"
   | "quote_recovery_queue"
   | "scheduling_booking"
@@ -138,6 +147,22 @@ export const featureRegistry = [
     guideStatus: "draft",
     key: "invoices_payments",
     level: "plus",
+    ownerAuthority: "founder",
+    state: "planned",
+  },
+  {
+    category: "data",
+    guideStatus: "required",
+    key: "lead_source_attribution_analytics",
+    level: "premium",
+    ownerAuthority: "founder",
+    state: "planned",
+  },
+  {
+    category: "communication",
+    guideStatus: "required",
+    key: "customer_contact_list",
+    level: "premium",
     ownerAuthority: "founder",
     state: "planned",
   },

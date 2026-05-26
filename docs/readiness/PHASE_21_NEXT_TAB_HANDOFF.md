@@ -89,6 +89,16 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
   Settings feature-level cards, EN/fr-CA guide copy, unit coverage, and
   evidence doc
   `docs/readiness/PHASE_21T_FEATURE_ENTITLEMENT_SETTINGS_EVIDENCE.md`.
+- Phase 21U fixed the authenticated dashboard runtime crash caused by passing a
+  function-valued Settings formatter into the client dashboard shell. The shell
+  now receives only serializable copy, error boundaries are present, and the
+  authenticated local synthetic dashboard smoke passed for overview, leads,
+  lead detail, quote setup, business profile, and Settings. Evidence:
+  `docs/readiness/PHASE_21U_DASHBOARD_RUNTIME_FIX_AND_SMOKE.md`.
+- Owner-requested premium/admin feature scenarios are now registered and
+  documented: lead source analytics using `leads.source_channel` plus
+  `lead_source_metadata`, and customer contact list visibility by email/phone
+  contact type. Do not add `leads.source`.
 
 ## 2. Current Git State
 

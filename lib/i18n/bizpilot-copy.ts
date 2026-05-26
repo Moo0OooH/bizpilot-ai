@@ -1640,6 +1640,36 @@ const englishCopy: BizPilotCopy = {
             visualGuide:
               "Show invoice draft, payment status, error state, and manual fallback.",
           },
+          customer_contact_list: {
+            activation:
+              "Founder enables after contact consent, retention, export, and premium access rules are defined.",
+            name: "Customer contact list",
+            ownerGuide:
+              "Define owner/admin visibility, contact import rules, opt-out handling, and export limits.",
+            setup:
+              "Planned premium feature; contact data rules and backup posture are required first.",
+            summary:
+              "A premium owner/admin list built from customer email or phone contact paths for follow-up and statistics.",
+            textGuide:
+              "Explains who can see the list, what contact types are stored, and how advertising use is limited.",
+            visualGuide:
+              "Show customer list, contact type filters, owner/admin visibility, consent status, and export-disabled state.",
+          },
+          lead_source_attribution_analytics: {
+            activation:
+              "Founder enables after source taxonomy and chart privacy rules are approved.",
+            name: "Lead source analytics",
+            ownerGuide:
+              "Use leads.source_channel and lead_source_metadata; never add leads.source.",
+            setup:
+              "Planned premium/admin feature; source taxonomy and dashboard charts are not active yet.",
+            summary:
+              "Shows whether leads came from website, Instagram, Facebook, Google, direct links, or campaign URLs.",
+            textGuide:
+              "Explains source labels, UTM fields, referrers, and why unknown sources stay honest.",
+            visualGuide:
+              "Show source mix chart, top channels, recent source list, unknown bucket, and date filter.",
+          },
           quote_link_intake: {
             activation: "Owner controls the active public quote link.",
             name: "Public quote link and intake",
@@ -1723,6 +1753,7 @@ const englishCopy: BizPilotCopy = {
           founder: "Founder",
           pilot: "Pilot",
           plus: "Plus",
+          premium: "Premium",
         },
         ownerLabel: "Owner",
         stateLabels: {
@@ -2956,6 +2987,36 @@ const frenchCopy: BizPilotCopy = {
             visualGuide:
               "Montrer brouillon facture, statut paiement, erreur et fallback manuel.",
           },
+          customer_contact_list: {
+            activation:
+              "Le fondateur active apres regles de consentement, retention, export et acces premium.",
+            name: "Liste de contacts clients",
+            ownerGuide:
+              "Definir visibilite owner/admin, import contacts, opt-out et limites export.",
+            setup:
+              "Fonction premium planifiee; regles contact et posture backup requises d'abord.",
+            summary:
+              "Liste premium owner/admin creee depuis email ou telephone client pour suivi et statistiques.",
+            textGuide:
+              "Explique qui voit la liste, quels contacts sont stockes et les limites d'usage publicitaire.",
+            visualGuide:
+              "Montrer liste clients, filtres par contact, visibilite owner/admin, consentement et export desactive.",
+          },
+          lead_source_attribution_analytics: {
+            activation:
+              "Le fondateur active apres taxonomie source et regles de confidentialite des graphiques.",
+            name: "Analytics des sources de leads",
+            ownerGuide:
+              "Utiliser leads.source_channel et lead_source_metadata; ne jamais ajouter leads.source.",
+            setup:
+              "Fonction premium/admin planifiee; taxonomie source et graphiques non actifs.",
+            summary:
+              "Montre si les leads viennent du site web, Instagram, Facebook, Google, liens directs ou campagnes.",
+            textGuide:
+              "Explique libelles de source, UTM, referents et pourquoi les sources inconnues restent honnetes.",
+            visualGuide:
+              "Montrer graphique des sources, meilleurs canaux, liste recente, bucket inconnu et filtre date.",
+          },
           quote_link_intake: {
             activation: "Le proprietaire controle le lien public actif.",
             name: "Lien public et intake",
@@ -3039,6 +3100,7 @@ const frenchCopy: BizPilotCopy = {
           founder: "Fondateur",
           pilot: "Pilote",
           plus: "Plus",
+          premium: "Premium",
         },
         ownerLabel: "Responsable",
         stateLabels: {

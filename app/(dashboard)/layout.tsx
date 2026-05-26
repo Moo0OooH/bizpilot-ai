@@ -90,7 +90,9 @@ export default async function DashboardLayout({
     actions: copy.actions,
     nav: copy.nav,
     pages: copy.pages,
-    settings: copy.settings,
+    settings: {
+      plan: copy.settings.plan,
+    },
     status: copy.status,
     theme: copy.theme,
   };

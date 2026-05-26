@@ -39,6 +39,9 @@ Canonical standard added:
   links.
 - External-blocked feature: model-backed AI and SMS/WhatsApp provider paths.
 - Planned features: team members, scheduling/booking, invoices/payments.
+- Planned premium/admin features: lead source analytics from
+  `leads.source_channel` / `lead_source_metadata`, and a customer contact list
+  keyed by email/phone visibility for owner/main-admin use.
 
 ## Safety notes
 
@@ -47,6 +50,8 @@ Canonical standard added:
   were read, printed, or committed.
 - No RLS policy was weakened.
 - No feature was default-enabled beyond current implemented core surfaces.
+- No `leads.source` column was added; source attribution remains on
+  `leads.source_channel` plus `lead_source_metadata`.
 - OpenAI remains blocked by provider/account quota until the owner confirms the
   support ticket is resolved.
 

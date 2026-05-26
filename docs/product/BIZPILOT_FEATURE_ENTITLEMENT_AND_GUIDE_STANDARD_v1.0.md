@@ -141,7 +141,36 @@ A new feature is complete only when:
 - smoke coverage exists for public, auth, provider, or payment paths when relevant,
 - readiness/product docs link to the guide evidence.
 
-## 8. Conflict Rule
+## 8. Required Premium Feature Scenarios
+
+The next premium/admin feature family must include lead source attribution and
+customer contact-list controls.
+
+Lead source attribution:
+
+- use `leads.source_channel` and `lead_source_metadata`,
+- do not add `leads.source`,
+- show sources such as website, Instagram, Facebook, Google, direct link, and
+  campaign/UTM URLs,
+- include an honest unknown/uncaptured bucket,
+- support admin/owner chart views only after privacy and retention rules are
+  documented,
+- avoid exposing raw referrer/contact details to users who should only see
+  aggregate statistics.
+
+Customer contact list:
+
+- allow owner/main-admin visibility only,
+- store/display contact type clearly: email, phone, or both,
+- require consent/retention/export guidance before launch,
+- keep advertising/statistics use behind a premium feature level,
+- provide disabled/export-blocked states until backup and privacy posture are
+  approved.
+
+Both features require visual guides, text guides, owner/admin guides, Settings
+feature-level visibility, and smoke coverage before activation.
+
+## 9. Conflict Rule
 
 Older docs that say "do not expand scope" should now be read as:
 

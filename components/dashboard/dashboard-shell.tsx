@@ -14,8 +14,11 @@ type DashboardTheme = "dark" | "light";
 
 export type DashboardShellCopy = Pick<
   BizPilotCopy["dashboard"],
-  "actions" | "nav" | "pages" | "settings" | "status" | "theme"
->;
+  "actions" | "nav" | "pages" | "status" | "theme"
+> &
+  Readonly<{
+    settings: Pick<BizPilotCopy["dashboard"]["settings"], "plan">;
+  }>;
 
 type DashboardShellProps = Readonly<{
   activeBusinessName: string;
