@@ -157,7 +157,7 @@ function HeroProductScene({
       className="pointer-events-none relative min-h-[520px] w-full min-w-0 overflow-hidden rounded-[22px] border p-3 shadow-[0_38px_120px_rgba(0,0,0,0.42)] sm:min-h-[560px] sm:p-4 lg:min-h-[620px]"
       style={{
         background:
-          "radial-gradient(circle at 76% 8%, rgba(226,232,240,0.20), transparent 13rem), radial-gradient(circle at 22% 4%, rgba(45,212,191,0.20), transparent 18rem), linear-gradient(145deg, rgba(13,28,42,0.96), rgba(5,12,20,0.98))",
+          "linear-gradient(145deg, rgba(19,39,55,0.96) 0%, rgba(8,19,31,0.98) 48%, rgba(5,12,20,0.98) 100%)",
         borderColor: "rgba(148,203,226,0.22)",
       }}
     >
@@ -165,15 +165,6 @@ function HeroProductScene({
         className="absolute inset-x-0 top-0 h-px"
         style={{ background: "linear-gradient(90deg, transparent, rgba(226,232,240,0.46), rgba(45,212,191,0.28), transparent)" }}
       />
-      <div
-        className="absolute -right-20 top-12 h-64 w-64 rounded-full blur-3xl"
-        style={{ backgroundColor: "rgba(45,212,191,0.18)" }}
-      />
-      <div
-        className="absolute -bottom-24 left-10 h-72 w-72 rounded-full blur-3xl"
-        style={{ backgroundColor: "rgba(84,167,255,0.12)" }}
-      />
-
       <div className="relative grid h-full min-h-[494px] grid-rows-[auto_minmax(0,1fr)_auto] gap-3 sm:min-h-[528px] lg:min-h-[588px]">
         <div className="flex items-center justify-between gap-3 rounded-[14px] border px-3 py-2" style={{ backgroundColor: "rgba(255,255,255,0.045)", borderColor: marketingTone.border }}>
           <div className="flex min-w-0 items-center gap-2">
@@ -232,7 +223,7 @@ function HeroProductScene({
               className="min-h-0 rounded-[18px] border p-4"
               style={{
                 background:
-                  "radial-gradient(circle at 96% 4%, rgba(226,232,240,0.18), transparent 10rem), linear-gradient(135deg, #2A3033 0%, #1D252B 45%, #0E151D 100%)",
+                  "linear-gradient(135deg, #2A3033 0%, #1D252B 45%, #0E151D 100%)",
                 borderColor: "rgba(148,203,226,0.30)",
                 boxShadow:
                   "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 34px rgba(56,189,248,0.08)",
@@ -312,7 +303,7 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
         }}
       />
       <MarketingShell className="relative max-w-[1320px]">
-        <div className="relative min-h-[calc(100svh-96px)] overflow-hidden rounded-[28px] border px-4 py-6 sm:px-7 sm:py-8 lg:min-h-[760px] lg:px-10 lg:py-10" style={{ borderColor: "rgba(148,203,226,0.16)" }}>
+        <div className="relative min-h-[calc(100svh-96px)] overflow-hidden px-4 py-6 sm:px-7 sm:py-8 lg:min-h-[760px] lg:px-10 lg:py-10">
           <div className="absolute inset-0">
             <HeroProductScene copy={copy.heroDesk} />
           </div>
