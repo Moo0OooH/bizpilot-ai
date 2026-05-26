@@ -156,9 +156,9 @@ export function ResetPasswordForm({
           <input name="code" type="hidden" value={code} />
 
           {[
-            ["password", copy.newPassword, copy.passwordHelp],
-            ["confirmPassword", copy.confirmPassword, copy.repeatNewPassword],
-          ].map(([name, label, placeholder]) => (
+            ["password", copy.newPassword],
+            ["confirmPassword", copy.confirmPassword],
+          ].map(([name, label]) => (
             <label className={authLabelClassName} key={name}>
               <span style={{ color: "var(--biz-page-text-soft)" }}>
                 {label}
@@ -170,7 +170,7 @@ export function ResetPasswordForm({
                   className={authInputClassName}
                   minLength={8}
                   name={name}
-                  placeholder={placeholder}
+                  placeholder={copy.password}
                   required
                   style={{
                     backgroundColor: "rgba(255,255,255,0.04)",

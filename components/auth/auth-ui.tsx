@@ -123,7 +123,7 @@ export function AuthShell({
             href="/"
             style={{ color: "var(--biz-page-text-soft)" }}
           >
-            ← {copy.backHome}
+            &larr; {copy.backHome}
           </Link>
         </div>
       </div>

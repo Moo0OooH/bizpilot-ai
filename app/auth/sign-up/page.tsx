@@ -87,7 +87,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
             [
               "password",
               copy.password,
-              copy.passwordHelp,
+              copy.password,
               "password",
               "password",
               "new-password",
