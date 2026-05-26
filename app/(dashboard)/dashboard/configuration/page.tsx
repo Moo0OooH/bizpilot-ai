@@ -319,7 +319,7 @@ export default async function DashboardPage({
                       <div
                         className="h-full rounded-full"
                         style={{
-                          backgroundColor: "#17D492",
+                          backgroundColor: "var(--dash-primary)",
                           width: `${readinessPercent}%`,
                         }}
                       />
@@ -940,7 +940,7 @@ export default async function DashboardPage({
                   <div
                     className="h-full rounded-full"
                     style={{
-                      backgroundColor: "#17D492",
+                      backgroundColor: "var(--dash-primary)",
                       width: `${readinessPercent}%`,
                     }}
                   />

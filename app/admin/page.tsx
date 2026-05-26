@@ -167,7 +167,7 @@ const adminActionLabels: Readonly<Record<string, string>> = {
 };
 
 const controlPanelClass =
-  "rounded-[18px] border border-[var(--dash-border)] bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)]";
+  "rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)]";
 
 type UserPriorityOption = Readonly<{
   description: string;
@@ -550,7 +550,7 @@ function sortUsersByPriority(users: FounderAdminUser[]): FounderAdminUser[] {
 function priorityFilterClass(active: boolean): string {
   return active
     ? "rounded-[16px] border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-3 text-left text-sm font-black text-[var(--dash-text)] shadow-[0_14px_30px_rgba(15,118,110,0.12)]"
-    : "rounded-[16px] border border-[var(--dash-border)] bg-white p-3 text-left text-sm font-black text-[var(--dash-text-secondary)] transition hover:-translate-y-0.5 hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]";
+    : "rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 text-left text-sm font-black text-[var(--dash-text-secondary)] transition hover:-translate-y-0.5 hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]";
 }
 
 function adminUsersHref(
@@ -588,7 +588,7 @@ function AdminNotice({
       ? {
           backgroundColor: "rgba(255,95,102,0.10)",
           borderColor: "rgba(255,95,102,0.24)",
-          color: "#FFB4B4",
+          color: "var(--dash-text)",
         }
       : {
           backgroundColor: "rgba(45,212,191,0.10)",
@@ -907,7 +907,7 @@ function FounderSystemChangeLog({
   actions,
 }: Readonly<{ actions: FounderAdminActionSummary[] }>) {
   return (
-    <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)] md:col-span-2">
+    <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)] md:col-span-2">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
@@ -947,7 +947,7 @@ function FounderSystemChangeLog({
                   </p>
                 ) : null}
               </div>
-              <span className="rounded-full border border-[var(--dash-border)] bg-white px-3 py-1.5 text-center font-black text-[var(--dash-text-secondary)]">
+              <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-1.5 text-center font-black text-[var(--dash-text-secondary)]">
                 #{shortActionId(action.id)}
               </span>
             </div>
@@ -1017,7 +1017,7 @@ function BusinessControlCard({
           </div>
 
           <dl className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3 xl:grid-cols-2">
-            <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4">
+            <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
               <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
                 Leads
               </dt>
@@ -1025,7 +1025,7 @@ function BusinessControlCard({
                 {business.leadCount}
               </dd>
             </div>
-            <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4">
+            <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
               <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
                 AI usage
               </dt>
@@ -1033,7 +1033,7 @@ function BusinessControlCard({
                 {business.usageCount}
               </dd>
             </div>
-            <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4">
+            <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
               <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
                 Users
               </dt>
@@ -1041,7 +1041,7 @@ function BusinessControlCard({
                 {business.memberCount}
               </dd>
             </div>
-            <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4">
+            <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
               <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
                 Last activity
               </dt>
@@ -1051,7 +1051,7 @@ function BusinessControlCard({
             </div>
           </dl>
 
-          <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 text-sm">
+          <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 text-sm">
             <p className="font-black text-[var(--dash-text)]">
               {formatSlug(business.publicSlug)}
             </p>
@@ -1060,7 +1060,7 @@ function BusinessControlCard({
             </p>
           </div>
 
-          <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-4 text-sm">
+          <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 text-sm">
             <p className="font-black text-[var(--dash-text)]">
               {sessionPolicyLabel(
                 business.sessionTimeoutMode,
@@ -1073,7 +1073,7 @@ function BusinessControlCard({
           </div>
 
           {dryRun ? (
-            <div className="rounded-[18px] border border-[#2DD4BF]/25 bg-[#2DD4BF]/10 p-4 text-sm">
+            <div className="rounded-[18px] border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-4 text-sm">
               <p className="font-black text-[var(--dash-text)]">
                 Cleanup dry run counts
               </p>
@@ -1082,7 +1082,7 @@ function BusinessControlCard({
                   .filter(([, count]) => count > 0)
                   .map(([table, count]) => (
                     <div
-                      className="rounded-[12px] border border-[var(--dash-border)] bg-white px-3 py-2"
+                      className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2"
                       key={table}
                     >
                       <dt className="truncate font-bold text-[var(--dash-text-muted)]">
@@ -1259,7 +1259,7 @@ function FounderPasswordControls({
     <div className="grid gap-4 rounded-[20px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4 md:grid-cols-2">
       <form
         action={founderPasswordResetAction}
-        className="grid gap-3 rounded-[18px] border border-[var(--dash-border)] bg-white p-4"
+        className="grid gap-3 rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4"
       >
         <input name="targetUserId" type="hidden" value={user.userId} />
         <div>
@@ -1277,7 +1277,7 @@ function FounderPasswordControls({
 
       <form
         action={founderTemporaryPasswordAction}
-        className="grid gap-3 rounded-[18px] border border-[var(--dash-border)] bg-white p-4"
+        className="grid gap-3 rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4"
       >
         <input name="targetUserId" type="hidden" value={user.userId} />
         <div>
@@ -1298,7 +1298,7 @@ function FounderPasswordControls({
         />
         <label className="flex items-start gap-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
           <input
-            className="mt-0.5 h-4 w-4 accent-[#17D492]"
+            className="mt-0.5 h-4 w-4 accent-[var(--dash-primary)]"
             name="temporaryPasswordAcknowledgement"
             type="checkbox"
           />
@@ -1415,7 +1415,7 @@ function FounderUsersSection({
       </div>
 
       <form
-        className="grid gap-4 rounded-[22px] border border-[var(--dash-border)] bg-white p-4 lg:grid-cols-[minmax(260px,1fr)_130px_180px_180px_auto] lg:items-end"
+        className="grid gap-4 rounded-[22px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 lg:grid-cols-[minmax(260px,1fr)_130px_180px_180px_auto] lg:items-end"
         method="get"
       >
         <input name="userPage" type="hidden" value="1" />
@@ -1487,7 +1487,7 @@ function FounderUsersSection({
 
             return (
             <details
-              className="group overflow-hidden rounded-[22px] border border-[var(--dash-border)] bg-white shadow-[0_14px_36px_rgba(15,23,42,0.06)]"
+              className="group overflow-hidden rounded-[22px] border border-[var(--dash-border)] bg-[var(--dash-surface)] shadow-[0_14px_36px_rgba(15,23,42,0.06)]"
               key={user.userId}
             >
               <summary className="grid cursor-pointer list-none gap-4 px-5 py-4 text-sm transition hover:bg-[var(--dash-surface-muted)] xl:grid-cols-[minmax(260px,1.1fr)_minmax(220px,0.9fr)_minmax(280px,1fr)_minmax(180px,0.65fr)_110px] xl:items-center">
@@ -1568,7 +1568,7 @@ function FounderUsersSection({
                 </div>
               </div>
 
-              <span className="justify-self-start rounded-full border border-[var(--dash-border)] bg-white px-4 py-2 text-[11px] font-black text-[var(--dash-text-secondary)] group-open:border-[var(--dash-primary)] group-open:bg-[var(--dash-primary-soft)] group-open:text-[var(--dash-text)] xl:justify-self-end">
+              <span className="justify-self-start rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-2 text-[11px] font-black text-[var(--dash-text-secondary)] group-open:border-[var(--dash-primary)] group-open:bg-[var(--dash-primary-soft)] group-open:text-[var(--dash-text)] xl:justify-self-end">
                 Modify
               </span>
               </summary>
@@ -1584,7 +1584,7 @@ function FounderUsersSection({
                     }
                   />
                 ) : (
-                  <div className="rounded-[18px] border border-[var(--dash-border)] bg-white p-5 text-sm text-[var(--dash-text-secondary)]">
+                  <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-5 text-sm text-[var(--dash-text-secondary)]">
                     No linked business controls for this auth user yet.
                   </div>
                 )}
@@ -1599,7 +1599,7 @@ function FounderUsersSection({
           );
           })
         ) : (
-          <p className="rounded-[18px] border border-[var(--dash-border)] bg-white px-4 py-6 text-center text-sm text-[var(--dash-text-secondary)]">
+          <p className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-6 text-center text-sm text-[var(--dash-text-secondary)]">
             No users found.
           </p>
         )}
