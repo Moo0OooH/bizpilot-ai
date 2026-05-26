@@ -1,0 +1,27 @@
+name: Checkout Diagnostic
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checkout-diagnostic:
+    name: Checkout diagnostic
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print safe GitHub context
+        run: |
+          echo "repository=${{ github.repository }}"
+          echo "actor=${{ github.actor }}"
+          echo "event_name=${{ github.event_name }}"
+          echo "ref=${{ github.ref }}"
+          echo "sha=${{ github.sha }}"
+
+      - name: Print git version
+        run: git --version
+
+      - name: Test anonymous public git access
+        run: git ls-remote https://github.com/Moo0OooH/bizpilot-ai.git HEAD
