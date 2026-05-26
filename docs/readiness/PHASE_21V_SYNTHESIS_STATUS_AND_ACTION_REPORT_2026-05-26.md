@@ -102,3 +102,25 @@
 - بخش‌های با ریسک بالا که مانع real pilot هستند هنوز باز هستند.
 - پیشنهاد: همین مسیر را ادامه بدهیم و هر feature جدید را فقط به‌صورت entitlement + guide + smoke قابل‌استناد جلو ببریم، نه فعال‌سازی پیش‌فرض.
 
+## 6) Merge-Readiness Evidence Closure (2026-05-26)
+
+- Commit hash: `57a5256`
+- Commit message: `docs(readiness): add phase 21v synthesis status report`
+- Current branch: `phase-21q-dashboard-redesign`
+- git status --short --branch: `## phase-21q-dashboard-redesign...origin/phase-21q-dashboard-redesign [ahead 1]`
+- Production public smoke (`pnpm smoke:public -- --base-url=https://bizpilo.com`): `9 passed, 0 failed`
+- `pnpm verify`: PASS
+  - lint PASS
+  - typecheck PASS
+  - test:unit PASS (`63` tests)
+  - build PASS
+- RLS test: blocked by environment (missing local `DATABASE_URL`), not code failure
+- Remaining blockers before real data:
+  - production public quote security smoke (lead create/visibility/isolation)
+  - fr-CA production quote smoke
+  - horizontal access smoke in production
+  - live admin visual QA with founder-authorized session
+  - SMTP/custom email provider smoke (signup/reset)
+  - OpenAI real-key output validation (provider quota issue pending)
+  - backup/export/restore decision and restore drill
+  - production `0020` decision and execution only after owner approval
