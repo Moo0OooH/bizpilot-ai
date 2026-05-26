@@ -25,4 +25,16 @@ describe("Founder admin source safety", () => {
     assert.equal(source.includes("buildFounderLinkedUsersPage"), true);
     assert.equal(source.includes("supabase.auth.admin.getUserById(userId)"), true);
   });
+
+  it("keeps founder production health checks server-only and safe", () => {
+    const source = readFileSync("server/services/production-health.service.ts", "utf8");
+    const pageSource = readFileSync("app/admin/page.tsx", "utf8");
+
+    assert.equal(source.includes('import "server-only"'), true);
+    assert.equal(source.includes("assertFounderUser"), true);
+    assert.equal(source.includes("SUPABASE_SERVICE_ROLE_KEY"), false);
+    assert.equal(source.includes("qfqendrqimqvkoojpjao"), true);
+    assert.equal(pageSource.includes("FounderProductionHealthPanel"), true);
+    assert.equal(pageSource.includes("Production health"), true);
+  });
 });

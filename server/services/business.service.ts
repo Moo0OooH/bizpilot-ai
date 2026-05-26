@@ -100,11 +100,20 @@ async function bootstrapDefaultQuoteConfiguration(input: {
   business: BusinessRecord;
   supabase: SupabaseClient<Database>;
 }): Promise<void> {
-  const cleaningTemplate = await getCleaningTemplate({
-    businessId: input.business.id,
-    preferredLanguage: input.business.preferred_language,
-    supabase: input.supabase,
-  });
+  let cleaningTemplate: Awaited<ReturnType<typeof getCleaningTemplate>>;
+  try {
+    cleaningTemplate = await getCleaningTemplate({
+      businessId: input.business.id,
+      preferredLanguage: input.business.preferred_language,
+      supabase: input.supabase,
+    });
+  } catch (error) {
+    safeLogger.warn("workspace_recovery.template_lookup_failed", {
+      businessId: input.business.id,
+      errorName: error instanceof Error ? error.name : "unknown",
+    });
+    throw error;
+  }
   const consentNotice =
     "By submitting this request, you agree that the business may contact you about your quote. AI may help draft owner-reviewed replies.";
 
@@ -221,35 +230,61 @@ export async function createFoundingBusiness(input: {
   let business: BusinessRecord;
 
   try {
-    business = await createBusinessForOwner({
-      name: input.businessName,
-      ownerUserId: input.ownerUserId,
-      slug: baseSlug,
+    try {
+      business = await createBusinessForOwner({
+        name: input.businessName,
+        ownerUserId: input.ownerUserId,
+        slug: baseSlug,
+        supabase,
+      });
+    } catch (error) {
+      if (!isUniqueSlugError(error)) {
+        throw error;
+      }
+
+      business = await createBusinessForOwner({
+        name: input.businessName,
+        ownerUserId: input.ownerUserId,
+        slug: fallbackSlug,
+        supabase,
+      });
+    }
+  } catch (error) {
+    safeLogger.warn("workspace_recovery.business_create_failed", {
+      errorName: error instanceof Error ? error.name : "unknown",
+      userId: input.ownerUserId,
+    });
+    throw error;
+  }
+
+  try {
+    await createOwnerMembership({
+      businessId: business.id,
+      supabase,
+      userId: input.ownerUserId,
+    });
+  } catch (error) {
+    safeLogger.warn("workspace_recovery.owner_membership_create_failed", {
+      businessId: business.id,
+      errorName: error instanceof Error ? error.name : "unknown",
+      userId: input.ownerUserId,
+    });
+    throw error;
+  }
+
+  try {
+    await bootstrapDefaultQuoteConfiguration({
+      business,
       supabase,
     });
   } catch (error) {
-    if (!isUniqueSlugError(error)) {
-      throw error;
-    }
-
-    business = await createBusinessForOwner({
-      name: input.businessName,
-      ownerUserId: input.ownerUserId,
-      slug: fallbackSlug,
-      supabase,
+    safeLogger.warn("workspace_recovery.default_config_failed", {
+      businessId: business.id,
+      errorName: error instanceof Error ? error.name : "unknown",
+      userId: input.ownerUserId,
     });
+      throw error;
   }
-
-  await createOwnerMembership({
-    businessId: business.id,
-    supabase,
-    userId: input.ownerUserId,
-  });
-
-  await bootstrapDefaultQuoteConfiguration({
-    business,
-    supabase,
-  });
 
   return business;
 }
@@ -298,25 +333,42 @@ export async function recoverWorkspaceAccess(input: {
     throw new Error("Business name is required.");
   }
 
-  const supabase = createSupabaseServiceRoleClient();
-  const [memberResult, ownedBusinessResult] = await Promise.all([
-    supabase
-      .from("business_members")
-      .select("*")
-      .eq("user_id", input.userId)
-      .order("created_at", { ascending: true }),
-    supabase
-      .from("businesses")
-      .select("*")
-      .eq("owner_user_id", input.userId)
-      .order("created_at", { ascending: true }),
-  ]);
+  let supabase: ReturnType<typeof createSupabaseServiceRoleClient>;
+  try {
+    supabase = createSupabaseServiceRoleClient();
+  } catch (error) {
+    safeLogger.warn("workspace_recovery.service_client_failed", {
+      errorName: error instanceof Error ? error.name : "unknown",
+      userId: input.userId,
+    });
+    throw error;
+  }
+
+  const memberResult = await supabase
+    .from("business_members")
+    .select("*")
+    .eq("user_id", input.userId)
+    .order("created_at", { ascending: true });
 
   if (memberResult.error) {
+    safeLogger.warn("workspace_recovery.membership_read_failed", {
+      errorCode: memberResult.error.code,
+      userId: input.userId,
+    });
     throw new Error(memberResult.error.message);
   }
 
+  const ownedBusinessResult = await supabase
+    .from("businesses")
+    .select("*")
+    .eq("owner_user_id", input.userId)
+    .order("created_at", { ascending: true });
+
   if (ownedBusinessResult.error) {
+    safeLogger.warn("workspace_recovery.business_read_failed", {
+      errorCode: ownedBusinessResult.error.code,
+      userId: input.userId,
+    });
     throw new Error(ownedBusinessResult.error.message);
   }
 

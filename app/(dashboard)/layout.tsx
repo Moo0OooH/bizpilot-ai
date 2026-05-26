@@ -46,9 +46,6 @@ export default async function DashboardLayout({
   if (!activeBusiness) {
     const accessSummary = await getWorkspaceAccessSummary({ userId: user.id });
     const recoveryError = cookieStore.get(WORKSPACE_RECOVERY_ERROR_COOKIE)?.value;
-    if (recoveryError) {
-      cookieStore.delete(WORKSPACE_RECOVERY_ERROR_COOKIE);
-    }
     const isDeletionRequested =
       accessSummary?.lifecycleStatus === "deletion_requested";
     const activeLanguage = resolveWorkspaceInterfaceLanguage({

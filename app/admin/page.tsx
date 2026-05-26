@@ -55,6 +55,10 @@ import {
   type FounderAdminUser,
 } from "@/server/services/founder-admin.service";
 import {
+  getFounderProductionHealth,
+  type FounderProductionHealth,
+} from "@/server/services/production-health.service";
+import {
   dryRunFounderTestWorkspaceCleanup,
   type FounderCleanupDryRun,
 } from "@/server/services/founder-test-cleanup.service";
@@ -638,6 +642,83 @@ function FounderAdminSafetyRail() {
           </p>
         </div>
       </div>
+    </DashboardCard>
+  );
+}
+
+function healthCount(check: { count: number | null; ok: boolean }): string {
+  if (!check.ok) {
+    return "Unavailable";
+  }
+
+  return check.count === null ? "OK" : String(check.count);
+}
+
+function FounderProductionHealthPanel({
+  health,
+}: Readonly<{ health: FounderProductionHealth | null }>) {
+  if (!health) {
+    return (
+      <DashboardCard className="p-4 sm:p-5" variant="priority">
+        <SectionHeader
+          description="Runtime health could not be loaded without exposing internals."
+          title="Production health"
+        />
+        <AdminNotice tone="error">
+          Founder runtime diagnostics are unavailable.
+        </AdminNotice>
+      </DashboardCard>
+    );
+  }
+
+  const checks = [
+    ["Supabase target", health.supabaseTargetMatchesCanonical ? "Canonical" : "Mismatch", health.supabaseTargetMatchesCanonical],
+    ["Auth admin", healthCount(health.authAdmin), health.authAdmin.ok],
+    ["Businesses", healthCount(health.businesses), health.businesses.ok],
+    ["Members", healthCount(health.businessMembers), health.businessMembers.ok],
+    ["Profiles", healthCount(health.profiles), health.profiles.ok],
+    ["Quote links", healthCount(health.publicLinks), health.publicLinks.ok],
+    ["Action log", healthCount(health.recentActions), health.recentActions.ok],
+    ["Deletion requests", healthCount(health.deletionRequests), health.deletionRequests.ok],
+  ] as const;
+  const unhealthy = checks.some(([, , ok]) => !ok);
+
+  return (
+    <DashboardCard className="p-4 sm:p-5" variant="priority">
+      <SectionHeader
+        action={
+          <StatusBadge tone={unhealthy ? "red" : "emerald"}>
+            {unhealthy ? "Needs attention" : "Healthy"}
+          </StatusBadge>
+        }
+        description="Founder-only runtime wiring checks. Values are counts or safe statuses only."
+        title="Production health"
+      />
+      <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+        {checks.map(([label, value, ok]) => (
+          <div
+            className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+            key={label}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-[12px] font-black uppercase text-[var(--dash-text-muted)]">
+                {label}
+              </p>
+              <StatusBadge tone={ok ? "emerald" : "red"}>
+                {ok ? "OK" : "Fail"}
+              </StatusBadge>
+            </div>
+            <p className="mt-2 text-lg font-black text-[var(--dash-text)]">
+              {value}
+            </p>
+          </div>
+        ))}
+      </div>
+      {health.supabaseHostRef ? (
+        <p className="mt-3 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          Supabase project ref: {health.supabaseHostRef}
+        </p>
+      ) : null}
     </DashboardCard>
   );
 }
@@ -1501,6 +1582,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   }
 
   let dryRun: FounderCleanupDryRun | null = null;
+  const productionHealth = await getFounderProductionHealth({ user }).catch(
+    () => null,
+  );
   if (params.cleanupBusinessId) {
     try {
       dryRun = await dryRunFounderTestWorkspaceCleanup({
@@ -1588,6 +1672,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           usersSearchMode={overview.usersSearchMode}
           usersTotal={overview.usersTotal}
         />
+
+        <FounderProductionHealthPanel health={productionHealth} />
 
         <FounderAdminSafetyRail />
 

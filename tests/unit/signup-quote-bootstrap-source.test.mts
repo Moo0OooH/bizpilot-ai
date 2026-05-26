@@ -51,12 +51,19 @@ describe("Signup quote bootstrap source safety", () => {
 
     assert.equal(layoutSource.includes("Recover workspace"), true);
     assert.equal(layoutSource.includes("WORKSPACE_RECOVERY_ERROR_COOKIE"), true);
+    assert.equal(layoutSource.includes("cookieStore.delete"), false);
     assert.equal(layoutSource.includes("defaultValue={user.businessName"), true);
     assert.equal(layoutSource.includes('name="accountEmail"'), true);
     assert.equal(actionSource.includes("getCurrentUser"), true);
     assert.equal(actionSource.includes("recoverWorkspaceAccess"), true);
     assert.equal(actionSource.includes("workspace_recovery.failed"), true);
     assert.equal(actionSource.includes("errorCode"), true);
+    assert.equal(serviceSource.includes("workspace_recovery.business_create_failed"), true);
+    assert.equal(
+      serviceSource.includes("workspace_recovery.owner_membership_create_failed"),
+      true,
+    );
+    assert.equal(serviceSource.includes("workspace_recovery.default_config_failed"), true);
     assert.equal(
       serviceSource.includes("blocked_existing_workspace_state"),
       true,
