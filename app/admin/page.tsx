@@ -648,12 +648,40 @@ function FounderAdminSafetyRail() {
   );
 }
 
-function healthCount(check: { count: number | null; ok: boolean }): string {
+function healthCount(check: FounderProductionHealth["authAdmin"]): string {
   if (!check.ok) {
-    return "Unavailable";
+    return check.status ? `HTTP ${check.status}` : "Unavailable";
   }
 
   return check.count === null ? "OK" : String(check.count);
+}
+
+function credentialKindLabel(
+  kind: FounderProductionHealth["serviceCredentialKind"],
+): string {
+  const labels: Record<
+    FounderProductionHealth["serviceCredentialKind"],
+    string
+  > = {
+    jwt_anon: "JWT anon",
+    jwt_other: "JWT non-service",
+    jwt_service_role: "JWT service",
+    missing: "Missing",
+    supabase_publishable: "Publishable",
+    supabase_secret: "Secret",
+    unknown: "Unknown",
+  };
+
+  return labels[kind];
+}
+
+function isServiceCredentialLikelyPrivileged(
+  health: FounderProductionHealth,
+): boolean {
+  return (
+    health.serviceCredentialKind === "jwt_service_role" ||
+    health.serviceCredentialKind === "supabase_secret"
+  );
 }
 
 function FounderProductionHealthPanel({
@@ -675,7 +703,22 @@ function FounderProductionHealthPanel({
 
   const checks = [
     ["Supabase target", health.supabaseTargetMatchesCanonical ? "Canonical" : "Mismatch", health.supabaseTargetMatchesCanonical],
-    ["Auth admin", healthCount(health.authAdmin), health.authAdmin.ok],
+    [
+      "Service key",
+      credentialKindLabel(health.serviceCredentialKind),
+      isServiceCredentialLikelyPrivileged(health),
+    ],
+    [
+      "Key project",
+      health.serviceCredentialMatchesSupabaseRef === false
+        ? "Mismatch"
+        : health.serviceCredentialMatchesSupabaseRef === true
+          ? "Matches"
+          : "Not encoded",
+      health.serviceCredentialMatchesSupabaseRef !== false,
+    ],
+    ["Auth SDK", healthCount(health.authAdmin), health.authAdmin.ok],
+    ["Auth REST", healthCount(health.authRest), health.authRest.ok],
     ["Businesses", healthCount(health.businesses), health.businesses.ok],
     ["Members", healthCount(health.businessMembers), health.businessMembers.ok],
     ["Profiles", healthCount(health.profiles), health.profiles.ok],
@@ -721,6 +764,20 @@ function FounderProductionHealthPanel({
           Supabase project ref: {health.supabaseHostRef}
         </p>
       ) : null}
+      {health.serviceCredentialIssuerRef ? (
+        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          Service credential issuer ref: {health.serviceCredentialIssuerRef}
+          {health.serviceCredentialMatchesSupabaseRef === false
+            ? " (does not match Supabase target)"
+            : ""}
+        </p>
+      ) : null}
+      {health.authAdmin.status || health.authRest.status ? (
+        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          Auth status: SDK {health.authAdmin.status ?? "n/a"} / REST{" "}
+          {health.authRest.status ?? "n/a"}
+        </p>
+      ) : null}
     </DashboardCard>
   );
 }
@@ -734,7 +791,9 @@ function isProductionHealthUnhealthy(
 
   return [
     health.supabaseTargetMatchesCanonical,
-    health.authAdmin.ok,
+    isServiceCredentialLikelyPrivileged(health),
+    health.serviceCredentialMatchesSupabaseRef !== false,
+    health.authAdmin.ok || health.authRest.ok,
     health.businesses.ok,
     health.businessMembers.ok,
     health.profiles.ok,

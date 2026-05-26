@@ -9,12 +9,13 @@
  * - lib/supabase/client.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-05-26
  * Change Log:
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created server Supabase config placeholder and added standard header.
  * - 2026-05-04: Clarified server-only placeholder boundary and returned immutable config.
  * - 2026-05-04: Added official Supabase SSR and service-role client factories.
+ * - 2026-05-26: Added an explicit server user agent for service-role Auth Admin calls.
  * ============================================================
  */
 
@@ -26,6 +27,8 @@ import { cookies } from "next/headers";
 
 import { getServerEnv } from "@/lib/env/server-env";
 import type { Database } from "@/types/database";
+
+const serviceRoleUserAgent = "BizPilot-Server-Admin/1.0";
 
 export type SupabaseServerClientConfig = Readonly<{
   url: string;
@@ -78,6 +81,11 @@ export function createSupabaseServiceRoleClient() {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
+    },
+    global: {
+      headers: {
+        "User-Agent": serviceRoleUserAgent,
+      },
     },
   });
 }

@@ -9,7 +9,9 @@
  * - server/repositories/founder-admin.repository.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-05-22
+ * Last Updated: 2026-05-26
+ * Change Log:
+ * - 2026-05-26: Sent a server user agent on Auth Admin REST fallback to avoid browser-agent secret-key rejection.
  * ============================================================
  */
 
@@ -153,6 +155,7 @@ const sessionTimeoutModes = new Set<FounderSessionTimeoutMode>([
 const founderUserPageSizes = new Set([5, 10]);
 const minimumTemporaryPasswordLength = 12;
 const sessionTimeoutMinuteOptions = new Set([15, 30, 60, 240, 480, 720, 1440, 10080]);
+const serviceRoleUserAgent = "BizPilot-Server-Admin/1.0";
 
 type FounderAuthUserRecord = Readonly<{
   confirmed_at?: string;
@@ -527,6 +530,7 @@ async function fetchFounderAuthUsersFromRest(input: {
   const response = await fetch(url, {
     cache: "no-store",
     headers: {
+      "User-Agent": serviceRoleUserAgent,
       apikey: env.SUPABASE_SERVICE_ROLE_KEY,
       authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
     },

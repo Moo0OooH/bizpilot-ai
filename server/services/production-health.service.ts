@@ -7,14 +7,18 @@
 
 import "server-only";
 
-import { getServerEnv } from "@/lib/env/server-env";
-import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
+import {
+  createSupabaseServiceRoleClient,
+  getSupabaseServerClientConfig,
+} from "@/lib/supabase/server";
+import { safeLogger } from "@/server/logging/safe-logger";
 import type { AuthUser } from "@/server/services/auth.service";
 import { assertFounderUser } from "@/server/services/founder-admin.service";
 import type { Database } from "@/types/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 const canonicalProductionSupabaseRef = "qfqendrqimqvkoojpjao";
+const serviceRoleUserAgent = "BizPilot-Server-Admin/1.0";
 
 type HealthCheck = Readonly<{
   count: number | null;
@@ -22,14 +26,27 @@ type HealthCheck = Readonly<{
   status: number | null;
 }>;
 
+type ServiceCredentialKind =
+  | "jwt_anon"
+  | "jwt_other"
+  | "jwt_service_role"
+  | "missing"
+  | "supabase_publishable"
+  | "supabase_secret"
+  | "unknown";
+
 export type FounderProductionHealth = Readonly<{
   authAdmin: HealthCheck;
+  authRest: HealthCheck;
   businessMembers: HealthCheck;
   businesses: HealthCheck;
   deletionRequests: HealthCheck;
   publicLinks: HealthCheck;
   profiles: HealthCheck;
   recentActions: HealthCheck;
+  serviceCredentialIssuerRef: string | null;
+  serviceCredentialKind: ServiceCredentialKind;
+  serviceCredentialMatchesSupabaseRef: boolean | null;
   supabaseHostRef: string | null;
   supabaseTargetMatchesCanonical: boolean;
 }>;
@@ -40,6 +57,86 @@ function readSupabaseHostRef(url: string): string | null {
   } catch {
     return null;
   }
+}
+
+function decodeJwtPayload(value: string): Record<string, unknown> | null {
+  const parts = value.split(".");
+
+  if (parts.length !== 3 || !parts[1]) {
+    return null;
+  }
+
+  try {
+    const payload = Buffer.from(parts[1], "base64url").toString("utf8");
+    const parsed = JSON.parse(payload) as unknown;
+
+    return parsed && typeof parsed === "object"
+      ? (parsed as Record<string, unknown>)
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+function readServiceCredentialDiagnostics(input: {
+  serviceRoleKey: string | undefined;
+  supabaseHostRef: string | null;
+}): {
+  issuerRef: string | null;
+  kind: ServiceCredentialKind;
+  matchesSupabaseRef: boolean | null;
+} {
+  const key = input.serviceRoleKey?.trim();
+
+  if (!key) {
+    return {
+      issuerRef: null,
+      kind: "missing",
+      matchesSupabaseRef: null,
+    };
+  }
+
+  if (key.startsWith("sb_secret_")) {
+    return {
+      issuerRef: null,
+      kind: "supabase_secret",
+      matchesSupabaseRef: null,
+    };
+  }
+
+  if (key.startsWith("sb_publishable_")) {
+    return {
+      issuerRef: null,
+      kind: "supabase_publishable",
+      matchesSupabaseRef: false,
+    };
+  }
+
+  const payload = decodeJwtPayload(key);
+  const role = typeof payload?.role === "string" ? payload.role : null;
+  const issuerRef =
+    typeof payload?.iss === "string" ? readSupabaseHostRef(payload.iss) : null;
+
+  if (payload) {
+    return {
+      issuerRef,
+      kind:
+        role === "service_role"
+          ? "jwt_service_role"
+          : role === "anon"
+            ? "jwt_anon"
+            : "jwt_other",
+      matchesSupabaseRef:
+        Boolean(input.supabaseHostRef && issuerRef) &&
+        input.supabaseHostRef === issuerRef,
+    };
+  }
+
+  return {
+    issuerRef: null,
+    kind: "unknown",
+    matchesSupabaseRef: null,
+  };
 }
 
 async function countTable(
@@ -57,16 +154,72 @@ async function countTable(
   };
 }
 
+async function checkAuthAdminRest(input: {
+  serviceRoleKey: string | undefined;
+  supabaseUrl: string;
+}): Promise<HealthCheck> {
+  if (!input.serviceRoleKey) {
+    return {
+      count: null,
+      ok: false,
+      status: null,
+    };
+  }
+
+  const url = new URL("/auth/v1/admin/users", input.supabaseUrl);
+  url.searchParams.set("page", "1");
+  url.searchParams.set("per_page", "1");
+
+  try {
+    const response = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        "User-Agent": serviceRoleUserAgent,
+        apikey: input.serviceRoleKey,
+        authorization: `Bearer ${input.serviceRoleKey}`,
+      },
+    });
+
+    if (!response.ok) {
+      return {
+        count: null,
+        ok: false,
+        status: response.status,
+      };
+    }
+
+    const totalHeader = response.headers.get("x-total-count");
+    const total = totalHeader ? Number.parseInt(totalHeader, 10) : null;
+
+    return {
+      count: Number.isFinite(total) ? total : null,
+      ok: true,
+      status: response.status,
+    };
+  } catch {
+    return {
+      count: null,
+      ok: false,
+      status: null,
+    };
+  }
+}
+
 export async function getFounderProductionHealth(input: {
   user: AuthUser | null;
 }): Promise<FounderProductionHealth> {
   assertFounderUser(input.user);
 
-  const env = getServerEnv();
-  const supabaseHostRef = readSupabaseHostRef(env.NEXT_PUBLIC_SUPABASE_URL);
+  const config = getSupabaseServerClientConfig();
+  const supabaseHostRef = readSupabaseHostRef(config.url);
+  const credentialDiagnostics = readServiceCredentialDiagnostics({
+    serviceRoleKey: config.serviceRoleKey,
+    supabaseHostRef,
+  });
   const supabase = createSupabaseServiceRoleClient();
   const [
     authUsersResult,
+    authRest,
     businesses,
     businessMembers,
     profiles,
@@ -75,6 +228,10 @@ export async function getFounderProductionHealth(input: {
     deletionRequests,
   ] = await Promise.all([
     supabase.auth.admin.listUsers({ page: 1, perPage: 1 }),
+    checkAuthAdminRest({
+      serviceRoleKey: config.serviceRoleKey,
+      supabaseUrl: config.url,
+    }),
     countTable(supabase, "businesses"),
     countTable(supabase, "business_members"),
     countTable(supabase, "profiles"),
@@ -84,18 +241,38 @@ export async function getFounderProductionHealth(input: {
   ]);
   const authData = authUsersResult.data as { total?: number } | null;
 
+  safeLogger.info("production_health.checked", {
+    auth_admin_ok: !authUsersResult.error,
+    auth_admin_status: authUsersResult.error?.status ?? null,
+    auth_rest_ok: authRest.ok,
+    auth_rest_status: authRest.status,
+    business_count: businesses.count,
+    businesses_ok: businesses.ok,
+    credential_kind: credentialDiagnostics.kind,
+    credential_matches_supabase_ref:
+      credentialDiagnostics.matchesSupabaseRef ?? "unknown",
+    supabase_ref: supabaseHostRef ?? "unknown",
+    target_matches_canonical:
+      supabaseHostRef === canonicalProductionSupabaseRef,
+  });
+
   return {
     authAdmin: {
       count: authData?.total ?? null,
       ok: !authUsersResult.error,
       status: authUsersResult.error?.status ?? null,
     },
+    authRest,
     businessMembers,
     businesses,
     deletionRequests,
     profiles,
     publicLinks,
     recentActions,
+    serviceCredentialIssuerRef: credentialDiagnostics.issuerRef,
+    serviceCredentialKind: credentialDiagnostics.kind,
+    serviceCredentialMatchesSupabaseRef:
+      credentialDiagnostics.matchesSupabaseRef,
     supabaseHostRef,
     supabaseTargetMatchesCanonical:
       supabaseHostRef === canonicalProductionSupabaseRef,
