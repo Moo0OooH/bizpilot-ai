@@ -124,3 +124,39 @@
   - OpenAI real-key output validation (provider quota issue pending)
   - backup/export/restore decision and restore drill
   - production `0020` decision and execution only after owner approval
+
+## 7) Waiting / External Support Tickets (Non-Code Blockers)
+
+These items are classified as external provider/account issues. They are not
+BizPilot application code failures.
+
+### 7a) GitHub Actions checkout failure (CI degraded)
+
+- Symptom (GitHub Actions): `actions/checkout@v4` fails with:
+  - `remote: Your account is suspended.`
+  - `fatal: unable to access 'https://github.com/Moo0OooH/bizpilot-ai/': The requested URL returned error: 403`
+- Repo settings verified by owner:
+  - Actions permissions: allow all actions and reusable workflows
+  - Workflow permissions: read/write
+- Workflow-level permissions verified:
+  - `.github/workflows/ci.yml` sets `permissions: contents: read`
+- Additional diagnostic outcome:
+  - A workflow that does not use `actions/checkout` can run.
+  - A minimal workflow that only runs `actions/checkout@v4` reproduces the failure.
+- Classification: external GitHub Actions checkout/auth restriction (account state),
+  not a BizPilot code failure.
+- Owner action: GitHub Support ticket submitted.
+  - Ticket reference: `PENDING`
+- Decision:
+  - CI is marked **degraded / non-authoritative** until GitHub resolves checkout.
+  - Product readiness can continue with manual/owner-approved checks.
+
+### 7b) OpenAI provider quota / insufficient_quota (AI paused)
+
+- Symptom (production provider): HTTP 429 `insufficient_quota` /
+  `ai_provider_quota_exceeded`.
+- Classification: external OpenAI account/billing/quota issue, not a BizPilot code bug.
+- Owner action: OpenAI support ticket opened; waiting on provider/account resolution.
+- Decision:
+  - Do not continue OpenAI debugging until owner confirms the account issue is resolved.
+  - Do not print/pull/commit keys.
