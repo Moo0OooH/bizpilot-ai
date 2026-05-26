@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Production public quote security verification
-**Status:** Partial route smoke passed; data-bearing production smoke not run
+**Status:** Step 8A resolved; Step 8B executed on synthetic production quote target
 **Owner:** MoOoH
 **Last Updated:** 2026-05-26
 
@@ -107,6 +107,50 @@ The safe local/RLS production-equivalent public quote verification from Phase 20
 ### Blocker found
 
 Active form rendering is currently blocked by production data-state mismatch (active public links not resolving to valid business/form content), so full data-bearing security smoke is not yet possible until an owner-approved synthetic active production workspace/link setup path is established.
+
+## 5b. 2026-05-26 Step 8B Synthetic Submission Smoke on `akora`
+
+### Smoke target
+
+- `https://bizpilo.com/quote/akora`
+
+### Synthetic payload used
+
+- customer_name: `Synthetic Customer`
+- customer_contact: `synthetic+8b@example.test`
+- customer_phone: `+15550123456`
+- customer_email: `synthetic+8b@example.test`
+- cleaning_type: `standard`
+- property_type: `house`
+- city_or_service_area: `Toronto`
+- notes: `Synthetic smoke test submission.`
+- sourceChannel: `public_quote_link`
+- formRenderedAt: `Date.now() - 6000`
+- consentAccepted: `on`
+
+### Checks and result
+
+| Check | Result |
+| --- | --- |
+| Active quote link renders real form | PASS |
+| Required fields enforced | PASS (`/quote/akora?error=Ville+ou+secteur+is+required.`) |
+| Valid synthetic submission accepted | PASS (`303 -> /quote/akora/success`) |
+| Success page renders | PASS |
+| Malformed/inexistent slug unavailable | PASS (`/quote/___not-a-real-slug___`) |
+| No obvious public-route cross-tenant leak | PASS (quote route returned only target form/success content) |
+| Lead created, visible in dashboard | PARTIAL (not testable without owner-auth owner session path) |
+| Source-channel persisted (observable) | PARTIAL (submitted as `public_quote_link`; read-back verification requires owner auth/DB read) |
+| Consent/version persisted (observable) | PARTIAL (submitted with hidden consent fields; read-back verification requires owner auth/DB read) |
+
+### Side effects
+
+- One synthetic submission was created through normal public form flow.
+- No DB mutation beyond allowed synthetic form submission was performed.
+- No cleanup/delete action executed.
+
+### Step 8B status
+
+Step 8B is marked **PARTIAL PASS**: route/form/rendering, validation, submission, success response, and malformed availability checks passed. Dashboard/DB-read confirmation is pending owner-auth path.
 
 ## 5. Positive Test Matrix
 
