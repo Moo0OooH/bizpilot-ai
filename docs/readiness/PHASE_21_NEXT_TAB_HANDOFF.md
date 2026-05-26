@@ -57,6 +57,17 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
   the current environment. Continue to avoid secrets, real customer data,
   destructive cleanup, RLS weakening, `leads.source`, blind `0018` replay, and
   OpenAI debugging while the provider/account ticket remains open.
+- 2026-05-25 dashboard redesign continuation: local `main`, `origin/main`, and
+  `origin/phase-21-production-alignment` were synced to
+  `3957d56 feat(admin): refresh founder console experience`, rollback refs
+  `backup/pre-dashboard-redesign-20260525-194012` and
+  `backup/pre-dashboard-redesign-synced-20260525-194041` were pushed, and the
+  redesign was kept on `phase-21q-dashboard-redesign`.
+- Dashboard redesign evidence is captured in
+  `docs/readiness/PHASE_21Q_DASHBOARD_REDESIGN_EVIDENCE.md`.
+- Latest dashboard redesign validation passed: `git diff --check`,
+  `pnpm verify`, local public smoke 9/9, production public smoke 9/9, and
+  production unavailable quote smoke 1/1.
 
 ## 2. Current Git State
 

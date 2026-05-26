@@ -182,14 +182,14 @@ export default async function DashboardOverviewPage() {
     overviewCopy.featuredFallbackAction;
 
   return (
-    <main className="space-y-4">
+    <main className="space-y-3.5">
       <DashboardCard
-        className="grid gap-4 border-[rgba(45,212,191,0.21)] p-4 shadow-[0_18px_60px_rgba(0,0,0,0.22)] md:p-5 xl:grid-cols-[minmax(0,1.3fr)_minmax(260px,0.7fr)] xl:items-stretch"
+        className="grid gap-4 p-4 md:p-5 xl:grid-cols-[minmax(0,1.32fr)_minmax(300px,0.68fr)] xl:items-stretch"
         variant="priority"
       >
         <div className="min-w-0">
-          <StatusBadge tone="emerald">{overviewCopy.heroBadge}</StatusBadge>
-          <h2 className="mt-3 max-w-3xl text-[24px] font-extrabold leading-[1.08] tracking-[-0.04em] text-[var(--dash-text)] sm:text-[28px] lg:text-[32px]">
+          <StatusBadge tone="blue">{overviewCopy.heroBadge}</StatusBadge>
+          <h2 className="mt-3 max-w-3xl text-[22px] font-extrabold leading-tight text-[var(--dash-text)] sm:text-[26px]">
             {overviewCopy.heroTitle(attentionCount)}
           </h2>
           <p className="mt-2.5 max-w-2xl text-[13px] leading-6 text-[var(--dash-text-secondary)]">
@@ -203,9 +203,29 @@ export default async function DashboardOverviewPage() {
               {dashboardCopy.actions.openLeadQueue}
             </Link>
           </div>
+          <div className="mt-4 grid gap-2 sm:grid-cols-3">
+            {[
+              [overviewCopy.recoveryFocus.replyTitle, needsReplyCount, "blue"],
+              [overviewCopy.status.missingInfo, missingInfoCount, "amber"],
+              [overviewCopy.metrics.atRiskLeads.label, atRiskCount, "red"],
+            ].map(([label, value, tone]) => (
+              <Link
+                className="flex min-h-12 items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[13px] transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                href="/dashboard/leads"
+                key={String(label)}
+              >
+                <span className="truncate font-bold text-[var(--dash-text-secondary)]">
+                  {label}
+                </span>
+                <StatusBadge tone={tone as "amber" | "blue" | "red"}>
+                  {String(value)}
+                </StatusBadge>
+              </Link>
+            ))}
+          </div>
         </div>
 
-        <div className="grid gap-3 rounded-[16px] border border-[rgba(45,212,191,0.18)] bg-[rgba(2,6,23,0.18)] p-3.5">
+        <div className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
           <div className="flex min-w-0 items-center gap-2.5">
             <Avatar name={featuredLeadName} size={36} tone="primary" />
             <span className="min-w-0">
@@ -213,7 +233,7 @@ export default async function DashboardOverviewPage() {
                 {shortCustomerName(featuredLeadName)}
               </span>
               <span className="mt-0.5 block truncate text-[12px] leading-4 text-[var(--dash-text-secondary)]">
-                {featuredLeadService} · {featuredLeadArea} · {featuredLeadAge}
+                {featuredLeadService} / {featuredLeadArea} / {featuredLeadAge}
               </span>
             </span>
           </div>
@@ -224,7 +244,7 @@ export default async function DashboardOverviewPage() {
               {missingInfoCount > 0 ? overviewCopy.status.missingInfo : overviewCopy.status.ready}
             </StatusBadge>
           </div>
-          <div className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2.5 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
             <span className="font-extrabold text-[var(--dash-text)]">{overviewCopy.suggestedNextAction}</span>{" "}
             {featuredNextAction}
           </div>
@@ -260,7 +280,7 @@ export default async function DashboardOverviewPage() {
 
       <section className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
         <div className="grid min-w-0 gap-3">
-          <DashboardCard className="p-3.5">
+          <div className="grid gap-2">
             <SectionHeader
               action={
                 <Link className={buttonClass} href="/dashboard/leads">
@@ -270,16 +290,14 @@ export default async function DashboardOverviewPage() {
               description={overviewCopy.queue.description}
               title={overviewCopy.queue.title}
             />
-            <div className="mt-3">
-              <LeadWorkspaceQueue
-                compact
-                language={activeLanguage}
-                leads={recentLeads}
-                limit={5}
-                quotePath={quotePath}
-              />
-            </div>
-          </DashboardCard>
+            <LeadWorkspaceQueue
+              compact
+              language={activeLanguage}
+              leads={recentLeads}
+              limit={5}
+              quotePath={quotePath}
+            />
+          </div>
 
           <DashboardCard className="p-3.5">
             <SectionHeader
@@ -290,7 +308,7 @@ export default async function DashboardOverviewPage() {
               {recentLeads.length > 0 ? (
                 recentLeads.slice(0, 5).map((item) => (
                   <Link
-                    className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5 transition hover:bg-[var(--dash-primary-soft)]"
+                    className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
                     href={`/dashboard/leads/${item.lead.id}`}
                     key={item.lead.id}
                   >
@@ -331,8 +349,8 @@ export default async function DashboardOverviewPage() {
               title={overviewCopy.readiness.title}
             />
             <div className="mt-4 grid gap-3">
-              <div className="grid grid-cols-[3.5rem_minmax(0,1fr)] gap-3 rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border-[4px] border-[var(--dash-primary)]/30 text-[13px] font-black text-[var(--dash-text)]">
+              <div className="grid grid-cols-[3.5rem_minmax(0,1fr)] gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] text-[13px] font-black text-[var(--dash-text)]">
                   {readinessPercent}%
                 </div>
                 <div className="min-w-0">
@@ -401,11 +419,11 @@ export default async function DashboardOverviewPage() {
                 ],
               ].map(([title, detail, value, tone]) => (
                 <Link
-                  className="grid min-h-[54px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2.5 rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[13px] transition hover:bg-[var(--dash-primary-soft)]"
+                  className="grid min-h-[54px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[13px] transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
                   href="/dashboard/leads"
                   key={String(title)}
                 >
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--dash-primary-soft)] text-[13px] font-black text-[var(--dash-primary)]">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--dash-primary-soft)] text-[13px] font-black text-[var(--dash-primary)]">
                     {value}
                   </span>
                   <span className="min-w-0">
@@ -432,14 +450,12 @@ export default async function DashboardOverviewPage() {
                 </StatusBadge>
               ))}
             </div>
-          </RightRailPanel>
-
-          <RightRailPanel>
+            <div className="my-3 h-px bg-[var(--dash-border)]" />
             <SectionHeader title={overviewCopy.routine.title} />
             <div className="mt-3 grid gap-2 text-[13px]">
               {overviewCopy.routine.steps.map(([step, title, detail]) => (
-                <div className="grid grid-cols-[1.75rem_minmax(0,1fr)] gap-2 rounded-[12px] bg-[var(--dash-surface-muted)] p-2.5" key={step}>
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--dash-primary-soft)] text-xs font-black text-[var(--dash-primary)]">
+                <div className="grid grid-cols-[1.75rem_minmax(0,1fr)] gap-2 rounded-lg bg-[var(--dash-surface-muted)] p-2.5" key={step}>
+                  <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-xs font-black text-[var(--dash-primary)]">
                     {step}
                   </span>
                   <span>

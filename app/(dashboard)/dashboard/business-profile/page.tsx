@@ -142,13 +142,13 @@ export default async function BusinessProfilePage({
       />
 
       {params?.notice ? (
-        <p className="rounded-[14px] border border-emerald-300/35 bg-emerald-500/12 p-3 text-xs font-semibold text-emerald-700 dark:text-emerald-200">
+        <p className="rounded-lg border border-emerald-300/35 bg-emerald-500/12 p-3 text-xs font-semibold text-emerald-700 dark:text-emerald-200">
           {params.notice}
         </p>
       ) : null}
 
       {params?.error ? (
-        <p className="rounded-[14px] border border-red-300/35 bg-red-500/12 p-3 text-xs font-semibold text-red-700 dark:text-red-200">
+        <p className="rounded-lg border border-red-300/35 bg-red-500/12 p-3 text-xs font-semibold text-red-700 dark:text-red-200">
           {params.error}
         </p>
       ) : null}
@@ -366,7 +366,7 @@ export default async function BusinessProfilePage({
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {text.roadmapFields.map(([title, badge]) => (
               <div
-                className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+                className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
                 key={title}
               >
                 <div className="flex items-center justify-between gap-3">
@@ -386,7 +386,7 @@ export default async function BusinessProfilePage({
           </div>
         </DashboardCard>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3">
           <p className="text-[12px] text-[var(--dash-text-secondary)]">
             {text.saveNote}
           </p>

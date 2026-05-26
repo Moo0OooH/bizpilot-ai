@@ -226,7 +226,7 @@ function LeadMobileCard({
         <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
       </div>
       <div className="grid gap-2 sm:grid-cols-2">
-        <span className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
+        <span className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
           <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
             {copy.headers.service}
           </span>
@@ -234,7 +234,7 @@ function LeadMobileCard({
             {summarizeService(item, copy)}
           </span>
         </span>
-        <span className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
+        <span className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
           <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
             {copy.headers.location}
           </span>
@@ -248,7 +248,7 @@ function LeadMobileCard({
 }
 
 const COL_TEMPLATE =
-  "grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_minmax(0,1fr)_120px_72px_minmax(0,1fr)]";
+  "grid-cols-[minmax(0,1.35fr)_minmax(0,0.95fr)_minmax(0,0.95fr)_96px_minmax(92px,0.7fr)_minmax(0,1.25fr)]";
 
 function LeadDesktopRow({
   copy,
@@ -257,7 +257,7 @@ function LeadDesktopRow({
   const status = displayStatus(item, copy);
   return (
     <Link
-      className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] px-4 py-3 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:grid`}
+      className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] px-3 py-2.5 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:grid`}
       href={`/dashboard/leads/${item.lead.id}`}
     >
       <CustomerCell copy={copy} item={item} />
@@ -281,7 +281,7 @@ function LeadDesktopRow({
 function LeadDesktopHeader({ copy }: Readonly<{ copy: LeadQueueCopy }>) {
   return (
     <div
-      className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-4 py-3 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)] xl:grid`}
+      className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[11px] font-black uppercase text-[var(--dash-text-muted)] xl:grid`}
     >
       <span>{copy.headers.customer}</span>
       <span>{copy.headers.service}</span>
@@ -313,7 +313,7 @@ function SampleLeadEmptyState({
     sampleLeads[selectedLeadIndex] ?? sampleLeads[0] ?? fallbackLead;
 
   return (
-    <div className="grid gap-4 rounded-[20px] border border-dashed border-[rgba(20,184,166,0.28)] bg-[var(--dash-primary-soft)] p-4 sm:p-5">
+    <div className="grid gap-4 rounded-lg border border-dashed border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-4 sm:p-5">
       <div className="flex flex-wrap items-center gap-2">
         <StatusBadge tone="amber">{copy.demo.sampleDemoState}</StatusBadge>
         <StatusBadge tone="red">{copy.demo.replyNeeded}</StatusBadge>
@@ -333,7 +333,7 @@ function SampleLeadEmptyState({
             </p>
           </div>
         </div>
-        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
           <span className="font-black text-[var(--dash-text)]">
             {copy.demo.aiSummaryLabel}
           </span>{" "}
@@ -347,8 +347,8 @@ function SampleLeadEmptyState({
             aria-pressed={selectedLeadIndex === index}
             className={
               selectedLeadIndex === index
-                ? "grid gap-2 rounded-[16px] border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 text-left shadow-[0_0_0_1px_var(--dash-primary-border)] transition"
-                : "grid gap-2 rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-left transition hover:border-[var(--dash-primary-border)] hover:bg-[var(--dash-primary-soft)]"
+                ? "grid gap-2 rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-3 text-left transition"
+                : "grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-left transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
             }
             key={lead.customer}
             onClick={() => setSelectedLeadIndex(index)}
@@ -376,19 +376,19 @@ function SampleLeadEmptyState({
       </div>
 
       <div className="grid gap-3 lg:grid-cols-2">
-        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
           <span className="font-black text-[var(--dash-text)]">{copy.demo.missingInfoLabel}</span>{" "}
           {copy.demo.missingInfo}
         </div>
-        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
           <span className="font-black text-[var(--dash-text)]">{copy.demo.suggestedNextActionLabel}</span>{" "}
           {copy.demo.suggestedNextAction}
         </div>
-        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
           <span className="font-black text-[var(--dash-text)]">{copy.demo.replyDraftLabel}</span>{" "}
           {featured.replyDraft}
         </div>
-        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
           <span className="font-black text-[var(--dash-text)]">{copy.demo.followUpLabel}</span>{" "}
           {featured.followUpDraft}
         </div>
@@ -420,7 +420,7 @@ function LeadQueueEmptyStarter({
   const queueCopy = copy.dashboard.leadQueue;
 
   return (
-    <div className="grid gap-4 rounded-[20px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4 sm:p-5">
+    <div className="grid gap-4 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4 sm:p-5">
       <EmptyState title={queueCopy.empty.noLeadsTitle}>
         {queueCopy.empty.noLeadsBody}
       </EmptyState>
@@ -430,7 +430,7 @@ function LeadQueueEmptyStarter({
           {copy.dashboard.nav.quoteSetup}
         </Link>
       </div>
-      <details className="rounded-[16px] border border-dashed border-[rgba(20,184,166,0.28)] bg-[rgba(20,184,166,0.06)]">
+      <details className="rounded-lg border border-dashed border-[var(--dash-primary)] bg-[var(--dash-primary-soft)]">
         <summary className="cursor-pointer list-none px-4 py-3 text-sm font-black text-[var(--dash-text)]">
           {copy.demo.sampleDemoState}
           <span className="ml-2 text-[12px] font-bold text-[var(--dash-text-muted)]">
@@ -479,17 +479,17 @@ export function LeadWorkspaceQueue({
   return (
     <DashboardCard className="overflow-hidden p-0" variant="elevated">
       {!compact ? (
-        <div className="border-b border-[var(--dash-border)] p-4 sm:p-[18px]">
+        <div className="border-b border-[var(--dash-border)] p-3">
           <div className="flex flex-wrap items-center gap-2">
             <input
-              className={`${inputClass} min-w-0 flex-[1_1_240px]`}
+              className={`${inputClass} min-w-0 flex-[1_1_280px]`}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={queueCopy.searchPlaceholder}
               type="search"
               value={search}
             />
             <select
-              className={`${inputClass} flex-[0_0_180px]`}
+              className={`${inputClass} flex-[0_0_176px]`}
               onChange={(event) => setActiveFilter(event.target.value as LeadFilter)}
               value={activeFilter}
             >
@@ -500,7 +500,7 @@ export function LeadWorkspaceQueue({
               ))}
             </select>
             <select
-              className={`${inputClass} flex-[0_0_160px]`}
+              className={`${inputClass} flex-[0_0_154px]`}
               onChange={(event) => setSort(event.target.value as LeadSort)}
               value={sort}
             >

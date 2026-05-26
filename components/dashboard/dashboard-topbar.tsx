@@ -91,9 +91,9 @@ export function DashboardTopbar({
 
   return (
     <header className="dashboard-topbar sticky top-0 z-20 border-b backdrop-blur">
-      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 px-3 py-2 sm:min-h-[64px] sm:flex-nowrap sm:gap-3 sm:px-5 md:px-6 lg:px-[28px]">
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 px-3 py-2 sm:min-h-[58px] sm:flex-nowrap sm:gap-3 sm:px-5 md:px-6 lg:px-5">
         <div className="min-w-0 flex-1 basis-[12rem]">
-          <h1 className="truncate text-[16px] font-extrabold leading-[1.2] tracking-[-0.02em] text-[var(--dash-text)] sm:text-[17px]">
+          <h1 className="truncate text-[16px] font-extrabold leading-[1.2] text-[var(--dash-text)] sm:text-[17px]">
             {pageContext.title}
           </h1>
           <p className="mt-0.5 hidden truncate text-[11px] leading-4 text-[var(--dash-text-muted)] sm:block">
@@ -103,21 +103,21 @@ export function DashboardTopbar({
 
         <div className="flex min-w-0 basis-full items-center justify-between gap-2 sm:basis-auto sm:justify-end">
           <CopyButton
-            className="hidden md:inline-flex"
+            className="!hidden md:!inline-flex"
             label={copy.actions.copyQuoteLink}
             value={quotePath}
           />
-          <Link className={`${buttonClass} hidden lg:inline-flex`} href={quotePath}>
+          <Link className={`${buttonClass} !hidden lg:!inline-flex`} href={quotePath}>
             {copy.actions.previewQuotePage}
           </Link>
           {showFounderAdmin ? (
-            <Link className={`${ghostButtonClass} hidden xl:inline-flex`} href="/admin">
+            <Link className={`${ghostButtonClass} !hidden xl:!inline-flex`} href="/admin">
               {copy.pages.founder.title}
             </Link>
           ) : null}
           <form
             action={updateWorkspaceLanguageAction}
-            className="flex h-9 items-center rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:h-10"
+            className="flex h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:h-10"
           >
             <input name="businessId" type="hidden" value={businessId} />
             <input name="redirectTo" type="hidden" value={pathname} />
@@ -126,8 +126,8 @@ export function DashboardTopbar({
                 aria-pressed={activeLanguage === language}
                 className={
                   activeLanguage === language
-                    ? "h-8 rounded-[10px] bg-[var(--dash-primary)] px-2.5 text-[12px] font-black text-[#03130c]"
-                    : "h-8 rounded-[10px] px-2.5 text-[12px] font-bold text-[var(--dash-text-secondary)]"
+                    ? "h-8 rounded-md bg-[var(--dash-primary)] px-2.5 text-[12px] font-black text-white"
+                    : "h-8 rounded-md px-2.5 text-[12px] font-bold text-[var(--dash-text-secondary)]"
                 }
                 key={language}
                 name="language"
@@ -139,12 +139,12 @@ export function DashboardTopbar({
             ))}
           </form>
           <DashboardThemeSelector />
-          <div className="hidden min-w-0 max-w-[210px] rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-3 py-2 text-[13px] font-bold text-[var(--dash-text)] xl:block">
+          <div className="hidden min-w-0 max-w-[190px] rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-3 py-2 text-[13px] font-bold text-[var(--dash-text)] xl:block">
             <span className="block truncate">{activeBusinessName}</span>
           </div>
           <form action={signOutAction}>
             <button
-              className="biz-button-secondary inline-flex h-9 max-w-[5.5rem] items-center justify-center rounded-[13px] border px-3 text-[12px] font-bold shadow-sm sm:h-10 sm:max-w-[8rem] sm:text-[13px]"
+              className="biz-button-secondary inline-flex h-9 max-w-[5.5rem] items-center justify-center rounded-lg border px-3 text-[12px] font-bold shadow-sm sm:h-10 sm:max-w-[8rem] sm:text-[13px]"
               title={userLabel}
               type="submit"
             >

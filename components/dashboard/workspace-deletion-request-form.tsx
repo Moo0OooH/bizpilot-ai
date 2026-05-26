@@ -53,13 +53,13 @@ export function WorkspaceDeletionRequestForm({
   );
 
   return (
-    <details className="rounded-[14px] border border-red-400/30 bg-red-500/10 p-4">
+    <details className="rounded-lg border border-red-400/30 bg-red-500/10 p-4">
       <summary className="cursor-pointer text-sm font-black text-red-700 dark:text-red-200">
         {copy.dangerZone}
       </summary>
       <form action={requestBusinessDeletionAction} className="mt-4 grid gap-3">
         <input name="businessId" type="hidden" value={businessId} />
-        <div className="rounded-[12px] border border-red-400/25 bg-[var(--dash-surface-muted)] p-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-red-400/25 bg-[var(--dash-surface-muted)] p-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
           <p className="font-black text-[var(--dash-text)]">
             {copy.title}
           </p>
