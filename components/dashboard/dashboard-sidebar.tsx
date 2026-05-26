@@ -89,10 +89,10 @@ function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
 
 function navClass(isActive: boolean): string {
   if (isActive) {
-    return "flex min-h-11 items-center gap-3 rounded-[14px] border border-[rgba(20,184,166,0.34)] bg-[var(--dash-primary-soft)] px-3 font-bold text-[var(--dash-text)] shadow-[inset_0_0_0_1px_rgba(20,184,166,0.07)]";
+    return "flex min-h-10 items-center gap-3 rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-3 font-bold text-[var(--dash-text)]";
   }
 
-  return "flex min-h-11 items-center gap-3 rounded-[14px] border border-transparent px-3 font-bold text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-border)] hover:bg-[rgba(148,163,184,0.08)] hover:text-[var(--dash-text)]";
+  return "flex min-h-10 items-center gap-3 rounded-lg border border-transparent px-3 font-bold text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-border)] hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]";
 }
 
 function NavIcon({
@@ -103,8 +103,8 @@ function NavIcon({
     <span
       className={
         active
-          ? "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[9px] bg-[rgba(20,184,166,0.22)] text-[11px] font-black"
-          : "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[9px] bg-[rgba(148,163,184,0.09)] text-[11px] font-black"
+          ? "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md bg-[var(--dash-primary)] text-[11px] font-black text-white"
+          : "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-md bg-[var(--dash-surface-muted)] text-[11px] font-black"
       }
     >
       {children}
@@ -122,8 +122,8 @@ function MobileNavLink({
     <Link
       className={
         isActive
-          ? "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[12px] bg-[var(--dash-primary-soft)] px-1.5 py-1.5 text-[var(--dash-primary)]"
-          : "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-[12px] px-1.5 py-1.5 text-[var(--dash-text-muted)]"
+          ? "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg bg-[var(--dash-primary-soft)] px-1.5 py-1.5 text-[var(--dash-primary)]"
+          : "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 text-[var(--dash-text-muted)]"
       }
       href={item.href}
     >
@@ -150,16 +150,16 @@ export function DashboardSidebar({
 
   return (
     <>
-      <aside className="dashboard-sidebar sticky top-0 hidden h-screen w-[244px] border-r px-4 py-5 lg:flex lg:flex-col">
+      <aside className="dashboard-sidebar sticky top-0 hidden h-screen w-[224px] border-r px-3.5 py-4 lg:flex lg:flex-col">
         <Link
-          className="flex items-center gap-3 border-b border-[var(--dash-border)] px-2.5 pb-[18px]"
+          className="flex items-center gap-3 border-b border-[var(--dash-border)] px-2 pb-4"
           href="/dashboard"
         >
-          <span className="flex h-[42px] w-[42px] items-center justify-center rounded-[14px] bg-gradient-to-br from-[#2dd4bf] to-[#10b981] text-[18px] font-black text-[#022c22] shadow-[0_12px_28px_rgba(20,184,166,0.26)]">
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--dash-primary)] text-[16px] font-black text-white">
             B
           </span>
           <span className="min-w-0">
-            <span className="block truncate text-[16px] font-black tracking-[-0.03em] text-[var(--dash-text)]">
+            <span className="block truncate text-[15px] font-black text-[var(--dash-text)]">
               BizPilot AI
             </span>
             <span className="mt-0.5 block truncate text-[12px] text-[var(--dash-text-muted)]">
@@ -168,7 +168,7 @@ export function DashboardSidebar({
           </span>
         </Link>
 
-        <nav className="mt-5 flex-1 space-y-5 overflow-y-auto text-[14px]">
+        <nav className="mt-4 flex-1 space-y-4 overflow-y-auto text-[13px]">
           {navigation.map((group) => (
             <div key={group.label}>
               <p className="mx-2.5 mb-2 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
@@ -196,7 +196,7 @@ export function DashboardSidebar({
         </nav>
 
         <div className="mt-auto grid gap-3">
-          <div className="rounded-[18px] border border-[var(--dash-border)] bg-[rgba(255,255,255,0.035)] p-[14px]">
+          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
             <div className="mb-2.5 flex items-center justify-between gap-3 text-[12px] text-[var(--dash-text-muted)]">
               <span>{copy.actions.copyQuoteLink}</span>
               <StatusBadge tone="emerald">{copy.status.active}</StatusBadge>
@@ -215,12 +215,12 @@ export function DashboardSidebar({
           </div>
 
           <div
-            className="flex items-center gap-2.5 rounded-[14px] border border-[var(--dash-border)] bg-[rgba(255,255,255,0.035)] px-3 py-2.5 text-[12px]"
+            className="flex items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
             title={userLabel}
           >
             <span
               aria-hidden
-              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--dash-primary-soft)] text-[11px] font-black text-[var(--dash-primary)]"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-[11px] font-black text-[var(--dash-primary)]"
             >
               {activeBusinessName.charAt(0).toUpperCase()}
             </span>
@@ -236,7 +236,7 @@ export function DashboardSidebar({
         </div>
       </aside>
 
-      <nav className="dashboard-mobile-nav fixed inset-x-0 bottom-0 z-30 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-2 py-2 shadow-[0_-18px_40px_rgba(0,0,0,0.28)] backdrop-blur lg:hidden">
+      <nav className="dashboard-mobile-nav fixed inset-x-0 bottom-0 z-30 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-2 py-2 shadow-[0_-10px_28px_rgba(0,0,0,0.18)] backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-xl gap-1">
           {mobileNavigation.map((item) => (
             <MobileNavLink item={item} key={item.href} pathname={pathname} />

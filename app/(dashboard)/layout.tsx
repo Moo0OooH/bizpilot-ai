@@ -63,7 +63,7 @@ export default async function DashboardLayout({
               : accessCopy.pausedBody}
           </p>
           {accessSummary ? (
-            <p className="mt-3 rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm font-bold text-[var(--dash-text)]">
+            <p className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm font-bold text-[var(--dash-text)]">
               {accessSummary.businessName}
             </p>
           ) : null}
@@ -84,7 +84,7 @@ export default async function DashboardLayout({
     businessLanguage: activeBusiness.preferred_language,
     cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
   });
-  const initialTheme = themeCookie === "light" ? "light" : "dark";
+  const initialTheme = themeCookie === "dark" ? "dark" : "light";
   const copy = getBizPilotCopy(activeLanguage).dashboard;
   const shellCopy = {
     actions: copy.actions,

@@ -930,7 +930,7 @@ const englishCopy: BizPilotCopy = {
       serviceAreas: "Service areas",
       templateName: "Custom quote template name",
       verticalHelp:
-        "Phase 18A is cleaning-first. Other verticals are locked until the validation gate clears.",
+        "Current scope is cleaning-first. Other verticals stay locked until the validation gate clears.",
     },
     configuration: {
       basics: {
@@ -1353,7 +1353,7 @@ const englishCopy: BizPilotCopy = {
       featuredFallbackCustomer: "Sarah M.",
       featuredFallbackService: "Move-out cleaning",
       finishSetup: "Finish setup",
-      heroBadge: "Phase 18A · Pilot readiness",
+      heroBadge: "Phase 21Q - Production readiness",
       heroDescription:
         "Reply while the customer is still comparing options. BizPilot surfaces urgent leads, drafts the response, and keeps the owner in control.",
       heroTitle: (count) => `${count} quote requests need attention today.`,
@@ -1490,7 +1490,7 @@ const englishCopy: BizPilotCopy = {
         integrations: "Webhooks deferred",
         teamMembers: "Owner-only in pilot",
       },
-      guardrails: "Phase 18A guardrails",
+      guardrails: "Production readiness guardrails",
       guardrailsDescription:
         "What stays on while the pilot validates. Anything below is intentionally locked.",
       guardrailItems: [
@@ -1570,7 +1570,7 @@ const englishCopy: BizPilotCopy = {
         title: "Request workspace deletion",
         typeBusinessName: "Type your business name to confirm",
       },
-      manualBilling: "Manual billing during Phase 18A.",
+      manualBilling: "Manual billing during production readiness.",
       notInMvp: "Not in MVP",
       plan: "Plan",
       quickLinks: "Quick links",
@@ -2008,7 +2008,7 @@ const frenchCopy: BizPilotCopy = {
       serviceAreas: "Zones desservies",
       templateName: "Nom du modèle de soumission",
       verticalHelp:
-        "La Phase 18A reste concentrée sur le nettoyage. Les autres verticales restent verrouillées jusqu'à validation.",
+        "Le périmètre actuel reste concentré sur le nettoyage. Les autres verticales restent verrouillées jusqu'à validation.",
     },
     configuration: {
       basics: {
@@ -2445,7 +2445,7 @@ const frenchCopy: BizPilotCopy = {
       featuredFallbackCustomer: "Sarah M.",
       featuredFallbackService: "Nettoyage de déménagement",
       finishSetup: "Terminer la configuration",
-      heroBadge: "Phase 18A · Préparation pilote",
+      heroBadge: "Phase 21Q - Préparation production",
       heroDescription:
         "Répondez pendant que le client compare encore ses options. BizPilot fait ressortir les leads urgents, prépare la réponse et garde le propriétaire en contrôle.",
       heroTitle: (count) =>
@@ -2585,7 +2585,7 @@ const frenchCopy: BizPilotCopy = {
         integrations: "Webhooks reportés",
         teamMembers: "Propriétaire seulement pendant le pilote",
       },
-      guardrails: "Garde-fous Phase 18A",
+      guardrails: "Garde-fous de préparation production",
       guardrailsDescription:
         "Ce qui reste actif pendant la validation pilote. Le reste est volontairement verrouillé.",
       guardrailItems: [
@@ -2666,7 +2666,7 @@ const frenchCopy: BizPilotCopy = {
         title: "Demander la suppression de l'espace",
         typeBusinessName: "Tapez le nom de l'entreprise pour confirmer",
       },
-      manualBilling: "Facturation manuelle pendant la Phase 18A.",
+      manualBilling: "Facturation manuelle pendant la préparation production.",
       notInMvp: "Hors MVP",
       plan: "Forfait",
       quickLinks: "Liens rapides",

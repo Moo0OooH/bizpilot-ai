@@ -367,7 +367,7 @@ export default async function BusinessProfilePage({
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {text.roadmapFields.map(([title, badge]) => (
               <div
-                className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+                className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
                 key={title}
               >
                 <div className="flex items-center justify-between gap-3">
@@ -387,7 +387,7 @@ export default async function BusinessProfilePage({
           </div>
         </DashboardCard>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3">
           <p className="text-[12px] text-[var(--dash-text-secondary)]">
             {text.saveNote}
           </p>

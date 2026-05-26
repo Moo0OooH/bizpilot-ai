@@ -71,22 +71,22 @@ type EmptyStateProps = Readonly<{
 }>;
 
 export const buttonClass =
-  "biz-button-secondary inline-flex min-h-10 items-center justify-center gap-2 rounded-[13px] border px-3.5 py-2 text-[13px] font-bold leading-none shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
+  "biz-button-secondary inline-flex min-h-9 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-[13px] font-bold leading-none shadow-sm transition hover:border-[var(--dash-primary)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
 
 export const primaryButtonClass =
-  "biz-button-primary inline-flex min-h-10 items-center justify-center gap-2 rounded-[13px] px-3.5 py-2 text-[13px] font-bold leading-none shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
+  "biz-button-primary inline-flex min-h-9 items-center justify-center gap-2 rounded-lg px-3 py-2 text-[13px] font-bold leading-none shadow-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
 
 export const ghostButtonClass =
-  "biz-button-ghost inline-flex min-h-10 items-center justify-center rounded-[13px] px-3.5 py-2 text-[13px] font-bold leading-none transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
+  "biz-button-ghost inline-flex min-h-9 items-center justify-center rounded-lg px-3 py-2 text-[13px] font-bold leading-none transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
 
 export const disabledButtonClass =
-  "inline-flex min-h-10 cursor-not-allowed items-center justify-center rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3.5 py-2 text-[13px] font-bold leading-none text-[var(--dash-text-muted)] opacity-60";
+  "inline-flex min-h-9 cursor-not-allowed items-center justify-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[13px] font-bold leading-none text-[var(--dash-text-muted)] opacity-60";
 
 export const inputClass =
-  "biz-field min-h-[42px] w-full rounded-[13px] border px-3.5 py-2 text-sm outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
+  "biz-field min-h-10 w-full rounded-lg border px-3 py-2 text-sm outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
 
 export const textareaClass =
-  "biz-field w-full rounded-[13px] border px-3.5 py-2.5 text-sm leading-6 outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
+  "biz-field w-full rounded-lg border px-3 py-2.5 text-sm leading-6 outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
 
 export const labelClass =
   "grid gap-1.5 text-sm font-semibold text-[var(--dash-text)]";
@@ -94,7 +94,7 @@ export const labelClass =
 const toneClasses: Record<Tone, string> = {
   amber:
     "border-amber-300/35 bg-amber-500/12 text-amber-700 dark:text-amber-200",
-  blue: "border-sky-300/35 bg-sky-500/12 text-sky-700 dark:text-sky-200",
+  blue: "border-blue-500/35 bg-blue-600/10 text-blue-700 dark:text-blue-200",
   emerald:
     "border-emerald-300/35 bg-emerald-500/12 text-emerald-700 dark:text-emerald-200",
   neutral:
@@ -104,7 +104,7 @@ const toneClasses: Record<Tone, string> = {
 
 const toneDotClasses: Record<Tone, string> = {
   amber: "bg-amber-500",
-  blue: "bg-sky-500",
+  blue: "bg-blue-600",
   emerald: "bg-emerald-500",
   neutral: "bg-[var(--dash-text-muted)]",
   red: "bg-red-500",
@@ -160,7 +160,7 @@ export function Avatar({
   return (
     <span
       aria-hidden
-      className={`inline-flex shrink-0 items-center justify-center rounded-[14px] font-black ${base}`}
+      className={`inline-flex shrink-0 items-center justify-center rounded-lg font-black ${base}`}
       style={{
         height: `${size}px`,
         width: `${size}px`,
@@ -190,7 +190,7 @@ export function DashboardCard({
 }: CardProps) {
   return (
     <section
-      className={`min-w-0 overflow-hidden rounded-[24px] border ${cardClass(variant)} ${className}`}
+      className={`min-w-0 overflow-hidden rounded-lg border ${cardClass(variant)} ${className}`}
     >
       {children}
     </section>
@@ -204,14 +204,14 @@ export function PageHeader({
   title,
 }: PageHeaderProps) {
   return (
-    <header className="flex flex-col gap-2.5 md:flex-row md:items-end md:justify-between">
+    <header className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
       <div className="min-w-0">
         {eyebrow ? (
           <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-1 text-[22px] font-extrabold leading-[1.15] tracking-[-0.03em] text-[var(--dash-text)] sm:text-[24px]">
+        <h1 className="mt-1 text-[22px] font-extrabold leading-[1.15] text-[var(--dash-text)] sm:text-[24px]">
           {title}
         </h1>
         <p className="mt-1 max-w-3xl text-[13px] leading-5 text-[var(--dash-text-secondary)]">
@@ -233,7 +233,7 @@ export function SectionHeader({
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h2 className="text-[15px] font-extrabold leading-5 tracking-[-0.02em] text-[var(--dash-text)]">
+        <h2 className="text-[15px] font-extrabold leading-5 text-[var(--dash-text)]">
           {title}
         </h2>
         {description ? (
@@ -263,14 +263,14 @@ export function MetricCard({
   };
 
   return (
-    <DashboardCard className="flex min-h-[120px] flex-col p-3.5">
+    <DashboardCard className="flex min-h-[104px] flex-col p-3">
       <div className="flex items-start justify-between gap-2">
         <p className="text-[12px] font-bold text-[var(--dash-text-muted)]">
           {label}
         </p>
         <span className={`mt-1 h-1.5 w-1.5 rounded-full ${toneDotClasses[tone]}`} />
       </div>
-      <p className={`mt-2.5 text-[26px] font-black leading-none tracking-[-0.04em] sm:text-[28px] ${accentClass[tone]}`}>
+      <p className={`mt-2 text-[24px] font-black leading-none sm:text-[26px] ${accentClass[tone]}`}>
         {value}
       </p>
       {detail ? (
@@ -296,7 +296,7 @@ export function KpiCard({ detail, label, value }: KpiCardProps) {
 export function StatusBadge({ children, tone = "neutral" }: StatusBadgeProps) {
   return (
     <span
-      className={`inline-flex min-h-6 max-w-full items-center justify-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-extrabold leading-none ${toneClasses[tone]}`}
+      className={`inline-flex min-h-6 max-w-full items-center justify-center gap-1.5 rounded-md border px-2 py-1 text-[11px] font-extrabold leading-none ${toneClasses[tone]}`}
     >
       <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${toneDotClasses[tone]}`} />
       <span className="truncate capitalize">{children}</span>
@@ -352,8 +352,8 @@ export function TabLink({ active = false, children, href }: TabLinkProps) {
     <Link
       className={
         active
-          ? "inline-flex min-h-10 items-center rounded-full border border-[rgba(20,184,166,0.32)] bg-[var(--dash-primary-soft)] px-3 text-xs font-extrabold text-[var(--dash-text)]"
-          : "inline-flex min-h-10 items-center rounded-full border border-[var(--dash-border)] px-3 text-xs font-extrabold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]"
+          ? "inline-flex min-h-9 items-center rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-3 text-xs font-extrabold text-[var(--dash-text)]"
+          : "inline-flex min-h-9 items-center rounded-lg border border-[var(--dash-border)] px-3 text-xs font-extrabold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]"
       }
       href={href}
     >
@@ -389,7 +389,7 @@ export function PriorityAction({
 }>) {
   return (
     <Link
-      className={`grid gap-1 rounded-[14px] border px-3 py-2.5 transition hover:-translate-y-0.5 hover:shadow-sm ${toneClasses[tone]}`}
+      className={`grid gap-1 rounded-lg border px-3 py-2.5 transition hover:border-[var(--dash-primary)] ${toneClasses[tone]}`}
       href={href}
     >
       <span className="text-[11px] font-extrabold uppercase tracking-[0.14em]">
@@ -419,11 +419,11 @@ export function QuickActionTile({
   title?: string;
 }>) {
   const className =
-    "flex min-h-16 items-center gap-3 rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-4 py-3 text-left transition";
+    "flex min-h-14 items-center gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-3 text-left transition";
 
   const content = title ? (
     <>
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[12px] bg-[var(--dash-primary-soft)] text-sm font-extrabold text-[var(--dash-primary)]">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--dash-primary-soft)] text-sm font-extrabold text-[var(--dash-primary)]">
         {icon ?? "A"}
       </span>
       <span className="min-w-0">
@@ -459,7 +459,7 @@ export function QuickActionTile({
 
 export function EmptyState({ action, children, title }: EmptyStateProps) {
   return (
-    <div className="rounded-[18px] border border-dashed border-[var(--dash-border-strong)] bg-[var(--dash-surface-muted)] p-5 text-center">
+    <div className="rounded-lg border border-dashed border-[var(--dash-border-strong)] bg-[var(--dash-surface-muted)] p-5 text-center">
       <p className="text-sm font-extrabold text-[var(--dash-text)]">{title}</p>
       <p className="mx-auto mt-1 max-w-xl text-[13px] leading-5 text-[var(--dash-text-secondary)]">
         {children}
