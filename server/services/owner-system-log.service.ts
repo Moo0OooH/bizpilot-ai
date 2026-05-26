@@ -16,6 +16,7 @@
 import "server-only";
 
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
+import { safeLogger } from "@/server/logging/safe-logger";
 import type { Database } from "@/types/database";
 
 type AdminActionLogRecord =
@@ -44,40 +45,50 @@ export async function getOwnerSystemChangeLog(input: {
   userId: string;
 }): Promise<OwnerSystemChangeLogItem[]> {
   const supabase = createSupabaseServiceRoleClient();
-  const { data: membership, error: membershipError } = await supabase
-    .from("business_members")
-    .select("id")
-    .eq("business_id", input.businessId)
-    .eq("user_id", input.userId)
-    .eq("status", "active")
-    .in("role", ["owner", "admin"])
-    .maybeSingle();
 
-  if (membershipError) {
-    throw new Error(membershipError.message);
-  }
+  try {
+    const { data: membership, error: membershipError } = await supabase
+      .from("business_members")
+      .select("id")
+      .eq("business_id", input.businessId)
+      .eq("user_id", input.userId)
+      .eq("status", "active")
+      .in("role", ["owner", "admin"])
+      .maybeSingle();
 
-  if (!membership) {
+    if (membershipError) {
+      throw new Error(membershipError.message);
+    }
+
+    if (!membership) {
+      return [];
+    }
+
+    const { data, error } = await supabase
+      .from("admin_action_log")
+      .select("*")
+      .eq("business_id", input.businessId)
+      .order("created_at", { ascending: false })
+      .limit(input.limit ?? 10);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return (data ?? []).map((action) => ({
+      actionType: action.action_type,
+      createdAt: action.created_at,
+      id: action.id,
+      newValues: action.new_values,
+      note: ownerVisibleNote(action),
+      previousValues: action.previous_values,
+    }));
+  } catch (error) {
+    safeLogger.warn("owner_system_log.unavailable", {
+      business_id: input.businessId,
+      error_name: error instanceof Error ? error.name : "unknown",
+    });
+
     return [];
   }
-
-  const { data, error } = await supabase
-    .from("admin_action_log")
-    .select("*")
-    .eq("business_id", input.businessId)
-    .order("created_at", { ascending: false })
-    .limit(input.limit ?? 10);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return (data ?? []).map((action) => ({
-    actionType: action.action_type,
-    createdAt: action.created_at,
-    id: action.id,
-    newValues: action.new_values,
-    note: ownerVisibleNote(action),
-    previousValues: action.previous_values,
-  }));
 }

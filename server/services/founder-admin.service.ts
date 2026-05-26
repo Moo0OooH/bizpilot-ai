@@ -645,7 +645,13 @@ export async function getFounderAdminOverview(input: {
     listFounderPublicLinks({ supabase }),
     listFounderLeadSignals({ supabase }),
     listFounderUsageSignals({ supabase }),
-    listFounderAdminLog({ limit: 100, supabase }),
+    listFounderAdminLog({ limit: 100, supabase }).catch((error) => {
+      safeLogger.warn("founder_admin.action_log_unavailable", {
+        error_name: error instanceof Error ? error.name : "unknown",
+      });
+
+      return [];
+    }),
     listFounderDeletionRequests({ supabase }),
     listFounderAuthUsers({
       page: usersPage,
