@@ -376,3 +376,207 @@ Until then:
 - Lead B: not created
 - Step 10 horizontal access smoke: not run
 - Step 11 founder-admin visual QA: still blocked
+
+## 11. Step 10A-1 Signup Failure Diagnosis (2026-05-26)
+
+**Status:** DIAGNOSED TO OWNER-SIDE AUTH/DB LOG CHECK REQUIRED
+
+### 11a. Exact signup code path
+
+Production signup flows through:
+
+1. `app/auth/sign-up/page.tsx`
+   - renders the owner signup form
+   - posts to `signUpAction`
+2. `server/actions/auth.actions.ts`
+   - `signUpAction(formData)`
+   - validates `displayName`, `businessName`, `email`, and `password`
+   - computes callback redirect via `/auth/callback`
+   - calls `signUpWithPassword(...)`
+3. `server/services/auth.service.ts`
+   - `signUpWithPassword(...)`
+   - calls `supabase.auth.signUp(...)`
+   - returns `identityCreated`, `sessionCreated`, and user id
+4. `server/actions/auth.actions.ts`
+   - if a new identity was created, calls `createFoundingBusiness(...)`
+5. `server/services/business.service.ts`
+   - inserts the business with service role
+   - inserts owner membership
+   - bootstraps default quote configuration:
+     - branding
+     - services
+     - FAQs
+     - service areas
+     - privacy settings
+     - consent settings
+     - template settings
+     - active public link
+     - consent version
+     - intake form
+     - onboarding tasks
+6. Redirect behavior:
+   - if no session is created, signup redirects to `/auth/check-email`
+   - if session is created, signup redirects to `/dashboard`
+
+### 11b. What the generic error means
+
+The observed UI error was:
+
+```text
+We couldn't create your account. Please try again.
+```
+
+This is the fallback error from `redirectWithCleanSignUpAuthError(...)`.
+
+That means the backend error did not match the current specific mappings for:
+
+- already registered / already exists
+- invalid email
+- email rate limit / too many attempts
+- email delivery / SMTP/provider/send-email failure
+- weak/password error
+
+Important: the same catch block wraps both the Supabase Auth signup call and
+the tenant/bootstrap creation path. Therefore this generic error can mean:
+
+- Supabase Auth returned an unclassified error, or
+- Auth user creation succeeded but `createFoundingBusiness(...)` failed, or
+- business/member/link/form/consent bootstrap failed after the auth user was created.
+
+### 11c. Disposable domain assessment
+
+There is no BizPilot app-code blocklist for disposable email domains in the
+signup path.
+
+Disposable domains should still be avoided for the next attempt until Auth logs
+are checked, because Supabase/Auth/email provider behavior may reject or throttle
+some disposable domains outside BizPilot code.
+
+Best next test identity:
+
+```text
+Owner-controlled test alias on a stable inbox/domain.
+```
+
+Do not use more random disposable domains until the failed attempts are checked.
+
+### 11d. Partial artifact risk
+
+Partial artifacts may exist. The current code can fail after Auth creates a user
+but before all workspace/bootstrap records finish.
+
+Possible partial states:
+
+- auth user exists with no business
+- business exists but owner membership failed
+- business and membership exist but public link/form/consent bootstrap failed
+- public link exists but is inactive/unrenderable
+
+The checked candidate route:
+
+```text
+https://bizpilo.com/quote/synthetic-acme-b
+```
+
+rendered `Quote page unavailable`, so no verified usable Business B public quote
+fixture exists yet.
+
+### 11e. Owner-side checks needed
+
+Supabase Auth/log access is required to avoid guessing.
+
+Check Supabase Dashboard:
+
+1. `Authentication -> Logs`
+   - filter around the failed signup attempt time on 2026-05-26
+   - search for signup failures involving domains:
+     - `emailgenerator.org`
+     - `wshu.net`
+   - record only sanitized error kind/status/message; do not copy tokens or full links
+2. `Authentication -> Users`
+   - search for synthetic owner attempts by domain only
+   - confirm whether any synthetic owner auth user was created
+3. SQL Editor, SELECT-only:
+
+```sql
+select
+  id,
+  email,
+  created_at,
+  confirmed_at,
+  last_sign_in_at
+from auth.users
+where email ilike 'synthetic.owner.b.%'
+order by created_at desc
+limit 10;
+```
+
+```sql
+select
+  id as business_id,
+  owner_user_id,
+  slug,
+  status,
+  lifecycle_status,
+  plan_slug,
+  created_at
+from public.businesses
+where slug like 'synthetic-acme-b%'
+   or name = 'Synthetic ACME B'
+order by created_at desc
+limit 10;
+```
+
+```sql
+select
+  slug,
+  business_id,
+  is_active,
+  preferred_language,
+  created_at
+from public.public_link_variants
+where slug like 'synthetic-acme-b%'
+order by created_at desc
+limit 10;
+```
+
+```sql
+select
+  b.id as business_id,
+  b.slug,
+  count(distinct bm.id) as membership_count,
+  count(distinct plv.id) as public_link_count,
+  count(distinct f.id) as active_form_count,
+  count(distinct cv.id) as active_consent_count
+from public.businesses b
+left join public.business_members bm on bm.business_id = b.id
+left join public.public_link_variants plv
+  on plv.business_id = b.id
+ and plv.is_active = true
+left join public.intake_forms f
+  on f.business_id = b.id
+ and f.is_active = true
+left join public.consent_versions cv
+  on cv.business_id = b.id
+ and cv.is_active = true
+where b.slug like 'synthetic-acme-b%'
+   or b.name = 'Synthetic ACME B'
+group by b.id, b.slug
+order by max(b.created_at) desc
+limit 10;
+```
+
+### 11f. Safest next signup attempt plan
+
+Only after the checks above:
+
+1. If no partial artifacts exist and Auth logs show disposable-domain rejection:
+   - retry once with an owner-controlled test alias on a stable domain.
+2. If Auth user exists but no business exists:
+   - do not retry blindly; inspect the bootstrap failure in logs.
+3. If business exists but public link/form/consent is incomplete:
+   - do not run Step 10; identify the exact missing bootstrap table first.
+4. If a complete synthetic Business B already exists:
+   - use its human-readable slug for Lead B creation through the public quote flow.
+
+Step 10 and Step 11 remain blocked until Business B and Lead B are verified.
