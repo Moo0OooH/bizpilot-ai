@@ -88,6 +88,7 @@ export async function generateLeadAiBundleAction(
 
   try {
     const output = await generateLeadAiBundle({
+      actorUserId: user.id,
       business: activeBusiness,
       leadId,
     });

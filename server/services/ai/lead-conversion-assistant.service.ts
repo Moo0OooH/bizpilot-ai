@@ -51,6 +51,7 @@ import type { BusinessRecord } from "@/server/repositories/businesses.repository
 import {
   getLeadById,
   getQualityScoreForLead,
+  insertLeadEvent,
   listSubmissionValuesForLead,
 } from "@/server/repositories/lead-conversion.repository";
 import { estimateAiCost, estimateTokens } from "@/server/services/ai/ai-cost";
@@ -255,6 +256,7 @@ export async function getLatestLeadAiOutput(input: {
 
 export async function generateLeadAiBundle(input: {
   aiProvider?: AIProvider | null;
+  actorUserId?: string | null | undefined;
   business: BusinessRecord;
   leadId: string;
 }): Promise<LeadConversionAiOutput> {
@@ -360,6 +362,21 @@ export async function generateLeadAiBundle(input: {
       supabase,
     });
 
+    await insertLeadEvent({
+      actorUserId: input.actorUserId,
+      businessId: input.business.id,
+      eventLabel: "AI assistant draft generated",
+      eventType: "action_completed",
+      leadId: input.leadId,
+      metadata: {
+        ai_output_id: record.id,
+        event_category: "ai_generation",
+        provider: "openai",
+        prompt_version: leadConversionBundlePrompt.version,
+      },
+      supabase,
+    });
+
     return parseAiOutput(record)!;
   } catch (error) {
     const sanitizedReason = sanitizeAiFailureReason(error);
@@ -396,6 +413,21 @@ export async function generateLeadAiBundle(input: {
       operationType: "lead_conversion_bundle",
       outputTokens,
       provider: "rule_fallback",
+      supabase,
+    });
+
+    await insertLeadEvent({
+      actorUserId: input.actorUserId,
+      businessId: input.business.id,
+      eventLabel: "AI fallback draft prepared",
+      eventType: "action_completed",
+      leadId: input.leadId,
+      metadata: {
+        ai_output_id: record.id,
+        event_category: "ai_generation",
+        provider: "rule_fallback",
+        reason: sanitizedReason,
+      },
       supabase,
     });
 

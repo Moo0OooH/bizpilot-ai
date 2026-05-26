@@ -22,6 +22,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { DashboardThemeSelector } from "@/components/dashboard/dashboard-theme";
+import { FlashMessage } from "@/components/dashboard/flash-message";
 import { WorkspaceDeletionRequestForm } from "@/components/dashboard/workspace-deletion-request-form";
 import {
   buttonClass,
@@ -176,14 +177,14 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       />
 
       {query?.notice ? (
-        <p className="rounded-[12px] border border-[#17D492]/25 bg-[#17D492]/10 p-3 text-sm font-semibold text-[#0F8F63] dark:text-[#8DF4C7]">
+        <FlashMessage tone="notice">
           {query.notice}
-        </p>
+        </FlashMessage>
       ) : null}
       {query?.error ? (
-        <p className="rounded-[12px] border border-red-400/25 bg-red-500/10 p-3 text-sm font-semibold text-red-700 dark:text-red-200">
+        <FlashMessage durationMs={10000} tone="error">
           {query.error}
-        </p>
+        </FlashMessage>
       ) : null}
 
       <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">

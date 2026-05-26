@@ -24,6 +24,7 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { CopyButton } from "@/components/dashboard/copy-button";
+import { FlashMessage } from "@/components/dashboard/flash-message";
 import {
   Avatar,
   buttonClass,
@@ -268,15 +269,18 @@ export default async function LeadDetailPage({
       />
 
       {query?.notice ? (
-        <p className="rounded-[14px] border border-emerald-300/35 bg-emerald-500/12 p-3 text-xs font-medium text-emerald-700 dark:text-emerald-200">
+        <FlashMessage
+          durationMs={query.notice.startsWith("Fallback") ? 9000 : 6500}
+          tone={query.notice.startsWith("Fallback") ? "warning" : "notice"}
+        >
           {query.notice}
-        </p>
+        </FlashMessage>
       ) : null}
 
       {query?.error ? (
-        <p className="rounded-[14px] border border-red-300/35 bg-red-500/12 p-3 text-xs font-medium text-red-700 dark:text-red-200">
+        <FlashMessage durationMs={10000} tone="error">
           {query.error}
-        </p>
+        </FlashMessage>
       ) : null}
 
       {/* Detail Header — avatar + identity + SLA badges + quick actions */}

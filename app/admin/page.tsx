@@ -19,6 +19,7 @@ import { redirect } from "next/navigation";
 
 import { FounderAuthUserDeleteForm } from "@/components/admin/founder-auth-user-delete-form";
 import { FounderTestCleanupForm } from "@/components/admin/founder-test-cleanup-form";
+import { FlashMessage } from "@/components/dashboard/flash-message";
 import {
   buttonClass,
   DashboardCard,
@@ -1538,8 +1539,14 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           />
         </DashboardCard>
 
-        {params.notice ? <AdminNotice tone="notice">{params.notice}</AdminNotice> : null}
-        {params.error ? <AdminNotice tone="error">{params.error}</AdminNotice> : null}
+        {params.notice ? (
+          <FlashMessage tone="notice">{params.notice}</FlashMessage>
+        ) : null}
+        {params.error ? (
+          <FlashMessage durationMs={10000} tone="error">
+            {params.error}
+          </FlashMessage>
+        ) : null}
 
         <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <MetricCard

@@ -19,6 +19,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { CopyButton } from "@/components/dashboard/copy-button";
+import { FlashMessage } from "@/components/dashboard/flash-message";
 import {
   buttonClass,
   DashboardCard,
@@ -142,15 +143,15 @@ export default async function BusinessProfilePage({
       />
 
       {params?.notice ? (
-        <p className="rounded-[14px] border border-emerald-300/35 bg-emerald-500/12 p-3 text-xs font-semibold text-emerald-700 dark:text-emerald-200">
+        <FlashMessage tone="notice">
           {params.notice}
-        </p>
+        </FlashMessage>
       ) : null}
 
       {params?.error ? (
-        <p className="rounded-[14px] border border-red-300/35 bg-red-500/12 p-3 text-xs font-semibold text-red-700 dark:text-red-200">
+        <FlashMessage durationMs={10000} tone="error">
           {params.error}
-        </p>
+        </FlashMessage>
       ) : null}
 
       <form
