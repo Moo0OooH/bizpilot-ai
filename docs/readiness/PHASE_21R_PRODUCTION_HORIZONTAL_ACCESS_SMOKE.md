@@ -307,3 +307,72 @@ Step 10 (horizontal access smoke) can proceed only after we have:
 - Production data created in Step 10A: **Yes, synthetic only** (once owner completes 9b).
 - Cleanup: **optional / owner-approved only**. Do not delete anything during Step 10A/10.
 - Step 11 founder-admin visual QA remains blocked until Step 10 passes.
+
+## 10. Step 10A Autonomous Attempt (2026-05-26)
+
+**Status:** BLOCKED - production sign-up did not create a verified Business B fixture.
+
+### 10a. What was attempted
+
+Autonomous setup was attempted through the normal production UI route only:
+
+- `https://bizpilo.com/auth/sign-up`
+- Owner name: `Synthetic Owner B`
+- Business name: `Synthetic ACME B`
+- Disposable inbox domains tried:
+  - `emailgenerator.org`
+  - `wshu.net` (mail.tm disposable domain)
+
+No password, auth link, inbox content, token, cookie, API key, or secret was
+printed or recorded.
+
+### 10b. Result
+
+Production sign-up returned the safe user-facing error:
+
+```text
+We couldn't create your account. Please try again.
+```
+
+The attempted canonical Business B slug was checked:
+
+- `https://bizpilo.com/quote/synthetic-acme-b`
+- Result: `Quote page unavailable`
+- Form inputs: not rendered
+
+Therefore Business B is not verified as a usable public quote tenant and Lead B
+could not be created.
+
+### 10c. Read-only evidence availability
+
+Read-only production verification from this workspace is currently unavailable:
+
+- `.env.local` has a `DATABASE_URL`, but it points to local Supabase
+  (`127.0.0.1:54322`), not canonical production.
+- REST read attempts against Supabase did not provide a usable read-only path
+  from this workspace without exposing or misusing secrets.
+
+No production SQL mutation was run. No direct INSERT/UPDATE/DELETE was run.
+
+### 10d. Current Step 10A blocker
+
+Smallest blocker:
+
+```text
+Production auth sign-up for a second synthetic owner currently fails before a
+usable Business B + public quote fixture can be verified.
+```
+
+Owner action is only required if one of these becomes necessary:
+
+- provide/complete an owner-controlled test inbox confirmation,
+- inspect Supabase Auth/logs for the failed synthetic signup,
+- create a synthetic Business B through an owner-approved browser/session,
+- approve any production mutation path.
+
+Until then:
+
+- Business B: not verified
+- Lead B: not created
+- Step 10 horizontal access smoke: not run
+- Step 11 founder-admin visual QA: still blocked
