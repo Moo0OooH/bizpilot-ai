@@ -184,6 +184,54 @@ function resolveTimeoutMs(): number {
   return value;
 }
 
+function readOptionalEnv(
+  name: string,
+  fileValues: Map<string, string>,
+): string | undefined {
+  const value = process.env[name] ?? fileValues.get(name);
+  const trimmed = value?.trim();
+
+  return trimmed && trimmed.length > 0 ? trimmed : undefined;
+}
+
+function assertDashboardSmokeSafeInput(input: {
+  appUrl: string | undefined;
+  baseUrl: URL;
+  isVercelEnvProduction: boolean;
+  supabaseUrl: string;
+}): void {
+  const productionSignals: string[] = [];
+  const appUrlHost = input.appUrl?.toLowerCase() ?? "";
+  const supabaseHost = input.supabaseUrl.toLowerCase();
+  const baseHost = input.baseUrl.host.toLowerCase();
+
+  if (input.isVercelEnvProduction) {
+    productionSignals.push("VERCEL_ENV=production");
+  }
+
+  if (appUrlHost.includes("bizpilo.com")) {
+    productionSignals.push("NEXT_PUBLIC_APP_URL includes bizpilo.com");
+  }
+
+  if (supabaseHost.includes("qfqendrqimqvkoojpjao")) {
+    productionSignals.push(
+      "NEXT_PUBLIC_SUPABASE_URL contains qfqendrqimqvkoojpjao",
+    );
+  }
+
+  if (baseHost.includes("bizpilo.com")) {
+    productionSignals.push("target smoke base URL is bizpilo.com");
+  }
+
+  if (productionSignals.length > 0) {
+    throw new Error(
+      `dashboard-auth-smoke is production-prohibited for synthetic data creation. ` +
+        `Detected production signals: ${productionSignals.join(", ")}. ` +
+        `This script is local/preview-only. Use founder-approved visual, read-only production validation.`,
+    );
+  }
+}
+
 function shortPgError(error: PgError): string {
   return [error.message, error.details, error.hint].filter(Boolean).join(" ");
 }
@@ -674,6 +722,16 @@ async function main(): Promise<void> {
   const supabaseUrl = readRequiredEnv("NEXT_PUBLIC_SUPABASE_URL", fileValues);
   const anonKey = readRequiredEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", fileValues);
   const serviceRoleKey = readRequiredEnv("SUPABASE_SERVICE_ROLE_KEY", fileValues);
+  const appUrl = readOptionalEnv("NEXT_PUBLIC_APP_URL", fileValues);
+  const isVercelEnvProduction =
+    process.env.VERCEL_ENV?.toLowerCase() === "production";
+
+  assertDashboardSmokeSafeInput({
+    appUrl,
+    baseUrl,
+    isVercelEnvProduction,
+    supabaseUrl,
+  });
 
   console.log(`BizPilot dashboard auth smoke target: ${baseUrl.origin}`);
   console.log("Synthetic data only. Secrets and cookies are not printed.");

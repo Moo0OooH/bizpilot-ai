@@ -27,6 +27,7 @@ Allowed in the later approved smoke:
 - synthetic quote submissions only,
 - read-only verification except for the intentionally created synthetic rows,
 - manual cleanup only through an approved path.
+- `dashboard-auth-smoke` must remain local/preview only; it must not run against production or canonical production DBs.
 
 Not allowed:
 
@@ -37,6 +38,9 @@ Not allowed:
 - weakening RLS,
 - production deploy or `main` merge without separate approval,
 - hidden auto-send, booking, invoices, SMS, WhatsApp, Instagram API, calendar automation, or full CRM scope.
+- `dashboard-auth-smoke` against production (`bizpilo.com`) or canonical production DB (`qfqendrqimqvkoojpjao`) under any circumstance.
+- creating production test artifacts without explicit owner approval and recorded cleanup/retention decision.
+- `codex-dashboard-*` slugs as canonical production smoke artifacts; use owner-approved synthetic workspace route labels only.
 
 ## 3. Required Owner Approval Before Execution
 
