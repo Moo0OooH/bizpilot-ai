@@ -491,3 +491,51 @@ Current evidence points to two likely causes:
 - After canonical confirmation, either:
   - use a confirmed renderable canonical synthetic slug for production smoke, or
   - create a fresh synthetic production workspace/link via owner-approved owner-admin flow and rerun Step 8A smoke.
+
+## 20. Step 8B-2 Production Synthetic Submission Read-Back Verification
+
+### Scope and preconditions
+
+- Synthetic identifier used in Step 8B: `synthetic+8b@example.test`
+- Target slug: `akora` (`https://bizpilo.com/quote/akora`)
+- Scope: read-only checks only.
+- No insert/update/delete, no cleanup, no dashboard smoke, no fr-CA smoke, no horizontal access smoke, no Step 9.
+
+### Canonical DB read availability
+
+- Required canonical target: `qfqendrqimqvkoojpjao`.
+- **In this workspace, canonical read access is not available.**
+- REST/SQL attempts against canonical project host with local workspace credentials returned auth failure (`401`), so authoritative read-back could not be executed locally.
+- Owner approval is still required for SQL-editor-only read-only verification on canonical production project.
+
+### Read-back verification checklist (status)
+
+| Check | Status | Note |
+| --- | --- | --- |
+| Lead exists (`synthetic+8b@example.test`) | N/A | Canonical read access blocked in workspace; no authorized query executed. |
+| Submission exists | N/A | Canonical read access blocked in workspace; no authorized query executed. |
+| Same business as `/quote/akora` | N/A | Canonical read access blocked in workspace; no authorized query executed. |
+| Consent/version persisted | N/A | Canonical read access blocked in workspace; no authorized query executed. |
+| Source metadata persisted | N/A | Canonical read access blocked in workspace; no authorized query executed. |
+| Required values captured | N/A | Canonical read access blocked in workspace; no authorized query executed. |
+| Owner dashboard visibility | PARTIAL | Not testable without approved owner-authenticated dashboard session path in this run. |
+
+### Step 8B outcome after 8B-2
+
+- Step 8B remains **PARTIAL** because canonical read-back could not be completed from local workspace access.
+
+### Step 8B-2 owner execution plan (canonical read-only only)
+
+Using only synthetic identifier `synthetic+8b@example.test` and a safe recent time window:
+
+1. Locate intake submissions/lead rows.
+2. Verify synthetic lead submission row exists and is linked to business using the `/quote/akora` path.
+3. Verify consent/version or source metadata if supported by schema/production data flow.
+4. Verify required field values are present in intake submission values table.
+5. Confirm owner dashboard visibility via approved founder session.
+6. If any item fails, record exact missing condition and keep status PARTIAL.
+
+### Final note
+
+- No additional production DB mutation was performed for Step 8B-2.
+- Step 9 (admin/visual and broader production QA) has not been run.
