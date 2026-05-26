@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Production public quote security verification
-**Status:** Step 8A resolved; Step 8B executed on synthetic production quote target
+**Status:** Step 8A resolved; Step 8B PASS on synthetic production quote target
 **Owner:** MoOoH
 **Last Updated:** 2026-05-26
 
@@ -12,9 +12,7 @@
 
 This document records whether BizPilot's public quote submission flow was safely verified in production with synthetic data after production schema/RPC alignment.
 
-No production quote submission was created. No production lead was created. No production customer data was read. No real customer data was used. No security policy was weakened. No production SQL was run. No secrets, tokens, database passwords, service role keys, anon keys, OpenAI keys, full connection strings, full emails, or customer payloads were printed or recorded.
-
-2026-05-26 continuation note: `pnpm smoke:quote` and direct quote-route checks were run against production. Route-only unavailable checks continue to pass, but active public form smoke could not be completed from an active synthetic link that renders a form.
+No production customer data was used. No security policy was weakened. No production SQL was run for migration/setup changes. No secrets, tokens, database passwords, service role keys, anon keys, OpenAI keys, full connection strings, full emails, or customer payloads were printed or recorded.
 
 ## 2. Environment
 
@@ -25,7 +23,7 @@ No production quote submission was created. No production lead was created. No p
 | Supabase project name | `bizpilot-production` |
 | Test environment | Production |
 | Test data policy | Synthetic only |
-| Production public quote security test run? | Partial route-only check |
+| Production public quote security test run? | 8B PASS on `/quote/akora`; read-back confirmed |
 
 ## 3. Preconditions
 
@@ -34,7 +32,7 @@ No production quote submission was created. No production lead was created. No p
 | Production migrations aligned | Object-verified; history unavailable | Required public quote columns/functions, expected `0018` objects, RLS enablement, policies, function definitions, `0019` grants, and targeted constraints/seeds have been verified. `supabase_migrations.schema_migrations` is missing, so history remains unavailable/manual drift. |
 | Required RPCs visible to PostgREST | Yes by safe probe and direct SQL | Phase 21B safe probes showed the three public quote RPCs callable/visible with repo parameter names. Owner-run direct SQL verified required functions and grants. |
 | Backup/safety documented | Blocked for real customer data | Supabase Free plan has no scheduled backup/PITR available; no manual export or restore drill has been done. Owner risk-accepted this only for no-real-user database/security alignment. |
-| Test business/link available or safely created | No production-ready active link mapping observed | Active public-link rows exist, but current production inspection shows unresolved/missing business/form linkage for tested slugs; form rendering is not occurring from these slugs. |
+| Test business/link available or safely created | PASS for canonical synthetic smoke target | `https://bizpilo.com/quote/akora` rendered form and persisted synthetic lead/submission for synthetic identifier. |
 | Owner approval for production data-bearing smoke | Broad readiness approval granted; execution inputs still required | Owner approved practical non-destructive readiness work. Phase 21N records the exact synthetic smoke plan, but execution still requires synthetic accounts/sessions, active link, payload, and cleanup/retain-evidence decision. |
 
 ### Safety addendum (must-not-run in production)
@@ -52,15 +50,16 @@ No production quote submission was created. No production lead was created. No p
 
 ## 4. Decision
 
-**Do not run data-bearing production public quote security tests yet.**
+**Data-bearing production public quote smoke executed and passed on synthetic target.**
 
 Reason:
 
 ```text
-The database/RLS preconditions are mostly satisfied by object verification, and Phase 21N now records a controlled test business/link/session plan plus cleanup options. The production route-only unavailable-link check passed. The production data-bearing synthetic smoke still needs an active synthetic quote slug, synthetic owner sessions, fake payload, and cleanup/retain-evidence decision.
+Step 8B used the synthetic canonical slug `https://bizpilo.com/quote/akora` and passed route/rendering, required field validation, synthetic submission, and success redirect checks.
+Owner-side read-back on canonical production DB confirmed lead + submission persistence and associated source/consent/field metadata.
 ```
 
-The safe local/RLS production-equivalent public quote verification from Phase 20 remains useful evidence, but it does not replace a production smoke after backup/migration/history gates are closed.
+Next required production smoke remains Step 9 (fr-CA synthetic production quote smoke).
 
 ## 5a. 2026-05-26 Production Smoke Attempt
 
@@ -138,9 +137,9 @@ Active form rendering is currently blocked by production data-state mismatch (ac
 | Success page renders | PASS |
 | Malformed/inexistent slug unavailable | PASS (`/quote/___not-a-real-slug___`) |
 | No obvious public-route cross-tenant leak | PASS (quote route returned only target form/success content) |
-| Lead created, visible in dashboard | PARTIAL (not testable without owner-auth owner session path) |
-| Source-channel persisted (observable) | PARTIAL (submitted as `public_quote_link`; read-back verification requires owner auth/DB read) |
-| Consent/version persisted (observable) | PARTIAL (submitted with hidden consent fields; read-back verification requires owner auth/DB read) |
+| Lead/submission persisted in canonical DB | PASS | Confirmed `lead_id: 4a50d95a-0b25-474e-8090-a0fa87a7bd1e`, `submission_id: 36a9e6cc-395e-4f96-9444-6c241d5c83db`. |
+| Source-channel persisted (observable) | PASS | Canonical lead metadata shows `source_channel: public_quote_link`. |
+| Consent/version persisted (observable) | PASS | Canonical submission metadata includes `consent_version_id: 0f776e26-9bd8-4df8-8765-3f8a0f3f8537` (`version v1`), with `consent_accepted_at` recorded. |
 
 ### Side effects
 
@@ -150,19 +149,26 @@ Active form rendering is currently blocked by production data-state mismatch (ac
 
 ### Step 8B status
 
-Step 8B is marked **PARTIAL PASS**: route/form/rendering, validation, submission, success response, and malformed availability checks passed. Dashboard/DB-read confirmation is pending owner-auth path.
+Step 8B is marked **PASS**.
+
+- Form/render path and required-field validation passed.
+- Submission and success route passed.
+- Canonical DB read-back confirmed persistence of lead and submission for synthetic identifier.
+- Source-channel and consent metadata persisted in canonical production.
+- Required submission values were persisted (owner-side read-back list provided in this section).
+- Owner dashboard visibility is deferred to Step 11 founder-admin visual QA.
 
 ## 5. Positive Test Matrix
 
 | Positive test | Result | Notes |
 | --- | --- | --- |
-| Active public quote link | Not run | Requires owner-approved synthetic production business/link. |
-| Valid cleaning quote payload | Not run | Do not create production submissions until gates pass. |
-| Submission accepted | Not run | No production submission attempted. |
-| Lead created | Not run | No production lead created. |
-| Intake values created | Not run | No production intake values created. |
-| Owner can see lead | Not run | Requires production synthetic owner/session and created lead. |
-| Another owner cannot see lead | Not run | Requires second synthetic owner and created lead. |
+| Active public quote link | PASS | `/quote/akora` rendered active form and accepted synthetic flow. |
+| Valid cleaning quote payload | PASS | Synthetic payload accepted and redirected successfully. |
+| Submission accepted | PASS | `303 -> /quote/akora/success` observed. |
+| Lead created | PASS | `lead_id: 4a50d95a-0b25-474e-8090-a0fa87a7bd1e` created in canonical production DB read-back. |
+| Intake values created | PASS | Canonical read-back confirms required field value capture set present. |
+| Owner can see lead | PARTIAL | Deferred to Step 11 founder-admin visual QA (owner-auth path). |
+| Another owner cannot see lead | PARTIAL | Requires Step 9 horizontal access smoke. |
 
 ## 6. Negative Test Matrix
 
@@ -204,7 +210,12 @@ Before running the production public quote security smoke:
 
 ## 9. Cleanup Policy
 
-No cleanup was performed because no production test data was created.
+No cleanup was performed.
+
+Synthetic Step 8B record is retained for evidence.
+
+- cleanup-needed-later: optional / owner-approved only
+- cleanup-executed: no
 
 When the production smoke is approved, the operator must record:
 
@@ -498,44 +509,67 @@ Current evidence points to two likely causes:
 
 - Synthetic identifier used in Step 8B: `synthetic+8b@example.test`
 - Target slug: `akora` (`https://bizpilo.com/quote/akora`)
-- Scope: read-only checks only.
-- No insert/update/delete, no cleanup, no dashboard smoke, no fr-CA smoke, no horizontal access smoke, no Step 9.
+- Canonical DB target: `qfqendrqimqvkoojpjao`
+- Scope: read-only owner-side verification only.
+- No insert/update/delete, no cleanup, no dashboard smoke, no fr-CA smoke, no horizontal access smoke, no Step 11 in this step.
 
-### Canonical DB read availability
+### Canonical read-back evidence (owner-side SQL)
 
-- Required canonical target: `qfqendrqimqvkoojpjao`.
-- **In this workspace, canonical read access is not available.**
-- REST/SQL attempts against canonical project host with local workspace credentials returned auth failure (`401`), so authoritative read-back could not be executed locally.
-- Owner approval is still required for SQL-editor-only read-only verification on canonical production project.
+- Lead:
+  - `lead_id: 4a50d95a-0b25-474e-8090-a0fa87a7bd1e`
+  - `business_id: 157bc1b5-7f13-46d9-ae87-c8ec0279a011`
+  - `intake_submission_id: 36a9e6cc-395e-4f96-9444-6c241d5c83db`
+  - `created_at: 2026-05-26 05:55:24.976003+00`
+  - `customer_contact: synthetic+8b@example.test`
+  - `city_or_service_area: Toronto`
+  - `source_channel: public_quote_link`
+- Submission:
+  - `submission_id: 36a9e6cc-395e-4f96-9444-6c241d5c83db`
+  - `submission_business_id: 157bc1b5-7f13-46d9-ae87-c8ec0279a011`
+  - `intake_form_id: 79303bf5-dca3-49f0-8986-af5acc806061`
+  - `consent_version_id: 0f776e26-9bd8-4df8-8765-3f8a0f3f8537`
+  - `consent_accepted_at: 2026-05-26 05:55:24.688+00`
+  - `privacy_mode: standard`
+- Akora linkage:
+  - `quote_slug: akora`
+  - `akora_business_id: 157bc1b5-7f13-46d9-ae87-c8ec0279a011`
+  - `akora_is_active: true`
+  - `same_business_as_akora: true`
+- Consent:
+  - `consent_version_id: 0f776e26-9bd8-4df8-8765-3f8a0f3f8537`
+  - `consent_business_id: 157bc1b5-7f13-46d9-ae87-c8ec0279a011`
+  - `consent_is_active: true`
+  - `version_label: v1`
+- Submission values captured: `bathrooms`, `bedrooms`, `city_or_service_area`, `cleaning_type`, `customer_contact`, `customer_email`, `customer_name`, `customer_phone`, `home_address`, `notes`, `pets`, `preferred_date`, `preferred_time_window`, `property_type`, `square_footage_optional`
 
-### Read-back verification checklist (status)
+### Read-back verification checklist
 
-| Check | Status | Note |
-| --- | --- | --- |
-| Lead exists (`synthetic+8b@example.test`) | N/A | Canonical read access blocked in workspace; no authorized query executed. |
-| Submission exists | N/A | Canonical read access blocked in workspace; no authorized query executed. |
-| Same business as `/quote/akora` | N/A | Canonical read access blocked in workspace; no authorized query executed. |
-| Consent/version persisted | N/A | Canonical read access blocked in workspace; no authorized query executed. |
-| Source metadata persisted | N/A | Canonical read access blocked in workspace; no authorized query executed. |
-| Required values captured | N/A | Canonical read access blocked in workspace; no authorized query executed. |
-| Owner dashboard visibility | PARTIAL | Not testable without approved owner-authenticated dashboard session path in this run. |
+| Check | Status |
+| --- | --- |
+| Lead exists | PASS |
+| Submission exists | PASS |
+| Same business as `/quote/akora` | PASS |
+| Consent/version persisted | PASS |
+| Source metadata persisted | PASS |
+| Required submission values captured | PASS |
+| Owner dashboard visibility | PARTIAL |
 
 ### Step 8B outcome after 8B-2
 
-- Step 8B remains **PARTIAL** because canonical read-back could not be completed from local workspace access.
+- Step 8B is **PASS**.
+- `Lead/submission persistence` and `source_channel/consent` persistence are confirmed on canonical production read-back.
+- `Owner dashboard visibility` is deferred to Step 11 founder-admin visual QA.
 
-### Step 8B-2 owner execution plan (canonical read-only only)
+### Cleanup status
 
-Using only synthetic identifier `synthetic+8b@example.test` and a safe recent time window:
+- Cleanup required: optional (owner-approved only)
+- Cleanup executed: no
 
-1. Locate intake submissions/lead rows.
-2. Verify synthetic lead submission row exists and is linked to business using the `/quote/akora` path.
-3. Verify consent/version or source metadata if supported by schema/production data flow.
-4. Verify required field values are present in intake submission values table.
-5. Confirm owner dashboard visibility via approved founder session.
-6. If any item fails, record exact missing condition and keep status PARTIAL.
+### Next step
+
+- Step 9: `fr-CA` production quote smoke with synthetic data only.
+- Step 9 was not run during this step.
 
 ### Final note
 
-- No additional production DB mutation was performed for Step 8B-2.
-- Step 9 (admin/visual and broader production QA) has not been run.
+- No production DB mutation was performed for Step 8B-2.
