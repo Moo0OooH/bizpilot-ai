@@ -206,3 +206,104 @@ Step 10 remains:
 PARTIAL/BLOCKED - code path inspected; production authenticated two-owner
 horizontal access smoke still requires owner-approved synthetic sessions.
 ```
+
+## 9. Step 10A - Synthetic Tenant Setup (Business B + Lead B)
+
+**Status:** BLOCKED (requires owner-controlled auth + inbox/session)
+
+### 9a. Why this is blocked in the current Codex environment
+
+Step 10A requires creating a second production auth user + tenant workspace
+through the normal UI (`/auth/sign-up`). That may require email confirmation
+and always requires credentials/session handling.
+
+This Codex workspace does not have a safe owner-controlled inbox/session to
+complete production sign-up autonomously without exposing secrets.
+
+Therefore, Business B + Lead B cannot be created from this workspace without
+owner involvement (inbox/session/password).
+
+### 9b. Smallest owner action required (exact, minimal)
+
+Create one synthetic tenant using the normal production UI only:
+
+1. Open: `https://bizpilo.com/auth/sign-up`
+2. Fill with synthetic values:
+   - Owner name: `Synthetic Owner B`
+   - Business name: `Synthetic ACME B`
+   - Email: owner-controlled test inbox alias (do not use `example.test` for auth)
+   - Password: choose any strong password (do not share)
+3. Complete any required email confirmation in that test inbox.
+4. After landing in the dashboard, locate the public quote link for Business B
+   via Quote Setup / Configuration / Copy Quote Link (product UI).
+5. Confirm the slug is human-readable and NOT:
+   - `codex-dashboard-*`
+   - a UUID / business_id
+6. Open Business B public quote URL and submit one synthetic Lead B:
+   - customer_name: `Synthetic Customer B`
+   - customer_contact/email: `synthetic+10-b@example.test`
+   - customer_phone: `+15550123458`
+   - city_or_service_area: `Montréal`
+   - notes: `Synthetic lead B for horizontal access smoke only.`
+   - sourceChannel: `public_quote_link`
+   - consentAccepted: `on`
+
+Do not run dashboard smoke scripts. Do not run production SQL mutations.
+Do not use real customer data.
+
+### 9c. Read-only verification (owner-side, canonical production DB)
+
+Run SELECT-only queries in Supabase SQL Editor for canonical production project
+`qfqendrqimqvkoojpjao`. Output only IDs/slugs/timestamps/counts.
+
+Verify Lead B exists:
+
+```sql
+select
+  id as lead_id,
+  business_id,
+  intake_submission_id,
+  created_at,
+  customer_contact,
+  city_or_service_area,
+  source_channel
+from public.leads
+where customer_contact = 'synthetic+10-b@example.test'
+order by created_at desc
+limit 1;
+```
+
+Verify Business B public link row for the discovered slug:
+
+```sql
+select
+  slug,
+  business_id,
+  is_active
+from public.public_link_variants
+where slug = '<BUSINESS_B_SLUG>'
+limit 1;
+```
+
+### 9d. Required fixtures before Step 10 can execute
+
+Step 10 (horizontal access smoke) can proceed only after we have:
+
+- Business A:
+  - slug: `akora`
+  - business_id: `157bc1b5-7f13-46d9-ae87-c8ec0279a011`
+  - lead_id: `4a50d95a-0b25-474e-8090-a0fa87a7bd1e`
+- Business B:
+  - slug: `<BUSINESS_B_SLUG>`
+  - business_id: `<BUSINESS_B_ID>`
+  - public quote URL: `https://bizpilo.com/quote/<BUSINESS_B_SLUG>`
+- Lead B:
+  - lead_id: `<LEAD_B_ID>`
+  - intake_submission_id: `<LEAD_B_SUBMISSION_ID>`
+  - source_channel: `public_quote_link`
+
+### 9e. Evidence and cleanup posture
+
+- Production data created in Step 10A: **Yes, synthetic only** (once owner completes 9b).
+- Cleanup: **optional / owner-approved only**. Do not delete anything during Step 10A/10.
+- Step 11 founder-admin visual QA remains blocked until Step 10 passes.
