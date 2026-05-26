@@ -8,8 +8,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { WORKSPACE_RECOVERY_ERROR_COOKIE } from "@/lib/workspace-recovery/constants";
 import { safeLogger } from "@/server/logging/safe-logger";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { recoverWorkspaceAccess } from "@/server/services/business.service";
@@ -24,8 +26,8 @@ function readBusinessName(formData: FormData): string {
   return value.trim();
 }
 
-function redirectWithRecoveryError(message: string): never {
-  redirect(`/dashboard?recoveryError=${encodeURIComponent(message)}`);
+function redirectWithRecoveryError(): never {
+  redirect("/dashboard");
 }
 
 export async function recoverWorkspaceAccessAction(
@@ -43,7 +45,18 @@ export async function recoverWorkspaceAccessAction(
       userId: user.id,
     });
   } catch (error) {
+    const errorCode =
+      error instanceof Error
+        ? error.message === "Business name is required."
+          ? "missing_business_name"
+          : error.message ===
+              "This account already has a workspace record that needs founder review."
+            ? "existing_workspace_state"
+            : "workspace_recovery_failed"
+        : "workspace_recovery_failed";
+
     safeLogger.warn("workspace_recovery.failed", {
+      errorCode,
       errorName: error instanceof Error ? error.name : "unknown",
       userId: user.id,
     });
@@ -56,7 +69,15 @@ export async function recoverWorkspaceAccessAction(
         ? error.message
         : "We couldn't recover this workspace automatically. Founder review is needed.";
 
-    redirectWithRecoveryError(message);
+    (await cookies()).set(WORKSPACE_RECOVERY_ERROR_COOKIE, message, {
+      httpOnly: true,
+      maxAge: 60,
+      path: "/dashboard",
+      sameSite: "lax",
+      secure: true,
+    });
+
+    redirectWithRecoveryError();
   }
 
   revalidatePath("/dashboard");

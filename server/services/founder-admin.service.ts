@@ -447,6 +447,16 @@ function latestByBusiness(items: ReadonlyArray<{ business_id: string; created_at
   return latest;
 }
 
+function logFounderAdminReadUnavailable(input: {
+  error: unknown;
+  readName: string;
+}): void {
+  safeLogger.warn("founder_admin.read_unavailable", {
+    error_name: input.error instanceof Error ? input.error.name : "unknown",
+    read_name: input.readName,
+  });
+}
+
 function mapFounderAdminAction(
   action: FounderAdminLogRecord,
 ): FounderAdminActionSummary {
@@ -640,11 +650,26 @@ export async function getFounderAdminOverview(input: {
     deletionRequests,
     usersResult,
   ] = await Promise.all([
-    listFounderBusinesses({ supabase }),
-    listFounderBusinessMembers({ supabase }),
-    listFounderPublicLinks({ supabase }),
-    listFounderLeadSignals({ supabase }),
-    listFounderUsageSignals({ supabase }),
+    listFounderBusinesses({ supabase }).catch((error) => {
+      logFounderAdminReadUnavailable({ error, readName: "businesses" });
+      return [];
+    }),
+    listFounderBusinessMembers({ supabase }).catch((error) => {
+      logFounderAdminReadUnavailable({ error, readName: "business_members" });
+      return [];
+    }),
+    listFounderPublicLinks({ supabase }).catch((error) => {
+      logFounderAdminReadUnavailable({ error, readName: "public_links" });
+      return [];
+    }),
+    listFounderLeadSignals({ supabase }).catch((error) => {
+      logFounderAdminReadUnavailable({ error, readName: "lead_signals" });
+      return [];
+    }),
+    listFounderUsageSignals({ supabase }).catch((error) => {
+      logFounderAdminReadUnavailable({ error, readName: "usage_signals" });
+      return [];
+    }),
     listFounderAdminLog({ limit: 100, supabase }).catch((error) => {
       safeLogger.warn("founder_admin.action_log_unavailable", {
         error_name: error instanceof Error ? error.name : "unknown",
@@ -664,12 +689,24 @@ export async function getFounderAdminOverview(input: {
       pageSize: usersPageSize,
       query: usersQuery,
       supabase,
+    }).catch((error) => {
+      logFounderAdminReadUnavailable({ error, readName: "auth_users" });
+
+      return {
+        lastPage: 1,
+        searchMode: "paged" as const,
+        total: 0,
+        users: [],
+      };
     }),
   ]);
 
   const userProfiles = await listFounderProfilesByUserIds({
     supabase,
     userIds: usersResult.users.map((user) => user.id),
+  }).catch((error) => {
+    logFounderAdminReadUnavailable({ error, readName: "profiles" });
+    return [];
   });
   const profileDisplayNameByUserId = new Map(
     userProfiles.map((profile) => [profile.user_id, profile.display_name]),

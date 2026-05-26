@@ -22,6 +22,7 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   resolveWorkspaceInterfaceLanguage,
 } from "@/lib/i18n/language";
+import { WORKSPACE_RECOVERY_ERROR_COOKIE } from "@/lib/workspace-recovery/constants";
 import { signOutAction } from "@/server/actions/auth.actions";
 import { recoverWorkspaceAccessAction } from "@/server/actions/workspace-recovery.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
@@ -44,6 +45,10 @@ export default async function DashboardLayout({
   const activeBusiness = workspace.businesses[0];
   if (!activeBusiness) {
     const accessSummary = await getWorkspaceAccessSummary({ userId: user.id });
+    const recoveryError = cookieStore.get(WORKSPACE_RECOVERY_ERROR_COOKIE)?.value;
+    if (recoveryError) {
+      cookieStore.delete(WORKSPACE_RECOVERY_ERROR_COOKIE);
+    }
     const isDeletionRequested =
       accessSummary?.lifecycleStatus === "deletion_requested";
     const activeLanguage = resolveWorkspaceInterfaceLanguage({
@@ -71,6 +76,11 @@ export default async function DashboardLayout({
           {accessSummary ? (
             <p className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm font-bold text-[var(--dash-text)]">
               {accessSummary.businessName}
+            </p>
+          ) : null}
+          {recoveryError ? (
+            <p className="mt-4 rounded-lg border border-red-300/50 bg-red-50 p-3 text-sm font-bold leading-5 text-red-700">
+              {recoveryError}
             </p>
           ) : null}
           {!accessSummary ? (

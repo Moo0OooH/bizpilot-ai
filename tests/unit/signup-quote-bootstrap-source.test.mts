@@ -49,8 +49,11 @@ describe("Signup quote bootstrap source safety", () => {
     const serviceSource = readFileSync("server/services/business.service.ts", "utf8");
 
     assert.equal(layoutSource.includes("Recover workspace"), true);
+    assert.equal(layoutSource.includes("WORKSPACE_RECOVERY_ERROR_COOKIE"), true);
     assert.equal(actionSource.includes("getCurrentUser"), true);
     assert.equal(actionSource.includes("recoverWorkspaceAccess"), true);
+    assert.equal(actionSource.includes("workspace_recovery.failed"), true);
+    assert.equal(actionSource.includes("errorCode"), true);
     assert.equal(
       serviceSource.includes("blocked_existing_workspace_state"),
       true,

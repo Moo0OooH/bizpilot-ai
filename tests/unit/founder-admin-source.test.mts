@@ -18,5 +18,8 @@ describe("Founder admin source safety", () => {
       true,
     );
     assert.equal(source.includes("listFounderDeletionRequests({ supabase }).catch"), true);
+    assert.equal(source.includes("founder_admin.read_unavailable"), true);
+    assert.equal(source.includes('readName: "auth_users"'), true);
+    assert.equal(source.includes('readName: "profiles"'), true);
   });
 });
