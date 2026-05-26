@@ -58,8 +58,8 @@ export function DashboardShell({
           showFounderAdmin={showFounderAdmin}
           userLabel={userLabel}
         />
-        <div className="px-4 py-4 pb-8 sm:px-5 md:px-6 lg:px-[28px] 2xl:px-[28px]">
-          <div className="mx-auto w-full max-w-[1440px] min-w-0">
+        <div className="px-3 py-3 pb-8 sm:px-5 md:px-6 lg:px-5 2xl:px-6">
+          <div className="mx-auto w-full max-w-[1500px] min-w-0">
             {children}
           </div>
         </div>

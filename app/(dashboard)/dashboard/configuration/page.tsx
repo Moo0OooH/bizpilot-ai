@@ -104,12 +104,12 @@ function ConfigurationPanel({
 }>) {
   return (
     <section
-      className="scroll-mt-4 rounded-[24px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-[18px] shadow-[0_16px_44px_rgba(2,6,23,0.12)]"
+      className="scroll-mt-4 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-sm"
       id={id}
     >
       <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_18rem] sm:items-start">
         <div className="min-w-0">
-          <h2 className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">{title}</h2>
+          <h2 className="text-[18px] font-extrabold text-[var(--dash-text)]">{title}</h2>
           {description ? (
             <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
               {description}
@@ -117,7 +117,7 @@ function ConfigurationPanel({
           ) : null}
         </div>
         {summary ? (
-          <p className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-xs leading-4 text-[var(--dash-text-secondary)]">
+          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-xs leading-4 text-[var(--dash-text-secondary)]">
             {summary}
           </p>
         ) : null}
@@ -138,7 +138,7 @@ function LogoPreviewImage({
 }
 
 const fieldInputClass =
-  "biz-field h-10 w-full rounded-[12px] border px-3 text-[13px] outline-none transition focus:border-[var(--dash-primary)]";
+  "biz-field h-10 w-full rounded-lg border px-3 text-[13px] outline-none transition focus:border-[var(--dash-primary)]";
 
 export default async function DashboardPage({
   searchParams,
@@ -216,13 +216,13 @@ export default async function DashboardPage({
         />
 
         {params?.notice ? (
-          <p className="rounded-[14px] border border-emerald-300/35 bg-emerald-500/12 p-3 text-xs font-semibold text-emerald-700 dark:text-emerald-200">
+          <p className="rounded-lg border border-emerald-300/35 bg-emerald-500/12 p-3 text-xs font-semibold text-emerald-700 dark:text-emerald-200">
             {params.notice}
           </p>
         ) : null}
 
         {params?.error ? (
-          <p className="rounded-[14px] border border-red-300/35 bg-red-500/12 p-3 text-xs font-semibold text-red-700 dark:text-red-200">
+          <p className="rounded-lg border border-red-300/35 bg-red-500/12 p-3 text-xs font-semibold text-red-700 dark:text-red-200">
             {params.error}
           </p>
         ) : null}
@@ -261,8 +261,8 @@ export default async function DashboardPage({
               summary={configCopy.overview.summary(readiness.completed, readiness.total)}
               title={configCopy.overview.title}
             >
-              <div className="grid gap-3.5 xl:grid-cols-[minmax(0,1fr)_20rem]">
-                <div className="grid gap-3.5 lg:grid-cols-[17rem_minmax(0,1fr)]">
+              <div className="grid gap-3.5 2xl:grid-cols-[minmax(0,1fr)_20rem]">
+                <div className="grid gap-3.5 xl:grid-cols-[17rem_minmax(0,1fr)]">
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
                     <div
                       className="flex h-28 items-center justify-center overflow-hidden rounded-lg border bg-[var(--dash-surface)]"
@@ -371,7 +371,7 @@ export default async function DashboardPage({
                 </div>
 
                 <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
-                  <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
+                  <p className="text-[18px] font-extrabold text-[var(--dash-text)]">
                     {configCopy.overview.setupReport}
                   </p>
                   <div className="mt-3 grid gap-2">
@@ -505,17 +505,17 @@ export default async function DashboardPage({
                       type="color"
                     />
                   </label>
-                  <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:col-span-3">
+                  <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:col-span-3">
                     <p className="text-xs font-medium text-[var(--dash-text-secondary)]">
                       {configCopy.branding.whereColorsApply}
                     </p>
-                    <div className="mt-2 overflow-hidden rounded-[12px] border border-[var(--dash-border)] bg-[#071018] p-3">
+                    <div className="mt-2 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[#071018] p-3">
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-xs font-semibold text-[#F5F7FA]">
                           {configCopy.branding.publicQuoteButton}
                         </span>
                         <span
-                          className="rounded-[10px] px-3 py-1.5 text-xs font-semibold text-white"
+                          className="rounded-md px-3 py-1.5 text-xs font-semibold text-white"
                           style={{ backgroundColor: primaryColor }}
                         >
                           {configCopy.branding.submitQuoteRequest}
@@ -929,7 +929,7 @@ export default async function DashboardPage({
 
             <aside className="space-y-3 2xl:sticky 2xl:top-20">
               <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
-                <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
+                <p className="text-[18px] font-extrabold text-[var(--dash-text)]">
                   {configCopy.side.workspaceReadiness}
                 </p>
                 <p className="mt-1 text-xs text-[var(--dash-text-muted)]">
@@ -968,7 +968,7 @@ export default async function DashboardPage({
               </section>
 
               <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
-                <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
+                <p className="text-[18px] font-extrabold text-[var(--dash-text)]">
                   {configCopy.side.brandingPreview}
                 </p>
                 <div
@@ -1003,7 +1003,7 @@ export default async function DashboardPage({
               </section>
 
               <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
-                <p className="text-[18px] font-extrabold tracking-[-0.03em] text-[var(--dash-text)]">
+                <p className="text-[18px] font-extrabold text-[var(--dash-text)]">
                   {configCopy.side.publicQuoteLink}
                 </p>
                 <p className="mt-1 text-xs leading-5 text-[var(--dash-text-muted)]">
@@ -1024,22 +1024,21 @@ export default async function DashboardPage({
 
         </form>
       </main>
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-4 py-2 shadow-[0_-18px_40px_rgba(0,0,0,0.18)] backdrop-blur">
-        <div className="mx-auto flex max-w-[1440px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[244px]">
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-4 py-2 shadow-[0_-10px_28px_rgba(0,0,0,0.14)] backdrop-blur">
+        <div className="mx-auto flex max-w-[1500px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[224px]">
           <p className="text-xs text-[var(--dash-text-secondary)]">
             {configCopy.bottomBar.text}
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">
             <a
-              className="biz-button-secondary inline-flex h-8 items-center justify-center rounded-[11px] border px-3 text-xs font-bold"
+              className="biz-button-secondary inline-flex h-8 items-center justify-center rounded-lg border px-3 text-xs font-bold"
               href={`/quote/${activeBusiness.slug}`}
             >
               {configCopy.bottomBar.openPublicQuoteLink}
             </a>
             <button
-              className="biz-button-primary h-8 rounded-[11px] px-4 text-xs font-bold"
+              className="biz-button-primary h-8 rounded-lg px-4 text-xs font-bold"
               form="business-configuration-form"
-              style={{ backgroundColor: "#17D492", color: "#03130c" }}
               type="submit"
             >
               {configCopy.bottomBar.saveConfiguration}

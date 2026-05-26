@@ -268,13 +268,13 @@ export default async function LeadDetailPage({
       />
 
       {query?.notice ? (
-        <p className="rounded-[14px] border border-emerald-300/35 bg-emerald-500/12 p-3 text-xs font-medium text-emerald-700 dark:text-emerald-200">
+        <p className="rounded-lg border border-emerald-300/35 bg-emerald-500/12 p-3 text-xs font-medium text-emerald-700 dark:text-emerald-200">
           {query.notice}
         </p>
       ) : null}
 
       {query?.error ? (
-        <p className="rounded-[14px] border border-red-300/35 bg-red-500/12 p-3 text-xs font-medium text-red-700 dark:text-red-200">
+        <p className="rounded-lg border border-red-300/35 bg-red-500/12 p-3 text-xs font-medium text-red-700 dark:text-red-200">
           {query.error}
         </p>
       ) : null}
@@ -285,7 +285,7 @@ export default async function LeadDetailPage({
           <div className="flex min-w-0 items-center gap-3.5">
             <Avatar name={customerName} size={52} tone="primary" />
             <div className="min-w-0">
-              <h2 className="truncate text-[22px] font-extrabold leading-tight tracking-[-0.04em] text-[var(--dash-text)]">
+              <h2 className="truncate text-[22px] font-extrabold leading-tight text-[var(--dash-text)]">
                 {customerShort}
               </h2>
               <p className="mt-1 truncate text-[13px] text-[var(--dash-text-secondary)]">
@@ -680,7 +680,7 @@ export default async function LeadDetailPage({
       <section className="grid min-w-0 gap-4 xl:grid-cols-2">
         <DashboardCard className="p-[22px]">
           <SectionHeader title={detailCopy.actionItems} />
-          <div className="mt-3 overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
+          <div className="mt-3 overflow-hidden rounded-lg border border-[var(--dash-border)]">
             {detail.actions.length > 0 ? (
               detail.actions.map((action) => (
                 <div
@@ -735,10 +735,10 @@ export default async function LeadDetailPage({
             {detail.events.length > 0 ? (
               detail.events.map((event) => (
                 <div
-                  className="grid grid-cols-[28px_minmax(0,1fr)_auto] gap-3 rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+                  className="grid grid-cols-[28px_minmax(0,1fr)_auto] gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
                   key={event.id}
                 >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-[10px] bg-[var(--dash-primary-soft)] text-[12px] font-bold text-[var(--dash-primary)]">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-[12px] font-bold text-[var(--dash-primary)]">
                     *
                   </span>
                   <span className="min-w-0">
@@ -771,7 +771,7 @@ function ReadOnlyField({
   value,
 }: Readonly<{ label: string; value: string }>) {
   return (
-    <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+    <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
       <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
         {fieldLabel}
       </p>

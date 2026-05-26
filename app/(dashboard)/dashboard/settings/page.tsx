@@ -27,7 +27,6 @@ import {
   buttonClass,
   DashboardCard,
   inputClass,
-  disabledButtonClass,
   PageHeader,
   primaryButtonClass,
   SectionHeader,
@@ -176,12 +175,12 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       />
 
       {query?.notice ? (
-        <p className="rounded-[12px] border border-[#17D492]/25 bg-[#17D492]/10 p-3 text-sm font-semibold text-[#0F8F63] dark:text-[#8DF4C7]">
+        <p className="rounded-lg border border-[#17D492]/25 bg-[#17D492]/10 p-3 text-sm font-semibold text-[#0F8F63] dark:text-[#8DF4C7]">
           {query.notice}
         </p>
       ) : null}
       {query?.error ? (
-        <p className="rounded-[12px] border border-red-400/25 bg-red-500/10 p-3 text-sm font-semibold text-red-700 dark:text-red-200">
+        <p className="rounded-lg border border-red-400/25 bg-red-500/10 p-3 text-sm font-semibold text-red-700 dark:text-red-200">
           {query.error}
         </p>
       ) : null}
@@ -189,11 +188,11 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
       <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
         <div className="grid gap-4">
           <section className="grid min-w-0 gap-4 lg:grid-cols-2 2xl:grid-cols-3">
-            <DashboardCard className="p-[22px]" variant="elevated">
+            <DashboardCard className="p-4" variant="elevated">
               <SectionHeader title={settingsCopy.account} />
               <div className="my-3 h-px bg-[var(--dash-border)]" />
               <div className="space-y-3">
-                <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                   <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
                     {settingsCopy.signedInAs}
                   </p>
@@ -209,7 +208,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               </div>
             </DashboardCard>
 
-            <DashboardCard className="p-[22px]">
+            <DashboardCard className="p-4">
               <SectionHeader
                 description={settingsCopy.languageDescription}
                 title={settingsCopy.language}
@@ -241,7 +240,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               </form>
             </DashboardCard>
 
-            <DashboardCard className="p-[22px]">
+            <DashboardCard className="p-4">
               <SectionHeader
                 description={settingsCopy.themeDescription}
                 title={settingsCopy.theme}
@@ -255,7 +254,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               </div>
             </DashboardCard>
 
-            <DashboardCard className="p-[22px]">
+            <DashboardCard className="p-4">
               <SectionHeader
                 description={settingsCopy.sessionPolicy.description}
                 title={settingsCopy.sessionPolicy.title}
@@ -286,32 +285,23 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                   [settingsCopy.teamMembers, settingsCopy.futureSectionHints.teamMembers],
                   [settingsCopy.integrations, settingsCopy.futureSectionHints.integrations],
                 ].map(([title, hint]) => (
-                  <div
-                    className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
-                    key={title}
-                  >
+                  <div className="grid gap-1 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3" key={title}>
                     <div className="flex items-center justify-between gap-3">
                       <p className="text-sm font-extrabold text-[var(--dash-text)]">
                         {title}
                       </p>
                       <StatusBadge>{settingsCopy.future}</StatusBadge>
                     </div>
-                    <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                      {hint}
+                    <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                      {hint} - {settingsCopy.notInMvp}
                     </p>
-                    <button
-                      className={`${disabledButtonClass} mt-3 w-full`}
-                      type="button"
-                    >
-                      {settingsCopy.notInMvp}
-                    </button>
                   </div>
                 ))}
               </div>
             </DashboardCard>
           </section>
 
-          <DashboardCard className="p-[22px]">
+          <DashboardCard className="p-4">
             <SectionHeader
               description={settingsCopy.guardrailsDescription}
               title={settingsCopy.guardrails}
@@ -319,7 +309,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {settingsCopy.guardrailItems.map((item) => (
                 <p
-                  className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]"
+                  className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]"
                   key={item}
                 >
                   {item}
@@ -328,7 +318,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             </div>
           </DashboardCard>
 
-          <DashboardCard className="p-[22px]">
+          <DashboardCard className="p-4">
             <SectionHeader
               description={settingsCopy.systemHistory.description}
               title={settingsCopy.systemHistory.title}
@@ -385,7 +375,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             />
             <div className="my-3 h-px bg-[var(--dash-border)]" />
             <div className="mb-3 grid gap-2 sm:grid-cols-2">
-              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
                   {settingsCopy.lifecycle.lifecycleStatus}
                 </p>
@@ -393,7 +383,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                   {lifecycleStatus.replaceAll("_", " ")}
                 </p>
               </div>
-              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
                   {settingsCopy.lifecycle.lockBehavior}
                 </p>
@@ -409,7 +399,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                 copy={settingsCopy.deletionForm}
               />
             ) : (
-              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                 <p className="text-sm font-extrabold text-[var(--dash-text)]">
                   {settingsCopy.lifecycle.deletionIneligibleTitle}
                 </p>
@@ -422,11 +412,11 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
         </div>
 
         <aside className="space-y-4 xl:sticky xl:top-[92px]">
-          <DashboardCard className="p-[22px]" variant="priority">
+          <DashboardCard className="p-4" variant="priority">
             <SectionHeader title={settingsCopy.workspace} />
             <div className="my-3 h-px bg-[var(--dash-border)]" />
             <div className="space-y-3">
-              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
                   {settingsCopy.business}
                 </p>
@@ -437,7 +427,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                   /{activeBusiness.slug}
                 </p>
               </div>
-              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
                   {settingsCopy.plan}
                 </p>
@@ -451,7 +441,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
             </div>
           </DashboardCard>
 
-          <DashboardCard className="p-[22px]">
+          <DashboardCard className="p-4">
             <SectionHeader title={settingsCopy.quickLinks} />
             <div className="mt-3 grid gap-2">
               <Link className={buttonClass} href="/dashboard/configuration">

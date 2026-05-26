@@ -91,7 +91,7 @@ export default async function LeadConversionDeskPage() {
   const lastSubmissionAt = desk.leads[0]?.lead.created_at ?? null;
 
   return (
-    <main className="space-y-[18px]">
+    <main className="space-y-4">
       <PageHeader
         actions={
           <>
@@ -106,15 +106,15 @@ export default async function LeadConversionDeskPage() {
         title={copy.pages.leads.title}
       />
 
-      <section className="grid min-w-0 items-start gap-[18px] xl:grid-cols-[minmax(0,1fr)_320px]">
+      <section className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
         <LeadWorkspaceQueue
           language={activeLanguage}
           leads={desk.leads}
           quotePath={quotePath}
         />
 
-        <aside className="min-w-0 space-y-[14px] xl:sticky xl:top-[92px]">
-          <DashboardCard className="p-[18px]" variant="priority">
+        <aside className="min-w-0 space-y-3 xl:sticky xl:top-[82px]">
+          <DashboardCard className="p-4" variant="priority">
             <SectionHeader
               description={
                 overdueCount > 0
@@ -136,7 +136,7 @@ export default async function LeadConversionDeskPage() {
             </div>
           </DashboardCard>
 
-          <DashboardCard className="p-[18px]">
+          <DashboardCard className="p-4">
             <SectionHeader
               action={<StatusBadge tone="emerald">{leadsCopy.active}</StatusBadge>}
               description={leadsCopy.lastSubmission(
@@ -144,7 +144,7 @@ export default async function LeadConversionDeskPage() {
               )}
               title={leadsCopy.quoteLinkHealth}
             />
-            <div className="mt-3 rounded-[13px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[13px] text-[var(--dash-text-secondary)]">
+            <div className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[13px] text-[var(--dash-text-secondary)]">
               <span className="break-all font-black text-[var(--dash-text)]">
                 {quotePath}
               </span>
@@ -158,7 +158,7 @@ export default async function LeadConversionDeskPage() {
             </div>
           </DashboardCard>
 
-          <DashboardCard className="p-[18px]">
+          <DashboardCard className="p-4">
             <SectionHeader title={leadsCopy.statusRulesTitle} />
             <div className="my-3 h-px bg-[var(--dash-border)]" />
             <p className="text-[13px] leading-6 text-[var(--dash-text-secondary)]">

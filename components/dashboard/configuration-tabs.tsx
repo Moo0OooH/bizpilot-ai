@@ -35,18 +35,18 @@ export function ConfigurationTabs({ children, sections }: Props) {
   const [activeSection, setActiveSection] = useState(sections[0]?.id ?? "");
 
   return (
-    <div className="space-y-3">
+    <div className="grid gap-3 xl:grid-cols-[13rem_minmax(0,1fr)] xl:items-start">
       <nav
         aria-label="Quote setup sections"
-        className="sticky top-[72px] z-10 rounded-[999px] border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)]/95 p-1.5 shadow-sm backdrop-blur"
+        className="sticky top-[70px] z-10 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)]/95 p-1.5 shadow-sm backdrop-blur xl:p-2"
       >
-        <div className="flex gap-1 overflow-x-auto pb-0.5">
+        <div className="flex gap-1 overflow-x-auto pb-0.5 xl:grid xl:overflow-visible xl:pb-0">
           {sections.map((section) => (
             <button
               className={
                 activeSection === section.id
-                  ? "inline-flex h-9 shrink-0 items-center rounded-full border border-[rgba(20,184,166,0.28)] bg-[var(--dash-primary-soft)] px-3 text-xs font-semibold text-[var(--dash-text)]"
-                  : "inline-flex h-9 shrink-0 items-center rounded-full px-3 text-xs font-semibold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]"
+                  ? "inline-flex h-9 shrink-0 items-center justify-start rounded-md border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-3 text-left text-xs font-semibold text-[var(--dash-text)]"
+                  : "inline-flex h-9 shrink-0 items-center justify-start rounded-md border border-transparent px-3 text-left text-xs font-semibold text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-border)] hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
               }
               key={section.id}
               onClick={() => setActiveSection(section.id)}
@@ -58,14 +58,16 @@ export function ConfigurationTabs({ children, sections }: Props) {
         </div>
       </nav>
 
-      {panels.map((panel, index) => (
-        <div
-          className={panelId(panel) === activeSection ? "block" : "hidden"}
-          key={panelId(panel) ?? index}
-        >
-          {panel}
-        </div>
-      ))}
+      <div className="min-w-0">
+        {panels.map((panel, index) => (
+          <div
+            className={panelId(panel) === activeSection ? "block" : "hidden"}
+            key={panelId(panel) ?? index}
+          >
+            {panel}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
