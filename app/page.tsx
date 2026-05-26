@@ -9,7 +9,9 @@
  * - docs/operations/BIZPILOT_PHASE_18A_NEXT_TAB_HANDOFF_v1.0.md
  * - components/public/marketing-ui.tsx
  * Author: MoOoH
- * Last Updated: 2026-05-21
+ * Last Updated: 2026-05-26
+ * Change Log:
+ * - 2026-05-26: Rebuilt the first viewport into an immersive product-led homepage hero.
  * ============================================================
  */
 
@@ -146,154 +148,209 @@ function LeadRow({
   );
 }
 
-function HeroDesk({
+function HeroProductScene({
   copy,
 }: Readonly<{ copy: HomeCopy["heroDesk"] }>) {
   return (
-    <MarketingCard
-      className="overflow-hidden p-3"
+    <div
+      aria-hidden
+      className="pointer-events-none relative min-h-[520px] w-full min-w-0 overflow-hidden rounded-[22px] border p-3 shadow-[0_38px_120px_rgba(0,0,0,0.42)] sm:min-h-[560px] sm:p-4 lg:min-h-[620px]"
       style={{
         background:
-          "radial-gradient(circle at 4% 0%, rgba(45,212,191,0.16), transparent 22rem), linear-gradient(145deg, rgba(10,23,35,0.96), rgba(5,12,20,0.96))",
-        borderColor: "rgba(45,212,191,0.22)",
+          "radial-gradient(circle at 76% 8%, rgba(226,232,240,0.20), transparent 13rem), radial-gradient(circle at 22% 4%, rgba(45,212,191,0.20), transparent 18rem), linear-gradient(145deg, rgba(13,28,42,0.96), rgba(5,12,20,0.98))",
+        borderColor: "rgba(148,203,226,0.22)",
       }}
     >
-      <div className="flex items-center gap-2 px-1 pb-3">
-        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: marketingTone.emerald }} />
-        <p className="text-[13px] font-black" style={{ color: marketingTone.text }}>
-          {copy.title}
-        </p>
-      </div>
+      <div
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, rgba(226,232,240,0.46), rgba(45,212,191,0.28), transparent)" }}
+      />
+      <div
+        className="absolute -right-20 top-12 h-64 w-64 rounded-full blur-3xl"
+        style={{ backgroundColor: "rgba(45,212,191,0.18)" }}
+      />
+      <div
+        className="absolute -bottom-24 left-10 h-72 w-72 rounded-full blur-3xl"
+        style={{ backgroundColor: "rgba(84,167,255,0.12)" }}
+      />
 
-      <div className="mb-2 grid grid-cols-3 gap-2">
-        {copy.journey.slice(0, 3).map((item, index) => (
-          <div
-            className="min-h-[52px] rounded-[10px] border px-3 py-2"
-            key={`${item.label}-${item.value}`}
-            style={{
-              background:
-                index === 5
-                  ? "linear-gradient(135deg, rgba(45,212,191,0.16), rgba(23,212,146,0.07))"
-                  : "rgba(255,255,255,0.035)",
-              borderColor: index === 5 ? "rgba(45,212,191,0.24)" : marketingTone.border,
-            }}
-          >
-            <p className="text-[9px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.muted }}>
-              {item.label}
-            </p>
-            <p className="mt-1 text-[12px] font-black leading-snug" style={{ color: index === 5 ? marketingTone.teal : marketingTone.text }}>
-              {item.value}
+      <div className="relative grid h-full min-h-[494px] grid-rows-[auto_minmax(0,1fr)_auto] gap-3 sm:min-h-[528px] lg:min-h-[588px]">
+        <div className="flex items-center justify-between gap-3 rounded-[14px] border px-3 py-2" style={{ backgroundColor: "rgba(255,255,255,0.045)", borderColor: marketingTone.border }}>
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: marketingTone.emerald }} />
+            <p className="truncate text-[13px] font-black" style={{ color: marketingTone.text }}>
+              {copy.title}
             </p>
           </div>
-        ))}
-      </div>
-
-      <div className="grid gap-3 xl:grid-cols-[0.92fr_1.08fr]">
-        <div className="grid gap-2">
-          {copy.leads.slice(0, 2).map((lead) => (
-            <LeadRow fromLabel={copy.fromLabel} item={lead} key={lead.customer} />
-          ))}
-          <div className="rounded-[10px] border px-3 py-2 text-center text-[11px] font-bold" style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
-            {copy.viewAll}
-          </div>
+          <StatusPill status={copy.aiDraft} tone="new" />
         </div>
 
-        <div
-          className="rounded-[13px] border p-3"
-          style={{
-            background:
-              "radial-gradient(circle at 96% 4%, rgba(226,232,240,0.24), transparent 10rem), radial-gradient(circle at 88% 16%, rgba(246,184,75,0.18), transparent 9rem), linear-gradient(135deg, #2A3033 0%, #1D252B 45%, #0E151D 100%)",
-            borderColor: "rgba(148,203,226,0.30)",
-            boxShadow:
-              "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 1px rgba(34,211,238,0.08), 0 0 34px rgba(56,189,248,0.08)",
-          }}
-        >
-          <div className="flex items-center justify-between gap-3">
-            <h3 className="text-[15px] font-black" style={{ color: marketingTone.text }}>
-              {copy.replyTitle}
-            </h3>
-            <StatusPill status={copy.aiDraft} tone="new" />
+        <div className="grid min-h-0 gap-3 lg:grid-cols-[0.88fr_1.12fr]">
+          <div className="grid min-h-0 gap-2">
+            {copy.leads.map((lead) => (
+              <LeadRow fromLabel={copy.fromLabel} item={lead} key={lead.customer} />
+            ))}
           </div>
-          <div className="mt-2 space-y-2 text-[11.5px] leading-5" style={{ color: marketingTone.soft }}>
-            <p>{copy.reply.greeting}</p>
-            <p>{copy.reply.intro}</p>
-            <p>{copy.reply.requestLine}</p>
-            <ul className="ml-4 list-disc space-y-0.5">
-              {copy.reply.questions.map((question) => (
-                <li key={question}>{question}</li>
-              ))}
-            </ul>
-            <p>{copy.reply.closing}</p>
-            <p>
-              {copy.reply.signature.map((line, index) => (
-                <span key={line}>
-                  {index > 0 ? <br /> : null}
-                  {line}
-                </span>
-              ))}
-            </p>
-          </div>
-          <div className="mt-4 grid gap-2">
-            <MarketingButton className="h-9 w-full text-[11.5px]" href="/auth/sign-up">
-              {copy.reviewReply}
-            </MarketingButton>
-            <div className="grid gap-2 min-[520px]:grid-cols-2">
-              <button
-                className="h-9 rounded-[9px] border text-[11px] font-black"
-                style={{ borderColor: marketingTone.borderStrong, color: marketingTone.text }}
-                type="button"
-              >
-                {copy.copyResponse}
-              </button>
-              <button
-                className="h-9 rounded-[9px] border text-[11px] font-black"
-                style={{ borderColor: marketingTone.borderStrong, color: marketingTone.text }}
-                type="button"
-              >
-                {copy.markContacted}
-              </button>
+
+          <div className="grid min-h-0 gap-3">
+            <div
+              className="rounded-[16px] border p-4"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(255,255,255,0.075), rgba(255,255,255,0.035))",
+                borderColor: "rgba(148,203,226,0.24)",
+              }}
+            >
+              <div className="grid grid-cols-3 gap-2">
+                {copy.journey.slice(0, 3).map((item, index) => (
+                  <div
+                    className="min-h-[62px] rounded-[12px] border px-3 py-2"
+                    key={`${item.label}-${item.value}`}
+                    style={{
+                      background:
+                        index === 1
+                          ? "linear-gradient(135deg, rgba(45,212,191,0.16), rgba(23,212,146,0.07))"
+                          : "rgba(255,255,255,0.04)",
+                      borderColor:
+                        index === 1
+                          ? "rgba(45,212,191,0.26)"
+                          : marketingTone.border,
+                    }}
+                  >
+                    <p className="text-[9px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.muted }}>
+                      {item.label}
+                    </p>
+                    <p className="mt-1 text-[12px] font-black leading-snug" style={{ color: index === 1 ? marketingTone.teal : marketingTone.text }}>
+                      {item.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              className="min-h-0 rounded-[18px] border p-4"
+              style={{
+                background:
+                  "radial-gradient(circle at 96% 4%, rgba(226,232,240,0.18), transparent 10rem), linear-gradient(135deg, #2A3033 0%, #1D252B 45%, #0E151D 100%)",
+                borderColor: "rgba(148,203,226,0.30)",
+                boxShadow:
+                  "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 34px rgba(56,189,248,0.08)",
+              }}
+            >
+              <div className="flex items-center justify-between gap-3">
+                <h3 className="text-[15px] font-black" style={{ color: marketingTone.text }}>
+                  {copy.replyTitle}
+                </h3>
+                <StatusPill status={copy.aiDraft} tone="new" />
+              </div>
+              <div className="mt-3 space-y-2 text-[12px] leading-5" style={{ color: marketingTone.soft }}>
+                <p>{copy.reply.greeting}</p>
+                <p>{copy.reply.intro}</p>
+                <p>{copy.reply.requestLine}</p>
+                <ul className="ml-4 list-disc space-y-0.5">
+                  {copy.reply.questions.map((question) => (
+                    <li key={question}>{question}</li>
+                  ))}
+                </ul>
+                <p>{copy.reply.closing}</p>
+              </div>
+              <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                {[copy.reviewReply, copy.copyResponse, copy.markContacted].map((action, index) => (
+                  <div
+                    className="h-9 rounded-[10px] border px-2 text-center text-[10.5px] font-black leading-9"
+                    key={action}
+                    style={{
+                      backgroundColor:
+                        index === 0 ? "rgba(45,212,191,0.16)" : "rgba(255,255,255,0.035)",
+                      borderColor:
+                        index === 0 ? "rgba(45,212,191,0.28)" : marketingTone.borderStrong,
+                      color: index === 0 ? marketingTone.teal : marketingTone.text,
+                    }}
+                  >
+                    {action}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
+
+        <div className="grid gap-2 sm:grid-cols-3">
+          {copy.journey.slice(3, 6).map((item, index) => (
+            <div
+              className="rounded-[13px] border px-3 py-2"
+              key={`${item.label}-${item.value}`}
+              style={{
+                backgroundColor: index === 2 ? "rgba(45,212,191,0.11)" : "rgba(255,255,255,0.04)",
+                borderColor: index === 2 ? "rgba(45,212,191,0.24)" : marketingTone.border,
+              }}
+            >
+              <p className="text-[9px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.muted }}>
+                {item.label}
+              </p>
+              <p className="mt-1 truncate text-[12px] font-black" style={{ color: index === 2 ? marketingTone.teal : marketingTone.text }}>
+                {item.value}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
-    </MarketingCard>
+    </div>
   );
 }
 
 function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
   return (
-    <section className="px-0 pb-4 pt-5 sm:pb-6 sm:pt-6">
-      <MarketingShell>
-        <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[minmax(0,0.94fr)_minmax(0,1.06fr)]">
-          <div className="min-w-0">
+    <section className="relative overflow-hidden px-5 pb-7 pt-5 sm:px-6 sm:pb-9 sm:pt-7">
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(5,11,18,0.98) 0%, rgba(5,11,18,0.90) 36%, rgba(5,11,18,0.44) 68%, rgba(5,11,18,0.92) 100%)",
+        }}
+      />
+      <MarketingShell className="relative max-w-[1320px]">
+        <div className="relative min-h-[calc(100svh-96px)] overflow-hidden rounded-[28px] border px-4 py-6 sm:px-7 sm:py-8 lg:min-h-[760px] lg:px-10 lg:py-10" style={{ borderColor: "rgba(148,203,226,0.16)" }}>
+          <div className="absolute inset-0">
+            <HeroProductScene copy={copy.heroDesk} />
+          </div>
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(90deg, rgba(5,11,18,0.98) 0%, rgba(5,11,18,0.92) 34%, rgba(5,11,18,0.42) 66%, rgba(5,11,18,0.16) 100%)",
+            }}
+          />
+
+          <div className="relative z-10 flex min-h-[calc(100svh-150px)] max-w-[720px] flex-col justify-center py-10 lg:min-h-[660px]">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
-            <h1 className="mt-5 max-w-[620px] text-[34px] font-black leading-[1.05] min-[380px]:text-[38px] sm:text-[44px] xl:text-[48px]" style={{ color: marketingTone.text }}>
+            <h1 className="mt-5 text-[38px] font-black leading-[1.02] min-[380px]:text-[44px] sm:text-[58px] lg:text-[68px]" style={{ color: marketingTone.text }}>
               {copy.hero.title}
             </h1>
-            <p className="mt-5 max-w-[590px] text-[15px] leading-7 sm:text-[16px] sm:leading-8" style={{ color: marketingTone.soft }}>
+            <p className="mt-5 max-w-[620px] text-[16px] leading-8 sm:text-[18px] sm:leading-9" style={{ color: marketingTone.soft }}>
               {copy.hero.body}
             </p>
-            <div className="mt-6 grid gap-3 min-[430px]:flex min-[430px]:flex-wrap">
-              <MarketingButton className="w-full px-4 min-[430px]:w-auto" href="/auth/sign-up">
+            <div className="mt-7 grid gap-3 min-[430px]:flex min-[430px]:flex-wrap">
+              <MarketingButton className="w-full px-5 min-[430px]:w-auto" href="/auth/sign-up">
                 {copy.hero.primaryCta} <MarketingIcon name="arrow" />
               </MarketingButton>
-              <MarketingButton className="w-full px-4 min-[430px]:w-auto" href="#cleaning-demo" variant="secondary">
+              <MarketingButton className="w-full px-5 min-[430px]:w-auto" href="#cleaning-demo" variant="secondary">
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
-            <div className="mt-6 grid gap-2.5 text-[12.5px]" style={{ color: marketingTone.soft }}>
+            <div className="mt-8 grid max-w-[620px] gap-2.5 sm:grid-cols-3" style={{ color: marketingTone.soft }}>
               {copy.hero.bullets.map((item) => (
-                <span className="flex items-center gap-3" key={item}>
-                  <span className="text-[#2DD4BF]">
+                <span className="flex min-w-0 items-center gap-2 rounded-[12px] border px-3 py-2 text-[12px] font-bold" key={item} style={{ backgroundColor: "rgba(255,255,255,0.045)", borderColor: marketingTone.border }}>
+                  <span className="shrink-0 text-[#2DD4BF]">
                     <MarketingIcon name="check" />
                   </span>
-                  {item}
+                  <span className="min-w-0 leading-5">{item}</span>
                 </span>
               ))}
             </div>
-          </div>
-          <div className="min-w-0 lg:justify-self-end">
-            <HeroDesk copy={copy.heroDesk} />
           </div>
         </div>
       </MarketingShell>
