@@ -92,6 +92,7 @@ export default async function DashboardLayout({
                 Business name
                 <input
                   className={inputClass}
+                  defaultValue={user.businessName ?? ""}
                   maxLength={80}
                   name="businessName"
                   placeholder="Your cleaning business"
@@ -99,6 +100,12 @@ export default async function DashboardLayout({
                   type="text"
                 />
               </label>
+              <input name="accountEmail" type="hidden" value={user.email ?? ""} />
+              {user.email ? (
+                <p className="mt-2 text-xs font-bold leading-5 text-[var(--dash-text-muted)]">
+                  Signed in as {user.email}
+                </p>
+              ) : null}
               <p className="mt-2 text-xs leading-5 text-[var(--dash-text-secondary)]">
                 Use this only if signup created your login but did not finish
                 the workspace setup.

@@ -21,5 +21,8 @@ describe("Founder admin source safety", () => {
     assert.equal(source.includes("founder_admin.read_unavailable"), true);
     assert.equal(source.includes('readName: "auth_users"'), true);
     assert.equal(source.includes('readName: "profiles"'), true);
+    assert.equal(source.includes("founder_admin.auth_rest_unavailable"), true);
+    assert.equal(source.includes("buildFounderLinkedUsersPage"), true);
+    assert.equal(source.includes("supabase.auth.admin.getUserById(userId)"), true);
   });
 });

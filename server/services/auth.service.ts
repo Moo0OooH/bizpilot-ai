@@ -23,6 +23,8 @@ import "server-only";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type AuthUser = Readonly<{
+  businessName?: string;
+  displayName?: string;
   email?: string;
   id: string;
 }>;
@@ -63,19 +65,34 @@ export function getPasswordResetFlowErrorContext(error: unknown): {
   };
 }
 
-function toAuthUser(response: { email?: string; id: string }): AuthUser {
+function readMetadataText(
+  metadata: Record<string, unknown> | undefined,
+  key: string,
+): string | undefined {
+  const value = metadata?.[key];
+
+  return typeof value === "string" && value.trim().length > 0
+    ? value.trim()
+    : undefined;
+}
+
+function toAuthUser(response: {
+  email?: string;
+  id: string;
+  user_metadata?: Record<string, unknown>;
+}): AuthUser {
   const user: AuthUser = {
     id: response.id,
   };
+  const businessName = readMetadataText(response.user_metadata, "business_name");
+  const displayName = readMetadataText(response.user_metadata, "display_name");
 
-  if (response.email !== undefined) {
-    return {
-      ...user,
-      email: response.email,
-    };
-  }
-
-  return user;
+  return {
+    ...user,
+    ...(businessName ? { businessName } : {}),
+    ...(displayName ? { displayName } : {}),
+    ...(response.email !== undefined ? { email: response.email } : {}),
+  };
 }
 
 export async function signInWithPassword(input: {

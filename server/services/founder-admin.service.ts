@@ -451,9 +451,21 @@ function logFounderAdminReadUnavailable(input: {
   error: unknown;
   readName: string;
 }): void {
+  const errorRecord =
+    input.error && typeof input.error === "object"
+      ? (input.error as { code?: unknown; status?: unknown })
+      : {};
+
   safeLogger.warn("founder_admin.read_unavailable", {
+    error_code:
+      typeof errorRecord.code === "string" ? errorRecord.code : undefined,
     error_name: input.error instanceof Error ? input.error.name : "unknown",
     read_name: input.readName,
+    status:
+      typeof errorRecord.status === "number" ||
+      typeof errorRecord.status === "string"
+        ? errorRecord.status
+        : undefined,
   });
 }
 
@@ -494,10 +506,10 @@ export function readFounderWorkspaceKind(value: string): FounderWorkspaceKind {
   throw new Error("Invalid workspace kind.");
 }
 
-async function fetchFounderAuthUsersWithFilter(input: {
+async function fetchFounderAuthUsersFromRest(input: {
+  filter?: string;
   page: number;
   pageSize: number;
-  query: string;
 }): Promise<FounderAuthUsersPage | null> {
   const env = getServerEnv();
 
@@ -508,7 +520,9 @@ async function fetchFounderAuthUsersWithFilter(input: {
   const url = new URL("/auth/v1/admin/users", env.NEXT_PUBLIC_SUPABASE_URL);
   url.searchParams.set("page", String(input.page));
   url.searchParams.set("per_page", String(input.pageSize));
-  url.searchParams.set("filter", input.query);
+  if (input.filter) {
+    url.searchParams.set("filter", input.filter);
+  }
 
   const response = await fetch(url, {
     cache: "no-store",
@@ -519,6 +533,9 @@ async function fetchFounderAuthUsersWithFilter(input: {
   });
 
   if (!response.ok) {
+    safeLogger.warn("founder_admin.auth_rest_unavailable", {
+      status: response.status,
+    });
     return null;
   }
 
@@ -532,7 +549,7 @@ async function fetchFounderAuthUsersWithFilter(input: {
 
   return {
     lastPage: Math.max(1, Math.ceil(safeTotal / input.pageSize)),
-    searchMode: "auth_filter",
+    searchMode: input.filter ? "auth_filter" : "paged",
     total: safeTotal,
     users,
   };
@@ -551,7 +568,16 @@ async function listFounderAuthUsers(input: {
     });
 
     if (usersResult.error) {
-      throw new Error(usersResult.error.message);
+      const fallback = await fetchFounderAuthUsersFromRest({
+        page: input.page,
+        pageSize: input.pageSize,
+      });
+
+      if (fallback) {
+        return fallback;
+      }
+
+      throw usersResult.error;
     }
 
     return {
@@ -563,10 +589,10 @@ async function listFounderAuthUsers(input: {
   }
 
   const [authFilterPage, profileMatches] = await Promise.all([
-    fetchFounderAuthUsersWithFilter({
+    fetchFounderAuthUsersFromRest({
+      filter: input.query,
       page: input.page,
       pageSize: input.pageSize,
-      query: input.query,
     }),
     searchFounderProfilesByDisplayName({
       page: input.page,
@@ -627,6 +653,94 @@ async function listFounderAuthUsers(input: {
   };
 }
 
+async function buildFounderLinkedUsersPage(input: {
+  businesses: FounderBusinessRecord[];
+  members: FounderBusinessMemberRecord[];
+  page: number;
+  pageSize: number;
+  query: string;
+  supabase: ReturnType<typeof createSupabaseServiceRoleClient>;
+}): Promise<FounderAuthUsersPage> {
+  const createdAtByUserId = new Map<string, string>();
+  const businessNamesByUserId = new Map<string, string[]>();
+
+  function addUser(inputUser: {
+    businessName?: string;
+    createdAt: string;
+    userId: string;
+  }): void {
+    const existingCreatedAt = createdAtByUserId.get(inputUser.userId);
+    if (!existingCreatedAt || inputUser.createdAt < existingCreatedAt) {
+      createdAtByUserId.set(inputUser.userId, inputUser.createdAt);
+    }
+
+    if (inputUser.businessName) {
+      const names = businessNamesByUserId.get(inputUser.userId) ?? [];
+      names.push(inputUser.businessName);
+      businessNamesByUserId.set(inputUser.userId, names);
+    }
+  }
+
+  for (const business of input.businesses) {
+    addUser({
+      businessName: business.name,
+      createdAt: business.created_at,
+      userId: business.owner_user_id,
+    });
+  }
+
+  const businessNameById = new Map(
+    input.businesses.map((business) => [business.id, business.name]),
+  );
+
+  for (const member of input.members) {
+    const businessName = businessNameById.get(member.business_id);
+    addUser({
+      createdAt: member.created_at,
+      ...(businessName ? { businessName } : {}),
+      userId: member.user_id,
+    });
+  }
+
+  const hydratedUsers = await Promise.all(
+    Array.from(createdAtByUserId.keys()).map(async (userId) => {
+      const result = await input.supabase.auth.admin.getUserById(userId);
+
+      if (result.error || !result.data.user) {
+        return {
+          created_at: createdAtByUserId.get(userId) ?? new Date(0).toISOString(),
+          id: userId,
+        } satisfies FounderAuthUserRecord;
+      }
+
+      return result.data.user;
+    }),
+  );
+  const normalizedQuery = input.query.toLowerCase();
+  const filteredUsers = hydratedUsers.filter((user) => {
+    if (!normalizedQuery) {
+      return true;
+    }
+
+    const businessNames = businessNamesByUserId.get(user.id) ?? [];
+
+    return founderAuthUserMatchesQuery({
+      displayName: null,
+      query: normalizedQuery,
+      user,
+    }) || businessNames.some((name) => name.toLowerCase().includes(normalizedQuery));
+  });
+  const total = filteredUsers.length;
+  const from = (input.page - 1) * input.pageSize;
+
+  return {
+    lastPage: Math.max(1, Math.ceil(total / input.pageSize)),
+    searchMode: "paged",
+    total,
+    users: filteredUsers.slice(from, from + input.pageSize),
+  };
+}
+
 export async function getFounderAdminOverview(input: {
   userPage?: number;
   userPageSize?: number;
@@ -648,7 +762,7 @@ export async function getFounderAdminOverview(input: {
     usageEvents,
     recentActions,
     deletionRequests,
-    usersResult,
+    initialUsersResult,
   ] = await Promise.all([
     listFounderBusinesses({ supabase }).catch((error) => {
       logFounderAdminReadUnavailable({ error, readName: "businesses" });
@@ -700,6 +814,18 @@ export async function getFounderAdminOverview(input: {
       };
     }),
   ]);
+
+  let usersResult = initialUsersResult;
+  if (usersResult.users.length === 0 && (businesses.length > 0 || members.length > 0)) {
+    usersResult = await buildFounderLinkedUsersPage({
+      businesses,
+      members,
+      page: usersPage,
+      pageSize: usersPageSize,
+      query: usersQuery,
+      supabase,
+    });
+  }
 
   const userProfiles = await listFounderProfilesByUserIds({
     supabase,
