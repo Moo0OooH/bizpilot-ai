@@ -7,10 +7,12 @@ Phase branch reference at the time of rebase: `3957d56 feat(admin): refresh foun
 
 ## Scope
 
-BizPilot remains a cleaning-first Quote Recovery / Lead Recovery Command Center.
-This pass did not add booking, invoices, SMS, WhatsApp, Instagram, calendar sync,
-AI auto-send, marketplace, a full CRM, real customer data, production SQL, 0020
-production apply, or OpenAI debugging.
+This pass kept the live product as a Quote Recovery / Lead Recovery Command
+Center. A later 2026-05-26 owner decision allows broader feature expansion when
+new capabilities are owner-controlled, feature-gated, visible in Settings, and
+guide-backed. This redesign pass itself did not add booking, invoices, SMS,
+WhatsApp, Instagram, calendar sync, AI auto-send, marketplace, a full CRM, real
+customer data, production SQL, 0020 production apply, or OpenAI debugging.
 
 ## Rollback posture
 

@@ -157,9 +157,11 @@ export default async function FounderConsolePage() {
           </li>
           <li className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
             <span className="font-bold text-[var(--dash-text)]">
-              Not-now list still active:
+              Feature levels:
             </span>{" "}
-            no booking, billing automation, autonomous sending, second vertical, or full CRM expansion before the validation gate.
+            broad features can be planned, but they stay owner-controlled and
+            Settings-visible until validation, provider, payment, and guide
+            gates pass.
           </li>
           <li className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
             <span className="font-bold text-[var(--dash-text)]">

@@ -169,7 +169,7 @@ Do not change these strategic decisions:
 
 ## 7. Final Founder-Level Recommendation
 
-The project is close to a serious MVP path. The best next move is not more features. The best next move is:
+The project is close to a serious MVP path. 2026-05-26 owner update: feature planning may broaden, but active customer availability must be controlled by feature entitlement, Settings visibility, and guides. The best next move for live readiness is still:
 
 ```text
 Phase 5/6 stabilization
@@ -201,4 +201,4 @@ Proceed only if the next execution cycle prioritizes:
 5. three cleaning pilot customers,
 6. retention tracking.
 
-Do not proceed into broad feature expansion until the validation gate is passed.
+Do not default-enable or sell broad feature expansion until the validation gate is passed. Implementation may proceed behind owner-controlled feature levels when Settings states, visual guides, text guides, owner/admin guides, and provider/payment/API blockers are explicit.

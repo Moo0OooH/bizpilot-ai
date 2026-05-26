@@ -16,7 +16,9 @@ Phase 1 through Phase 4 are implemented.
 
 Phase 5 is implemented and in stabilization / completion candidate status. The next step is end-to-end manual QA and demo readiness: docs sync, tenant-safe smoke testing, and `pnpm typecheck`, `pnpm lint`, and `pnpm build`.
 
-Phase 6 foundation has started with a manual, on-demand AI Lead Assistant. Full Phase 6 remains open. Do not add AI auto-send, email sending, billing, booking, integrations, generic CRM scope, or automation while closing Phase 5 and hardening the foundation.
+Phase 6 foundation has started with a manual, on-demand AI Lead Assistant. Full Phase 6 remains open.
+
+2026-05-26 owner expansion update: future AI sending, email, billing, booking, integrations, automation, team, vertical, and CRM-like capabilities may be planned and built when they are owner-controlled, feature-gated, Settings-visible, guide-backed, and validated. They must not be default-enabled or presented as active before the implementation, provider/payment/API posture, and smoke evidence are real. See `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`.
 
 ---
 
@@ -26,8 +28,7 @@ Build like a platform.
 Ship like a simple cleaning lead recovery product.
 Sell like a done-for-you revenue recovery service.
 
-The goal is not to build everything.
-The goal is to reach paying validation quickly with low server cost and controlled scope.
+The goal is to build the right things in the right order. Feature breadth is allowed, but activation must be controlled by owner-defined feature levels and readiness evidence.
 
 ---
 
@@ -634,7 +635,7 @@ Before serious outreach, the dashboard must support a first-use or demo state wi
 
 ### Execution Constraint
 
-Do not add new verticals, booking, invoices, direct messaging automation, or advanced analytics before the validation gate is passed.
+Do not default-enable or sell new verticals, booking, invoices, direct messaging automation, or advanced analytics before the entitlement, guide, provider/payment/API, and validation gates are passed. Planning and implementation behind feature levels is allowed.
 
 ### Validation-Oriented Definition of Done
 

@@ -16,7 +16,19 @@ The dashboard IA is implemented as part of Phase 5 stabilization. Phase 6 founda
 
 Dashboard copy and layout should stay focused on quote requests, reply urgency, follow-up discipline, public quote link visibility, business readiness, and recovery proof.
 
-Do not introduce AI auto-send, email sending, billing, booking, integrations, generic CRM scope, or upgrade-oriented marketing blocks in the Phase 5 dashboard.
+2026-05-26 owner expansion update:
+
+The old Phase 5 scope ceiling no longer blocks future product planning. BizPilot may add broader capabilities, including communication, scheduling, billing, team, integration, vertical, and CRM-like workflows, when they are owner-controlled and feature-gated.
+
+Dashboard UX must still stay calm and operational:
+
+- do not default-enable new capabilities,
+- do not show unavailable features as active controls,
+- do not imply send, booking, invoice, payment, or automation outcomes before the product really performs them,
+- surface each feature's availability, level, setup requirement, and guide links in Settings,
+- require visual and text guides before any new feature is considered complete.
+
+Canonical expansion rules live in `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`.
 
 ---
 

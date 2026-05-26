@@ -18,7 +18,7 @@ The project already has three older visual standards:
 
 They remain valid, but the live dashboard has been rebuilt from the approved `index (7).html` prototype with a teal/navy command-center palette that supersedes the parts of those documents that disagree. This file records exactly what the implementation uses now so that every new page - protected or public - can match without guessing.
 
-When this document and an older one conflict, this document wins for any **rendered chrome, surface, button, badge, form field, layout grid, or interactive component**. Older documents still win for **product scope, security, AI behavior, GTM, and validation gates** (per CURRENT_CANONICAL_DOCS_v1.7.md conflict resolution rules).
+When this document and an older one conflict, this document wins for any **rendered chrome, surface, button, badge, form field, layout grid, or interactive component**. `BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md` wins for future feature expansion, Settings feature visibility, and guide requirements. Older documents still win for **security, AI behavior, GTM, and validation gates** unless a newer canonical standard explicitly supersedes them.
 
 ---
 
@@ -425,6 +425,7 @@ Each row records something the approved `index (7).html` did and how the live im
 | 7+ owner profile fields (phone, website, languages, response hours ...) | Engineering Standard v1.5 Section 3 + Vendor Independence Section 7: SQL-first migrations only | Identity fields without a column today appear as a separate "Roadmap fields" card with `Phase 18B` badges and disabled CTAs. The visual matches the index without unauthorized schema growth. | `BIZPILOT_ENGINEERING_STANDARD_v1.5.md` Section 3 |
 | Hero card with strong gradient + glow | Strategic Alignment v1.6 Section 6: "Operational Calm UX ... no heavy gradients, no glow spam" | Hero uses two soft radial accents (<=18% opacity) on `--dash-surface` - calm but distinctive. No box-shadow glow. | `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` Section 6 |
 | Recent Activity feed mixing system + customer messages | Privacy Standard v1.5 Section 11 (no raw customer content in logs) | Feed shows lead identifier + summary line only. No raw customer message text is rendered. | `BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` Section 11 |
+| Older docs freeze major feature scope | Owner 2026-05-26 direction: expand the project through owner-controlled feature levels | Scope can expand when the feature is entitlement-backed, visible in Settings, guide-backed, and validated. Disabled/planned features still must not look active. | `BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md` |
 
 ---
 
@@ -441,7 +442,7 @@ A new dashboard route is considered design-system-aligned when:
 - Semantic colors include `dark:` modifiers
 - Empty / loading / error states exist
 - Sticky right rails use `xl:sticky xl:top-[92px]`
-- No new feature scope outside the active Phase 18 lock
+- Any new feature is backed by entitlement/level state, Settings visibility, visual guide, text guide, and validation evidence before it is treated as active
 
 ---
 
