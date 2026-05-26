@@ -100,6 +100,7 @@ export async function signInWithPassword(input: {
 }
 
 export async function signUpWithPassword(input: {
+  businessName?: string;
   displayName?: string;
   emailRedirectTo?: string;
   email: string;
@@ -118,6 +119,7 @@ export async function signUpWithPassword(input: {
         ? { emailRedirectTo: input.emailRedirectTo }
         : {}),
       data: {
+        business_name: input.businessName ?? "",
         display_name: input.displayName ?? "",
       },
     },

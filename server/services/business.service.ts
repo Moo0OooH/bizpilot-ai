@@ -54,6 +54,7 @@ import {
 } from "@/server/repositories/public-intake.repository";
 import type { Database } from "@/types/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { safeLogger } from "@/server/logging/safe-logger";
 
 export type BusinessWorkspace = Readonly<{
   businesses: BusinessRecord[];
@@ -248,6 +249,136 @@ export async function createFoundingBusiness(input: {
   await bootstrapDefaultQuoteConfiguration({
     business,
     supabase,
+  });
+
+  return business;
+}
+
+function isDashboardAccessibleBusiness(business: BusinessRecord): boolean {
+  return (
+    (business.status === "onboarding" || business.status === "active") &&
+    business.lifecycle_status === "active" &&
+    business.plan_slug !== "paused"
+  );
+}
+
+function hasActiveOwnerMembership(input: {
+  businessId: string;
+  memberships: BusinessMemberRecord[];
+  userId: string;
+}): boolean {
+  return input.memberships.some(
+    (membership) =>
+      membership.business_id === input.businessId &&
+      membership.user_id === input.userId &&
+      membership.role === "owner" &&
+      membership.status === "active",
+  );
+}
+
+function hasAnyMembership(input: {
+  businessId: string;
+  memberships: BusinessMemberRecord[];
+  userId: string;
+}): boolean {
+  return input.memberships.some(
+    (membership) =>
+      membership.business_id === input.businessId &&
+      membership.user_id === input.userId,
+  );
+}
+
+export async function recoverWorkspaceAccess(input: {
+  businessName: string;
+  userId: string;
+}): Promise<BusinessRecord> {
+  const businessName = input.businessName.trim();
+
+  if (businessName.length === 0) {
+    throw new Error("Business name is required.");
+  }
+
+  const supabase = createSupabaseServiceRoleClient();
+  const [memberResult, ownedBusinessResult] = await Promise.all([
+    supabase
+      .from("business_members")
+      .select("*")
+      .eq("user_id", input.userId)
+      .order("created_at", { ascending: true }),
+    supabase
+      .from("businesses")
+      .select("*")
+      .eq("owner_user_id", input.userId)
+      .order("created_at", { ascending: true }),
+  ]);
+
+  if (memberResult.error) {
+    throw new Error(memberResult.error.message);
+  }
+
+  if (ownedBusinessResult.error) {
+    throw new Error(ownedBusinessResult.error.message);
+  }
+
+  const memberships = memberResult.data ?? [];
+  const ownedBusinesses = ownedBusinessResult.data ?? [];
+  const recoverableOwnedBusiness = ownedBusinesses.find(isDashboardAccessibleBusiness);
+
+  if (recoverableOwnedBusiness) {
+    if (
+      !hasActiveOwnerMembership({
+        businessId: recoverableOwnedBusiness.id,
+        memberships,
+        userId: input.userId,
+      })
+    ) {
+      if (
+        hasAnyMembership({
+          businessId: recoverableOwnedBusiness.id,
+          memberships,
+          userId: input.userId,
+        })
+      ) {
+        throw new Error(
+          "This account already has a workspace record that needs founder review.",
+        );
+      }
+
+      await createOwnerMembership({
+        businessId: recoverableOwnedBusiness.id,
+        supabase,
+        userId: input.userId,
+      });
+
+      safeLogger.info("workspace_recovery.owner_membership_created", {
+        businessId: recoverableOwnedBusiness.id,
+        userId: input.userId,
+      });
+    }
+
+    return recoverableOwnedBusiness;
+  }
+
+  if (ownedBusinesses.length > 0 || memberships.length > 0) {
+    safeLogger.warn("workspace_recovery.blocked_existing_workspace_state", {
+      ownedBusinessCount: ownedBusinesses.length,
+      membershipCount: memberships.length,
+      userId: input.userId,
+    });
+    throw new Error(
+      "This account already has a workspace record that needs founder review.",
+    );
+  }
+
+  const business = await createFoundingBusiness({
+    businessName,
+    ownerUserId: input.userId,
+    serviceRole: true,
+  });
+
+  safeLogger.info("workspace_recovery.workspace_created", {
+    businessId: business.id,
+    userId: input.userId,
   });
 
   return business;

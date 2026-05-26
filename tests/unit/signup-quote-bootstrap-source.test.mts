@@ -31,6 +31,34 @@ describe("Signup quote bootstrap source safety", () => {
     assert.equal(source.includes("upsertIntakeFormFromTemplate"), true);
   });
 
+  it("stores signup business name for future workspace recovery", () => {
+    const authSource = readFileSync("server/services/auth.service.ts", "utf8");
+    const actionSource = readFileSync("server/actions/auth.actions.ts", "utf8");
+
+    assert.equal(authSource.includes("businessName?: string"), true);
+    assert.equal(authSource.includes("business_name: input.businessName"), true);
+    assert.equal(actionSource.includes("businessName,"), true);
+  });
+
+  it("exposes a guarded owner workspace recovery path", () => {
+    const layoutSource = readFileSync("app/(dashboard)/layout.tsx", "utf8");
+    const actionSource = readFileSync(
+      "server/actions/workspace-recovery.actions.ts",
+      "utf8",
+    );
+    const serviceSource = readFileSync("server/services/business.service.ts", "utf8");
+
+    assert.equal(layoutSource.includes("Recover workspace"), true);
+    assert.equal(actionSource.includes("getCurrentUser"), true);
+    assert.equal(actionSource.includes("recoverWorkspaceAccess"), true);
+    assert.equal(
+      serviceSource.includes("blocked_existing_workspace_state"),
+      true,
+    );
+    assert.equal(serviceSource.includes("status === \"suspended\""), false);
+    assert.equal(serviceSource.includes("disable row level security"), false);
+  });
+
   it("uses conservative default setup data without weakening tenant access", () => {
     const source = readFileSync("server/services/business.service.ts", "utf8");
 

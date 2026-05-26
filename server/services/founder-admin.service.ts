@@ -652,7 +652,13 @@ export async function getFounderAdminOverview(input: {
 
       return [];
     }),
-    listFounderDeletionRequests({ supabase }),
+    listFounderDeletionRequests({ supabase }).catch((error) => {
+      safeLogger.warn("founder_admin.deletion_requests_unavailable", {
+        error_name: error instanceof Error ? error.name : "unknown",
+      });
+
+      return [];
+    }),
     listFounderAuthUsers({
       page: usersPage,
       pageSize: usersPageSize,

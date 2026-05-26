@@ -11,13 +11,19 @@ import { redirect } from "next/navigation";
 
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { DASHBOARD_THEME_COOKIE } from "@/components/dashboard/dashboard-theme";
-import { buttonClass, DashboardCard } from "@/components/dashboard/dashboard-ui";
+import {
+  buttonClass,
+  DashboardCard,
+  inputClass,
+  primaryButtonClass,
+} from "@/components/dashboard/dashboard-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
   resolveWorkspaceInterfaceLanguage,
 } from "@/lib/i18n/language";
 import { signOutAction } from "@/server/actions/auth.actions";
+import { recoverWorkspaceAccessAction } from "@/server/actions/workspace-recovery.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import {
   getBusinessWorkspace,
@@ -66,6 +72,31 @@ export default async function DashboardLayout({
             <p className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm font-bold text-[var(--dash-text)]">
               {accessSummary.businessName}
             </p>
+          ) : null}
+          {!accessSummary ? (
+            <form
+              action={recoverWorkspaceAccessAction}
+              className="mt-5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4"
+            >
+              <label className="grid gap-2 text-sm font-bold text-[var(--dash-text)]">
+                Business name
+                <input
+                  className={inputClass}
+                  maxLength={80}
+                  name="businessName"
+                  placeholder="Your cleaning business"
+                  required
+                  type="text"
+                />
+              </label>
+              <p className="mt-2 text-xs leading-5 text-[var(--dash-text-secondary)]">
+                Use this only if signup created your login but did not finish
+                the workspace setup.
+              </p>
+              <button className={`${primaryButtonClass} mt-3`} type="submit">
+                Recover workspace
+              </button>
+            </form>
           ) : null}
           <div className="mt-5 flex flex-wrap gap-2">
             <form action={signOutAction}>

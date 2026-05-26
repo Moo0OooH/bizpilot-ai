@@ -683,6 +683,7 @@ export async function signUpAction(formData: FormData): Promise<never> {
 
   try {
     const result = await signUpWithPassword({
+      businessName,
       displayName,
       email,
       emailRedirectTo: callbackRedirectTo,
