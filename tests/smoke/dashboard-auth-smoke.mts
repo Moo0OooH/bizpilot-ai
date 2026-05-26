@@ -534,7 +534,7 @@ async function createSyntheticWorkspace(input: {
 
   return {
     cookieHeader: [...cookies]
-      .map(([name, value]) => `${encodeURIComponent(name)}=${encodeURIComponent(value)}`)
+      .map(([name, value]) => `${name}=${value}`)
       .join("; "),
     workspace: {
       businessId,

@@ -50,6 +50,22 @@ Result: `pnpm smoke:dashboard -- --base-url=http://localhost:3000` passed
 expected HTTP 307 redirect to `/dashboard/configuration`, and no route rendered
 the generic crash page or internal error markers.
 
+## Production deploy check
+
+After pushing `f1703d5` to `main`, Vercel production reported Ready for:
+
+- `dpl_8pnYf3mZgywrUu7UdFf7KdiMfAWK`
+- `https://bizpilo.com`
+
+Production public smoke passed 9/9 after that deployment.
+
+`pnpm smoke:dashboard -- --base-url=https://bizpilo.com` could not complete
+from this workstation because the synthetic Supabase session created from the
+local environment was redirected to `/auth/sign-in` on production. No secrets
+were read from Vercel or printed. A founder-authorized production browser
+session, or a production-matched synthetic auth environment, is still needed to
+record the authenticated production dashboard smoke.
+
 ## Source/contact feature note
 
 The owner requested source attribution and premium customer contact-list
