@@ -32,6 +32,10 @@ import {
   SectionHeader,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
+import {
+  featureRegistry,
+  getFeatureStateTone,
+} from "@/lib/features/feature-registry";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { canUserRequestWorkspaceDeletion } from "@/lib/business-deletion/owner-eligibility";
 import {
@@ -124,6 +128,10 @@ function formatSessionPolicyLabel(input: {
   }
 
   return input.alwaysOn;
+}
+
+function formatOwnerAuthority(value: string): string {
+  return value.replaceAll("_", " ");
 }
 
 export default async function SettingsPage({ searchParams }: SettingsPageProps) {
@@ -273,30 +281,95 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               </div>
             </DashboardCard>
 
-            <DashboardCard className="p-[22px]">
+            <DashboardCard className="p-[18px] lg:col-span-2 2xl:col-span-3">
               <SectionHeader
-                description={settingsCopy.futureSectionsDescription}
-                title={settingsCopy.futureSections}
+                description={settingsCopy.featureRegistry.description}
+                title={settingsCopy.featureRegistry.title}
               />
               <div className="my-3 h-px bg-[var(--dash-border)]" />
-              <div className="space-y-2">
-                {[
-                  [settingsCopy.billing, settingsCopy.futureSectionHints.billing],
-                  [settingsCopy.teamMembers, settingsCopy.futureSectionHints.teamMembers],
-                  [settingsCopy.integrations, settingsCopy.futureSectionHints.integrations],
-                ].map(([title, hint]) => (
-                  <div className="grid gap-1 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3" key={title}>
-                    <div className="flex items-center justify-between gap-3">
-                      <p className="text-sm font-extrabold text-[var(--dash-text)]">
-                        {title}
+              <div className="grid gap-3 xl:grid-cols-2">
+                {featureRegistry.map((feature) => {
+                  const featureText = settingsCopy.featureRegistry.featureCopy[feature.key];
+
+                  return (
+                    <div
+                      className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+                      key={feature.key}
+                    >
+                      <div className="flex flex-wrap items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+                            {settingsCopy.featureRegistry.categoryLabels[feature.category]}
+                          </p>
+                          <p className="mt-1 text-sm font-extrabold text-[var(--dash-text)]">
+                            {featureText.name}
+                          </p>
+                        </div>
+                        <StatusBadge tone={getFeatureStateTone(feature.state)}>
+                          {settingsCopy.featureRegistry.stateLabels[feature.state]}
+                        </StatusBadge>
+                      </div>
+
+                      <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                        {featureText.summary}
                       </p>
-                      <StatusBadge>{settingsCopy.future}</StatusBadge>
+
+                      <div className="grid gap-2 text-[12px] sm:grid-cols-2">
+                        <div className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2">
+                          <p className="font-extrabold text-[var(--dash-text-muted)]">
+                            {settingsCopy.featureRegistry.levelLabel}
+                          </p>
+                          <p className="mt-1 font-bold text-[var(--dash-text)]">
+                            {settingsCopy.featureRegistry.levelLabels[feature.level]}
+                          </p>
+                        </div>
+                        <div className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2">
+                          <p className="font-extrabold text-[var(--dash-text-muted)]">
+                            {settingsCopy.featureRegistry.ownerLabel}
+                          </p>
+                          <p className="mt-1 font-bold capitalize text-[var(--dash-text)]">
+                            {formatOwnerAuthority(feature.ownerAuthority)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                        <p>
+                          <span className="font-extrabold text-[var(--dash-text)]">
+                            {settingsCopy.featureRegistry.activationLabel}:
+                          </span>{" "}
+                          {featureText.activation}
+                        </p>
+                        <p>
+                          <span className="font-extrabold text-[var(--dash-text)]">
+                            {settingsCopy.featureRegistry.statusLabel}:
+                          </span>{" "}
+                          {featureText.setup}
+                        </p>
+                      </div>
+
+                      <div className="grid gap-2 text-[12px]">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-extrabold text-[var(--dash-text)]">
+                            {settingsCopy.featureRegistry.guidesLabel}
+                          </span>
+                          <StatusBadge>
+                            {settingsCopy.featureRegistry.guideLabels[feature.guideStatus]}
+                          </StatusBadge>
+                        </div>
+                        <p className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 leading-5 text-[var(--dash-text-secondary)]">
+                          {featureText.visualGuide}
+                        </p>
+                        <p className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 leading-5 text-[var(--dash-text-secondary)]">
+                          {featureText.textGuide}
+                        </p>
+                        <p className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 leading-5 text-[var(--dash-text-secondary)]">
+                          {featureText.ownerGuide}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                      {hint} - {settingsCopy.notInMvp}
-                    </p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </DashboardCard>
           </section>

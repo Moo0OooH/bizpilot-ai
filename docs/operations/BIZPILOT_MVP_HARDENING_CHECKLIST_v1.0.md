@@ -21,18 +21,20 @@ Safe enough, polished enough, and focused enough to charge early customers.
 
 ---
 
-## 2. Scope Freeze
+## 2. Feature Entitlement Freeze
 
-Before hardening starts:
+2026-05-26 update: broad product planning is allowed, but active customer
+availability must be controlled by feature entitlement and Settings visibility.
+Before a feature is treated as active:
 
-- [ ] No new feature scope is added.
-- [ ] No booking engine.
-- [ ] No CRM expansion.
-- [ ] No SMS/WhatsApp/Instagram APIs.
-- [ ] No full Stripe Billing.
-- [ ] No second vertical.
-- [ ] No background AI agents.
-- [ ] No auto-send.
+- [ ] Feature key, state, and level exist.
+- [ ] Settings shows whether it is enabled, owner-controlled, planned, setup-required, or externally blocked.
+- [ ] Visual guide exists.
+- [ ] Customer-facing text guide exists.
+- [ ] Owner/admin enablement guide exists.
+- [ ] Provider/payment/API blockers are explicit.
+- [ ] The feature is not default-enabled unless it is truly ready.
+- [ ] No booking, CRM expansion, SMS/WhatsApp/Instagram, Stripe Billing, second vertical, background AI, or auto-send surface looks active before the entitlement and smoke gates pass.
 
 ---
 

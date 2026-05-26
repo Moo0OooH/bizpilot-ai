@@ -65,7 +65,7 @@ Evidence: `artifacts/phase18/BizPilot_Phase18_Founder_CRM_Template.xlsx` and `do
 
 ## G. Validation Gate
 
-Do not expand verticals or major feature categories until:
+Do not default-enable, sell, or imply availability of verticals or major feature categories until:
 
 - [ ] 3+ paying/payment-ready cleaning businesses exist.
 - [ ] Repeat weekly usage is visible.
@@ -74,6 +74,17 @@ Do not expand verticals or major feature categories until:
 - [ ] At least one testimonial or strong qualitative proof exists.
 - [ ] Quote-to-response workflow is clearly useful.
 
+Expansion implementation may proceed behind owner-controlled feature levels when:
+
+- [ ] The feature is listed in Settings with clear state and level.
+- [ ] The feature has a visual guide.
+- [ ] The feature has a customer-facing text guide.
+- [ ] The feature has an owner/admin enablement guide.
+- [ ] Provider, payment, data, and automation limits are stated honestly.
+- [ ] The feature does not look active until it is actually enabled.
+
+Reference: `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`.
+
 ## Definition of Done
 
-The project is strategically aligned when a new coding agent, designer, or founder can read the docs and clearly understand that the current mission is not to build a broad AI platform, but to validate a secure, focused, cleaning-first quote recovery product that owners repeatedly use.
+The project is strategically aligned when a new coding agent, designer, or founder can read the docs and clearly understand that BizPilot can grow broadly, but every capability must be owner-controlled, guide-backed, Settings-visible, and validated before it becomes active for customers.

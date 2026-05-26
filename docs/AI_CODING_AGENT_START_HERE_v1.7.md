@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This file is the first instruction document for Cloud Code, Codex, or any coding agent working on BizPilot AI. It is designed to prevent scope creep, security regressions, and misinterpretation of older documentation.
+This file is the first instruction document for Cloud Code, Codex, or any coding agent working on BizPilot AI. It is designed to prevent unsafe expansion, security regressions, and misinterpretation of older documentation.
 
 ## Non-Negotiable Starting Rule
 
@@ -12,11 +12,11 @@ Do not assume a file, route, migration, table, package, or component exists unti
 
 ## Active Product Identity
 
-BizPilot AI is currently:
+BizPilot AI's current live surface is:
 
 > **A Lead Recovery & Response System for cleaning businesses.**
 
-It is not currently a generic AI operating system, full CRM, form builder, booking platform, invoice system, marketing automation platform, or multi-vertical SaaS.
+2026-05-26 owner update: BizPilot may expand into broader product capabilities. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, visual/text guides, and validation evidence. Do not default-enable or overpromise broader capabilities before the implementation and provider/payment/API posture are real.
 
 ## Golden Product Rule
 
@@ -28,7 +28,7 @@ Every implementation must improve at least one of these outcomes:
 - owner clarity,
 - conversion probability.
 
-If the change does not improve one of these, do not implement it in the MVP.
+If the change does not improve one of these, keep it out of the active surface or place it behind an owner-controlled feature level with honest Settings state.
 
 ## Current Implementation Priorities
 
@@ -122,11 +122,19 @@ AI must not:
 - produce verbose marketing copy by default,
 - store raw sensitive error metadata.
 
-## MVP Response Channel Boundary
+## Feature Entitlement Boundary
 
-For the MVP, BizPilot prepares drafts. The owner manually sends or copies them into their preferred channel such as email, Instagram DM, SMS, or phone follow-up.
+Feature growth is allowed, but every customer-visible capability needs:
 
-Do not implement automated SMS, WhatsApp, Instagram, or email sending unless explicitly approved in a later phase.
+- feature registry/entitlement state,
+- owner-controlled activation,
+- Settings state/level visibility,
+- visual guide,
+- customer-facing text guide,
+- owner/admin enablement guide,
+- validation evidence appropriate to its data/API/payment/automation risk.
+
+For the current live response channel, BizPilot prepares drafts. The owner manually sends or copies them into their preferred channel such as email, Instagram DM, SMS, or phone follow-up. Automated sending can be implemented only behind explicit feature entitlement and must not look active until it really works.
 
 ## Required Repo Inspection Checklist
 
@@ -177,9 +185,9 @@ Use this prompt when starting implementation work:
 ```text
 You are working on BizPilot AI. Before editing, read docs/CURRENT_CANONICAL_DOCS_v1.7.md and docs/AI_CODING_AGENT_START_HERE_v1.7.md.
 
-Treat BizPilot as a Lead Recovery & Response System for cleaning businesses, not a generic AI platform or full CRM.
+Treat the current live surface as a Lead Recovery & Response System for cleaning businesses. Future broader product growth is allowed only through the feature entitlement and guide standard.
 
-Inspect the repo before making any assumptions. Prioritize security/RLS/public quote hardening, Magic Moment, Operational Calm UX, and founder-led pilot readiness. Do not add booking, invoices, WhatsApp/SMS automation, autonomous AI, multi-vertical expansion, marketplace, or advanced analytics unless explicitly instructed.
+Inspect the repo before making any assumptions. Prioritize security/RLS/public quote hardening, Magic Moment, Operational Calm UX, founder-led pilot readiness, and Settings-visible feature levels. Do not default-enable booking, invoices, WhatsApp/SMS automation, autonomous AI, multi-vertical expansion, marketplace, or advanced analytics before entitlement, guides, provider/payment/API posture, and smoke evidence exist.
 
 Preserve existing architecture. Make small, reviewable changes. Add or update tests where relevant. Report exactly what changed, what was verified, and what remains unverified.
 ```
@@ -188,9 +196,11 @@ Preserve existing architecture. Make small, reviewable changes. Add or update te
 
 A coding task is complete only when:
 
-- it respects the active MVP lock,
+- it respects the active feature entitlement standard,
 - it does not weaken RLS/security/privacy,
 - it improves one of the Golden Product Rule outcomes,
 - it keeps AI owner-reviewed,
+- it includes visual/text guide updates when adding a feature,
+- it shows customer-visible feature state in Settings when relevant,
 - it includes verification notes,
-- it avoids unrelated scope expansion.
+- it avoids fake or default-enabled scope expansion.

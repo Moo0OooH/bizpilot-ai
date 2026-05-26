@@ -45,6 +45,10 @@ Core product rules:
 - No fake revenue or growth claims.
 - No internal phase, tenant, schema, or developer language in user-facing UI.
 
+2026-05-26 expansion update:
+
+Future product expansion is allowed through explicit feature entitlement, owner-controlled activation, Settings visibility, and guide-backed release. Older "do not add" language in this document means "do not fake, default-enable, or overpromise the capability before it is really implemented, validated, and assigned to a feature level." Canonical expansion rules live in `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`.
+
 Route meaning:
 
 ```text

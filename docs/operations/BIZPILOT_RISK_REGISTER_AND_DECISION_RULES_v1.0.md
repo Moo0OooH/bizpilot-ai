@@ -31,7 +31,8 @@ Mitigation:
 
 Mitigation:
 
-- Keep booking, CRM, calendar sync, and automation blocked until validation.
+- Allow booking, CRM-like workflows, calendar sync, messaging, billing, and automation only through explicit feature entitlement, owner-controlled activation, Settings visibility, and guide-backed release.
+- Keep unavailable or setup-required capabilities non-clickable and clearly labeled until validation/provider/payment gates pass.
 - Use Manual Outcome Tracking instead of booking engine.
 
 ### Risk 3 — Server/AI cost grows before revenue
@@ -131,7 +132,7 @@ Review every 2 weeks during validation:
 - Cost per lead
 - Support effort
 
-Do not expand features until validation gate is passed.
+Do not default-enable or sell broad features until validation gate is passed. Planning and implementation may proceed behind owner-controlled feature levels when the feature has visual/text guides, Settings visibility, and validation evidence.
 
 ---
 

@@ -29,7 +29,7 @@ If a prompt touches database/RLS, also run the RLS tests.
 You are working in the BizPilot AI repository.
 
 Goal:
-Update the canonical docs to include the v1.5 hardening standards without changing product scope.
+Update the canonical docs to include the v1.5 hardening standards and the 2026-05-26 feature entitlement standard.
 
 Inputs:
 - Current docs are v1.4/v1.4.1.
@@ -43,7 +43,8 @@ Inputs:
 Rules:
 - Do not delete the existing v1.4 docs.
 - Do not change code.
-- Do not add new feature scope.
+- Do not default-enable new feature scope.
+- Any new feature must have Settings state/level visibility plus visual, customer-text, and owner/admin guides.
 - Update README/MANIFEST references so v1.5 hardening docs are easy to find.
 - Keep English documentation style consistent.
 
@@ -51,7 +52,7 @@ Acceptance:
 - Docs compile as clean Markdown.
 - No broken code fences.
 - Superseded docs are clearly referenced.
-- MVP scope remains frozen.
+- Active customer scope remains honest and gated by feature entitlement.
 ```
 
 ---

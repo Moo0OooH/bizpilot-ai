@@ -28,6 +28,12 @@ Not like:
 - A marketing landing page inside the product.
 - A set of disconnected screens.
 
+2026-05-26 expansion rule:
+
+BizPilot can grow beyond the first quote recovery surface. New features are allowed when they are feature-gated, owner-controlled, visible in Settings with a clear level/state, and shipped with both a visual guide and a customer-facing text guide. Do not make planned, setup-required, provider-blocked, or payment-blocked features look active.
+
+Canonical feature expansion and guide requirements live in `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`.
+
 ---
 
 ## 2. Core UX Test
@@ -38,7 +44,7 @@ Before accepting any screen, answer:
 Does this help the business owner capture quote requests, reply faster, follow up better, or complete setup faster?
 ```
 
-If not, remove or simplify it.
+If not, remove, simplify, or move it behind an explicit feature level in Settings.
 
 ---
 

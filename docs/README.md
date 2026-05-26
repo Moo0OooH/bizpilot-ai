@@ -7,14 +7,15 @@ Before reading or implementing anything, start with:
 1. `CURRENT_CANONICAL_DOCS_v1.7.md`
 2. `AI_CODING_AGENT_START_HERE_v1.7.md`
 3. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
+4. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
-These files define the active MVP interpretation of the full documentation package.
+These files define the active feature-entitlement interpretation of the full documentation package.
 
 ## Active MVP Direction
 
-BizPilot AI is currently a **Lead Recovery & Response System for cleaning businesses** and a **Quote Recovery Command Center**, not a generic AI platform, full CRM, booking system, or automation suite.
+BizPilot AI's current live surface is a **Lead Recovery & Response System for cleaning businesses** and a **Quote Recovery Command Center**.
 
-Older broad-platform language is preserved as long-term vision only. Current implementation must follow the v1.6/v1.7 alignment.
+2026-05-26 owner update: broader product expansion is allowed when it is owner-controlled, feature-gated, visible in Settings, guide-backed, and validated. Older blanket scope-freeze language now means "do not default-enable, fake, or overpromise broad capabilities before they are truly ready."
 
 ---
 
@@ -28,7 +29,7 @@ Older broad-platform language is preserved as long-term vision only. Current imp
 
 ## How To Read These Docs
 
-BizPilot AI should continue from the current MVP direction. The v1.5 documents are a hardening layer for security, backend, RLS, privacy, accessibility, and readiness. They do not restart the project and do not add new product scope.
+BizPilot AI should continue from the current feature-entitlement direction. The v1.5 documents are a hardening layer for security, backend, RLS, privacy, accessibility, and readiness. They do not restart the project. Product growth is governed by `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`.
 
 Use the v1.4 product documents for strategy and phase context. Use the v1.5 documents for implementation standards before real customer pilots.
 
@@ -48,6 +49,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 - `docs/security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md`
 - `docs/security/BIZPILOT_AUTH_ROUTE_PROTECTION_AUDIT_v1.0.md`
 - `docs/security/BIZPILOT_RLS_AUDIT_REPORT_v1.0.md`
+- `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 - `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md`
 - `docs/operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md`
 - `docs/operations/BIZPILOT_CODEX_IMPLEMENTATION_PROMPTS_v1.0.md`

@@ -14,7 +14,7 @@ Customer-facing framing:
 
 > **Quote Recovery Command Center for Cleaning Businesses.**
 
-The broader “AI operating system for local service businesses” remains a long-term vision only. It must not drive current MVP implementation, landing page copy, demo flow, or early sales conversations.
+2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
 
@@ -23,14 +23,15 @@ Read these first, in this exact order:
 1. `CURRENT_CANONICAL_DOCS_v1.7.md` — this file; active source-of-truth map.
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` — execution instructions for Cloud Code/Codex.
 3. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` — active strategic overlay.
-4. `security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` — active security/privacy standard.
-5. `engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md` — active backend/RLS hardening standard.
-6. `engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md` — active engineering standard.
-7. `product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md` — preserved product blueprint plus v1.6 addendum.
-8. `product/BIZPILOT_BUILD_PLAN_v1.4.md` — active build plan with v1.6 alignment applied.
-9. `operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md` — hardening execution checklist.
-10. `operations/BIZPILOT_STRATEGIC_ALIGNMENT_IMPLEMENTATION_CHECKLIST_v1.6.md` — alignment checklist.
-11. `operations/BIZPILOT_REPO_INSPECTION_AND_READINESS_GAP_REPORT_v1.0.md` — current repo inspection and readiness truth table.
+4. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md` — active expansion, Settings visibility, and guide standard.
+5. `security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` — active security/privacy standard.
+6. `engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md` — active backend/RLS hardening standard.
+7. `engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md` — active engineering standard.
+8. `product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md` — preserved product blueprint plus v1.6 addendum.
+9. `product/BIZPILOT_BUILD_PLAN_v1.4.md` — active build plan with v1.6 alignment applied and 2026-05-26 expansion update.
+10. `operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md` — hardening execution checklist.
+11. `operations/BIZPILOT_STRATEGIC_ALIGNMENT_IMPLEMENTATION_CHECKLIST_v1.6.md` — alignment checklist.
+12. `operations/BIZPILOT_REPO_INSPECTION_AND_READINESS_GAP_REPORT_v1.0.md` — current repo inspection and readiness truth table.
 
 Additional active lifecycle/deletion authorities:
 
@@ -44,6 +45,8 @@ Additional active lifecycle/deletion authorities:
 
 - `product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
 - `product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md`
+- `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+- `product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`
 - `product/BIZPILOT_DESIGN_SYSTEM_SPEC_v1.0.md`
 - `product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md`
 - `product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md`
@@ -131,17 +134,17 @@ These files are preserved for context and history. They are not deleted and shou
 When two documents disagree:
 
 1. Security/privacy rules win over convenience.
-2. v1.6 strategic alignment wins over older broad-platform language.
+2. v1.6 strategic alignment wins over older broad-platform language unless the 2026-05-26 feature entitlement standard is more specific about owner-approved expansion.
 3. v1.5 engineering/security standards win over v1.4 engineering language.
-4. MVP focus wins over long-term expansion ideas.
-5. “Cleaning-first” wins over multi-vertical ambition until validation gates are passed.
+4. Feature entitlement and Settings visibility win over blanket scope-freeze language for future planning.
+5. Early live surfaces stay quote-recovery focused until the owner enables broader feature levels.
 6. Human-reviewed AI wins over autonomous AI.
 7. Database-first security wins over app-only validation.
-8. Retention and customer validation win over feature expansion.
+8. Retention and customer validation win over default-enabled feature expansion.
 
-## Active MVP Lock
+## Active Feature Policy
 
-The current MVP is limited to:
+The current production surface is centered on:
 
 - cleaning-business quote intake,
 - public quote page,
@@ -153,9 +156,19 @@ The current MVP is limited to:
 - retention and validation tracking,
 - security hardening for public submission paths.
 
-## Explicit Not-Now List
+Broader capabilities may be planned or implemented only when they have:
 
-Do not implement these until validation gates are passed:
+- feature registry/entitlement state,
+- owner-controlled activation,
+- Settings state/level visibility,
+- visual guide,
+- customer-facing text guide,
+- owner/admin enablement guide,
+- validation, smoke, provider/payment/API, and rollback evidence as relevant.
+
+## Explicit Not-Default-On List
+
+Do not default-enable, sell as live, or imply availability until entitlement and validation gates are passed:
 
 - booking system,
 - invoices,
@@ -174,7 +187,7 @@ Do not implement these until validation gates are passed:
 
 ## Validation Gate Before Expansion
 
-No new vertical or major feature family should be started until BizPilot has:
+No new vertical or major feature family should be enabled for customers until BizPilot has:
 
 - at least 3 paying or payment-ready cleaning businesses,
 - repeated weekly usage,
@@ -183,6 +196,8 @@ No new vertical or major feature family should be started until BizPilot has:
 - evidence that AI drafts save owner time,
 - at least one usable testimonial or strong qualitative proof,
 - founder-led onboarding notes from real customers.
+
+Implementation behind owner-controlled feature levels is allowed before that point when the feature is honest in Settings and not active by default.
 
 ## Definition of Done
 

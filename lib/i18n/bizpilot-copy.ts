@@ -19,6 +19,13 @@ import {
   readSupportedLanguage,
   type SupportedLanguage,
 } from "./language.ts";
+import type {
+  FeatureCategory,
+  FeatureGuideStatus,
+  FeatureKey,
+  FeatureLevel,
+  FeatureState,
+} from "../features/feature-registry.ts";
 
 /**
  * Copy namespaces stay domain-based on purpose:
@@ -566,6 +573,32 @@ type DashboardWorkspaceAccessCopy = Readonly<{
   pausedTitle: string;
 }>;
 
+type DashboardFeatureRegistryCopy = Readonly<{
+  activationLabel: string;
+  categoryLabels: Readonly<Record<FeatureCategory, string>>;
+  description: string;
+  featureCopy: Readonly<Record<
+    FeatureKey,
+    Readonly<{
+      activation: string;
+      name: string;
+      ownerGuide: string;
+      setup: string;
+      summary: string;
+      textGuide: string;
+      visualGuide: string;
+    }>
+  >>;
+  guideLabels: Readonly<Record<FeatureGuideStatus, string>>;
+  guidesLabel: string;
+  levelLabel: string;
+  levelLabels: Readonly<Record<FeatureLevel, string>>;
+  ownerLabel: string;
+  stateLabels: Readonly<Record<FeatureState, string>>;
+  statusLabel: string;
+  title: string;
+}>;
+
 type AuthCopy = Readonly<{
   backHome: string;
   businessName: string;
@@ -664,6 +697,7 @@ type DashboardCopy = Readonly<{
     account: string;
     billing: string;
     business: string;
+    featureRegistry: DashboardFeatureRegistryCopy;
     future: string;
     futureSections: string;
     futureSectionsDescription: string;
@@ -1481,6 +1515,226 @@ const englishCopy: BizPilotCopy = {
       account: "Account",
       billing: "Billing",
       business: "Business",
+      featureRegistry: {
+        activationLabel: "Activation",
+        categoryLabels: {
+          admin: "Admin",
+          ai: "AI",
+          billing: "Billing",
+          communication: "Communication",
+          data: "Data",
+          intake: "Intake",
+          recovery: "Recovery",
+          scheduling: "Scheduling",
+          settings: "Settings",
+        },
+        description:
+          "Owner-controlled feature levels. Active tools stay clear, setup-required tools show the blocker, and planned tools stay non-clickable.",
+        featureCopy: {
+          ai_draft_assistant: {
+            activation:
+              "Founder enables model-backed AI after the OpenAI account/quota gate is healthy.",
+            name: "AI draft assistant",
+            ownerGuide:
+              "Confirm provider health, run synthetic AI smoke, then keep owner review required.",
+            setup: "Blocked by OpenAI provider/account quota until owner support ticket clears.",
+            summary:
+              "Summaries, reply drafts, and follow-up drafts remain owner-reviewed.",
+            textGuide:
+              "Explains fallback behavior, privacy limits, and that BizPilot never sends automatically.",
+            visualGuide:
+              "Show summary, suggested reply, follow-up, copy action, and fallback banner.",
+          },
+          backup_restore_posture: {
+            activation:
+              "Founder chooses manual encrypted export or upgraded PITR/restore path.",
+            name: "Backup and restore posture",
+            ownerGuide:
+              "Record storage location, access list, restore target, and drill evidence.",
+            setup: "Setup required before real customer data.",
+            summary:
+              "Defines how workspace data can be exported and restored before real pilots.",
+            textGuide:
+              "Explains what is backed up, where exports live, and who can restore.",
+            visualGuide:
+              "Show readiness checklist, restore-drill status, and owner decision state.",
+          },
+          billing_payment_links: {
+            activation:
+              "Founder keeps billing manual or adds payment links after payment setup.",
+            name: "Billing and payment links",
+            ownerGuide:
+              "Confirm pricing, payment provider, refund/cancel language, and smoke path.",
+            setup: "Payment provider/account setup required.",
+            summary:
+              "Staged pilot billing can be tracked without pretending in-app billing exists.",
+            textGuide:
+              "Explains manual billing, payment-link use, cancellation, and refund limits.",
+            visualGuide:
+              "Show plan state, payment setup needed, and non-clickable billing actions.",
+          },
+          business_branding: {
+            activation: "Owner edits branding in Quote Setup.",
+            name: "Business branding",
+            ownerGuide:
+              "Verify contrast and public quote preview after logo/color changes.",
+            setup: "Available now.",
+            summary:
+              "Logo, colors, service areas, services, FAQs, and privacy copy shape the quote page.",
+            textGuide:
+              "Explains how branding affects customer trust and the public quote page.",
+            visualGuide:
+              "Show quote-page preview, brand colors, services, FAQs, and consent area.",
+          },
+          custom_smtp_auth_email: {
+            activation:
+              "Founder enables after provider, DNS, Supabase SMTP, signup, and reset smokes pass.",
+            name: "Custom SMTP auth email",
+            ownerGuide:
+              "Never print credentials. Check provider logs and Supabase auth logs.",
+            setup: "DNS and SMTP provider setup required.",
+            summary:
+              "Signup confirmation and password reset email delivery for real pilots.",
+            textGuide:
+              "Explains confirmation/reset behavior and what to do when email is missing.",
+            visualGuide:
+              "Show signup email, reset email, provider-log check, and retry path.",
+          },
+          fr_ca_language: {
+            activation: "Owner selects workspace language.",
+            name: "English / fr-CA workspace language",
+            ownerGuide:
+              "Keep strings in central dictionaries and run language smoke for quote flows.",
+            setup: "Available now.",
+            summary:
+              "Dashboard and quote-flow copy can follow the workspace language.",
+            textGuide:
+              "Explains what changes when the workspace language changes.",
+            visualGuide:
+              "Show language selector, public quote copy, validation copy, and success state.",
+          },
+          founder_admin_controls: {
+            activation: "Founder/admin only.",
+            name: "Founder admin controls",
+            ownerGuide:
+              "Use dry-run first, log actions, and keep destructive paths separately approved.",
+            setup: "Owner-controlled.",
+            summary:
+              "Workspace kind, plan/status, quote-link, session policy, notes, and cleanup safety.",
+            textGuide:
+              "Explains which changes a customer can see and which are founder-only.",
+            visualGuide:
+              "Show traceable admin actions, session policy, cleanup dry-run, and blocked purge.",
+          },
+          invoices_payments: {
+            activation:
+              "Founder decides whether invoice/payment workflow becomes part of a paid level.",
+            name: "Invoices and payments",
+            ownerGuide:
+              "Define provider, tax/refund language, webhook rollback, and support flow.",
+            setup: "Planned; payment provider setup required before launch.",
+            summary:
+              "Future invoice/payment workflow that must not imply payment success before it exists.",
+            textGuide:
+              "Explains what payment actions are manual versus automated.",
+            visualGuide:
+              "Show invoice draft, payment status, error state, and manual fallback.",
+          },
+          quote_link_intake: {
+            activation: "Owner controls the active public quote link.",
+            name: "Public quote link and intake",
+            ownerGuide:
+              "Run public quote security smoke when form behavior changes.",
+            setup: "Available now.",
+            summary:
+              "A customer-safe quote link captures structured cleaning requests.",
+            textGuide:
+              "Explains link sharing, required fields, consent, and unavailable states.",
+            visualGuide:
+              "Show active link, form steps, validation, consent, and success page.",
+          },
+          quote_recovery_queue: {
+            activation: "Core dashboard feature.",
+            name: "Lead recovery queue",
+            ownerGuide:
+              "Keep queue priority, lead status, and follow-up language aligned with real workflow.",
+            setup: "Available now.",
+            summary:
+              "Prioritizes new, urgent, missing-info, and follow-up leads for owner action.",
+            textGuide:
+              "Explains statuses, next actions, owner review, and copy/send boundary.",
+            visualGuide:
+              "Show queue priority, filters, lead detail, AI draft, and copy action.",
+          },
+          scheduling_booking: {
+            activation:
+              "Founder decides provider and feature level after quote recovery is proven.",
+            name: "Scheduling and booking",
+            ownerGuide:
+              "Define manual/automated boundary, provider sync, conflicts, and cancellation rules.",
+            setup: "Planned; not enabled.",
+            summary:
+              "Future scheduling workflow that must not confirm bookings until real booking exists.",
+            textGuide:
+              "Explains request versus confirmed booking and owner approval rules.",
+            visualGuide:
+              "Show requested time, owner approval, confirmation, conflict, and cancellation states.",
+          },
+          sms_whatsapp_messaging: {
+            activation:
+              "Founder enables only after provider approval, consent, templates, and smoke tests.",
+            name: "SMS / WhatsApp messaging",
+            ownerGuide:
+              "Confirm opt-in, templates, deliverability logs, unsubscribe, and data retention.",
+            setup: "External provider and compliance setup required.",
+            summary:
+              "Future messaging workflow; current product does not send these messages.",
+            textGuide:
+              "Explains consent, manual review, send status, failed delivery, and opt-out.",
+            visualGuide:
+              "Show channel status, consent, draft, send review, delivery, and failure states.",
+          },
+          team_members: {
+            activation:
+              "Founder decides team level after owner-only workflow is stable.",
+            name: "Team members",
+            ownerGuide:
+              "Define roles, invitations, RLS coverage, audit log, and offboarding path.",
+            setup: "Planned; not enabled.",
+            summary:
+              "Future multi-user workspace access with roles and traceability.",
+            textGuide:
+              "Explains roles, permissions, invites, and what each member can access.",
+            visualGuide:
+              "Show role list, invite, pending invite, access denied, and removal states.",
+          },
+        },
+        guideLabels: {
+          draft: "Guide draft",
+          ready: "Guide ready",
+          required: "Guide required",
+        },
+        guidesLabel: "Guides",
+        levelLabel: "Level",
+        levelLabels: {
+          admin: "Admin",
+          core: "Core",
+          custom: "Custom",
+          founder: "Founder",
+          pilot: "Pilot",
+          plus: "Plus",
+        },
+        ownerLabel: "Owner",
+        stateLabels: {
+          blocked_external: "External blocker",
+          enabled: "Enabled",
+          owner_controlled: "Owner controlled",
+          planned: "Planned",
+          setup_required: "Setup required",
+        },
+        statusLabel: "Status",
+        title: "Feature levels",
+      },
       future: "Future",
       futureSections: "Future sections",
       futureSectionsDescription:
@@ -1492,12 +1746,12 @@ const englishCopy: BizPilotCopy = {
       },
       guardrails: "Production readiness guardrails",
       guardrailsDescription:
-        "What stays on while the pilot validates. Anything below is intentionally locked.",
+        "What stays true while BizPilot expands through owner-controlled feature levels.",
       guardrailItems: [
-        "No auto-send. AI drafts only; owner copies and sends manually.",
-        "No invented pricing or availability.",
-        "No booking, invoices, SMS, WhatsApp, or full CRM expansion.",
-        "Cleaning-first vertical until 3 paying/payment-ready businesses.",
+        "Do not default-enable provider, payment, or automation features.",
+        "Do not imply send, booking, invoice, or payment success before BizPilot actually performs it.",
+        "Every new feature needs a visual guide, text guide, owner guide, and Settings state.",
+        "External blockers stay visible until API, account, DNS, provider, or payment setup is complete.",
       ],
       integrations: "Integrations",
       language: "Workspace language",
@@ -1583,7 +1837,7 @@ const englishCopy: BizPilotCopy = {
         "Dark mode remains the default operational view. Light mode is available for daytime use.",
       workspace: "Workspace",
       workspaceDescription:
-        "Workspace, account, theme, language, and future billing/team sections.",
+        "Workspace, account, theme, language, feature levels, and owner-controlled setup.",
     },
     status: {
       active: "Active",
@@ -2576,6 +2830,227 @@ const frenchCopy: BizPilotCopy = {
       account: "Compte",
       billing: "Facturation",
       business: "Entreprise",
+      featureRegistry: {
+        activationLabel: "Activation",
+        categoryLabels: {
+          admin: "Admin",
+          ai: "IA",
+          billing: "Facturation",
+          communication: "Communication",
+          data: "Donnees",
+          intake: "Demandes",
+          recovery: "Relance",
+          scheduling: "Planification",
+          settings: "Reglages",
+        },
+        description:
+          "Niveaux de fonctionnalites controles par le proprietaire principal. Les outils actifs sont clairs, les outils a configurer affichent le blocage, et les outils planifies restent non cliquables.",
+        featureCopy: {
+          ai_draft_assistant: {
+            activation:
+              "Le fondateur active l'IA modele quand le compte/quota OpenAI est sain.",
+            name: "Assistant IA de brouillons",
+            ownerGuide:
+              "Verifier le fournisseur, lancer un smoke IA synthetique, puis garder la revue proprietaire obligatoire.",
+            setup:
+              "Bloque par le quota/compte OpenAI jusqu'a la resolution du ticket support.",
+            summary:
+              "Les resumes, brouillons de reponse et suivis restent relus par le proprietaire.",
+            textGuide:
+              "Explique le fallback, la confidentialite et le fait que BizPilot n'envoie pas automatiquement.",
+            visualGuide:
+              "Montrer resume, reponse suggeree, suivi, action copier et banniere fallback.",
+          },
+          backup_restore_posture: {
+            activation:
+              "Le fondateur choisit export chiffre manuel ou upgrade PITR/restauration.",
+            name: "Sauvegarde et restauration",
+            ownerGuide:
+              "Noter l'emplacement, les acces, la cible de restauration et la preuve du drill.",
+            setup: "Requis avant les vraies donnees client.",
+            summary:
+              "Definit comment exporter et restaurer les donnees avant les vrais pilotes.",
+            textGuide:
+              "Explique ce qui est sauvegarde, ou les exports vivent et qui peut restaurer.",
+            visualGuide:
+              "Montrer checklist, statut de drill et decision proprietaire.",
+          },
+          billing_payment_links: {
+            activation:
+              "Le fondateur garde la facturation manuelle ou ajoute des liens de paiement apres setup.",
+            name: "Facturation et liens de paiement",
+            ownerGuide:
+              "Confirmer prix, fournisseur, annulation/remboursement et smoke.",
+            setup: "Fournisseur/compte paiement requis.",
+            summary:
+              "La facturation pilote peut etre suivie sans pretendre que le billing in-app existe.",
+            textGuide:
+              "Explique facturation manuelle, liens de paiement, annulation et limites de remboursement.",
+            visualGuide:
+              "Montrer forfait, setup paiement requis et actions billing non cliquables.",
+          },
+          business_branding: {
+            activation: "Le proprietaire modifie la marque dans Quote Setup.",
+            name: "Marque d'entreprise",
+            ownerGuide:
+              "Verifier contraste et apercu public apres les changements logo/couleur.",
+            setup: "Disponible maintenant.",
+            summary:
+              "Logo, couleurs, zones, services, FAQ et confidentialite forment la page publique.",
+            textGuide:
+              "Explique comment la marque renforce la confiance sur la page publique.",
+            visualGuide:
+              "Montrer apercu public, couleurs, services, FAQ et consentement.",
+          },
+          custom_smtp_auth_email: {
+            activation:
+              "Le fondateur active apres fournisseur, DNS, SMTP Supabase, signup et reset smokes.",
+            name: "SMTP personnalise auth email",
+            ownerGuide:
+              "Ne jamais imprimer les identifiants. Verifier logs fournisseur et Supabase auth.",
+            setup: "DNS et fournisseur SMTP requis.",
+            summary:
+              "Livraison des confirmations signup et resets mot de passe pour vrais pilotes.",
+            textGuide:
+              "Explique confirmation/reset et quoi faire si l'email manque.",
+            visualGuide:
+              "Montrer email signup, email reset, logs fournisseur et retry.",
+          },
+          fr_ca_language: {
+            activation: "Le proprietaire choisit la langue de l'espace.",
+            name: "Langue anglais / fr-CA",
+            ownerGuide:
+              "Garder les textes dans les dictionnaires centraux et lancer les smokes langue.",
+            setup: "Disponible maintenant.",
+            summary:
+              "Le tableau de bord et la demande publique peuvent suivre la langue de l'espace.",
+            textGuide:
+              "Explique ce qui change quand la langue de l'espace change.",
+            visualGuide:
+              "Montrer selecteur, page publique, validation et succes.",
+          },
+          founder_admin_controls: {
+            activation: "Fondateur/admin seulement.",
+            name: "Controles admin fondateur",
+            ownerGuide:
+              "Utiliser dry-run d'abord, journaliser les actions et separer les actions destructives.",
+            setup: "Controle par le proprietaire principal.",
+            summary:
+              "Type d'espace, forfait/statut, lien public, session, notes et securite cleanup.",
+            textGuide:
+              "Explique les changements visibles par le client et ceux reserves au fondateur.",
+            visualGuide:
+              "Montrer actions tracees, session, dry-run cleanup et purge bloquee.",
+          },
+          invoices_payments: {
+            activation:
+              "Le fondateur decide si facture/paiement devient un niveau payant.",
+            name: "Factures et paiements",
+            ownerGuide:
+              "Definir fournisseur, taxes/remboursement, rollback webhook et support.",
+            setup: "Planifie; fournisseur paiement requis avant lancement.",
+            summary:
+              "Workflow futur qui ne doit pas impliquer un paiement reussi avant d'exister.",
+            textGuide:
+              "Explique les actions manuelles versus automatisees.",
+            visualGuide:
+              "Montrer brouillon facture, statut paiement, erreur et fallback manuel.",
+          },
+          quote_link_intake: {
+            activation: "Le proprietaire controle le lien public actif.",
+            name: "Lien public et intake",
+            ownerGuide:
+              "Lancer le smoke securite quote quand le formulaire change.",
+            setup: "Disponible maintenant.",
+            summary:
+              "Un lien client capture des demandes structurees de nettoyage.",
+            textGuide:
+              "Explique partage du lien, champs requis, consentement et etats indisponibles.",
+            visualGuide:
+              "Montrer lien actif, etapes, validation, consentement et succes.",
+          },
+          quote_recovery_queue: {
+            activation: "Fonction coeur du tableau de bord.",
+            name: "File de relance leads",
+            ownerGuide:
+              "Garder priorite, statut et suivi alignes avec le vrai workflow.",
+            setup: "Disponible maintenant.",
+            summary:
+              "Priorise nouveaux leads, urgences, infos manquantes et suivis.",
+            textGuide:
+              "Explique statuts, prochaines actions, revue proprietaire et copier/envoyer.",
+            visualGuide:
+              "Montrer file, filtres, detail lead, brouillon IA et action copier.",
+          },
+          scheduling_booking: {
+            activation:
+              "Le fondateur choisit fournisseur et niveau apres preuve quote recovery.",
+            name: "Planification et booking",
+            ownerGuide:
+              "Definir limite manuel/auto, sync fournisseur, conflits et annulations.",
+            setup: "Planifie; non active.",
+            summary:
+              "Workflow futur qui ne confirme pas de booking avant la vraie integration.",
+            textGuide:
+              "Explique demande versus booking confirme et regles d'approbation.",
+            visualGuide:
+              "Montrer heure demandee, approbation, confirmation, conflit et annulation.",
+          },
+          sms_whatsapp_messaging: {
+            activation:
+              "Le fondateur active apres approbation fournisseur, consentement, templates et smokes.",
+            name: "Messagerie SMS / WhatsApp",
+            ownerGuide:
+              "Verifier opt-in, templates, logs, desinscription et retention.",
+            setup: "Fournisseur externe et conformite requis.",
+            summary:
+              "Workflow futur; le produit actuel n'envoie pas ces messages.",
+            textGuide:
+              "Explique consentement, revue manuelle, statut envoi, echec et opt-out.",
+            visualGuide:
+              "Montrer statut canal, consentement, brouillon, revue, livraison et echec.",
+          },
+          team_members: {
+            activation:
+              "Le fondateur choisit le niveau equipe apres stabilite owner-only.",
+            name: "Membres d'equipe",
+            ownerGuide:
+              "Definir roles, invitations, RLS, audit log et offboarding.",
+            setup: "Planifie; non active.",
+            summary:
+              "Acces multi-utilisateur futur avec roles et tracabilite.",
+            textGuide:
+              "Explique roles, permissions, invitations et acces.",
+            visualGuide:
+              "Montrer roles, invitation, invitation en attente, acces refuse et retrait.",
+          },
+        },
+        guideLabels: {
+          draft: "Guide brouillon",
+          ready: "Guide pret",
+          required: "Guide requis",
+        },
+        guidesLabel: "Guides",
+        levelLabel: "Niveau",
+        levelLabels: {
+          admin: "Admin",
+          core: "Core",
+          custom: "Custom",
+          founder: "Fondateur",
+          pilot: "Pilote",
+          plus: "Plus",
+        },
+        ownerLabel: "Responsable",
+        stateLabels: {
+          blocked_external: "Blocage externe",
+          enabled: "Actif",
+          owner_controlled: "Controle owner",
+          planned: "Planifie",
+          setup_required: "Setup requis",
+        },
+        statusLabel: "Statut",
+        title: "Niveaux de fonctionnalites",
+      },
       future: "Futur",
       futureSections: "Sections futures",
       futureSectionsDescription:
@@ -2587,12 +3062,12 @@ const frenchCopy: BizPilotCopy = {
       },
       guardrails: "Garde-fous de préparation production",
       guardrailsDescription:
-        "Ce qui reste actif pendant la validation pilote. Le reste est volontairement verrouillé.",
+        "Ce qui reste vrai pendant que BizPilot grandit avec des niveaux de fonctionnalites controles.",
       guardrailItems: [
-        "Aucun envoi automatique. L'IA prépare seulement des brouillons.",
-        "Aucun prix ou disponibilité inventé.",
-        "Pas de booking, factures, SMS, WhatsApp ou CRM complet.",
-        "Vertical nettoyage seulement jusqu'à 3 entreprises payantes ou prêtes à payer.",
+        "Ne pas activer par defaut les fonctions fournisseur, paiement ou automatisation.",
+        "Ne pas impliquer envoi, booking, facture ou paiement reussi avant que BizPilot le fasse vraiment.",
+        "Chaque nouvelle fonction exige guide visuel, guide texte, guide owner et etat dans Settings.",
+        "Les blocages externes restent visibles jusqu'a la fin du setup API, compte, DNS, fournisseur ou paiement.",
       ],
       integrations: "Intégrations",
       language: "Langue de l'espace",
@@ -2679,7 +3154,7 @@ const frenchCopy: BizPilotCopy = {
         "Le mode sombre reste le mode opérationnel par défaut. Le mode clair est disponible le jour.",
       workspace: "Espace",
       workspaceDescription:
-        "Espace, compte, thème, langue et futures sections de facturation/équipe.",
+        "Espace, compte, theme, langue, niveaux de fonctionnalites et setup controle par le proprietaire principal.",
     },
     status: {
       active: "Actif",

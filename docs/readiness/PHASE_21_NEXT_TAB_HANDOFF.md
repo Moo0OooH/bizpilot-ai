@@ -74,6 +74,21 @@ BizPilot is production-deployed on https://bizpilo.com, signup confirmation smok
 - Latest dashboard redesign validation passed: `git diff --check`,
   `pnpm verify`, local public smoke 9/9, production public smoke 9/9, and
   production unavailable quote smoke 1/1.
+- 2026-05-26 owner expansion update: future product growth is no longer
+  limited by the earlier blanket scope lock. New capabilities may be planned
+  and implemented behind owner-controlled feature levels, but they must not be
+  default-enabled or presented as active until entitlement, setup, provider/API,
+  payment, data, guide, and validation gates are real.
+- Canonical expansion standard added:
+  `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`.
+  Every new feature must have Settings state/level visibility plus a visual
+  guide, customer-facing text guide, and owner/admin enablement guide before it
+  is considered complete.
+- Feature entitlement Settings implementation added on
+  `phase-21q-dashboard-redesign`: `lib/features/feature-registry.ts`,
+  Settings feature-level cards, EN/fr-CA guide copy, unit coverage, and
+  evidence doc
+  `docs/readiness/PHASE_21T_FEATURE_ENTITLEMENT_SETTINGS_EVIDENCE.md`.
 
 ## 2. Current Git State
 
@@ -142,7 +157,8 @@ Allowed now:
 - PostgREST schema cache reload only if functions exist but API cache is stale,
 - synthetic/founder-controlled demos.
 
-Still not allowed:
+Still not allowed without the exact gated implementation and owner-visible
+feature level:
 
 - real customer pilot with real customer data,
 - destructive purge/anonymization,
@@ -150,7 +166,9 @@ Still not allowed:
 - adding `leads.source`,
 - weakening RLS,
 - committing secrets, `.env` files, dumps, or customer data,
-- pushing `main` without approval.
+- pushing `main` without approval,
+- default-enabling provider/payment/API-backed features before the provider,
+  payment, smoke, and rollback posture is real.
 
 Owner also granted GitHub/Vercel/Supabase access for needed verification and continuation. Treat that as permission to inspect and continue repo-backed work, not as permission to push `main`, deploy production, reveal secrets, or start a real pilot.
 
