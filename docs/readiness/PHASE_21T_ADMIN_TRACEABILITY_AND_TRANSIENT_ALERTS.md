@@ -1,8 +1,9 @@
 # Phase 21T - Admin Traceability And Transient Alerts
 
 **Date:** 2026-05-25  
-**Status:** Implementation verified locally; deploy verification required after push  
+**Status:** Implemented, deployed, and production-smoke verified  
 **Owner:** MoOoH  
+**Production commit:** `5c9a780 fix(dashboard): expire flash notices and log ai fallback`  
 **Related code paths:**
 - `app/admin/page.tsx`
 - `app/(dashboard)/dashboard/leads/[leadId]/page.tsx`
@@ -155,18 +156,18 @@ Coverage notes:
 
 ---
 
-## Remaining Production Checks
+## Production Checks
 
-After push/deploy:
+Production verification completed after push:
 
-1. Verify GitHub Actions passes for the deployed commit.
-2. Verify Vercel production deployment completes.
-3. Run public route smoke:
-   - `pnpm smoke:public -- --base-url=https://bizpilo.com`
-4. Run quote route smoke:
-   - `pnpm smoke:quote -- --base-url=https://bizpilo.com --inactive-slug=/`
-5. Confirm `/quote` still defaults to English even when the interface cookie is French.
-6. Confirm `/quote?language=fr-CA` renders French.
+| Check | Result |
+| --- | --- |
+| GitHub Actions `App validation` | Pass |
+| Vercel deployment status | Success |
+| `pnpm smoke:public -- --base-url=https://bizpilo.com` | Pass, 9/9 routes |
+| `pnpm smoke:quote -- --base-url=https://bizpilo.com --inactive-slug=/` | Pass |
+| `/quote` with `bizpilot-interface-language=fr-CA` cookie | English content remains default |
+| `/quote?language=fr-CA` | French content renders |
 
 Manual authenticated check still recommended:
 - Generate an AI draft on a lead that falls back.
