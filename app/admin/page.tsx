@@ -10,7 +10,9 @@
  * - docs/product/BIZPILOT_FOUNDER_ADMIN_CONSOLE_SPEC_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-05-22
+ * Last Updated: 2026-05-26
+ * Change Log:
+ * - 2026-05-26: Moved production health ahead of data grids so empty admin data is tied to safe runtime diagnostics.
  * ============================================================
  */
 
@@ -547,7 +549,7 @@ function sortUsersByPriority(users: FounderAdminUser[]): FounderAdminUser[] {
 
 function priorityFilterClass(active: boolean): string {
   return active
-    ? "rounded-[16px] border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-3 text-left text-sm font-black text-[var(--dash-text)] shadow-[0_14px_30px_rgba(37,99,235,0.12)]"
+    ? "rounded-[16px] border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-3 text-left text-sm font-black text-[var(--dash-text)] shadow-[0_14px_30px_rgba(15,118,110,0.12)]"
     : "rounded-[16px] border border-[var(--dash-border)] bg-white p-3 text-left text-sm font-black text-[var(--dash-text-secondary)] transition hover:-translate-y-0.5 hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]";
 }
 
@@ -721,6 +723,25 @@ function FounderProductionHealthPanel({
       ) : null}
     </DashboardCard>
   );
+}
+
+function isProductionHealthUnhealthy(
+  health: FounderProductionHealth | null,
+): boolean {
+  if (!health) {
+    return true;
+  }
+
+  return [
+    health.supabaseTargetMatchesCanonical,
+    health.authAdmin.ok,
+    health.businesses.ok,
+    health.businessMembers.ok,
+    health.profiles.ok,
+    health.publicLinks.ok,
+    health.recentActions.ok,
+    health.deletionRequests.ok,
+  ].some((ok) => !ok);
 }
 
 function getFounderAccessMessage(error: unknown): string {
@@ -1632,6 +1653,16 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </FlashMessage>
         ) : null}
 
+        {isProductionHealthUnhealthy(productionHealth) ? (
+          <AdminNotice tone="error">
+            Founder data may be incomplete because one or more production runtime
+            checks failed. Review Production health before treating zero users or
+            zero businesses as real data.
+          </AdminNotice>
+        ) : null}
+
+        <FounderProductionHealthPanel health={productionHealth} />
+
         <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <MetricCard
             detail="Auth users available through paged founder search."
@@ -1672,8 +1703,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           usersSearchMode={overview.usersSearchMode}
           usersTotal={overview.usersTotal}
         />
-
-        <FounderProductionHealthPanel health={productionHealth} />
 
         <FounderAdminSafetyRail />
 

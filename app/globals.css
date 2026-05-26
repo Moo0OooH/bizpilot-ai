@@ -9,11 +9,12 @@ Related:
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-05-18
+Last Updated: 2026-05-26
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
 - 2026-05-18: Updated dashboard dark theme to the approved emerald/navy command-center direction.
+- 2026-05-26: Unified dashboard light/dark action colors and component surfaces for Phase 21X UI QA.
 ============================================================
 */
 
@@ -180,8 +181,8 @@ body {
 }
 
 .biz-dashboard-light {
-  --dash-bg: #f7f8fb;
-  --dash-bg-soft: #eef2f6;
+  --dash-bg: #f6f8fb;
+  --dash-bg-soft: #eef4f6;
   --dash-surface: #ffffff;
   --dash-surface-muted: #f6f8fb;
   --dash-surface-elevated: #ffffff;
@@ -190,13 +191,13 @@ body {
   --dash-text: #0f172a;
   --dash-text-secondary: #475569;
   --dash-text-muted: #64748b;
-  --dash-primary: #2563eb;
-  --dash-primary-hover: #1d4ed8;
-  --dash-primary-soft: rgba(37, 99, 235, 0.09);
+  --dash-primary: #0f766e;
+  --dash-primary-hover: #0d5f5a;
+  --dash-primary-soft: rgba(15, 118, 110, 0.1);
   --dash-warning-soft: rgba(245, 158, 11, 0.12);
   --dash-danger-soft: rgba(239, 68, 68, 0.1);
   --dash-ai-soft: rgba(20, 184, 166, 0.09);
-  background: linear-gradient(180deg, #f7f8fb 0%, #eef2f6 100%);
+  background: linear-gradient(180deg, #f8fbfc 0%, #eef5f6 100%);
   color: #0f172a;
 }
 
@@ -222,23 +223,23 @@ body {
 }
 
 .biz-dashboard-dark {
-  --dash-bg: #0b0f14;
-  --dash-bg-soft: #101720;
-  --dash-surface: #111922;
-  --dash-surface-muted: rgba(17, 25, 34, 0.82);
-  --dash-surface-elevated: rgba(20, 29, 39, 0.94);
+  --dash-bg: #071016;
+  --dash-bg-soft: #0d1820;
+  --dash-surface: #101b24;
+  --dash-surface-muted: rgba(16, 27, 36, 0.84);
+  --dash-surface-elevated: rgba(18, 31, 40, 0.94);
   --dash-border: rgba(255, 255, 255, 0.08);
   --dash-border-strong: rgba(255, 255, 255, 0.14);
   --dash-text: #f5f7fa;
   --dash-text-secondary: rgba(245, 247, 250, 0.72);
   --dash-text-muted: rgba(245, 247, 250, 0.46);
-  --dash-primary: #3b82f6;
-  --dash-primary-hover: #60a5fa;
-  --dash-primary-soft: rgba(59, 130, 246, 0.11);
+  --dash-primary: #14b8a6;
+  --dash-primary-hover: #2dd4bf;
+  --dash-primary-soft: rgba(20, 184, 166, 0.13);
   --dash-warning-soft: rgba(255, 184, 77, 0.12);
   --dash-danger-soft: rgba(255, 92, 92, 0.1);
   --dash-ai-soft: rgba(20, 184, 166, 0.1);
-  background: linear-gradient(180deg, #0b0f14 0%, #0f1720 100%);
+  background: linear-gradient(180deg, #071016 0%, #0d1820 100%);
   color: var(--dash-text);
 }
 
@@ -334,13 +335,13 @@ body {
 }
 
 .biz-card {
-  background: color-mix(in srgb, var(--dash-surface) 92%, transparent);
-  box-shadow: 0 6px 22px rgba(2, 6, 23, 0.08);
+  background: color-mix(in srgb, var(--dash-surface) 94%, transparent);
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.07);
 }
 
 .biz-card-elevated {
   background: var(--dash-surface-elevated);
-  box-shadow: 0 8px 26px rgba(2, 6, 23, 0.09);
+  box-shadow: 0 14px 36px rgba(2, 6, 23, 0.09);
 }
 
 .biz-card-muted {
@@ -349,7 +350,7 @@ body {
 
 .biz-card-priority {
   background: var(--dash-surface);
-  box-shadow: 0 7px 24px rgba(2, 6, 23, 0.08);
+  box-shadow: 0 12px 32px rgba(2, 6, 23, 0.08);
 }
 
 /*
@@ -383,6 +384,7 @@ body {
 .biz-button-primary {
   background: var(--dash-primary);
   color: #ffffff;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--dash-primary) 18%, transparent);
 }
 
 .biz-button-primary:hover {
@@ -393,6 +395,7 @@ body {
   border-color: var(--dash-border-strong);
   background: var(--dash-surface-elevated);
   color: var(--dash-text);
+  box-shadow: 0 8px 18px rgba(2, 6, 23, 0.06);
 }
 
 .biz-button-secondary:hover {

@@ -11,10 +11,11 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-23
+ * Last Updated: 2026-05-26
  * Change Log:
  * - 2026-05-19: Matched approved index.html topbar hierarchy: page title left, focused actions right, no global search clutter.
  * - 2026-05-23: Localized route context and actions through the central dashboard copy dictionary.
+ * - 2026-05-26: Tightened responsive controls and made founder entry visible on desktop dashboards.
  * ============================================================
  */
 
@@ -111,7 +112,7 @@ export function DashboardTopbar({
             {copy.actions.previewQuotePage}
           </Link>
           {showFounderAdmin ? (
-            <Link className={`${ghostButtonClass} !hidden xl:!inline-flex`} href="/admin">
+            <Link className={`${ghostButtonClass} !hidden lg:!inline-flex`} href="/admin">
               {copy.pages.founder.title}
             </Link>
           ) : null}
@@ -126,8 +127,8 @@ export function DashboardTopbar({
                 aria-pressed={activeLanguage === language}
                 className={
                   activeLanguage === language
-                    ? "h-8 rounded-md bg-[var(--dash-primary)] px-2.5 text-[12px] font-black text-white"
-                    : "h-8 rounded-md px-2.5 text-[12px] font-bold text-[var(--dash-text-secondary)]"
+                    ? "h-8 rounded-md bg-[var(--dash-primary)] px-2.5 text-[12px] font-black text-white shadow-sm"
+                    : "h-8 rounded-md px-2.5 text-[12px] font-bold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
                 }
                 key={language}
                 name="language"
