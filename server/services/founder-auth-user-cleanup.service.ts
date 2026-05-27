@@ -21,6 +21,7 @@ import {
   type FounderAuthUserDeletionBusinessContext,
 } from "@/lib/founder-cleanup/auth-user-deletion";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
+import { safeLogger } from "@/server/logging/safe-logger";
 import {
   insertFounderAdminAction,
   updateFounderAdminActionNewValues,
@@ -261,17 +262,25 @@ export async function deleteFounderTestAuthUser(input: {
     throw new Error(deleteError.message);
   }
 
-  await updateFounderAdminActionNewValues({
-    actionId,
-    newValues: {
-      auth_provider_delete_completed: true,
-      auth_user_deleted: true,
-      linked_business_count: linkedBusinesses.length,
-      target_email_present: Boolean(targetEmail),
+  try {
+    await updateFounderAdminActionNewValues({
+      actionId,
+      newValues: {
+        auth_provider_delete_completed: true,
+        auth_user_deleted: true,
+        linked_business_count: linkedBusinesses.length,
+        target_email_present: Boolean(targetEmail),
+        target_user_id: targetUser.id,
+      },
+      supabase,
+    });
+  } catch (error) {
+    safeLogger.warn("founder_admin.auth_delete_audit_update_failed", {
+      action_id: actionId,
+      error_name: error instanceof Error ? error.name : "unknown",
       target_user_id: targetUser.id,
-    },
-    supabase,
-  });
+    });
+  }
 
   return {
     linkedBusinessCount: linkedBusinesses.length,
