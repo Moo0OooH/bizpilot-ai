@@ -17,9 +17,14 @@
  */
 
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { FounderAuthUserDeleteForm } from "@/components/admin/founder-auth-user-delete-form";
+import {
+  FounderAdminThemeFrame,
+  FounderAdminThemeSelector,
+} from "@/components/admin/founder-admin-theme";
 import { FounderTestCleanupForm } from "@/components/admin/founder-test-cleanup-form";
 import { FlashMessage } from "@/components/dashboard/flash-message";
 import {
@@ -1705,6 +1710,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   const usersPage = readFounderUserPage(params.userPage);
   const usersPageSize = readFounderUserPageSize(params.userPageSize);
+  const cookieStore = await cookies();
+  const initialTheme =
+    cookieStore.get("bizpilot-dashboard-theme")?.value === "dark" ? "dark" : "light";
   let overview;
   try {
     overview = await getFounderAdminOverview({
@@ -1739,14 +1747,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   );
 
   return (
-    <main
-      className="biz-founder-admin min-h-screen overflow-x-hidden px-5 py-8 text-[var(--dash-text)] sm:px-7 lg:px-10"
-    >
+    <FounderAdminThemeFrame initialTheme={initialTheme}>
       <div className="mx-auto max-w-[1440px] space-y-6">
         <DashboardCard className="p-6 sm:p-8" variant="priority">
           <PageHeader
             actions={
               <div className="flex flex-wrap gap-2">
+                <FounderAdminThemeSelector />
                 <StatusBadge tone="amber">Internal only</StatusBadge>
                 <Link className={buttonClass} href="/dashboard">
                   Owner dashboard
@@ -1853,6 +1860,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </div>
         </DashboardCard>
       </div>
-    </main>
+    </FounderAdminThemeFrame>
   );
 }

@@ -265,6 +265,46 @@ body {
   color: var(--dash-text);
 }
 
+.biz-founder-admin-light {
+  --dash-bg: #f6f8fb;
+  --dash-bg-soft: #edf4f2;
+  --dash-surface: #ffffff;
+  --dash-surface-muted: #f5f8f7;
+  --dash-surface-elevated: #ffffff;
+  --dash-border: rgba(15, 23, 42, 0.1);
+  --dash-border-strong: rgba(15, 23, 42, 0.16);
+  --dash-text: #0f172a;
+  --dash-text-secondary: #475569;
+  --dash-text-muted: #64748b;
+  --dash-primary: #0f766e;
+  --dash-primary-hover: #115e59;
+  --dash-primary-soft: rgba(15, 118, 110, 0.1);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(20, 184, 166, 0.12), transparent 28%),
+    linear-gradient(180deg, #fbfefd 0%, #eef5f4 100%);
+}
+
+.biz-founder-admin-dark {
+  --dash-bg: #071016;
+  --dash-bg-soft: #0d1820;
+  --dash-surface: #101b24;
+  --dash-surface-muted: rgba(15, 27, 36, 0.88);
+  --dash-surface-elevated: rgba(18, 31, 40, 0.96);
+  --dash-border: rgba(255, 255, 255, 0.08);
+  --dash-border-strong: rgba(255, 255, 255, 0.14);
+  --dash-text: #f5f7fa;
+  --dash-text-secondary: rgba(245, 247, 250, 0.74);
+  --dash-text-muted: rgba(245, 247, 250, 0.48);
+  --dash-primary: #14b8a6;
+  --dash-primary-hover: #2dd4bf;
+  --dash-primary-soft: rgba(20, 184, 166, 0.13);
+  --dash-warning-soft: rgba(255, 184, 77, 0.12);
+  --dash-danger-soft: rgba(255, 92, 92, 0.1);
+  background:
+    radial-gradient(circle at 14% 0%, rgba(20, 184, 166, 0.14), transparent 28%),
+    linear-gradient(180deg, #071016 0%, #0d1820 100%);
+}
+
 .biz-founder-admin .font-black {
   font-weight: 760;
 }
@@ -274,21 +314,21 @@ body {
 }
 
 .biz-founder-admin .biz-card {
-  background: rgba(255, 255, 255, 0.94);
+  background: color-mix(in srgb, var(--dash-surface) 94%, transparent);
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
 }
 
 .biz-founder-admin .biz-card-elevated {
-  background: rgba(255, 255, 255, 0.98);
+  background: var(--dash-surface-elevated);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
 }
 
 .biz-founder-admin .biz-card-muted {
-  background: #f8fafc;
+  background: var(--dash-surface-muted);
 }
 
 .biz-founder-admin .biz-card-priority {
-  background: #ffffff;
+  background: var(--dash-surface);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
 }
 
@@ -302,8 +342,8 @@ body {
 }
 
 .biz-founder-admin .biz-button-secondary {
-  border-color: rgba(31, 41, 55, 0.14);
-  background: #ffffff;
+  border-color: var(--dash-border-strong);
+  background: var(--dash-surface-elevated);
   color: var(--dash-text);
 }
 
@@ -313,13 +353,19 @@ body {
 }
 
 .biz-founder-admin .biz-field {
-  border-color: rgba(31, 41, 55, 0.14);
-  background: #ffffff;
+  border-color: var(--dash-border-strong);
+  background: var(--dash-surface-elevated);
   color: var(--dash-text);
 }
 
 .biz-founder-admin .biz-field:focus {
   border-color: var(--dash-primary);
+}
+
+.biz-founder-admin-dark .shadow-\[0_12px_32px_rgba\(15\,23\,42\,0\.05\)\],
+.biz-founder-admin-dark .shadow-\[0_14px_36px_rgba\(15\,23\,42\,0\.06\)\],
+.biz-founder-admin-dark .shadow-\[0_14px_30px_rgba\(15\,118\,110\,0\.12\)\] {
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
 }
 
 .dashboard-frame {

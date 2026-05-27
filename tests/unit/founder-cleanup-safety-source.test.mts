@@ -25,7 +25,8 @@ describe("Founder cleanup source safety", () => {
 
     assert.equal(source.includes("deleteUser("), false);
     assert.equal(source.includes(".auth.admin.deleteUser"), false);
-    assert.equal(source.includes("auth_users_deleted: false"), true);
+    assert.equal(source.includes("authUsersDeleted: false"), true);
+    assert.equal(source.includes("authUsersDeleted: true"), true);
   });
 
   it("keeps auth user deletion in a separate guarded service", () => {
@@ -101,7 +102,7 @@ describe("Founder cleanup source safety", () => {
       true,
     );
     assert.equal(
-      authDeleteForm.includes("missing production `0020` constraint blocks"),
+      authDeleteForm.includes("keeps founder and production-customer accounts blocked"),
       true,
     );
     assert.equal(adminPage.includes("FounderAdminSafetyRail"), true);

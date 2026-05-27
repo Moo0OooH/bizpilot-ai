@@ -69,12 +69,12 @@ export function FounderAuthUserDeleteForm({
         <input name="cleanupMode" type="hidden" value="test_auth_user_delete" />
         <div className="rounded-[10px] border border-amber-400/25 bg-amber-500/10 p-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
           <p className="font-black text-[var(--dash-text)]">
-            Auth login deletion is separate from workspace cleanup.
+            Fake/test login deletion also removes owned non-production workspaces.
           </p>
           <p className="mt-1">
-            The server writes the audit action before calling Supabase Auth
-            deletion, so a missing production `0020` constraint blocks the action
-            before the identity is deleted.
+            The server keeps founder and production-customer accounts blocked,
+            purges owned Founder test, Demo, or Seed workspaces first, then calls
+            Supabase Auth deletion.
           </p>
         </div>
         {deletionBlockedReason ? (

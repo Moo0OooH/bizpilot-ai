@@ -222,62 +222,109 @@ export async function purgeFounderTestWorkspace(input: {
     throw new Error("Run dry-run before final cleanup.");
   }
 
-  const counts = await getCleanupCounts({ businessId: business.id, supabase });
+  const counts = await purgeEligibleWorkspace({
+    actorUserId: actor.id,
+    authUsersDeleted: false,
+    business,
+    supabase,
+  });
+
+  return {
+    businessId: business.id,
+    cleanupMode: "test_hard_purge",
+    counts,
+    workspaceKind: business.workspace_kind,
+  };
+}
+
+async function purgeEligibleWorkspace(input: {
+  actorUserId: string;
+  authUsersDeleted: boolean;
+  business: BusinessRow & { workspace_kind: CleanupWorkspaceKind };
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderCleanupCounts> {
+  const counts = await getCleanupCounts({
+    businessId: input.business.id,
+    supabase: input.supabase,
+  });
   const purgedTables = purgeOrder.filter((table) => counts[table] > 0);
 
   if (counts.admin_action_log > 0) {
     await deleteBusinessRows({
-      businessId: business.id,
-      supabase,
+      businessId: input.business.id,
+      supabase: input.supabase,
       table: "admin_action_log",
     });
   }
 
-  const { error: tombstoneError } = await supabase
+  const { error: tombstoneError } = await input.supabase
     .from("business_deletion_tombstones")
     .insert({
-      business_id: business.id,
+      business_id: input.business.id,
       completed_by_actor_type: "founder",
       deletion_mode: "test_hard_purge",
       purged_tables: [...purgedTables, "businesses"],
       reason_code: "cleanup",
-      workspace_kind: business.workspace_kind,
+      workspace_kind: input.business.workspace_kind,
     });
 
   throwIfError(tombstoneError);
 
   await insertFounderAdminAction({
     actionType: "test_workspace_cleanup_completed",
-    actorUserId: actor.id,
-    businessId: business.id,
+    actorUserId: input.actorUserId,
+    businessId: input.business.id,
     newValues: {
-      auth_users_deleted: false,
+      auth_users_deleted: input.authUsersDeleted,
       deletion_mode: "test_hard_purge",
       purged_table_count: purgedTables.length + 1,
-      workspace_kind: business.workspace_kind,
+      workspace_kind: input.business.workspace_kind,
     },
     note: null,
     previousValues: {
-      lifecycle_status: business.lifecycle_status,
-      status: business.status,
-      workspace_kind: business.workspace_kind,
+      lifecycle_status: input.business.lifecycle_status,
+      status: input.business.status,
+      workspace_kind: input.business.workspace_kind,
     },
-    supabase,
+    supabase: input.supabase,
   });
 
   for (const table of purgeOrder.filter((table) => table !== "admin_action_log")) {
-    await deleteBusinessRows({ businessId: business.id, supabase, table });
+    await deleteBusinessRows({
+      businessId: input.business.id,
+      supabase: input.supabase,
+      table,
+    });
   }
 
-  const { error: businessDeleteError } = await supabase
+  const { error: businessDeleteError } = await input.supabase
     .from("businesses")
     .delete()
-    .eq("id", business.id);
+    .eq("id", input.business.id);
 
   throwIfError(businessDeleteError);
 
+  return counts;
+}
+
+export async function purgeFounderTestWorkspaceForAuthDeletion(input: {
+  actorUserId: string;
+  businessId: string;
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderCleanupDryRun> {
+  const business = await getBusinessForCleanup({
+    businessId: input.businessId,
+    supabase: input.supabase,
+  });
+  const counts = await purgeEligibleWorkspace({
+    actorUserId: input.actorUserId,
+    authUsersDeleted: true,
+    business,
+    supabase: input.supabase,
+  });
+
   return {
-    businessId: business.id,
+    businessId: input.businessId,
     cleanupMode: "test_hard_purge",
     counts,
     workspaceKind: business.workspace_kind,

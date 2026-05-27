@@ -48,7 +48,7 @@ describe("Founder auth user deletion guards", () => {
     );
   });
 
-  it("blocks founder, self, owner, and production workspace users", () => {
+  it("blocks founder, self, and production workspace users", () => {
     assert.equal(
       getFounderAuthUserDeletionBlock({
         actorUserId: "founder-1",
@@ -73,22 +73,6 @@ describe("Founder auth user deletion guards", () => {
         isFounderUser: false,
         linkedBusinesses: [
           {
-            businessId: "biz-1",
-            membershipRole: "owner",
-            ownerUserId: "target-1",
-            workspaceKind: "founder_test",
-          },
-        ],
-        targetUserId: "target-1",
-      }),
-      "Delete or transfer owned workspaces before deleting this auth user.",
-    );
-    assert.equal(
-      getFounderAuthUserDeletionBlock({
-        actorUserId: "founder-1",
-        isFounderUser: false,
-        linkedBusinesses: [
-          {
             businessId: "biz-2",
             membershipRole: "member",
             ownerUserId: "other-user",
@@ -101,7 +85,7 @@ describe("Founder auth user deletion guards", () => {
     );
   });
 
-  it("allows non-founder non-owner users linked only to test/demo/seed workspaces", () => {
+  it("allows non-founder users linked only to test/demo/seed workspaces", () => {
     assert.equal(
       getFounderAuthUserDeletionBlock({
         actorUserId: "founder-1",
@@ -115,8 +99,8 @@ describe("Founder auth user deletion guards", () => {
           },
           {
             businessId: "biz-2",
-            membershipRole: "admin",
-            ownerUserId: "owner-2",
+            membershipRole: "owner",
+            ownerUserId: "target-1",
             workspaceKind: "demo",
           },
         ],

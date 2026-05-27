@@ -55,16 +55,6 @@ export function getFounderAuthUserDeletionBlock(input: {
 
   if (
     input.linkedBusinesses.some(
-      (business) =>
-        business.ownerUserId === input.targetUserId ||
-        business.membershipRole === "owner",
-    )
-  ) {
-    return "Delete or transfer owned workspaces before deleting this auth user.";
-  }
-
-  if (
-    input.linkedBusinesses.some(
       (business) => business.workspaceKind === "production_customer",
     )
   ) {

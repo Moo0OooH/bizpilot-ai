@@ -26,6 +26,7 @@ import {
   updateFounderAdminActionNewValues,
 } from "@/server/repositories/founder-admin.repository";
 import { assertFounderUser } from "@/server/services/founder-admin.service";
+import { purgeFounderTestWorkspaceForAuthDeletion } from "@/server/services/founder-test-cleanup.service";
 import type { AuthUser } from "@/server/services/auth.service";
 import type { Database } from "@/types/database";
 
@@ -204,6 +205,22 @@ export async function deleteFounderTestAuthUser(input: {
     },
     supabase,
   });
+
+  const ownedBusinessIds = Array.from(
+    new Set(
+      linkedBusinesses
+        .filter((business) => business.ownerUserId === targetUser.id)
+        .map((business) => business.businessId),
+    ),
+  );
+
+  for (const businessId of ownedBusinessIds) {
+    await purgeFounderTestWorkspaceForAuthDeletion({
+      actorUserId: actor.id,
+      businessId,
+      supabase,
+    });
+  }
 
   const { error: deleteError } = await supabase.auth.admin.deleteUser(targetUser.id);
   if (deleteError) {
