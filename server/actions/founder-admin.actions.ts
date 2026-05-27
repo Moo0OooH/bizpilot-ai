@@ -387,6 +387,8 @@ export async function founderTestAuthUserDeleteAction(
       acknowledged: formData.get("authUserDeleteAcknowledgement") === "on",
       cleanupMode: readRequiredFormValue(formData, "cleanupMode"),
       finalConfirmed: formData.get("authUserDeleteFinalConfirmation") === "on",
+      productionWorkspaceReclassificationAcknowledged:
+        formData.get("productionWorkspaceReclassificationAcknowledgement") === "on",
       targetUserId: readRequiredFormValue(formData, "targetUserId"),
       typedConfirmation: readRequiredFormValue(
         formData,

@@ -41,6 +41,7 @@ export function isExactAuthUserDeleteConfirmation(input: {
 
 export function getFounderAuthUserDeletionBlock(input: {
   actorUserId: string;
+  allowProductionWorkspaceReclassification?: boolean;
   isFounderUser: boolean;
   linkedBusinesses: readonly FounderAuthUserDeletionBusinessContext[];
   targetUserId: string;
@@ -54,6 +55,7 @@ export function getFounderAuthUserDeletionBlock(input: {
   }
 
   if (
+    !input.allowProductionWorkspaceReclassification &&
     input.linkedBusinesses.some(
       (business) => business.workspaceKind === "production_customer",
     )
@@ -76,6 +78,7 @@ export function validateFounderAuthUserDeleteConfirmation(input: {
   acknowledged: boolean;
   cleanupMode: string;
   finalConfirmed: boolean;
+  productionWorkspaceReclassificationAcknowledged?: boolean;
   targetEmail: string | null;
   targetUserId: string;
   typedConfirmation: string;

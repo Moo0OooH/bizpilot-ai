@@ -555,8 +555,8 @@ function sortUsersByPriority(users: FounderAdminUser[]): FounderAdminUser[] {
 
 function priorityFilterClass(active: boolean): string {
   return active
-    ? "rounded-[16px] border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-3 text-left text-sm font-black text-[var(--dash-text)] shadow-[0_14px_30px_rgba(15,118,110,0.12)]"
-    : "rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 text-left text-sm font-black text-[var(--dash-text-secondary)] transition hover:-translate-y-0.5 hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]";
+    ? "inline-flex min-h-9 items-center gap-2 rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-3 py-2 text-left text-[12px] font-black text-[var(--dash-text)] shadow-sm"
+    : "inline-flex min-h-9 items-center gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2 text-left text-[12px] font-black text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]";
 }
 
 function adminUsersHref(
@@ -1425,8 +1425,8 @@ function FounderUsersSection({
         </div>
       </div>
 
-      <div className="space-y-4 rounded-[22px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+      <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
+        <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
           <div>
             <p className="text-sm font-black text-[var(--dash-text)]">
               Priority views
@@ -1440,19 +1440,19 @@ function FounderUsersSection({
             href={adminUsersHref(params, { userPage: "1", userPriority: undefined })}
           >
             All loaded
-            <span className="mt-1 block text-[12px] text-[var(--dash-text-muted)]">
+            <span className="text-[12px] text-[var(--dash-text-muted)]">
               {totalLoaded} users
             </span>
           </Link>
-        </div>
+        </summary>
 
-        <div className="grid gap-4 xl:grid-cols-[1.2fr_1fr_1.15fr]">
+        <div className="grid gap-4 border-t border-[var(--dash-border)] p-4 xl:grid-cols-[1.2fr_1fr_1.15fr]">
           {userPriorityGroups.map((group) => (
             <div className="min-w-0 space-y-2" key={group.title}>
               <p className="text-[12px] font-black uppercase text-[var(--dash-text-muted)]">
                 {group.title}
               </p>
-              <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1">
+              <div className="flex flex-wrap gap-2">
                 {group.options.map((option) => (
                   <Link
                     className={priorityFilterClass(selectedPriority === option.value)}
@@ -1463,11 +1463,8 @@ function FounderUsersSection({
                     key={option.value}
                   >
                     {option.label}
-                    <span className="mt-1 block text-[12px] text-[var(--dash-text-muted)]">
+                    <span className="text-[12px] text-[var(--dash-text-muted)]">
                       {priorityCount(users, option.value)} loaded
-                    </span>
-                    <span className="mt-1 block text-[11px] font-bold leading-4 text-[var(--dash-text-muted)]">
-                      {option.description}
                     </span>
                   </Link>
                 ))}
@@ -1475,7 +1472,7 @@ function FounderUsersSection({
             </div>
           ))}
         </div>
-      </div>
+      </details>
 
       <form
         className="grid gap-4 rounded-[22px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 lg:grid-cols-[minmax(260px,1fr)_130px_180px_180px_auto] lg:items-end"

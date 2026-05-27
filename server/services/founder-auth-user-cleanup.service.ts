@@ -184,6 +184,7 @@ export async function deleteFounderTestAuthUser(input: {
   acknowledged: boolean;
   cleanupMode: string;
   finalConfirmed: boolean;
+  productionWorkspaceReclassificationAcknowledged: boolean;
   targetUserId: string;
   typedConfirmation: string;
   user: AuthUser | null;
@@ -214,6 +215,8 @@ export async function deleteFounderTestAuthUser(input: {
     acknowledged: input.acknowledged,
     cleanupMode: input.cleanupMode,
     finalConfirmed: input.finalConfirmed,
+    productionWorkspaceReclassificationAcknowledged:
+      input.productionWorkspaceReclassificationAcknowledged,
     targetEmail,
     targetUserId: targetUser.id,
     typedConfirmation: input.typedConfirmation,
@@ -221,6 +224,8 @@ export async function deleteFounderTestAuthUser(input: {
 
   const founderEmails = readFounderEmails();
   const blockReason = getFounderAuthUserDeletionBlock({
+    allowProductionWorkspaceReclassification:
+      input.productionWorkspaceReclassificationAcknowledged,
     actorUserId: actor.id,
     isFounderUser: Boolean(
       targetEmail && founderEmails.has(targetEmail.toLowerCase()),
@@ -231,6 +236,24 @@ export async function deleteFounderTestAuthUser(input: {
 
   if (blockReason) {
     throw new Error(blockReason);
+  }
+
+  const ownedProductionBusinessIds = linkedBusinesses
+    .filter(
+      (business) =>
+        business.ownerUserId === targetUser.id &&
+        business.workspaceKind === "production_customer",
+    )
+    .map((business) => business.businessId);
+
+  if (ownedProductionBusinessIds.length > 0) {
+    const { error } = await supabase
+      .from("businesses")
+      .update({ workspace_kind: "founder_test" })
+      .eq("owner_user_id", targetUser.id)
+      .in("id", ownedProductionBusinessIds);
+
+    throwIfError(error);
   }
 
   const actionId = await insertFounderAuthUserDeletionAction({

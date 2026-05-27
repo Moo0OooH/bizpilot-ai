@@ -32,11 +32,17 @@ export function FounderAuthUserDeleteForm({
 }>) {
   const [acknowledged, setAcknowledged] = useState(false);
   const [finalConfirmed, setFinalConfirmed] = useState(false);
+  const [productionReclassification, setProductionReclassification] =
+    useState(false);
   const [typedConfirmation, setTypedConfirmation] = useState("");
   const confirmationLabel = targetEmail ?? targetUserId;
+  const canOverrideProductionBlock =
+    deletionBlockedReason ===
+    "Auth user deletion is blocked for production workspaces.";
   const canDelete = useMemo(
     () =>
-      !deletionBlockedReason &&
+      (!deletionBlockedReason ||
+        (canOverrideProductionBlock && productionReclassification)) &&
       acknowledged &&
       finalConfirmed &&
       isExactAuthUserDeleteConfirmation({
@@ -46,8 +52,10 @@ export function FounderAuthUserDeleteForm({
       }),
     [
       acknowledged,
+      canOverrideProductionBlock,
       deletionBlockedReason,
       finalConfirmed,
+      productionReclassification,
       targetEmail,
       targetUserId,
       typedConfirmation,
@@ -56,10 +64,10 @@ export function FounderAuthUserDeleteForm({
 
   return (
     <details
-      className="rounded-[14px] border border-red-400/25 bg-red-500/10 p-3"
+      className="rounded-lg border border-[rgba(185,28,28,0.28)] bg-[rgba(254,242,242,0.82)] p-3 text-[var(--dash-text)] dark:bg-[rgba(127,29,29,0.14)]"
       open={!deletionBlockedReason}
     >
-      <summary className="cursor-pointer text-[12px] font-black text-red-700 dark:text-red-200">
+      <summary className="cursor-pointer text-[12px] font-black text-red-700 dark:text-red-300">
         {deletionBlockedReason
           ? "Fake/test login deletion blocked"
           : "Delete fake/test login"}
@@ -67,7 +75,7 @@ export function FounderAuthUserDeleteForm({
       <form action={founderTestAuthUserDeleteAction} className="mt-3 grid gap-3">
         <input name="targetUserId" type="hidden" value={targetUserId} />
         <input name="cleanupMode" type="hidden" value="test_auth_user_delete" />
-        <div className="rounded-[10px] border border-amber-400/25 bg-amber-500/10 p-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-amber-400/30 bg-amber-500/10 p-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
           <p className="font-black text-[var(--dash-text)]">
             Fake/test login deletion also removes owned non-production workspaces.
           </p>
@@ -78,13 +86,30 @@ export function FounderAuthUserDeleteForm({
           </p>
         </div>
         {deletionBlockedReason ? (
-          <div className="rounded-[10px] border border-red-400/25 bg-red-500/10 p-2 text-[12px] leading-5 text-red-200">
+          <div className="rounded-lg border border-red-400/30 bg-white/70 p-2 text-[12px] leading-5 text-red-700 dark:bg-red-950/20 dark:text-red-200">
             <p className="font-black">{deletionBlockedReason}</p>
-            <p className="mt-1 font-semibold">
-              For fake accounts linked to fake data, first mark the workspace as
-              Founder test, Demo, or Seed when safe, then run test/demo cleanup or
-              transfer owned workspaces before deleting the login.
-            </p>
+            {canOverrideProductionBlock ? (
+              <label className="mt-2 flex gap-2 font-semibold text-[var(--dash-text-secondary)]">
+                <input
+                  checked={productionReclassification}
+                  className="mt-1"
+                  name="productionWorkspaceReclassificationAcknowledgement"
+                  onChange={(event) =>
+                    setProductionReclassification(event.currentTarget.checked)
+                  }
+                  type="checkbox"
+                />
+                <span>
+                  This is fake/test data. Reclassify owned production-marked
+                  workspaces to Founder test, then delete this login.
+                </span>
+              </label>
+            ) : (
+              <p className="mt-1 font-semibold">
+                Mark the workspace as Founder test, Demo, or Seed when safe,
+                then run cleanup before deleting the login.
+              </p>
+            )}
           </div>
         ) : null}
         <label className="flex gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
@@ -120,7 +145,7 @@ export function FounderAuthUserDeleteForm({
           <span>Final confirm: delete this fake/test login now.</span>
         </label>
         <button
-          className={`${primaryButtonClass} border-red-400/40 bg-red-600 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-45`}
+          className={`${primaryButtonClass} border border-red-700 bg-red-700 text-white hover:bg-red-800 disabled:border-[var(--dash-border)] disabled:bg-[var(--dash-surface-muted)] disabled:text-[var(--dash-text-muted)] disabled:shadow-none`}
           disabled={!canDelete}
           type="submit"
         >
