@@ -106,11 +106,23 @@ Result:
 - Active quote link `/quote/milen` - pass
 - Inactive/unavailable quote link - pass
 
+After the confirmed unlinked owner recovery below:
+
+```text
+pnpm smoke:quote -- --base-url=https://bizpilo.com --active-slug=your-cleaning-business --inactive-slug=phase-21-synthetic-unavailable-check --timeout-ms=20000
+```
+
+Result:
+
+- Recovered quote link `/quote/your-cleaning-business` - pass
+- Inactive/unavailable quote link - pass
+
 ## Remaining Operational Gaps
 
 ### 1. Incomplete Auth Users
 
-Three auth users currently have no `business_members` row. One is confirmed.
+Initial audit found three auth users with no `business_members` row. One was
+confirmed.
 
 Interpretation:
 
@@ -120,6 +132,19 @@ Interpretation:
   when the signed-in owner submits a business name.
 - Do not treat this as founder admin data-load failure; admin data is now
   available through Auth Admin and service-role table reads.
+
+Execution performed in this phase:
+
+- The confirmed unlinked owner account was signed in through production using a
+  temporary smoke password.
+- The owner dashboard recovery form was submitted with a safe cleaning business
+  name.
+- The dashboard loaded after recovery.
+- A standard password reset email was requested afterward so the test account is
+  not left dependent on the temporary smoke password.
+- Post-recovery counts: `businesses=13`, `business_members=13`,
+  `auth_users_without_membership=2`.
+- The recovered active quote link smoke passed.
 
 Implemented support path:
 
@@ -158,5 +183,6 @@ Admin authorization. The remaining incomplete-workspace cases are isolated data
 repair/recovery cases, not a global dashboard/admin runtime failure.
 
 Founder/admin data loading is healthy at the backend level, public quote smoke is
-passing, and confirmed unlinked users now have both owner self-recovery and
-founder-assisted repair paths without SQL.
+passing, the known confirmed unlinked owner has been recovered, and future
+confirmed unlinked users now have both owner self-recovery and founder-assisted
+repair paths without SQL.

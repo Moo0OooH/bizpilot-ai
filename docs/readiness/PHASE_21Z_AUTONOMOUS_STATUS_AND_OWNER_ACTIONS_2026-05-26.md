@@ -36,6 +36,9 @@ The final chat report should point back to this file and should include:
   not a global admin data-load outage.
 - Founder admin now has a guarded manual workspace repair control for confirmed
   unlinked users, using the same recovery/bootstrap path as owner self-recovery.
+- The known confirmed unlinked owner was recovered through the production owner
+  dashboard recovery flow; post-recovery production counts show two remaining
+  unlinked auth users, both unconfirmed at audit time.
 - See `docs/readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`.
 
 ### Owner-confirmed production recovery (latest)
