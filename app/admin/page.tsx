@@ -40,6 +40,7 @@ import { languageLabels } from "@/lib/i18n/language";
 import {
   founderPasswordResetAction,
   founderTemporaryPasswordAction,
+  founderWorkspaceRepairAction,
   updateFounderInternalNoteAction,
   updateFounderPlanAction,
   updateFounderQuoteLinkAction,
@@ -1252,6 +1253,63 @@ function BusinessControlCard({
   );
 }
 
+function FounderWorkspaceRepairControls({
+  user,
+}: Readonly<{ user: FounderAdminUser }>) {
+  if (user.businessName) {
+    return null;
+  }
+
+  return (
+    <form
+      action={founderWorkspaceRepairAction}
+      className="grid gap-3 rounded-[20px] border border-[var(--dash-border-strong)] bg-[var(--dash-warning-soft)] p-4"
+    >
+      <input name="targetUserId" type="hidden" value={user.userId} />
+      <div>
+        <p className="text-sm font-black text-[var(--dash-text)]">
+          Recover owner workspace
+        </p>
+        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          Use for confirmed auth users created while signup did not finish
+          workspace bootstrap.
+        </p>
+      </div>
+      <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+        Business name
+        <input
+          className={inputClass}
+          maxLength={80}
+          name="businessName"
+          placeholder="Customer cleaning business"
+          required
+          type="text"
+        />
+      </label>
+      <label className="flex items-start gap-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
+        <input
+          className="mt-0.5 h-4 w-4 accent-[var(--dash-primary)]"
+          name="workspaceRepairAcknowledgement"
+          type="checkbox"
+        />
+        <span>This confirmed user has no existing workspace or membership.</span>
+      </label>
+      <button
+        className={primaryButtonClass}
+        disabled={!user.emailConfirmed}
+        type="submit"
+      >
+        Recover workspace
+      </button>
+      {!user.emailConfirmed ? (
+        <p className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
+          Confirm the email before creating a workspace.
+        </p>
+      ) : null}
+    </form>
+  );
+}
+
 function FounderPasswordControls({
   user,
 }: Readonly<{ user: FounderAdminUser }>) {
@@ -1584,9 +1642,7 @@ function FounderUsersSection({
                     }
                   />
                 ) : (
-                  <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-5 text-sm text-[var(--dash-text-secondary)]">
-                    No linked business controls for this auth user yet.
-                  </div>
+                  <FounderWorkspaceRepairControls user={user} />
                 )}
                 <FounderPasswordControls user={user} />
                 <FounderAuthUserDeleteForm

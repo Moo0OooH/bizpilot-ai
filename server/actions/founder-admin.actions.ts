@@ -27,6 +27,7 @@ import {
   readFounderSessionTimeoutMode,
   readFounderTemporaryPassword,
   readFounderWorkspaceKind,
+  repairFounderUserWorkspace,
   requestFounderUserPasswordReset,
   setFounderUserTemporaryPassword,
   updateFounderInternalNote,
@@ -88,6 +89,11 @@ function redirectWithFounderAdminError(error: unknown): never {
         "Auth user deletion is blocked until linked workspaces are marked as test, demo, or seed." ||
       value === "Auth user not found." ||
       value === "Target user does not have an email address." ||
+      value === "Enter a business name for workspace repair." ||
+      value === "Use 80 characters or fewer for the business name." ||
+      value === "Confirm the user's email before workspace repair." ||
+      value === "Target user already has a workspace or membership." ||
+      value === "Confirm that this auth user should receive a recovered owner workspace." ||
       value === "Use at least 12 characters for the temporary password." ||
       value === "Choose a valid sign-out policy." ||
       value === "Choose a valid sign-out duration." ||
@@ -100,6 +106,33 @@ function redirectWithFounderAdminError(error: unknown): never {
   });
 
   redirect(`/admin?error=${encodeURIComponent(message)}`);
+}
+
+export async function founderWorkspaceRepairAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    if (formData.get("workspaceRepairAcknowledgement") !== "on") {
+      throw new Error(
+        "Confirm that this auth user should receive a recovered owner workspace.",
+      );
+    }
+
+    const traceId = await repairFounderUserWorkspace({
+      businessName: readRequiredFormValue(formData, "businessName"),
+      targetUserId: readRequiredFormValue(formData, "targetUserId"),
+      user: await getCurrentUser(),
+    });
+
+    revalidatePath("/admin");
+    redirect(
+      `/admin?notice=${encodeURIComponent(
+        `Workspace recovered for unlinked auth user. Trace ${traceId}.`,
+      )}`,
+    );
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
 }
 
 export async function founderPasswordResetAction(

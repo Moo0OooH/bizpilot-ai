@@ -22,6 +22,7 @@ import { randomUUID } from "node:crypto";
 import { getServerEnv } from "@/lib/env/server-env";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 import type { AuthUser } from "@/server/services/auth.service";
+import { recoverWorkspaceAccess } from "@/server/services/business.service";
 import {
   getFounderAuthUserDeletionBlock,
   type FounderAuthUserDeletionBusinessContext,
@@ -499,6 +500,20 @@ export function readFounderBusinessStatus(value: string): FounderBusinessStatus 
   }
 
   throw new Error("Invalid business status.");
+}
+
+function readFounderRepairBusinessName(value: string): string {
+  const trimmed = value.trim();
+
+  if (trimmed.length === 0) {
+    throw new Error("Enter a business name for workspace repair.");
+  }
+
+  if (trimmed.length > 80) {
+    throw new Error("Use 80 characters or fewer for the business name.");
+  }
+
+  return trimmed;
 }
 
 export function readFounderWorkspaceKind(value: string): FounderWorkspaceKind {
@@ -1091,6 +1106,94 @@ export async function requestFounderUserPasswordReset(input: {
       error,
       eventId,
       targetUserId: input.targetUserId,
+    });
+    throw error;
+  }
+}
+
+export async function repairFounderUserWorkspace(input: {
+  businessName: string;
+  targetUserId: string;
+  user: AuthUser | null;
+}): Promise<string> {
+  const actor = assertFounderUser(input.user);
+  const supabase = createSupabaseServiceRoleClient();
+  const eventId = randomUUID();
+  const businessName = readFounderRepairBusinessName(input.businessName);
+
+  const targetResult = await supabase.auth.admin.getUserById(input.targetUserId);
+  if (targetResult.error || !targetResult.data.user) {
+    throw new Error("Auth user not found.");
+  }
+
+  const target = targetResult.data.user;
+  if (!target.email_confirmed_at && !target.confirmed_at) {
+    throw new Error("Confirm the user's email before workspace repair.");
+  }
+
+  const [memberResult, ownedBusinessResult] = await Promise.all([
+    supabase
+      .from("business_members")
+      .select("id")
+      .eq("user_id", input.targetUserId)
+      .limit(1),
+    supabase
+      .from("businesses")
+      .select("id")
+      .eq("owner_user_id", input.targetUserId)
+      .limit(1),
+  ]);
+
+  if (memberResult.error) {
+    throw new Error(memberResult.error.message);
+  }
+
+  if (ownedBusinessResult.error) {
+    throw new Error(ownedBusinessResult.error.message);
+  }
+
+  if (
+    (memberResult.data?.length ?? 0) > 0 ||
+    (ownedBusinessResult.data?.length ?? 0) > 0
+  ) {
+    throw new Error("Target user already has a workspace or membership.");
+  }
+
+  try {
+    const business = await recoverWorkspaceAccess({
+      businessName,
+      userId: input.targetUserId,
+    });
+
+    await insertFounderAdminAction({
+      actionType: "internal_note_added",
+      actorUserId: actor.id,
+      businessId: business.id,
+      newValues: {
+        admin_event_id: shortTraceId(eventId),
+        repair: "workspace_recovered",
+        target_email: target.email ?? null,
+        target_user_id: input.targetUserId,
+      },
+      note: "Founder repaired a confirmed auth user with no workspace membership.",
+      previousValues: {},
+      supabase,
+    });
+
+    safeLogger.info("founder_admin.workspace_repair_completed", {
+      actor_user_id: actor.id,
+      admin_event_id: eventId,
+      business_id: business.id,
+      target_user_id: input.targetUserId,
+    });
+
+    return shortTraceId(eventId);
+  } catch (error) {
+    safeLogger.error("founder_admin.workspace_repair_failed", {
+      actor_user_id: actor.id,
+      admin_event_id: eventId,
+      error_name: error instanceof Error ? error.name : "unknown",
+      target_user_id: input.targetUserId,
     });
     throw error;
   }

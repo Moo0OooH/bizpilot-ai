@@ -22,6 +22,22 @@ The final chat report should point back to this file and should include:
 
 ## Recent Completed Work
 
+### Production access and admin data recovery follow-up (2026-05-27)
+
+- Supabase Management API access was confirmed for the canonical production
+  project `qfqendrqimqvkoojpjao`.
+- Production Vercel Supabase env wiring was reset from the canonical Supabase
+  project and production was redeployed.
+- Auth Admin and service-role table reads now pass against production.
+- Founder admin empty-data symptoms are no longer supported by backend runtime
+  evidence after the env/deploy repair.
+- Production has three auth users without membership rows; one is confirmed.
+  This is now tracked as an isolated incomplete-workspace recovery/repair case,
+  not a global admin data-load outage.
+- Founder admin now has a guarded manual workspace repair control for confirmed
+  unlinked users, using the same recovery/bootstrap path as owner self-recovery.
+- See `docs/readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`.
+
 ### Owner-confirmed production recovery (latest)
 
 - Owner dashboard access is now working again for affected users.
