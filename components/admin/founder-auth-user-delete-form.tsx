@@ -14,7 +14,7 @@
 
 import { useMemo, useState } from "react";
 
-import { inputClass, primaryButtonClass } from "@/components/dashboard/dashboard-ui";
+import { inputClass } from "@/components/dashboard/dashboard-ui";
 import {
   FOUNDER_TEST_AUTH_USER_DELETE_ACKNOWLEDGEMENT,
   isExactAuthUserDeleteConfirmation,
@@ -88,7 +88,7 @@ export function FounderAuthUserDeleteForm({
           </p>
         </div>
         {deletionBlockedReason ? (
-          <div className="rounded-lg border border-[rgba(185,28,28,0.26)] bg-[rgba(254,242,242,0.72)] p-2 text-[12px] leading-5 text-red-800 dark:bg-[rgba(127,29,29,0.18)] dark:text-red-200">
+          <div className="rounded-lg border border-[rgba(185,28,28,0.28)] bg-[rgba(254,242,242,0.86)] p-2 text-[12px] leading-5 text-[#991b1b] dark:bg-[rgba(127,29,29,0.2)] dark:text-red-200">
             <p className="font-black">Deletion is blocked by the safety rail.</p>
             <p className="mt-1 font-semibold">{deletionBlockedReason}</p>
             {canOverrideProductionBlock ? (
@@ -148,7 +148,7 @@ export function FounderAuthUserDeleteForm({
           <span>Final confirm: delete this fake/test login now.</span>
         </label>
         <button
-          className={`${primaryButtonClass} border border-red-700 bg-red-700 text-white hover:bg-red-800 disabled:border-[var(--dash-border)] disabled:bg-[var(--dash-surface-muted)] disabled:text-[var(--dash-text-muted)] disabled:shadow-none`}
+          className="inline-flex min-h-9 items-center justify-center gap-2 rounded-lg border border-red-700 bg-red-700 px-3 py-2 text-[13px] font-bold leading-none text-white shadow-sm transition hover:bg-red-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-700 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)] disabled:cursor-not-allowed disabled:border-[var(--dash-border)] disabled:bg-[var(--dash-surface-muted)] disabled:text-[var(--dash-text-muted)] disabled:shadow-none disabled:hover:bg-[var(--dash-surface-muted)]"
           disabled={!canDelete}
           type="submit"
         >
