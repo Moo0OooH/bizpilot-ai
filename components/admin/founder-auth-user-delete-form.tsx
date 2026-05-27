@@ -38,7 +38,9 @@ export function FounderAuthUserDeleteForm({
   const confirmationLabel = targetEmail ?? targetUserId;
   const canOverrideProductionBlock =
     deletionBlockedReason ===
-    "Auth user deletion is blocked for production workspaces.";
+      "Auth user deletion is blocked for production workspaces." ||
+    deletionBlockedReason ===
+      "Auth user deletion is blocked until linked workspaces are marked as test, demo, or seed.";
   const canDelete = useMemo(
     () =>
       (!deletionBlockedReason ||
@@ -64,10 +66,10 @@ export function FounderAuthUserDeleteForm({
 
   return (
     <details
-      className="rounded-lg border border-[rgba(185,28,28,0.28)] bg-[rgba(254,242,242,0.82)] p-3 text-[var(--dash-text)] dark:bg-[rgba(127,29,29,0.14)]"
+      className="rounded-lg border border-[rgba(185,28,28,0.22)] bg-[var(--dash-surface)] p-3 text-[var(--dash-text)] shadow-sm"
       open={!deletionBlockedReason}
     >
-      <summary className="cursor-pointer text-[12px] font-black text-red-700 dark:text-red-300">
+      <summary className="cursor-pointer text-[12px] font-black text-[var(--dash-text)]">
         {deletionBlockedReason
           ? "Fake/test login deletion blocked"
           : "Delete fake/test login"}
@@ -75,7 +77,7 @@ export function FounderAuthUserDeleteForm({
       <form action={founderTestAuthUserDeleteAction} className="mt-3 grid gap-3">
         <input name="targetUserId" type="hidden" value={targetUserId} />
         <input name="cleanupMode" type="hidden" value="test_auth_user_delete" />
-        <div className="rounded-lg border border-amber-400/30 bg-amber-500/10 p-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
           <p className="font-black text-[var(--dash-text)]">
             Fake/test login deletion also removes owned non-production workspaces.
           </p>
@@ -86,8 +88,9 @@ export function FounderAuthUserDeleteForm({
           </p>
         </div>
         {deletionBlockedReason ? (
-          <div className="rounded-lg border border-red-400/30 bg-white/70 p-2 text-[12px] leading-5 text-red-700 dark:bg-red-950/20 dark:text-red-200">
-            <p className="font-black">{deletionBlockedReason}</p>
+          <div className="rounded-lg border border-[rgba(185,28,28,0.26)] bg-[rgba(254,242,242,0.72)] p-2 text-[12px] leading-5 text-red-800 dark:bg-[rgba(127,29,29,0.18)] dark:text-red-200">
+            <p className="font-black">Deletion is blocked by the safety rail.</p>
+            <p className="mt-1 font-semibold">{deletionBlockedReason}</p>
             {canOverrideProductionBlock ? (
               <label className="mt-2 flex gap-2 font-semibold text-[var(--dash-text-secondary)]">
                 <input

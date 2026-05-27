@@ -54,19 +54,36 @@ export function getFounderAuthUserDeletionBlock(input: {
     return "Founder admin cannot delete a founder allowlist account.";
   }
 
-  if (
-    !input.allowProductionWorkspaceReclassification &&
-    input.linkedBusinesses.some(
-      (business) => business.workspaceKind === "production_customer",
-    )
-  ) {
-    return "Auth user deletion is blocked for production workspaces.";
+  const productionBusinesses = input.linkedBusinesses.filter(
+    (business) => business.workspaceKind === "production_customer",
+  );
+
+  if (productionBusinesses.length > 0) {
+    if (!input.allowProductionWorkspaceReclassification) {
+      return "Auth user deletion is blocked for production workspaces.";
+    }
+
+    if (
+      productionBusinesses.some(
+        (business) => business.ownerUserId !== input.targetUserId,
+      )
+    ) {
+      return "Auth user deletion is blocked because the user belongs to a production workspace they do not own.";
+    }
   }
 
   if (
-    input.linkedBusinesses.some(
-      (business) => !isCleanupEligibleWorkspaceKind(business.workspaceKind),
-    )
+    input.linkedBusinesses.some((business) => {
+      if (
+        input.allowProductionWorkspaceReclassification &&
+        business.ownerUserId === input.targetUserId &&
+        business.workspaceKind === "production_customer"
+      ) {
+        return false;
+      }
+
+      return !isCleanupEligibleWorkspaceKind(business.workspaceKind);
+    })
   ) {
     return "Auth user deletion is blocked until linked workspaces are marked as test, demo, or seed.";
   }

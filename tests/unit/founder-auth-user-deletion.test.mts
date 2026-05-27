@@ -110,6 +110,43 @@ describe("Founder auth user deletion guards", () => {
     );
   });
 
+  it("allows explicit reclassification only for production workspaces owned by the target", () => {
+    assert.equal(
+      getFounderAuthUserDeletionBlock({
+        actorUserId: "founder-1",
+        allowProductionWorkspaceReclassification: true,
+        isFounderUser: false,
+        linkedBusinesses: [
+          {
+            businessId: "biz-owned",
+            membershipRole: "owner",
+            ownerUserId: "target-1",
+            workspaceKind: "production_customer",
+          },
+        ],
+        targetUserId: "target-1",
+      }),
+      null,
+    );
+    assert.equal(
+      getFounderAuthUserDeletionBlock({
+        actorUserId: "founder-1",
+        allowProductionWorkspaceReclassification: true,
+        isFounderUser: false,
+        linkedBusinesses: [
+          {
+            businessId: "biz-member",
+            membershipRole: "member",
+            ownerUserId: "other-user",
+            workspaceKind: "production_customer",
+          },
+        ],
+        targetUserId: "target-1",
+      }),
+      "Auth user deletion is blocked because the user belongs to a production workspace they do not own.",
+    );
+  });
+
   it("rejects weak final confirmations", () => {
     assert.throws(
       () =>

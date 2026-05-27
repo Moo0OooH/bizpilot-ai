@@ -1429,10 +1429,10 @@ function FounderUsersSection({
         <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
           <div>
             <p className="text-sm font-black text-[var(--dash-text)]">
-              Priority views
+              Work queues
             </p>
             <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-              Choose a work queue first, then search or refine inside that queue.
+              Start with risk and recovery queues, then search inside the result.
             </p>
           </div>
           <Link
