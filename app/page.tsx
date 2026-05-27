@@ -154,7 +154,7 @@ function HeroProductScene({
   return (
     <div
       aria-hidden
-      className="pointer-events-none relative min-h-[520px] w-full min-w-0 overflow-hidden rounded-[22px] border p-3 shadow-[0_38px_120px_rgba(0,0,0,0.42)] sm:min-h-[560px] sm:p-4 lg:min-h-[620px]"
+      className="pointer-events-none relative min-h-[500px] w-full min-w-0 overflow-hidden rounded-[22px] border p-3 shadow-[0_34px_100px_rgba(0,0,0,0.36)] sm:min-h-[540px] sm:p-4 lg:min-h-[590px]"
       style={{
         background:
           "linear-gradient(145deg, rgba(19,39,55,0.96) 0%, rgba(8,19,31,0.98) 48%, rgba(5,12,20,0.98) 100%)",
@@ -165,7 +165,7 @@ function HeroProductScene({
         className="absolute inset-x-0 top-0 h-px"
         style={{ background: "linear-gradient(90deg, transparent, rgba(226,232,240,0.46), rgba(45,212,191,0.28), transparent)" }}
       />
-      <div className="relative grid h-full min-h-[494px] grid-rows-[auto_minmax(0,1fr)_auto] gap-3 sm:min-h-[528px] lg:min-h-[588px]">
+      <div className="relative grid h-full min-h-[474px] grid-rows-[auto_minmax(0,1fr)_auto] gap-3 sm:min-h-[508px] lg:min-h-[558px]">
         <div className="flex items-center justify-between gap-3 rounded-[14px] border px-3 py-2" style={{ backgroundColor: "rgba(255,255,255,0.045)", borderColor: marketingTone.border }}>
           <div className="flex min-w-0 items-center gap-2">
             <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: marketingTone.emerald }} />
@@ -303,8 +303,8 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
         }}
       />
       <MarketingShell className="relative max-w-[1320px]">
-        <div className="relative min-h-[calc(100svh-96px)] overflow-hidden px-4 py-6 sm:px-7 sm:py-8 lg:min-h-[760px] lg:px-10 lg:py-10">
-          <div className="absolute inset-0">
+        <div className="relative min-h-[640px] overflow-hidden px-4 py-6 sm:px-7 sm:py-8 lg:min-h-[690px] lg:px-10 lg:py-10">
+          <div className="absolute -right-[18%] top-10 w-[92%] opacity-55 sm:-right-[10%] sm:opacity-65 lg:-right-[7%] lg:top-12 lg:w-[78%] lg:opacity-85">
             <HeroProductScene copy={copy.heroDesk} />
           </div>
           <div
@@ -312,16 +312,16 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(90deg, rgba(5,11,18,0.98) 0%, rgba(5,11,18,0.92) 34%, rgba(5,11,18,0.42) 66%, rgba(5,11,18,0.16) 100%)",
+                "linear-gradient(90deg, rgba(5,11,18,0.99) 0%, rgba(5,11,18,0.96) 36%, rgba(5,11,18,0.76) 56%, rgba(5,11,18,0.22) 100%)",
             }}
           />
 
-          <div className="relative z-10 flex min-h-[calc(100svh-150px)] max-w-[720px] flex-col justify-center py-10 lg:min-h-[660px]">
+          <div className="relative z-10 flex min-h-[560px] max-w-[610px] flex-col justify-center py-8 lg:min-h-[610px]">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
-            <h1 className="mt-5 text-[38px] font-black leading-[1.02] min-[380px]:text-[44px] sm:text-[58px] lg:text-[68px]" style={{ color: marketingTone.text }}>
+            <h1 className="mt-5 text-[32px] font-black leading-[1.06] min-[380px]:text-[36px] sm:text-[44px] lg:text-[50px]" style={{ color: marketingTone.text }}>
               {copy.hero.title}
             </h1>
-            <p className="mt-5 max-w-[620px] text-[16px] leading-8 sm:text-[18px] sm:leading-9" style={{ color: marketingTone.soft }}>
+            <p className="mt-5 max-w-[560px] text-[15px] leading-7 sm:text-[16px] sm:leading-8" style={{ color: marketingTone.soft }}>
               {copy.hero.body}
             </p>
             <div className="mt-7 grid gap-3 min-[430px]:flex min-[430px]:flex-wrap">
@@ -332,7 +332,7 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
-            <div className="mt-8 grid max-w-[620px] gap-2.5 sm:grid-cols-3" style={{ color: marketingTone.soft }}>
+            <div className="mt-8 grid max-w-[580px] gap-2.5 sm:grid-cols-3" style={{ color: marketingTone.soft }}>
               {copy.hero.bullets.map((item) => (
                 <span className="flex min-w-0 items-center gap-2 rounded-[12px] border px-3 py-2 text-[12px] font-bold" key={item} style={{ backgroundColor: "rgba(255,255,255,0.045)", borderColor: marketingTone.border }}>
                   <span className="shrink-0 text-[#2DD4BF]">
