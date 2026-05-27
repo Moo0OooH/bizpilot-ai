@@ -77,6 +77,24 @@ function getPageContext(
   return copy.pages.dashboard;
 }
 
+function MoreIcon() {
+  return (
+    <svg
+      aria-hidden
+      className="h-4 w-4"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M5 12h14M5 7h14M5 17h14"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="2"
+      />
+    </svg>
+  );
+}
+
 export function DashboardTopbar({
   activeBusinessName,
   activeLanguage,
@@ -103,19 +121,30 @@ export function DashboardTopbar({
         </div>
 
         <div className="flex min-w-0 basis-full items-center justify-between gap-2 sm:basis-auto sm:justify-end">
-          <CopyButton
-            className="!hidden md:!inline-flex"
-            label={copy.actions.copyQuoteLink}
-            value={quotePath}
-          />
-          <Link className={`${buttonClass} !hidden lg:!inline-flex`} href={quotePath}>
-            {copy.actions.previewQuotePage}
-          </Link>
-          {showFounderAdmin ? (
-            <Link className={`${ghostButtonClass} !hidden lg:!inline-flex`} href="/admin">
-              {copy.pages.founder.title}
-            </Link>
-          ) : null}
+          <details className="group relative">
+            <summary
+              className={`${buttonClass} list-none cursor-pointer [&::-webkit-details-marker]:hidden`}
+              title={copy.actions.copyQuoteLink}
+            >
+              <MoreIcon />
+              <span className="hidden sm:inline">Actions</span>
+            </summary>
+            <div className="absolute right-0 top-11 z-30 grid w-[220px] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)]">
+              <CopyButton
+                className="!w-full !justify-start"
+                label={copy.actions.copyQuoteLink}
+                value={quotePath}
+              />
+              <Link className={`${buttonClass} w-full justify-start`} href={quotePath}>
+                {copy.actions.previewQuotePage}
+              </Link>
+              {showFounderAdmin ? (
+                <Link className={`${ghostButtonClass} w-full justify-start`} href="/admin">
+                  {copy.pages.founder.title}
+                </Link>
+              ) : null}
+            </div>
+          </details>
           <form
             action={updateWorkspaceLanguageAction}
             className="flex h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:h-10"

@@ -182,9 +182,9 @@ export default async function DashboardOverviewPage() {
     overviewCopy.featuredFallbackAction;
 
   return (
-    <main className="space-y-3.5">
+    <main className="space-y-3">
       <DashboardCard
-        className="grid gap-4 p-4 md:p-5 xl:grid-cols-[minmax(0,1.32fr)_minmax(300px,0.68fr)] xl:items-stretch"
+        className="grid gap-4 p-4 md:p-5 xl:grid-cols-[minmax(0,1.38fr)_minmax(300px,0.62fr)] xl:items-stretch"
         variant="priority"
       >
         <div className="min-w-0">
@@ -202,6 +202,11 @@ export default async function DashboardOverviewPage() {
             <Link className={buttonClass} href="/dashboard/leads">
               {dashboardCopy.actions.openLeadQueue}
             </Link>
+            <CopyButton
+              className="md:!hidden"
+              label={overviewCopy.copyLink}
+              value={quotePath}
+            />
           </div>
           <div className="mt-4 grid gap-2 sm:grid-cols-3">
             {[
@@ -278,7 +283,7 @@ export default async function DashboardOverviewPage() {
         />
       </section>
 
-      <section className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
+      <section className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1.42fr)_minmax(300px,0.58fr)]">
         <div className="grid min-w-0 gap-3">
           <div className="grid gap-2">
             <SectionHeader
@@ -364,29 +369,34 @@ export default async function DashboardOverviewPage() {
                   </p>
                 </div>
               </div>
-              <div className="grid gap-2 text-[13px]">
-                {readiness.items.slice(0, 5).map((item) => (
-                  <div
-                    className="flex items-start justify-between gap-3 border-b border-[var(--dash-border)] pb-2 last:border-b-0 last:pb-0"
-                    key={item.label}
-                  >
-                    <span className="text-[var(--dash-text-secondary)]">
-                      {dashboardCopy.readinessTasks[
-                        item.taskKey as keyof typeof dashboardCopy.readinessTasks
-                      ] ?? item.label}
-                    </span>
-                    <StatusBadge tone={item.complete ? "emerald" : "amber"}>
-                      {item.complete ? dashboardCopy.status.done : overviewCopy.readiness.needed}
-                    </StatusBadge>
-                  </div>
-                ))}
-              </div>
               <div className="grid grid-cols-2 gap-2">
                 <CopyButton label={overviewCopy.copyLink} value={quotePath} />
                 <Link className={buttonClass} href="/dashboard/configuration">
                   {overviewCopy.finishSetup}
                 </Link>
               </div>
+              <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
+                <summary className="cursor-pointer list-none px-3 py-2 text-[12px] font-black text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
+                  Setup checklist
+                </summary>
+                <div className="grid gap-2 border-t border-[var(--dash-border)] p-3 text-[13px]">
+                  {readiness.items.slice(0, 5).map((item) => (
+                    <div
+                      className="flex items-start justify-between gap-3 border-b border-[var(--dash-border)] pb-2 last:border-b-0 last:pb-0"
+                      key={item.label}
+                    >
+                      <span className="text-[var(--dash-text-secondary)]">
+                        {dashboardCopy.readinessTasks[
+                          item.taskKey as keyof typeof dashboardCopy.readinessTasks
+                        ] ?? item.label}
+                      </span>
+                      <StatusBadge tone={item.complete ? "emerald" : "amber"}>
+                        {item.complete ? dashboardCopy.status.done : overviewCopy.readiness.needed}
+                      </StatusBadge>
+                    </div>
+                  ))}
+                </div>
+              </details>
             </div>
           </RightRailPanel>
 
@@ -438,36 +448,45 @@ export default async function DashboardOverviewPage() {
             </div>
           </RightRailPanel>
 
-          <RightRailPanel>
-            <SectionHeader title={overviewCopy.aiControlTitle} />
-            <p className="mt-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
-              {overviewCopy.aiControlBody}
-            </p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {overviewCopy.aiControlBadges.map((badge, index) => (
-                <StatusBadge key={badge} tone={index === 2 ? "blue" : "emerald"}>
-                  {badge}
-                </StatusBadge>
-              ))}
-            </div>
-            <div className="my-3 h-px bg-[var(--dash-border)]" />
-            <SectionHeader title={overviewCopy.routine.title} />
-            <div className="mt-3 grid gap-2 text-[13px]">
-              {overviewCopy.routine.steps.map(([step, title, detail]) => (
-                <div className="grid grid-cols-[1.75rem_minmax(0,1fr)] gap-2 rounded-lg bg-[var(--dash-surface-muted)] p-2.5" key={step}>
-                  <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-xs font-black text-[var(--dash-primary)]">
-                    {step}
-                  </span>
-                  <span>
-                    <span className="block font-black text-[var(--dash-text)]">{title}</span>
-                    <span className="mt-0.5 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                      {detail}
-                    </span>
-                  </span>
+          <details className="overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]">
+            <summary className="cursor-pointer list-none px-3.5 py-3 text-[13px] font-black text-[var(--dash-text)] transition hover:bg-[var(--dash-surface-muted)] [&::-webkit-details-marker]:hidden">
+              Guides and AI controls
+            </summary>
+            <div className="grid gap-3 border-t border-[var(--dash-border)] p-3.5">
+              <div>
+                <SectionHeader title={overviewCopy.aiControlTitle} />
+                <p className="mt-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
+                  {overviewCopy.aiControlBody}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {overviewCopy.aiControlBadges.map((badge, index) => (
+                    <StatusBadge key={badge} tone={index === 2 ? "blue" : "emerald"}>
+                      {badge}
+                    </StatusBadge>
+                  ))}
                 </div>
-              ))}
+              </div>
+              <div className="h-px bg-[var(--dash-border)]" />
+              <div>
+                <SectionHeader title={overviewCopy.routine.title} />
+                <div className="mt-3 grid gap-2 text-[13px]">
+                  {overviewCopy.routine.steps.map(([step, title, detail]) => (
+                    <div className="grid grid-cols-[1.75rem_minmax(0,1fr)] gap-2 rounded-lg bg-[var(--dash-surface-muted)] p-2.5" key={step}>
+                      <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-xs font-black text-[var(--dash-primary)]">
+                        {step}
+                      </span>
+                      <span>
+                        <span className="block font-black text-[var(--dash-text)]">{title}</span>
+                        <span className="mt-0.5 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                          {detail}
+                        </span>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </RightRailPanel>
+          </details>
         </aside>
       </section>
     </main>
