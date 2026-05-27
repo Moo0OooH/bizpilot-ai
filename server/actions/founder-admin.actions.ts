@@ -111,6 +111,7 @@ function redirectWithFounderAdminError(error: unknown): never {
 export async function founderWorkspaceRepairAction(
   formData: FormData,
 ): Promise<never> {
+  let traceId: string;
   try {
     if (formData.get("workspaceRepairAcknowledgement") !== "on") {
       throw new Error(
@@ -118,68 +119,70 @@ export async function founderWorkspaceRepairAction(
       );
     }
 
-    const traceId = await repairFounderUserWorkspace({
+    traceId = await repairFounderUserWorkspace({
       businessName: readRequiredFormValue(formData, "businessName"),
       targetUserId: readRequiredFormValue(formData, "targetUserId"),
       user: await getCurrentUser(),
     });
-
-    revalidatePath("/admin");
-    redirect(
-      `/admin?notice=${encodeURIComponent(
-        `Workspace recovered for unlinked auth user. Trace ${traceId}.`,
-      )}`,
-    );
   } catch (error) {
     redirectWithFounderAdminError(error);
   }
+
+  revalidatePath("/admin");
+  redirect(
+    `/admin?notice=${encodeURIComponent(
+      `Workspace recovered for unlinked auth user. Trace ${traceId}.`,
+    )}`,
+  );
 }
 
 export async function founderPasswordResetAction(
   formData: FormData,
 ): Promise<never> {
+  let traceId: string;
   try {
-    const traceId = await requestFounderUserPasswordReset({
+    traceId = await requestFounderUserPasswordReset({
       targetUserId: readRequiredFormValue(formData, "targetUserId"),
       user: await getCurrentUser(),
     });
-
-    revalidatePath("/admin");
-    redirect(
-      `/admin?notice=${encodeURIComponent(
-        `Password reset email requested. Trace ${traceId}.`,
-      )}`,
-    );
   } catch (error) {
     redirectWithFounderAdminError(error);
   }
+
+  revalidatePath("/admin");
+  redirect(
+    `/admin?notice=${encodeURIComponent(
+      `Password reset email requested. Trace ${traceId}.`,
+    )}`,
+  );
 }
 
 export async function founderTemporaryPasswordAction(
   formData: FormData,
 ): Promise<never> {
+  let traceId: string;
   try {
     if (formData.get("temporaryPasswordAcknowledgement") !== "on") {
       throw new Error("Confirm that you will share this temporary password securely.");
     }
 
-    const traceId = await setFounderUserTemporaryPassword({
+    traceId = await setFounderUserTemporaryPassword({
       targetUserId: readRequiredFormValue(formData, "targetUserId"),
       temporaryPassword: readFounderTemporaryPassword(
         readRequiredFormValue(formData, "temporaryPassword"),
       ),
       user: await getCurrentUser(),
     });
-
-    revalidatePath("/admin");
-    redirect(
-      `/admin?notice=${encodeURIComponent(
-        `Temporary password set. Share it securely and ask the user to change it after sign-in. Trace ${traceId}.`,
-      )}`,
-    );
   } catch (error) {
     redirectWithFounderAdminError(error);
   }
+
+  revalidatePath("/admin");
+  redirect(
+    `/admin?notice=${encodeURIComponent(
+      `Temporary password set. Share it securely and ask the user to change it after sign-in. Trace ${traceId}.`,
+    )}`,
+  );
 }
 
 export async function updateFounderPlanAction(formData: FormData): Promise<never> {
@@ -319,30 +322,34 @@ export async function updateFounderInternalNoteAction(
 export async function founderCleanupDryRunAction(
   formData: FormData,
 ): Promise<never> {
+  let cleanupBusinessId: string;
+  let total = 0;
   try {
     const dryRun = await dryRunFounderTestWorkspaceCleanup({
       businessId: readRequiredFormValue(formData, "businessId"),
       user: await getCurrentUser(),
     });
-    const total = Object.values(dryRun.counts).reduce(
+    total = Object.values(dryRun.counts).reduce(
       (sum, value) => sum + value,
       0,
     );
-
-    revalidatePath("/admin");
-    redirect(
-      `/admin?notice=${encodeURIComponent(
-        `Dry run ready: ${total} rows across cleanup-scoped tables.`,
-      )}&cleanupBusinessId=${encodeURIComponent(dryRun.businessId)}`,
-    );
+    cleanupBusinessId = dryRun.businessId;
   } catch (error) {
     redirectWithFounderAdminError(error);
   }
+
+  revalidatePath("/admin");
+  redirect(
+    `/admin?notice=${encodeURIComponent(
+      `Dry run ready: ${total} rows across cleanup-scoped tables.`,
+    )}&cleanupBusinessId=${encodeURIComponent(cleanupBusinessId)}`,
+  );
 }
 
 export async function founderTestWorkspaceCleanupAction(
   formData: FormData,
 ): Promise<never> {
+  let total = 0;
   try {
     const result = await purgeFounderTestWorkspace({
       acknowledged: formData.get("cleanupAcknowledgement") === "on",
@@ -355,25 +362,26 @@ export async function founderTestWorkspaceCleanupAction(
       typedConfirmation: readRequiredFormValue(formData, "cleanupConfirmation"),
       user: await getCurrentUser(),
     });
-    const total = Object.values(result.counts).reduce(
+    total = Object.values(result.counts).reduce(
       (sum, value) => sum + value,
       0,
-    );
-
-    revalidatePath("/admin");
-    redirect(
-      `/admin?notice=${encodeURIComponent(
-        `Test workspace cleanup completed: ${total} rows purged. Auth users were not deleted.`,
-      )}`,
     );
   } catch (error) {
     redirectWithFounderAdminError(error);
   }
+
+  revalidatePath("/admin");
+  redirect(
+    `/admin?notice=${encodeURIComponent(
+      `Test workspace cleanup completed: ${total} rows purged. Auth users were not deleted.`,
+    )}`,
+  );
 }
 
 export async function founderTestAuthUserDeleteAction(
   formData: FormData,
 ): Promise<never> {
+  let linkedBusinessCount = 0;
   try {
     const result = await deleteFounderTestAuthUser({
       acknowledged: formData.get("authUserDeleteAcknowledgement") === "on",
@@ -386,14 +394,15 @@ export async function founderTestAuthUserDeleteAction(
       ),
       user: await getCurrentUser(),
     });
-
-    revalidatePath("/admin");
-    redirect(
-      `/admin?notice=${encodeURIComponent(
-        `Test auth user deleted. Linked businesses at deletion time: ${result.linkedBusinessCount}.`,
-      )}`,
-    );
+    linkedBusinessCount = result.linkedBusinessCount;
   } catch (error) {
     redirectWithFounderAdminError(error);
   }
+
+  revalidatePath("/admin");
+  redirect(
+    `/admin?notice=${encodeURIComponent(
+      `Test auth user deleted. Linked businesses at deletion time: ${linkedBusinessCount}.`,
+    )}`,
+  );
 }
