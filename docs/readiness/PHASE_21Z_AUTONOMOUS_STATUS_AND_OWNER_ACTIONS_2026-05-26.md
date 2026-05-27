@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI  
 **Date:** 2026-05-26  
-**Status:** Living handoff log for autonomous execution  
+**Status:** Living handoff log for autonomous execution (owner-confirmed recovery state recorded)  
 **Owner-facing purpose:** Keep one clear place for what was completed, what remains, what is blocked, and what needs owner action.
 
 ## Operating Rule
@@ -21,6 +21,15 @@ The final chat report should point back to this file and should include:
 - exact owner actions required.
 
 ## Recent Completed Work
+
+### Owner-confirmed production recovery (latest)
+
+- Owner dashboard access is now working again for affected users.
+- Users can regain workspace access and enter dashboard successfully.
+- Signup creates new users successfully.
+- Confirmation email is sent and confirm flow completes.
+- Confirmed users are routed into dashboard successfully from email flow.
+- Current auth/dashboard state is accepted as healthy for this phase checkpoint.
 
 ### Auth and account recovery stabilization
 
@@ -77,32 +86,31 @@ Recent validation evidence:
 - production `BIZPILOT_SMOKE_BASE_URL=https://bizpilo.com pnpm smoke:public` - pass, 9/9 after the latest deploys
 - latest Vercel log review after production smoke found only normal info-level smoke requests and no new error/warning lines
 
-## Known Open Items
+## Post-Recovery Priorities
 
-These are not active code regressions found in the latest smoke checks, but they
-remain before serious paid pilot use.
+These are no longer framed as active blockers for dashboard sign-in/access.
+They remain important for safer pilot operations quality.
 
-1. Founder must open `/admin` with a founder session and inspect the Production health panel.
-2. Real email deliverability still depends on Supabase Auth email posture and rate limits until custom SMTP/domain email is configured.
-3. Signup and reset-password should be tested once with a real owner-controlled inbox after rate limits clear.
-4. Production backup/export/restore posture still needs owner decision before real customer data.
-5. Real pilot outreach still needs the owner-approved list of cleaning prospects and final commercial terms.
-6. Model-backed AI output still depends on `OPENAI_API_KEY` and provider quota; fallback/manual-only behavior remains safe.
+1. Keep founder `/admin` production health panel checks as a recurring runtime sanity check.
+2. Decide custom SMTP/domain email timing to reduce provider-limit risk during heavier outreach.
+3. Confirm production backup/export/restore posture before storing real customer lead data at scale.
+4. Finalize owner-approved pilot commercial terms and prospect list for outreach.
+5. Keep AI provider readiness (`OPENAI_API_KEY` and quota) monitored for model-backed drafts.
 
-## Bugs Not Currently Reproduced
+## Bugs Status Snapshot
 
-- The previously reported signup confirmation failure was fixed or reduced to a safer sign-in fallback in code paths tested so far.
-- The previously reported reset-password invalid screen after successful update was fixed in the reset session hardening pass.
-- The previously reported empty admin visibility issue now has production health diagnostics, but live founder-session inspection is still required to confirm the production panel data.
+- Previously reported user dashboard access lockout: resolved (owner-confirmed).
+- Previously reported signup confirmation flow issue: resolved in current owner test path.
+- Previously reported password reset invalid post-success behavior: resolved in current owner test path.
+- Founder admin production diagnostics remain in place for ongoing visibility.
 
-## Exact Owner Actions
+## Owner Actions (Next Phase)
 
-1. Open `https://bizpilo.com/admin` while signed in with an email listed in `BIZPILOT_FOUNDER_EMAILS`.
-2. Confirm the Production health panel does not show a Supabase target mismatch, missing service-role access, or zero-data surprise.
-3. Wait for Supabase email rate limits to clear, then test one new signup and one reset-password with a real inbox.
-4. Decide whether to configure custom SMTP before any real paid pilot outreach.
-5. Confirm backup/export/restore risk posture before storing real customer lead data.
-6. Provide or approve the first 10 real cleaning business prospects and final setup/monthly/trial/refund/cancellation terms.
+1. Start the professional debug pass you requested, now that access/auth recovery is stable.
+2. Keep checking `/admin` Production health before major release toggles.
+3. Decide SMTP/domain-email upgrade timing before higher-volume pilot onboarding.
+4. Approve backup/export/restore posture for real customer-data scale.
+5. Approve final pilot offer terms and outreach list.
 
 ## Final Reporting Protocol
 
@@ -116,4 +124,3 @@ When the owner returns, the final report should answer in this order:
 6. Bugs still open or not reproducible.
 7. Owner-only actions.
 8. Link to this log.
-
