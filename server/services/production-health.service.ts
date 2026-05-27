@@ -118,6 +118,11 @@ function readServiceCredentialDiagnostics(input: {
     typeof payload?.iss === "string" ? readSupabaseHostRef(payload.iss) : null;
 
   if (payload) {
+    const matchesSupabaseRef =
+      input.supabaseHostRef && issuerRef
+        ? input.supabaseHostRef === issuerRef
+        : null;
+
     return {
       issuerRef,
       kind:
@@ -126,9 +131,7 @@ function readServiceCredentialDiagnostics(input: {
           : role === "anon"
             ? "jwt_anon"
             : "jwt_other",
-      matchesSupabaseRef:
-        Boolean(input.supabaseHostRef && issuerRef) &&
-        input.supabaseHostRef === issuerRef,
+      matchesSupabaseRef,
     };
   }
 
