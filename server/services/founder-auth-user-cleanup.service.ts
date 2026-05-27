@@ -134,6 +134,51 @@ async function listTargetBusinessContexts(input: {
   }));
 }
 
+async function insertFounderAuthUserDeletionAction(input: {
+  actorUserId: string;
+  linkedBusinessCount: number;
+  supabase: SupabaseClient<Database>;
+  targetEmail: string | null;
+  targetUserId: string;
+}): Promise<string> {
+  const previousValues = {
+    linked_business_count: input.linkedBusinessCount,
+    target_user_id: input.targetUserId,
+  };
+  const newValues = {
+    auth_provider_delete_completed: false,
+    auth_user_delete_authorized: true,
+    linked_business_count: input.linkedBusinessCount,
+    target_email_present: Boolean(input.targetEmail),
+    target_user_id: input.targetUserId,
+  };
+
+  try {
+    return await insertFounderAdminAction({
+      actionType: "test_auth_user_deleted",
+      actorUserId: input.actorUserId,
+      businessId: null,
+      newValues,
+      note: null,
+      previousValues,
+      supabase: input.supabase,
+    });
+  } catch {
+    return insertFounderAdminAction({
+      actionType: "internal_note_added",
+      actorUserId: input.actorUserId,
+      businessId: null,
+      newValues: {
+        ...newValues,
+        fallback_action_type: "test_auth_user_deleted",
+      },
+      note: "Fallback audit for fake/test auth user deletion.",
+      previousValues,
+      supabase: input.supabase,
+    });
+  }
+}
+
 export async function deleteFounderTestAuthUser(input: {
   acknowledged: boolean;
   cleanupMode: string;
@@ -187,23 +232,12 @@ export async function deleteFounderTestAuthUser(input: {
     throw new Error(blockReason);
   }
 
-  const actionId = await insertFounderAdminAction({
-    actionType: "test_auth_user_deleted",
+  const actionId = await insertFounderAuthUserDeletionAction({
     actorUserId: actor.id,
-    businessId: null,
-    newValues: {
-      auth_provider_delete_completed: false,
-      auth_user_delete_authorized: true,
-      linked_business_count: linkedBusinesses.length,
-      target_email_present: Boolean(targetEmail),
-      target_user_id: targetUser.id,
-    },
-    note: null,
-    previousValues: {
-      linked_business_count: linkedBusinesses.length,
-      target_user_id: targetUser.id,
-    },
+    linkedBusinessCount: linkedBusinesses.length,
     supabase,
+    targetEmail,
+    targetUserId: targetUser.id,
   });
 
   const ownedBusinessIds = Array.from(
