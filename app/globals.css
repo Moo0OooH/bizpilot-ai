@@ -304,32 +304,32 @@ body {
 }
 
 .biz-founder-admin-dark {
-  --dash-bg: #0b1220;
-  --dash-bg-soft: #111827;
-  --dash-surface: #111827;
-  --dash-surface-muted: rgba(30, 41, 59, 0.78);
-  --dash-surface-elevated: rgba(15, 23, 42, 0.96);
-  --dash-border: rgba(148, 163, 184, 0.16);
-  --dash-border-strong: rgba(148, 163, 184, 0.26);
+  --dash-bg: #0b1018;
+  --dash-bg-soft: #101720;
+  --dash-surface: #131b24;
+  --dash-surface-muted: #18232e;
+  --dash-surface-elevated: #101821;
+  --dash-border: rgba(148, 163, 184, 0.13);
+  --dash-border-strong: rgba(148, 163, 184, 0.22);
   --dash-text: #f8fafc;
-  --dash-text-secondary: rgba(226, 232, 240, 0.78);
-  --dash-text-muted: rgba(203, 213, 225, 0.58);
-  --dash-primary: #60a5fa;
-  --dash-primary-strong: #bfdbfe;
-  --dash-primary-hover: #93c5fd;
-  --dash-primary-soft: rgba(96, 165, 250, 0.14);
-  --dash-primary-border: rgba(96, 165, 250, 0.26);
-  --dash-warning-soft: rgba(245, 158, 11, 0.13);
-  --dash-warning-border: rgba(245, 158, 11, 0.25);
-  --dash-warning-strong: #fcd34d;
-  --dash-danger-soft: rgba(248, 113, 113, 0.1);
-  --dash-danger-border: rgba(248, 113, 113, 0.22);
+  --dash-text-secondary: rgba(226, 232, 240, 0.76);
+  --dash-text-muted: rgba(203, 213, 225, 0.56);
+  --dash-primary: #2dd4bf;
+  --dash-primary-strong: #99f6e4;
+  --dash-primary-hover: #5eead4;
+  --dash-primary-soft: rgba(45, 212, 191, 0.11);
+  --dash-primary-border: rgba(45, 212, 191, 0.22);
+  --dash-warning-soft: rgba(245, 158, 11, 0.1);
+  --dash-warning-border: rgba(245, 158, 11, 0.2);
+  --dash-warning-strong: #fbbf24;
+  --dash-danger-soft: rgba(248, 113, 113, 0.09);
+  --dash-danger-border: rgba(248, 113, 113, 0.18);
   --dash-danger-strong: #fca5a5;
-  --dash-success-soft: rgba(52, 211, 153, 0.11);
-  --dash-success-border: rgba(52, 211, 153, 0.23);
-  --dash-success-strong: #a7f3d0;
+  --dash-success-soft: rgba(45, 212, 191, 0.1);
+  --dash-success-border: rgba(45, 212, 191, 0.21);
+  --dash-success-strong: #99f6e4;
   background:
-    linear-gradient(180deg, #0b1220 0%, #111827 100%);
+    linear-gradient(180deg, #0b1018 0%, #101720 100%);
 }
 
 .biz-founder-admin .font-black {

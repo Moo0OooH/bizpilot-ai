@@ -1058,7 +1058,7 @@ function BusinessControlCard({
 }>) {
   return (
     <DashboardCard className="p-4 sm:p-5" variant="elevated">
-      <div className="grid gap-4 xl:grid-cols-[minmax(260px,0.78fr)_minmax(500px,1.35fr)]">
+      <div className="grid gap-4 2xl:grid-cols-[minmax(260px,0.72fr)_minmax(500px,1.28fr)]">
         <div className="min-w-0 space-y-5">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
@@ -1198,7 +1198,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="emerald">Daily use</StatusBadge>
             </div>
-            <div className="grid gap-3 md:grid-cols-2">
+            <div className="grid gap-3 xl:grid-cols-2">
               <form
                 action={updateFounderStatusAction}
                 className={controlPanelClass}
@@ -1297,7 +1297,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="amber">Controlled</StatusBadge>
             </div>
-            <div className="grid gap-3 md:grid-cols-2">
+            <div className="grid gap-3 xl:grid-cols-2">
           <form
             action={updateFounderWorkspaceKindAction}
             className={controlPanelClass}
@@ -1346,7 +1346,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="red">Sensitive</StatusBadge>
             </div>
-            <div className="grid gap-3 md:grid-cols-2">
+            <div className="grid gap-3 xl:grid-cols-2">
           <form
             action={updateFounderInternalNoteAction}
             className={controlPanelClass}
@@ -1765,54 +1765,50 @@ function FounderUsersSection({
                     </dd>
                   </div>
                 </dl>
-                <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
-                  <p className="text-sm font-black text-[var(--dash-text)]">
-                    Founder toolbox
-                  </p>
-                  <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                    Work from top to bottom: priority controls, workspace tools,
-                    account tools, then destructive cleanup.
-                  </p>
-                </div>
-                {linkedBusiness ? (
-                  <BusinessControlCard
-                    business={linkedBusiness}
-                    dryRun={
-                      dryRun?.businessId === linkedBusiness.businessId
-                        ? dryRun
-                        : null
-                    }
-                  />
-                ) : (
-                  <FounderWorkspaceRepairControls user={user} />
-                )}
-                <section className={toolboxSectionClass}>
-                  <div className="flex flex-wrap items-start justify-between gap-2 lg:col-span-2">
-                    <div>
-                      <p className="text-sm font-black text-[var(--dash-text)]">
-                        Account tools
-                      </p>
-                      <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                        Password help stays separate from destructive auth cleanup.
-                      </p>
-                    </div>
-                    <StatusBadge tone="blue">Identity</StatusBadge>
-                  </div>
-                  <div className="grid min-w-0 gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
-                    <section className={toolboxSectionClass}>
-                      <p className="text-xs font-black text-[var(--dash-text-muted)]">1) Passwords</p>
-                      <FounderPasswordControls user={user} />
-                    </section>
-                    <section className={toolboxSectionClass}>
-                      <p className="text-xs font-black text-[var(--dash-text-muted)]">2) Auth deletion</p>
-                      <FounderAuthUserDeleteForm
-                        deletionBlockedReason={user.authDeletionBlockedReason}
-                        targetEmail={user.authEmail}
-                        targetUserId={user.userId}
+                <div className="grid gap-3 2xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
+                  <div className="min-w-0">
+                    {linkedBusiness ? (
+                      <BusinessControlCard
+                        business={linkedBusiness}
+                        dryRun={
+                          dryRun?.businessId === linkedBusiness.businessId
+                            ? dryRun
+                            : null
+                        }
                       />
-                    </section>
+                    ) : (
+                      <FounderWorkspaceRepairControls user={user} />
+                    )}
                   </div>
-                </section>
+
+                  <section className={`${toolboxSectionClass} content-start`}>
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div>
+                        <p className="text-sm font-black text-[var(--dash-text)]">
+                          Account tools
+                        </p>
+                        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                          Password reset and auth cleanup for this user only.
+                        </p>
+                      </div>
+                      <StatusBadge tone="blue">Identity</StatusBadge>
+                    </div>
+                    <div className="grid min-w-0 gap-3">
+                      <section className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
+                        <p className="text-xs font-black text-[var(--dash-text-muted)]">1) Passwords</p>
+                        <FounderPasswordControls user={user} />
+                      </section>
+                      <section className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
+                        <p className="text-xs font-black text-[var(--dash-text-muted)]">2) Auth deletion</p>
+                        <FounderAuthUserDeleteForm
+                          deletionBlockedReason={user.authDeletionBlockedReason}
+                          targetEmail={user.authEmail}
+                          targetUserId={user.userId}
+                        />
+                      </section>
+                    </div>
+                  </section>
+                </div>
               </div>
             </details>
           );
@@ -2310,11 +2306,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                     diagnostic until this panel is clean.
                   </AdminNotice>
                 ) : null}
-                <FounderProductionHealthPanel health={productionHealth} />
                 <FounderAdminMetricsPanel
                   totals={overview.totals}
                   usersTotal={overview.usersTotal}
                 />
+                <FounderProductionHealthPanel health={productionHealth} />
               </div>
             ) : null}
 
