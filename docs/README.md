@@ -8,6 +8,8 @@ Before reading or implementing anything, start with:
 2. `AI_CODING_AGENT_START_HERE_v1.7.md`
 3. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
 4. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+5. `readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md`
+6. `readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
 
@@ -23,7 +25,7 @@ BizPilot AI's current live surface is a **Lead Recovery & Response System for cl
 
 **Current standards layer:** v1.5 foundation hardening  
 **Product strategy layer:** v1.4 remains active unless superseded  
-**Last updated:** 2026-05-17
+**Last updated:** 2026-05-28
 
 ---
 
@@ -68,6 +70,19 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 - `docs/product/BIZPILOT_VALIDATION_DASHBOARD_SPEC_v1.1.md`
 - `docs/gtm/BIZPILOT_GTM_PLAYBOOK_v1.1.md`
 - `docs/finance/BIZPILOT_COST_CONTROL_AND_UNIT_ECONOMICS_v1.0.md`
+
+## Latest Readiness Evidence
+
+- `docs/readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md`
+- `docs/readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`
+- `docs/readiness/PHASE_21Z_AUTONOMOUS_STATUS_AND_OWNER_ACTIONS_2026-05-26.md`
+- `docs/readiness/PHASE_21R_PRODUCTION_HORIZONTAL_ACCESS_SMOKE.md`
+- `docs/readiness/HOMEPAGE_RENEW_V2_WORK_LOG.md`
+
+2026-05-28 interpretation: production access/admin backend data loading is no
+longer the main blocker after Phase 22 evidence. Real customer-data scale still
+requires backup/export/restore posture, owner-approved authenticated synthetic
+smoke evidence, provider/email readiness, and owner approval.
 
 ---
 

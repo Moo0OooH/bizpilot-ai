@@ -1,8 +1,54 @@
 # BizPilot AI - Docs File Inventory v1.7
 
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-05-28
 **Generated From Repo:** yes
 **Scope:** Markdown and text documentation files only; packaged archives are excluded.
+
+## 2026-05-28 Inventory Sync Addendum
+
+Automated audit result:
+
+- Documentation-like files scanned: 142 (`.md`, `.txt`, `.csv`, `.sql`, `.html`)
+- Broken local Markdown links detected: 0
+- Files missing from the previous inventory body: 31
+
+The list below records files that existed in the repo but were not represented
+in the prior 2026-05-24 inventory snapshot. Older byte counts in the historical
+body below are preserved for traceability; use this addendum plus the canonical
+map for current navigation.
+
+- `design/DASHBOARD_COLOR_SYSTEM_2026.md`
+- `operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`
+- `operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`
+- `operations/BIZPILOT_CHANGE_EVIDENCE_AND_REMEMBERING_PROTOCOL_v1.0.md`
+- `product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`
+- `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+- `readiness/HOMEPAGE_DEMO_INTEGRATION.md`
+- `readiness/HOMEPAGE_RENEW_V2_PREVIEW.html`
+- `readiness/HOMEPAGE_RENEW_V2_WORK_LOG.md`
+- `readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md`
+- `readiness/PHASE_21C_OWNER_SQL_VERIFICATION_PACK.sql`
+- `readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`
+- `readiness/PHASE_21J_SMART_INTAKE_ROUTING_LITE.md`
+- `readiness/PHASE_21L_DASHBOARD_I18N_ADMIN_RECOVERY.md`
+- `readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md`
+- `readiness/PHASE_21N_SYNTHETIC_PRODUCTION_SMOKE_PLAN.md`
+- `readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md`
+- `readiness/PHASE_21P_NO_COST_READINESS_HARDENING.md`
+- `readiness/PHASE_21Q_CURRENT_EXECUTION_STARTER.md`
+- `readiness/PHASE_21Q_DASHBOARD_REDESIGN_EVIDENCE.md`
+- `readiness/PHASE_21R_PRODUCTION_HORIZONTAL_ACCESS_SMOKE.md`
+- `readiness/PHASE_21S_ADMIN_VISUAL_QA_CHECKLIST.md`
+- `readiness/PHASE_21T_ADMIN_TRACEABILITY_AND_TRANSIENT_ALERTS.md`
+- `readiness/PHASE_21T_FEATURE_ENTITLEMENT_SETTINGS_EVIDENCE.md`
+- `readiness/PHASE_21U_DASHBOARD_RUNTIME_FIX_AND_SMOKE.md`
+- `readiness/PHASE_21V_SYNTHESIS_STATUS_AND_ACTION_REPORT_2026-05-26.md`
+- `readiness/PHASE_21W_ADMIN_DASHBOARD_RECOVERY_AUDIT_2026-05-26.md`
+- `readiness/PHASE_21X_UI_POLISH_AND_RUNTIME_QA_2026-05-26.md`
+- `readiness/PHASE_21Y_AUTONOMOUS_UI_ADMIN_POLISH_2026-05-26.md`
+- `readiness/PHASE_21Z_AUTONOMOUS_STATUS_AND_OWNER_ACTIONS_2026-05-26.md`
+- `readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`
+- `sales/FOUNDER_CRM_PROSPECT_TEMPLATE.csv`
 
 - `AI_CODING_AGENT_START_HERE_v1.7.md` - 5694 bytes
 - `architecture/BIZPILOT_ARCHITECTURE_v1.4.md` - 13090 bytes

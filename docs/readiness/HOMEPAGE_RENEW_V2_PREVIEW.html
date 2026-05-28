@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#070D14" />
+<title>BizPilot AI - Homepage Renew v2 Preview</title>
+<meta name="description" content="Static design preview of the rebuilt BizPilot AI homepage. Cleaning-first quote recovery, owner-controlled." />
+<style>
+  :root {
+    --bg: #070D14;
+    --bg-2: #0B131C;
+    --surface: #0F1925;
+    --surface-2: #131E2B;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.14);
+    --text: #F2F5F8;
+    --soft: rgba(242, 245, 248, 0.66);
+    --muted: rgba(242, 245, 248, 0.44);
+    --accent: #2DD4BF;
+    --accent-2: #17D492;
+    --accent-soft: rgba(45, 212, 191, 0.12);
+    --accent-border: rgba(45, 212, 191, 0.30);
+    --container: 1160px;
+  }
+
+  * { box-sizing: border-box; min-width: 0; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, "Inter", "Geist Sans", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--text);
+    background: var(--bg);
+    background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(45, 212, 191, 0.10), transparent);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.55;
+    font-size: 15px;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; max-width: 100%; height: auto; }
+  button { font: inherit; cursor: pointer; border: 0; background: transparent; color: inherit; }
+  ul, ol { margin: 0; padding: 0; list-style: none; }
+  h1, h2, h3, h4, h5, p { margin: 0; }
+  .shell { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 20px; }
+  @media (min-width: 768px) { .shell { padding: 0 32px; } }
+
+  /* PREVIEW BANNER */
+  .preview-banner {
+    background: rgba(45, 212, 191, 0.08);
+    border-bottom: 1px solid var(--accent-border);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-align: center;
+    padding: 7px 16px;
+  }
+
+  /* HEADER */
+  .header {
+    position: sticky; top: 0; z-index: 50;
+    background-color: rgba(7, 13, 20, 0.80);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom: 1px solid var(--border);
+  }
+  .header nav {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    height: 60px; padding: 0 20px;
+    max-width: var(--container); margin: 0 auto;
+  }
+  @media (min-width: 768px) { .header nav { padding: 0 32px; } }
+  .brand { display: inline-flex; align-items: center; gap: 9px; }
+  .brand-logo {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: #03130C;
+    font-weight: 800; font-size: 13px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .brand-title { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+  .nav-links { display: none; gap: 4px; align-items: center; }
+  @media (min-width: 880px) { .nav-links { display: inline-flex; } }
+  .nav-links a {
+    padding: 7px 12px; border-radius: 7px; font-size: 13px; font-weight: 500;
+    color: var(--soft); transition: color 160ms;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-right { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .lang-toggle {
+    display: inline-flex; align-items: center;
+    padding: 2px; border-radius: 7px;
+    border: 1px solid var(--border-strong);
+  }
+  .lang-toggle button {
+    padding: 4px 8px; font-size: 11px; font-weight: 700; border-radius: 5px;
+    line-height: 1; color: var(--muted);
+  }
+  .lang-toggle button.active { background: var(--text); color: var(--bg); }
+  .signin-link {
+    display: none; padding: 7px 10px; font-size: 13px; font-weight: 500;
+    color: var(--soft);
+  }
+  @media (min-width: 1060px) { .signin-link { display: inline-flex; } }
+  .signin-link:hover { color: var(--text); }
+
+  /* BUTTONS */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 7px; height: 40px; padding: 0 16px;
+    border-radius: 8px; font-size: 13.5px; font-weight: 600;
+    line-height: 1; white-space: nowrap;
+    transition: transform 140ms, background 140ms, box-shadow 140ms;
+    border: 0; cursor: pointer;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: #03130C;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.20) inset, 0 6px 16px rgba(23, 212, 146, 0.20);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 1px 0 rgba(255,255,255,0.20) inset, 0 10px 24px rgba(23, 212, 146, 0.30); }
+  .btn-secondary {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+  }
+  .btn-secondary:hover { background: var(--surface-2); }
+  .btn-ghost {
+    background: transparent; color: var(--soft); padding: 0 10px;
+  }
+  .btn-ghost:hover { color: var(--text); }
+  .btn-sm { height: 34px; padding: 0 12px; font-size: 12.5px; }
+
+  /* HERO */
+  .hero { padding: 56px 0 64px; position: relative; }
+  @media (min-width: 768px) { .hero { padding: 80px 0 88px; } }
+  .hero-grid { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 1024px) { .hero-grid { grid-template-columns: 1fr 1fr; gap: 56px; } }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  .eyebrow::before { content: ""; width: 5px; height: 5px; border-radius: 999px; background: var(--accent); }
+  .hero h1 {
+    margin-top: 14px;
+    font-size: 32px; font-weight: 800; line-height: 1.10; letter-spacing: -0.022em;
+  }
+  @media (min-width: 640px) { .hero h1 { font-size: 38px; } }
+  @media (min-width: 1024px) { .hero h1 { font-size: 44px; } }
+  @media (min-width: 1280px) { .hero h1 { font-size: 48px; } }
+  .hero h1 .accent { color: var(--accent); }
+  .hero p.lead {
+    margin-top: 16px; max-width: 480px;
+    font-size: 15.5px; line-height: 1.6; color: var(--soft);
+  }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; align-items: center; }
+  .hero-micro {
+    margin-top: 18px; font-size: 12px; color: var(--muted);
+    display: flex; flex-wrap: wrap; gap: 16px;
+  }
+  .hero-micro span { display: inline-flex; align-items: center; gap: 5px; }
+  .hero-micro svg { color: var(--accent); flex-shrink: 0; }
+
+  /* HERO VISUAL - clean product card, compact */
+  .hero-visual {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 20px 60px rgba(0, 0, 0, 0.40);
+  }
+  .hv-top {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding-bottom: 14px; margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hv-top .group { display: inline-flex; align-items: center; gap: 8px; }
+  .hv-top .dot { width: 7px; height: 7px; border-radius: 999px; background: var(--accent); }
+  .hv-top .title { font-size: 12.5px; font-weight: 600; color: var(--text); }
+  .hv-top .meta { font-size: 11.5px; color: var(--muted); }
+  .pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-border);
+  }
+  .pill::before { content: ""; width: 4px; height: 4px; border-radius: 999px; background: currentColor; }
+  .pill.muted { background: rgba(255,255,255,0.05); color: var(--muted); border-color: var(--border); }
+  .hv-name { font-size: 16px; font-weight: 700; }
+  .hv-sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .hv-chips { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 5px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 8px; border-radius: 6px;
+    font-size: 11px; font-weight: 600; color: var(--soft);
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  }
+  .chip svg { color: var(--accent); }
+  .chip.miss { color: var(--muted); }
+  .chip.miss svg { color: var(--muted); }
+  .hv-draft {
+    margin-top: 14px;
+    background: var(--accent-soft); border: 1px solid var(--accent-border);
+    border-radius: 10px; padding: 14px;
+  }
+  .hv-draft-head {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .hv-draft p {
+    margin-top: 8px;
+    font-size: 13px; line-height: 1.55; color: var(--soft);
+  }
+  .hv-foot {
+    margin-top: 14px; display: grid; gap: 7px;
+    grid-template-columns: 1fr 1fr;
+  }
+  .hv-foot .act {
+    height: 34px; line-height: 34px; text-align: center;
+    border-radius: 7px; font-size: 12px; font-weight: 600;
+    background: rgba(255,255,255,0.04); color: var(--text); border: 1px solid var(--border-strong);
+  }
+  .hv-foot .act.primary {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: #03130C; border: 0;
+  }
+
+  /* SECTION DEFAULTS */
+  section.block {
+    padding: 64px 0;
+    border-top: 1px solid var(--border);
+  }
+  @media (max-width: 767px) { section.block { padding: 48px 0; } }
+  .section-head { max-width: 680px; margin: 0 auto 40px; text-align: center; }
+  .section-head h2 {
+    margin-top: 12px;
+    font-size: 26px; font-weight: 800; line-height: 1.18; letter-spacing: -0.018em;
+  }
+  @media (min-width: 768px) { .section-head h2 { font-size: 32px; } }
+  .section-head p {
+    margin-top: 12px; font-size: 14.5px; line-height: 1.6; color: var(--soft);
+  }
+
+  /* HOW IT WORKS - 3 column horizontal */
+  .steps {
+    display: grid; gap: 16px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+  .step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 200ms, background 200ms;
+  }
+  .step:hover { border-color: var(--border-strong); background: var(--surface-2); }
+  .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 7px;
+    background: var(--accent-soft); border: 1px solid var(--accent-border);
+    color: var(--accent); font-weight: 800; font-size: 12px;
+  }
+  .step-kicker {
+    margin-top: 14px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .step h3 {
+    margin-top: 6px;
+    font-size: 17px; font-weight: 700; line-height: 1.25; letter-spacing: -0.012em;
+  }
+  .step p {
+    margin-top: 10px;
+    font-size: 13.5px; line-height: 1.55; color: var(--soft);
+  }
+  .step-visual {
+    margin-top: 16px;
+    padding: 14px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    font-size: 12px;
+    min-height: 110px;
+  }
+  .sv-line { padding: 4px 0; display: flex; justify-content: space-between; gap: 10px; }
+  .sv-line .l { color: var(--muted); font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .sv-line .r { color: var(--text); font-weight: 600; }
+  .sv-divide { height: 1px; background: var(--border); margin: 8px 0; }
+  .sv-quote-text {
+    font-size: 12.5px; line-height: 1.55; color: var(--soft);
+    font-style: italic;
+  }
+  .sv-actions { display: grid; gap: 6px; margin-top: 8px; grid-template-columns: 1fr 1fr; }
+  .sv-act {
+    padding: 6px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; text-align: center;
+    background: rgba(255,255,255,0.04); border: 1px solid var(--border-strong); color: var(--soft);
+  }
+  .sv-act.primary { background: var(--accent-soft); border-color: var(--accent-border); color: var(--accent); }
+
+  /* PRICING */
+  .pricing-grid {
+    display: grid; gap: 12px;
+    grid-template-columns: 1fr;
+    max-width: 940px; margin: 0 auto;
+  }
+  @media (min-width: 800px) { .pricing-grid { grid-template-columns: repeat(3, 1fr); align-items: stretch; } }
+  .price-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    display: flex; flex-direction: column;
+  }
+  .price-card.featured {
+    border: 1px solid var(--accent-border);
+    box-shadow: 0 0 0 1px var(--accent-border), 0 20px 60px rgba(23, 212, 146, 0.10);
+  }
+  .price-name { font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: 0.06em; text-transform: uppercase; }
+  .price-card.featured .price-name::after {
+    content: "Recommended"; margin-left: 8px;
+    font-size: 9.5px; padding: 2px 7px; border-radius: 999px;
+    background: var(--accent); color: #03130C;
+    letter-spacing: 0.04em;
+  }
+  .price-amount { margin-top: 12px; display: flex; align-items: baseline; gap: 5px; }
+  .price-amount .v { font-size: 30px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; }
+  .price-amount .c { font-size: 12.5px; color: var(--muted); font-weight: 500; }
+  .price-meta { margin-top: 6px; font-size: 12.5px; color: var(--soft); }
+  .price-divider { height: 1px; background: var(--border); margin: 16px 0; }
+  .price-list { display: grid; gap: 8px; flex: 1; }
+  .price-list li {
+    display: grid; grid-template-columns: 14px 1fr; gap: 8px; align-items: flex-start;
+    font-size: 13px; line-height: 1.5; color: var(--soft);
+  }
+  .price-list li svg { color: var(--accent); margin-top: 3px; flex-shrink: 0; }
+  .price-card .btn { margin-top: 18px; width: 100%; height: 38px; font-size: 13px; }
+
+  /* FAQ */
+  .faq-grid { display: grid; gap: 8px; max-width: 720px; margin: 0 auto; }
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    overflow: hidden;
+  }
+  .faq-item[open] { border-color: var(--accent-border); }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    font-size: 14px; font-weight: 600; color: var(--text);
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: "+"; font-size: 18px; line-height: 1; color: var(--accent); font-weight: 300;
+  }
+  .faq-item[open] summary::after { content: "−"; }
+  .faq-item .answer {
+    padding: 0 18px 16px;
+    font-size: 13.5px; line-height: 1.65; color: var(--soft);
+  }
+  .faq-item .answer em { color: var(--text); font-style: normal; font-weight: 600; }
+
+  /* FINAL CTA - compact band, no separate section */
+  .final-cta {
+    margin-top: 48px;
+    padding: 32px;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(45, 212, 191, 0.12), transparent 28rem),
+      var(--surface);
+    border: 1px solid var(--accent-border);
+    border-radius: 14px;
+    text-align: center;
+  }
+  .final-cta h2 {
+    font-size: 22px; font-weight: 800; line-height: 1.2; letter-spacing: -0.018em;
+  }
+  @media (min-width: 768px) { .final-cta h2 { font-size: 26px; } }
+  .final-cta p {
+    margin: 10px auto 0; max-width: 480px;
+    font-size: 14px; line-height: 1.6; color: var(--soft);
+  }
+  .final-cta-actions { margin-top: 18px; display: inline-flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+  /* FOOTER */
+  footer.site-footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0 24px;
+  }
+  .footer-grid {
+    display: grid; gap: 24px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 768px) { .footer-grid { grid-template-columns: 1.6fr 1fr 1fr 1fr; align-items: start; } }
+  .footer-brand p {
+    margin-top: 10px; font-size: 12.5px; line-height: 1.55; color: var(--muted); max-width: 260px;
+  }
+  .footer-col-title {
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.10em; color: var(--muted); margin-bottom: 10px;
+  }
+  .footer-col a {
+    display: block; font-size: 12.5px; color: var(--soft); padding: 3px 0;
+    transition: color 140ms;
+  }
+  .footer-col a:hover { color: var(--text); }
+  .footer-bottom {
+    margin-top: 28px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center;
+    font-size: 11.5px; color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-banner">
+  Homepage Renew v2 · Static Preview · single dark theme · compact sizing
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <nav>
+    <a class="brand" href="#">
+      <span class="brand-logo" aria-hidden="true">B</span>
+      <span class="brand-title">BizPilot</span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang-toggle" aria-label="Language">
+        <button class="active" aria-pressed="true">EN</button>
+        <button aria-pressed="false">FR</button>
+      </div>
+      <a class="signin-link" href="#">Sign in</a>
+      <a class="btn btn-primary btn-sm" href="#pricing">Start free pilot</a>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="shell">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">For Montreal cleaning teams</span>
+        <h1>Reply to every quote request. <span class="accent">Even the ones hiding in your DMs.</span></h1>
+        <p class="lead">
+          BizPilot captures every quote request in one place, drafts the reply, and waits for
+          your approval. No auto-send. No CRM bloat.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#pricing">Start free founder pilot
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#how">See how it works ›</a>
+        </div>
+        <div class="hero-micro">
+          <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg> Free during pilot</span>
+          <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg> No credit card</span>
+          <span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg> Cancel anytime</span>
+        </div>
+      </div>
+      <!-- Hero product visual -->
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hv-top">
+          <div class="group">
+            <span class="dot"></span>
+            <span class="title">Sarah M.</span>
+            <span class="meta">· 14m ago</span>
+          </div>
+          <span class="pill">Owner review</span>
+        </div>
+        <div class="hv-name">Move-out cleaning</div>
+        <div class="hv-sub">2-bed apartment · Friday · from Instagram DM</div>
+        <div class="hv-chips">
+          <span class="chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Service type</span>
+          <span class="chip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Date</span>
+          <span class="chip miss"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 17h.01"/></svg>Square footage missing</span>
+          <span class="chip miss"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 17h.01"/></svg>Access missing</span>
+        </div>
+        <div class="hv-draft">
+          <div class="hv-draft-head">
+            <span>AI draft · ready for review</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l11-11-4-4L4 16z"/><path d="m13 7 4 4"/></svg>
+          </div>
+          <p>"Hi Sarah - happy to help with the move-out clean. Could you share the square footage and whether there's parking on site? I can usually fit you in this week."</p>
+        </div>
+        <div class="hv-foot">
+          <div class="act primary">Copy &amp; send</div>
+          <div class="act">Edit draft</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="block" id="how">
+  <div class="shell">
+    <div class="section-head">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps. You stay in control of every send.</h2>
+      <p>One quote link replaces scattered DMs. The system organizes and drafts. You decide what gets sent.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">1</span>
+        <div class="step-kicker">Capture</div>
+        <h3>One quote link, every channel.</h3>
+        <p>Place it in your Instagram bio, Google Business profile, and saved text reply. Customers fill a short form instead of vague messages.</p>
+        <div class="step-visual">
+          <div class="sv-line"><span class="l">Source</span><span class="r">Instagram bio</span></div>
+          <div class="sv-line"><span class="l">Customer</span><span class="r">Sarah M.</span></div>
+          <div class="sv-line"><span class="l">Service</span><span class="r">Move-out clean</span></div>
+          <div class="sv-line"><span class="l">Status</span><span class="r" style="color: var(--accent);">Captured</span></div>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">2</span>
+        <div class="step-kicker">Draft</div>
+        <h3>We organize and draft.</h3>
+        <p>BizPilot summarizes the request, flags what is missing, and writes a clean draft reply. Nothing is sent. Nothing leaves your workspace.</p>
+        <div class="step-visual">
+          <div class="sv-line"><span class="l">Missing</span><span class="r" style="color: var(--muted);">Sq ft, access</span></div>
+          <div class="sv-divide"></div>
+          <p class="sv-quote-text">"Hi Sarah - could you share the square footage and parking details so I can quote accurately?"</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step-num">3</span>
+        <div class="step-kicker">Recover</div>
+        <h3>You review and send.</h3>
+        <p>One click to copy the draft, send through Instagram or email, mark contacted. If the customer goes quiet, follow-up appears tomorrow.</p>
+        <div class="step-visual">
+          <div class="sv-line"><span class="l">Action</span><span class="r" style="color: var(--accent);">Owner approves</span></div>
+          <div class="sv-actions">
+            <div class="sv-act primary">Copy reply</div>
+            <div class="sv-act">Mark contacted</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="block" id="pricing">
+  <div class="shell">
+    <div class="section-head">
+      <span class="eyebrow">Pricing</span>
+      <h2>Honest pricing. No endless free trials.</h2>
+      <p>We onboard you ourselves, prove value during a 14-day pilot, then move to paid only if you continue.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card featured">
+        <div class="price-name">Founder Pilot</div>
+        <div class="price-amount"><span class="v">$0</span><span class="c">/ setup</span></div>
+        <div class="price-meta">First 1-5 cleaning teams · feedback exchange</div>
+        <div class="price-divider"></div>
+        <ul class="price-list">
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Done-for-you setup</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Branded quote link &amp; dashboard</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>AI summary, reply &amp; follow-up</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Weekly founder check-in</li>
+        </ul>
+        <a class="btn btn-primary" href="#">Apply for pilot</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Starter</div>
+        <div class="price-amount"><span class="v">$149</span><span class="c">setup · $49/mo</span></div>
+        <div class="price-meta">Customers 6 to 20 · single workflow</div>
+        <div class="price-divider"></div>
+        <ul class="price-list">
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>One branded quote page</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Lead recovery workspace</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>AI drafts &amp; reminders</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Cancel before next cycle</li>
+        </ul>
+        <a class="btn btn-secondary" href="#">Choose Starter</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name">Pro</div>
+        <div class="price-amount"><span class="v">$199</span><span class="c">setup · $79/mo</span></div>
+        <div class="price-meta">After 20 paying teams · more customization</div>
+        <div class="price-divider"></div>
+        <ul class="price-list">
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Stronger branded quote page</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>More customization</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Follow-up drafts</li>
+          <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>Priority founder support</li>
+        </ul>
+        <a class="btn btn-secondary" href="#">Choose Pro</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="block" id="faq">
+  <div class="shell">
+    <div class="section-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>Common questions from cleaning owners.</h2>
+    </div>
+    <div class="faq-grid">
+      <details class="faq-item">
+        <summary>Will BizPilot send messages to my customers automatically?</summary>
+        <div class="answer">
+          <em>No. Never.</em> BizPilot only prepares drafts inside your dashboard. You read, edit, then copy and send through your own Instagram, email, or SMS. Nothing leaves your account without your manual action.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How is this different from Jobber or Housecall Pro?</summary>
+        <div class="answer">
+          Jobber and Housecall Pro manage <em>booked jobs</em> — scheduling, dispatch, invoicing. BizPilot helps you <em>win the job in the first place</em>, by replying faster to messy DM quote requests. You can use both: BizPilot up front, the others after the booking.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Do I need to integrate Instagram, WhatsApp, or SMS?</summary>
+        <div class="answer">
+          No. You share one quote link in your Instagram bio, Google Business profile, or saved text reply. The customer fills it out. The lead lands in your dashboard. No API integrations.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How is customer privacy handled?</summary>
+        <div class="answer">
+          Each business has tenant-isolated data. The AI never sees more than the minimum needed for a draft. Raw customer messages are never logged. Designed with Quebec Law 25 and Canadian PIPEDA awareness from day one.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What if I want to cancel?</summary>
+        <div class="answer">
+          Cancel anytime before your next monthly cycle. No long-term contract. Your data exports cleanly. We would rather you leave easily than feel locked in.
+        </div>
+      </details>
+    </div>
+
+    <!-- Final CTA inline at the end of FAQ to avoid extra section -->
+    <div class="final-cta">
+      <h2>Stop losing cleaning jobs to slow replies.</h2>
+      <p>Start a 14-day founder pilot. We set everything up, walk you through the workflow, and help you win your first recovered lead.</p>
+      <div class="final-cta-actions">
+        <a class="btn btn-primary" href="#">Start free founder pilot
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-secondary" href="#pricing">See pricing</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="#">
+          <span class="brand-logo" aria-hidden="true">B</span>
+          <span class="brand-title">BizPilot</span>
+        </a>
+        <p>Cleaning-first quote recovery. AI drafts, owner-reviewed, manual sends. Built in Montreal.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Product</div>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Trust</div>
+        <a href="#">Privacy</a>
+        <a href="#">Security</a>
+        <a href="#">Terms</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Account</div>
+        <a href="#">Sign in</a>
+        <a href="#">Apply for pilot</a>
+        <a href="#">Contact founder</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 BizPilot AI · Built in Montreal</span>
+      <div class="lang-toggle" aria-label="Footer language">
+        <button class="active" aria-pressed="true">EN</button>
+        <button aria-pressed="false">FR</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.lang-toggle').forEach(function (group) {
+    var btns = group.querySelectorAll('button');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.classList.remove('active'); x.setAttribute('aria-pressed', 'false'); });
+        b.classList.add('active');
+        b.setAttribute('aria-pressed', 'true');
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

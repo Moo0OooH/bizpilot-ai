@@ -39,6 +39,34 @@ Additional active lifecycle/deletion authorities:
 - `operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 - `readiness/PHASE_19_BUSINESS_LIFECYCLE_DELETION_READINESS.md`
 
+## Current Readiness Snapshot - 2026-05-28
+
+Use these files for the latest production and documentation status before
+starting new work:
+
+- `readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md` - current docs audit,
+  progress summary, repaired inventory gap list, and remaining operational gaps.
+- `readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md` -
+  latest production access/runtime evidence; founder/admin backend data loading
+  recovered, public smoke passing, quote smoke passing, and RLS coverage
+  recorded.
+- `readiness/PHASE_21Z_AUTONOMOUS_STATUS_AND_OWNER_ACTIONS_2026-05-26.md` -
+  living owner-action and autonomous-status handoff.
+- `readiness/HOMEPAGE_RENEW_V2_WORK_LOG.md` and
+  `readiness/HOMEPAGE_RENEW_V2_PREVIEW.html` - homepage redesign preview path;
+  not production implementation by itself.
+
+Current top-level interpretation:
+
+- Production access/admin-data loading is no longer the primary blocker after
+  Phase 22 evidence.
+- Real customer-data scale is still gated by backup/export/restore posture,
+  owner-approved synthetic authenticated smoke evidence, provider/email
+  readiness, and owner approval.
+- Broader feature work remains allowed only through feature entitlement,
+  Settings visibility, guide coverage, smoke evidence, and honest
+  customer-facing copy.
+
 ## Supporting Active Files
 
 ### Product and UX
@@ -48,6 +76,7 @@ Additional active lifecycle/deletion authorities:
 - `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 - `product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`
 - `product/BIZPILOT_DESIGN_SYSTEM_SPEC_v1.0.md`
+- `design/DASHBOARD_COLOR_SYSTEM_2026.md`
 - `product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md`
 - `product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md`
 - `product/BIZPILOT_VALIDATION_DASHBOARD_SPEC_v1.1.md`
@@ -89,7 +118,10 @@ Additional active lifecycle/deletion authorities:
 - `operations/BIZPILOT_RISK_REGISTER_AND_DECISION_RULES_v1.0.md`
 - `ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
 - `operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
+- `operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`
 - `operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
+- `operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`
+- `operations/BIZPILOT_CHANGE_EVIDENCE_AND_REMEMBERING_PROTOCOL_v1.0.md`
 - `operations/BIZPILOT_CODEX_IMPLEMENTATION_PROMPTS_v1.0.md`
 - `operations/BIZPILOT_EXECUTIVE_AUDIT_AND_DECISION_v1.5.md`
 - `operations/BIZPILOT_PHASE_18_FOUNDER_LED_PILOT_WORKFLOW_v1.0.md`
@@ -118,6 +150,29 @@ Additional active lifecycle/deletion authorities:
 - `readiness/PHASE_21F_FR_CA_PRODUCTION_QUOTE_SMOKE.md`
 - `readiness/PHASE_21G_OPENAI_REAL_KEY_VALIDATION.md`
 - `readiness/PHASE_21H_SIGNUP_CONFIRMATION_SMOKE.md`
+- `readiness/PHASE_21I_DASHBOARD_I18N_SYSTEMIZATION.md`
+- `readiness/PHASE_21J_SMART_INTAKE_ROUTING_LITE.md`
+- `readiness/PHASE_21L_DASHBOARD_I18N_ADMIN_RECOVERY.md`
+- `readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md`
+- `readiness/PHASE_21N_SYNTHETIC_PRODUCTION_SMOKE_PLAN.md`
+- `readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md`
+- `readiness/PHASE_21P_NO_COST_READINESS_HARDENING.md`
+- `readiness/PHASE_21Q_CURRENT_EXECUTION_STARTER.md`
+- `readiness/PHASE_21Q_DASHBOARD_REDESIGN_EVIDENCE.md`
+- `readiness/PHASE_21R_PRODUCTION_HORIZONTAL_ACCESS_SMOKE.md`
+- `readiness/PHASE_21S_ADMIN_VISUAL_QA_CHECKLIST.md`
+- `readiness/PHASE_21T_ADMIN_TRACEABILITY_AND_TRANSIENT_ALERTS.md`
+- `readiness/PHASE_21T_FEATURE_ENTITLEMENT_SETTINGS_EVIDENCE.md`
+- `readiness/PHASE_21U_DASHBOARD_RUNTIME_FIX_AND_SMOKE.md`
+- `readiness/PHASE_21V_SYNTHESIS_STATUS_AND_ACTION_REPORT_2026-05-26.md`
+- `readiness/PHASE_21W_ADMIN_DASHBOARD_RECOVERY_AUDIT_2026-05-26.md`
+- `readiness/PHASE_21X_UI_POLISH_AND_RUNTIME_QA_2026-05-26.md`
+- `readiness/PHASE_21Y_AUTONOMOUS_UI_ADMIN_POLISH_2026-05-26.md`
+- `readiness/PHASE_21Z_AUTONOMOUS_STATUS_AND_OWNER_ACTIONS_2026-05-26.md`
+- `readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`
+- `readiness/HOMEPAGE_DEMO_INTEGRATION.md`
+- `readiness/HOMEPAGE_RENEW_V2_WORK_LOG.md`
+- `readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md`
 
 ## Preserved Reference Files
 
