@@ -441,62 +441,6 @@ body {
   color: var(--dash-primary-strong);
 }
 
-.founder-toolbox-radio {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.founder-toolbox-panel {
-  display: none;
-}
-
-.founder-toolbox-nav-item {
-  border-color: var(--dash-border);
-  background: var(--dash-surface);
-  color: var(--dash-text-secondary);
-}
-
-.founder-toolbox-nav-item:hover {
-  border-color: color-mix(in srgb, var(--dash-primary) 28%, transparent);
-  background: var(--dash-primary-soft);
-  color: var(--dash-text);
-}
-
-.founder-toolbox:has(.founder-toolbox-radio-priority:checked)
-  .founder-toolbox-panel-priority,
-.founder-toolbox:has(.founder-toolbox-radio-workspace:checked)
-  .founder-toolbox-panel-workspace,
-.founder-toolbox:has(.founder-toolbox-radio-audit:checked)
-  .founder-toolbox-panel-audit,
-.founder-toolbox:has(.founder-toolbox-radio-password:checked)
-  .founder-toolbox-panel-password,
-.founder-toolbox:has(.founder-toolbox-radio-auth-delete:checked)
-  .founder-toolbox-panel-auth-delete {
-  display: block;
-}
-
-.founder-toolbox-all .founder-toolbox-panel {
-  display: block;
-}
-
-.founder-toolbox:has(.founder-toolbox-radio-priority:checked)
-  .founder-toolbox-nav-priority,
-.founder-toolbox:has(.founder-toolbox-radio-workspace:checked)
-  .founder-toolbox-nav-workspace,
-.founder-toolbox:has(.founder-toolbox-radio-audit:checked)
-  .founder-toolbox-nav-audit,
-.founder-toolbox:has(.founder-toolbox-radio-password:checked)
-  .founder-toolbox-nav-password,
-.founder-toolbox:has(.founder-toolbox-radio-auth-delete:checked)
-  .founder-toolbox-nav-auth-delete {
-  border-color: var(--dash-primary);
-  background: var(--dash-primary-soft);
-  color: var(--dash-text);
-}
-
 .biz-founder-admin-dark .shadow-\[0_12px_32px_rgba\(15\,23\,42\,0\.05\)\],
 .biz-founder-admin-dark .shadow-\[0_14px_36px_rgba\(15\,23\,42\,0\.06\)\],
 .biz-founder-admin-dark .shadow-\[0_14px_30px_rgba\(15\,118\,110\,0\.12\)\] {

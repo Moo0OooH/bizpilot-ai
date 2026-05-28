@@ -1072,8 +1072,6 @@ function BusinessControlCard({
   business: FounderAdminBusiness;
   dryRun?: FounderCleanupDryRun | null;
 }>) {
-  const toolboxName = `business-toolbox-${business.businessId}`;
-
   return (
     <DashboardCard className="p-4 sm:p-5" variant="elevated">
       <div className="grid gap-4 xl:grid-cols-[minmax(260px,0.78fr)_minmax(500px,1.35fr)]">
@@ -1203,52 +1201,12 @@ function BusinessControlCard({
           ) : null}
         </div>
 
-        <div className="founder-toolbox founder-toolbox-all relative grid gap-3">
-          <input
-            className="founder-toolbox-radio founder-toolbox-radio-priority"
-            defaultChecked
-            id={`${toolboxName}-priority`}
-            name={toolboxName}
-            type="radio"
-          />
-          <input
-            className="founder-toolbox-radio founder-toolbox-radio-workspace"
-            id={`${toolboxName}-workspace`}
-            name={toolboxName}
-            type="radio"
-          />
-          <input
-            className="founder-toolbox-radio founder-toolbox-radio-audit"
-            id={`${toolboxName}-audit`}
-            name={toolboxName}
-            type="radio"
-          />
-          <nav className="hidden content-start gap-1.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-1.5">
-            <label
-              className="founder-toolbox-nav-item founder-toolbox-nav-priority cursor-pointer rounded-md border px-2.5 py-2 text-[12px] font-black"
-              htmlFor={`${toolboxName}-priority`}
-            >
-              Priority
-            </label>
-            <label
-              className="founder-toolbox-nav-item founder-toolbox-nav-workspace cursor-pointer rounded-md border px-2.5 py-2 text-[12px] font-black"
-              htmlFor={`${toolboxName}-workspace`}
-            >
-              Workspace
-            </label>
-            <label
-              className="founder-toolbox-nav-item founder-toolbox-nav-audit cursor-pointer rounded-md border px-2.5 py-2 text-[12px] font-black"
-              htmlFor={`${toolboxName}-audit`}
-            >
-              Cleanup & audit
-            </label>
-          </nav>
-          <div className="grid min-w-0 gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
-          <section className={`founder-toolbox-panel founder-toolbox-panel-priority ${toolboxSectionClass}`}>
+        <div className="grid min-w-0 gap-3">
+          <section className={toolboxSectionClass}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
-                  Priority controls
+                  1) Priority controls
                 </p>
                 <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
                   Change access, plan, and intake state first.
@@ -1343,11 +1301,11 @@ function BusinessControlCard({
             </div>
           </section>
 
-          <section className={`founder-toolbox-panel founder-toolbox-panel-workspace ${toolboxSectionClass}`}>
+          <section className={toolboxSectionClass}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
-                  Workspace tools
+                  2) Workspace tools
                 </p>
                 <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
                   Use these when setup, session, or cleanup state is wrong.
@@ -1392,11 +1350,11 @@ function BusinessControlCard({
             </div>
           </section>
 
-          <section className={`founder-toolbox-panel founder-toolbox-panel-audit ${toolboxSectionClass}`}>
+          <section className={toolboxSectionClass}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
-                  Notes, cleanup, and audit
+                  3) Notes, cleanup, and audit
                 </p>
                 <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
                   Record context, run cleanup, then review the change trail.
@@ -1435,7 +1393,6 @@ function BusinessControlCard({
           <FounderSystemChangeLog actions={business.actionLog} />
             </div>
           </section>
-          </div>
         </div>
       </div>
     </DashboardCard>
@@ -1725,12 +1682,10 @@ function FounderUsersSection({
 
       <div className="space-y-3">
         {shownUsers.length > 0 ? (
-          shownUsers.map((user) => {
-            const linkedBusiness = user.businessId
-              ? (businessById.get(user.businessId) ?? null)
-              : null;
-            const accountToolboxName = `account-toolbox-${user.userId}`;
-
+            shownUsers.map((user) => {
+              const linkedBusiness = user.businessId
+                ? (businessById.get(user.businessId) ?? null)
+                : null;
             return (
             <details
               className="group overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] shadow-[0_10px_26px_rgba(15,23,42,0.05)]"
@@ -1845,20 +1800,7 @@ function FounderUsersSection({
                 ) : (
                   <FounderWorkspaceRepairControls user={user} />
                 )}
-                <section className={`${toolboxSectionClass} founder-toolbox founder-toolbox-all relative`}>
-                  <input
-                    className="founder-toolbox-radio founder-toolbox-radio-password"
-                    defaultChecked
-                    id={`${accountToolboxName}-password`}
-                    name={accountToolboxName}
-                    type="radio"
-                  />
-                  <input
-                    className="founder-toolbox-radio founder-toolbox-radio-auth-delete"
-                    id={`${accountToolboxName}-auth-delete`}
-                    name={accountToolboxName}
-                    type="radio"
-                  />
+                <section className={toolboxSectionClass}>
                   <div className="flex flex-wrap items-start justify-between gap-2 lg:col-span-2">
                     <div>
                       <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1870,31 +1812,19 @@ function FounderUsersSection({
                     </div>
                     <StatusBadge tone="blue">Identity</StatusBadge>
                   </div>
-                  <nav className="hidden content-start gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2">
-                    <label
-                      className="founder-toolbox-nav-item founder-toolbox-nav-password cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
-                      htmlFor={`${accountToolboxName}-password`}
-                    >
-                      Passwords
-                    </label>
-                    <label
-                      className="founder-toolbox-nav-item founder-toolbox-nav-auth-delete cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
-                      htmlFor={`${accountToolboxName}-auth-delete`}
-                    >
-                      Auth deletion
-                    </label>
-                  </nav>
                   <div className="grid min-w-0 gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
-                    <div className="founder-toolbox-panel founder-toolbox-panel-password">
+                    <section className={toolboxSectionClass}>
+                      <p className="text-xs font-black text-[var(--dash-text-muted)]">1) Passwords</p>
                       <FounderPasswordControls user={user} />
-                    </div>
-                    <div className="founder-toolbox-panel founder-toolbox-panel-auth-delete">
+                    </section>
+                    <section className={toolboxSectionClass}>
+                      <p className="text-xs font-black text-[var(--dash-text-muted)]">2) Auth deletion</p>
                       <FounderAuthUserDeleteForm
                         deletionBlockedReason={user.authDeletionBlockedReason}
                         targetEmail={user.authEmail}
                         targetUserId={user.userId}
                       />
-                    </div>
+                    </section>
                   </div>
                 </section>
               </div>
