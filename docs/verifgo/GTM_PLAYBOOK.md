@@ -19,19 +19,9 @@ Votre verification quotidienne, prete avant votre premiere course.
 | Plan | Price | Role |
 | --- | --- | --- |
 | Free | $0 | Trial and acquisition |
-| Founding Driver | $29/year locked | First 100 drivers, includes premium smart notifications |
-| Pro | $39/year or $4.99/month | Main revenue, includes premium smart notifications |
+| Founding Driver | $29/year locked | First 100 drivers |
+| Pro | $39/year or $4.99/month | Main revenue |
 | Fleet | Later | Not MVP |
-
-## Premium Smart Notifications
-
-Paid plans expose one toggle:
-
-```txt
-Premium smart notifications
-```
-
-When enabled, VerifGo can send the whole seasonal reminder bundle at the right time. The product must not make the driver configure tire, washer fluid, battery, and kit alerts one by one during onboarding.
 
 ## Community Launch Copy
 
