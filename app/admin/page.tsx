@@ -879,7 +879,7 @@ function FounderProductionHealthStrip({
           {isProductionHealthUnhealthy(health) ? "Needs check" : "Healthy"}
         </StatusBadge>
       </div>
-      <div className="mt-3 grid gap-2 sm:grid-cols-3 xl:grid-cols-6">
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6">
         {items.map(([label, value, ok]) => (
           <div
             className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2"
@@ -2366,7 +2366,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </FlashMessage>
         ) : null}
 
-        <div className="grid min-w-0 grid-cols-[210px_minmax(0,1fr)] gap-3">
+        <div className="grid min-w-0 grid-cols-[176px_minmax(0,1fr)] gap-3">
           <FounderAdminToolRail
             activePanel={activePanel}
             healthNeedsAttention={productionHealthNeedsAttention}
