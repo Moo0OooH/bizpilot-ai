@@ -977,6 +977,8 @@ function BusinessControlCard({
   business: FounderAdminBusiness;
   dryRun?: FounderCleanupDryRun | null;
 }>) {
+  const toolboxName = `business-toolbox-${business.businessId}`;
+
   return (
     <DashboardCard className="p-5 sm:p-6" variant="elevated">
       <div className="grid gap-6 xl:grid-cols-[minmax(300px,0.9fr)_minmax(520px,1.35fr)]">
@@ -1106,8 +1108,48 @@ function BusinessControlCard({
           ) : null}
         </div>
 
-        <div className="grid gap-4">
-          <section className={toolboxSectionClass}>
+        <div className="founder-toolbox relative grid gap-4 lg:grid-cols-[180px_minmax(0,1fr)]">
+          <input
+            className="founder-toolbox-radio founder-toolbox-radio-priority"
+            defaultChecked
+            id={`${toolboxName}-priority`}
+            name={toolboxName}
+            type="radio"
+          />
+          <input
+            className="founder-toolbox-radio founder-toolbox-radio-workspace"
+            id={`${toolboxName}-workspace`}
+            name={toolboxName}
+            type="radio"
+          />
+          <input
+            className="founder-toolbox-radio founder-toolbox-radio-audit"
+            id={`${toolboxName}-audit`}
+            name={toolboxName}
+            type="radio"
+          />
+          <nav className="grid content-start gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2">
+            <label
+              className="founder-toolbox-nav-item founder-toolbox-nav-priority cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
+              htmlFor={`${toolboxName}-priority`}
+            >
+              Priority
+            </label>
+            <label
+              className="founder-toolbox-nav-item founder-toolbox-nav-workspace cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
+              htmlFor={`${toolboxName}-workspace`}
+            >
+              Workspace
+            </label>
+            <label
+              className="founder-toolbox-nav-item founder-toolbox-nav-audit cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
+              htmlFor={`${toolboxName}-audit`}
+            >
+              Cleanup & audit
+            </label>
+          </nav>
+          <div className="min-w-0 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 lg:max-h-[68vh] lg:overflow-y-auto">
+          <section className={`founder-toolbox-panel founder-toolbox-panel-priority ${toolboxSectionClass}`}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1206,7 +1248,7 @@ function BusinessControlCard({
             </div>
           </section>
 
-          <section className={toolboxSectionClass}>
+          <section className={`founder-toolbox-panel founder-toolbox-panel-workspace ${toolboxSectionClass}`}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1255,7 +1297,7 @@ function BusinessControlCard({
             </div>
           </section>
 
-          <section className={toolboxSectionClass}>
+          <section className={`founder-toolbox-panel founder-toolbox-panel-audit ${toolboxSectionClass}`}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1298,6 +1340,7 @@ function BusinessControlCard({
           <FounderSystemChangeLog actions={business.actionLog} />
             </div>
           </section>
+          </div>
         </div>
       </div>
     </DashboardCard>
@@ -1590,6 +1633,7 @@ function FounderUsersSection({
             const linkedBusiness = user.businessId
               ? (businessById.get(user.businessId) ?? null)
               : null;
+            const accountToolboxName = `account-toolbox-${user.userId}`;
 
             return (
             <details
@@ -1701,8 +1745,21 @@ function FounderUsersSection({
                 ) : (
                   <FounderWorkspaceRepairControls user={user} />
                 )}
-                <section className={toolboxSectionClass}>
-                  <div className="flex flex-wrap items-start justify-between gap-2">
+                <section className={`${toolboxSectionClass} founder-toolbox relative lg:grid-cols-[180px_minmax(0,1fr)]`}>
+                  <input
+                    className="founder-toolbox-radio founder-toolbox-radio-password"
+                    defaultChecked
+                    id={`${accountToolboxName}-password`}
+                    name={accountToolboxName}
+                    type="radio"
+                  />
+                  <input
+                    className="founder-toolbox-radio founder-toolbox-radio-auth-delete"
+                    id={`${accountToolboxName}-auth-delete`}
+                    name={accountToolboxName}
+                    type="radio"
+                  />
+                  <div className="flex flex-wrap items-start justify-between gap-2 lg:col-span-2">
                     <div>
                       <p className="text-sm font-black text-[var(--dash-text)]">
                         Account tools
@@ -1713,12 +1770,32 @@ function FounderUsersSection({
                     </div>
                     <StatusBadge tone="blue">Identity</StatusBadge>
                   </div>
-                  <FounderPasswordControls user={user} />
-                  <FounderAuthUserDeleteForm
-                    deletionBlockedReason={user.authDeletionBlockedReason}
-                    targetEmail={user.authEmail}
-                    targetUserId={user.userId}
-                  />
+                  <nav className="grid content-start gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2">
+                    <label
+                      className="founder-toolbox-nav-item founder-toolbox-nav-password cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
+                      htmlFor={`${accountToolboxName}-password`}
+                    >
+                      Passwords
+                    </label>
+                    <label
+                      className="founder-toolbox-nav-item founder-toolbox-nav-auth-delete cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
+                      htmlFor={`${accountToolboxName}-auth-delete`}
+                    >
+                      Auth deletion
+                    </label>
+                  </nav>
+                  <div className="min-w-0 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 lg:max-h-[58vh] lg:overflow-y-auto">
+                    <div className="founder-toolbox-panel founder-toolbox-panel-password">
+                      <FounderPasswordControls user={user} />
+                    </div>
+                    <div className="founder-toolbox-panel founder-toolbox-panel-auth-delete">
+                      <FounderAuthUserDeleteForm
+                        deletionBlockedReason={user.authDeletionBlockedReason}
+                        targetEmail={user.authEmail}
+                        targetUserId={user.userId}
+                      />
+                    </div>
+                  </div>
                 </section>
               </div>
             </details>
