@@ -43,6 +43,8 @@ import {
 } from "@/components/public/marketing-ui";
 import { languageLabels } from "@/lib/i18n/language";
 import {
+  founderInboxLeadDeleteAction,
+  founderInboxLeadStatusAction,
   founderPasswordResetAction,
   founderTemporaryPasswordAction,
   founderWorkspaceRepairAction,
@@ -369,6 +371,19 @@ function statusTone(status: BusinessStatus) {
   }
 
   return "amber";
+}
+
+function leadStatusTone(status: string) {
+  if (status === "new" || status === "follow_up_needed") {
+    return "amber";
+  }
+  if (status === "archived" || status === "lost") {
+    return "neutral";
+  }
+  if (status === "replied" || status === "reviewed" || status === "booked") {
+    return "emerald";
+  }
+  return "blue";
 }
 
 function planTone(planSlug: PlanSlug) {
@@ -1843,6 +1858,121 @@ function FounderUsersSection({
   );
 }
 
+function FounderInboxSection({
+  items,
+}: Readonly<{
+  items: ReadonlyArray<{
+    businessName: string;
+    cityOrServiceArea: string | null;
+    createdAt: string;
+    customerContact: string | null;
+    customerName: string | null;
+    leadId: string;
+    serviceType: string | null;
+    sourceChannel: string | null;
+    sourceReferrer: string | null;
+    status: string;
+  }>;
+}>) {
+  return (
+    <DashboardCard className="space-y-4 p-4 sm:p-5" variant="priority">
+      <SectionHeader
+        action={<StatusBadge tone="blue">{items.length}</StatusBadge>}
+        description="Incoming user quote messages for founder triage. Review, archive, or permanently delete spam/test submissions."
+        title="Admin inbox"
+      />
+      <div className="space-y-3">
+        {items.length > 0 ? (
+          items.slice(0, 30).map((item) => (
+            <details
+              className="overflow-hidden rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface)]"
+              key={item.leadId}
+            >
+              <summary className="grid cursor-pointer list-none gap-3 px-4 py-3 hover:bg-[var(--dash-surface-muted)]">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="truncate text-sm font-black text-[var(--dash-text)]">
+                    {item.customerName ?? "Unknown sender"}
+                  </p>
+                  <StatusBadge tone={leadStatusTone(item.status)}>
+                    {item.status.replaceAll("_", " ")}
+                  </StatusBadge>
+                </div>
+                <p className="text-[12px] text-[var(--dash-text-secondary)]">
+                  {item.businessName} | {formatDateTime(item.createdAt)}
+                </p>
+                <p className="truncate text-[12px] text-[var(--dash-text-muted)]">
+                  {item.serviceType ?? "Service not set"} | {item.cityOrServiceArea ?? "Area not set"}
+                </p>
+              </summary>
+              <div className="grid gap-3 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4">
+                <div className="grid gap-1 text-[12px] text-[var(--dash-text-secondary)]">
+                  <p>
+                    <span className="font-black text-[var(--dash-text)]">Contact:</span>{" "}
+                    {formatContactValue(item.customerContact)}
+                  </p>
+                  <p>
+                    <span className="font-black text-[var(--dash-text)]">Source:</span>{" "}
+                    {item.sourceChannel ?? "unknown"}
+                  </p>
+                  <p>
+                    <span className="font-black text-[var(--dash-text)]">Referrer:</span>{" "}
+                    {item.sourceReferrer ?? "none"}
+                  </p>
+                  <p>
+                    <span className="font-black text-[var(--dash-text)]">Lead ID:</span> {item.leadId}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <form action={founderInboxLeadStatusAction}>
+                    <input name="leadId" type="hidden" value={item.leadId} />
+                    <input name="status" type="hidden" value="reviewed" />
+                    <button className={buttonClass} type="submit">
+                      Mark reviewed
+                    </button>
+                  </form>
+                  <form action={founderInboxLeadStatusAction}>
+                    <input name="leadId" type="hidden" value={item.leadId} />
+                    <input name="status" type="hidden" value="archived" />
+                    <button className={buttonClass} type="submit">
+                      Archive
+                    </button>
+                  </form>
+                </div>
+
+                <form
+                  action={founderInboxLeadDeleteAction}
+                  className="grid gap-2 rounded-[12px] border border-[rgba(255,95,102,0.28)] bg-[rgba(255,95,102,0.08)] p-3"
+                >
+                  <input name="leadId" type="hidden" value={item.leadId} />
+                  <p className="text-[12px] font-black text-[#ff9ca1]">
+                    Permanent delete (cannot be undone)
+                  </p>
+                  <label className="grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
+                    Type Lead ID to confirm
+                    <input className={inputClass} name="leadConfirmation" placeholder={item.leadId} />
+                  </label>
+                  <label className="flex items-center gap-2 text-[12px] font-bold text-[var(--dash-text)]">
+                    <input className="h-4 w-4" name="deleteAcknowledgement" type="checkbox" />
+                    I understand this delete is permanent.
+                  </label>
+                  <button className={primaryButtonClass} type="submit">
+                    Delete permanently
+                  </button>
+                </form>
+              </div>
+            </details>
+          ))
+        ) : (
+          <p className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-5 text-sm text-[var(--dash-text-secondary)]">
+            No inbox items yet.
+          </p>
+        )}
+      </div>
+    </DashboardCard>
+  );
+}
+
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   const [params = {}, user] = await Promise.all([searchParams, getCurrentUser()]);
 
@@ -1925,82 +2055,89 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </AdminNotice>
         ) : null}
 
-        <FounderProductionHealthPanel health={productionHealth} />
-
-        <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <MetricCard
-            detail="Auth users available through paged founder search."
-            label="Auth users"
-            tone="blue"
-            value={overview.usersTotal}
-          />
-          <MetricCard
-            detail="Onboarding or active businesses."
-            label="Active pilots"
-            tone="emerald"
-            value={overview.totals.activePilots}
-          />
-          <MetricCard
-            detail="Starter or Pro manual plans."
-            label="Payment-ready"
-            tone="amber"
-            value={overview.totals.paymentReady}
-          />
-          <MetricCard
-            detail="Suspended or cancelled access."
-            label="Paused access"
-            tone="red"
-            value={overview.totals.suspended}
-          />
-        </section>
-
-        <FounderUsersSection
-          businessById={businessById}
-          dryRun={dryRun}
-          params={params}
-          shownUsers={shownUsers}
-          totalLoaded={overview.users.length}
-          users={overview.users}
-          usersLastPage={overview.usersLastPage}
-          usersPage={overview.usersPage}
-          usersPageSize={overview.usersPageSize}
-          usersSearchMode={overview.usersSearchMode}
-          usersTotal={overview.usersTotal}
-        />
-
-        <FounderAdminSafetyRail />
-
-        <DashboardCard className="p-4 sm:p-5" variant="priority">
-          <SectionHeader
-            description="Service-role writes land here after founder authorization."
-            title="Recent admin actions"
-          />
-          <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
-            {overview.recentActions.length > 0 ? (
-              overview.recentActions.map((action) => (
-                <div
-                  className="grid gap-1 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm sm:grid-cols-[160px_minmax(0,1fr)_140px] sm:items-center"
-                  key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
-                >
-                  <span className="font-black text-[var(--dash-text)]">
-                    {adminActionLabels[action.actionType] ??
-                      humanizeAdminKey(action.actionType)}
-                  </span>
-                  <span className="truncate text-[var(--dash-text-secondary)]">
-                    {action.note ?? action.businessId ?? "No note"}
-                  </span>
-                  <span className="text-[12px] font-bold text-[var(--dash-text-muted)] sm:text-right">
-                    {formatDateTime(action.createdAt)}
-                  </span>
-                </div>
-              ))
-            ) : (
-              <p className="bg-[var(--dash-surface-muted)] px-4 py-5 text-center text-sm text-[var(--dash-text-secondary)]">
-                No admin actions logged yet.
-              </p>
-            )}
+        <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(340px,0.95fr)]">
+          <div className="space-y-5">
+            <FounderUsersSection
+              businessById={businessById}
+              dryRun={dryRun}
+              params={params}
+              shownUsers={shownUsers}
+              totalLoaded={overview.users.length}
+              users={overview.users}
+              usersLastPage={overview.usersLastPage}
+              usersPage={overview.usersPage}
+              usersPageSize={overview.usersPageSize}
+              usersSearchMode={overview.usersSearchMode}
+              usersTotal={overview.usersTotal}
+            />
           </div>
-        </DashboardCard>
+
+          <aside className="space-y-5">
+            <FounderProductionHealthPanel health={productionHealth} />
+
+            <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-1">
+              <MetricCard
+                detail="Auth users available through paged founder search."
+                label="Auth users"
+                tone="blue"
+                value={overview.usersTotal}
+              />
+              <MetricCard
+                detail="Onboarding or active businesses."
+                label="Active pilots"
+                tone="emerald"
+                value={overview.totals.activePilots}
+              />
+              <MetricCard
+                detail="Starter or Pro manual plans."
+                label="Payment-ready"
+                tone="amber"
+                value={overview.totals.paymentReady}
+              />
+              <MetricCard
+                detail="Suspended or cancelled access."
+                label="Paused access"
+                tone="red"
+                value={overview.totals.suspended}
+              />
+            </section>
+
+            <FounderInboxSection items={overview.leadInbox} />
+            <FounderAdminSafetyRail />
+
+            <DashboardCard className="p-4 sm:p-5" variant="priority">
+              <SectionHeader
+                description="Service-role writes land here after founder authorization."
+                title="Recent admin actions"
+              />
+              <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
+                {overview.recentActions.length > 0 ? (
+                  overview.recentActions.map((action) => (
+                    <div
+                      className="grid gap-1 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm"
+                      key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
+                    >
+                      <span className="font-black text-[var(--dash-text)]">
+                        {adminActionLabels[action.actionType] ??
+                          humanizeAdminKey(action.actionType)}
+                      </span>
+                      <span className="truncate text-[var(--dash-text-secondary)]">
+                        {action.note ?? action.businessId ?? "No note"}
+                      </span>
+                      <span className="text-[12px] font-bold text-[var(--dash-text-muted)]">
+                        {formatDateTime(action.createdAt)}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="bg-[var(--dash-surface-muted)] px-4 py-5 text-center text-sm text-[var(--dash-text-secondary)]">
+                    No admin actions logged yet.
+                  </p>
+                )}
+              </div>
+            </DashboardCard>
+          </aside>
+        </div>
       </div>
     </FounderAdminThemeFrame>
   );
