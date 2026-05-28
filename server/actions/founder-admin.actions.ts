@@ -36,6 +36,8 @@ import {
   updateFounderSessionPolicy,
   updateFounderStatus,
   updateFounderWorkspaceKind,
+  updateFounderInboxLeadStatus,
+  deleteFounderInboxLead,
 } from "@/server/services/founder-admin.service";
 import {
   dryRunFounderTestWorkspaceCleanup,
@@ -99,7 +101,9 @@ function redirectWithFounderAdminError(error: unknown): never {
       value === "Choose a valid sign-out duration." ||
       value === "Confirm that you will share this temporary password securely." ||
       value === "Founder admin cannot change the signed-in account password here." ||
-      value === "Founder admin cannot change a founder allowlist account password here.",
+      value === "Founder admin cannot change a founder allowlist account password here." ||
+      value === "Confirm that this deletion cannot be undone." ||
+      value === "Type the exact lead ID to confirm deletion.",
     code: "UNKNOWN_ERROR",
     error,
     fallbackMessage: "Founder admin action could not be completed.",
@@ -134,6 +138,46 @@ export async function founderWorkspaceRepairAction(
       `Workspace recovered for unlinked auth user. Trace ${traceId}.`,
     )}`,
   );
+}
+
+export async function founderInboxLeadStatusAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    const status = readRequiredFormValue(formData, "status");
+    if (status !== "reviewed" && status !== "archived") {
+      throw new Error("Founder admin action could not be completed.");
+    }
+
+    await updateFounderInboxLeadStatus({
+      leadId: readRequiredFormValue(formData, "leadId"),
+      status,
+      user: await getCurrentUser(),
+    });
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
+
+  revalidatePath("/admin");
+  redirect("/admin?notice=Inbox%20item%20updated.");
+}
+
+export async function founderInboxLeadDeleteAction(
+  formData: FormData,
+): Promise<never> {
+  try {
+    await deleteFounderInboxLead({
+      acknowledged: formData.get("deleteAcknowledgement") === "on",
+      leadId: readRequiredFormValue(formData, "leadId"),
+      typedConfirmation: readRequiredFormValue(formData, "leadConfirmation"),
+      user: await getCurrentUser(),
+    });
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
+
+  revalidatePath("/admin");
+  redirect("/admin?notice=Inbox%20item%20deleted%20permanently.");
 }
 
 export async function founderPasswordResetAction(

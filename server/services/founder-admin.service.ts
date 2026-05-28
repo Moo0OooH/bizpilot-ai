@@ -30,17 +30,22 @@ import {
 import { safeLogger } from "@/server/logging/safe-logger";
 import {
   getFounderBusiness,
+  getFounderLeadById,
   insertFounderAdminAction,
   listFounderAdminLog,
   listFounderBusinesses,
   listFounderBusinessMembers,
   listFounderDeletionRequests,
+  listFounderLeadInbox,
   listFounderLeadSignals,
+  listFounderLeadSourcesByLeadIds,
   listFounderProfilesByUserIds,
   listFounderPublicLinks,
   listFounderUsageSignals,
   searchFounderProfilesByDisplayName,
+  deleteFounderLeadThread,
   setFounderPublicLinksActive,
+  updateFounderLeadStatus,
   updateFounderBusinessControls,
   type FounderAdminActionType,
   type FounderBusinessRecord,
@@ -110,6 +115,20 @@ export type FounderAdminUser = Readonly<{
 
 export type FounderAdminOverview = Readonly<{
   businesses: FounderAdminBusiness[];
+  leadInbox: ReadonlyArray<{
+    businessId: string;
+    businessName: string;
+    cityOrServiceArea: string | null;
+    createdAt: string;
+    customerContact: string | null;
+    customerName: string | null;
+    intakeSubmissionId: string;
+    leadId: string;
+    serviceType: string | null;
+    sourceChannel: string | null;
+    sourceReferrer: string | null;
+    status: string;
+  }>;
   recentActions: ReadonlyArray<{
     actionType: string;
     businessId: string | null;
@@ -782,6 +801,7 @@ export async function getFounderAdminOverview(input: {
     recentActions,
     deletionRequests,
     initialUsersResult,
+    leadInbox,
   ] = await Promise.all([
     listFounderBusinesses({ supabase }).catch((error) => {
       logFounderAdminReadUnavailable({ error, readName: "businesses" });
@@ -832,7 +852,18 @@ export async function getFounderAdminOverview(input: {
         users: [],
       };
     }),
+    listFounderLeadInbox({ limit: 120, supabase }).catch((error) => {
+      logFounderAdminReadUnavailable({ error, readName: "lead_inbox" });
+      return [];
+    }),
   ]);
+  const leadSourceRows = await listFounderLeadSourcesByLeadIds({
+    leadIds: leadInbox.map((lead) => lead.id),
+    supabase,
+  }).catch((error) => {
+    logFounderAdminReadUnavailable({ error, readName: "lead_source_metadata" });
+    return [];
+  });
 
   let usersResult = initialUsersResult;
   if (usersResult.users.length === 0 && (businesses.length > 0 || members.length > 0)) {
@@ -915,6 +946,9 @@ export async function getFounderAdminOverview(input: {
     existingActions.push(mapFounderAdminAction(action));
     actionLogByBusiness.set(action.business_id, existingActions);
   }
+  const leadSourceByLeadId = new Map(
+    leadSourceRows.map((row) => [row.lead_id, row]),
+  );
 
   const overviewBusinesses = businesses.map((business) => {
     const latestLead = latestLeadByBusiness.get(business.id);
@@ -1023,6 +1057,21 @@ export async function getFounderAdminOverview(input: {
 
   return {
     businesses: overviewBusinesses,
+    leadInbox: leadInbox.map((lead) => ({
+      businessId: lead.business_id,
+      businessName:
+        businessById.get(lead.business_id)?.name ?? "Unknown workspace",
+      cityOrServiceArea: lead.city_or_service_area,
+      createdAt: lead.created_at,
+      customerContact: lead.customer_contact,
+      customerName: lead.customer_name,
+      intakeSubmissionId: lead.intake_submission_id,
+      leadId: lead.id,
+      serviceType: lead.service_type,
+      sourceChannel: lead.source_channel ?? null,
+      sourceReferrer: leadSourceByLeadId.get(lead.id)?.referrer ?? null,
+      status: lead.status,
+    })),
     recentActions: recentActions.map((action) => ({
       actionType: action.action_type,
       businessId: action.business_id,
@@ -1049,6 +1098,79 @@ export async function getFounderAdminOverview(input: {
     usersSearchMode: usersResult.searchMode,
     usersTotal: usersResult.total,
   };
+}
+
+export async function updateFounderInboxLeadStatus(input: {
+  leadId: string;
+  status: "archived" | "reviewed";
+  user: AuthUser | null;
+}): Promise<void> {
+  const actor = assertFounderUser(input.user);
+  const supabase = createSupabaseServiceRoleClient();
+  const before = await getFounderLeadById({ leadId: input.leadId, supabase });
+  const after = await updateFounderLeadStatus({
+    leadId: input.leadId,
+    status: input.status,
+    supabase,
+  });
+
+  await insertFounderAdminAction({
+    actionType: "status_changed",
+    actorUserId: actor.id,
+    businessId: after.business_id,
+    newValues: {
+      lead_id: after.id,
+      lead_status: after.status,
+    },
+    note: `Inbox lead marked ${input.status}`,
+    previousValues: {
+      lead_id: before.id,
+      lead_status: before.status,
+    },
+    supabase,
+  });
+}
+
+export async function deleteFounderInboxLead(input: {
+  acknowledged: boolean;
+  leadId: string;
+  typedConfirmation: string;
+  user: AuthUser | null;
+}): Promise<void> {
+  if (!input.acknowledged) {
+    throw new Error("Confirm that this deletion cannot be undone.");
+  }
+
+  const actor = assertFounderUser(input.user);
+  const supabase = createSupabaseServiceRoleClient();
+  const lead = await getFounderLeadById({ leadId: input.leadId, supabase });
+  const expected = lead.id.toLowerCase();
+
+  if (input.typedConfirmation.trim().toLowerCase() !== expected) {
+    throw new Error("Type the exact lead ID to confirm deletion.");
+  }
+
+  await deleteFounderLeadThread({
+    businessId: lead.business_id,
+    submissionId: lead.intake_submission_id,
+    supabase,
+  });
+
+  await insertFounderAdminAction({
+    actionType: "status_changed",
+    actorUserId: actor.id,
+    businessId: lead.business_id,
+    newValues: {
+      deleted_lead_id: lead.id,
+      deleted_submission_id: lead.intake_submission_id,
+      operation: "hard_delete",
+    },
+    note: "Inbox lead hard-deleted by founder admin.",
+    previousValues: {
+      lead_status: lead.status,
+    },
+    supabase,
+  });
 }
 
 export async function requestFounderUserPasswordReset(input: {

@@ -40,6 +40,9 @@ export type FounderBusinessMemberRecord =
 
 export type FounderPublicLinkRecord =
   Database["public"]["Tables"]["public_link_variants"]["Row"];
+export type FounderLeadRecord = Database["public"]["Tables"]["leads"]["Row"];
+export type FounderLeadSourceRecord =
+  Database["public"]["Tables"]["lead_source_metadata"]["Row"];
 
 function throwIfError(error: { message: string } | null): void {
   if (error) {
@@ -97,6 +100,93 @@ export async function listFounderLeadSignals(input: {
   throwIfError(error);
 
   return data ?? [];
+}
+
+export async function listFounderLeadInbox(input: {
+  limit?: number;
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderLeadRecord[]> {
+  const { data, error } = await input.supabase
+    .from("leads")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(input.limit ?? 80);
+
+  throwIfError(error);
+
+  return data ?? [];
+}
+
+export async function listFounderLeadSourcesByLeadIds(input: {
+  leadIds: string[];
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderLeadSourceRecord[]> {
+  if (input.leadIds.length === 0) {
+    return [];
+  }
+
+  const { data, error } = await input.supabase
+    .from("lead_source_metadata")
+    .select("*")
+    .in("lead_id", input.leadIds);
+
+  throwIfError(error);
+
+  return data ?? [];
+}
+
+export async function getFounderLeadById(input: {
+  leadId: string;
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderLeadRecord> {
+  const { data, error } = await input.supabase
+    .from("leads")
+    .select("*")
+    .eq("id", input.leadId)
+    .single();
+
+  throwIfError(error);
+
+  if (!data) {
+    throw new Error("Lead not found.");
+  }
+
+  return data;
+}
+
+export async function updateFounderLeadStatus(input: {
+  leadId: string;
+  status: FounderLeadRecord["status"];
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderLeadRecord> {
+  const { data, error } = await input.supabase
+    .from("leads")
+    .update({ status: input.status })
+    .eq("id", input.leadId)
+    .select("*")
+    .single();
+
+  throwIfError(error);
+
+  if (!data) {
+    throw new Error("Lead not found.");
+  }
+
+  return data;
+}
+
+export async function deleteFounderLeadThread(input: {
+  businessId: string;
+  submissionId: string;
+  supabase: SupabaseClient<Database>;
+}): Promise<void> {
+  const { error } = await input.supabase
+    .from("intake_submissions")
+    .delete()
+    .eq("id", input.submissionId)
+    .eq("business_id", input.businessId);
+
+  throwIfError(error);
 }
 
 export async function listFounderUsageSignals(input: {
