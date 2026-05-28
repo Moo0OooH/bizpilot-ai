@@ -1093,7 +1093,7 @@ function SnapshotTile({
   value: string;
 }>) {
   return (
-    <div className="min-h-[108px] rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_10px_28px_rgba(15,23,42,0.04)]">
+    <div className="min-h-[112px] rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_10px_28px_rgba(15,23,42,0.04)]">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-[12px] font-black leading-4 text-[var(--dash-text)]">
@@ -1244,7 +1244,7 @@ function BusinessControlCard({
             View full customer profile
           </Link>
         </div>
-        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
           <SnapshotTile
             description={
               business.status === "active"
@@ -1311,7 +1311,7 @@ function BusinessControlCard({
           </StatusBadge>
         </div>
 
-        <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_280px]">
+        <div className="grid gap-3 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_280px]">
           <div className="grid gap-2">
             <form action={updateFounderStatusAction} className={controlPanelClass}>
                 <input name="businessId" type="hidden" value={business.businessId} />
@@ -1500,7 +1500,7 @@ function BusinessControlCard({
         </div>
       </section>
 
-      <div className="grid gap-3 xl:grid-cols-[minmax(420px,1fr)_minmax(520px,1.18fr)_minmax(300px,0.72fr)]">
+      <div className="grid gap-3 xl:grid-cols-[minmax(0,0.94fr)_minmax(0,1.1fr)] 2xl:grid-cols-[minmax(420px,1fr)_minmax(520px,1.18fr)_minmax(300px,0.72fr)]">
         <section className={toolboxSectionClass}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
@@ -2523,7 +2523,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   return (
     <FounderAdminThemeFrame initialTheme={initialTheme}>
-      <div className="mx-auto flex min-h-[calc(100dvh-3rem)] max-w-[1440px] flex-col gap-3">
+      <div className="mx-auto flex min-h-[calc(100dvh-3rem)] w-full max-w-[1680px] flex-col gap-3">
         <DashboardCard className="p-4" variant="priority">
           <PageHeader
             actions={
@@ -2550,7 +2550,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </FlashMessage>
         ) : null}
 
-        <div className="grid min-w-0 flex-1 gap-3 lg:grid-cols-[220px_minmax(0,1fr)]">
+        <div className="grid min-w-0 flex-1 gap-3 lg:grid-cols-[210px_minmax(0,1fr)] 2xl:grid-cols-[220px_minmax(0,1fr)]">
           <FounderAdminToolRail
             activePanel={activePanel}
             healthNeedsAttention={productionHealthNeedsAttention}
