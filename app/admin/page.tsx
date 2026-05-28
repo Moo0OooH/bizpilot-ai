@@ -2110,12 +2110,12 @@ function FounderAdminToolRail({
   ];
 
   return (
-    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2 shadow-sm xl:sticky xl:top-4 xl:h-[calc(100dvh-2rem)] xl:overflow-y-auto">
-      <div className="mb-2 px-2 py-2">
+    <aside className="sticky top-3 h-[calc(100dvh-1.5rem)] overflow-y-auto rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2 shadow-sm">
+      <div className="mb-1 px-2 py-2">
         <p className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
-          Admin tools
+          Tools
         </p>
-        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+        <p className="mt-1 hidden text-[12px] leading-5 text-[var(--dash-text-secondary)] 2xl:block">
           Pick one tool; the workspace opens in the main panel.
         </p>
       </div>
@@ -2127,7 +2127,7 @@ function FounderAdminToolRail({
           return (
             <Link
               className={[
-                "grid gap-1 rounded-lg border px-3 py-2.5 text-left transition",
+                "grid gap-1 rounded-lg border px-2.5 py-2 text-left transition",
                 active
                   ? "border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] text-[var(--dash-text)] shadow-sm"
                   : "border-transparent text-[var(--dash-text-secondary)] hover:border-[var(--dash-border)] hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]",
@@ -2145,7 +2145,7 @@ function FounderAdminToolRail({
                   </StatusBadge>
                 )}
               </span>
-              <span className="text-[11px] leading-4 text-[var(--dash-text-secondary)]">
+              <span className="hidden text-[11px] leading-4 text-[var(--dash-text-secondary)] 2xl:block">
                 {item.description}
               </span>
             </Link>
@@ -2153,9 +2153,9 @@ function FounderAdminToolRail({
         })}
       </nav>
 
-      <div className="mt-3 grid grid-cols-3 gap-1.5 xl:grid-cols-1">
+      <div className="mt-2 grid gap-1.5">
         <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2 py-2">
-          <p className="text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
+          <p className="truncate text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
             Active
           </p>
           <p className="text-sm font-black text-[var(--dash-text)]">
@@ -2163,7 +2163,7 @@ function FounderAdminToolRail({
           </p>
         </div>
         <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2 py-2">
-          <p className="text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
+          <p className="truncate text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
             Paid-ready
           </p>
           <p className="text-sm font-black text-[var(--dash-text)]">
@@ -2171,7 +2171,7 @@ function FounderAdminToolRail({
           </p>
         </div>
         <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2 py-2">
-          <p className="text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
+          <p className="truncate text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
             Paused
           </p>
           <p className="text-sm font-black text-[var(--dash-text)]">
@@ -2306,7 +2306,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </FlashMessage>
         ) : null}
 
-        <div className="grid min-w-0 gap-3 xl:grid-cols-[260px_minmax(0,1fr)]">
+        <div className="grid min-w-0 grid-cols-[210px_minmax(0,1fr)] gap-3">
           <FounderAdminToolRail
             activePanel={activePanel}
             healthNeedsAttention={productionHealthNeedsAttention}
@@ -2315,7 +2315,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             usersTotal={overview.usersTotal}
           />
 
-          <main className="min-w-0 xl:max-h-[calc(100dvh-9.5rem)] xl:overflow-y-auto xl:pr-1">
+          <main className="min-w-0 max-h-[calc(100dvh-9.5rem)] overflow-y-auto pr-1">
             {activePanel === "users" ? (
               <FounderUsersSection
                 businessById={businessById}
