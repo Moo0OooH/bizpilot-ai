@@ -38,9 +38,6 @@ import {
   StatusBadge,
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
-import {
-  marketingTone,
-} from "@/components/public/marketing-ui";
 import { languageLabels } from "@/lib/i18n/language";
 import {
   founderInboxLeadDeleteAction,
@@ -609,14 +606,14 @@ function AdminNotice({
   const style =
     tone === "error"
       ? {
-          backgroundColor: "rgba(255,95,102,0.10)",
-          borderColor: "rgba(255,95,102,0.24)",
+          backgroundColor: "var(--dash-danger-soft)",
+          borderColor: "var(--dash-danger-border)",
           color: "var(--dash-text)",
         }
       : {
-          backgroundColor: "rgba(45,212,191,0.10)",
-          borderColor: "rgba(45,212,191,0.24)",
-          color: marketingTone.teal,
+          backgroundColor: "var(--dash-primary-soft)",
+          borderColor: "var(--dash-primary-border)",
+          color: "var(--dash-primary-strong)",
         };
 
   return (
@@ -1484,7 +1481,6 @@ function FounderUsersSection({
   dryRun,
   params,
   shownUsers,
-  totalLoaded,
   usersLastPage,
   usersPage,
   usersPageSize,
@@ -1496,7 +1492,6 @@ function FounderUsersSection({
   dryRun: FounderCleanupDryRun | null;
   params: AdminSearchParams;
   shownUsers: FounderAdminUser[];
-  totalLoaded: number;
   users: FounderAdminUser[];
   usersLastPage: number;
   usersPage: number;
@@ -1539,15 +1534,9 @@ function FounderUsersSection({
               Start with risk and recovery queues, then search inside the result.
             </p>
           </div>
-          <Link
-            className={priorityFilterClass(selectedPriority === "all")}
-            href={adminUsersHref(params, { userPage: "1", userPriority: undefined })}
-          >
-            All loaded
-            <span className="text-[12px] text-[var(--dash-text-muted)]">
-              {totalLoaded} users
-            </span>
-          </Link>
+          <StatusBadge tone="blue">
+            Showing up to {usersPageSize} users per page
+          </StatusBadge>
         </summary>
 
         <div className="grid gap-3 border-t border-[var(--dash-border)] p-3 xl:grid-cols-[1.2fr_1fr_1.15fr]">
@@ -1636,7 +1625,16 @@ function FounderUsersSection({
           <button className={primaryButtonClass} type="submit">
             Search
           </button>
-          <Link className={buttonClass} href="/admin">
+          <Link
+            className={buttonClass}
+            href={adminUsersHref(params, {
+              userAccess: undefined,
+              userConfirmed: undefined,
+              userPage: "1",
+              userPriority: undefined,
+              userQuery: undefined,
+            })}
+          >
             Reset
           </Link>
         </div>
@@ -1831,7 +1829,7 @@ function FounderUsersSection({
         <div className="text-[12px] font-bold text-[var(--dash-text-muted)]">
           {users.length > shownUsers.length
             ? "Some loaded users are hidden by access/auth filters."
-            : "Use search to jump directly to a user instead of scrolling."}
+            : `Showing ${shownUsers.length} user(s) on this page. Use search or Next for more.`}
         </div>
         <div className="flex flex-wrap gap-2">
           {hasPreviousPage ? (
@@ -1946,10 +1944,10 @@ function FounderInboxSection({
 
                 <form
                   action={founderInboxLeadDeleteAction}
-                  className="grid gap-2 rounded-[12px] border border-[rgba(255,95,102,0.28)] bg-[rgba(255,95,102,0.08)] p-3"
+                  className="grid gap-2 rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] p-3"
                 >
                   <input name="leadId" type="hidden" value={item.leadId} />
-                  <p className="text-[12px] font-black text-[#ff9ca1]">
+                  <p className="text-[12px] font-black text-[var(--dash-danger-strong)]">
                     Permanent delete (cannot be undone)
                   </p>
                   <label className="grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
@@ -2100,7 +2098,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               dryRun={dryRun}
               params={params}
               shownUsers={shownUsers}
-              totalLoaded={overview.users.length}
               users={overview.users}
               usersLastPage={overview.usersLastPage}
               usersPage={overview.usersPage}

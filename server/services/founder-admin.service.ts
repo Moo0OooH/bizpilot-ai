@@ -208,7 +208,7 @@ export function readFounderUserPage(value: string | null | undefined): number {
 export function readFounderUserPageSize(value: string | null | undefined): number {
   const pageSize = Number.parseInt(value ?? "", 10);
 
-  return founderUserPageSizes.has(pageSize) ? pageSize : 10;
+  return founderUserPageSizes.has(pageSize) ? pageSize : 5;
 }
 
 export function readFounderTemporaryPassword(value: string): string {
