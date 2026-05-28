@@ -846,6 +846,66 @@ function isProductionHealthUnhealthy(
   ].some((ok) => !ok);
 }
 
+function FounderProductionHealthStrip({
+  health,
+}: Readonly<{ health: FounderProductionHealth | null }>) {
+  const items: ReadonlyArray<readonly [string, string, boolean]> = health
+    ? [
+        ["Supabase", health.supabaseTargetMatchesCanonical ? "OK" : "Check", health.supabaseTargetMatchesCanonical],
+        [
+          "Service key",
+          credentialKindLabel(health.serviceCredentialKind),
+          isServiceCredentialLikelyPrivileged(health),
+        ],
+        ["Auth", health.authAdmin.ok || health.authRest.ok ? "OK" : "Check", health.authAdmin.ok || health.authRest.ok],
+        ["Businesses", healthCount(health.businesses), health.businesses.ok],
+        ["Members", healthCount(health.businessMembers), health.businessMembers.ok],
+        ["Logs", healthCount(health.recentActions), health.recentActions.ok],
+      ]
+    : [["Runtime", "Unavailable", false]];
+
+  return (
+    <DashboardCard className="p-3" variant="priority">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Production health
+          </p>
+          <p className="text-[11px] leading-4 text-[var(--dash-text-secondary)]">
+            Compact runtime status; open the Health tool for full diagnostics.
+          </p>
+        </div>
+        <StatusBadge tone={isProductionHealthUnhealthy(health) ? "red" : "emerald"}>
+          {isProductionHealthUnhealthy(health) ? "Needs check" : "Healthy"}
+        </StatusBadge>
+      </div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-3 xl:grid-cols-6">
+        {items.map(([label, value, ok]) => (
+          <div
+            className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2"
+            key={label}
+          >
+            <div className="flex items-center gap-2">
+              <span
+                className={[
+                  "h-2 w-2 rounded-full",
+                  ok ? "bg-[var(--dash-success)]" : "bg-[var(--dash-danger)]",
+                ].join(" ")}
+              />
+              <p className="truncate text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
+                {label}
+              </p>
+            </div>
+            <p className="mt-1 truncate text-sm font-black text-[var(--dash-text)]">
+              {value}
+            </p>
+          </div>
+        ))}
+      </div>
+    </DashboardCard>
+  );
+}
+
 function getFounderAccessMessage(error: unknown): string {
   const message =
     error instanceof Error && error.message.trim().length > 0
@@ -1143,7 +1203,7 @@ function BusinessControlCard({
           ) : null}
         </div>
 
-        <div className="founder-toolbox relative grid gap-3 lg:grid-cols-[150px_minmax(0,1fr)]">
+        <div className="founder-toolbox founder-toolbox-all relative grid gap-3">
           <input
             className="founder-toolbox-radio founder-toolbox-radio-priority"
             defaultChecked
@@ -1163,7 +1223,7 @@ function BusinessControlCard({
             name={toolboxName}
             type="radio"
           />
-          <nav className="grid content-start gap-1.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-1.5">
+          <nav className="hidden content-start gap-1.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-1.5">
             <label
               className="founder-toolbox-nav-item founder-toolbox-nav-priority cursor-pointer rounded-md border px-2.5 py-2 text-[12px] font-black"
               htmlFor={`${toolboxName}-priority`}
@@ -1183,7 +1243,7 @@ function BusinessControlCard({
               Cleanup & audit
             </label>
           </nav>
-          <div className="min-w-0 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 lg:max-h-[62vh] lg:overflow-y-auto">
+          <div className="grid min-w-0 gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
           <section className={`founder-toolbox-panel founder-toolbox-panel-priority ${toolboxSectionClass}`}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
@@ -1785,7 +1845,7 @@ function FounderUsersSection({
                 ) : (
                   <FounderWorkspaceRepairControls user={user} />
                 )}
-                <section className={`${toolboxSectionClass} founder-toolbox relative lg:grid-cols-[180px_minmax(0,1fr)]`}>
+                <section className={`${toolboxSectionClass} founder-toolbox founder-toolbox-all relative`}>
                   <input
                     className="founder-toolbox-radio founder-toolbox-radio-password"
                     defaultChecked
@@ -1810,7 +1870,7 @@ function FounderUsersSection({
                     </div>
                     <StatusBadge tone="blue">Identity</StatusBadge>
                   </div>
-                  <nav className="grid content-start gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2">
+                  <nav className="hidden content-start gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2">
                     <label
                       className="founder-toolbox-nav-item founder-toolbox-nav-password cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
                       htmlFor={`${accountToolboxName}-password`}
@@ -1824,7 +1884,7 @@ function FounderUsersSection({
                       Auth deletion
                     </label>
                   </nav>
-                  <div className="min-w-0 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 lg:max-h-[58vh] lg:overflow-y-auto">
+                  <div className="grid min-w-0 gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
                     <div className="founder-toolbox-panel founder-toolbox-panel-password">
                       <FounderPasswordControls user={user} />
                     </div>
@@ -2359,6 +2419,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             {activePanel === "safety" ? <FounderAdminSafetyRail /> : null}
           </main>
         </div>
+
+        <FounderProductionHealthStrip health={productionHealth} />
       </div>
     </FounderAdminThemeFrame>
   );

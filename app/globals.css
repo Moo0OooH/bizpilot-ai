@@ -478,6 +478,10 @@ body {
   display: block;
 }
 
+.founder-toolbox-all .founder-toolbox-panel {
+  display: block;
+}
+
 .founder-toolbox:has(.founder-toolbox-radio-priority:checked)
   .founder-toolbox-nav-priority,
 .founder-toolbox:has(.founder-toolbox-radio-workspace:checked)
