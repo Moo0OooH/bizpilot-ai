@@ -629,41 +629,48 @@ function AdminNotice({
 
 function FounderAdminSafetyRail() {
   return (
-    <DashboardCard className="p-4 sm:p-5" variant="priority">
-      <SectionHeader
-        action={<StatusBadge tone="red">Production-safe controls</StatusBadge>}
-        description="Cleanup and auth deletion stay synthetic-only until a workspace is deliberately classified as non-production."
-        title="Safety rail"
-      />
-      <div className="mt-4 grid gap-3 text-sm leading-6 text-[var(--dash-text-secondary)] lg:grid-cols-3">
-        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-          <p className="font-black text-[var(--dash-text)]">
-            Production customer is locked
-          </p>
-          <p className="mt-1">
-            Hard cleanup and fake/test login deletion are blocked for production
-            customer workspaces and owner accounts.
-          </p>
+    <DashboardCard className="p-3" variant="priority">
+      <details>
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+          <div className="min-w-0">
+            <p className="text-sm font-black text-[var(--dash-text)]">
+              Safety rules
+            </p>
+            <p className="mt-0.5 text-[11px] leading-4 text-[var(--dash-text-secondary)]">
+              Destructive controls stay behind explicit guards.
+            </p>
+          </div>
+          <StatusBadge tone="red">Rules</StatusBadge>
+        </summary>
+        <div className="mt-3 grid gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
+            <p className="font-black text-[var(--dash-text)]">
+              Production customer is locked
+            </p>
+            <p className="mt-1">
+              Hard cleanup and fake/test login deletion are blocked for production
+              customer workspaces and owner accounts.
+            </p>
+          </div>
+          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
+            <p className="font-black text-[var(--dash-text)]">
+              Dry-run comes first
+            </p>
+            <p className="mt-1">
+              Test/demo cleanup requires counts, acknowledgement, and exact
+              business name or slug confirmation.
+            </p>
+          </div>
+          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
+            <p className="font-black text-[var(--dash-text)]">
+              Auth deletion is separate
+            </p>
+            <p className="mt-1">
+              Login deletion is audited before the Supabase Auth call.
+            </p>
+          </div>
         </div>
-        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-          <p className="font-black text-[var(--dash-text)]">
-            Dry-run comes first
-          </p>
-          <p className="mt-1">
-            Test/demo cleanup requires a dry-run count, explicit acknowledgement,
-            and exact business name or slug confirmation.
-          </p>
-        </div>
-        <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-          <p className="font-black text-[var(--dash-text)]">
-            Auth deletion is separate
-          </p>
-          <p className="mt-1">
-            Login deletion is audited before the Supabase Auth call. If production
-            `0020` is missing, the audit constraint blocks before deletion.
-          </p>
-        </div>
-      </div>
+      </details>
     </DashboardCard>
   );
 }
@@ -749,43 +756,42 @@ function FounderProductionHealthPanel({
   const unhealthy = checks.some(([, , ok]) => !ok);
 
   return (
-    <DashboardCard className="p-4 sm:p-5" variant="priority">
+    <DashboardCard className="p-3 sm:p-4" variant="priority">
       <SectionHeader
         action={
           <StatusBadge tone={unhealthy ? "red" : "emerald"}>
             {unhealthy ? "Needs attention" : "Healthy"}
           </StatusBadge>
         }
-        description="Founder-only runtime wiring checks. Values are counts or safe statuses only."
         title="Production health"
       />
-      <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-3 grid grid-cols-2 gap-2">
         {checks.map(([label, value, ok]) => (
           <div
-            className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+            className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5"
             key={label}
           >
             <div className="flex items-center justify-between gap-2">
-              <p className="text-[12px] font-black uppercase text-[var(--dash-text-muted)]">
+              <p className="truncate text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
                 {label}
               </p>
               <StatusBadge tone={ok ? "emerald" : "red"}>
                 {ok ? "OK" : "Fail"}
               </StatusBadge>
             </div>
-            <p className="mt-2 text-lg font-black text-[var(--dash-text)]">
+            <p className="mt-1.5 truncate text-sm font-black text-[var(--dash-text)]">
               {value}
             </p>
           </div>
         ))}
       </div>
       {health.supabaseHostRef ? (
-        <p className="mt-3 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+        <p className="mt-3 truncate text-[11px] leading-5 text-[var(--dash-text-secondary)]">
           Supabase project ref: {health.supabaseHostRef}
         </p>
       ) : null}
       {health.serviceCredentialIssuerRef ? (
-        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+        <p className="mt-1 truncate text-[11px] leading-5 text-[var(--dash-text-secondary)]">
           Service credential issuer ref: {health.serviceCredentialIssuerRef}
           {health.serviceCredentialMatchesSupabaseRef === false
             ? " (does not match Supabase target)"
@@ -793,7 +799,7 @@ function FounderProductionHealthPanel({
         </p>
       ) : null}
       {health.authAdmin.status || health.authRest.status ? (
-        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+        <p className="mt-1 text-[11px] leading-5 text-[var(--dash-text-secondary)]">
           Auth status: SDK {health.authAdmin.status ?? "n/a"} / REST{" "}
           {health.authRest.status ?? "n/a"}
         </p>
@@ -1975,6 +1981,60 @@ function FounderInboxSection({
   );
 }
 
+function FounderRecentActionsPanel({
+  actions,
+}: Readonly<{
+  actions: ReadonlyArray<{
+    actionType: string;
+    businessId: string | null;
+    createdAt: string;
+    note: string | null;
+  }>;
+}>) {
+  return (
+    <DashboardCard className="p-3" variant="priority">
+      <details>
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+          <div className="min-w-0">
+            <p className="text-sm font-black text-[var(--dash-text)]">
+              Recent admin actions
+            </p>
+            <p className="mt-0.5 text-[11px] leading-4 text-[var(--dash-text-secondary)]">
+              Service-role writes after founder authorization.
+            </p>
+          </div>
+          <StatusBadge tone="blue">{actions.length}</StatusBadge>
+        </summary>
+        <div className="mt-3 divide-y divide-[var(--dash-border)] overflow-hidden rounded-lg border border-[var(--dash-border)]">
+          {actions.length > 0 ? (
+            actions.map((action) => (
+              <div
+                className="grid gap-1 bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
+                key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
+              >
+                <span className="font-black text-[var(--dash-text)]">
+                  {adminActionLabels[action.actionType] ??
+                    humanizeAdminKey(action.actionType)}
+                </span>
+                <span className="truncate text-[var(--dash-text-secondary)]">
+                  {action.note ?? action.businessId ?? "No note"}
+                </span>
+                <span className="font-bold text-[var(--dash-text-muted)]">
+                  {formatDateTime(action.createdAt)}
+                </span>
+              </div>
+            ))
+          ) : (
+            <p className="bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
+              No admin actions logged yet.
+            </p>
+          )}
+        </div>
+      </details>
+    </DashboardCard>
+  );
+}
+
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   const [params = {}, user] = await Promise.all([searchParams, getCurrentUser()]);
 
@@ -2057,8 +2117,23 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </AdminNotice>
         ) : null}
 
-        <div className="grid min-w-0 gap-4 xl:grid-cols-[300px_minmax(0,1fr)]">
-          <aside className="space-y-4 xl:sticky xl:top-6 xl:self-start">
+        <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="min-w-0 space-y-4">
+            <FounderUsersSection
+              businessById={businessById}
+              dryRun={dryRun}
+              params={params}
+              shownUsers={shownUsers}
+              users={overview.users}
+              usersLastPage={overview.usersLastPage}
+              usersPage={overview.usersPage}
+              usersPageSize={overview.usersPageSize}
+              usersSearchMode={overview.usersSearchMode}
+              usersTotal={overview.usersTotal}
+            />
+          </div>
+
+          <aside className="space-y-3 xl:sticky xl:top-6 xl:self-start">
             <FounderProductionHealthPanel health={productionHealth} />
 
             <section className="grid min-w-0 gap-2 sm:grid-cols-2 xl:grid-cols-1">
@@ -2089,55 +2164,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             </section>
 
             <FounderInboxSection items={overview.leadInbox} />
+            <FounderRecentActionsPanel actions={overview.recentActions} />
             <FounderAdminSafetyRail />
           </aside>
-
-          <div className="space-y-4">
-            <FounderUsersSection
-              businessById={businessById}
-              dryRun={dryRun}
-              params={params}
-              shownUsers={shownUsers}
-              users={overview.users}
-              usersLastPage={overview.usersLastPage}
-              usersPage={overview.usersPage}
-              usersPageSize={overview.usersPageSize}
-              usersSearchMode={overview.usersSearchMode}
-              usersTotal={overview.usersTotal}
-            />
-
-            <DashboardCard className="p-4 sm:p-5" variant="priority">
-              <SectionHeader
-                description="Service-role writes land here after founder authorization."
-                title="Recent admin actions"
-              />
-              <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
-                {overview.recentActions.length > 0 ? (
-                  overview.recentActions.map((action) => (
-                    <div
-                      className="grid gap-1 bg-[var(--dash-surface-muted)] px-4 py-3 text-sm"
-                      key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
-                    >
-                      <span className="font-black text-[var(--dash-text)]">
-                        {adminActionLabels[action.actionType] ??
-                          humanizeAdminKey(action.actionType)}
-                      </span>
-                      <span className="truncate text-[var(--dash-text-secondary)]">
-                        {action.note ?? action.businessId ?? "No note"}
-                      </span>
-                      <span className="text-[12px] font-bold text-[var(--dash-text-muted)]">
-                        {formatDateTime(action.createdAt)}
-                      </span>
-                    </div>
-                  ))
-                ) : (
-                  <p className="bg-[var(--dash-surface-muted)] px-4 py-5 text-center text-sm text-[var(--dash-text-secondary)]">
-                    No admin actions logged yet.
-                  </p>
-                )}
-              </div>
-            </DashboardCard>
-          </div>
         </div>
       </div>
     </FounderAdminThemeFrame>
