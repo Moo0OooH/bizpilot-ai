@@ -8,7 +8,11 @@ import {
   View,
 } from "react-native";
 
-import { VERIFGO_MVP_FEATURES, verifgoCopy } from "@verifgo/shared";
+import {
+  VERIFGO_MVP_FEATURES,
+  VERIFGO_PREMIUM_SMART_REMINDERS,
+  verifgoCopy,
+} from "@verifgo/shared";
 
 type TabKey = "history" | "settings" | "today" | "vehicle";
 
@@ -21,6 +25,7 @@ const tabs: ReadonlyArray<{ key: TabKey; label: string }> = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<TabKey>("today");
+  const [smartRemindersEnabled, setSmartRemindersEnabled] = useState(false);
   const copy = verifgoCopy.en;
   const completion = useMemo(
     () => `${VERIFGO_MVP_FEATURES.length} MVP features locked`,
@@ -40,7 +45,12 @@ export default function App() {
           {activeTab === "today" ? <TodayPanel completion={completion} /> : null}
           {activeTab === "history" ? <HistoryPanel /> : null}
           {activeTab === "vehicle" ? <VehiclePanel /> : null}
-          {activeTab === "settings" ? <SettingsPanel /> : null}
+          {activeTab === "settings" ? (
+            <SettingsPanel
+              enabled={smartRemindersEnabled}
+              onToggle={() => setSmartRemindersEnabled((value) => !value)}
+            />
+          ) : null}
         </ScrollView>
 
         <View style={styles.tabbar}>
@@ -113,13 +123,24 @@ function VehiclePanel() {
       <Text style={styles.panelKicker}>Setup</Text>
       <Text style={styles.panelTitle}>Vehicle</Text>
       <Text style={styles.panelBody}>
-        Plate, accessory number, make, model, year, and default vehicle setup.
+        Register the real vehicle used for work. Keep purpose, powertrain, and
+        identity separate so reports and reminders stay accurate.
       </Text>
+      <View style={styles.stack}>
+        <InfoRow label="Vehicle use" value="Rideshare, taxi, delivery, personal" />
+        <InfoRow label="Powertrain" value="Gas, diesel, hybrid, plug-in hybrid, EV" />
+        <InfoRow label="Optional photo" value="Upload during vehicle registration" />
+      </View>
     </View>
   );
 }
 
-function SettingsPanel() {
+function SettingsPanel({
+  enabled,
+  onToggle,
+}: Readonly<{ enabled: boolean; onToggle: () => void }>) {
+  const copy = verifgoCopy.en;
+
   return (
     <View style={styles.panel}>
       <Text style={styles.panelKicker}>Preferences</Text>
@@ -127,8 +148,56 @@ function SettingsPanel() {
       <Text style={styles.panelBody}>
         Language, reminder time, subscription state, and legal disclaimer.
       </Text>
+      <View style={styles.smartCard}>
+        <View style={styles.smartHeader}>
+          <View style={styles.smartTitleGroup}>
+            <Text style={styles.smartTitle}>{copy.smartReminders}</Text>
+            <Text style={styles.smartBody}>{copy.smartRemindersDescription}</Text>
+          </View>
+          <TouchableOpacity
+            accessibilityRole="switch"
+            accessibilityState={{ checked: enabled }}
+            onPress={onToggle}
+            style={[styles.switchTrack, enabled ? styles.switchTrackOn : null]}
+          >
+            <View
+              style={[
+                styles.switchThumb,
+                enabled ? styles.switchThumbOn : null,
+              ]}
+            />
+          </TouchableOpacity>
+        </View>
+        <Text style={styles.smartMeta}>
+          {VERIFGO_PREMIUM_SMART_REMINDERS.length} Quebec seasonal reminders are
+          included as one premium bundle.
+        </Text>
+        <View style={styles.reminderList}>
+          {VERIFGO_PREMIUM_SMART_REMINDERS.map((reminder) => (
+            <Text key={reminder.code} style={styles.reminderItem}>
+              {formatReminderCode(reminder.code)}
+            </Text>
+          ))}
+        </View>
+      </View>
     </View>
   );
+}
+
+function InfoRow({ label, value }: Readonly<{ label: string; value: string }>) {
+  return (
+    <View style={styles.statusRow}>
+      <Text style={styles.statusLabel}>{label}</Text>
+      <Text style={styles.statusValue}>{value}</Text>
+    </View>
+  );
+}
+
+function formatReminderCode(code: string) {
+  return code
+    .split("_")
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+    .join(" ");
 }
 
 const colors = {
@@ -203,6 +272,42 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg,
     flex: 1,
   },
+  smartBody: {
+    color: colors.muted,
+    fontSize: 13,
+    lineHeight: 19,
+  },
+  smartCard: {
+    backgroundColor: colors.surfaceMuted,
+    borderColor: colors.border,
+    borderRadius: 14,
+    borderWidth: 1,
+    gap: 12,
+    padding: 14,
+  },
+  smartHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 14,
+    justifyContent: "space-between",
+  },
+  smartMeta: {
+    color: colors.text,
+    fontSize: 13,
+    fontWeight: "800",
+  },
+  smartTitle: {
+    color: colors.text,
+    fontSize: 16,
+    fontWeight: "900",
+  },
+  smartTitleGroup: {
+    flex: 1,
+    gap: 4,
+  },
+  stack: {
+    gap: 10,
+  },
   statusLabel: {
     color: colors.muted,
     fontSize: 13,
@@ -220,8 +325,10 @@ const styles = StyleSheet.create({
   },
   statusValue: {
     color: colors.text,
+    flexShrink: 1,
     fontSize: 13,
     fontWeight: "800",
+    textAlign: "right",
   },
   subtitle: {
     color: colors.muted,
@@ -252,6 +359,36 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     padding: 10,
+  },
+  reminderItem: {
+    color: colors.muted,
+    fontSize: 13,
+    fontWeight: "700",
+  },
+  reminderList: {
+    gap: 8,
+  },
+  switchThumb: {
+    backgroundColor: colors.muted,
+    borderRadius: 11,
+    height: 22,
+    width: 22,
+  },
+  switchThumbOn: {
+    alignSelf: "flex-end",
+    backgroundColor: colors.primaryDark,
+  },
+  switchTrack: {
+    backgroundColor: "rgba(255,255,255,0.12)",
+    borderColor: colors.border,
+    borderRadius: 18,
+    borderWidth: 1,
+    justifyContent: "center",
+    padding: 3,
+    width: 58,
+  },
+  switchTrackOn: {
+    backgroundColor: colors.primary,
   },
   title: {
     color: colors.text,

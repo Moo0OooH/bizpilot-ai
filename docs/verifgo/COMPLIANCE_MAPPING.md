@@ -12,6 +12,8 @@ This document maps product behavior to compliance-oriented system requirements. 
 | Defects | `defects` table with severity and optional photo |
 | Driver attestation | Immutable submit and audit event |
 | Inspection proof | Inspector mode and PDF export |
+| Vehicle identity | Plate, accessory number, use, powertrain, and optional vehicle photo |
+| Seasonal readiness | Premium smart notifications for Quebec weather and tire timing |
 
 ## Immutable Report Policy
 
@@ -41,6 +43,35 @@ If `offline_created=true`, every proof surface must distinguish:
 - sync state
 
 The app must never imply that a client-side offline timestamp was verified by the server.
+
+## Vehicle Setup Rule
+
+Vehicle setup must not collapse several concepts into one vague label. The canonical model separates:
+
+- vehicle use: rideshare, taxi, delivery, personal
+- powertrain: gas, diesel, hybrid, plug-in hybrid, electric
+- optional photo: driver-owned context only, not a compliance proof by itself
+
+The app must never require a stock car image. A driver may upload a real vehicle photo during vehicle registration or edit.
+
+## Premium Smart Reminder Rule
+
+Premium smart notifications are a convenience layer. They do not replace the driver's legal duty to follow current Quebec requirements or maintain the vehicle.
+
+The initial Quebec seasonal set is one paid bundle with six reminder rules:
+
+- winter tire install planning
+- winter tire deadline window
+- winter washer fluid
+- emergency kit check
+- cold-weather battery check
+- summer tire reinstall timing
+
+Reference inputs for the first reminder set:
+
+- Gouvernement du Quebec, winter tire requirements: https://www.quebec.ca/en/transports/traffic-road-safety/winter-road-safety/requirements-for-winter-tires
+- Gouvernement du Quebec, preparing your vehicle for winter driving: https://www.quebec.ca/en/transports/traffic-road-safety/winter-road-safety/preparing-vehicle-winter-driving
+- CAA-Quebec, preparing your car for winter: https://www.caaquebec.com/en/advices/maintaining-a-vehicle/preparing-your-car-for-winter/
 
 ## Required Disclaimer
 

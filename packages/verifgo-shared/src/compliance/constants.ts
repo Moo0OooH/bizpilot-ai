@@ -54,3 +54,48 @@ export const VERIFGO_DEFAULT_INSPECTION_ITEM_CODES = [
   "passenger_transport_condition",
   "ev_battery_charge",
 ] as const;
+
+export const VERIFGO_PREMIUM_SMART_REMINDERS = [
+  {
+    code: "winter_tire_install",
+    defaultLeadDays: 30,
+    guidance:
+      "Prepare winter tires before Quebec's December 1 winter-ready requirement.",
+    recommendedMonthDay: "11-01",
+  },
+  {
+    code: "winter_tire_deadline",
+    defaultLeadDays: 7,
+    guidance:
+      "Quebec winter tire period runs from December 1 to March 15 for most Quebec-registered motor vehicles.",
+    recommendedMonthDay: "11-24",
+  },
+  {
+    code: "washer_fluid_winter",
+    defaultLeadDays: 14,
+    guidance:
+      "Check winter windshield washer fluid before freezing weather and keep extra fluid in the vehicle.",
+    recommendedMonthDay: "11-15",
+  },
+  {
+    code: "emergency_kit_check",
+    defaultLeadDays: 14,
+    guidance:
+      "Check scraper, snow brush, shovel, gloves, blanket, jumper cables, and other winter kit items.",
+    recommendedMonthDay: "11-15",
+  },
+  {
+    code: "battery_cold_check",
+    defaultLeadDays: 14,
+    guidance:
+      "Cold weather stresses batteries and electrical systems; prompt drivers to inspect before winter.",
+    recommendedMonthDay: "11-15",
+  },
+  {
+    code: "summer_tire_wait",
+    defaultLeadDays: 7,
+    guidance:
+      "After March 15, remind drivers that Quebec recommends waiting a few weeks before reinstalling summer or all-season tires.",
+    recommendedMonthDay: "03-15",
+  },
+] as const;

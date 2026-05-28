@@ -5,6 +5,7 @@ import {
   VERIFGO_DEFAULT_INSPECTION_ITEM_CODES,
   VERIFGO_FORBIDDEN_PRODUCT_CLAIMS,
   VERIFGO_MVP_FEATURES,
+  VERIFGO_PREMIUM_SMART_REMINDERS,
   validateDailyReportDraft,
   verifgoCopy,
 } from "../../packages/verifgo-shared/src/index.ts";
@@ -30,6 +31,20 @@ describe("VerifGo shared foundation", () => {
     assert.ok(
       VERIFGO_DEFAULT_INSPECTION_ITEM_CODES.includes(
         "dashboard_warning_lights",
+      ),
+    );
+  });
+
+  it("keeps premium smart reminders bundled behind one product switch", () => {
+    assert.ok(VERIFGO_PREMIUM_SMART_REMINDERS.length >= 5);
+    assert.ok(
+      VERIFGO_PREMIUM_SMART_REMINDERS.some(
+        (reminder) => reminder.code === "winter_tire_deadline",
+      ),
+    );
+    assert.ok(
+      VERIFGO_PREMIUM_SMART_REMINDERS.some(
+        (reminder) => reminder.code === "washer_fluid_winter",
       ),
     );
   });

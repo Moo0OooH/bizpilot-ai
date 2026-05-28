@@ -31,12 +31,16 @@ create table if not exists public.verifgo_vehicles (
   make text,
   model text,
   vehicle_year integer,
-  vehicle_type text not null default 'rideshare',
+  vehicle_use text not null default 'rideshare',
+  powertrain text not null default 'gas',
+  photo_path text,
   is_default boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  constraint verifgo_vehicles_vehicle_type_check
-    check (vehicle_type in ('rideshare', 'taxi', 'ev', 'hybrid', 'other')),
+  constraint verifgo_vehicles_vehicle_use_check
+    check (vehicle_use in ('delivery', 'personal', 'rideshare', 'taxi')),
+  constraint verifgo_vehicles_powertrain_check
+    check (powertrain in ('diesel', 'electric', 'gas', 'hybrid', 'plug_in_hybrid')),
   constraint verifgo_vehicles_vehicle_year_check
     check (vehicle_year is null or vehicle_year between 1980 and 2100)
 );
@@ -147,6 +151,7 @@ create table if not exists public.verifgo_audit_events (
         'inspector_mode_opened',
         'correction_created',
         'reminder_updated',
+        'premium_smart_notifications_updated',
         'subscription_started',
         'subscription_cancelled'
       )
@@ -167,6 +172,40 @@ create table if not exists public.verifgo_subscriptions (
     check (plan_slug in ('free', 'founding_driver', 'pro')),
   constraint verifgo_subscriptions_status_check
     check (status in ('free', 'trialing', 'active', 'past_due', 'cancelled'))
+);
+
+create table if not exists public.verifgo_smart_reminder_settings (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null unique references auth.users(id) on delete cascade,
+  premium_smart_notifications_enabled boolean not null default false,
+  timezone text not null default 'America/Toronto',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.verifgo_smart_reminder_events (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  vehicle_id uuid references public.verifgo_vehicles(id) on delete cascade,
+  reminder_code text not null,
+  scheduled_for date not null,
+  status text not null default 'scheduled',
+  sent_at timestamptz,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint verifgo_smart_reminder_events_code_check
+    check (
+      reminder_code in (
+        'battery_cold_check',
+        'emergency_kit_check',
+        'summer_tire_wait',
+        'washer_fluid_winter',
+        'winter_tire_deadline',
+        'winter_tire_install'
+      )
+    ),
+  constraint verifgo_smart_reminder_events_status_check
+    check (status in ('scheduled', 'sent', 'dismissed', 'skipped'))
 );
 
 create or replace function public.verifgo_prevent_submitted_report_mutation()
@@ -224,6 +263,8 @@ alter table public.verifgo_daily_report_items enable row level security;
 alter table public.verifgo_defects enable row level security;
 alter table public.verifgo_audit_events enable row level security;
 alter table public.verifgo_subscriptions enable row level security;
+alter table public.verifgo_smart_reminder_settings enable row level security;
+alter table public.verifgo_smart_reminder_events enable row level security;
 
 drop policy if exists verifgo_profiles_owner_all on public.verifgo_profiles;
 create policy verifgo_profiles_owner_all on public.verifgo_profiles
@@ -307,6 +348,18 @@ drop policy if exists verifgo_subscriptions_owner_read on public.verifgo_subscri
 create policy verifgo_subscriptions_owner_read on public.verifgo_subscriptions
 for select to authenticated
 using (user_id = auth.uid());
+
+drop policy if exists verifgo_smart_reminder_settings_owner_all on public.verifgo_smart_reminder_settings;
+create policy verifgo_smart_reminder_settings_owner_all on public.verifgo_smart_reminder_settings
+for all to authenticated
+using (user_id = auth.uid())
+with check (user_id = auth.uid());
+
+drop policy if exists verifgo_smart_reminder_events_owner_all on public.verifgo_smart_reminder_events;
+create policy verifgo_smart_reminder_events_owner_all on public.verifgo_smart_reminder_events
+for all to authenticated
+using (user_id = auth.uid())
+with check (user_id = auth.uid());
 
 insert into public.verifgo_inspection_templates (version, label, is_active, effective_from)
 values ('qc-v1', 'Quebec daily vehicle verification baseline', true, '2026-01-01')

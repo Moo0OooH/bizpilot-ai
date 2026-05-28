@@ -23,6 +23,20 @@ docs/verifgo             Canonical product and compliance docs
 - User-facing copy lives in i18n files.
 - No service role key in mobile app.
 
+## Vehicle Modeling
+
+- Do not use a single catch-all `vehicle_type` label.
+- Store vehicle use separately from powertrain.
+- Vehicle photos are optional driver uploads during vehicle registration or edit.
+- Stock car images are not a source of truth and should not appear where the driver is expected to identify their own vehicle.
+
+## Premium Reminder Modeling
+
+- Premium smart notifications are one product switch.
+- Individual Quebec seasonal reminder rules live as shared constants.
+- Scheduling and delivery events must be auditable without storing raw push tokens in logs.
+- Free users can see the upgrade value, but reminder delivery is reserved for paid plans.
+
 ## Logging Rules
 
 Allowed events:
@@ -35,6 +49,7 @@ Allowed events:
 - `inspector_mode_opened`
 - `correction_created`
 - `reminder_updated`
+- `premium_smart_notifications_updated`
 - `subscription_started`
 - `subscription_cancelled`
 

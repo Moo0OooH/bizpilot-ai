@@ -48,7 +48,7 @@ values
   );
 
 insert into public.verifgo_vehicles (
-  id, user_id, plate_number, accessory_number, vehicle_type, is_default
+  id, user_id, plate_number, accessory_number, vehicle_use, powertrain, photo_path, is_default
 )
 values
   (
@@ -57,6 +57,8 @@ values
     'AAA111',
     'ACC-A',
     'rideshare',
+    'hybrid',
+    null,
     true
   ),
   (
@@ -65,7 +67,29 @@ values
     'BBB222',
     'ACC-B',
     'taxi',
+    'gas',
+    null,
     true
+  );
+
+insert into public.verifgo_smart_reminder_settings (
+  id,
+  user_id,
+  premium_smart_notifications_enabled,
+  timezone
+)
+values
+  (
+    'f3500000-0000-0000-0000-000000000001',
+    'f1000000-0000-0000-0000-000000000001',
+    true,
+    'America/Toronto'
+  ),
+  (
+    'f3500000-0000-0000-0000-000000000002',
+    'f1000000-0000-0000-0000-000000000002',
+    false,
+    'America/Toronto'
   );
 
 insert into public.verifgo_daily_reports (
@@ -106,6 +130,7 @@ do $$
 declare
   visible_vehicle_count integer;
   visible_report_count integer;
+  visible_smart_setting_count integer;
 begin
   select count(*) into visible_vehicle_count
   from public.verifgo_vehicles;
@@ -119,6 +144,13 @@ begin
 
   if visible_report_count <> 1 then
     raise exception 'Driver A should see exactly one report, saw %', visible_report_count;
+  end if;
+
+  select count(*) into visible_smart_setting_count
+  from public.verifgo_smart_reminder_settings;
+
+  if visible_smart_setting_count <> 1 then
+    raise exception 'Driver A should see exactly one smart reminder setting, saw %', visible_smart_setting_count;
   end if;
 end $$;
 

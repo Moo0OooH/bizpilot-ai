@@ -1,6 +1,13 @@
 export type VerifGoLanguage = "en" | "fr";
 
-export type VehicleType = "rideshare" | "taxi" | "ev" | "hybrid" | "other";
+export type VehicleUse = "delivery" | "personal" | "rideshare" | "taxi";
+
+export type VehiclePowertrain =
+  | "diesel"
+  | "electric"
+  | "gas"
+  | "hybrid"
+  | "plug_in_hybrid";
 
 export type InspectionItemStatus = "defect" | "na" | "ok";
 
@@ -15,10 +22,20 @@ export type VehicleSetup = Readonly<{
   isDefault: boolean;
   make: string | null;
   model: string | null;
+  photoPath: string | null;
   plateNumber: string;
-  vehicleType: VehicleType;
+  powertrain: VehiclePowertrain;
+  vehicleUse: VehicleUse;
   year: number | null;
 }>;
+
+export type SmartReminderCode =
+  | "battery_cold_check"
+  | "emergency_kit_check"
+  | "summer_tire_wait"
+  | "washer_fluid_winter"
+  | "winter_tire_deadline"
+  | "winter_tire_install";
 
 export type DailyReportDraft = Readonly<{
   allRequiredItemsConfirmed: boolean;
