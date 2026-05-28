@@ -370,7 +370,7 @@ function statusTone(status: BusinessStatus) {
     return "red";
   }
 
-  return "amber";
+  return "blue";
 }
 
 function leadStatusTone(status: string) {
@@ -395,11 +395,11 @@ function planTone(planSlug: PlanSlug) {
     return "red";
   }
 
-  if (planSlug === "starter") {
+  if (planSlug === "starter" || planSlug === "founder_pilot") {
     return "blue";
   }
 
-  return "amber";
+  return "neutral";
 }
 
 function userAccessTone(status: FounderAdminUser["businessAccessStatus"]) {
@@ -989,6 +989,184 @@ function FounderSystemChangeLog({
   );
 }
 
+function quoteLinkTone(active: boolean): "amber" | "emerald" {
+  return active ? "emerald" : "amber";
+}
+
+function latestAction(
+  actions: FounderAdminActionSummary[],
+  actionTypes: ReadonlyArray<string>,
+): FounderAdminActionSummary | null {
+  return actions.find((action) => actionTypes.includes(action.actionType)) ?? null;
+}
+
+function controlAuditText(
+  actions: FounderAdminActionSummary[],
+  actionTypes: ReadonlyArray<string>,
+): { updatedAt: string; updatedBy: string } {
+  const action = latestAction(actions, actionTypes);
+
+  return {
+    updatedAt: action ? formatDateTime(action.createdAt) : "Not recorded yet",
+    updatedBy: "Founder Admin",
+  };
+}
+
+function recommendedPriorityAction(business: FounderAdminBusiness): {
+  tone: "amber" | "blue" | "emerald" | "red";
+  text: string;
+} {
+  if (business.status === "suspended" || business.status === "cancelled") {
+    return {
+      tone: "red",
+      text: "Customer and public access should stay blocked until the account is intentionally restored.",
+    };
+  }
+
+  if (business.status === "onboarding" && !business.publicLinkActive) {
+    return {
+      tone: "blue",
+      text: "Keep the public quote form inactive until onboarding is complete and the customer is ready.",
+    };
+  }
+
+  if (business.status === "active" && !business.publicLinkActive) {
+    return {
+      tone: "amber",
+      text: "Activate the public quote link so the customer can receive new leads.",
+    };
+  }
+
+  return {
+    tone: "emerald",
+    text: "Business is ready for daily use.",
+  };
+}
+
+function controlIconClass(tone: "amber" | "blue" | "emerald" | "neutral" | "red") {
+  const toneClass: Record<typeof tone, string> = {
+    amber:
+      "border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] text-[var(--dash-warning-strong)]",
+    blue:
+      "border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] text-[var(--dash-primary-strong)]",
+    emerald:
+      "border-[var(--dash-success-border)] bg-[var(--dash-success-soft)] text-[var(--dash-success-strong)]",
+    neutral:
+      "border-[var(--dash-border)] bg-[var(--dash-surface-muted)] text-[var(--dash-text-secondary)]",
+    red:
+      "border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] text-[var(--dash-danger-strong)]",
+  };
+
+  return `inline-grid h-9 w-9 shrink-0 place-items-center rounded-full border text-sm font-black ${toneClass[tone]}`;
+}
+
+function MiniControlIcon({
+  children,
+  tone,
+}: Readonly<{
+  children: React.ReactNode;
+  tone: "amber" | "blue" | "emerald" | "neutral" | "red";
+}>) {
+  return <span className={controlIconClass(tone)}>{children}</span>;
+}
+
+function ControlAuditMeta({
+  audit,
+}: Readonly<{ audit: { updatedAt: string; updatedBy: string } }>) {
+  return (
+    <div className="grid gap-1 text-[11px] font-bold text-[var(--dash-text-muted)] sm:grid-cols-2">
+      <p>Last updated: {audit.updatedAt}</p>
+      <p className="sm:text-right">Updated by: {audit.updatedBy}</p>
+    </div>
+  );
+}
+
+function SnapshotTile({
+  description,
+  label,
+  tone,
+  value,
+}: Readonly<{
+  description: string;
+  label: string;
+  tone: "amber" | "blue" | "emerald" | "neutral" | "red";
+  value: string;
+}>) {
+  return (
+    <div className="min-h-[108px] rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_10px_28px_rgba(15,23,42,0.04)]">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[12px] font-black leading-4 text-[var(--dash-text)]">
+            {label}
+          </p>
+          <p className="mt-1 break-words text-base font-black leading-5 text-[var(--dash-text)]">
+            {value}
+          </p>
+        </div>
+        <MiniControlIcon tone={tone}>{label.charAt(0)}</MiniControlIcon>
+      </div>
+      <p className="mt-3 text-[12px] font-semibold leading-5 text-[var(--dash-text-secondary)]">
+        {description}
+      </p>
+    </div>
+  );
+}
+
+function RecentAdminChangesPanel({
+  actions,
+}: Readonly<{ actions: FounderAdminActionSummary[] }>) {
+  return (
+    <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_12px_32px_rgba(15,23,42,0.05)]">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Recent admin changes
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Founder/admin action trail for support verification.
+          </p>
+        </div>
+        <StatusBadge tone="blue">{actions.length} logged</StatusBadge>
+      </div>
+      <div className="mt-4 grid gap-2">
+        {actions.length > 0 ? (
+          actions.slice(0, 4).map((action) => (
+            <div
+              className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
+              key={action.id}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-black text-[var(--dash-text)]">
+                    {adminActionLabels[action.actionType] ??
+                      humanizeAdminKey(action.actionType)}
+                  </p>
+                  <p className="mt-1 truncate font-semibold text-[var(--dash-text-secondary)]">
+                    {formatActionChange(action)}
+                  </p>
+                </div>
+                <p className="shrink-0 text-right font-bold text-[var(--dash-text-muted)]">
+                  {formatDate(action.createdAt)}
+                </p>
+              </div>
+              <p className="truncate font-bold text-[var(--dash-text-muted)]">
+                trace_{shortActionId(action.id)}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-6 text-center text-[12px] text-[var(--dash-text-secondary)]">
+            No admin changes recorded yet.
+          </p>
+        )}
+      </div>
+      <Link className={`${buttonClass} mt-4 w-full justify-center`} href="/admin?adminPanel=activity">
+        View full activity log
+      </Link>
+    </section>
+  );
+}
+
 function BusinessControlCard({
   business,
   dryRun,
@@ -996,24 +1174,49 @@ function BusinessControlCard({
   business: FounderAdminBusiness;
   dryRun?: FounderCleanupDryRun | null;
 }>) {
+  const accessAudit = controlAuditText(business.actionLog, [
+    "status_changed",
+    "business_reactivated",
+    "business_suspended",
+    "business_cancelled",
+  ]);
+  const planAudit = controlAuditText(business.actionLog, ["plan_changed"]);
+  const quoteAudit = controlAuditText(business.actionLog, [
+    "quote_link_disabled",
+    "quote_link_enabled",
+  ]);
+  const recommendation = recommendedPriorityAction(business);
+  const recentPriorityActions = business.actionLog.filter((action) =>
+    [
+      "status_changed",
+      "business_reactivated",
+      "business_suspended",
+      "business_cancelled",
+      "plan_changed",
+      "quote_link_disabled",
+      "quote_link_enabled",
+    ].includes(action.actionType),
+  );
+  const leadIntakeBlocked =
+    business.status !== "active" || !business.publicLinkActive;
+  const lastActivityText = business.lastActivityAt
+    ? formatDate(business.lastActivityAt)
+    : "No recent activity yet";
+
   return (
-    <DashboardCard className="p-4 sm:p-5" variant="elevated">
-      <div className="grid gap-4 2xl:grid-cols-[minmax(260px,0.72fr)_minmax(500px,1.28fr)]">
-        <div className="min-w-0 space-y-5">
-          <div className="min-w-0">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="truncate text-xl font-black text-[var(--dash-text)]">
-                {business.name}
-              </h2>
-              <StatusBadge tone={statusTone(business.status)}>
-                {statusLabels[business.status]}
-              </StatusBadge>
-              <StatusBadge tone={planTone(business.planSlug)}>
-                {planLabels[business.planSlug]}
-              </StatusBadge>
-              <StatusBadge tone="blue">
-                {languageLabels[business.preferredLanguage]}
-              </StatusBadge>
+    <div className="grid gap-3">
+      <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
+        <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-sm font-black text-[var(--dash-text)]">
+              Business snapshot
+            </p>
+            <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+              Operational summary at a glance for {business.name}.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              <StatusBadge tone="neutral">{business.ownerEmail}</StatusBadge>
+              <StatusBadge tone="blue">{formatSlug(business.publicSlug)}</StatusBadge>
               <StatusBadge
                 tone={
                   business.workspaceKind === "production_customer"
@@ -1023,129 +1226,111 @@ function BusinessControlCard({
               >
                 {workspaceKindLabels[business.workspaceKind]}
               </StatusBadge>
-              <StatusBadge tone="neutral">
-                {business.lifecycleStatus.replaceAll("_", " ")}
-              </StatusBadge>
-              <StatusBadge tone={business.sessionTimeoutMode === "always_on" ? "emerald" : "amber"}>
+              <StatusBadge
+                tone={
+                  business.sessionTimeoutMode === "always_on"
+                    ? "emerald"
+                    : "amber"
+                }
+              >
                 {sessionPolicyLabel(
                   business.sessionTimeoutMode,
                   business.sessionTimeoutMinutes,
                 )}
               </StatusBadge>
-              {business.deletionRequestStatus ? (
-                <StatusBadge tone="red">
-                  deletion request {business.deletionRequestStatus}
-                </StatusBadge>
-              ) : null}
             </div>
-            <p className="mt-1 truncate text-sm text-[var(--dash-text-muted)]">
-              Owner: {business.ownerEmail}
+          </div>
+          <Link className={buttonClass} href="/dashboard/business-profile">
+            View full customer profile
+          </Link>
+        </div>
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+          <SnapshotTile
+            description={
+              business.status === "active"
+                ? "Customer has daily dashboard access."
+                : "Limited dashboard access and lifecycle readiness."
+            }
+            label="Access status"
+            tone={statusTone(business.status)}
+            value={statusLabels[business.status]}
+          />
+          <SnapshotTile
+            description="Plan is founder controlled. Customer cannot change plan."
+            label="Plan"
+            tone={planTone(business.planSlug)}
+            value={planLabels[business.planSlug]}
+          />
+          <SnapshotTile
+            description={
+              business.publicLinkActive
+                ? "Public quote form can accept new leads."
+                : "Public quote form is blocked. No new leads can enter."
+            }
+            label="Quote link"
+            tone={quoteLinkTone(business.publicLinkActive)}
+            value={business.publicLinkActive ? "Active" : "Inactive"}
+          />
+          <SnapshotTile
+            description={
+              business.lastActivityAt
+                ? formatDateTime(business.lastActivityAt)
+                : "No recent activity yet"
+            }
+            label="Last activity"
+            tone={business.lastActivityAt ? "emerald" : "neutral"}
+            value={lastActivityText}
+          />
+          <SnapshotTile
+            description={
+              leadIntakeBlocked
+                ? "Quote submissions are disabled for this customer."
+                : `${business.leadCount} lead(s) available for review.`
+            }
+            label="Lead intake"
+            tone={leadIntakeBlocked ? "red" : "emerald"}
+            value={leadIntakeBlocked ? "Blocked" : "Open"}
+          />
+        </div>
+      </section>
+
+      <section className={toolboxSectionClass}>
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <div>
+            <p className="text-sm font-black text-[var(--dash-text)]">
+              1) Priority controls
+            </p>
+            <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+              Change access, plan, and intake state first.
             </p>
           </div>
-
-          <dl className="grid grid-cols-2 gap-2 text-sm">
-            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
-              <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
-                Leads
-              </dt>
-              <dd className="mt-1 text-xl font-black text-[var(--dash-text)]">
-                {business.leadCount}
-              </dd>
-            </div>
-            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
-              <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
-                AI usage
-              </dt>
-              <dd className="mt-1 text-xl font-black text-[var(--dash-text)]">
-                {business.usageCount}
-              </dd>
-            </div>
-            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
-              <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
-                Users
-              </dt>
-              <dd className="mt-1 text-xl font-black text-[var(--dash-text)]">
-                {business.memberCount}
-              </dd>
-            </div>
-            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
-              <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
-                Last activity
-              </dt>
-              <dd className="mt-1 text-sm font-black text-[var(--dash-text)]">
-                {formatDate(business.lastActivityAt)}
-              </dd>
-            </div>
-          </dl>
-
-          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 text-sm">
-            <p className="font-black text-[var(--dash-text)]">
-              {formatSlug(business.publicSlug)}
-            </p>
-            <p className="mt-1 text-[var(--dash-text-secondary)]">
-              Quote link is {business.publicLinkActive ? "active" : "inactive"}.
-            </p>
-          </div>
-
-          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 text-sm">
-            <p className="font-black text-[var(--dash-text)]">
-              {sessionPolicyLabel(
-                business.sessionTimeoutMode,
-                business.sessionTimeoutMinutes,
-              )}
-            </p>
-            <p className="mt-1 text-[var(--dash-text-secondary)]">
-              Owner sessions follow this policy on dashboard requests.
-            </p>
-          </div>
-
-          {dryRun ? (
-            <div className="rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-4 text-sm">
-              <p className="font-black text-[var(--dash-text)]">
-                Cleanup dry run counts
-              </p>
-              <dl className="mt-2 grid grid-cols-2 gap-2 text-[12px]">
-                {Object.entries(dryRun.counts)
-                  .filter(([, count]) => count > 0)
-                  .map(([table, count]) => (
-                    <div
-                      className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2"
-                      key={table}
-                    >
-                      <dt className="truncate font-bold text-[var(--dash-text-muted)]">
-                        {table}
-                      </dt>
-                      <dd className="font-black text-[var(--dash-text)]">
-                        {count}
-                      </dd>
-                    </div>
-                  ))}
-              </dl>
-            </div>
-          ) : null}
+          <StatusBadge
+            tone={business.status === "active" ? "emerald" : statusTone(business.status)}
+          >
+            {business.status === "active" ? "Daily use" : statusLabels[business.status]}
+          </StatusBadge>
         </div>
 
-        <div className="grid min-w-0 gap-3">
-          <section className={toolboxSectionClass}>
-            <div className="flex flex-wrap items-start justify-between gap-2">
-              <div>
-                <p className="text-sm font-black text-[var(--dash-text)]">
-                  1) Priority controls
-                </p>
-                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  Change access, plan, and intake state first.
-                </p>
-              </div>
-              <StatusBadge tone="emerald">Daily use</StatusBadge>
-            </div>
-            <div className="grid gap-3 xl:grid-cols-2">
-              <form
-                action={updateFounderStatusAction}
-                className={controlPanelClass}
-              >
+        <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_280px]">
+          <div className="grid gap-2">
+            <form action={updateFounderStatusAction} className={controlPanelClass}>
                 <input name="businessId" type="hidden" value={business.businessId} />
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <MiniControlIcon tone={statusTone(business.status)}>U</MiniControlIcon>
+                    <p className="text-sm font-black text-[var(--dash-text)]">
+                      Access status
+                    </p>
+                    <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                      Controls sign-in eligibility, dashboard access, and the customer lifecycle state shown to founder operations.
+                    </p>
+                  </div>
+                  <StatusBadge tone={statusTone(business.status)}>
+                    {statusLabels[business.status]}
+                  </StatusBadge>
+                </div>
                 <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-                  Access status
+                  Change access to
                   <select
                     className={inputClass}
                     defaultValue={business.status}
@@ -1158,74 +1343,165 @@ function BusinessControlCard({
                     ))}
                   </select>
                 </label>
+                <p className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  Suspended or cancelled states block customer-facing access. Use them only when the account should stop operating.
+                </p>
                 <input
                   className={inputClass}
                   name="note"
                   placeholder="Optional access note"
                 />
+                <ControlAuditMeta audit={accessAudit} />
                 <button className={`${primaryButtonClass} w-full`} type="submit">
                   Save access
                 </button>
               </form>
+            <p className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-primary-strong)]">
+              Onboarding restricts full access until setup is complete.
+            </p>
+          </div>
 
-          <form
-            action={updateFounderPlanAction}
-            className={controlPanelClass}
-          >
-            <input name="businessId" type="hidden" value={business.businessId} />
-            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-              Plan
-              <select
-                className={inputClass}
-                defaultValue={business.planSlug}
-                name="planSlug"
-              >
-                {planOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <input
-              className={inputClass}
-              name="note"
-              placeholder="Optional plan note"
-            />
-            <button className={`${primaryButtonClass} w-full`} type="submit">
-              Save plan
-            </button>
-          </form>
+          <div className="grid gap-2">
+            <form action={updateFounderPlanAction} className={controlPanelClass}>
+                <input name="businessId" type="hidden" value={business.businessId} />
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <MiniControlIcon tone={planTone(business.planSlug)}>P</MiniControlIcon>
+                    <p className="text-sm font-black text-[var(--dash-text)]">
+                      Plan
+                    </p>
+                    <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                      Founder/admin controlled billing tier. Customers should not self-change this state from their dashboard.
+                    </p>
+                  </div>
+                  <StatusBadge tone={planTone(business.planSlug)}>
+                    {planLabels[business.planSlug]}
+                  </StatusBadge>
+                </div>
+                <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+                  Change plan to
+                  <select
+                    className={inputClass}
+                    defaultValue={business.planSlug}
+                    name="planSlug"
+                  >
+                    {planOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  Plan changes affect founder reporting and manual billing readiness. Record why the customer is moving tiers.
+                </p>
+                <input
+                  className={inputClass}
+                  name="note"
+                  placeholder="Optional plan note"
+                />
+                <ControlAuditMeta audit={planAudit} />
+                <button className={`${primaryButtonClass} w-full`} type="submit">
+                  Save plan
+                </button>
+              </form>
+            <p className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-primary-strong)]">
+              Pilot plan limits usage and supports controlled rollout.
+            </p>
+          </div>
 
-          <form
-            action={updateFounderQuoteLinkAction}
-            className={controlPanelClass}
-          >
-            <input name="businessId" type="hidden" value={business.businessId} />
-            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-              Public quote link
-              <select
-                className={inputClass}
-                defaultValue={business.publicLinkActive ? "true" : "false"}
-                name="quoteLinkActive"
-              >
-                <option value="true">Active</option>
-                <option value="false">Inactive</option>
-              </select>
-            </label>
-            <input
-              className={inputClass}
-              name="note"
-              placeholder="Optional quote link note"
-            />
-            <button className={`${primaryButtonClass} w-full`} type="submit">
-              Save quote link
-            </button>
-          </form>
+          <div className="grid gap-2">
+            <form action={updateFounderQuoteLinkAction} className={controlPanelClass}>
+                <input name="businessId" type="hidden" value={business.businessId} />
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <MiniControlIcon tone={quoteLinkTone(business.publicLinkActive)}>Q</MiniControlIcon>
+                    <p className="text-sm font-black text-[var(--dash-text)]">
+                      Public quote link
+                    </p>
+                    <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                      Controls whether the public quote form can accept new leads for this customer.
+                    </p>
+                  </div>
+                  <StatusBadge tone={quoteLinkTone(business.publicLinkActive)}>
+                    {business.publicLinkActive ? "Active" : "Inactive"}
+                  </StatusBadge>
+                </div>
+                <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+                  Change quote link to
+                  <select
+                    className={inputClass}
+                    defaultValue={business.publicLinkActive ? "true" : "false"}
+                    name="quoteLinkActive"
+                  >
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                  </select>
+                </label>
+                <p className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  If inactive, the public quote form is blocked and the customer cannot receive new leads from the public intake page.
+                </p>
+                <input
+                  className={inputClass}
+                  name="note"
+                  placeholder="Optional quote link note"
+                />
+                <ControlAuditMeta audit={quoteAudit} />
+                <button className={`${primaryButtonClass} w-full`} type="submit">
+                  Save quote link
+                </button>
+              </form>
+            <p className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-warning-strong)]">
+              Inactive link blocks all incoming public quote submissions.
+            </p>
+          </div>
+
+          <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_12px_32px_rgba(15,23,42,0.05)]">
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <p className="text-sm font-black text-[var(--dash-text)]">
+                  Recommended next action
+                </p>
+                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  Based on current access and quote-link state.
+                </p>
+              </div>
+              <StatusBadge tone={recommendation.tone}>Next</StatusBadge>
             </div>
-          </section>
+            <div className="mt-4 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-3 py-3 text-[12px] leading-5">
+              <p className="font-black text-[var(--dash-primary-strong)]">
+                {recommendation.text}
+              </p>
+              <p className="mt-3 font-bold text-[var(--dash-text-secondary)]">
+                Why: keeps customer experience clean and prevents incomplete lead intake.
+              </p>
+            </div>
+            <div className="mt-4 grid gap-2">
+              <p className="text-[12px] font-black text-[var(--dash-text)]">
+                Recent admin changes
+              </p>
+              {recentPriorityActions.length > 0 ? (
+                recentPriorityActions.slice(0, 2).map((action) => (
+                  <p
+                    className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold text-[var(--dash-text-secondary)]"
+                    key={action.id}
+                  >
+                    {adminActionLabels[action.actionType] ??
+                      humanizeAdminKey(action.actionType)}
+                  </p>
+                ))
+              ) : (
+                <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-3 text-[12px] text-[var(--dash-text-secondary)]">
+                  No admin changes recorded yet.
+                </p>
+              )}
+            </div>
+          </aside>
+        </div>
+      </section>
 
-          <section className={toolboxSectionClass}>
+      <div className="grid gap-3 xl:grid-cols-[minmax(420px,1fr)_minmax(520px,1.18fr)_minmax(300px,0.72fr)]">
+        <section className={toolboxSectionClass}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1237,7 +1513,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="amber">Controlled</StatusBadge>
             </div>
-            <div className="grid gap-3 xl:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-2">
           <form
             action={updateFounderWorkspaceKindAction}
             className={controlPanelClass}
@@ -1265,6 +1541,9 @@ function BusinessControlCard({
               name="note"
               placeholder="Why this is safe"
             />
+            <ControlAuditMeta
+              audit={controlAuditText(business.actionLog, ["workspace_kind_changed"])}
+            />
             <button className={`${primaryButtonClass} w-full`} type="submit">
               Save workspace kind
             </button>
@@ -1272,9 +1551,9 @@ function BusinessControlCard({
 
           <FounderSessionPolicyForm business={business} />
             </div>
-          </section>
+        </section>
 
-          <section className={toolboxSectionClass}>
+        <section className={toolboxSectionClass}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1315,13 +1594,51 @@ function BusinessControlCard({
           />
 
           <FounderAdminSafetyRail />
-
-          <FounderSystemChangeLog actions={business.actionLog} />
             </div>
-          </section>
-        </div>
+          {dryRun ? (
+            <div className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 text-sm">
+              <p className="font-black text-[var(--dash-text)]">
+                Cleanup dry run counts
+              </p>
+              <dl className="mt-2 grid grid-cols-2 gap-2 text-[12px]">
+                {Object.entries(dryRun.counts)
+                  .filter(([, count]) => count > 0)
+                  .map(([table, count]) => (
+                    <div
+                      className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2"
+                      key={table}
+                    >
+                      <dt className="truncate font-bold text-[var(--dash-text-muted)]">
+                        {table}
+                      </dt>
+                      <dd className="font-black text-[var(--dash-text)]">
+                        {count}
+                      </dd>
+                    </div>
+                  ))}
+              </dl>
+            </div>
+          ) : null}
+          <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2.5 [&::-webkit-details-marker]:hidden">
+              <span className="text-[12px] font-black text-[var(--dash-text)]">
+                Full system change log
+              </span>
+              <StatusBadge tone="blue">{business.actionLog.length} logged</StatusBadge>
+            </summary>
+            <div className="border-t border-[var(--dash-border)] p-3">
+              <FounderSystemChangeLog actions={business.actionLog} />
+            </div>
+          </details>
+        </section>
+
+        <RecentAdminChangesPanel actions={business.actionLog} />
       </div>
-    </DashboardCard>
+
+      <p className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-4 py-3 text-[12px] font-bold leading-5 text-[var(--dash-primary-strong)]">
+        All changes are manual, traceable, and reversible by the founder. Use controls with operational awareness.
+      </p>
+    </div>
   );
 }
 
@@ -1468,16 +1785,37 @@ function FounderUsersSection({
   const hasPreviousPage = usersPage > 1;
   const hasNextPage = usersPage < usersLastPage;
   const selectedPriority = safeParam(params.userPriority);
+  const featuredBusiness =
+    shownUsers
+      .map((user) =>
+        user.businessId ? (businessById.get(user.businessId) ?? null) : null,
+      )
+      .find((business): business is FounderAdminBusiness => Boolean(business)) ??
+    null;
 
   return (
     <DashboardCard className="space-y-4 p-4 sm:p-5" variant="elevated">
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <SectionHeader
-          action={<StatusBadge tone="blue">{shownUsers.length} shown</StatusBadge>}
-          description="Search by name, email, phone, or user ID. Only 5-10 auth users load per page, then priority filters tighten the view."
-          title="User control desk"
+      {featuredBusiness ? (
+        <BusinessControlCard
+          business={featuredBusiness}
+          dryRun={
+            dryRun?.businessId === featuredBusiness.businessId ? dryRun : null
+          }
         />
+      ) : null}
+
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Customer queue
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Search and open another customer when founder focus changes.
+          </p>
+        </div>
         <div className="flex flex-wrap gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
+          <FounderAdminThemeSelector />
+          <StatusBadge tone="blue">{shownUsers.length} shown</StatusBadge>
           <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
             Page {usersPage} / {usersLastPage}
           </span>
