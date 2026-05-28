@@ -173,7 +173,9 @@ const adminActionLabels: Readonly<Record<string, string>> = {
 };
 
 const controlPanelClass =
-  "rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)]";
+  "grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm";
+const toolboxSectionClass =
+  "grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5";
 
 type UserPriorityOption = Readonly<{
   description: string;
@@ -1104,7 +1106,49 @@ function BusinessControlCard({
           ) : null}
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-4">
+          <section className={toolboxSectionClass}>
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <p className="text-sm font-black text-[var(--dash-text)]">
+                  Priority controls
+                </p>
+                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  Change access, plan, and intake state first.
+                </p>
+              </div>
+              <StatusBadge tone="emerald">Daily use</StatusBadge>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+              <form
+                action={updateFounderStatusAction}
+                className={controlPanelClass}
+              >
+                <input name="businessId" type="hidden" value={business.businessId} />
+                <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+                  Access status
+                  <select
+                    className={inputClass}
+                    defaultValue={business.status}
+                    name="businessStatus"
+                  >
+                    {statusOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <input
+                  className={inputClass}
+                  name="note"
+                  placeholder="Optional access note"
+                />
+                <button className={`${primaryButtonClass} w-full`} type="submit">
+                  Save access
+                </button>
+              </form>
+
           <form
             action={updateFounderPlanAction}
             className={controlPanelClass}
@@ -1125,74 +1169,12 @@ function BusinessControlCard({
               </select>
             </label>
             <input
-              className={`${inputClass} mt-2`}
+              className={inputClass}
               name="note"
               placeholder="Optional plan note"
             />
-            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
+            <button className={`${primaryButtonClass} w-full`} type="submit">
               Save plan
-            </button>
-          </form>
-
-          <form
-            action={updateFounderStatusAction}
-            className={controlPanelClass}
-          >
-            <input name="businessId" type="hidden" value={business.businessId} />
-            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-              Access status
-              <select
-                className={inputClass}
-                defaultValue={business.status}
-                name="businessStatus"
-              >
-                {statusOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <input
-              className={`${inputClass} mt-2`}
-              name="note"
-              placeholder="Optional access note"
-            />
-            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
-              Save access
-            </button>
-          </form>
-
-          <form
-            action={updateFounderWorkspaceKindAction}
-            className={controlPanelClass}
-          >
-            <input name="businessId" type="hidden" value={business.businessId} />
-            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-              Workspace kind
-              <select
-                className={inputClass}
-                defaultValue={business.workspaceKind}
-                name="workspaceKind"
-              >
-                {workspaceKindOptions.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-              Use Founder test, Demo, or Seed only for fake data before hard cleanup
-              or fake/test auth login deletion.
-            </p>
-            <input
-              className={`${inputClass} mt-2`}
-              name="note"
-              placeholder="Why this workspace is safe to mark non-production"
-            />
-            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
-              Save workspace kind
             </button>
           </form>
 
@@ -1213,15 +1195,79 @@ function BusinessControlCard({
               </select>
             </label>
             <input
-              className={`${inputClass} mt-2`}
+              className={inputClass}
               name="note"
               placeholder="Optional quote link note"
             />
-            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
+            <button className={`${primaryButtonClass} w-full`} type="submit">
               Save quote link
             </button>
           </form>
+            </div>
+          </section>
 
+          <section className={toolboxSectionClass}>
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <p className="text-sm font-black text-[var(--dash-text)]">
+                  Workspace tools
+                </p>
+                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  Use these when setup, session, or cleanup state is wrong.
+                </p>
+              </div>
+              <StatusBadge tone="amber">Controlled</StatusBadge>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
+          <form
+            action={updateFounderWorkspaceKindAction}
+            className={controlPanelClass}
+          >
+            <input name="businessId" type="hidden" value={business.businessId} />
+            <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
+              Workspace kind
+              <select
+                className={inputClass}
+                defaultValue={business.workspaceKind}
+                name="workspaceKind"
+              >
+                {workspaceKindOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+              Mark fake data as Founder test, Demo, or Seed before cleanup.
+            </p>
+            <input
+              className={inputClass}
+              name="note"
+              placeholder="Why this is safe"
+            />
+            <button className={`${primaryButtonClass} w-full`} type="submit">
+              Save workspace kind
+            </button>
+          </form>
+
+          <FounderSessionPolicyForm business={business} />
+            </div>
+          </section>
+
+          <section className={toolboxSectionClass}>
+            <div className="flex flex-wrap items-start justify-between gap-2">
+              <div>
+                <p className="text-sm font-black text-[var(--dash-text)]">
+                  Notes, cleanup, and audit
+                </p>
+                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  Record context, run cleanup, then review the change trail.
+                </p>
+              </div>
+              <StatusBadge tone="red">Sensitive</StatusBadge>
+            </div>
+            <div className="grid gap-3 md:grid-cols-2">
           <form
             action={updateFounderInternalNoteAction}
             className={controlPanelClass}
@@ -1236,12 +1282,10 @@ function BusinessControlCard({
                 placeholder="Objection, setup state, next founder follow-up"
               />
             </label>
-            <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
+            <button className={`${primaryButtonClass} w-full`} type="submit">
               Save note
             </button>
           </form>
-
-          <FounderSessionPolicyForm business={business} />
 
           <FounderTestCleanupForm
             businessId={business.businessId}
@@ -1252,6 +1296,8 @@ function BusinessControlCard({
           />
 
           <FounderSystemChangeLog actions={business.actionLog} />
+            </div>
+          </section>
         </div>
       </div>
     </DashboardCard>
@@ -1633,7 +1679,16 @@ function FounderUsersSection({
               </span>
               </summary>
 
-              <div className="grid gap-5 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-5">
+              <div className="grid gap-4 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-5">
+                <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
+                  <p className="text-sm font-black text-[var(--dash-text)]">
+                    Founder toolbox
+                  </p>
+                  <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                    Work from top to bottom: priority controls, workspace tools,
+                    account tools, then destructive cleanup.
+                  </p>
+                </div>
                 {linkedBusiness ? (
                   <BusinessControlCard
                     business={linkedBusiness}
@@ -1646,12 +1701,25 @@ function FounderUsersSection({
                 ) : (
                   <FounderWorkspaceRepairControls user={user} />
                 )}
-                <FounderPasswordControls user={user} />
-                <FounderAuthUserDeleteForm
-                  deletionBlockedReason={user.authDeletionBlockedReason}
-                  targetEmail={user.authEmail}
-                  targetUserId={user.userId}
-                />
+                <section className={toolboxSectionClass}>
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <div>
+                      <p className="text-sm font-black text-[var(--dash-text)]">
+                        Account tools
+                      </p>
+                      <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                        Password help stays separate from destructive auth cleanup.
+                      </p>
+                    </div>
+                    <StatusBadge tone="blue">Identity</StatusBadge>
+                  </div>
+                  <FounderPasswordControls user={user} />
+                  <FounderAuthUserDeleteForm
+                    deletionBlockedReason={user.authDeletionBlockedReason}
+                    targetEmail={user.authEmail}
+                    targetUserId={user.userId}
+                  />
+                </section>
               </div>
             </details>
           );
