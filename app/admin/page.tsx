@@ -830,66 +830,6 @@ function isProductionHealthUnhealthy(
   ].some((ok) => !ok);
 }
 
-function FounderProductionHealthStrip({
-  health,
-}: Readonly<{ health: FounderProductionHealth | null }>) {
-  const items: ReadonlyArray<readonly [string, string, boolean]> = health
-    ? [
-        ["Supabase", health.supabaseTargetMatchesCanonical ? "OK" : "Check", health.supabaseTargetMatchesCanonical],
-        [
-          "Service key",
-          credentialKindLabel(health.serviceCredentialKind),
-          isServiceCredentialLikelyPrivileged(health),
-        ],
-        ["Auth", health.authAdmin.ok || health.authRest.ok ? "OK" : "Check", health.authAdmin.ok || health.authRest.ok],
-        ["Businesses", healthCount(health.businesses), health.businesses.ok],
-        ["Members", healthCount(health.businessMembers), health.businessMembers.ok],
-        ["Logs", healthCount(health.recentActions), health.recentActions.ok],
-      ]
-    : [["Runtime", "Unavailable", false]];
-
-  return (
-    <DashboardCard className="p-3" variant="priority">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="text-sm font-black text-[var(--dash-text)]">
-            Production health
-          </p>
-          <p className="text-[11px] leading-4 text-[var(--dash-text-secondary)]">
-            Compact runtime status; open the Health tool for full diagnostics.
-          </p>
-        </div>
-        <StatusBadge tone={isProductionHealthUnhealthy(health) ? "red" : "emerald"}>
-          {isProductionHealthUnhealthy(health) ? "Needs check" : "Healthy"}
-        </StatusBadge>
-      </div>
-      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6">
-        {items.map(([label, value, ok]) => (
-          <div
-            className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2"
-            key={label}
-          >
-            <div className="flex items-center gap-2">
-              <span
-                className={[
-                  "h-2 w-2 rounded-full",
-                  ok ? "bg-[var(--dash-success)]" : "bg-[var(--dash-danger)]",
-                ].join(" ")}
-              />
-              <p className="truncate text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
-                {label}
-              </p>
-            </div>
-            <p className="mt-1 truncate text-sm font-black text-[var(--dash-text)]">
-              {value}
-            </p>
-          </div>
-        ))}
-      </div>
-    </DashboardCard>
-  );
-}
-
 function getFounderAccessMessage(error: unknown): string {
   const message =
     error instanceof Error && error.message.trim().length > 0
@@ -1594,7 +1534,7 @@ function FounderUsersSection({
       </details>
 
       <form
-        className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 lg:grid-cols-[minmax(260px,1fr)_120px_168px_168px_auto] lg:items-end"
+        className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 sm:grid-cols-2 xl:grid-cols-[minmax(220px,1fr)_120px_minmax(140px,0.72fr)_minmax(140px,0.72fr)] 2xl:grid-cols-[minmax(260px,1fr)_120px_168px_168px_auto] 2xl:items-end"
         method="get"
       >
         <input name="userPage" type="hidden" value="1" />
@@ -1647,12 +1587,12 @@ function FounderUsersSection({
             <option value="founder">Founder accounts</option>
           </select>
         </label>
-        <div className="flex flex-wrap gap-2">
-          <button className={primaryButtonClass} type="submit">
+        <div className="flex flex-wrap gap-2 sm:col-span-2 xl:col-span-4 2xl:col-span-1 2xl:flex-nowrap">
+          <button className={`${primaryButtonClass} flex-1 2xl:flex-none`} type="submit">
             Search
           </button>
           <Link
-            className={buttonClass}
+            className={`${buttonClass} flex-1 2xl:flex-none`}
             href={adminUsersHref(params, {
               userAccess: undefined,
               userConfirmed: undefined,
@@ -2076,7 +2016,7 @@ function FounderAdminToolRail({
   ];
 
   return (
-    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2 shadow-sm lg:sticky lg:top-3 lg:h-[calc(100dvh-1.5rem)] lg:overflow-y-auto">
+    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2 shadow-sm lg:sticky lg:top-3 lg:max-h-[calc(100dvh-10.25rem)] lg:overflow-y-auto">
       <div className="mb-1 px-2 py-2">
         <p className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
           Tools
@@ -2281,7 +2221,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             usersTotal={overview.usersTotal}
           />
 
-          <main className="min-w-0 overflow-y-auto pr-1 lg:max-h-[calc(100dvh-10.25rem)]">
+          <main className="min-w-0 overflow-y-auto lg:max-h-[calc(100dvh-10.25rem)]">
             {activePanel === "users" ? (
               <FounderUsersSection
                 businessById={businessById}
@@ -2325,7 +2265,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </main>
         </div>
 
-        <FounderProductionHealthStrip health={productionHealth} />
       </div>
     </FounderAdminThemeFrame>
   );
