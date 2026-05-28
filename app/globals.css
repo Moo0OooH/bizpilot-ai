@@ -266,39 +266,43 @@ body {
 }
 
 .biz-founder-admin-light {
-  --dash-bg: #f6f8fb;
-  --dash-bg-soft: #edf4f2;
+  --dash-bg: #f8fafc;
+  --dash-bg-soft: #eef2f7;
   --dash-surface: #ffffff;
-  --dash-surface-muted: #f5f8f7;
+  --dash-surface-muted: #f1f5f9;
   --dash-surface-elevated: #ffffff;
-  --dash-border: rgba(15, 23, 42, 0.1);
-  --dash-border-strong: rgba(15, 23, 42, 0.16);
+  --dash-border: rgba(15, 23, 42, 0.09);
+  --dash-border-strong: rgba(15, 23, 42, 0.14);
   --dash-text: #0f172a;
-  --dash-text-secondary: #475569;
+  --dash-text-secondary: #334155;
   --dash-text-muted: #64748b;
-  --dash-primary: #0f766e;
-  --dash-primary-hover: #115e59;
-  --dash-primary-soft: rgba(15, 118, 110, 0.1);
-  background: var(--dash-bg);
+  --dash-primary: #2563eb;
+  --dash-primary-hover: #1d4ed8;
+  --dash-primary-soft: rgba(37, 99, 235, 0.09);
+  --dash-warning-soft: rgba(217, 119, 6, 0.1);
+  --dash-danger-soft: rgba(220, 38, 38, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(248, 250, 252, 0.96) 52%, #eef2f7 100%);
 }
 
 .biz-founder-admin-dark {
-  --dash-bg: #071016;
-  --dash-bg-soft: #0d1820;
-  --dash-surface: #101b24;
-  --dash-surface-muted: rgba(15, 27, 36, 0.88);
-  --dash-surface-elevated: rgba(18, 31, 40, 0.96);
-  --dash-border: rgba(255, 255, 255, 0.08);
-  --dash-border-strong: rgba(255, 255, 255, 0.14);
-  --dash-text: #f5f7fa;
-  --dash-text-secondary: rgba(245, 247, 250, 0.74);
-  --dash-text-muted: rgba(245, 247, 250, 0.48);
-  --dash-primary: #14b8a6;
-  --dash-primary-hover: #2dd4bf;
-  --dash-primary-soft: rgba(20, 184, 166, 0.13);
-  --dash-warning-soft: rgba(255, 184, 77, 0.12);
-  --dash-danger-soft: rgba(255, 92, 92, 0.1);
-  background: var(--dash-bg);
+  --dash-bg: #0b1220;
+  --dash-bg-soft: #111827;
+  --dash-surface: #111827;
+  --dash-surface-muted: rgba(30, 41, 59, 0.78);
+  --dash-surface-elevated: rgba(15, 23, 42, 0.96);
+  --dash-border: rgba(148, 163, 184, 0.16);
+  --dash-border-strong: rgba(148, 163, 184, 0.26);
+  --dash-text: #f8fafc;
+  --dash-text-secondary: rgba(226, 232, 240, 0.78);
+  --dash-text-muted: rgba(203, 213, 225, 0.58);
+  --dash-primary: #60a5fa;
+  --dash-primary-hover: #93c5fd;
+  --dash-primary-soft: rgba(96, 165, 250, 0.14);
+  --dash-warning-soft: rgba(245, 158, 11, 0.13);
+  --dash-danger-soft: rgba(248, 113, 113, 0.1);
+  background:
+    linear-gradient(180deg, #0b1220 0%, #111827 100%);
 }
 
 .biz-founder-admin .font-black {
@@ -311,12 +315,12 @@ body {
 
 .biz-founder-admin .biz-card {
   background: color-mix(in srgb, var(--dash-surface) 96%, transparent);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
 .biz-founder-admin .biz-card-elevated {
   background: var(--dash-surface-elevated);
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.09);
 }
 
 .biz-founder-admin .biz-card-muted {
@@ -325,7 +329,7 @@ body {
 
 .biz-founder-admin .biz-card-priority {
   background: var(--dash-surface-elevated);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.09);
 }
 
 .biz-founder-admin .biz-button-primary {

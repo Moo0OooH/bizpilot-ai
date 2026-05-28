@@ -995,8 +995,8 @@ function BusinessControlCard({
   const toolboxName = `business-toolbox-${business.businessId}`;
 
   return (
-    <DashboardCard className="p-5 sm:p-6" variant="elevated">
-      <div className="grid gap-6 xl:grid-cols-[minmax(300px,0.9fr)_minmax(520px,1.35fr)]">
+    <DashboardCard className="p-4 sm:p-5" variant="elevated">
+      <div className="grid gap-4 xl:grid-cols-[minmax(260px,0.78fr)_minmax(500px,1.35fr)]">
         <div className="min-w-0 space-y-5">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
@@ -1041,8 +1041,8 @@ function BusinessControlCard({
             </p>
           </div>
 
-          <dl className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-3 xl:grid-cols-2">
-            <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
+          <dl className="grid grid-cols-2 gap-2 text-sm">
+            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
               <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
                 Leads
               </dt>
@@ -1050,7 +1050,7 @@ function BusinessControlCard({
                 {business.leadCount}
               </dd>
             </div>
-            <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
+            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
               <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
                 AI usage
               </dt>
@@ -1058,7 +1058,7 @@ function BusinessControlCard({
                 {business.usageCount}
               </dd>
             </div>
-            <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
+            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
               <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
                 Users
               </dt>
@@ -1066,7 +1066,7 @@ function BusinessControlCard({
                 {business.memberCount}
               </dd>
             </div>
-            <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
+            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
               <dt className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
                 Last activity
               </dt>
@@ -1076,7 +1076,7 @@ function BusinessControlCard({
             </div>
           </dl>
 
-          <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 text-sm">
+          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 text-sm">
             <p className="font-black text-[var(--dash-text)]">
               {formatSlug(business.publicSlug)}
             </p>
@@ -1085,7 +1085,7 @@ function BusinessControlCard({
             </p>
           </div>
 
-          <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 text-sm">
+          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 text-sm">
             <p className="font-black text-[var(--dash-text)]">
               {sessionPolicyLabel(
                 business.sessionTimeoutMode,
@@ -1123,7 +1123,7 @@ function BusinessControlCard({
           ) : null}
         </div>
 
-        <div className="founder-toolbox relative grid gap-4 lg:grid-cols-[180px_minmax(0,1fr)]">
+        <div className="founder-toolbox relative grid gap-3 lg:grid-cols-[150px_minmax(0,1fr)]">
           <input
             className="founder-toolbox-radio founder-toolbox-radio-priority"
             defaultChecked
@@ -1143,27 +1143,27 @@ function BusinessControlCard({
             name={toolboxName}
             type="radio"
           />
-          <nav className="grid content-start gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2">
+          <nav className="grid content-start gap-1.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-1.5">
             <label
-              className="founder-toolbox-nav-item founder-toolbox-nav-priority cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
+              className="founder-toolbox-nav-item founder-toolbox-nav-priority cursor-pointer rounded-md border px-2.5 py-2 text-[12px] font-black"
               htmlFor={`${toolboxName}-priority`}
             >
               Priority
             </label>
             <label
-              className="founder-toolbox-nav-item founder-toolbox-nav-workspace cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
+              className="founder-toolbox-nav-item founder-toolbox-nav-workspace cursor-pointer rounded-md border px-2.5 py-2 text-[12px] font-black"
               htmlFor={`${toolboxName}-workspace`}
             >
               Workspace
             </label>
             <label
-              className="founder-toolbox-nav-item founder-toolbox-nav-audit cursor-pointer rounded-lg border px-3 py-2 text-[12px] font-black"
+              className="founder-toolbox-nav-item founder-toolbox-nav-audit cursor-pointer rounded-md border px-2.5 py-2 text-[12px] font-black"
               htmlFor={`${toolboxName}-audit`}
             >
               Cleanup & audit
             </label>
           </nav>
-          <div className="min-w-0 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 lg:max-h-[68vh] lg:overflow-y-auto">
+          <div className="min-w-0 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 lg:max-h-[62vh] lg:overflow-y-auto">
           <section className={`founder-toolbox-panel founder-toolbox-panel-priority ${toolboxSectionClass}`}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
@@ -1509,7 +1509,7 @@ function FounderUsersSection({
   const selectedPriority = safeParam(params.userPriority);
 
   return (
-    <DashboardCard className="space-y-5 p-5 sm:p-6" variant="elevated">
+    <DashboardCard className="space-y-4 p-4 sm:p-5" variant="elevated">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <SectionHeader
           action={<StatusBadge tone="blue">{shownUsers.length} shown</StatusBadge>}
@@ -1550,13 +1550,13 @@ function FounderUsersSection({
           </Link>
         </summary>
 
-        <div className="grid gap-4 border-t border-[var(--dash-border)] p-4 xl:grid-cols-[1.2fr_1fr_1.15fr]">
+        <div className="grid gap-3 border-t border-[var(--dash-border)] p-3 xl:grid-cols-[1.2fr_1fr_1.15fr]">
           {userPriorityGroups.map((group) => (
             <div className="min-w-0 space-y-2" key={group.title}>
               <p className="text-[12px] font-black uppercase text-[var(--dash-text-muted)]">
                 {group.title}
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 {group.options.map((option) => (
                   <Link
                     className={priorityFilterClass(selectedPriority === option.value)}
@@ -1579,7 +1579,7 @@ function FounderUsersSection({
       </details>
 
       <form
-        className="grid gap-4 rounded-[22px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 lg:grid-cols-[minmax(260px,1fr)_130px_180px_180px_auto] lg:items-end"
+        className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 lg:grid-cols-[minmax(260px,1fr)_120px_168px_168px_auto] lg:items-end"
         method="get"
       >
         <input name="userPage" type="hidden" value="1" />
@@ -1652,10 +1652,10 @@ function FounderUsersSection({
 
             return (
             <details
-              className="group overflow-hidden rounded-[22px] border border-[var(--dash-border)] bg-[var(--dash-surface)] shadow-[0_14px_36px_rgba(15,23,42,0.06)]"
+              className="group overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] shadow-[0_10px_26px_rgba(15,23,42,0.05)]"
               key={user.userId}
             >
-              <summary className="grid cursor-pointer list-none gap-4 px-5 py-4 text-sm transition hover:bg-[var(--dash-surface-muted)] xl:grid-cols-[minmax(260px,1.1fr)_minmax(220px,0.9fr)_minmax(280px,1fr)_minmax(180px,0.65fr)_110px] xl:items-center">
+              <summary className="grid cursor-pointer list-none gap-3 px-4 py-3 text-sm transition hover:bg-[var(--dash-surface-muted)] xl:grid-cols-[minmax(240px,1.08fr)_minmax(210px,0.85fr)_minmax(220px,1fr)_90px] xl:items-center">
               <div className="min-w-0">
                 <div className="flex min-w-0 flex-wrap items-center gap-2">
                   <p className="truncate font-black text-[var(--dash-text)]">
@@ -1670,9 +1670,6 @@ function FounderUsersSection({
                 </div>
                 <p className="mt-1 text-[12px] font-bold text-[var(--dash-text-muted)]">
                   {user.email}
-                </p>
-                <p className="mt-1 text-[12px] font-bold text-[var(--dash-text-muted)]">
-                  Phone: {formatContactValue(user.phone)}
                 </p>
               </div>
 
@@ -1714,31 +1711,38 @@ function FounderUsersSection({
                 </StatusBadge>
               </div>
 
-              <div className="grid grid-cols-2 gap-2 text-[12px]">
-                <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
-                  <p className="font-black text-[var(--dash-text)]">
-                    {user.leadCount ?? "-"}
-                  </p>
-                  <p className="mt-0.5 font-bold text-[var(--dash-text-muted)]">
-                    Leads
-                  </p>
-                </div>
-                <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
-                  <p className="font-black text-[var(--dash-text)]">
-                    {formatDate(user.lastSignInAt)}
-                  </p>
-                  <p className="mt-0.5 font-bold text-[var(--dash-text-muted)]">
-                    Last sign-in
-                  </p>
-                </div>
-              </div>
-
-              <span className="justify-self-start rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-2 text-[11px] font-black text-[var(--dash-text-secondary)] group-open:border-[var(--dash-primary)] group-open:bg-[var(--dash-primary-soft)] group-open:text-[var(--dash-text)] xl:justify-self-end">
+              <span className="justify-self-start rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2 text-[11px] font-black text-[var(--dash-text-secondary)] group-open:border-[var(--dash-primary)] group-open:bg-[var(--dash-primary-soft)] group-open:text-[var(--dash-text)] xl:justify-self-end">
                 Modify
               </span>
               </summary>
 
-              <div className="grid gap-4 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-5">
+              <div className="grid gap-4 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4">
+                <dl className="grid gap-2 text-[12px] sm:grid-cols-2 lg:grid-cols-4">
+                  <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
+                    <dt className="font-bold text-[var(--dash-text-muted)]">Leads</dt>
+                    <dd className="mt-0.5 font-black text-[var(--dash-text)]">
+                      {user.leadCount ?? "-"}
+                    </dd>
+                  </div>
+                  <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
+                    <dt className="font-bold text-[var(--dash-text-muted)]">Last sign-in</dt>
+                    <dd className="mt-0.5 font-black text-[var(--dash-text)]">
+                      {formatDate(user.lastSignInAt)}
+                    </dd>
+                  </div>
+                  <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
+                    <dt className="font-bold text-[var(--dash-text-muted)]">User ID</dt>
+                    <dd className="mt-0.5 truncate font-black text-[var(--dash-text)]">
+                      {user.userId}
+                    </dd>
+                  </div>
+                  <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
+                    <dt className="font-bold text-[var(--dash-text-muted)]">Phone</dt>
+                    <dd className="mt-0.5 truncate font-black text-[var(--dash-text)]">
+                      {formatContactValue(user.phone)}
+                    </dd>
+                  </div>
+                </dl>
                 <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4">
                   <p className="text-sm font-black text-[var(--dash-text)]">
                     Founder toolbox
@@ -2020,8 +2024,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   return (
     <FounderAdminThemeFrame initialTheme={initialTheme}>
-      <div className="mx-auto max-w-[1440px] space-y-6">
-        <DashboardCard className="p-6 sm:p-8" variant="priority">
+      <div className="mx-auto max-w-[1320px] space-y-4">
+        <DashboardCard className="p-4 sm:p-5" variant="priority">
           <PageHeader
             actions={
               <div className="flex flex-wrap gap-2">
@@ -2055,27 +2059,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </AdminNotice>
         ) : null}
 
-        <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(340px,0.95fr)]">
-          <div className="space-y-5">
-            <FounderUsersSection
-              businessById={businessById}
-              dryRun={dryRun}
-              params={params}
-              shownUsers={shownUsers}
-              totalLoaded={overview.users.length}
-              users={overview.users}
-              usersLastPage={overview.usersLastPage}
-              usersPage={overview.usersPage}
-              usersPageSize={overview.usersPageSize}
-              usersSearchMode={overview.usersSearchMode}
-              usersTotal={overview.usersTotal}
-            />
-          </div>
-
-          <aside className="space-y-5">
+        <div className="grid min-w-0 gap-4 xl:grid-cols-[300px_minmax(0,1fr)]">
+          <aside className="space-y-4 xl:sticky xl:top-6 xl:self-start">
             <FounderProductionHealthPanel health={productionHealth} />
 
-            <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-1">
+            <section className="grid min-w-0 gap-2 sm:grid-cols-2 xl:grid-cols-1">
               <MetricCard
                 detail="Auth users available through paged founder search."
                 label="Auth users"
@@ -2104,6 +2092,22 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
             <FounderInboxSection items={overview.leadInbox} />
             <FounderAdminSafetyRail />
+          </aside>
+
+          <div className="space-y-4">
+            <FounderUsersSection
+              businessById={businessById}
+              dryRun={dryRun}
+              params={params}
+              shownUsers={shownUsers}
+              totalLoaded={overview.users.length}
+              users={overview.users}
+              usersLastPage={overview.usersLastPage}
+              usersPage={overview.usersPage}
+              usersPageSize={overview.usersPageSize}
+              usersSearchMode={overview.usersSearchMode}
+              usersTotal={overview.usersTotal}
+            />
 
             <DashboardCard className="p-4 sm:p-5" variant="priority">
               <SectionHeader
@@ -2136,7 +2140,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                 )}
               </div>
             </DashboardCard>
-          </aside>
+          </div>
         </div>
       </div>
     </FounderAdminThemeFrame>
