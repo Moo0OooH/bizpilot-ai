@@ -73,6 +73,7 @@ import {
 export const dynamic = "force-dynamic";
 
 type AdminSearchParams = {
+  adminPanel?: string | undefined;
   cleanupBusinessId?: string | undefined;
   error?: string | undefined;
   notice?: string | undefined;
@@ -87,6 +88,8 @@ type AdminSearchParams = {
 type AdminPageProps = Readonly<{
   searchParams?: Promise<AdminSearchParams>;
 }>;
+
+type AdminPanel = "users" | "health" | "leads" | "activity" | "safety";
 
 type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
@@ -431,6 +434,19 @@ function safeParam(value: string | undefined, fallback = "all"): string {
   return value && value.trim().length > 0 ? value.trim() : fallback;
 }
 
+function readAdminPanel(value: string | undefined): AdminPanel {
+  if (
+    value === "health" ||
+    value === "leads" ||
+    value === "activity" ||
+    value === "safety"
+  ) {
+    return value;
+  }
+
+  return "users";
+}
+
 function matchesQuery(values: ReadonlyArray<string | null | undefined>, query: string) {
   if (!query) {
     return true;
@@ -578,6 +594,7 @@ function adminUsersHref(
   updates: Partial<AdminSearchParams>,
 ): string {
   const merged: AdminSearchParams = {
+    adminPanel: params.adminPanel,
     userAccess: params.userAccess,
     userConfirmed: params.userConfirmed,
     userPage: params.userPage,
@@ -2035,6 +2052,184 @@ function FounderRecentActionsPanel({
   );
 }
 
+function FounderAdminToolRail({
+  activePanel,
+  healthNeedsAttention,
+  params,
+  totals,
+  usersTotal,
+}: Readonly<{
+  activePanel: AdminPanel;
+  healthNeedsAttention: boolean;
+  params: AdminSearchParams;
+  totals: {
+    activePilots: number;
+    paymentReady: number;
+    suspended: number;
+  };
+  usersTotal: number;
+}>) {
+  const items: ReadonlyArray<{
+    count?: number;
+    description: string;
+    label: string;
+    panel: AdminPanel;
+    tone?: "amber" | "blue" | "emerald" | "red";
+  }> = [
+    {
+      count: usersTotal,
+      description: "Search, repair, plan, access, and deletion tools.",
+      label: "Users",
+      panel: "users",
+      tone: "blue",
+    },
+    {
+      description: "Supabase, service key, auth, and table readiness.",
+      label: "Production health",
+      panel: "health",
+      tone: healthNeedsAttention ? "red" : "emerald",
+    },
+    {
+      description: "Lead inbox cleanup and intake state controls.",
+      label: "Leads",
+      panel: "leads",
+      tone: "emerald",
+    },
+    {
+      description: "Founder write log and recent admin operations.",
+      label: "Activity log",
+      panel: "activity",
+      tone: "amber",
+    },
+    {
+      description: "Destructive-action guards and deletion rules.",
+      label: "Safety",
+      panel: "safety",
+      tone: "red",
+    },
+  ];
+
+  return (
+    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2 shadow-sm xl:sticky xl:top-4 xl:h-[calc(100dvh-2rem)] xl:overflow-y-auto">
+      <div className="mb-2 px-2 py-2">
+        <p className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
+          Admin tools
+        </p>
+        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          Pick one tool; the workspace opens in the main panel.
+        </p>
+      </div>
+
+      <nav className="grid gap-1">
+        {items.map((item) => {
+          const active = activePanel === item.panel;
+
+          return (
+            <Link
+              className={[
+                "grid gap-1 rounded-lg border px-3 py-2.5 text-left transition",
+                active
+                  ? "border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] text-[var(--dash-text)] shadow-sm"
+                  : "border-transparent text-[var(--dash-text-secondary)] hover:border-[var(--dash-border)] hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]",
+              ].join(" ")}
+              href={adminUsersHref(params, { adminPanel: item.panel })}
+              key={item.panel}
+            >
+              <span className="flex items-center justify-between gap-2">
+                <span className="text-sm font-black">{item.label}</span>
+                {item.count !== undefined ? (
+                  <StatusBadge tone={item.tone ?? "neutral"}>{item.count}</StatusBadge>
+                ) : (
+                  <StatusBadge tone={item.tone ?? "neutral"}>
+                    {item.panel === "health" && healthNeedsAttention ? "Check" : "Open"}
+                  </StatusBadge>
+                )}
+              </span>
+              <span className="text-[11px] leading-4 text-[var(--dash-text-secondary)]">
+                {item.description}
+              </span>
+            </Link>
+          );
+        })}
+      </nav>
+
+      <div className="mt-3 grid grid-cols-3 gap-1.5 xl:grid-cols-1">
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2 py-2">
+          <p className="text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
+            Active
+          </p>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            {totals.activePilots}
+          </p>
+        </div>
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2 py-2">
+          <p className="text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
+            Paid-ready
+          </p>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            {totals.paymentReady}
+          </p>
+        </div>
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2 py-2">
+          <p className="text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
+            Paused
+          </p>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            {totals.suspended}
+          </p>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function FounderAdminMetricsPanel({
+  totals,
+  usersTotal,
+}: Readonly<{
+  totals: {
+    activePilots: number;
+    paymentReady: number;
+    suspended: number;
+  };
+  usersTotal: number;
+}>) {
+  return (
+    <DashboardCard className="p-4 sm:p-5" variant="elevated">
+      <SectionHeader
+        description="High-level counts stay here as a compact snapshot instead of occupying the workspace."
+        title="Workspace snapshot"
+      />
+      <section className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <MetricCard
+          detail="Auth users available through paged founder search."
+          label="Auth users"
+          tone="blue"
+          value={usersTotal}
+        />
+        <MetricCard
+          detail="Onboarding or active businesses."
+          label="Active pilots"
+          tone="emerald"
+          value={totals.activePilots}
+        />
+        <MetricCard
+          detail="Starter or Pro manual plans."
+          label="Payment-ready"
+          tone="amber"
+          value={totals.paymentReady}
+        />
+        <MetricCard
+          detail="Suspended or cancelled access."
+          label="Paused access"
+          tone="red"
+          value={totals.suspended}
+        />
+      </section>
+    </DashboardCard>
+  );
+}
+
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   const [params = {}, user] = await Promise.all([searchParams, getCurrentUser()]);
 
@@ -2044,6 +2239,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   const usersPage = readFounderUserPage(params.userPage);
   const usersPageSize = readFounderUserPageSize(params.userPageSize);
+  const activePanel = readAdminPanel(params.adminPanel);
   const cookieStore = await cookies();
   const initialTheme =
     cookieStore.get("bizpilot-dashboard-theme")?.value === "dark" ? "dark" : "light";
@@ -2079,11 +2275,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const shownUsers = sortUsersByPriority(
     overview.users.filter((adminUser) => matchesUserFilters(adminUser, params)),
   );
+  const productionHealthNeedsAttention = isProductionHealthUnhealthy(productionHealth);
 
   return (
     <FounderAdminThemeFrame initialTheme={initialTheme}>
-      <div className="mx-auto max-w-[1320px] space-y-4">
-        <DashboardCard className="p-4 sm:p-5" variant="priority">
+      <div className="mx-auto max-w-[1440px] space-y-3">
+        <DashboardCard className="p-4" variant="priority">
           <PageHeader
             actions={
               <div className="flex flex-wrap gap-2">
@@ -2109,64 +2306,58 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </FlashMessage>
         ) : null}
 
-        {isProductionHealthUnhealthy(productionHealth) ? (
-          <AdminNotice tone="error">
-            Founder data may be incomplete because one or more production runtime
-            checks failed. Review Production health before treating zero users or
-            zero businesses as real data.
-          </AdminNotice>
-        ) : null}
+        <div className="grid min-w-0 gap-3 xl:grid-cols-[260px_minmax(0,1fr)]">
+          <FounderAdminToolRail
+            activePanel={activePanel}
+            healthNeedsAttention={productionHealthNeedsAttention}
+            params={params}
+            totals={overview.totals}
+            usersTotal={overview.usersTotal}
+          />
 
-        <div className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
-          <div className="min-w-0 space-y-4">
-            <FounderUsersSection
-              businessById={businessById}
-              dryRun={dryRun}
-              params={params}
-              shownUsers={shownUsers}
-              users={overview.users}
-              usersLastPage={overview.usersLastPage}
-              usersPage={overview.usersPage}
-              usersPageSize={overview.usersPageSize}
-              usersSearchMode={overview.usersSearchMode}
-              usersTotal={overview.usersTotal}
-            />
-          </div>
+          <main className="min-w-0 xl:max-h-[calc(100dvh-9.5rem)] xl:overflow-y-auto xl:pr-1">
+            {activePanel === "users" ? (
+              <FounderUsersSection
+                businessById={businessById}
+                dryRun={dryRun}
+                params={params}
+                shownUsers={shownUsers}
+                users={overview.users}
+                usersLastPage={overview.usersLastPage}
+                usersPage={usersPage}
+                usersPageSize={usersPageSize}
+                usersSearchMode={overview.usersSearchMode}
+                usersTotal={overview.usersTotal}
+              />
+            ) : null}
 
-          <aside className="space-y-3 xl:sticky xl:top-6 xl:self-start">
-            <FounderProductionHealthPanel health={productionHealth} />
+            {activePanel === "health" ? (
+              <div className="space-y-3">
+                {productionHealthNeedsAttention ? (
+                  <AdminNotice tone="error">
+                    Founder data may be incomplete because one or more production
+                    runtime checks failed. Treat zero users or zero businesses as
+                    diagnostic until this panel is clean.
+                  </AdminNotice>
+                ) : null}
+                <FounderProductionHealthPanel health={productionHealth} />
+                <FounderAdminMetricsPanel
+                  totals={overview.totals}
+                  usersTotal={overview.usersTotal}
+                />
+              </div>
+            ) : null}
 
-            <section className="grid min-w-0 gap-2 sm:grid-cols-2 xl:grid-cols-1">
-              <MetricCard
-                detail="Auth users available through paged founder search."
-                label="Auth users"
-                tone="blue"
-                value={overview.usersTotal}
-              />
-              <MetricCard
-                detail="Onboarding or active businesses."
-                label="Active pilots"
-                tone="emerald"
-                value={overview.totals.activePilots}
-              />
-              <MetricCard
-                detail="Starter or Pro manual plans."
-                label="Payment-ready"
-                tone="amber"
-                value={overview.totals.paymentReady}
-              />
-              <MetricCard
-                detail="Suspended or cancelled access."
-                label="Paused access"
-                tone="red"
-                value={overview.totals.suspended}
-              />
-            </section>
+            {activePanel === "leads" ? (
+              <FounderInboxSection items={overview.leadInbox} />
+            ) : null}
 
-            <FounderInboxSection items={overview.leadInbox} />
-            <FounderRecentActionsPanel actions={overview.recentActions} />
-            <FounderAdminSafetyRail />
-          </aside>
+            {activePanel === "activity" ? (
+              <FounderRecentActionsPanel actions={overview.recentActions} />
+            ) : null}
+
+            {activePanel === "safety" ? <FounderAdminSafetyRail /> : null}
+          </main>
         </div>
       </div>
     </FounderAdminThemeFrame>
