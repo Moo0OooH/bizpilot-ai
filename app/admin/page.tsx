@@ -635,7 +635,7 @@ function AdminNotice({
   return (
     <p
       aria-live={tone === "error" ? "assertive" : "polite"}
-      className="rounded-[14px] border px-4 py-3 text-sm font-semibold"
+      className="rounded-lg border px-4 py-3 text-sm font-semibold"
       style={style}
     >
       {children}
@@ -994,7 +994,7 @@ function FounderSystemChangeLog({
   actions,
 }: Readonly<{ actions: FounderAdminActionSummary[] }>) {
   return (
-    <div className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)] md:col-span-2">
+    <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)] md:col-span-2">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1008,7 +1008,7 @@ function FounderSystemChangeLog({
         <StatusBadge tone="blue">{actions.length} logged</StatusBadge>
       </div>
 
-      <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
+      <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-lg border border-[var(--dash-border)]">
         {actions.length > 0 ? (
           actions.map((action) => (
             <div
@@ -1160,7 +1160,7 @@ function BusinessControlCard({
           </div>
 
           {dryRun ? (
-            <div className="rounded-[18px] border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-4 text-sm">
+            <div className="rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-4 text-sm">
               <p className="font-black text-[var(--dash-text)]">
                 Cleanup dry run counts
               </p>
@@ -1169,7 +1169,7 @@ function BusinessControlCard({
                   .filter(([, count]) => count > 0)
                   .map(([table, count]) => (
                     <div
-                      className="rounded-[12px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2"
+                      className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2"
                       key={table}
                     >
                       <dt className="truncate font-bold text-[var(--dash-text-muted)]">
@@ -1395,7 +1395,7 @@ function FounderWorkspaceRepairControls({
   return (
     <form
       action={founderWorkspaceRepairAction}
-      className="grid gap-3 rounded-[20px] border border-[var(--dash-border-strong)] bg-[var(--dash-warning-soft)] p-4"
+      className="grid gap-3 rounded-lg border border-[var(--dash-border-strong)] bg-[var(--dash-warning-soft)] p-4"
     >
       <input name="targetUserId" type="hidden" value={user.userId} />
       <div>
@@ -1446,10 +1446,10 @@ function FounderPasswordControls({
   user,
 }: Readonly<{ user: FounderAdminUser }>) {
   return (
-    <div className="grid gap-4 rounded-[20px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4 md:grid-cols-2">
+    <div className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 xl:grid-cols-1 2xl:grid-cols-2">
       <form
         action={founderPasswordResetAction}
-        className="grid gap-3 rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4"
+        className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3"
       >
         <input name="targetUserId" type="hidden" value={user.userId} />
         <div>
@@ -1467,7 +1467,7 @@ function FounderPasswordControls({
 
       <form
         action={founderTemporaryPasswordAction}
-        className="grid gap-3 rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4"
+        className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3"
       >
         <input name="targetUserId" type="hidden" value={user.userId} />
         <div>
@@ -1814,7 +1814,7 @@ function FounderUsersSection({
           );
           })
         ) : (
-          <p className="rounded-[18px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-6 text-center text-sm text-[var(--dash-text-secondary)]">
+          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-6 text-center text-sm text-[var(--dash-text-secondary)]">
             No users found.
           </p>
         )}
@@ -1882,7 +1882,7 @@ function FounderInboxSection({
         {items.length > 0 ? (
           items.slice(0, 30).map((item) => (
             <details
-              className="overflow-hidden rounded-[16px] border border-[var(--dash-border)] bg-[var(--dash-surface)]"
+              className="overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]"
               key={item.leadId}
             >
               <summary className="grid cursor-pointer list-none gap-3 px-4 py-3 hover:bg-[var(--dash-surface-muted)]">
@@ -1961,7 +1961,7 @@ function FounderInboxSection({
             </details>
           ))
         ) : (
-          <p className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-5 text-sm text-[var(--dash-text-secondary)]">
+          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-5 text-sm text-[var(--dash-text-secondary)]">
             No inbox items yet.
           </p>
         )}
