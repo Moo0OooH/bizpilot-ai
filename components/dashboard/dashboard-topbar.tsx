@@ -109,8 +109,8 @@ export function DashboardTopbar({
   const pageContext = getPageContext(pathname, copy);
 
   return (
-    <header className="dashboard-topbar sticky top-0 z-20 border-b backdrop-blur">
-      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 px-3 py-2 sm:min-h-[58px] sm:flex-nowrap sm:gap-3 sm:px-5 md:px-6 lg:px-5">
+    <header className="dashboard-topbar sticky top-0 z-20 shrink-0 border-b backdrop-blur">
+      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 px-3 py-2 sm:min-h-[60px] sm:flex-nowrap sm:gap-3 sm:px-5 md:px-6 lg:px-5">
         <div className="min-w-0 flex-1 basis-[12rem]">
           <h1 className="truncate text-[16px] font-extrabold leading-[1.2] text-[var(--dash-text)] sm:text-[17px]">
             {pageContext.title}
@@ -127,7 +127,7 @@ export function DashboardTopbar({
               title={copy.actions.copyQuoteLink}
             >
               <MoreIcon />
-              <span className="hidden sm:inline">Actions</span>
+              <span className="hidden md:inline">Actions</span>
             </summary>
             <div className="absolute right-0 top-11 z-30 grid w-[220px] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)]">
               <CopyButton
@@ -147,7 +147,7 @@ export function DashboardTopbar({
           </details>
           <form
             action={updateWorkspaceLanguageAction}
-            className="flex h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:h-10"
+            className="flex h-9 max-w-[11rem] items-center overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:h-10"
           >
             <input name="businessId" type="hidden" value={businessId} />
             <input name="redirectTo" type="hidden" value={pathname} />

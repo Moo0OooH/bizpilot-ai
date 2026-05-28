@@ -89,7 +89,7 @@ type AdminPageProps = Readonly<{
   searchParams?: Promise<AdminSearchParams>;
 }>;
 
-type AdminPanel = "users" | "health" | "leads" | "activity" | "safety";
+type AdminPanel = "users" | "health" | "leads" | "activity";
 
 type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
@@ -438,8 +438,7 @@ function readAdminPanel(value: string | undefined): AdminPanel {
   if (
     value === "health" ||
     value === "leads" ||
-    value === "activity" ||
-    value === "safety"
+    value === "activity"
   ) {
     return value;
   }
@@ -646,49 +645,34 @@ function AdminNotice({
 
 function FounderAdminSafetyRail() {
   return (
-    <DashboardCard className="p-3" variant="priority">
-      <details>
-        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-          <div className="min-w-0">
-            <p className="text-sm font-black text-[var(--dash-text)]">
-              Safety rules
-            </p>
-            <p className="mt-0.5 text-[11px] leading-4 text-[var(--dash-text-secondary)]">
-              Destructive controls stay behind explicit guards.
-            </p>
-          </div>
-          <StatusBadge tone="red">Rules</StatusBadge>
-        </summary>
-        <div className="mt-3 grid gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
-            <p className="font-black text-[var(--dash-text)]">
-              Production customer is locked
-            </p>
-            <p className="mt-1">
-              Hard cleanup and fake/test login deletion are blocked for production
-              customer workspaces and owner accounts.
-            </p>
-          </div>
-          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
-            <p className="font-black text-[var(--dash-text)]">
-              Dry-run comes first
-            </p>
-            <p className="mt-1">
-              Test/demo cleanup requires counts, acknowledgement, and exact
-              business name or slug confirmation.
-            </p>
-          </div>
-          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
-            <p className="font-black text-[var(--dash-text)]">
-              Auth deletion is separate
-            </p>
-            <p className="mt-1">
-              Login deletion is audited before the Supabase Auth call.
-            </p>
-          </div>
+    <details className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] p-3">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+        <span className="text-[12px] font-black text-[var(--dash-text)]">
+          Cleanup safety
+        </span>
+        <StatusBadge tone="amber">Guarded</StatusBadge>
+      </summary>
+      <div className="mt-3 grid gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2.5">
+          <p className="font-black text-[var(--dash-text)]">
+            Production customer is locked
+          </p>
+          <p className="mt-1">
+            Hard cleanup and fake/test login deletion are blocked for production
+            customer workspaces and owner accounts.
+          </p>
         </div>
-      </details>
-    </DashboardCard>
+        <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2.5">
+          <p className="font-black text-[var(--dash-text)]">
+            Dry-run comes first
+          </p>
+          <p className="mt-1">
+            Test/demo cleanup requires counts, acknowledgement, and exact
+            business name or slug confirmation.
+          </p>
+        </div>
+      </div>
+    </details>
   );
 }
 
@@ -1389,6 +1373,8 @@ function BusinessControlCard({
             dryRunAvailable={dryRun?.businessId === business.businessId}
             workspaceKind={business.workspaceKind}
           />
+
+          <FounderAdminSafetyRail />
 
           <FounderSystemChangeLog actions={business.actionLog} />
             </div>
@@ -2091,16 +2077,10 @@ function FounderAdminToolRail({
       panel: "activity",
       tone: "amber",
     },
-    {
-      description: "Destructive-action guards and deletion rules.",
-      label: "Safety",
-      panel: "safety",
-      tone: "red",
-    },
   ];
 
   return (
-    <aside className="sticky top-3 h-[calc(100dvh-1.5rem)] overflow-y-auto rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2 shadow-sm">
+    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2 shadow-sm lg:sticky lg:top-3 lg:h-[calc(100dvh-1.5rem)] lg:overflow-y-auto">
       <div className="mb-1 px-2 py-2">
         <p className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
           Tools
@@ -2143,7 +2123,7 @@ function FounderAdminToolRail({
         })}
       </nav>
 
-      <div className="mt-2 grid gap-1.5">
+      <div className="mt-2 grid gap-1.5 sm:grid-cols-3 lg:grid-cols-1">
         <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2 py-2">
           <p className="truncate text-[10px] font-black uppercase text-[var(--dash-text-muted)]">
             Active
@@ -2269,7 +2249,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   return (
     <FounderAdminThemeFrame initialTheme={initialTheme}>
-      <div className="mx-auto max-w-[1440px] space-y-3">
+      <div className="mx-auto flex min-h-[calc(100dvh-3rem)] max-w-[1440px] flex-col gap-3">
         <DashboardCard className="p-4" variant="priority">
           <PageHeader
             actions={
@@ -2296,7 +2276,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </FlashMessage>
         ) : null}
 
-        <div className="grid min-w-0 grid-cols-[176px_minmax(0,1fr)] gap-3">
+        <div className="grid min-w-0 flex-1 gap-3 lg:grid-cols-[220px_minmax(0,1fr)]">
           <FounderAdminToolRail
             activePanel={activePanel}
             healthNeedsAttention={productionHealthNeedsAttention}
@@ -2305,7 +2285,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             usersTotal={overview.usersTotal}
           />
 
-          <main className="min-w-0 max-h-[calc(100dvh-9.5rem)] overflow-y-auto pr-1">
+          <main className="min-w-0 overflow-y-auto pr-1 lg:max-h-[calc(100dvh-10.25rem)]">
             {activePanel === "users" ? (
               <FounderUsersSection
                 businessById={businessById}
@@ -2346,7 +2326,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               <FounderRecentActionsPanel actions={overview.recentActions} />
             ) : null}
 
-            {activePanel === "safety" ? <FounderAdminSafetyRail /> : null}
           </main>
         </div>
 
