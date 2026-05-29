@@ -30,6 +30,8 @@ import { safeLogger } from "@/server/logging/safe-logger";
 import { extractOpenAiResponseText } from "@/server/providers/ai/openai-response-parser";
 import {
   buildOpenAiStructuredResponsePayload,
+  getOpenAiStructuredRequestDiagnostics,
+  getOpenAiStructuredResponseDiagnostics,
   parseOpenAiStructuredJson,
 } from "@/server/providers/ai/openai-structured-output";
 
@@ -155,17 +157,22 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
           schemaName: input.schema.name,
         });
 
+        const requestPayload = buildOpenAiStructuredResponsePayload({
+          inputContext: input.inputContext,
+          instructions: input.instructions,
+          maxOutputTokens: input.maxOutputTokens ?? DEFAULT_MAX_OUTPUT_TOKENS,
+          model,
+          schema: input.schema,
+        });
+
+        safeLogger.info("ai.openai.phase23e_request_shape", {
+          ...getOpenAiStructuredRequestDiagnostics(requestPayload),
+          schemaName: input.schema.name,
+        });
+
         try {
           response = await fetch(OPENAI_RESPONSES_URL, {
-            body: JSON.stringify(
-              buildOpenAiStructuredResponsePayload({
-                inputContext: input.inputContext,
-                instructions: input.instructions,
-                maxOutputTokens: input.maxOutputTokens ?? DEFAULT_MAX_OUTPUT_TOKENS,
-                model,
-                schema: input.schema,
-              }),
-            ),
+            body: JSON.stringify(requestPayload),
             headers: {
               Authorization: `Bearer ${config.apiKey}`,
               "Content-Type": "application/json",
@@ -220,12 +227,20 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
         const requestId = response.headers.get("x-request-id");
         const payload = await response.json();
         const outputText = extractOpenAiResponseText(payload);
+        const responseDiagnostics = getOpenAiStructuredResponseDiagnostics({
+          extractedText: outputText,
+          payload,
+        });
 
         safeLogger.info("ai.openai.response_received", {
           attempt,
           model,
           outputTextPresent: Boolean(outputText),
           requestId,
+        });
+        safeLogger.info("ai.openai.phase23e_response_shape", {
+          ...responseDiagnostics,
+          requestIdPresent: Boolean(requestId),
         });
 
         if (!outputText) {
@@ -248,6 +263,15 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
         } catch (cause) {
           safeLogger.warn("ai.openai.invalid_json", {
             attempt,
+            extractedFirstCharacterClass:
+              responseDiagnostics.extractedFirstCharacterClass,
+            extractedTextLength: responseDiagnostics.extractedTextLength,
+            parseFailureClass:
+              responseDiagnostics.extractedTextLength === 0
+                ? "empty_output_text"
+                : responseDiagnostics.balancedJsonObjectFound
+                  ? "balanced_json_parse_failed"
+                  : "no_balanced_json_object",
             model,
             requestId,
           });

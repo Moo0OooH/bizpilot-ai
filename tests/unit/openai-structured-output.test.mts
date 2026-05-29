@@ -3,6 +3,8 @@ import { describe, it } from "node:test";
 
 import {
   buildOpenAiStructuredResponsePayload,
+  getOpenAiStructuredRequestDiagnostics,
+  getOpenAiStructuredResponseDiagnostics,
   parseOpenAiStructuredJson,
 } from "../../server/providers/ai/openai-structured-output.ts";
 
@@ -61,6 +63,69 @@ describe("OpenAI structured output helpers", () => {
         strict: true,
         type: "json_schema",
       },
+    });
+  });
+
+  it("summarizes the structured request without prompt or schema body text", () => {
+    const payload = buildOpenAiStructuredResponsePayload({
+      inputContext: "{\"lead\":\"synthetic\"}",
+      instructions: "Return only JSON.",
+      maxOutputTokens: 900,
+      model: "gpt-5.1",
+      schema: {
+        definition: bundleSchema,
+        name: "lead_conversion_bundle_v1",
+      },
+    });
+
+    assert.deepEqual(getOpenAiStructuredRequestDiagnostics(payload), {
+      formatType: "json_schema",
+      hasJsonSchemaFormat: true,
+      model: "gpt-5.1",
+      schemaName: "lead_conversion_bundle_v1",
+      strict: true,
+      usesResponsesApi: true,
+    });
+  });
+
+  it("summarizes response shape without logging generated text", () => {
+    const diagnostics = getOpenAiStructuredResponseDiagnostics({
+      extractedText: "```json\n{\"leadSummary\":\"ok\"}\n```",
+      payload: {
+        id: "resp_123",
+        output: [
+          {
+            content: [
+              {
+                text: "```json\n{\"leadSummary\":\"ok\"}\n```",
+                type: "output_text",
+              },
+            ],
+            type: "message",
+          },
+        ],
+        output_text: "```json\n{\"leadSummary\":\"ok\"}\n```",
+        status: "completed",
+      },
+    });
+
+    assert.deepEqual(diagnostics, {
+      balancedJsonObjectFound: true,
+      contentPartCount: 1,
+      contentPartTypes: "output_text",
+      directTextLength: 32,
+      directTextPresent: true,
+      extractedFirstCharacterClass: "code_fence",
+      extractedTextLength: 32,
+      generatedItemCount: 1,
+      generatedItemTypes: "message",
+      incompleteReason: null,
+      parsedHelperPresent: false,
+      responseErrorCode: null,
+      responseErrorType: null,
+      responseIdPresent: true,
+      responseStatus: "completed",
+      textPartPresent: true,
     });
   });
 
