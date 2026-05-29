@@ -275,32 +275,32 @@ body {
 }
 
 .biz-founder-admin-light {
-  --dash-bg: #f8fafc;
+  --dash-bg: #f7f9fc;
   --dash-bg-soft: #eef2f7;
   --dash-surface: #ffffff;
-  --dash-surface-muted: #f1f5f9;
+  --dash-surface-muted: #f4f6fa;
   --dash-surface-elevated: #ffffff;
-  --dash-border: rgba(15, 23, 42, 0.09);
-  --dash-border-strong: rgba(15, 23, 42, 0.14);
-  --dash-text: #0f172a;
-  --dash-text-secondary: #334155;
-  --dash-text-muted: #64748b;
-  --dash-primary: #2563eb;
-  --dash-primary-strong: #1d4ed8;
-  --dash-primary-hover: #1d4ed8;
-  --dash-primary-soft: rgba(37, 99, 235, 0.09);
-  --dash-primary-border: rgba(37, 99, 235, 0.22);
-  --dash-warning-soft: rgba(217, 119, 6, 0.1);
-  --dash-warning-border: rgba(217, 119, 6, 0.22);
-  --dash-warning-strong: #92400e;
+  --dash-border: rgba(10, 18, 25, 0.08);
+  --dash-border-strong: rgba(10, 18, 25, 0.16);
+  --dash-text: #0a1219;
+  --dash-text-secondary: rgba(10, 18, 25, 0.68);
+  --dash-text-muted: rgba(10, 18, 25, 0.48);
+  --dash-primary: #0f8c7b;
+  --dash-primary-strong: #0c6f62;
+  --dash-primary-hover: #0c6f62;
+  --dash-primary-soft: rgba(15, 140, 123, 0.10);
+  --dash-primary-border: rgba(15, 140, 123, 0.26);
+  --dash-warning-soft: rgba(217, 119, 6, 0.10);
+  --dash-warning-border: rgba(217, 119, 6, 0.26);
+  --dash-warning-strong: #b45309;
   --dash-danger-soft: rgba(220, 38, 38, 0.08);
-  --dash-danger-border: rgba(220, 38, 38, 0.18);
-  --dash-danger-strong: #991b1b;
-  --dash-success-soft: rgba(5, 150, 105, 0.09);
-  --dash-success-border: rgba(5, 150, 105, 0.2);
-  --dash-success-strong: #047857;
+  --dash-danger-border: rgba(220, 38, 38, 0.24);
+  --dash-danger-strong: #b91c1c;
+  --dash-success-soft: rgba(15, 140, 123, 0.10);
+  --dash-success-border: rgba(15, 140, 123, 0.22);
+  --dash-success-strong: #0c6f62;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(248, 250, 252, 0.96) 52%, #eef2f7 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78) 0%, rgba(247, 249, 252, 0.96) 52%, #eef2f7 100%);
 }
 
 .biz-founder-admin-dark {
