@@ -28,6 +28,10 @@ import {
 } from "@/server/providers/ai/ai-provider";
 import { safeLogger } from "@/server/logging/safe-logger";
 import { extractOpenAiResponseText } from "@/server/providers/ai/openai-response-parser";
+import {
+  buildOpenAiStructuredResponsePayload,
+  parseOpenAiStructuredJson,
+} from "@/server/providers/ai/openai-structured-output";
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const DEFAULT_MAX_OUTPUT_TOKENS = 900;
@@ -153,20 +157,15 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
 
         try {
           response = await fetch(OPENAI_RESPONSES_URL, {
-            body: JSON.stringify({
-              input: input.inputContext,
-              instructions: input.instructions,
-              max_output_tokens: input.maxOutputTokens ?? DEFAULT_MAX_OUTPUT_TOKENS,
-              model,
-              text: {
-                format: {
-                  name: input.schema.name,
-                  schema: input.schema.definition,
-                  strict: true,
-                  type: "json_schema",
-                },
-              },
-            }),
+            body: JSON.stringify(
+              buildOpenAiStructuredResponsePayload({
+                inputContext: input.inputContext,
+                instructions: input.instructions,
+                maxOutputTokens: input.maxOutputTokens ?? DEFAULT_MAX_OUTPUT_TOKENS,
+                model,
+                schema: input.schema,
+              }),
+            ),
             headers: {
               Authorization: `Bearer ${config.apiKey}`,
               "Content-Type": "application/json",
@@ -245,7 +244,7 @@ export function createOpenAiProvider(config: OpenAiProviderConfig): AIProvider {
 
         let parsed: unknown;
         try {
-          parsed = JSON.parse(outputText);
+          parsed = parseOpenAiStructuredJson(outputText);
         } catch (cause) {
           safeLogger.warn("ai.openai.invalid_json", {
             attempt,
