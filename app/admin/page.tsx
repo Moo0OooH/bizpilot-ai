@@ -74,6 +74,7 @@ export const dynamic = "force-dynamic";
 
 type AdminSearchParams = {
   adminPanel?: string | undefined;
+  businessId?: string | undefined;
   cleanupBusinessId?: string | undefined;
   error?: string | undefined;
   notice?: string | undefined;
@@ -1043,6 +1044,27 @@ function recommendedPriorityAction(business: FounderAdminBusiness): {
   };
 }
 
+function sortBusinessesByOperationalPriority(
+  businesses: FounderAdminBusiness[],
+): FounderAdminBusiness[] {
+  const rank: Record<BusinessStatus, number> = {
+    suspended: 0,
+    onboarding: 1,
+    active: 2,
+    cancelled: 3,
+  };
+
+  return [...businesses].sort((left, right) => {
+    const rankDelta = rank[left.status] - rank[right.status];
+
+    if (rankDelta !== 0) {
+      return rankDelta;
+    }
+
+    return left.name.localeCompare(right.name);
+  });
+}
+
 function controlIconClass(tone: "amber" | "blue" | "emerald" | "neutral" | "red") {
   const toneClass: Record<typeof tone, string> = {
     amber:
@@ -1164,6 +1186,76 @@ function RecentAdminChangesPanel({
         View full activity log
       </Link>
     </section>
+  );
+}
+
+function FounderBusinessMasterRail({
+  businesses,
+  params,
+  selectedBusinessId,
+}: Readonly<{
+  businesses: FounderAdminBusiness[];
+  params: AdminSearchParams;
+  selectedBusinessId: string | null;
+}>) {
+  return (
+    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm xl:sticky xl:top-0 xl:max-h-[calc(100dvh-11rem)] xl:overflow-y-auto">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Businesses
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Select one workspace; edit it in the detail panel.
+          </p>
+        </div>
+        <StatusBadge tone="blue">{businesses.length}</StatusBadge>
+      </div>
+
+      <div className="mt-3 flex gap-1.5 overflow-x-auto pb-1 xl:grid xl:overflow-visible xl:pb-0">
+        {businesses.map((business) => {
+          const selected = business.businessId === selectedBusinessId;
+          const leadBlocked =
+            business.status !== "active" || !business.publicLinkActive;
+
+          return (
+            <Link
+              className={[
+                "grid min-w-[260px] gap-2 rounded-lg border px-3 py-3 text-left transition xl:min-w-0",
+                selected
+                  ? "border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] shadow-sm"
+                  : "border-[var(--dash-border)] bg-[var(--dash-surface-muted)] hover:border-[var(--dash-primary-border)] hover:bg-[var(--dash-surface)]",
+              ].join(" ")}
+              href={adminUsersHref(params, {
+                businessId: business.businessId,
+                userPage: "1",
+              })}
+              key={business.businessId}
+            >
+              <div className="min-w-0">
+                <p className="truncate text-sm font-black text-[var(--dash-text)]">
+                  {business.name}
+                </p>
+                <p className="mt-1 truncate text-[11px] font-bold text-[var(--dash-text-muted)]">
+                  {business.ownerEmail}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                <StatusBadge tone={statusTone(business.status)}>
+                  {statusLabels[business.status]}
+                </StatusBadge>
+                <StatusBadge tone={planTone(business.planSlug)}>
+                  {planLabels[business.planSlug]}
+                </StatusBadge>
+                <StatusBadge tone={leadBlocked ? "amber" : "emerald"}>
+                  {leadBlocked ? "Intake off" : "Intake open"}
+                </StatusBadge>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </aside>
   );
 }
 
@@ -1785,48 +1877,70 @@ function FounderUsersSection({
   const hasPreviousPage = usersPage > 1;
   const hasNextPage = usersPage < usersLastPage;
   const selectedPriority = safeParam(params.userPriority);
+  const businesses = sortBusinessesByOperationalPriority(
+    Array.from(businessById.values()),
+  );
+  const selectedBusinessId = safeParam(params.businessId);
   const featuredBusiness =
+    businessById.get(selectedBusinessId) ??
     shownUsers
       .map((user) =>
         user.businessId ? (businessById.get(user.businessId) ?? null) : null,
       )
       .find((business): business is FounderAdminBusiness => Boolean(business)) ??
+    businesses[0] ??
     null;
 
   return (
-    <DashboardCard className="space-y-4 p-4 sm:p-5" variant="elevated">
-      {featuredBusiness ? (
-        <BusinessControlCard
-          business={featuredBusiness}
-          dryRun={
-            dryRun?.businessId === featuredBusiness.businessId ? dryRun : null
-          }
+    <div className="grid gap-3">
+      <div className="grid min-w-0 gap-3 xl:grid-cols-[320px_minmax(0,1fr)]">
+        <FounderBusinessMasterRail
+          businesses={businesses}
+          params={params}
+          selectedBusinessId={featuredBusiness?.businessId ?? null}
         />
-      ) : null}
-
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-        <div>
-          <p className="text-sm font-black text-[var(--dash-text)]">
-            Customer queue
-          </p>
-          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Search and open another customer when founder focus changes.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
-          <FounderAdminThemeSelector />
-          <StatusBadge tone="blue">{shownUsers.length} shown</StatusBadge>
-          <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
-            Page {usersPage} / {usersLastPage}
-          </span>
-          <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
-            {usersTotal} auth users
-          </span>
-          <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
-            {usersSearchMode === "auth_filter" ? "Search indexed" : "Paged"}
-          </span>
-        </div>
+        <DashboardCard className="min-w-0 p-3 sm:p-4" variant="elevated">
+          {featuredBusiness ? (
+            <BusinessControlCard
+              business={featuredBusiness}
+              dryRun={
+                dryRun?.businessId === featuredBusiness.businessId ? dryRun : null
+              }
+            />
+          ) : (
+            <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-4 py-8 text-center text-sm text-[var(--dash-text-secondary)]">
+              No business workspace is available yet.
+            </p>
+          )}
+        </DashboardCard>
       </div>
+
+      <DashboardCard className="space-y-4 p-4 sm:p-5" variant="elevated">
+        <details>
+          <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+            <div>
+              <p className="text-sm font-black text-[var(--dash-text)]">
+                Users and auth tools
+              </p>
+              <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                Search auth users, recover workspaces, and open account-level tools.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
+              <StatusBadge tone="blue">{shownUsers.length} shown</StatusBadge>
+              <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
+                Page {usersPage} / {usersLastPage}
+              </span>
+              <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
+                {usersTotal} auth users
+              </span>
+              <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
+                {usersSearchMode === "auth_filter" ? "Search indexed" : "Paged"}
+              </span>
+            </div>
+          </summary>
+
+          <div className="mt-4 grid gap-4">
 
       <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
         <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
@@ -2129,7 +2243,10 @@ function FounderUsersSection({
           ) : null}
         </div>
       </div>
-    </DashboardCard>
+          </div>
+        </details>
+      </DashboardCard>
+    </div>
   );
 }
 
