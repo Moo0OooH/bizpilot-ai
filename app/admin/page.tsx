@@ -59,6 +59,7 @@ import {
   readFounderUserPageSize,
   type FounderAdminActionSummary,
   type FounderAdminBusiness,
+  type FounderAdminOverview,
   type FounderAdminUser,
 } from "@/server/services/founder-admin.service";
 import {
@@ -90,7 +91,7 @@ type AdminPageProps = Readonly<{
   searchParams?: Promise<AdminSearchParams>;
 }>;
 
-type AdminPanel = "users" | "health" | "leads" | "activity";
+type AdminPanel = "businesses" | "users" | "health" | "leads" | "activity";
 
 type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
@@ -437,6 +438,8 @@ function safeParam(value: string | undefined, fallback = "all"): string {
 
 function readAdminPanel(value: string | undefined): AdminPanel {
   if (
+    value === "businesses" ||
+    value === "users" ||
     value === "health" ||
     value === "leads" ||
     value === "activity"
@@ -444,7 +447,7 @@ function readAdminPanel(value: string | undefined): AdminPanel {
     return value;
   }
 
-  return "users";
+  return "businesses";
 }
 
 function matchesQuery(values: ReadonlyArray<string | null | undefined>, query: string) {
@@ -1851,6 +1854,117 @@ function FounderPasswordControls({
   );
 }
 
+function FounderBusinessesSection({
+  businessById,
+  dryRun,
+  params,
+  recentActions,
+  totals,
+  usersTotal,
+}: Readonly<{
+  businessById: Map<string, FounderAdminBusiness>;
+  dryRun: FounderCleanupDryRun | null;
+  params: AdminSearchParams;
+  recentActions: FounderAdminOverview["recentActions"];
+  totals: FounderAdminOverview["totals"];
+  usersTotal: number;
+}>) {
+  const businesses = sortBusinessesByOperationalPriority(
+    Array.from(businessById.values()),
+  );
+  const selectedBusinessId = safeParam(params.businessId);
+  const featuredBusiness = businessById.get(selectedBusinessId) ?? businesses[0] ?? null;
+  const inactiveLinks = businesses.filter((business) => !business.publicLinkActive).length;
+  const onboarding = businesses.filter(
+    (business) => business.status === "onboarding",
+  ).length;
+  const productionCustomers = businesses.filter(
+    (business) => business.workspaceKind === "production_customer",
+  ).length;
+
+  return (
+    <div className="grid gap-3">
+      <DashboardCard className="p-4 sm:p-5" variant="priority">
+        <PageHeader
+          actions={
+            <>
+              <Link className={buttonClass} href="/admin?adminPanel=leads">
+                Open inbox
+              </Link>
+              <Link className={buttonClass} href="/admin?adminPanel=health">
+                Check health
+              </Link>
+              <Link className={primaryButtonClass} href="/admin?adminPanel=users">
+                Manage users
+              </Link>
+            </>
+          }
+          description="Founder command center for pilot access, quote links, plan state, workspace safety, customer notes, and audit trails."
+          eyebrow="Founder Admin"
+          title="Business Operations"
+        />
+
+        <section className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+          <MetricCard
+            detail="All loaded customer workspaces."
+            label="Businesses"
+            tone="blue"
+            value={totals.businesses}
+          />
+          <MetricCard
+            detail="Onboarding or active customer workspaces."
+            label="Active pilots"
+            tone="emerald"
+            value={totals.activePilots}
+          />
+          <MetricCard
+            detail="Starter or Pro manual plan state."
+            label="Payment-ready"
+            tone="amber"
+            value={totals.paymentReady}
+          />
+          <MetricCard
+            detail="Public quote links currently inactive."
+            label="Quote links off"
+            tone={inactiveLinks > 0 ? "amber" : "emerald"}
+            value={inactiveLinks}
+          />
+          <MetricCard
+            detail={`${productionCustomers} production / ${onboarding} onboarding / ${usersTotal} auth users.`}
+            label="Paused access"
+            tone={totals.suspended > 0 ? "red" : "neutral"}
+            value={totals.suspended}
+          />
+        </section>
+      </DashboardCard>
+
+      <div className="grid min-w-0 gap-3 xl:grid-cols-[320px_minmax(0,1fr)]">
+        <FounderBusinessMasterRail
+          businesses={businesses}
+          params={params}
+          selectedBusinessId={featuredBusiness?.businessId ?? null}
+        />
+        <DashboardCard className="min-w-0 p-3 sm:p-4" variant="elevated">
+          {featuredBusiness ? (
+            <BusinessControlCard
+              business={featuredBusiness}
+              dryRun={
+                dryRun?.businessId === featuredBusiness.businessId ? dryRun : null
+              }
+            />
+          ) : (
+            <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-4 py-8 text-center text-sm text-[var(--dash-text-secondary)]">
+              No business workspace is available yet.
+            </p>
+          )}
+        </DashboardCard>
+      </div>
+
+      <FounderRecentActionsPanel actions={recentActions} />
+    </div>
+  );
+}
+
 function FounderUsersSection({
   businessById,
   dryRun,
@@ -2551,7 +2665,12 @@ function AdminTabsBar({
   activePanel: AdminPanel;
   healthNeedsAttention: boolean;
   params: AdminSearchParams;
-  totals: { activePilots: number; paymentReady: number; suspended: number };
+  totals: {
+    activePilots: number;
+    businesses: number;
+    paymentReady: number;
+    suspended: number;
+  };
   usersTotal: number;
 }>) {
   const items: ReadonlyArray<{
@@ -2559,6 +2678,7 @@ function AdminTabsBar({
     label: string;
     panel: AdminPanel;
   }> = [
+    { count: totals.businesses, label: "Businesses", panel: "businesses" },
     { count: usersTotal, label: "Users", panel: "users" },
     { label: "Health", panel: "health" },
     { label: "Leads", panel: "leads" },
@@ -2637,7 +2757,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const [params = {}, user] = await Promise.all([searchParams, getCurrentUser()]);
 
   if (!user) {
-    redirect("/auth/sign-in");
+    redirect("/auth/sign-in?redirectTo=%2Fadmin");
   }
 
   const usersPage = readFounderUserPage(params.userPage);
@@ -2703,6 +2823,17 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         />
 
         <main className="min-w-0 flex-1 pb-6">
+          {activePanel === "businesses" ? (
+            <FounderBusinessesSection
+              businessById={businessById}
+              dryRun={dryRun}
+              params={params}
+              recentActions={overview.recentActions}
+              totals={overview.totals}
+              usersTotal={overview.usersTotal}
+            />
+          ) : null}
+
           {activePanel === "users" ? (
             <FounderUsersSection
               businessById={businessById}

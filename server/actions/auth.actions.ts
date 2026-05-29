@@ -52,8 +52,34 @@ const SIGN_UP_EMAIL_DELIVERY_MESSAGE =
 const AUTH_INTENT_SIGN_UP = "sign-up";
 const AUTH_INTENT_PASSWORD_RESET = "password-reset";
 
-function redirectWithSignInError(message: string): never {
-  redirect(`/auth/sign-in?error=${encodeURIComponent(message)}`);
+function readPostAuthRedirect(formData: FormData): string {
+  const value = formData.get("redirectTo");
+
+  if (typeof value !== "string" || value.trim().length === 0) {
+    return "/dashboard";
+  }
+
+  const redirectTo = value.trim();
+
+  if (
+    redirectTo === "/admin" ||
+    redirectTo === "/dashboard" ||
+    redirectTo.startsWith("/dashboard/")
+  ) {
+    return redirectTo;
+  }
+
+  return "/dashboard";
+}
+
+function redirectWithSignInError(message: string, redirectTo = "/dashboard"): never {
+  const searchParams = new URLSearchParams({ error: message });
+
+  if (redirectTo !== "/dashboard") {
+    searchParams.set("redirectTo", redirectTo);
+  }
+
+  redirect(`/auth/sign-in?${searchParams.toString()}`);
 }
 
 function redirectWithSignUpError(message: string): never {
@@ -78,17 +104,17 @@ function redirectWithResetPasswordError(message: string, code?: string): never {
   redirect(`/auth/reset-password?${searchParams.toString()}`);
 }
 
-function readSignInEmail(formData: FormData): string {
+function readSignInEmail(formData: FormData, redirectTo = "/dashboard"): string {
   const value = formData.get("email");
 
   if (typeof value !== "string" || value.trim().length === 0) {
-    redirectWithSignInError("Enter your email address.");
+    redirectWithSignInError("Enter your email address.", redirectTo);
   }
 
   const email = value.trim();
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    redirectWithSignInError("Enter a valid email address.");
+    redirectWithSignInError("Enter a valid email address.", redirectTo);
   }
 
   return email;
@@ -364,17 +390,20 @@ function readPasswordResetEmail(formData: FormData): string {
   return email;
 }
 
-function readSignInPassword(formData: FormData): string {
+function readSignInPassword(formData: FormData, redirectTo = "/dashboard"): string {
   const value = formData.get("password");
 
   if (typeof value !== "string" || value.trim().length === 0) {
-    redirectWithSignInError("Enter your password.");
+    redirectWithSignInError("Enter your password.", redirectTo);
   }
 
   return value;
 }
 
-function redirectWithCleanSignInAuthError(error: unknown): never {
+function redirectWithCleanSignInAuthError(
+  error: unknown,
+  redirectTo = "/dashboard",
+): never {
   const message = error instanceof Error ? error.message.toLowerCase() : "";
   const rateLimitHints = ["rate limit", "too many", "security purposes"];
   const invalidCredentialHints = [
@@ -384,20 +413,21 @@ function redirectWithCleanSignInAuthError(error: unknown): never {
   ];
 
   if (message.includes("email not confirmed")) {
-    redirectWithSignInError("Confirm your email before signing in.");
+    redirectWithSignInError("Confirm your email before signing in.", redirectTo);
   }
 
   if (rateLimitHints.some((hint) => message.includes(hint))) {
     redirectWithSignInError(
       "Too many sign-in attempts. Please wait a moment and try again.",
+      redirectTo,
     );
   }
 
   if (invalidCredentialHints.some((hint) => message.includes(hint))) {
-    redirectWithSignInError("Email or password is incorrect.");
+    redirectWithSignInError("Email or password is incorrect.", redirectTo);
   }
 
-  redirectWithSignInError("We couldn't sign you in. Please try again.");
+  redirectWithSignInError("We couldn't sign you in. Please try again.", redirectTo);
 }
 
 function readSignUpText(input: {
@@ -500,8 +530,9 @@ function redirectWithCleanSignUpAuthError(error: unknown): never {
 }
 
 export async function signInAction(formData: FormData): Promise<never> {
-  const email = readSignInEmail(formData);
-  const password = readSignInPassword(formData);
+  const redirectTo = readPostAuthRedirect(formData);
+  const email = readSignInEmail(formData, redirectTo);
+  const password = readSignInPassword(formData, redirectTo);
 
   try {
     await signInWithPassword({
@@ -509,10 +540,10 @@ export async function signInAction(formData: FormData): Promise<never> {
       password,
     });
   } catch (error) {
-    redirectWithCleanSignInAuthError(error);
+    redirectWithCleanSignInAuthError(error, redirectTo);
   }
 
-  redirect("/dashboard");
+  redirect(redirectTo);
 }
 
 export async function requestPasswordResetAction(

@@ -36,18 +36,41 @@ type SignInPageProps = Readonly<{
   searchParams?: Promise<{
     error?: string;
     notice?: string;
+    redirectTo?: string;
   }>;
 }>;
 
+function readSafeSignInRedirect(value: string | undefined): string {
+  if (
+    value === "/admin" ||
+    value === "/dashboard" ||
+    value?.startsWith("/dashboard/")
+  ) {
+    return value;
+  }
+
+  return "/dashboard";
+}
+
 export default async function SignInPage({ searchParams }: SignInPageProps) {
   const params = await searchParams;
+  const redirectTo = readSafeSignInRedirect(params?.redirectTo);
   const language = readSupportedLanguage(
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
   const copy = getBizPilotCopy(language).auth;
 
   return (
-    <AuthShell copy={copy} footer={copy.signInFooter} language={language} redirectPath="/auth/sign-in">
+    <AuthShell
+      copy={copy}
+      footer={copy.signInFooter}
+      language={language}
+      redirectPath={
+        redirectTo === "/dashboard"
+          ? "/auth/sign-in"
+          : `/auth/sign-in?redirectTo=${encodeURIComponent(redirectTo)}`
+      }
+    >
       <AuthCard subtitle={copy.signInSubtitle} title={copy.signInTitle}>
         {params?.notice ? (
           <p
@@ -78,6 +101,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
         ) : null}
 
         <form action={signInAction} className="mt-5 space-y-3.5">
+          <input name="redirectTo" type="hidden" value={redirectTo} />
           <label className={authLabelClassName}>
             <span style={{ color: "var(--biz-page-text-soft)" }}>{copy.email}</span>
             <span className="relative block">
