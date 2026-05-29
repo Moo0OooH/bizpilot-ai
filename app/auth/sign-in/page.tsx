@@ -35,6 +35,7 @@ import Link from "next/link";
 type SignInPageProps = Readonly<{
   searchParams?: Promise<{
     error?: string;
+    next?: string;
     notice?: string;
     redirectTo?: string;
   }>;
@@ -43,6 +44,7 @@ type SignInPageProps = Readonly<{
 function readSafeSignInRedirect(value: string | undefined): string {
   if (
     value === "/admin" ||
+    value?.startsWith("/admin/") ||
     value === "/dashboard" ||
     value?.startsWith("/dashboard/")
   ) {
@@ -54,7 +56,8 @@ function readSafeSignInRedirect(value: string | undefined): string {
 
 export default async function SignInPage({ searchParams }: SignInPageProps) {
   const params = await searchParams;
-  const redirectTo = readSafeSignInRedirect(params?.redirectTo);
+  const requestedRedirect = params?.redirectTo ?? params?.next;
+  const redirectTo = readSafeSignInRedirect(requestedRedirect);
   const language = readSupportedLanguage(
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
