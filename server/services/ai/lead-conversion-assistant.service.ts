@@ -119,6 +119,8 @@ const bundleSchema = {
   type: "object",
 } as const;
 
+export const LEAD_CONVERSION_BUNDLE_MAX_OUTPUT_TOKENS = 3_000;
+
 function isBundle(value: unknown): value is LeadConversionAiBundle {
   if (!value || typeof value !== "object") {
     return false;
@@ -321,6 +323,7 @@ export async function generateLeadAiBundle(input: {
     const generated = await provider.generateStructuredBundle<LeadConversionAiBundle>({
       inputContext: context,
       instructions: buildInstructions(language),
+      maxOutputTokens: LEAD_CONVERSION_BUNDLE_MAX_OUTPUT_TOKENS,
       model,
       schema: {
         definition: bundleSchema,
