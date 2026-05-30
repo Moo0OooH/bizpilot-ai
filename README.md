@@ -38,22 +38,25 @@ Phase 23 production functional smoke has completed on synthetic data:
 - Phase 23C passed: controlled synthetic quote intake on `MrTester`.
 - Phase 23D passed: synthetic owner dashboard runtime proof.
 - Phase 23E passed: targeted OpenAI provider proof on the synthetic lead.
-- Phase 23F partially passed: password reset request handling is safe, but
-  mailbox delivery, custom SMTP, reset-link open, and owner notification email
-  proof remain open.
+- Phase 23F passed for external Auth email/custom SMTP: Resend SMTP is
+  configured, domain DNS is verified, signup confirmation passed, password
+  reset email/link/completion passed, and login after reset passed.
 
 Real customer data is still not approved. The current blockers are:
 
-- custom SMTP/Auth email delivery proof,
 - backup/export/restore proof,
-- owner notification implementation decision,
 - OpenAI cost/quota/fallback monitoring posture.
+
+Owner notification email is intentionally deferred for the first pilot. The
+approved first-pilot operating model is manual-only: owners check the dashboard
+manually, review AI drafts, and manually respond.
 
 Current source-of-truth docs:
 
 - `docs/readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md`
 - `docs/readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md`
 - `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
+- `docs/product/PRODUCT_DECISION_OWNER_NOTIFICATION_EMAIL_DEFERRED_FIRST_PILOT_2026-05-30.md`
 
 ## Current Implementation Status
 

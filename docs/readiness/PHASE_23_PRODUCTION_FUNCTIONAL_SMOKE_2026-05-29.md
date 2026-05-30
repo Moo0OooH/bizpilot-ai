@@ -1105,7 +1105,9 @@ Passed for inspected app output and logs:
 
 ### Phase 23F Status
 
-Phase 23F is partially passed, not fully passed.
+Phase 23F initially partially passed from repo-side inspection and one safe
+password-reset request. It was later completed by owner-provided external
+Resend/Supabase SMTP evidence.
 
 Passed:
 
@@ -1116,13 +1118,28 @@ Passed:
 - Public auth routes, including `/auth/reset-password`, remained healthy.
 - Sensitive output checks passed.
 
-Not passed / remaining email blockers:
+External owner-provided completion evidence:
 
-- Actual mailbox arrival was not verified.
-- Reset link open was not verified.
-- Password reset completion was not tested because owner approval to change the
-  password was not requested for this phase.
-- Supabase custom SMTP provider/domain verification remains unconfirmed.
-- Owner notification email delivery remains unimplemented/unverified.
-- From/Reply-To posture for owner notifications remains unverified until an
-  email provider and sender identity are configured.
+- Provider: Resend.
+- Sender: `no-reply@bizpilo.com`.
+- Resend domain DNS verified.
+- Hostinger DNS records added: DKIM, SPF, MX, DMARC.
+- Supabase custom SMTP enabled with `smtp.resend.com` on port `587`.
+- Resend API key created with Sending access only; the value is not recorded.
+- Signup confirmation email passed.
+- Confirm email link passed.
+- Forgot-password email passed.
+- Reset-password link opened.
+- Password reset completion passed.
+- Login after reset passed.
+- Resend log proof showed `POST /emails` returned `200` via SMTP v1.0.0.
+
+Phase 23F external Auth email/custom SMTP gate is now FULL PASS.
+
+Email-adjacent product decision:
+
+- Owner notification email is intentionally deferred for the first pilot.
+- The first pilot is manual-only: owner checks dashboard manually and manually
+  responds after reviewing the lead and AI draft.
+- No owner notification email, customer-facing email automation, AI auto-send,
+  or autonomous workflow is required or approved for first-pilot readiness.

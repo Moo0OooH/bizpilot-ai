@@ -29,6 +29,21 @@ The customer's Settings surface must show what is available, enabled, planned,
 blocked by setup, or blocked by provider/payment/API readiness.
 ```
 
+2026-05-30 first-pilot communication decision:
+
+```text
+Owner notification email is deferred for the first BizPilot pilot.
+The first pilot is manual-only.
+Owner checks dashboard manually.
+No owner notification email, customer-facing email automation, AI auto-send, or
+autonomous communication workflow is required or approved for first-pilot
+readiness.
+```
+
+See:
+
+- `product/PRODUCT_DECISION_OWNER_NOTIFICATION_EMAIL_DEFERRED_FIRST_PILOT_2026-05-30.md`
+
 ## 3. Feature Entitlement Model
 
 Every capability must have an explicit feature record before it becomes

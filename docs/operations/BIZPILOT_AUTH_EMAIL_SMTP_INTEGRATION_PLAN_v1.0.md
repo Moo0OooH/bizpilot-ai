@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Signup confirmation and auth-email delivery plan
-**Status:** Active Phase 21P plan; not configured in production yet
+**Status:** External Auth email/custom SMTP gate passed by owner-provided Resend/Supabase proof
 **Owner:** MoOoH
 **Last Updated:** 2026-05-25
 **Related:**
@@ -31,12 +31,49 @@ Official reference:
 
 | Area | Status |
 | --- | --- |
-| Signup confirmation smoke | Previously passed once with a synthetic disposable inbox |
-| Stable custom SMTP | Not configured/verified |
-| Safe ongoing test inbox | Needed for repeatable smoke |
-| Real user signup readiness | Blocked |
+| Signup confirmation smoke | Passed by owner-provided external proof |
+| Stable custom SMTP | Passed: Resend + Supabase custom SMTP |
+| Safe ongoing test inbox | Used by owner outside repo; private inbox not recorded |
+| Real user signup readiness | Email gate passed; still depends on backup/restore and owner real-data approval |
 | Marketing/bulk email | Out of scope |
 | Hidden auto-send/customer messaging | Not allowed |
+
+## 2A. 2026-05-30 External Completion Evidence
+
+Owner reported the external Auth email/custom SMTP gate fully passed.
+
+Recorded non-secret posture:
+
+| Item | Result |
+| --- | --- |
+| Provider | Resend |
+| Sender | `no-reply@bizpilo.com` |
+| Resend domain DNS verified | Yes |
+| Hostinger DNS records | DKIM, SPF, MX, DMARC |
+| Supabase custom SMTP | Enabled |
+| SMTP host | `smtp.resend.com` |
+| SMTP port | `587` |
+| API key posture | Created with Sending access only; value not recorded |
+| Signup confirmation email | Passed |
+| Confirm email link | Passed |
+| Forgot-password email | Passed |
+| Reset-password link opened | Passed |
+| Password reset completion | Passed |
+| Login after reset | Passed |
+| Resend log proof | `POST /emails` returned `200` via SMTP v1.0.0 |
+
+Security rule remains active:
+
+- do not commit, print, log, or store SMTP credentials, Resend API keys,
+  confirmation links, reset links, auth tokens, passwords, or full private inbox
+  addresses.
+
+This closes the external Auth email/custom SMTP readiness gate. It does not
+authorize customer-facing automated email.
+
+Owner notification email is intentionally deferred for the first pilot. Do not
+implement app-level notification infrastructure based solely on this deferred
+feature.
 
 ## 3. Provider Recommendation
 
@@ -129,10 +166,10 @@ Keep these controls active:
 - keep CAPTCHA/waitlist as a future option if signup abuse appears,
 - keep customer messaging manual and owner-reviewed; Auth email is not customer follow-up automation.
 
-## 9. Phase 21P Decision
+## 9. Updated Decision
 
 ```text
-Custom SMTP is a real-pilot blocker.
-Synthetic signup smoke may continue with a safe disposable inbox.
-Real customer onboarding waits until SMTP delivery and reset-password smoke pass.
+Custom SMTP/Auth email gate is passed by owner-provided Resend/Supabase proof.
+Real customer onboarding still waits for backup/export/restore readiness and
+explicit owner real-data approval.
 ```

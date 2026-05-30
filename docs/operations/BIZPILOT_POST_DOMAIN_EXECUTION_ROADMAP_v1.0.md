@@ -40,6 +40,10 @@ Turn the purchased domain into a pilot-ready public demo and use it to onboard t
 - outreach
 - demo
 - setup
+- manual dashboard-check operating model
+- no owner notification email for first pilot
+- no customer-facing email automation
+- no AI auto-send
 - 7-day check-in
 - collect usage
 - collect objections

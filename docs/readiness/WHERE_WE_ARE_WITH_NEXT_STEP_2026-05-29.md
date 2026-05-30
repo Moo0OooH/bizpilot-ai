@@ -27,17 +27,20 @@ The strongest current evidence is Phase 23:
 - Phase 23D passed: synthetic owner dashboard runtime proof.
 - Phase 23E passed: OpenAI provider success on the synthetic lead after parser
   and token-budget fixes.
-- Phase 23F partially passed: password reset request path is safe, but real
-  email delivery and custom SMTP posture are not fully proven.
+- Phase 23F passed for external Auth email/custom SMTP after owner-side Resend,
+  DNS, Supabase SMTP, signup confirmation, forgot-password, reset-link, reset
+  completion, and login-after-reset proof.
 
 The project is **not yet approved for real customer data** because the remaining
 operational gates are still open:
 
-1. Custom SMTP/email delivery proof.
-2. Password reset email arrival and reset-link open proof.
-3. Owner notification email implementation/proof, if this is required for pilot.
-4. Backup/export/restore posture and restore drill.
-5. Ongoing OpenAI cost/quota/fallback monitoring.
+1. Backup/export/restore posture and restore drill.
+2. Ongoing OpenAI cost/quota/fallback monitoring.
+3. Final owner approval for real customer data.
+
+Owner notification email is intentionally deferred for the first pilot. The
+approved operating model is manual-only: owner checks dashboard manually,
+reviews the AI draft, and manually responds.
 
 ## Current Git And Documentation State
 
@@ -255,7 +258,7 @@ Final successful proof:
 
 ### Phase 23F - Email, SMTP, And Password Reset Proof
 
-Partially passed, not fully passed.
+Passed for external Auth email/custom SMTP.
 
 Passed:
 
@@ -278,14 +281,29 @@ Passed:
 - no token/reset link/password/provider secret was printed,
 - public smoke passed 9/9 afterward.
 
-Not passed:
+Owner later reported the external email gate fully passed:
 
-- mailbox arrival was not verified,
-- reset link was not opened,
-- password reset completion was not tested,
-- custom SMTP provider/domain verification remains unconfirmed,
-- owner notification email delivery is not implemented/proven,
-- From/Reply-To posture is not proven.
+- Provider: Resend.
+- Sender: `no-reply@bizpilo.com`.
+- Resend domain DNS verified.
+- Hostinger DNS records added: DKIM, SPF, MX, DMARC.
+- Supabase custom SMTP enabled with `smtp.resend.com` on port `587`.
+- Resend API key exists with Sending access only; the value is not recorded.
+- Signup confirmation email passed.
+- Confirm email link passed.
+- Forgot-password email passed.
+- Reset-password link opened.
+- Password reset completion passed.
+- Login after reset passed.
+- Resend log proof showed SMTP accepted the email request with `POST /emails`
+  returning `200` via SMTP v1.0.0.
+
+First-pilot communication decision:
+
+- app-level owner notification email is intentionally deferred,
+- owner checks the dashboard manually,
+- no customer-facing automated email is approved,
+- no AI auto-send or autonomous communication workflow is approved.
 
 ## Production Code Changes Completed During This Readiness Push
 
@@ -326,40 +344,31 @@ The OpenAI fixes were intentionally narrow:
 
 2. **Custom SMTP/Auth email proof**
 
-   Current state:
+   Current state: passed by owner-provided external proof.
 
-   - password reset request is accepted,
-   - app behavior is safe,
-   - actual mailbox delivery is not verified,
-   - custom SMTP/DNS/provider status is not verified,
-   - reset-link open is not verified.
+   Recorded without secrets:
 
-   Required before real users:
-
-   - choose and configure transactional email provider,
-   - verify sending domain/DNS,
-   - configure Supabase custom SMTP,
-   - use one approved receivable test inbox,
-   - run signup/confirmation smoke,
-   - run forgot/reset-password smoke,
-   - open the reset link without printing it,
-   - verify reset page and completion if owner approves password change.
+   - Resend selected,
+   - `no-reply@bizpilo.com` sender,
+   - DNS verified,
+   - Supabase custom SMTP enabled,
+   - signup confirmation and password-reset flows passed,
+   - login after reset passed.
 
 3. **Owner notification email decision**
 
    Current state:
 
-   - dashboard has notification UI,
-   - app-level owner notification sender was not found,
-   - no `RESEND_API_KEY` was present in Vercel production env listing,
-   - owner notification proof was skipped.
+   - intentionally deferred for the first pilot,
+   - no owner notification email is required for first-pilot readiness,
+   - no app-level notification sender should be implemented based solely on
+     the deferred feature.
 
-   Decision needed:
+   Revisit trigger:
 
-   - Is owner notification email required for the first real pilot?
-   - If yes, implement and test a narrow owner-only notification sender.
-   - If no, adjust UI/copy/readiness docs so owner notification is clearly
-     "not active yet" and the owner workflow remains manual.
+   - successful pilot validation,
+   - active pilot customers,
+   - demonstrated operational need.
 
 4. **OpenAI monitoring posture**
 
@@ -412,24 +421,18 @@ git push origin main
 
 Do not include production code changes in this docs commit.
 
-### Next Step 2 - Close Email Gate
+### Next Step 2 - Email Gate Follow-Up
 
-Owner decisions needed:
+Auth email/custom SMTP is now passed by owner-provided external proof.
 
-1. Pick provider:
-   - Postmark,
-   - Resend,
-   - SendGrid,
-   - AWS SES,
-   - or another transactional provider.
-2. Confirm sender/domain:
-   - example: `no-reply@auth.bizpilo.com`,
-   - or another owner-approved address.
-3. Configure DNS and Supabase custom SMTP outside the repo.
-4. Provide one approved receivable test inbox.
-5. Run one controlled signup/confirmation and forgot/reset smoke.
+Remaining email-related posture:
 
-No real customer email should be used.
+1. Keep first pilot manual-only, with owners checking dashboard manually.
+2. Do not implement owner notification email for first-pilot readiness.
+3. Revisit only after pilot validation and demonstrated operational need.
+
+No customer-facing automated email should be enabled without a separate
+implementation and smoke proof.
 
 ### Next Step 3 - Close Backup/Restore Gate
 
@@ -443,21 +446,20 @@ Owner decisions needed:
 
 No destructive cleanup or real customer data intake should happen before this.
 
-### Next Step 4 - Decide Owner Notification Scope
+### Next Step 4 - Preserve Manual-Only Pilot Scope
 
-Two safe paths:
+Owner notification email is deferred for the first pilot.
 
-1. **Manual-only pilot**
-   - leave owner notifications unimplemented,
-   - make UI/copy explicit that notification email is not active,
-   - owner checks dashboard manually.
+Keep:
 
-2. **Owner notification pilot**
-   - implement narrow owner-only notification sender,
-   - no customer-facing email,
-   - no AI auto-send,
-   - test only on `MrTester` or approved safe inbox,
-   - verify subject/body, From/Reply-To, and failure behavior.
+- owner notifications unimplemented,
+- owner checks dashboard manually,
+- no customer-facing email automation,
+- no AI auto-send,
+- no autonomous communication workflows.
+
+Revisit only after successful pilot validation, active pilot customers, and a
+demonstrated operational need.
 
 ### Next Step 5 - Real Pilot Approval Decision
 
@@ -502,10 +504,9 @@ core synthetic quote, dashboard, and AI draft paths end to end.
 
 The remaining blockers are operational, not core product-flow blockers:
 
-1. Email delivery/custom SMTP proof.
-2. Backup/export/restore proof.
-3. Owner notification implementation decision.
-4. Ongoing OpenAI operational monitoring.
+1. Backup/export/restore proof.
+2. Ongoing OpenAI operational monitoring.
+3. Owner notification email remains deferred until post-validation need.
 
 Once those gates are closed, the project can be reassessed for a carefully
 scoped first real pilot.

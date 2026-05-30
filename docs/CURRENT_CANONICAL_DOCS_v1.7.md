@@ -20,6 +20,11 @@ Customer-facing framing:
 
 Read these first, in this exact order:
 
+2026-05-30 product decision addendum: owner notification email is intentionally
+deferred for the first pilot. The approved communication workflow is manual
+dashboard review and manual response. See
+`product/PRODUCT_DECISION_OWNER_NOTIFICATION_EMAIL_DEFERRED_FIRST_PILOT_2026-05-30.md`.
+
 1. `CURRENT_CANONICAL_DOCS_v1.7.md` — this file; active source-of-truth map.
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` — execution instructions for Cloud Code/Codex.
 3. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` — active strategic overlay.
@@ -50,8 +55,10 @@ starting new work:
 - `readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md` - active real-data
   approval gate; do not start real customer data until this gate closes.
 - `readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md` - Phase 23B
-  through Phase 23F production evidence; core synthetic flow and OpenAI provider
-  proof passed, email posture partially passed.
+  through Phase 23F production evidence; core synthetic flow, OpenAI provider
+  proof, and external Auth email/custom SMTP proof passed.
+- `product/PRODUCT_DECISION_OWNER_NOTIFICATION_EMAIL_DEFERRED_FIRST_PILOT_2026-05-30.md` -
+  owner notification email is intentionally deferred for the first pilot.
 - `readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md` - current docs audit,
   progress summary, repaired inventory gap list, and remaining operational gaps.
 - `readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md` -
@@ -71,8 +78,10 @@ Current top-level interpretation:
 - Synthetic production readiness is strong after Phase 23. `MrTester` is the
   reusable synthetic smoke tenant.
 - Real customer-data scale is still gated by backup/export/restore posture,
-  custom SMTP/Auth email delivery proof, reset-link mailbox proof, owner
-  notification decision, OpenAI operational monitoring, and owner approval.
+  OpenAI operational monitoring, and owner approval. External Auth email/custom
+  SMTP proof is now passed by owner-provided Resend/Supabase SMTP evidence.
+  Owner notification email is not a first-pilot readiness requirement because
+  it is intentionally deferred.
 - Broader feature work remains allowed only through feature entitlement,
   Settings visibility, guide coverage, smoke evidence, and honest
   customer-facing copy.
@@ -84,6 +93,7 @@ Current top-level interpretation:
 - `product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
 - `product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md`
 - `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+- `product/PRODUCT_DECISION_OWNER_NOTIFICATION_EMAIL_DEFERRED_FIRST_PILOT_2026-05-30.md`
 - `product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`
 - `product/BIZPILOT_DESIGN_SYSTEM_SPEC_v1.0.md`
 - `design/DASHBOARD_COLOR_SYSTEM_2026.md`

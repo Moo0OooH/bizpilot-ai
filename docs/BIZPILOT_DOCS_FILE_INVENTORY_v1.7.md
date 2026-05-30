@@ -59,13 +59,15 @@ source-of-truth files:
 - `readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md`
 - `readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md`
 - `readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
+- `product/PRODUCT_DECISION_OWNER_NOTIFICATION_EMAIL_DEFERRED_FIRST_PILOT_2026-05-30.md`
 
 Current interpretation:
 
 - Phase 23B, 23C, 23D, and 23E passed.
-- Phase 23F partially passed: safe password-reset request path passed, but
-  mailbox delivery, custom SMTP, reset-link open, owner notification email, and
-  From/Reply-To proof remain open.
+- Phase 23F now passed for external Auth email/custom SMTP: owner reported
+  Resend, verified DNS, Supabase custom SMTP, signup confirmation, password
+  reset link/completion, and login-after-reset proof. App-level owner
+  notification is intentionally deferred for the first pilot.
 - Real customer data remains blocked until the Phase 24 real-data gate closes.
 
 - `AI_CODING_AGENT_START_HERE_v1.7.md` - 5694 bytes
