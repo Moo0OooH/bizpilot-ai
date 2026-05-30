@@ -39,11 +39,19 @@ Additional active lifecycle/deletion authorities:
 - `operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 - `readiness/PHASE_19_BUSINESS_LIFECYCLE_DELETION_READINESS.md`
 
-## Current Readiness Snapshot - 2026-05-28
+## Current Readiness Snapshot - 2026-05-30
 
 Use these files for the latest production and documentation status before
 starting new work:
 
+- `readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md` - current operator
+  handoff and source-of-truth summary after Phase 23F; includes completed
+  synthetic production proof, remaining blockers, and corrected next steps.
+- `readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md` - active real-data
+  approval gate; do not start real customer data until this gate closes.
+- `readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md` - Phase 23B
+  through Phase 23F production evidence; core synthetic flow and OpenAI provider
+  proof passed, email posture partially passed.
 - `readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md` - current docs audit,
   progress summary, repaired inventory gap list, and remaining operational gaps.
 - `readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md` -
@@ -60,9 +68,11 @@ Current top-level interpretation:
 
 - Production access/admin-data loading is no longer the primary blocker after
   Phase 22 evidence.
+- Synthetic production readiness is strong after Phase 23. `MrTester` is the
+  reusable synthetic smoke tenant.
 - Real customer-data scale is still gated by backup/export/restore posture,
-  owner-approved synthetic authenticated smoke evidence, provider/email
-  readiness, and owner approval.
+  custom SMTP/Auth email delivery proof, reset-link mailbox proof, owner
+  notification decision, OpenAI operational monitoring, and owner approval.
 - Broader feature work remains allowed only through feature entitlement,
   Settings visibility, guide coverage, smoke evidence, and honest
   customer-facing copy.
@@ -170,6 +180,10 @@ Current top-level interpretation:
 - `readiness/PHASE_21Y_AUTONOMOUS_UI_ADMIN_POLISH_2026-05-26.md`
 - `readiness/PHASE_21Z_AUTONOMOUS_STATUS_AND_OWNER_ACTIONS_2026-05-26.md`
 - `readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`
+- `readiness/PHASE_23D_NEXT_TAB_HANDOFF_2026-05-29.md`
+- `readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md`
+- `readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md`
+- `readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
 - `readiness/HOMEPAGE_DEMO_INTEGRATION.md`
 - `readiness/HOMEPAGE_RENEW_V2_WORK_LOG.md`
 - `readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md`

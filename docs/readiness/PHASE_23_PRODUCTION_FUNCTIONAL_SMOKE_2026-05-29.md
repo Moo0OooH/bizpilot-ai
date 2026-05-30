@@ -972,3 +972,157 @@ usage event, and lead timeline event were persisted as expected.
 - SMTP/custom-domain email posture and password-reset smoke remain readiness gates if owner-facing email flows are used.
 - OpenAI usage, cost, quota, and fallback posture should remain monitored during real pilot operation.
 - Docs remain uncommitted pending owner review.
+
+## Phase 23F - Email, SMTP, and Password Reset Proof
+
+Phase 23F was run as a safe email-posture audit and one controlled password
+reset request against the existing synthetic `MrTester` owner account only.
+
+### Guardrails
+
+- No production SQL was run.
+- No migrations were run.
+- No users were deleted.
+- No hard purge or workspace repair was run.
+- No real customer, business, lead, or customer email was touched.
+- No password was changed.
+- No email provider API key, reset token, reset link, prompt, or raw provider
+  output was printed or recorded.
+- `BizPilot Synthetic Cleaning QA MailTM` was not touched.
+- No owner notification quote submission was performed.
+
+### Email Configuration Audit
+
+Production Vercel env names showed:
+
+| Env name | Production presence |
+| --- | --- |
+| `NEXT_PUBLIC_APP_URL` | Present |
+| `NEXT_PUBLIC_SUPABASE_URL` | Present |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Present |
+| `SUPABASE_SERVICE_ROLE_KEY` | Present |
+| `BIZPILOT_FOUNDER_EMAILS` | Present |
+| `OPENAI_API_KEY` | Present |
+| `RESEND_API_KEY` | Not present in Vercel production env listing |
+
+No secret values were printed.
+
+Code/config posture:
+
+- Password reset email is sent through Supabase Auth
+  `resetPasswordForEmail`.
+- Password reset redirect target resolves to:
+
+```text
+https://bizpilo.com/auth/reset-password
+```
+
+- App-level Resend/SMTP owner notification sending is not implemented in the
+  production code path inspected in this phase.
+- The dashboard notification configuration panel is read-only/disabled UI at
+  this stage.
+- The operations plan still records custom SMTP/Auth email as required before
+  real pilot use.
+
+Custom SMTP/domain status:
+
+- `bizpilo.com` production app domain is active and aliased to the current
+  Vercel production deployment.
+- Supabase/Auth custom SMTP DNS/provider verification could not be confirmed
+  from repo/Vercel env inspection alone.
+- No app-level custom owner-notification From/Reply-To provider was configured
+  in the inspected production app env.
+
+### Password Reset Proof
+
+Target:
+
+| Field | Value |
+| --- | --- |
+| Business | `MrTester` |
+| Business id | `131561a7-9b5b-4ff9-a7fe-403d5c46462b` |
+| Target account | Existing synthetic `MrTester` owner |
+| Target email domain | `noyavip.com` |
+
+One password reset request was submitted through the production forgot-password
+server action.
+
+Result:
+
+| Check | Result |
+| --- | --- |
+| Request submitted | Yes, once |
+| App response | `303` redirect |
+| Redirect path | `/auth/forgot-password` |
+| User-facing notice | Generic non-enumerating notice |
+| Error param | None |
+| Token/code in redirect URL | Not observed |
+| Sensitive marker in response body | Not observed |
+| Production log classification | `auth.password_reset.primary_succeeded` |
+| Logged email data | Domain only |
+| Reset redirect target in logs | `https://bizpilo.com/auth/reset-password` |
+
+The reset-password page itself returned `200` in public smoke and did not expose
+token, service-role, OpenAI key, or other sensitive markers.
+
+Public smoke after the reset request:
+
+```text
+Results: 9 passed, 0 failed (9 total)
+```
+
+Mailbox arrival was not verified in this phase because no approved receivable
+inbox access was available in the current run. The reset link was therefore not
+opened, and no password update was attempted.
+
+### Owner Notification Proof
+
+Owner notification proof was skipped.
+
+Reason:
+
+- No production app-level owner notification sender was found.
+- No `RESEND_API_KEY` was present in the Vercel production env listing.
+- No safe notification resend tooling was found.
+- Creating an additional synthetic quote only to probe notification delivery
+  requires a separate owner approval because it would mutate the `MrTester`
+  lead dataset again.
+
+The public quote flow is not currently dependent on app-level email delivery,
+so the absence of owner notification sending did not crash public route smoke.
+
+### Sensitive Output Check
+
+Passed for inspected app output and logs:
+
+- No API key printed.
+- No SMTP/provider secret printed.
+- No service-role marker printed.
+- No password reset token or reset link printed.
+- No full target email was recorded in readiness evidence.
+- No raw customer data, real-tenant data, prompt, or raw provider output was
+  recorded.
+
+### Phase 23F Status
+
+Phase 23F is partially passed, not fully passed.
+
+Passed:
+
+- Production email configuration posture was audited without exposing secrets.
+- Password reset request path accepted the synthetic owner request safely.
+- Password reset response remained non-enumerating.
+- Reset redirect domain/path was correct.
+- Public auth routes, including `/auth/reset-password`, remained healthy.
+- Sensitive output checks passed.
+
+Not passed / remaining email blockers:
+
+- Actual mailbox arrival was not verified.
+- Reset link open was not verified.
+- Password reset completion was not tested because owner approval to change the
+  password was not requested for this phase.
+- Supabase custom SMTP provider/domain verification remains unconfirmed.
+- Owner notification email delivery remains unimplemented/unverified.
+- From/Reply-To posture for owner notifications remains unverified until an
+  email provider and sender identity are configured.

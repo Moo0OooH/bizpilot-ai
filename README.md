@@ -2,11 +2,11 @@
 
 **Project:** BizPilot AI
 **Owner:** MoOoH
-**Current Phase:** Phase 5 stabilized / completion candidate; Phase 6 foundation started
-**Standards Layer:** v1.5 foundation hardening active
+**Current Phase:** Phase 24A docs-only readiness cleanup; Phase 23 synthetic production proof complete
+**Standards Layer:** v1.7 canonical docs map active
 **Product:** AI Quote Recovery & Lead Conversion Desk
 **GTM:** Cleaning-first
-**Last Updated:** 2026-05-13
+**Last Updated:** 2026-05-30
 
 ---
 
@@ -29,6 +29,31 @@ BizPilot is not an AI operator.
 BizPilot helps small cleaning businesses capture quote requests, organize leads, identify missing information, prioritize replies and follow-ups, and show lightweight recovery proof.
 
 ---
+
+## Current Readiness Status
+
+Phase 23 production functional smoke has completed on synthetic data:
+
+- Phase 23B passed: production functional/auth smoke.
+- Phase 23C passed: controlled synthetic quote intake on `MrTester`.
+- Phase 23D passed: synthetic owner dashboard runtime proof.
+- Phase 23E passed: targeted OpenAI provider proof on the synthetic lead.
+- Phase 23F partially passed: password reset request handling is safe, but
+  mailbox delivery, custom SMTP, reset-link open, and owner notification email
+  proof remain open.
+
+Real customer data is still not approved. The current blockers are:
+
+- custom SMTP/Auth email delivery proof,
+- backup/export/restore proof,
+- owner notification implementation decision,
+- OpenAI cost/quota/fallback monitoring posture.
+
+Current source-of-truth docs:
+
+- `docs/readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md`
+- `docs/readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md`
+- `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
 
 ## Current Implementation Status
 

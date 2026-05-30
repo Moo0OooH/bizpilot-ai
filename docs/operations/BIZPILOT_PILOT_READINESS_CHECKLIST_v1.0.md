@@ -5,7 +5,7 @@
 **Version:** v1.0  
 **Status:** Required Before Phase 18 Pilot  
 **Owner:** MoOoH  
-**Last Updated:** 2026-05-25
+**Last Updated:** 2026-05-30
 **Related:**
 - `docs/CURRENT_CANONICAL_DOCS_v1.7.md`
 - `docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
@@ -25,6 +25,24 @@
 This checklist decides whether BizPilot AI is ready to begin Phase 18: founder-led pilots with three cleaning businesses.
 
 Pilot readiness is not feature expansion. It confirms that the current Lead Recovery & Response MVP is safe, focused, demoable, and operationally calm enough to put in front of real cleaning-business owners.
+
+## 1C. Phase 24A Current Pilot Gate Status
+
+Use this table as the current 2026-05-30 truth. It supersedes older Phase 19,
+20, and 21 status rows when they disagree.
+
+| Major Item | Status | Current Evidence |
+| --- | --- | --- |
+| Production public/auth smoke | Pass | Phase 23B passed. Public smoke passed 9/9 and protected route redirect behavior passed. |
+| Controlled synthetic quote intake | Pass | Phase 23C passed on `MrTester` only. `/quote/mrtester` is active and one synthetic lead exists. |
+| Synthetic owner dashboard runtime | Pass | Phase 23D passed. `/dashboard` and `/dashboard/leads` returned 200 for the synthetic owner and showed only `MrTester` data. |
+| OpenAI provider proof | Pass | Phase 23E passed after parser diagnostics and the lead bundle token-budget fix. The approved synthetic lead produced `provider=openai`, `status=generated`, model `gpt-5.1`. |
+| Password reset request path | Partial pass | Phase 23F submitted one reset request for the synthetic `MrTester` owner. The app returned the generic non-enumerating notice and logged `auth.password_reset.primary_succeeded` with domain-only metadata. Mailbox arrival and reset-link open were not verified. |
+| Custom SMTP/Auth email | Blocked for real users | Supabase/Auth custom SMTP provider/domain verification remains unconfirmed. Do not use real customer accounts until delivery and reset smoke pass with an approved inbox. |
+| Owner notification email | Not implemented/proven | No production owner-notification sender was found, no `RESEND_API_KEY` was present in Vercel production env listing, and no notification resend tool exists. Decide manual-only pilot vs owner-notification pilot before relying on email notifications. |
+| Backup/export/restore | Blocked for real customer data | Restore drill and export proof remain open. Follow `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md` and `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`. |
+| Real customer data intake | Not approved | Phase 24 real-data approval gate remains open. Continue synthetic-only production smoke until email and backup gates close. |
+| Current source-of-truth summary | Active | `docs/readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md` and `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`. |
 
 ## 1A. Phase 21 Current Pilot Gate Status
 

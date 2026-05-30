@@ -1,6 +1,6 @@
 # BizPilot AI - Docs File Inventory v1.7
 
-**Last Updated:** 2026-05-28
+**Last Updated:** 2026-05-30
 **Generated From Repo:** yes
 **Scope:** Markdown and text documentation files only; packaged archives are excluded.
 
@@ -49,6 +49,24 @@ map for current navigation.
 - `readiness/PHASE_21Z_AUTONOMOUS_STATUS_AND_OWNER_ACTIONS_2026-05-26.md`
 - `readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`
 - `sales/FOUNDER_CRM_PROSPECT_TEMPLATE.csv`
+
+## 2026-05-30 Phase 24A Readiness Addendum
+
+Docs-only cleanup after Phase 23 added or promoted these current readiness
+source-of-truth files:
+
+- `readiness/PHASE_23D_NEXT_TAB_HANDOFF_2026-05-29.md`
+- `readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md`
+- `readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md`
+- `readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
+
+Current interpretation:
+
+- Phase 23B, 23C, 23D, and 23E passed.
+- Phase 23F partially passed: safe password-reset request path passed, but
+  mailbox delivery, custom SMTP, reset-link open, owner notification email, and
+  From/Reply-To proof remain open.
+- Real customer data remains blocked until the Phase 24 real-data gate closes.
 
 - `AI_CODING_AGENT_START_HERE_v1.7.md` - 5694 bytes
 - `architecture/BIZPILOT_ARCHITECTURE_v1.4.md` - 13090 bytes
