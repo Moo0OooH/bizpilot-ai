@@ -35,6 +35,10 @@ bizpilot-*.dump
 bizpilot-*.backup
 bizpilot-*.csv
 bizpilot-*.json
+/roles.sql
+/schema.sql
+/data.sql
+*.dump
 *-export.sql
 *-export.csv
 *-export.json

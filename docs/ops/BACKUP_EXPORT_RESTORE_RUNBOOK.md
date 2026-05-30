@@ -41,6 +41,28 @@ The active decision matrix is now:
 Do not store exports in the repo. Do not print dump contents. Do not run a
 production data export until encrypted storage and access are recorded.
 
+## 1B. Phase 24C Selected Proof Path
+
+Phase 24C uses this path:
+
+```text
+Manual Supabase CLI logical export + restore drill to a disposable
+non-production Supabase project.
+```
+
+Real external customer data remains blocked until the restore drill is
+completed and documented.
+
+This phase is preparation only unless the owner separately approves the actual
+export/restore run. Use placeholders in docs and command examples:
+
+- `[PROD_DB_URL]`
+- `[RESTORE_DB_URL]`
+- `[BACKUP_DIR]`
+
+Never print or commit database URLs, passwords, tokens, service-role keys, dump
+contents, `.env` files, or customer data.
+
 ## 2. Phase 19B Verification Result
 
 The repo/CLI check on 2026-05-23 found:
@@ -136,6 +158,10 @@ Ignored patterns include:
 - `bizpilot-*.backup`
 - `bizpilot-*.csv`
 - `bizpilot-*.json`
+- `/roles.sql`
+- `/schema.sql`
+- `/data.sql`
+- `*.dump`
 - `*-export.sql`
 - `*-export.csv`
 - `*-export.json`
@@ -189,6 +215,47 @@ test -s "../bizpilot-secure-backups/production/$(date +%Y-%m-%d)/bizpilot-produc
 
 Do not open the file in tooling that might sync it to an unsafe location.
 
+## 7A. Phase 24C Supabase CLI Logical Export
+
+Run only after owner approval and only with secrets supplied through a local
+shell/session or approved password manager. Do not paste values into docs.
+
+PowerShell placeholder setup:
+
+```powershell
+$env:PROD_DB_URL = "[PROD_DB_URL]"
+$env:BACKUP_DIR = "[BACKUP_DIR]"
+New-Item -ItemType Directory -Force -Path $env:BACKUP_DIR | Out-Null
+
+supabase db dump --db-url "$env:PROD_DB_URL" --role-only --file "$env:BACKUP_DIR/roles.sql"
+supabase db dump --db-url "$env:PROD_DB_URL" --schema public --file "$env:BACKUP_DIR/schema.sql"
+supabase db dump --db-url "$env:PROD_DB_URL" --schema public --data-only --file "$env:BACKUP_DIR/data.sql"
+```
+
+Bash placeholder setup:
+
+```bash
+export PROD_DB_URL="[PROD_DB_URL]"
+export BACKUP_DIR="[BACKUP_DIR]"
+mkdir -p "$BACKUP_DIR"
+
+supabase db dump --db-url "$PROD_DB_URL" --role-only --file "$BACKUP_DIR/roles.sql"
+supabase db dump --db-url "$PROD_DB_URL" --schema public --file "$BACKUP_DIR/schema.sql"
+supabase db dump --db-url "$PROD_DB_URL" --schema public --data-only --file "$BACKUP_DIR/data.sql"
+```
+
+Minimum verification without printing contents:
+
+```powershell
+Get-Item "$env:BACKUP_DIR/roles.sql", "$env:BACKUP_DIR/schema.sql", "$env:BACKUP_DIR/data.sql" |
+  Select-Object Name, Length, LastWriteTime
+git status --short
+git ls-files --others --exclude-standard
+```
+
+The git output must not include backup files, `.env` files, credentials, or
+customer exports.
+
 ## 8. Data Backup Procedure If Permitted
 
 Only run this if the owner has approved data export storage and access.
@@ -240,11 +307,128 @@ Steps:
 11. Verify a test lead can be read from the restored target without printing real customer content in logs.
 12. Record the drill result in this document or a future `docs/ops/RESTORE_DRILL_LOG.md`.
 
+Phase 24C disposable Supabase restore command shape:
+
+```powershell
+$env:RESTORE_DB_URL = "[RESTORE_DB_URL]"
+$env:BACKUP_DIR = "[BACKUP_DIR]"
+
+psql "$env:RESTORE_DB_URL" -v ON_ERROR_STOP=1 -f "$env:BACKUP_DIR/roles.sql"
+psql "$env:RESTORE_DB_URL" -v ON_ERROR_STOP=1 -f "$env:BACKUP_DIR/schema.sql"
+psql "$env:RESTORE_DB_URL" -v ON_ERROR_STOP=1 -f "$env:BACKUP_DIR/data.sql"
+```
+
+If `roles.sql` fails because a managed Supabase role already exists or cannot
+be created, stop and record only the sanitized error class. Do not continue with
+ad hoc fixes against production.
+
 Current result:
 
 - Restore drill not performed.
 - Blocker: no local database connection, `pg_dump` missing, `psql` missing, and no approved staging restore target.
 - Owner action: install tooling or provide a staging/local restore target and approve whether data export is permitted.
+
+## 9A. Phase 24C Sanitized Evidence Template
+
+Copy this template after the drill and fill it with non-secret evidence only.
+Do not include database URLs, passwords, tokens, keys, file contents, customer
+messages, private inbox addresses, or raw row data.
+
+| Field | Value |
+| --- | --- |
+| Export timestamp | `YYYY-MM-DD HH:MM TZ` |
+| Operator | `name/initials` |
+| Source environment | `production / bizpilot-production / project ref only` |
+| Restore target environment | `disposable non-production Supabase project / project ref only` |
+| Files generated | `roles.sql`, `schema.sql`, `data.sql` |
+| Where files are stored | `encrypted owner-controlled storage; exact path omitted if sensitive` |
+| Files excluded from git | `pass / partial / fail` |
+| Restore status | `pass / partial / fail` |
+| App smoke status | `pass / partial / fail / skipped with reason` |
+| RLS smoke status | `pass / partial / fail / skipped with reason` |
+| Dashboard smoke status | `pass / partial / fail / skipped with reason` |
+| Lead visibility smoke status | `pass / partial / fail / skipped with reason` |
+| Sensitive output check | `pass / partial / fail` |
+| Final decision | `pass / partial / fail` |
+| Remaining blockers | `short sanitized note` |
+
+Phase 24C passes only if the restore drill completes and the app/RLS/dashboard
+and lead-visibility smokes are documented as pass, or if skipped items have an
+owner-approved reason that still allows real-data approval.
+
+## 9B. Phase 24C Owner Checklist
+
+Owner/operator checklist for the actual drill:
+
+1. Confirm Supabase CLI is installed and authenticated without printing tokens.
+2. Confirm `psql` is installed.
+3. Create a disposable non-production Supabase project for restore.
+4. Choose encrypted owner-controlled storage for `[BACKUP_DIR]`.
+5. Set `[PROD_DB_URL]` only in a local shell/session or approved password
+   manager.
+6. Set `[RESTORE_DB_URL]` only in a local shell/session or approved password
+   manager.
+7. Run the export commands to generate `roles.sql`, `schema.sql`, and
+   `data.sql`.
+8. Verify generated files exist without printing contents.
+9. Confirm generated files are excluded from git.
+10. Restore into the disposable non-production Supabase project only.
+11. Run app smoke against the restore target.
+12. Run RLS smoke against the restore target if the test harness can safely
+    point to the disposable project.
+13. Run dashboard smoke with synthetic/test owner access only.
+14. Run lead visibility smoke using synthetic/test data only.
+15. Fill the sanitized evidence template above.
+16. Keep real external customer data blocked until the final pass/partial/fail
+    decision is recorded.
+
+## 9C. Phase 24C Restore Drill Evidence - 2026-05-30
+
+Phase 24C export and restore proof was completed for the current synthetic-only
+first-pilot readiness stage.
+
+Acceptance standard:
+
+- DB-level logical export and local Docker Postgres restore are sufficient for
+  first-pilot readiness because no real external customer data exists yet.
+- App/dashboard/RLS smoke against the restored target is deferred to a stronger
+  future drill because the local Docker restore target does not reproduce the
+  full Supabase Auth/API runtime.
+
+Sanitized evidence:
+
+| Field | Value |
+| --- | --- |
+| Export timestamp | 2026-05-30 17:15 America/New_York |
+| Operator | Codex under owner direction |
+| Source environment | Production Supabase project `bizpilot-production` / `qfqendrqimqvkoojpjao` |
+| Restore target environment | Existing local Docker Supabase/Postgres container, disposable database `phase24c_restore_20260530_171511_c` |
+| Files generated | `roles.sql`, `schema.sql`, `data.sql` |
+| Where files are stored | Owner-controlled local backup folder outside repo; exact path omitted from committed docs |
+| Files excluded from git | Pass; `git ls-files --others --exclude-standard` showed no dump files visible to git |
+| Restore status | Pass |
+| Auth compatibility | Local-only minimal `auth` compatibility shim applied to disposable restore target before restoring public schema |
+| Data restore mode | Normal; trigger disabling was not required |
+| App smoke status | Deferred; not mandatory for current synthetic-only DB-level acceptance |
+| RLS smoke status | Deferred; not mandatory for current synthetic-only DB-level acceptance |
+| Dashboard smoke status | Deferred; not mandatory for current synthetic-only DB-level acceptance |
+| Lead visibility smoke status | Sanitized DB count check passed; UI smoke deferred |
+| Sensitive output check | Pass; no DB URLs, passwords, tokens, dump contents, or customer row content printed |
+| Final decision | Phase 24C FULL PASS for DB-level restore proof and first-pilot readiness |
+| Remaining blockers | OpenAI operating posture and final owner real-data approval |
+
+Sanitized table-count checks:
+
+| Table | Count |
+| --- | ---: |
+| `public.businesses` | 10 |
+| `public.leads` | 6 |
+| `public.lead_events` | 21 |
+| `public.ai_outputs` | 4 |
+| `public.usage_events` | 13 |
+
+Real external customer data remains blocked until the remaining Phase 24 gates
+are completed and the owner explicitly approves real customer intake.
 
 ## 10. Restored Data Verification
 

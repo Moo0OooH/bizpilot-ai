@@ -91,16 +91,24 @@ Still separate:
 Current status:
 
 - Backup/export/restore runbooks exist.
-- Real restore drill has not been completed.
-- Real-data backup posture remains unclosed.
+- Phase 24C preparation docs are complete.
+- Phase 24C DB-level export/restore drill completed on 2026-05-30 using local
+  Docker Supabase/Postgres as the disposable restore target.
+- DB-level restore proof is FULL PASS for current synthetic-only first-pilot
+  readiness.
+- Phase 24C selected path: manual Supabase CLI logical export plus restore
+  drill to a disposable non-production Supabase project.
 
 Real-data gate requirement:
 
-- choose Supabase backup/PITR upgrade or manual logical export path,
-- perform/export evidence without printing customer data,
+- run manual logical export with placeholder-only commands,
+- generate `roles.sql`, `schema.sql`, and `data.sql` outside git,
 - restore to a disposable non-production target,
 - run RLS/app smoke against the restored target,
 - document the result.
+
+Real external customer data remains blocked until the remaining Phase 24 gates
+close and the owner records explicit real-data approval.
 
 ### 3. Owner Notification Decision
 
@@ -155,7 +163,8 @@ Gate requirement:
 This gate can close only when the owner explicitly records:
 
 1. Email/custom SMTP proof passed. Completed by owner-provided external Resend/Supabase proof.
-2. Backup/export/restore proof passed or explicitly risk-accepted with exact scope.
+2. Backup/export/restore proof passed. Completed by Phase 24C DB-level
+   export/restore proof on 2026-05-30.
 3. Owner notification email deferred decision is recorded.
 4. OpenAI operating posture is accepted.
 5. Real customer data intake is approved.
@@ -181,14 +190,9 @@ Until then:
 
 ## Next Correct Step
 
-Phase 24A is docs-only cleanup and commit:
+Phase 24C DB-level export/restore proof is complete.
 
-```text
-docs: record phase 23 status and corrected next steps
-```
+Next implementation track:
 
-After Phase 24A, choose the next implementation track:
-
-1. Phase 24C - close backup/export/restore proof, or
-2. Phase 24E - record OpenAI operating posture, or
-3. Phase 24F - final real-data approval decision.
+1. Phase 24E - record OpenAI operating posture, or
+2. Phase 24F - final real-data approval decision.

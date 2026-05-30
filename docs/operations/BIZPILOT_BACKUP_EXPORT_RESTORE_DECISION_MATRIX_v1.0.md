@@ -62,7 +62,43 @@ Operational notes from those docs, summarized for BizPilot:
 
 ## 4. Recommended Path Before Real Customer Data
 
-Preferred production-ready path:
+Phase 24C selected path:
+
+```text
+Manual Supabase CLI logical export + restore drill to a disposable
+non-production Supabase project.
+```
+
+This path is selected because it proves BizPilot can create an owner-controlled
+logical export and restore it outside production without relying only on
+provider-managed backups. It does not require production SQL, migrations,
+deletes, purges, or data mutation.
+
+Current Phase 24C checklist:
+
+1. Owner creates or confirms a disposable non-production Supabase restore
+   project.
+2. Owner provides secrets only through local shell/session variables or an
+   approved password manager, never in docs:
+   - `[PROD_DB_URL]`
+   - `[RESTORE_DB_URL]`
+   - `[BACKUP_DIR]`
+3. Operator runs Supabase CLI logical dumps to produce:
+   - `roles.sql`
+   - `schema.sql`
+   - `data.sql`
+4. Operator verifies files exist and are excluded from git without printing
+   contents.
+5. Operator restores into the disposable non-production Supabase project.
+6. Operator runs app/RLS/dashboard/lead-visibility smoke against the restored
+   target only.
+7. Operator records sanitized evidence in
+   `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`.
+
+Real external customer data remains blocked until the restore drill is
+completed and documented.
+
+Alternative production-ready path:
 
 1. Upgrade Supabase enough to support the chosen backup posture.
 2. Enable PITR if owner accepts the recurring cost and operational need.

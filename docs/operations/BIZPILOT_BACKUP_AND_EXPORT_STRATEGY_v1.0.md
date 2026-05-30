@@ -129,9 +129,40 @@ non-production target. Use `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` and
 `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md` as the
 operational source of truth.
 
+Phase 24C selected path: manual Supabase CLI logical export plus restore drill
+to a disposable non-production Supabase project.
+
+Real external customer data remains blocked until the restore drill is
+completed and documented.
+
 ---
 
 ## 6. Manual export procedure (workstation-driven)
+
+Phase 24C uses Supabase CLI logical dumps as the selected pre-pilot proof path.
+Use placeholders only in docs:
+
+```bash
+export PROD_DB_URL="[PROD_DB_URL]"
+export BACKUP_DIR="[BACKUP_DIR]"
+
+mkdir -p "$BACKUP_DIR"
+
+supabase db dump --db-url "$PROD_DB_URL" --role-only --file "$BACKUP_DIR/roles.sql"
+supabase db dump --db-url "$PROD_DB_URL" --schema public --file "$BACKUP_DIR/schema.sql"
+supabase db dump --db-url "$PROD_DB_URL" --schema public --data-only --file "$BACKUP_DIR/data.sql"
+```
+
+Expected generated files:
+
+- `roles.sql`
+- `schema.sql`
+- `data.sql`
+
+Do not print file contents. Store files outside git, preferably in encrypted
+owner-controlled storage. The repo ignores backup folders and root-level
+`roles.sql`, `schema.sql`, and `data.sql`; do not add a broad `*.sql` ignore
+because migration SQL must remain trackable.
 
 Until a CI-driven export job is in place, exports are run manually using `pg_dump` against the connection string exposed by Supabase. The following is a baseline procedure to be refined as it is exercised.
 
@@ -206,6 +237,22 @@ For the pilot, the accepted risk is: BizPilot will remain on Supabase Auth and w
 ---
 
 ## 9. Restore procedure (placeholder)
+
+Phase 24C restore drill target: disposable non-production Supabase project.
+Use placeholders only in docs:
+
+```bash
+export RESTORE_DB_URL="[RESTORE_DB_URL]"
+export BACKUP_DIR="[BACKUP_DIR]"
+
+psql "$RESTORE_DB_URL" -v ON_ERROR_STOP=1 -f "$BACKUP_DIR/roles.sql"
+psql "$RESTORE_DB_URL" -v ON_ERROR_STOP=1 -f "$BACKUP_DIR/schema.sql"
+psql "$RESTORE_DB_URL" -v ON_ERROR_STOP=1 -f "$BACKUP_DIR/data.sql"
+```
+
+If role restore is blocked by managed-provider permissions, stop and record the
+sanitized error class without printing connection strings or file contents.
+Do not restore into production for a drill.
 
 A real restore procedure does not exist yet. The placeholder steps for the first time it is exercised:
 
