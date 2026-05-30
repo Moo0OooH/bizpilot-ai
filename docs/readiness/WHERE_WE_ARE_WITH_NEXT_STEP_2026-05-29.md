@@ -63,8 +63,11 @@ After that commit, Phase 23F evidence was appended to:
 docs/readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md
 ```
 
-That Phase 23F doc update is currently uncommitted unless committed later by
-owner approval.
+That Phase 23F doc update was later committed and pushed in:
+
+```text
+5cd3393 docs: record SMTP full pass and defer owner notifications for first pilot
+```
 
 This new summary document is intended to become the current operator handoff:
 
@@ -410,13 +413,10 @@ These are not blockers for synthetic readiness but should be considered:
 
 ### Next Step 1 - Commit Phase 23F And This Summary
 
-If owner approves docs-only commit:
+Completed in:
 
-```powershell
-git status --short --branch
-git add docs/readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md docs/readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md
-git commit -m "docs: summarize current readiness and next steps"
-git push origin main
+```text
+5cd3393 docs: record SMTP full pass and defer owner notifications for first pilot
 ```
 
 Do not include production code changes in this docs commit.
@@ -463,12 +463,13 @@ demonstrated operational need.
 
 ### Next Step 5 - Real Pilot Approval Decision
 
-Only after email and backup gates close, decide whether BizPilot is:
+Only after backup/export/restore, OpenAI operating posture, and final owner
+approval close, decide whether BizPilot is:
 
 | Status | Meaning |
 | --- | --- |
 | Synthetic-ready | Current state is mostly here |
-| Real-data-ready | Requires email + backup/restore gates closed |
+| Real-data-ready | Requires backup/restore, OpenAI operating posture, and final owner approval |
 | Paid-pilot-ready | Requires real-data-ready plus payment/support/operator readiness |
 
 ## Current Real Pilot Decision

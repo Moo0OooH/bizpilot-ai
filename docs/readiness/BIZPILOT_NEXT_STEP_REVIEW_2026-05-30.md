@@ -83,12 +83,18 @@ Required update:
 
 `operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md` still says several items are blocked that later passed in Phase 21/23, including production quote security, fr-CA smoke, and OpenAI real provider proof. It also contains NUL characters at the end of the file.
 
+Repo follow-up completed:
+
+- NUL characters were removed.
+- A 2026-05-30 current-status addendum is present.
+- Current rows now mark SMTP/Auth email, password reset, and OpenAI provider
+  proof correctly.
+- Older Phase 19/21 blocked statuses are historical where they conflict with
+  Phase 23/24 evidence.
+
 Required update:
 
-- Remove NUL characters.
-- Add a 2026-05-30 addendum instead of rewriting history.
-- Mark old Phase 19/21 blocked statuses as historical.
-- Point readers to Phase 23 for current synthetic runtime truth.
+- Completed in repo.
 
 ### 2.3 Business terms are mostly resolved, but payment execution is not
 
@@ -151,7 +157,7 @@ Phase 23E passed with OpenAI provider output on the synthetic `MrTester` lead. R
 
 ### Gate A — Synthetic-ready
 
-Status: **mostly closed / current state**
+Status: **closed for current synthetic readiness documentation**
 
 Required evidence now exists for:
 
@@ -162,12 +168,12 @@ Required evidence now exists for:
 - synthetic OpenAI provider output,
 - safe password-reset request path.
 
-Remaining for clean synthetic-ready documentation:
+Clean synthetic-ready documentation follow-up:
 
-- commit Phase 23F and 2026-05-29 handoff,
-- update README/current canonical docs,
-- clean the readiness checklist NUL characters,
-- record an explicit `Synthetic-ready: yes` decision.
+- Phase 23F and 2026-05-29 handoff were committed and pushed.
+- README/current canonical docs were updated.
+- Readiness checklist NUL characters were removed.
+- `Synthetic-ready: yes` and `Real-data-ready: no` are recorded.
 
 ### Gate B — Real-data-ready
 
@@ -199,9 +205,13 @@ Must complete after Gate B:
 
 ### Step 1 — Documentation freeze/commit cleanup
 
-Do this first because it reduces future-agent confusion and is no-risk if docs-only.
+Completed. The docs-only commit is:
 
-Recommended commit scope:
+```text
+5cd3393 docs: record SMTP full pass and defer owner notifications for first pilot
+```
+
+Historical recommended commit scope:
 
 ```text
 docs/readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md

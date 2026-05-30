@@ -72,10 +72,10 @@ The Phase 21 table above is historical where it conflicts with Phase 23 evidence
 
 ## Phase 24A - Docs And Synthetic-Ready Decision
 
-- [ ] Commit Phase 23F and handoff summary.
-- [ ] Update README/CURRENT canonical map.
-- [ ] Clean NUL characters from pilot readiness checklist.
-- [ ] Record `Synthetic-ready: yes` and `Real-data-ready: no`.
+- [x] Commit Phase 23F and handoff summary.
+- [x] Update README/CURRENT canonical map.
+- [x] Clean NUL characters from pilot readiness checklist.
+- [x] Record `Synthetic-ready: yes` and `Real-data-ready: no`.
 
 ## Phase 24B - Custom SMTP/Auth Email Proof
 
