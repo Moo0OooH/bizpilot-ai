@@ -45,12 +45,15 @@ Phase 23 production functional smoke has completed on synthetic data:
 Real customer data is still not approved. The current blockers are:
 
 - OpenAI cost/quota/fallback monitoring posture.
+- strict restored-target app/dashboard/RLS smoke if the owner requires that
+  acceptance level before real data.
 - final owner real-data approval.
 
-Phase 24C backup/export/restore proof is now passed for current synthetic-only
-first-pilot readiness. The drill used a Supabase CLI logical export and local
-Docker Postgres restore, with sanitized count checks and no dump files tracked
-by git.
+Phase 24C DB-level backup/export/restore proof is passed. The drill used a
+Supabase CLI logical export and local Docker Postgres restore, with sanitized
+count checks, specific `MrTester` business/lead count checks, and no dump files
+tracked by git. App/dashboard/RLS smoke against the restored target was not run,
+so Phase 24C is not being claimed as a strict full pass.
 
 Owner notification email is intentionally deferred for the first pilot. The
 approved first-pilot operating model is manual-only: owners check the dashboard

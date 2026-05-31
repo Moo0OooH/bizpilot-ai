@@ -352,9 +352,10 @@ messages, private inbox addresses, or raw row data.
 | Final decision | `pass / partial / fail` |
 | Remaining blockers | `short sanitized note` |
 
-Phase 24C passes only if the restore drill completes and the app/RLS/dashboard
-and lead-visibility smokes are documented as pass, or if skipped items have an
-owner-approved reason that still allows real-data approval.
+Strict Phase 24C full-pass acceptance requires the restore drill plus
+app/RLS/dashboard and lead-visibility smokes to be documented as pass, or an
+owner-approved written reason for any skipped item. A DB-level restore proof may
+be recorded separately as PASS without claiming strict full pass.
 
 ## 9B. Phase 24C Owner Checklist
 
@@ -384,16 +385,17 @@ Owner/operator checklist for the actual drill:
 
 ## 9C. Phase 24C Restore Drill Evidence - 2026-05-30
 
-Phase 24C export and restore proof was completed for the current synthetic-only
-first-pilot readiness stage.
+Phase 24C export and restore proof was completed at DB level for the current
+synthetic-only stage.
 
 Acceptance standard:
 
 - DB-level logical export and local Docker Postgres restore are sufficient for
-  first-pilot readiness because no real external customer data exists yet.
-- App/dashboard/RLS smoke against the restored target is deferred to a stronger
-  future drill because the local Docker restore target does not reproduce the
-  full Supabase Auth/API runtime.
+  a DB-level restore proof because no real external customer data exists yet.
+- App/dashboard/RLS smoke against the restored target was not run, so strict
+  Phase 24C full pass is not claimed.
+- If strict restore acceptance is required before real data, complete
+  restored-target app/dashboard/RLS smoke and document it separately.
 
 Sanitized evidence:
 
@@ -409,13 +411,13 @@ Sanitized evidence:
 | Restore status | Pass |
 | Auth compatibility | Local-only minimal `auth` compatibility shim applied to disposable restore target before restoring public schema |
 | Data restore mode | Normal; trigger disabling was not required |
-| App smoke status | Deferred; not mandatory for current synthetic-only DB-level acceptance |
-| RLS smoke status | Deferred; not mandatory for current synthetic-only DB-level acceptance |
-| Dashboard smoke status | Deferred; not mandatory for current synthetic-only DB-level acceptance |
-| Lead visibility smoke status | Sanitized DB count check passed; UI smoke deferred |
+| App smoke status | NOT RUN |
+| RLS smoke status | NOT RUN |
+| Dashboard smoke status | NOT RUN |
+| Lead visibility smoke status | DB-count check passed for approved synthetic target; UI smoke NOT RUN |
 | Sensitive output check | Pass; no DB URLs, passwords, tokens, dump contents, or customer row content printed |
-| Final decision | Phase 24C FULL PASS for DB-level restore proof and first-pilot readiness |
-| Remaining blockers | OpenAI operating posture and final owner real-data approval |
+| Final decision | Phase 24C DB-level restore proof PASS; strict full pass NOT CLAIMED |
+| Remaining blockers | OpenAI operating posture and final owner real-data approval; if strict restore acceptance is required, restored-target app/dashboard/RLS smoke |
 
 Sanitized table-count checks:
 
@@ -427,8 +429,17 @@ Sanitized table-count checks:
 | `public.ai_outputs` | 4 |
 | `public.usage_events` | 13 |
 
-Real external customer data remains blocked until the remaining Phase 24 gates
-are completed and the owner explicitly approves real customer intake.
+Approved synthetic target DB-count checks:
+
+| Check | Count |
+| --- | ---: |
+| `MrTester` business id `131561a7-9b5b-4ff9-a7fe-403d5c46462b` | 1 |
+| `BizPilot QA Test Lead` id `3f46045b-47d1-4d92-b99d-0bdfe6eab10e` under `MrTester` | 1 |
+
+Real external customer data remains blocked until OpenAI operating posture and
+final owner real-data approval are recorded. If strict restore acceptance is
+required, it also remains blocked until restored-target app/dashboard/RLS smoke
+is completed and documented.
 
 ## 10. Restored Data Verification
 

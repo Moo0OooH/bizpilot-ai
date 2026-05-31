@@ -79,9 +79,11 @@ Current top-level interpretation:
   reusable synthetic smoke tenant.
 - Real customer-data scale is still gated by OpenAI operational monitoring and
   owner approval. External Auth email/custom SMTP proof is now passed by
-  owner-provided Resend/Supabase SMTP evidence, and Phase 24C DB-level
-  backup/export/restore proof is now passed for current synthetic-only
-  first-pilot readiness.
+  owner-provided Resend/Supabase SMTP evidence. Phase 24C DB-level
+  backup/export/restore proof passed with local Docker Postgres restore and
+  sanitized count checks, including the `MrTester` synthetic target. App,
+  dashboard, and RLS smoke against the restored target were not run, so strict
+  Phase 24C full-pass acceptance is not claimed.
   Owner notification email is not a first-pilot readiness requirement because
   it is intentionally deferred.
 - Broader feature work remains allowed only through feature entitlement,

@@ -13,9 +13,10 @@ broader production mutation.
 
 Phase 23 proved the synthetic production flow. The external Auth email/custom
 SMTP gate was later completed by owner-side setup and smoke evidence. Owner
-notification email is intentionally deferred for the first pilot. The
-backup/export/restore and OpenAI operating-posture gates remain open before
-real customer data.
+notification email is intentionally deferred for the first pilot. Phase 24C
+DB-level backup/export/restore proof has passed, but restored-target app,
+dashboard, and RLS smoke was not run. OpenAI operating posture and final owner
+approval remain open before real customer data.
 
 ## Current Decision
 
@@ -94,21 +95,27 @@ Current status:
 - Phase 24C preparation docs are complete.
 - Phase 24C DB-level export/restore drill completed on 2026-05-30 using local
   Docker Supabase/Postgres as the disposable restore target.
-- DB-level restore proof is FULL PASS for current synthetic-only first-pilot
-  readiness.
-- Phase 24C selected path: manual Supabase CLI logical export plus restore
-  drill to a disposable non-production Supabase project.
+- DB-level restore proof is PASS.
+- App/dashboard/RLS restore smoke is NOT RUN.
+- Strict Phase 24C full pass is NOT CLAIMED.
+- Phase 24C selected path used manual Supabase CLI logical export plus restore
+  drill to a disposable local Docker Postgres database.
+- Specific synthetic target checks passed at DB-count level:
+  `MrTester` business count = 1 and approved synthetic lead count = 1.
 
 Real-data gate requirement:
 
 - run manual logical export with placeholder-only commands,
 - generate `roles.sql`, `schema.sql`, and `data.sql` outside git,
 - restore to a disposable non-production target,
-- run RLS/app smoke against the restored target,
+- run RLS/app smoke against the restored target if strict restore acceptance is
+  required,
 - document the result.
 
-Real external customer data remains blocked until the remaining Phase 24 gates
-close and the owner records explicit real-data approval.
+Real external customer data remains blocked until OpenAI operating posture and
+final owner real-data approval are recorded. If the owner requires strict
+restore acceptance, real data also remains blocked until app/dashboard/RLS
+restore smoke is completed and documented.
 
 ### 3. Owner Notification Decision
 
@@ -163,8 +170,9 @@ Gate requirement:
 This gate can close only when the owner explicitly records:
 
 1. Email/custom SMTP proof passed. Completed by owner-provided external Resend/Supabase proof.
-2. Backup/export/restore proof passed. Completed by Phase 24C DB-level
-   export/restore proof on 2026-05-30.
+2. Backup/export/restore DB-level proof passed. Completed by Phase 24C
+   DB-level export/restore proof on 2026-05-30. App/dashboard/RLS restore
+   smoke was not run, so strict Phase 24C full pass is not claimed.
 3. Owner notification email deferred decision is recorded.
 4. OpenAI operating posture is accepted.
 5. Real customer data intake is approved.
@@ -190,7 +198,8 @@ Until then:
 
 ## Next Correct Step
 
-Phase 24C DB-level export/restore proof is complete.
+Phase 24C DB-level export/restore proof is complete. Strict restored-target
+app/dashboard/RLS smoke remains not run.
 
 Next implementation track:
 
