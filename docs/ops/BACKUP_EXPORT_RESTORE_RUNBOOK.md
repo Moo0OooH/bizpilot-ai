@@ -412,11 +412,13 @@ Sanitized evidence:
 | Auth compatibility | Local-only minimal `auth` compatibility shim applied to disposable restore target before restoring public schema |
 | Data restore mode | Normal; trigger disabling was not required |
 | App smoke status | NOT RUN |
-| RLS smoke status | NOT RUN |
+| DB-level RLS metadata status | Pass for restored core tables found in the current schema: `ai_outputs`, `business_members`, `businesses`, `intake_forms`, `intake_submissions`, `lead_events`, and `leads` |
+| Existing RLS test suite against restored DB | Failed; 2 passed and 11 failed against the restored fixture state, so this is not accepted as restored-target RLS proof |
+| RLS smoke status | NOT PASSED |
 | Dashboard smoke status | NOT RUN |
 | Lead visibility smoke status | DB-count check passed for approved synthetic target; UI smoke NOT RUN |
 | Sensitive output check | Pass; no DB URLs, passwords, tokens, dump contents, or customer row content printed |
-| Final decision | Phase 24C DB-level restore proof PASS; strict full pass NOT CLAIMED |
+| Final decision | Phase 24C.0 DB-level restore proof PASS; Phase 24C.1 restored app/RLS smoke NOT PASSED; strict full pass NOT CLAIMED |
 | Remaining blockers | OpenAI operating posture and final owner real-data approval; if strict restore acceptance is required, restored-target app/dashboard/RLS smoke |
 
 Sanitized table-count checks:
@@ -435,6 +437,17 @@ Approved synthetic target DB-count checks:
 | --- | ---: |
 | `MrTester` business id `131561a7-9b5b-4ff9-a7fe-403d5c46462b` | 1 |
 | `BizPilot QA Test Lead` id `3f46045b-47d1-4d92-b99d-0bdfe6eab10e` under `MrTester` | 1 |
+
+Restored DB RLS follow-up checks:
+
+| Check | Result |
+| --- | --- |
+| Core table RLS metadata | Pass for the restored tables listed above; all returned `rls_enabled = true` |
+| Existing `pnpm test:rls` suite against restored DB | Failed; sanitized result was 2 passed, 11 failed |
+| App connected to restored target | Not run |
+| Dashboard loaded from restored target | Not run |
+| Leads page loaded from restored target | Not run |
+| Cross-tenant app smoke on restored target | Not run |
 
 Real external customer data remains blocked until OpenAI operating posture and
 final owner real-data approval are recorded. If strict restore acceptance is

@@ -49,11 +49,13 @@ Real customer data is still not approved. The current blockers are:
   acceptance level before real data.
 - final owner real-data approval.
 
-Phase 24C DB-level backup/export/restore proof is passed. The drill used a
+Phase 24C.0 DB-level backup/export/restore proof is passed. The drill used a
 Supabase CLI logical export and local Docker Postgres restore, with sanitized
-count checks, specific `MrTester` business/lead count checks, and no dump files
-tracked by git. App/dashboard/RLS smoke against the restored target was not run,
-so Phase 24C is not being claimed as a strict full pass.
+count checks, specific `MrTester` business/lead count checks, DB-level RLS
+metadata checks on core tables, and no dump files tracked by git. Phase 24C.1
+restored app/RLS smoke is not passed: the existing RLS suite against the
+restored database did not pass, and app/dashboard smoke against the restored
+target was not run. Phase 24C is not being claimed as a strict full pass.
 
 Owner notification email is intentionally deferred for the first pilot. The
 approved first-pilot operating model is manual-only: owners check the dashboard

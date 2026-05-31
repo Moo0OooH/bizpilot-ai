@@ -15,8 +15,8 @@ Phase 23 proved the synthetic production flow. The external Auth email/custom
 SMTP gate was later completed by owner-side setup and smoke evidence. Owner
 notification email is intentionally deferred for the first pilot. Phase 24C
 DB-level backup/export/restore proof has passed, but restored-target app,
-dashboard, and RLS smoke was not run. OpenAI operating posture and final owner
-approval remain open before real customer data.
+dashboard, and RLS smoke has not passed. OpenAI operating posture and final
+owner approval remain open before real customer data.
 
 ## Current Decision
 
@@ -93,15 +93,23 @@ Current status:
 
 - Backup/export/restore runbooks exist.
 - Phase 24C preparation docs are complete.
-- Phase 24C DB-level export/restore drill completed on 2026-05-30 using local
+- Phase 24C.0 DB-level export/restore drill completed on 2026-05-30 using local
   Docker Supabase/Postgres as the disposable restore target.
-- DB-level restore proof is PASS.
-- App/dashboard/RLS restore smoke is NOT RUN.
+- Phase 24C.0 DB-level restore proof is PASS.
+- Phase 24C.1 restored app/RLS smoke is NOT PASSED.
+- App/dashboard restore smoke is NOT RUN.
+- Existing RLS test suite against the restored database was RUN and FAILED
+  against the restored fixture state: 2 passed, 11 failed. This is not accepted
+  as restored-target RLS proof.
 - Strict Phase 24C full pass is NOT CLAIMED.
 - Phase 24C selected path used manual Supabase CLI logical export plus restore
   drill to a disposable local Docker Postgres database.
 - Specific synthetic target checks passed at DB-count level:
   `MrTester` business count = 1 and approved synthetic lead count = 1.
+- DB-level RLS metadata check passed for the restored core tables found in the
+  current schema: `ai_outputs`, `business_members`, `businesses`,
+  `intake_forms`, `intake_submissions`, `lead_events`, and `leads` all had RLS
+  enabled.
 
 Real-data gate requirement:
 
@@ -198,8 +206,9 @@ Until then:
 
 ## Next Correct Step
 
-Phase 24C DB-level export/restore proof is complete. Strict restored-target
-app/dashboard/RLS smoke remains not run.
+Phase 24C.0 DB-level export/restore proof is complete. Phase 24C.1 restored
+app/RLS smoke remains not passed: app/dashboard smoke was not run and the
+existing RLS suite against the restored database failed.
 
 Next implementation track:
 
