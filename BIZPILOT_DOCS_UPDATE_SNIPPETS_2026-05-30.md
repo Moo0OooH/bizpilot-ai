@@ -13,7 +13,7 @@
 - `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`
 - `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
 
-2026-05-30 interpretation: production synthetic readiness is strong after Phase 23. Public smoke, protected auth redirect, controlled synthetic quote intake, synthetic owner dashboard runtime, targeted OpenAI provider proof, and external Auth email/custom SMTP proof passed on approved synthetic/test targets. Owner notification email is intentionally deferred for the first pilot. Real customer-data intake is still not approved. Remaining P0 gates are backup/export/restore proof, OpenAI cost/quota/fallback monitoring, and final owner approval.
+2026-05-30 interpretation: production synthetic readiness is strong after Phase 23. Public smoke, protected auth redirect, controlled synthetic quote intake, synthetic owner dashboard runtime, targeted OpenAI provider proof, external Auth email/custom SMTP proof, and Phase 24C DB-level backup/export/restore proof passed on approved synthetic/test targets. Owner notification email is intentionally deferred for the first pilot. Real customer-data intake is still not approved. Remaining P0 gates are OpenAI cost/quota/fallback monitoring and final owner approval.
 ```
 
 ## CURRENT_CANONICAL_DOCS_v1.7.md — add new current snapshot near “Current Readiness Snapshot”
@@ -34,9 +34,9 @@ Current top-level interpretation:
 - BizPilot is not real-data-ready.
 - BizPilot is not paid-pilot-ready.
 - Design remains frozen until owner explicitly reopens design work.
-- Do not start real customer data intake until backup/export/restore, OpenAI
-  operations, and final owner approval gates close. External Auth email/custom
-  SMTP proof is already passed.
+- Do not start real customer data intake until OpenAI operations and final owner
+  approval gates close. External Auth email/custom SMTP proof and Phase 24C
+  DB-level backup/export/restore proof are already passed.
 ```
 
 ## operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md — append addendum after current Phase 21 table
@@ -55,8 +55,8 @@ The Phase 21 table above is historical where it conflicts with Phase 23 evidence
 | Password reset request path | Pass | Phase 23F repo-side request handling was safe; owner later verified mailbox arrival, reset-link open, reset completion, and login after reset. |
 | Custom SMTP/Auth email | Pass | Owner reported Resend provider, verified DNS, Supabase custom SMTP enabled, signup confirmation passed, and reset-password flow passed. |
 | Owner notification email | Deferred for first pilot | Owner decision recorded: first pilot is manual-only. Owners check dashboard manually; no owner notification email, customer-facing email automation, AI auto-send, or autonomous workflow is required or approved. |
-| Backup/export/restore | Blocked | No completed export/restore drill or PITR posture recorded. |
-| First real customer data | Blocked | Wait for email + backup/export/restore + final approval gate. |
+| Backup/export/restore | Pass for current synthetic-only first-pilot readiness | Phase 24C completed Supabase CLI logical export, local Docker Postgres restore, sanitized count checks, and git dump-file exclusion proof. |
+| First real customer data | Blocked | Wait for OpenAI operating posture and final owner approval gate. |
 | Paid pilot | Blocked | Requires real-data-ready plus payment/support/operator readiness. |
 ```
 
@@ -142,6 +142,6 @@ Current non-secret truth:
 - No credentials, private inboxes, reset links, tokens, or passwords are stored
   in repo docs.
 
-Remaining gates are backup/export/restore, OpenAI operational monitoring, and
-final owner approval for real customer data. Owner notification email is
-intentionally deferred for the first pilot.
+Remaining gates are OpenAI operational monitoring and final owner approval for
+real customer data. Owner notification email is intentionally deferred for the
+first pilot.

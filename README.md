@@ -44,8 +44,13 @@ Phase 23 production functional smoke has completed on synthetic data:
 
 Real customer data is still not approved. The current blockers are:
 
-- backup/export/restore proof,
 - OpenAI cost/quota/fallback monitoring posture.
+- final owner real-data approval.
+
+Phase 24C backup/export/restore proof is now passed for current synthetic-only
+first-pilot readiness. The drill used a Supabase CLI logical export and local
+Docker Postgres restore, with sanitized count checks and no dump files tracked
+by git.
 
 Owner notification email is intentionally deferred for the first pilot. The
 approved first-pilot operating model is manual-only: owners check the dashboard

@@ -34,9 +34,11 @@ The strongest current evidence is Phase 23:
 The project is **not yet approved for real customer data** because the remaining
 operational gates are still open:
 
-1. Backup/export/restore posture and restore drill.
-2. Ongoing OpenAI cost/quota/fallback monitoring.
-3. Final owner approval for real customer data.
+1. Ongoing OpenAI cost/quota/fallback monitoring.
+2. Final owner approval for real customer data.
+
+Phase 24C backup/export/restore proof passed on 2026-05-30 for current
+synthetic-only first-pilot readiness.
 
 Owner notification email is intentionally deferred for the first pilot. The
 approved operating model is manual-only: owner checks dashboard manually,
@@ -333,13 +335,17 @@ The OpenAI fixes were intentionally narrow:
 
 1. **Backup/export/restore readiness**
 
-   Real customer data remains blocked until one of these is completed:
+   Current status: passed for current synthetic-only first-pilot readiness.
 
-   - Supabase paid backup/PITR posture is upgraded and recorded, or
-   - manual logical export path is performed and verified, and
-   - restore drill is completed against a disposable non-production target.
+   Completed evidence:
 
-   Current supporting docs say this is still an active gate:
+   - Supabase CLI logical export generated `roles.sql`, `schema.sql`, and
+     `data.sql` outside repo,
+   - local Docker Postgres restore succeeded against disposable database,
+   - sanitized count checks passed,
+   - git did not track dump files.
+
+   Current supporting docs:
 
    - `docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
    - `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`
@@ -505,8 +511,8 @@ core synthetic quote, dashboard, and AI draft paths end to end.
 
 The remaining blockers are operational, not core product-flow blockers:
 
-1. Backup/export/restore proof.
-2. Ongoing OpenAI operational monitoring.
+1. Ongoing OpenAI operational monitoring.
+2. Final owner real-data approval.
 3. Owner notification email remains deferred until post-validation need.
 
 Once those gates are closed, the project can be reassessed for a carefully

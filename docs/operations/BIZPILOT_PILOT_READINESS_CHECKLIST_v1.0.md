@@ -40,8 +40,8 @@ Use this table as the current 2026-05-30 truth. It supersedes older Phase 19,
 | Password reset request path | Pass | Phase 23F repo-side request path was safe; owner later verified forgot-password email arrival, reset link open, reset completion, and login after reset. |
 | Custom SMTP/Auth email | Pass | Owner reported Resend provider, `no-reply@bizpilo.com` sender, verified DNS, Supabase custom SMTP enabled, signup confirmation passed, and Resend SMTP accepted email with `POST /emails` 200. No credentials or private links are recorded. |
 | Owner notification email | Deferred for first pilot | Owner decision recorded: first pilot is manual-only. Owners check dashboard manually; no owner notification email, customer-facing email automation, AI auto-send, or autonomous workflow is required or approved. |
-| Backup/export/restore | Blocked for real customer data | Restore drill and export proof remain open. Follow `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md` and `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`. |
-| Real customer data intake | Not approved | Phase 24 real-data approval gate remains open. Continue synthetic-only production smoke until email and backup gates close. |
+| Backup/export/restore | Pass for current synthetic-only first-pilot readiness | Phase 24C completed Supabase CLI logical export, local Docker Postgres restore, sanitized table-count checks, and git dump-file exclusion proof. Follow `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` for evidence. |
+| Real customer data intake | Not approved | Phase 24 real-data approval gate remains open. Continue synthetic-only production smoke until OpenAI operating posture and final owner approval close. |
 | Current source-of-truth summary | Active | `docs/readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md` and `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`. |
 
 ## 1A. Phase 21 Current Pilot Gate Status
@@ -53,7 +53,7 @@ Use this table as the current Phase 21 truth. It supersedes older Phase 19/20 pr
 | Git/deploy safety | Pass (updated 2026-05-25) | `main` was fast-forwarded to `b10f1a4` and deployed to production on 2026-05-25. Rollback tags `backup/main-pre-phase21-20260525-004550` and `backup/phase21-pre-production-20260525-004550` were pushed before deploy. Bootstrap fix `5758a0b` and doc commits `d0c4539`, `4f64110`, `862b716` were pushed to `main` and deployed. `.gitattributes` hygiene commit `8bf3387` was applied locally (awaiting push). Both `main` and `phase-21-production-alignment` are locally at `8bf3387`. |
 | Baseline app validation | Pass (updated 2026-05-25) | `pnpm test:unit` 53/53 passed in the current session. Prior full `pnpm verify` (lint, typecheck, unit, build) passed through the production deploy session. `pnpm test:rls` 13/13 passed through local Docker proxy in an earlier session. |
 | Production target | Deployed and verified (updated 2026-05-25) | `bizpilot-production` / `qfqendrqimqvkoojpjao` / `https://bizpilo.com`. Latest Vercel production deployment `dpl_7Z7kh6Z2PH9y2ho5QUtpyDrHCks6` is Ready. Post-deploy route smoke: HTTP 200 for `/`, `/pricing`, all auth pages, logged-out `/admin` redirect, inactive quote slug. Env values not pulled or revealed. |
-| Backup/PITR/export/restore | Blocked for real customer data | Supabase Free plan; no scheduled backups, no PITR. Manual export not done; restore drill not done. Owner risk-accepted for current no-real-user align. Not acceptable for real customer data. |
+| Backup/PITR/export/restore | Pass for current synthetic-only first-pilot readiness | Supabase Free/no-PITR posture remains noted, but Phase 24C completed manual logical export and local Docker restore proof before real external customer data. |
 | Migration drift/history | Verified (no history table) | Required columns, functions, `0018` objects, RLS on all 31 tables, policies, `0019` grants, and targeted constraints/seeds verified by owner-run SQL. `supabase_migrations.schema_migrations` missing; manual drift accepted. Do not re-apply `0018` blindly. |
 | Migration `0018` lifecycle/deletion status | Object-verified; manual drift | Owner-run SQL verified all `0018` objects, columns, policies, and functions. `0019` grant hardening applied and verified: `checked_functions = 6`, `all_grant_checks_passed = true`. Treat as manual drift; do not replay. |
 | Production migration apply | `0019` done; `0020` pending owner decision | `0019` grant-only apply verified. `0020_founder_test_auth_user_cleanup.sql` is repo-backed and locally validated only. Apply `0020` only after explicit owner approval. |
@@ -63,7 +63,7 @@ Use this table as the current Phase 21 truth. It supersedes older Phase 19/20 pr
 | OpenAI real-key validation | Blocked | HTTP `429` from provider. Owner must check billing, quota, model access, and rate limits, then run exactly one synthetic dry run. |
 | Signup confirmation smoke | Passed (2026-05-25) | Synthetic disposable inbox used; confirmed owner reached `/dashboard`. Credentials and artifacts stored outside repo. Post-fix retest blocked by Auth rate limiting; should retest when limits clear. |
 | Pilot commercial terms | Owner decision required | Recommended default (`$199 setup + $49/month`) not yet approved. Pricing mismatch across pages not resolved. |
-| First real pilot customer readiness | Blocked | Still not ready. Remaining blockers: production quote security smoke, fr-CA smoke, OpenAI validation, backup/export posture, commercial terms, live admin visual QA, horizontal-access smoke. |
+| First real pilot customer readiness | Blocked | Historical Phase 21 row; current Phase 23/24 evidence supersedes older blockers. Remaining current blockers are OpenAI operating posture and final owner real-data approval. |
 
 ## 1B. Phase 19H Historical Readiness Status
 
@@ -79,7 +79,7 @@ The Phase 19 table below remains for context. Use Section 1A as the current Phas
 | Migrations `0014`-`0017` | Historical open item, superseded by Phase 21 object verification | Do not treat old migration blockers as current facts. Phase 21 direct SQL verified the key objects, while standard migration history remains unavailable/manual drift. |
 | fr-CA production quote flow | Blocked | Disposable fr-CA business/link/lead could not be created because the checked Supabase target did not match current multilingual schema. |
 | Backup/export runbook | Pass | Phase 19B runbook exists and documents export cadence, storage/access rules, restore procedure, deletion/export requests, privacy incident process, and git safety rules. |
-| PITR/export/restore execution | Blocked | PITR/storage require owner dashboard decisions; `pg_dump`, `psql`, and a restore target were unavailable; no restore drill was performed. |
+| PITR/export/restore execution | Pass for current synthetic-only first-pilot readiness | Phase 24C used Supabase CLI export and existing local Docker Supabase/Postgres as disposable restore target. |
 | AI fallback | Pass | Rule fallback remains owner-reviewed, manual copy/send only, and sanitized. |
 | OpenAI real-key model output | Blocked | No non-empty `OPENAI_API_KEY` was configured, so no model-backed output was generated or quality-checked. |
 | Pricing/offer documentation | Pass | Phase 19F decision doc and Phase 20 terms gate exist; both document current `/pricing` mismatch and recommended draft without treating it as final. |
@@ -145,16 +145,16 @@ Do not begin Phase 18 until these are true:
 | Backup/export strategy document reviewed. | [x] | [ ] | 2026-05-22 standards audit reviewed `BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`. |
 | Minimum backup/export/restore runbook exists. | [x] | [ ] | 2026-05-23 Phase 19B added `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` with export cadence, storage/access rules, schema/data backup commands, restore drill procedure, deletion/export request handling, privacy incident process, and git safety rules. |
 | Critical data tables are documented. | [x] | [ ] | Backup/export strategy Section 4 maps identity, tenant, configuration, public intake, submissions/leads, lead intelligence, AI artifacts, and reference tables. |
-| Manual export path is understood by the operator. | [ ] | [x] | Phase 19B runbook documents schema-only and data export commands, but `pg_dump` and `psql` are not on PATH and no export has been performed. |
+| Manual export path is understood by the operator. | [x] | [ ] | Phase 24C used Supabase CLI export to generate `roles.sql`, `schema.sql`, and `data.sql` outside repo. |
 | Export storage location is decided and encrypted. | [ ] | [x] | Owner decision still required. Runbook requires encrypted storage outside git and a named access list. |
 | PITR support and retention are recorded. | [ ] | [x] | Cannot be checked from repo/CLI. Owner must verify Supabase plan/PITR in dashboard and record exact result. |
-| Schema-only backup has been created and verified. | [ ] | [x] | Blocked on missing `pg_dump` and unavailable local DB connection. No dump created and no customer data printed. |
+| Schema-only backup has been created and verified. | [x] | [ ] | Phase 24C generated and verified `schema.sql` outside repo without printing dump contents. |
 | Auth migration risk is accepted for pilot. | [x] | [ ] | Backup/export strategy Section 8 accepts Supabase Auth migration risk for pilot. |
-| Restore drill is scheduled or explicitly deferred with reason. | [ ] | [x] | Phase 19B restore drill not performed. Blockers: local `DATABASE_URL` points to `127.0.0.1` but connection is refused; `pg_dump` and `psql` are not installed; no approved staging restore target. |
+| Restore drill is scheduled or explicitly deferred with reason. | [x] | [ ] | Phase 24C restore drill completed against disposable local Docker database `phase24c_restore_20260530_171511_c`; sanitized count checks passed. |
 | Customer deletion/export request process is documented. | [x] | [ ] | Phase 19B runbook documents manual pilot process for customer deletion/minimization requests and customer export requests. |
 | Privacy incident process is documented. | [x] | [ ] | Phase 19B runbook documents private incident handling and register fields. The incident register itself must stay outside git if it contains personal data. |
 | Git ignore rules prevent backup/export dump commits. | [x] | [ ] | 2026-05-23: `.gitignore` now blocks BizPilot dump/export patterns and backup/restore temp folders while keeping migration SQL files trackable. |
-| Export is performed before first real pilot data is collected, or accepted as risk. | [ ] | [ ] |  |
+| Export is performed before first real pilot data is collected, or accepted as risk. | [x] | [ ] | Phase 24C export generated `roles.sql`, `schema.sql`, and `data.sql` outside repo; git did not track dump files. |
 
 ## 6. Product and Demo Readiness
 

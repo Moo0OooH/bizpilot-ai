@@ -77,9 +77,11 @@ Current top-level interpretation:
   Phase 22 evidence.
 - Synthetic production readiness is strong after Phase 23. `MrTester` is the
   reusable synthetic smoke tenant.
-- Real customer-data scale is still gated by backup/export/restore posture,
-  OpenAI operational monitoring, and owner approval. External Auth email/custom
-  SMTP proof is now passed by owner-provided Resend/Supabase SMTP evidence.
+- Real customer-data scale is still gated by OpenAI operational monitoring and
+  owner approval. External Auth email/custom SMTP proof is now passed by
+  owner-provided Resend/Supabase SMTP evidence, and Phase 24C DB-level
+  backup/export/restore proof is now passed for current synthetic-only
+  first-pilot readiness.
   Owner notification email is not a first-pilot readiness requirement because
   it is intentionally deferred.
 - Broader feature work remains allowed only through feature entitlement,

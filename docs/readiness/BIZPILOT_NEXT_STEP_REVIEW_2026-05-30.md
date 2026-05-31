@@ -133,16 +133,19 @@ Customer submits quote
 Revisit only after successful pilot validation, active pilot customers, and
 demonstrated operational need.
 
-### 2.5 Backup/export/restore is still the real-data hard gate
+### 2.5 Backup/export/restore passed for current first-pilot readiness
 
-The docs consistently say real customer data is blocked until backup/export/restore posture is upgraded or drilled:
+Phase 24C completed the selected low-cost restore drill:
 
-- current posture recorded as Supabase Free/no PITR or unverified PITR,
-- no manual export completed,
-- no restore drill completed,
-- no encrypted export storage/access list recorded.
+- Supabase CLI logical export produced `roles.sql`, `schema.sql`, and
+  `data.sql` outside repo,
+- local Docker Postgres restore succeeded against a disposable database,
+- sanitized table-count checks passed,
+- git did not track dump files.
 
-This must stay P0 before real customer intake.
+This closes the backup/export/restore blocker for current synthetic-only
+first-pilot readiness. Larger real-data scale can still add stronger app/RLS
+restore smokes later.
 
 ### 2.6 OpenAI provider proof passed, but operations are not done
 
@@ -181,10 +184,9 @@ Status: **not closed**
 
 Must complete:
 
-1. Backup/export/restore gate.
-2. OpenAI operations monitoring baseline.
-3. Final no-secret production smoke after the above.
-4. Final owner approval for real customer data.
+1. OpenAI operations monitoring baseline.
+2. Final no-secret production smoke after the above.
+3. Final owner approval for real customer data.
 
 Custom SMTP/Auth email delivery and password reset proof are now passed.
 Owner notification email is intentionally deferred for the first pilot.
