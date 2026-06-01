@@ -77,9 +77,11 @@ Current top-level interpretation:
   Phase 22 evidence.
 - Synthetic production readiness is strong after Phase 23. `MrTester` is the
   reusable synthetic smoke tenant.
-- Real customer-data scale is still gated by final owner approval. Phase 24E
-  accepted the OpenAI operating posture for first limited pilot: daily cost
-  monitoring for the first 14 pilot days, weekly checks afterward,
+- Real customer-data scale is still gated by final no-secret production smoke
+  and final owner approval. Phase 24E accepted the OpenAI operating posture
+  documentation for first limited pilot; this is not a new runtime AI proof
+  because Phase 23E remains the runtime OpenAI provider proof. Phase 24E records
+  daily cost monitoring for the first 14 pilot days, weekly checks afterward,
   usage/quota checks before each real pilot onboarding and weekly, owner-defined
   monthly soft budget, safe fallback/manual workflow, no bulk generation, no
   retry storm, no auto-send, and temporary non-secret diagnostics. External

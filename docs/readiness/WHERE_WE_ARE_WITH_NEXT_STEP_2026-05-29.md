@@ -32,12 +32,14 @@ The strongest current evidence is Phase 23:
   completion, and login-after-reset proof.
 
 The project is **not yet approved for real customer data** because the final
-owner approval gate is still open:
+smoke and owner approval gates are still open:
 
-1. Final owner approval for real customer data.
+1. Final no-secret production smoke.
+2. Final owner approval for real customer data.
 
-Phase 24E OpenAI operating posture is accepted for first limited pilot: cost
-monitoring is daily during the first 14 pilot days and weekly afterward;
+Phase 24E OpenAI operating posture documentation is accepted for first limited
+pilot. This is not a new runtime AI proof; Phase 23E remains the runtime OpenAI
+provider proof. Cost monitoring is daily during the first 14 pilot days and weekly afterward;
 usage/quota is checked before onboarding each real pilot customer and weekly;
 fallback remains safe/manual with no customer-facing auto-send; diagnostics
 remain non-secret and temporary.
@@ -391,7 +393,7 @@ The OpenAI fixes were intentionally narrow:
 
 4. **OpenAI monitoring posture**
 
-   Phase 24E owner decision is recorded:
+   Phase 24E owner decision is recorded as docs/operating posture only:
 
    - cost monitoring daily during first 14 pilot days, then weekly,
    - usage/quota checked before each real pilot onboarding, then weekly,
@@ -401,6 +403,7 @@ The OpenAI fixes were intentionally narrow:
    - safe non-secret diagnostics kept temporarily and reduced/gated if noisy,
    - AI drafts are never automatically sent; owner reviews and manually
      responds.
+   - Phase 23E remains the runtime OpenAI provider proof.
 
 ### P1 Before Paid Pilot Operations
 
@@ -487,12 +490,13 @@ demonstrated operational need.
 
 ### Next Step 5 - Real Pilot Approval Decision
 
-Only after final owner approval closes, decide whether BizPilot is:
+Only after final no-secret production smoke and final owner approval close,
+decide whether BizPilot is:
 
 | Status | Meaning |
 | --- | --- |
 | Synthetic-ready | Current state is mostly here |
-| Real-data-ready | Requires final owner approval |
+| Real-data-ready | Requires final no-secret production smoke and final owner approval |
 | Paid-pilot-ready | Requires real-data-ready plus payment/support/operator readiness |
 
 ## Current Real Pilot Decision
@@ -502,8 +506,8 @@ As of this document:
 ```text
 Do not start real customer data intake yet.
 Do not start paid pilot with real customer data yet.
-Continue using synthetic-only production smoke flows until OpenAI operating
-posture and final owner approval close.
+Continue using synthetic-only production smoke flows until final no-secret
+production smoke and final owner approval close.
 ```
 
 ## Safety Rules To Keep Carrying Forward

@@ -15,8 +15,9 @@ Phase 23 proved the synthetic production flow. The external Auth email/custom
 SMTP gate was later completed by owner-side setup and smoke evidence. Owner
 notification email is intentionally deferred for the first pilot. Phase 24C
 DB-level backup/export/restore proof has passed, but restored-target app,
-dashboard, and RLS smoke has not passed. OpenAI operating posture and final
-owner approval remain open before real customer data.
+dashboard, and RLS smoke has not passed. Phase 24E OpenAI operating posture
+documentation has passed. Final no-secret production smoke and final owner
+approval remain open before real customer data.
 
 ## Current Decision
 
@@ -123,8 +124,8 @@ Real-data gate requirement:
   production migrations, or before destructive/bulk data work,
 - document the result.
 
-Real external customer data remains blocked until OpenAI operating posture and
-final owner real-data approval are recorded.
+Real external customer data remains blocked until final no-secret production
+smoke and final owner real-data approval are recorded.
 
 ### 3. Owner Notification Decision
 
@@ -152,8 +153,10 @@ Current status:
 - provider proof passed on one synthetic lead,
 - fallback safety passed,
 - diagnostics helped resolve parser/token truncation.
-- Phase 24E owner decision recorded: OpenAI operating posture is accepted for
-  the first limited pilot.
+- Phase 24E owner decision recorded: OpenAI operating posture documentation is
+  accepted for the first limited pilot.
+- Phase 24E is not a new runtime AI proof. Phase 23E remains the runtime
+  OpenAI provider proof.
 
 Accepted operating posture:
 
@@ -195,8 +198,10 @@ This gate can close only when the owner explicitly records:
    restored database failed and app/dashboard restore smoke was not run, so
    strict Phase 24C full pass is not claimed.
 3. Owner notification email deferred decision is recorded.
-4. OpenAI operating posture is accepted. Completed by Phase 24E owner decision.
-5. Real customer data intake is approved.
+4. OpenAI operating posture documentation is accepted. Completed by Phase 24E
+   owner decision; this is not a new runtime AI proof.
+5. Final no-secret production smoke passed.
+6. Real customer data intake is approved.
 
 Until then:
 
@@ -224,8 +229,9 @@ Until then:
 Phase 24C.0 DB-level export/restore proof is complete. Phase 24C.1 restored
 app/RLS smoke remains not passed: app/dashboard smoke was not run and the
 existing RLS suite against the restored database failed. Phase 24E OpenAI
-operating posture is accepted.
+operating posture documentation is accepted.
 
 Next implementation track:
 
-1. Phase 24F - final real-data approval decision.
+1. Phase 24F - final no-secret production smoke.
+2. Phase 24G - final real-data approval decision.

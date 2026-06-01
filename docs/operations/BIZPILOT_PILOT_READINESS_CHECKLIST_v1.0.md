@@ -37,13 +37,14 @@ Use this table as the current 2026-05-30 truth. It supersedes older Phase 19,
 | Controlled synthetic quote intake | Pass | Phase 23C passed on `MrTester` only. `/quote/mrtester` is active and one synthetic lead exists. |
 | Synthetic owner dashboard runtime | Pass | Phase 23D passed. `/dashboard` and `/dashboard/leads` returned 200 for the synthetic owner and showed only `MrTester` data. |
 | OpenAI provider proof | Pass | Phase 23E passed after parser diagnostics and the lead bundle token-budget fix. The approved synthetic lead produced `provider=openai`, `status=generated`, model `gpt-5.1`. |
-| OpenAI operating posture | Pass for first limited pilot | Phase 24E owner decision recorded: cost monitoring daily for first 14 pilot days then weekly; usage/quota checked before onboarding each real pilot customer then weekly; owner-defined monthly soft budget in OpenAI project settings; safe fallback/manual workflow if provider fails; no retry storm, no bulk generation, no auto-send; safe non-secret diagnostics kept temporarily and reduced/gated if noisy. |
+| OpenAI operating posture | Docs/operating posture pass for first limited pilot | Phase 24E owner decision recorded: cost monitoring daily for first 14 pilot days then weekly; usage/quota checked before onboarding each real pilot customer then weekly; owner-defined monthly soft budget in OpenAI project settings; safe fallback/manual workflow if provider fails; no retry storm, no bulk generation, no auto-send; safe non-secret diagnostics kept temporarily and reduced/gated if noisy. This is not a new runtime AI proof; Phase 23E remains the runtime provider proof. |
 | Password reset request path | Pass | Phase 23F repo-side request path was safe; owner later verified forgot-password email arrival, reset link open, reset completion, and login after reset. |
 | Custom SMTP/Auth email | Pass | Owner reported Resend provider, `no-reply@bizpilo.com` sender, verified DNS, Supabase custom SMTP enabled, signup confirmation passed, and Resend SMTP accepted email with `POST /emails` 200. No credentials or private links are recorded. |
 | Owner notification email | Deferred for first pilot | Owner decision recorded: first pilot is manual-only. Owners check dashboard manually; no owner notification email, customer-facing email automation, AI auto-send, or autonomous workflow is required or approved. |
 | Backup/export/restore | Phase 24C.0 DB-level proof pass; Phase 24C.1 not passed | Phase 24C completed Supabase CLI logical export, local Docker Postgres restore, sanitized table-count checks, specific `MrTester` business/lead count checks, DB-level RLS metadata checks, and git dump-file exclusion proof. Existing RLS suite against the restored DB failed, and app/dashboard restore smoke was not run. Strict full pass is not claimed. Follow `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` for evidence. |
 | Strict restored app/dashboard/RLS smoke | Deferred to P1 | Owner decision: not required for the first limited pilot. Required before paid pilot, production migrations, or destructive/bulk data work. |
-| Real customer data intake | Not approved | Phase 24 real-data approval gate remains open. Continue synthetic-only production smoke until final owner approval closes. |
+| Final no-secret production smoke | Not run | Required before final real customer data approval. |
+| Real customer data intake | Not approved | Phase 24 real-data approval gate remains open. Continue synthetic-only production smoke until final no-secret production smoke and final owner approval close. |
 | Current source-of-truth summary | Active | `docs/readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md` and `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`. |
 
 ## 1A. Phase 21 Current Pilot Gate Status
@@ -65,7 +66,7 @@ Use this table as the current Phase 21 truth. It supersedes older Phase 19/20 pr
 | OpenAI real-key validation | Historical blocker superseded | Historical Phase 21 row. Current Phase 23E provider proof passed on `MrTester`, and Phase 24E operating posture is accepted for first limited pilot. |
 | Signup confirmation smoke | Passed (2026-05-25) | Synthetic disposable inbox used; confirmed owner reached `/dashboard`. Credentials and artifacts stored outside repo. Post-fix retest blocked by Auth rate limiting; should retest when limits clear. |
 | Pilot commercial terms | Owner decision required | Recommended default (`$199 setup + $49/month`) not yet approved. Pricing mismatch across pages not resolved. |
-| First real pilot customer readiness | Blocked | Historical Phase 21 row; current Phase 23/24 evidence supersedes older blockers. Remaining current blocker is final owner real-data approval. |
+| First real pilot customer readiness | Blocked | Historical Phase 21 row; current Phase 23/24 evidence supersedes older blockers. Remaining current blockers are final no-secret production smoke and final owner real-data approval. |
 
 ## 1B. Phase 19H Historical Readiness Status
 

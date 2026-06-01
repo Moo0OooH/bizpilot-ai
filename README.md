@@ -42,11 +42,14 @@ Phase 23 production functional smoke has completed on synthetic data:
   configured, domain DNS is verified, signup confirmation passed, password
   reset email/link/completion passed, and login after reset passed.
 
-Real customer data is still not approved. The current remaining blocker is:
+Real customer data is still not approved. The current remaining blockers are:
 
+- final no-secret production smoke.
 - final owner real-data approval.
 
-Phase 24E OpenAI operating posture is accepted for first limited pilot:
+Phase 24E OpenAI operating posture documentation is accepted for first limited
+pilot. This is not a new runtime AI proof; Phase 23E remains the runtime
+OpenAI provider proof. Phase 24E records:
 cost monitoring is daily during the first 14 pilot days and weekly after that;
 usage/quota is checked before onboarding each real pilot customer and weekly
 afterward; budget control uses an owner-defined monthly soft budget in OpenAI

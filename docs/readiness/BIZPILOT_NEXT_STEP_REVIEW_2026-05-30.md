@@ -32,7 +32,8 @@ Corrected current status:
 ```text
 Synthetic-ready: yes, with evidence.
 External Auth email/custom SMTP gate: passed.
-Real-data-ready: still no, pending final owner approval.
+Real-data-ready: still no, pending final no-secret production smoke and final
+owner approval.
 Paid-pilot-ready: still no.
 ```
 
@@ -152,10 +153,12 @@ restored app/dashboard/RLS smoke is not required for the first limited pilot;
 it is deferred to P1 before paid pilot, before production migrations, or before
 destructive/bulk data work.
 
-### 2.6 OpenAI provider proof and operating posture passed
+### 2.6 OpenAI provider proof passed; operating posture documentation passed
 
 Phase 23E passed with OpenAI provider output on the synthetic `MrTester` lead.
-Phase 24E owner decision accepted the first limited pilot operating posture:
+Phase 24E owner decision accepted the first limited pilot operating posture in
+documentation. This is not a new runtime AI proof; Phase 23E remains the
+runtime OpenAI provider proof.
 
 - cost monitoring daily during first 14 pilot days, then weekly,
 - usage/quota checked before onboarding each real pilot customer, then weekly,
