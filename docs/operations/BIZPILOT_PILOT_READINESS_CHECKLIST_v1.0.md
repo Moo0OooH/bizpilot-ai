@@ -20,6 +20,24 @@
 
 ---
 
+## Current Status Override - 2026-06-01
+
+Use `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`,
+`docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`, and
+`docs/operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+for current readiness truth.
+
+Older Phase 19/21/22 blocker rows below are historical where they conflict.
+Current state:
+
+- Synthetic-ready: yes.
+- Real-data-ready: no; pending Phase 24F final no-secret smoke and Phase 24G explicit owner approval.
+- Paid-pilot-ready: no; pending payment/support operating packet and strict restored app/dashboard/RLS proof before paid pilot or risky production work.
+- First pilot mode: cleaning-only, manual dashboard check, owner-reviewed AI drafts, manual copy/send.
+- Owner notification email, AI auto-send, SMS/WhatsApp, booking, invoices, and CRM expansion are not approved for the first pilot.
+
+---
+
 ## 1. Purpose
 
 This checklist decides whether BizPilot AI is ready to begin Phase 18: founder-led pilots with three cleaning businesses.

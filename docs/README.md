@@ -6,12 +6,19 @@ Before reading or implementing anything, start with:
 
 1. `CURRENT_CANONICAL_DOCS_v1.7.md`
 2. `AI_CODING_AGENT_START_HERE_v1.7.md`
-3. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
-4. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
-5. `readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md`
-6. `readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`
+3. `readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`
+4. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+5. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
+6. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
+
+2026-06-01 status override: BizPilot is synthetic-ready, not
+real-data-approved, and not paid-pilot-ready. The next gates are Phase 24F final
+no-secret production smoke and Phase 24G explicit owner approval. After those,
+the highest priority work is product readiness, demo readiness, and customer
+validation: homepage polish, dashboard polish, manual email templates,
+end-to-end smoke, demo creation, demo video, and founder-led outreach.
 
 ## Active MVP Direction
 
@@ -73,16 +80,26 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ## Latest Readiness Evidence
 
+- `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`
+- `docs/readiness/BIZPILOT_SECOND_PASS_PROJECT_GAP_AND_SUGGESTIONS_2026-06-01.md`
+- `docs/readiness/BIZPILOT_PROJECT_GAP_AND_SUGGESTIONS_2026-06-01.md`
+- `docs/operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+- `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
+- `docs/readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md`
+- `docs/readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md`
 - `docs/readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md`
 - `docs/readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`
 - `docs/readiness/PHASE_21Z_AUTONOMOUS_STATUS_AND_OWNER_ACTIONS_2026-05-26.md`
 - `docs/readiness/PHASE_21R_PRODUCTION_HORIZONTAL_ACCESS_SMOKE.md`
 - `docs/readiness/HOMEPAGE_RENEW_V2_WORK_LOG.md`
 
-2026-05-28 interpretation: production access/admin backend data loading is no
-longer the main blocker after Phase 22 evidence. Real customer-data scale still
-requires backup/export/restore posture, owner-approved authenticated synthetic
-smoke evidence, provider/email readiness, and owner approval.
+2026-06-01 interpretation: production access/admin-data loading and broad
+infrastructure discovery are no longer the main blocker after Phase 22/23/24
+evidence. Real customer data still requires Phase 24F final no-secret
+production smoke and Phase 24G owner approval. Paid pilot readiness still
+requires payment/support operating packet and strict restored app/dashboard/RLS
+proof before paid pilot, migrations, destructive cleanup, bulk work, or broader
+scale.
 
 ---
 

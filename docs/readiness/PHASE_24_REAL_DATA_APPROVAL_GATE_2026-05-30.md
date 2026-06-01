@@ -224,6 +224,106 @@ Until then:
 - No homepage/design/docs stash work during this gate.
 - No broad AI or email tests.
 
+## Phase 24F - Final No-Secret Production Smoke Checklist
+
+Status: prepared, not run.
+
+This smoke is required before final real customer data approval. It must be
+synthetic-only, non-destructive, and no-secret. Do not run it unless the owner
+explicitly asks for execution.
+
+Read-only wording note:
+
+The dashboard checks are UI-read-only and must not perform destructive or
+operator-initiated mutations. If the current app records expected passive
+metadata during owner viewing, such as viewed/reviewed/timeline/SLA state, that
+must be recorded as expected passive metadata rather than described as a purely
+database-read-only route.
+
+Recommended evidence wording:
+
+```text
+No destructive or user-initiated mutation was performed. Passive owner-view
+metadata may update if that is the current app behavior and is recorded as
+expected.
+```
+
+Approved target:
+
+| Field | Value |
+| --- | --- |
+| Business | `MrTester` |
+| Business id | `131561a7-9b5b-4ff9-a7fe-403d5c46462b` |
+| Lead | `BizPilot QA Test Lead` |
+| Lead id | `3f46045b-47d1-4d92-b99d-0bdfe6eab10e` |
+
+Smoke scope:
+
+| Check | Expected result | Evidence field |
+| --- | --- | --- |
+| Public route smoke | Public pages load without raw errors or secret markers | `pass / partial / fail / not run` |
+| Logged-out protected route redirect | Protected dashboard route redirects safely to auth | `pass / partial / fail / not run` |
+| Synthetic owner login | Approved synthetic owner can sign in through normal auth | `pass / partial / fail / not run` |
+| `/dashboard` read-only load | Dashboard loads for `MrTester` and does not show another tenant | `pass / partial / fail / not run` |
+| `/dashboard/leads` read-only load | Leads page loads for `MrTester` and shows scoped lead data only | `pass / partial / fail / not run` |
+| Approved lead detail read-only load | `/dashboard/leads/3f46045b-47d1-4d92-b99d-0bdfe6eab10e` loads for the approved synthetic lead only | `pass / partial / fail / not run` |
+| Cross-tenant visual smoke | No other tenant data is visible in dashboard, leads, or lead detail | `pass / partial / fail / not run` |
+| Sensitive output check | No API keys, SMTP credentials, reset links, auth tokens, cookies, provider secrets, raw prompts, raw provider output, stack traces, or service-role markers appear in UI/log evidence | `pass / partial / fail / not run` |
+| Sign-out, if tested | Sign-out works without exposing tokens or internal errors | `pass / partial / fail / not run` |
+
+Safe evidence template:
+
+```text
+Route:
+Actor:
+Time:
+Expected:
+Result: pass / partial / fail / not run
+Sensitive data visible: no / yes
+Cross-tenant data visible: no / yes
+Notes: sanitized, one sentence only
+```
+
+Hard exclusions:
+
+- no AI run unless separately approved,
+- no production SQL,
+- no migrations,
+- no delete, purge, workspace repair, or destructive cleanup,
+- no broad/batch tests,
+- no real customer data,
+- no real customer email,
+- no secret/token/reset-link logging,
+- no homepage/design/dashboard/admin redesign.
+
+Final decision field:
+
+| Field | Value |
+| --- | --- |
+| Final no-secret production smoke decision | `pass / partial / fail / not run` |
+| Production touched beyond normal read-only UI/auth | `yes / no` |
+| Real customer data used | `yes / no` |
+| Secrets exposed | `yes / no` |
+| Remaining blocker before real-data approval | `short sanitized note` |
+
+## Phase 24G - Explicit Owner Real-Data Approval Template
+
+Status: not recorded.
+
+Do not fill this section until Phase 24F passes and the owner explicitly
+approves real customer data.
+
+| Field | Value |
+| --- | --- |
+| Approval date | `YYYY-MM-DD` |
+| Approver | `MoOoH / owner` |
+| Scope | `first limited cleaning pilot only` |
+| Data allowed | `real cleaning-business owner account and real quote submissions only after setup` |
+| Data not allowed | `bulk imports, scraping, automated customer email, AI auto-send` |
+| Pilot mode | `manual dashboard check, owner-reviewed AI drafts, manual copy/send` |
+| Stop condition | `any P0 security/auth/cross-tenant issue pauses pilot` |
+| Final approval decision | `approved / not approved` |
+
 ## Next Correct Step
 
 Phase 24C.0 DB-level export/restore proof is complete. Phase 24C.1 restored

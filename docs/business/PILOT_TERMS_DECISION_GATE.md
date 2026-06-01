@@ -19,7 +19,13 @@
 
 This gate prevents BizPilot from starting a real pilot without clear commercial terms.
 
-Do not accept payment, onboard a real cleaning business, or collect real customer data until the remaining production, backup/export, OpenAI, SMTP/signup, and smoke-test gates are closed.
+Do not accept payment, onboard a real cleaning business, or collect real customer data until the current real-data and paid-pilot gates are closed.
+
+Current gate status as of 2026-06-01:
+
+- Real customer data is still blocked by Phase 24F final no-secret production smoke and Phase 24G explicit owner approval.
+- Paid pilot execution is still blocked by the payment collection asset/process, support/escalation/refund operating packet, and strict restored app/dashboard/RLS proof before paid pilot or risky production work.
+- Historical OpenAI, Auth email/SMTP, and DB-level backup/export/restore blockers are superseded where Phase 23/24 evidence records them as passed or deferred.
 
 This document records the owner-approved staged commercial terms for the first pilot cohorts. The terms approval closes the pricing mismatch, but it does not approve a real customer pilot by itself.
 
@@ -104,12 +110,11 @@ Before any real pilot starts, the following business terms are now approved:
 
 Remaining non-business gates still block real customer data and paid pilot execution:
 
-- production quote security smoke,
-- fr-CA production quote smoke,
-- signup confirmation flow with stable safe inbox/custom SMTP posture,
-- OpenAI real-output validation with a non-empty production key,
-- production backup/export/restore posture,
-- any paid-payment asset/process needed before collecting money.
+- Phase 24F final no-secret production smoke,
+- Phase 24G explicit owner approval before real customer data,
+- manual invoice or Stripe Payment Link asset/process before collecting money,
+- support/escalation/refund operating packet before paid pilot,
+- strict restored app/dashboard/RLS proof before paid pilot, production migrations, destructive cleanup, bulk work, or broader scale.
 
 ## 6. Approved Guardrails
 

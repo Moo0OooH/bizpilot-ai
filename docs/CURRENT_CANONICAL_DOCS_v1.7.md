@@ -25,18 +25,28 @@ deferred for the first pilot. The approved communication workflow is manual
 dashboard review and manual response. See
 `product/PRODUCT_DECISION_OWNER_NOTIFICATION_EMAIL_DEFERRED_FIRST_PILOT_2026-05-30.md`.
 
+2026-06-01 priority override: the active execution priority is no longer broad
+infrastructure discovery. Treat product readiness, demo readiness, and customer
+validation as the main risk after the remaining Phase 24F/24G real-data gates.
+See
+`operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`.
+For the shortest current state, use
+`readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`.
+
 1. `CURRENT_CANONICAL_DOCS_v1.7.md` — this file; active source-of-truth map.
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` — execution instructions for Cloud Code/Codex.
-3. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` — active strategic overlay.
-4. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md` — active expansion, Settings visibility, and guide standard.
-5. `security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` — active security/privacy standard.
-6. `engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md` — active backend/RLS hardening standard.
-7. `engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md` — active engineering standard.
-8. `product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md` — preserved product blueprint plus v1.6 addendum.
-9. `product/BIZPILOT_BUILD_PLAN_v1.4.md` — active build plan with v1.6 alignment applied and 2026-05-26 expansion update.
-10. `operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md` — hardening execution checklist.
-11. `operations/BIZPILOT_STRATEGIC_ALIGNMENT_IMPLEMENTATION_CHECKLIST_v1.6.md` — alignment checklist.
-12. `operations/BIZPILOT_REPO_INSPECTION_AND_READINESS_GAP_REPORT_v1.0.md` — current repo inspection and readiness truth table.
+3. `readiness/CURRENT_PROJECT_STATUS_2026-06-01.md` — shortest active status and execution-order summary.
+4. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` — active priority override for final execution, demo readiness, and validation.
+5. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md` — active strategic overlay.
+6. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md` — active expansion, Settings visibility, and guide standard.
+7. `security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md` — active security/privacy standard.
+8. `engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md` — active backend/RLS hardening standard.
+9. `engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md` — active engineering standard.
+10. `product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md` — preserved product blueprint plus v1.6 addendum.
+11. `product/BIZPILOT_BUILD_PLAN_v1.4.md` — active build plan with v1.6 alignment applied and 2026-05-26 expansion update.
+12. `operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md` — hardening execution checklist.
+13. `operations/BIZPILOT_STRATEGIC_ALIGNMENT_IMPLEMENTATION_CHECKLIST_v1.6.md` — alignment checklist.
+14. `operations/BIZPILOT_REPO_INSPECTION_AND_READINESS_GAP_REPORT_v1.0.md` — current repo inspection and readiness truth table.
 
 Additional active lifecycle/deletion authorities:
 
@@ -52,6 +62,14 @@ starting new work:
 - `readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md` - current operator
   handoff and source-of-truth summary after Phase 23F; includes completed
   synthetic production proof, remaining blockers, and corrected next steps.
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-01.md` - shortest current status:
+  synthetic-ready, not real-data-approved, not paid-pilot-ready, with active
+  execution order.
+- `readiness/BIZPILOT_SECOND_PASS_PROJECT_GAP_AND_SUGGESTIONS_2026-06-01.md` -
+  second-pass gap, stale-truth, operating-packet, and implementation-order
+  review.
+- `readiness/BIZPILOT_PROJECT_GAP_AND_SUGGESTIONS_2026-06-01.md` - Codex repo
+  audit and suggestions aligned to the 2026-06-01 priority override.
 - `readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md` - active real-data
   approval gate; do not start real customer data until this gate closes.
 - `readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md` - Phase 23B
@@ -101,6 +119,18 @@ Current top-level interpretation:
 - Broader feature work remains allowed only through feature entitlement,
   Settings visibility, guide coverage, smoke evidence, and honest
   customer-facing copy.
+- 2026-06-01 execution override: after Phase 24F/24G, the highest active work is
+  product readiness, demo readiness, and customer validation. Homepage polish,
+  dashboard polish, manual email templates, end-to-end smoke, demo creation,
+  demo video, and founder-led outreach take priority over feature expansion.
+  P1-after-validation items include owner notes, source attribution, validation
+  dashboard, payment process, support process, French pilot expansion, and
+  strict restored app/RLS proof. P2 hardening includes IP hash salt, abuse
+  retention cleanup, registers, CSP hardening, Node runtime enforcement,
+  workflow cleanup, and header cleanup. P3/future scope remains blocked before
+  validation: owner notification email, customer email automation, SMS,
+  WhatsApp, booking, invoices, billing automation, calendar sync, multi-vertical
+  expansion, full CRM, and autonomous AI.
 
 ## Supporting Active Files
 
@@ -159,6 +189,8 @@ Current top-level interpretation:
 - `operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`
 - `operations/BIZPILOT_CHANGE_EVIDENCE_AND_REMEMBERING_PROTOCOL_v1.0.md`
 - `operations/BIZPILOT_CODEX_IMPLEMENTATION_PROMPTS_v1.0.md`
+- `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+- `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.pdf`
 - `operations/BIZPILOT_EXECUTIVE_AUDIT_AND_DECISION_v1.5.md`
 - `operations/BIZPILOT_PHASE_18_FOUNDER_LED_PILOT_WORKFLOW_v1.0.md`
 - `operations/BIZPILOT_PHASE_18A_STANDARDS_AUDIT_v1.0.md`

@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI  
 **Document Type:** Pilot Offer / Pricing Decision Record  
-**Status:** Phase 19F draft; owner approval required before paid outreach  
+**Status:** Historical Phase 19F draft; superseded by `PILOT_TERMS_DECISION_GATE.md` where current terms conflict
 **Owner:** MoOoH  
 **Last Updated:** 2026-05-23  
 **Related:**
@@ -13,6 +13,27 @@
 - `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md`
 - `app/pricing/page.tsx`
 - `lib/i18n/pricing-copy.ts`
+
+---
+
+## Current Status Override - 2026-06-01
+
+This document is historical. Current pilot pricing and commercial execution are
+governed by:
+
+- `docs/business/PILOT_TERMS_DECISION_GATE.md`
+- `lib/i18n/pricing-copy.ts`
+- `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`
+
+Current public pricing source: `lib/i18n/pricing-copy.ts` plus
+`docs/business/PILOT_TERMS_DECISION_GATE.md`. Older pricing numbers and
+"owner approval required" language below are historical where they conflict
+with the staged owner-approved terms.
+
+Do not use this document to start a paid pilot by itself. Real customer data
+still requires Phase 24F final no-secret smoke and Phase 24G owner approval.
+Paid collection still requires a manual invoice or Stripe Payment Link process
+before charging.
 
 ---
 
@@ -144,4 +165,3 @@ It does not send messages automatically, book jobs, create invoices, sync calend
 | Refund/cancellation locked | No. Draft direction exists, but exact policy is owner-required. |
 | Trial locked | No. Public page says 14-day pilot, but paid/free/subscription timing is not decided. |
 | Manual billing ready | No. Manual billing process is documented, but the actual payment collection asset/process is not verified. |
-

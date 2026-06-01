@@ -30,6 +30,26 @@ Every implementation must improve at least one of these outcomes:
 
 If the change does not improve one of these, keep it out of the active surface or place it behind an owner-controlled feature level with honest Settings state.
 
+## Active Priority Override - 2026-06-01
+
+For the shortest current status, read `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`.
+
+Read `docs/operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` before choosing execution order.
+
+BizPilot does not need a strategic reset. After the remaining Phase 24F/24G real-data gates, the main risk is product readiness, demo readiness, and customer validation.
+
+Highest current execution priorities:
+
+1. Homepage polish
+2. Dashboard polish
+3. Manual email templates
+4. End-to-end smoke test
+5. Demo creation
+6. Demo video
+7. Founder-led customer outreach
+
+Feature expansion is forbidden until validation evidence exists. P3/future scope includes owner notification email, customer email automation, SMS, WhatsApp, booking, invoices, billing automation, calendar sync, multi-vertical expansion, full CRM, and autonomous AI.
+
 ## Current Implementation Priorities
 
 ### Priority 1 — Safety and Trust

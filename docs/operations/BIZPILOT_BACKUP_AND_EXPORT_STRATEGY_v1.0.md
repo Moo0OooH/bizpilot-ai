@@ -13,6 +13,27 @@
 
 ---
 
+## Current Status Override - 2026-06-01
+
+Phase 24C.0 DB-level backup/export/restore proof passed: Supabase CLI logical
+export, local Docker Postgres restore, sanitized count checks, `MrTester`
+synthetic target checks, DB-level RLS metadata checks, and dump-file git
+exclusion proof were recorded.
+
+Strict Phase 24C full pass is not claimed. Phase 24C.1 restored app/dashboard
+smoke was not run, and the existing RLS suite against the restored database did
+not pass. Owner decision: strict restored app/dashboard/RLS proof is deferred to
+P1 and is required before paid pilot, production migrations, destructive
+cleanup, bulk work, or broader real-data scale.
+
+For current status, use:
+
+- `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`
+- `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
+- `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
+
+---
+
 ## 1. Purpose
 
 This document satisfies the pilot-readiness portion of the Vendor Independence Standard, Section 14.1. It defines what BizPilot AI commits to before onboarding the first three cleaning-business pilots:
