@@ -32,7 +32,9 @@ Corrected current status:
 ```text
 Synthetic-ready: yes, with evidence.
 External Auth email/custom SMTP gate: passed.
-Real-data-ready: still no, pending backup/export/restore and owner approval.
+Real-data-ready: still no, pending OpenAI operating posture and final owner
+approval; if strict restore acceptance is required, restored app/RLS smoke is
+also still pending.
 Paid-pilot-ready: still no.
 ```
 
@@ -133,19 +135,21 @@ Customer submits quote
 Revisit only after successful pilot validation, active pilot customers, and
 demonstrated operational need.
 
-### 2.5 Backup/export/restore passed for current first-pilot readiness
+### 2.5 Backup/export/restore DB-level proof passed; strict full pass not claimed
 
-Phase 24C completed the selected low-cost restore drill:
+Phase 24C.0 completed the selected low-cost DB-level restore drill:
 
 - Supabase CLI logical export produced `roles.sql`, `schema.sql`, and
   `data.sql` outside repo,
 - local Docker Postgres restore succeeded against a disposable database,
 - sanitized table-count checks passed,
+- `MrTester` business and approved synthetic lead were verified by DB count,
+- DB-level RLS metadata checks passed on core restored tables,
 - git did not track dump files.
 
-This closes the backup/export/restore blocker for current synthetic-only
-first-pilot readiness. Larger real-data scale can still add stronger app/RLS
-restore smokes later.
+Phase 24C.1 restored app/RLS smoke is not passed. The existing RLS suite against
+the restored DB failed, and app/dashboard smoke against the restored target was
+not run. Strict Phase 24C full pass is not claimed.
 
 ### 2.6 OpenAI provider proof passed, but operations are not done
 
@@ -187,6 +191,7 @@ Must complete:
 1. OpenAI operations monitoring baseline.
 2. Final no-secret production smoke after the above.
 3. Final owner approval for real customer data.
+4. If strict restore acceptance is required, restored app/dashboard/RLS smoke.
 
 Custom SMTP/Auth email delivery and password reset proof are now passed.
 Owner notification email is intentionally deferred for the first pilot.
@@ -249,14 +254,17 @@ Recorded current posture:
 No SMTP credentials, Resend API keys, private inboxes, confirmation links,
 reset links, tokens, or passwords are recorded in repo docs.
 
-### Step 3 — Backup/export/restore gate
+### Step 3 — Backup/export/restore status
 
-Recommended owner decision:
+Current status:
 
-- For the first 1-5 feedback pilots, close the gate with at least one verified manual logical export + restore drill.
-- Upgrade Supabase/PITR if owner accepts cost and wants stronger recovery before real intake.
+- Phase 24C.0 DB-level restore proof passed.
+- Phase 24C.1 restored app/RLS smoke did not pass.
+- Strict Phase 24C full pass is not claimed.
+- Upgrade Supabase/PITR remains optional if owner accepts cost and wants
+  stronger recovery before real intake.
 
-Minimum path:
+Strict restore path, if owner requires it:
 
 1. Record production plan/PITR status from Supabase dashboard.
 2. Choose encrypted storage outside repo.
@@ -264,7 +272,7 @@ Minimum path:
 4. Install `pg_dump` / `psql` or use Supabase CLI.
 5. Run schema-only export without printing contents.
 6. Restore to disposable local/staging target.
-7. Run local app/RLS smoke against restore.
+7. Run local app/RLS smoke against restore and get a pass.
 8. Record result in runbook.
 
 ### Step 4 — Manual-only pilot scope

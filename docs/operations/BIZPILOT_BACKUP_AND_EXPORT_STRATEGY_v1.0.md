@@ -130,10 +130,14 @@ non-production target. Use `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` and
 operational source of truth.
 
 Phase 24C selected path: manual Supabase CLI logical export plus restore drill
-to a disposable non-production Supabase project.
+to a disposable local Docker Postgres database.
 
-Real external customer data remains blocked until the restore drill is
-completed and documented.
+Phase 24C.0 DB-level restore proof is complete and documented. Phase 24C.1
+restored app/RLS smoke is not passed: the existing RLS suite against the
+restored DB failed, and app/dashboard smoke against the restored target was not
+run. Real external customer data remains blocked until OpenAI operating posture
+and final owner approval are recorded; if strict restore acceptance is required,
+it also remains blocked until restored app/dashboard/RLS smoke passes.
 
 ---
 
@@ -238,7 +242,9 @@ For the pilot, the accepted risk is: BizPilot will remain on Supabase Auth and w
 
 ## 9. Restore procedure (placeholder)
 
-Phase 24C restore drill target: disposable non-production Supabase project.
+Phase 24C.0 restore drill target used: disposable local Docker Postgres
+database. A disposable Supabase cloud project remains the cleaner target for a
+future strict app/dashboard/RLS restore smoke.
 Use placeholders only in docs:
 
 ```bash
@@ -265,7 +271,9 @@ A real restore procedure does not exist yet. The placeholder steps for the first
 7. Verify the application boots end-to-end against the restored database by pointing a local `next dev` instance at the restored project credentials.
 8. Record the date, duration, and any anomalies in a `docs/operations/BIZPILOT_RESTORE_DRILL_LOG.md` (to be created on first drill).
 
-This procedure is not validated. It is recorded so the first drill has a starting point.
+The Phase 24C.0 DB-level drill is validated. The strict app/dashboard/RLS
+restore procedure is not yet validated because the restored-target RLS suite
+failed and app/dashboard smoke was not run.
 
 ---
 

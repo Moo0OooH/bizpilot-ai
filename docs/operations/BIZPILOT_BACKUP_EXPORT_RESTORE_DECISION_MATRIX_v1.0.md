@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Document Type:** Production data-safety decision matrix
-**Status:** Active Phase 21P gate; synthetic demos allowed, real customer data blocked
+**Status:** Active Phase 24 gate; synthetic demos allowed, real customer data blocked
 **Owner:** MoOoH
 **Last Updated:** 2026-05-25
 **Related:**
@@ -18,7 +18,9 @@
 
 BizPilot can continue founder-controlled synthetic demos on the current
 production stack, but it cannot accept real customer data or a paid pilot until
-backup/export/restore is upgraded and verified.
+OpenAI operating posture and final owner approval are recorded. If the owner
+requires strict restore acceptance before real data, restored app/dashboard/RLS
+smoke must also pass.
 
 Current production posture:
 
@@ -28,8 +30,8 @@ Current production posture:
 | Supabase project | `bizpilot-production` / `qfqendrqimqvkoojpjao` |
 | Data scope allowed now | Synthetic founder demos only |
 | Scheduled backup/PITR posture | Not enough for real customer data |
-| Manual export | Not completed |
-| Restore drill | Not completed |
+| Manual export | Completed for Phase 24C.0 DB-level proof |
+| Restore drill | DB-level restore completed; strict app/RLS restore smoke not passed |
 | Production SQL requiring data safety | Blocked unless separately approved with exact query/migration and backup posture |
 
 ## 2. Official Supabase References
@@ -56,7 +58,7 @@ Operational notes from those docs, summarized for BizPilot:
 | Public route smoke, homepage demo, trust pages | Yes | No real data, no secrets, no production SQL |
 | Synthetic signup/quote smoke | Yes, with safe inbox and fake payload | Disposable account, no real customer content, sanitized evidence only |
 | Production `0020` for fake/test auth deletion | Not until safety is recorded | Exact migration approval plus backup/export posture or explicit risk acceptance for synthetic-only cleanup |
-| Real customer quote submissions | No | Backup/export/restore gate closed, SMTP posture stable, production smokes pass, OpenAI validation complete if AI is shown |
+| Real customer quote submissions | No | OpenAI operating posture accepted, SMTP posture stable, production smokes pass, final owner approval recorded, and strict restore smoke passed if owner requires it |
 | Paid pilot | No | Same as real customer data plus payment process evidence |
 | Destructive cleanup/purge | No | Separate exact owner approval, verified backup/export, and scoped synthetic target |
 
@@ -65,8 +67,8 @@ Operational notes from those docs, summarized for BizPilot:
 Phase 24C selected path:
 
 ```text
-Manual Supabase CLI logical export + restore drill to a disposable
-non-production Supabase project.
+Manual Supabase CLI logical export + restore drill to a disposable local Docker
+Postgres database for Phase 24C.0 DB-level proof.
 ```
 
 This path is selected because it proves BizPilot can create an owner-controlled
@@ -74,29 +76,31 @@ logical export and restore it outside production without relying only on
 provider-managed backups. It does not require production SQL, migrations,
 deletes, purges, or data mutation.
 
-Current Phase 24C checklist:
+Current Phase 24C status:
 
-1. Owner creates or confirms a disposable non-production Supabase restore
-   project.
-2. Owner provides secrets only through local shell/session variables or an
+1. Owner provided secrets only through local shell/session variables or an
    approved password manager, never in docs:
    - `[PROD_DB_URL]`
    - `[RESTORE_DB_URL]`
    - `[BACKUP_DIR]`
-3. Operator runs Supabase CLI logical dumps to produce:
+2. Operator ran Supabase CLI logical dumps to produce:
    - `roles.sql`
    - `schema.sql`
    - `data.sql`
-4. Operator verifies files exist and are excluded from git without printing
+3. Operator verified files existed and were excluded from git without printing
    contents.
-5. Operator restores into the disposable non-production Supabase project.
-6. Operator runs app/RLS/dashboard/lead-visibility smoke against the restored
-   target only.
-7. Operator records sanitized evidence in
+4. Operator restored into a disposable local Docker Postgres database.
+5. Operator verified `MrTester` business and approved synthetic lead by DB
+   count.
+6. Operator verified DB-level RLS metadata on core restored tables.
+7. Existing RLS suite against restored DB failed; app/dashboard restore smoke
+   was not run.
+8. Operator recorded sanitized evidence in
    `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`.
 
-Real external customer data remains blocked until the restore drill is
-completed and documented.
+Real external customer data remains blocked until OpenAI operating posture and
+final owner approval are recorded. If strict restore acceptance is required,
+real data also remains blocked until restored app/dashboard/RLS smoke passes.
 
 Alternative production-ready path:
 
@@ -114,12 +118,13 @@ Lower-cost pre-pilot alternative:
 
 1. Keep Supabase Free for synthetic demos only.
 2. Do not collect real customer data.
-3. Use `supabase db dump` or `pg_dump` to create manual logical exports once
-   tooling and safe storage are ready.
-4. Perform one restore drill before any real customer enters the system.
+3. Use the completed Phase 24C.0 Supabase CLI logical export and local Docker
+   DB-level restore proof as the current low-cost evidence.
+4. If stricter restore acceptance is required, perform a restored
+   app/dashboard/RLS smoke before any real customer enters the system.
 
-The lower-cost path does not close the real-data gate until export and restore
-are actually exercised.
+The lower-cost path has exercised export and DB-level restore, but it does not
+claim strict app/RLS restore proof.
 
 ## 5. Export Storage Rules
 
@@ -151,6 +156,9 @@ A restore drill is complete only when all are true:
 - RLS tests are run against a local/non-production database only,
 - no secrets or real customer rows are printed,
 - pass/fail result and date are recorded in the runbook.
+
+Phase 24C.0 satisfies the DB-level subset of this definition. Phase 24C.1 does
+not satisfy strict restored app/RLS acceptance yet.
 
 ## 7. Phase 21P Decision
 

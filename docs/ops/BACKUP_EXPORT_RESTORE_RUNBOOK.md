@@ -339,7 +339,7 @@ messages, private inbox addresses, or raw row data.
 | Export timestamp | `YYYY-MM-DD HH:MM TZ` |
 | Operator | `name/initials` |
 | Source environment | `production / bizpilot-production / project ref only` |
-| Restore target environment | `disposable non-production Supabase project / project ref only` |
+| Restore target environment | `disposable local Docker Postgres database / disposable non-production Supabase project / project ref only` |
 | Files generated | `roles.sql`, `schema.sql`, `data.sql` |
 | Where files are stored | `encrypted owner-controlled storage; exact path omitted if sensitive` |
 | Files excluded from git | `pass / partial / fail` |
@@ -363,7 +363,9 @@ Owner/operator checklist for the actual drill:
 
 1. Confirm Supabase CLI is installed and authenticated without printing tokens.
 2. Confirm `psql` is installed.
-3. Create a disposable non-production Supabase project for restore.
+3. Create or confirm a disposable non-production restore target, such as local
+   Docker Postgres for DB-level proof or a disposable Supabase project for
+   stricter app/dashboard/RLS smoke.
 4. Choose encrypted owner-controlled storage for `[BACKUP_DIR]`.
 5. Set `[PROD_DB_URL]` only in a local shell/session or approved password
    manager.
@@ -373,7 +375,7 @@ Owner/operator checklist for the actual drill:
    `data.sql`.
 8. Verify generated files exist without printing contents.
 9. Confirm generated files are excluded from git.
-10. Restore into the disposable non-production Supabase project only.
+10. Restore into the disposable non-production target only.
 11. Run app smoke against the restore target.
 12. Run RLS smoke against the restore target if the test harness can safely
     point to the disposable project.

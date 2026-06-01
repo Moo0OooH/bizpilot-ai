@@ -36,9 +36,13 @@ operational gates are still open:
 
 1. Ongoing OpenAI cost/quota/fallback monitoring.
 2. Final owner approval for real customer data.
+3. If strict restore acceptance is required before real data, restored-target
+   app/dashboard/RLS smoke must pass.
 
-Phase 24C backup/export/restore proof passed on 2026-05-30 for current
-synthetic-only first-pilot readiness.
+Phase 24C.0 DB-level backup/export/restore proof passed on 2026-05-30. Phase
+24C.1 restored app/RLS smoke is not passed: the existing RLS suite against the
+restored DB failed, and app/dashboard smoke against the restored target was not
+run. Strict Phase 24C full pass is not claimed.
 
 Owner notification email is intentionally deferred for the first pilot. The
 approved operating model is manual-only: owner checks dashboard manually,
@@ -440,17 +444,22 @@ Remaining email-related posture:
 No customer-facing automated email should be enabled without a separate
 implementation and smoke proof.
 
-### Next Step 3 - Close Backup/Restore Gate
+### Next Step 3 - Backup/Restore Status
 
-Owner decisions needed:
+Current status:
 
-1. Upgrade Supabase backup/PITR posture, or approve manual export path.
-2. Run a logical export without printing real/customer data.
-3. Restore to disposable non-production target.
-4. Run RLS/app smoke against restored target.
-5. Record result in readiness docs.
+1. Manual Supabase CLI logical export completed.
+2. Restore to disposable local Docker Postgres completed.
+3. Dump files remained outside repo and untracked.
+4. `MrTester` business and approved synthetic lead were verified by DB count.
+5. DB-level RLS metadata check passed on core restored tables.
+6. Existing `pnpm test:rls` suite against restored DB failed, so restored RLS
+   proof is not accepted.
+7. App/dashboard smoke against restored target was not run.
 
-No destructive cleanup or real customer data intake should happen before this.
+No destructive cleanup or real customer data intake should happen before OpenAI
+operating posture, final owner approval, and any owner-required strict restore
+acceptance are recorded.
 
 ### Next Step 4 - Preserve Manual-Only Pilot Scope
 
@@ -469,13 +478,13 @@ demonstrated operational need.
 
 ### Next Step 5 - Real Pilot Approval Decision
 
-Only after backup/export/restore, OpenAI operating posture, and final owner
-approval close, decide whether BizPilot is:
+Only after OpenAI operating posture and final owner approval close, decide
+whether BizPilot is:
 
 | Status | Meaning |
 | --- | --- |
 | Synthetic-ready | Current state is mostly here |
-| Real-data-ready | Requires backup/restore, OpenAI operating posture, and final owner approval |
+| Real-data-ready | Requires OpenAI operating posture and final owner approval; if strict restore acceptance is required, also requires restored app/dashboard/RLS smoke |
 | Paid-pilot-ready | Requires real-data-ready plus payment/support/operator readiness |
 
 ## Current Real Pilot Decision
@@ -485,7 +494,8 @@ As of this document:
 ```text
 Do not start real customer data intake yet.
 Do not start paid pilot with real customer data yet.
-Continue using synthetic-only production smoke flows until email and backup gates close.
+Continue using synthetic-only production smoke flows until OpenAI operating
+posture and final owner approval close.
 ```
 
 ## Safety Rules To Keep Carrying Forward

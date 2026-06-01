@@ -179,8 +179,9 @@ This gate can close only when the owner explicitly records:
 
 1. Email/custom SMTP proof passed. Completed by owner-provided external Resend/Supabase proof.
 2. Backup/export/restore DB-level proof passed. Completed by Phase 24C
-   DB-level export/restore proof on 2026-05-30. App/dashboard/RLS restore
-   smoke was not run, so strict Phase 24C full pass is not claimed.
+   DB-level export/restore proof on 2026-05-30. Existing RLS suite against the
+   restored database failed and app/dashboard restore smoke was not run, so
+   strict Phase 24C full pass is not claimed.
 3. Owner notification email deferred decision is recorded.
 4. OpenAI operating posture is accepted.
 5. Real customer data intake is approved.
