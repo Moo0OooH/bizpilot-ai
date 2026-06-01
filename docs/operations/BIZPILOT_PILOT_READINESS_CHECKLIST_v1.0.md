@@ -37,12 +37,13 @@ Use this table as the current 2026-05-30 truth. It supersedes older Phase 19,
 | Controlled synthetic quote intake | Pass | Phase 23C passed on `MrTester` only. `/quote/mrtester` is active and one synthetic lead exists. |
 | Synthetic owner dashboard runtime | Pass | Phase 23D passed. `/dashboard` and `/dashboard/leads` returned 200 for the synthetic owner and showed only `MrTester` data. |
 | OpenAI provider proof | Pass | Phase 23E passed after parser diagnostics and the lead bundle token-budget fix. The approved synthetic lead produced `provider=openai`, `status=generated`, model `gpt-5.1`. |
+| OpenAI operating posture | Pass for first limited pilot | Phase 24E owner decision recorded: cost monitoring daily for first 14 pilot days then weekly; usage/quota checked before onboarding each real pilot customer then weekly; owner-defined monthly soft budget in OpenAI project settings; safe fallback/manual workflow if provider fails; no retry storm, no bulk generation, no auto-send; safe non-secret diagnostics kept temporarily and reduced/gated if noisy. |
 | Password reset request path | Pass | Phase 23F repo-side request path was safe; owner later verified forgot-password email arrival, reset link open, reset completion, and login after reset. |
 | Custom SMTP/Auth email | Pass | Owner reported Resend provider, `no-reply@bizpilo.com` sender, verified DNS, Supabase custom SMTP enabled, signup confirmation passed, and Resend SMTP accepted email with `POST /emails` 200. No credentials or private links are recorded. |
 | Owner notification email | Deferred for first pilot | Owner decision recorded: first pilot is manual-only. Owners check dashboard manually; no owner notification email, customer-facing email automation, AI auto-send, or autonomous workflow is required or approved. |
 | Backup/export/restore | Phase 24C.0 DB-level proof pass; Phase 24C.1 not passed | Phase 24C completed Supabase CLI logical export, local Docker Postgres restore, sanitized table-count checks, specific `MrTester` business/lead count checks, DB-level RLS metadata checks, and git dump-file exclusion proof. Existing RLS suite against the restored DB failed, and app/dashboard restore smoke was not run. Strict full pass is not claimed. Follow `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` for evidence. |
 | Strict restored app/dashboard/RLS smoke | Deferred to P1 | Owner decision: not required for the first limited pilot. Required before paid pilot, production migrations, or destructive/bulk data work. |
-| Real customer data intake | Not approved | Phase 24 real-data approval gate remains open. Continue synthetic-only production smoke until OpenAI operating posture and final owner approval close. |
+| Real customer data intake | Not approved | Phase 24 real-data approval gate remains open. Continue synthetic-only production smoke until final owner approval closes. |
 | Current source-of-truth summary | Active | `docs/readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md` and `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`. |
 
 ## 1A. Phase 21 Current Pilot Gate Status
@@ -61,10 +62,10 @@ Use this table as the current Phase 21 truth. It supersedes older Phase 19/20 pr
 | Founder fake/test auth user cleanup | Repo-backed + local; not production-deployed | Admin has a guarded fake/test auth login deletion UI. `0020` not applied to production. Cleanup UX has production-safe warnings and dry-run requirement. |
 | Production public quote security | Partially started; bootstrap fix deployed (2026-05-25) | Signup smoke revealed new-workspace quote URL showed `Quote page unavailable`. Bootstrap fix `5758a0b` deployed. Post-fix signup retest blocked by Auth rate limiting during same session. Full Phase 21E security smoke (positive + negative matrix from Phase 21N) still not run. |
 | fr-CA production quote smoke | Blocked | Depends on Phase 21E passing first and approved fr-CA synthetic workspace. |
-| OpenAI real-key validation | Blocked | HTTP `429` from provider. Owner must check billing, quota, model access, and rate limits, then run exactly one synthetic dry run. |
+| OpenAI real-key validation | Historical blocker superseded | Historical Phase 21 row. Current Phase 23E provider proof passed on `MrTester`, and Phase 24E operating posture is accepted for first limited pilot. |
 | Signup confirmation smoke | Passed (2026-05-25) | Synthetic disposable inbox used; confirmed owner reached `/dashboard`. Credentials and artifacts stored outside repo. Post-fix retest blocked by Auth rate limiting; should retest when limits clear. |
 | Pilot commercial terms | Owner decision required | Recommended default (`$199 setup + $49/month`) not yet approved. Pricing mismatch across pages not resolved. |
-| First real pilot customer readiness | Blocked | Historical Phase 21 row; current Phase 23/24 evidence supersedes older blockers. Remaining current blockers are OpenAI operating posture and final owner real-data approval. |
+| First real pilot customer readiness | Blocked | Historical Phase 21 row; current Phase 23/24 evidence supersedes older blockers. Remaining current blocker is final owner real-data approval. |
 
 ## 1B. Phase 19H Historical Readiness Status
 
@@ -82,7 +83,7 @@ The Phase 19 table below remains for context. Use Section 1A as the current Phas
 | Backup/export runbook | Pass | Phase 19B runbook exists and documents export cadence, storage/access rules, restore procedure, deletion/export requests, privacy incident process, and git safety rules. |
 | PITR/export/restore execution | Phase 24C.0 DB-level proof pass; Phase 24C.1 not passed | Phase 24C used Supabase CLI export and existing local Docker Supabase/Postgres as disposable restore target. DB-level RLS metadata checks passed on core tables, but the existing RLS suite against the restored DB failed and app/dashboard restore smoke was not run. |
 | AI fallback | Pass | Rule fallback remains owner-reviewed, manual copy/send only, and sanitized. |
-| OpenAI real-key model output | Blocked | No non-empty `OPENAI_API_KEY` was configured, so no model-backed output was generated or quality-checked. |
+| OpenAI real-key model output | Historical blocker superseded | Historical Phase 19 row. Current Phase 23E provider proof passed on the approved synthetic lead, and Phase 24E operating posture is accepted for first limited pilot. |
 | Pricing/offer documentation | Pass | Phase 19F decision doc and Phase 20 terms gate exist; both document current `/pricing` mismatch and recommended draft without treating it as final. |
 | Final commercial terms | Owner decision required | `docs/business/PILOT_TERMS_DECISION_GATE.md` blocks any real pilot until setup fee, monthly fee, trial, refund, cancellation, payment collection, billing start, included/excluded wording, support promise, and non-responsive customer handling are owner-approved. |
 | Founder CRM setup | Pass | Phase 19G playbook and CSV template exist. |
@@ -132,7 +133,7 @@ Do not begin Phase 18 until these are true:
 | `.env.local` has valid Supabase URL and anon key. | [x] | [ ] | 2026-05-22: present and used for browser QA against the configured app project. |
 | `.env.local` has service-role key only for server-side bootstrap use. | [x] | [ ] | 2026-05-22: service-role key is present; no browser/client service-role exposure was found in source search. |
 | `OPENAI_API_KEY` is present for model-backed demo testing. | [ ] | [x] | 2026-05-23 Phase 19D: `.env.local` exists and the `OPENAI_API_KEY` name is present, but the value is empty and process env does not provide a key. Real-key model dry run was blocked; do not mark model-backed AI ready. |
-| App still works with `OPENAI_API_KEY` unset through rule fallback. | [x] | [ ] | Fallback remains the only verified AI mode in this environment. Phase 21 OpenAI real-key dry run returned HTTP `429`, so real model output still needs a successful synthetic retry; full production dashboard re-smoke depends on synthetic lead setup, not the older Phase 19C schema finding. |
+| App still works with `OPENAI_API_KEY` unset through rule fallback. | [x] | [ ] | Historical fallback check remains valid. Current Phase 23E provider proof also passed on the approved synthetic lead, and Phase 24E keeps fallback/manual workflow as the safe failure path. |
 | `.env.example` matches required env variables without real secrets. | [x] | [ ] | 2026-05-22: `.env.example` includes `BIZPILOT_FOUNDER_EMAILS` for founder-only `/admin`; no real secrets added. |
 | Vercel production env variable names/scopes are present. | [x] | [ ] | 2026-05-24 `vercel env ls` confirmed `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_APP_URL`, `BIZPILOT_FOUNDER_EMAILS`, and `OPENAI_API_KEY` exist encrypted for Production and Preview. Values were not pulled or revealed. |
 | Secret scan performed before pilot branch/deploy. | [x] | [ ] | 2026-05-24 staged diff secret scan found no real secrets; only a documented local RLS README connection string had matched the broader workspace scan earlier. |

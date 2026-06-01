@@ -152,13 +152,24 @@ Current status:
 - provider proof passed on one synthetic lead,
 - fallback safety passed,
 - diagnostics helped resolve parser/token truncation.
+- Phase 24E owner decision recorded: OpenAI operating posture is accepted for
+  the first limited pilot.
 
-Real-data gate requirement:
+Accepted operating posture:
 
-- decide whether Phase 23E diagnostics stay enabled, are reduced, or are gated
-  behind an env flag,
-- monitor OpenAI cost/quota/rate limits,
-- preserve fallback behavior and manual-send owner review.
+- cost monitoring: daily during the first 14 pilot days, then weekly,
+- usage/quota check: before onboarding each real pilot customer, then weekly,
+- budget: owner-defined monthly soft budget in OpenAI project settings; no hard
+  cap is assumed from OpenAI budget alerts,
+- fallback: if OpenAI fails, the app keeps the lead saved and uses the existing
+  safe fallback/manual workflow,
+- rate-limit behavior: no retry storm, no bulk AI generation, manual
+  on-demand only, owner can retry later,
+- diagnostics: keep safe non-secret diagnostics temporarily; no raw prompts,
+  raw provider output, or customer PII in logs; after pilot starts, reduce or
+  gate diagnostics if noisy,
+- manual review: AI draft is never automatically sent; owner reviews and
+  manually responds.
 
 ### 5. Commercial And Support Readiness
 
@@ -184,7 +195,7 @@ This gate can close only when the owner explicitly records:
    restored database failed and app/dashboard restore smoke was not run, so
    strict Phase 24C full pass is not claimed.
 3. Owner notification email deferred decision is recorded.
-4. OpenAI operating posture is accepted.
+4. OpenAI operating posture is accepted. Completed by Phase 24E owner decision.
 5. Real customer data intake is approved.
 
 Until then:
@@ -212,9 +223,9 @@ Until then:
 
 Phase 24C.0 DB-level export/restore proof is complete. Phase 24C.1 restored
 app/RLS smoke remains not passed: app/dashboard smoke was not run and the
-existing RLS suite against the restored database failed.
+existing RLS suite against the restored database failed. Phase 24E OpenAI
+operating posture is accepted.
 
 Next implementation track:
 
-1. Phase 24E - record OpenAI operating posture, or
-2. Phase 24F - final real-data approval decision.
+1. Phase 24F - final real-data approval decision.

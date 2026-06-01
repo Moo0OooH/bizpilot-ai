@@ -42,10 +42,16 @@ Phase 23 production functional smoke has completed on synthetic data:
   configured, domain DNS is verified, signup confirmation passed, password
   reset email/link/completion passed, and login after reset passed.
 
-Real customer data is still not approved. The current blockers are:
+Real customer data is still not approved. The current remaining blocker is:
 
-- OpenAI cost/quota/fallback monitoring posture.
 - final owner real-data approval.
+
+Phase 24E OpenAI operating posture is accepted for first limited pilot:
+cost monitoring is daily during the first 14 pilot days and weekly after that;
+usage/quota is checked before onboarding each real pilot customer and weekly
+afterward; budget control uses an owner-defined monthly soft budget in OpenAI
+project settings; failures keep leads saved and fall back to the existing safe
+manual workflow with no customer-facing auto-send.
 
 Phase 24C.0 DB-level backup/export/restore proof is passed. The drill used a
 Supabase CLI logical export and local Docker Postgres restore, with sanitized

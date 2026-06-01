@@ -31,11 +31,16 @@ The strongest current evidence is Phase 23:
   DNS, Supabase SMTP, signup confirmation, forgot-password, reset-link, reset
   completion, and login-after-reset proof.
 
-The project is **not yet approved for real customer data** because the remaining
-operational gates are still open:
+The project is **not yet approved for real customer data** because the final
+owner approval gate is still open:
 
-1. Ongoing OpenAI cost/quota/fallback monitoring.
-2. Final owner approval for real customer data.
+1. Final owner approval for real customer data.
+
+Phase 24E OpenAI operating posture is accepted for first limited pilot: cost
+monitoring is daily during the first 14 pilot days and weekly afterward;
+usage/quota is checked before onboarding each real pilot customer and weekly;
+fallback remains safe/manual with no customer-facing auto-send; diagnostics
+remain non-secret and temporary.
 
 Phase 24C.0 DB-level backup/export/restore proof passed on 2026-05-30. Phase
 24C.1 restored app/RLS smoke is not passed: the existing RLS suite against the
@@ -386,14 +391,16 @@ The OpenAI fixes were intentionally narrow:
 
 4. **OpenAI monitoring posture**
 
-   Provider proof passed, but real pilot still needs operating limits:
+   Phase 24E owner decision is recorded:
 
-   - cost monitoring,
-   - quota monitoring,
-   - fallback monitoring,
-   - rate-limit behavior,
-   - decision on whether Phase 23E diagnostics stay enabled, are gated, or are
-     reduced after readiness.
+   - cost monitoring daily during first 14 pilot days, then weekly,
+   - usage/quota checked before each real pilot onboarding, then weekly,
+   - owner-defined monthly soft budget in OpenAI project settings,
+   - existing safe fallback/manual workflow if OpenAI fails,
+   - no retry storm, no bulk AI generation, manual on-demand only,
+   - safe non-secret diagnostics kept temporarily and reduced/gated if noisy,
+   - AI drafts are never automatically sent; owner reviews and manually
+     responds.
 
 ### P1 Before Paid Pilot Operations
 
@@ -480,13 +487,12 @@ demonstrated operational need.
 
 ### Next Step 5 - Real Pilot Approval Decision
 
-Only after OpenAI operating posture and final owner approval close, decide
-whether BizPilot is:
+Only after final owner approval closes, decide whether BizPilot is:
 
 | Status | Meaning |
 | --- | --- |
 | Synthetic-ready | Current state is mostly here |
-| Real-data-ready | Requires OpenAI operating posture and final owner approval |
+| Real-data-ready | Requires final owner approval |
 | Paid-pilot-ready | Requires real-data-ready plus payment/support/operator readiness |
 
 ## Current Real Pilot Decision

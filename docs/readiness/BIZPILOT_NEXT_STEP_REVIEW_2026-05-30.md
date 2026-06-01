@@ -32,8 +32,7 @@ Corrected current status:
 ```text
 Synthetic-ready: yes, with evidence.
 External Auth email/custom SMTP gate: passed.
-Real-data-ready: still no, pending OpenAI operating posture and final owner
-approval.
+Real-data-ready: still no, pending final owner approval.
 Paid-pilot-ready: still no.
 ```
 
@@ -153,14 +152,18 @@ restored app/dashboard/RLS smoke is not required for the first limited pilot;
 it is deferred to P1 before paid pilot, before production migrations, or before
 destructive/bulk data work.
 
-### 2.6 OpenAI provider proof passed, but operations are not done
+### 2.6 OpenAI provider proof and operating posture passed
 
-Phase 23E passed with OpenAI provider output on the synthetic `MrTester` lead. Remaining OpenAI work is operational, not proof-of-function:
+Phase 23E passed with OpenAI provider output on the synthetic `MrTester` lead.
+Phase 24E owner decision accepted the first limited pilot operating posture:
 
-- cost/quota monitoring,
-- rate-limit/fallback monitoring,
-- decision on whether diagnostics stay enabled, are gated, or are reduced,
-- provider failure runbook.
+- cost monitoring daily during first 14 pilot days, then weekly,
+- usage/quota checked before onboarding each real pilot customer, then weekly,
+- owner-defined monthly soft budget in OpenAI project settings,
+- existing safe fallback/manual workflow if OpenAI fails,
+- no retry storm, no bulk AI generation, manual on-demand only,
+- safe non-secret diagnostics kept temporarily and reduced/gated if noisy,
+- AI drafts are never automatically sent; owner reviews and manually responds.
 
 ## 3. Corrected Gate Model
 
@@ -190,9 +193,8 @@ Status: **not closed**
 
 Must complete:
 
-1. OpenAI operations monitoring baseline.
-2. Final no-secret production smoke after the above.
-3. Final owner approval for real customer data.
+1. Final no-secret production smoke.
+2. Final owner approval for real customer data.
 
 Custom SMTP/Auth email delivery and password reset proof are now passed.
 Owner notification email is intentionally deferred for the first pilot.
