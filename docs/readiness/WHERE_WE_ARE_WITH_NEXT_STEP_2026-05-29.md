@@ -36,13 +36,14 @@ operational gates are still open:
 
 1. Ongoing OpenAI cost/quota/fallback monitoring.
 2. Final owner approval for real customer data.
-3. If strict restore acceptance is required before real data, restored-target
-   app/dashboard/RLS smoke must pass.
 
 Phase 24C.0 DB-level backup/export/restore proof passed on 2026-05-30. Phase
 24C.1 restored app/RLS smoke is not passed: the existing RLS suite against the
 restored DB failed, and app/dashboard smoke against the restored target was not
-run. Strict Phase 24C full pass is not claimed.
+run. Strict Phase 24C full pass is not claimed. Owner decision: strict restored
+app/dashboard/RLS smoke is not required for the first limited pilot; it is
+deferred to P1 before paid pilot, before production migrations, or before
+destructive/bulk data work.
 
 Owner notification email is intentionally deferred for the first pilot. The
 approved operating model is manual-only: owner checks dashboard manually,
@@ -458,8 +459,9 @@ Current status:
 7. App/dashboard smoke against restored target was not run.
 
 No destructive cleanup or real customer data intake should happen before OpenAI
-operating posture, final owner approval, and any owner-required strict restore
-acceptance are recorded.
+operating posture and final owner approval are recorded. Strict restored
+app/dashboard/RLS smoke must be completed before paid pilot, production
+migrations, or destructive/bulk data work.
 
 ### Next Step 4 - Preserve Manual-Only Pilot Scope
 
@@ -484,7 +486,7 @@ whether BizPilot is:
 | Status | Meaning |
 | --- | --- |
 | Synthetic-ready | Current state is mostly here |
-| Real-data-ready | Requires OpenAI operating posture and final owner approval; if strict restore acceptance is required, also requires restored app/dashboard/RLS smoke |
+| Real-data-ready | Requires OpenAI operating posture and final owner approval |
 | Paid-pilot-ready | Requires real-data-ready plus payment/support/operator readiness |
 
 ## Current Real Pilot Decision

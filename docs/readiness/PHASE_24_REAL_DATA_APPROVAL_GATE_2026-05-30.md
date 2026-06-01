@@ -110,20 +110,21 @@ Current status:
   current schema: `ai_outputs`, `business_members`, `businesses`,
   `intake_forms`, `intake_submissions`, `lead_events`, and `leads` all had RLS
   enabled.
+- Owner decision: strict restored app/dashboard/RLS smoke is not required for
+  the first limited pilot. It is deferred to P1 before paid pilot, before
+  production migrations, or before destructive/bulk data work.
 
 Real-data gate requirement:
 
 - run manual logical export with placeholder-only commands,
 - generate `roles.sql`, `schema.sql`, and `data.sql` outside git,
 - restore to a disposable non-production target,
-- run RLS/app smoke against the restored target if strict restore acceptance is
-  required,
+- run RLS/app smoke against the restored target before paid pilot, before
+  production migrations, or before destructive/bulk data work,
 - document the result.
 
 Real external customer data remains blocked until OpenAI operating posture and
-final owner real-data approval are recorded. If the owner requires strict
-restore acceptance, real data also remains blocked until app/dashboard/RLS
-restore smoke is completed and documented.
+final owner real-data approval are recorded.
 
 ### 3. Owner Notification Decision
 
@@ -193,6 +194,8 @@ Until then:
 - do not send emails to real customers,
 - do not run broad AI tests,
 - do not run production SQL, migrations, delete, purge, or workspace repair.
+- do not run destructive cleanup, hard purge, bulk data mutation, automation,
+  or AI auto-send.
 
 ## Safety Rules
 

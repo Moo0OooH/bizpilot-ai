@@ -18,9 +18,13 @@
 
 BizPilot can continue founder-controlled synthetic demos on the current
 production stack, but it cannot accept real customer data or a paid pilot until
-OpenAI operating posture and final owner approval are recorded. If the owner
-requires strict restore acceptance before real data, restored app/dashboard/RLS
-smoke must also pass.
+OpenAI operating posture and final owner approval are recorded.
+
+Owner decision: strict restored app/dashboard/RLS smoke is not required for the
+first limited pilot. DB-level restore proof is sufficient for the current
+limited pilot gate, provided the hard safety guardrails below remain in force.
+Strict restored app/dashboard/RLS smoke is deferred to P1 before paid pilot,
+before production migrations, or before destructive/bulk data work.
 
 Current production posture:
 
@@ -58,7 +62,7 @@ Operational notes from those docs, summarized for BizPilot:
 | Public route smoke, homepage demo, trust pages | Yes | No real data, no secrets, no production SQL |
 | Synthetic signup/quote smoke | Yes, with safe inbox and fake payload | Disposable account, no real customer content, sanitized evidence only |
 | Production `0020` for fake/test auth deletion | Not until safety is recorded | Exact migration approval plus backup/export posture or explicit risk acceptance for synthetic-only cleanup |
-| Real customer quote submissions | No | OpenAI operating posture accepted, SMTP posture stable, production smokes pass, final owner approval recorded, and strict restore smoke passed if owner requires it |
+| Real customer quote submissions | No | OpenAI operating posture accepted, SMTP posture stable, production smokes pass, and final owner approval recorded |
 | Paid pilot | No | Same as real customer data plus payment process evidence |
 | Destructive cleanup/purge | No | Separate exact owner approval, verified backup/export, and scoped synthetic target |
 
@@ -99,8 +103,7 @@ Current Phase 24C status:
    `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`.
 
 Real external customer data remains blocked until OpenAI operating posture and
-final owner approval are recorded. If strict restore acceptance is required,
-real data also remains blocked until restored app/dashboard/RLS smoke passes.
+final owner approval are recorded.
 
 Alternative production-ready path:
 
@@ -120,11 +123,22 @@ Lower-cost pre-pilot alternative:
 2. Do not collect real customer data.
 3. Use the completed Phase 24C.0 Supabase CLI logical export and local Docker
    DB-level restore proof as the current low-cost evidence.
-4. If stricter restore acceptance is required, perform a restored
-   app/dashboard/RLS smoke before any real customer enters the system.
+4. Perform restored app/dashboard/RLS smoke before paid pilot, before
+   production migrations, or before destructive/bulk data work.
 
 The lower-cost path has exercised export and DB-level restore, but it does not
 claim strict app/RLS restore proof.
+
+Hard guardrails while using the lower-cost path:
+
+- no production migrations,
+- no destructive cleanup,
+- no hard purge,
+- no workspace repair,
+- no bulk data mutation,
+- no automation,
+- no AI auto-send,
+- manual owner review only.
 
 ## 5. Export Storage Rules
 

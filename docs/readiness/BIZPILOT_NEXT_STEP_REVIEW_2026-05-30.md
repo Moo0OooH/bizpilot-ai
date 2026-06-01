@@ -33,8 +33,7 @@ Corrected current status:
 Synthetic-ready: yes, with evidence.
 External Auth email/custom SMTP gate: passed.
 Real-data-ready: still no, pending OpenAI operating posture and final owner
-approval; if strict restore acceptance is required, restored app/RLS smoke is
-also still pending.
+approval.
 Paid-pilot-ready: still no.
 ```
 
@@ -149,7 +148,10 @@ Phase 24C.0 completed the selected low-cost DB-level restore drill:
 
 Phase 24C.1 restored app/RLS smoke is not passed. The existing RLS suite against
 the restored DB failed, and app/dashboard smoke against the restored target was
-not run. Strict Phase 24C full pass is not claimed.
+not run. Strict Phase 24C full pass is not claimed. Owner decision: strict
+restored app/dashboard/RLS smoke is not required for the first limited pilot;
+it is deferred to P1 before paid pilot, before production migrations, or before
+destructive/bulk data work.
 
 ### 2.6 OpenAI provider proof passed, but operations are not done
 
@@ -191,7 +193,6 @@ Must complete:
 1. OpenAI operations monitoring baseline.
 2. Final no-secret production smoke after the above.
 3. Final owner approval for real customer data.
-4. If strict restore acceptance is required, restored app/dashboard/RLS smoke.
 
 Custom SMTP/Auth email delivery and password reset proof are now passed.
 Owner notification email is intentionally deferred for the first pilot.
@@ -261,6 +262,8 @@ Current status:
 - Phase 24C.0 DB-level restore proof passed.
 - Phase 24C.1 restored app/RLS smoke did not pass.
 - Strict Phase 24C full pass is not claimed.
+- Owner decision: strict restored app/dashboard/RLS smoke is not required for
+  the first limited pilot.
 - Upgrade Supabase/PITR remains optional if owner accepts cost and wants
   stronger recovery before real intake.
 

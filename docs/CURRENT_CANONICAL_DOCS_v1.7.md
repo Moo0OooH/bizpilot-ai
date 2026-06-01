@@ -85,7 +85,10 @@ Current top-level interpretation:
   RLS metadata checks on core tables passed. Phase 24C.1 restored app/RLS smoke
   is not passed: the existing RLS suite against the restored database did not
   pass, and app/dashboard smoke against the restored target was not run. Strict
-  Phase 24C full-pass acceptance is not claimed.
+  Phase 24C full-pass acceptance is not claimed. Owner decision: strict
+  restored app/dashboard/RLS smoke is not required for the first limited pilot;
+  it is deferred to P1 before paid pilot, production migrations, or
+  destructive/bulk data work.
   Owner notification email is not a first-pilot readiness requirement because
   it is intentionally deferred.
 - Broader feature work remains allowed only through feature entitlement,

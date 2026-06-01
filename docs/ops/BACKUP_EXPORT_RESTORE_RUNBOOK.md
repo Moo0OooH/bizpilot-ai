@@ -396,8 +396,9 @@ Acceptance standard:
   a DB-level restore proof because no real external customer data exists yet.
 - App/dashboard/RLS smoke against the restored target was not run, so strict
   Phase 24C full pass is not claimed.
-- If strict restore acceptance is required before real data, complete
-  restored-target app/dashboard/RLS smoke and document it separately.
+- Owner decision: strict restored app/dashboard/RLS smoke is not required for
+  the first limited pilot. It is deferred to P1 before paid pilot, before
+  production migrations, or before destructive/bulk data work.
 
 Sanitized evidence:
 
@@ -421,7 +422,7 @@ Sanitized evidence:
 | Lead visibility smoke status | DB-count check passed for approved synthetic target; UI smoke NOT RUN |
 | Sensitive output check | Pass; no DB URLs, passwords, tokens, dump contents, or customer row content printed |
 | Final decision | Phase 24C.0 DB-level restore proof PASS; Phase 24C.1 restored app/RLS smoke NOT PASSED; strict full pass NOT CLAIMED |
-| Remaining blockers | OpenAI operating posture and final owner real-data approval; if strict restore acceptance is required, restored-target app/dashboard/RLS smoke |
+| Remaining blockers | OpenAI operating posture and final owner real-data approval |
 
 Sanitized table-count checks:
 
@@ -452,9 +453,9 @@ Restored DB RLS follow-up checks:
 | Cross-tenant app smoke on restored target | Not run |
 
 Real external customer data remains blocked until OpenAI operating posture and
-final owner real-data approval are recorded. If strict restore acceptance is
-required, it also remains blocked until restored-target app/dashboard/RLS smoke
-is completed and documented.
+final owner real-data approval are recorded. Strict restored app/dashboard/RLS
+smoke is deferred to P1 before paid pilot, before production migrations, or
+before destructive/bulk data work.
 
 ## 10. Restored Data Verification
 

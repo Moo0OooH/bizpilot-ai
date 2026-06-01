@@ -45,8 +45,6 @@ Phase 23 production functional smoke has completed on synthetic data:
 Real customer data is still not approved. The current blockers are:
 
 - OpenAI cost/quota/fallback monitoring posture.
-- strict restored-target app/dashboard/RLS smoke if the owner requires that
-  acceptance level before real data.
 - final owner real-data approval.
 
 Phase 24C.0 DB-level backup/export/restore proof is passed. The drill used a
@@ -56,6 +54,9 @@ metadata checks on core tables, and no dump files tracked by git. Phase 24C.1
 restored app/RLS smoke is not passed: the existing RLS suite against the
 restored database did not pass, and app/dashboard smoke against the restored
 target was not run. Phase 24C is not being claimed as a strict full pass.
+Owner decision: strict restored app/dashboard/RLS smoke is not required for the
+first limited pilot. It is deferred to P1 before paid pilot, before production
+migrations, or before destructive/bulk data work.
 
 Owner notification email is intentionally deferred for the first pilot. The
 approved first-pilot operating model is manual-only: owners check the dashboard
