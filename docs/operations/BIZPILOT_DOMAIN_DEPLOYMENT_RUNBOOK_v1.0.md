@@ -27,14 +27,14 @@ Applies to late Phase 18 / production pilot preparation.
 Required:
 - `NEXT_PUBLIC_APP_URL=https://bizpilo.com` after the domain is live and SSL is active
 - `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` preferred; `NEXT_PUBLIC_SUPABASE_ANON_KEY` legacy fallback during migration
+- `SUPABASE_SECRET_KEY` preferred; `SUPABASE_SERVICE_ROLE_KEY` legacy fallback during migration
 - `BIZPILOT_FOUNDER_EMAILS`
 - `OPENAI_API_KEY`
 - `RESEND_API_KEY` if email is enabled
 
 Rules:
-- `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, and `RESEND_API_KEY` must stay server-only.
+- `SUPABASE_SECRET_KEY`, legacy `SUPABASE_SERVICE_ROLE_KEY`, `OPENAI_API_KEY`, and `RESEND_API_KEY` must stay server-only.
 - Never expose service role keys to client code.
 - Redeploy after environment variable changes.
 - Keep the Vercel production URL in Supabase Auth Redirect URLs during the domain transition if active users may still open old reset links.

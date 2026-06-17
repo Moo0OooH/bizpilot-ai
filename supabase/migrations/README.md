@@ -3,7 +3,7 @@
 **Version:** v1.0
 **Status:** Active
 **Owner:** MoOoH
-**Last Updated:** 2026-05-22
+**Last Updated:** 2026-06-17
 **Related:**
 - `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`
 - `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
@@ -59,8 +59,9 @@ The original `0003` migration was removed from the repository because keeping it
    - explicit named policies for `select` / `insert` / `update` / `delete` as required;
    - explicit `grant` statements for `anon`, `authenticated`, and `service_role` per the Vendor Independence Standard, Section 9;
    - any helper function used in RLS, with `search_path` and `security definer / invoker` documented in comments.
-5. **No dashboard-driven schema changes.** Any production schema change made via the Supabase dashboard must be backfilled into a migration in the same working session.
-6. **Tests live separately.** Add an RLS test under `tests/rls/<feature>.test.sql` for every new tenant or public-facing table created by the migration.
+5. **Do not rely on Supabase public-schema default grants.** Supabase's 2026 Data API default change means new public tables must opt in with explicit grants before client-library/Data API access works. Keep the grant contract in the same migration that creates or exposes the object.
+6. **No dashboard-driven schema changes.** Any production schema change made via the Supabase dashboard must be backfilled into a migration in the same working session.
+7. **Tests live separately.** Add an RLS test under `tests/rls/<feature>.test.sql` for every new tenant or public-facing table created by the migration.
 
 ---
 

@@ -1,3 +1,20 @@
+/**
+ * ============================================================
+ * File: lib/features/feature-registry.ts
+ * Project: BizPilot AI
+ * Description: Central Settings-visible feature state registry.
+ * Role: Keeps customer-visible capability states honest against readiness gates.
+ * Related:
+ * - app/(dashboard)/dashboard/settings/page.tsx
+ * - docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md
+ * Author: MoOoH
+ * Created: 2026-05-26
+ * Last Updated: 2026-06-16
+ * Change Log:
+ * - 2026-06-16: Aligned AI, auth email, and backup states with Phase 23/24 readiness truth.
+ * ============================================================
+ */
+
 export type FeatureCategory =
   | "admin"
   | "ai"
@@ -92,7 +109,7 @@ export const featureRegistry = [
     key: "ai_draft_assistant",
     level: "pilot",
     ownerAuthority: "founder",
-    state: "blocked_external",
+    state: "owner_controlled",
   },
   {
     category: "admin",
@@ -108,7 +125,7 @@ export const featureRegistry = [
     key: "custom_smtp_auth_email",
     level: "admin",
     ownerAuthority: "founder",
-    state: "setup_required",
+    state: "enabled",
   },
   {
     category: "data",
@@ -116,7 +133,7 @@ export const featureRegistry = [
     key: "backup_restore_posture",
     level: "admin",
     ownerAuthority: "founder",
-    state: "setup_required",
+    state: "owner_controlled",
   },
   {
     category: "billing",

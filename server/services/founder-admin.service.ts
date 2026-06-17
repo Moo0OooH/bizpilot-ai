@@ -9,9 +9,10 @@
  * - server/repositories/founder-admin.repository.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-05-26
+ * Last Updated: 2026-06-17
  * Change Log:
  * - 2026-05-26: Sent a server user agent on Auth Admin REST fallback to avoid browser-agent secret-key rejection.
+ * - 2026-06-17: Read Supabase admin credentials through the shared secret-key-compatible config.
  * ============================================================
  */
 
@@ -20,7 +21,11 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 
 import { getServerEnv } from "@/lib/env/server-env";
-import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
+import {
+  createSupabaseAdminRestHeaders,
+  createSupabaseServiceRoleClient,
+  getSupabaseServerClientConfig,
+} from "@/lib/supabase/server";
 import type { AuthUser } from "@/server/services/auth.service";
 import { recoverWorkspaceAccess } from "@/server/services/business.service";
 import {
@@ -175,7 +180,6 @@ const sessionTimeoutModes = new Set<FounderSessionTimeoutMode>([
 const founderUserPageSizes = new Set([5, 10]);
 const minimumTemporaryPasswordLength = 12;
 const sessionTimeoutMinuteOptions = new Set([15, 30, 60, 240, 480, 720, 1440, 10080]);
-const serviceRoleUserAgent = "BizPilot-Server-Admin/1.0";
 
 type FounderAuthUserRecord = Readonly<{
   confirmed_at?: string;
@@ -548,13 +552,13 @@ async function fetchFounderAuthUsersFromRest(input: {
   page: number;
   pageSize: number;
 }): Promise<FounderAuthUsersPage | null> {
-  const env = getServerEnv();
+  const config = getSupabaseServerClientConfig();
 
-  if (!env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!config.serviceRoleKey) {
     return null;
   }
 
-  const url = new URL("/auth/v1/admin/users", env.NEXT_PUBLIC_SUPABASE_URL);
+  const url = new URL("/auth/v1/admin/users", config.url);
   url.searchParams.set("page", String(input.page));
   url.searchParams.set("per_page", String(input.pageSize));
   if (input.filter) {
@@ -563,11 +567,7 @@ async function fetchFounderAuthUsersFromRest(input: {
 
   const response = await fetch(url, {
     cache: "no-store",
-    headers: {
-      "User-Agent": serviceRoleUserAgent,
-      apikey: env.SUPABASE_SERVICE_ROLE_KEY,
-      authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
-    },
+    headers: createSupabaseAdminRestHeaders(config.serviceRoleKey),
   });
 
   if (!response.ok) {

@@ -8,6 +8,7 @@
 import "server-only";
 
 import {
+  createSupabaseAdminRestHeaders,
   createSupabaseServiceRoleClient,
   getSupabaseServerClientConfig,
 } from "@/lib/supabase/server";
@@ -18,7 +19,6 @@ import type { Database } from "@/types/database";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 const canonicalProductionSupabaseRef = "qfqendrqimqvkoojpjao";
-const serviceRoleUserAgent = "BizPilot-Server-Admin/1.0";
 
 type HealthCheck = Readonly<{
   count: number | null;
@@ -176,11 +176,7 @@ async function checkAuthAdminRest(input: {
   try {
     const response = await fetch(url, {
       cache: "no-store",
-      headers: {
-        "User-Agent": serviceRoleUserAgent,
-        apikey: input.serviceRoleKey,
-        authorization: `Bearer ${input.serviceRoleKey}`,
-      },
+      headers: createSupabaseAdminRestHeaders(input.serviceRoleKey),
     });
 
     if (!response.ok) {

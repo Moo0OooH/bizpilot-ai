@@ -5,7 +5,7 @@
 **Version:** v1.0  
 **Status:** Active MVP Standard  
 **Owner:** MoOoH  
-**Last Updated:** 2026-05-13
+**Last Updated:** 2026-06-17
 
 ---
 
@@ -48,14 +48,17 @@ Allowed env:
 
 ```text
 NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 ```
+
+`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` is preferred. `NEXT_PUBLIC_SUPABASE_ANON_KEY` remains a legacy fallback during migration only.
 
 Rules:
 
 - Must not import `lib/env/server-env.ts`.
 - Must not import `lib/supabase/server.ts`.
-- Must not use `SUPABASE_SERVICE_ROLE_KEY`.
+- Must not use `SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY`.
 - Must rely on RLS for any data access.
 
 Current status:
@@ -92,7 +95,7 @@ Rules:
 
 - Runs server-side only.
 - Uses Supabase SSR cookies/session handling.
-- Uses anon key plus current request/session context.
+- Uses the publishable key, or legacy anon key during migration, plus current request/session context.
 - Must respect RLS.
 - Should be the default client for dashboard reads/writes.
 
@@ -127,8 +130,11 @@ Allowed use:
 Allowed env:
 
 ```text
+SUPABASE_SECRET_KEY
 SUPABASE_SERVICE_ROLE_KEY
 ```
+
+`SUPABASE_SECRET_KEY` is preferred. `SUPABASE_SERVICE_ROLE_KEY` remains a legacy fallback during migration only.
 
 Rules:
 
@@ -192,7 +198,7 @@ Do not:
 - Import repositories or server services from Client Components except type-only imports.
 - Use service-role client for dashboard reads/writes.
 - Disable or bypass RLS to make a feature work.
-- Put `SUPABASE_SERVICE_ROLE_KEY` in browser code, docs examples, screenshots, logs, or public env.
+- Put `SUPABASE_SECRET_KEY` or `SUPABASE_SERVICE_ROLE_KEY` in browser code, docs examples, screenshots, logs, or public env.
 - Use service-role access for public quote submissions.
 
 ---

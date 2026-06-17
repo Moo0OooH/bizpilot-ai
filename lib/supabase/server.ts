@@ -9,13 +9,14 @@
  * - lib/supabase/client.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-26
+ * Last Updated: 2026-06-17
  * Change Log:
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created server Supabase config placeholder and added standard header.
  * - 2026-05-04: Clarified server-only placeholder boundary and returned immutable config.
  * - 2026-05-04: Added official Supabase SSR and service-role client factories.
  * - 2026-05-26: Added an explicit server user agent for service-role Auth Admin calls.
+ * - 2026-06-17: Prefer Supabase publishable/secret keys with legacy key fallback.
  * ============================================================
  */
 
@@ -28,7 +29,7 @@ import { cookies } from "next/headers";
 import { getServerEnv } from "@/lib/env/server-env";
 import type { Database } from "@/types/database";
 
-const serviceRoleUserAgent = "BizPilot-Server-Admin/1.0";
+export const supabaseAdminUserAgent = "BizPilot-Server-Admin/1.0";
 
 export type SupabaseServerClientConfig = Readonly<{
   url: string;
@@ -41,11 +42,31 @@ export function getSupabaseServerClientConfig(): SupabaseServerClientConfig {
 
   return Object.freeze({
     url: env.NEXT_PUBLIC_SUPABASE_URL,
-    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    ...(env.SUPABASE_SERVICE_ROLE_KEY
-      ? { serviceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY }
+    anonKey: env.SUPABASE_PUBLIC_API_KEY,
+    ...(env.SUPABASE_SECRET_KEY || env.SUPABASE_SERVICE_ROLE_KEY
+      ? {
+          serviceRoleKey:
+            env.SUPABASE_SECRET_KEY ?? env.SUPABASE_SERVICE_ROLE_KEY,
+        }
       : {}),
   });
+}
+
+export function createSupabaseAdminRestHeaders(
+  apiKey: string,
+): Record<string, string> {
+  const headers: Record<string, string> = {
+    "User-Agent": supabaseAdminUserAgent,
+    apikey: apiKey,
+  };
+
+  // Legacy service_role keys are JWTs and still require Authorization for
+  // direct Auth Admin REST calls. New sb_secret keys are not JWTs.
+  if (!apiKey.startsWith("sb_secret_") && !apiKey.startsWith("sb_publishable_")) {
+    headers.authorization = `Bearer ${apiKey}`;
+  }
+
+  return headers;
 }
 
 export async function createSupabaseServerClient() {
@@ -74,7 +95,9 @@ export function createSupabaseServiceRoleClient() {
   const config = getSupabaseServerClientConfig();
 
   if (!config.serviceRoleKey) {
-    throw new Error("SUPABASE_SERVICE_ROLE_KEY is required for tenant setup.");
+    throw new Error(
+      "SUPABASE_SECRET_KEY or legacy SUPABASE_SERVICE_ROLE_KEY is required for tenant setup.",
+    );
   }
 
   return createClient<Database>(config.url, config.serviceRoleKey, {
@@ -84,7 +107,7 @@ export function createSupabaseServiceRoleClient() {
     },
     global: {
       headers: {
-        "User-Agent": serviceRoleUserAgent,
+        "User-Agent": supabaseAdminUserAgent,
       },
     },
   });

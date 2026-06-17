@@ -11,6 +11,9 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
+ * Last Updated: 2026-06-16
+ * Change Log:
+ * - 2026-06-16: Aligned Settings copy with Phase 23/24 readiness and first-pilot manual-only decisions.
  * ============================================================
  */
 
@@ -1030,13 +1033,13 @@ const englishCopy: BizPilotCopy = {
       noBusinessDescription: "No tenant business is available for this user yet.",
       notifications: {
         description:
-          "MVP keeps notifications simple: owner email awareness only. SMS and WhatsApp stay disabled before validation.",
-        emailActive: "Email active",
-        futureDisabled: "Future - disabled",
+          "First pilot is manual-only: owners check the dashboard. Owner notification email, SMS, and WhatsApp stay disabled before validation.",
+        emailActive: "Manual dashboard check only",
+        futureDisabled: "Disabled before validation",
         newQuoteRequest: "New quote request",
         off: "Off",
         ownerEmail: "Owner email",
-        summary: "Email active - SMS/WhatsApp disabled",
+        summary: "Manual dashboard check only - owner notification deferred",
         title: "Notifications",
       },
       overview: {
@@ -1070,7 +1073,7 @@ const englishCopy: BizPilotCopy = {
           "Shown on the public quote page. If left blank, a safe default is saved so the consent version stays valid.",
         consentNotice: "Consent notice",
         description: "Consent and retention settings used by public quote submissions.",
-        forwardOnly: "Forward-only",
+        forwardOnly: "Forward-only (planned)",
         leadRetentionDays: "Lead retention days",
         minimal: "Minimal data",
         privacyContactEmail: "Privacy contact email",
@@ -1533,11 +1536,12 @@ const englishCopy: BizPilotCopy = {
         featureCopy: {
           ai_draft_assistant: {
             activation:
-              "Founder enables model-backed AI after the OpenAI account/quota gate is healthy.",
+              "Founder enables model-backed AI for approved pilot use after final no-secret smoke and owner approval.",
             name: "AI draft assistant",
             ownerGuide:
-              "Confirm provider health, run synthetic AI smoke, then keep owner review required.",
-            setup: "Blocked by OpenAI provider/account quota until owner support ticket clears.",
+              "Confirm Phase 24F/24G gates, keep usage monitored, and keep owner review required.",
+            setup:
+              "Synthetic OpenAI provider proof passed; real customer use remains gated by final smoke and owner approval.",
             summary:
               "Summaries, reply drafts, and follow-up drafts remain owner-reviewed.",
             textGuide:
@@ -1547,13 +1551,14 @@ const englishCopy: BizPilotCopy = {
           },
           backup_restore_posture: {
             activation:
-              "Founder chooses manual encrypted export or upgraded PITR/restore path.",
+              "Founder accepts the DB-level restore proof for first limited pilot and completes strict restored app/RLS proof before paid pilot or risky data work.",
             name: "Backup and restore posture",
             ownerGuide:
-              "Record storage location, access list, restore target, and drill evidence.",
-            setup: "Setup required before real customer data.",
+              "Record storage location, access list, restore target, Phase 24C.0 proof, and Phase 24C.1 deferral.",
+            setup:
+              "DB-level export/restore proof passed; strict restored app/dashboard/RLS proof remains P1 before paid pilot, migrations, or destructive work.",
             summary:
-              "Defines how workspace data can be exported and restored before real pilots.",
+              "Separates the passed DB-level backup proof from the deferred strict restored app/RLS proof.",
             textGuide:
               "Explains what is backed up, where exports live, and who can restore.",
             visualGuide:
@@ -1588,11 +1593,12 @@ const englishCopy: BizPilotCopy = {
           },
           custom_smtp_auth_email: {
             activation:
-              "Founder enables after provider, DNS, Supabase SMTP, signup, and reset smokes pass.",
+              "Auth email is enabled after Resend DNS, Supabase SMTP, signup confirmation, and reset smokes passed.",
             name: "Custom SMTP auth email",
             ownerGuide:
-              "Never print credentials. Check provider logs and Supabase auth logs.",
-            setup: "DNS and SMTP provider setup required.",
+              "Never print credentials. Keep app-level owner notification email separate and deferred.",
+            setup:
+              "Auth email proof passed; owner notification email remains deferred for the first pilot.",
             summary:
               "Signup confirmation and password reset email delivery for real pilots.",
             textGuide:
@@ -2361,13 +2367,14 @@ const frenchCopy: BizPilotCopy = {
         "Aucune entreprise locataire n'est disponible pour cet utilisateur.",
       notifications: {
         description:
-          "Le MVP garde les notifications simples: courriel propriétaire seulement. SMS et WhatsApp restent désactivés avant validation.",
-        emailActive: "Courriel actif",
-        futureDisabled: "Futur - désactivé",
+          "Le premier pilote est manuel: le proprietaire verifie le tableau de bord. Les notifications courriel proprietaire, SMS et WhatsApp restent desactivees avant validation.",
+        emailActive: "Verification manuelle du tableau de bord",
+        futureDisabled: "Desactive avant validation",
         newQuoteRequest: "Nouvelle demande",
         off: "Désactivé",
         ownerEmail: "Courriel propriétaire",
-        summary: "Courriel actif - SMS/WhatsApp désactivés",
+        summary:
+          "Verification manuelle du tableau de bord - notification proprietaire differee",
         title: "Notifications",
       },
       overview: {
@@ -2402,7 +2409,7 @@ const frenchCopy: BizPilotCopy = {
         consentNotice: "Avis de consentement",
         description:
           "Réglages de consentement et de conservation pour les demandes publiques.",
-        forwardOnly: "Transfert seulement",
+        forwardOnly: "Transfert seulement (planifie)",
         leadRetentionDays: "Jours de conservation",
         minimal: "Données minimales",
         privacyContactEmail: "Courriel de confidentialité",
@@ -2879,12 +2886,12 @@ const frenchCopy: BizPilotCopy = {
         featureCopy: {
           ai_draft_assistant: {
             activation:
-              "Le fondateur active l'IA modele quand le compte/quota OpenAI est sain.",
+              "Le fondateur active l'IA modele pour un pilote approuve apres le smoke final sans secret et l'approbation proprietaire.",
             name: "Assistant IA de brouillons",
             ownerGuide:
-              "Verifier le fournisseur, lancer un smoke IA synthetique, puis garder la revue proprietaire obligatoire.",
+              "Verifier les gates Phase 24F/24G, surveiller l'usage et garder la revue proprietaire obligatoire.",
             setup:
-              "Bloque par le quota/compte OpenAI jusqu'a la resolution du ticket support.",
+              "La preuve fournisseur OpenAI synthetique est passee; l'usage donnees reelles reste gate par smoke final et approbation proprietaire.",
             summary:
               "Les resumes, brouillons de reponse et suivis restent relus par le proprietaire.",
             textGuide:
@@ -2894,13 +2901,14 @@ const frenchCopy: BizPilotCopy = {
           },
           backup_restore_posture: {
             activation:
-              "Le fondateur choisit export chiffre manuel ou upgrade PITR/restauration.",
+              "Le fondateur accepte la preuve DB-level pour le premier pilote limite et complete la preuve app/RLS restauree avant pilote payant ou travail data risque.",
             name: "Sauvegarde et restauration",
             ownerGuide:
-              "Noter l'emplacement, les acces, la cible de restauration et la preuve du drill.",
-            setup: "Requis avant les vraies donnees client.",
+              "Noter emplacement, acces, cible de restauration, preuve Phase 24C.0 et deferral Phase 24C.1.",
+            setup:
+              "La preuve export/restauration DB-level est passee; la preuve app/dashboard/RLS restauree reste P1 avant pilote payant, migrations ou operations destructives.",
             summary:
-              "Definit comment exporter et restaurer les donnees avant les vrais pilotes.",
+              "Separe la preuve DB-level passee de la preuve stricte app/RLS differee.",
             textGuide:
               "Explique ce qui est sauvegarde, ou les exports vivent et qui peut restaurer.",
             visualGuide:
@@ -2935,11 +2943,12 @@ const frenchCopy: BizPilotCopy = {
           },
           custom_smtp_auth_email: {
             activation:
-              "Le fondateur active apres fournisseur, DNS, SMTP Supabase, signup et reset smokes.",
+              "Le courriel auth est actif apres Resend DNS, SMTP Supabase, confirmation signup et reset smokes passes.",
             name: "SMTP personnalise auth email",
             ownerGuide:
-              "Ne jamais imprimer les identifiants. Verifier logs fournisseur et Supabase auth.",
-            setup: "DNS et fournisseur SMTP requis.",
+              "Ne jamais imprimer les identifiants. Garder la notification proprietaire app separee et differee.",
+            setup:
+              "La preuve courriel auth est passee; la notification proprietaire reste differee pour le premier pilote.",
             summary:
               "Livraison des confirmations signup et resets mot de passe pour vrais pilotes.",
             textGuide:

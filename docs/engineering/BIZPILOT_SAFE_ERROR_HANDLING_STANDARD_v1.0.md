@@ -5,7 +5,7 @@
 **Version:** v1.0  
 **Status:** Active MVP Standard  
 **Owner:** MoOoH  
-**Last Updated:** 2026-05-13
+**Last Updated:** 2026-06-17
 
 ---
 
@@ -195,7 +195,7 @@ permission denied for table leads
 |---|---|
 | `relation public.leads does not exist` | `We couldn't update this lead. Please try again.` |
 | `new row violates row-level security policy` | `We couldn't submit the quote request. Please review the form and try again.` |
-| `SUPABASE_SERVICE_ROLE_KEY is required` | `We couldn't create your account. Please try again.` |
+| `SUPABASE_SECRET_KEY or legacy SUPABASE_SERVICE_ROLE_KEY is required` | `We couldn't create your account. Please try again.` |
 | `OpenAI request failed with status 401` | `AI assistant could not prepare a draft. Please try again.` |
 | `duplicate key value violates unique constraint` | `We couldn't save the business configuration. Please review the form and try again.` |
 

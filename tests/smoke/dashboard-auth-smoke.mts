@@ -154,6 +154,22 @@ function readRequiredEnv(name: string, fileValues: Map<string, string>): string 
   return value.trim();
 }
 
+function readFirstRequiredEnv(
+  names: readonly string[],
+  fileValues: Map<string, string>,
+): string {
+  for (const name of names) {
+    const value = process.env[name] ?? fileValues.get(name);
+    if (value && value.trim().length > 0) {
+      return value.trim();
+    }
+  }
+
+  throw new Error(
+    `${names.join(" or ")} is required for authenticated dashboard smoke.`,
+  );
+}
+
 function resolveBaseUrl(): URL {
   const raw =
     readCliValue("base-url") ?? process.env.BIZPILOT_SMOKE_BASE_URL ?? DEFAULT_BASE_URL;
@@ -298,11 +314,11 @@ async function insertMany(
 }
 
 async function createSyntheticWorkspace(input: {
-  anonKey: string;
-  serviceRoleKey: string;
+  adminApiKey: string;
+  publicApiKey: string;
   supabaseUrl: string;
 }): Promise<{ cookieHeader: string; workspace: SyntheticWorkspace }> {
-  const service = createClient<Database>(input.supabaseUrl, input.serviceRoleKey, {
+  const service = createClient<Database>(input.supabaseUrl, input.adminApiKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
@@ -540,7 +556,7 @@ async function createSyntheticWorkspace(input: {
     utm_source: "instagram",
   });
 
-  const anonClient = createClient<Database>(input.supabaseUrl, input.anonKey, {
+  const anonClient = createClient<Database>(input.supabaseUrl, input.publicApiKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
@@ -557,7 +573,7 @@ async function createSyntheticWorkspace(input: {
   }
 
   const cookies = new Map<string, string>();
-  const ssrClient = createServerClient<Database>(input.supabaseUrl, input.anonKey, {
+  const ssrClient = createServerClient<Database>(input.supabaseUrl, input.publicApiKey, {
     cookies: {
       getAll() {
         return [...cookies].map(([name, value]) => ({ name, value }));
@@ -720,8 +736,14 @@ async function main(): Promise<void> {
   const baseUrl = resolveBaseUrl();
   const timeoutMs = resolveTimeoutMs();
   const supabaseUrl = readRequiredEnv("NEXT_PUBLIC_SUPABASE_URL", fileValues);
-  const anonKey = readRequiredEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", fileValues);
-  const serviceRoleKey = readRequiredEnv("SUPABASE_SERVICE_ROLE_KEY", fileValues);
+  const publicApiKey = readFirstRequiredEnv(
+    ["NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", "NEXT_PUBLIC_SUPABASE_ANON_KEY"],
+    fileValues,
+  );
+  const adminApiKey = readFirstRequiredEnv(
+    ["SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY"],
+    fileValues,
+  );
   const appUrl = readOptionalEnv("NEXT_PUBLIC_APP_URL", fileValues);
   const isVercelEnvProduction =
     process.env.VERCEL_ENV?.toLowerCase() === "production";
@@ -737,8 +759,8 @@ async function main(): Promise<void> {
   console.log("Synthetic data only. Secrets and cookies are not printed.");
 
   const { cookieHeader, workspace } = await createSyntheticWorkspace({
-    anonKey,
-    serviceRoleKey,
+    adminApiKey,
+    publicApiKey,
     supabaseUrl,
   });
   const targets = [

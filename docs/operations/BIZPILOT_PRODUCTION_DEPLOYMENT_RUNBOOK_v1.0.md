@@ -66,11 +66,13 @@ backup/export decision recorded
 ```text
 NEXT_PUBLIC_APP_URL=https://bizpilo.com
 NEXT_PUBLIC_SUPABASE_URL
-NEXT_PUBLIC_SUPABASE_ANON_KEY
-SUPABASE_SERVICE_ROLE_KEY
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+SUPABASE_SECRET_KEY
 BIZPILOT_FOUNDER_EMAILS
 OPENAI_API_KEY
 ```
+
+`NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` are legacy fallbacks during migration only.
 
 `OPENAI_API_KEY` is required for model-backed AI demos. The app must still fail safely when it is absent.
 

@@ -11,6 +11,9 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
+ * Last Updated: 2026-06-16
+ * Change Log:
+ * - 2026-06-16: Updated public trust copy to reflect Phase 23/24 synthetic proof and remaining real-data gates.
  * ============================================================
  */
 
@@ -49,13 +52,13 @@ const englishPolicyCopy: PolicyCopy = {
   privacy: {
     badge: "Privacy notice",
     boundaryBody:
-      "Founder-controlled synthetic demos are allowed. Real customer data waits for production smokes, OpenAI validation, stable email, and backup/export readiness.",
+      "Founder-controlled synthetic demos are allowed. Real customer data waits for Phase 24F final no-secret production smoke and Phase 24G explicit owner approval.",
     boundaryTitle: "Pilot boundary",
     body:
       "BizPilot is being prepared for early cleaning-business pilots. This notice explains the practical privacy rules that apply before real customer data is allowed.",
-    effectiveDate: "Last updated: May 25, 2026",
+    effectiveDate: "Last updated: June 16, 2026",
     footerNote:
-      "Before any real customer pilot, BizPilot must publish a verified privacy contact channel and keep the backup/export gate closed or explicitly upgraded.",
+      "Before any real customer pilot, BizPilot must keep the first pilot manual-only and record the final no-secret smoke plus owner approval.",
     references: [
       {
         href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/pipeda_brief",
@@ -86,7 +89,7 @@ const englishPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "Tenant data must stay separated by business membership and row-level security. Real customer data is blocked until production smokes, backup/export posture, signup email posture, and OpenAI validation are complete.",
+          "Tenant data must stay separated by business membership and row-level security. Synthetic production proof, OpenAI provider proof, Auth email proof, and DB-level backup/export/restore proof are recorded; real customer data remains blocked until Phase 24F and Phase 24G close.",
         title: "Current pilot-stage limitation",
       },
       {
@@ -100,11 +103,11 @@ const englishPolicyCopy: PolicyCopy = {
   security: {
     badge: "Security posture",
     boundaryBody:
-      "Founder-controlled synthetic demos are allowed. Real customer data waits for production smokes, OpenAI validation, stable email, and backup/export readiness.",
+      "Founder-controlled synthetic demos are allowed. Real customer data waits for Phase 24F final no-secret production smoke and Phase 24G explicit owner approval.",
     boundaryTitle: "Pilot boundary",
     body:
       "BizPilot's security model is intentionally conservative: public quote intake is treated as the highest-risk surface, and AI remains owner-reviewed.",
-    effectiveDate: "Last updated: May 25, 2026",
+    effectiveDate: "Last updated: June 16, 2026",
     footerNote:
       "This page is a product security summary. It does not replace a formal security review, incident response policy, or production backup drill.",
     references: [
@@ -142,7 +145,7 @@ const englishPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "Real customer data remains blocked until backup/export/restore posture is approved. Supabase Free/no-PITR status is acceptable only for synthetic founder demos.",
+          "DB-level export/restore proof passed for the synthetic target. Strict restored app/dashboard/RLS proof remains deferred to P1 before paid pilot, production migrations, destructive cleanup, bulk work, or broader scale.",
         title: "Backup and restore gate",
       },
     ],
@@ -151,11 +154,11 @@ const englishPolicyCopy: PolicyCopy = {
   terms: {
     badge: "Pilot terms",
     boundaryBody:
-      "Founder-controlled synthetic demos are allowed. Real customer data waits for production smokes, OpenAI validation, stable email, and backup/export readiness.",
+      "Founder-controlled synthetic demos are allowed. Real customer data waits for Phase 24F final no-secret production smoke and Phase 24G explicit owner approval.",
     boundaryTitle: "Pilot boundary",
     body:
       "These pilot-stage terms keep the offer clear while BizPilot is still founder-led and manual-billing only.",
-    effectiveDate: "Last updated: May 25, 2026",
+    effectiveDate: "Last updated: June 16, 2026",
     footerNote:
       "Any paid pilot must still have a written offer or invoice/payment-link record before money is collected.",
     sections: [
@@ -193,13 +196,13 @@ const frenchPolicyCopy: PolicyCopy = {
   privacy: {
     badge: "Avis de confidentialite",
     boundaryBody:
-      "Les demos synthetiques controlees par le fondateur sont permises. Les donnees reelles attendent les smokes production, la validation OpenAI, le courriel stable et la posture sauvegarde/export.",
+      "Les demos synthetiques controlees par le fondateur sont permises. Les donnees reelles attendent le smoke production final sans secret Phase 24F et l'approbation proprietaire explicite Phase 24G.",
     boundaryTitle: "Limite du pilote",
     body:
       "BizPilot est prepare pour les premiers pilotes avec des entreprises de nettoyage. Cet avis explique les regles pratiques avant l'utilisation de donnees reelles de clients.",
-    effectiveDate: "Derniere mise a jour: 25 mai 2026",
+    effectiveDate: "Derniere mise a jour: 16 juin 2026",
     footerNote:
-      "Avant tout pilote reel, BizPilot doit publier un canal de contact confidentialite verifie et fermer ou ameliorer le gate de sauvegarde/export.",
+      "Avant tout pilote reel, BizPilot doit garder le premier pilote manuel et enregistrer le smoke final sans secret plus l'approbation proprietaire.",
     references: englishPolicyCopy.privacy.references ?? [],
     referenceEyebrow: "Reference",
     referenceTitle: "References publiques de confidentialite et securite.",
@@ -221,7 +224,7 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "Les donnees de chaque entreprise doivent rester separees par l'adhesion et la securite au niveau des lignes. Les donnees reelles restent bloquees jusqu'aux smokes production, sauvegarde/export, posture courriel signup et validation OpenAI.",
+          "Les donnees de chaque entreprise doivent rester separees par l'adhesion et la securite RLS. La preuve production synthetique, OpenAI, courriel auth et sauvegarde/restauration DB-level est enregistree; les donnees reelles restent bloquees jusqu'a Phase 24F et Phase 24G.",
         title: "Limite actuelle du pilote",
       },
       {
@@ -235,11 +238,11 @@ const frenchPolicyCopy: PolicyCopy = {
   security: {
     badge: "Posture de securite",
     boundaryBody:
-      "Les demos synthetiques controlees par le fondateur sont permises. Les donnees reelles attendent les smokes production, la validation OpenAI, le courriel stable et la posture sauvegarde/export.",
+      "Les demos synthetiques controlees par le fondateur sont permises. Les donnees reelles attendent le smoke production final sans secret Phase 24F et l'approbation proprietaire explicite Phase 24G.",
     boundaryTitle: "Limite du pilote",
     body:
       "Le modele de securite BizPilot reste conservateur: l'intake public est traite comme surface critique, et l'IA reste revisee par le proprietaire.",
-    effectiveDate: "Derniere mise a jour: 25 mai 2026",
+    effectiveDate: "Derniere mise a jour: 16 juin 2026",
     footerNote:
       "Cette page resume la securite produit. Elle ne remplace pas un audit formel, une politique d'incident ou un exercice de restauration.",
     references: englishPolicyCopy.security.references ?? [],
@@ -268,7 +271,7 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "Les donnees reelles restent bloquees jusqu'a approbation de la sauvegarde/export/restauration. Le statut Supabase Free/sans PITR est acceptable seulement pour les demos synthetiques fondateur.",
+          "La preuve export/restauration DB-level est passee pour la cible synthetique. La preuve stricte app/dashboard/RLS restauree reste differee a P1 avant pilote payant, migrations production, nettoyage destructif, travail bulk ou echelle plus large.",
         title: "Gate sauvegarde et restauration",
       },
     ],
@@ -277,11 +280,11 @@ const frenchPolicyCopy: PolicyCopy = {
   terms: {
     badge: "Conditions pilote",
     boundaryBody:
-      "Les demos synthetiques controlees par le fondateur sont permises. Les donnees reelles attendent les smokes production, la validation OpenAI, le courriel stable et la posture sauvegarde/export.",
+      "Les demos synthetiques controlees par le fondateur sont permises. Les donnees reelles attendent le smoke production final sans secret Phase 24F et l'approbation proprietaire explicite Phase 24G.",
     boundaryTitle: "Limite du pilote",
     body:
       "Ces conditions de pilote gardent l'offre claire pendant que BizPilot reste guide par le fondateur avec facturation manuelle.",
-    effectiveDate: "Derniere mise a jour: 25 mai 2026",
+    effectiveDate: "Derniere mise a jour: 16 juin 2026",
     footerNote:
       "Tout pilote payant doit avoir une offre ecrite, facture ou lien de paiement separe avant toute collecte d'argent.",
     sections: [

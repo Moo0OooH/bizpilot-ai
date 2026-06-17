@@ -9,11 +9,12 @@
  * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-06-17
  * Change Log:
  * - 2026-05-04: Created browser Supabase config placeholder and added standard header.
  * - 2026-05-04: Clarified Phase 1 placeholder boundary and returned immutable config.
  * - 2026-05-04: Added official Supabase browser client factory.
+ * - 2026-06-17: Prefer Supabase publishable keys through the public env resolver.
  * ============================================================
  */
 
@@ -30,10 +31,9 @@ export type SupabaseBrowserClientConfig = Readonly<{
 export function getSupabaseBrowserClientConfig(): SupabaseBrowserClientConfig {
   const env = getPublicEnv();
 
-  // Phase 1 only exposes validated config. Real browser auth starts in Phase 2.
   return Object.freeze({
     url: env.NEXT_PUBLIC_SUPABASE_URL,
-    anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    anonKey: env.SUPABASE_PUBLIC_API_KEY,
   });
 }
 

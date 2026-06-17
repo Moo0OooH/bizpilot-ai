@@ -9,11 +9,13 @@
  * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-06-17
  * Change Log:
  * - 2026-05-04: Created server env validation helper and added standard header.
  * - 2026-05-04: Added explicit server-only env boundary notes for Phase 1.
  * - 2026-05-13: Enforced the server-only runtime boundary for private env reads.
+ * - 2026-06-16: Added server-only IP hash salt configuration for abuse metadata.
+ * - 2026-06-17: Added Supabase secret-key support with legacy service-role fallback.
  * ============================================================
  */
 
@@ -22,21 +24,25 @@ import "server-only";
 import { getPublicEnv } from "@/lib/env/public-env";
 
 type ServerEnv = ReturnType<typeof getPublicEnv> & {
+  SUPABASE_SECRET_KEY?: string;
   SUPABASE_SERVICE_ROLE_KEY?: string;
   OPENAI_API_KEY?: string;
   RESEND_API_KEY?: string;
   STRIPE_SECRET_KEY?: string;
   STRIPE_WEBHOOK_SECRET?: string;
   BIZPILOT_FOUNDER_EMAILS?: string;
+  BIZPILOT_IP_HASH_SALT?: string;
 };
 
 const optionalServerEnvKeys = [
+  "SUPABASE_SECRET_KEY",
   "SUPABASE_SERVICE_ROLE_KEY",
   "OPENAI_API_KEY",
   "RESEND_API_KEY",
   "STRIPE_SECRET_KEY",
   "STRIPE_WEBHOOK_SECRET",
   "BIZPILOT_FOUNDER_EMAILS",
+  "BIZPILOT_IP_HASH_SALT",
 ] as const;
 
 // Server-only values must never be imported by client components.

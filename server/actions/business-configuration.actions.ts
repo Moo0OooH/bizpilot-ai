@@ -12,6 +12,7 @@
  * - 2026-05-13: Mapped configuration action failures to safe user-facing messages.
  * - 2026-05-05: Created Phase 3 business configuration save action.
  * - 2026-05-16: Restored truncated file tail; kept [CONFIG_SAVE_ERROR] dev log.
+ * - 2026-06-16: Rejected forward-only privacy mode until the full intake/storage behavior exists.
  */
 
 "use server";
@@ -119,7 +120,7 @@ function readFaqs(value: string | undefined) {
 function readPrivacyMode(
   value: string,
 ): BusinessPrivacySettingsRecord["privacy_mode"] {
-  if (value === "standard" || value === "minimal" || value === "forward_only") {
+  if (value === "standard" || value === "minimal") {
     return value;
   }
   throw new Error("Invalid privacy mode.");

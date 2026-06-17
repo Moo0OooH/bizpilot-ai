@@ -52,6 +52,7 @@ playwright-profile/
 restore-drills/
 screenshots/
 supabase/.temp/
+supabase/.branches/
 tmp-backups/
 
 # debug

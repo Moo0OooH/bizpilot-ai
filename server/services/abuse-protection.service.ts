@@ -12,9 +12,11 @@
  * - lib/env/server-env.ts
  * Author: MoOoH
  * Created: 2026-05-15
- * Last Updated: 2026-05-15
+ * Last Updated: 2026-06-17
  * Change Log:
  * - 2026-05-15: Created the abuse-protection service. Server-only by design.
+ * - 2026-06-16: Prefer a server-only IP hash salt with deterministic local fallback.
+ * - 2026-06-17: Fail closed in production when BIZPILOT_IP_HASH_SALT is missing.
  * ============================================================
  */
 
@@ -45,9 +47,24 @@ export const DEFAULT_RATE_LIMIT_WINDOW_MINUTES = 60;
 
 const DEFAULT_SALT_FALLBACK = "bizpilot-default-ip-salt-v1";
 
+function isProductionRuntime(): boolean {
+  return (
+    process.env.NODE_ENV?.toLowerCase() === "production" ||
+    process.env.VERCEL_ENV?.toLowerCase() === "production"
+  );
+}
+
 function getIpHashSalt(): string {
   const env = getServerEnv();
-  return env.NEXT_PUBLIC_APP_URL || DEFAULT_SALT_FALLBACK;
+  if (env.BIZPILOT_IP_HASH_SALT) {
+    return env.BIZPILOT_IP_HASH_SALT;
+  }
+
+  if (isProductionRuntime()) {
+    throw new Error("BIZPILOT_IP_HASH_SALT is required in production.");
+  }
+
+  return DEFAULT_SALT_FALLBACK;
 }
 
 export function hashClientIp(rawIp: string | null | undefined): string {

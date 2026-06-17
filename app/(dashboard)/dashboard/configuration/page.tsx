@@ -24,6 +24,7 @@
  * - 2026-05-06: Shows the Phase 4 public quote link generated from the business slug.
  * - 2026-05-09: Polished the business configuration UX into clearer cards and sections.
  * - 2026-05-10: Moved Business Configuration from /dashboard to /dashboard/configuration.
+ * - 2026-06-16: Aligned notifications and forward-only privacy controls with first-pilot readiness gates.
  * ============================================================
  */
 
@@ -604,8 +605,8 @@ export default async function DashboardPage({
                 </label>
                 <label className={labelClass}>
                   {configCopy.notifications.newQuoteRequest}
-                  <select className={inputClass} defaultValue="email_active" disabled>
-                    <option value="email_active">{configCopy.notifications.emailActive}</option>
+                  <select className={inputClass} defaultValue="manual_dashboard" disabled>
+                    <option value="manual_dashboard">{configCopy.notifications.emailActive}</option>
                     <option value="off">{configCopy.notifications.off}</option>
                   </select>
                 </label>
@@ -833,7 +834,7 @@ export default async function DashboardPage({
                   >
                     <option value="standard">{configCopy.privacy.standard}</option>
                     <option value="minimal">{configCopy.privacy.minimal}</option>
-                    <option value="forward_only">{configCopy.privacy.forwardOnly}</option>
+                    <option disabled value="forward_only">{configCopy.privacy.forwardOnly}</option>
                   </select>
                 </label>
                 <label className={labelClass}>

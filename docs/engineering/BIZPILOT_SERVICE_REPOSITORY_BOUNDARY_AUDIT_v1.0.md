@@ -31,10 +31,10 @@ This audit maps how BizPilot AI currently moves data and decisions through the M
 
 | Client | File | Current Usage | Boundary Status |
 | --- | --- | --- | --- |
-| Browser anon client | `lib/supabase/client.ts` | Available for client-safe auth/browser use | Uses only `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
+| Browser public client | `lib/supabase/client.ts` | Available for client-safe auth/browser use | Uses only `NEXT_PUBLIC_SUPABASE_URL` plus `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` or legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY` |
 | Server session client | `lib/supabase/server.ts` / `createSupabaseServerClient()` | Auth, dashboard reads/writes, public quote reads/inserts, AI persistence | Server-only, cookie/session-aware, respects RLS |
 | Service-role client | `lib/supabase/server.ts` / `createSupabaseServiceRoleClient()` | Sign-up tenant bootstrap only | Server-only, isolated, not used for normal dashboard reads/writes |
-| Middleware/proxy client | `lib/supabase/middleware.ts` | Dashboard request guard | Uses anon key and session cookies; no service-role access |
+| Middleware/proxy client | `lib/supabase/middleware.ts` | Dashboard request guard | Uses publishable/legacy anon key and session cookies; no service-role access |
 
 ---
 
