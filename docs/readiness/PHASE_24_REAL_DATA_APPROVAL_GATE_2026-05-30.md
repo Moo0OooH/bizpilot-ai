@@ -16,8 +16,9 @@ SMTP gate was later completed by owner-side setup and smoke evidence. Owner
 notification email is intentionally deferred for the first pilot. Phase 24C
 DB-level backup/export/restore proof has passed, but restored-target app,
 dashboard, and RLS smoke has not passed. Phase 24E OpenAI operating posture
-documentation has passed. Final no-secret production smoke and final owner
-approval remain open before real customer data.
+documentation has passed. Final no-secret production smoke is now FULL PASS
+using sanitized synthetic-only evidence. Final owner approval remains open
+before real customer data.
 
 ## Current Decision
 
@@ -51,6 +52,7 @@ explicitly approves it.
 | AI safety review | Passed | No invented pricing, availability, booking confirmation, or guarantees observed; manual owner-review orientation preserved. |
 | Password reset request handling | Passed | Phase 23F showed safe generic request response and correct reset redirect target; owner later verified email arrival, reset link, completion, and login after reset. |
 | Custom SMTP/Auth email | Passed | Owner reported Resend + `no-reply@bizpilo.com`, DNS verified, Supabase SMTP enabled, signup confirmation passed, forgot/reset password passed. |
+| Phase 24F final no-secret production smoke | FULL PASS | 2026-06-18 sanitized evidence: production deploy Ready; public routes loaded; `/quote/mrtester` and `/quote/bizpilotowner` synthetic submits reached success; owner visually confirmed synthetic dashboard lead visibility; protected dashboard route redirected logged-out users to sign-in; no real customer data, secrets, tokens, cookies, auth links, private payloads, or destructive production DB actions were used or recorded. |
 
 Primary evidence docs:
 
@@ -124,8 +126,8 @@ Real-data gate requirement:
   production migrations, or before destructive/bulk data work,
 - document the result.
 
-Real external customer data remains blocked until final no-secret production
-smoke and final owner real-data approval are recorded.
+Real external customer data remains blocked until final owner real-data
+approval is explicitly recorded.
 
 ### 3. Owner Notification Decision
 
@@ -200,8 +202,9 @@ This gate can close only when the owner explicitly records:
 3. Owner notification email deferred decision is recorded.
 4. OpenAI operating posture documentation is accepted. Completed by Phase 24E
    owner decision; this is not a new runtime AI proof.
-5. Final no-secret production smoke passed.
-6. Real customer data intake is approved.
+5. Final no-secret production smoke passed. Completed by Phase 24F FULL PASS
+   on 2026-06-18 with sanitized synthetic-only evidence.
+6. Real customer data intake is approved. Not recorded yet.
 
 Until then:
 
@@ -226,11 +229,10 @@ Until then:
 
 ## Phase 24F - Final No-Secret Production Smoke Checklist
 
-Status: prepared, not run.
+Status: FULL PASS on 2026-06-18.
 
-This smoke is required before final real customer data approval. It must be
-synthetic-only, non-destructive, and no-secret. Do not run it unless the owner
-explicitly asks for execution.
+This smoke is required before final real customer data approval. It was run
+synthetic-only, non-destructively, and with sanitized no-secret reporting.
 
 Read-only wording note:
 
@@ -300,15 +302,30 @@ Final decision field:
 
 | Field | Value |
 | --- | --- |
-| Final no-secret production smoke decision | `pass / partial / fail / not run` |
-| Production touched beyond normal read-only UI/auth | `yes / no` |
-| Real customer data used | `yes / no` |
-| Secrets exposed | `yes / no` |
-| Remaining blocker before real-data approval | `short sanitized note` |
+| Final no-secret production smoke decision | `pass` |
+| Production touched beyond normal read-only UI/auth | `yes - synthetic public quote submissions only` |
+| Real customer data used | `no` |
+| Secrets exposed | `no` |
+| Remaining blocker before real-data approval | `Phase 24G explicit owner approval is ready for owner review but not recorded.` |
+
+Sanitized Phase 24F evidence:
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Production deploy | PASS | Production deployment reported Ready. |
+| Public route smoke | PASS | Public routes loaded without raw errors or secret markers. |
+| `/quote/mrtester` submit | PASS | Synthetic-only submit reached the success page. |
+| `/quote/bizpilotowner` submit | PASS | Synthetic-only submit reached the success page. |
+| Dashboard lead visibility | PASS | Owner visually confirmed the synthetic lead appears in the authenticated production dashboard. |
+| Password reset | PASS | Owner manually verified reset-password email, reset link, completion, and login end-to-end. |
+| Logged-out protected route redirect | PASS | Protected dashboard route redirected unauthenticated browser session to sign-in. |
+| Sensitive output check | PASS | No secrets, env values, tokens, cookies, auth links, database URLs, private payloads, customer emails, phone numbers, or private field values were printed or recorded. |
+| Real customer data | PASS | No real customer data was used. |
+| Destructive production DB action | PASS | No destructive production DB action was performed. |
 
 ## Phase 24G - Explicit Owner Real-Data Approval Template
 
-Status: not recorded.
+Status: ready for owner review; not approved and not recorded.
 
 Do not fill this section until Phase 24F passes and the owner explicitly
 approves real customer data.
@@ -333,5 +350,6 @@ operating posture documentation is accepted.
 
 Next implementation track:
 
-1. Phase 24F - final no-secret production smoke.
-2. Phase 24G - final real-data approval decision.
+1. Phase 24G - final real-data approval decision by the owner.
+2. Keep real customer data, paid pilot, and feature expansion blocked until the
+   owner explicitly records Phase 24G approval.

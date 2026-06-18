@@ -833,12 +833,12 @@ export type BizPilotCopy = Readonly<{
   quoteSuccess: Readonly<{
     backHome: string;
     body: string;
-    footer: (businessName: string) => string;
+    footer: (businessName: string | null) => string;
     nextTitle: string;
     requestSent: string;
     submitAnother: string;
-    title: (businessName: string) => string;
-    steps: (businessName: string) => string[];
+    title: (businessName: string | null) => string;
+    steps: (businessName: string | null) => string[];
   }>;
 }>;
 
@@ -1434,16 +1434,19 @@ const englishCopy: BizPilotCopy = {
       atRiskSoon: "At risk soon",
       copyLink: "Copy link",
       featuredFallbackAction:
-        "Ask for apartment size, preferred date, and access details before giving an estimate range.",
+        "Review the request and send a manual reply.",
       featuredFallbackAge: "22m ago",
       featuredFallbackArea: "Plateau",
       featuredFallbackCustomer: "Sarah M.",
       featuredFallbackService: "Move-out cleaning",
       finishSetup: "Finish setup",
-      heroBadge: "Phase 21Q - Production readiness",
+      heroBadge: "Manual-first recovery",
       heroDescription:
-        "Reply while the customer is still comparing options. BizPilot surfaces urgent leads, drafts the response, and keeps the owner in control.",
-      heroTitle: (count) => `${count} quote requests need attention today.`,
+        "Respond while the customer is still comparing options. BizPilot organizes urgent quote requests, drafts a reply, and keeps the owner in control.",
+      heroTitle: (count) =>
+        count === 1
+          ? "1 quote request needs attention today."
+          : `${count} quote requests need attention today.`,
       metrics: {
         aiDraftsReady: {
           detail: "Review before using. No auto-send.",
@@ -2050,7 +2053,7 @@ const englishCopy: BizPilotCopy = {
     actionFollowUp: "Follow up with this lead",
     actionReply: "Reply to this lead",
     actionReplyOverdue: "Reply to overdue lead",
-    archiveOrReviewArea: "Archive or review service area",
+    archiveOrReviewArea: "Review service area before replying",
     completeExplanation:
       "Contact, service, area, timing, and quote details are present.",
     followUpToday: "Follow up today",
@@ -2202,19 +2205,25 @@ const englishCopy: BizPilotCopy = {
   quoteSuccess: {
     backHome: "Back home",
     body:
-      "The business reviews every request manually. They will follow up directly with the next step. Nothing is booked and no price is confirmed yet.",
+      "The business will review your request and follow up directly. Nothing is booked and no price is confirmed yet.",
     footer: (businessName) =>
-      `BizPilot AI helps ${businessName} reply faster. The business stays in control of every message.`,
+      businessName
+        ? `BizPilot helps ${businessName} reply faster while keeping every message owner-reviewed.`
+        : "BizPilot helps the business reply faster while keeping every message owner-reviewed.",
     nextTitle: "What happens next",
     requestSent: "Request sent",
     steps: (businessName) => [
-      `${businessName} reviews your request and missing details.`,
+      businessName
+        ? `${businessName} reviews your request and any missing details.`
+        : "The business reviews your request and any missing details.",
       "They prepare an owner-reviewed reply - no automatic messages.",
-      "You hear back through the contact you submitted.",
+      "You hear back through the contact details you submitted.",
     ],
-    submitAnother: "Submit another quote",
+    submitAnother: "Submit another request",
     title: (businessName) =>
-      `Thanks - ${businessName} received your quote request.`,
+      businessName
+        ? `Thanks - your request was sent to ${businessName}.`
+        : "Thanks - your quote request was sent.",
   },
 };
 
@@ -2810,15 +2819,15 @@ const frenchCopy: BizPilotCopy = {
       atRiskSoon: "Bientôt à risque",
       copyLink: "Copier le lien",
       featuredFallbackAction:
-        "Demander la taille du logement, la date souhaitée et les détails d'accès avant de donner une fourchette d'estimation.",
+        "Réviser la demande et envoyer une réponse manuelle.",
       featuredFallbackAge: "22 min",
       featuredFallbackArea: "Plateau",
       featuredFallbackCustomer: "Sarah M.",
       featuredFallbackService: "Nettoyage de déménagement",
       finishSetup: "Terminer la configuration",
-      heroBadge: "Phase 21Q - Préparation production",
+      heroBadge: "Récupération manuelle",
       heroDescription:
-        "Répondez pendant que le client compare encore ses options. BizPilot fait ressortir les leads urgents, prépare la réponse et garde le propriétaire en contrôle.",
+        "Répondez pendant que le client compare encore ses options. BizPilot organise les demandes urgentes, prépare une réponse et garde le propriétaire en contrôle.",
       heroTitle: (count) =>
         `${count} demande${count === 1 ? "" : "s"} de soumission demandent votre attention aujourd'hui.`,
       metrics: {
@@ -3439,7 +3448,7 @@ const frenchCopy: BizPilotCopy = {
     actionFollowUp: "Faire un suivi avec ce lead",
     actionReply: "Répondre à ce lead",
     actionReplyOverdue: "Répondre au lead en retard",
-    archiveOrReviewArea: "Archiver ou vérifier le secteur desservi",
+    archiveOrReviewArea: "Vérifier le secteur desservi avant de répondre",
     completeExplanation:
       "Contact, service, secteur, horaire et détails de soumission présents.",
     followUpToday: "Faire un suivi aujourd'hui",
@@ -3592,19 +3601,25 @@ const frenchCopy: BizPilotCopy = {
   quoteSuccess: {
     backHome: "Retour à l'accueil",
     body:
-      "L'entreprise révise chaque demande manuellement. Elle vous répondra directement avec la prochaine étape. Rien n'est réservé et aucun prix n'est confirmé pour l'instant.",
+      "L'entreprise examinera votre demande et vous contactera directement pour la suite. Aucune réservation ni aucun prix n'est confirmé pour le moment.",
     footer: (businessName) =>
-      `BizPilot AI aide ${businessName} à répondre plus vite. L'entreprise garde le contrôle de chaque message.`,
+      businessName
+        ? `BizPilot aide ${businessName} à répondre plus vite tout en gardant chaque message révisé par le propriétaire.`
+        : "BizPilot aide l'entreprise à répondre plus vite tout en gardant chaque message révisé par le propriétaire.",
     nextTitle: "Prochaines étapes",
     requestSent: "Demande envoyée",
     steps: (businessName) => [
-      `${businessName} révise votre demande et les détails manquants.`,
-      "L'entreprise prépare une réponse révisée par le propriétaire - aucun message automatique.",
-      "Vous recevrez une réponse par le moyen de contact soumis.",
+      businessName
+        ? `${businessName} examine votre demande et les détails manquants.`
+        : "L'entreprise examine votre demande et les détails manquants.",
+      "Elle prépare une réponse révisée par le propriétaire - aucun message automatique.",
+      "Vous recevrez une réponse avec les coordonnées que vous avez soumises.",
     ],
     submitAnother: "Envoyer une autre demande",
     title: (businessName) =>
-      `Merci - ${businessName} a reçu votre demande de soumission.`,
+      businessName
+        ? `Merci - votre demande a été envoyée à ${businessName}.`
+        : "Merci - votre demande de soumission a été envoyée.",
   },
 };
 

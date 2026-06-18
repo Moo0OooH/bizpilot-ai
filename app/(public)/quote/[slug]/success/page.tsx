@@ -42,6 +42,35 @@ function quoteLanguageSuffix(language: string): string {
   return language === DEFAULT_LANGUAGE ? "" : `?language=${encodeURIComponent(language)}`;
 }
 
+function readDisplayableBusinessName(value: string | null | undefined): string | null {
+  const cleaned = value?.trim();
+
+  if (!cleaned) {
+    return null;
+  }
+
+  const normalized = cleaned.toLowerCase();
+  const placeholderNames = new Set([
+    "bizpilotowner",
+    "business",
+    "demo",
+    "mrtester",
+    "my business",
+    "new",
+    "sample",
+    "test",
+    "tester",
+    "untitled",
+    "your business",
+  ]);
+
+  if (placeholderNames.has(normalized) || normalized.startsWith("business-")) {
+    return null;
+  }
+
+  return cleaned;
+}
+
 export default async function QuoteSuccessPage({
   params,
   searchParams,
@@ -54,7 +83,7 @@ export default async function QuoteSuccessPage({
     notFound();
   }
 
-  const businessName = page.publicLink.display_name;
+  const businessName = readDisplayableBusinessName(page.publicLink.display_name);
   const language = readSupportedLanguage(query?.language);
   const copy = getBizPilotCopy(language);
   const quotePath = `/quote/${slug}${quoteLanguageSuffix(language)}`;

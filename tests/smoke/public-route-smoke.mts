@@ -32,7 +32,7 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 
 const smokeTargets: readonly SmokeTarget[] = [
   {
-    expectedText: ["Step 1 of 7"],
+    expectedText: ["Stop losing cleaning quote requests", "Join founder pilot"],
     path: "/",
     status: 200,
   },
@@ -62,7 +62,7 @@ const smokeTargets: readonly SmokeTarget[] = [
     status: 200,
   },
   {
-    expectedText: ["Create your workspace"],
+    expectedText: ["Create owner access", "Apply through the founder pilot page first."],
     path: "/auth/sign-up",
     status: 200,
   },
