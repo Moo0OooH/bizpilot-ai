@@ -362,6 +362,12 @@ describe("BizPilot language copy", () => {
       true,
     );
     assert.equal(
+      isSafePublicIntakeMessage(
+        getBizPilotCopy("en").intakeErrors.temporarySubmitUnavailable,
+      ),
+      true,
+    );
+    assert.equal(
       isSafePublicIntakeMessage("Raw database or provider error"),
       false,
     );

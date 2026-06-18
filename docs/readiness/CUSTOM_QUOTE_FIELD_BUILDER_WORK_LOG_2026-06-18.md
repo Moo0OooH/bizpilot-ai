@@ -71,6 +71,8 @@ tenant.
   against the configured option list.
 - Invalid select/radio/time-window choices return a safe field-specific message
   instead of the generic stale-form refresh message.
+- Backend/environment/storage submit failures return a temporary-unavailable
+  message so customers are not incorrectly told to keep changing valid fields.
 - Public intake submit failures write only sanitized operational metadata to the
   safe logger; no submitted values, tokens, cookies, auth links, URLs, or
   secrets are logged.
@@ -138,6 +140,16 @@ Recorded during the follow-up polish pass:
 | --- | --- |
 | `pnpm lint -- 'server/actions/public-intake.actions.ts' 'server/services/public-intake.service.ts' 'server/actions/business-configuration.actions.ts' 'components/dashboard/custom-quote-field-builder.tsx' 'components/dashboard/quote-field-type-control.tsx' 'app/(dashboard)/dashboard/configuration/page.tsx' 'lib/i18n/bizpilot-copy.ts' 'tests/unit/i18n-copy.test.mts'` | PASS |
 | `pnpm test:unit` | PASS, 80 tests / 19 suites |
+
+Production follow-up after deploy:
+
+- Vercel commit status for the follow-up commit returned success.
+- `pnpm smoke:quote -- --base-url=https://bizpilo.com --active-slug=mrtester`
+  passed for the active synthetic quote route.
+- A synthetic production submit on `mrtester` still returned the safe fallback
+  path instead of success. No raw/internal marker was exposed. Treat this as a
+  production environment/schema/RLS gate until verified from sanitized server
+  logs and production environment configuration.
 
 Not run in this implementation turn:
 

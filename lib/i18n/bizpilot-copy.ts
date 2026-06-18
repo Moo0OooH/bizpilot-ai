@@ -67,6 +67,7 @@ type IntakeErrorCopy = Readonly<{
   linkUnavailable: string;
   rejected: string;
   submittedTooFast: string;
+  temporarySubmitUnavailable: string;
   fieldRequired: (label: string) => string;
   nonNegativeNumber: (label: string) => string;
   validDate: (label: string) => string;
@@ -2039,6 +2040,8 @@ const englishCopy: BizPilotCopy = {
     notPastDate: (label) => `${label} cannot be in the past.`,
     rejected: "Submission rejected.",
     submittedTooFast: "Please wait a moment and submit the quote request again.",
+    temporarySubmitUnavailable:
+      "We couldn't submit this quote request right now. Please contact the business directly or try again later.",
     validDate: (label) => `${label} must be a valid date.`,
     validNumber: (label) => `${label} must be a valid number.`,
   },
@@ -3426,6 +3429,8 @@ const frenchCopy: BizPilotCopy = {
     rejected: "Soumission rejetée.",
     submittedTooFast:
       "Veuillez attendre un moment, puis envoyer la demande de soumission à nouveau.",
+    temporarySubmitUnavailable:
+      "Nous ne pouvons pas envoyer cette demande pour le moment. Veuillez contacter l'entreprise directement ou réessayer plus tard.",
     validDate: (label) => `${label} doit être une date valide.`,
     validNumber: (label) => `${label} doit être un nombre valide.`,
   },
@@ -3714,6 +3719,7 @@ export function isSafePublicIntakeMessage(message: string): boolean {
     copy.intakeErrors.linkUnavailable,
     copy.intakeErrors.rejected,
     copy.intakeErrors.submittedTooFast,
+    copy.intakeErrors.temporarySubmitUnavailable,
   ]);
 
   if (exactMessages.includes(message)) {

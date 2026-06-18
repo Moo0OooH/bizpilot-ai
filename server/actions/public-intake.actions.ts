@@ -22,7 +22,10 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { isSafePublicIntakeMessage } from "@/lib/i18n/bizpilot-copy";
+import {
+  getBizPilotCopy,
+  isSafePublicIntakeMessage,
+} from "@/lib/i18n/bizpilot-copy";
 import {
   DEFAULT_LANGUAGE,
   readSupportedLanguage,
@@ -97,6 +100,13 @@ function getPublicIntakeErrorKind(error: unknown): string {
   }
 
   if (
+    message.includes("required in production") ||
+    message.includes("environment")
+  ) {
+    return "environment";
+  }
+
+  if (
     message.includes("required") ||
     message.includes("valid") ||
     message.includes("option") ||
@@ -119,6 +129,22 @@ function getPublicIntakeErrorKind(error: unknown): string {
   return "unknown";
 }
 
+function getPublicIntakeFallbackMessage(input: {
+  errorKind: string;
+  language: SupportedLanguage;
+}): string {
+  const copy = getBizPilotCopy(input.language).intakeErrors;
+
+  if (
+    input.errorKind === "environment" ||
+    input.errorKind === "storage_or_policy"
+  ) {
+    return copy.temporarySubmitUnavailable;
+  }
+
+  return copy.fallbackSubmit;
+}
+
 function redirectWithIntakeError(
   input: {
     error: unknown;
@@ -126,8 +152,10 @@ function redirectWithIntakeError(
     slug: string;
   },
 ): never {
+  const errorKind = getPublicIntakeErrorKind(input.error);
+
   safeLogger.warn("public_intake.submit_failed", {
-    errorKind: getPublicIntakeErrorKind(input.error),
+    errorKind,
     errorName: getPublicIntakeErrorName(input.error),
   });
 
@@ -138,8 +166,10 @@ function redirectWithIntakeError(
       value === RATE_LIMIT_EXCEEDED_MESSAGE,
     code: "PUBLIC_INTAKE_ERROR",
     error: input.error,
-    fallbackMessage:
-      "We couldn't submit the quote request. Reopen this quote link, check required fields, and try again.",
+    fallbackMessage: getPublicIntakeFallbackMessage({
+      errorKind,
+      language: input.language,
+    }),
   });
   const search = new URLSearchParams({ error: message });
 
