@@ -49,7 +49,7 @@ export default async function ContentStudioPage() {
               Future Content Studio for local business growth.
             </h1>
             <p className="mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
-              BizPilot is being designed to help local service businesses create owner-reviewed marketing content after the lead recovery workflow is validated.
+              This page is roadmap only. BizPilot may later help local businesses create owner-reviewed marketing content after the cleaning lead recovery workflow is validated.
             </p>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

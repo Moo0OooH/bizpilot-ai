@@ -94,7 +94,7 @@ const englishPricingCopy: PricingCopy = {
     badge: "Ready for pilot setup",
     body:
       "The goal is simple: prove that faster, cleaner quote response helps your cleaning business recover more conversations.",
-    button: "Start founder pilot",
+    button: "Apply for founder pilot",
     title:
       "Start with the recovery workflow, then decide from real usage.",
   },
@@ -253,7 +253,7 @@ const frenchPricingCopy: PricingCopy = {
     badge: "Prêt pour la configuration pilote",
     body:
       "L'objectif est simple: prouver qu'une réponse de soumission plus rapide et plus claire aide votre entreprise de nettoyage à récupérer plus de conversations.",
-    button: "Démarrer le pilote fondateur",
+    button: "Apply for founder pilot",
     title:
       "Commencez avec le workflow de récupération, puis décidez à partir de l'usage réel.",
   },

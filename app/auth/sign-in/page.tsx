@@ -29,8 +29,15 @@ import {
   readSupportedLanguage,
 } from "@/lib/i18n/language";
 import { signInAction } from "@/server/actions/auth.actions";
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Owner Sign In | BizPilot AI",
+  description:
+    "Sign in to an approved BizPilot AI owner workspace to review cleaning quote requests, AI-assisted drafts, and manual follow-up.",
+};
 
 type SignInPageProps = Readonly<{
   searchParams?: Promise<{

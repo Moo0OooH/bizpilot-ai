@@ -50,7 +50,7 @@ const defaultMarketingNavCopy: HomeNavCopy = {
   security: "Security",
   signIn: "Sign in",
   startFull: "Join founder pilot",
-  startShort: "Start",
+  startShort: "Join founder pilot",
   terms: "Terms",
   trust: "Trust",
   why: "Why BizPilot",
@@ -381,7 +381,7 @@ export function MarketingHeader({
     { href: "/features", label: copy.features },
     { href: "/industries/cleaning", label: copy.cleaning },
     { href: "/trust", label: copy.trust },
-    { href: "/#demo", label: copy.demo },
+    { href: "/demo", label: copy.demo },
     { href: "/pricing", label: copy.pricing },
     { href: "/pilot", label: copy.pilot },
   ];
@@ -414,7 +414,7 @@ export function MarketingHeader({
             <form
               action={setInterfaceLanguageAction}
               aria-label={copy.languageLabel}
-              className="flex h-9 items-center rounded-[10px] border p-1 sm:h-10"
+              className="flex min-h-11 items-center rounded-[10px] border p-1"
               style={{
                 backgroundColor: "#FFFFFF",
                 borderColor: marketingTone.borderStrong,
@@ -427,7 +427,7 @@ export function MarketingHeader({
                 return (
                   <button
                     aria-pressed={selected}
-                    className="h-7 rounded-[8px] px-2 text-[10px] font-black transition sm:h-8 sm:px-2.5 sm:text-[11px]"
+                    className="min-h-11 rounded-[8px] px-2 text-[10px] font-black transition sm:px-2.5 sm:text-[11px]"
                     key={option}
                     name="language"
                     style={{
@@ -451,7 +451,7 @@ export function MarketingHeader({
           >
             {copy.signIn}
           </Link>
-          <MarketingButton className="h-10 px-3 text-[11px] sm:h-11 sm:px-4 sm:text-[13px]" href="/pilot">
+          <MarketingButton className="min-h-11 px-3 text-[11px] sm:px-4 sm:text-[13px]" href="/pilot">
             <span className="sm:hidden">{copy.startShort}</span>
             <span className="hidden sm:inline">{copy.startFull}</span>
           </MarketingButton>
@@ -468,7 +468,7 @@ export function MarketingFooter({
     { href: "/features", label: copy.features },
     { href: "/industries/cleaning", label: copy.cleaning },
     { href: "/trust", label: copy.trust },
-    { href: "/#demo", label: copy.demo },
+    { href: "/demo", label: copy.demo },
     { href: "/pricing", label: copy.pricing },
     { href: "/pilot", label: copy.pilot },
     { href: "/privacy", label: copy.privacy },

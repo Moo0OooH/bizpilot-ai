@@ -28,9 +28,9 @@ const trustItems = [
   ["Owner-reviewed AI", "AI drafts are reviewed, edited, and sent manually by the business owner."],
   ["No fake pricing", "The assistant should ask for missing details instead of inventing prices."],
   ["No booking confirmation", "A quote request never becomes a confirmed booking by itself."],
-  ["Data readiness gates", "Real customer workflows stay careful and founder-guided during the pilot."],
-  ["Transparent fallback", "If AI is unavailable, the owner still has a clear manual workflow."],
-  ["Manual communication only", "The first pilot is built around copy/send owner control."],
+  ["Real customer data readiness gate", "Real customer data stays blocked until final readiness approval is complete."],
+  ["Safe fallback if AI is unavailable", "If AI is unavailable, the owner still has a clear manual workflow."],
+  ["Manual communication only in first pilot", "The first pilot is built around copy/send owner control."],
 ] as const;
 
 export default async function TrustPage() {
@@ -64,6 +64,12 @@ export default async function TrustPage() {
               </MarketingCard>
             ))}
           </div>
+          <MarketingCard className="mt-8 p-6" style={{ borderColor: "rgba(245,158,11,0.28)" }}>
+            <MarketingBadge toneName="gold">Technical readiness notes</MarketingBadge>
+            <p className="mt-4 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
+              BizPilot&apos;s commercial pilot terms are staged, but real customer data and paid pilot execution still depend on readiness gates, including final no-secret production smoke, explicit owner approval before real customer data, and a prepared manual invoice or Stripe Payment Link process before collecting payment.
+            </p>
+          </MarketingCard>
           <div className="mt-8 text-center">
             <MarketingButton href="/pilot">Apply for founder pilot</MarketingButton>
           </div>

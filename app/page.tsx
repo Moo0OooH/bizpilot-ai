@@ -236,7 +236,7 @@ function MiniProductMockup() {
           need cleaning so I can prepare an accurate quote?
         </p>
         <button
-          className="mt-4 inline-flex h-10 items-center justify-center rounded-[10px] bg-slate-950 px-4 text-[13px] font-black text-white"
+          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-[10px] bg-slate-950 px-4 text-[13px] font-black text-white"
           type="button"
         >
           Copy reply
@@ -321,69 +321,111 @@ function CardGrid({
 }
 
 function ProductPreview() {
-  const demoSteps = [
-    {
-      body: '"Hi, how much for a move-out clean before Friday?"',
-      title: "Customer request",
-    },
-    {
-      body: "Service: Move-out cleaning. Timing: Before Friday. Status: Needs reply.",
-      title: "Lead organized",
-    },
-    {
-      body: "Square footage, appliances, access notes.",
-      title: "Missing details",
-    },
-    {
-      body: "Sarah needs a move-out cleaning before Friday, but pricing would be risky without square footage, appliance details, and access notes.",
-      title: "AI summary",
-    },
-    {
-      body: "Hi Sarah, thanks for reaching out. We can help with move-out cleaning. Could you please confirm the approximate square footage, whether appliances need interior cleaning, and any access notes?",
-      title: "Draft reply",
-    },
-    {
-      body: "Owner edits if needed.",
-      title: "Owner review",
-    },
-    {
-      body: "Owner copies and sends from their own channel. Lead status stays visible.",
-      title: "Manual send",
-    },
-  ] as const;
-
   return (
-    <section className="px-5 py-16 sm:px-6 lg:py-24" id="demo">
+    <section className="px-5 py-14 sm:px-6 lg:py-20" id="demo">
       <MarketingShell>
         <SectionTitle
-          body="Follow one realistic move-out cleaning request from customer message to owner-reviewed reply. The system organizes the work; the owner stays in control."
-          title="See how BizPilot handles a cleaning quote request."
+          body="Follow one realistic move-out cleaning request from messy message to owner-reviewed reply. BizPilot organizes the work; the owner stays in control."
+          title="See the quote recovery workflow in 60 seconds."
         />
-        <div className="mt-8 grid gap-4">
-          {demoSteps.map((step, index) => (
-            <MarketingCard className="p-5 sm:p-6" key={step.title}>
-              <div className="grid gap-4 sm:grid-cols-[80px_minmax(0,1fr)] sm:items-start">
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#2563EB] text-[14px] font-black text-white sm:h-14 sm:w-14">
-                  {index + 1}
-                </span>
-                <div>
-                  <h3 className="text-[19px] font-black" style={{ color: marketingTone.text }}>
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
-                    {step.body}
-                  </p>
+        <div className="mt-8 grid min-w-0 gap-4 lg:grid-cols-3">
+          <MarketingCard className="p-5 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-[12px] font-black uppercase tracking-[0.14em] text-slate-500">
+                Step 1
+              </span>
+              <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-slate-950 text-[13px] font-black text-white">
+                1
+              </span>
+            </div>
+            <h3 className="mt-5 text-[22px] font-black text-slate-950">
+              Messy request
+            </h3>
+            <p className="mt-4 rounded-[16px] border border-slate-200 bg-slate-50 p-4 text-[17px] font-black leading-7 text-slate-950">
+              &quot;Hi, how much for move-out cleaning before Friday?&quot;
+            </p>
+          </MarketingCard>
+
+          <MarketingCard className="p-5 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-[12px] font-black uppercase tracking-[0.14em] text-slate-500">
+                Step 2
+              </span>
+              <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#2563EB] text-[13px] font-black text-white">
+                2
+              </span>
+            </div>
+            <h3 className="mt-5 text-[22px] font-black text-slate-950">
+              BizPilot organizes it
+            </h3>
+            <div className="mt-4 grid gap-2">
+              {[
+                ["Service", "Move-out cleaning"],
+                ["Timing", "Before Friday"],
+                ["Missing", "square footage, appliances, access notes"],
+                ["Status", "Needs reply"],
+              ].map(([label, value]) => (
+                <div
+                  className="grid min-w-0 gap-1 rounded-[12px] border border-slate-200 bg-white px-3 py-2 sm:grid-cols-[86px_minmax(0,1fr)]"
+                  key={label}
+                >
+                  <span className="text-[12px] font-black uppercase tracking-[0.08em] text-slate-500">
+                    {label}
+                  </span>
+                  <span className="min-w-0 break-words text-[14px] font-black text-slate-950">
+                    {value}
+                  </span>
                 </div>
-              </div>
-            </MarketingCard>
-          ))}
+              ))}
+            </div>
+          </MarketingCard>
+
+          <MarketingCard className="p-5 sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-[12px] font-black uppercase tracking-[0.14em] text-slate-500">
+                Step 3
+              </span>
+              <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-[#14B8A6] text-[13px] font-black text-white">
+                3
+              </span>
+            </div>
+            <h3 className="mt-5 text-[22px] font-black text-slate-950">
+              Owner-reviewed draft
+            </h3>
+            <div className="mt-4 rounded-[16px] border border-teal-200 bg-teal-50 p-4">
+              <p className="text-[15px] font-bold leading-7 text-slate-950">
+                Hi Sarah, thanks for reaching out. Could you confirm the
+                approximate square footage, whether appliances need interior
+                cleaning, and any access notes so I can prepare an accurate
+                quote?
+              </p>
+              <button
+                className="mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-[12px] bg-slate-950 px-4 text-[13px] font-black text-white"
+                type="button"
+              >
+                <MarketingIcon name="copy" />
+                Copy reply
+              </button>
+            </div>
+          </MarketingCard>
         </div>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          {["No auto-send", "No invented price"].map((item) => (
-            <span className="rounded-full border px-4 py-2 text-[13px] font-black" key={item} style={{ borderColor: marketingTone.border, color: marketingTone.teal }}>
-              {item}
-            </span>
-          ))}
+
+        <div className="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
+            {["No auto-send", "No invented price", "Owner sends manually"].map((item) => (
+              <span
+                className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-black"
+                key={item}
+                style={{ borderColor: marketingTone.border, color: marketingTone.teal }}
+              >
+                <MarketingIcon name="check" />
+                {item}
+              </span>
+            ))}
+          </div>
+          <MarketingButton href="/demo" variant="secondary">
+            Watch full demo
+          </MarketingButton>
         </div>
       </MarketingShell>
     </section>

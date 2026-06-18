@@ -26,9 +26,9 @@ export const metadata: Metadata = {
 const services = [
   "Residential cleaning",
   "Deep cleaning",
-  "Move-in / move-out cleaning",
+  "Move-in / move-out",
   "Office cleaning",
-  "Airbnb turnover cleaning",
+  "Airbnb turnover",
   "Post-construction cleaning",
   "Small commercial cleaning",
 ] as const;

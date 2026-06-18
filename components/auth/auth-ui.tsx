@@ -105,8 +105,13 @@ export function AuthShell({
                 aria-pressed={language === option}
                 className={
                   language === option
-                    ? "rounded-[7px] bg-[#17D492] px-2 py-1 text-[11px] font-black text-[#03130c]"
-                    : "rounded-[7px] px-2 py-1 text-[11px] font-bold"
+                    ? "min-h-11 rounded-[7px] px-2 text-[11px] font-black text-[#03130c]"
+                    : "min-h-11 rounded-[7px] px-2 text-[11px] font-bold"
+                }
+                style={
+                  language === option
+                    ? { backgroundColor: "#17D492" }
+                    : undefined
                 }
                 key={option}
                 name="language"
