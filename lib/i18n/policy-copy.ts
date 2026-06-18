@@ -169,8 +169,8 @@ const englishPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "The first 1-5 pilot customers receive founder-led setup at $0 in exchange for honest 30- and 60-day feedback. Customers 6-20 use $149 setup plus $49/month. The standard post-proof offer is $199 setup plus $79/month.",
-        title: "Approved staged pricing",
+          "BizPilot is preparing a controlled founder pilot. Public fixed pricing is not the primary offer until pilot terms are approved and shared directly with applicants.",
+        title: "Pilot pricing",
       },
       {
         body:
@@ -295,8 +295,8 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "Les clients pilotes 1 a 5 recoivent une configuration fondateur a 0 $ contre un feedback honnete a 30 et 60 jours. Les clients 6 a 20 utilisent 149 $ setup plus 49 $/mois. L'offre standard apres preuve est 199 $ setup plus 79 $/mois.",
-        title: "Tarifs stages approuves",
+          "BizPilot prepare un pilote fondateur controle. Les tarifs publics fixes ne sont pas l'offre principale tant que les conditions pilote ne sont pas approuvees et partagees directement avec les candidats.",
+        title: "Tarifs pilote",
       },
       {
         body:

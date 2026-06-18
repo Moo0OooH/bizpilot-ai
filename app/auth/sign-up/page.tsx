@@ -134,6 +134,24 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
         </form>
 
         <p
+          className="mt-4 rounded-[12px] border px-3 py-2 text-center text-[12px] leading-5"
+          style={{
+            backgroundColor: "rgba(37,99,235,0.10)",
+            borderColor: "rgba(37,99,235,0.22)",
+            color: "var(--biz-page-text-soft)",
+          }}
+        >
+          Looking to join the pilot?{" "}
+          <Link
+            className="font-bold underline-offset-4 hover:underline"
+            href="/pilot"
+            style={{ color: "#17D492" }}
+          >
+            Apply through the founder pilot page first.
+          </Link>
+        </p>
+
+        <p
           className="mt-4 text-center text-[13px]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >

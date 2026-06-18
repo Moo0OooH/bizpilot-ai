@@ -44,7 +44,7 @@ type QueryParams = Readonly<{
 type StepId = QuoteStepCopy["id"];
 
 const FIELD_INPUT =
-  "h-11 w-full rounded-[10px] border border-white/[0.10] bg-[rgba(255,255,255,0.04)] px-3 text-[14px] text-[#F5F7FA] outline-none transition placeholder:text-[rgba(245,247,250,0.35)] focus:border-[#17D492] focus:ring-4 focus:ring-[rgba(23,212,146,0.15)]";
+  "h-12 w-full rounded-[14px] border border-[#CBD5E1] bg-white px-3 text-[15px] text-[#0F172A] outline-none transition placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]";
 
 function groupForField(field: FieldRecord): StepId {
   const key = field.field_key.toLowerCase();
@@ -169,7 +169,7 @@ function FieldInput({
       <div className="grid gap-2">
         {getOptions(field.options).map((option) => (
           <label
-            className="flex items-center gap-2 rounded-[10px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] px-3 py-2 text-[13px] font-semibold text-[#F5F7FA]"
+            className="flex min-h-11 items-center gap-2 rounded-[12px] border border-[#CBD5E1] bg-white px-3 py-2 text-[14px] font-semibold text-[#0F172A]"
             key={option}
           >
             <input
@@ -193,15 +193,13 @@ function FieldInput({
         defaultValue=""
         name={`field:${field.field_key}`}
         required={required}
-        style={{ backgroundColor: "#0D1721" }}
       >
-        <option style={{ backgroundColor: "#0D1721" }} value="">
+        <option value="">
           {copy.quoteForm.selectPlaceholder}
         </option>
         {getOptions(field.options).map((option) => (
           <option
             key={option}
-            style={{ backgroundColor: "#0D1721" }}
             value={option}
           >
             {copy.optionLabels[option] ?? toOptionLabel(option)}
@@ -236,7 +234,7 @@ function FieldRow({
   if (field.field_type === "boolean") {
     return (
       <label
-        className={`flex items-center gap-3 rounded-[10px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] px-3 py-2.5 ${colSpan}`}
+        className={`flex items-center gap-3 rounded-[14px] border border-[#CBD5E1] bg-white px-3 py-3 ${colSpan}`}
       >
         <FieldInput
           copy={copy}
@@ -245,14 +243,14 @@ function FieldRow({
           todayDate={todayDate}
         />
         <span className="min-w-0">
-          <span className="block text-[13px] font-bold text-[#F5F7FA]">
+          <span className="block text-[14px] font-bold text-[#0F172A]">
             {field.label}
             {field.is_required ? (
               <span className="text-[#FF5C5C]"> *</span>
             ) : null}
           </span>
           {field.help_text ? (
-            <span className="mt-0.5 block text-[11px] leading-4 text-[rgba(245,247,250,0.55)]">
+            <span className="mt-0.5 block text-[12px] leading-5 text-[#64748B]">
               {field.help_text}
             </span>
           ) : null}
@@ -263,7 +261,7 @@ function FieldRow({
 
   return (
     <label className={`flex min-w-0 flex-col gap-1.5 ${colSpan}`}>
-      <span className="text-[11px] font-extrabold uppercase tracking-[0.08em] text-[rgba(245,247,250,0.72)]">
+      <span className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[#334155]">
         {field.label}
         {field.is_required ? (
           <span className="text-[#FF5C5C]"> *</span>
@@ -276,7 +274,7 @@ function FieldRow({
         todayDate={todayDate}
       />
       {field.help_text ? (
-        <span className="text-[11px] leading-4 text-[rgba(245,247,250,0.46)]">
+        <span className="text-[12px] leading-5 text-[#64748B]">
           {field.help_text}
         </span>
       ) : null}
@@ -294,7 +292,7 @@ function ConsentBlock({
   copy: BizPilotCopy;
 }>) {
   return (
-    <label className="mt-4 flex items-start gap-3 rounded-[12px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] p-3 text-[12px] leading-5 text-[rgba(245,247,250,0.72)]">
+    <label className="mt-4 flex items-start gap-3 rounded-[14px] border border-[#CBD5E1] bg-white p-4 text-[13px] leading-6 text-[#334155]">
       <input
         className="mt-0.5 h-4 w-4 shrink-0 accent-[#17D492]"
         name="consentAccepted"
@@ -333,7 +331,7 @@ export function QuoteFormWizard({
   return (
     <form
       action={submitPublicIntakeAction}
-      className="mx-auto w-full max-w-[720px] space-y-4 px-4 py-5 pb-10 sm:px-6"
+      className="mx-auto w-full max-w-[780px] space-y-5 px-5 py-8 pb-12 sm:px-8"
     >
       <input name="businessSlug" type="hidden" value={slug} />
       <input name="language" type="hidden" value={language} />
@@ -373,18 +371,18 @@ export function QuoteFormWizard({
 
         return (
           <section
-            className="rounded-[16px] border border-white/[0.08] bg-[rgba(255,255,255,0.035)] p-4"
+            className="rounded-[24px] border border-[#E2E8F0] bg-white p-5 shadow-[0_16px_42px_rgba(15,23,42,0.06)]"
             id={`quote-step-${index}`}
             key={step.id}
           >
             <header className="mb-4 space-y-1">
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[rgba(245,247,250,0.55)]">
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[#64748B]">
                 {copy.quoteForm.stepProgress(index + 1, steps.length, step.label)}
               </p>
-              <h2 className="text-[21px] font-extrabold leading-tight tracking-[-0.03em] text-[#F5F7FA]">
+              <h2 className="text-[22px] font-extrabold leading-tight text-[#0F172A]">
                 {step.title}
               </h2>
-              <p className="text-[13px] leading-5 text-[rgba(245,247,250,0.72)]">
+              <p className="text-[14px] leading-6 text-[#334155]">
                 {step.description}
               </p>
             </header>
@@ -401,7 +399,7 @@ export function QuoteFormWizard({
                 ))}
               </div>
             ) : (
-              <p className="rounded-[12px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] p-3 text-[13px] text-[rgba(245,247,250,0.55)]">
+              <p className="rounded-[14px] border border-[#E2E8F0] bg-[#F8FAFC] p-3 text-[13px] text-[#64748B]">
                 {copy.quoteForm.emptySection}
               </p>
             )}
@@ -419,13 +417,17 @@ export function QuoteFormWizard({
 
       {query?.source === "rate_limited_demo" ? null : null}
 
+      <p className="rounded-[14px] border border-amber-200 bg-amber-50 p-4 text-[13px] leading-6 text-amber-800">
+        Submitting this form does not confirm pricing, availability, or booking.
+      </p>
+
       <div className="flex justify-end pt-1">
         <button
-          className="inline-flex h-11 min-w-[200px] items-center justify-center rounded-[12px] px-5 text-[14px] font-extrabold transition hover:-translate-y-0.5"
+          className="inline-flex min-h-12 w-full items-center justify-center rounded-[14px] px-5 text-[15px] font-extrabold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[rgba(37,99,235,0.18)] sm:w-auto sm:min-w-[220px]"
           style={{
-            background: "linear-gradient(135deg, #14b8a6, #2dd4bf)",
-            boxShadow: "0 14px 30px rgba(20,184,166,0.22)",
-            color: "#022c22",
+            background: "linear-gradient(135deg, #2563EB, #1D4ED8)",
+            boxShadow: "0 14px 30px rgba(37,99,235,0.22)",
+            color: "#FFFFFF",
           }}
           type="submit"
         >

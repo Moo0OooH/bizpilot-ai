@@ -899,7 +899,7 @@ const englishCopy: BizPilotCopy = {
     createWorkspaceFooter:
       "Owner access for cleaning businesses already onboarded to BizPilot AI.",
     createWorkspaceSubtitle:
-      "Use this after your founder pilot setup has been approved.",
+      "Create your BizPilot workspace only if you've been invited or approved for pilot access.",
     createWorkspaceTitle: "Create owner access",
     email: "Email",
     forgotPassword: "Forgot password?",
@@ -934,7 +934,7 @@ const englishCopy: BizPilotCopy = {
     signInPending: "Opening workspace...",
     signInQuestion: "Already have an account?",
     signInSubtitle:
-      "Access quote requests, lead notes, and owner-reviewed reply drafts.",
+      "Manage quote requests, owner-reviewed AI drafts, and manual follow-up from your BizPilot workspace.",
     signInTitle: "Sign in",
     updatePassword: "Update password",
     updatePasswordPending: "Updating password...",
@@ -1463,7 +1463,7 @@ const englishCopy: BizPilotCopy = {
         },
       },
       noWorkspaceBody:
-        "Create or join a business workspace before using the quote recovery desk.",
+        "Create or join a business workspace before using the lead workspace.",
       noWorkspaceTitle: "No business workspace yet.",
       openQueue: "Open queue",
       queue: {
@@ -2258,7 +2258,7 @@ const frenchCopy: BizPilotCopy = {
     createWorkspaceFooter:
       "Accès propriétaire pour les entreprises déjà onboardées sur BizPilot AI.",
     createWorkspaceSubtitle:
-      "Utilisez cette page après l'approbation de votre pilote fondateur.",
+      "Créez votre espace BizPilot seulement si vous avez été invité ou approuvé pour le pilote.",
     createWorkspaceTitle: "Créer l'accès propriétaire",
     email: "Courriel",
     forgotPassword: "Mot de passe oublié?",
@@ -2293,7 +2293,7 @@ const frenchCopy: BizPilotCopy = {
     signInPending: "Ouverture de l'espace...",
     signInQuestion: "Vous avez déjà un compte?",
     signInSubtitle:
-      "Accédez aux demandes, notes de leads et brouillons révisés par le propriétaire.",
+      "Gérez les demandes de soumission, les brouillons IA révisés par le propriétaire et les suivis manuels.",
     signInTitle: "Connexion",
     updatePassword: "Mettre à jour le mot de passe",
     updatePasswordPending: "Mise à jour...",

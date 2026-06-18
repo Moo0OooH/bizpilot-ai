@@ -118,8 +118,8 @@ const englishPricingCopy: PricingCopy = {
       },
       {
         answer:
-          "The first version is done-for-you. Setup covers configuring the quote workflow around your cleaning business instead of handing you another empty tool.",
-        question: "Why is there a setup fee?",
+          "The first version is founder-guided. Setup details are handled manually during the controlled pilot.",
+        question: "How does pilot setup work?",
       },
     ],
     title: "Straight answers before you start.",
@@ -139,8 +139,8 @@ const englishPricingCopy: PricingCopy = {
   hero: {
     badge: "Founder pilot pricing",
     body:
-      "BizPilot is sold as a done-for-you quote recovery system: setup, quote link, organized leads, owner-reviewed AI drafts, and follow-up visibility. No auto-send, no booking system, no bloated CRM.",
-    primaryCta: "Start founder pilot",
+      "BizPilot is being prepared as a founder-guided quote recovery system: quote link, organized leads, owner-reviewed AI drafts, and manual follow-up visibility. No auto-send, no booking system, no bloated CRM.",
+    primaryCta: "Join founder pilot",
     promise: {
       bullets: [
         "Owner reviews every AI draft",
@@ -167,7 +167,7 @@ const englishPricingCopy: PricingCopy = {
       {
         body:
           "Every request lands in a clear queue with status, urgency, source, and missing details.",
-        title: "Lead recovery desk",
+        title: "Lead inbox",
       },
       {
         body:
@@ -186,7 +186,7 @@ const englishPricingCopy: PricingCopy = {
     eyebrow: "Simple founder offers",
     items: [
       {
-        cta: "Start founder pilot",
+        cta: "Join founder pilot",
         description:
           "For the first cleaning businesses validating the quote recovery workflow with founder-led setup and manual support.",
         features: [
@@ -196,17 +196,17 @@ const englishPricingCopy: PricingCopy = {
           "Lead recovery queue",
           "AI summary",
           "AI reply drafts you review",
-          "AI follow-up drafts",
+          "Manual follow-up visibility",
           "30- and 60-day feedback required",
           "Manual copy/send only",
         ],
-        monthly: "$0 setup pilot",
+        monthly: "Founder pilot",
         name: "Founder Pilot",
         recommended: true,
-        setup: "feedback commitment",
+        setup: "application required",
       },
       {
-        cta: "Choose Starter",
+        cta: "Apply for pilot",
         description:
           "For early customers after the first proof points are collected: one clean quote link, one lead workspace, and owner-reviewed AI drafts.",
         features: [
@@ -218,12 +218,12 @@ const englishPricingCopy: PricingCopy = {
           "Basic branding",
           "Founder setup guidance",
         ],
-        monthly: "$49/mo",
+        monthly: "Pilot pricing",
         name: "Starter",
-        setup: "$149 setup",
+        setup: "after approval",
       },
       {
-        cta: "Choose Pro",
+        cta: "Apply for pilot",
         description:
           "For the standard paid offer after early testimonials prove that quote recovery is working.",
         features: [
@@ -236,9 +236,9 @@ const englishPricingCopy: PricingCopy = {
           "Priority setup",
           "Simple usage insights",
         ],
-        monthly: "$79/mo",
+        monthly: "Future offer",
         name: "Pro",
-        setup: "$199 setup",
+        setup: "roadmap",
       },
     ],
     lead:
@@ -277,8 +277,8 @@ const frenchPricingCopy: PricingCopy = {
       },
       {
         answer:
-          "La première version est faite pour vous. Les frais couvrent la configuration du workflow autour de votre entreprise de nettoyage au lieu de vous donner un autre outil vide.",
-        question: "Pourquoi y a-t-il des frais de configuration?",
+          "La première version est guidée par le fondateur. Les détails de configuration sont traités manuellement pendant le pilote contrôlé.",
+        question: "Comment fonctionne la configuration pilote?",
       },
     ],
     title: "Des réponses claires avant de commencer.",
@@ -299,7 +299,7 @@ const frenchPricingCopy: PricingCopy = {
     badge: "Tarifs du pilote fondateur",
     body:
       "BizPilot est vendu comme un système de récupération de soumissions fait pour vous: configuration, lien de soumission, leads organisés, brouillons IA révisés par le propriétaire et visibilité des suivis. Aucun envoi automatique, aucun système de réservation, aucun CRM gonflé.",
-    primaryCta: "Démarrer le pilote fondateur",
+    primaryCta: "Rejoindre le pilote fondateur",
     promise: {
       bullets: [
         "Le propriétaire révise chaque brouillon IA",
@@ -327,7 +327,7 @@ const frenchPricingCopy: PricingCopy = {
       {
         body:
           "Chaque demande arrive dans une file claire avec statut, urgence, source et détails manquants.",
-        title: "Bureau de récupération des leads",
+        title: "File de leads",
       },
       {
         body:
@@ -346,7 +346,7 @@ const frenchPricingCopy: PricingCopy = {
     eyebrow: "Offres fondatrices simples",
     items: [
       {
-        cta: "Démarrer le pilote fondateur",
+        cta: "Rejoindre le pilote fondateur",
         description:
           "Pour les premières entreprises de nettoyage qui valident le workflow de récupération avec configuration fondatrice et soutien manuel.",
         features: [
@@ -356,14 +356,14 @@ const frenchPricingCopy: PricingCopy = {
           "File de récupération des leads",
           "Résumé IA",
           "Brouillons de réponse IA à réviser",
-          "Brouillons de suivi IA",
+          "Visibilité simple des suivis manuels",
           "Feedback requis a 30 et 60 jours",
           "Copie/envoi manuel seulement",
         ],
         monthly: "Setup pilote a 0 $",
         name: "Pilote fondateur",
         recommended: true,
-        setup: "engagement de feedback",
+        setup: "application requise",
       },
       {
         cta: "Choisir Starter",
@@ -378,9 +378,9 @@ const frenchPricingCopy: PricingCopy = {
           "Branding de base",
           "Guidance de configuration fondatrice",
         ],
-        monthly: "49 $/mois",
+        monthly: "Tarif pilote",
         name: "Starter",
-        setup: "149 $ setup",
+        setup: "après approbation",
       },
       {
         cta: "Choisir Pro",
@@ -396,9 +396,9 @@ const frenchPricingCopy: PricingCopy = {
           "Configuration prioritaire",
           "Insights d'usage simples",
         ],
-        monthly: "79 $/mois",
+        monthly: "Offre future",
         name: "Pro",
-        setup: "199 $ setup",
+        setup: "roadmap",
       },
     ],
     lead:

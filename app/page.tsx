@@ -2,16 +2,13 @@
  * ============================================================
  * File: app/page.tsx
  * Project: BizPilot AI
- * Description: Public homepage for the cleaning-first Quote Recovery Command Center.
- * Role: Presents the pre-dashboard marketing surface without expanding product scope.
+ * Description: Public homepage for cleaning-first lead recovery.
+ * Role: Converts cleaning business owners into founder pilot applicants.
  * Related:
- * - docs/CURRENT_CANONICAL_DOCS_v1.7.md
- * - docs/operations/BIZPILOT_PHASE_18A_NEXT_TAB_HANDOFF_v1.0.md
  * - components/public/marketing-ui.tsx
+ * - lib/i18n/home-copy.ts
  * Author: MoOoH
- * Last Updated: 2026-05-26
- * Change Log:
- * - 2026-05-26: Rebuilt the first viewport into an immersive product-led homepage hero.
+ * Last Updated: 2026-06-18
  * ============================================================
  */
 
@@ -24,1010 +21,396 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
-  type MarketingIconName,
   MarketingShell,
   marketingBackground,
   marketingTone,
 } from "@/components/public/marketing-ui";
-import { InteractiveCleaningDemoSection } from "@/components/public/interactive-cleaning-demo";
-import { getHomeCopy, type HomeCopy } from "@/lib/i18n/home-copy";
+import { getHomeCopy } from "@/lib/i18n/home-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
 
 export const metadata: Metadata = {
-  title: "BizPilot AI - Recover Cleaning Quote Requests Faster",
+  title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
   description:
-    "BizPilot helps cleaning businesses organize quote requests, recover missing details, draft owner-reviewed replies, and follow up before warm leads go cold.",
+    "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies — without auto-sending customer messages.",
 };
 
-type LeadTone = "new" | "info" | "draft" | "replied" | "risk";
-
-type LeadItem = Readonly<{
-  customer: string;
-  detail: string;
-  source: string;
-  status: string;
-  time: string;
-  tone: LeadTone;
-}>;
-
-type ProblemItem = Readonly<{
-  body: string;
-  icon: MarketingIconName;
-  title: string;
-  tone: LeadTone;
-}>;
-
-type FlowItem = Readonly<{
-  body: string;
-  icon: MarketingIconName;
-  kicker: string;
-  title: string;
-}>;
-
-const leadToneStyles: Record<LeadTone, { accent: string; bg: string; border: string; text: string }> = {
-  draft: {
-    accent: marketingTone.blue,
-    bg: "rgba(84,167,255,0.12)",
-    border: "rgba(84,167,255,0.30)",
-    text: "#86C5FF",
+const problemCards = [
+  {
+    body: "Quote requests arrive through different channels and are easy to miss.",
+    title: "Messages get buried",
   },
-  info: {
-    accent: marketingTone.gold,
-    bg: "rgba(246,184,75,0.13)",
-    border: "rgba(246,184,75,0.30)",
-    text: marketingTone.gold,
+  {
+    body: "Customers often contact more than one cleaning business.",
+    title: "Replies take too long",
   },
-  new: {
-    accent: marketingTone.emerald,
-    bg: "rgba(23,212,146,0.12)",
-    border: "rgba(23,212,146,0.30)",
-    text: marketingTone.emerald,
+  {
+    body: "Owners waste time writing the same first reply again and again.",
+    title: "No ready response",
   },
-  replied: {
-    accent: "#2CE59C",
-    bg: "rgba(44,229,156,0.11)",
-    border: "rgba(44,229,156,0.28)",
-    text: "#58EBAF",
-  },
-  risk: {
-    accent: marketingTone.red,
-    bg: "rgba(255,95,102,0.12)",
-    border: "rgba(255,95,102,0.30)",
-    text: "#FF8C92",
-  },
-};
+] as const;
 
-function StatusPill({ status, tone }: Readonly<{ status: string; tone: LeadTone }>) {
-  const selected = leadToneStyles[tone];
+const solutionCards = [
+  {
+    body: "Share a simple quote link with customers.",
+    title: "Capture quote requests",
+  },
+  {
+    body: "See who needs a reply and what service they requested.",
+    title: "Review organized leads",
+  },
+  {
+    body: "Use a professional draft, edit it, and send it manually.",
+    title: "Copy AI-drafted replies",
+  },
+] as const;
 
+const workflowSteps = [
+  "Share your BizPilot quote link",
+  "Customer submits a request",
+  "Lead appears in your dashboard",
+  "BizPilot drafts a response",
+  "You review and send manually",
+] as const;
+
+const aiCanHelp = [
+  "Summarizing quote requests",
+  "Drafting friendly replies",
+  "Suggesting follow-up questions",
+  "Improving tone",
+  "Creating English or French response drafts",
+] as const;
+
+const aiWillNot = [
+  "Send messages automatically",
+  "Invent prices",
+  "Promise availability",
+  "Confirm bookings",
+  "Replace owner judgment",
+] as const;
+
+const cleaningUseCases = [
+  "Residential cleaning",
+  "Deep cleaning",
+  "Move-in / move-out",
+  "Office cleaning",
+  "Airbnb turnover",
+  "Post-construction cleaning",
+] as const;
+
+const roadmapCards = [
+  "Social captions",
+  "Google Business posts",
+  "Seasonal campaign ideas",
+  "Review responses",
+  "Image prompts",
+  "Content calendar",
+] as const;
+
+const faqItems = [
+  {
+    answer:
+      "No. BizPilot starts as a focused lead recovery workflow for cleaning quote requests, not a full CRM.",
+    question: "Is BizPilot a full CRM?",
+  },
+  {
+    answer:
+      "No. In the first pilot, BizPilot drafts replies and the owner reviews, edits, copies, and sends manually.",
+    question: "Does BizPilot send messages automatically?",
+  },
+  {
+    answer:
+      "No. BizPilot should not invent prices. It can help ask for the missing details needed before you quote.",
+    question: "Can AI create prices for me?",
+  },
+  {
+    answer:
+      "BizPilot is built for cleaning businesses first: residential, deep cleaning, move-out, office, Airbnb turnover, and related quote requests.",
+    question: "Who is BizPilot for first?",
+  },
+  {
+    answer:
+      "The request appears as an organized lead with the service, timing, property details, status, and an owner-reviewed reply draft when enough context is available.",
+    question: "What happens when a customer submits a quote request?",
+  },
+  {
+    answer:
+      "Later, possibly. The founder pilot is cleaning-only so the workflow can be proven before expanding.",
+    question: "Will BizPilot support other industries?",
+  },
+  {
+    answer:
+      "Content Studio is a roadmap direction for owner-reviewed posts, updates, campaigns, service descriptions, and visual content briefs. It is not the first pilot promise.",
+    question: "What is the future Content Studio?",
+  },
+] as const;
+
+function SectionTitle({
+  body,
+  eyebrow,
+  title,
+}: Readonly<{ body?: string; eyebrow?: string; title: string }>) {
   return (
-    <span
-      className="inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[9.5px] font-black uppercase leading-none"
-      style={{ backgroundColor: selected.bg, borderColor: selected.border, color: selected.text }}
-    >
-      {status}
-    </span>
-  );
-}
-
-function LeadRow({
-  fromLabel,
-  item,
-}: Readonly<{ fromLabel: string; item: LeadItem }>) {
-  const selected = leadToneStyles[item.tone];
-
-  return (
-    <div
-      className="grid gap-2 rounded-[12px] border p-2.5 min-[520px]:grid-cols-[minmax(0,1fr)_auto] min-[520px]:items-start"
-      style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
-    >
-      <div className="min-w-0">
-        <div className="flex min-w-0 items-center gap-2">
-          <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: selected.accent }} />
-          <p className="truncate text-[13px] font-black" style={{ color: marketingTone.text }}>
-            {item.customer}
-          </p>
-        </div>
-        <p className="mt-1 truncate text-[10.5px]" style={{ color: marketingTone.soft }}>
-          {item.detail}
+    <div className="mx-auto max-w-[780px] text-center">
+      {eyebrow ? (
+        <p
+          className="text-[12px] font-black uppercase tracking-[0.16em]"
+          style={{ color: marketingTone.teal }}
+        >
+          {eyebrow}
         </p>
-        <p className="mt-1 truncate text-[9.5px]" style={{ color: marketingTone.muted }}>
-          {fromLabel}: {item.source}
+      ) : null}
+      <h2
+        className="mt-3 text-[30px] font-black leading-[1.08] sm:text-[40px]"
+        style={{ color: marketingTone.text }}
+      >
+        {title}
+      </h2>
+      {body ? (
+        <p
+          className="mt-4 text-[16px] leading-8"
+          style={{ color: marketingTone.soft }}
+        >
+          {body}
         </p>
-      </div>
-      <div className="flex items-center justify-between gap-3 min-[520px]:flex-col min-[520px]:items-end">
-        <span className="text-[9.5px] font-bold" style={{ color: marketingTone.muted }}>
-          {item.time}
-        </span>
-        <StatusPill status={item.status} tone={item.tone} />
-      </div>
+      ) : null}
     </div>
   );
 }
 
-function HeroProductScene({
-  copy,
-}: Readonly<{ copy: HomeCopy["heroDesk"] }>) {
+function MiniProductMockup() {
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none relative min-h-[500px] w-full min-w-0 overflow-hidden rounded-[22px] border p-3 shadow-[0_34px_100px_rgba(0,0,0,0.36)] sm:min-h-[540px] sm:p-4 lg:min-h-[590px]"
+    <MarketingCard
+      className="p-4 sm:p-5"
       style={{
         background:
-          "linear-gradient(145deg, rgba(19,39,55,0.96) 0%, rgba(8,19,31,0.98) 48%, rgba(5,12,20,0.98) 100%)",
-        borderColor: "rgba(148,203,226,0.22)",
+          "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241,248,247,0.96))",
+        borderColor: "rgba(15, 23, 42, 0.10)",
+        boxShadow: "0 28px 80px rgba(15,23,42,0.16)",
       }}
     >
-      <div
-        className="absolute inset-x-0 top-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent, rgba(226,232,240,0.46), rgba(45,212,191,0.28), transparent)" }}
-      />
-      <div className="relative grid h-full min-h-[474px] grid-rows-[auto_minmax(0,1fr)_auto] gap-3 sm:min-h-[508px] lg:min-h-[558px]">
-        <div className="flex items-center justify-between gap-3 rounded-[14px] border px-3 py-2" style={{ backgroundColor: "rgba(255,255,255,0.045)", borderColor: marketingTone.border }}>
-          <div className="flex min-w-0 items-center gap-2">
-            <span className="h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: marketingTone.emerald }} />
-            <p className="truncate text-[13px] font-black" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </p>
-          </div>
-          <StatusPill status={copy.aiDraft} tone="new" />
-        </div>
-
-        <div className="grid min-h-0 gap-3 lg:grid-cols-[0.88fr_1.12fr]">
-          <div className="grid min-h-0 gap-2">
-            {copy.leads.map((lead) => (
-              <LeadRow fromLabel={copy.fromLabel} item={lead} key={lead.customer} />
-            ))}
-          </div>
-
-          <div className="grid min-h-0 gap-3">
-            <div
-              className="rounded-[16px] border p-4"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(255,255,255,0.075), rgba(255,255,255,0.035))",
-                borderColor: "rgba(148,203,226,0.24)",
-              }}
-            >
-              <div className="grid grid-cols-3 gap-2">
-                {copy.journey.slice(0, 3).map((item, index) => (
-                  <div
-                    className="min-h-[62px] rounded-[12px] border px-3 py-2"
-                    key={`${item.label}-${item.value}`}
-                    style={{
-                      background:
-                        index === 1
-                          ? "linear-gradient(135deg, rgba(45,212,191,0.16), rgba(23,212,146,0.07))"
-                          : "rgba(255,255,255,0.04)",
-                      borderColor:
-                        index === 1
-                          ? "rgba(45,212,191,0.26)"
-                          : marketingTone.border,
-                    }}
-                  >
-                    <p className="text-[9px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.muted }}>
-                      {item.label}
-                    </p>
-                    <p className="mt-1 text-[12px] font-black leading-snug" style={{ color: index === 1 ? marketingTone.teal : marketingTone.text }}>
-                      {item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div
-              className="min-h-0 rounded-[18px] border p-4"
-              style={{
-                background:
-                  "linear-gradient(135deg, #2A3033 0%, #1D252B 45%, #0E151D 100%)",
-                borderColor: "rgba(148,203,226,0.30)",
-                boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,0.05), 0 0 34px rgba(56,189,248,0.08)",
-              }}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <h3 className="text-[15px] font-black" style={{ color: marketingTone.text }}>
-                  {copy.replyTitle}
-                </h3>
-                <StatusPill status={copy.aiDraft} tone="new" />
-              </div>
-              <div className="mt-3 space-y-2 text-[12px] leading-5" style={{ color: marketingTone.soft }}>
-                <p>{copy.reply.greeting}</p>
-                <p>{copy.reply.intro}</p>
-                <p>{copy.reply.requestLine}</p>
-                <ul className="ml-4 list-disc space-y-0.5">
-                  {copy.reply.questions.map((question) => (
-                    <li key={question}>{question}</li>
-                  ))}
-                </ul>
-                <p>{copy.reply.closing}</p>
-              </div>
-              <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                {[copy.reviewReply, copy.copyResponse, copy.markContacted].map((action, index) => (
-                  <div
-                    className="h-9 rounded-[10px] border px-2 text-center text-[10.5px] font-black leading-9"
-                    key={action}
-                    style={{
-                      backgroundColor:
-                        index === 0 ? "rgba(45,212,191,0.16)" : "rgba(255,255,255,0.035)",
-                      borderColor:
-                        index === 0 ? "rgba(45,212,191,0.28)" : marketingTone.borderStrong,
-                      color: index === 0 ? marketingTone.teal : marketingTone.text,
-                    }}
-                  >
-                    {action}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid gap-2 sm:grid-cols-3">
-          {copy.journey.slice(3, 6).map((item, index) => (
-            <div
-              className="rounded-[13px] border px-3 py-2"
-              key={`${item.label}-${item.value}`}
-              style={{
-                backgroundColor: index === 2 ? "rgba(45,212,191,0.11)" : "rgba(255,255,255,0.04)",
-                borderColor: index === 2 ? "rgba(45,212,191,0.24)" : marketingTone.border,
-              }}
-            >
-              <p className="text-[9px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.muted }}>
-                {item.label}
-              </p>
-              <p className="mt-1 truncate text-[12px] font-black" style={{ color: index === 2 ? marketingTone.teal : marketingTone.text }}>
-                {item.value}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
-  return (
-    <section className="relative overflow-hidden px-5 pb-7 pt-5 sm:px-6 sm:pb-9 sm:pt-7">
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(5,11,18,0.98) 0%, rgba(5,11,18,0.90) 36%, rgba(5,11,18,0.44) 68%, rgba(5,11,18,0.92) 100%)",
-        }}
-      />
-      <MarketingShell className="relative max-w-[1320px]">
-        <div className="relative min-h-[640px] overflow-hidden px-4 py-6 sm:px-7 sm:py-8 lg:min-h-[690px] lg:px-10 lg:py-10">
-          <div className="absolute -right-[18%] top-10 w-[92%] opacity-55 sm:-right-[10%] sm:opacity-65 lg:-right-[7%] lg:top-12 lg:w-[78%] lg:opacity-85">
-            <HeroProductScene copy={copy.heroDesk} />
-          </div>
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(90deg, rgba(5,11,18,0.99) 0%, rgba(5,11,18,0.96) 36%, rgba(5,11,18,0.76) 56%, rgba(5,11,18,0.22) 100%)",
-            }}
-          />
-
-          <div className="relative z-10 flex min-h-[560px] max-w-[610px] flex-col justify-center py-8 lg:min-h-[610px]">
-            <MarketingBadge>{copy.hero.badge}</MarketingBadge>
-            <h1 className="mt-5 text-[32px] font-black leading-[1.06] min-[380px]:text-[36px] sm:text-[44px] lg:text-[50px]" style={{ color: marketingTone.text }}>
-              {copy.hero.title}
-            </h1>
-            <p className="mt-5 max-w-[560px] text-[15px] leading-7 sm:text-[16px] sm:leading-8" style={{ color: marketingTone.soft }}>
-              {copy.hero.body}
-            </p>
-            <div className="mt-7 grid gap-3 min-[430px]:flex min-[430px]:flex-wrap">
-              <MarketingButton className="w-full px-5 min-[430px]:w-auto" href="/auth/sign-up">
-                {copy.hero.primaryCta} <MarketingIcon name="arrow" />
-              </MarketingButton>
-              <MarketingButton className="w-full px-5 min-[430px]:w-auto" href="#cleaning-demo" variant="secondary">
-                {copy.hero.secondaryCta}
-              </MarketingButton>
-            </div>
-            <div className="mt-8 grid max-w-[580px] gap-2.5 sm:grid-cols-3" style={{ color: marketingTone.soft }}>
-              {copy.hero.bullets.map((item) => (
-                <span className="flex min-w-0 items-center gap-2 rounded-[12px] border px-3 py-2 text-[12px] font-bold" key={item} style={{ backgroundColor: "rgba(255,255,255,0.045)", borderColor: marketingTone.border }}>
-                  <span className="shrink-0 text-[#2DD4BF]">
-                    <MarketingIcon name="check" />
-                  </span>
-                  <span className="min-w-0 leading-5">{item}</span>
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </MarketingShell>
-    </section>
-  );
-}
-
-function MetricStrip({ copy }: Readonly<{ copy: HomeCopy["metrics"] }>) {
-  const metricVisuals: ReadonlyArray<Readonly<{ icon: MarketingIconName; tone: LeadTone }>> = [
-    { icon: "radar", tone: "draft" },
-    { icon: "briefcase", tone: "new" },
-    { icon: "target", tone: "risk" },
-    { icon: "copy", tone: "draft" },
-  ];
-  const metrics = copy.items.map((item, index) => ({
-    ...item,
-    icon: metricVisuals[index]?.icon ?? "radar",
-    tone: metricVisuals[index]?.tone ?? "draft",
-  }));
-  const primary = metrics[0]!;
-  const secondary = metrics.slice(1);
-
-  return (
-    <section className="px-5 pb-6 sm:px-6">
-      <div
-        className="mx-auto grid w-full max-w-[1200px] overflow-hidden rounded-[18px] border lg:grid-cols-[1.15fr_1.85fr]"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(37,43,46,0.58) 0%, rgba(13,19,26,0.95) 48%, rgba(7,16,25,0.96) 100%)",
-          borderColor: marketingTone.border,
-          boxShadow: "0 26px 80px rgba(0,0,0,0.26)",
-        }}
-      >
-        <div className="relative min-w-0 border-b p-5 lg:border-b-0 lg:border-r" style={{ borderColor: marketingTone.border }}>
-          <div
-            aria-hidden
-            className="absolute inset-x-5 top-0 h-px"
-            style={{ background: "linear-gradient(90deg, rgba(56,189,248,0.02), rgba(226,232,240,0.35), rgba(45,212,191,0.22))" }}
-          />
-          <p className="text-[10px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.muted }}>
-            {copy.eyebrow}
+      <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <p className="text-[12px] font-black uppercase tracking-[0.14em] text-teal-700">
+            New quote request
           </p>
-          <div className="mt-4 flex items-center gap-4">
-            <span
-              className="flex h-14 w-14 shrink-0 items-center justify-center rounded-[14px] text-[22px]"
-              style={{
-                background: "linear-gradient(135deg, rgba(84,167,255,0.22), rgba(45,212,191,0.09))",
-                color: leadToneStyles[primary.tone].text,
-              }}
-            >
-              <MarketingIcon name={primary.icon} />
-            </span>
-            <div>
-              <p className="text-[40px] font-black leading-none" style={{ color: marketingTone.text }}>
-                {primary.value}
-              </p>
-              <p className="mt-2 text-[14px] font-black" style={{ color: marketingTone.text }}>
-                {primary.label}
-              </p>
-              <p className="mt-1 text-[12px]" style={{ color: marketingTone.muted }}>
-                {primary.note}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid min-w-0 md:grid-cols-3">
-          {secondary.map((metric, index) => {
-            const selected = leadToneStyles[metric.tone];
-
-            return (
-              <div
-                className="relative min-w-0 border-b p-5 md:border-b-0 md:border-l"
-                key={metric.label}
-                style={{ borderColor: index === 0 ? "transparent" : marketingTone.border }}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <p className="text-[30px] font-black leading-none" style={{ color: marketingTone.text }}>
-                    {metric.value}
-                  </p>
-                  <span
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] text-[18px]"
-                    style={{
-                      background:
-                        metric.tone === "risk"
-                          ? "linear-gradient(135deg, rgba(255,95,102,0.22), rgba(246,184,75,0.10))"
-                          : `linear-gradient(135deg, ${selected.bg}, rgba(56,189,248,0.07))`,
-                      color: selected.text,
-                    }}
-                  >
-                    <MarketingIcon name={metric.icon} />
-                  </span>
-                </div>
-                <p className="mt-4 text-[13px] font-black" style={{ color: marketingTone.text }}>
-                  {metric.label}
-                </p>
-                <p className="mt-1 text-[12px]" style={{ color: marketingTone.muted }}>
-                  {metric.note}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function PainStorySection({ copy }: Readonly<{ copy: HomeCopy["painStory"] }>) {
-  return (
-    <section className="px-5 py-7 sm:px-6">
-      <MarketingShell>
-        <div
-          className="grid min-w-0 gap-6 overflow-hidden rounded-[18px] border p-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-center"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(255,95,102,0.10), rgba(13,19,26,0.94) 36%, rgba(5,12,20,0.96) 100%)",
-            borderColor: "rgba(255,95,102,0.20)",
-          }}
-        >
-          <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.red }}>
-              {copy.eyebrow}
-            </p>
-            <h2 className="mt-3 max-w-[560px] text-[26px] font-black leading-[1.1] sm:text-[34px]" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </h2>
-            <p className="mt-4 max-w-[58ch] text-[14.5px] leading-7" style={{ color: marketingTone.soft }}>
-              {copy.body}
-            </p>
-            <p className="mt-4 max-w-[54ch] text-[13px] font-black leading-6" style={{ color: marketingTone.teal }}>
-              {copy.closing}
-            </p>
-          </div>
-
-          <div className="grid min-w-0 gap-2.5">
-            {copy.items.map((item, index) => (
-              <div
-                className="grid min-h-[54px] grid-cols-[34px_minmax(0,1fr)] items-center gap-3 rounded-[10px] border px-3 py-2"
-                key={item}
-                style={{
-                  backgroundColor:
-                    index === copy.items.length - 1
-                      ? "rgba(255,95,102,0.10)"
-                      : "rgba(255,255,255,0.035)",
-                  borderColor:
-                    index === copy.items.length - 1
-                      ? "rgba(255,95,102,0.24)"
-                      : marketingTone.border,
-                }}
-              >
-                <span
-                  className="flex h-[30px] w-[30px] items-center justify-center rounded-[8px] text-[11px] font-black"
-                  style={{
-                    backgroundColor:
-                      index === copy.items.length - 1
-                        ? "rgba(255,95,102,0.18)"
-                        : "rgba(246,184,75,0.12)",
-                    color:
-                      index === copy.items.length - 1
-                        ? marketingTone.red
-                        : marketingTone.gold,
-                  }}
-                >
-                  {index + 1}
-                </span>
-                <p className="text-[13px] font-bold leading-5" style={{ color: marketingTone.soft }}>
-                  {item}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </MarketingShell>
-    </section>
-  );
-}
-
-function ProblemSection({ copy }: Readonly<{ copy: HomeCopy["problem"] }>) {
-  const problemVisuals: ReadonlyArray<Readonly<{ icon: MarketingIconName; tone: LeadTone }>> = [
-    { icon: "clock", tone: "risk" },
-    { icon: "inbox", tone: "draft" },
-    { icon: "warning", tone: "info" },
-    { icon: "radar", tone: "draft" },
-  ];
-  const problems: ReadonlyArray<ProblemItem> = copy.items.map((item, index) => ({
-    ...item,
-    icon: problemVisuals[index]?.icon ?? "clock",
-    tone: problemVisuals[index]?.tone ?? "draft",
-  }));
-
-  return (
-    <section className="px-5 py-7 sm:px-6" id="why">
-      <MarketingShell>
-        <div className="grid min-w-0 gap-7 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
-          <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
-              {copy.eyebrow}
-            </p>
-            <h2 className="mt-3 max-w-[14ch] text-[26px] font-black leading-[1.1] sm:max-w-[520px] sm:text-[34px]" style={{ color: marketingTone.text }}>
-              {copy.titlePrefix}{" "}
-              <span style={{ color: marketingTone.emerald }}>{copy.titleHighlight}</span>
-            </h2>
-            <p className="mt-4 max-w-[34ch] text-[14.5px] leading-7 sm:max-w-[50ch]" style={{ color: marketingTone.soft }}>
-              {copy.body}
-            </p>
-          </div>
-
-          <div
-            className="relative overflow-hidden rounded-[18px] border"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(37,43,46,0.46), rgba(9,20,31,0.86) 40%, rgba(5,12,20,0.94))",
-              borderColor: marketingTone.border,
-            }}
-          >
-            <div
-              aria-hidden
-              className="absolute bottom-4 left-8 top-4 w-px"
-              style={{ background: "linear-gradient(180deg, rgba(255,95,102,0.28), rgba(246,184,75,0.26), rgba(45,212,191,0.30))" }}
-            />
-            <div className="grid">
-              {problems.map((problem, index) => {
-                const selected = leadToneStyles[problem.tone];
-
-                return (
-                  <div
-                    className="grid gap-4 border-b p-4 pl-16 last:border-b-0 sm:grid-cols-[92px_minmax(0,1fr)_minmax(0,1.2fr)] sm:items-center sm:pl-20"
-                    key={problem.title}
-                    style={{ borderColor: marketingTone.border }}
-                  >
-                    <span
-                      className="absolute left-[1.35rem] mt-1 flex h-10 w-10 items-center justify-center rounded-full border text-[18px] sm:left-[2rem]"
-                      style={{
-                        background:
-                          problem.tone === "risk"
-                            ? "linear-gradient(135deg, rgba(255,95,102,0.25), rgba(246,184,75,0.10))"
-                            : `linear-gradient(135deg, ${selected.bg}, rgba(56,189,248,0.08))`,
-                        borderColor: selected.border,
-                        color: selected.text,
-                      }}
-                    >
-                      <MarketingIcon name={problem.icon} />
-                    </span>
-                    <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.muted }}>
-                      0{index + 1}
-                    </p>
-                    <h3 className="text-[17px] font-black" style={{ color: marketingTone.text }}>
-                      {problem.title}
-                    </h3>
-                    <p className="text-[13px] leading-6" style={{ color: marketingTone.soft }}>
-                      {problem.body}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </MarketingShell>
-    </section>
-  );
-}
-
-function RecoveryFlowSection({
-  copy,
-}: Readonly<{ copy: HomeCopy["recoveryFlow"] }>) {
-  const flowIcons: readonly MarketingIconName[] = ["link", "inbox", "pen", "target"];
-  const flow: ReadonlyArray<FlowItem> = copy.steps.map((item, index) => ({
-    ...item,
-    icon: flowIcons[index] ?? "link",
-  }));
-
-  return (
-    <section className="px-5 py-7 sm:px-6" id="recovery-flow">
-      <MarketingShell>
-        <div
-          className="overflow-hidden rounded-[22px] border p-5 sm:p-6"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(14,116,144,0.16), rgba(13,19,26,0.94) 38%, rgba(5,12,20,0.96) 100%)",
-            borderColor: "rgba(56,189,248,0.18)",
-          }}
-        >
-          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <h2 className="max-w-[760px] text-[26px] font-black leading-[1.12] sm:text-[30px]" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </h2>
-            <MarketingBadge toneName="blue">{copy.badge}</MarketingBadge>
-          </div>
-
-          <div className="relative mt-7 grid gap-5 lg:grid-cols-4">
-            <div
-              aria-hidden
-              className="absolute left-8 right-8 top-[1.45rem] hidden h-px lg:block"
-              style={{ background: "linear-gradient(90deg, rgba(45,212,191,0.45), rgba(56,189,248,0.34), rgba(246,184,75,0.20), rgba(45,212,191,0.45))" }}
-            />
-            {flow.map((item, index) => (
-              <div className="relative min-w-0" key={item.title}>
-                <span
-                  className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border text-[20px]"
-                  style={{
-                    background:
-                      index === 2
-                        ? "linear-gradient(135deg, rgba(56,189,248,0.24), rgba(246,184,75,0.10))"
-                        : "linear-gradient(135deg, rgba(45,212,191,0.20), rgba(56,189,248,0.08))",
-                    borderColor: "rgba(148,203,226,0.26)",
-                    color: index === 2 ? "#7DD3FC" : marketingTone.teal,
-                  }}
-                >
-                  <MarketingIcon name={item.icon} />
-                </span>
-                <p className="mt-5 text-[11px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
-                  {item.kicker}
-                </p>
-                <h3 className="mt-2 text-[18px] font-black" style={{ color: marketingTone.text }}>
-                  {item.title}
-                </h3>
-                <p className="mt-3 max-w-[29ch] text-[13px] leading-6" style={{ color: marketingTone.soft }}>
-                  {item.body}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </MarketingShell>
-    </section>
-  );
-}
-
-function CommandCenterMock({
-  copy,
-}: Readonly<{ copy: HomeCopy["commandCenter"]["mock"] }>) {
-  return (
-    <div className="grid gap-4 lg:grid-cols-[0.82fr_1.2fr_0.72fr]">
-      <div className="rounded-[16px] border p-4" style={{ backgroundColor: "rgba(255,255,255,0.032)", borderColor: marketingTone.border }}>
-        <div className="flex items-center justify-between">
-          <h3 className="text-[14px] font-black" style={{ color: marketingTone.text }}>
-            {copy.leadQueueTitle}
+          <h3 className="mt-1 text-[22px] font-black text-slate-950">
+            Maria L.
           </h3>
-          <span className="text-[11px]" style={{ color: marketingTone.blue }}>
-            {copy.leadCount}
-          </span>
         </div>
-        <div className="mt-3 grid gap-2">
-          {copy.queue.map((lead) => (
-            <div
-              className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-[11px] border p-2.5"
-              key={lead.customer}
-              style={{ backgroundColor: "rgba(255,255,255,0.035)", borderColor: marketingTone.border }}
-            >
-              <div className="min-w-0">
-                <p className="truncate text-[12px] font-black" style={{ color: marketingTone.text }}>
-                  {lead.customer}
-                </p>
-                <p className="truncate text-[10px]" style={{ color: marketingTone.muted }}>
-                  {lead.detail}
-                </p>
-              </div>
-              <StatusPill status={lead.status} tone={lead.tone} />
-            </div>
-          ))}
-        </div>
+        <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[12px] font-black text-amber-700">
+          Needs reply
+        </span>
       </div>
 
-      <div
-        className="rounded-[18px] border p-4"
-        style={{
-          background:
-            "radial-gradient(circle at 98% 0%, rgba(226,232,240,0.13), transparent 12rem), linear-gradient(135deg, rgba(37,43,46,0.50), rgba(10,22,34,0.95) 44%, rgba(6,13,21,0.96))",
-          borderColor: "rgba(148,203,226,0.22)",
-        }}
-      >
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h3 className="text-[14px] font-black" style={{ color: marketingTone.text }}>
-              {copy.deskTitle}
-            </h3>
-            <p className="mt-1 text-[12px]" style={{ color: marketingTone.soft }}>
-              {copy.deskSubtitle}
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        {[
+          ["Service", "Move-out cleaning"],
+          ["Property", "2 bed / 1 bath"],
+          ["Timing", "Saturday morning"],
+          ["Status", "Needs reply"],
+        ].map(([label, value]) => (
+          <div className="rounded-[10px] border border-slate-200 bg-white p-3" key={label}>
+            <p className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-500">
+              {label}
             </p>
-          </div>
-          <StatusPill status={copy.ownerReviewStatus} tone="new" />
-        </div>
-        <div className="mt-4 grid gap-3">
-          <div className="rounded-[12px] border p-4" style={{ backgroundColor: "rgba(255,255,255,0.04)", borderColor: marketingTone.border }}>
-            <p className="text-[12px] font-black" style={{ color: marketingTone.text }}>
-              {copy.summaryLabel}
-            </p>
-            <p className="mt-2 text-[12px] leading-5" style={{ color: marketingTone.soft }}>
-              {copy.summary}
-            </p>
-          </div>
-          <div
-            className="rounded-[12px] border p-4"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(37,43,46,0.46), rgba(26,32,37,0.72) 45%, rgba(13,19,26,0.88))",
-              borderColor: "rgba(148,203,226,0.20)",
-            }}
-          >
-            <div className="flex items-center justify-between gap-3">
-              <p className="text-[12px] font-black" style={{ color: marketingTone.text }}>
-                {copy.draftLabel}
-              </p>
-              <StatusPill status={copy.aiDraftStatus} tone="draft" />
-            </div>
-            <p className="mt-2 text-[12px] leading-5" style={{ color: marketingTone.soft }}>
-              {copy.draft}
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {copy.tags.map((item) => (
-              <span className="rounded-full border px-2.5 py-1 text-[10px]" key={item} style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="grid gap-3">
-        {copy.actions.map(({ body, title }, index) => (
-          <div
-            className="rounded-[14px] border p-4"
-            key={title}
-            style={{
-              background:
-                index === 0
-                  ? "linear-gradient(135deg, rgba(45,212,191,0.16), rgba(56,189,248,0.06))"
-                  : "rgba(255,255,255,0.03)",
-              borderColor: index === 0 ? "rgba(45,212,191,0.24)" : marketingTone.border,
-            }}
-          >
-            <p className="text-[13px] font-black" style={{ color: index === 0 ? marketingTone.teal : marketingTone.text }}>
-              {title}
-            </p>
-            <p className="mt-2 text-[12px] leading-5" style={{ color: marketingTone.soft }}>
-              {body}
+            <p className="mt-1 text-[14px] font-black text-slate-950">
+              {value}
             </p>
           </div>
         ))}
       </div>
+
+      <div className="mt-4 rounded-[14px] border border-teal-200 bg-teal-50 p-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="text-[13px] font-black text-slate-950">AI draft card</p>
+          <span className="rounded-full bg-white px-3 py-1 text-[11px] font-black text-teal-700">
+            AI drafts. You send.
+          </span>
+        </div>
+        <p className="mt-3 text-[14px] leading-6 text-slate-700">
+          Hi Maria, thanks for reaching out. I can help with your move-out
+          cleaning. Could you confirm the address area and whether appliances
+          need cleaning so I can prepare an accurate quote?
+        </p>
+        <button
+          className="mt-4 inline-flex h-10 items-center justify-center rounded-[10px] bg-slate-950 px-4 text-[13px] font-black text-white"
+          type="button"
+        >
+          Copy reply
+        </button>
+      </div>
+    </MarketingCard>
+  );
+}
+
+function HeroSection() {
+  return (
+    <section className="px-5 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:pb-28 lg:pt-20">
+      <MarketingShell>
+        <div className="grid min-w-0 items-center gap-10 lg:grid-cols-[minmax(0,0.94fr)_minmax(360px,0.86fr)]">
+          <div className="min-w-0">
+            <MarketingBadge>Built for cleaning businesses first</MarketingBadge>
+            <h1
+              className="mt-6 max-w-[820px] text-[42px] font-black leading-[1.02] sm:text-[58px] lg:text-[66px]"
+              style={{ color: marketingTone.text }}
+            >
+              Stop losing cleaning quote requests to slow replies.
+            </h1>
+            <p
+              className="mt-6 max-w-[690px] text-[17px] leading-8 sm:text-[19px]"
+              style={{ color: marketingTone.soft }}
+            >
+              BizPilot helps cleaning businesses collect quote requests,
+              organize leads, and draft fast owner-reviewed replies - so owners
+              can respond faster without giving up control.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 min-[460px]:flex-row">
+              <MarketingButton href="/pilot">Join founder pilot</MarketingButton>
+              <MarketingButton href="#demo" variant="secondary">
+                Watch demo
+              </MarketingButton>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-2">
+              {[
+                "No auto-send",
+                "Owner-reviewed AI drafts",
+                "Manual copy/send workflow",
+              ].map((item) => (
+                <span
+                  className="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-black"
+                  key={item}
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.045)",
+                    borderColor: marketingTone.border,
+                    color: marketingTone.soft,
+                  }}
+                >
+                  <MarketingIcon name="check" />
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+          <MiniProductMockup />
+        </div>
+      </MarketingShell>
+    </section>
+  );
+}
+
+function CardGrid({
+  items,
+}: Readonly<{ items: ReadonlyArray<Readonly<{ body: string; title: string }>> }>) {
+  return (
+    <div className="mt-8 grid gap-4 md:grid-cols-3">
+      {items.map((item) => (
+        <MarketingCard className="p-5" key={item.title}>
+          <h3 className="text-[18px] font-black" style={{ color: marketingTone.text }}>
+            {item.title}
+          </h3>
+          <p className="mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
+            {item.body}
+          </p>
+        </MarketingCard>
+      ))}
     </div>
   );
 }
 
-function CommandCenterSection({
-  copy,
-}: Readonly<{ copy: HomeCopy["commandCenter"] }>) {
-  return (
-    <section className="px-5 py-7 sm:px-6">
-      <MarketingShell>
-        <div
-          className="overflow-hidden rounded-[22px] border p-5 sm:p-6"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(7,16,25,0.96), rgba(13,19,26,0.96) 48%, rgba(37,43,46,0.44))",
-            borderColor: "rgba(148,203,226,0.18)",
-          }}
-        >
-          <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
-                {copy.eyebrow}
-              </p>
-              <h2 className="mt-3 text-[26px] font-black leading-[1.12] sm:text-[34px]" style={{ color: marketingTone.text }}>
-                {copy.title}
-              </h2>
-            </div>
-            <p className="max-w-[520px] text-[14px] leading-7" style={{ color: marketingTone.soft }}>
-              {copy.body}
-            </p>
-          </div>
-          <CommandCenterMock copy={copy.mock} />
-        </div>
-      </MarketingShell>
-    </section>
-  );
-}
-
-function BeforeAfterSection({
-  copy,
-}: Readonly<{ copy: HomeCopy["beforeAfter"] }>) {
-  return (
-    <section className="px-5 py-7 sm:px-6" id="comparison">
-      <MarketingShell>
-        <div
-          className="overflow-hidden rounded-[20px] border p-6 sm:p-8"
-          style={{
-            background:
-              "radial-gradient(circle at 76% 10%, rgba(226,232,240,0.08), transparent 12rem), linear-gradient(135deg, rgba(48,55,58,0.56), rgba(10,22,34,0.94) 44%, rgba(12,25,38,0.94))",
-            borderColor: "rgba(148,203,226,0.18)",
-          }}
-        >
-          <div className="grid gap-7 lg:grid-cols-[minmax(0,0.94fr)_88px_minmax(0,1.06fr)] lg:items-center">
-            <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.red }}>
-                {copy.beforeLabel}
-              </p>
-              <h2 className="mt-3 text-[28px] font-black leading-tight" style={{ color: marketingTone.text }}>
-                {copy.beforeTitle}
-              </h2>
-              <div className="mt-5 grid gap-2">
-                {copy.beforeItems.map((item) => (
-                  <div
-                    className="flex items-center gap-3 rounded-[12px] border px-4 py-2.5 text-[13px]"
-                    key={item}
-                    style={{ backgroundColor: "rgba(255,95,102,0.07)", borderColor: "rgba(255,95,102,0.18)", color: marketingTone.soft }}
-                  >
-                    <span style={{ color: marketingTone.red }}>
-                      <MarketingIcon name="x" />
-                    </span>
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex justify-center">
-              <div
-                className="flex h-14 w-14 items-center justify-center rounded-full border text-[22px] sm:h-20 sm:w-20 sm:text-[28px]"
-                style={{
-                  background: "linear-gradient(135deg, rgba(56,189,248,0.18), rgba(246,184,75,0.10))",
-                  borderColor: "rgba(148,203,226,0.24)",
-                  color: marketingTone.teal,
-                }}
-              >
-                <MarketingIcon name="arrow" />
-              </div>
-            </div>
-
-            <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
-                {copy.afterLabel}
-              </p>
-              <h2 className="mt-3 text-[28px] font-black leading-tight" style={{ color: marketingTone.text }}>
-                {copy.afterTitle}
-              </h2>
-              <div className="mt-5 grid gap-2">
-                <div
-                  className="hidden px-3 text-[10px] font-black uppercase tracking-[0.14em] sm:grid sm:grid-cols-[0.55fr_1fr]"
-                  style={{ color: marketingTone.muted }}
-                >
-                  <span>{copy.recoveredDetailHeader}</span>
-                  <span>{copy.serviceActionHeader}</span>
-                </div>
-                {copy.afterItems.map((item) => (
-                  <div
-                    className="grid gap-1.5 rounded-[12px] border px-4 py-2.5 text-[13px] sm:grid-cols-[0.48fr_1fr] sm:items-center"
-                    key={item.detail}
-                    style={{ backgroundColor: "rgba(45,212,191,0.075)", borderColor: "rgba(45,212,191,0.20)", color: marketingTone.soft }}
-                  >
-                    <span className="flex items-center gap-2 font-black" style={{ color: marketingTone.teal }}>
-                      <MarketingIcon name="check" />
-                      {item.detail}
-                    </span>
-                    <span>
-                      {item.action}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </MarketingShell>
-    </section>
-  );
-}
-
-function TrustStrip({ copy }: Readonly<{ copy: HomeCopy["trust"] }>) {
-  const icons: readonly MarketingIconName[] = [
-    "user",
-    "calendar",
-    "briefcase",
-    "shield",
-    "lock",
-  ];
-  const items = copy.items.map((item, index) => ({
-    ...item,
-    icon: icons[index] ?? "shield",
-  }));
+function ProductPreview() {
+  const demoSteps = [
+    {
+      body: '"Hi, how much for a move-out clean before Friday?"',
+      title: "Customer request",
+    },
+    {
+      body: "Service: Move-out cleaning. Timing: Before Friday. Status: Needs reply.",
+      title: "Lead organized",
+    },
+    {
+      body: "Square footage, appliances, access notes.",
+      title: "Missing details",
+    },
+    {
+      body: "Sarah needs a move-out cleaning before Friday, but pricing would be risky without square footage, appliance details, and access notes.",
+      title: "AI summary",
+    },
+    {
+      body: "Hi Sarah, thanks for reaching out. We can help with move-out cleaning. Could you please confirm the approximate square footage, whether appliances need interior cleaning, and any access notes?",
+      title: "Draft reply",
+    },
+    {
+      body: "Owner edits if needed.",
+      title: "Owner review",
+    },
+    {
+      body: "Owner copies and sends from their own channel. Lead status stays visible.",
+      title: "Manual send",
+    },
+  ] as const;
 
   return (
-    <section className="px-5 py-7 sm:px-6">
+    <section className="px-5 py-16 sm:px-6 lg:py-24" id="demo">
       <MarketingShell>
-        <div
-          className="overflow-hidden rounded-[18px] border"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(37,43,46,0.52), rgba(9,20,31,0.88) 36%, rgba(5,12,20,0.94))",
-            borderColor: marketingTone.border,
-          }}
-        >
-          <div className="grid lg:grid-cols-[0.7fr_1.3fr]">
-            <div className="border-b p-5 lg:border-b-0 lg:border-r" style={{ borderColor: marketingTone.border }}>
-              <p className="text-[11px] font-black uppercase tracking-[0.16em]" style={{ color: marketingTone.teal }}>
-                {copy.eyebrow}
-              </p>
-              <h2 className="mt-3 text-[24px] font-black leading-tight" style={{ color: marketingTone.text }}>
-                {copy.title}
-              </h2>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-5">
-              {items.map((item, index) => (
-                <div
-                  className="min-w-0 border-b p-4 sm:border-l lg:border-b-0"
-                  key={item.title}
-                  style={{ borderColor: marketingTone.border }}
-                >
-                  <div className="grid gap-3">
-                    <span
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] text-[17px]"
-                      style={{
-                        background:
-                          index === 1
-                            ? "linear-gradient(135deg, rgba(56,189,248,0.18), rgba(246,184,75,0.08))"
-                            : "linear-gradient(135deg, rgba(45,212,191,0.15), rgba(56,189,248,0.05))",
-                        color: index === 1 ? "#7DD3FC" : marketingTone.teal,
-                      }}
-                    >
-                      <MarketingIcon name={item.icon} />
-                    </span>
-                    <h3 className="min-w-0 text-[12px] font-black leading-snug" style={{ color: marketingTone.text }}>
-                      {item.title}
-                    </h3>
-                  </div>
-                  <p className="mt-3 text-[11px] leading-5" style={{ color: marketingTone.muted }}>
-                    {item.body}
+        <SectionTitle
+          body="Follow one realistic move-out cleaning request from customer message to owner-reviewed reply. The system organizes the work; the owner stays in control."
+          title="See how BizPilot handles a cleaning quote request."
+        />
+        <div className="mt-8 grid gap-4">
+          {demoSteps.map((step, index) => (
+            <MarketingCard className="p-5 sm:p-6" key={step.title}>
+              <div className="grid gap-4 sm:grid-cols-[80px_minmax(0,1fr)] sm:items-start">
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#2563EB] text-[14px] font-black text-white sm:h-14 sm:w-14">
+                  {index + 1}
+                </span>
+                <div>
+                  <h3 className="text-[19px] font-black" style={{ color: marketingTone.text }}>
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
+                    {step.body}
                   </p>
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            </MarketingCard>
+          ))}
+        </div>
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
+          {["No auto-send", "No invented price"].map((item) => (
+            <span className="rounded-full border px-4 py-2 text-[13px] font-black" key={item} style={{ borderColor: marketingTone.border, color: marketingTone.teal }}>
+              {item}
+            </span>
+          ))}
         </div>
       </MarketingShell>
     </section>
   );
 }
 
-function FinalCtaSection({ copy }: Readonly<{ copy: HomeCopy["finalCta"] }>) {
+function ListColumn({
+  items,
+  title,
+  tone,
+}: Readonly<{ items: readonly string[]; title: string; tone: "good" | "limit" }>) {
   return (
-    <section className="px-5 py-7 sm:px-6">
-      <MarketingShell>
-        <MarketingCard
-          className="overflow-hidden p-7"
-          style={{
-            background:
-              "radial-gradient(circle at 94% 8%, rgba(226,232,240,0.14), transparent 18rem), radial-gradient(circle at 72% 2%, rgba(246,184,75,0.10), transparent 16rem), linear-gradient(135deg, rgba(37,43,46,0.62), rgba(11,25,37,0.98) 38%, rgba(5,12,20,0.96))",
-            borderColor: "rgba(148,203,226,0.22)",
-          }}
-        >
-          <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,390px)]">
-            <div className="min-w-0">
-              <h2 className="max-w-[620px] text-[26px] font-black leading-[1.12] sm:text-[36px]" style={{ color: marketingTone.text }}>
-                {copy.title}
-              </h2>
-              <p className="mt-5 max-w-[640px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
-                {copy.body}
-              </p>
-            </div>
-            <div className="min-w-0">
-              <div className="grid gap-3">
-                <MarketingButton className="w-full" href="/auth/sign-up">
-                  {copy.primaryCta} <MarketingIcon name="arrow" />
-                </MarketingButton>
-                <MarketingButton className="w-full" href="/pricing" variant="secondary">
-                  {copy.secondaryCta}
-                </MarketingButton>
-              </div>
-              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[11px]" style={{ color: marketingTone.soft }}>
-                {copy.assurances.map((item) => (
-                  <span className="flex items-center gap-2" key={item}>
-                    <span style={{ color: marketingTone.teal }}>
-                      <MarketingIcon name="check" />
-                    </span>
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
+    <MarketingCard className="p-5">
+      <h3 className="text-[19px] font-black" style={{ color: marketingTone.text }}>
+        {title}
+      </h3>
+      <div className="mt-5 grid gap-3">
+        {items.map((item) => (
+          <div className="flex items-start gap-3 text-[14px] leading-6" key={item} style={{ color: marketingTone.soft }}>
+            <span style={{ color: tone === "good" ? marketingTone.teal : marketingTone.gold }}>
+              <MarketingIcon name={tone === "good" ? "check" : "minus"} />
+            </span>
+            {item}
           </div>
-        </MarketingCard>
-      </MarketingShell>
-    </section>
+        ))}
+      </div>
+    </MarketingCard>
   );
 }
 
@@ -1035,22 +418,148 @@ export default async function HomePage() {
   const language = readSupportedLanguage(
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
-  const copy = getHomeCopy(language);
+  const navCopy = getHomeCopy(language).nav;
 
   return (
     <main className="min-h-screen overflow-x-hidden" style={{ background: marketingBackground, color: marketingTone.text }}>
-      <MarketingHeader copy={copy.nav} language={language} redirectPath="/" />
-      <HeroSection copy={copy} />
-      <MetricStrip copy={copy.metrics} />
-      <PainStorySection copy={copy.painStory} />
-      <ProblemSection copy={copy.problem} />
-      <RecoveryFlowSection copy={copy.recoveryFlow} />
-      <InteractiveCleaningDemoSection language={language} />
-      <CommandCenterSection copy={copy.commandCenter} />
-      <BeforeAfterSection copy={copy.beforeAfter} />
-      <TrustStrip copy={copy.trust} />
-      <FinalCtaSection copy={copy.finalCta} />
-      <MarketingFooter copy={copy.nav} />
+      <MarketingHeader copy={navCopy} language={language} redirectPath="/" />
+      <HeroSection />
+
+      <section className="px-5 py-16 sm:px-6 lg:py-24" id="features">
+        <MarketingShell>
+          <SectionTitle
+            body="Cleaning owners receive quote requests while working, driving, managing a team, or answering customers. When messages get buried or replies are delayed, customers move on."
+            eyebrow="Problem"
+            title="Your next customer may already be waiting."
+          />
+          <CardGrid items={problemCards} />
+        </MarketingShell>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:py-24" id="cleaning">
+        <MarketingShell>
+          <SectionTitle
+            eyebrow="Solution"
+            title="A simple lead recovery system for cleaning businesses."
+          />
+          <CardGrid items={solutionCards} />
+        </MarketingShell>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:py-24">
+        <MarketingShell>
+          <SectionTitle eyebrow="How it works" title="Five steps, no hidden automation." />
+          <div className="mt-8 grid gap-3 lg:grid-cols-5">
+            {workflowSteps.map((step, index) => (
+              <MarketingCard className="p-5" key={step}>
+                <p className="text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
+                  Step {index + 1}
+                </p>
+                <p className="mt-3 text-[16px] font-black leading-6" style={{ color: marketingTone.text }}>
+                  {step}
+                </p>
+              </MarketingCard>
+            ))}
+          </div>
+        </MarketingShell>
+      </section>
+
+      <ProductPreview />
+
+      <section className="px-5 py-16 sm:px-6 lg:py-24" id="trust">
+        <MarketingShell>
+          <SectionTitle
+            body="BizPilot does not automatically send customer messages in the first pilot. AI helps prepare replies, but every message is reviewed, edited, and sent manually by the owner."
+            eyebrow="Manual-first AI"
+            title="AI drafts. You decide."
+          />
+          <div className="mt-8 grid gap-5 lg:grid-cols-2">
+            <ListColumn items={aiCanHelp} title="AI can help with" tone="good" />
+            <ListColumn items={aiWillNot} title="AI will not" tone="limit" />
+          </div>
+        </MarketingShell>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:py-24">
+        <MarketingShell>
+          <SectionTitle title="Built around real cleaning quote requests." />
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {cleaningUseCases.map((item) => (
+              <MarketingCard className="p-5" key={item}>
+                <p className="text-[16px] font-black" style={{ color: marketingTone.text }}>
+                  {item}
+                </p>
+              </MarketingCard>
+            ))}
+          </div>
+        </MarketingShell>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:py-24">
+        <MarketingShell>
+          <MarketingCard className="p-6 sm:p-8">
+            <MarketingBadge toneName="gold">Roadmap</MarketingBadge>
+            <h2 className="mt-5 max-w-[820px] text-[30px] font-black leading-[1.08] sm:text-[40px]" style={{ color: marketingTone.text }}>
+              More than lead replies - future growth content for your business.
+            </h2>
+            <p className="mt-5 max-w-[860px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
+              BizPilot is being designed to help local service businesses create owner-reviewed social posts, Google Business updates, follow-up campaigns, service descriptions, seasonal promotions, and visual content briefs.
+            </p>
+            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {roadmapCards.map((item) => (
+                <div className="rounded-[10px] border px-4 py-3 text-[14px] font-black" key={item} style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </MarketingCard>
+        </MarketingShell>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:py-24">
+        <MarketingShell>
+          <SectionTitle eyebrow="FAQ" title="Straight answers for the founder pilot." />
+          <div className="mx-auto mt-8 grid max-w-[900px] gap-3">
+            {faqItems.map((item) => (
+              <MarketingCard className="p-5" key={item.question}>
+                <details>
+                  <summary className="cursor-pointer list-none text-[16px] font-black" style={{ color: marketingTone.text }}>
+                    {item.question}
+                  </summary>
+                  <p className="mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
+                    {item.answer}
+                  </p>
+                </details>
+              </MarketingCard>
+            ))}
+          </div>
+        </MarketingShell>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:py-24" id="pilot">
+        <MarketingShell>
+          <MarketingCard className="p-7 sm:p-9" style={{ borderColor: "rgba(45,212,191,0.24)" }}>
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+              <div>
+                <h2 className="text-[30px] font-black leading-[1.08] sm:text-[42px]" style={{ color: marketingTone.text }}>
+                  Join the founder pilot for cleaning businesses.
+                </h2>
+                <p className="mt-4 max-w-[720px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
+                  We&apos;re starting with a small group of cleaning businesses to test the workflow, improve the product, and build around real owner feedback.
+                </p>
+                <p className="mt-4 text-[13px] font-black" style={{ color: marketingTone.teal }}>
+                  Limited pilot. Manual onboarding. No auto-send.
+                </p>
+              </div>
+              <MarketingButton href="/pilot">
+                Apply for founder pilot <MarketingIcon name="arrow" />
+              </MarketingButton>
+            </div>
+          </MarketingCard>
+        </MarketingShell>
+      </section>
+
+      <MarketingFooter copy={navCopy} />
     </main>
   );
 }

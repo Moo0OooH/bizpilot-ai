@@ -48,12 +48,15 @@ type HomeDetailPair = Readonly<{
 
 export type HomeNavCopy = Readonly<{
   brandSubtitle: string;
+  cleaning: string;
   comparison: string;
   copyright: string;
   demo: string;
   faq: string;
+  features: string;
   flow: string;
   languageLabel: string;
+  pilot: string;
   pricing: string;
   privacy: string;
   security: string;
@@ -61,6 +64,7 @@ export type HomeNavCopy = Readonly<{
   startFull: string;
   startShort: string;
   terms: string;
+  trust: string;
   why: string;
 }>;
 
@@ -222,7 +226,7 @@ const englishHomeCopy: HomeCopy = {
   },
   commandCenter: {
     body:
-      "One cockpit for the lead, the missing details, the owner-reviewed draft, and the next manual action.",
+      "One simple view for the lead, the missing details, the owner-reviewed draft, and the next manual action.",
     eyebrow: "Command center",
     mock: {
       actions: [
@@ -299,13 +303,13 @@ const englishHomeCopy: HomeCopy = {
   },
   finalCta: {
     assurances: [
-      "No credit card required",
-      "14-day no-risk pilot",
-      "Cancel anytime",
+      "Limited founder pilot",
+      "Manual onboarding",
+      "No auto-send",
     ],
     body:
       "Start with one clean quote workflow: capture the request, recover missing details, review the draft, and send before the lead goes cold.",
-    primaryCta: "Start recovering quote requests",
+    primaryCta: "Join founder pilot",
     secondaryCta: "See pricing",
     title: "Make the next missed quote request much harder to lose.",
   },
@@ -318,7 +322,7 @@ const englishHomeCopy: HomeCopy = {
       "Review an AI-drafted reply before anything is sent",
       "No auto-send, no fake pricing, no takeover",
     ],
-    primaryCta: "Start recovering missed quote requests",
+    primaryCta: "Apply for founder pilot",
     secondaryCta: "See the quote recovery workflow",
     title: "Stop losing cleaning jobs one delayed reply at a time.",
   },
@@ -393,7 +397,7 @@ const englishHomeCopy: HomeCopy = {
     items: [
       {
         label: "Quote requests organized",
-        note: "From all your channels",
+        note: "From your quote workflow",
         value: "12",
       },
       {
@@ -429,20 +433,24 @@ const englishHomeCopy: HomeCopy = {
     title: "The lead was warm. The reply was late.",
   },
   nav: {
-    brandSubtitle: "Quote Recovery Command Center",
+    brandSubtitle: "AI-assisted lead recovery for cleaning businesses",
+    cleaning: "Cleaning",
     comparison: "Comparison",
     copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
     demo: "Demo",
     faq: "FAQ",
+    features: "Features",
     flow: "How it works",
     languageLabel: "Homepage language",
+    pilot: "Pilot",
     pricing: "Pricing",
     privacy: "Privacy",
     security: "Security",
     signIn: "Sign in",
-    startFull: "Start free recovery",
+    startFull: "Join founder pilot",
     startShort: "Start",
     terms: "Terms",
+    trust: "Trust",
     why: "Why BizPilot",
   },
   problem: {
@@ -583,7 +591,7 @@ const englishHomeCopy: HomeCopy = {
       },
       {
         body: "Try it. See value. Decide.",
-        title: "14-day no-risk pilot",
+        title: "Founder pilot",
       },
       {
         body: "One focus. One outcome.",
@@ -730,7 +738,7 @@ const frenchHomeCopy: HomeCopy = {
     ],
     body:
       "Captez les demandes, demandez les détails manquants, répondez plus vite et ne perdez plus un lead dans le silence.",
-    primaryCta: "Démarrer la récupération",
+    primaryCta: "Rejoindre le pilote fondateur",
     secondaryCta: "Voir les prix",
     title:
       "Transformez plus de demandes de soumission en vraies conversations.",
@@ -744,7 +752,7 @@ const frenchHomeCopy: HomeCopy = {
       "Les brouillons IA restent sous votre contrôle",
       "Aucun envoi automatique, aucun prix invente",
     ],
-    primaryCta: "Démarrer la récupération",
+    primaryCta: "Postuler au pilote fondateur",
     secondaryCta: "Voir le fonctionnement",
     title:
       "Arrêtez de perdre des mandats de nettoyage à cause des réponses lentes.",
@@ -857,20 +865,24 @@ const frenchHomeCopy: HomeCopy = {
     title: "Le lead etait chaud. La reponse etait tardive.",
   },
   nav: {
-    brandSubtitle: "Centre de récupération des soumissions",
+    brandSubtitle: "Récupération de leads assistée par IA pour le nettoyage",
+    cleaning: "Nettoyage",
     comparison: "Comparaison",
     copyright: "Copyright 2026 BizPilot AI. Tous droits réservés.",
     demo: "Demo",
     faq: "FAQ",
+    features: "Fonctions",
     flow: "Fonctionnement",
     languageLabel: "Langue de la page d'accueil",
+    pilot: "Pilote",
     pricing: "Prix",
     privacy: "Confidentialite",
     security: "Securite",
     signIn: "Connexion",
-    startFull: "Démarrer la récupération",
+    startFull: "Rejoindre le pilote fondateur",
     startShort: "Démarrer",
     terms: "Conditions",
+    trust: "Confiance",
     why: "Pourquoi BizPilot",
   },
   problem: {

@@ -3,7 +3,7 @@
  * File: app/(public)/quote/[slug]/success/page.tsx
  * Project: BizPilot AI
  * Description: Customer-facing quote request success page.
- * Role: Confirms intake capture, sets the right expectation about owner reply, and matches the Quote Recovery Command Center visual system. No booking or price is implied.
+ * Role: Confirms intake capture, sets the right expectation about owner reply, and keeps public quote UX manual-first. No booking or price is implied.
  * Related:
  * - app/(public)/quote/[slug]/page.tsx
  * - server/services/public-intake.service.ts

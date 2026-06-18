@@ -38,9 +38,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BizPilot | Reply Before Competitors Do",
+  title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
   description:
-    "AI lead recovery for cleaning businesses. Capture quote requests, draft faster replies, and book more jobs before competitors respond.",
+    "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies without auto-sending customer messages.",
 };
 
 export const viewport: Viewport = {
