@@ -91,6 +91,7 @@ function isValidDateOnly(value: string): boolean {
 function readFieldValue(input: {
   copy: ReturnType<typeof getBizPilotCopy>;
   fieldLabel: string;
+  fieldOptions: Json;
   fieldType: string;
   value: string;
 }): Json {
@@ -129,6 +130,26 @@ function readFieldValue(input: {
 
     if (trimmed < todayDateString()) {
       throw new Error(input.copy.intakeErrors.notPastDate(input.fieldLabel));
+    }
+
+    return trimmed;
+  }
+
+  if (
+    input.fieldType === "radio" ||
+    input.fieldType === "select" ||
+    input.fieldType === "time_window"
+  ) {
+    const options = Array.isArray(input.fieldOptions)
+      ? input.fieldOptions.filter((item): item is string => typeof item === "string")
+      : [];
+
+    if (trimmed.length === 0) {
+      return null;
+    }
+
+    if (options.length > 0 && !options.includes(trimmed)) {
+      throw new Error(input.copy.intakeErrors.formChanged);
     }
 
     return trimmed;
@@ -176,6 +197,7 @@ function getSubmissionValues(input: {
     const value = readFieldValue({
       copy: input.copy,
       fieldLabel: field.label,
+      fieldOptions: field.options,
       fieldType: field.field_type,
       value: input.fieldValues[field.field_key] ?? "",
     });

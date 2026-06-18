@@ -18,7 +18,26 @@ BizPilot is synthetic-ready, not real-data-approved, not paid-pilot-ready, and n
 | First pilot mode | Manual-only | Cleaning-only, manual dashboard check, owner-reviewed AI drafts, manual copy/send. |
 | Owner notification email | Deferred | Not active and not required for first pilot. |
 | AI auto-send | Not approved | AI drafts only; owner sends manually. |
+| Quote form configurability | Improved | Owner/admin can add custom public quote fields inside the existing cleaning-first Quote Setup flow; no automation or new vertical is enabled. |
 | Feature expansion | Blocked before validation | No SMS, WhatsApp, booking, invoices, billing automation, full CRM, multi-vertical expansion, or autonomous AI before validation evidence. |
+
+## Product Readiness Update - 2026-06-18
+
+Quote Setup now includes a scoped custom quote field builder for the existing
+public quote workflow. Owner/admin can add business-specific fields, choose
+text/long text/email/phone/number/select/radio/checkbox/date/time-window types,
+set required/visible status, set priority, and provide select/radio options.
+
+This is treated as product readiness within the current quote recovery surface,
+not broad feature expansion. It does not approve real customer data, paid pilot
+use, automated sending, booking, invoicing, SMS, WhatsApp, multi-industry
+support, or CRM expansion.
+
+Implementation evidence:
+
+- `docs/readiness/CUSTOM_QUOTE_FIELD_BUILDER_WORK_LOG_2026-06-18.md`
+- `docs/product/BIZPILOT_CONFIGURABILITY_STANDARD_v1.0.md`
+- `supabase/migrations/0022_custom_quote_field_builder.sql`
 
 ## Active Execution Order
 

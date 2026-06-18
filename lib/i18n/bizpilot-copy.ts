@@ -40,6 +40,17 @@ import type {
  * conditional UI copy.
  */
 type QuoteStepId = "service" | "when_where" | "contact";
+type QuoteFieldTypeLabelKey =
+  | "boolean"
+  | "date"
+  | "email"
+  | "number"
+  | "phone"
+  | "radio"
+  | "select"
+  | "text"
+  | "textarea"
+  | "time_window";
 
 export type QuoteStepCopy = Readonly<{
   description: string;
@@ -211,19 +222,28 @@ type DashboardConfigurationCopy = Readonly<{
     title: string;
   }>;
   fields: Readonly<{
+    addCustomField: string;
     close: string;
+    customFieldBuilder: string;
     customerFacingQuestion: string;
     customerQuestion: string;
     customize: string;
     description: string;
+    fieldKey: string;
+    fieldKeyHelp: string;
     helperText: string;
     hidden: string;
+    newFieldName: string;
     optional: string;
+    options: string;
+    optionsHelp: string;
     position: string;
+    priority: string;
     required: string;
     showOnPublicForm: string;
     title: string;
     type: string;
+    typeLabels: Readonly<Record<QuoteFieldTypeLabelKey, string>>;
     visible: string;
     visibleOnForm: string;
   }>;
@@ -1003,20 +1023,42 @@ const englishCopy: BizPilotCopy = {
         whereColorsApply: "Where these colors apply",
       },
       fields: {
+        addCustomField: "Add custom field",
         close: "Close",
+        customFieldBuilder:
+          "Create owner-specific questions with type, visibility, required status, and priority.",
         customerFacingQuestion: "Customer-facing question",
         customerQuestion: "Customer question",
         customize: "Customize",
         description:
-          "Choose which customer questions appear on the public quote form and how they read.",
+          "Choose which customer questions appear on the public quote form, add owner-specific fields, and set their priority.",
+        fieldKey: "Field key",
+        fieldKeyHelp:
+          "Optional. Lowercase letters, numbers, and underscores. Leave blank to generate from the label.",
         helperText: "Helper text",
         hidden: "Not visible",
+        newFieldName: "New customer question",
         optional: "Optional",
+        options: "Options",
+        optionsHelp: "For select or radio fields. One option per line or comma.",
         position: "Position",
+        priority: "Priority",
         required: "Required",
         showOnPublicForm: "Show on public form",
-        title: "Cleaning template",
+        title: "Form Questions",
         type: "Type",
+        typeLabels: {
+          boolean: "Checkbox",
+          date: "Date",
+          email: "Email",
+          number: "Number",
+          phone: "Phone",
+          radio: "Radio",
+          select: "Select",
+          text: "Text",
+          textarea: "Long text",
+          time_window: "Time window",
+        },
         visible: "Visible",
         visibleOnForm: "Visible on form",
       },
@@ -2336,20 +2378,43 @@ const frenchCopy: BizPilotCopy = {
         whereColorsApply: "Où ces couleurs s'appliquent",
       },
       fields: {
+        addCustomField: "Ajouter un champ",
         close: "Fermer",
+        customFieldBuilder:
+          "Créez des questions propres au propriétaire avec type, visibilité, statut requis et priorité.",
         customerFacingQuestion: "Question visible par le client",
         customerQuestion: "Question client",
         customize: "Personnaliser",
         description:
-          "Choisissez les questions affichées sur le formulaire public et leur formulation.",
+          "Choisissez les questions affichées sur le formulaire public, ajoutez des champs propres au propriétaire et définissez leur priorité.",
+        fieldKey: "Clé du champ",
+        fieldKeyHelp:
+          "Optionnel. Lettres minuscules, chiffres et traits de soulignement. Laissez vide pour générer depuis le libellé.",
         helperText: "Texte d'aide",
         hidden: "Non visible",
+        newFieldName: "Nouvelle question client",
         optional: "Optionnel",
+        options: "Options",
+        optionsHelp:
+          "Pour les champs select ou radio. Une option par ligne ou séparée par une virgule.",
         position: "Position",
+        priority: "Priorité",
         required: "Requis",
         showOnPublicForm: "Afficher sur le formulaire public",
-        title: "Modèle de nettoyage",
+        title: "Questions du formulaire",
         type: "Type",
+        typeLabels: {
+          boolean: "Case à cocher",
+          date: "Date",
+          email: "Courriel",
+          number: "Nombre",
+          phone: "Téléphone",
+          radio: "Radio",
+          select: "Select",
+          text: "Texte",
+          textarea: "Texte long",
+          time_window: "Plage horaire",
+        },
         visible: "Visible",
         visibleOnForm: "Visible sur le formulaire",
       },

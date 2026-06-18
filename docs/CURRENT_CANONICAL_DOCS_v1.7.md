@@ -72,6 +72,9 @@ starting new work:
   audit and suggestions aligned to the 2026-06-01 priority override.
 - `readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md` - active real-data
   approval gate; do not start real customer data until this gate closes.
+- `readiness/CUSTOM_QUOTE_FIELD_BUILDER_WORK_LOG_2026-06-18.md` - product
+  readiness implementation log for owner/admin custom public quote fields
+  inside the existing Quote Setup flow; does not close Phase 24F/24G.
 - `readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md` - Phase 23B
   through Phase 23F production evidence; core synthetic flow, OpenAI provider
   proof, and external Auth email/custom SMTP proof passed.
@@ -242,6 +245,7 @@ Current top-level interpretation:
 - `readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md`
 - `readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md`
 - `readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
+- `readiness/CUSTOM_QUOTE_FIELD_BUILDER_WORK_LOG_2026-06-18.md`
 - `readiness/HOMEPAGE_DEMO_INTEGRATION.md`
 - `readiness/HOMEPAGE_RENEW_V2_WORK_LOG.md`
 - `readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md`

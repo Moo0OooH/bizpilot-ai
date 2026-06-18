@@ -38,6 +38,35 @@ import { updateWorkspaceLanguage } from "@/server/services/business.service";
 import type { BusinessPrivacySettingsRecord } from "@/server/repositories/business-configuration.repository";
 import type { Json } from "@/types/database";
 
+const quoteFieldTypes = [
+  "boolean",
+  "date",
+  "email",
+  "number",
+  "phone",
+  "radio",
+  "select",
+  "text",
+  "textarea",
+  "time_window",
+] as const;
+type QuoteFieldType = (typeof quoteFieldTypes)[number];
+type TemplateFieldSettings = {
+  fieldType?: QuoteFieldType;
+  helpText?: string;
+  isHidden: boolean;
+  isRequired: boolean;
+  label?: string;
+  options?: string[];
+  sortOrder?: number;
+};
+const choiceFieldTypes = new Set<QuoteFieldType>([
+  "radio",
+  "select",
+  "time_window",
+]);
+const customFieldKeyPattern = /^[a-z][a-z0-9_]*$/;
+
 function readRequiredFormValue(formData: FormData, key: string): string {
   const value = formData.get(key);
   if (typeof value !== "string" || value.trim().length === 0) {
@@ -59,6 +88,13 @@ function readOptionalFormValue(
 function readList(value: string | undefined): string[] {
   return (value ?? "")
     .split(/\r?\n/)
+    .map((item) => item.trim())
+    .filter((item) => item.length > 0);
+}
+
+function readOptionList(value: string | undefined): string[] {
+  return (value ?? "")
+    .split(/\r?\n|,/)
     .map((item) => item.trim())
     .filter((item) => item.length > 0);
 }
@@ -126,6 +162,58 @@ function readPrivacyMode(
   throw new Error("Invalid privacy mode.");
 }
 
+function readQuoteFieldType(value: string | undefined): QuoteFieldType {
+  if (
+    typeof value === "string" &&
+    quoteFieldTypes.includes(value as QuoteFieldType)
+  ) {
+    return value as QuoteFieldType;
+  }
+
+  throw new Error("Invalid field type.");
+}
+
+function normalizeCustomFieldKey(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .replace(/_+/g, "_")
+    .slice(0, 48);
+}
+
+function readFieldSortOrder(value: string | undefined): number | undefined {
+  if (!value) return undefined;
+  const sortOrder = Number.parseInt(value, 10);
+
+  if (!Number.isFinite(sortOrder) || sortOrder < 1 || sortOrder > 999) {
+    throw new Error("Field priority must be a number between 1 and 999.");
+  }
+
+  return sortOrder;
+}
+
+function readChoiceOptions(input: {
+  fieldType: QuoteFieldType;
+  optionsText: string | undefined;
+  requireChoices: boolean;
+}): string[] | undefined {
+  if (!choiceFieldTypes.has(input.fieldType)) {
+    return undefined;
+  }
+
+  const options = Array.from(new Set(readOptionList(input.optionsText))).slice(
+    0,
+    20,
+  );
+  if (input.requireChoices && options.length < 2) {
+    throw new Error("Choice fields need at least two options.");
+  }
+
+  return options.length > 0 ? options : undefined;
+}
+
 function getConfigurationErrorName(error: unknown): string {
   return error instanceof Error ? error.name : "unknown";
 }
@@ -167,6 +255,14 @@ function redirectWithConfigurationError(error: unknown): never {
       value ===
         "Business slug must contain lowercase letters, numbers, and hyphens." ||
       value === "FAQ entries must include both a question and an answer." ||
+      value === "Choice fields need at least two options." ||
+      value === "Custom field keys must be unique." ||
+      value === "Custom field label is required." ||
+      value ===
+        "Custom field key must start with a letter and contain only lowercase letters, numbers, and underscores." ||
+      value === "Custom field limit is 12." ||
+      value === "Field priority must be a number between 1 and 999." ||
+      value === "Invalid field type." ||
       value === "Invalid privacy mode." ||
       value === "Invalid preferred language." ||
       value === "Lead retention must be between 1 and 3650 days." ||
@@ -202,39 +298,110 @@ function isMissingPreferredLanguageColumn(error: unknown): boolean {
 }
 
 function readTemplateFieldOverrides(formData: FormData): Json {
-  const fields = Object.fromEntries(
+  const templateFieldKeys = formData
+    .getAll("templateFieldKeys")
+    .filter((value): value is string => typeof value === "string");
+  const customFieldKeys = new Set(
     formData
-      .getAll("templateFieldKeys")
-      .filter((value): value is string => typeof value === "string")
-      .map((fieldKey) => {
+      .getAll("customFieldKeys")
+      .filter((value): value is string => typeof value === "string"),
+  );
+  const usedKeys = new Set(templateFieldKeys);
+
+  const fieldEntries: Array<[string, TemplateFieldSettings]> =
+    templateFieldKeys.map((fieldKey) => {
         const label = readRequiredFormValue(formData, `fieldLabel:${fieldKey}`);
         const helpText = readOptionalFormValue(formData, `fieldHelp:${fieldKey}`);
+        const fieldType = readQuoteFieldType(
+          readOptionalFormValue(formData, `fieldType:${fieldKey}`),
+        );
         const isCustomHelpText =
           helpText !== undefined &&
           !isDefaultQuoteFieldHelpText({ fieldKey, helpText });
         const isCustomLabel = !isDefaultQuoteFieldLabel({ fieldKey, label });
-        const sortOrderValue = readOptionalFormValue(
-          formData,
-          `fieldSort:${fieldKey}`,
+        const options = readChoiceOptions({
+          fieldType,
+          optionsText: readOptionalFormValue(formData, `fieldOptions:${fieldKey}`),
+          requireChoices: customFieldKeys.has(fieldKey),
+        });
+        const sortOrder = readFieldSortOrder(
+          readOptionalFormValue(formData, `fieldSort:${fieldKey}`),
         );
-        const sortOrder = sortOrderValue
-          ? Number.parseInt(sortOrderValue, 10)
-          : undefined;
+        const isCustomField = customFieldKeys.has(fieldKey);
+        const fieldSettings = {
+          ...(isCustomField ? { fieldType } : {}),
+          isHidden: formData.get(`fieldHidden:${fieldKey}`) === "on",
+          isRequired: formData.get(`fieldRequired:${fieldKey}`) === "on",
+          ...(isCustomLabel || isCustomField ? { label } : {}),
+          ...(isCustomHelpText || (isCustomField && helpText)
+            ? { helpText }
+            : {}),
+          ...(options ? { options } : {}),
+          ...(sortOrder !== undefined ? { sortOrder } : {}),
+        };
+
         return [
           fieldKey,
-          {
-            isHidden: formData.get(`fieldHidden:${fieldKey}`) === "on",
-            isRequired: formData.get(`fieldRequired:${fieldKey}`) === "on",
-            ...(isCustomLabel ? { label } : {}),
-            ...(isCustomHelpText ? { helpText } : {}),
-            ...(sortOrder !== undefined && Number.isFinite(sortOrder)
-              ? { sortOrder }
-              : {}),
-          },
+          fieldSettings,
         ];
-      }),
+  });
+  const customFields: Record<string, TemplateFieldSettings> = Object.fromEntries(
+    fieldEntries.filter(([fieldKey]) => customFieldKeys.has(fieldKey)),
   );
-  return { fields };
+  const fields = Object.fromEntries(
+    fieldEntries.filter(([fieldKey]) => !customFieldKeys.has(fieldKey)),
+  );
+  const newCustomFieldSlots = formData
+    .getAll("newCustomFieldSlots")
+    .filter((value): value is string => typeof value === "string");
+
+  for (const slot of newCustomFieldSlots) {
+    const label = readOptionalFormValue(formData, `newFieldLabel:${slot}`);
+    if (!label) continue;
+
+    const fieldKey = normalizeCustomFieldKey(
+      readOptionalFormValue(formData, `newFieldKey:${slot}`) ?? label,
+    );
+    if (!customFieldKeyPattern.test(fieldKey)) {
+      throw new Error(
+        "Custom field key must start with a letter and contain only lowercase letters, numbers, and underscores.",
+      );
+    }
+
+    if (usedKeys.has(fieldKey)) {
+      throw new Error("Custom field keys must be unique.");
+    }
+
+    const fieldType = readQuoteFieldType(
+      readOptionalFormValue(formData, `newFieldType:${slot}`),
+    );
+    const options = readChoiceOptions({
+      fieldType,
+      optionsText: readOptionalFormValue(formData, `newFieldOptions:${slot}`),
+      requireChoices: true,
+    });
+    const sortOrder = readFieldSortOrder(
+      readOptionalFormValue(formData, `newFieldSort:${slot}`),
+    );
+
+    const helpText = readOptionalFormValue(formData, `newFieldHelp:${slot}`);
+    customFields[fieldKey] = {
+      fieldType,
+      isHidden: formData.get(`newFieldVisible:${slot}`) !== "on",
+      isRequired: formData.get(`newFieldRequired:${slot}`) === "on",
+      label,
+      ...(helpText ? { helpText } : {}),
+      ...(options ? { options } : {}),
+      ...(sortOrder !== undefined ? { sortOrder } : {}),
+    };
+    usedKeys.add(fieldKey);
+  }
+
+  if (Object.keys(customFields).length > 12) {
+    throw new Error("Custom field limit is 12.");
+  }
+
+  return { customFields, fields };
 }
 
 export async function saveBusinessConfigurationAction(

@@ -35,6 +35,7 @@
 | `0019_lifecycle_helper_execute_grant_hardening.sql` | Tightens EXECUTE grants for the 0018 lifecycle/deletion helper functions by removing broad PUBLIC/anon execution and restating authenticated/service-role access. Grants-only; no data or policy changes. |
 | `0020_founder_test_auth_user_cleanup.sql` | Extends the service-role-only founder admin audit log action-type constraint to permit safe fake/test auth user cleanup auditing. Constraint-only; no data or policy changes. |
 | `0021_session_policy_and_owner_audit.sql` | Adds founder-controlled workspace sign-out policy fields and extends founder admin audit actions for session policy and password-support traceability. |
+| `0022_custom_quote_field_builder.sql` | Allows owner-defined quote form fields to use radio-button choice controls by extending the safe field-type constraints on template and intake fields. |
 
 ---
 

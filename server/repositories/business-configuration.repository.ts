@@ -45,10 +45,12 @@ export type IndustryTemplateFieldRecord =
   Database["public"]["Tables"]["industry_template_fields"]["Row"];
 export type IndustryTemplateRecord =
   Database["public"]["Tables"]["industry_templates"]["Row"];
+type QuoteFieldType = IndustryTemplateFieldRecord["field_type"];
 
 export type CleaningTemplateFieldRecord = IndustryTemplateFieldRecord & {
+  is_custom?: boolean;
   is_hidden: boolean;
-  template_field_id: string;
+  template_field_id: string | null;
 };
 
 export type CleaningTemplateRecord = Readonly<{
@@ -68,6 +70,7 @@ export type BusinessConfigurationRecord = Readonly<{
 }>;
 
 type TemplateFieldOverride = Readonly<{
+  fieldType?: QuoteFieldType;
   helpText?: string;
   isHidden?: boolean;
   isRequired?: boolean;
@@ -76,7 +79,13 @@ type TemplateFieldOverride = Readonly<{
   sortOrder?: number;
 }>;
 
+type CustomTemplateFieldOverride = TemplateFieldOverride & Readonly<{
+  fieldType: QuoteFieldType;
+  label: string;
+}>;
+
 type TemplateFieldOverrides = Readonly<{
+  customFields?: Record<string, CustomTemplateFieldOverride>;
   disabledFields?: string[];
   fields?: Record<string, TemplateFieldOverride>;
   labels?: Record<string, string>;
@@ -112,6 +121,50 @@ function readStringList(value: Json | undefined): string[] {
     : [];
 }
 
+function readFieldType(value: Json | undefined): QuoteFieldType | undefined {
+  const allowedTypes: readonly QuoteFieldType[] = [
+    "boolean",
+    "date",
+    "email",
+    "number",
+    "phone",
+    "radio",
+    "select",
+    "text",
+    "textarea",
+    "time_window",
+  ];
+
+  return typeof value === "string" &&
+    allowedTypes.includes(value as QuoteFieldType)
+    ? (value as QuoteFieldType)
+    : undefined;
+}
+
+function readTemplateFieldOverride(
+  value: Record<string, Json>,
+): TemplateFieldOverride {
+  const fieldType = readFieldType(value.fieldType);
+
+  return {
+    ...(fieldType ? { fieldType } : {}),
+    ...(typeof value.helpText === "string"
+      ? { helpText: value.helpText }
+      : {}),
+    ...(typeof value.isHidden === "boolean"
+      ? { isHidden: value.isHidden }
+      : {}),
+    ...(typeof value.isRequired === "boolean"
+      ? { isRequired: value.isRequired }
+      : {}),
+    ...(typeof value.label === "string" ? { label: value.label } : {}),
+    ...(value.options !== undefined ? { options: value.options } : {}),
+    ...(typeof value.sortOrder === "number"
+      ? { sortOrder: value.sortOrder }
+      : {}),
+  };
+}
+
 function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides {
   if (!isRecord(value)) {
     return {};
@@ -125,31 +178,43 @@ function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides {
           )
           .map(([fieldKey, override]) => [
             fieldKey,
-            {
-              ...(typeof override.helpText === "string"
-                ? { helpText: override.helpText }
-                : {}),
-              ...(typeof override.isHidden === "boolean"
-                ? { isHidden: override.isHidden }
-                : {}),
-              ...(typeof override.isRequired === "boolean"
-                ? { isRequired: override.isRequired }
-                : {}),
-              ...(typeof override.label === "string"
-                ? { label: override.label }
-                : {}),
-              ...(override.options !== undefined
-                ? { options: override.options }
-                : {}),
-              ...(typeof override.sortOrder === "number"
-                ? { sortOrder: override.sortOrder }
-                : {}),
-            },
+            readTemplateFieldOverride(override),
           ]),
+      )
+    : {};
+  const customFields = isRecord(value.customFields)
+    ? Object.fromEntries(
+        Object.entries(value.customFields)
+          .filter((entry): entry is [string, Record<string, Json>] =>
+            isRecord(entry[1]),
+          )
+          .map(([fieldKey, override]) => {
+            const fieldType = readFieldType(override.fieldType);
+            const label =
+              typeof override.label === "string" ? override.label : undefined;
+
+            if (!fieldType || !label) {
+              return null;
+            }
+
+            return [
+              fieldKey,
+              {
+                ...readTemplateFieldOverride(override),
+                fieldType,
+                label,
+              },
+            ] as const;
+          })
+          .filter(
+            (entry): entry is readonly [string, CustomTemplateFieldOverride] =>
+              entry !== null,
+          ),
       )
     : {};
 
   return {
+    customFields,
     disabledFields: readStringList(value.disabledFields),
     fields,
     labels: readStringMap(value.labels),
@@ -228,15 +293,36 @@ export async function getCleaningTemplate(input: {
         is_hidden: fieldOverride?.isHidden ?? isLegacyHidden ?? false,
         is_required: isRequired,
         label: localized.label,
+        field_type: fieldOverride?.fieldType ?? field.field_type,
         options: fieldOverride?.options ?? field.options,
         sort_order: fieldOverride?.sortOrder ?? field.sort_order,
         template_field_id: field.id,
       };
-    })
+    });
+  const customFields = Object.entries(overrides.customFields ?? {}).map(
+    ([fieldKey, field]): CleaningTemplateFieldRecord => ({
+      created_at: template.created_at,
+      field_key: fieldKey,
+      field_type: field.fieldType,
+      help_text: field.helpText ?? null,
+      id: `${template.id}:${fieldKey}`,
+      is_active: true,
+      is_custom: true,
+      is_hidden: field.isHidden ?? false,
+      is_required: field.isRequired ?? false,
+      label: field.label,
+      options: field.options ?? [],
+      sort_order: field.sortOrder ?? 500,
+      template_field_id: null,
+      template_id: template.id,
+      updated_at: template.updated_at,
+    }),
+  );
+  const allFields = [...mergedFields, ...customFields]
     .sort((left, right) => left.sort_order - right.sort_order);
 
   return {
-    fields: mergedFields,
+    fields: allFields,
     template,
   };
 }

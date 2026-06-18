@@ -51,6 +51,7 @@ import { saveBusinessConfigurationAction } from "@/server/actions/business-confi
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
+import type { Json } from "@/types/database";
 
 export const dynamic = "force-dynamic";
 
@@ -89,6 +90,12 @@ function serviceAreasToText(
   >["configuration"]["serviceAreas"],
 ): string {
   return areas.map((area) => area.name).join("\n");
+}
+
+function optionsToText(options: Json): string {
+  return Array.isArray(options)
+    ? options.filter((option): option is string => typeof option === "string").join("\n")
+    : "";
 }
 
 function ConfigurationPanel({
@@ -141,6 +148,21 @@ function LogoPreviewImage({
 
 const fieldInputClass =
   "biz-field h-10 w-full rounded-lg border px-3 text-[13px] outline-none transition focus:border-[var(--dash-primary)]";
+const fieldTextareaClass =
+  "biz-field min-h-20 w-full rounded-lg border px-3 py-2 text-[13px] outline-none transition focus:border-[var(--dash-primary)]";
+const configurableFieldTypes = [
+  "text",
+  "textarea",
+  "email",
+  "phone",
+  "number",
+  "select",
+  "radio",
+  "boolean",
+  "date",
+  "time_window",
+] as const;
+const newCustomFieldSlots = ["1", "2", "3"] as const;
 
 export default async function DashboardPage({
   searchParams,
@@ -678,7 +700,7 @@ export default async function DashboardPage({
               title={configCopy.fields.title}
             >
               <div className="overflow-hidden rounded-md border border-[var(--dash-border)]">
-                <div className="hidden grid-cols-[minmax(0,1fr)_6rem_5rem_7rem_4rem_6rem] items-center gap-2 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-1.5 text-xs font-medium uppercase tracking-normal text-[var(--dash-text-muted)] lg:grid">
+                <div className="hidden grid-cols-[minmax(0,1fr)_7rem_5rem_7rem_4rem_6rem] items-center gap-2 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-1.5 text-xs font-medium uppercase tracking-normal text-[var(--dash-text-muted)] lg:grid">
                   <span>{configCopy.fields.customerQuestion}</span>
                   <span>{configCopy.fields.type}</span>
                   <span>{configCopy.fields.required}</span>
@@ -686,7 +708,13 @@ export default async function DashboardPage({
                   <span>{configCopy.fields.position}</span>
                   <span className="text-right">{configCopy.fields.customize}</span>
                 </div>
-                {cleaningTemplate.fields.map((field) => (
+                {cleaningTemplate.fields.map((field) => {
+                  const isChoiceField =
+                    field.field_type === "radio" ||
+                    field.field_type === "select" ||
+                    field.field_type === "time_window";
+
+                  return (
                   <details
                     className="group border-b border-[var(--dash-border)] bg-[var(--dash-surface)] last:border-b-0"
                     key={field.id}
@@ -697,12 +725,19 @@ export default async function DashboardPage({
                       type="hidden"
                       value={field.field_key}
                     />
-                    <summary className="grid cursor-pointer list-none gap-2 px-3 py-2 text-xs transition hover:bg-[rgba(23,212,146,0.08)] lg:grid-cols-[minmax(0,1fr)_6rem_5rem_7rem_4rem_6rem] lg:items-center [&::-webkit-details-marker]:hidden">
+                    {field.is_custom ? (
+                      <input
+                        name="customFieldKeys"
+                        type="hidden"
+                        value={field.field_key}
+                      />
+                    ) : null}
+                    <summary className="grid cursor-pointer list-none gap-2 px-3 py-2 text-xs transition hover:bg-[rgba(23,212,146,0.08)] lg:grid-cols-[minmax(0,1fr)_7rem_5rem_7rem_4rem_6rem] lg:items-center [&::-webkit-details-marker]:hidden">
                       <span className="min-w-0 truncate font-medium text-[var(--dash-text)]">
                         {field.label}
                       </span>
                       <span className="capitalize text-[var(--dash-text-muted)]">
-                        {field.field_type.replaceAll("_", " ")}
+                        {configCopy.fields.typeLabels[field.field_type]}
                       </span>
                       <span
                         className={
@@ -735,7 +770,7 @@ export default async function DashboardPage({
                       </span>
                     </summary>
                     <div className="border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5">
-                      <div className="grid gap-2.5 lg:grid-cols-[1fr_1fr_5rem_6rem_8rem] lg:items-end">
+                      <div className="grid gap-2.5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_8rem_5rem_6rem_8rem] lg:items-end">
                         <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
                           {configCopy.fields.customerFacingQuestion}
                           <input
@@ -743,6 +778,15 @@ export default async function DashboardPage({
                             defaultValue={field.label}
                             name={`fieldLabel:${field.field_key}`}
                             required
+                            type="text"
+                          />
+                        </label>
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+                          {configCopy.fields.fieldKey}
+                          <input
+                            className={fieldInputClass}
+                            defaultValue={field.field_key}
+                            disabled
                             type="text"
                           />
                         </label>
@@ -756,10 +800,42 @@ export default async function DashboardPage({
                           />
                         </label>
                         <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
-                          {configCopy.fields.position}
+                          {configCopy.fields.type}
+                          {field.is_custom ? (
+                            <select
+                              className={fieldInputClass}
+                              defaultValue={field.field_type}
+                              name={`fieldType:${field.field_key}`}
+                            >
+                              {configurableFieldTypes.map((type) => (
+                                <option key={type} value={type}>
+                                  {configCopy.fields.typeLabels[type]}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <>
+                              <input
+                                name={`fieldType:${field.field_key}`}
+                                type="hidden"
+                                value={field.field_type}
+                              />
+                              <input
+                                className={fieldInputClass}
+                                defaultValue={configCopy.fields.typeLabels[field.field_type]}
+                                disabled
+                                type="text"
+                              />
+                            </>
+                          )}
+                        </label>
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+                          {configCopy.fields.priority}
                           <input
                             className={fieldInputClass}
                             defaultValue={field.sort_order}
+                            max={999}
+                            min={1}
                             name={`fieldSort:${field.field_key}`}
                             type="number"
                           />
@@ -786,10 +862,125 @@ export default async function DashboardPage({
                             value="on"
                           />
                         </label>
+                        {isChoiceField ? (
+                          <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)] lg:col-span-2">
+                            {configCopy.fields.options}
+                            <textarea
+                              className={fieldTextareaClass}
+                              defaultValue={optionsToText(field.options)}
+                              name={`fieldOptions:${field.field_key}`}
+                            />
+                            <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
+                              {configCopy.fields.optionsHelp}
+                            </span>
+                          </label>
+                        ) : null}
                       </div>
                     </div>
                   </details>
-                ))}
+                  );
+                })}
+              </div>
+              <div className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                <div className="grid gap-1 sm:grid-cols-[minmax(0,1fr)_16rem] sm:items-start">
+                  <div>
+                    <h3 className="text-sm font-extrabold text-[var(--dash-text)]">
+                      {configCopy.fields.addCustomField}
+                    </h3>
+                    <p className="mt-1 text-xs leading-5 text-[var(--dash-text-secondary)]">
+                      {configCopy.fields.customFieldBuilder}
+                    </p>
+                  </div>
+                  <p className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2 text-xs leading-4 text-[var(--dash-text-muted)]">
+                    {configCopy.fields.fieldKeyHelp}
+                  </p>
+                </div>
+                <div className="mt-3 grid gap-3">
+                  {newCustomFieldSlots.map((slot, index) => (
+                    <div
+                      className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3"
+                      key={slot}
+                    >
+                      <input name="newCustomFieldSlots" type="hidden" value={slot} />
+                      <div className="grid gap-2.5 lg:grid-cols-[minmax(0,1fr)_12rem_8rem_5rem_6rem_8rem] lg:items-end">
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+                          {configCopy.fields.newFieldName}
+                          <input
+                            className={fieldInputClass}
+                            name={`newFieldLabel:${slot}`}
+                            type="text"
+                          />
+                        </label>
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+                          {configCopy.fields.fieldKey}
+                          <input
+                            className={fieldInputClass}
+                            name={`newFieldKey:${slot}`}
+                            pattern="[a-z][a-z0-9_]*"
+                            type="text"
+                          />
+                        </label>
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+                          {configCopy.fields.type}
+                          <select
+                            className={fieldInputClass}
+                            defaultValue="text"
+                            name={`newFieldType:${slot}`}
+                          >
+                            {configurableFieldTypes.map((type) => (
+                              <option key={type} value={type}>
+                                {configCopy.fields.typeLabels[type]}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+                          {configCopy.fields.priority}
+                          <input
+                            className={fieldInputClass}
+                            defaultValue={(index + 13) * 10}
+                            max={999}
+                            min={1}
+                            name={`newFieldSort:${slot}`}
+                            type="number"
+                          />
+                        </label>
+                        <label className="flex h-8 items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
+                          <input name={`newFieldRequired:${slot}`} type="checkbox" />
+                          {configCopy.fields.required}
+                        </label>
+                        <label className="flex h-8 items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
+                          <input
+                            defaultChecked
+                            name={`newFieldVisible:${slot}`}
+                            type="checkbox"
+                          />
+                          {configCopy.fields.showOnPublicForm}
+                        </label>
+                      </div>
+                      <div className="mt-2 grid gap-2.5 lg:grid-cols-2">
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+                          {configCopy.fields.helperText}
+                          <input
+                            className={fieldInputClass}
+                            name={`newFieldHelp:${slot}`}
+                            type="text"
+                          />
+                        </label>
+                        <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+                          {configCopy.fields.options}
+                          <textarea
+                            className={fieldTextareaClass}
+                            name={`newFieldOptions:${slot}`}
+                          />
+                          <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
+                            {configCopy.fields.optionsHelp}
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </ConfigurationPanel>
 

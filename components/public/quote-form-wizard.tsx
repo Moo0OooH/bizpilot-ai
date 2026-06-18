@@ -124,6 +124,7 @@ function isWideField(field: FieldRecord): boolean {
   return (
     field.field_type === "textarea" ||
     field.field_type === "boolean" ||
+    field.field_type === "radio" ||
     key.includes("note") ||
     key.includes("message") ||
     key.includes("contact") ||
@@ -160,6 +161,28 @@ function FieldInput({
         name={`field:${field.field_key}`}
         type="checkbox"
       />
+    );
+  }
+
+  if (field.field_type === "radio") {
+    return (
+      <div className="grid gap-2">
+        {getOptions(field.options).map((option) => (
+          <label
+            className="flex items-center gap-2 rounded-[10px] border border-white/[0.08] bg-[rgba(255,255,255,0.04)] px-3 py-2 text-[13px] font-semibold text-[#F5F7FA]"
+            key={option}
+          >
+            <input
+              className="h-4 w-4 shrink-0 accent-[#17D492]"
+              name={`field:${field.field_key}`}
+              required={required}
+              type="radio"
+              value={option}
+            />
+            {copy.optionLabels[option] ?? toOptionLabel(option)}
+          </label>
+        ))}
+      </div>
     );
   }
 

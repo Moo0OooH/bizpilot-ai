@@ -22,7 +22,7 @@ The product can grow into more categories, but it must not silently become a gen
 | Branding | Primary color, accent color, logo URL | Must stay readable on public quote and dashboard previews. |
 | Services | Service names and descriptions | Used for quote context and owner review. |
 | Service areas | Covered cities/areas | Used for readiness and lead guidance. |
-| Quote questions | Label, help text, required flag, visibility, sort order | Must not bypass server validation or RLS. |
+| Quote questions | Label, help text, type for owner-defined fields, required flag, visibility, priority/sort order, select/radio options | Must not bypass server validation or RLS. Owner-defined fields stay scoped to the business settings and sync into that business's public intake form only. |
 | FAQ / AI context | Question/answer pairs | Used as owner-facing business context, not as auto-send permission. |
 | Privacy and consent | Privacy mode, retention days, consent notice, AI disclosure | Must remain explicit on public quote submissions. |
 | Public link | Active quote slug generated from the business slug | Inactive or missing links must render a safe unavailable state. |
@@ -88,7 +88,52 @@ Add through the feature entitlement model, with owner-controlled activation:
 - controlled import/export tools after backup/restore posture is decided,
 - booking/scheduling, billing, messaging, team, vertical packs, marketplace, and deeper CRM-like workflows when their guide, data, provider, and owner-level gates are ready.
 
-## 7. Acceptance Criteria For New Configurable Features
+## 7. Implemented Quote Field Builder - 2026-06-18
+
+The Quote Setup form questions section now supports owner/admin field building
+inside the current cleaning-first quote workflow.
+
+Implemented:
+
+- owner/admin can add custom public quote fields from Quote Setup,
+- supported field types are text, long text, email, phone, number, select,
+  radio, checkbox, date, and time window,
+- owner/admin can set required status, public visibility, helper text, and
+  priority/sort order,
+- select/radio/time-window options are captured as structured option lists,
+- existing template fields can still be relabeled, reordered, hidden, or made
+  required/optional,
+- custom fields are stored in `business_template_settings.field_overrides`
+  under the owning business and then synced into that business's
+  `intake_form_fields`,
+- public quote rendering supports radio controls,
+- server-side public intake validation rejects out-of-list values for
+  select/radio/time-window fields.
+
+Guardrails:
+
+- this does not enable new industries,
+- this does not enable SMS, WhatsApp, booking, invoicing, payments,
+  auto-send AI, customer email automation, or CRM expansion,
+- default template field types remain protected from UI tampering because
+  lead extraction depends on canonical keys such as `customer_name`,
+  `customer_contact`, `city_or_service_area`, and `cleaning_type`,
+- Phase 24F final no-secret production smoke and Phase 24G owner approval are
+  still required before real customer data,
+- migration `0022_custom_quote_field_builder.sql` must be applied before
+  production use of radio fields.
+
+Verification recorded in the implementation turn:
+
+- `pnpm typecheck` passed,
+- `pnpm lint` passed,
+- `git diff --check` passed with only a CRLF/LF normalization warning.
+
+Evidence log:
+
+- `docs/readiness/CUSTOM_QUOTE_FIELD_BUILDER_WORK_LOG_2026-06-18.md`
+
+## 8. Acceptance Criteria For New Configurable Features
 
 Every new configurable feature needs:
 
