@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI  
 **Date:** 2026-06-18  
-**Status:** Implemented locally, pending commit/push and deployment verification  
+**Status:** Implemented and locally verified; latest follow-up pending commit/push and deployment verification
 **Scope:** Product-readiness improvement inside the existing cleaning-first public quote workflow
 
 ## Purpose
@@ -44,6 +44,7 @@ Examples:
 - Add customer-facing helper text.
 - Add options only when the chosen field type needs them, such as
   select/radio/time-window fields.
+- Remove saved owner-created custom fields from the same Quote Setup workflow.
 - Keep existing default fields customizable for label, helper text,
   required/optional, visible/hidden, priority, and choice options.
 
@@ -68,6 +69,13 @@ tenant.
 - Checkbox fields continue to use the existing boolean field behavior.
 - Server-side public intake validation checks select/radio/time-window values
   against the configured option list.
+- Invalid select/radio/time-window choices return a safe field-specific message
+  instead of the generic stale-form refresh message.
+- Public intake submit failures write only sanitized operational metadata to the
+  safe logger; no submitted values, tokens, cookies, auth links, URLs, or
+  secrets are logged.
+- Saving Quote Setup revalidates the affected public quote route so field type,
+  option, and deletion changes are reflected after save.
 - Submitted values continue to be saved through the existing public intake and
   lead workflow.
 
@@ -104,7 +112,10 @@ Phase 24F final no-secret production smoke remains required before Phase 24G.
 | `server/actions/business-configuration.actions.ts` | Reads, validates, sanitizes, and persists default/custom quote field settings. |
 | `server/repositories/business-configuration.repository.ts` | Merges per-business custom fields with the canonical Cleaning template. |
 | `components/public/quote-form-wizard.tsx` | Renders radio fields on public quote forms. |
+| `server/actions/public-intake.actions.ts` | Logs sanitized public submit failures and keeps user-facing errors safe. |
 | `server/services/public-intake.service.ts` | Validates choice-field values server-side. |
+| `lib/i18n/bizpilot-copy.ts` | Adds safe invalid-choice copy and a clearer fallback submit message. |
+| `tests/unit/i18n-copy.test.mts` | Verifies invalid-choice public intake messages stay on the safe allowlist. |
 | `types/database.ts` | Adds `radio` to the typed field-type unions. |
 | `supabase/migrations/0022_custom_quote_field_builder.sql` | Extends database field-type constraints to allow `radio`. |
 | `supabase/migrations/README.md` | Records the new migration. |
@@ -120,6 +131,13 @@ Recorded during implementation:
 | `pnpm typecheck` | PASS |
 | `pnpm lint` | PASS |
 | `git diff --check` | PASS with CRLF/LF normalization warning only |
+
+Recorded during the follow-up polish pass:
+
+| Command | Result |
+| --- | --- |
+| `pnpm lint -- 'server/actions/public-intake.actions.ts' 'server/services/public-intake.service.ts' 'server/actions/business-configuration.actions.ts' 'components/dashboard/custom-quote-field-builder.tsx' 'components/dashboard/quote-field-type-control.tsx' 'app/(dashboard)/dashboard/configuration/page.tsx' 'lib/i18n/bizpilot-copy.ts' 'tests/unit/i18n-copy.test.mts'` | PASS |
+| `pnpm test:unit` | PASS, 80 tests / 19 suites |
 
 Not run in this implementation turn:
 

@@ -29,6 +29,7 @@ import {
   type SupportedLanguage,
 } from "@/lib/i18n/language";
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
+import { safeLogger } from "@/server/logging/safe-logger";
 import {
   hashClientIp,
   RATE_LIMIT_EXCEEDED_MESSAGE,
@@ -80,6 +81,44 @@ function quoteLanguageSuffix(language: SupportedLanguage): string {
     : `?language=${encodeURIComponent(language)}`;
 }
 
+function getPublicIntakeErrorName(error: unknown): string {
+  return error instanceof Error ? error.name : "unknown";
+}
+
+function getPublicIntakeErrorKind(error: unknown): string {
+  const message = error instanceof Error ? error.message.toLowerCase() : "";
+
+  if (message.includes("rate")) {
+    return "rate_limit";
+  }
+
+  if (message.includes("form changed")) {
+    return "stale_form";
+  }
+
+  if (
+    message.includes("required") ||
+    message.includes("valid") ||
+    message.includes("option") ||
+    message.includes("past") ||
+    message.includes("negative") ||
+    message.includes("consent")
+  ) {
+    return "validation";
+  }
+
+  if (
+    message.includes("row-level") ||
+    message.includes("policy") ||
+    message.includes("constraint") ||
+    message.includes("violates")
+  ) {
+    return "storage_or_policy";
+  }
+
+  return "unknown";
+}
+
 function redirectWithIntakeError(
   input: {
     error: unknown;
@@ -87,6 +126,11 @@ function redirectWithIntakeError(
     slug: string;
   },
 ): never {
+  safeLogger.warn("public_intake.submit_failed", {
+    errorKind: getPublicIntakeErrorKind(input.error),
+    errorName: getPublicIntakeErrorName(input.error),
+  });
+
   const message = getSafeUserErrorMessage({
     allowMessage: (value) =>
       isSafePublicIntakeMessage(value) ||
@@ -95,7 +139,7 @@ function redirectWithIntakeError(
     code: "PUBLIC_INTAKE_ERROR",
     error: input.error,
     fallbackMessage:
-      "We couldn't submit the quote request. Please review the form and try again.",
+      "We couldn't submit the quote request. Reopen this quote link, check required fields, and try again.",
   });
   const search = new URLSearchParams({ error: message });
 

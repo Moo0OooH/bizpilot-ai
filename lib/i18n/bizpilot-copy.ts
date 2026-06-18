@@ -63,6 +63,7 @@ type IntakeErrorCopy = Readonly<{
   consentRequired: string;
   fallbackSubmit: string;
   formChanged: string;
+  invalidChoice: (label: string) => string;
   linkUnavailable: string;
   rejected: string;
   submittedTooFast: string;
@@ -2029,9 +2030,10 @@ const englishCopy: BizPilotCopy = {
   intakeErrors: {
     consentRequired: "Consent is required before submitting.",
     fallbackSubmit:
-      "We couldn't submit the quote request. Please review the form and try again.",
+      "We couldn't submit the quote request. Reopen this quote link, check required fields, and try again.",
     fieldRequired: (label) => `${label} is required.`,
     formChanged: "The quote form changed. Please refresh and submit again.",
+    invalidChoice: (label) => `${label} has an unavailable option.`,
     linkUnavailable: "This quote link is not available.",
     nonNegativeNumber: (label) => `${label} cannot be negative.`,
     notPastDate: (label) => `${label} cannot be in the past.`,
@@ -3413,10 +3415,11 @@ const frenchCopy: BizPilotCopy = {
   intakeErrors: {
     consentRequired: "Le consentement est requis avant l'envoi.",
     fallbackSubmit:
-      "Nous n'avons pas pu envoyer la demande de soumission. Veuillez vérifier le formulaire et réessayer.",
+      "Nous n'avons pas pu envoyer la demande de soumission. Rouvrez ce lien, vérifiez les champs requis et réessayez.",
     fieldRequired: (label) => `${label} doit être rempli.`,
     formChanged:
       "Le formulaire de soumission a changé. Veuillez rafraîchir la page et réessayer.",
+    invalidChoice: (label) => `${label} contient une option indisponible.`,
     linkUnavailable: "Ce lien de soumission n'est pas disponible.",
     nonNegativeNumber: (label) => `${label} ne peut pas être négatif.`,
     notPastDate: (label) => `${label} ne peut pas être dans le passé.`,
@@ -3723,6 +3726,8 @@ export function isSafePublicIntakeMessage(message: string): boolean {
     " cannot be negative.",
     " must be a valid date.",
     " cannot be in the past.",
+    " has an unavailable option.",
+    " contient une option indisponible.",
     " doit être rempli.",
     " doit être un nombre valide.",
     " ne peut pas être négatif.",

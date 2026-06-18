@@ -350,6 +350,18 @@ describe("BizPilot language copy", () => {
       true,
     );
     assert.equal(
+      isSafePublicIntakeMessage(
+        getBizPilotCopy("en").intakeErrors.invalidChoice("Service"),
+      ),
+      true,
+    );
+    assert.equal(
+      isSafePublicIntakeMessage(
+        getBizPilotCopy("fr-CA").intakeErrors.invalidChoice("Service"),
+      ),
+      true,
+    );
+    assert.equal(
       isSafePublicIntakeMessage("Raw database or provider error"),
       false,
     );

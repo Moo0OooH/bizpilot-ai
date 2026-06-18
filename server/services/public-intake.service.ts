@@ -141,7 +141,9 @@ function readFieldValue(input: {
     input.fieldType === "time_window"
   ) {
     const options = Array.isArray(input.fieldOptions)
-      ? input.fieldOptions.filter((item): item is string => typeof item === "string")
+      ? input.fieldOptions.filter(
+          (item): item is string => typeof item === "string",
+        )
       : [];
 
     if (trimmed.length === 0) {
@@ -149,7 +151,9 @@ function readFieldValue(input: {
     }
 
     if (options.length > 0 && !options.includes(trimmed)) {
-      throw new Error(input.copy.intakeErrors.formChanged);
+      throw new Error(
+        input.copy.intakeErrors.invalidChoice(input.fieldLabel),
+      );
     }
 
     return trimmed;

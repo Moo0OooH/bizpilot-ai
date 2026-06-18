@@ -100,6 +100,8 @@ Implemented:
   radio, checkbox, date, and time window,
 - owner/admin can set required status, public visibility, helper text, and
   priority/sort order,
+- owner/admin can remove owner-created custom fields without deleting protected
+  canonical fields,
 - field keys are optional advanced settings and are generated from the label
   when left blank,
 - select/radio/time-window options are captured as structured option lists and
@@ -111,7 +113,10 @@ Implemented:
   `intake_form_fields`,
 - public quote rendering supports radio controls,
 - server-side public intake validation rejects out-of-list values for
-  select/radio/time-window fields.
+  select/radio/time-window fields with safe customer-facing guidance,
+- Quote Setup saves revalidate the affected public quote route so recent field
+  type and option changes are reflected without requiring customers to work
+  around stale pages.
 
 Guardrails:
 

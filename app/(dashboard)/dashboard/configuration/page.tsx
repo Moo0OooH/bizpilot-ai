@@ -804,6 +804,15 @@ export default async function DashboardPage({
                             value="on"
                           />
                         </label>
+                        {field.is_custom ? (
+                          <label className="flex h-8 items-center gap-2 text-xs font-medium text-red-700 dark:text-red-300">
+                            <input
+                              name={`fieldDelete:${field.field_key}`}
+                              type="checkbox"
+                            />
+                            {configCopy.fields.removeField}
+                          </label>
+                        ) : null}
                       </div>
                     </div>
                   </details>

@@ -111,7 +111,7 @@ export function CustomQuoteFieldBuilder({
               key={field.id}
             >
               <input name="newCustomFieldSlots" type="hidden" value={field.id} />
-              <div className="grid gap-3 lg:grid-cols-[minmax(13rem,1fr)_12rem_7rem_8rem] lg:items-end">
+              <div className="grid gap-3 xl:grid-cols-[minmax(20rem,1fr)_14rem_8rem] xl:items-end">
                 <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
                   {copy.newFieldName}
                   <input
@@ -158,20 +158,21 @@ export function CustomQuoteFieldBuilder({
                     type="number"
                   />
                 </label>
-                <div className="flex flex-wrap gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
-                  <label className="flex items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
-                    <input name={`newFieldRequired:${field.id}`} type="checkbox" />
-                    {copy.required}
-                  </label>
-                  <label className="flex items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
-                    <input
-                      defaultChecked
-                      name={`newFieldVisible:${field.id}`}
-                      type="checkbox"
-                    />
-                    {copy.showOnPublicForm}
-                  </label>
-                </div>
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
+                <label className="flex min-h-7 items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
+                  <input name={`newFieldRequired:${field.id}`} type="checkbox" />
+                  {copy.required}
+                </label>
+                <label className="flex min-h-7 items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
+                  <input
+                    defaultChecked
+                    name={`newFieldVisible:${field.id}`}
+                    type="checkbox"
+                  />
+                  {copy.showOnPublicForm}
+                </label>
               </div>
 
               <div className="mt-3 grid gap-3 lg:grid-cols-2">

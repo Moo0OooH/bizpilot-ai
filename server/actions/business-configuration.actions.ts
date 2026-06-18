@@ -308,43 +308,47 @@ function readTemplateFieldOverrides(formData: FormData): Json {
   );
   const usedKeys = new Set(templateFieldKeys);
 
-  const fieldEntries: Array<[string, TemplateFieldSettings]> =
-    templateFieldKeys.map((fieldKey) => {
-        const label = readRequiredFormValue(formData, `fieldLabel:${fieldKey}`);
-        const helpText = readOptionalFormValue(formData, `fieldHelp:${fieldKey}`);
-        const fieldType = readQuoteFieldType(
-          readOptionalFormValue(formData, `fieldType:${fieldKey}`),
-        );
-        const isCustomHelpText =
-          helpText !== undefined &&
-          !isDefaultQuoteFieldHelpText({ fieldKey, helpText });
-        const isCustomLabel = !isDefaultQuoteFieldLabel({ fieldKey, label });
-        const options = readChoiceOptions({
-          fieldType,
-          optionsText: readOptionalFormValue(formData, `fieldOptions:${fieldKey}`),
-          requireChoices: customFieldKeys.has(fieldKey),
-        });
-        const sortOrder = readFieldSortOrder(
-          readOptionalFormValue(formData, `fieldSort:${fieldKey}`),
-        );
-        const isCustomField = customFieldKeys.has(fieldKey);
-        const fieldSettings = {
-          ...(isCustomField ? { fieldType } : {}),
-          isHidden: formData.get(`fieldHidden:${fieldKey}`) === "on",
-          isRequired: formData.get(`fieldRequired:${fieldKey}`) === "on",
-          ...(isCustomLabel || isCustomField ? { label } : {}),
-          ...(isCustomHelpText || (isCustomField && helpText)
-            ? { helpText }
-            : {}),
-          ...(options ? { options } : {}),
-          ...(sortOrder !== undefined ? { sortOrder } : {}),
-        };
+  const fieldEntries = templateFieldKeys
+    .map((fieldKey): [string, TemplateFieldSettings] | null => {
+      const isCustomField = customFieldKeys.has(fieldKey);
+      if (isCustomField && formData.get(`fieldDelete:${fieldKey}`) === "on") {
+        return null;
+      }
 
-        return [
-          fieldKey,
-          fieldSettings,
-        ];
-  });
+      const label = readRequiredFormValue(formData, `fieldLabel:${fieldKey}`);
+      const helpText = readOptionalFormValue(formData, `fieldHelp:${fieldKey}`);
+      const fieldType = readQuoteFieldType(
+        readOptionalFormValue(formData, `fieldType:${fieldKey}`),
+      );
+      const isCustomHelpText =
+        helpText !== undefined &&
+        !isDefaultQuoteFieldHelpText({ fieldKey, helpText });
+      const isCustomLabel = !isDefaultQuoteFieldLabel({ fieldKey, label });
+      const options = readChoiceOptions({
+        fieldType,
+        optionsText: readOptionalFormValue(formData, `fieldOptions:${fieldKey}`),
+        requireChoices: isCustomField,
+      });
+      const sortOrder = readFieldSortOrder(
+        readOptionalFormValue(formData, `fieldSort:${fieldKey}`),
+      );
+      const fieldSettings = {
+        ...(isCustomField ? { fieldType } : {}),
+        isHidden: formData.get(`fieldHidden:${fieldKey}`) === "on",
+        isRequired: formData.get(`fieldRequired:${fieldKey}`) === "on",
+        ...(isCustomLabel || isCustomField ? { label } : {}),
+        ...(isCustomHelpText || (isCustomField && helpText)
+          ? { helpText }
+          : {}),
+        ...(options ? { options } : {}),
+        ...(sortOrder !== undefined ? { sortOrder } : {}),
+      };
+
+      return [fieldKey, fieldSettings];
+    })
+    .filter(
+      (entry): entry is [string, TemplateFieldSettings] => entry !== null,
+    );
   const customFields: Record<string, TemplateFieldSettings> = Object.fromEntries(
     fieldEntries.filter(([fieldKey]) => customFieldKeys.has(fieldKey)),
   );
@@ -411,6 +415,7 @@ export async function saveBusinessConfigurationAction(
   if (!user) redirect("/auth/sign-in");
 
   try {
+    const businessSlug = readRequiredFormValue(formData, "businessSlug");
     const customTemplateName = readOptionalFormValue(
       formData,
       "customTemplateName",
@@ -433,7 +438,7 @@ export async function saveBusinessConfigurationAction(
       aiDisclosureEnabled: formData.get("aiDisclosureEnabled") === "on",
       businessId: readRequiredFormValue(formData, "businessId"),
       businessName: readRequiredFormValue(formData, "businessName"),
-      businessSlug: readRequiredFormValue(formData, "businessSlug"),
+      businessSlug,
       consentNotice: resolveConsentNoticeForLanguage({
         language: preferredLanguage,
         value: readOptionalFormValue(formData, "consentNotice"),
@@ -458,6 +463,7 @@ export async function saveBusinessConfigurationAction(
       ...(privacyContactEmail ? { privacyContactEmail } : {}),
     });
     await persistInterfaceLanguage(preferredLanguage);
+    revalidatePath(`/quote/${businessSlug}`);
   } catch (error) {
     redirectWithConfigurationError(error);
   }
