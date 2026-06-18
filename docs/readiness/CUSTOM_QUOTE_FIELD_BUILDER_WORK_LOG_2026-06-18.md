@@ -24,6 +24,9 @@ Examples:
 ## Implemented Capabilities
 
 - Add custom public quote fields from `Quote Setup > Form Questions`.
+- Show a focused custom-field builder where `Field key` is optional and kept in
+  advanced settings; if it is left blank, the server generates the key from the
+  label.
 - Choose field type:
   - text,
   - long text,
@@ -39,7 +42,8 @@ Examples:
 - Set required/optional.
 - Set visible/hidden.
 - Add customer-facing helper text.
-- Add options for select/radio/time-window style fields.
+- Add options only when the chosen field type needs them, such as
+  select/radio/time-window fields.
 - Keep existing default fields customizable for label, helper text,
   required/optional, visible/hidden, priority, and choice options.
 

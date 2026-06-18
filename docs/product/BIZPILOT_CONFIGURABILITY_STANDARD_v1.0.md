@@ -100,7 +100,10 @@ Implemented:
   radio, checkbox, date, and time window,
 - owner/admin can set required status, public visibility, helper text, and
   priority/sort order,
-- select/radio/time-window options are captured as structured option lists,
+- field keys are optional advanced settings and are generated from the label
+  when left blank,
+- select/radio/time-window options are captured as structured option lists and
+  shown only when the selected field type needs options,
 - existing template fields can still be relabeled, reordered, hidden, or made
   required/optional,
 - custom fields are stored in `business_template_settings.field_overrides`

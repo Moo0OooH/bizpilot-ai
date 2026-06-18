@@ -222,7 +222,9 @@ type DashboardConfigurationCopy = Readonly<{
     title: string;
   }>;
   fields: Readonly<{
+    addAnotherField: string;
     addCustomField: string;
+    advancedSettings: string;
     close: string;
     customFieldBuilder: string;
     customerFacingQuestion: string;
@@ -239,6 +241,7 @@ type DashboardConfigurationCopy = Readonly<{
     optionsHelp: string;
     position: string;
     priority: string;
+    removeField: string;
     required: string;
     showOnPublicForm: string;
     title: string;
@@ -889,13 +892,13 @@ const englishCopy: BizPilotCopy = {
     checkEmailTitle: "Next steps",
     checkEmailUseAnother: "Use another email",
     confirmPassword: "Confirm password",
-    createAccount: "Create account",
-    createAccountPending: "Creating workspace...",
+    createAccount: "Create owner access",
+    createAccountPending: "Creating owner access...",
     createWorkspaceFooter:
-      "Owner access for the BizPilot AI Quote Recovery workspace.",
+      "Owner access for cleaning businesses already onboarded to BizPilot AI.",
     createWorkspaceSubtitle:
-      "Create owner access and your first business workspace.",
-    createWorkspaceTitle: "Create your workspace",
+      "Use this after your founder pilot setup has been approved.",
+    createWorkspaceTitle: "Create owner access",
     email: "Email",
     forgotPassword: "Forgot password?",
     forgotPasswordFooter:
@@ -905,7 +908,7 @@ const englishCopy: BizPilotCopy = {
       "Enter your owner email and we'll send reset instructions if an account exists.",
     forgotPasswordTitle: "Reset password",
     name: "Name",
-    needAccount: "Need an account?",
+    needAccount: "Onboarded already?",
     needNewResetLink: "Need a new reset link?",
     newPassword: "New password",
     ownerAccess: "Owner access",
@@ -925,11 +928,11 @@ const englishCopy: BizPilotCopy = {
     resetRequestPending: "Sending instructions...",
     resetRequestSubmit: "Send reset instructions",
     signIn: "Sign in",
-    signInFooter: "Secure owner access for your Quote Recovery workspace.",
+    signInFooter: "Secure owner access for your BizPilot AI workspace.",
     signInPending: "Opening workspace...",
     signInQuestion: "Already have an account?",
     signInSubtitle:
-      "Manage quote requests, replies, and follow-ups from one place.",
+      "Access quote requests, lead notes, and owner-reviewed reply drafts.",
     signInTitle: "Sign in",
     updatePassword: "Update password",
     updatePasswordPending: "Updating password...",
@@ -1023,10 +1026,12 @@ const englishCopy: BizPilotCopy = {
         whereColorsApply: "Where these colors apply",
       },
       fields: {
+        addAnotherField: "Add field",
         addCustomField: "Add custom field",
+        advancedSettings: "Advanced settings",
         close: "Close",
         customFieldBuilder:
-          "Create owner-specific questions with type, visibility, required status, and priority.",
+          "Create owner-specific questions. Choice options appear only when the field type needs them.",
         customerFacingQuestion: "Customer-facing question",
         customerQuestion: "Customer question",
         customize: "Customize",
@@ -1043,6 +1048,7 @@ const englishCopy: BizPilotCopy = {
         optionsHelp: "For select or radio fields. One option per line or comma.",
         position: "Position",
         priority: "Priority",
+        removeField: "Remove field",
         required: "Required",
         showOnPublicForm: "Show on public form",
         title: "Form Questions",
@@ -2242,13 +2248,13 @@ const frenchCopy: BizPilotCopy = {
     checkEmailTitle: "Prochaines étapes",
     checkEmailUseAnother: "Utiliser un autre courriel",
     confirmPassword: "Confirmer le mot de passe",
-    createAccount: "Créer le compte",
-    createAccountPending: "Création de l'espace...",
+    createAccount: "Créer l'accès propriétaire",
+    createAccountPending: "Création de l'accès...",
     createWorkspaceFooter:
-      "Accès propriétaire pour l'espace Quote Recovery de BizPilot AI.",
+      "Accès propriétaire pour les entreprises déjà onboardées sur BizPilot AI.",
     createWorkspaceSubtitle:
-      "Créez l'accès propriétaire et votre premier espace d'entreprise.",
-    createWorkspaceTitle: "Créer votre espace",
+      "Utilisez cette page après l'approbation de votre pilote fondateur.",
+    createWorkspaceTitle: "Créer l'accès propriétaire",
     email: "Courriel",
     forgotPassword: "Mot de passe oublié?",
     forgotPasswordFooter:
@@ -2258,7 +2264,7 @@ const frenchCopy: BizPilotCopy = {
       "Entrez votre courriel propriétaire. Nous enverrons les instructions si un compte existe.",
     forgotPasswordTitle: "Réinitialiser le mot de passe",
     name: "Nom",
-    needAccount: "Besoin d'un compte?",
+    needAccount: "Déjà onboardé?",
     needNewResetLink: "Besoin d'un nouveau lien?",
     newPassword: "Nouveau mot de passe",
     ownerAccess: "Accès propriétaire",
@@ -2278,11 +2284,11 @@ const frenchCopy: BizPilotCopy = {
     resetRequestPending: "Envoi des instructions...",
     resetRequestSubmit: "Envoyer les instructions",
     signIn: "Connexion",
-    signInFooter: "Accès sécurisé à votre espace Quote Recovery.",
+    signInFooter: "Accès sécurisé à votre espace BizPilot AI.",
     signInPending: "Ouverture de l'espace...",
     signInQuestion: "Vous avez déjà un compte?",
     signInSubtitle:
-      "Gérez les demandes de soumission, les réponses et les suivis au même endroit.",
+      "Accédez aux demandes, notes de leads et brouillons révisés par le propriétaire.",
     signInTitle: "Connexion",
     updatePassword: "Mettre à jour le mot de passe",
     updatePasswordPending: "Mise à jour...",
@@ -2378,10 +2384,12 @@ const frenchCopy: BizPilotCopy = {
         whereColorsApply: "Où ces couleurs s'appliquent",
       },
       fields: {
+        addAnotherField: "Ajouter un champ",
         addCustomField: "Ajouter un champ",
+        advancedSettings: "Paramètres avancés",
         close: "Fermer",
         customFieldBuilder:
-          "Créez des questions propres au propriétaire avec type, visibilité, statut requis et priorité.",
+          "Créez des questions propres au propriétaire. Les options apparaissent seulement quand le type du champ les exige.",
         customerFacingQuestion: "Question visible par le client",
         customerQuestion: "Question client",
         customize: "Personnaliser",
@@ -2399,6 +2407,7 @@ const frenchCopy: BizPilotCopy = {
           "Pour les champs select ou radio. Une option par ligne ou séparée par une virgule.",
         position: "Position",
         priority: "Priorité",
+        removeField: "Retirer le champ",
         required: "Requis",
         showOnPublicForm: "Afficher sur le formulaire public",
         title: "Questions du formulaire",
