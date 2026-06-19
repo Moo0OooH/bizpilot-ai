@@ -17,6 +17,7 @@ Change Log:
 - 2026-05-26: Unified dashboard light/dark action colors and component surfaces for Phase 21X UI QA.
 - 2026-06-18: Added public responsive tokens, no-overflow primitives, and legal/dashboard containers.
 - 2026-06-19: Added semantic System/Light/Dark tokens shared by marketing, auth, quote, dashboard, and admin shells.
+- 2026-06-19: Aligned Light/Dark tokens with the final polish contrast baseline.
 ============================================================
 */
 
@@ -31,25 +32,26 @@ Change Log:
   --canvas-subtle: #f1f5f9;
   --surface: #ffffff;
   --surface-elevated: #ffffff;
-  --surface-interactive: #eef6ff;
+  --surface-interactive: #f8fafc;
   --text-strong: #0f172a;
   --text-default: #334155;
   --text-muted: #64748b;
-  --border-default: #e2e8f0;
-  --border-strong: #cbd5e1;
+  --border-default: #dce4ee;
+  --border-strong: #b8c5d6;
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
   --primary-contrast: #ffffff;
-  --accent: #14b8a6;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #dc2626;
-  --focus-ring: rgba(37, 99, 235, 0.22);
+  --accent: #0f766e;
+  --accent-decorative: #14b8a6;
+  --success: #047857;
+  --warning: #b45309;
+  --danger: #b91c1c;
+  --focus-ring: #2563eb;
   --shadow-sm: 0 8px 22px rgba(15, 23, 42, 0.06);
   --shadow-md: 0 18px 48px rgba(15, 23, 42, 0.07);
   --shadow-lg: 0 28px 78px rgba(15, 23, 42, 0.12);
   --gradient-start: #2563eb;
-  --gradient-end: #14b8a6;
+  --gradient-end: var(--accent-decorative);
   --marketing-background: radial-gradient(circle at 8% 4%, rgba(37,99,235,0.09), transparent 28rem), radial-gradient(circle at 92% 12%, rgba(20,184,166,0.12), transparent 30rem), linear-gradient(180deg, #f8fafc 0%, #ffffff 46%, #f1f5f9 100%);
   --public-bg-page: var(--canvas);
   --public-bg-surface: var(--surface);
@@ -127,29 +129,30 @@ Change Log:
   --background: #08111f;
   --foreground: #f8fafc;
   --canvas: #08111f;
-  --canvas-subtle: #0e1828;
-  --surface: #101a2b;
-  --surface-elevated: #162236;
-  --surface-interactive: #1d2d45;
+  --canvas-subtle: #0b1627;
+  --surface: #0f1b2d;
+  --surface-elevated: #14243a;
+  --surface-interactive: #182a42;
   --text-strong: #f8fafc;
-  --text-default: #d7e0ea;
-  --text-muted: #a7b4c5;
-  --border-default: #26364d;
-  --border-strong: #36506f;
+  --text-default: #d7e2ee;
+  --text-muted: #a9b6c6;
+  --border-default: #29405e;
+  --border-strong: #3b5678;
   --primary: #60a5fa;
   --primary-hover: #93c5fd;
-  --primary-contrast: #06111f;
-  --accent: #2dd4bf;
+  --primary-contrast: #07111e;
+  --accent: #5eead4;
+  --accent-decorative: #2dd4bf;
   --success: #34d399;
   --warning: #fbbf24;
   --danger: #fb7185;
-  --focus-ring: rgba(96, 165, 250, 0.34);
+  --focus-ring: #93c5fd;
   --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.24);
   --shadow-md: 0 18px 54px rgba(0, 0, 0, 0.28);
   --shadow-lg: 0 30px 84px rgba(0, 0, 0, 0.38);
   --gradient-start: #60a5fa;
-  --gradient-end: #2dd4bf;
-  --marketing-background: radial-gradient(circle at 8% 4%, rgba(96,165,250,0.12), transparent 28rem), radial-gradient(circle at 92% 12%, rgba(45,212,191,0.12), transparent 30rem), linear-gradient(180deg, #08111f 0%, #0b1220 48%, #0e1828 100%);
+  --gradient-end: var(--accent-decorative);
+  --marketing-background: radial-gradient(circle at 8% 4%, rgba(96,165,250,0.12), transparent 28rem), radial-gradient(circle at 92% 12%, rgba(45,212,191,0.12), transparent 30rem), linear-gradient(180deg, #08111f 0%, #0b1627 48%, #0b1627 100%);
   --public-bg-page: var(--canvas);
   --public-bg-surface: var(--surface);
   --public-bg-surface-alt: var(--canvas-subtle);
@@ -166,7 +169,7 @@ Change Log:
   --public-focus: var(--focus-ring);
   --public-shadow: var(--shadow-md);
   --biz-page-bg: var(--canvas);
-  --biz-page-bg-deep: #050b13;
+  --biz-page-bg-deep: var(--canvas-subtle);
   --biz-page-surface: var(--surface);
   --biz-page-surface-elevated: var(--surface-elevated);
   --biz-page-border: var(--border-default);
@@ -178,7 +181,7 @@ Change Log:
   --biz-surface-dark: var(--surface);
   --biz-surface-elevated: var(--surface-elevated);
   --biz-border-subtle: var(--border-default);
-  --biz-border-medium: var(--border-default);
+  --biz-border-medium: var(--border-strong);
   --biz-border-strong: var(--border-strong);
   --biz-text-primary: var(--text-strong);
   --biz-text-secondary: var(--text-default);

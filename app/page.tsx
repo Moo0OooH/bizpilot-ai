@@ -8,9 +8,10 @@
  * - components/public/marketing-ui.tsx
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
- * Last Updated: 2026-06-18
+ * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-06-18: Applied responsive hero, section density, and no-inner-scroll demo hardening.
+ * - 2026-06-19: Mapped the hero product preview to semantic theme surfaces for dark contrast.
  * ============================================================
  */
 
@@ -188,21 +189,39 @@ function MiniProductMockup() {
       className="w-full max-w-[600px] p-4 sm:p-5"
       style={{
         background:
-          "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241,248,247,0.96))",
-        borderColor: "rgba(15, 23, 42, 0.10)",
-        boxShadow: "0 28px 80px rgba(15,23,42,0.16)",
+          "linear-gradient(180deg, var(--surface-elevated), var(--surface))",
+        borderColor: "var(--border-strong)",
+        boxShadow: "var(--shadow-lg)",
       }}
     >
-      <div className="flex items-center justify-between gap-3 border-b border-slate-200 pb-4">
+      <div
+        className="flex items-center justify-between gap-3 border-b pb-4"
+        style={{ borderColor: "var(--border-default)" }}
+      >
         <div>
-          <p className="text-[12px] font-black uppercase tracking-[0.14em] text-teal-700">
+          <p
+            className="text-[12px] font-black uppercase tracking-[0.14em]"
+            style={{ color: "var(--accent)" }}
+          >
             New quote request
           </p>
-          <h3 className="mt-1 text-[22px] font-black text-slate-950">
+          <h3
+            className="mt-1 text-[22px] font-black"
+            style={{ color: "var(--text-strong)" }}
+          >
             Maria L.
           </h3>
         </div>
-        <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[12px] font-black text-amber-700">
+        <span
+          className="rounded-full border px-3 py-1 text-[12px] font-black"
+          style={{
+            backgroundColor:
+              "color-mix(in srgb, var(--warning) 14%, var(--surface))",
+            borderColor:
+              "color-mix(in srgb, var(--warning) 32%, var(--border-default))",
+            color: "var(--warning)",
+          }}
+        >
           Needs reply
         </span>
       </div>
@@ -214,31 +233,70 @@ function MiniProductMockup() {
           ["Timing", "Saturday morning"],
           ["Status", "Needs reply"],
         ].map(([label, value]) => (
-          <div className="rounded-[10px] border border-slate-200 bg-white p-3" key={label}>
-            <p className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-500">
+          <div
+            className="rounded-[10px] border p-3"
+            key={label}
+            style={{
+              backgroundColor: "var(--surface-interactive)",
+              borderColor: "var(--border-default)",
+            }}
+          >
+            <p
+              className="text-[11px] font-black uppercase tracking-[0.12em]"
+              style={{ color: "var(--text-muted)" }}
+            >
               {label}
             </p>
-            <p className="mt-1 text-[14px] font-black text-slate-950">
+            <p
+              className="mt-1 text-[14px] font-black"
+              style={{ color: "var(--text-strong)" }}
+            >
               {value}
             </p>
           </div>
         ))}
       </div>
 
-      <div className="mt-4 rounded-[14px] border border-teal-200 bg-teal-50 p-4">
+      <div
+        className="mt-4 rounded-[14px] border p-4"
+        style={{
+          backgroundColor:
+            "color-mix(in srgb, var(--accent-decorative) 14%, var(--surface-elevated))",
+          borderColor:
+            "color-mix(in srgb, var(--accent-decorative) 38%, var(--border-default))",
+        }}
+      >
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="text-[13px] font-black text-slate-950">AI draft card</p>
-          <span className="rounded-full bg-white px-3 py-1 text-[11px] font-black text-teal-700">
+          <p
+            className="text-[13px] font-black"
+            style={{ color: "var(--text-strong)" }}
+          >
+            AI draft card
+          </p>
+          <span
+            className="rounded-full px-3 py-1 text-[11px] font-black"
+            style={{
+              backgroundColor: "var(--surface-elevated)",
+              color: "var(--accent)",
+            }}
+          >
             AI drafts. You send.
           </span>
         </div>
-        <p className="mt-3 text-[14px] leading-6 text-slate-700">
+        <p
+          className="mt-3 text-[14px] leading-6"
+          style={{ color: "var(--text-default)" }}
+        >
           Hi Maria, thanks for reaching out. I can help with your move-out
           cleaning. Could you confirm the address area and whether appliances
           need cleaning so I can prepare an accurate quote?
         </p>
         <button
-          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-[10px] bg-slate-950 px-4 text-[13px] font-black text-white"
+          className="mt-4 inline-flex min-h-11 items-center justify-center rounded-[10px] px-4 text-[13px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+          style={{
+            backgroundColor: "var(--primary)",
+            color: "var(--primary-contrast)",
+          }}
           type="button"
         >
           Copy reply

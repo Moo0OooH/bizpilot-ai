@@ -16,6 +16,7 @@
  * - 2026-05-05: Updated metadata description for Phase 3 configuration core.
  * - 2026-05-17: Updated metadata for the quote recovery landing page.
  * - 2026-06-19: Added shared System/Light/Dark theme preference bootstrapping.
+ * - 2026-06-19: Defaulted fresh sessions to Light and synced theme-color before paint.
  * ============================================================
  */
 
@@ -28,6 +29,8 @@ import {
   readSupportedLanguage,
 } from "@/lib/i18n/language";
 import {
+  DEFAULT_THEME_PREFERENCE,
+  THEME_COLOR_BY_RESOLVED,
   THEME_PREFERENCE_COOKIE,
   THEME_PREFERENCE_STORAGE_KEY,
   readThemePreference,
@@ -52,6 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
+  themeColor: THEME_COLOR_BY_RESOLVED.light,
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -83,7 +87,7 @@ export default async function RootLayout({
         id="bizpilot-theme-bootstrap"
         strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
-          __html: `(function(){try{var r=document.documentElement;var k="${THEME_PREFERENCE_STORAGE_KEY}";var c="${THEME_PREFERENCE_COOKIE}";var m=document.cookie.match(new RegExp("(?:^|; )"+c+"=([^;]*)"));var cookie=m?decodeURIComponent(m[1]):"";var stored=window.localStorage.getItem(k);var pref=stored||cookie||r.dataset.themePreference||"system";if(pref!=="system"&&pref!=="light"&&pref!=="dark"){pref="system"}var systemDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;var theme=pref==="system"?(systemDark?"dark":"light"):pref;r.dataset.themePreference=pref;r.dataset.theme=theme;r.style.colorScheme=theme;}catch(error){}})();`,
+          __html: `(function(){try{var r=document.documentElement;var k="${THEME_PREFERENCE_STORAGE_KEY}";var c="${THEME_PREFERENCE_COOKIE}";var lightColor="${THEME_COLOR_BY_RESOLVED.light}";var darkColor="${THEME_COLOR_BY_RESOLVED.dark}";var valid=function(value){return value==="system"||value==="light"||value==="dark"?value:""};var m=document.cookie.match(new RegExp("(?:^|; )"+c+"=([^;]*)"));var cookie=m?decodeURIComponent(m[1]):"";var stored="";try{stored=window.localStorage.getItem(k)||""}catch(error){}var pref=valid(stored)||valid(cookie)||valid(r.dataset.themePreference)||"${DEFAULT_THEME_PREFERENCE}";var systemDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;var theme=pref==="system"?(systemDark?"dark":"light"):pref;r.dataset.themePreference=pref;r.dataset.theme=theme;r.style.colorScheme=theme;var meta=document.querySelector('meta[name="theme-color"]');if(!meta){meta=document.createElement("meta");meta.setAttribute("name","theme-color");document.head.appendChild(meta)}meta.setAttribute("content",theme==="dark"?darkColor:lightColor);}catch(error){}})();`,
         }}
       />
       <body className="min-h-full flex flex-col">{children}</body>

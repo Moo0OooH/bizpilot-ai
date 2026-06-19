@@ -11,9 +11,10 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-16
+ * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-06-16: Aligned Settings copy with Phase 23/24 readiness and first-pilot manual-only decisions.
+ * - 2026-06-19: Updated dashboard theme help copy for the Light-by-default public theme foundation.
  * ============================================================
  */
 
@@ -1925,7 +1926,7 @@ const englishCopy: BizPilotCopy = {
       themeDescription:
         "Hydration-safe theme. The first paint is resolved server-side.",
       themeHelp:
-        "Default follows your device. Choose Light or Dark when you want a fixed view.",
+        "New sessions start in Light. Choose Dark or System when you want a fixed or device-based view.",
       workspace: "Workspace",
       workspaceDescription:
         "Workspace, account, theme, language, feature levels, and owner-controlled setup.",
@@ -3312,7 +3313,7 @@ const frenchCopy: BizPilotCopy = {
       themeDescription:
         "Thème sans problème d'hydratation. Le premier affichage est résolu côté serveur.",
       themeHelp:
-        "Par défaut, le thème suit votre appareil. Choisissez Clair ou Sombre pour une vue fixe.",
+        "Les nouvelles sessions commencent en mode clair. Choisissez Sombre ou Système pour une vue fixe ou basée sur l'appareil.",
       workspace: "Espace",
       workspaceDescription:
         "Espace, compte, theme, langue, niveaux de fonctionnalites et setup controle par le proprietaire principal.",
