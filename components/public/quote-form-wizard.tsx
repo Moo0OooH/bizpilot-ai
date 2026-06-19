@@ -419,7 +419,7 @@ export function QuoteFormWizard({
       {query?.source === "rate_limited_demo" ? null : null}
 
       <p className="rounded-[14px] border border-amber-200 bg-amber-50 p-4 text-[13px] leading-6 text-amber-800">
-        Submitting this form does not confirm pricing, availability, or booking.
+        {copy.quoteForm.guardrail}
       </p>
 
       <div className="flex justify-end pt-1">

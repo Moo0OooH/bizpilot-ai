@@ -40,6 +40,11 @@ import {
   POLICY_COPY_SOURCE_LANGUAGE,
 } from "../../lib/i18n/policy-copy.ts";
 import {
+  getPublicSiteCopy,
+  PUBLIC_SITE_COPY_SOURCE_LANGUAGE,
+  publicSiteCopyNamespaces,
+} from "../../lib/i18n/public-site-copy.ts";
+import {
   languageDefinitions,
   resolveWorkspaceInterfaceLanguage,
   supportedLanguages,
@@ -85,6 +90,7 @@ const userFacingSourceFiles = [
   "lib/i18n/home-copy.ts",
   "lib/i18n/pricing-copy.ts",
   "lib/i18n/policy-copy.ts",
+  "lib/i18n/public-site-copy.ts",
   "app/(dashboard)/layout.tsx",
   "app/(dashboard)/dashboard/page.tsx",
   "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
@@ -99,6 +105,27 @@ const userFacingSourceFiles = [
 const dashboardSourceFiles = userFacingSourceFiles.filter((file) =>
   file.startsWith("app/(dashboard)") || file.startsWith("components/dashboard"),
 );
+
+const finalPublicRouteSourceFiles = [
+  "app/page.tsx",
+  "app/features/page.tsx",
+  "app/industries/cleaning/page.tsx",
+  "app/trust/page.tsx",
+  "app/demo/page.tsx",
+  "app/pricing/page.tsx",
+  "app/pilot/page.tsx",
+  "app/content-studio/page.tsx",
+  "app/privacy/page.tsx",
+  "app/security/page.tsx",
+  "app/terms/page.tsx",
+  "app/auth/sign-in/page.tsx",
+  "app/auth/sign-up/page.tsx",
+  "app/auth/forgot-password/page.tsx",
+  "app/auth/reset-password/page.tsx",
+  "app/auth/check-email/page.tsx",
+  "app/(public)/quote/[slug]/page.tsx",
+  "components/public/quote-form-wizard.tsx",
+] as const;
 
 const mojibakePattern =
   /(?:\u00c3[\u0080-\u00bf]|\u00c2[\u0080-\u00bf]|\u00e2[\u0080-\uffff]|\ufffd)/u;
@@ -254,6 +281,109 @@ describe("BizPilot language copy", () => {
     }
   });
 
+  it("keeps final public-site copy structurally synced for every supported language", () => {
+    assert.equal(PUBLIC_SITE_COPY_SOURCE_LANGUAGE, "en");
+    const sourceCopy = getPublicSiteCopy(PUBLIC_SITE_COPY_SOURCE_LANGUAGE);
+    const sourceShape = copyShape(sourceCopy);
+
+    for (const language of supportedLanguages) {
+      assert.deepEqual(
+        copyShape(getPublicSiteCopy(language)),
+        sourceShape,
+        `${language} public-site copy must match the ${PUBLIC_SITE_COPY_SOURCE_LANGUAGE} public-site copy shape.`,
+      );
+    }
+  });
+
+  it("keeps final public routes wired to dictionaries instead of hardcoded marketing copy", () => {
+    const dictionaryBackedRoutes = finalPublicRouteSourceFiles.filter(
+      (file) =>
+        !file.includes("quote-form-wizard") &&
+        !file.includes("/privacy/") &&
+        !file.includes("/security/") &&
+        !file.includes("/terms/"),
+    );
+
+    for (const file of dictionaryBackedRoutes) {
+      const source = readFileSync(file, "utf8");
+      assert.equal(
+        source.includes("getPublicSiteCopy"),
+        true,
+        `${file} should read public route copy from the public-site dictionary.`,
+      );
+    }
+
+    for (const file of [
+      "app/privacy/page.tsx",
+      "app/security/page.tsx",
+      "app/terms/page.tsx",
+    ]) {
+      const source = readFileSync(file, "utf8");
+      assert.equal(
+        source.includes("getPolicyCopy"),
+        true,
+        `${file} should read public policy copy from the policy dictionary.`,
+      );
+      assert.equal(
+        source.includes("generateMetadata"),
+        true,
+        `${file} should expose language-aware metadata.`,
+      );
+    }
+
+    const homepageSource = readFileSync("app/page.tsx", "utf8");
+    for (const phrase of [
+      "Stop losing cleaning quote requests to slow replies.",
+      "Messages get buried",
+      "Your next customer may already be waiting.",
+      "AI drafts. You decide.",
+    ]) {
+      assert.equal(
+        homepageSource.includes(phrase),
+        false,
+        `app/page.tsx should not keep hardcoded homepage phrase: ${phrase}`,
+      );
+    }
+
+    const quoteWizardSource = readFileSync(
+      "components/public/quote-form-wizard.tsx",
+      "utf8",
+    );
+    assert.equal(
+      quoteWizardSource.includes("copy.quoteForm.guardrail"),
+      true,
+      "Quote form guardrail copy should follow the selected quote language.",
+    );
+  });
+
+  it("keeps fr-CA public marketing copy localized and claim-equivalent", () => {
+    const frenchPublicCopy = getPublicSiteCopy("fr-CA");
+    const frenchPublicText = JSON.stringify(frenchPublicCopy);
+
+    assert.equal(
+      frenchPublicCopy.home.hero.title,
+      "Ne perdez plus de demandes de soumission à cause de réponses trop lentes.",
+    );
+    assert.equal(
+      frenchPublicCopy.home.hero.primaryCta,
+      "Participer au projet pilote",
+    );
+
+    for (const englishPhrase of [
+      "Stop losing cleaning quote requests to slow replies.",
+      "Built for cleaning businesses first",
+      "Owner-reviewed AI drafts",
+      "Manual copy/send workflow",
+      "Payment and product guardrails",
+    ]) {
+      assert.equal(
+        frenchPublicText.includes(englishPhrase),
+        false,
+        `fr-CA public copy should not contain English phrase: ${englishPhrase}`,
+      );
+    }
+  });
+
   it("keeps public copy namespaces explicit and complete", () => {
     assert.deepEqual(
       [...bizPilotCopyNamespaces],
@@ -292,6 +422,21 @@ describe("BizPilot language copy", () => {
     assert.deepEqual(
       [...pricingCopyNamespaces],
       ["hero", "plans", "included", "guardrails", "faq", "cta"],
+    );
+    assert.deepEqual(
+      [...publicSiteCopyNamespaces],
+      [
+        "home",
+        "features",
+        "cleaning",
+        "trust",
+        "demo",
+        "pricing",
+        "pilot",
+        "contentStudio",
+        "authMeta",
+        "quoteShell",
+      ],
     );
   });
 

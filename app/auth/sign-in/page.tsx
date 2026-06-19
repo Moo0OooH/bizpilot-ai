@@ -28,16 +28,22 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
+import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 import { signInAction } from "@/server/actions/auth.actions";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Owner Sign In | BizPilot AI",
-  description:
-    "Sign in to an approved BizPilot AI owner workspace to review cleaning quote requests, AI-assisted drafts, and manual follow-up.",
-};
+async function readAuthLanguage() {
+  return readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const language = await readAuthLanguage();
+  return getPublicSiteCopy(language).authMeta.signIn;
+}
 
 type SignInPageProps = Readonly<{
   searchParams?: Promise<{
@@ -65,9 +71,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   const params = await searchParams;
   const requestedRedirect = params?.redirectTo ?? params?.next;
   const redirectTo = readSafeSignInRedirect(requestedRedirect);
-  const language = readSupportedLanguage(
-    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
-  );
+  const language = await readAuthLanguage();
   const copy = getBizPilotCopy(language).auth;
 
   return (

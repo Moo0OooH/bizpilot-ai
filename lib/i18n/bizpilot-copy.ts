@@ -818,6 +818,7 @@ export type BizPilotCopy = Readonly<{
     aiDisclosure: string;
     consentNoticeDefault: string;
     emptySection: string;
+    guardrail: string;
     selectPlaceholder: string;
     submitButton: string;
     stepProgress: (index: number, total: number, label: string) => string;
@@ -2167,6 +2168,8 @@ const englishCopy: BizPilotCopy = {
     consentNoticeDefault:
       "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.",
     emptySection: "Nothing to fill on this section.",
+    guardrail:
+      "Submitting this form does not confirm pricing, availability, or booking.",
     selectPlaceholder: "Select an option",
     stepProgress: (index, total, label) => `Step ${index} of ${total} - ${label}`,
     steps: [
@@ -3563,6 +3566,8 @@ const frenchCopy: BizPilotCopy = {
     consentNoticeDefault:
       "En envoyant cette demande, vous acceptez que vos renseignements soient partagés avec cette entreprise afin qu'elle réponde à votre demande de soumission. BizPilot peut aider à préparer des brouillons IA internes, mais l'entreprise révise les messages avant de les envoyer.",
     emptySection: "Rien à remplir dans cette section.",
+    guardrail:
+      "Envoyer ce formulaire ne confirme ni prix, ni disponibilité, ni réservation.",
     selectPlaceholder: "Sélectionner une option",
     stepProgress: (index, total, label) =>
       `Étape ${index} sur ${total} - ${label}`,

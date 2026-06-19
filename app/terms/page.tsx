@@ -24,16 +24,24 @@ import {
 } from "@/lib/i18n/language";
 import { getPolicyCopy } from "@/lib/i18n/policy-copy";
 
-export const metadata: Metadata = {
-  title: "Terms - BizPilot AI",
-  description:
-    "Founder-pilot terms for BizPilot AI cleaning quote recovery.",
-};
-
-export default async function TermsPage() {
-  const language = readSupportedLanguage(
+async function readPolicyLanguage() {
+  return readSupportedLanguage(
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const language = await readPolicyLanguage();
+  const copy = getPolicyCopy(language).terms;
+
+  return {
+    description: copy.body,
+    title: `${copy.title} | BizPilot AI`,
+  };
+}
+
+export default async function TermsPage() {
+  const language = await readPolicyLanguage();
 
   return (
     <PolicyPage

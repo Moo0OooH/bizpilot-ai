@@ -7,11 +7,13 @@
  * Related:
  * - components/public/marketing-ui.tsx
  * - docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md
+ * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-18
+ * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-06-18: Made the request UI unmistakably preview-only with disabled controls.
+ * - 2026-06-19: Moved visible pilot-page copy and metadata into the public-site i18n dictionary.
  * ============================================================
  */
 
@@ -33,54 +35,31 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
+import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 
-export const metadata: Metadata = {
-  title: "Founder Pilot | BizPilot AI",
-  description:
-    "Apply for the BizPilot AI founder pilot for cleaning businesses that want faster owner-reviewed quote replies without full CRM complexity.",
-};
-
-const nextSteps = [
-  "You send a founder pilot request",
-  "The founder reviews your cleaning workflow",
-  "We prepare your quote page and sample workflow",
-  "You test the lead recovery flow",
-  "Real customer data starts only after final readiness approval",
-] as const;
-
-const getItems = [
-  "Cleaning quote request link",
-  "Lead inbox",
-  "AI summary and reply draft assistance",
-  "Manual copy/send workflow",
-  "Founder-led setup",
-  "Feedback-based improvements",
-] as const;
-
-const fitItems = [
-  "Owner-operated cleaning businesses",
-  "Small cleaning teams",
-  "Businesses receiving quote requests online",
-  "Owners who want faster replies without CRM complexity",
-] as const;
-
-const fields = [
-  ["businessName", "Business name", "text"],
-  ["ownerName", "Owner name", "text"],
-  ["email", "Email", "email"],
-  ["phone", "Phone", "tel"],
-  ["city", "City", "text"],
-  ["website", "Website or social link", "url"],
-] as const;
-
-const requestTemplate =
-  "Subject: BizPilot founder pilot request\n\nBusiness name:\nCity:\nCleaning services:\nQuote requests per week:\nBiggest lead problem:\nPreferred language:";
-
-export default async function PilotPage() {
-  const language = readSupportedLanguage(
+async function readPublicLanguage() {
+  return readSupportedLanguage(
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const language = await readPublicLanguage();
+  return getPublicSiteCopy(language).pilot.meta;
+}
+
+export default async function PilotPage() {
+  const language = await readPublicLanguage();
   const navCopy = getHomeCopy(language).nav;
+  const copy = getPublicSiteCopy(language).pilot;
+  const fields = [
+    ["businessName", copy.form.businessName, "text"],
+    ["ownerName", copy.form.ownerName, "text"],
+    ["email", copy.form.email, "email"],
+    ["phone", copy.form.phone, "tel"],
+    ["city", copy.form.city, "text"],
+    ["website", copy.form.website, "url"],
+  ] as const;
 
   return (
     <main
@@ -92,19 +71,18 @@ export default async function PilotPage() {
         <MarketingShell>
           <div className="grid gap-10 min-[1100px]:grid-cols-[minmax(0,0.9fr)_minmax(320px,0.75fr)] min-[1100px]:items-start">
             <div>
-              <MarketingBadge>Founder pilot</MarketingBadge>
+              <MarketingBadge>{copy.badge}</MarketingBadge>
               <h1
                 className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]"
                 style={{ color: marketingTone.text }}
               >
-                Join the BizPilot founder pilot.
+                {copy.title}
               </h1>
               <p
                 className="mt-6 text-[17px] leading-8"
                 style={{ color: marketingTone.soft }}
               >
-                We&apos;re starting with a small group of cleaning businesses to
-                improve the product around real owner workflows.
+                {copy.body}
               </p>
 
               <MarketingCard className="mt-8 p-6">
@@ -112,10 +90,10 @@ export default async function PilotPage() {
                   className="text-[20px] font-black"
                   style={{ color: marketingTone.text }}
                 >
-                  What happens next
+                  {copy.nextStepsTitle}
                 </h2>
                 <div className="mt-5 grid gap-3">
-                  {nextSteps.map((item, index) => (
+                  {copy.nextSteps.map((item, index) => (
                     <div
                       className="grid grid-cols-[36px_minmax(0,1fr)] items-start gap-3 text-[14px] font-bold"
                       key={item}
@@ -136,10 +114,10 @@ export default async function PilotPage() {
                     className="text-[20px] font-black"
                     style={{ color: marketingTone.text }}
                   >
-                    What you get
+                    {copy.getTitle}
                   </h2>
                   <div className="mt-5 grid gap-3">
-                    {getItems.map((item) => (
+                    {copy.getItems.map((item) => (
                       <div
                         className="flex items-start gap-3 text-[14px] font-bold"
                         key={item}
@@ -159,10 +137,10 @@ export default async function PilotPage() {
                     className="text-[20px] font-black"
                     style={{ color: marketingTone.text }}
                   >
-                    Who this is for
+                    {copy.fitTitle}
                   </h2>
                   <div className="mt-5 grid gap-3">
-                    {fitItems.map((item) => (
+                    {copy.fitItems.map((item) => (
                       <div
                         className="flex items-start gap-3 text-[14px] font-bold"
                         key={item}
@@ -184,28 +162,27 @@ export default async function PilotPage() {
                 className="text-[24px] font-black"
                 style={{ color: marketingTone.text }}
               >
-                Founder pilot request preview
+                {copy.form.title}
               </h2>
               <p
                 className="mt-3 rounded-[14px] border border-amber-200 bg-amber-50 p-4 text-[13px] font-bold leading-6 text-amber-800"
                 id="pilot-preview-status"
               >
-                Preview only: this form does not submit, store, or email pilot
-                application data yet.
+                {copy.form.previewNotice}
               </p>
               <p
                 className="mt-4 text-[14px] leading-7"
                 style={{ color: marketingTone.soft }}
               >
-                The safe request template below shows what to send once a
-                verified public founder contact path is approved.
+                {copy.form.previewBody}
               </p>
               <form
                 aria-describedby="pilot-preview-status"
-                aria-label="Founder pilot request preview"
+                aria-label={copy.form.title}
                 className="mt-5 grid gap-4"
               >
                 <fieldset className="grid gap-4 opacity-60" disabled>
+                <legend className="sr-only">{copy.form.fieldsetLegend}</legend>
                 {fields.map(([name, label, type]) => (
                   <label
                     className="grid gap-1.5 text-[13px] font-bold"
@@ -225,7 +202,7 @@ export default async function PilotPage() {
                   className="grid gap-1.5 text-[13px] font-bold"
                   style={{ color: marketingTone.soft }}
                 >
-                  Cleaning services offered
+                  {copy.form.services}
                   <textarea
                     className="min-h-[88px] rounded-[14px] border bg-white px-3 py-2 text-[15px] outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]"
                     disabled
@@ -236,25 +213,24 @@ export default async function PilotPage() {
                   className="grid gap-1.5 text-[13px] font-bold"
                   style={{ color: marketingTone.soft }}
                 >
-                  Approximate quote requests per week
+                  {copy.form.weeklyQuotes}
                   <select
                     className="h-12 rounded-[14px] border bg-white px-3 text-[15px] outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]"
                     defaultValue=""
                     disabled
                     name="weeklyQuotes"
                   >
-                    <option disabled value="">Select one</option>
-                    <option>1-5</option>
-                    <option>6-15</option>
-                    <option>16+</option>
-                    <option>Not sure</option>
+                    <option disabled value="">{copy.form.selectOne}</option>
+                    {copy.form.weeklyQuoteOptions.map((option) => (
+                      <option key={option}>{option}</option>
+                    ))}
                   </select>
                 </label>
                 <label
                   className="grid gap-1.5 text-[13px] font-bold"
                   style={{ color: marketingTone.soft }}
                 >
-                  Biggest lead management problem
+                  {copy.form.biggestProblem}
                   <textarea
                     className="min-h-[88px] rounded-[14px] border bg-white px-3 py-2 text-[15px] outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]"
                     disabled
@@ -265,17 +241,17 @@ export default async function PilotPage() {
                   className="grid gap-1.5 text-[13px] font-bold"
                   style={{ color: marketingTone.soft }}
                 >
-                  Preferred language
+                  {copy.form.language}
                   <select
                     className="h-12 rounded-[14px] border bg-white px-3 text-[15px] outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]"
                     defaultValue=""
                     disabled
                     name="language"
                   >
-                    <option disabled value="">Select one</option>
-                    <option>English</option>
-                    <option>French</option>
-                    <option>Both</option>
+                    <option disabled value="">{copy.form.selectOne}</option>
+                    {copy.form.languageOptions.map((option) => (
+                      <option key={option}>{option}</option>
+                    ))}
                   </select>
                 </label>
                 </fieldset>
@@ -285,16 +261,14 @@ export default async function PilotPage() {
                   disabled
                   type="button"
                 >
-                  Copy request template
+                  {copy.form.copyTemplate}
                 </button>
                 <div className="rounded-[14px] border border-amber-200 bg-amber-50 p-4">
                   <p className="text-[13px] font-black text-amber-800">
-                    Safe preview: no public application endpoint is active yet.
+                    {copy.form.previewStatus}
                   </p>
                   <p className="mt-2 text-[12px] leading-6 text-amber-800">
-                    No verified public founder email is approved in the project,
-                    so this CTA does not expose a private address or submit
-                    production data.
+                    {copy.form.safeBody}
                   </p>
                 </div>
                 <MarketingCard className="p-4" style={{ boxShadow: "none" }}>
@@ -302,13 +276,13 @@ export default async function PilotPage() {
                     className="text-[12px] font-black uppercase tracking-[0.12em]"
                     style={{ color: marketingTone.teal }}
                   >
-                    Request email template
+                    {copy.form.requestTemplateLabel}
                   </p>
                   <div
                     className="mt-3 whitespace-pre-line text-[13px] font-bold leading-7"
                     style={{ color: marketingTone.soft }}
                   >
-                    {requestTemplate}
+                    {copy.form.requestTemplate}
                   </div>
                 </MarketingCard>
               </form>

@@ -28,9 +28,22 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
+import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 import { requestPasswordResetAction } from "@/server/actions/auth.actions";
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
+
+async function readAuthLanguage() {
+  return readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const language = await readAuthLanguage();
+  return getPublicSiteCopy(language).authMeta.forgotPassword;
+}
 
 type ForgotPasswordPageProps = Readonly<{
   searchParams?: Promise<{
@@ -43,9 +56,7 @@ export default async function ForgotPasswordPage({
   searchParams,
 }: ForgotPasswordPageProps) {
   const params = await searchParams;
-  const language = readSupportedLanguage(
-    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
-  );
+  const language = await readAuthLanguage();
   const copy = getBizPilotCopy(language).auth;
 
   return (

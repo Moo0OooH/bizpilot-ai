@@ -7,10 +7,12 @@
  * Related:
  * - components/public/marketing-ui.tsx
  * - lib/i18n/home-copy.ts
+ * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
- * Last Updated: 2026-06-18
+ * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-06-18: Removed duplicate monthly price highlights and aligned card reflow.
+ * - 2026-06-19: Moved visible pricing-page copy and metadata into the public-site i18n dictionary.
  * ============================================================
  */
 
@@ -32,68 +34,23 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
+import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 
-export const metadata: Metadata = {
-  title: "Pilot Pricing | BizPilot AI",
-  description:
-    "Approved staged pilot pricing for cleaning businesses exploring BizPilot AI lead recovery, with manual setup and payment guardrails.",
-};
-
-const pricingCards = [
-  {
-    bullets: [
-      "Founder-led setup",
-      "Cleaning quote request link",
-      "Lead inbox",
-      "AI summary and reply draft assistance",
-      "Manual copy/send workflow",
-      "30- and 60-day feedback commitment",
-      "No auto-send",
-    ],
-    cohort: "For first 1-5 cleaning businesses",
-    cta: "Apply for founder pilot",
-    highlight: "Feedback commitment required",
-    priceLines: ["$0 setup"],
-    title: "Founder Feedback Pilot",
-  },
-  {
-    bullets: [
-      "Public quote page",
-      "Lead recovery dashboard",
-      "AI reply drafts owner reviews",
-      "Manual follow-up visibility",
-      "Founder setup guidance",
-      "Manual invoice or Stripe Payment Link only",
-    ],
-    cohort: "For customers 6-20",
-    cta: "Apply for pilot",
-    highlight: "Manual billing after readiness approval",
-    priceLines: ["$149 setup", "$49/month"],
-    title: "Starter Pilot",
-  },
-  {
-    bullets: [
-      "Everything in Starter",
-      "Stronger branded quote page",
-      "Reply style and FAQ tuning",
-      "Follow-up draft tuning",
-      "Better lead organization",
-      "Priority onboarding",
-      "Simple usage insights",
-    ],
-    cohort: "After proof / after first 20 customers",
-    cta: "Apply for pilot",
-    highlight: "Manual billing after readiness approval",
-    priceLines: ["$199 setup", "$79/month"],
-    title: "Pro Pilot",
-  },
-] as const;
-
-export default async function PricingPage() {
-  const language = readSupportedLanguage(
+async function readPublicLanguage() {
+  return readSupportedLanguage(
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const language = await readPublicLanguage();
+  return getPublicSiteCopy(language).pricing.meta;
+}
+
+export default async function PricingPage() {
+  const language = await readPublicLanguage();
   const navCopy = getHomeCopy(language).nav;
+  const copy = getPublicSiteCopy(language).pricing;
 
   return (
     <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
@@ -101,17 +58,17 @@ export default async function PricingPage() {
       <section className="py-[var(--section-space)]">
         <MarketingShell>
           <div className="mx-auto max-w-[820px] text-center">
-            <MarketingBadge>Approved staged pilot terms</MarketingBadge>
+            <MarketingBadge>{copy.badge}</MarketingBadge>
             <h1 className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
-              Simple pilot pricing for cleaning businesses.
+              {copy.title}
             </h1>
             <p className="mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
-              BizPilot is starting with controlled cleaning-business pilot cohorts. Setup and billing stay founder-led, manual, and approval-gated.
+              {copy.body}
             </p>
           </div>
 
           <div className="mt-10 grid gap-5 min-[1180px]:grid-cols-3">
-            {pricingCards.map((card) => (
+            {copy.cards.map((card) => (
               <MarketingCard className="flex min-w-0 flex-col p-6 sm:p-7" key={card.title}>
                 <div>
                   <p className="text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
@@ -157,10 +114,10 @@ export default async function PricingPage() {
               </span>
               <div>
                 <h2 className="text-[23px] font-black" style={{ color: marketingTone.text }}>
-                  Payment and product guardrails
+                  {copy.guardrail.title}
                 </h2>
                 <p className="mt-3 text-[15px] font-bold leading-7" style={{ color: marketingTone.soft }}>
-                  Payment collection starts only after final readiness approval and a manual invoice or Stripe Payment Link process is prepared. BizPilot does not include in-app billing automation, booking, invoicing, SMS/WhatsApp automation, or auto-send.
+                  {copy.guardrail.body}
                 </p>
               </div>
             </div>

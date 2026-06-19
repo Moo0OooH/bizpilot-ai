@@ -26,6 +26,7 @@ import {
   DEFAULT_LANGUAGE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
+import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
 
 export const dynamic = "force-dynamic";
@@ -70,6 +71,7 @@ export default async function QuotePage({
   const activeLanguage = query?.language
     ? readSupportedLanguage(query.language)
     : DEFAULT_LANGUAGE;
+  const copy = getPublicSiteCopy(activeLanguage).quoteShell;
 
   if (!page) {
     return <QuoteUnavailable language={activeLanguage} pathname={`/quote/${slug}`} />;
@@ -85,13 +87,13 @@ export default async function QuotePage({
             {page.publicLink.display_name}
           </p>
           <h1 className="mt-3 text-[34px] font-black leading-[1.06] sm:text-[44px]">
-            Request a cleaning quote
+            {copy.title}
           </h1>
           <p className="mt-4 max-w-[620px] text-[16px] leading-7 text-[var(--text-default)]">
-            Tell us what you need and we&apos;ll review your request.
+            {copy.subtitle}
           </p>
           <p className="mt-4 rounded-[16px] border border-amber-200 bg-amber-50 p-4 text-[14px] leading-6 text-amber-800">
-            This form does not confirm booking or pricing. The business owner will review your request and reply.
+            {copy.guardrail}
           </p>
           {query?.error ? (
             <p className="mt-4 rounded-[14px] border border-red-200 bg-red-50 p-3 text-[14px] text-red-700">

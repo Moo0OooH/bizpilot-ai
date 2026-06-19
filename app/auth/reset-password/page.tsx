@@ -25,8 +25,21 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
+import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
+
+async function readAuthLanguage() {
+  return readSupportedLanguage(
+    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const language = await readAuthLanguage();
+  return getPublicSiteCopy(language).authMeta.resetPassword;
+}
 
 type ResetPasswordPageProps = Readonly<{
   searchParams?: Promise<{
@@ -41,9 +54,7 @@ export default async function ResetPasswordPage({
   searchParams,
 }: ResetPasswordPageProps) {
   const params = await searchParams;
-  const language = readSupportedLanguage(
-    (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
-  );
+  const language = await readAuthLanguage();
   const copy = getBizPilotCopy(language).auth;
   const code = params?.code?.trim() ?? "";
   const callbackError = params?.error ?? params?.error_code ?? params?.error_description;
