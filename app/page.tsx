@@ -14,11 +14,13 @@
  * - 2026-06-18: Applied responsive hero, section density, and no-inner-scroll demo hardening.
  * - 2026-06-19: Mapped the hero product preview to semantic theme surfaces for dark contrast.
  * - 2026-06-19: Moved visible homepage copy and metadata into the public-site i18n dictionary.
+ * - 2026-06-19: Finalized balanced homepage rhythm, four-step demo, and locked cleaning-use-case links.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 import {
   MarketingBadge,
@@ -90,7 +92,7 @@ function SectionTitle({
 function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
   return (
     <MarketingCard
-      className="w-full max-w-[600px] p-4 sm:p-5"
+      className="w-full max-w-[540px] p-4 sm:p-5"
       style={{
         background:
           "linear-gradient(180deg, var(--surface-elevated), var(--surface))",
@@ -205,30 +207,30 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
 
 function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
   return (
-    <section className="pb-14 pt-9 sm:pb-16 sm:pt-12 min-[1180px]:pb-20 min-[1180px]:pt-16">
+    <section className="pb-12 pt-8 sm:pb-14 sm:pt-10 min-[1180px]:pb-16 min-[1180px]:pt-12">
       <MarketingShell>
-        <div className="grid min-w-0 items-center gap-10 min-[1100px]:grid-cols-[minmax(0,1.02fr)_minmax(28rem,0.98fr)] min-[1100px]:gap-12">
+        <div className="grid min-w-0 items-center gap-9 min-[1120px]:grid-cols-[minmax(0,1.04fr)_minmax(27rem,0.88fr)] min-[1120px]:gap-10">
           <div className="min-w-0">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
             <h1
-              className="mt-6 max-w-[650px] text-[length:var(--text-hero)] font-black leading-[0.98] [text-wrap:balance]"
+              className="mt-5 max-w-[650px] text-[length:var(--text-hero)] font-black leading-[0.98] [text-wrap:balance]"
               style={{ color: marketingTone.text }}
             >
               {copy.hero.title}
             </h1>
             <p
-              className="mt-6 max-w-[690px] text-[17px] leading-8 sm:text-[19px]"
+              className="mt-5 max-w-[690px] text-[17px] leading-8 sm:text-[18px]"
               style={{ color: marketingTone.soft }}
             >
               {copy.hero.body}
             </p>
-            <div className="mt-8 flex flex-col gap-3 min-[460px]:flex-row">
+            <div className="mt-7 flex flex-col gap-3 min-[460px]:flex-row">
               <MarketingButton href="/pilot">{copy.hero.primaryCta}</MarketingButton>
               <MarketingButton href="/demo" variant="secondary">
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
-            <div className="mt-7 flex flex-wrap gap-2">
+            <div className="mt-6 flex flex-wrap gap-2">
               {copy.hero.trustBadges.map((item) => (
                 <span
                   className="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-black"
@@ -278,9 +280,9 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
     <section className="py-[var(--section-space-compact)]" id="demo">
       <MarketingShell>
         <SectionTitle body={copy.body} title={copy.title} />
-        <div className="public-card-grid-wide mt-8">
+        <div className="homepage-demo-grid mt-8">
           {copy.steps.map((step, index) => (
-            <MarketingCard className="p-5 sm:p-6" key={step.title}>
+            <MarketingCard className="flex min-h-[260px] flex-col p-5 sm:p-6" key={step.title}>
               <div className="flex items-center justify-between gap-3">
                 <span className="text-[12px] font-black uppercase tracking-[0.14em] text-slate-500">
                   {index + 1}
@@ -289,7 +291,11 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                   className="flex h-9 w-9 items-center justify-center rounded-[10px] text-[13px] font-black text-white"
                   style={{
                     backgroundColor:
-                      index === 0 ? marketingTone.text : index === 1 ? marketingTone.blue : marketingTone.teal,
+                      index === 0
+                        ? marketingTone.text
+                        : index === 1
+                          ? marketingTone.blue
+                          : marketingTone.teal,
                   }}
                 >
                   {index + 1}
@@ -299,7 +305,7 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                 {step.title}
               </h3>
               {step.quote ? (
-                <p className="mt-4 rounded-[16px] border border-slate-200 bg-slate-50 p-4 text-[17px] font-black leading-7 text-slate-950">
+                <p className="mt-4 rounded-[16px] border border-slate-200 bg-slate-50 p-4 text-[16px] font-black leading-7 text-slate-950">
                   {step.quote}
                 </p>
               ) : null}
@@ -321,7 +327,7 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                 </div>
               ) : null}
               {step.body ? (
-                <div className="mt-4 rounded-[16px] border border-teal-200 bg-teal-50 p-4">
+                <div className="mt-4 flex flex-1 flex-col justify-between rounded-[16px] border border-teal-200 bg-teal-50 p-4">
                   <p className="text-[15px] font-bold leading-7 text-slate-950">
                     {step.body}
                   </p>
@@ -454,14 +460,35 @@ export default async function HomePage() {
 
       <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
-          <SectionTitle title={copy.useCases.title} />
-          <div className="public-card-grid mt-8">
-            {copy.useCases.items.map((item) => (
-              <MarketingCard className="p-5" key={item}>
-                <p className="text-[16px] font-black" style={{ color: marketingTone.text }}>
-                  {item}
-                </p>
-              </MarketingCard>
+          <SectionTitle body={copy.useCases.body} title={copy.useCases.title} />
+          <div className="homepage-use-case-grid mt-8">
+            {copy.useCases.cards.map((item) => (
+              <Link
+                className="group flex min-h-[170px] min-w-0 flex-col justify-between rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-5 shadow-[var(--shadow-md)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] active:translate-y-0"
+                href={item.href}
+                key={item.href}
+                style={{
+                  color: marketingTone.text,
+                }}
+              >
+                <span>
+                  <span className="block text-[18px] font-black">
+                    {item.title}
+                  </span>
+                  <span
+                    className="mt-3 block text-[14px] font-bold leading-6"
+                    style={{ color: marketingTone.soft }}
+                  >
+                    {item.body}
+                  </span>
+                </span>
+                <span
+                  className="mt-5 inline-flex items-center gap-2 text-[13px] font-black transition group-hover:translate-x-1"
+                  style={{ color: marketingTone.teal }}
+                >
+                  <MarketingIcon name="arrow" />
+                </span>
+              </Link>
             ))}
           </div>
         </MarketingShell>

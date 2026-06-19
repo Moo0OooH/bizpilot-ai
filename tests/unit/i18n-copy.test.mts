@@ -384,6 +384,59 @@ describe("BizPilot language copy", () => {
     }
   });
 
+  it("keeps homepage cleaning use-case cards locked to six service anchors", () => {
+    const englishUseCases = getPublicSiteCopy("en").home.useCases;
+
+    assert.equal(
+      englishUseCases.title,
+      "Built for the cleaning jobs you quote every week.",
+    );
+    assert.equal(
+      englishUseCases.body,
+      "BizPilot keeps the service, timing, missing details, and next reply clear across common residential and commercial cleaning requests.",
+    );
+    assert.deepEqual(
+      englishUseCases.cards.map((card) => card.href),
+      [
+        "/industries/cleaning#residential",
+        "/industries/cleaning#deep-cleaning",
+        "/industries/cleaning#move-in-out",
+        "/industries/cleaning#office",
+        "/industries/cleaning#airbnb",
+        "/industries/cleaning#post-construction",
+      ],
+    );
+
+    for (const language of supportedLanguages) {
+      assert.equal(
+        getPublicSiteCopy(language).home.useCases.cards.length,
+        6,
+        `${language} homepage use-case grid must stay 3x2 / 2x3 / 1x6 friendly.`,
+      );
+      assert.equal(
+        getPublicSiteCopy(language).home.preview.steps.length,
+        4,
+        `${language} homepage demo must keep three states plus manual-send outcome.`,
+      );
+    }
+
+    const homepageSource = readFileSync("app/page.tsx", "utf8");
+    assert.equal(homepageSource.includes("homepage-use-case-grid"), true);
+    assert.equal(homepageSource.includes("homepage-demo-grid"), true);
+
+    const globalStyles = readFileSync("app/globals.css", "utf8");
+    assert.equal(
+      globalStyles.includes(".homepage-use-case-grid"),
+      true,
+      "Homepage service cards should use the locked grid class.",
+    );
+    assert.equal(
+      globalStyles.includes("grid-template-columns: repeat(3, minmax(0, 1fr));"),
+      true,
+      "Homepage service cards should lock to three columns on wide desktop.",
+    );
+  });
+
   it("keeps public copy namespaces explicit and complete", () => {
     assert.deepEqual(
       [...bizPilotCopyNamespaces],

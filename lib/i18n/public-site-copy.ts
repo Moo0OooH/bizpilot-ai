@@ -13,6 +13,7 @@
  * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
+ * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
  * ============================================================
  */
 
@@ -107,7 +108,14 @@ type HomeCopy = Readonly<{
     title: string;
   }>;
   useCases: Readonly<{
-    items: readonly string[];
+    body: string;
+    cards: ReadonlyArray<
+      Readonly<{
+        body: string;
+        href: string;
+        title: string;
+      }>
+    >;
     title: string;
   }>;
   workflow: Readonly<{
@@ -665,6 +673,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
             "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
           title: "Owner-reviewed draft",
         },
+        {
+          body:
+            "The owner reviews the draft, adjusts it if needed, copies it, and sends it manually from the channel they already use.",
+          title: "Owner copies and sends manually",
+        },
       ],
       title: "See the quote recovery workflow in 60 seconds.",
     },
@@ -724,15 +737,41 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "A simple lead recovery system for cleaning businesses.",
     },
     useCases: {
-      items: [
-        "Residential cleaning",
-        "Deep cleaning",
-        "Move-in / move-out",
-        "Office cleaning",
-        "Airbnb turnover",
-        "Post-construction cleaning",
+      body:
+        "BizPilot keeps the service, timing, missing details, and next reply clear across common residential and commercial cleaning requests.",
+      cards: [
+        {
+          body: "Recurring or one-time home-cleaning requests.",
+          href: "/industries/cleaning#residential",
+          title: "Residential cleaning",
+        },
+        {
+          body: "Scope, property condition, and priority areas.",
+          href: "/industries/cleaning#deep-cleaning",
+          title: "Deep cleaning",
+        },
+        {
+          body: "Deadlines, appliance details, and access notes.",
+          href: "/industries/cleaning#move-in-out",
+          title: "Move-in / move-out",
+        },
+        {
+          body: "Floor area, frequency, schedule, and site access.",
+          href: "/industries/cleaning#office",
+          title: "Office cleaning",
+        },
+        {
+          body: "Checkout time, linens, supplies, and entry details.",
+          href: "/industries/cleaning#airbnb",
+          title: "Airbnb turnover",
+        },
+        {
+          body: "Site size, dust/debris scope, and deadline.",
+          href: "/industries/cleaning#post-construction",
+          title: "Post-construction cleaning",
+        },
       ],
-      title: "Built around real cleaning quote requests.",
+      title: "Built for the cleaning jobs you quote every week.",
     },
     workflow: {
       eyebrow: "How it works",
@@ -1311,6 +1350,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
             "Bonjour Sarah, merci pour votre message. Pourriez-vous confirmer la superficie approximative, si les électroménagers doivent être nettoyés à l'intérieur, et les notes d'accès afin que je prépare une soumission exacte?",
           title: "Brouillon révisé par le propriétaire",
         },
+        {
+          body:
+            "Le propriétaire révise le brouillon, l'ajuste au besoin, le copie et l'envoie manuellement depuis le canal qu'il utilise déjà.",
+          title: "Le propriétaire copie et envoie manuellement",
+        },
       ],
       title: "Voyez le flux de récupération en 60 secondes.",
     },
@@ -1374,15 +1418,41 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Un système simple de récupération de prospects pour entreprises de nettoyage.",
     },
     useCases: {
-      items: [
-        "Nettoyage résidentiel",
-        "Nettoyage en profondeur",
-        "Nettoyage avant ou après déménagement",
-        "Nettoyage de bureaux",
-        "Remise en état entre séjours Airbnb",
-        "Nettoyage après travaux",
+      body:
+        "BizPilot garde le service, le moment, les détails manquants et la prochaine réponse clairs pour les demandes courantes de nettoyage résidentiel et commercial.",
+      cards: [
+        {
+          body: "Demandes de nettoyage résidentiel récurrent ou ponctuel.",
+          href: "/industries/cleaning#residential",
+          title: "Nettoyage résidentiel",
+        },
+        {
+          body: "Portée, état de la propriété et zones prioritaires.",
+          href: "/industries/cleaning#deep-cleaning",
+          title: "Nettoyage en profondeur",
+        },
+        {
+          body: "Délais, détails des électroménagers et notes d'accès.",
+          href: "/industries/cleaning#move-in-out",
+          title: "Nettoyage avant ou après déménagement",
+        },
+        {
+          body: "Superficie, fréquence, horaire et accès au site.",
+          href: "/industries/cleaning#office",
+          title: "Nettoyage de bureaux",
+        },
+        {
+          body: "Heure de départ, literie, fournitures et détails d'entrée.",
+          href: "/industries/cleaning#airbnb",
+          title: "Remise en état entre séjours Airbnb",
+        },
+        {
+          body: "Taille du site, poussière/débris et échéance.",
+          href: "/industries/cleaning#post-construction",
+          title: "Nettoyage après travaux",
+        },
       ],
-      title: "Bâti autour de vraies demandes de nettoyage.",
+      title: "Conçu pour les travaux de nettoyage que vous soumissionnez chaque semaine.",
     },
     workflow: {
       eyebrow: "Fonctionnement",
