@@ -46,7 +46,7 @@ type AuthFieldIconProps = Readonly<{
 function BrandMark({ copy }: Readonly<{ copy: BizPilotCopy["auth"] }>) {
   return (
     <Link
-      className="inline-flex items-center gap-2.5"
+      className="inline-flex min-h-11 items-center gap-2.5"
       href="/"
       style={{ color: "var(--biz-page-text)" }}
     >

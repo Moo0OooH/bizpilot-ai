@@ -141,7 +141,7 @@ export function PolicyPage({
             <div className="mt-5 flex flex-wrap gap-3">
               {copy.references.map((reference) => (
                 <a
-                  className="inline-flex min-h-10 items-center gap-2 rounded-[10px] border px-4 text-[13px] font-bold transition hover:bg-white/[0.05]"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-[10px] border px-4 text-[13px] font-bold transition hover:bg-white/[0.05]"
                   href={reference.href}
                   key={reference.href}
                   rel="noreferrer"

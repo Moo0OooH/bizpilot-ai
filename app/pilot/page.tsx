@@ -285,7 +285,7 @@ export default async function PilotPage() {
                   disabled
                   type="button"
                 >
-                  Email founder pilot request
+                  Copy request template
                 </button>
                 <div className="rounded-[14px] border border-amber-200 bg-amber-50 p-4">
                   <p className="text-[13px] font-black text-amber-800">

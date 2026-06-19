@@ -416,7 +416,7 @@ function ProductPreview() {
 
         <div className="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
           <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-            {["No auto-send", "No invented price", "Owner sends manually"].map((item) => (
+            {["No auto-send", "No invented price", "Manual send"].map((item) => (
               <span
                 className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-black"
                 key={item}

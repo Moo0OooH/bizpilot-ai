@@ -361,7 +361,7 @@ export function MarketingBrand({
   subtitle = defaultMarketingNavCopy.brandSubtitle,
 }: Readonly<{ subtitle?: string }>) {
   return (
-    <Link className="inline-flex min-w-0 items-center gap-3" href="/">
+    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3" href="/">
       <span
         aria-hidden
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[16px] font-black"
@@ -453,7 +453,7 @@ export function MarketingHeader({
 
             return (
               <Link
-                className="whitespace-nowrap rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
+                className="inline-flex min-h-11 items-center whitespace-nowrap rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
                 href={item.href}
                 key={item.href}
                 style={{ color: selected ? marketingTone.text : marketingTone.soft }}
@@ -466,7 +466,7 @@ export function MarketingHeader({
         <div className="hidden shrink-0 items-center gap-2 min-[1180px]:flex">
           {renderLanguageForm()}
           <Link
-            className="inline-flex h-10 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
+            className="inline-flex min-h-11 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
             href="/auth/sign-in"
             style={{ color: marketingTone.soft }}
           >
@@ -529,7 +529,7 @@ export function MarketingFooter({
         <MarketingBrand subtitle={copy.brandSubtitle} />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2" style={{ color: marketingTone.soft }}>
           {links.map((link) => (
-            <Link className="rounded-[8px] py-1 hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]" href={link.href} key={link.href}>
+            <Link className="inline-flex min-h-11 items-center rounded-[8px] py-1 hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]" href={link.href} key={link.href}>
               {link.label}
             </Link>
           ))}

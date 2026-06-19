@@ -75,18 +75,20 @@ const demoChapters = [
   {
     body: "The owner reviews, edits if needed, copies the reply, and sends it manually from their own channel. Guardrails stay visible.",
     eyebrow: "4",
-    panelItems: ["Review", "Edit if needed", "Copy reply", "Send manually"],
-    panelTitle: "Owner action",
-    title: "Owner copies and sends manually.",
+    panelItems: [
+      "Review",
+      "Edit if needed",
+      "Copy reply",
+      "Send manually",
+      "No auto-send",
+      "No invented price",
+      "No booking confirmation",
+      "No SMS/WhatsApp automation",
+      "No full CRM claim",
+    ],
+    panelTitle: "Manual send and guardrails",
+    title: "Manual send + guardrails.",
   },
-] as const;
-
-const guardrails = [
-  "No auto-send",
-  "No invented price",
-  "No booking confirmation",
-  "No SMS/WhatsApp automation",
-  "No full CRM claim",
 ] as const;
 
 function DemoPanel({
@@ -173,42 +175,6 @@ export default async function DemoPage() {
                 </div>
               </MarketingCard>
             ))}
-
-            <MarketingCard className="p-5 sm:p-6">
-              <div className="grid min-w-0 gap-5 min-[1040px]:grid-cols-[minmax(0,0.92fr)_minmax(320px,0.82fr)] min-[1040px]:items-center">
-                <div className="min-w-0">
-                  <span
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] text-[13px] font-black text-white"
-                    style={{ backgroundColor: marketingTone.teal }}
-                  >
-                    5
-                  </span>
-                  <h2 className="mt-4 text-[24px] font-black leading-tight text-slate-950">
-                    Guardrails
-                  </h2>
-                  <p
-                    className="mt-3 max-w-[680px] text-[15px] leading-7"
-                    style={{ color: marketingTone.soft }}
-                  >
-                    The product stays manual-first so the owner keeps control of
-                    customer communication and quote decisions.
-                  </p>
-                </div>
-                <div className="grid min-w-0 gap-3">
-                  {guardrails.map((item) => (
-                    <div
-                      className="flex min-w-0 items-start gap-3 rounded-[14px] border border-slate-200 bg-white px-4 py-3 text-[14px] font-black text-slate-950"
-                      key={item}
-                    >
-                      <span className="mt-0.5 text-teal-600">
-                        <MarketingIcon name="check" />
-                      </span>
-                      <span className="min-w-0 break-words">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </MarketingCard>
 
             <MarketingCard className="p-6 sm:p-8">
               <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">

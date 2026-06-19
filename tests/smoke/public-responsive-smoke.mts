@@ -47,7 +47,7 @@ const routes: readonly RouteContract[] = [
   },
   {
     h1: "See how BizPilot handles a cleaning quote request.",
-    mustContain: ["Request arrives.", "Owner copies and sends manually.", "No invented price"],
+    mustContain: ["Request arrives.", "Manual send + guardrails.", "No invented price"],
     path: "/demo",
   },
   {
