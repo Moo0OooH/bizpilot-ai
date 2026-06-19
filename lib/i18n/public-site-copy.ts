@@ -148,6 +148,14 @@ type FeaturesCopy = Readonly<{
 
 type CleaningCopy = Readonly<{
   body: string;
+  beforeAfter: Readonly<{
+    after: string;
+    afterLabel: string;
+    before: string;
+    beforeLabel: string;
+    body: string;
+    title: string;
+  }>;
   ctaPrimary: string;
   ctaSecondary: string;
   example: Readonly<{
@@ -157,6 +165,23 @@ type CleaningCopy = Readonly<{
     title: string;
     workflow: string;
   }>;
+  families: ReadonlyArray<
+    Readonly<{
+      body: string;
+      details: readonly string[];
+      detailsTitle: string;
+      request: string;
+      requestLabel: string;
+      services: ReadonlyArray<
+        Readonly<{
+          body: string;
+          id: string;
+          title: string;
+        }>
+      >;
+      title: string;
+    }>
+  >;
   intro: string;
   meta: MetaCopy;
   services: readonly string[];
@@ -173,6 +198,13 @@ type TrustCopy = Readonly<{
     badge: string;
     body: string;
   }>;
+  pillars: ReadonlyArray<
+    Readonly<{
+      body: string;
+      points: readonly string[];
+      title: string;
+    }>
+  >;
   primaryCta: string;
   privacyCta: string;
   securityCta: string;
@@ -202,6 +234,10 @@ type DemoCopy = Readonly<{
 }>;
 
 type PricingCopy = Readonly<{
+  afterApply: Readonly<{
+    steps: readonly string[];
+    title: string;
+  }>;
   body: string;
   cards: ReadonlyArray<
     Readonly<{
@@ -345,6 +381,16 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   },
   cleaning: {
     badge: "Cleaning businesses first",
+    beforeAfter: {
+      after:
+        "Thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and access notes so I can prepare a responsible quote?",
+      afterLabel: "Owner-reviewed reply draft",
+      before: '"How much for a move-out clean before Friday?"',
+      beforeLabel: "Before",
+      body:
+        "BizPilot turns a vague cleaning message into the missing details an owner needs before replying.",
+      title: "From vague request to clear next reply.",
+    },
     body:
       "BizPilot helps cleaning business owners collect quote requests, organize leads, and draft fast owner-reviewed replies.",
     ctaPrimary: "Join the cleaning founder pilot",
@@ -364,6 +410,94 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       workflow:
         "Customer requests quote -> Owner sees service details -> AI summarizes -> AI drafts reply -> Owner copies and sends manually",
     },
+    families: [
+      {
+        body:
+          "Common home requests still need the right scope before an owner can quote responsibly.",
+        details: [
+          "Service type",
+          "Bedrooms, bathrooms, or square footage",
+          "Priority rooms and condition",
+          "Pets, supplies, and access notes",
+        ],
+        detailsTitle: "Details BizPilot keeps clear",
+        request:
+          '"Can you do a deep clean for a 3-bedroom house next week?"',
+        requestLabel: "Example request",
+        services: [
+          {
+            body: "Recurring or one-time home-cleaning requests.",
+            id: "residential",
+            title: "Residential cleaning",
+          },
+          {
+            body: "Scope, property condition, and priority areas.",
+            id: "deep-cleaning",
+            title: "Deep cleaning",
+          },
+        ],
+        title: "Homes",
+      },
+      {
+        body:
+          "Deadline-driven work needs timing, access, and turnover details in one place.",
+        details: [
+          "Move date or checkout time",
+          "Appliance and cabinet interior needs",
+          "Entry instructions",
+          "Missing supplies or linen notes",
+        ],
+        detailsTitle: "Details BizPilot keeps clear",
+        request:
+          '"The tenant leaves Friday morning. Can someone clean before the new guest arrives?"',
+        requestLabel: "Example request",
+        services: [
+          {
+            body: "Deadlines, appliance details, and access notes.",
+            id: "move-in-out",
+            title: "Move-in / move-out",
+          },
+          {
+            body: "Checkout time, linens, supplies, and entry details.",
+            id: "airbnb",
+            title: "Airbnb turnover",
+          },
+        ],
+        title: "Moves and turnovers",
+      },
+      {
+        body:
+          "Commercial and specialist requests become easier to triage when scope and site access are visible.",
+        details: [
+          "Floor area and frequency",
+          "Preferred schedule",
+          "Site access and contact",
+          "Dust, debris, or specialist scope",
+        ],
+        detailsTitle: "Details BizPilot keeps clear",
+        request:
+          '"We need office cleaning twice a week and a post-renovation cleanup next month."',
+        requestLabel: "Example request",
+        services: [
+          {
+            body: "Floor area, frequency, schedule, and site access.",
+            id: "office",
+            title: "Office cleaning",
+          },
+          {
+            body: "Small commercial requests with clear manual follow-up.",
+            id: "small-commercial",
+            title: "Small commercial cleaning",
+          },
+          {
+            body: "Site size, dust/debris scope, and deadline.",
+            id: "post-construction",
+            title: "Post-construction cleaning",
+          },
+        ],
+        title: "Commercial and specialist",
+      },
+    ],
     intro:
       "Cleaning owners are often away from a desk. They are on jobs, driving, managing staff, or answering existing customers. Quote requests arrive at the worst time, and slow replies can cost jobs.",
     meta: {
@@ -388,19 +522,16 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     body:
       "This page is roadmap only. BizPilot may later help local businesses create owner-reviewed marketing content after the cleaning lead recovery workflow is validated.",
     cards: [
-      "Instagram captions",
-      "Facebook posts",
-      "Google Business Profile updates",
-      "Seasonal promotions",
-      "Review responses",
-      "Short video scripts",
-      "Image prompts",
+      "Service post drafts",
+      "Google Business Profile update ideas",
+      "Seasonal promotion outlines",
+      "Review-response drafts",
+      "Short video script ideas",
       "Visual creative briefs",
-      "Content calendar",
     ],
     cta: "Apply for founder pilot",
     footer:
-      "Like AI reply drafts, future content drafts should be reviewed by the owner before publishing.",
+      "Like AI reply drafts, future content drafts should be reviewed by the owner before publishing. No automatic posting is promised.",
     meta: {
       description:
         "Future BizPilot AI Content Studio roadmap for owner-reviewed local business marketing content after lead recovery is validated.",
@@ -484,36 +615,38 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "No auto-send",
       "No invented price",
       "Owner decides",
+      "Manual copy/send",
       "Cleaning-first pilot",
     ],
     cards: [
       {
         body: "Give customers one simple place to request a quote.",
-        title: "Quote link",
+        title: "Capture every quote request in one clean flow.",
       },
       {
         body:
-          "See new quote requests in an organized dashboard instead of scattered messages.",
-        title: "Lead inbox",
+          "See new cleaning requests in one owner workspace instead of scattered messages.",
+        title: "Know who needs a reply now.",
       },
       {
         body:
-          "Review service type, contact info, timing, notes, and reply status.",
-        title: "Lead detail",
+          "Review the service, timing, property details, notes, and contact path before replying.",
+        title: "See the job context before you answer.",
       },
       {
         body:
-          "Generate a helpful first reply that the owner can review and edit.",
-        title: "AI draft assistant",
+          "Use a practical first response that asks for missing details instead of guessing.",
+        title: "Start with an owner-reviewed draft.",
       },
       {
         body:
-          "Copy the response and send it yourself through your preferred channel.",
-        title: "Manual copy/send",
+          "Keep final communication in the owner's hands while still moving faster.",
+        title: "Copy and send from the channel you already use.",
       },
       {
-        body: "No automatic customer messaging in the first pilot.",
-        title: "Trust-first workflow",
+        body:
+          "Track whether the next step is reply, ask for details, follow up, or mark reviewed.",
+        title: "Keep the next manual action clear.",
       },
     ],
     meta: {
@@ -525,12 +658,12 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     proof: {
       badge: "Product proof",
       body:
-        "BizPilot keeps the first pilot focused: collect the request, organize what matters, draft a helpful reply, and leave the final send to the owner.",
+        "A realistic cleaning request moves through one simple manual-first path.",
       items: [
-        "Quote request captured",
-        "Missing details highlighted",
-        "AI draft prepared",
-        "Owner copies and sends manually",
+        "Customer submits a quote request",
+        "BizPilot organizes service, timing, and missing details",
+        "AI prepares an owner-reviewed draft",
+        "Owner copies, edits if needed, and sends manually",
       ],
       title: "From quote link to owner-reviewed reply.",
     },
@@ -851,6 +984,14 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     title: "Join the BizPilot founder pilot.",
   },
   pricing: {
+    afterApply: {
+      steps: [
+        "Founder reviews fit and current quote workflow",
+        "Pilot setup stays manual and approval-gated",
+        "Payment, if any, uses invoice or Stripe Payment Link only",
+      ],
+      title: "What happens after you apply",
+    },
     badge: "Approved staged pilot terms",
     body:
       "BizPilot is starting with controlled cleaning-business pilot cohorts. Setup and billing stay founder-led, manual, and approval-gated.",
@@ -972,6 +1113,38 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       body:
         "BizPilot's commercial pilot terms are staged, but real customer data and paid pilot execution still depend on readiness gates, including final no-secret production smoke, explicit owner approval before real customer data, and a prepared manual invoice or Stripe Payment Link process before collecting payment.",
     },
+    pillars: [
+      {
+        body:
+          "BizPilot helps prepare the work, but the owner decides what the customer receives.",
+        points: [
+          "No auto-send",
+          "Owner reviews, edits, and sends",
+          "Manual communication during the pilot",
+        ],
+        title: "You stay in control",
+      },
+      {
+        body:
+          "Quote requests stay honest until the owner has the facts needed to price the work.",
+        points: [
+          "No invented pricing",
+          "No automatic booking confirmation",
+          "Missing details are requested before quoting",
+        ],
+        title: "Quotes stay honest",
+      },
+      {
+        body:
+          "If an automated aid is unavailable, the owner still has a clear manual workflow.",
+        points: [
+          "Real-customer-data readiness gate",
+          "Safe fallback when AI is unavailable",
+          "Manual workflow remains available",
+        ],
+        title: "The workflow fails safely",
+      },
+    ],
     primaryCta: "Apply for founder pilot",
     privacyCta: "Read privacy",
     securityCta: "Read security",
@@ -1011,6 +1184,17 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   },
   cleaning: {
     badge: "Entreprises de nettoyage d'abord",
+    beforeAfter: {
+      after:
+        "Merci pour votre message. Pourriez-vous confirmer la superficie approximative, si les électroménagers doivent être nettoyés à l'intérieur et les notes d'accès afin que je prépare une soumission responsable?",
+      afterLabel: "Brouillon de réponse révisé par le propriétaire",
+      before:
+        "\"Combien pour un nettoyage avant déménagement d'ici vendredi?\"",
+      beforeLabel: "Avant",
+      body:
+        "BizPilot transforme un message vague de nettoyage en détails utiles avant la réponse du propriétaire.",
+      title: "D'une demande vague à une prochaine réponse claire.",
+    },
     body:
       "BizPilot aide les propriétaires d'entreprises de nettoyage à recueillir les demandes de soumission, à organiser les prospects et à préparer rapidement des réponses révisées par le propriétaire.",
     ctaPrimary: "Participer au projet pilote nettoyage",
@@ -1030,6 +1214,94 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       workflow:
         "Le client demande une soumission -> Le propriétaire voit les détails du service -> L'IA résume -> L'IA prépare un brouillon -> Le propriétaire copie et envoie manuellement",
     },
+    families: [
+      {
+        body:
+          "Les demandes résidentielles courantes exigent tout de même le bon contexte avant une soumission responsable.",
+        details: [
+          "Type de service",
+          "Chambres, salles de bain ou superficie",
+          "Pièces prioritaires et état du logement",
+          "Animaux, fournitures et notes d'accès",
+        ],
+        detailsTitle: "Détails que BizPilot garde clairs",
+        request:
+          "\"Pouvez-vous faire un grand ménage pour une maison de 3 chambres la semaine prochaine?\"",
+        requestLabel: "Exemple de demande",
+        services: [
+          {
+            body: "Demandes de nettoyage résidentiel récurrent ou ponctuel.",
+            id: "residential",
+            title: "Nettoyage résidentiel",
+          },
+          {
+            body: "Portée, état de la propriété et zones prioritaires.",
+            id: "deep-cleaning",
+            title: "Nettoyage en profondeur",
+          },
+        ],
+        title: "Maisons",
+      },
+      {
+        body:
+          "Les travaux liés aux dates limites demandent le moment, l'accès et les détails de remise en état au même endroit.",
+        details: [
+          "Date de déménagement ou heure de départ",
+          "Électroménagers et armoires à l'intérieur",
+          "Instructions d'entrée",
+          "Fournitures ou notes de literie manquantes",
+        ],
+        detailsTitle: "Détails que BizPilot garde clairs",
+        request:
+          "\"Le locataire quitte vendredi matin. Pouvez-vous nettoyer avant l'arrivée du prochain invité?\"",
+        requestLabel: "Exemple de demande",
+        services: [
+          {
+            body: "Délais, détails des électroménagers et notes d'accès.",
+            id: "move-in-out",
+            title: "Nettoyage avant ou après déménagement",
+          },
+          {
+            body: "Heure de départ, literie, fournitures et détails d'entrée.",
+            id: "airbnb",
+            title: "Remise en état entre séjours Airbnb",
+          },
+        ],
+        title: "Déménagements et turnovers",
+      },
+      {
+        body:
+          "Les demandes commerciales et spécialisées sont plus simples à trier quand la portée et l'accès au site sont visibles.",
+        details: [
+          "Superficie et fréquence",
+          "Horaire préféré",
+          "Accès au site et contact",
+          "Poussière, débris ou portée spécialisée",
+        ],
+        detailsTitle: "Détails que BizPilot garde clairs",
+        request:
+          "\"Nous avons besoin d'un nettoyage de bureaux deux fois par semaine et d'un nettoyage après rénovation le mois prochain.\"",
+        requestLabel: "Exemple de demande",
+        services: [
+          {
+            body: "Superficie, fréquence, horaire et accès au site.",
+            id: "office",
+            title: "Nettoyage de bureaux",
+          },
+          {
+            body: "Demandes de petit commercial avec suivi manuel clair.",
+            id: "small-commercial",
+            title: "Petit nettoyage commercial",
+          },
+          {
+            body: "Taille du site, poussière/débris et échéance.",
+            id: "post-construction",
+            title: "Nettoyage après travaux",
+          },
+        ],
+        title: "Commercial et spécialisé",
+      },
+    ],
     intro:
       "Les propriétaires d'entreprises de nettoyage sont souvent loin d'un bureau. Ils sont sur les chantiers, sur la route, avec leur équipe ou avec des clients. Les demandes de soumission arrivent au mauvais moment, et une réponse lente peut coûter des mandats.",
     meta: {
@@ -1054,19 +1326,16 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     body:
       "Cette page présente seulement une direction future. BizPilot pourrait plus tard aider les entreprises locales à créer du contenu marketing révisé par le propriétaire, après la validation du flux de récupération des demandes de nettoyage.",
     cards: [
-      "Légendes Instagram",
-      "Publications Facebook",
-      "Mises à jour Google Business Profile",
-      "Promotions saisonnières",
-      "Réponses aux avis",
-      "Scripts de courtes vidéos",
-      "Prompts d'images",
+      "Brouillons de publications de services",
+      "Idées de mises à jour Google Business Profile",
+      "Plans de promotions saisonnières",
+      "Brouillons de réponses aux avis",
+      "Idées de scripts vidéo courts",
       "Briefs créatifs visuels",
-      "Calendrier de contenu",
     ],
     cta: "Participer au projet pilote",
     footer:
-      "Comme les brouillons de réponse, les futurs brouillons de contenu devraient être révisés par le propriétaire avant publication.",
+      "Comme les brouillons de réponse, les futurs brouillons de contenu devraient être révisés par le propriétaire avant publication. Aucune publication automatique n'est promise.",
     meta: {
       description:
         "Feuille de route du futur Content Studio BizPilot AI pour du contenu marketing local révisé par le propriétaire, après validation de la récupération de prospects.",
@@ -1153,38 +1422,39 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       "Aucun envoi automatique",
       "Aucun prix inventé",
       "Le propriétaire décide",
+      "Copier/envoyer manuellement",
       "Projet pilote axé sur le nettoyage",
     ],
     cards: [
       {
         body:
           "Offrez aux clients un endroit simple pour demander une soumission.",
-        title: "Lien de soumission",
+        title: "Capter chaque demande de soumission dans un flux clair.",
       },
       {
         body:
-          "Voyez les nouvelles demandes dans un tableau de bord organisé plutôt que dans des messages dispersés.",
-        title: "Boîte de prospects",
+          "Voyez les nouvelles demandes de nettoyage dans un espace propriétaire plutôt que dans des messages dispersés.",
+        title: "Savoir qui attend une réponse maintenant.",
       },
       {
         body:
-          "Révisez le type de service, les coordonnées, le moment, les notes et le statut de réponse.",
-        title: "Détail du prospect",
+          "Révisez le service, le moment, les détails de propriété, les notes et le canal de contact avant de répondre.",
+        title: "Voir le contexte du travail avant de répondre.",
       },
       {
         body:
-          "Préparez une première réponse utile que le propriétaire peut réviser et modifier.",
-        title: "Assistant de brouillon IA",
+          "Utilisez une première réponse pratique qui demande les détails manquants au lieu de deviner.",
+        title: "Commencer avec un brouillon révisé par le propriétaire.",
       },
       {
         body:
-          "Copiez la réponse et envoyez-la vous-même dans le canal de votre choix.",
-        title: "Copier et envoyer manuellement",
+          "Gardez la communication finale entre les mains du propriétaire tout en avançant plus vite.",
+        title: "Copier et envoyer depuis le canal que vous utilisez déjà.",
       },
       {
         body:
-          "Aucun message client n'est envoyé automatiquement pendant le premier projet pilote.",
-        title: "Flux axé sur la confiance",
+          "Suivez si la prochaine étape est répondre, demander des détails, faire un suivi ou marquer comme révisé.",
+        title: "Garder la prochaine action manuelle claire.",
       },
     ],
     meta: {
@@ -1196,12 +1466,12 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     proof: {
       badge: "Preuve produit",
       body:
-        "BizPilot garde le premier projet pilote concentré : recueillir la demande, organiser ce qui compte, préparer un brouillon utile et laisser l'envoi final au propriétaire.",
+        "Une demande réaliste de nettoyage passe par un chemin simple, manuel d'abord.",
       items: [
-        "Demande de soumission captée",
-        "Détails manquants signalés",
-        "Brouillon IA préparé",
-        "Le propriétaire copie et envoie manuellement",
+        "Le client envoie une demande de soumission",
+        "BizPilot organise le service, le moment et les détails manquants",
+        "L'IA prépare un brouillon révisé par le propriétaire",
+        "Le propriétaire copie, ajuste au besoin et envoie manuellement",
       ],
       title: "Du lien de soumission à la réponse révisée par le propriétaire.",
     },
@@ -1532,6 +1802,14 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     title: "Participez au projet pilote BizPilot.",
   },
   pricing: {
+    afterApply: {
+      steps: [
+        "Le fondateur révise le fit et le flux actuel de soumission",
+        "La configuration pilote reste manuelle et soumise à approbation",
+        "Tout paiement utilise seulement une facture ou un Stripe Payment Link",
+      ],
+      title: "Ce qui se passe après la demande",
+    },
     badge: "Conditions pilotes approuvées",
     body:
       "BizPilot commence avec des cohortes contrôlées d'entreprises de nettoyage. La configuration et la facturation restent guidées par le fondateur, manuelles et soumises à approbation.",
@@ -1653,6 +1931,38 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       body:
         "Les conditions commerciales du projet pilote BizPilot sont par étapes, mais les vraies données client et l'exécution payante dépendent encore de portes de préparation : smoke de production sans secret, approbation explicite du propriétaire avant toute vraie donnée client, et facture manuelle ou Stripe Payment Link préparé avant tout paiement.",
     },
+    pillars: [
+      {
+        body:
+          "BizPilot aide à préparer le travail, mais le propriétaire décide ce que le client reçoit.",
+        points: [
+          "Aucun envoi automatique",
+          "Le propriétaire révise, modifie et envoie",
+          "Communication manuelle pendant le projet pilote",
+        ],
+        title: "Vous gardez le contrôle",
+      },
+      {
+        body:
+          "Les demandes de soumission restent honnêtes jusqu'à ce que le propriétaire ait les faits nécessaires pour chiffrer le travail.",
+        points: [
+          "Aucun prix inventé",
+          "Aucune confirmation automatique de réservation",
+          "Les détails manquants sont demandés avant la soumission",
+        ],
+        title: "Les soumissions restent honnêtes",
+      },
+      {
+        body:
+          "Si une aide automatisée est indisponible, le propriétaire garde un flux manuel clair.",
+        points: [
+          "Porte d'approbation des vraies données client",
+          "Solution de repli si l'IA est indisponible",
+          "Le flux manuel reste disponible",
+        ],
+        title: "Le flux échoue prudemment",
+      },
+    ],
     primaryCta: "Postuler au projet pilote",
     privacyCta: "Lire la confidentialité",
     securityCta: "Lire la sécurité",

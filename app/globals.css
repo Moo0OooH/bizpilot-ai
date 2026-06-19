@@ -331,9 +331,21 @@ select {
   gap: 1rem;
 }
 
+.supporting-six-grid,
+.supporting-three-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.supporting-six-grid {
+  grid-auto-rows: 1fr;
+}
+
 @media (min-width: 768px) {
   .homepage-demo-grid,
-  .homepage-use-case-grid {
+  .homepage-use-case-grid,
+  .supporting-six-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -345,6 +357,15 @@ select {
 
   .homepage-use-case-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .supporting-six-grid,
+  .supporting-three-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .supporting-three-grid {
+    grid-auto-rows: 1fr;
   }
 }
 

@@ -437,6 +437,125 @@ describe("BizPilot language copy", () => {
     );
   });
 
+  it("keeps final supporting-page polish structure locked", () => {
+    const englishPublicCopy = getPublicSiteCopy("en");
+
+    assert.deepEqual(
+      englishPublicCopy.features.cards.map((card) => card.title),
+      [
+        "Capture every quote request in one clean flow.",
+        "Know who needs a reply now.",
+        "See the job context before you answer.",
+        "Start with an owner-reviewed draft.",
+        "Copy and send from the channel you already use.",
+        "Keep the next manual action clear.",
+      ],
+    );
+    assert.deepEqual(
+      englishPublicCopy.features.proof.items,
+      [
+        "Customer submits a quote request",
+        "BizPilot organizes service, timing, and missing details",
+        "AI prepares an owner-reviewed draft",
+        "Owner copies, edits if needed, and sends manually",
+      ],
+    );
+
+    assert.equal(englishPublicCopy.cleaning.families.length, 3);
+    assert.deepEqual(
+      englishPublicCopy.cleaning.families.map((family) => family.services.length),
+      [2, 2, 3],
+    );
+    const cleaningServiceIds = new Set(
+      englishPublicCopy.cleaning.families.flatMap((family) =>
+        family.services.map((service) => service.id),
+      ),
+    );
+    for (const serviceId of [
+      "residential",
+      "deep-cleaning",
+      "move-in-out",
+      "office",
+      "airbnb",
+      "post-construction",
+    ]) {
+      assert.equal(
+        cleaningServiceIds.has(serviceId),
+        true,
+        `Cleaning page should expose #${serviceId}.`,
+      );
+    }
+
+    assert.equal(englishPublicCopy.trust.pillars.length, 3);
+    assert.deepEqual(
+      englishPublicCopy.trust.pillars.map((pillar) => pillar.title),
+      [
+        "You stay in control",
+        "Quotes stay honest",
+        "The workflow fails safely",
+      ],
+    );
+    for (const pillar of englishPublicCopy.trust.pillars) {
+      assert.equal(pillar.points.length, 3);
+    }
+
+    assert.equal(englishPublicCopy.demo.chapters.length, 4);
+    assert.deepEqual(
+      englishPublicCopy.demo.chapters.at(-1)?.panelItems.slice(-5),
+      [
+        "No auto-send",
+        "No invented price",
+        "No booking confirmation",
+        "No SMS/WhatsApp automation",
+        "No full CRM claim",
+      ],
+    );
+
+    assert.deepEqual(
+      englishPublicCopy.pricing.cards.flatMap((card) => card.priceLines),
+      ["$0 setup", "$149 setup", "$49/month", "$199 setup", "$79/month"],
+    );
+    assert.equal(englishPublicCopy.pricing.afterApply.steps.length, 3);
+    assert.equal(englishPublicCopy.contentStudio.cards.length, 6);
+    assert.equal(
+      englishPublicCopy.contentStudio.footer.includes(
+        "No automatic posting is promised.",
+      ),
+      true,
+    );
+
+    const routeExpectations: ReadonlyArray<
+      readonly [file: string, required: string, forbidden?: string]
+    > = [
+      ["app/features/page.tsx", "supporting-six-grid"],
+      ["app/industries/cleaning/page.tsx", "supporting-three-grid"],
+      ["app/trust/page.tsx", "copy.pillars", "copy.items"],
+      ["app/pricing/page.tsx", "copy.afterApply"],
+      ["app/pricing/page.tsx", "supporting-three-grid"],
+      ["app/content-studio/page.tsx", "supporting-six-grid"],
+    ];
+
+    for (const [file, required, forbidden] of routeExpectations) {
+      const source = readFileSync(file, "utf8");
+      assert.equal(
+        source.includes(required),
+        true,
+        `${file} should include ${required}.`,
+      );
+      if (forbidden) {
+        assert.equal(
+          source.includes(forbidden),
+          false,
+          `${file} should no longer include ${forbidden}.`,
+        );
+      }
+    }
+
+    const globalStyles = readFileSync("app/globals.css", "utf8");
+    assert.equal(globalStyles.includes(".supporting-six-grid"), true);
+    assert.equal(globalStyles.includes(".supporting-three-grid"), true);
+  });
+
   it("keeps public copy namespaces explicit and complete", () => {
     assert.deepEqual(
       [...bizPilotCopyNamespaces],

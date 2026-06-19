@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-06-18: Added compact proof visual, trust strip, and responsive intrinsic grid.
  * - 2026-06-19: Moved visible feature-page copy and metadata into the public-site i18n dictionary.
+ * - 2026-06-19: Locked the feature grid and rebuilt product proof as one workflow strip.
  * ============================================================
  */
 
@@ -53,6 +54,7 @@ export default async function FeaturesPage() {
   const language = await readPublicLanguage();
   const navCopy = getHomeCopy(language).nav;
   const copy = getPublicSiteCopy(language).features;
+  const featureIcons = ["link", "inbox", "briefcase", "spark", "copy", "target"] as const;
 
   return (
     <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
@@ -65,16 +67,25 @@ export default async function FeaturesPage() {
               {copy.title}
             </h1>
           </div>
-          <div className="public-card-grid mt-10">
-            {copy.cards.map((item) => (
-              <MarketingCard className="p-6" key={item.title}>
-                <h2 className="text-[20px] font-black" style={{ color: marketingTone.text }}>{item.title}</h2>
+          <div className="supporting-six-grid mt-10">
+            {copy.cards.map((item, index) => (
+              <MarketingCard className="flex min-h-[210px] flex-col p-6" key={item.title}>
+                <span
+                  className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-[12px]"
+                  style={{
+                    backgroundColor: "color-mix(in srgb, var(--accent) 12%, transparent)",
+                    color: marketingTone.teal,
+                  }}
+                >
+                  <MarketingIcon name={featureIcons[index] ?? "check"} />
+                </span>
+                <h2 className="text-[20px] font-black leading-tight" style={{ color: marketingTone.text }}>{item.title}</h2>
                 <p className="mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>{item.body}</p>
               </MarketingCard>
             ))}
           </div>
           <MarketingCard className="mt-8 p-6 sm:p-7">
-            <div className="grid gap-5 min-[900px]:grid-cols-[minmax(0,0.9fr)_minmax(260px,0.7fr)] min-[900px]:items-center">
+            <div className="grid gap-5">
               <div>
                 <MarketingBadge>{copy.proof.badge}</MarketingBadge>
                 <h2 className="mt-4 text-[26px] font-black leading-tight" style={{ color: marketingTone.text }}>
@@ -84,11 +95,15 @@ export default async function FeaturesPage() {
                   {copy.proof.body}
                 </p>
               </div>
-              <div className="grid gap-2">
-                {copy.proof.items.map((item) => (
-                  <div className="flex min-w-0 items-center gap-3 rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[14px] font-black text-slate-950" key={item}>
-                    <span className="text-teal-600"><MarketingIcon name="check" /></span>
-                    <span className="min-w-0">{item}</span>
+              <div className="grid gap-3 min-[900px]:grid-cols-4">
+                {copy.proof.items.map((item, index) => (
+                  <div className="min-w-0 rounded-[14px] border border-slate-200 bg-slate-50 p-4 text-slate-950" key={item}>
+                    <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-slate-950 text-[12px] font-black text-white">
+                      {index + 1}
+                    </span>
+                    <span className="mt-3 block text-[14px] font-black leading-6">
+                      {item}
+                    </span>
                   </div>
                 ))}
               </div>
