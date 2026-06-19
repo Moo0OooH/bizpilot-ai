@@ -1,16 +1,15 @@
 /**
  * File: components/dashboard/dashboard-shell.tsx
  * Project: BizPilot AI
- * Role: Shared protected dashboard application shell.
- * Last Updated: 2026-06-18
+ * Role: Shared protected dashboard application shell with shared theme preference.
+ * Last Updated: 2026-06-19
  */
 
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { DashboardThemeFrame } from "./dashboard-theme";
 import { DashboardTopbar } from "./dashboard-topbar";
 import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
-
-type DashboardTheme = "dark" | "light";
+import type { ThemePreference } from "@/lib/theme";
 
 export type DashboardShellCopy = Pick<
   BizPilotCopy["dashboard"],
@@ -26,7 +25,7 @@ type DashboardShellProps = Readonly<{
   businessId: string;
   businessSlug: string;
   children: React.ReactNode;
-  initialTheme?: DashboardTheme;
+  initialTheme?: ThemePreference;
   copy: DashboardShellCopy;
   showFounderAdmin?: boolean;
   userLabel: string;

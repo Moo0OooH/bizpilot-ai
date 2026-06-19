@@ -2,17 +2,18 @@
  * ============================================================
  * File: components/public/marketing-ui.tsx
  * Project: BizPilot AI
- * Description: Shared public marketing primitives for the light founder-pilot site.
- * Role: Provides responsive header, footer, containers, cards, badges, buttons, and icons for public routes.
+ * Description: Shared public marketing primitives for the founder-pilot site.
+ * Role: Provides responsive header, footer, containers, cards, badges, buttons, icons, and theme control for public routes.
  * Related:
  * - app/page.tsx
  * - app/globals.css
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-18
+ * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
+ * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
  * ============================================================
  */
 
@@ -20,6 +21,7 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
 import { MarketingCompactMenu } from "@/components/public/marketing-compact-menu";
+import { ThemePreferenceControl } from "@/components/ui/theme-preference-control";
 import type { HomeNavCopy } from "@/lib/i18n/home-copy";
 import {
   languageNativeLabels,
@@ -30,25 +32,24 @@ import {
 import { setInterfaceLanguageAction } from "@/server/actions/business-configuration.actions";
 
 export const marketingTone = {
-  bg: "#F8FAFC",
-  bgSoft: "#F1F5F9",
-  text: "#0F172A",
-  soft: "#334155",
-  muted: "#64748B",
-  faint: "rgba(15,23,42,0.12)",
-  border: "#E2E8F0",
-  borderStrong: "#CBD5E1",
-  surface: "#FFFFFF",
-  surfaceStrong: "#F8FAFC",
-  teal: "#14B8A6",
-  emerald: "#10B981",
-  gold: "#F59E0B",
-  red: "#DC2626",
-  blue: "#2563EB",
+  bg: "var(--canvas)",
+  bgSoft: "var(--canvas-subtle)",
+  text: "var(--text-strong)",
+  soft: "var(--text-default)",
+  muted: "var(--text-muted)",
+  faint: "var(--border-default)",
+  border: "var(--border-default)",
+  borderStrong: "var(--border-strong)",
+  surface: "var(--surface)",
+  surfaceStrong: "var(--surface-elevated)",
+  teal: "var(--accent)",
+  emerald: "var(--success)",
+  gold: "var(--warning)",
+  red: "var(--danger)",
+  blue: "var(--primary)",
 };
 
-export const marketingBackground =
-  "radial-gradient(circle at 8% 4%, rgba(37,99,235,0.09), transparent 28rem), radial-gradient(circle at 92% 12%, rgba(20,184,166,0.12), transparent 30rem), linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 46%, #F1F5F9 100%)";
+export const marketingBackground = "var(--marketing-background)";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 type BadgeTone = "teal" | "gold" | "blue" | "red" | "neutral";
@@ -237,9 +238,9 @@ export function MarketingCard({
     <div
       className={`min-w-0 rounded-[20px] border ${className}`}
       style={{
-        background: "#FFFFFF",
+        background: "var(--surface)",
         borderColor: marketingTone.border,
-        boxShadow: "0 18px 48px rgba(15,23,42,0.07)",
+        boxShadow: "var(--shadow-md)",
         ...style,
       }}
     >
@@ -254,13 +255,13 @@ export function MarketingBadge({
 }: Readonly<{ children: ReactNode; toneName?: BadgeTone }>) {
   const palette: Record<BadgeTone, { bg: string; border: string; color: string }> = {
     blue: {
-      bg: "rgba(84,167,255,0.11)",
-      border: "rgba(84,167,255,0.28)",
+      bg: "color-mix(in srgb, var(--primary) 12%, transparent)",
+      border: "color-mix(in srgb, var(--primary) 28%, transparent)",
       color: marketingTone.blue,
     },
     gold: {
-      bg: "rgba(246,184,75,0.12)",
-      border: "rgba(246,184,75,0.30)",
+      bg: "color-mix(in srgb, var(--warning) 12%, transparent)",
+      border: "color-mix(in srgb, var(--warning) 30%, transparent)",
       color: marketingTone.gold,
     },
     neutral: {
@@ -269,13 +270,13 @@ export function MarketingBadge({
       color: marketingTone.soft,
     },
     red: {
-      bg: "rgba(255,95,102,0.12)",
-      border: "rgba(255,95,102,0.30)",
+      bg: "color-mix(in srgb, var(--danger) 12%, transparent)",
+      border: "color-mix(in srgb, var(--danger) 30%, transparent)",
       color: marketingTone.red,
     },
     teal: {
-      bg: "rgba(45,212,191,0.11)",
-      border: "rgba(45,212,191,0.30)",
+      bg: "color-mix(in srgb, var(--accent) 12%, transparent)",
+      border: "color-mix(in srgb, var(--accent) 30%, transparent)",
       color: marketingTone.teal,
     },
   };
@@ -312,7 +313,7 @@ export function MarketingButton({
   variant?: ButtonVariant;
 }>) {
   const base =
-    "inline-flex min-h-12 max-w-full min-w-0 items-center justify-center gap-3 rounded-[14px] px-5 text-center text-[14px] font-black leading-tight transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.22)]";
+    "inline-flex min-h-12 max-w-full min-w-0 items-center justify-center gap-3 rounded-[14px] px-5 text-center text-[14px] font-black leading-tight transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]";
 
   if (variant === "primary") {
     return (
@@ -320,9 +321,9 @@ export function MarketingButton({
         className={`${base} hover:-translate-y-0.5 ${className}`}
         href={href}
         style={{
-          background: "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)",
-          boxShadow: "0 16px 34px rgba(37,99,235,0.22)",
-          color: "#FFFFFF",
+          background: "linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%)",
+          boxShadow: "0 16px 34px color-mix(in srgb, var(--primary) 22%, transparent)",
+          color: "var(--primary-contrast)",
         }}
       >
         {children}
@@ -336,7 +337,7 @@ export function MarketingButton({
         className={`${base} border hover:-translate-y-0.5 ${className}`}
         href={href}
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "var(--surface)",
           borderColor: marketingTone.borderStrong,
           color: marketingTone.text,
         }}
@@ -348,7 +349,7 @@ export function MarketingButton({
 
   return (
     <Link
-      className={`inline-flex min-h-11 min-w-0 items-center justify-center rounded-[12px] px-3 py-2 text-center text-[13px] font-bold leading-tight transition hover:bg-slate-100 ${className}`}
+      className={`inline-flex min-h-11 min-w-0 items-center justify-center rounded-[12px] px-3 py-2 text-center text-[13px] font-bold leading-tight transition hover:bg-[var(--surface-interactive)] ${className}`}
       href={href}
       style={{ color: marketingTone.soft }}
     >
@@ -366,9 +367,9 @@ export function MarketingBrand({
         aria-hidden
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[16px] font-black"
         style={{
-          background: "linear-gradient(135deg, #2563EB 0%, #14B8A6 100%)",
-          boxShadow: "0 12px 26px rgba(37,99,235,0.20)",
-          color: "#FFFFFF",
+          background: "linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%)",
+          boxShadow: "0 12px 26px color-mix(in srgb, var(--primary) 20%, transparent)",
+          color: "var(--primary-contrast)",
         }}
       >
         B
@@ -411,7 +412,7 @@ export function MarketingHeader({
         aria-label={copy.languageLabel}
         className="flex min-h-11 items-center rounded-[10px] border p-1"
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "var(--surface)",
           borderColor: marketingTone.borderStrong,
         }}
       >
@@ -427,7 +428,7 @@ export function MarketingHeader({
               name="language"
               style={{
                 backgroundColor: selected ? marketingTone.blue : "transparent",
-                color: selected ? "#FFFFFF" : marketingTone.text,
+                color: selected ? "var(--primary-contrast)" : marketingTone.text,
               }}
               title={languageNativeLabels[option]}
               type="submit"
@@ -443,7 +444,7 @@ export function MarketingHeader({
   return (
     <header
       className="sticky top-0 z-40 border-b backdrop-blur-xl"
-      style={{ backgroundColor: "rgba(248,250,252,0.88)", borderColor: marketingTone.border }}
+      style={{ backgroundColor: "color-mix(in srgb, var(--canvas) 88%, transparent)", borderColor: marketingTone.border }}
     >
       <nav className="public-container flex min-h-[64px] items-center justify-between gap-3 py-2">
         <MarketingBrand subtitle={copy.brandSubtitle} />
@@ -453,7 +454,7 @@ export function MarketingHeader({
 
             return (
               <Link
-                className="inline-flex min-h-11 items-center whitespace-nowrap rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
+                className="inline-flex min-h-11 items-center whitespace-nowrap rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                 href={item.href}
                 key={item.href}
                 style={{ color: selected ? marketingTone.text : marketingTone.soft }}
@@ -465,8 +466,9 @@ export function MarketingHeader({
         </div>
         <div className="hidden shrink-0 items-center gap-2 min-[1180px]:flex">
           {renderLanguageForm()}
+          <ThemePreferenceControl language={language ?? "en"} />
           <Link
-            className="inline-flex min-h-11 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
+            className="inline-flex min-h-11 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
             href="/auth/sign-in"
             style={{ color: marketingTone.soft }}
           >
@@ -480,7 +482,7 @@ export function MarketingHeader({
             <div className="grid gap-1">
               {navItems.map((item) => (
                 <Link
-                  className="min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
+                  className="min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                   href={item.href}
                   key={item.href}
                   style={{ color: marketingTone.text }}
@@ -491,8 +493,9 @@ export function MarketingHeader({
             </div>
             <div className="grid gap-3 border-t pt-3" style={{ borderColor: marketingTone.border }}>
               {renderLanguageForm()}
+              <ThemePreferenceControl className="w-full justify-center" language={language ?? "en"} />
               <Link
-                className="inline-flex min-h-11 items-center justify-center rounded-[12px] border px-4 text-[13px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
+                className="inline-flex min-h-11 items-center justify-center rounded-[12px] border px-4 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                 href="/auth/sign-in"
                 style={{ borderColor: marketingTone.borderStrong, color: marketingTone.soft }}
               >
@@ -529,7 +532,7 @@ export function MarketingFooter({
         <MarketingBrand subtitle={copy.brandSubtitle} />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2" style={{ color: marketingTone.soft }}>
           {links.map((link) => (
-            <Link className="inline-flex min-h-11 items-center rounded-[8px] py-1 hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]" href={link.href} key={link.href}>
+            <Link className="inline-flex min-h-11 items-center rounded-[8px] py-1 hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]" href={link.href} key={link.href}>
               {link.label}
             </Link>
           ))}

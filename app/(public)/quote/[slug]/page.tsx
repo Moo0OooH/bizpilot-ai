@@ -3,7 +3,7 @@
  * File: app/(public)/quote/[slug]/page.tsx
  * Project: BizPilot AI
  * Description: Public branded cleaning quote page.
- * Role: Renders public-safe business branding + a grouped intake form.
+ * Role: Renders public-safe business branding + a grouped intake form with shared semantic theme tokens.
  * Related:
  * - components/public/quote-form-wizard.tsx
  * - server/actions/public-intake.actions.ts
@@ -11,11 +11,12 @@
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-05-06: Created public quote page with dynamic form rendering.
  * - 2026-05-19: Replaced inline single-page form with grouped quote sections for higher completion rate per UX research.
  * - 2026-05-22: Kept all grouped sections visible so public submit does not depend on client-side step navigation.
+ * - 2026-06-19: Mapped public quote shell colors to shared semantic theme tokens.
  * ============================================================
  */
 
@@ -77,16 +78,16 @@ export default async function QuotePage({
   const todayDate = todayDateString();
 
   return (
-    <main className="min-h-screen bg-[#F8FAFC] text-[#0F172A]">
-      <section className="border-b border-[#E2E8F0] px-5 py-6 sm:px-8">
+    <main className="public-site min-h-svh bg-[var(--canvas)] text-[var(--text-strong)]">
+      <section className="border-b border-[var(--border-default)] px-5 py-6 sm:px-8">
         <div className="mx-auto w-full max-w-[780px]">
-          <p className="text-[13px] font-black uppercase tracking-[0.14em] text-[#2563EB]">
+          <p className="text-[13px] font-black uppercase tracking-[0.14em] text-[var(--primary)]">
             {page.publicLink.display_name}
           </p>
           <h1 className="mt-3 text-[34px] font-black leading-[1.06] sm:text-[44px]">
             Request a cleaning quote
           </h1>
-          <p className="mt-4 max-w-[620px] text-[16px] leading-7 text-[#334155]">
+          <p className="mt-4 max-w-[620px] text-[16px] leading-7 text-[var(--text-default)]">
             Tell us what you need and we&apos;ll review your request.
           </p>
           <p className="mt-4 rounded-[16px] border border-amber-200 bg-amber-50 p-4 text-[14px] leading-6 text-amber-800">

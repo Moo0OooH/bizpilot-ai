@@ -3,13 +3,16 @@
  * File: components/public/quote-unavailable.tsx
  * Project: BizPilot AI
  * Description: Localized public quote unavailable state.
- * Role: Keeps missing/inactive quote links language-aware without exposing tenant data.
+ * Role: Keeps missing/inactive quote links language-aware and theme-aware without exposing tenant data.
  * Related:
  * - app/(public)/quote/page.tsx
  * - app/(public)/quote/[slug]/page.tsx
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-05-25
+ * Last Updated: 2026-06-19
+ * Change Log:
+ * - 2026-06-19: Mapped unavailable quote state to shared semantic theme tokens.
  * ============================================================
  */
 
@@ -19,7 +22,6 @@ import {
   BizPilotBrand,
   BizPilotThemeShell,
 } from "@/components/ui/bizpilot-theme";
-import { bizTheme } from "@/lib/design-tokens";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
   languageShortLabels,
@@ -35,17 +37,17 @@ export function QuoteUnavailable({
 
   return (
     <BizPilotThemeShell>
-      <main className="flex min-h-screen items-center justify-center px-4 py-10">
-        <section className="w-full max-w-[560px] rounded-[18px] border border-white/[0.08] bg-white/[0.035] p-6 text-center shadow-2xl shadow-black/20">
+      <main className="public-site flex min-h-svh items-center justify-center px-4 py-10">
+        <section className="w-full max-w-[560px] rounded-[18px] border p-6 text-center shadow-[var(--shadow-lg)]" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border-default)" }}>
           <BizPilotBrand compact subtitle={copy.unavailableSubtitle} />
-          <h1 className="mt-5 text-2xl font-extrabold text-[#F5F7FA]">
+          <h1 className="mt-5 text-2xl font-extrabold text-[var(--text-strong)]">
             {copy.unavailableTitle}
           </h1>
-          <p className={`mt-3 text-sm leading-6 ${bizTheme.secondaryText}`}>
+          <p className="mt-3 text-sm leading-6 text-[var(--text-default)]">
             {copy.unavailableBody}
           </p>
           <div className="mt-5 flex justify-center">
-            <div className="inline-flex rounded-[12px] border border-white/[0.10] bg-white/[0.035] p-1">
+            <div className="inline-flex rounded-[12px] border p-1" style={{ backgroundColor: "var(--surface-elevated)", borderColor: "var(--border-default)" }}>
               {supportedLanguages.map((option) => {
                 const selected = option === language;
 
@@ -61,7 +63,7 @@ export function QuoteUnavailable({
                     key={option}
                     style={{
                       backgroundColor: selected ? "var(--biz-primary)" : "transparent",
-                      color: selected ? "#03130c" : "#F5F7FA",
+                      color: selected ? "var(--primary-contrast)" : "var(--text-strong)",
                     }}
                   >
                     {languageShortLabels[option]}
@@ -75,7 +77,7 @@ export function QuoteUnavailable({
             href="/"
             style={{
               backgroundColor: "var(--biz-primary)",
-              color: "#03130c",
+              color: "var(--primary-contrast)",
             }}
           >
             {copy.unavailableCta}

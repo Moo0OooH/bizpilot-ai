@@ -3,24 +3,26 @@
  * File: components/auth/auth-ui.tsx
  * Project: BizPilot AI
  * Description: Auth page primitives - single centered card.
- * Role: Owner access screens follow Design System v1.0 section 10.2 and share localized copy primitives.
+ * Role: Owner access screens follow Design System v1.0 section 10.2, shared theme preference, and localized copy primitives.
  * Related:
  * - app/auth/sign-in/page.tsx
  * - app/auth/sign-up/page.tsx
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-05-12
- * Last Updated: 2026-06-18
+ * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-05-19: Rebuilt as single centered card. Removed the split layout that caused scroll/scale issues.
  * - 2026-05-23: Added shared language switcher and localized auth chrome.
  * - 2026-06-18: Switched auth shell to short-height-safe svh layout.
+ * - 2026-06-19: Added the shared System/Light/Dark preference control to auth chrome.
  * ============================================================
  */
 
 import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { languageNativeLabels, supportedLanguages } from "@/lib/i18n/language";
 import { setInterfaceLanguageAction } from "@/server/actions/business-configuration.actions";
+import { ThemePreferenceControl } from "@/components/ui/theme-preference-control";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -98,6 +100,7 @@ export function AuthShell({
         <div className="flex shrink-0 items-center gap-2">
           <form
             action={setInterfaceLanguageAction}
+            aria-label="Auth language"
             className="flex rounded-[10px] border border-[var(--biz-border-medium)] p-1"
           >
             <input name="redirectTo" type="hidden" value={redirectPath} />
@@ -124,6 +127,7 @@ export function AuthShell({
               </button>
             ))}
           </form>
+          <ThemePreferenceControl className="hidden sm:inline-flex" language={language} />
           <Link
             className="hidden text-[12px] font-bold sm:inline"
             href="/"
@@ -132,6 +136,10 @@ export function AuthShell({
             &larr; {copy.backHome}
           </Link>
         </div>
+      </div>
+
+      <div className={`mb-4 flex w-full ${maxWidthClassName} justify-center sm:hidden`}>
+        <ThemePreferenceControl className="w-full justify-center" language={language} />
       </div>
 
       <section className={`w-full ${maxWidthClassName}`}>{children}</section>

@@ -10,10 +10,11 @@
  * - docs/product/BIZPILOT_FOUNDER_ADMIN_CONSOLE_SPEC_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-06-18
+ * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-05-26: Moved production health ahead of data grids so empty admin data is tied to safe runtime diagnostics.
  * - 2026-06-18: Updated founder access fallback to svh/clip frame for responsive hardening.
+ * - 2026-06-19: Read the shared theme preference cookie while preserving legacy dashboard theme fallback.
  * ============================================================
  */
 
@@ -39,6 +40,7 @@ import {
   StatusBadge,
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
+import { readThemePreference } from "@/lib/theme";
 import { languageLabels } from "@/lib/i18n/language";
 import {
   founderInboxLeadDeleteAction,
@@ -2765,8 +2767,10 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const usersPageSize = readFounderUserPageSize(params.userPageSize);
   const activePanel = readAdminPanel(params.adminPanel);
   const cookieStore = await cookies();
-  const initialTheme =
-    cookieStore.get("bizpilot-dashboard-theme")?.value === "dark" ? "dark" : "light";
+  const initialTheme = readThemePreference(
+    cookieStore.get("bizpilot-theme-preference")?.value ??
+      cookieStore.get("bizpilot-dashboard-theme")?.value,
+  );
   let overview;
   try {
     overview = await getFounderAdminOverview({

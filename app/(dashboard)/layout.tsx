@@ -1,9 +1,9 @@
 /**
  * File: app/(dashboard)/layout.tsx
  * Project: BizPilot AI
- * Role: Protected dashboard route group layout. Resolves theme from cookie
+ * Role: Protected dashboard route group layout. Resolves theme preference from cookie
  * server-side so hydration matches client-side first render.
- * Last Updated: 2026-05-18
+ * Last Updated: 2026-06-19
  */
 
 import { cookies } from "next/headers";
@@ -22,6 +22,7 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   resolveWorkspaceInterfaceLanguage,
 } from "@/lib/i18n/language";
+import { readThemePreference } from "@/lib/theme";
 import { WORKSPACE_RECOVERY_ERROR_COOKIE } from "@/lib/workspace-recovery/constants";
 import { signOutAction } from "@/server/actions/auth.actions";
 import { recoverWorkspaceAccessAction } from "@/server/actions/workspace-recovery.actions";
@@ -129,7 +130,7 @@ export default async function DashboardLayout({
     businessLanguage: activeBusiness.preferred_language,
     cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
   });
-  const initialTheme = themeCookie === "dark" ? "dark" : "light";
+  const initialTheme = readThemePreference(themeCookie);
   const copy = getBizPilotCopy(activeLanguage).dashboard;
   const shellCopy = {
     actions: copy.actions,

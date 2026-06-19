@@ -2,43 +2,70 @@
 ============================================================
 File: app/globals.css
 Project: BizPilot AI
-Description: Defines global Tailwind, base CSS variables, public responsive tokens, and scoped dashboard themes.
-Role: Provides the global styling foundation, public responsive primitives, and protected dashboard theme tokens.
+Description: Defines global Tailwind, semantic UI tokens, public responsive tokens, and scoped dashboard themes.
+Role: Provides the global styling foundation, theme primitives, public responsive primitives, and protected dashboard theme tokens.
 Related:
 - app/layout.tsx
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-06-18
+Last Updated: 2026-06-19
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
 - 2026-05-18: Updated dashboard dark theme to the approved emerald/navy command-center direction.
 - 2026-05-26: Unified dashboard light/dark action colors and component surfaces for Phase 21X UI QA.
 - 2026-06-18: Added public responsive tokens, no-overflow primitives, and legal/dashboard containers.
+- 2026-06-19: Added semantic System/Light/Dark tokens shared by marketing, auth, quote, dashboard, and admin shells.
 ============================================================
 */
 
 @import "tailwindcss";
 
-:root {
+:root,
+[data-theme="light"] {
+  color-scheme: light;
   --background: #ffffff;
   --foreground: #171717;
-  --public-bg-page: #f8fafc;
-  --public-bg-surface: #ffffff;
-  --public-bg-surface-alt: #f1f5f9;
-  --public-text-strong: #0f172a;
-  --public-text-body: #334155;
-  --public-text-muted: #64748b;
-  --public-border: #e2e8f0;
-  --public-border-strong: #cbd5e1;
-  --public-primary: #2563eb;
-  --public-primary-hover: #1d4ed8;
-  --public-accent: #14b8a6;
-  --public-success: #10b981;
-  --public-warning: #f59e0b;
-  --public-focus: rgba(37, 99, 235, 0.22);
-  --public-shadow: 0 18px 48px rgba(15, 23, 42, 0.07);
+  --canvas: #f8fafc;
+  --canvas-subtle: #f1f5f9;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --surface-interactive: #eef6ff;
+  --text-strong: #0f172a;
+  --text-default: #334155;
+  --text-muted: #64748b;
+  --border-default: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-contrast: #ffffff;
+  --accent: #14b8a6;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+  --focus-ring: rgba(37, 99, 235, 0.22);
+  --shadow-sm: 0 8px 22px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 18px 48px rgba(15, 23, 42, 0.07);
+  --shadow-lg: 0 28px 78px rgba(15, 23, 42, 0.12);
+  --gradient-start: #2563eb;
+  --gradient-end: #14b8a6;
+  --marketing-background: radial-gradient(circle at 8% 4%, rgba(37,99,235,0.09), transparent 28rem), radial-gradient(circle at 92% 12%, rgba(20,184,166,0.12), transparent 30rem), linear-gradient(180deg, #f8fafc 0%, #ffffff 46%, #f1f5f9 100%);
+  --public-bg-page: var(--canvas);
+  --public-bg-surface: var(--surface);
+  --public-bg-surface-alt: var(--canvas-subtle);
+  --public-text-strong: var(--text-strong);
+  --public-text-body: var(--text-default);
+  --public-text-muted: var(--text-muted);
+  --public-border: var(--border-default);
+  --public-border-strong: var(--border-strong);
+  --public-primary: var(--primary);
+  --public-primary-hover: var(--primary-hover);
+  --public-accent: var(--accent);
+  --public-success: var(--success);
+  --public-warning: var(--warning);
+  --public-focus: var(--focus-ring);
+  --public-shadow: var(--shadow-md);
   --public-max: 75rem;
   --public-gutter: clamp(1rem, 0.55rem + 1.8vw, 2.5rem);
   --legal-max: 50rem;
@@ -51,29 +78,29 @@ Change Log:
   --section-space-compact: clamp(2.5rem, 2rem + 1.4vw, 4.5rem);
   --card-pad: clamp(1rem, 0.75rem + 0.9vw, 2rem);
   --grid-gap: clamp(1rem, 0.75rem + 0.8vw, 1.75rem);
-  --biz-page-bg: #080d12;
-  --biz-page-bg-deep: #080d12;
-  --biz-page-surface: #0f1a24;
-  --biz-page-surface-elevated: #13202e;
-  --biz-page-border: rgba(255, 255, 255, 0.07);
-  --biz-page-text: #eef2f6;
-  --biz-page-text-soft: #7a90a4;
-  --biz-page-text-muted: #435566;
-  --biz-bg-dark: #080d12;
-  --biz-bg-dark-2: #0d1520;
-  --biz-surface-dark: #0f1a24;
-  --biz-surface-elevated: #13202e;
-  --biz-border-subtle: rgba(255, 255, 255, 0.07);
-  --biz-border-medium: rgba(255, 255, 255, 0.13);
-  --biz-border-strong: rgba(255, 255, 255, 0.18);
-  --biz-text-primary: #eef2f6;
-  --biz-text-secondary: #7a90a4;
-  --biz-text-muted: #435566;
-  --biz-primary: #00d084;
-  --biz-primary-hover: #00a868;
-  --biz-success: #00d084;
-  --biz-warning: #ffab00;
-  --biz-danger: #ff4757;
+  --biz-page-bg: var(--canvas);
+  --biz-page-bg-deep: var(--canvas-subtle);
+  --biz-page-surface: var(--surface);
+  --biz-page-surface-elevated: var(--surface-elevated);
+  --biz-page-border: var(--border-default);
+  --biz-page-text: var(--text-strong);
+  --biz-page-text-soft: var(--text-default);
+  --biz-page-text-muted: var(--text-muted);
+  --biz-bg-dark: var(--canvas);
+  --biz-bg-dark-2: var(--canvas-subtle);
+  --biz-surface-dark: var(--surface);
+  --biz-surface-elevated: var(--surface-elevated);
+  --biz-border-subtle: var(--border-default);
+  --biz-border-medium: var(--border-strong);
+  --biz-border-strong: var(--border-strong);
+  --biz-text-primary: var(--text-strong);
+  --biz-text-secondary: var(--text-default);
+  --biz-text-muted: var(--text-muted);
+  --biz-primary: var(--accent);
+  --biz-primary-hover: #0f766e;
+  --biz-success: var(--success);
+  --biz-warning: var(--warning);
+  --biz-danger: var(--danger);
   --biz-loss-accent: #e8d5b0;
   --biz-blue-accent: #4fa8ff;
   --biz-ai-accent: #8b5cf6;
@@ -95,6 +122,90 @@ Change Log:
   --dash-ai-soft: rgba(139, 92, 246, 0.1);
 }
 
+[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #08111f;
+  --foreground: #f8fafc;
+  --canvas: #08111f;
+  --canvas-subtle: #0e1828;
+  --surface: #101a2b;
+  --surface-elevated: #162236;
+  --surface-interactive: #1d2d45;
+  --text-strong: #f8fafc;
+  --text-default: #d7e0ea;
+  --text-muted: #a7b4c5;
+  --border-default: #26364d;
+  --border-strong: #36506f;
+  --primary: #60a5fa;
+  --primary-hover: #93c5fd;
+  --primary-contrast: #06111f;
+  --accent: #2dd4bf;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --danger: #fb7185;
+  --focus-ring: rgba(96, 165, 250, 0.34);
+  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 18px 54px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 30px 84px rgba(0, 0, 0, 0.38);
+  --gradient-start: #60a5fa;
+  --gradient-end: #2dd4bf;
+  --marketing-background: radial-gradient(circle at 8% 4%, rgba(96,165,250,0.12), transparent 28rem), radial-gradient(circle at 92% 12%, rgba(45,212,191,0.12), transparent 30rem), linear-gradient(180deg, #08111f 0%, #0b1220 48%, #0e1828 100%);
+  --public-bg-page: var(--canvas);
+  --public-bg-surface: var(--surface);
+  --public-bg-surface-alt: var(--canvas-subtle);
+  --public-text-strong: var(--text-strong);
+  --public-text-body: var(--text-default);
+  --public-text-muted: var(--text-muted);
+  --public-border: var(--border-default);
+  --public-border-strong: var(--border-strong);
+  --public-primary: var(--primary);
+  --public-primary-hover: var(--primary-hover);
+  --public-accent: var(--accent);
+  --public-success: var(--success);
+  --public-warning: var(--warning);
+  --public-focus: var(--focus-ring);
+  --public-shadow: var(--shadow-md);
+  --biz-page-bg: var(--canvas);
+  --biz-page-bg-deep: #050b13;
+  --biz-page-surface: var(--surface);
+  --biz-page-surface-elevated: var(--surface-elevated);
+  --biz-page-border: var(--border-default);
+  --biz-page-text: var(--text-strong);
+  --biz-page-text-soft: var(--text-default);
+  --biz-page-text-muted: var(--text-muted);
+  --biz-bg-dark: var(--canvas);
+  --biz-bg-dark-2: var(--canvas-subtle);
+  --biz-surface-dark: var(--surface);
+  --biz-surface-elevated: var(--surface-elevated);
+  --biz-border-subtle: var(--border-default);
+  --biz-border-medium: var(--border-default);
+  --biz-border-strong: var(--border-strong);
+  --biz-text-primary: var(--text-strong);
+  --biz-text-secondary: var(--text-default);
+  --biz-text-muted: var(--text-muted);
+  --biz-primary: var(--accent);
+  --biz-primary-hover: #5eead4;
+  --biz-success: var(--success);
+  --biz-warning: var(--warning);
+  --biz-danger: var(--danger);
+  --dash-bg: var(--canvas);
+  --dash-bg-soft: var(--canvas-subtle);
+  --dash-surface: var(--surface);
+  --dash-surface-muted: #132033;
+  --dash-surface-elevated: var(--surface-elevated);
+  --dash-border: rgba(148, 163, 184, 0.16);
+  --dash-border-strong: rgba(148, 163, 184, 0.25);
+  --dash-text: var(--text-strong);
+  --dash-text-secondary: var(--text-default);
+  --dash-text-muted: var(--text-muted);
+  --dash-primary: var(--accent);
+  --dash-primary-hover: #5eead4;
+  --dash-primary-soft: rgba(45, 212, 191, 0.12);
+  --dash-warning-soft: rgba(251, 191, 36, 0.12);
+  --dash-danger-soft: rgba(251, 113, 133, 0.1);
+  --dash-ai-soft: rgba(96, 165, 250, 0.12);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -103,8 +214,8 @@ Change Log:
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--canvas);
+  color: var(--text-default);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   min-width: 0;
 }
@@ -130,7 +241,13 @@ canvas {
 }
 
 :where(h1, h2, h3, p, a, button, label, td, th, span, li) {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+}
+
+input,
+textarea,
+select {
+  color-scheme: inherit;
 }
 
 :where([id]) {
@@ -138,7 +255,37 @@ canvas {
 }
 
 .public-site {
-  color-scheme: only light;
+  background: var(--canvas);
+  color: var(--text-default);
+  color-scheme: inherit;
+}
+
+.public-site :where(.bg-white) {
+  background-color: var(--surface);
+}
+
+[data-theme="dark"] .public-site :where(.bg-white, .bg-slate-50, .bg-zinc-50) {
+  background-color: var(--surface);
+}
+
+[data-theme="dark"] .public-site :where(.bg-slate-100, .bg-zinc-100) {
+  background-color: var(--surface-interactive);
+}
+
+[data-theme="dark"] .public-site :where(.border-slate-100, .border-slate-200, .border-zinc-100, .border-zinc-200) {
+  border-color: var(--border-default);
+}
+
+[data-theme="dark"] .public-site :where(.text-slate-950, .text-slate-900, .text-zinc-950, .text-zinc-900) {
+  color: var(--text-strong);
+}
+
+[data-theme="dark"] .public-site :where(.text-slate-700, .text-slate-600, .text-zinc-700, .text-zinc-600) {
+  color: var(--text-default);
+}
+
+[data-theme="dark"] .public-site :where(.text-slate-500, .text-slate-400, .text-zinc-500, .text-zinc-400) {
+  color: var(--text-muted);
 }
 
 .public-container {

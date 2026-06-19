@@ -798,6 +798,7 @@ type DashboardCopy = Readonly<{
     dark: string;
     label: string;
     light: string;
+    system: string;
   }>;
   workspaceAccess: DashboardWorkspaceAccessCopy;
 }>;
@@ -1924,7 +1925,7 @@ const englishCopy: BizPilotCopy = {
       themeDescription:
         "Hydration-safe theme. The first paint is resolved server-side.",
       themeHelp:
-        "Dark mode remains the default operational view. Light mode is available for daytime use.",
+        "Default follows your device. Choose Light or Dark when you want a fixed view.",
       workspace: "Workspace",
       workspaceDescription:
         "Workspace, account, theme, language, feature levels, and owner-controlled setup.",
@@ -1939,6 +1940,7 @@ const englishCopy: BizPilotCopy = {
       dark: "Dark",
       label: "Dashboard theme",
       light: "Light",
+      system: "System",
     },
     workspaceAccess: {
       deletionRequestedBody:
@@ -3310,7 +3312,7 @@ const frenchCopy: BizPilotCopy = {
       themeDescription:
         "Thème sans problème d'hydratation. Le premier affichage est résolu côté serveur.",
       themeHelp:
-        "Le mode sombre reste le mode opérationnel par défaut. Le mode clair est disponible le jour.",
+        "Par défaut, le thème suit votre appareil. Choisissez Clair ou Sombre pour une vue fixe.",
       workspace: "Espace",
       workspaceDescription:
         "Espace, compte, theme, langue, niveaux de fonctionnalites et setup controle par le proprietaire principal.",
@@ -3325,6 +3327,7 @@ const frenchCopy: BizPilotCopy = {
       dark: "Sombre",
       label: "Thème du tableau de bord",
       light: "Clair",
+      system: "Système",
     },
     workspaceAccess: {
       deletionRequestedBody:

@@ -3,14 +3,14 @@
  * File: app/(public)/quote/[slug]/success/page.tsx
  * Project: BizPilot AI
  * Description: Customer-facing quote request success page.
- * Role: Confirms intake capture, sets the right expectation about owner reply, and keeps public quote UX manual-first. No booking or price is implied.
+ * Role: Confirms intake capture, sets the right expectation about owner reply, and keeps public quote UX manual-first with shared theme tokens. No booking or price is implied.
  * Related:
  * - app/(public)/quote/[slug]/page.tsx
  * - server/services/public-intake.service.ts
  * - docs/product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-06-19
  * Change Log:
  * - 2026-05-06: Created public quote request success page.
  * - 2026-05-19: Rebuilt to match the approved index — dark navy surface, emerald check, next-steps card, return link. Removed the light slate theme that broke design-system parity.
@@ -90,10 +90,9 @@ export default async function QuoteSuccessPage({
 
   return (
     <main
-      className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6"
+      className="public-site flex min-h-svh items-center justify-center px-4 py-10 sm:px-6"
       style={{
-        background:
-          "radial-gradient(circle at 18% 6%, rgba(20,184,166,0.16), transparent 28%), radial-gradient(circle at 86% 12%, rgba(45,212,191,0.10), transparent 26%), linear-gradient(140deg, var(--biz-page-bg), var(--biz-bg-dark-2))",
+        background: "var(--marketing-background)",
         color: "var(--biz-page-text)",
       }}
     >
