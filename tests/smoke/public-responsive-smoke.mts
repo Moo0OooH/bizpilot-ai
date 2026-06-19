@@ -56,8 +56,12 @@ const routes: readonly RouteContract[] = [
     path: "/pricing",
   },
   {
-    h1: "Join the BizPilot founder pilot.",
-    mustContain: ["Preview only", "disabled", "Request email template"],
+    h1: "Help shape BizPilot around real cleaning work.",
+    mustContain: [
+      "Pilot requests are being prepared.",
+      "Copy pilot request template",
+      "Preview the six application questions",
+    ],
     path: "/pilot",
   },
   {

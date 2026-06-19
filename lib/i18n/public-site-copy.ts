@@ -258,35 +258,26 @@ type PricingCopy = Readonly<{
   badge: string;
 }>;
 
+export type PilotConversionCopy = Readonly<{
+  body: string;
+  copiedStatus: string;
+  fallbackBody: string;
+  previewQuestions: readonly string[];
+  previewTitle: string;
+  primaryAction: string;
+  secondaryAction: string;
+  selectedStatus: string;
+  selectAction: string;
+  template: string;
+  templateLabel: string;
+  title: string;
+}>;
+
 type PilotCopy = Readonly<{
   body: string;
+  conversion: PilotConversionCopy;
   fitItems: readonly string[];
   fitTitle: string;
-  form: Readonly<{
-    biggestProblem: string;
-    businessName: string;
-    city: string;
-    copyTemplate: string;
-    email: string;
-    fieldsetLegend: string;
-    language: string;
-    languageOptions: readonly string[];
-    ownerName: string;
-    phone: string;
-    previewBody: string;
-    previewNotice: string;
-    previewStatus: string;
-    requestTemplate: string;
-    requestTemplateLabel: string;
-    safeBody: string;
-    safeTitle: string;
-    selectOne: string;
-    services: string;
-    title: string;
-    weeklyQuotes: string;
-    weeklyQuoteOptions: readonly string[];
-    website: string;
-  }>;
   getItems: readonly string[];
   getTitle: string;
   meta: MetaCopy;
@@ -922,47 +913,42 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   pilot: {
     badge: "Founder pilot",
     body:
-      "We are starting with a small group of cleaning businesses to improve the product around real owner workflows.",
+      "Join a small founder-led pilot built to help cleaning businesses capture quote requests, reply faster, and stay in control.",
+    conversion: {
+      body:
+        "Copy a 60-second request template now. Nothing is submitted or stored on this page.",
+      copiedStatus: "Pilot request template copied.",
+      fallbackBody:
+        "Clipboard permission was blocked. Use the fallback template below.",
+      previewQuestions: [
+        "Business name",
+        "Work email",
+        "City / service area",
+        "Weekly quote-volume range",
+        "Biggest lead-management problem",
+        "Preferred language",
+      ],
+      previewTitle: "Preview the six application questions",
+      primaryAction: "Copy pilot request template",
+      secondaryAction: "See pilot pricing",
+      selectedStatus: "Pilot request template selected.",
+      selectAction: "Select template",
+      template:
+        "Subject: BizPilot founder pilot request\nBusiness name:\nWork email:\nCity / service area:\nCleaning services:\nApproximate quote requests per week:\nBiggest lead-management problem:\nPreferred language: English / French / Both",
+      templateLabel: "Pilot request template",
+      title: "Pilot requests are being prepared.",
+    },
     fitItems: [
       "Owner-operated cleaning businesses",
       "Small cleaning teams",
-      "Businesses receiving quote requests online",
-      "Owners who want faster replies without CRM complexity",
+      "Businesses already receiving online quote requests",
+      "Owners who want speed without full-CRM complexity",
     ],
-    fitTitle: "Who this is for",
-    form: {
-      biggestProblem: "Biggest lead management problem",
-      businessName: "Business name",
-      city: "City",
-      copyTemplate: "Copy request template",
-      email: "Email",
-      fieldsetLegend: "Founder pilot request details",
-      language: "Preferred language",
-      languageOptions: ["English", "French", "Both"],
-      ownerName: "Owner name",
-      phone: "Phone",
-      previewBody:
-        "The safe request template below shows what to send once a verified public founder contact path is approved.",
-      previewNotice:
-        "Preview only: this form does not submit, store, or email pilot application data yet.",
-      previewStatus: "Safe preview: no public application endpoint is active yet.",
-      requestTemplate:
-        "Subject: BizPilot founder pilot request\n\nBusiness name:\nCity:\nCleaning services:\nQuote requests per week:\nBiggest lead problem:\nPreferred language:",
-      requestTemplateLabel: "Request email template",
-      safeBody:
-        "No verified public founder email is approved in the project, so this CTA does not expose a private address or submit production data.",
-      safeTitle: "Safe preview",
-      selectOne: "Select one",
-      services: "Cleaning services offered",
-      title: "Founder pilot request preview",
-      weeklyQuotes: "Approximate quote requests per week",
-      weeklyQuoteOptions: ["1-5", "6-15", "16+", "Not sure"],
-      website: "Website or social link",
-    },
+    fitTitle: "Good fit for",
     getItems: [
       "Cleaning quote request link",
-      "Lead inbox",
-      "AI summary and reply draft assistance",
+      "Organized lead inbox",
+      "AI-assisted summary and reply draft",
       "Manual copy/send workflow",
       "Founder-led setup",
       "Feedback-based improvements",
@@ -974,14 +960,12 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "Founder Pilot | BizPilot AI",
     },
     nextSteps: [
-      "You send a founder pilot request",
-      "The founder reviews your cleaning workflow",
-      "We prepare your quote page and sample workflow",
-      "You test the lead recovery flow",
-      "Real customer data starts only after final readiness approval",
+      "Send a short pilot request",
+      "Founder reviews the workflow",
+      "Selected businesses receive setup and a sample workflow",
     ],
     nextStepsTitle: "What happens next",
-    title: "Join the BizPilot founder pilot.",
+    title: "Help shape BizPilot around real cleaning work.",
   },
   pricing: {
     afterApply: {
@@ -1740,47 +1724,42 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   pilot: {
     badge: "Projet pilote fondateur",
     body:
-      "Nous commençons avec un petit groupe d'entreprises de nettoyage afin d'améliorer le produit autour de vrais flux de propriétaires.",
+      "Joignez-vous à un petit projet pilote guidé par le fondateur, conçu pour aider les entreprises de nettoyage à capter les demandes de soumission, répondre plus vite et garder le contrôle.",
+    conversion: {
+      body:
+        "Copiez maintenant un modèle de demande de 60 secondes. Rien n'est soumis ni stocké sur cette page.",
+      copiedStatus: "Modèle de demande pilote copié.",
+      fallbackBody:
+        "La permission du presse-papiers a été bloquée. Utilisez le modèle de secours ci-dessous.",
+      previewQuestions: [
+        "Nom de l'entreprise",
+        "Courriel professionnel",
+        "Ville / zone de service",
+        "Volume hebdomadaire de demandes",
+        "Plus grand problème de gestion des prospects",
+        "Langue préférée",
+      ],
+      previewTitle: "Aperçu des six questions de candidature",
+      primaryAction: "Copier le modèle de demande pilote",
+      secondaryAction: "Voir la tarification pilote",
+      selectedStatus: "Modèle de demande pilote sélectionné.",
+      selectAction: "Sélectionner le modèle",
+      template:
+        "Objet : demande pour le projet pilote BizPilot\nNom de l'entreprise :\nCourriel professionnel :\nVille / zone de service :\nServices de nettoyage :\nDemandes de soumission approximatives par semaine :\nPlus grand problème de gestion des prospects :\nLangue préférée : anglais / français / les deux",
+      templateLabel: "Modèle de demande pilote",
+      title: "Les demandes pour le projet pilote sont en préparation.",
+    },
     fitItems: [
       "Entreprises de nettoyage exploitées par le propriétaire",
       "Petites équipes de nettoyage",
-      "Entreprises qui reçoivent des demandes en ligne",
-      "Propriétaires qui veulent répondre plus vite sans complexité CRM",
+      "Entreprises qui reçoivent déjà des demandes de soumission en ligne",
+      "Propriétaires qui veulent de la vitesse sans complexité de CRM complet",
     ],
-    fitTitle: "À qui cela s'adresse",
-    form: {
-      biggestProblem: "Plus grand problème de gestion des prospects",
-      businessName: "Nom de l'entreprise",
-      city: "Ville",
-      copyTemplate: "Copier le modèle de demande",
-      email: "Courriel",
-      fieldsetLegend: "Détails de la demande de projet pilote",
-      language: "Langue préférée",
-      languageOptions: ["Anglais", "Français", "Les deux"],
-      ownerName: "Nom du propriétaire",
-      phone: "Téléphone",
-      previewBody:
-        "Le modèle sécuritaire ci-dessous montre quoi envoyer lorsqu'un chemin de contact public vérifié sera approuvé.",
-      previewNotice:
-        "Aperçu seulement : ce formulaire ne soumet, ne stocke et n'envoie aucune donnée de candidature pour le moment.",
-      previewStatus: "Aperçu sécuritaire : aucun point de candidature public n'est actif.",
-      requestTemplate:
-        "Objet : demande pour le projet pilote BizPilot\n\nNom de l'entreprise :\nVille :\nServices de nettoyage :\nDemandes de soumission par semaine :\nPlus grand problème de prospects :\nLangue préférée :",
-      requestTemplateLabel: "Modèle de courriel de demande",
-      safeBody:
-        "Aucun courriel public vérifié du fondateur n'est approuvé dans le projet; ce bouton n'expose donc aucune adresse privée et ne soumet aucune donnée de production.",
-      safeTitle: "Aperçu sécuritaire",
-      selectOne: "Sélectionnez une option",
-      services: "Services de nettoyage offerts",
-      title: "Aperçu de demande pour le projet pilote",
-      weeklyQuotes: "Demandes de soumission approximatives par semaine",
-      weeklyQuoteOptions: ["1-5", "6-15", "16+", "Pas certain"],
-      website: "Site Web ou lien social",
-    },
+    fitTitle: "Bon profil",
     getItems: [
       "Lien de demande de soumission",
-      "Boîte de prospects",
-      "Résumé IA et aide au brouillon de réponse",
+      "Boîte de prospects organisée",
+      "Résumé assisté par IA et brouillon de réponse",
       "Flux copier/envoyer manuellement",
       "Configuration guidée par le fondateur",
       "Améliorations basées sur les commentaires",
@@ -1792,14 +1771,12 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "Projet pilote fondateur | BizPilot AI",
     },
     nextSteps: [
-      "Vous envoyez une demande pour le projet pilote",
-      "Le fondateur révise votre flux de nettoyage",
-      "Nous préparons votre page de soumission et un flux exemple",
-      "Vous testez le flux de récupération",
-      "Les vraies données client commencent seulement après l'approbation finale",
+      "Envoyez une courte demande pilote",
+      "Le fondateur révise le flux",
+      "Les entreprises sélectionnées reçoivent une configuration et un flux exemple",
     ],
     nextStepsTitle: "Ce qui se passe ensuite",
-    title: "Participez au projet pilote BizPilot.",
+    title: "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
   },
   pricing: {
     afterApply: {

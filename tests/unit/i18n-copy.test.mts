@@ -556,6 +556,81 @@ describe("BizPilot language copy", () => {
     assert.equal(globalStyles.includes(".supporting-three-grid"), true);
   });
 
+  it("keeps pilot Branch B conversion honest and non-submitting", () => {
+    const englishPilotCopy = getPublicSiteCopy("en").pilot;
+    const frenchPilotCopy = getPublicSiteCopy("fr-CA").pilot;
+
+    assert.equal(
+      englishPilotCopy.title,
+      "Help shape BizPilot around real cleaning work.",
+    );
+    assert.equal(
+      englishPilotCopy.body,
+      "Join a small founder-led pilot built to help cleaning businesses capture quote requests, reply faster, and stay in control.",
+    );
+    assert.equal(
+      englishPilotCopy.conversion.title,
+      "Pilot requests are being prepared.",
+    );
+    assert.equal(
+      englishPilotCopy.conversion.template,
+      "Subject: BizPilot founder pilot request\nBusiness name:\nWork email:\nCity / service area:\nCleaning services:\nApproximate quote requests per week:\nBiggest lead-management problem:\nPreferred language: English / French / Both",
+    );
+    assert.equal(englishPilotCopy.conversion.previewQuestions.length, 6);
+    assert.equal(frenchPilotCopy.conversion.previewQuestions.length, 6);
+    assert.equal(
+      JSON.stringify(frenchPilotCopy).includes("Copy pilot request template"),
+      false,
+      "fr-CA pilot copy should not fall back to English CTA text.",
+    );
+
+    const pilotSource = readFileSync("app/pilot/page.tsx", "utf8");
+    for (const forbidden of ["<form", "<input", "<select", "<textarea"]) {
+      assert.equal(
+        pilotSource.includes(forbidden),
+        false,
+        `Pilot page should not render default form control ${forbidden}.`,
+      );
+    }
+    assert.equal(
+      pilotSource.includes("disabled"),
+      false,
+      "Pilot page should not keep disabled form/control source.",
+    );
+    assert.equal(
+      pilotSource.includes("PilotRequestTemplateCard"),
+      true,
+      "Pilot page should use the clipboard conversion component.",
+    );
+
+    const conversionSource = readFileSync(
+      "components/public/pilot-request-template-card.tsx",
+      "utf8",
+    );
+    assert.equal(
+      conversionSource.includes("navigator.clipboard.writeText"),
+      true,
+      "Pilot request action should use the Clipboard API.",
+    );
+    assert.equal(
+      conversionSource.includes('document.execCommand("copy")'),
+      true,
+      "Pilot request action should attempt a selection-based copy fallback.",
+    );
+    assert.equal(
+      conversionSource.includes('aria-live="polite"'),
+      true,
+      "Pilot request copy status should be announced.",
+    );
+    for (const forbidden of ["fetch(", "XMLHttpRequest", "<form"]) {
+      assert.equal(
+        conversionSource.includes(forbidden),
+        false,
+        `Pilot request copy action should not include ${forbidden}.`,
+      );
+    }
+  });
+
   it("keeps public copy namespaces explicit and complete", () => {
     assert.deepEqual(
       [...bizPilotCopyNamespaces],
