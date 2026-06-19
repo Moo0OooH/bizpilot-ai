@@ -1,3 +1,20 @@
+/**
+ * ============================================================
+ * File: app/demo/page.tsx
+ * Project: BizPilot AI
+ * Description: Public full-demo page for the cleaning quote recovery workflow.
+ * Role: Shows the manual-first request-to-draft workflow without implying automation.
+ * Related:
+ * - components/public/marketing-ui.tsx
+ * - app/page.tsx
+ * Author: MoOoH
+ * Created: 2026-06-18
+ * Last Updated: 2026-06-18
+ * Change Log:
+ * - 2026-06-18: Grouped the demo into concise responsive chapters with visible guardrails.
+ * ============================================================
+ */
+
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -24,59 +41,43 @@ export const metadata: Metadata = {
     "See how BizPilot AI captures a cleaning quote request, organizes the lead, highlights missing details, and prepares an owner-reviewed reply.",
 };
 
-const demoSections = [
+const demoChapters = [
   {
     body: "A vague request arrives while the owner is busy. Details are missing, pricing is risky, and the message is easy to forget.",
     eyebrow: "1",
-    panelBody: '"Hi, how much for move-out cleaning before Friday?"',
+    panelItems: ['"Hi, how much for move-out cleaning before Friday?"'],
     panelTitle: "Customer message",
-    title: "Before BizPilot",
+    title: "Request arrives.",
   },
   {
-    body: "BizPilot starts by collecting cleaning-specific context instead of treating every inquiry like a generic contact form.",
+    body: "BizPilot turns the message into cleaning-specific context and highlights what is missing before a responsible quote.",
     eyebrow: "2",
-    panelBody:
-      "Service: Move-out cleaning\nTiming: Before Friday\nProperty: Move-out request\nConsent: Customer expects the owner to review and reply",
-    panelTitle: "Captured context",
-    title: "Quote request captured",
+    panelItems: [
+      "Service: Move-out cleaning",
+      "Timing: Before Friday",
+      "Status: Needs reply",
+      "Missing: square footage, appliances, access notes",
+      "Consent: owner-reviewed reply expected",
+    ],
+    panelTitle: "Organized lead",
+    title: "BizPilot organizes it and highlights missing details.",
   },
   {
-    body: "The request becomes a clean lead record with the details the owner needs to decide the next step.",
+    body: "AI prepares a short owner summary and a practical first reply. The draft asks for missing details instead of inventing a price.",
     eyebrow: "3",
-    panelBody:
-      "Service: Move-out cleaning\nTiming: Before Friday\nSource: Quote request\nStatus: Needs reply\nMissing: square footage, appliances, access notes",
-    panelTitle: "Lead card",
-    title: "Lead organized",
-  },
-  {
-    body: "BizPilot keeps the owner from guessing by surfacing what is still needed before a responsible quote.",
-    eyebrow: "4",
-    panelBody: "Square footage\nAppliance cleaning\nAccess notes",
-    panelTitle: "Missing details",
-    title: "Missing details highlighted",
-  },
-  {
-    body: "The summary is short, practical, and focused on helping the owner respond faster without inventing facts.",
-    eyebrow: "5",
-    panelBody:
+    panelItems: [
       "Sarah needs a move-out cleaning before Friday, but pricing would be risky without square footage, appliance details, and access notes.",
-    panelTitle: "Owner summary",
-    title: "AI summary",
-  },
-  {
-    body: "AI prepares a useful first reply. The owner reviews it, edits it if needed, and stays responsible for the final message.",
-    eyebrow: "6",
-    panelBody:
       "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
-    panelTitle: "Draft reply",
-    title: "Owner-reviewed draft",
+    ],
+    panelTitle: "AI summary and draft",
+    title: "AI prepares an owner-reviewed draft.",
   },
   {
-    body: "BizPilot does not send the message. The owner copies the reply and sends it from their own channel.",
-    eyebrow: "7",
-    panelBody: "Review\nEdit if needed\nCopy reply\nSend manually",
+    body: "The owner reviews, edits if needed, copies the reply, and sends it manually from their own channel. Guardrails stay visible.",
+    eyebrow: "4",
+    panelItems: ["Review", "Edit if needed", "Copy reply", "Send manually"],
     panelTitle: "Owner action",
-    title: "Manual copy/send",
+    title: "Owner copies and sends manually.",
   },
 ] as const;
 
@@ -89,17 +90,24 @@ const guardrails = [
 ] as const;
 
 function DemoPanel({
-  body,
+  items,
   title,
-}: Readonly<{ body: string; title: string }>) {
+}: Readonly<{ items: readonly string[]; title: string }>) {
   return (
     <div className="min-w-0 rounded-[16px] border border-slate-200 bg-white p-5 shadow-[0_18px_42px_rgba(15,23,42,0.06)]">
       <p className="text-[12px] font-black uppercase tracking-[0.14em] text-slate-500">
         {title}
       </p>
-      <p className="mt-3 whitespace-pre-line break-words text-[15px] font-bold leading-7 text-slate-950">
-        {body}
-      </p>
+      <div className="mt-3 grid gap-2">
+        {items.map((item) => (
+          <p
+            className="rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[14px] font-bold leading-6 text-slate-950"
+            key={item}
+          >
+            {item}
+          </p>
+        ))}
+      </div>
     </div>
   );
 }
@@ -112,17 +120,17 @@ export default async function DemoPage() {
 
   return (
     <main
-      className="min-h-screen overflow-x-hidden"
+      className="public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
       <MarketingHeader copy={navCopy} language={language} redirectPath="/demo" />
 
-      <section className="px-5 pb-12 pt-12 sm:px-6 lg:pb-16 lg:pt-20">
+      <section className="pb-12 pt-10 sm:pt-14 lg:pb-16 lg:pt-20">
         <MarketingShell>
           <div className="mx-auto max-w-[920px] text-center">
             <MarketingBadge>60-second workflow demo</MarketingBadge>
             <h1
-              className="mt-5 text-[38px] font-black leading-[1.04] sm:text-[54px]"
+              className="mt-5 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]"
               style={{ color: marketingTone.text }}
             >
               See how BizPilot handles a cleaning quote request.
@@ -138,12 +146,12 @@ export default async function DemoPage() {
         </MarketingShell>
       </section>
 
-      <section className="px-5 pb-16 sm:px-6 lg:pb-24">
+      <section className="pb-[var(--section-space)]">
         <MarketingShell>
           <div className="grid gap-4">
-            {demoSections.map((item) => (
+            {demoChapters.map((item) => (
               <MarketingCard className="p-5 sm:p-6" key={item.title}>
-                <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,0.92fr)_minmax(320px,0.82fr)] lg:items-center">
+                <div className="grid min-w-0 gap-5 min-[1040px]:grid-cols-[minmax(0,0.92fr)_minmax(320px,0.82fr)] min-[1040px]:items-center">
                   <div className="min-w-0">
                     <span
                       className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] text-[13px] font-black text-white"
@@ -161,19 +169,19 @@ export default async function DemoPage() {
                       {item.body}
                     </p>
                   </div>
-                  <DemoPanel body={item.panelBody} title={item.panelTitle} />
+                  <DemoPanel items={item.panelItems} title={item.panelTitle} />
                 </div>
               </MarketingCard>
             ))}
 
             <MarketingCard className="p-5 sm:p-6">
-              <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,0.92fr)_minmax(320px,0.82fr)] lg:items-center">
+              <div className="grid min-w-0 gap-5 min-[1040px]:grid-cols-[minmax(0,0.92fr)_minmax(320px,0.82fr)] min-[1040px]:items-center">
                 <div className="min-w-0">
                   <span
                     className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] text-[13px] font-black text-white"
                     style={{ backgroundColor: marketingTone.teal }}
                   >
-                    8
+                    5
                   </span>
                   <h2 className="mt-4 text-[24px] font-black leading-tight text-slate-950">
                     Guardrails

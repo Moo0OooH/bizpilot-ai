@@ -14,11 +14,25 @@ Customer-facing framing:
 
 > **Quote Recovery Command Center for Cleaning Businesses.**
 
+2026-06-18 responsive/public-site override: the active public website direction
+is the light, cleaning-first founder-pilot site. Treat
+`product/BIZPILOT_RESPONSIVE_LAYOUT_AND_DEVICE_STANDARD_v1.0.md` and
+`readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md` as canonical for
+public responsive behavior, header collapse, hero first-fold requirements,
+legal/auth reading templates, and the "no marketing inner scroll" policy.
+Older dark frozen-homepage, `Start free recovery`, command-center-first, and
+two-viewport QA guidance is superseded wherever it conflicts.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
 
 Read these first, in this exact order:
+
+2026-06-18 public responsive authorities:
+
+- `product/BIZPILOT_RESPONSIVE_LAYOUT_AND_DEVICE_STANDARD_v1.0.md`
+- `readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md`
 
 2026-05-30 product decision addendum: owner notification email is intentionally
 deferred for the first pilot. The approved communication workflow is manual

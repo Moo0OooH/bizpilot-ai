@@ -11,6 +11,9 @@
  * - app/terms/page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
+ * Last Updated: 2026-06-18
+ * Change Log:
+ * - 2026-06-18: Switched policy pages to narrow readable containers and owner-first summaries.
  * ============================================================
  */
 
@@ -22,7 +25,6 @@ import {
   MarketingHeader,
   MarketingIcon,
   MarketingSectionTitle,
-  MarketingShell,
   marketingBackground,
   marketingTone,
 } from "@/components/public/marketing-ui";
@@ -43,7 +45,7 @@ export function PolicyPage({
 }>) {
   return (
     <main
-      className="min-h-screen overflow-x-hidden"
+      className="public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
       <MarketingHeader
@@ -52,13 +54,13 @@ export function PolicyPage({
         redirectPath={pagePath}
       />
 
-      <section className="px-5 pb-8 pt-10 sm:px-6 sm:pt-14">
-        <MarketingShell>
-          <div className="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(280px,0.42fr)] lg:items-start">
+      <section className="pb-8 pt-10 sm:pt-14">
+        <div className="legal-container">
+          <div className="grid min-w-0 gap-6">
             <div className="min-w-0">
               <MarketingBadge>{copy.badge}</MarketingBadge>
               <h1
-                className="mt-6 max-w-[820px] text-[34px] font-black leading-[1.06] sm:text-[44px]"
+                className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]"
                 style={{ color: marketingTone.text }}
               >
                 {copy.title}
@@ -92,12 +94,12 @@ export function PolicyPage({
               </p>
             </MarketingCard>
           </div>
-        </MarketingShell>
+        </div>
       </section>
 
-      <section className="px-5 py-8 sm:px-6">
-        <MarketingShell>
-          <div className="grid min-w-0 gap-4 md:grid-cols-2">
+      <section className="py-8">
+        <div className="legal-container">
+          <div className="grid min-w-0 gap-4">
             {copy.sections.map((section) => (
               <MarketingCard className="p-5" key={section.title}>
                 <span
@@ -124,12 +126,12 @@ export function PolicyPage({
               </MarketingCard>
             ))}
           </div>
-        </MarketingShell>
+        </div>
       </section>
 
       {copy.references?.length ? (
-        <section className="px-5 py-8 sm:px-6">
-          <MarketingShell>
+        <section className="py-8">
+          <div className="legal-container">
             <MarketingSectionTitle
               {...(copy.referenceEyebrow
                 ? { eyebrow: copy.referenceEyebrow }
@@ -154,12 +156,12 @@ export function PolicyPage({
                 </a>
               ))}
             </div>
-          </MarketingShell>
+          </div>
         </section>
       ) : null}
 
-      <section className="px-5 py-8 sm:px-6">
-        <MarketingShell>
+      <section className="py-8">
+        <div className="legal-container">
           <MarketingCard
             className="grid min-w-0 gap-5 p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
             style={{ borderColor: "rgba(45,212,191,0.24)" }}
@@ -174,7 +176,7 @@ export function PolicyPage({
               {navCopy.pricing}
             </MarketingButton>
           </MarketingCard>
-        </MarketingShell>
+        </div>
       </section>
 
       <MarketingFooter copy={navCopy} />

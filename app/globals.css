@@ -2,19 +2,20 @@
 ============================================================
 File: app/globals.css
 Project: BizPilot AI
-Description: Defines global Tailwind, base CSS variables, and scoped dashboard themes.
-Role: Provides Phase 1 global styling foundation and protected command-center visual system.
+Description: Defines global Tailwind, base CSS variables, public responsive tokens, and scoped dashboard themes.
+Role: Provides the global styling foundation, public responsive primitives, and protected dashboard theme tokens.
 Related:
 - app/layout.tsx
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-05-26
+Last Updated: 2026-06-18
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
 - 2026-05-18: Updated dashboard dark theme to the approved emerald/navy command-center direction.
 - 2026-05-26: Unified dashboard light/dark action colors and component surfaces for Phase 21X UI QA.
+- 2026-06-18: Added public responsive tokens, no-overflow primitives, and legal/dashboard containers.
 ============================================================
 */
 
@@ -23,6 +24,33 @@ Change Log:
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --public-bg-page: #f8fafc;
+  --public-bg-surface: #ffffff;
+  --public-bg-surface-alt: #f1f5f9;
+  --public-text-strong: #0f172a;
+  --public-text-body: #334155;
+  --public-text-muted: #64748b;
+  --public-border: #e2e8f0;
+  --public-border-strong: #cbd5e1;
+  --public-primary: #2563eb;
+  --public-primary-hover: #1d4ed8;
+  --public-accent: #14b8a6;
+  --public-success: #10b981;
+  --public-warning: #f59e0b;
+  --public-focus: rgba(37, 99, 235, 0.22);
+  --public-shadow: 0 18px 48px rgba(15, 23, 42, 0.07);
+  --public-max: 75rem;
+  --public-gutter: clamp(1rem, 0.55rem + 1.8vw, 2.5rem);
+  --legal-max: 50rem;
+  --dashboard-max: 90rem;
+  --text-hero: clamp(2.5rem, 1.85rem + 2.25vw, 4.5rem);
+  --text-section: clamp(1.9rem, 1.55rem + 1.25vw, 3rem);
+  --text-page: clamp(2rem, 1.7rem + 0.9vw, 2.75rem);
+  --text-lead: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  --section-space: clamp(3.5rem, 2.6rem + 2.4vw, 6rem);
+  --section-space-compact: clamp(2.5rem, 2rem + 1.4vw, 4.5rem);
+  --card-pad: clamp(1rem, 0.75rem + 0.9vw, 2rem);
+  --grid-gap: clamp(1rem, 0.75rem + 0.8vw, 1.75rem);
   --biz-page-bg: #080d12;
   --biz-page-bg-deep: #080d12;
   --biz-page-surface: #0f1a24;
@@ -78,7 +106,71 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  overflow-x: hidden;
+  min-width: 0;
+}
+
+html,
+body {
+  max-width: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+:where(h1, h2, h3, p, a, button, label, td, th, span, li) {
+  overflow-wrap: anywhere;
+}
+
+:where([id]) {
+  scroll-margin-top: 5.5rem;
+}
+
+.public-site {
+  color-scheme: only light;
+}
+
+.public-container {
+  width: min(100% - (2 * var(--public-gutter)), var(--public-max));
+  margin-inline: auto;
+}
+
+.legal-container {
+  width: min(100% - (2 * var(--public-gutter)), var(--legal-max));
+  margin-inline: auto;
+}
+
+.dashboard-container {
+  width: min(100% - 2rem, var(--dashboard-max));
+  margin-inline: auto;
+}
+
+.public-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--grid-gap);
+}
+
+.public-card-grid-wide {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: var(--grid-gap);
+}
+
+.safe-wrap {
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 @keyframes homepage-demo-step-pulse {
@@ -269,7 +361,7 @@ body {
   --dash-success-border: rgba(20, 184, 166, 0.22);
   --dash-success-strong: #99f6e4;
   --dash-ai-soft: rgba(20, 184, 166, 0.09);
-  min-height: 100vh;
+  min-height: 100svh;
   background: linear-gradient(180deg, #071016 0%, #0d1820 100%);
   color: var(--dash-text);
 }

@@ -9,6 +9,8 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Last Updated: 2026-06-18
+ * Change Log:
+ * - 2026-06-18: Applied responsive hero, section density, and no-inner-scroll demo hardening.
  * ============================================================
  */
 
@@ -183,7 +185,7 @@ function SectionTitle({
 function MiniProductMockup() {
   return (
     <MarketingCard
-      className="p-4 sm:p-5"
+      className="w-full max-w-[600px] p-4 sm:p-5"
       style={{
         background:
           "linear-gradient(180deg, rgba(255,255,255,0.98), rgba(241,248,247,0.96))",
@@ -248,13 +250,13 @@ function MiniProductMockup() {
 
 function HeroSection() {
   return (
-    <section className="px-5 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14 lg:pb-28 lg:pt-20">
+    <section className="pb-14 pt-9 sm:pb-16 sm:pt-12 min-[1180px]:pb-20 min-[1180px]:pt-16">
       <MarketingShell>
-        <div className="grid min-w-0 items-center gap-10 lg:grid-cols-[minmax(0,0.94fr)_minmax(360px,0.86fr)]">
+        <div className="grid min-w-0 items-center gap-10 min-[1100px]:grid-cols-[minmax(0,1.02fr)_minmax(28rem,0.98fr)] min-[1100px]:gap-12">
           <div className="min-w-0">
             <MarketingBadge>Built for cleaning businesses first</MarketingBadge>
             <h1
-              className="mt-6 max-w-[820px] text-[42px] font-black leading-[1.02] sm:text-[58px] lg:text-[66px]"
+              className="mt-6 max-w-[650px] text-[length:var(--text-hero)] font-black leading-[0.98] [text-wrap:balance]"
               style={{ color: marketingTone.text }}
             >
               Stop losing cleaning quote requests to slow replies.
@@ -269,7 +271,7 @@ function HeroSection() {
             </p>
             <div className="mt-8 flex flex-col gap-3 min-[460px]:flex-row">
               <MarketingButton href="/pilot">Join founder pilot</MarketingButton>
-              <MarketingButton href="#demo" variant="secondary">
+              <MarketingButton href="/demo" variant="secondary">
                 Watch demo
               </MarketingButton>
             </div>
@@ -294,7 +296,9 @@ function HeroSection() {
               ))}
             </div>
           </div>
-          <MiniProductMockup />
+          <div className="flex min-w-0 justify-center min-[1100px]:justify-end">
+            <MiniProductMockup />
+          </div>
         </div>
       </MarketingShell>
     </section>
@@ -305,7 +309,7 @@ function CardGrid({
   items,
 }: Readonly<{ items: ReadonlyArray<Readonly<{ body: string; title: string }>> }>) {
   return (
-    <div className="mt-8 grid gap-4 md:grid-cols-3">
+    <div className="public-card-grid mt-8">
       {items.map((item) => (
         <MarketingCard className="p-5" key={item.title}>
           <h3 className="text-[18px] font-black" style={{ color: marketingTone.text }}>
@@ -322,13 +326,13 @@ function CardGrid({
 
 function ProductPreview() {
   return (
-    <section className="px-5 py-14 sm:px-6 lg:py-20" id="demo">
+    <section className="py-[var(--section-space-compact)]" id="demo">
       <MarketingShell>
         <SectionTitle
           body="Follow one realistic move-out cleaning request from messy message to owner-reviewed reply. BizPilot organizes the work; the owner stays in control."
           title="See the quote recovery workflow in 60 seconds."
         />
-        <div className="mt-8 grid min-w-0 gap-4 lg:grid-cols-3">
+        <div className="public-card-grid-wide mt-8">
           <MarketingCard className="p-5 sm:p-6">
             <div className="flex items-center justify-between gap-3">
               <span className="text-[12px] font-black uppercase tracking-[0.14em] text-slate-500">
@@ -463,11 +467,11 @@ export default async function HomePage() {
   const navCopy = getHomeCopy(language).nav;
 
   return (
-    <main className="min-h-screen overflow-x-hidden" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader copy={navCopy} language={language} redirectPath="/" />
       <HeroSection />
 
-      <section className="px-5 py-16 sm:px-6 lg:py-24" id="features">
+      <section className="py-[var(--section-space)]" id="features">
         <MarketingShell>
           <SectionTitle
             body="Cleaning owners receive quote requests while working, driving, managing a team, or answering customers. When messages get buried or replies are delayed, customers move on."
@@ -478,7 +482,7 @@ export default async function HomePage() {
         </MarketingShell>
       </section>
 
-      <section className="px-5 py-16 sm:px-6 lg:py-24" id="cleaning">
+      <section className="py-[var(--section-space-compact)]" id="cleaning">
         <MarketingShell>
           <SectionTitle
             eyebrow="Solution"
@@ -488,10 +492,10 @@ export default async function HomePage() {
         </MarketingShell>
       </section>
 
-      <section className="px-5 py-16 sm:px-6 lg:py-24">
+      <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
           <SectionTitle eyebrow="How it works" title="Five steps, no hidden automation." />
-          <div className="mt-8 grid gap-3 lg:grid-cols-5">
+          <div className="mt-8 grid gap-3 min-[1180px]:grid-cols-5">
             {workflowSteps.map((step, index) => (
               <MarketingCard className="p-5" key={step}>
                 <p className="text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
@@ -508,7 +512,7 @@ export default async function HomePage() {
 
       <ProductPreview />
 
-      <section className="px-5 py-16 sm:px-6 lg:py-24" id="trust">
+      <section className="py-[var(--section-space-compact)]" id="trust">
         <MarketingShell>
           <SectionTitle
             body="BizPilot does not automatically send customer messages in the first pilot. AI helps prepare replies, but every message is reviewed, edited, and sent manually by the owner."
@@ -522,10 +526,10 @@ export default async function HomePage() {
         </MarketingShell>
       </section>
 
-      <section className="px-5 py-16 sm:px-6 lg:py-24">
+      <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
           <SectionTitle title="Built around real cleaning quote requests." />
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="public-card-grid mt-8">
             {cleaningUseCases.map((item) => (
               <MarketingCard className="p-5" key={item}>
                 <p className="text-[16px] font-black" style={{ color: marketingTone.text }}>
@@ -537,7 +541,7 @@ export default async function HomePage() {
         </MarketingShell>
       </section>
 
-      <section className="px-5 py-16 sm:px-6 lg:py-24">
+      <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
           <MarketingCard className="p-6 sm:p-8">
             <MarketingBadge toneName="gold">Roadmap</MarketingBadge>
@@ -558,7 +562,7 @@ export default async function HomePage() {
         </MarketingShell>
       </section>
 
-      <section className="px-5 py-16 sm:px-6 lg:py-24">
+      <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
           <SectionTitle eyebrow="FAQ" title="Straight answers for the founder pilot." />
           <div className="mx-auto mt-8 grid max-w-[900px] gap-3">
@@ -578,7 +582,7 @@ export default async function HomePage() {
         </MarketingShell>
       </section>
 
-      <section className="px-5 py-16 sm:px-6 lg:py-24" id="pilot">
+      <section className="py-[var(--section-space)]" id="pilot">
         <MarketingShell>
           <MarketingCard className="p-7 sm:p-9" style={{ borderColor: "rgba(45,212,191,0.24)" }}>
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">

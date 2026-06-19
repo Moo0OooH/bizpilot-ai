@@ -9,6 +9,8 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Last Updated: 2026-06-18
+ * Change Log:
+ * - 2026-06-18: Removed duplicate monthly price highlights and aligned card reflow.
  * ============================================================
  */
 
@@ -65,7 +67,7 @@ const pricingCards = [
     ],
     cohort: "For customers 6-20",
     cta: "Apply for pilot",
-    highlight: "$49/month",
+    highlight: "Manual billing after readiness approval",
     priceLines: ["$149 setup", "$49/month"],
     title: "Starter Pilot",
   },
@@ -81,7 +83,7 @@ const pricingCards = [
     ],
     cohort: "After proof / after first 20 customers",
     cta: "Apply for pilot",
-    highlight: "$79/month",
+    highlight: "Manual billing after readiness approval",
     priceLines: ["$199 setup", "$79/month"],
     title: "Pro Pilot",
   },
@@ -94,13 +96,13 @@ export default async function PricingPage() {
   const navCopy = getHomeCopy(language).nav;
 
   return (
-    <main className="min-h-screen overflow-x-hidden" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader active="pricing" copy={navCopy} language={language} redirectPath="/pricing" />
-      <section className="px-5 py-16 sm:px-6 lg:py-24">
+      <section className="py-[var(--section-space)]">
         <MarketingShell>
           <div className="mx-auto max-w-[820px] text-center">
             <MarketingBadge>Approved staged pilot terms</MarketingBadge>
-            <h1 className="mt-6 text-[38px] font-black leading-[1.06] sm:text-[56px]" style={{ color: marketingTone.text }}>
+            <h1 className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
               Simple pilot pricing for cleaning businesses.
             </h1>
             <p className="mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
@@ -108,7 +110,7 @@ export default async function PricingPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          <div className="mt-10 grid gap-5 min-[1180px]:grid-cols-3">
             {pricingCards.map((card) => (
               <MarketingCard className="flex min-w-0 flex-col p-6 sm:p-7" key={card.title}>
                 <div>
@@ -118,7 +120,7 @@ export default async function PricingPage() {
                   <h2 className="mt-3 text-[27px] font-black leading-tight" style={{ color: marketingTone.text }}>
                     {card.title}
                   </h2>
-                  <div className="mt-5 min-h-[78px]">
+                  <div className="mt-5">
                     {card.priceLines.map((line) => (
                       <p className="text-[28px] font-black leading-tight" key={line} style={{ color: marketingTone.text }}>
                         {line}

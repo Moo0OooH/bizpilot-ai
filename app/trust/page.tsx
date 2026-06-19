@@ -1,3 +1,21 @@
+/**
+ * ============================================================
+ * File: app/trust/page.tsx
+ * Project: BizPilot AI
+ * Description: Public trust page for the manual-first founder pilot.
+ * Role: Explains owner control, AI draft guardrails, readiness gates, and trust links.
+ * Related:
+ * - components/public/marketing-ui.tsx
+ * - app/privacy/page.tsx
+ * - app/security/page.tsx
+ * Author: MoOoH
+ * Created: 2026-06-18
+ * Last Updated: 2026-06-18
+ * Change Log:
+ * - 2026-06-18: Tightened trust grid and added Privacy/Security links.
+ * ============================================================
+ */
+
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import {
@@ -38,20 +56,20 @@ export default async function TrustPage() {
   const navCopy = getHomeCopy(language).nav;
 
   return (
-    <main className="min-h-screen overflow-x-hidden" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader copy={navCopy} language={language} redirectPath="/trust" />
-      <section className="px-5 py-16 sm:px-6 lg:py-24">
+      <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
           <div className="mx-auto max-w-[820px] text-center">
             <MarketingBadge>Trust-first workflow</MarketingBadge>
-            <h1 className="mt-6 text-[38px] font-black leading-[1.06] sm:text-[56px]" style={{ color: marketingTone.text }}>
+            <h1 className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
               Built for owner control and trust.
             </h1>
             <p className="mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
               BizPilot is manual-first. AI assists with drafts, but the owner reviews and sends every customer message.
             </p>
           </div>
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
+          <div className="public-card-grid mt-10">
             {trustItems.map(([title, body]) => (
               <MarketingCard className="p-6" key={title}>
                 <div className="flex items-start gap-3">
@@ -70,7 +88,9 @@ export default async function TrustPage() {
               BizPilot&apos;s commercial pilot terms are staged, but real customer data and paid pilot execution still depend on readiness gates, including final no-secret production smoke, explicit owner approval before real customer data, and a prepared manual invoice or Stripe Payment Link process before collecting payment.
             </p>
           </MarketingCard>
-          <div className="mt-8 text-center">
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            <MarketingButton href="/privacy" variant="secondary">Read privacy</MarketingButton>
+            <MarketingButton href="/security" variant="secondary">Read security</MarketingButton>
             <MarketingButton href="/pilot">Apply for founder pilot</MarketingButton>
           </div>
         </MarketingShell>

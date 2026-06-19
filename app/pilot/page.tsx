@@ -1,3 +1,20 @@
+/**
+ * ============================================================
+ * File: app/pilot/page.tsx
+ * Project: BizPilot AI
+ * Description: Public founder-pilot application information page.
+ * Role: Explains the pilot process while keeping the preview-only request UI non-submitting.
+ * Related:
+ * - components/public/marketing-ui.tsx
+ * - docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md
+ * Author: MoOoH
+ * Created: 2026-06-18
+ * Last Updated: 2026-06-18
+ * Change Log:
+ * - 2026-06-18: Made the request UI unmistakably preview-only with disabled controls.
+ * ============================================================
+ */
+
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
@@ -67,17 +84,17 @@ export default async function PilotPage() {
 
   return (
     <main
-      className="min-h-screen overflow-x-hidden"
+      className="public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
       <MarketingHeader copy={navCopy} language={language} redirectPath="/pilot" />
-      <section className="px-5 py-16 sm:px-6 lg:py-24">
+      <section className="py-[var(--section-space)]">
         <MarketingShell>
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(320px,0.75fr)] lg:items-start">
+          <div className="grid gap-10 min-[1100px]:grid-cols-[minmax(0,0.9fr)_minmax(320px,0.75fr)] min-[1100px]:items-start">
             <div>
               <MarketingBadge>Founder pilot</MarketingBadge>
               <h1
-                className="mt-6 text-[38px] font-black leading-[1.06] sm:text-[56px]"
+                className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]"
                 style={{ color: marketingTone.text }}
               >
                 Join the BizPilot founder pilot.
@@ -170,13 +187,25 @@ export default async function PilotPage() {
                 Founder pilot request preview
               </h2>
               <p
-                className="mt-3 text-[14px] leading-7"
+                className="mt-3 rounded-[14px] border border-amber-200 bg-amber-50 p-4 text-[13px] font-bold leading-6 text-amber-800"
+                id="pilot-preview-status"
+              >
+                Preview only: this form does not submit, store, or email pilot
+                application data yet.
+              </p>
+              <p
+                className="mt-4 text-[14px] leading-7"
                 style={{ color: marketingTone.soft }}
               >
-                This form UI is safe preview-only for now. It does not submit or
-                store pilot application data in production.
+                The safe request template below shows what to send once a
+                verified public founder contact path is approved.
               </p>
-              <form className="mt-5 grid gap-4" aria-label="Founder pilot request preview">
+              <form
+                aria-describedby="pilot-preview-status"
+                aria-label="Founder pilot request preview"
+                className="mt-5 grid gap-4"
+              >
+                <fieldset className="grid gap-4 opacity-60" disabled>
                 {fields.map(([name, label, type]) => (
                   <label
                     className="grid gap-1.5 text-[13px] font-bold"
@@ -186,6 +215,7 @@ export default async function PilotPage() {
                     {label}
                     <input
                       className="h-12 rounded-[14px] border bg-white px-3 text-[15px] outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]"
+                      disabled
                       name={name}
                       type={type}
                     />
@@ -198,6 +228,7 @@ export default async function PilotPage() {
                   Cleaning services offered
                   <textarea
                     className="min-h-[88px] rounded-[14px] border bg-white px-3 py-2 text-[15px] outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]"
+                    disabled
                     name="services"
                   />
                 </label>
@@ -209,6 +240,7 @@ export default async function PilotPage() {
                   <select
                     className="h-12 rounded-[14px] border bg-white px-3 text-[15px] outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]"
                     defaultValue=""
+                    disabled
                     name="weeklyQuotes"
                   >
                     <option disabled value="">Select one</option>
@@ -225,6 +257,7 @@ export default async function PilotPage() {
                   Biggest lead management problem
                   <textarea
                     className="min-h-[88px] rounded-[14px] border bg-white px-3 py-2 text-[15px] outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]"
+                    disabled
                     name="problem"
                   />
                 </label>
@@ -236,6 +269,7 @@ export default async function PilotPage() {
                   <select
                     className="h-12 rounded-[14px] border bg-white px-3 text-[15px] outline-none focus:border-[#2563EB] focus:ring-4 focus:ring-[rgba(37,99,235,0.18)]"
                     defaultValue=""
+                    disabled
                     name="language"
                   >
                     <option disabled value="">Select one</option>
@@ -244,8 +278,11 @@ export default async function PilotPage() {
                     <option>Both</option>
                   </select>
                 </label>
+                </fieldset>
                 <button
-                  className="min-h-12 rounded-[14px] bg-slate-950 px-5 text-[14px] font-black text-white"
+                  aria-disabled="true"
+                  className="min-h-12 cursor-not-allowed rounded-[14px] bg-slate-300 px-5 text-[14px] font-black text-slate-600"
+                  disabled
                   type="button"
                 >
                   Email founder pilot request

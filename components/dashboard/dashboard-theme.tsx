@@ -4,7 +4,7 @@
  * File: components/dashboard/dashboard-theme.tsx
  * Project: BizPilot AI
  * Role: Hydration-safe dashboard theme provider and selector.
- * Last Updated: 2026-05-18
+ * Last Updated: 2026-06-18
  */
 
 import {
@@ -74,7 +74,7 @@ export function DashboardThemeFrame({
   return (
     <ThemeContext.Provider value={value}>
       <main
-        className={`${themeClass} dashboard-frame min-h-screen min-w-0 overflow-x-hidden transition-colors lg:grid lg:h-screen lg:grid-cols-[224px_minmax(0,1fr)] lg:overflow-hidden`}
+        className={`${themeClass} dashboard-frame min-h-svh min-w-0 transition-colors lg:grid lg:grid-cols-[224px_minmax(0,1fr)]`}
       >
         {children}
       </main>

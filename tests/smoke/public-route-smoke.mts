@@ -37,7 +37,7 @@ const smokeTargets: readonly SmokeTarget[] = [
     status: 200,
   },
   {
-    expectedText: ["$149 setup", "$49/mo"],
+    expectedText: ["$149 setup", "$49/month"],
     path: "/pricing",
     status: 200,
   },

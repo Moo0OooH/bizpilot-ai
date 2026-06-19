@@ -11,11 +11,12 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-26
+ * Last Updated: 2026-06-18
  * Change Log:
  * - 2026-05-19: Matched approved index.html sidebar rhythm, brand block, active states, mobile nav, and quote-link readiness footer.
  * - 2026-05-23: Localized sidebar labels from the central BizPilot copy dictionary.
  * - 2026-05-26: Replaced letter-only navigation markers with consistent inline dashboard icons.
+ * - 2026-06-18: Updated desktop sidebar height to svh for responsive shell readiness.
  * ============================================================
  */
 
@@ -208,7 +209,7 @@ export function DashboardSidebar({
 
   return (
     <>
-      <aside className="dashboard-sidebar sticky top-0 hidden h-screen w-[224px] border-r px-3.5 py-4 lg:flex lg:flex-col">
+      <aside className="dashboard-sidebar sticky top-0 hidden h-svh w-[224px] border-r px-3.5 py-4 lg:flex lg:flex-col">
         <Link
           className="flex items-center gap-3 border-b border-[var(--dash-border)] px-2 pb-4"
           href="/dashboard"

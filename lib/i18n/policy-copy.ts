@@ -14,6 +14,7 @@
  * Last Updated: 2026-06-16
  * Change Log:
  * - 2026-06-16: Updated public trust copy to reflect Phase 23/24 synthetic proof and remaining real-data gates.
+ * - 2026-06-18: Reframed public policy copy around owner-friendly summaries and approved staged pilot pricing.
  * ============================================================
  */
 
@@ -52,13 +53,13 @@ const englishPolicyCopy: PolicyCopy = {
   privacy: {
     badge: "Privacy notice",
     boundaryBody:
-      "Founder-controlled synthetic demos are allowed. Real customer data waits for Phase 24F final no-secret production smoke and Phase 24G explicit owner approval.",
-    boundaryTitle: "Pilot boundary",
+      "BizPilot is manual-first. It should collect only what a cleaning owner needs to review a quote request and reply responsibly.",
+    boundaryTitle: "Plain-language summary",
     body:
       "BizPilot is being prepared for early cleaning-business pilots. This notice explains the practical privacy rules that apply before real customer data is allowed.",
     effectiveDate: "Last updated: June 16, 2026",
     footerNote:
-      "Before any real customer pilot, BizPilot must keep the first pilot manual-only and record the final no-secret smoke plus owner approval.",
+      "Before any real customer pilot, BizPilot must keep the first pilot manual-only and record final readiness approval from the owner.",
     references: [
       {
         href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/pipeda_brief",
@@ -89,8 +90,8 @@ const englishPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "Tenant data must stay separated by business membership and row-level security. Synthetic production proof, OpenAI provider proof, Auth email proof, and DB-level backup/export/restore proof are recorded; real customer data remains blocked until Phase 24F and Phase 24G close.",
-        title: "Current pilot-stage limitation",
+          "Tenant data must stay separated by business membership and row-level security. Synthetic production proof, OpenAI provider proof, Auth email proof, and DB-level backup/export/restore proof are recorded; real customer data remains blocked until the final readiness approval gate closes.",
+        title: "Real customer data gate",
       },
       {
         body:
@@ -103,8 +104,8 @@ const englishPolicyCopy: PolicyCopy = {
   security: {
     badge: "Security posture",
     boundaryBody:
-      "Founder-controlled synthetic demos are allowed. Real customer data waits for Phase 24F final no-secret production smoke and Phase 24G explicit owner approval.",
-    boundaryTitle: "Pilot boundary",
+      "BizPilot uses conservative safeguards for public quote intake, tenant access, secret handling, and owner-reviewed AI drafts.",
+    boundaryTitle: "Plain-language summary",
     body:
       "BizPilot's security model is intentionally conservative: public quote intake is treated as the highest-risk surface, and AI remains owner-reviewed.",
     effectiveDate: "Last updated: June 16, 2026",
@@ -154,8 +155,8 @@ const englishPolicyCopy: PolicyCopy = {
   terms: {
     badge: "Pilot terms",
     boundaryBody:
-      "Founder-controlled synthetic demos are allowed. Real customer data waits for Phase 24F final no-secret production smoke and Phase 24G explicit owner approval.",
-    boundaryTitle: "Pilot boundary",
+      "Setup, billing, and real customer data stay founder-led, manual, and approval-gated during the pilot.",
+    boundaryTitle: "Plain-language summary",
     body:
       "These pilot-stage terms keep the offer clear while BizPilot is still founder-led and manual-billing only.",
     effectiveDate: "Last updated: June 16, 2026",
@@ -169,7 +170,7 @@ const englishPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "BizPilot is preparing a controlled founder pilot. Public fixed pricing is not the primary offer until pilot terms are approved and shared directly with applicants.",
+          "BizPilot uses staged pilot terms: first 1-5 cleaning businesses may join the Founder Feedback Pilot at $0 setup with a 30- and 60-day feedback commitment; customers 6-20 use Starter Pilot at $149 setup and $49/month; after proof or after the first 20 customers, Pro Pilot is $199 setup and $79/month.",
         title: "Pilot pricing",
       },
       {
@@ -196,13 +197,13 @@ const frenchPolicyCopy: PolicyCopy = {
   privacy: {
     badge: "Avis de confidentialite",
     boundaryBody:
-      "Les demos synthetiques controlees par le fondateur sont permises. Les donnees reelles attendent le smoke production final sans secret Phase 24F et l'approbation proprietaire explicite Phase 24G.",
-    boundaryTitle: "Limite du pilote",
+      "BizPilot est manuel d'abord. Il doit collecter seulement ce qu'un proprietaire de nettoyage doit savoir pour reviser une demande et repondre prudemment.",
+    boundaryTitle: "Resume simple",
     body:
       "BizPilot est prepare pour les premiers pilotes avec des entreprises de nettoyage. Cet avis explique les regles pratiques avant l'utilisation de donnees reelles de clients.",
     effectiveDate: "Derniere mise a jour: 16 juin 2026",
     footerNote:
-      "Avant tout pilote reel, BizPilot doit garder le premier pilote manuel et enregistrer le smoke final sans secret plus l'approbation proprietaire.",
+      "Avant tout pilote reel, BizPilot doit garder le premier pilote manuel et enregistrer l'approbation finale du proprietaire.",
     references: englishPolicyCopy.privacy.references ?? [],
     referenceEyebrow: "Reference",
     referenceTitle: "References publiques de confidentialite et securite.",
@@ -224,8 +225,8 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "Les donnees de chaque entreprise doivent rester separees par l'adhesion et la securite RLS. La preuve production synthetique, OpenAI, courriel auth et sauvegarde/restauration DB-level est enregistree; les donnees reelles restent bloquees jusqu'a Phase 24F et Phase 24G.",
-        title: "Limite actuelle du pilote",
+          "Les donnees de chaque entreprise doivent rester separees par l'adhesion et la securite RLS. La preuve production synthetique, OpenAI, courriel auth et sauvegarde/restauration DB-level est enregistree; les donnees reelles restent bloquees jusqu'a la gate finale d'approbation.",
+        title: "Gate des donnees reelles",
       },
       {
         body:
@@ -238,8 +239,8 @@ const frenchPolicyCopy: PolicyCopy = {
   security: {
     badge: "Posture de securite",
     boundaryBody:
-      "Les demos synthetiques controlees par le fondateur sont permises. Les donnees reelles attendent le smoke production final sans secret Phase 24F et l'approbation proprietaire explicite Phase 24G.",
-    boundaryTitle: "Limite du pilote",
+      "BizPilot applique des protections conservatrices pour les soumissions publiques, l'acces tenant, les secrets et les brouillons IA revises par le proprietaire.",
+    boundaryTitle: "Resume simple",
     body:
       "Le modele de securite BizPilot reste conservateur: l'intake public est traite comme surface critique, et l'IA reste revisee par le proprietaire.",
     effectiveDate: "Derniere mise a jour: 16 juin 2026",
@@ -280,8 +281,8 @@ const frenchPolicyCopy: PolicyCopy = {
   terms: {
     badge: "Conditions pilote",
     boundaryBody:
-      "Les demos synthetiques controlees par le fondateur sont permises. Les donnees reelles attendent le smoke production final sans secret Phase 24F et l'approbation proprietaire explicite Phase 24G.",
-    boundaryTitle: "Limite du pilote",
+      "Le setup, la facturation et les donnees reelles restent guides par le fondateur, manuels et soumis a approbation pendant le pilote.",
+    boundaryTitle: "Resume simple",
     body:
       "Ces conditions de pilote gardent l'offre claire pendant que BizPilot reste guide par le fondateur avec facturation manuelle.",
     effectiveDate: "Derniere mise a jour: 16 juin 2026",
@@ -295,7 +296,7 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "BizPilot prepare un pilote fondateur controle. Les tarifs publics fixes ne sont pas l'offre principale tant que les conditions pilote ne sont pas approuvees et partagees directement avec les candidats.",
+          "BizPilot utilise des conditions pilote par etapes: les 1-5 premieres entreprises de nettoyage peuvent rejoindre le Founder Feedback Pilot a $0 setup avec engagement de feedback a 30 et 60 jours; les clients 6-20 utilisent Starter Pilot a $149 setup et $49/month; apres preuve ou apres les 20 premiers clients, Pro Pilot est a $199 setup et $79/month.",
         title: "Tarifs pilote",
       },
       {

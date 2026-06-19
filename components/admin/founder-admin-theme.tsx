@@ -6,6 +6,9 @@
  * Role: Keeps the internal console visually aligned with the owner dashboard theme system.
  * Author: MoOoH
  * Created: 2026-05-27
+ * Last Updated: 2026-06-18
+ * Change Log:
+ * - 2026-06-18: Switched the admin frame to svh for safer short-height scrolling.
  * ============================================================
  */
 
@@ -54,7 +57,7 @@ export function FounderAdminThemeFrame({
   return (
     <FounderAdminThemeContext.Provider value={value}>
       <main
-        className={`biz-founder-admin biz-founder-admin-${theme} min-h-screen overflow-x-clip px-3 py-3 text-[var(--dash-text)] sm:px-5 sm:py-5 lg:px-5 2xl:px-6`}
+        className={`biz-founder-admin biz-founder-admin-${theme} min-h-svh overflow-x-clip px-3 py-3 text-[var(--dash-text)] sm:px-5 sm:py-5 lg:px-5 2xl:px-6`}
       >
         {children}
       </main>

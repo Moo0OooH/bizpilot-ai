@@ -10,10 +10,11 @@
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-05-12
- * Last Updated: 2026-05-23
+ * Last Updated: 2026-06-18
  * Change Log:
  * - 2026-05-19: Rebuilt as single centered card. Removed the split layout that caused scroll/scale issues.
  * - 2026-05-23: Added shared language switcher and localized auth chrome.
+ * - 2026-06-18: Switched auth shell to short-height-safe svh layout.
  * ============================================================
  */
 
@@ -85,7 +86,7 @@ export function AuthShell({
 }: AuthShellProps) {
   return (
     <main
-      className="flex min-h-screen flex-col items-center justify-center px-4 py-6 sm:px-6"
+      className="flex min-h-svh flex-col items-center justify-start overflow-y-auto px-4 py-6 sm:px-6 sm:py-8 md:justify-center"
       style={{
         background:
           "radial-gradient(circle at 16% 8%, rgba(20,184,166,0.16), transparent 26%), radial-gradient(circle at 88% 14%, rgba(45,212,191,0.10), transparent 24%), linear-gradient(140deg, var(--biz-page-bg), var(--biz-bg-dark-2))",

@@ -1,3 +1,20 @@
+/**
+ * ============================================================
+ * File: app/content-studio/page.tsx
+ * Project: BizPilot AI
+ * Description: Public roadmap page for future owner-reviewed content assistance.
+ * Role: Labels Content Studio as roadmap while preserving cleaning-first lead recovery scope.
+ * Related:
+ * - components/public/marketing-ui.tsx
+ * - app/features/page.tsx
+ * Author: MoOoH
+ * Created: 2026-06-18
+ * Last Updated: 2026-06-18
+ * Change Log:
+ * - 2026-06-18: Applied responsive section spacing and intrinsic card grid.
+ * ============================================================
+ */
+
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import {
@@ -39,20 +56,20 @@ export default async function ContentStudioPage() {
   const navCopy = getHomeCopy(language).nav;
 
   return (
-    <main className="min-h-screen overflow-x-hidden" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader copy={navCopy} language={language} redirectPath="/content-studio" />
-      <section className="px-5 py-16 sm:px-6 lg:py-24">
+      <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
           <div className="max-w-[860px]">
             <MarketingBadge toneName="gold">Roadmap</MarketingBadge>
-            <h1 className="mt-6 text-[38px] font-black leading-[1.06] sm:text-[56px]" style={{ color: marketingTone.text }}>
+            <h1 className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
               Future Content Studio for local business growth.
             </h1>
             <p className="mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
               This page is roadmap only. BizPilot may later help local businesses create owner-reviewed marketing content after the cleaning lead recovery workflow is validated.
             </p>
           </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="public-card-grid mt-10">
             {cards.map((card) => (
               <MarketingCard className="p-5" key={card}>
                 <p className="text-[16px] font-black" style={{ color: marketingTone.text }}>{card}</p>

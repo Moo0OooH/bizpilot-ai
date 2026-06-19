@@ -1,4 +1,5 @@
-﻿# BizPilot AI Design System Spec v1.1
+> Superseded note, 2026-06-18: This older design-system file is preserved for historical context. Public responsive behavior, light founder-pilot direction, header collapse, section spacing, overflow policy, and route QA are now governed by `docs/product/BIZPILOT_RESPONSIVE_LAYOUT_AND_DEVICE_STANDARD_v1.0.md` and `docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md` wherever they conflict.
+# BizPilot AI Design System Spec v1.1
 
 **Status:** Active
 **Last updated:** 2026-05-22

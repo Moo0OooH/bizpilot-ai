@@ -10,9 +10,10 @@
  * - docs/product/BIZPILOT_FOUNDER_ADMIN_CONSOLE_SPEC_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-05-26
+ * Last Updated: 2026-06-18
  * Change Log:
  * - 2026-05-26: Moved production health ahead of data grids so empty admin data is tied to safe runtime diagnostics.
+ * - 2026-06-18: Updated founder access fallback to svh/clip frame for responsive hardening.
  * ============================================================
  */
 
@@ -853,9 +854,9 @@ function getFounderAccessMessage(error: unknown): string {
 function FounderAccessBlocked({ message }: Readonly<{ message: string }>) {
   return (
     <main
-      className="biz-founder-admin min-h-screen overflow-x-hidden px-5 py-7 text-[var(--dash-text)] sm:px-6"
+      className="biz-founder-admin min-h-svh overflow-x-clip px-5 py-7 text-[var(--dash-text)] sm:px-6"
     >
-      <div className="mx-auto flex min-h-[calc(100vh-3.5rem)] max-w-[720px] items-center">
+      <div className="mx-auto flex min-h-[calc(100svh-3.5rem)] max-w-[720px] items-center">
         <DashboardCard className="p-6 sm:p-8" variant="priority">
           <PageHeader
             actions={<StatusBadge tone="amber">Internal only</StatusBadge>}

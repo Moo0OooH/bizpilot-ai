@@ -1,6 +1,25 @@
+/**
+ * ============================================================
+ * File: components/public/marketing-ui.tsx
+ * Project: BizPilot AI
+ * Description: Shared public marketing primitives for the light founder-pilot site.
+ * Role: Provides responsive header, footer, containers, cards, badges, buttons, and icons for public routes.
+ * Related:
+ * - app/page.tsx
+ * - app/globals.css
+ * - lib/i18n/home-copy.ts
+ * Author: MoOoH
+ * Created: 2026-06-18
+ * Last Updated: 2026-06-18
+ * Change Log:
+ * - 2026-06-18: Added compact responsive navigation and public container primitives.
+ * ============================================================
+ */
+
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
+import { MarketingCompactMenu } from "@/components/public/marketing-compact-menu";
 import type { HomeNavCopy } from "@/lib/i18n/home-copy";
 import {
   languageNativeLabels,
@@ -199,7 +218,7 @@ export function MarketingShell({
   className = "",
 }: Readonly<{ children: ReactNode; className?: string }>) {
   return (
-    <div className={`mx-auto w-full max-w-[1200px] px-5 sm:px-8 lg:px-10 ${className}`}>
+    <div className={`public-container ${className}`}>
       {children}
     </div>
   );
@@ -216,7 +235,7 @@ export function MarketingCard({
 }>) {
   return (
     <div
-      className={`min-w-0 rounded-[24px] border ${className}`}
+      className={`min-w-0 rounded-[20px] border ${className}`}
       style={{
         background: "#FFFFFF",
         borderColor: marketingTone.border,
@@ -358,7 +377,7 @@ export function MarketingBrand({
         <span className="block text-[15px] font-black" style={{ color: marketingTone.text }}>
           BizPilot AI
         </span>
-        <span className="hidden text-[9px] font-black uppercase sm:block" style={{ color: marketingTone.muted }}>
+        <span className="hidden max-w-[18rem] truncate text-[9px] font-black uppercase sm:block min-[1180px]:max-w-[22rem]" style={{ color: marketingTone.muted }}>
           {subtitle}
         </span>
       </span>
@@ -385,15 +404,50 @@ export function MarketingHeader({
     { href: "/pricing", label: copy.pricing },
     { href: "/pilot", label: copy.pilot },
   ];
+  const renderLanguageForm = () =>
+    language ? (
+      <form
+        action={setInterfaceLanguageAction}
+        aria-label={copy.languageLabel}
+        className="flex min-h-11 items-center rounded-[10px] border p-1"
+        style={{
+          backgroundColor: "#FFFFFF",
+          borderColor: marketingTone.borderStrong,
+        }}
+      >
+        <input name="redirectTo" type="hidden" value={redirectPath} />
+        {supportedLanguages.map((option) => {
+          const selected = option === language;
+
+          return (
+            <button
+              aria-pressed={selected}
+              className="min-h-11 rounded-[8px] px-2 text-[10px] font-black transition sm:px-2.5 sm:text-[11px]"
+              key={option}
+              name="language"
+              style={{
+                backgroundColor: selected ? marketingTone.blue : "transparent",
+                color: selected ? "#FFFFFF" : marketingTone.text,
+              }}
+              title={languageNativeLabels[option]}
+              type="submit"
+              value={option}
+            >
+              {languageShortLabels[option]}
+            </button>
+          );
+        })}
+      </form>
+    ) : null;
 
   return (
     <header
       className="sticky top-0 z-40 border-b backdrop-blur-xl"
       style={{ backgroundColor: "rgba(248,250,252,0.88)", borderColor: marketingTone.border }}
     >
-      <nav className="mx-auto flex min-h-[58px] w-full max-w-[1200px] items-center justify-between gap-3 px-3 py-2 sm:px-6">
+      <nav className="public-container flex min-h-[64px] items-center justify-between gap-3 py-2">
         <MarketingBrand subtitle={copy.brandSubtitle} />
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-2 min-[1180px]:flex">
           {navItems.map((item) => {
             const selected = active === "pricing" && item.href === "/pricing";
 
@@ -409,53 +463,46 @@ export function MarketingHeader({
             );
           })}
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          {language ? (
-            <form
-              action={setInterfaceLanguageAction}
-              aria-label={copy.languageLabel}
-              className="flex min-h-11 items-center rounded-[10px] border p-1"
-              style={{
-                backgroundColor: "#FFFFFF",
-                borderColor: marketingTone.borderStrong,
-              }}
-            >
-              <input name="redirectTo" type="hidden" value={redirectPath} />
-              {supportedLanguages.map((option) => {
-                const selected = option === language;
-
-                return (
-                  <button
-                    aria-pressed={selected}
-                    className="min-h-11 rounded-[8px] px-2 text-[10px] font-black transition sm:px-2.5 sm:text-[11px]"
-                    key={option}
-                    name="language"
-                    style={{
-                      backgroundColor: selected ? marketingTone.blue : "transparent",
-                      color: selected ? "#FFFFFF" : marketingTone.text,
-                    }}
-                    title={languageNativeLabels[option]}
-                    type="submit"
-                    value={option}
-                  >
-                    {languageShortLabels[option]}
-                  </button>
-                );
-              })}
-            </form>
-          ) : null}
+        <div className="hidden shrink-0 items-center gap-2 min-[1180px]:flex">
+          {renderLanguageForm()}
           <Link
-            className="hidden h-10 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)] lg:inline-flex"
+            className="inline-flex h-10 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
             href="/auth/sign-in"
             style={{ color: marketingTone.soft }}
           >
             {copy.signIn}
           </Link>
-          <MarketingButton className="min-h-11 px-3 text-[11px] sm:px-4 sm:text-[13px]" href="/pilot">
-            <span className="sm:hidden">{copy.startShort}</span>
-            <span className="hidden sm:inline">{copy.startFull}</span>
+          <MarketingButton className="min-h-11 px-4 text-[13px]" href="/pilot">
+            {copy.startFull}
           </MarketingButton>
         </div>
+        <MarketingCompactMenu>
+            <div className="grid gap-1">
+              {navItems.map((item) => (
+                <Link
+                  className="min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
+                  href={item.href}
+                  key={item.href}
+                  style={{ color: marketingTone.text }}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            <div className="grid gap-3 border-t pt-3" style={{ borderColor: marketingTone.border }}>
+              {renderLanguageForm()}
+              <Link
+                className="inline-flex min-h-11 items-center justify-center rounded-[12px] border px-4 text-[13px] font-bold transition hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[rgba(37,99,235,0.18)]"
+                href="/auth/sign-in"
+                style={{ borderColor: marketingTone.borderStrong, color: marketingTone.soft }}
+              >
+                {copy.signIn}
+              </Link>
+              <MarketingButton className="w-full" href="/pilot">
+                {copy.startFull}
+              </MarketingButton>
+            </div>
+        </MarketingCompactMenu>
       </nav>
     </header>
   );

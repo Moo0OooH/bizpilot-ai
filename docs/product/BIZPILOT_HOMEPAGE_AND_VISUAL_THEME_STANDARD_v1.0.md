@@ -1,4 +1,5 @@
-﻿# BizPilot Homepage and Visual Theme Standard v1.1
+> Superseded note, 2026-06-18: Public-site guidance in this file is preserved for history. Where it conflicts with `docs/product/BIZPILOT_RESPONSIVE_LAYOUT_AND_DEVICE_STANDARD_v1.0.md` or `docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md`, the responsive standard and visual audit win. In particular, the old dark frozen-homepage direction, `Start free recovery` CTA, command-center-first public framing, and limited two-viewport QA guidance are no longer canonical.
+# BizPilot Homepage and Visual Theme Standard v1.1
 
 **Status:** Active canonical visual standard
 **Last updated:** 2026-05-24
