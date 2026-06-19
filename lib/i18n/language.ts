@@ -10,6 +10,9 @@
  * - server/services/public-intake.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
+ * Last Updated: 2026-06-19
+ * Change Log:
+ * - 2026-06-19: Corrected public French locale labels for compact language navigation.
  * ============================================================
  */
 

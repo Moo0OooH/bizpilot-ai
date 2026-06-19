@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
+ * - 2026-06-19: Rebuilt public header utilities around compact locale/theme controls and content-fit navigation.
  * ============================================================
  */
 
@@ -21,15 +22,10 @@ import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
 import { MarketingCompactMenu } from "@/components/public/marketing-compact-menu";
+import { MarketingLanguageMenu } from "@/components/public/marketing-language-menu";
 import { ThemePreferenceControl } from "@/components/ui/theme-preference-control";
 import type { HomeNavCopy } from "@/lib/i18n/home-copy";
-import {
-  languageNativeLabels,
-  languageShortLabels,
-  supportedLanguages,
-  type SupportedLanguage,
-} from "@/lib/i18n/language";
-import { setInterfaceLanguageAction } from "@/server/actions/business-configuration.actions";
+import type { SupportedLanguage } from "@/lib/i18n/language";
 
 export const marketingTone = {
   bg: "var(--canvas)",
@@ -55,7 +51,7 @@ type ButtonVariant = "primary" | "secondary" | "ghost";
 type BadgeTone = "teal" | "gold" | "blue" | "red" | "neutral";
 
 const defaultMarketingNavCopy: HomeNavCopy = {
-  brandSubtitle: "AI-assisted lead recovery for cleaning businesses",
+  brandSubtitle: "Lead recovery for cleaning businesses",
   cleaning: "Cleaning",
   comparison: "Comparison",
   copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
@@ -75,6 +71,15 @@ const defaultMarketingNavCopy: HomeNavCopy = {
   trust: "Trust",
   why: "Why BizPilot",
 };
+
+type MarketingNavKey =
+  | "cleaning"
+  | "demo"
+  | "features"
+  | "home"
+  | "pilot"
+  | "pricing"
+  | "trust";
 
 export type MarketingIconName =
   | "arrow"
@@ -378,7 +383,10 @@ export function MarketingBrand({
         <span className="block text-[15px] font-black" style={{ color: marketingTone.text }}>
           BizPilot AI
         </span>
-        <span className="hidden max-w-[18rem] truncate text-[9px] font-black uppercase sm:block min-[1180px]:max-w-[22rem]" style={{ color: marketingTone.muted }}>
+        <span
+          className="hidden whitespace-nowrap text-[9px] font-black uppercase min-[1240px]:block"
+          style={{ color: marketingTone.muted }}
+        >
           {subtitle}
         </span>
       </span>
@@ -392,53 +400,35 @@ export function MarketingHeader({
   language,
   redirectPath = "/",
 }: Readonly<{
-  active?: "home" | "pricing";
+  active?: MarketingNavKey;
   copy?: HomeNavCopy;
   language?: SupportedLanguage;
   redirectPath?: string;
 }>) {
-  const navItems: ReadonlyArray<Readonly<{ href: string; label: string }>> = [
-    { href: "/features", label: copy.features },
-    { href: "/industries/cleaning", label: copy.cleaning },
-    { href: "/trust", label: copy.trust },
-    { href: "/demo", label: copy.demo },
-    { href: "/pricing", label: copy.pricing },
-    { href: "/pilot", label: copy.pilot },
+  const navItems: ReadonlyArray<
+    Readonly<{ href: string; key: Exclude<MarketingNavKey, "home">; label: string }>
+  > = [
+    { href: "/features", key: "features", label: copy.features },
+    { href: "/industries/cleaning", key: "cleaning", label: copy.cleaning },
+    { href: "/trust", key: "trust", label: copy.trust },
+    { href: "/demo", key: "demo", label: copy.demo },
+    { href: "/pricing", key: "pricing", label: copy.pricing },
+    { href: "/pilot", key: "pilot", label: copy.pilot },
   ];
-  const renderLanguageForm = () =>
-    language ? (
-      <form
-        action={setInterfaceLanguageAction}
-        aria-label={copy.languageLabel}
-        className="flex min-h-11 items-center rounded-[10px] border p-1"
-        style={{
-          backgroundColor: "var(--surface)",
-          borderColor: marketingTone.borderStrong,
-        }}
-      >
-        <input name="redirectTo" type="hidden" value={redirectPath} />
-        {supportedLanguages.map((option) => {
-          const selected = option === language;
 
-          return (
-            <button
-              aria-pressed={selected}
-              className="min-h-11 rounded-[8px] px-2 text-[10px] font-black transition sm:px-2.5 sm:text-[11px]"
-              key={option}
-              name="language"
-              style={{
-                backgroundColor: selected ? marketingTone.blue : "transparent",
-                color: selected ? "var(--primary-contrast)" : marketingTone.text,
-              }}
-              title={languageNativeLabels[option]}
-              type="submit"
-              value={option}
-            >
-              {languageShortLabels[option]}
-            </button>
-          );
-        })}
-      </form>
+  const currentPath = redirectPath.split(/[?#]/)[0] || "/";
+  const isActiveItem = (
+    item: Readonly<{ href: string; key: Exclude<MarketingNavKey, "home"> }>,
+  ) => active === item.key || currentPath === item.href;
+  const renderLanguageMenu = (compact = false) =>
+    language ? (
+      <MarketingLanguageMenu
+        buttonClassName={compact ? "w-full justify-center" : ""}
+        className={compact ? "w-full" : ""}
+        label={copy.languageLabel}
+        language={language}
+        redirectPath={redirectPath}
+      />
     ) : null;
 
   return (
@@ -446,26 +436,32 @@ export function MarketingHeader({
       className="sticky top-0 z-40 border-b backdrop-blur-xl"
       style={{ backgroundColor: "color-mix(in srgb, var(--canvas) 88%, transparent)", borderColor: marketingTone.border }}
     >
-      <nav className="public-container flex min-h-[64px] items-center justify-between gap-3 py-2">
+      <nav className="public-container flex min-h-[64px] items-center justify-between gap-3 py-2 min-[1240px]:min-h-[76px]">
         <MarketingBrand subtitle={copy.brandSubtitle} />
-        <div className="hidden items-center gap-2 min-[1180px]:flex">
+        <div className="hidden items-center gap-1 min-[1240px]:flex">
           {navItems.map((item) => {
-            const selected = active === "pricing" && item.href === "/pricing";
+            const selected = isActiveItem(item);
 
             return (
               <Link
+                aria-current={selected ? "page" : undefined}
                 className="inline-flex min-h-11 items-center whitespace-nowrap rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                 href={item.href}
                 key={item.href}
-                style={{ color: selected ? marketingTone.text : marketingTone.soft }}
+                style={{
+                  backgroundColor: selected
+                    ? "var(--surface-interactive)"
+                    : "transparent",
+                  color: selected ? marketingTone.text : marketingTone.soft,
+                }}
               >
                 {item.label}
               </Link>
             );
           })}
         </div>
-        <div className="hidden shrink-0 items-center gap-2 min-[1180px]:flex">
-          {renderLanguageForm()}
+        <div className="hidden shrink-0 items-center gap-2 min-[1240px]:flex">
+          {renderLanguageMenu()}
           <ThemePreferenceControl language={language ?? "en"} />
           <Link
             className="inline-flex min-h-11 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
@@ -478,21 +474,37 @@ export function MarketingHeader({
             {copy.startFull}
           </MarketingButton>
         </div>
-        <MarketingCompactMenu>
+        <div className="flex shrink-0 items-center gap-2 min-[1240px]:hidden">
+          <div className="hidden sm:block min-[1240px]:hidden">
+            <MarketingButton className="min-h-11 px-4 text-[13px]" href="/pilot">
+              {copy.startShort}
+            </MarketingButton>
+          </div>
+          <MarketingCompactMenu>
             <div className="grid gap-1">
-              {navItems.map((item) => (
-                <Link
-                  className="min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                  href={item.href}
-                  key={item.href}
-                  style={{ color: marketingTone.text }}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const selected = isActiveItem(item);
+
+                return (
+                  <Link
+                    aria-current={selected ? "page" : undefined}
+                    className="min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                    href={item.href}
+                    key={item.href}
+                    style={{
+                      backgroundColor: selected
+                        ? "var(--surface-interactive)"
+                        : "transparent",
+                      color: marketingTone.text,
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
             <div className="grid gap-3 border-t pt-3" style={{ borderColor: marketingTone.border }}>
-              {renderLanguageForm()}
+              {renderLanguageMenu(true)}
               <ThemePreferenceControl className="w-full justify-center" language={language ?? "en"} />
               <Link
                 className="inline-flex min-h-11 items-center justify-center rounded-[12px] border px-4 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
@@ -505,7 +517,8 @@ export function MarketingHeader({
                 {copy.startFull}
               </MarketingButton>
             </div>
-        </MarketingCompactMenu>
+          </MarketingCompactMenu>
+        </div>
       </nav>
     </header>
   );

@@ -10,6 +10,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
+ * Last Updated: 2026-06-19
+ * Change Log:
+ * - 2026-06-19: Shortened public header tagline and corrected compact French pilot CTA.
  * ============================================================
  */
 
@@ -433,7 +436,7 @@ const englishHomeCopy: HomeCopy = {
     title: "The lead was warm. The reply was late.",
   },
   nav: {
-    brandSubtitle: "AI-assisted lead recovery for cleaning businesses",
+    brandSubtitle: "Lead recovery for cleaning businesses",
     cleaning: "Cleaning",
     comparison: "Comparison",
     copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
@@ -865,7 +868,7 @@ const frenchHomeCopy: HomeCopy = {
     title: "Le lead etait chaud. La reponse etait tardive.",
   },
   nav: {
-    brandSubtitle: "Récupération de leads assistée par IA pour le nettoyage",
+    brandSubtitle: "Récupération de leads pour le nettoyage",
     cleaning: "Nettoyage",
     comparison: "Comparaison",
     copyright: "Copyright 2026 BizPilot AI. Tous droits réservés.",
@@ -880,7 +883,7 @@ const frenchHomeCopy: HomeCopy = {
     security: "Securite",
     signIn: "Connexion",
     startFull: "Rejoindre le pilote fondateur",
-    startShort: "Join founder pilot",
+    startShort: "Rejoindre le pilote",
     terms: "Conditions",
     trust: "Confiance",
     why: "Pourquoi BizPilot",
