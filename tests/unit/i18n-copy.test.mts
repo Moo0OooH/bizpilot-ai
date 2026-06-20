@@ -362,7 +362,11 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       frenchPublicCopy.home.hero.title,
-      "Ne perdez plus de demandes de soumission à cause de réponses trop lentes.",
+      "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    );
+    assert.ok(
+      frenchPublicCopy.home.hero.title.length <= 70,
+      "fr-CA homepage hero title should stay short enough for first-fold parity.",
     );
     assert.equal(
       frenchPublicCopy.home.hero.primaryCta,
@@ -375,6 +379,7 @@ describe("BizPilot language copy", () => {
       "Owner-reviewed AI drafts",
       "Manual copy/send workflow",
       "Payment and product guardrails",
+      "Ne perdez plus de demandes de soumission à cause de réponses trop lentes.",
     ]) {
       assert.equal(
         frenchPublicText.includes(englishPhrase),

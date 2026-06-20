@@ -9,9 +9,10 @@
  * - docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-18
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
+ * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
  * ============================================================
  */
 
@@ -29,6 +30,15 @@ const routes: readonly RouteContract[] = [
     h1: "Stop losing cleaning quote requests to slow replies.",
     mustContain: ["href=\"/demo\"", "No auto-send", "Owner-reviewed AI drafts"],
     path: "/",
+  },
+  {
+    h1: "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    mustContain: [
+      "href=\"/demo\"",
+      "Aucun envoi automatique",
+      "Brouillons révisés par le propriétaire",
+    ],
+    path: "/?language=fr-CA",
   },
   {
     h1: "A simple system to capture, organize, and reply to cleaning leads faster.",

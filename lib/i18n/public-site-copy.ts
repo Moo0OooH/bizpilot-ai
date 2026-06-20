@@ -10,10 +10,11 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
  * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
+ * - 2026-06-20: Shortened fr-CA homepage hero copy for first-fold parity.
  * ============================================================
  */
 
@@ -1542,11 +1543,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "Conçu d'abord pour les entreprises de nettoyage",
       body:
-        "BizPilot aide les entreprises de nettoyage à recueillir les demandes de soumission, à organiser les demandes clients et à préparer rapidement des réponses révisées par le propriétaire - pour répondre plus vite sans perdre le contrôle.",
+        "BizPilot aide les entreprises de nettoyage à capter les demandes, organiser les prospects et préparer des réponses révisées par le propriétaire, sans envoi automatique.",
       primaryCta: "Participer au projet pilote",
       secondaryCta: "Voir la démo de 60 secondes",
       title:
-        "Ne perdez plus de demandes de soumission à cause de réponses trop lentes.",
+        "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
       trustBadges: [
         "Aucun envoi automatique",
         "Brouillons révisés par le propriétaire",
@@ -1561,7 +1562,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     mockup: {
       copyButton: "Copier la réponse",
       draftBody:
-        "Bonjour Maria, merci pour votre message. Je peux vous aider avec votre nettoyage avant déménagement. Pourriez-vous confirmer le secteur de l'adresse et si les électroménagers doivent être nettoyés afin que je prépare une soumission exacte?",
+        "Bonjour Maria, merci pour votre message. Pourriez-vous confirmer le secteur et si les électroménagers doivent être nettoyés afin que je prépare une soumission exacte?",
       draftTag: "L'IA prépare. Vous envoyez.",
       draftTitle: "Brouillon IA",
       fields: [
