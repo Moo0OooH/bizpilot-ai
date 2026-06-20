@@ -30,9 +30,15 @@ Every implementation must improve at least one of these outcomes:
 
 If the change does not improve one of these, keep it out of the active surface or place it behind an owner-controlled feature level with honest Settings state.
 
-## Active Priority Override - 2026-06-01
+## Active Priority Override - 2026-06-20
 
-For the shortest current status, read `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`.
+For the shortest current status, read `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`.
+
+2026-06-20 update: the final public-site polish, visual stability patch, visual
+truth fix, and dashboard D0 design audit are complete. The next correct
+implementation phase is scoped dashboard shell and lead workflow visual
+stabilization. Do not restart homepage/public-site work unless a new defect is
+reported.
 
 Read `docs/operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` before choosing execution order.
 
@@ -40,13 +46,12 @@ BizPilot does not need a strategic reset. After the remaining Phase 24F/24G real
 
 Highest current execution priorities:
 
-1. Homepage polish
-2. Dashboard polish
-3. Manual email templates
-4. End-to-end smoke test
-5. Demo creation
-6. Demo video
-7. Founder-led customer outreach
+1. Dashboard shell and lead workflow visual stabilization
+2. Manual email templates
+3. End-to-end smoke test
+4. Demo creation
+5. Demo video
+6. Founder-led customer outreach
 
 Feature expansion is forbidden until validation evidence exists. P3/future scope includes owner notification email, customer email automation, SMS, WhatsApp, booking, invoices, billing automation, calendar sync, multi-vertical expansion, full CRM, and autonomous AI.
 

@@ -6,12 +6,14 @@ Before reading or implementing anything, start with:
 
 1. `CURRENT_CANONICAL_DOCS_v1.7.md`
 2. `AI_CODING_AGENT_START_HERE_v1.7.md`
-3. `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
-4. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
-5. `readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`
-6. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
-7. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
-8. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+4. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+5. `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
+6. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
+7. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
+8. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+9. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
+10. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
 
@@ -27,6 +29,14 @@ for dashboard work after the final polish evidence in
 `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`. This does not
 approve real customer data, paid-pilot launch, billing automation, or broader
 feature expansion.
+
+2026-06-20 post-D0 dashboard override: public-site visual truth verification and
+the dashboard D0 audit are complete. Use
+`readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` for the active phase map and
+`readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` for the dashboard route,
+component, data-flow, UX, and risk baseline. The next correct implementation
+phase is scoped dashboard visual stabilization, not real-data, billing, auth,
+RLS, AI provider, or production data-flow expansion.
 
 ## Active MVP Direction
 
@@ -88,6 +98,10 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ## Latest Readiness Evidence
 
+- `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `docs/readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+- `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
+- `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`
 - `docs/readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
 - `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`
 - `docs/readiness/BIZPILOT_SECOND_PASS_PROJECT_GAP_AND_SUGGESTIONS_2026-06-01.md`

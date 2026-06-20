@@ -3,6 +3,10 @@
 Date: 2026-06-01
 Status: Active short status override for humans and coding agents
 
+2026-06-20 addendum: this file is preserved as the prior short status. For the
+active post-public-site, post-D0 dashboard baseline, use
+`docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`.
+
 ## One-Line Status
 
 BizPilot is synthetic-ready, not real-data-approved, not paid-pilot-ready, and now primarily needs product readiness, demo readiness, and customer validation work.
@@ -13,7 +17,7 @@ BizPilot is synthetic-ready, not real-data-approved, not paid-pilot-ready, and n
 | --- | --- | --- |
 | Strategic direction | Approved | Lead Recovery & Response System for cleaning businesses. |
 | Synthetic production proof | Passed | Phase 23 public/auth/quote/dashboard/OpenAI/Auth email evidence is recorded. |
-| Real-data readiness | Not approved | Pending Phase 24F final no-secret production smoke and Phase 24G explicit owner approval. |
+| Real-data readiness | Not approved | 2026-06-20 update: Phase 24F final no-secret production smoke later passed; Phase 24G explicit owner approval remains open. |
 | Paid-pilot readiness | Not ready | Requires payment/support operating packet and strict restored app/dashboard/RLS proof before paid pilot or risky production work. |
 | First pilot mode | Manual-only | Cleaning-only, manual dashboard check, owner-reviewed AI drafts, manual copy/send. |
 | Owner notification email | Deferred | Not active and not required for first pilot. |
@@ -41,14 +45,12 @@ Implementation evidence:
 
 ## Active Execution Order
 
-1. Run and record Phase 24F final no-secret production smoke.
-2. Record Phase 24G owner approval only if Phase 24F passes.
-3. Polish homepage for 30-second cleaning-owner understanding.
-4. Polish dashboard and lead workspace for 60-second first value.
-5. Create manual initial reply, follow-up, and re-engagement email templates.
-6. Run full end-to-end smoke: signup, verify email, login, create business, submit lead, dashboard, AI summary, AI draft, copy reply, logout, password reset, login again.
-7. Create demo scenario, demo script, and 60 to 120 second demo video.
-8. Start founder-led outreach to 20 to 30 cleaning businesses.
+1. Record Phase 24G owner approval only if the owner explicitly approves real customer data.
+2. Polish dashboard and lead workspace for 60-second first value.
+3. Create manual initial reply, follow-up, and re-engagement email templates.
+4. Run full end-to-end smoke with approved synthetic/local data only.
+5. Create demo scenario, demo script, and 60 to 120 second demo video.
+6. Start founder-led outreach to 20 to 30 cleaning businesses only after product/demo readiness is strong.
 
 ## P1 After Validation Evidence
 

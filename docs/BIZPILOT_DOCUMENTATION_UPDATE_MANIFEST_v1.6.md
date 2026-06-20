@@ -89,3 +89,40 @@ No original document content was intentionally removed. v1.7 clarifies reading o
 ## Main Result
 
 The docs can now be placed into the active repo with less risk of AI-agent confusion between long-term platform vision and current MVP execution.
+
+
+---
+
+# 2026-06-20 Post Public-Site And D0 Addendum
+
+## Update Type
+
+Readiness, visual-stability, and dashboard-start documentation sync.
+
+## New Current Files Added
+
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`
+- `readiness/PUBLIC_SITE_VISUAL_STABILITY_AUDIT_2026-06-20.md`
+- `readiness/PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`
+- `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
+
+## Existing Files Updated
+
+- `README.md`
+- `CURRENT_CANONICAL_DOCS_v1.7.md`
+- `AI_CODING_AGENT_START_HERE_v1.7.md`
+- `BIZPILOT_DOCS_FILE_INVENTORY_v1.7.md`
+
+## Current Interpretation
+
+The public site is visually stable enough to start scoped dashboard work. The
+dashboard D0 audit is complete. The next correct implementation phase is
+dashboard shell and lead workflow visual stabilization.
+
+This addendum does not approve real customer data, paid pilot launch, billing
+automation, auth/RLS/database changes, AI provider changes, production data-flow
+expansion, or feature expansion beyond the manual-first cleaning lead recovery
+surface.

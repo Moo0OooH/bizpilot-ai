@@ -4,6 +4,35 @@
 **Generated From Repo:** yes
 **Scope:** Markdown and text documentation files only; packaged archives are excluded.
 
+## 2026-06-20 Public-Site/D0 Readiness Addendum
+
+Docs-only sync after final public-site visual stabilization and dashboard D0
+audit added or promoted these current source-of-truth files:
+
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`
+- `readiness/PUBLIC_SITE_VISUAL_STABILITY_AUDIT_2026-06-20.md`
+- `readiness/PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`
+- `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_POLISH_BASELINE_2026-06-19.md`
+- `readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md`
+- `readiness/PUBLIC_RESPONSIVE_HARDENING_WORK_LOG_2026-06-18.md`
+- `readiness/CUSTOM_QUOTE_FIELD_BUILDER_WORK_LOG_2026-06-18.md`
+- `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
+- `product/BIZPILOT_RESPONSIVE_LAYOUT_AND_DEVICE_STANDARD_v1.0.md`
+
+Current interpretation:
+
+- Final public-site visual truth verification passed and is deployed.
+- Dashboard D0 audit passed and is committed.
+- The next correct implementation phase is scoped dashboard shell and lead
+  workflow visual stabilization.
+- Real customer data, paid pilot launch, billing automation,
+  auth/RLS/database changes, AI provider changes, and production data-flow
+  expansion remain blocked.
+
 ## 2026-05-28 Inventory Sync Addendum
 
 Automated audit result:

@@ -32,14 +32,37 @@ status. Earlier public light-only/no-toggle guidance is superseded: the public
 site now supports a compact Light/Dark/Use device setting theme menu while
 fresh sessions still default to Light.
 
+2026-06-20 post-D0 dashboard override: treat
+`readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`,
+`readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`, and
+`readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` as the latest authority for
+where the project stands after public-site visual truth verification and the
+dashboard D0 audit. Public-site visual stability is GO for scoped dashboard
+visual work. Real customer data, paid pilot launch, billing automation,
+auth/RLS/database changes, AI provider changes, and production data-flow
+expansion remain NO-GO.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
 
 Read these first, in this exact order:
 
+2026-06-20 current read-first override:
+
+1. `CURRENT_CANONICAL_DOCS_v1.7.md` - this file.
+2. `AI_CODING_AGENT_START_HERE_v1.7.md` - current agent instructions.
+3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - active post-D0 project status and phase map.
+4. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
+5. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - latest public-site visual truth evidence.
+6. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
+7. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
+
 2026-06-18 public responsive authorities:
 
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
 - `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
 - `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
 - `product/BIZPILOT_RESPONSIVE_LAYOUT_AND_DEVICE_STANDARD_v1.0.md`
@@ -79,11 +102,20 @@ Additional active lifecycle/deletion authorities:
 - `operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 - `readiness/PHASE_19_BUSINESS_LIFECYCLE_DELETION_READINESS.md`
 
-## Current Readiness Snapshot - 2026-05-30
+## Current Readiness Snapshot - 2026-06-20
 
 Use these files for the latest production and documentation status before
 starting new work:
 
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - current post-D0 project
+  status, closed/open phase map, GO/NO-GO table, and recommended next phase.
+- `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route map,
+  shell map, data-flow map, UX issues, implementation plan, and boundaries.
+- `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - final
+  production/local public-site visual truth verification after Phase 12; this is
+  the current public-site visual GO evidence for starting dashboard work.
+- `readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md` - Phase
+  11E public-site visual stability patch evidence.
 - `readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md` - current operator
   handoff and source-of-truth summary after Phase 23F; includes completed
   synthetic production proof, remaining blockers, and corrected next steps.
@@ -123,6 +155,13 @@ starting new work:
 
 Current top-level interpretation:
 
+- Public-site work through final visual truth verification is closed enough for
+  dashboard visual work. The next correct implementation phase is scoped
+  dashboard shell and lead workflow visual stabilization.
+- Dashboard D0 is closed. It approved planning and scoped visual
+  implementation only; it did not approve real customer data, paid pilot,
+  billing, auth/RLS/database changes, AI provider changes, or production
+  data-flow expansion.
 - Production access/admin-data loading is no longer the primary blocker after
   Phase 22 evidence.
 - Synthetic production readiness is strong after Phase 23. `MrTester` is the
@@ -151,10 +190,12 @@ Current top-level interpretation:
 - Broader feature work remains allowed only through feature entitlement,
   Settings visibility, guide coverage, smoke evidence, and honest
   customer-facing copy.
-- 2026-06-01 execution override: after Phase 24F/24G, the highest active work is
-  product readiness, demo readiness, and customer validation. Homepage polish,
-  dashboard polish, manual email templates, end-to-end smoke, demo creation,
-  demo video, and founder-led outreach take priority over feature expansion.
+- 2026-06-20 execution override: the highest active work is product readiness,
+  demo readiness, and customer validation. Homepage/public-site polish and
+  visual truth verification are now closed enough for dashboard work. Dashboard
+  shell and lead workflow visual stabilization, manual email templates,
+  end-to-end smoke, demo creation, demo video, and founder-led outreach take
+  priority over feature expansion.
   P1-after-validation items include owner notes, source attribution, validation
   dashboard, payment process, support process, French pilot expansion, and
   strict restored app/RLS proof. P2 hardening includes IP hash salt, abuse
@@ -168,6 +209,10 @@ Current top-level interpretation:
 
 ### Product and UX
 
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`
 - `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
 - `product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
 - `product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md`
