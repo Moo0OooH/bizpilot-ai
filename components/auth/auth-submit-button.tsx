@@ -17,14 +17,13 @@
  * - 2026-05-12: Standardized production auth CTA scale and focus treatment.
  * - 2026-05-12: Added quiet premium depth to the slate auth CTA.
  * - 2026-05-18: Connected the submit button to shared BizPilot design tokens.
+ * - 2026-06-19: Aligned auth primary actions with the public blue primary.
  * ============================================================
  */
 
 "use client";
 
 import { useFormStatus } from "react-dom";
-
-import { bizTheme } from "@/lib/design-tokens";
 
 type AuthSubmitButtonProps = Readonly<{
   children: string;
@@ -39,8 +38,15 @@ export function AuthSubmitButton({
 
   return (
     <button
-      className={`${bizTheme.buttonPrimary} h-11 w-full disabled:cursor-not-allowed disabled:opacity-65`}
+      className="inline-flex h-11 w-full items-center justify-center rounded-[12px] px-5 text-sm font-black transition duration-200 hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-65"
       disabled={pending}
+      style={{
+        background:
+          "linear-gradient(135deg, var(--primary), var(--primary-hover))",
+        boxShadow:
+          "0 14px 30px color-mix(in srgb, var(--primary) 22%, transparent)",
+        color: "var(--primary-contrast)",
+      }}
       type="submit"
     >
       {pending ? pendingLabel : children}

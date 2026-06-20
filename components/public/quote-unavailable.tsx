@@ -37,7 +37,7 @@ export function QuoteUnavailable({
 
   return (
     <BizPilotThemeShell>
-      <main className="public-site flex min-h-svh items-center justify-center px-4 py-10">
+      <div className="public-site flex min-h-svh items-center justify-center px-4 py-10">
         <section className="w-full max-w-[560px] rounded-[18px] border p-6 text-center shadow-[var(--shadow-lg)]" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border-default)" }}>
           <BizPilotBrand compact subtitle={copy.unavailableSubtitle} />
           <h1 className="mt-5 text-2xl font-extrabold text-[var(--text-strong)]">
@@ -62,7 +62,7 @@ export function QuoteUnavailable({
                     }
                     key={option}
                     style={{
-                      backgroundColor: selected ? "var(--biz-primary)" : "transparent",
+                      backgroundColor: selected ? "var(--primary)" : "transparent",
                       color: selected ? "var(--primary-contrast)" : "var(--text-strong)",
                     }}
                   >
@@ -77,13 +77,14 @@ export function QuoteUnavailable({
             href="/"
             style={{
               backgroundColor: "var(--biz-primary)",
+              boxShadow: "0 14px 30px color-mix(in srgb, var(--primary) 22%, transparent)",
               color: "var(--primary-contrast)",
             }}
           >
             {copy.unavailableCta}
           </Link>
         </section>
-      </main>
+      </div>
     </BizPilotThemeShell>
   );
 }

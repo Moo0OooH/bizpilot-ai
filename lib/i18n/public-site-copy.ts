@@ -355,7 +355,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     resetPassword: {
       description:
         "Choose a new password for your BizPilot AI owner account.",
-      title: "Create new password | BizPilot AI",
+      title: "Reset Password | BizPilot AI",
     },
     signIn: {
       description:
@@ -365,7 +365,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     signUp: {
       description:
         "Create a BizPilot AI owner workspace after founder-pilot approval.",
-      title: "Create owner account | BizPilot AI",
+      title: "Create Owner Access | BizPilot AI",
     },
     signUpPilotCta: "Apply through the founder pilot page first.",
     signUpPilotPrompt: "Looking to join the pilot?",
@@ -1151,7 +1151,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     resetPassword: {
       description:
         "Choisissez un nouveau mot de passe pour votre compte propriétaire BizPilot AI.",
-      title: "Créer un nouveau mot de passe | BizPilot AI",
+      title: "Réinitialiser le mot de passe | BizPilot AI",
     },
     signIn: {
       description:
@@ -1161,7 +1161,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     signUp: {
       description:
         "Créez un espace propriétaire BizPilot AI après l'approbation du projet pilote.",
-      title: "Créer un compte propriétaire | BizPilot AI",
+      title: "Créer l'accès propriétaire | BizPilot AI",
     },
     signUpPilotCta: "Postulez d'abord sur la page du projet pilote.",
     signUpPilotPrompt: "Vous voulez rejoindre le projet pilote?",

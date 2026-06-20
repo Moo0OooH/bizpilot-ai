@@ -418,7 +418,14 @@ export function QuoteFormWizard({
 
       {query?.source === "rate_limited_demo" ? null : null}
 
-      <p className="rounded-[14px] border border-amber-200 bg-amber-50 p-4 text-[13px] leading-6 text-amber-800">
+      <p
+        className="rounded-[14px] border p-4 text-[13px] leading-6"
+        style={{
+          backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
+          borderColor: "color-mix(in srgb, var(--warning) 34%, var(--border-default))",
+          color: "var(--text-strong)",
+        }}
+      >
         {copy.quoteForm.guardrail}
       </p>
 

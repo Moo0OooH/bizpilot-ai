@@ -16,12 +16,15 @@
  */
 
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button";
+import { AuthPasswordField } from "@/components/auth/auth-password-field";
 import {
   AuthCard,
   AuthFieldIcon,
   AuthShell,
+  authErrorStyle,
   authInputClassName,
   authLabelClassName,
+  authSuccessStyle,
 } from "@/components/auth/auth-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
@@ -78,23 +81,13 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
     <AuthShell
       copy={copy}
       footer={copy.signInFooter}
-      language={language}
-      redirectPath={
-        redirectTo === "/dashboard"
-          ? "/auth/sign-in"
-          : `/auth/sign-in?redirectTo=${encodeURIComponent(redirectTo)}`
-      }
     >
       <AuthCard subtitle={copy.signInSubtitle} title={copy.signInTitle}>
         {params?.notice ? (
           <p
             aria-live="polite"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
-            style={{
-              backgroundColor: "rgba(23,212,146,0.10)",
-              borderColor: "rgba(23,212,146,0.22)",
-              color: "#17D492",
-            }}
+            style={authSuccessStyle}
           >
             {params.notice}
           </p>
@@ -104,11 +97,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           <p
             aria-live="assertive"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
-            style={{
-              backgroundColor: "rgba(255,92,92,0.10)",
-              borderColor: "rgba(255,92,92,0.22)",
-              color: "#FFB4B4",
-            }}
+            style={authErrorStyle}
           >
             {params.error}
           </p>
@@ -127,7 +116,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
                 placeholder="you@example.com"
                 required
                 style={{
-                  backgroundColor: "rgba(255,255,255,0.04)",
+                  backgroundColor: "var(--surface)",
                   borderColor: "var(--biz-border-medium)",
                   color: "var(--biz-page-text)",
                 }}
@@ -136,35 +125,22 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             </span>
           </label>
 
-          <label className={authLabelClassName}>
-            <span className="flex items-center justify-between gap-3">
-              <span style={{ color: "var(--biz-page-text-soft)" }}>{copy.password}</span>
+          <AuthPasswordField
+            action={
               <Link
                 className="text-[11px] font-bold normal-case tracking-normal underline-offset-4 hover:underline"
                 href="/auth/forgot-password"
-                style={{ color: "#17D492" }}
+                style={{ color: "var(--primary)" }}
               >
                 {copy.forgotPassword}
               </Link>
-            </span>
-            <span className="relative block">
-              <AuthFieldIcon type="password" />
-              <input
-                autoComplete="current-password"
-                className={authInputClassName}
-                minLength={6}
-                name="password"
-                placeholder={copy.password}
-                required
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.04)",
-                  borderColor: "var(--biz-border-medium)",
-                  color: "var(--biz-page-text)",
-                }}
-                type="password"
-              />
-            </span>
-          </label>
+            }
+            autoComplete="current-password"
+            copy={copy}
+            label={copy.password}
+            minLength={6}
+            name="password"
+          />
 
           <AuthSubmitButton pendingLabel={copy.signInPending}>
             {copy.signIn}
@@ -179,7 +155,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           <Link
             className="font-bold underline-offset-4 hover:underline"
             href="/auth/sign-up"
-            style={{ color: "#17D492" }}
+            style={{ color: "var(--primary)" }}
           >
             {copy.createAccount}
           </Link>

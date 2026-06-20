@@ -2,8 +2,8 @@
  * ============================================================
  * File: components/auth/auth-ui.tsx
  * Project: BizPilot AI
- * Description: Auth page primitives - single centered card.
- * Role: Owner access screens follow Design System v1.0 section 10.2, shared theme preference, and localized copy primitives.
+ * Description: Auth page primitives - single natural-flow card.
+ * Role: Owner access screens inherit the saved theme and keep auth chrome simple.
  * Related:
  * - app/auth/sign-in/page.tsx
  * - app/auth/sign-up/page.tsx
@@ -16,23 +16,19 @@
  * - 2026-05-23: Added shared language switcher and localized auth chrome.
  * - 2026-06-18: Switched auth shell to short-height-safe svh layout.
  * - 2026-06-19: Added the shared System/Light/Dark preference control to auth chrome.
+ * - 2026-06-19: Removed auth utility controls and aligned auth actions to the public blue primary.
  * ============================================================
  */
 
 import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
-import { languageNativeLabels, supportedLanguages } from "@/lib/i18n/language";
-import { setInterfaceLanguageAction } from "@/server/actions/business-configuration.actions";
-import { ThemePreferenceControl } from "@/components/ui/theme-preference-control";
 import Link from "next/link";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 type AuthShellProps = Readonly<{
   children: ReactNode;
   copy: BizPilotCopy["auth"];
   footer?: string;
-  language: string;
   maxWidthClassName?: string;
-  redirectPath: string;
 }>;
 
 type AuthCardProps = Readonly<{
@@ -42,7 +38,7 @@ type AuthCardProps = Readonly<{
 }>;
 
 type AuthFieldIconProps = Readonly<{
-  type: "business" | "email" | "name" | "password";
+  type: "business" | "email" | "name";
 }>;
 
 function BrandMark({ copy }: Readonly<{ copy: BizPilotCopy["auth"] }>) {
@@ -54,11 +50,11 @@ function BrandMark({ copy }: Readonly<{ copy: BizPilotCopy["auth"] }>) {
     >
       <span
         aria-hidden
-        className="flex h-9 w-9 items-center justify-center rounded-[12px] text-base font-black"
+        className="flex h-9 w-9 items-center justify-center rounded-[10px] text-base font-black"
         style={{
-          background: "linear-gradient(135deg, #2dd4bf, #10b981)",
-          boxShadow: "0 10px 22px rgba(20,184,166,0.22)",
-          color: "#022c22",
+          background: "linear-gradient(135deg, var(--primary), var(--primary-hover))",
+          boxShadow: "0 10px 22px color-mix(in srgb, var(--primary) 18%, transparent)",
+          color: "var(--primary-contrast)",
         }}
       >
         B
@@ -82,64 +78,29 @@ export function AuthShell({
   children,
   copy,
   footer,
-  language,
-  maxWidthClassName = "max-w-[460px]",
-  redirectPath,
+  maxWidthClassName = "max-w-[520px]",
 }: AuthShellProps) {
   return (
     <main
-      className="flex min-h-svh flex-col items-center justify-start overflow-y-auto px-4 py-6 sm:px-6 sm:py-8 md:justify-center"
+      className="flex min-h-svh flex-col items-center justify-start px-4 py-6 sm:px-6 sm:py-8"
       style={{
         background:
-          "radial-gradient(circle at 16% 8%, rgba(20,184,166,0.16), transparent 26%), radial-gradient(circle at 88% 14%, rgba(45,212,191,0.10), transparent 24%), linear-gradient(140deg, var(--biz-page-bg), var(--biz-bg-dark-2))",
+          "linear-gradient(180deg, color-mix(in srgb, var(--canvas-subtle) 72%, var(--canvas)) 0%, var(--canvas) 100%)",
         color: "var(--biz-page-text)",
       }}
     >
       <div className={`mb-5 flex w-full ${maxWidthClassName} items-center justify-between gap-3`}>
         <BrandMark copy={copy} />
-        <div className="flex shrink-0 items-center gap-2">
-          <form
-            action={setInterfaceLanguageAction}
-            aria-label="Auth language"
-            className="flex rounded-[10px] border border-[var(--biz-border-medium)] p-1"
-          >
-            <input name="redirectTo" type="hidden" value={redirectPath} />
-            {supportedLanguages.map((option) => (
-              <button
-                aria-pressed={language === option}
-                className={
-                  language === option
-                    ? "min-h-11 rounded-[7px] px-2 text-[11px] font-black text-[#03130c]"
-                    : "min-h-11 rounded-[7px] px-2 text-[11px] font-bold"
-                }
-                style={
-                  language === option
-                    ? { backgroundColor: "#17D492" }
-                    : undefined
-                }
-                key={option}
-                name="language"
-                title={languageNativeLabels[option]}
-                type="submit"
-                value={option}
-              >
-                {option === "fr-CA" ? "FR" : "EN"}
-              </button>
-            ))}
-          </form>
-          <ThemePreferenceControl className="hidden sm:inline-flex" language={language} />
-          <Link
-            className="hidden text-[12px] font-bold sm:inline"
-            href="/"
-            style={{ color: "var(--biz-page-text-soft)" }}
-          >
-            &larr; {copy.backHome}
-          </Link>
-        </div>
-      </div>
-
-      <div className={`mb-4 flex w-full ${maxWidthClassName} justify-center sm:hidden`}>
-        <ThemePreferenceControl className="w-full justify-center" language={language} />
+        <Link
+          className="inline-flex min-h-11 items-center rounded-[12px] border px-3 text-[12px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+          href="/"
+          style={{
+            borderColor: "var(--biz-page-border)",
+            color: "var(--biz-page-text-soft)",
+          }}
+        >
+          &larr; {copy.backHome}
+        </Link>
       </div>
 
       <section className={`w-full ${maxWidthClassName}`}>{children}</section>
@@ -163,7 +124,7 @@ export function AuthCard({ children, subtitle, title }: AuthCardProps) {
       style={{
         backgroundColor: "var(--biz-page-surface)",
         borderColor: "var(--biz-page-border)",
-        boxShadow: "0 24px 80px rgba(0,0,0,0.30)",
+        boxShadow: "var(--shadow-md)",
       }}
     >
       <div className="text-center">
@@ -190,7 +151,7 @@ export function AuthFieldIcon({ type }: AuthFieldIconProps) {
     <span
       aria-hidden
       className="pointer-events-none absolute left-3 top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center"
-      style={{ color: "rgba(245,247,250,0.42)" }}
+      style={{ color: "var(--biz-page-text-muted)" }}
     >
       <svg
         className="h-4 w-4"
@@ -219,19 +180,31 @@ export function AuthFieldIcon({ type }: AuthFieldIconProps) {
             <path d="m4 8 8 6 8-6" />
           </>
         ) : null}
-        {type === "password" ? (
-          <>
-            <path d="M7 11h10v9H7z" />
-            <path d="M9 11V8a3 3 0 0 1 6 0v3" />
-          </>
-        ) : null}
       </svg>
     </span>
   );
 }
 
+export const authInfoStyle: CSSProperties = {
+  backgroundColor: "color-mix(in srgb, var(--primary) 10%, transparent)",
+  borderColor: "color-mix(in srgb, var(--primary) 24%, transparent)",
+  color: "var(--biz-page-text-soft)",
+};
+
+export const authSuccessStyle: CSSProperties = {
+  backgroundColor: "color-mix(in srgb, var(--success) 10%, transparent)",
+  borderColor: "color-mix(in srgb, var(--success) 24%, transparent)",
+  color: "var(--success)",
+};
+
+export const authErrorStyle: CSSProperties = {
+  backgroundColor: "color-mix(in srgb, var(--danger) 10%, transparent)",
+  borderColor: "color-mix(in srgb, var(--danger) 24%, transparent)",
+  color: "var(--danger)",
+};
+
 export const authInputClassName =
-  "h-11 w-full rounded-[12px] border pl-9 pr-12 text-[14px] outline-none transition placeholder:opacity-50 focus:border-[#17D492] focus:ring-4 focus:ring-[rgba(23,212,146,0.15)]";
+  "h-11 w-full rounded-[12px] border pl-9 pr-3 text-[14px] outline-none transition placeholder:opacity-50 focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]";
 
 export const authLabelClassName =
   "grid gap-1.5 text-[12px] font-bold uppercase tracking-[0.08em]";

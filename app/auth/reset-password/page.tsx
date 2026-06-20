@@ -61,7 +61,7 @@ export default async function ResetPasswordPage({
   const errorMessage = callbackError ? copy.resetInvalid : undefined;
 
   return (
-    <AuthShell copy={copy} footer={copy.resetPasswordFooter} language={language} redirectPath="/auth/reset-password">
+    <AuthShell copy={copy} footer={copy.resetPasswordFooter}>
       <AuthCard
         subtitle={copy.resetPasswordSubtitle}
         title={copy.resetPasswordTitle}
@@ -80,7 +80,7 @@ export default async function ResetPasswordPage({
           <Link
             className="font-bold underline-offset-4 hover:underline"
             href="/auth/forgot-password"
-            style={{ color: "#17D492" }}
+            style={{ color: "var(--primary)" }}
           >
             {copy.requestAgain}
           </Link>

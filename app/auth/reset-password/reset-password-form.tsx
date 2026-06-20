@@ -20,11 +20,8 @@
 import { useEffect, useState } from "react";
 
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button";
-import {
-  AuthFieldIcon,
-  authInputClassName,
-  authLabelClassName,
-} from "@/components/auth/auth-ui";
+import { AuthPasswordField } from "@/components/auth/auth-password-field";
+import { authErrorStyle, authInfoStyle } from "@/components/auth/auth-ui";
 import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 import { updatePasswordAction } from "@/server/actions/auth.actions";
@@ -123,11 +120,7 @@ export function ResetPasswordForm({
       <p
         aria-live="polite"
         className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
-        style={{
-          backgroundColor: "rgba(23,212,146,0.10)",
-          borderColor: "rgba(23,212,146,0.22)",
-          color: "#17D492",
-        }}
+        style={authInfoStyle}
       >
         {copy.resetPreparing}
       </p>
@@ -140,11 +133,7 @@ export function ResetPasswordForm({
         <p
           aria-live="assertive"
           className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
-          style={{
-            backgroundColor: "rgba(255,92,92,0.10)",
-            borderColor: "rgba(255,92,92,0.22)",
-            color: "#FFB4B4",
-          }}
+          style={authErrorStyle}
         >
           {errorMessage}
         </p>
@@ -156,39 +145,25 @@ export function ResetPasswordForm({
           <input name="code" type="hidden" value={code} />
 
           {[
-            ["password", copy.newPassword],
-            ["confirmPassword", copy.confirmPassword],
-          ].map(([name, label]) => (
-            <label className={authLabelClassName} key={name}>
-              <span style={{ color: "var(--biz-page-text-soft)" }}>
-                {label}
-              </span>
-              <span className="relative block">
-                <AuthFieldIcon type="password" />
-                <input
-                  autoComplete="new-password"
-                  className={authInputClassName}
-                  minLength={8}
-                  name={name}
-                  placeholder={copy.password}
-                  required
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.04)",
-                    borderColor: "var(--biz-border-medium)",
-                    color: "var(--biz-page-text)",
-                  }}
-                  type="password"
-                />
-              </span>
-            </label>
+            { label: copy.newPassword, name: "password" },
+            { label: copy.confirmPassword, name: "confirmPassword" },
+          ].map((field) => (
+            <AuthPasswordField
+              autoComplete="new-password"
+              copy={copy}
+              key={field.name}
+              label={field.label}
+              minLength={8}
+              name={field.name}
+            />
           ))}
 
           <p
             className="rounded-[10px] border px-2.5 py-1.5 text-[11px] leading-5"
             style={{
-              backgroundColor: "rgba(255,255,255,0.04)",
-              borderColor: "var(--biz-border-medium)",
-              color: "var(--biz-page-text-soft)",
+              backgroundColor: "var(--surface-interactive)",
+              borderColor: "var(--border-default)",
+              color: "var(--text-muted)",
             }}
           >
             {copy.resetPasswordReuseHelp}

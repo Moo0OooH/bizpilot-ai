@@ -93,15 +93,15 @@ export default async function QuoteSuccessPage({
       className="public-site flex min-h-svh items-center justify-center px-4 py-10 sm:px-6"
       style={{
         background: "var(--marketing-background)",
-        color: "var(--biz-page-text)",
+        color: "var(--text-strong)",
       }}
     >
       <section
         className="mx-auto w-full max-w-[480px] rounded-[20px] border p-6 sm:p-7"
         style={{
-          backgroundColor: "var(--biz-page-surface)",
-          borderColor: "var(--biz-page-border)",
-          boxShadow: "0 24px 80px rgba(0,0,0,0.32)",
+          backgroundColor: "var(--surface)",
+          borderColor: "var(--border-default)",
+          boxShadow: "var(--shadow-md)",
         }}
       >
         <span
@@ -109,7 +109,7 @@ export default async function QuoteSuccessPage({
           className="flex h-12 w-12 items-center justify-center rounded-full"
           style={{
             backgroundColor: "rgba(20,184,166,0.16)",
-            color: "var(--biz-primary)",
+            color: "var(--success)",
           }}
         >
           <svg
@@ -127,21 +127,21 @@ export default async function QuoteSuccessPage({
 
         <p
           className="mt-5 text-[11px] font-extrabold uppercase tracking-[0.14em]"
-          style={{ color: "var(--biz-page-text-soft)" }}
+          style={{ color: "var(--text-default)" }}
         >
           {copy.quoteSuccess.requestSent}
         </p>
 
         <h1
           className="mt-2 text-[26px] font-extrabold leading-tight tracking-[-0.03em]"
-          style={{ color: "var(--biz-page-text)" }}
+          style={{ color: "var(--text-strong)" }}
         >
           {copy.quoteSuccess.title(businessName)}
         </h1>
 
         <p
           className="mt-3 text-sm leading-6"
-          style={{ color: "var(--biz-page-text-soft)" }}
+          style={{ color: "var(--text-default)" }}
         >
           {copy.quoteSuccess.body}
         </p>
@@ -149,19 +149,19 @@ export default async function QuoteSuccessPage({
         <div
           className="mt-5 grid gap-2.5 rounded-[14px] border p-3.5"
           style={{
-            backgroundColor: "rgba(255,255,255,0.035)",
-            borderColor: "var(--biz-page-border)",
+            backgroundColor: "var(--surface-interactive)",
+            borderColor: "var(--border-default)",
           }}
         >
           <p
             className="text-[12px] font-extrabold uppercase tracking-[0.14em]"
-            style={{ color: "var(--biz-page-text-soft)" }}
+            style={{ color: "var(--text-muted)" }}
           >
             {copy.quoteSuccess.nextTitle}
           </p>
           <ul
             className="grid gap-2 text-sm leading-6"
-            style={{ color: "var(--biz-page-text)" }}
+            style={{ color: "var(--text-strong)" }}
           >
             {copy.quoteSuccess.steps(businessName).map((item, index) => (
               <li className="flex items-start gap-2" key={item}>
@@ -170,7 +170,7 @@ export default async function QuoteSuccessPage({
                   className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold"
                   style={{
                     backgroundColor: "rgba(20,184,166,0.16)",
-                    color: "var(--biz-primary)",
+                    color: "var(--success)",
                   }}
                 >
                   {index + 1}
@@ -186,8 +186,9 @@ export default async function QuoteSuccessPage({
             className="inline-flex h-11 flex-1 items-center justify-center rounded-[13px] px-3.5 text-[13px] font-extrabold sm:flex-none sm:min-w-[180px]"
             href={quotePath}
             style={{
-              backgroundColor: "var(--biz-primary)",
-              color: "#03130c",
+              background:
+                "linear-gradient(135deg, var(--primary), var(--primary-hover))",
+              color: "var(--primary-contrast)",
             }}
           >
             {copy.quoteSuccess.submitAnother}
@@ -196,8 +197,8 @@ export default async function QuoteSuccessPage({
             className="inline-flex h-11 flex-1 items-center justify-center rounded-[13px] border px-3.5 text-[13px] font-extrabold sm:flex-none sm:min-w-[140px]"
             href="/"
             style={{
-              borderColor: "var(--biz-border-strong)",
-              color: "var(--biz-page-text)",
+              borderColor: "var(--border-strong)",
+              color: "var(--text-strong)",
             }}
           >
             {copy.quoteSuccess.backHome}
@@ -206,7 +207,7 @@ export default async function QuoteSuccessPage({
 
         <p
           className="mt-5 text-center text-[11px]"
-          style={{ color: "var(--biz-page-text-muted)" }}
+          style={{ color: "var(--text-muted)" }}
         >
           {copy.quoteSuccess.footer(businessName)}
         </p>

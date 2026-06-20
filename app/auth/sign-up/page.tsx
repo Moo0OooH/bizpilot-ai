@@ -16,10 +16,13 @@
  */
 
 import { AuthSubmitButton } from "@/components/auth/auth-submit-button";
+import { AuthPasswordField } from "@/components/auth/auth-password-field";
 import {
   AuthCard,
   AuthFieldIcon,
   AuthShell,
+  authErrorStyle,
+  authInfoStyle,
   authInputClassName,
   authLabelClassName,
 } from "@/components/auth/auth-ui";
@@ -61,9 +64,6 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
     <AuthShell
       copy={copy}
       footer={copy.createWorkspaceFooter}
-      language={language}
-      maxWidthClassName="max-w-[650px]"
-      redirectPath="/auth/sign-up"
     >
       <AuthCard
         subtitle={copy.createWorkspaceSubtitle}
@@ -73,11 +73,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
           <p
             aria-live="assertive"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
-            style={{
-              backgroundColor: "rgba(255,92,92,0.10)",
-              borderColor: "rgba(255,92,92,0.22)",
-              color: "#FFB4B4",
-            }}
+            style={authErrorStyle}
           >
             {params.error}
           </p>
@@ -96,28 +92,19 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
               "organization",
             ],
             ["email", copy.email, "you@example.com", "email", "email", "email"],
-            [
-              "password",
-              copy.password,
-              copy.password,
-              "password",
-              "password",
-              "new-password",
-            ],
           ].map(([name, label, placeholder, icon, type, autoComplete]) => (
             <label className={authLabelClassName} key={name}>
               <span style={{ color: "var(--biz-page-text-soft)" }}>{label}</span>
               <span className="relative block">
-                <AuthFieldIcon type={icon as "business" | "email" | "name" | "password"} />
+                <AuthFieldIcon type={icon as "business" | "email" | "name"} />
                 <input
                   autoComplete={autoComplete}
                   className={authInputClassName}
-                  minLength={name === "password" ? 8 : undefined}
                   name={name}
                   placeholder={placeholder}
                   required
                   style={{
-                    backgroundColor: "rgba(255,255,255,0.04)",
+                    backgroundColor: "var(--surface)",
                     borderColor: "var(--biz-border-medium)",
                     color: "var(--biz-page-text)",
                   }}
@@ -127,13 +114,19 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
             </label>
           ))}
 
+          <div className="sm:col-span-2">
+            <AuthPasswordField
+              autoComplete="new-password"
+              copy={copy}
+              label={copy.password}
+              minLength={8}
+              name="password"
+            />
+          </div>
+
           <p
             className="rounded-[10px] border px-2.5 py-1.5 text-[11px] leading-5 sm:col-span-2"
-            style={{
-              backgroundColor: "rgba(23,212,146,0.10)",
-              borderColor: "rgba(23,212,146,0.22)",
-              color: "#17D492",
-            }}
+            style={authInfoStyle}
           >
             {copy.passwordHelp}
           </p>
@@ -147,17 +140,13 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
 
         <p
           className="mt-4 rounded-[12px] border px-3 py-2 text-center text-[12px] leading-5"
-          style={{
-            backgroundColor: "rgba(37,99,235,0.10)",
-            borderColor: "rgba(37,99,235,0.22)",
-            color: "var(--biz-page-text-soft)",
-          }}
+          style={authInfoStyle}
         >
           {publicCopy.signUpPilotPrompt}{" "}
           <Link
             className="font-bold underline-offset-4 hover:underline"
             href="/pilot"
-            style={{ color: "#17D492" }}
+            style={{ color: "var(--primary)" }}
           >
             {publicCopy.signUpPilotCta}
           </Link>
@@ -171,7 +160,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
           <Link
             className="font-bold underline-offset-4 hover:underline"
             href="/auth/sign-in"
-            style={{ color: "#17D492" }}
+            style={{ color: "var(--primary)" }}
           >
             {copy.signIn}
           </Link>

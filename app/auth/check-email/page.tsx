@@ -16,6 +16,7 @@
 import {
   AuthCard,
   AuthShell,
+  authSuccessStyle,
 } from "@/components/auth/auth-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
@@ -47,18 +48,12 @@ export default async function CheckEmailPage() {
     <AuthShell
       copy={copy}
       footer={copy.checkEmailFooter}
-      language={language}
-      redirectPath="/auth/check-email"
     >
       <AuthCard subtitle={copy.checkEmailSubtitle} title={copy.checkEmailTitle}>
         <p
           aria-live="polite"
           className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
-          style={{
-            backgroundColor: "rgba(23,212,146,0.10)",
-            borderColor: "rgba(23,212,146,0.22)",
-            color: "#17D492",
-          }}
+          style={authSuccessStyle}
         >
           {notice}
         </p>
@@ -68,8 +63,8 @@ export default async function CheckEmailPage() {
             className="inline-flex h-11 w-full items-center justify-center rounded-[12px] text-sm font-black"
             href="/auth/sign-in"
             style={{
-              background: "linear-gradient(135deg, #2DD4BF, #17D492)",
-              color: "#03130c",
+              background: "linear-gradient(135deg, var(--primary), var(--primary-hover))",
+              color: "var(--primary-contrast)",
             }}
           >
             {copy.signIn}

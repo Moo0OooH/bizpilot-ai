@@ -649,6 +649,8 @@ type AuthCopy = Readonly<{
   forgotPasswordQuestion: string;
   forgotPasswordSubtitle: string;
   forgotPasswordTitle: string;
+  hidePassword: string;
+  hidePasswordShort: string;
   name: string;
   needAccount: string;
   needNewResetLink: string;
@@ -672,6 +674,8 @@ type AuthCopy = Readonly<{
   signInQuestion: string;
   signInSubtitle: string;
   signInTitle: string;
+  showPassword: string;
+  showPasswordShort: string;
   updatePassword: string;
   updatePasswordPending: string;
   yourBusiness: string;
@@ -912,8 +916,10 @@ const englishCopy: BizPilotCopy = {
     forgotPasswordSubtitle:
       "Enter your owner email and we'll send reset instructions if an account exists.",
     forgotPasswordTitle: "Reset password",
+    hidePassword: "Hide password",
+    hidePasswordShort: "Hide",
     name: "Name",
-    needAccount: "Onboarded already?",
+    needAccount: "Approved for pilot access but haven't created your login?",
     needNewResetLink: "Need a new reset link?",
     newPassword: "New password",
     ownerAccess: "Owner access",
@@ -939,6 +945,8 @@ const englishCopy: BizPilotCopy = {
     signInSubtitle:
       "Manage quote requests, owner-reviewed AI drafts, and manual follow-up from your BizPilot workspace.",
     signInTitle: "Sign in",
+    showPassword: "Show password",
+    showPasswordShort: "Show",
     updatePassword: "Update password",
     updatePasswordPending: "Updating password...",
     yourBusiness: "Your business",
@@ -2283,8 +2291,10 @@ const frenchCopy: BizPilotCopy = {
     forgotPasswordSubtitle:
       "Entrez votre courriel propriétaire. Nous enverrons les instructions si un compte existe.",
     forgotPasswordTitle: "Réinitialiser le mot de passe",
+    hidePassword: "Masquer le mot de passe",
+    hidePasswordShort: "Masquer",
     name: "Nom",
-    needAccount: "Déjà onboardé?",
+    needAccount: "Approuvé pour le pilote, mais vous n'avez pas encore créé votre accès?",
     needNewResetLink: "Besoin d'un nouveau lien?",
     newPassword: "Nouveau mot de passe",
     ownerAccess: "Accès propriétaire",
@@ -2308,8 +2318,10 @@ const frenchCopy: BizPilotCopy = {
     signInPending: "Ouverture de l'espace...",
     signInQuestion: "Vous avez déjà un compte?",
     signInSubtitle:
-      "Gérez les demandes de soumission, les brouillons IA révisés par le propriétaire et les suivis manuels.",
+      "Gérez les demandes de soumission, les brouillons IA révisés par le propriétaire et les suivis manuels depuis votre espace BizPilot.",
     signInTitle: "Connexion",
+    showPassword: "Afficher le mot de passe",
+    showPasswordShort: "Afficher",
     updatePassword: "Mettre à jour le mot de passe",
     updatePasswordPending: "Mise à jour...",
     yourBusiness: "Votre entreprise",

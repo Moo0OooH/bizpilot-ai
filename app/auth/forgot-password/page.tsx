@@ -20,8 +20,10 @@ import {
   AuthCard,
   AuthFieldIcon,
   AuthShell,
+  authErrorStyle,
   authInputClassName,
   authLabelClassName,
+  authSuccessStyle,
 } from "@/components/auth/auth-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
@@ -60,7 +62,7 @@ export default async function ForgotPasswordPage({
   const copy = getBizPilotCopy(language).auth;
 
   return (
-    <AuthShell copy={copy} footer={copy.forgotPasswordFooter} language={language} redirectPath="/auth/forgot-password">
+    <AuthShell copy={copy} footer={copy.forgotPasswordFooter}>
       <AuthCard
         subtitle={copy.forgotPasswordSubtitle}
         title={copy.forgotPasswordTitle}
@@ -69,11 +71,7 @@ export default async function ForgotPasswordPage({
           <p
             aria-live="polite"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
-            style={{
-              backgroundColor: "rgba(23,212,146,0.10)",
-              borderColor: "rgba(23,212,146,0.22)",
-              color: "#17D492",
-            }}
+            style={authSuccessStyle}
           >
             {params.notice}
           </p>
@@ -83,11 +81,7 @@ export default async function ForgotPasswordPage({
           <p
             aria-live="assertive"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
-            style={{
-              backgroundColor: "rgba(255,92,92,0.10)",
-              borderColor: "rgba(255,92,92,0.22)",
-              color: "#FFB4B4",
-            }}
+            style={authErrorStyle}
           >
             {params.error}
           </p>
@@ -106,7 +100,7 @@ export default async function ForgotPasswordPage({
                 placeholder="you@example.com"
                 required
                 style={{
-                  backgroundColor: "rgba(255,255,255,0.04)",
+                  backgroundColor: "var(--surface)",
                   borderColor: "var(--biz-border-medium)",
                   color: "var(--biz-page-text)",
                 }}
@@ -128,7 +122,7 @@ export default async function ForgotPasswordPage({
           <Link
             className="font-bold underline-offset-4 hover:underline"
             href="/auth/sign-in"
-            style={{ color: "#17D492" }}
+            style={{ color: "var(--primary)" }}
           >
             {copy.signIn}
           </Link>

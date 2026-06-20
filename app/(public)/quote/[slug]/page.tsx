@@ -24,7 +24,10 @@ import { QuoteFormWizard } from "@/components/public/quote-form-wizard";
 import { QuoteUnavailable } from "@/components/public/quote-unavailable";
 import {
   DEFAULT_LANGUAGE,
+  languageShortLabels,
   readSupportedLanguage,
+  supportedLanguages,
+  type SupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
@@ -47,6 +50,15 @@ type QuotePageProps = Readonly<{
 }>;
 
 const appTimeZone = "America/New_York";
+
+function quoteLanguageHref({
+  language,
+  slug,
+}: Readonly<{ language: SupportedLanguage; slug: string }>) {
+  return language === DEFAULT_LANGUAGE
+    ? `/quote/${slug}`
+    : `/quote/${slug}?language=${encodeURIComponent(language)}`;
+}
 
 function todayDateString(): string {
   const parts = new Intl.DateTimeFormat("en", {
@@ -83,20 +95,57 @@ export default async function QuotePage({
     <main className="public-site min-h-svh bg-[var(--canvas)] text-[var(--text-strong)]">
       <section className="border-b border-[var(--border-default)] px-5 py-6 sm:px-8">
         <div className="mx-auto w-full max-w-[780px]">
-          <p className="text-[13px] font-black uppercase tracking-[0.14em] text-[var(--primary)]">
-            {page.publicLink.display_name}
-          </p>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-[13px] font-black uppercase tracking-[0.14em] text-[var(--primary)]">
+              {page.publicLink.display_name}
+            </p>
+            <nav
+              aria-label="Quote language"
+              className="inline-flex w-fit rounded-[12px] border p-1"
+              style={{
+                backgroundColor: "var(--surface-elevated)",
+                borderColor: "var(--border-default)",
+              }}
+            >
+              {supportedLanguages.map((option) => {
+                const selected = option === activeLanguage;
+
+                return (
+                  <a
+                    aria-current={selected ? "page" : undefined}
+                    className="inline-flex h-8 min-w-10 items-center justify-center rounded-[9px] px-3 text-[11px] font-black"
+                    href={quoteLanguageHref({ language: option, slug })}
+                    key={option}
+                    style={{
+                      backgroundColor: selected ? "var(--primary)" : "transparent",
+                      color: selected ? "var(--primary-contrast)" : "var(--text-strong)",
+                    }}
+                  >
+                    {languageShortLabels[option]}
+                  </a>
+                );
+              })}
+            </nav>
+          </div>
           <h1 className="mt-3 text-[34px] font-black leading-[1.06] sm:text-[44px]">
             {copy.title}
           </h1>
           <p className="mt-4 max-w-[620px] text-[16px] leading-7 text-[var(--text-default)]">
             {copy.subtitle}
           </p>
-          <p className="mt-4 rounded-[16px] border border-amber-200 bg-amber-50 p-4 text-[14px] leading-6 text-amber-800">
+          <p className="mt-4 rounded-[16px] border p-4 text-[14px] leading-6" style={{
+            backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
+            borderColor: "color-mix(in srgb, var(--warning) 34%, var(--border-default))",
+            color: "var(--text-strong)",
+          }}>
             {copy.guardrail}
           </p>
           {query?.error ? (
-            <p className="mt-4 rounded-[14px] border border-red-200 bg-red-50 p-3 text-[14px] text-red-700">
+            <p className="mt-4 rounded-[14px] border p-3 text-[14px]" style={{
+              backgroundColor: "color-mix(in srgb, var(--danger) 12%, var(--surface))",
+              borderColor: "color-mix(in srgb, var(--danger) 34%, var(--border-default))",
+              color: "var(--text-strong)",
+            }}>
               {query.error}
             </p>
           ) : null}
