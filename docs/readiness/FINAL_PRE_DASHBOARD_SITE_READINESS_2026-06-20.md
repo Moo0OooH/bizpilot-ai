@@ -32,8 +32,8 @@ Covered surfaces:
 
 ## Deployed Commit Proof
 
-- Final readiness/evidence HEAD after this document was committed: `488493d`
-- Final readiness/evidence commit subject: `docs(release): record final pre-dashboard site readiness`
+- Phase 10 readiness/evidence deployment verified before final report: `488493d`
+- Phase 10 readiness/evidence commit subject: `docs(release): record final pre-dashboard site readiness`
 - GitHub combined status for `488493d`: `Vercel` = `success`
 - Vercel target URL for `488493d`: `https://vercel.com/moo0ooohs-projects/bizpilot-ai/GogMWx4DVfPDaj944XjPxs83hRF3`
 - Last public-site implementation commit before the final docs commit: `3170ebf4138df67bdd0366de4fef316f68b0c0fb`
@@ -51,7 +51,7 @@ Live behavior checks:
 - `https://bizpilo.com/sitemap.xml` returned HTTP 200 and included localized alternates.
 - `https://bizpilo.com/robots.txt` returned HTTP 200 and included `Disallow: /quote`.
 
-Post-final-commit live checks after Vercel success for `488493d`:
+Post-readiness-commit live checks after Vercel success for `488493d`:
 
 - `https://bizpilo.com/` returned HTTP 200.
 - `https://bizpilo.com/features?language=fr-CA` returned HTTP 200 and rendered `<html lang="fr-CA">`.
