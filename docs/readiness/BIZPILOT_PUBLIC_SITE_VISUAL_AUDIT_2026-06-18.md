@@ -6,6 +6,8 @@
 **Applies to:** Homepage, Features, Cleaning, Trust, Demo, Pricing, Pilot, Privacy, Security, Terms, Sign-in  
 **Companion standard:** `docs/product/BIZPILOT_RESPONSIVE_LAYOUT_AND_DEVICE_STANDARD_v1.0.md`
 
+> 2026-06-20 superseded status: this audit remains historical evidence for the responsive-hardening baseline. Final public-site decisions, theme behavior, and GO/NO-GO status now live in `docs/product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md` and `docs/readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`.
+
 ## 1. Executive decision
 
 The new light redesign is materially better than the former dark command-center direction. It is simpler, more trustworthy, more cleaning-specific, and more consistent with the manual-first founder pilot.

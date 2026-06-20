@@ -6,6 +6,8 @@
 **Applies to:** Public marketing pages, auth, public quote flow, owner dashboard, founder admin  
 **Supersedes:** Responsive, viewport, spacing, overflow, and dark-mode guidance that conflicts with this document in earlier BizPilot design documents  
 
+> 2026-06-20 amendment: this file remains active for responsive layout, overflow, viewport, and no-inner-scroll standards. Its earlier public light-only/no public dark-toggle decision is superseded by `docs/product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`: the public site now supports a compact Light/Dark/Use device setting theme menu, while first-time visitors still default to Light.
+
 ## 1. Purpose
 
 This standard prevents the recurring BizPilot problems seen in the current public site and anticipated in the dashboard:

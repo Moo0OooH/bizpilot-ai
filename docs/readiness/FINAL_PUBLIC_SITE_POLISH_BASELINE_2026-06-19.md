@@ -1,5 +1,7 @@
 # Final Public Site Polish Baseline - 2026-06-19
 
+> 2026-06-20 superseded status: this baseline remains historical evidence for the start of the final polish sequence. The final public-site standard and readiness decision now live in `docs/product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md` and `docs/readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`.
+
 ## Scope
 
 This baseline records the current public-site state before starting the final polish sequence from `BIZPILOT_FINAL_POLISH_CODEX_PROMPTS_v3.0.md`.
