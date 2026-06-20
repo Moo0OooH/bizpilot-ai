@@ -4,7 +4,9 @@
 
 **Local patch verification: PASS.**
 
-**Dashboard D0 gate: pending production deployment verification.**
+**Production deployment verification: PASS.**
+
+**Dashboard D0 gate: GO from the public-site visual stability perspective.**
 
 This phase does not approve real customer data, paid-pilot launch, payment
 collection, billing automation, AI provider changes, auth changes, database
@@ -101,6 +103,18 @@ Local patch after fix:
 | `/?language=en` | `1440x900` | 659px | 4 | 278px |
 | `/?language=fr-CA` | `1440x900` | 659px | 4 | 278px |
 
+Production after deployment at commit
+`259cd1401f17e9761d0f874d11b5d03880d474f9` matched the local patch:
+
+| Route | Viewport | Hero Height | H1 Lines | CTA Bottom Margin |
+| --- | ---: | ---: | ---: | ---: |
+| `/?language=en` | `1280x720` | 531px | 3 | 210px |
+| `/?language=fr-CA` | `1280x720` | 591px | 4 | 148px |
+| `/?language=en` | `1366x768` | 537px | 3 | 248px |
+| `/?language=fr-CA` | `1366x768` | 605px | 4 | 180px |
+| `/?language=en` | `1440x900` | 659px | 4 | 278px |
+| `/?language=fr-CA` | `1440x900` | 659px | 4 | 278px |
+
 Dark-mode local patch geometry matched Light for the sampled homepage sizes:
 
 | Route | Viewport | Hero Height | H1 Lines | CTA Bottom Margin |
@@ -134,12 +148,16 @@ Local browser audit after the patch confirmed:
 - `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-local-home-hero-metrics.json`
 - `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-local-dark-home-hero-metrics.json`
 - `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-local-route-consistency-audit.json`
+- `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-production-home-hero-metrics.json`
+- `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-production-route-consistency-audit.json`
 - `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/before-production-home-en-1280x720-light.png`
 - `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/before-production-home-fr-ca-1280x720-light.png`
 - `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-local-home-en-1280x720-light.png`
 - `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-local-home-fr-ca-1280x720-light.png`
 - `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-local-home-fr-ca-1366x768-light.png`
 - `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-local-home-fr-ca-1280x720-dark.png`
+- `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-production-home-fr-ca-1280x720-light.png`
+- `docs/readiness/final-public-site-visual-truth-fix-2026-06-20/after-production-home-fr-ca-1366x768-light.png`
 
 ## Git And Deployment State
 
@@ -148,8 +166,9 @@ Local browser audit after the patch confirmed:
 | Pre-patch production commit | `3991dcd5f7815835f77b3bed8546deb9540989af` |
 | Pre-patch Vercel deployment URL | `https://bizpilot-9h7f7gtrv-moo0ooohs-projects.vercel.app` |
 | Production alias | `https://bizpilo.com` |
-| Phase 12 patch commit | Assigned by Git after this report is committed; record in final handoff |
-| Post-push production deployment | Must be verified after `git push origin main` |
+| Phase 12 patch commit | `259cd1401f17e9761d0f874d11b5d03880d474f9` |
+| Vercel deployment status | PASS: GitHub/Vercel status `success`, description `Deployment has completed` |
+| Post-push Vercel deployment URL | `https://bizpilot-2uakfaon5-moo0ooohs-projects.vercel.app` |
 
 ## Commands Run
 
@@ -164,6 +183,10 @@ Local browser audit after the patch confirmed:
 | `pnpm smoke:responsive` | PASS after narrowing a false-positive raw `undefined` smoke assertion |
 | `pnpm smoke:quote -- --inactive-slug=phase1-unavailable-synthetic` | PASS: 1 passed, 0 failed |
 | `pnpm smoke:ui-matrix` | PASS: final UI matrix failures 0 |
+| `pnpm smoke:public -- --base-url=https://bizpilo.com --timeout-ms=20000` | PASS: 9 passed, 0 failed |
+| `pnpm smoke:responsive -- --base-url=https://bizpilo.com` | PASS: responsive smoke failures 0 |
+| `pnpm smoke:quote -- --base-url=https://bizpilo.com --inactive-slug=phase1-unavailable-synthetic --timeout-ms=20000` | PASS: 1 passed, 0 failed |
+| `pnpm smoke:ui-matrix -- --base-url=https://bizpilo.com --en-quote-url=https://bizpilo.com/quote/phase1-unavailable-synthetic --fr-quote-url=https://bizpilo.com/quote/akora?language=fr-CA --timeout-ms=20000` | PASS: final UI matrix failures 0 |
 | route/link check | No separate script available; UI matrix covers safe internal-link targets, external-link attributes, metadata, sitemap, and robots |
 | metadata/sitemap/robots check | PASS through `pnpm smoke:ui-matrix` |
 | Lighthouse | Not available in this environment |
@@ -171,8 +194,6 @@ Local browser audit after the patch confirmed:
 
 ## Remaining Limitations
 
-- Production-after-push verification is still required before marking dashboard
-  D0 as GO.
 - The `akora` quote check remains safe GET only; no production quote submit was
   performed.
 - Browser zoom at true 200% / 400% was not available through the current browser
@@ -184,6 +205,7 @@ Local browser audit after the patch confirmed:
 
 ```text
 Local Phase 12 patch: PASS.
-Dashboard D0: NO-GO until the pushed commit deploys and production visual parity is verified on https://bizpilo.com.
+Production Phase 12 patch: PASS on https://bizpilo.com.
+Dashboard D0: GO from the public-site visual stability perspective.
 Real customer data, paid pilot, billing, auth, database, RLS, AI provider, and production data-flow changes: NO-GO.
 ```

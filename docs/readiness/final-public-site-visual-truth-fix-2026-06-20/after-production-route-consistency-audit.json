@@ -1,0 +1,757 @@
+[
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 4,
+        "className": "homepage-demo-grid mt-8",
+        "height": 505,
+        "rowPattern": [
+          4
+        ],
+        "width": 1200
+      },
+      {
+        "children": 6,
+        "className": "homepage-use-case-grid mt-8",
+        "height": 300,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Stop losing cleaning quote requests to slow replies.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/?language=en&phase12=audit-1781988875106",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 4,
+        "className": "homepage-demo-grid mt-8",
+        "height": 533,
+        "rowPattern": [
+          4
+        ],
+        "width": 1200
+      },
+      {
+        "children": 6,
+        "className": "homepage-use-case-grid mt-8",
+        "height": 375,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/?language=fr-CA&phase12=audit-1781988875464",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 469,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "A simple system to capture, organize, and reply to cleaning leads faster.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/features?language=en&phase12=audit-1781988875770",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 525,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/features?language=fr-CA&phase12=audit-1781988876089",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 822,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Lead recovery software for cleaning businesses.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/industries/cleaning?language=en&phase12=audit-1781988876425",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 854,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Récupération de prospects pour les entreprises de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/industries/cleaning?language=fr-CA&phase12=audit-1781988876737",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 434,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Built for owner control and trust.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/trust?language=en&phase12=audit-1781988877072",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 515,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Bâti pour le contrôle du propriétaire et la confiance.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/trust?language=fr-CA&phase12=audit-1781988877388",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "See how BizPilot handles a cleaning quote request.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/demo?language=en&phase12=audit-1781988877755",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/demo?language=fr-CA&phase12=audit-1781988878087",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 602,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Simple pilot pricing for cleaning businesses.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pricing?language=en&phase12=audit-1781988878436",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 657,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Tarification pilote simple pour entreprises de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pricing?language=fr-CA&phase12=audit-1781988878749",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Help shape BizPilot around real cleaning work.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pilot?language=en&phase12=audit-1781988879100",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pilot?language=fr-CA&phase12=audit-1781988879407",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 390,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Future Content Studio for local business growth.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/content-studio?language=en&phase12=audit-1781988879730",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 390,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Futur Content Studio pour la croissance locale.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/content-studio?language=fr-CA&phase12=audit-1781988880095",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Privacy rules for careful quote recovery.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/privacy?language=en&phase12=audit-1781988880413",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Security boundaries before real pilot data.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/security?language=en&phase12=audit-1781988880774",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Clear founder-pilot terms, no hidden automation.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AILead recovery for cleaning businessesFeaturesCleaningTrustDemoPricingPilotENSign inJoin founder pilotJoin founder pilot",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/terms?language=en&phase12=audit-1781988881090",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Sign in",
+    "h1Count": 1,
+    "headerText": "",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/auth/sign-in?phase12=audit-1781988881406",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Create owner access",
+    "h1Count": 1,
+    "headerText": "",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/auth/sign-up?phase12=audit-1781988881695",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Reset password",
+    "h1Count": 1,
+    "headerText": "",
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/auth/forgot-password?phase12=audit-1781988881982",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Demander une soumission de nettoyage",
+    "h1Count": 1,
+    "headerText": "Étape 1 sur 3 - ServiceQuel type de nettoyage?Quelques détails rapides pour aider le propriétaire à préparer une réponse précise.",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/quote/akora?language=fr-CA&phase12=audit-1781988882258",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  }
+]
