@@ -1,0 +1,4292 @@
+{
+  "generatedAt": "2026-06-20T18:37:10.922Z",
+  "summary": {
+    "checks": 96,
+    "failures": 0
+  },
+  "failures": [],
+  "homeHeroCompare": [
+    {
+      "route": "/?language=en",
+      "lang": "en",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      },
+      "heroHeight": 671,
+      "heroCtas": [
+        {
+          "bottom": 637.5995330810547,
+          "height": 47.99778747558594,
+          "text": "Join founder pilot",
+          "top": 589.6017456054688,
+          "visibleInFirstFold": true,
+          "width": 167.37831115722656
+        },
+        {
+          "bottom": 637.5995330810547,
+          "height": 47.99778747558594,
+          "text": "Watch demo",
+          "top": 589.6017456054688,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        }
+      ]
+    },
+    {
+      "route": "/?language=fr-CA",
+      "lang": "fr-CA",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      },
+      "heroHeight": 782,
+      "heroCtas": [
+        {
+          "bottom": 705.3318328857422,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 657.3340454101562,
+          "visibleInFirstFold": true,
+          "width": 224.46902465820312
+        },
+        {
+          "bottom": 705.3318328857422,
+          "height": 47.99778747558594,
+          "text": "Voir la démo de 60 secondes",
+          "top": 657.3340454101562,
+          "visibleInFirstFold": true,
+          "width": 245.67477416992188
+        }
+      ]
+    },
+    {
+      "route": "/?language=en",
+      "lang": "en",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      },
+      "heroHeight": 696,
+      "heroCtas": [
+        {
+          "bottom": 659.2367401123047,
+          "height": 47.99778747558594,
+          "text": "Join founder pilot",
+          "top": 611.2389526367188,
+          "visibleInFirstFold": true,
+          "width": 167.37831115722656
+        },
+        {
+          "bottom": 659.2367401123047,
+          "height": 47.99778747558594,
+          "text": "Watch demo",
+          "top": 611.2389526367188,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        }
+      ]
+    },
+    {
+      "route": "/?language=fr-CA",
+      "lang": "fr-CA",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      },
+      "heroHeight": 811,
+      "heroCtas": [
+        {
+          "bottom": 731.5375823974609,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 683.539794921875,
+          "visibleInFirstFold": true,
+          "width": 224.46902465820312
+        },
+        {
+          "bottom": 731.5375823974609,
+          "height": 47.99778747558594,
+          "text": "Voir la démo de 60 secondes",
+          "top": 683.539794921875,
+          "visibleInFirstFold": true,
+          "width": 245.67477416992188
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Stop losing cleaning quote requests to slow replies.",
+      "heroCtas": [
+        {
+          "bottom": 630.5641326904297,
+          "height": 47.99778747558594,
+          "text": "Join founder pilot",
+          "top": 582.5663452148438,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 690.5530853271484,
+          "height": 47.99778747558594,
+          "text": "Watch demo",
+          "top": 642.5552978515625,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 1299,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "en",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/?language=en",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+      "heroCtas": [
+        {
+          "bottom": 769.9557342529297,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 721.9579467773438,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 829.9446868896484,
+          "height": 47.99778747558594,
+          "text": "Voir la démo de 60 secondes",
+          "top": 781.9468994140625,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 1520,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "BizPilot AI | Récupération de prospects pour le nettoyage",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 3382.422592163086,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 3334.4248046875,
+          "visibleInFirstFold": false,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 3418,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/features",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 3382.422592163086,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 3334.4248046875,
+          "visibleInFirstFold": false,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 3418,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/features?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 767.9314422607422,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 719.9336547851562,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 827.9203338623047,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 779.9225463867188,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 5078.882553100586,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 5030.884765625,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        }
+      ],
+      "heroHeight": 5079,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/industries/cleaning",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 767.9314422607422,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 719.9336547851562,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 827.9203338623047,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 779.9225463867188,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 5078.882553100586,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 5030.884765625,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        }
+      ],
+      "heroHeight": 5079,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/industries/cleaning?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 2483.395980834961,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 2435.398193359375,
+          "visibleInFirstFold": false,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 2459,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/trust",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 2483.395980834961,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 2435.398193359375,
+          "visibleInFirstFold": false,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 2459,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/trust?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 445,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/demo",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 445,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/demo?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1155.718978881836,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1107.72119140625,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        },
+        {
+          "bottom": 1760.210189819336,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 1712.21240234375,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        },
+        {
+          "bottom": 2418.694564819336,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 2370.69677734375,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        }
+      ],
+      "heroHeight": 3335,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pricing",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1155.718978881836,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1107.72119140625,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        },
+        {
+          "bottom": 1760.210189819336,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 1712.21240234375,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        },
+        {
+          "bottom": 2418.694564819336,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 2370.69677734375,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        }
+      ],
+      "heroHeight": 3335,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pricing?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1884,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pilot",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1884,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pilot?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": 0,
+      "clientWidth": 390,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Connexion",
+      "heroCtas": [],
+      "heroHeight": 450,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/auth/sign-in",
+      "scrollWidth": 390,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Connexion | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Demander une soumission de nettoyage",
+      "heroCtas": [],
+      "heroHeight": 435,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": true,
+      "requestedTheme": "light",
+      "route": "/quote/akora?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Request a cleaning quote | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Stop losing cleaning quote requests to slow replies.",
+      "heroCtas": [
+        {
+          "bottom": 637.5995330810547,
+          "height": 47.99778747558594,
+          "text": "Join founder pilot",
+          "top": 589.6017456054688,
+          "visibleInFirstFold": true,
+          "width": 167.37831115722656
+        },
+        {
+          "bottom": 637.5995330810547,
+          "height": 47.99778747558594,
+          "text": "Watch demo",
+          "top": 589.6017456054688,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        }
+      ],
+      "heroHeight": 671,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "en",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/?language=en",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+      "heroCtas": [
+        {
+          "bottom": 705.3318328857422,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 657.3340454101562,
+          "visibleInFirstFold": true,
+          "width": 224.46902465820312
+        },
+        {
+          "bottom": 705.3318328857422,
+          "height": 47.99778747558594,
+          "text": "Voir la démo de 60 secondes",
+          "top": 657.3340454101562,
+          "visibleInFirstFold": true,
+          "width": 245.67477416992188
+        }
+      ],
+      "heroHeight": 782,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "BizPilot AI | Récupération de prospects pour le nettoyage",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1551.471176147461,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 1503.473388671875,
+          "visibleInFirstFold": false,
+          "width": 251.85841369628906
+        }
+      ],
+      "heroHeight": 1525,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/features",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1551.471176147461,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 1503.473388671875,
+          "visibleInFirstFold": false,
+          "width": 251.85841369628906
+        }
+      ],
+      "heroHeight": 1525,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/features?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 576.2499847412109,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 528.252197265625,
+          "visibleInFirstFold": true,
+          "width": 300.2654724121094
+        },
+        {
+          "bottom": 576.2499847412109,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 528.252197265625,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        },
+        {
+          "bottom": 1890.5530853271484,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 1842.5552978515625,
+          "visibleInFirstFold": false,
+          "width": 511.5597229003906
+        }
+      ],
+      "heroHeight": 1892,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/industries/cleaning",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 576.2499847412109,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 528.252197265625,
+          "visibleInFirstFold": true,
+          "width": 300.2654724121094
+        },
+        {
+          "bottom": 576.2499847412109,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 528.252197265625,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        },
+        {
+          "bottom": 1890.5530853271484,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 1842.5552978515625,
+          "visibleInFirstFold": false,
+          "width": 511.5597229003906
+        }
+      ],
+      "heroHeight": 1892,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/industries/cleaning?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 1184.247787475586,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1136.25,
+          "visibleInFirstFold": false,
+          "width": 213.8385009765625
+        }
+      ],
+      "heroHeight": 1157,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/trust",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 1184.247787475586,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1136.25,
+          "visibleInFirstFold": false,
+          "width": 213.8385009765625
+        }
+      ],
+      "heroHeight": 1157,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/trust?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 313,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/demo",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 313,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/demo?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1008.0420379638672,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 960.0442504882812,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        },
+        {
+          "bottom": 924.0375823974609,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 876.039794921875,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        },
+        {
+          "bottom": 954.0265350341797,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 906.0287475585938,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        }
+      ],
+      "heroHeight": 1409,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pricing",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1008.0420379638672,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 960.0442504882812,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        },
+        {
+          "bottom": 924.0375823974609,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 876.039794921875,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        },
+        {
+          "bottom": 954.0265350341797,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 906.0287475585938,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        }
+      ],
+      "heroHeight": 1409,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pricing?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1052,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pilot",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1052,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pilot?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": 0,
+      "clientWidth": 1280,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Connexion",
+      "heroCtas": [],
+      "heroHeight": 438,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/auth/sign-in",
+      "scrollWidth": 1280,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Connexion | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Demander une soumission de nettoyage",
+      "heroCtas": [],
+      "heroHeight": 337,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": true,
+      "requestedTheme": "light",
+      "route": "/quote/akora?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Request a cleaning quote | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Stop losing cleaning quote requests to slow replies.",
+      "heroCtas": [
+        {
+          "bottom": 659.2367401123047,
+          "height": 47.99778747558594,
+          "text": "Join founder pilot",
+          "top": 611.2389526367188,
+          "visibleInFirstFold": true,
+          "width": 167.37831115722656
+        },
+        {
+          "bottom": 659.2367401123047,
+          "height": 47.99778747558594,
+          "text": "Watch demo",
+          "top": 611.2389526367188,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        }
+      ],
+      "heroHeight": 696,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "en",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/?language=en",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+      "heroCtas": [
+        {
+          "bottom": 731.5375823974609,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 683.539794921875,
+          "visibleInFirstFold": true,
+          "width": 224.46902465820312
+        },
+        {
+          "bottom": 731.5375823974609,
+          "height": 47.99778747558594,
+          "text": "Voir la démo de 60 secondes",
+          "top": 683.539794921875,
+          "visibleInFirstFold": true,
+          "width": 245.67477416992188
+        }
+      ],
+      "heroHeight": 811,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "BizPilot AI | Récupération de prospects pour le nettoyage",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1555.862777709961,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 1507.864990234375,
+          "visibleInFirstFold": false,
+          "width": 251.85841369628906
+        }
+      ],
+      "heroHeight": 1530,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/features",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1555.862777709961,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 1507.864990234375,
+          "visibleInFirstFold": false,
+          "width": 251.85841369628906
+        }
+      ],
+      "heroHeight": 1530,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/features?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 579.1260833740234,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 531.1282958984375,
+          "visibleInFirstFold": true,
+          "width": 300.2654724121094
+        },
+        {
+          "bottom": 579.1260833740234,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 531.1282958984375,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        },
+        {
+          "bottom": 1891.7698822021484,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 1843.7720947265625,
+          "visibleInFirstFold": false,
+          "width": 511.5597229003906
+        }
+      ],
+      "heroHeight": 1895,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/industries/cleaning",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 579.1260833740234,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 531.1282958984375,
+          "visibleInFirstFold": true,
+          "width": 300.2654724121094
+        },
+        {
+          "bottom": 579.1260833740234,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 531.1282958984375,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        },
+        {
+          "bottom": 1891.7698822021484,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 1843.7720947265625,
+          "visibleInFirstFold": false,
+          "width": 511.5597229003906
+        }
+      ],
+      "heroHeight": 1895,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/industries/cleaning?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 1187.1238861083984,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1139.1260986328125,
+          "visibleInFirstFold": false,
+          "width": 213.8385009765625
+        }
+      ],
+      "heroHeight": 1162,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/trust",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 1187.1238861083984,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1139.1260986328125,
+          "visibleInFirstFold": false,
+          "width": 213.8385009765625
+        }
+      ],
+      "heroHeight": 1162,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/trust?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 318,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/demo",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 318,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/demo?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1010.9181365966797,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 962.9203491210938,
+          "visibleInFirstFold": false,
+          "width": 327.3008728027344
+        },
+        {
+          "bottom": 926.9137420654297,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 878.9159545898438,
+          "visibleInFirstFold": false,
+          "width": 327.31195068359375
+        },
+        {
+          "bottom": 956.9026336669922,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 908.9048461914062,
+          "visibleInFirstFold": false,
+          "width": 327.31195068359375
+        }
+      ],
+      "heroHeight": 1413,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pricing",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1010.9181365966797,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 962.9203491210938,
+          "visibleInFirstFold": false,
+          "width": 327.3008728027344
+        },
+        {
+          "bottom": 926.9137420654297,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 878.9159545898438,
+          "visibleInFirstFold": false,
+          "width": 327.31195068359375
+        },
+        {
+          "bottom": 956.9026336669922,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 908.9048461914062,
+          "visibleInFirstFold": false,
+          "width": 327.31195068359375
+        }
+      ],
+      "heroHeight": 1413,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pricing?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1098,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pilot",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1098,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/pilot?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": 0,
+      "clientWidth": 1366,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Connexion",
+      "heroCtas": [],
+      "heroHeight": 438,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "light",
+      "route": "/auth/sign-in",
+      "scrollWidth": 1366,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Connexion | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Demander une soumission de nettoyage",
+      "heroCtas": [],
+      "heroHeight": 337,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": true,
+      "requestedTheme": "light",
+      "route": "/quote/akora?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "light",
+      "themePreference": "light",
+      "title": "Request a cleaning quote | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Stop losing cleaning quote requests to slow replies.",
+      "heroCtas": [
+        {
+          "bottom": 630.5641326904297,
+          "height": 47.99778747558594,
+          "text": "Join founder pilot",
+          "top": 582.5663452148438,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 690.5530853271484,
+          "height": 47.99778747558594,
+          "text": "Watch demo",
+          "top": 642.5552978515625,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 1299,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "en",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/?language=en",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+      "heroCtas": [
+        {
+          "bottom": 769.9557342529297,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 721.9579467773438,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 829.9446868896484,
+          "height": 47.99778747558594,
+          "text": "Voir la démo de 60 secondes",
+          "top": 781.9468994140625,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 1520,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "BizPilot AI | Récupération de prospects pour le nettoyage",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 3382.422592163086,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 3334.4248046875,
+          "visibleInFirstFold": false,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 3418,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/features",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 3382.422592163086,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 3334.4248046875,
+          "visibleInFirstFold": false,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 3418,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/features?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 767.9314422607422,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 719.9336547851562,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 827.9203338623047,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 779.9225463867188,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 5078.882553100586,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 5030.884765625,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        }
+      ],
+      "heroHeight": 5079,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/industries/cleaning",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 767.9314422607422,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 719.9336547851562,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 827.9203338623047,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 779.9225463867188,
+          "visibleInFirstFold": true,
+          "width": 343.2190246582031
+        },
+        {
+          "bottom": 5078.882553100586,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 5030.884765625,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        }
+      ],
+      "heroHeight": 5079,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/industries/cleaning?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 2483.395980834961,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 2435.398193359375,
+          "visibleInFirstFold": false,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 2459,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/trust",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 2483.395980834961,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 2435.398193359375,
+          "visibleInFirstFold": false,
+          "width": 343.2190246582031
+        }
+      ],
+      "heroHeight": 2459,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/trust?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 445,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/demo",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 445,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/demo?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1155.718978881836,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1107.72119140625,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        },
+        {
+          "bottom": 1760.210189819336,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 1712.21240234375,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        },
+        {
+          "bottom": 2418.694564819336,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 2370.69677734375,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        }
+      ],
+      "heroHeight": 3335,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pricing",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            1,
+            1,
+            1
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1155.718978881836,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1107.72119140625,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        },
+        {
+          "bottom": 1760.210189819336,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 1712.21240234375,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        },
+        {
+          "bottom": 2418.694564819336,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 2370.69677734375,
+          "visibleInFirstFold": false,
+          "width": 293.8163757324219
+        }
+      ],
+      "heroHeight": 3335,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pricing?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1884,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pilot",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1884,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pilot?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": 0,
+      "clientWidth": 390,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Connexion",
+      "heroCtas": [],
+      "heroHeight": 450,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/auth/sign-in",
+      "scrollWidth": 390,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Connexion | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 375,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Demander une soumission de nettoyage",
+      "heroCtas": [],
+      "heroHeight": 435,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": true,
+      "requestedTheme": "dark",
+      "route": "/quote/akora?language=fr-CA",
+      "scrollWidth": 375,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Request a cleaning quote | BizPilot AI",
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Stop losing cleaning quote requests to slow replies.",
+      "heroCtas": [
+        {
+          "bottom": 637.5995330810547,
+          "height": 47.99778747558594,
+          "text": "Join founder pilot",
+          "top": 589.6017456054688,
+          "visibleInFirstFold": true,
+          "width": 167.37831115722656
+        },
+        {
+          "bottom": 637.5995330810547,
+          "height": 47.99778747558594,
+          "text": "Watch demo",
+          "top": 589.6017456054688,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        }
+      ],
+      "heroHeight": 671,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "en",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/?language=en",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+      "heroCtas": [
+        {
+          "bottom": 705.3318328857422,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 657.3340454101562,
+          "visibleInFirstFold": true,
+          "width": 224.46902465820312
+        },
+        {
+          "bottom": 705.3318328857422,
+          "height": 47.99778747558594,
+          "text": "Voir la démo de 60 secondes",
+          "top": 657.3340454101562,
+          "visibleInFirstFold": true,
+          "width": 245.67477416992188
+        }
+      ],
+      "heroHeight": 782,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "BizPilot AI | Récupération de prospects pour le nettoyage",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1551.471176147461,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 1503.473388671875,
+          "visibleInFirstFold": false,
+          "width": 251.85841369628906
+        }
+      ],
+      "heroHeight": 1525,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/features",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1551.471176147461,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 1503.473388671875,
+          "visibleInFirstFold": false,
+          "width": 251.85841369628906
+        }
+      ],
+      "heroHeight": 1525,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/features?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 576.2499847412109,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 528.252197265625,
+          "visibleInFirstFold": true,
+          "width": 300.2654724121094
+        },
+        {
+          "bottom": 576.2499847412109,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 528.252197265625,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        },
+        {
+          "bottom": 1890.5530853271484,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 1842.5552978515625,
+          "visibleInFirstFold": false,
+          "width": 511.5597229003906
+        }
+      ],
+      "heroHeight": 1892,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/industries/cleaning",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 576.2499847412109,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 528.252197265625,
+          "visibleInFirstFold": true,
+          "width": 300.2654724121094
+        },
+        {
+          "bottom": 576.2499847412109,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 528.252197265625,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        },
+        {
+          "bottom": 1890.5530853271484,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 1842.5552978515625,
+          "visibleInFirstFold": false,
+          "width": 511.5597229003906
+        }
+      ],
+      "heroHeight": 1892,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/industries/cleaning?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 1184.247787475586,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1136.25,
+          "visibleInFirstFold": false,
+          "width": 213.8385009765625
+        }
+      ],
+      "heroHeight": 1157,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/trust",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 1184.247787475586,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1136.25,
+          "visibleInFirstFold": false,
+          "width": 213.8385009765625
+        }
+      ],
+      "heroHeight": 1157,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/trust?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 313,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/demo",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 313,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/demo?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1008.0420379638672,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 960.0442504882812,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        },
+        {
+          "bottom": 924.0375823974609,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 876.039794921875,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        },
+        {
+          "bottom": 954.0265350341797,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 906.0287475585938,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        }
+      ],
+      "heroHeight": 1409,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pricing",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1008.0420379638672,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 960.0442504882812,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        },
+        {
+          "bottom": 924.0375823974609,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 876.039794921875,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        },
+        {
+          "bottom": 954.0265350341797,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 906.0287475585938,
+          "visibleInFirstFold": false,
+          "width": 327.7654724121094
+        }
+      ],
+      "heroHeight": 1409,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pricing?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1052,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pilot",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1052,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pilot?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": 0,
+      "clientWidth": 1280,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Connexion",
+      "heroCtas": [],
+      "heroHeight": 438,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/auth/sign-in",
+      "scrollWidth": 1280,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Connexion | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1265,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Demander une soumission de nettoyage",
+      "heroCtas": [],
+      "heroHeight": 337,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": true,
+      "requestedTheme": "dark",
+      "route": "/quote/akora?language=fr-CA",
+      "scrollWidth": 1265,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Request a cleaning quote | BizPilot AI",
+      "viewport": {
+        "height": 720,
+        "width": 1280
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Stop losing cleaning quote requests to slow replies.",
+      "heroCtas": [
+        {
+          "bottom": 659.2367401123047,
+          "height": 47.99778747558594,
+          "text": "Join founder pilot",
+          "top": 611.2389526367188,
+          "visibleInFirstFold": true,
+          "width": 167.37831115722656
+        },
+        {
+          "bottom": 659.2367401123047,
+          "height": 47.99778747558594,
+          "text": "Watch demo",
+          "top": 611.2389526367188,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        }
+      ],
+      "heroHeight": 696,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "en",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/?language=en",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".homepage-use-case-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+      "heroCtas": [
+        {
+          "bottom": 731.5375823974609,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 683.539794921875,
+          "visibleInFirstFold": true,
+          "width": 224.46902465820312
+        },
+        {
+          "bottom": 731.5375823974609,
+          "height": 47.99778747558594,
+          "text": "Voir la démo de 60 secondes",
+          "top": 683.539794921875,
+          "visibleInFirstFold": true,
+          "width": 245.67477416992188
+        }
+      ],
+      "heroHeight": 811,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "BizPilot AI | Récupération de prospects pour le nettoyage",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1555.862777709961,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 1507.864990234375,
+          "visibleInFirstFold": false,
+          "width": 251.85841369628906
+        }
+      ],
+      "heroHeight": 1530,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/features",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 6,
+          "rowCounts": [
+            3,
+            3
+          ],
+          "selector": ".supporting-six-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1555.862777709961,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote",
+          "top": 1507.864990234375,
+          "visibleInFirstFold": false,
+          "width": 251.85841369628906
+        }
+      ],
+      "heroHeight": 1530,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/features?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Fonctions de récupération de prospects | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 579.1260833740234,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 531.1282958984375,
+          "visibleInFirstFold": true,
+          "width": 300.2654724121094
+        },
+        {
+          "bottom": 579.1260833740234,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 531.1282958984375,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        },
+        {
+          "bottom": 1891.7698822021484,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 1843.7720947265625,
+          "visibleInFirstFold": false,
+          "width": 511.5597229003906
+        }
+      ],
+      "heroHeight": 1895,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/industries/cleaning",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Récupération de prospects pour les entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 579.1260833740234,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 531.1282958984375,
+          "visibleInFirstFold": true,
+          "width": 300.2654724121094
+        },
+        {
+          "bottom": 579.1260833740234,
+          "height": 47.99778747558594,
+          "text": "Voir la démo",
+          "top": 531.1282958984375,
+          "visibleInFirstFold": true,
+          "width": 130.03318786621094
+        },
+        {
+          "bottom": 1891.7698822021484,
+          "height": 47.99778747558594,
+          "text": "Participer au projet pilote nettoyage",
+          "top": 1843.7720947265625,
+          "visibleInFirstFold": false,
+          "width": 511.5597229003906
+        }
+      ],
+      "heroHeight": 1895,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/industries/cleaning?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 1187.1238861083984,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1139.1260986328125,
+          "visibleInFirstFold": false,
+          "width": 213.8385009765625
+        }
+      ],
+      "heroHeight": 1162,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/trust",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Bâti pour le contrôle du propriétaire et la confiance.",
+      "heroCtas": [
+        {
+          "bottom": 1187.1238861083984,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 1139.1260986328125,
+          "visibleInFirstFold": false,
+          "width": 213.8385009765625
+        }
+      ],
+      "heroHeight": 1162,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/trust?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 318,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/demo",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 318,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/demo?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Démo du flux de soumission de nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1010.9181365966797,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 962.9203491210938,
+          "visibleInFirstFold": false,
+          "width": 327.3008728027344
+        },
+        {
+          "bottom": 926.9137420654297,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 878.9159545898438,
+          "visibleInFirstFold": false,
+          "width": 327.31195068359375
+        },
+        {
+          "bottom": 956.9026336669922,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 908.9048461914062,
+          "visibleInFirstFold": false,
+          "width": 327.31195068359375
+        }
+      ],
+      "heroHeight": 1413,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pricing",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [
+        {
+          "itemCount": 3,
+          "rowCounts": [
+            3
+          ],
+          "selector": ".supporting-three-grid"
+        }
+      ],
+      "h1Count": 1,
+      "h1Text": "Tarification pilote simple pour entreprises de nettoyage.",
+      "heroCtas": [
+        {
+          "bottom": 1010.9181365966797,
+          "height": 47.99778747558594,
+          "text": "Postuler au projet pilote",
+          "top": 962.9203491210938,
+          "visibleInFirstFold": false,
+          "width": 327.3008728027344
+        },
+        {
+          "bottom": 926.9137420654297,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 878.9159545898438,
+          "visibleInFirstFold": false,
+          "width": 327.31195068359375
+        },
+        {
+          "bottom": 956.9026336669922,
+          "height": 47.99778747558594,
+          "text": "Postuler au pilote",
+          "top": 908.9048461914062,
+          "visibleInFirstFold": false,
+          "width": 327.31195068359375
+        }
+      ],
+      "heroHeight": 1413,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": true,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pricing?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Tarification du projet pilote fondateur | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1098,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pilot",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+      "heroCtas": [],
+      "heroHeight": 1098,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": false,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/pilot?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": 0,
+      "clientWidth": 1366,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Connexion",
+      "heroCtas": [],
+      "heroHeight": 438,
+      "horizontalOverflow": 0,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": null,
+      "requestedTheme": "dark",
+      "route": "/auth/sign-in",
+      "scrollWidth": 1366,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Connexion | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    },
+    {
+      "authNavCount": null,
+      "clientWidth": 1351,
+      "disabledFields": 0,
+      "grids": [],
+      "h1Count": 1,
+      "h1Text": "Demander une soumission de nettoyage",
+      "heroCtas": [],
+      "heroHeight": 337,
+      "horizontalOverflow": 1,
+      "internalScrollers": [],
+      "lang": "fr-CA",
+      "pilotHasLongDisabledForm": null,
+      "pricingTruth": null,
+      "protruding": [],
+      "quoteHasFrenchLabels": true,
+      "requestedTheme": "dark",
+      "route": "/quote/akora?language=fr-CA",
+      "scrollWidth": 1352,
+      "theme": "dark",
+      "themePreference": "dark",
+      "title": "Request a cleaning quote | BizPilot AI",
+      "viewport": {
+        "height": 768,
+        "width": 1366
+      }
+    }
+  ]
+}
