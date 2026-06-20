@@ -11,11 +11,12 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-18: Tightened trust grid and added Privacy/Security links.
  * - 2026-06-19: Moved visible trust-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Replaced trust cards with three full-width owner-control pillars.
+ * - 2026-06-20: Balanced trust as three grouped pillar columns on desktop.
  * ============================================================
  */
 
@@ -84,27 +85,23 @@ export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
               {copy.body}
             </p>
           </div>
-          <div className="mt-10 grid gap-5">
+          <div className="supporting-three-grid mt-8">
             {copy.pillars.map((pillar) => (
-              <MarketingCard className="p-6 sm:p-7" key={pillar.title}>
-                <div className="grid min-w-0 gap-5 min-[900px]:grid-cols-[minmax(0,0.86fr)_minmax(280px,0.72fr)] min-[900px]:items-start">
-                  <div className="min-w-0">
-                    <span className="inline-flex h-11 w-11 items-center justify-center rounded-[14px]" style={{ backgroundColor: "color-mix(in srgb, var(--accent) 12%, transparent)", color: marketingTone.teal }}>
-                      <MarketingIcon name="shield" />
-                    </span>
-                    <h2 className="mt-4 text-[24px] font-black leading-tight" style={{ color: marketingTone.text }}>{pillar.title}</h2>
-                    <p className="mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>{pillar.body}</p>
-                  </div>
-                  <div className="grid gap-3">
-                    {pillar.points.map((point) => (
-                      <div className="flex min-w-0 items-start gap-3 rounded-[14px] border p-4 text-[14px] font-black leading-6" key={point} style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border, color: marketingTone.text }}>
-                        <span className="mt-0.5 shrink-0" style={{ color: marketingTone.teal }}>
-                          <MarketingIcon name="check" />
-                        </span>
-                        <span className="min-w-0 break-words">{point}</span>
-                      </div>
-                    ))}
-                  </div>
+              <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={pillar.title}>
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-[14px]" style={{ backgroundColor: "color-mix(in srgb, var(--accent) 12%, transparent)", color: marketingTone.teal }}>
+                  <MarketingIcon name="shield" />
+                </span>
+                <h2 className="mt-4 text-[23px] font-black leading-tight" style={{ color: marketingTone.text }}>{pillar.title}</h2>
+                <p className="mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>{pillar.body}</p>
+                <div className="mt-5 grid gap-3">
+                  {pillar.points.map((point) => (
+                    <div className="flex min-w-0 items-start gap-3 rounded-[14px] border p-3.5 text-[14px] font-black leading-6" key={point} style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border, color: marketingTone.text }}>
+                      <span className="mt-0.5 shrink-0" style={{ color: marketingTone.teal }}>
+                        <MarketingIcon name="check" />
+                      </span>
+                      <span className="min-w-0 break-words">{point}</span>
+                    </div>
+                  ))}
                 </div>
               </MarketingCard>
             ))}

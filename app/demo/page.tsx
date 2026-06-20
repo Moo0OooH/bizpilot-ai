@@ -10,10 +10,11 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-18: Grouped the demo into concise responsive chapters with visible guardrails.
  * - 2026-06-19: Moved visible demo-page copy and metadata into the public-site i18n dictionary.
+ * - 2026-06-20: Tightened demo chapter spacing for a shorter normal-flow page.
  * ============================================================
  */
 
@@ -99,7 +100,7 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
     >
       <MarketingHeader copy={navCopy} language={language} redirectPath="/demo" />
 
-      <section className="pb-12 pt-10 sm:pt-14 lg:pb-16 lg:pt-20">
+      <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
           <div className="mx-auto max-w-[920px] text-center">
             <MarketingBadge>{copy.badge}</MarketingBadge>
@@ -119,9 +120,9 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
         </MarketingShell>
       </section>
 
-      <section className="pb-[var(--section-space)]">
+      <section className="pb-[var(--section-space-compact)]">
         <MarketingShell>
-          <div className="grid gap-4">
+          <div className="grid gap-3">
             {copy.chapters.map((item) => (
               <MarketingCard className="p-5 sm:p-6" key={item.title}>
                 <div className="grid min-w-0 gap-5 min-[1040px]:grid-cols-[minmax(0,0.92fr)_minmax(320px,0.82fr)] min-[1040px]:items-center">

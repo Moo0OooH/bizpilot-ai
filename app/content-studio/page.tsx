@@ -10,11 +10,12 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-18: Applied responsive section spacing and intrinsic card grid.
  * - 2026-06-19: Moved visible Content Studio roadmap copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Rebuilt the page as a clear owner-reviewed roadmap surface.
+ * - 2026-06-20: Removed fixed roadmap-card height and tightened six-card rhythm.
  * ============================================================
  */
 
@@ -85,9 +86,9 @@ export default async function ContentStudioPage({
               {copy.body}
             </p>
           </div>
-          <div className="supporting-six-grid mt-10">
+          <div className="supporting-six-grid mt-8">
             {copy.cards.map((card, index) => (
-              <MarketingCard className="flex min-h-[150px] flex-col p-5" key={card}>
+              <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={card}>
                 <span className="flex h-9 w-9 items-center justify-center rounded-[12px] text-[12px] font-black" style={{ backgroundColor: "color-mix(in srgb, var(--warning) 14%, transparent)", color: marketingTone.gold }}>
                   {index + 1}
                 </span>

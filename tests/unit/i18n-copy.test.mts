@@ -9,6 +9,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
+ * Last Updated: 2026-06-20
+ * Change Log:
+ * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * ============================================================
  */
 
@@ -535,6 +538,7 @@ describe("BizPilot language copy", () => {
       ["app/features/page.tsx", "supporting-six-grid"],
       ["app/industries/cleaning/page.tsx", "supporting-three-grid"],
       ["app/trust/page.tsx", "copy.pillars", "copy.items"],
+      ["app/trust/page.tsx", "supporting-three-grid"],
       ["app/pricing/page.tsx", "copy.afterApply"],
       ["app/pricing/page.tsx", "supporting-three-grid"],
       ["app/content-studio/page.tsx", "supporting-six-grid"],
@@ -559,6 +563,24 @@ describe("BizPilot language copy", () => {
     const globalStyles = readFileSync("app/globals.css", "utf8");
     assert.equal(globalStyles.includes(".supporting-six-grid"), true);
     assert.equal(globalStyles.includes(".supporting-three-grid"), true);
+    assert.equal(
+      globalStyles.includes("gap: var(--grid-gap);"),
+      true,
+      "Supporting grids should use fluid grid gaps rather than fixed one-off spacing.",
+    );
+
+    for (const [file, forbidden] of [
+      ["app/page.tsx", "min-h-[170px]"],
+      ["app/page.tsx", "min-h-[260px]"],
+      ["app/features/page.tsx", "min-h-[210px]"],
+      ["app/content-studio/page.tsx", "min-h-[150px]"],
+    ] as const) {
+      assert.equal(
+        readFileSync(file, "utf8").includes(forbidden),
+        false,
+        `${file} should not force marketing card height with ${forbidden}.`,
+      );
+    }
   });
 
   it("keeps pilot Branch B conversion honest and non-submitting", () => {

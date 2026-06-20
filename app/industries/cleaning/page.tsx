@@ -10,11 +10,12 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-18: Added quote example, organized lead details, and top/end pilot CTAs.
  * - 2026-06-19: Moved visible cleaning-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Rebuilt cleaning page around three service-family panels with stable service anchors.
+ * - 2026-06-20: Tightened service-family card spacing while preserving all cleaning anchors.
  * ============================================================
  */
 
@@ -115,9 +116,9 @@ export default async function CleaningPage({
             </MarketingCard>
           </div>
 
-          <div className="supporting-three-grid mt-10">
+          <div className="supporting-three-grid mt-8">
             {copy.families.map((family) => (
-              <MarketingCard className="flex min-w-0 flex-col p-6" key={family.title}>
+              <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={family.title}>
                 <h2 className="text-[24px] font-black leading-tight" style={{ color: marketingTone.text }}>
                   {family.title}
                 </h2>
@@ -127,7 +128,7 @@ export default async function CleaningPage({
                 <div className="mt-5 grid gap-3">
                   {family.services.map((service) => (
                     <div
-                      className="rounded-[14px] border border-slate-200 bg-slate-50 p-4"
+                      className="rounded-[14px] border border-slate-200 bg-slate-50 p-3.5"
                       id={service.id}
                       key={service.id}
                     >
@@ -140,7 +141,7 @@ export default async function CleaningPage({
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 rounded-[14px] border border-slate-200 bg-white p-4">
+                <div className="mt-5 rounded-[14px] border border-slate-200 bg-white p-3.5">
                   <p className="text-[12px] font-black uppercase tracking-[0.12em] text-slate-500">
                     {family.requestLabel}
                   </p>

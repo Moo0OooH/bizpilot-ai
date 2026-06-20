@@ -16,6 +16,7 @@
  * - 2026-06-19: Moved visible homepage copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Finalized balanced homepage rhythm, four-step demo, and locked cleaning-use-case links.
  * - 2026-06-20: Stabilized bilingual hero scale and first-fold CTA placement.
+ * - 2026-06-20: Removed forced card heights from demo and cleaning-use-case grids.
  * ============================================================
  */
 
@@ -294,7 +295,7 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
         <SectionTitle body={copy.body} title={copy.title} />
         <div className="homepage-demo-grid mt-8">
           {copy.steps.map((step, index) => (
-            <MarketingCard className="flex min-h-[260px] flex-col p-5 sm:p-6" key={step.title}>
+            <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={step.title}>
               <div className="flex items-center justify-between gap-3">
                 <span className="text-[12px] font-black uppercase tracking-[0.14em] text-slate-500">
                   {index + 1}
@@ -339,7 +340,7 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                 </div>
               ) : null}
               {step.body ? (
-                <div className="mt-4 flex flex-1 flex-col justify-between rounded-[16px] border border-teal-200 bg-teal-50 p-4">
+                <div className="mt-4 rounded-[16px] border border-teal-200 bg-teal-50 p-4">
                   <p className="text-[15px] font-bold leading-7 text-slate-950">
                     {step.body}
                   </p>
@@ -476,7 +477,7 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
           <div className="homepage-use-case-grid mt-8">
             {copy.useCases.cards.map((item) => (
               <Link
-                className="group flex min-h-[170px] min-w-0 flex-col justify-between rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-5 shadow-[var(--shadow-md)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] active:translate-y-0"
+                className="group flex min-w-0 flex-col justify-between rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-5 shadow-[var(--shadow-md)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] active:translate-y-0"
                 href={item.href}
                 key={item.href}
                 style={{

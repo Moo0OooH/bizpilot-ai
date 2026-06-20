@@ -19,6 +19,7 @@ Change Log:
 - 2026-06-19: Added semantic System/Light/Dark tokens shared by marketing, auth, quote, dashboard, and admin shells.
 - 2026-06-19: Aligned Light/Dark tokens with the final polish contrast baseline.
 - 2026-06-20: Stabilized public grids and wrapping before dashboard work.
+- 2026-06-20: Balanced public marketing grids with fluid gaps and content-driven card heights.
 ============================================================
 */
 
@@ -328,14 +329,14 @@ select {
 .homepage-use-case-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: var(--grid-gap);
 }
 
 .supporting-six-grid,
 .supporting-three-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
+  gap: var(--grid-gap);
 }
 
 .supporting-six-grid {

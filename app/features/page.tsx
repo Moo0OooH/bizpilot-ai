@@ -10,11 +10,12 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-18: Added compact proof visual, trust strip, and responsive intrinsic grid.
  * - 2026-06-19: Moved visible feature-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Locked the feature grid and rebuilt product proof as one workflow strip.
+ * - 2026-06-20: Removed fixed feature-card height and tightened grid rhythm.
  * ============================================================
  */
 
@@ -84,11 +85,11 @@ export default async function FeaturesPage({
               {copy.title}
             </h1>
           </div>
-          <div className="supporting-six-grid mt-10">
+          <div className="supporting-six-grid mt-8">
             {copy.cards.map((item, index) => (
-              <MarketingCard className="flex min-h-[210px] flex-col p-6" key={item.title}>
+              <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={item.title}>
                 <span
-                  className="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-[12px]"
+                  className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-[12px]"
                   style={{
                     backgroundColor: "color-mix(in srgb, var(--accent) 12%, transparent)",
                     color: marketingTone.teal,

@@ -9,11 +9,13 @@
  * - lib/i18n/home-copy.ts
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
- * Last Updated: 2026-06-19
+ * Created: 2026-06-18
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-18: Removed duplicate monthly price highlights and aligned card reflow.
  * - 2026-06-19: Moved visible pricing-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Added post-apply strip and balanced staged pricing cards.
+ * - 2026-06-20: Tightened pricing spacing without changing staged pricing or guardrails.
  * ============================================================
  */
 
@@ -73,7 +75,7 @@ export default async function PricingPage({
   return (
     <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader active="pricing" copy={navCopy} language={language} redirectPath="/pricing" />
-      <section className="py-[var(--section-space)]">
+      <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
           <div className="mx-auto max-w-[820px] text-center">
             <MarketingBadge>{copy.badge}</MarketingBadge>
@@ -85,7 +87,7 @@ export default async function PricingPage({
             </p>
           </div>
 
-          <div className="supporting-three-grid mt-10">
+          <div className="supporting-three-grid mt-8">
             {copy.cards.map((card, index) => (
               <MarketingCard
                 className="flex min-w-0 flex-col p-6 sm:p-7"
@@ -101,12 +103,12 @@ export default async function PricingPage({
                   <p className="text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
                     {card.cohort}
                   </p>
-                  <h2 className="mt-3 text-[27px] font-black leading-tight" style={{ color: marketingTone.text }}>
+                  <h2 className="mt-3 text-[25px] font-black leading-tight" style={{ color: marketingTone.text }}>
                     {card.title}
                   </h2>
                   <div className="mt-5">
                     {card.priceLines.map((line) => (
-                      <p className="text-[28px] font-black leading-tight" key={line} style={{ color: marketingTone.text }}>
+                      <p className="text-[26px] font-black leading-tight" key={line} style={{ color: marketingTone.text }}>
                         {line}
                       </p>
                     ))}
@@ -116,7 +118,7 @@ export default async function PricingPage({
                   </p>
                 </div>
 
-                <div className="mt-6 grid flex-1 gap-3">
+                <div className="mt-5 grid gap-3">
                   {card.bullets.map((item) => (
                     <div className="flex min-w-0 items-start gap-3 text-[14px] font-bold leading-6" key={item} style={{ color: marketingTone.soft }}>
                       <span className="mt-0.5 shrink-0" style={{ color: marketingTone.teal }}>
@@ -127,7 +129,7 @@ export default async function PricingPage({
                   ))}
                 </div>
 
-                <MarketingButton className="mt-7 w-full" href="/pilot">
+                <MarketingButton className="mt-6 w-full" href="/pilot">
                   {card.cta}
                 </MarketingButton>
               </MarketingCard>

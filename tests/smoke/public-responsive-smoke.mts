@@ -13,6 +13,7 @@
  * Change Log:
  * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
  * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
+ * - 2026-06-20: Locked balanced public grid classes into route-level smoke coverage.
  * ============================================================
  */
 
@@ -28,13 +29,19 @@ const TIMEOUT_MS = 15_000;
 const routes: readonly RouteContract[] = [
   {
     h1: "Stop losing cleaning quote requests to slow replies.",
-    mustContain: ["href=\"/demo\"", "No auto-send", "Owner-reviewed AI drafts"],
+    mustContain: [
+      "href=\"/demo\"",
+      "homepage-use-case-grid",
+      "No auto-send",
+      "Owner-reviewed AI drafts",
+    ],
     path: "/",
   },
   {
     h1: "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
     mustContain: [
       "href=\"/demo\"",
+      "homepage-use-case-grid",
       "Aucun envoi automatique",
       "Brouillons révisés par le propriétaire",
     ],
@@ -42,17 +49,32 @@ const routes: readonly RouteContract[] = [
   },
   {
     h1: "A simple system to capture, organize, and reply to cleaning leads faster.",
-    mustContain: ["Product proof", "Roadmap", "Manual copy/send"],
+    mustContain: [
+      "Product proof",
+      "Roadmap",
+      "Manual copy/send",
+      "supporting-six-grid",
+    ],
     path: "/features",
   },
   {
     h1: "Lead recovery software for cleaning businesses.",
-    mustContain: ["Example request", "Move-out cleaning", "Needs reply"],
+    mustContain: [
+      "Example request",
+      "Move-out cleaning",
+      "Needs reply",
+      "supporting-three-grid",
+    ],
     path: "/industries/cleaning",
   },
   {
     h1: "Built for owner control and trust.",
-    mustContain: ["Read privacy", "Read security", "Technical readiness notes"],
+    mustContain: [
+      "Read privacy",
+      "Read security",
+      "Technical readiness notes",
+      "supporting-three-grid",
+    ],
     path: "/trust",
   },
   {
@@ -62,7 +84,13 @@ const routes: readonly RouteContract[] = [
   },
   {
     h1: "Simple pilot pricing for cleaning businesses.",
-    mustContain: ["$149 setup", "$49/month", "$199 setup", "$79/month"],
+    mustContain: [
+      "$149 setup",
+      "$49/month",
+      "$199 setup",
+      "$79/month",
+      "supporting-three-grid",
+    ],
     path: "/pricing",
   },
   {
@@ -76,7 +104,7 @@ const routes: readonly RouteContract[] = [
   },
   {
     h1: "Future Content Studio for local business growth.",
-    mustContain: ["Roadmap", "owner before publishing"],
+    mustContain: ["Roadmap", "owner before publishing", "supporting-six-grid"],
     path: "/content-studio",
   },
   {
