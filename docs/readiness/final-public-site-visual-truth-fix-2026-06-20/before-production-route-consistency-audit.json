@@ -1,0 +1,757 @@
+[
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 4,
+        "className": "homepage-demo-grid mt-8",
+        "height": 533,
+        "rowPattern": [
+          4
+        ],
+        "width": 1200
+      },
+      {
+        "children": 6,
+        "className": "homepage-use-case-grid mt-8",
+        "height": 375,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/?phase12=audit-1781987869502",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 4,
+        "className": "homepage-demo-grid mt-8",
+        "height": 533,
+        "rowPattern": [
+          4
+        ],
+        "width": 1200
+      },
+      {
+        "children": 6,
+        "className": "homepage-use-case-grid mt-8",
+        "height": 375,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/?language=fr-CA&phase12=audit-1781987869983",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 525,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/features?phase12=audit-1781987870418",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 525,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/features?language=fr-CA&phase12=audit-1781987870857",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 854,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Récupération de prospects pour les entreprises de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/industries/cleaning?phase12=audit-1781987871264",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 854,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Récupération de prospects pour les entreprises de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/industries/cleaning?language=fr-CA&phase12=audit-1781987871731",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 515,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Bâti pour le contrôle du propriétaire et la confiance.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/trust?phase12=audit-1781987872183",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 515,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Bâti pour le contrôle du propriétaire et la confiance.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/trust?language=fr-CA&phase12=audit-1781987872635",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/demo?phase12=audit-1781987873080",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/demo?language=fr-CA&phase12=audit-1781987873554",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 657,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Tarification pilote simple pour entreprises de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pricing?phase12=audit-1781987874050",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 657,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Tarification pilote simple pour entreprises de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pricing?language=fr-CA&phase12=audit-1781987874503",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pilot?phase12=audit-1781987874932",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pilot?language=fr-CA&phase12=audit-1781987875377",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 297,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Futur Content Studio pour la croissance locale.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/content-studio?phase12=audit-1781987875793",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 297,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Futur Content Studio pour la croissance locale.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/content-studio?language=fr-CA&phase12=audit-1781987876205",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Regles de confidentialite pour la recuperation des soumissions.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/privacy?phase12=audit-1781987876631",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Frontieres de securite avant les donnees reelles.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/security?phase12=audit-1781987877059",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Conditions claires, sans automation cachee.",
+    "h1Count": 1,
+    "headerText": "BBizPilot AIRécupération de leads pour le nettoyageFonctionsNettoyageConfianceDemoPrixPiloteFRConnexionRejoindre le pilote fondateurRejoindre le pilote",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/terms?phase12=audit-1781987877478",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Connexion",
+    "h1Count": 1,
+    "headerText": "",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/auth/sign-in?phase12=audit-1781987877905",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Créer l'accès propriétaire",
+    "h1Count": 1,
+    "headerText": "",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/auth/sign-up?phase12=audit-1781987878315",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Réinitialiser le mot de passe",
+    "h1Count": 1,
+    "headerText": "",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/auth/forgot-password?phase12=audit-1781987878689",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "bodyOverflow": 0,
+    "dataTheme": "light",
+    "grids": [],
+    "h1": "Demander une soumission de nettoyage",
+    "h1Count": 1,
+    "headerText": "Étape 1 sur 3 - ServiceQuel type de nettoyage?Quelques détails rapides pour aider le propriétaire à préparer une réponse précise.",
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "oldThemeSequenceVisible": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/quote/akora?language=fr-CA&phase12=audit-1781987879074",
+    "protruding": [],
+    "status": "rendered",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  }
+]

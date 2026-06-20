@@ -1,0 +1,398 @@
+[
+  {
+    "label": "after-local3-home-en-1280x720",
+    "ctaBottomMargin": 210,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1265,
+      "clientWidth": 1265,
+      "scrollHeight": 5708,
+      "scrollWidth": 1265
+    },
+    "h1": {
+      "bottom": 354,
+      "height": 192,
+      "left": 33,
+      "right": 769,
+      "top": 162,
+      "width": 736
+    },
+    "h1LineCountApprox": 3,
+    "h1Text": "Stop losing cleaning quote requests to slow replies.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1265,
+      "top": 0,
+      "width": 1265
+    },
+    "hero": {
+      "bottom": 607,
+      "height": 531,
+      "left": 0,
+      "right": 1265,
+      "top": 77,
+      "width": 1265
+    },
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 510,
+      "height": 48,
+      "left": 33,
+      "right": 200,
+      "top": 462,
+      "width": 167
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 510,
+      "height": 48,
+      "left": 212,
+      "right": 342,
+      "top": 462,
+      "width": 130
+    },
+    "secondaryVisibleInViewport": true,
+    "url": "http://127.0.0.1:3000/?language=en&phase12=after-1781988276273",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "label": "after-local3-home-fr-ca-1280x720",
+    "ctaBottomMargin": 148,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1265,
+      "clientWidth": 1265,
+      "scrollHeight": 6129,
+      "scrollWidth": 1265
+    },
+    "h1": {
+      "bottom": 416,
+      "height": 256,
+      "left": 33,
+      "right": 769,
+      "top": 160,
+      "width": 736
+    },
+    "h1LineCountApprox": 4,
+    "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1265,
+      "top": 0,
+      "width": 1265
+    },
+    "hero": {
+      "bottom": 667,
+      "height": 591,
+      "left": 0,
+      "right": 1265,
+      "top": 77,
+      "width": 1265
+    },
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 572,
+      "height": 48,
+      "left": 33,
+      "right": 257,
+      "top": 524,
+      "width": 224
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 572,
+      "height": 48,
+      "left": 269,
+      "right": 515,
+      "top": 524,
+      "width": 246
+    },
+    "secondaryVisibleInViewport": true,
+    "url": "http://127.0.0.1:3000/?language=fr-CA&phase12=after-1781988276608",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "label": "after-local3-home-en-1366x768",
+    "ctaBottomMargin": 248,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1352,
+      "clientWidth": 1351,
+      "scrollHeight": 5741,
+      "scrollWidth": 1351
+    },
+    "h1": {
+      "bottom": 364,
+      "height": 205,
+      "left": 76,
+      "right": 812,
+      "top": 159,
+      "width": 736
+    },
+    "h1LineCountApprox": 3,
+    "h1Text": "Stop losing cleaning quote requests to slow replies.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1352,
+      "top": 0,
+      "width": 1352
+    },
+    "hero": {
+      "bottom": 614,
+      "height": 537,
+      "left": 0,
+      "right": 1352,
+      "top": 77,
+      "width": 1352
+    },
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 520,
+      "height": 48,
+      "left": 76,
+      "right": 243,
+      "top": 472,
+      "width": 167
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 520,
+      "height": 48,
+      "left": 255,
+      "right": 385,
+      "top": 472,
+      "width": 130
+    },
+    "secondaryVisibleInViewport": true,
+    "url": "http://127.0.0.1:3000/?language=en&phase12=after-1781988276808",
+    "viewport": {
+      "height": 768,
+      "width": 1366
+    }
+  },
+  {
+    "label": "after-local3-home-fr-ca-1366x768",
+    "ctaBottomMargin": 180,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1352,
+      "clientWidth": 1351,
+      "scrollHeight": 6118,
+      "scrollWidth": 1351
+    },
+    "h1": {
+      "bottom": 432,
+      "height": 273,
+      "left": 76,
+      "right": 812,
+      "top": 159,
+      "width": 736
+    },
+    "h1LineCountApprox": 4,
+    "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1352,
+      "top": 0,
+      "width": 1352
+    },
+    "hero": {
+      "bottom": 682,
+      "height": 605,
+      "left": 0,
+      "right": 1352,
+      "top": 77,
+      "width": 1352
+    },
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 588,
+      "height": 48,
+      "left": 76,
+      "right": 300,
+      "top": 540,
+      "width": 224
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 588,
+      "height": 48,
+      "left": 312,
+      "right": 558,
+      "top": 540,
+      "width": 246
+    },
+    "secondaryVisibleInViewport": true,
+    "url": "http://127.0.0.1:3000/?language=fr-CA&phase12=after-1781988276994",
+    "viewport": {
+      "height": 768,
+      "width": 1366
+    }
+  },
+  {
+    "label": "after-local3-home-en-1440x900",
+    "ctaBottomMargin": 278,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1425,
+      "clientWidth": 1425,
+      "scrollHeight": 5884,
+      "scrollWidth": 1425
+    },
+    "h1": {
+      "bottom": 466,
+      "height": 288,
+      "left": 113,
+      "right": 849,
+      "top": 178,
+      "width": 736
+    },
+    "h1LineCountApprox": 4,
+    "h1Text": "Stop losing cleaning quote requests to slow replies.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1425,
+      "top": 0,
+      "width": 1425
+    },
+    "hero": {
+      "bottom": 736,
+      "height": 659,
+      "left": 0,
+      "right": 1425,
+      "top": 77,
+      "width": 1425
+    },
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 622,
+      "height": 48,
+      "left": 113,
+      "right": 280,
+      "top": 574,
+      "width": 167
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 622,
+      "height": 48,
+      "left": 292,
+      "right": 422,
+      "top": 574,
+      "width": 130
+    },
+    "secondaryVisibleInViewport": true,
+    "url": "http://127.0.0.1:3000/?language=en&phase12=after-1781988277211",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    }
+  },
+  {
+    "label": "after-local3-home-fr-ca-1440x900",
+    "ctaBottomMargin": 278,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1425,
+      "clientWidth": 1425,
+      "scrollHeight": 6194,
+      "scrollWidth": 1425
+    },
+    "h1": {
+      "bottom": 466,
+      "height": 288,
+      "left": 113,
+      "right": 849,
+      "top": 178,
+      "width": 736
+    },
+    "h1LineCountApprox": 4,
+    "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1425,
+      "top": 0,
+      "width": 1425
+    },
+    "hero": {
+      "bottom": 736,
+      "height": 659,
+      "left": 0,
+      "right": 1425,
+      "top": 77,
+      "width": 1425
+    },
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 622,
+      "height": 48,
+      "left": 113,
+      "right": 337,
+      "top": 574,
+      "width": 224
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 622,
+      "height": 48,
+      "left": 349,
+      "right": 595,
+      "top": 574,
+      "width": 246
+    },
+    "secondaryVisibleInViewport": true,
+    "url": "http://127.0.0.1:3000/?language=fr-CA&phase12=after-1781988277408",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    }
+  }
+]

@@ -105,7 +105,7 @@ function SectionTitle({
 function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
   return (
     <MarketingCard
-      className="w-full max-w-[500px] p-3 sm:p-4"
+      className="homepage-hero-mockup w-full p-3 sm:p-4"
       style={{
         background:
           "linear-gradient(180deg, var(--surface-elevated), var(--surface))",
@@ -220,24 +220,24 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
 
 function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
   return (
-    <section style={{ paddingBlock: "clamp(3rem, 7vh, 6rem)" }}>
+    <section className="homepage-hero-section">
       <MarketingShell>
-        <div className="grid min-w-0 items-center gap-8 min-[1100px]:grid-cols-[minmax(0,1.05fr)_minmax(24rem,0.82fr)] min-[1100px]:gap-10">
-          <div className="min-w-0">
+        <div className="homepage-hero-grid grid min-w-0 items-center gap-8 min-[1100px]:grid-cols-[minmax(0,1fr)_minmax(20rem,0.5fr)] min-[1100px]:gap-8">
+          <div className="homepage-hero-copy min-w-0">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
             <h1
-              className="mt-5 max-w-[720px] text-[clamp(3rem,5.4vw,5.6rem)] font-black leading-[0.98] [max-inline-size:13ch] [text-wrap:balance]"
+              className="homepage-hero-title mt-5 text-[clamp(2.75rem,5vw,5.25rem)] font-black leading-[1] [text-wrap:pretty]"
               style={{ color: marketingTone.text }}
             >
               {copy.hero.title}
             </h1>
             <p
-              className="mt-5 max-w-[690px] text-[17px] leading-8 [max-inline-size:62ch] sm:text-[18px]"
+              className="homepage-hero-body mt-5 text-[17px] leading-8 [text-wrap:pretty] sm:text-[18px]"
               style={{ color: marketingTone.soft }}
             >
               {copy.hero.body}
             </p>
-            <div className="mt-7 flex flex-col gap-3 min-[460px]:flex-row">
+            <div className="homepage-hero-actions mt-6 flex flex-col gap-3 min-[460px]:flex-row">
               <MarketingButton href="/pilot">{copy.hero.primaryCta}</MarketingButton>
               <MarketingButton href="/demo" variant="secondary">
                 {copy.hero.secondaryCta}
@@ -260,7 +260,7 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
               ))}
             </div>
           </div>
-          <div className="flex min-w-0 justify-center min-[1100px]:justify-end">
+          <div className="homepage-hero-visual flex min-w-0 justify-center min-[1100px]:justify-end">
             <MiniProductMockup copy={copy.mockup} />
           </div>
         </div>

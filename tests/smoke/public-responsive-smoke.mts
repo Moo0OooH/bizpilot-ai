@@ -193,6 +193,18 @@ function assertContract(route: RouteContract, html: string): string[] {
     }
   }
 
+  for (const stale of ["ENFR", "System Light Dark"]) {
+    if (html.includes(stale)) {
+      failures.push(`stale header control text found: ${stale}`);
+    }
+  }
+
+  for (const artifact of ["MISSING_COPY", "__MISSING", ">undefined<"]) {
+    if (html.includes(artifact)) {
+      failures.push(`missing-copy artifact found: ${artifact}`);
+    }
+  }
+
   if (route.path !== "/demo" && html.includes("Quote Recovery Command Center")) {
     failures.push("stale command-center public framing found");
   }

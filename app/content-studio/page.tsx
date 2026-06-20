@@ -88,11 +88,12 @@ export default async function ContentStudioPage({
           </div>
           <div className="supporting-six-grid mt-8">
             {copy.cards.map((card, index) => (
-              <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={card}>
+              <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={card.title}>
                 <span className="flex h-9 w-9 items-center justify-center rounded-[12px] text-[12px] font-black" style={{ backgroundColor: "color-mix(in srgb, var(--warning) 14%, transparent)", color: marketingTone.gold }}>
                   {index + 1}
                 </span>
-                <p className="mt-4 text-[17px] font-black leading-6" style={{ color: marketingTone.text }}>{card}</p>
+                <h2 className="mt-4 text-[18px] font-black leading-tight" style={{ color: marketingTone.text }}>{card.title}</h2>
+                <p className="mt-3 text-[14px] font-bold leading-6" style={{ color: marketingTone.soft }}>{card.body}</p>
               </MarketingCard>
             ))}
           </div>

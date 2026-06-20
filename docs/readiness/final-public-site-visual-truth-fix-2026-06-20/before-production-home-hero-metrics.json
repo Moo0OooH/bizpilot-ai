@@ -1,0 +1,416 @@
+[
+  {
+    "label": "before-home-en-1280x720",
+    "ctaBottomMargin": 82,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1265,
+      "clientWidth": 1265,
+      "scrollHeight": 5848,
+      "scrollWidth": 1265
+    },
+    "h1": {
+      "bottom": 446,
+      "height": 271,
+      "left": 33,
+      "right": 673,
+      "top": 175,
+      "width": 641
+    },
+    "h1LineCountApprox": 4,
+    "h1Text": "Stop losing cleaning quote requests to slow replies.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1265,
+      "top": 0,
+      "width": 1265
+    },
+    "hero": {
+      "bottom": 747,
+      "height": 671,
+      "left": 0,
+      "right": 1265,
+      "top": 77,
+      "width": 1265
+    },
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingLanguage": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 638,
+      "height": 48,
+      "left": 33,
+      "right": 200,
+      "top": 590,
+      "width": 167
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 638,
+      "height": 48,
+      "left": 212,
+      "right": 342,
+      "top": 590,
+      "width": 130
+    },
+    "secondaryVisibleInViewport": true,
+    "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
+    "url": "https://bizpilo.com/?language=en&phase12=before-1781987840063",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "label": "before-home-fr-ca-1280x720",
+    "ctaBottomMargin": 15,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1265,
+      "clientWidth": 1265,
+      "scrollHeight": 6321,
+      "scrollWidth": 1265
+    },
+    "h1": {
+      "bottom": 513,
+      "height": 339,
+      "left": 33,
+      "right": 673,
+      "top": 175,
+      "width": 641
+    },
+    "h1LineCountApprox": 5,
+    "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1265,
+      "top": 0,
+      "width": 1265
+    },
+    "hero": {
+      "bottom": 859,
+      "height": 782,
+      "left": 0,
+      "right": 1265,
+      "top": 77,
+      "width": 1265
+    },
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingLanguage": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 705,
+      "height": 48,
+      "left": 33,
+      "right": 257,
+      "top": 657,
+      "width": 224
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 705,
+      "height": 48,
+      "left": 269,
+      "right": 515,
+      "top": 657,
+      "width": 246
+    },
+    "secondaryVisibleInViewport": true,
+    "title": "BizPilot AI | Récupération de prospects pour le nettoyage",
+    "url": "https://bizpilo.com/?language=fr-CA&phase12=before-1781987840627",
+    "viewport": {
+      "height": 720,
+      "width": 1280
+    }
+  },
+  {
+    "label": "before-home-en-1366x768",
+    "ctaBottomMargin": 109,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1352,
+      "clientWidth": 1351,
+      "scrollHeight": 5899,
+      "scrollWidth": 1351
+    },
+    "h1": {
+      "bottom": 467,
+      "height": 289,
+      "left": 76,
+      "right": 727,
+      "top": 178,
+      "width": 651
+    },
+    "h1LineCountApprox": 4,
+    "h1Text": "Stop losing cleaning quote requests to slow replies.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1352,
+      "top": 0,
+      "width": 1352
+    },
+    "hero": {
+      "bottom": 772,
+      "height": 696,
+      "left": 0,
+      "right": 1352,
+      "top": 77,
+      "width": 1352
+    },
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingLanguage": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 659,
+      "height": 48,
+      "left": 76,
+      "right": 243,
+      "top": 611,
+      "width": 167
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 659,
+      "height": 48,
+      "left": 255,
+      "right": 385,
+      "top": 611,
+      "width": 130
+    },
+    "secondaryVisibleInViewport": true,
+    "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
+    "url": "https://bizpilo.com/?language=en&phase12=before-1781987841123",
+    "viewport": {
+      "height": 768,
+      "width": 1366
+    }
+  },
+  {
+    "label": "before-home-fr-ca-1366x768",
+    "ctaBottomMargin": 36,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1352,
+      "clientWidth": 1351,
+      "scrollHeight": 6324,
+      "scrollWidth": 1351
+    },
+    "h1": {
+      "bottom": 540,
+      "height": 362,
+      "left": 76,
+      "right": 727,
+      "top": 178,
+      "width": 651
+    },
+    "h1LineCountApprox": 5,
+    "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1352,
+      "top": 0,
+      "width": 1352
+    },
+    "hero": {
+      "bottom": 888,
+      "height": 811,
+      "left": 0,
+      "right": 1352,
+      "top": 77,
+      "width": 1352
+    },
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingLanguage": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 732,
+      "height": 48,
+      "left": 76,
+      "right": 300,
+      "top": 684,
+      "width": 224
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 732,
+      "height": 48,
+      "left": 312,
+      "right": 558,
+      "top": 684,
+      "width": 246
+    },
+    "secondaryVisibleInViewport": true,
+    "title": "BizPilot AI | Récupération de prospects pour le nettoyage",
+    "url": "https://bizpilo.com/?language=fr-CA&phase12=before-1781987841629",
+    "viewport": {
+      "height": 768,
+      "width": 1366
+    }
+  },
+  {
+    "label": "before-home-en-1440x900",
+    "ctaBottomMargin": 216,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1425,
+      "clientWidth": 1425,
+      "scrollHeight": 5955,
+      "scrollWidth": 1425
+    },
+    "h1": {
+      "bottom": 492,
+      "height": 305,
+      "left": 113,
+      "right": 764,
+      "top": 187,
+      "width": 651
+    },
+    "h1LineCountApprox": 4,
+    "h1Text": "Stop losing cleaning quote requests to slow replies.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1425,
+      "top": 0,
+      "width": 1425
+    },
+    "hero": {
+      "bottom": 807,
+      "height": 730,
+      "left": 0,
+      "right": 1425,
+      "top": 77,
+      "width": 1425
+    },
+    "lang": "en",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingLanguage": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 684,
+      "height": 48,
+      "left": 113,
+      "right": 280,
+      "top": 636,
+      "width": 167
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 684,
+      "height": 48,
+      "left": 292,
+      "right": 422,
+      "top": 636,
+      "width": 130
+    },
+    "secondaryVisibleInViewport": true,
+    "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
+    "url": "https://bizpilo.com/?language=en&phase12=before-1781987842149",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    }
+  },
+  {
+    "label": "before-home-fr-ca-1440x900",
+    "ctaBottomMargin": 63,
+    "dataTheme": "light",
+    "doc": {
+      "bodyScrollWidth": 1425,
+      "clientWidth": 1425,
+      "scrollHeight": 6461,
+      "scrollWidth": 1425
+    },
+    "h1": {
+      "bottom": 645,
+      "height": 457,
+      "left": 113,
+      "right": 764,
+      "top": 187,
+      "width": 651
+    },
+    "h1LineCountApprox": 6,
+    "h1Text": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "header": {
+      "bottom": 77,
+      "height": 77,
+      "left": 0,
+      "right": 1425,
+      "top": 0,
+      "width": 1425
+    },
+    "hero": {
+      "bottom": 1002,
+      "height": 926,
+      "left": 0,
+      "right": 1425,
+      "top": 77,
+      "width": 1425
+    },
+    "lang": "fr-CA",
+    "nestedScrollCount": 0,
+    "nestedScrollExamples": [],
+    "oldArtifacts": {
+      "authMarketingLanguage": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "primaryCta": {
+      "bottom": 837,
+      "height": 48,
+      "left": 113,
+      "right": 337,
+      "top": 789,
+      "width": 224
+    },
+    "primaryVisibleInViewport": true,
+    "secondaryCta": {
+      "bottom": 837,
+      "height": 48,
+      "left": 349,
+      "right": 595,
+      "top": 789,
+      "width": 246
+    },
+    "secondaryVisibleInViewport": true,
+    "title": "BizPilot AI | Récupération de prospects pour le nettoyage",
+    "url": "https://bizpilo.com/?language=fr-CA&phase12=before-1781987842643",
+    "viewport": {
+      "height": 900,
+      "width": 1440
+    }
+  }
+]

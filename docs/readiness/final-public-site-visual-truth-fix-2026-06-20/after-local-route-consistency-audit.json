@@ -1,0 +1,1025 @@
+[
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 4,
+        "className": "homepage-demo-grid mt-8",
+        "height": 505,
+        "rowPattern": [
+          4
+        ],
+        "width": 1200
+      },
+      {
+        "children": 6,
+        "className": "homepage-use-case-grid mt-8",
+        "height": 300,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Stop losing cleaning quote requests to slow replies.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/demo",
+      "/demo",
+      "/industries/cleaning#residential",
+      "/industries/cleaning#deep-cleaning",
+      "/industries/cleaning#move-in-out",
+      "/industries/cleaning#office",
+      "/industries/cleaning#airbnb",
+      "/industries/cleaning#post-construction",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/?language=en&phase12=local-audit-1781988319754"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 3,
+        "className": "public-card-grid mt-8",
+        "height": 136,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      },
+      {
+        "children": 4,
+        "className": "homepage-demo-grid mt-8",
+        "height": 533,
+        "rowPattern": [
+          4
+        ],
+        "width": 1200
+      },
+      {
+        "children": 6,
+        "className": "homepage-use-case-grid mt-8",
+        "height": 375,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    "h1Count": 1,
+    "lang": "fr-CA",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/demo",
+      "/demo",
+      "/industries/cleaning#residential",
+      "/industries/cleaning#deep-cleaning",
+      "/industries/cleaning#move-in-out",
+      "/industries/cleaning#office",
+      "/industries/cleaning#airbnb",
+      "/industries/cleaning#post-construction",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/?language=fr-CA&phase12=local-audit-1781988320077"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 469,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "A simple system to capture, organize, and reply to cleaning leads faster.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/trust",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/features?language=en&phase12=local-audit-1781988320282"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 525,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+    "h1Count": 1,
+    "lang": "fr-CA",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/trust",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/features?language=fr-CA&phase12=local-audit-1781988320460"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 822,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Lead recovery software for cleaning businesses.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/demo",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/industries/cleaning?language=en&phase12=local-audit-1781988320632"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 854,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Récupération de prospects pour les entreprises de nettoyage.",
+    "h1Count": 1,
+    "lang": "fr-CA",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/demo",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/industries/cleaning?language=fr-CA&phase12=local-audit-1781988320816"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 434,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Built for owner control and trust.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/trust?language=en&phase12=local-audit-1781988320987"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 515,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Bâti pour le contrôle du propriétaire et la confiance.",
+    "h1Count": 1,
+    "lang": "fr-CA",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/trust?language=fr-CA&phase12=local-audit-1781988321159"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "See how BizPilot handles a cleaning quote request.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/demo?language=en&phase12=local-audit-1781988321335"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+    "h1Count": 1,
+    "lang": "fr-CA",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/demo?language=fr-CA&phase12=local-audit-1781988321509"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 602,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Simple pilot pricing for cleaning businesses.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pricing?language=en&phase12=local-audit-1781988321694"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [
+      {
+        "children": 3,
+        "className": "supporting-three-grid mt-8",
+        "height": 657,
+        "rowPattern": [
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Tarification pilote simple pour entreprises de nettoyage.",
+    "h1Count": 1,
+    "lang": "fr-CA",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pricing?language=fr-CA&phase12=local-audit-1781988321870"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Help shape BizPilot around real cleaning work.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pricing",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pilot?language=en&phase12=local-audit-1781988322072",
+    "pilotLongFormControls": 3
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
+    "h1Count": 1,
+    "lang": "fr-CA",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pricing",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/pilot?language=fr-CA&phase12=local-audit-1781988322306",
+    "pilotLongFormControls": 3
+  },
+  {
+    "bodyOverflow": 0,
+    "contentStudioBodyCards": 6,
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 390,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Future Content Studio for local business growth.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/content-studio?language=en&phase12=local-audit-1781988322478"
+  },
+  {
+    "bodyOverflow": 0,
+    "contentStudioBodyCards": 6,
+    "grids": [
+      {
+        "children": 6,
+        "className": "supporting-six-grid mt-8",
+        "height": 390,
+        "rowPattern": [
+          3,
+          3
+        ],
+        "width": 1200
+      }
+    ],
+    "h1": "Futur Content Studio pour la croissance locale.",
+    "h1Count": 1,
+    "lang": "fr-CA",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pilot",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/content-studio?language=fr-CA&phase12=local-audit-1781988322668"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Privacy rules for careful quote recovery.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/",
+      "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
+      "/pricing",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/privacy?language=en&phase12=local-audit-1781988322832"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Security boundaries before real pilot data.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/",
+      "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
+      "/pricing",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/security?language=en&phase12=local-audit-1781988323017"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Clear founder-pilot terms, no hidden automation.",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/auth/sign-in",
+      "/pilot",
+      "/pilot",
+      "/pricing",
+      "/",
+      "/features",
+      "/industries/cleaning",
+      "/trust",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/privacy",
+      "/security",
+      "/terms"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/terms?language=en&phase12=local-audit-1781988323215"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Sign in",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/",
+      "/auth/forgot-password",
+      "/auth/sign-up"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/auth/sign-in?phase12=local-audit-1781988323391"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Create owner access",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/",
+      "/pilot",
+      "/auth/sign-in"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/auth/sign-up?phase12=local-audit-1781988323583"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Reset password",
+    "h1Count": 1,
+    "lang": "en",
+    "links": [
+      "/",
+      "/",
+      "/auth/sign-in"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/auth/forgot-password?phase12=local-audit-1781988323773"
+  },
+  {
+    "bodyOverflow": 0,
+    "grids": [],
+    "h1": "Demander une soumission de nettoyage",
+    "h1Count": 1,
+    "lang": "fr-CA",
+    "links": [
+      "/quote/akora",
+      "/quote/akora?language=fr-CA"
+    ],
+    "nestedScrollCount": 0,
+    "oldArtifacts": {
+      "authMarketingControls": false,
+      "rawENFR": false,
+      "rawSystemLightDark": false
+    },
+    "overflow": 0,
+    "path": "/quote/akora?language=fr-CA&phase12=local-audit-1781988323946"
+  }
+]

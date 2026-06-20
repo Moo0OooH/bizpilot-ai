@@ -526,6 +526,13 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.pricing.afterApply.steps.length, 3);
     assert.equal(englishPublicCopy.contentStudio.cards.length, 6);
     assert.equal(
+      englishPublicCopy.contentStudio.cards.every(
+        (card) => card.title.length > 0 && card.body.length >= 24,
+      ),
+      true,
+      "Content Studio six-card roadmap should include value text, not title-only cards.",
+    );
+    assert.equal(
       englishPublicCopy.contentStudio.footer.includes(
         "No automatic posting is promised.",
       ),

@@ -270,6 +270,19 @@ function checkPublicRoute(
     name: `${locale} no overflow escape hatch`,
     pass: !html.includes("overflow-x-hidden"),
   });
+  results.push({
+    detail: route.path,
+    name: `${locale} no stale header control text`,
+    pass: !html.includes("ENFR") && !html.includes("System Light Dark"),
+  });
+  results.push({
+    detail: route.path,
+    name: `${locale} no missing-copy artifacts`,
+    pass:
+      !html.includes("MISSING_COPY") &&
+      !html.includes("__MISSING") &&
+      !html.includes(">undefined<"),
+  });
 
   return results;
 }
@@ -287,7 +300,9 @@ function checkAuthRoute(path: string, html: string): CheckResult[] {
       pass:
         !html.includes("Theme:") &&
         !html.includes("Homepage language") &&
-        !html.includes("language=fr-CA"),
+        !html.includes("language=fr-CA") &&
+        !html.includes("ENFR") &&
+        !html.includes("System Light Dark"),
     },
     {
       detail: path,

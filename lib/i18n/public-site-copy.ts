@@ -290,7 +290,7 @@ type PilotCopy = Readonly<{
 
 type ContentStudioCopy = Readonly<{
   body: string;
-  cards: readonly string[];
+  cards: ReadonlyArray<TextPair>;
   cta: string;
   footer: string;
   meta: MetaCopy;
@@ -514,12 +514,30 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     body:
       "This page is roadmap only. BizPilot may later help local businesses create owner-reviewed marketing content after the cleaning lead recovery workflow is validated.",
     cards: [
-      "Service post drafts",
-      "Google Business Profile update ideas",
-      "Seasonal promotion outlines",
-      "Review-response drafts",
-      "Short video script ideas",
-      "Visual creative briefs",
+      {
+        body: "Future drafts for explaining cleaning services clearly.",
+        title: "Service post drafts",
+      },
+      {
+        body: "Owner-reviewed ideas for local profile updates.",
+        title: "Google Business Profile ideas",
+      },
+      {
+        body: "Promotion outlines that still need owner approval.",
+        title: "Seasonal promotion outlines",
+      },
+      {
+        body: "Draft responses for the owner to review before posting.",
+        title: "Review-response drafts",
+      },
+      {
+        body: "Short concepts for service education or local updates.",
+        title: "Video script ideas",
+      },
+      {
+        body: "Plain-language briefs for future image or design work.",
+        title: "Visual creative briefs",
+      },
     ],
     cta: "Apply for founder pilot",
     footer:
@@ -1311,12 +1329,30 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     body:
       "Cette page présente seulement une direction future. BizPilot pourrait plus tard aider les entreprises locales à créer du contenu marketing révisé par le propriétaire, après la validation du flux de récupération des demandes de nettoyage.",
     cards: [
-      "Brouillons de publications de services",
-      "Idées de mises à jour Google Business Profile",
-      "Plans de promotions saisonnières",
-      "Brouillons de réponses aux avis",
-      "Idées de scripts vidéo courts",
-      "Briefs créatifs visuels",
+      {
+        body: "Futurs brouillons pour expliquer les services clairement.",
+        title: "Publications de services",
+      },
+      {
+        body: "Idées locales à réviser avant toute publication.",
+        title: "Mises à jour Google Business",
+      },
+      {
+        body: "Plans promotionnels qui restent soumis à l'approbation.",
+        title: "Promotions saisonnières",
+      },
+      {
+        body: "Réponses brouillons que le propriétaire révise d'abord.",
+        title: "Réponses aux avis",
+      },
+      {
+        body: "Concepts courts pour expliquer un service ou une offre.",
+        title: "Scripts vidéo courts",
+      },
+      {
+        body: "Briefs simples pour de futurs visuels révisés par l'équipe.",
+        title: "Briefs créatifs visuels",
+      },
     ],
     cta: "Participer au projet pilote",
     footer:

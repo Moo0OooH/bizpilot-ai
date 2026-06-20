@@ -68,6 +68,31 @@ describe("public visual stability source contracts", () => {
     assert.equal(globals.includes(".supporting-six-grid > *"), true);
   });
 
+  it("keeps the bilingual homepage hero from regressing to a narrow first-fold layout", () => {
+    const globals = source("app/globals.css");
+    const homepage = source("app/page.tsx");
+
+    assert.equal(
+      homepage.includes("[max-inline-size:13ch]"),
+      false,
+      "Homepage hero title should not use the old narrow 13ch wrap constraint.",
+    );
+    assert.equal(homepage.includes("homepage-hero-section"), true);
+    assert.equal(homepage.includes("homepage-hero-title"), true);
+    assert.equal(homepage.includes("homepage-hero-actions"), true);
+    assert.equal(
+      homepage.includes("text-[clamp(2.75rem,5vw,5.25rem)]"),
+      true,
+      "Homepage hero should use the Phase 12 readable clamp size.",
+    );
+    assert.equal(globals.includes("max-inline-size: min(100%, 46rem);"), true);
+    assert.equal(
+      globals.includes("@media (min-width: 1100px) and (max-height: 780px)"),
+      true,
+      "Short desktop viewports need reduced hero padding instead of smaller body text.",
+    );
+  });
+
   it("keeps theme and compact menus viewport-safe and layout-stable", () => {
     const themeControl = source("components/ui/theme-preference-control.tsx");
     const compactMenu = source("components/public/marketing-compact-menu.tsx");
