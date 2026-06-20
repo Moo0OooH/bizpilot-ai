@@ -21,6 +21,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 
 import type { PilotConversionCopy } from "@/lib/i18n/public-site-copy";
+import { trackPublicEvent } from "@/lib/public-events";
 
 export function PilotRequestTemplateCard({
   copy,
@@ -64,10 +65,12 @@ export function PilotRequestTemplateCard({
       await navigator.clipboard.writeText(copy.template);
       setFallbackVisible(false);
       setStatus(copy.copiedStatus);
+      trackPublicEvent("pilot_template_copy");
     } catch {
       if (copyWithSelectionFallback()) {
         setFallbackVisible(false);
         setStatus(copy.copiedStatus);
+        trackPublicEvent("pilot_template_copy");
         return;
       }
 
@@ -89,6 +92,7 @@ export function PilotRequestTemplateCard({
     selection?.removeAllRanges();
     selection?.addRange(range);
     setStatus(copy.selectedStatus);
+    trackPublicEvent("pilot_template_copy");
   }
 
   return (

@@ -35,23 +35,40 @@ import {
 import { getHomeCopy } from "@/lib/i18n/home-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
-  readSupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import {
+  buildPublicMetadata,
+  resolvePublicRouteLanguage,
+  type PublicRouteSearchParams,
+} from "@/lib/seo";
 
-async function readPublicLanguage() {
-  return readSupportedLanguage(
+type FeaturesPageProps = Readonly<{
+  searchParams?: PublicRouteSearchParams;
+}>;
+
+async function readPublicLanguage(searchParams?: PublicRouteSearchParams) {
+  return resolvePublicRouteLanguage(
+    searchParams,
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const language = await readPublicLanguage();
-  return getPublicSiteCopy(language).features.meta;
+export async function generateMetadata({
+  searchParams,
+}: FeaturesPageProps = {}): Promise<Metadata> {
+  const language = await readPublicLanguage(searchParams);
+  return buildPublicMetadata(
+    "/features",
+    getPublicSiteCopy(language).features.meta,
+    language,
+  );
 }
 
-export default async function FeaturesPage() {
-  const language = await readPublicLanguage();
+export default async function FeaturesPage({
+  searchParams,
+}: FeaturesPageProps = {}) {
+  const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
   const copy = getPublicSiteCopy(language).features;
   const featureIcons = ["link", "inbox", "briefcase", "spark", "copy", "target"] as const;

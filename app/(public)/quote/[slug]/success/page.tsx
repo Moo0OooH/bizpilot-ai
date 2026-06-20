@@ -18,6 +18,7 @@
  */
 
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
@@ -25,9 +26,16 @@ import {
   DEFAULT_LANGUAGE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
+import { buildNoIndexMetadata } from "@/lib/seo";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = buildNoIndexMetadata({
+  description:
+    "Quote request received for owner review. No booking or price is confirmed by this page.",
+  title: "Quote request received | BizPilot AI",
+});
 
 type SuccessPageProps = Readonly<{
   params: Promise<{

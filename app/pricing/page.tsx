@@ -33,23 +33,40 @@ import {
 import { getHomeCopy } from "@/lib/i18n/home-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
-  readSupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import {
+  buildPublicMetadata,
+  resolvePublicRouteLanguage,
+  type PublicRouteSearchParams,
+} from "@/lib/seo";
 
-async function readPublicLanguage() {
-  return readSupportedLanguage(
+type PricingPageProps = Readonly<{
+  searchParams?: PublicRouteSearchParams;
+}>;
+
+async function readPublicLanguage(searchParams?: PublicRouteSearchParams) {
+  return resolvePublicRouteLanguage(
+    searchParams,
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const language = await readPublicLanguage();
-  return getPublicSiteCopy(language).pricing.meta;
+export async function generateMetadata({
+  searchParams,
+}: PricingPageProps = {}): Promise<Metadata> {
+  const language = await readPublicLanguage(searchParams);
+  return buildPublicMetadata(
+    "/pricing",
+    getPublicSiteCopy(language).pricing.meta,
+    language,
+  );
 }
 
-export default async function PricingPage() {
-  const language = await readPublicLanguage();
+export default async function PricingPage({
+  searchParams,
+}: PricingPageProps = {}) {
+  const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
   const copy = getPublicSiteCopy(language).pricing;
 

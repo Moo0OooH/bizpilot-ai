@@ -30,9 +30,17 @@ import {
   type SupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import { buildNoIndexMetadata } from "@/lib/seo";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = buildNoIndexMetadata({
+  description:
+    "Submit a cleaning quote request for owner review. No booking or price is confirmed by the form.",
+  title: "Request a cleaning quote | BizPilot AI",
+});
 
 type QuotePageProps = Readonly<{
   params: Promise<{

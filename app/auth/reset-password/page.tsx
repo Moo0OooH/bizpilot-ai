@@ -26,6 +26,7 @@ import {
   readSupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import { buildNoIndexMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -38,7 +39,9 @@ async function readAuthLanguage() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const language = await readAuthLanguage();
-  return getPublicSiteCopy(language).authMeta.resetPassword;
+  return buildNoIndexMetadata(
+    getPublicSiteCopy(language).authMeta.resetPassword,
+  );
 }
 
 type ResetPasswordPageProps = Readonly<{

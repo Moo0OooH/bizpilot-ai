@@ -28,6 +28,7 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
+import { getPublicSiteOrigin, PUBLIC_SITE_NAME } from "@/lib/seo";
 import {
   DEFAULT_THEME_PREFERENCE,
   THEME_COLOR_BY_RESOLVED,
@@ -49,9 +50,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
   description:
     "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies without auto-sending customer messages.",
+  metadataBase: new URL(getPublicSiteOrigin()),
+  openGraph: {
+    description:
+      "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies without auto-sending customer messages.",
+    siteName: PUBLIC_SITE_NAME,
+    title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
+    type: "website",
+    url: getPublicSiteOrigin(),
+  },
+  title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
+  twitter: {
+    card: "summary",
+    description:
+      "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies without auto-sending customer messages.",
+    title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
+  },
 };
 
 export const viewport: Viewport = {

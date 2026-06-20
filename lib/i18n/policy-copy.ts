@@ -29,6 +29,12 @@ type PolicyTextPair = Readonly<{
   title: string;
 }>;
 
+type PolicyReference = Readonly<{
+  description: string;
+  href: string;
+  title: string;
+}>;
+
 export type PolicyPageKey = "privacy" | "security" | "terms";
 
 export type PolicyPageCopy = Readonly<{
@@ -37,11 +43,17 @@ export type PolicyPageCopy = Readonly<{
   boundaryTitle: string;
   body: string;
   effectiveDate: string;
+  externalNewTabLabel: string;
   footerNote: string;
+  meta: Readonly<{
+    description: string;
+    title: string;
+  }>;
   referenceEyebrow?: string;
   referenceTitle?: string;
-  references?: ReadonlyArray<Readonly<{ href: string; label: string }>>;
+  references?: ReadonlyArray<PolicyReference>;
   sections: ReadonlyArray<PolicyTextPair>;
+  technicalNotesTitle: string;
   title: string;
 }>;
 
@@ -58,16 +70,26 @@ const englishPolicyCopy: PolicyCopy = {
     body:
       "BizPilot is being prepared for early cleaning-business pilots. This notice explains the practical privacy rules that apply before real customer data is allowed.",
     effectiveDate: "Last updated: June 16, 2026",
+    externalNewTabLabel: "Opens in a new tab",
     footerNote:
       "Before any real customer pilot, BizPilot must keep the first pilot manual-only and record final readiness approval from the owner.",
+    meta: {
+      description:
+        "BizPilot AI privacy notice for careful cleaning quote recovery, consent, data minimization, and real customer data readiness gates.",
+      title: "Privacy Notice | BizPilot AI",
+    },
     references: [
       {
-        href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/pipeda_brief",
-        label: "Canada PIPEDA overview",
+        description:
+          "Federal private-sector privacy law topics from Canada's privacy regulator.",
+        href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/",
+        title: "Office of the Privacy Commissioner of Canada: PIPEDA",
       },
       {
-        href: "https://www.cai.gouv.qc.ca/espace-evolutif-modernisation-lois/principales-modifications/",
-        label: "Quebec Law 25 privacy changes",
+        description:
+          "Quebec regulator overview of privacy-law modernization changes.",
+        href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
+        title: "Commission d'acces a l'information: Law 25 changes",
       },
     ],
     referenceEyebrow: "Reference",
@@ -99,6 +121,7 @@ const englishPolicyCopy: PolicyCopy = {
         title: "Access, correction, and deletion",
       },
     ],
+    technicalNotesTitle: "Technical notes and operating boundaries",
     title: "Privacy rules for careful quote recovery.",
   },
   security: {
@@ -109,16 +132,26 @@ const englishPolicyCopy: PolicyCopy = {
     body:
       "BizPilot's security model is intentionally conservative: public quote intake is treated as the highest-risk surface, and AI remains owner-reviewed.",
     effectiveDate: "Last updated: June 16, 2026",
+    externalNewTabLabel: "Opens in a new tab",
     footerNote:
       "This page is a product security summary. It does not replace a formal security review, incident response policy, or production backup drill.",
+    meta: {
+      description:
+        "BizPilot AI security summary for public quote intake, tenant isolation, owner-reviewed AI drafts, and readiness gates.",
+      title: "Security Summary | BizPilot AI",
+    },
     references: [
       {
-        href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/pipeda_brief",
-        label: "Safeguards principle reference",
+        description:
+          "Federal privacy-law topics, including safeguards and compliance help.",
+        href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/",
+        title: "Office of the Privacy Commissioner of Canada: PIPEDA",
       },
       {
-        href: "https://www.cai.gouv.qc.ca/espace-evolutif-modernisation-lois/principales-modifications/",
-        label: "Quebec Law 25 changes",
+        description:
+          "Quebec privacy-law changes that affect private-sector organizations.",
+        href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
+        title: "Commission d'acces a l'information: Law 25 changes",
       },
     ],
     referenceEyebrow: "Reference",
@@ -150,6 +183,7 @@ const englishPolicyCopy: PolicyCopy = {
         title: "Backup and restore gate",
       },
     ],
+    technicalNotesTitle: "Technical notes and operating boundaries",
     title: "Security boundaries before real pilot data.",
   },
   terms: {
@@ -160,8 +194,14 @@ const englishPolicyCopy: PolicyCopy = {
     body:
       "These pilot-stage terms keep the offer clear while BizPilot is still founder-led and manual-billing only.",
     effectiveDate: "Last updated: June 16, 2026",
+    externalNewTabLabel: "Opens in a new tab",
     footerNote:
       "Any paid pilot must still have a written offer or invoice/payment-link record before money is collected.",
+    meta: {
+      description:
+        "BizPilot AI founder-pilot terms covering manual billing, staged pilot pricing, product scope, refunds, and no-guarantee boundaries.",
+      title: "Pilot Terms | BizPilot AI",
+    },
     sections: [
       {
         body:
@@ -189,6 +229,7 @@ const englishPolicyCopy: PolicyCopy = {
         title: "No guarantees",
       },
     ],
+    technicalNotesTitle: "Technical notes and operating boundaries",
     title: "Clear founder-pilot terms, no hidden automation.",
   },
 };
@@ -202,9 +243,28 @@ const frenchPolicyCopy: PolicyCopy = {
     body:
       "BizPilot est prepare pour les premiers pilotes avec des entreprises de nettoyage. Cet avis explique les regles pratiques avant l'utilisation de donnees reelles de clients.",
     effectiveDate: "Derniere mise a jour: 16 juin 2026",
+    externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
       "Avant tout pilote reel, BizPilot doit garder le premier pilote manuel et enregistrer l'approbation finale du proprietaire.",
-    references: englishPolicyCopy.privacy.references ?? [],
+    meta: {
+      description:
+        "Avis de confidentialite BizPilot AI pour la recuperation prudente des soumissions de nettoyage, le consentement et les portes de preparation.",
+      title: "Avis de confidentialite | BizPilot AI",
+    },
+    references: [
+      {
+        description:
+          "Sujets sur la loi federale canadienne applicable au secteur prive.",
+        href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/",
+        title: "Commissariat a la protection de la vie privee du Canada: LPRPDE",
+      },
+      {
+        description:
+          "Apercu du regulateur quebecois sur les changements de la Loi 25.",
+        href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
+        title: "Commission d'acces a l'information: changements de la Loi 25",
+      },
+    ],
     referenceEyebrow: "Reference",
     referenceTitle: "References publiques de confidentialite et securite.",
     sections: [
@@ -234,6 +294,7 @@ const frenchPolicyCopy: PolicyCopy = {
         title: "Acces, correction et suppression",
       },
     ],
+    technicalNotesTitle: "Notes techniques et limites operationnelles",
     title: "Regles de confidentialite pour la recuperation des soumissions.",
   },
   security: {
@@ -244,9 +305,28 @@ const frenchPolicyCopy: PolicyCopy = {
     body:
       "Le modele de securite BizPilot reste conservateur: l'intake public est traite comme surface critique, et l'IA reste revisee par le proprietaire.",
     effectiveDate: "Derniere mise a jour: 16 juin 2026",
+    externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
       "Cette page resume la securite produit. Elle ne remplace pas un audit formel, une politique d'incident ou un exercice de restauration.",
-    references: englishPolicyCopy.security.references ?? [],
+    meta: {
+      description:
+        "Resume de securite BizPilot AI pour les soumissions publiques, l'isolation des tenants, les brouillons IA revises et les portes de preparation.",
+      title: "Resume de securite | BizPilot AI",
+    },
+    references: [
+      {
+        description:
+          "Sujets sur la loi federale, incluant les mesures de protection et l'aide a la conformite.",
+        href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/",
+        title: "Commissariat a la protection de la vie privee du Canada: LPRPDE",
+      },
+      {
+        description:
+          "Changements quebecois en protection des renseignements personnels pour les organisations.",
+        href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
+        title: "Commission d'acces a l'information: changements de la Loi 25",
+      },
+    ],
     referenceEyebrow: "Reference",
     referenceTitle: "References publiques de confidentialite et securite.",
     sections: [
@@ -276,6 +356,7 @@ const frenchPolicyCopy: PolicyCopy = {
         title: "Gate sauvegarde et restauration",
       },
     ],
+    technicalNotesTitle: "Notes techniques et limites operationnelles",
     title: "Frontieres de securite avant les donnees reelles.",
   },
   terms: {
@@ -286,8 +367,14 @@ const frenchPolicyCopy: PolicyCopy = {
     body:
       "Ces conditions de pilote gardent l'offre claire pendant que BizPilot reste guide par le fondateur avec facturation manuelle.",
     effectiveDate: "Derniere mise a jour: 16 juin 2026",
+    externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
       "Tout pilote payant doit avoir une offre ecrite, facture ou lien de paiement separe avant toute collecte d'argent.",
+    meta: {
+      description:
+        "Conditions du projet pilote BizPilot AI couvrant la facturation manuelle, les tarifs pilotes, les remboursements et les limites sans garantie.",
+      title: "Conditions pilote | BizPilot AI",
+    },
     sections: [
       {
         body:
@@ -315,6 +402,7 @@ const frenchPolicyCopy: PolicyCopy = {
         title: "Aucune garantie",
       },
     ],
+    technicalNotesTitle: "Notes techniques et limites operationnelles",
     title: "Conditions claires, sans automation cachee.",
   },
 };

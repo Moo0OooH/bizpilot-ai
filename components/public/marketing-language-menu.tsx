@@ -33,6 +33,7 @@ import {
   supportedLanguages,
   type SupportedLanguage,
 } from "@/lib/i18n/language";
+import { trackPublicEvent } from "@/lib/public-events";
 import { setInterfaceLanguageAction } from "@/server/actions/business-configuration.actions";
 
 function LocaleIcon() {
@@ -206,6 +207,7 @@ export function MarketingLanguageMenu({
       className={`relative inline-flex items-center ${className}`}
       onSubmit={() => {
         syncRedirectTarget();
+        trackPublicEvent("locale_change");
         setOpen(false);
       }}
       ref={rootRef}

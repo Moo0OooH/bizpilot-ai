@@ -596,7 +596,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "See how BizPilot AI captures a cleaning quote request, organizes the lead, highlights missing details, and prepares an owner-reviewed reply.",
-      title: "Demo | BizPilot AI",
+      title: "Cleaning Quote Workflow Demo | BizPilot AI",
     },
     title: "See how BizPilot handles a cleaning quote request.",
   },
@@ -643,7 +643,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "BizPilot AI features for cleaning businesses: quote link, lead inbox, lead detail, owner-reviewed AI drafts, and manual copy/send workflow.",
-      title: "Features | BizPilot AI",
+      title: "Cleaning Lead Recovery Features | BizPilot AI",
     },
     primaryCta: "Join founder pilot",
     proof: {
@@ -957,7 +957,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "Apply for the BizPilot AI founder pilot for cleaning businesses that want faster owner-reviewed quote replies without full CRM complexity.",
-      title: "Founder Pilot | BizPilot AI",
+      title: "Cleaning Business Founder Pilot | BizPilot AI",
     },
     nextSteps: [
       "Send a short pilot request",
@@ -1036,7 +1036,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "Approved staged pilot pricing for cleaning businesses exploring BizPilot AI lead recovery, with manual setup and payment guardrails.",
-      title: "Pilot Pricing | BizPilot AI",
+      title: "Founder Pilot Pricing | BizPilot AI",
     },
     title: "Simple pilot pricing for cleaning businesses.",
   },
@@ -1090,7 +1090,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "BizPilot AI is manual-first: AI drafts, owners review, and no customer messages are sent automatically in the first pilot.",
-      title: "Trust | BizPilot AI",
+      title: "Owner-Controlled AI and Trust | BizPilot AI",
     },
     notes: {
       badge: "Technical readiness notes",
@@ -1396,7 +1396,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "Voyez comment BizPilot AI capte une demande de soumission de nettoyage, organise le prospect, signale les détails manquants et prépare une réponse révisée par le propriétaire.",
-      title: "Démo | BizPilot AI",
+      title: "Démo du flux de soumission de nettoyage | BizPilot AI",
     },
     title: "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
   },
@@ -1444,7 +1444,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "Fonctions BizPilot AI pour les entreprises de nettoyage : lien de soumission, boîte de prospects, détails, brouillons révisés par le propriétaire et envoi manuel.",
-      title: "Fonctions | BizPilot AI",
+      title: "Fonctions de récupération de prospects | BizPilot AI",
     },
     primaryCta: "Participer au projet pilote",
     proof: {
@@ -1768,7 +1768,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "Postulez au projet pilote BizPilot AI pour les entreprises de nettoyage qui veulent répondre plus vite aux soumissions sans complexité CRM.",
-      title: "Projet pilote fondateur | BizPilot AI",
+      title: "Projet pilote fondateur pour le nettoyage | BizPilot AI",
     },
     nextSteps: [
       "Envoyez une courte demande pilote",
@@ -1847,7 +1847,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "Tarification pilote approuvée pour les entreprises de nettoyage qui explorent BizPilot AI, avec configuration manuelle et garde-fous de paiement.",
-      title: "Tarification pilote | BizPilot AI",
+      title: "Tarification du projet pilote fondateur | BizPilot AI",
     },
     title: "Tarification pilote simple pour entreprises de nettoyage.",
   },
@@ -1901,7 +1901,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "BizPilot AI est d'abord manuel : l'IA prépare, les propriétaires révisent et aucun message client n'est envoyé automatiquement pendant le premier projet pilote.",
-      title: "Confiance | BizPilot AI",
+      title: "IA contrôlée par le propriétaire et confiance | BizPilot AI",
     },
     notes: {
       badge: "Notes de préparation technique",

@@ -28,6 +28,7 @@ import {
   marketingBackground,
   marketingTone,
 } from "@/components/public/marketing-ui";
+import { TrackedExternalReferenceLink } from "@/components/public/tracked-external-reference-link";
 import type { HomeNavCopy } from "@/lib/i18n/home-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
 import type { PolicyPageCopy } from "@/lib/i18n/policy-copy";
@@ -97,38 +98,6 @@ export function PolicyPage({
         </div>
       </section>
 
-      <section className="py-8">
-        <div className="legal-container">
-          <div className="grid min-w-0 gap-4">
-            {copy.sections.map((section) => (
-              <MarketingCard className="p-5" key={section.title}>
-                <span
-                  className="flex h-10 w-10 items-center justify-center rounded-[10px]"
-                  style={{
-                    backgroundColor: "rgba(45,212,191,0.11)",
-                    color: marketingTone.teal,
-                  }}
-                >
-                  <MarketingIcon name="shield" />
-                </span>
-                <h2
-                  className="mt-5 text-[18px] font-black leading-snug"
-                  style={{ color: marketingTone.text }}
-                >
-                  {section.title}
-                </h2>
-                <p
-                  className="mt-3 text-[14px] leading-7"
-                  style={{ color: marketingTone.soft }}
-                >
-                  {section.body}
-                </p>
-              </MarketingCard>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {copy.references?.length ? (
         <section className="py-8">
           <div className="legal-container">
@@ -138,27 +107,75 @@ export function PolicyPage({
                 : {})}
               title={copy.referenceTitle ?? "References"}
             />
-            <div className="mt-5 flex flex-wrap gap-3">
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {copy.references.map((reference) => (
-                <a
-                  className="inline-flex min-h-11 items-center gap-2 rounded-[10px] border px-4 text-[13px] font-bold transition hover:bg-white/[0.05]"
+                <TrackedExternalReferenceLink
+                  description={reference.description}
                   href={reference.href}
                   key={reference.href}
-                  rel="noreferrer"
-                  style={{
-                    borderColor: marketingTone.borderStrong,
-                    color: marketingTone.soft,
-                  }}
-                  target="_blank"
-                >
-                  {reference.label}
-                  <MarketingIcon name="arrow" />
-                </a>
+                  newTabLabel={copy.externalNewTabLabel}
+                  title={reference.title}
+                />
               ))}
             </div>
           </div>
         </section>
       ) : null}
+
+      <section className="py-8">
+        <div className="legal-container">
+          <details
+            className="rounded-[18px] border p-5"
+            style={{
+              backgroundColor: "var(--surface)",
+              borderColor: marketingTone.border,
+              boxShadow: "var(--shadow-sm)",
+            }}
+          >
+            <summary
+              className="cursor-pointer text-[15px] font-black leading-6"
+              style={{ color: marketingTone.text }}
+            >
+              {copy.technicalNotesTitle}
+            </summary>
+            <div className="mt-5 grid min-w-0 gap-4">
+              {copy.sections.map((section) => (
+                <div
+                  className="rounded-[14px] border p-4"
+                  key={section.title}
+                  style={{
+                    backgroundColor: "var(--surface-interactive)",
+                    borderColor: marketingTone.border,
+                  }}
+                >
+                  <span
+                    className="flex h-10 w-10 items-center justify-center rounded-[10px]"
+                    style={{
+                      backgroundColor:
+                        "color-mix(in srgb, var(--accent) 12%, transparent)",
+                      color: marketingTone.teal,
+                    }}
+                  >
+                    <MarketingIcon name="shield" />
+                  </span>
+                  <h2
+                    className="mt-5 text-[18px] font-black leading-snug"
+                    style={{ color: marketingTone.text }}
+                  >
+                    {section.title}
+                  </h2>
+                  <p
+                    className="mt-3 text-[14px] leading-7"
+                    style={{ color: marketingTone.soft }}
+                  >
+                    {section.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </details>
+        </div>
+      </section>
 
       <section className="py-8">
         <div className="legal-container">

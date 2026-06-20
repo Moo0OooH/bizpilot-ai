@@ -35,23 +35,38 @@ import {
 import { getHomeCopy } from "@/lib/i18n/home-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
-  readSupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import {
+  buildPublicMetadata,
+  resolvePublicRouteLanguage,
+  type PublicRouteSearchParams,
+} from "@/lib/seo";
 
-async function readPublicLanguage() {
-  return readSupportedLanguage(
+type TrustPageProps = Readonly<{
+  searchParams?: PublicRouteSearchParams;
+}>;
+
+async function readPublicLanguage(searchParams?: PublicRouteSearchParams) {
+  return resolvePublicRouteLanguage(
+    searchParams,
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const language = await readPublicLanguage();
-  return getPublicSiteCopy(language).trust.meta;
+export async function generateMetadata({
+  searchParams,
+}: TrustPageProps = {}): Promise<Metadata> {
+  const language = await readPublicLanguage(searchParams);
+  return buildPublicMetadata(
+    "/trust",
+    getPublicSiteCopy(language).trust.meta,
+    language,
+  );
 }
 
-export default async function TrustPage() {
-  const language = await readPublicLanguage();
+export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
+  const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
   const copy = getPublicSiteCopy(language).trust;
 

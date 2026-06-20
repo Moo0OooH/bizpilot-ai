@@ -31,6 +31,7 @@ import {
   readSupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import { buildNoIndexMetadata } from "@/lib/seo";
 import { requestPasswordResetAction } from "@/server/actions/auth.actions";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -44,7 +45,9 @@ async function readAuthLanguage() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const language = await readAuthLanguage();
-  return getPublicSiteCopy(language).authMeta.forgotPassword;
+  return buildNoIndexMetadata(
+    getPublicSiteCopy(language).authMeta.forgotPassword,
+  );
 }
 
 type ForgotPasswordPageProps = Readonly<{

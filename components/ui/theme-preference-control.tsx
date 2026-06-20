@@ -42,6 +42,7 @@ import {
   readThemePreference,
   resolveEffectiveTheme,
 } from "@/lib/theme";
+import { trackPublicEvent } from "@/lib/public-events";
 
 type ThemeLabels = Readonly<{
   change: string;
@@ -331,6 +332,7 @@ export function ThemePreferenceControl({
   function selectPreference(nextPreference: ThemePreference) {
     setPreference(nextPreference);
     setEffectiveTheme(applyThemePreference(nextPreference));
+    trackPublicEvent("theme_preference_change");
     closeMenu(true);
   }
 

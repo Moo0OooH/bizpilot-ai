@@ -20,28 +20,38 @@ import { PolicyPage } from "@/components/public/policy-page";
 import { getHomeCopy } from "@/lib/i18n/home-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
-  readSupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPolicyCopy } from "@/lib/i18n/policy-copy";
+import {
+  buildPublicMetadata,
+  resolvePublicRouteLanguage,
+  type PublicRouteSearchParams,
+} from "@/lib/seo";
 
-async function readPolicyLanguage() {
-  return readSupportedLanguage(
+type SecurityPageProps = Readonly<{
+  searchParams?: PublicRouteSearchParams;
+}>;
+
+async function readPolicyLanguage(searchParams?: PublicRouteSearchParams) {
+  return resolvePublicRouteLanguage(
+    searchParams,
     (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
   );
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const language = await readPolicyLanguage();
+export async function generateMetadata({
+  searchParams,
+}: SecurityPageProps = {}): Promise<Metadata> {
+  const language = await readPolicyLanguage(searchParams);
   const copy = getPolicyCopy(language).security;
 
-  return {
-    description: copy.body,
-    title: `${copy.title} | BizPilot AI`,
-  };
+  return buildPublicMetadata("/security", copy.meta, language);
 }
 
-export default async function SecurityPage() {
-  const language = await readPolicyLanguage();
+export default async function SecurityPage({
+  searchParams,
+}: SecurityPageProps = {}) {
+  const language = await readPolicyLanguage(searchParams);
 
   return (
     <PolicyPage
