@@ -10,9 +10,10 @@
  * - docs/product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-05-06: Created public quote request success page.
+ * - 2026-06-20: Aligned success actions with shared public shell focus and short-height behavior.
  * - 2026-05-19: Rebuilt to match the approved index — dark navy surface, emerald check, next-steps card, return link. Removed the light slate theme that broke design-system parity.
  * ============================================================
  */
@@ -98,7 +99,7 @@ export default async function QuoteSuccessPage({
 
   return (
     <main
-      className="public-site flex min-h-svh items-center justify-center px-4 py-10 sm:px-6"
+      className="public-site flex min-h-svh items-start justify-center px-4 py-8 sm:items-center sm:px-6 sm:py-10"
       style={{
         background: "var(--marketing-background)",
         color: "var(--text-strong)",
@@ -191,7 +192,7 @@ export default async function QuoteSuccessPage({
 
         <div className="mt-6 flex flex-wrap items-center gap-2">
           <Link
-            className="inline-flex h-11 flex-1 items-center justify-center rounded-[13px] px-3.5 text-[13px] font-extrabold sm:flex-none sm:min-w-[180px]"
+            className="inline-flex h-11 flex-1 items-center justify-center rounded-[13px] px-3.5 text-[13px] font-extrabold shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] sm:flex-none sm:min-w-[180px]"
             href={quotePath}
             style={{
               background:
@@ -202,7 +203,7 @@ export default async function QuoteSuccessPage({
             {copy.quoteSuccess.submitAnother}
           </Link>
           <Link
-            className="inline-flex h-11 flex-1 items-center justify-center rounded-[13px] border px-3.5 text-[13px] font-extrabold sm:flex-none sm:min-w-[140px]"
+            className="inline-flex h-11 flex-1 items-center justify-center rounded-[13px] border px-3.5 text-[13px] font-extrabold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] sm:flex-none sm:min-w-[140px]"
             href="/"
             style={{
               borderColor: "var(--border-strong)",

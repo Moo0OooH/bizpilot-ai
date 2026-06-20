@@ -10,6 +10,9 @@
  * - app/auth/callback/route.ts
  * Author: MoOoH
  * Created: 2026-05-23
+ * Last Updated: 2026-06-20
+ * Change Log:
+ * - 2026-06-20: Aligned check-email actions with the shared auth shell button and focus treatment.
  * ============================================================
  */
 
@@ -61,7 +64,7 @@ export default async function CheckEmailPage() {
 
         <div className="mt-5 grid gap-2">
           <Link
-            className="inline-flex h-11 w-full items-center justify-center rounded-[12px] text-sm font-black"
+            className="inline-flex h-11 w-full items-center justify-center rounded-[12px] text-sm font-black shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
             href="/auth/sign-in"
             style={{
               background: "linear-gradient(135deg, var(--primary), var(--primary-hover))",
@@ -71,21 +74,21 @@ export default async function CheckEmailPage() {
             {copy.signIn}
           </Link>
           <Link
-            className="inline-flex h-11 w-full items-center justify-center rounded-[12px] border text-sm font-black"
+            className="inline-flex h-11 w-full items-center justify-center rounded-[12px] border text-sm font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
             href="/auth/forgot-password"
             style={{
-              borderColor: "var(--biz-border-medium)",
-              color: "var(--biz-page-text)",
+              borderColor: "var(--border-default)",
+              color: "var(--text-strong)",
             }}
           >
             {copy.checkEmailResetPassword}
           </Link>
           <Link
-            className="inline-flex h-11 w-full items-center justify-center rounded-[12px] border text-sm font-black"
+            className="inline-flex h-11 w-full items-center justify-center rounded-[12px] border text-sm font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
             href="/auth/sign-up"
             style={{
-              borderColor: "var(--biz-border-medium)",
-              color: "var(--biz-page-text)",
+              borderColor: "var(--border-default)",
+              color: "var(--text-strong)",
             }}
           >
             {copy.checkEmailUseAnother}

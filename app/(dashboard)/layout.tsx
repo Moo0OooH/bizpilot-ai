@@ -1,9 +1,20 @@
 /**
+ * ============================================================
  * File: app/(dashboard)/layout.tsx
  * Project: BizPilot AI
- * Role: Protected dashboard route group layout. Resolves theme preference from cookie
- * server-side so hydration matches client-side first render.
- * Last Updated: 2026-06-19
+ * Description: Protected dashboard route-group layout and workspace access shell.
+ * Role: Resolves auth/workspace access, theme preference, and dashboard shell copy before rendering protected pages.
+ * Related:
+ * - components/dashboard/dashboard-shell.tsx
+ * - components/dashboard/dashboard-theme.tsx
+ * - server/services/auth.service.ts
+ * Author: MoOoH
+ * Created: 2026-05-02
+ * Last Updated: 2026-06-20
+ * Change Log:
+ * - 2026-06-19: Resolved theme preference from cookies for hydration-safe dashboard rendering.
+ * - 2026-06-20: Made the workspace-access recovery shell short-height safe with svh and natural overflow.
+ * ============================================================
  */
 
 import { cookies } from "next/headers";
@@ -56,8 +67,8 @@ export default async function DashboardLayout({
     const accessCopy = copy.workspaceAccess;
 
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[var(--dash-bg)] px-4 py-8 text-[var(--dash-text)]">
-        <DashboardCard className="max-w-xl p-6 sm:p-8" variant="priority">
+      <main className="flex min-h-svh min-w-0 items-start justify-center bg-[var(--dash-bg)] px-4 py-8 text-[var(--dash-text)] sm:items-center">
+        <DashboardCard className="w-full max-w-xl p-6 sm:p-8" variant="priority">
           <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
             {accessCopy.eyebrow}
           </p>

@@ -25,6 +25,7 @@
  * - 2026-05-09: Polished the business configuration UX into clearer cards and sections.
  * - 2026-05-10: Moved Business Configuration from /dashboard to /dashboard/configuration.
  * - 2026-06-16: Aligned notifications and forward-only privacy controls with first-pilot readiness gates.
+ * - 2026-06-20: Replaced the no-business setup fallback with an svh-based shell-safe layout.
  * ============================================================
  */
 
@@ -167,7 +168,7 @@ export default async function DashboardPage({
     const fallbackCopy = getBizPilotCopy(fallbackLanguage).dashboard;
 
     return (
-      <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col px-6 py-12">
+      <main className="mx-auto flex min-h-svh w-full max-w-5xl flex-col px-4 py-8 sm:px-6 sm:py-12">
         <div className="border-b border-[var(--dash-border)] pb-8">
           <p className="text-sm font-medium uppercase tracking-normal text-[var(--dash-text-muted)]">
             BizPilot AI

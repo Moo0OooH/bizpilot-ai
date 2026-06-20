@@ -10,6 +10,9 @@
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-06-19
+ * Last Updated: 2026-06-20
+ * Change Log:
+ * - 2026-06-20: Added 11D shell alignment contracts for auth, quote, and dashboard setup shells.
  * ============================================================
  */
 
@@ -28,6 +31,7 @@ describe("final shell polish source contracts", () => {
   it("keeps auth chrome simple and primary actions blue", () => {
     const authUi = source("components/auth/auth-ui.tsx");
     const submitButton = source("components/auth/auth-submit-button.tsx");
+    const checkEmailPage = source("app/auth/check-email/page.tsx");
 
     for (const forbidden of [
       "ThemePreferenceControl",
@@ -47,6 +51,9 @@ describe("final shell polish source contracts", () => {
     assert.equal(authUi.includes("copy.backHome"), true);
     assert.equal(submitButton.includes("var(--primary)"), true);
     assert.equal(submitButton.includes("bizTheme"), false);
+    assert.equal(checkEmailPage.includes("var(--primary)"), true);
+    assert.equal(checkEmailPage.includes("focus-visible:ring-4"), true);
+    assert.equal(checkEmailPage.includes("ThemePreferenceControl"), false);
   });
 
   it("uses password visibility controls without password field icons", () => {
@@ -96,17 +103,35 @@ describe("final shell polish source contracts", () => {
     assert.equal(quoteWizard.includes("max-w-[780px]"), true);
     assert.equal(quoteWizard.includes("overflow-y-auto"), false);
     assert.equal(quoteUnavailable.includes("<main"), false);
+    assert.equal(quoteUnavailable.includes("var(--biz-primary)"), false);
+    assert.equal(quoteUnavailable.includes("var(--primary)"), true);
+    assert.equal(quoteUnavailable.includes("focus-visible:ring-4"), true);
+  });
+
+  it("keeps quote success actions aligned to shared shell tokens", () => {
+    const quoteSuccess = source("app/(public)/quote/[slug]/success/page.tsx");
+
+    assert.equal(quoteSuccess.includes("min-h-svh"), true);
+    assert.equal(quoteSuccess.includes("items-start"), true);
+    assert.equal(quoteSuccess.includes("var(--primary)"), true);
+    assert.equal(quoteSuccess.includes("focus-visible:ring-4"), true);
   });
 
   it("keeps the setup report shell tokenized and not color-only", () => {
     const configurationPage = source(
       "app/(dashboard)/dashboard/configuration/page.tsx",
     );
+    const dashboardLayout = source("app/(dashboard)/layout.tsx");
+    const dashboardShell = source("components/dashboard/dashboard-shell.tsx");
 
     assert.equal(configurationPage.includes("configCopy.overview.setupReport"), true);
     assert.equal(configurationPage.includes("var(--dash-surface-muted)"), true);
     assert.equal(configurationPage.includes("configCopy.overview.done"), true);
     assert.equal(configurationPage.includes("configCopy.overview.open"), true);
     assert.equal(configurationPage.includes("overflow-y-auto"), false);
+    assert.equal(configurationPage.includes("min-h-screen"), false);
+    assert.equal(dashboardLayout.includes("min-h-screen"), false);
+    assert.equal(dashboardLayout.includes("min-h-svh"), true);
+    assert.equal(dashboardShell.includes('initialTheme = "light"'), true);
   });
 });

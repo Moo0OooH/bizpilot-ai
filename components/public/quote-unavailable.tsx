@@ -10,9 +10,10 @@
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-19: Mapped unavailable quote state to shared semantic theme tokens.
+ * - 2026-06-20: Aligned the unavailable quote shell action with shared primary and focus tokens.
  * ============================================================
  */
 
@@ -37,7 +38,7 @@ export function QuoteUnavailable({
 
   return (
     <BizPilotThemeShell>
-      <div className="public-site flex min-h-svh items-center justify-center px-4 py-10">
+      <div className="public-site flex min-h-svh items-start justify-center px-4 py-8 sm:items-center sm:py-10">
         <section className="w-full max-w-[560px] rounded-[18px] border p-6 text-center shadow-[var(--shadow-lg)]" style={{ backgroundColor: "var(--surface)", borderColor: "var(--border-default)" }}>
           <BizPilotBrand compact subtitle={copy.unavailableSubtitle} />
           <h1 className="mt-5 text-2xl font-extrabold text-[var(--text-strong)]">
@@ -54,7 +55,7 @@ export function QuoteUnavailable({
                 return (
                   <Link
                     aria-current={selected ? "page" : undefined}
-                    className="inline-flex h-8 min-w-10 items-center justify-center rounded-[9px] px-3 text-[11px] font-black"
+                    className="inline-flex h-8 min-w-10 items-center justify-center rounded-[9px] px-3 text-[11px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                     href={
                       option === "en"
                         ? pathname
@@ -73,10 +74,10 @@ export function QuoteUnavailable({
             </div>
           </div>
           <Link
-            className="mt-5 inline-flex h-11 items-center justify-center rounded-[13px] px-4 text-sm font-extrabold"
+            className="mt-5 inline-flex h-11 items-center justify-center rounded-[13px] px-4 text-sm font-extrabold shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
             href="/"
             style={{
-              backgroundColor: "var(--biz-primary)",
+              background: "linear-gradient(135deg, var(--primary), var(--primary-hover))",
               boxShadow: "0 14px 30px color-mix(in srgb, var(--primary) 22%, transparent)",
               color: "var(--primary-contrast)",
             }}

@@ -1,8 +1,20 @@
 /**
+ * ============================================================
  * File: components/dashboard/dashboard-shell.tsx
  * Project: BizPilot AI
- * Role: Shared protected dashboard application shell with shared theme preference.
- * Last Updated: 2026-06-19
+ * Description: Shared protected dashboard application shell.
+ * Role: Composes the sidebar, topbar, theme frame, and content rail for owner workspace pages.
+ * Related:
+ * - components/dashboard/dashboard-theme.tsx
+ * - components/dashboard/dashboard-sidebar.tsx
+ * - components/dashboard/dashboard-topbar.tsx
+ * Author: MoOoH
+ * Created: 2026-05-10
+ * Last Updated: 2026-06-20
+ * Change Log:
+ * - 2026-06-19: Added shared theme preference support to the protected dashboard shell.
+ * - 2026-06-20: Matched the shell fallback theme to the product-wide light-first default.
+ * ============================================================
  */
 
 import { DashboardSidebar } from "./dashboard-sidebar";
@@ -38,7 +50,7 @@ export function DashboardShell({
   businessSlug,
   children,
   copy,
-  initialTheme = "dark",
+  initialTheme = "light",
   showFounderAdmin = false,
   userLabel,
 }: DashboardShellProps) {
