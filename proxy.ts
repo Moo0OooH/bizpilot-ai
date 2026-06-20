@@ -24,7 +24,64 @@ import {
   getRootAuthCallbackTargetPath,
   hasRootAuthCallbackParams,
 } from "@/lib/auth/auth-callback-routing";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  isSupportedLanguage,
+} from "@/lib/i18n/language";
 import { protectDashboardRequest } from "@/lib/supabase/middleware";
+
+const interfaceLanguageMaxAge = 60 * 60 * 24 * 365;
+
+function appendRequestCookie(
+  cookieHeader: string | null,
+  name: string,
+  value: string,
+): string {
+  const serialized = `${name}=${encodeURIComponent(value)}`;
+
+  if (!cookieHeader) {
+    return serialized;
+  }
+
+  const keptCookies = cookieHeader
+    .split(";")
+    .map((cookie) => cookie.trim())
+    .filter((cookie) => !cookie.startsWith(`${name}=`));
+
+  return [...keptCookies, serialized].join("; ");
+}
+
+function publicLanguageResponse(request: NextRequest): NextResponse {
+  const language = request.nextUrl.searchParams.get("language");
+
+  if (!isSupportedLanguage(language)) {
+    return NextResponse.next();
+  }
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(
+    "cookie",
+    appendRequestCookie(
+      request.headers.get("cookie"),
+      INTERFACE_LANGUAGE_COOKIE,
+      language,
+    ),
+  );
+
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+
+  response.cookies.set(INTERFACE_LANGUAGE_COOKIE, language, {
+    maxAge: interfaceLanguageMaxAge,
+    path: "/",
+    sameSite: "lax",
+  });
+
+  return response;
+}
 
 export async function proxy(request: NextRequest) {
   if (
@@ -41,13 +98,27 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(callbackUrl);
   }
 
-  if (request.nextUrl.pathname === "/") {
-    return NextResponse.next();
+  if (request.nextUrl.pathname.startsWith("/dashboard")) {
+    return protectDashboardRequest(request);
   }
 
-  return protectDashboardRequest(request);
+  return publicLanguageResponse(request);
 }
 
 export const config = {
-  matcher: ["/", "/dashboard/:path*"],
+  matcher: [
+    "/",
+    "/features",
+    "/industries/cleaning",
+    "/trust",
+    "/demo",
+    "/pricing",
+    "/pilot",
+    "/content-studio",
+    "/privacy",
+    "/security",
+    "/terms",
+    "/quote/:path*",
+    "/dashboard/:path*",
+  ],
 };

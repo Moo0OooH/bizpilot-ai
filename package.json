@@ -21,7 +21,8 @@
     "smoke:dashboard": "node --experimental-strip-types tests/smoke/dashboard-auth-smoke.mts",
     "smoke:public": "node --experimental-strip-types tests/smoke/public-route-smoke.mts",
     "smoke:responsive": "node --experimental-strip-types tests/smoke/public-responsive-smoke.mts",
-    "smoke:quote": "node --experimental-strip-types tests/smoke/quote-route-smoke.mts"
+    "smoke:quote": "node --experimental-strip-types tests/smoke/quote-route-smoke.mts",
+    "smoke:ui-matrix": "node --experimental-strip-types tests/smoke/final-ui-matrix-smoke.mts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
