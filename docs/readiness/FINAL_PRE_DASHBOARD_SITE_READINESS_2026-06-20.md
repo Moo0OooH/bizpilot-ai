@@ -32,8 +32,12 @@ Covered surfaces:
 
 ## Deployed Commit Proof
 
-- Verified local HEAD: `3170ebf4138df67bdd0366de4fef316f68b0c0fb`
-- Commit subject: `test(ui): cover final responsive locale and theme matrix`
+- Final readiness/evidence HEAD after this document was committed: `488493d`
+- Final readiness/evidence commit subject: `docs(release): record final pre-dashboard site readiness`
+- GitHub combined status for `488493d`: `Vercel` = `success`
+- Vercel target URL for `488493d`: `https://vercel.com/moo0ooohs-projects/bizpilot-ai/GogMWx4DVfPDaj944XjPxs83hRF3`
+- Last public-site implementation commit before the final docs commit: `3170ebf4138df67bdd0366de4fef316f68b0c0fb`
+- Last implementation commit subject: `test(ui): cover final responsive locale and theme matrix`
 - GitHub combined status: `Vercel` = `success`
 - Vercel target URL from GitHub status: `https://vercel.com/moo0ooohs-projects/bizpilot-ai/19k9YmyB6vfugbk5cNdoXpYD99AH`
 - Live environment checked: `https://bizpilo.com`
@@ -45,6 +49,13 @@ Live behavior checks:
 - `https://bizpilo.com/privacy?language=fr-CA` returned HTTP 200 and rendered `<html lang="fr-CA">`.
 - `https://bizpilo.com/quote/akora?language=fr-CA` returned HTTP 200, rendered `<html lang="fr-CA">`, and contained `Quel type de nettoyage`.
 - `https://bizpilo.com/sitemap.xml` returned HTTP 200 and included localized alternates.
+- `https://bizpilo.com/robots.txt` returned HTTP 200 and included `Disallow: /quote`.
+
+Post-final-commit live checks after Vercel success for `488493d`:
+
+- `https://bizpilo.com/` returned HTTP 200.
+- `https://bizpilo.com/features?language=fr-CA` returned HTTP 200 and rendered `<html lang="fr-CA">`.
+- `https://bizpilo.com/quote/akora?language=fr-CA` returned HTTP 200, rendered `<html lang="fr-CA">`, and contained `Quel type de nettoyage`.
 - `https://bizpilo.com/robots.txt` returned HTTP 200 and included `Disallow: /quote`.
 
 ## Local Verification
