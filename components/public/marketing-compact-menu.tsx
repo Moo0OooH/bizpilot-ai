@@ -10,11 +10,12 @@
  * - components/public/marketing-ui.tsx
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-18: Created compact navigation controller for responsive header QA.
  * - 2026-06-19: Switched compact menu colors to semantic theme tokens.
  * - 2026-06-19: Added focus return, icon trigger, and disclosure semantics for final header polish.
+ * - 2026-06-20: Stabilized compact menu width against narrow viewport overflow.
  * ============================================================
  */
 
@@ -85,7 +86,7 @@ export function MarketingCompactMenu({
       <button
         aria-controls="marketing-compact-menu"
         aria-expanded={open}
-        aria-haspopup="true"
+        aria-haspopup="menu"
         aria-label={open ? "Close site navigation" : "Open site navigation"}
         className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-[12px] border text-[13px] font-black shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
         onClick={() => setOpen((value) => !value)}
@@ -101,7 +102,7 @@ export function MarketingCompactMenu({
       </button>
       {open ? (
         <div
-          className="absolute right-0 top-[calc(100%+0.65rem)] z-50 grid max-h-[min(70svh,32rem)] w-[min(88vw,22rem)] gap-3 overflow-y-auto rounded-[18px] border p-3 shadow-[var(--shadow-lg)]"
+          className="absolute right-0 top-[calc(100%+0.65rem)] z-50 grid max-h-[min(70svh,32rem)] w-[min(calc(100vw-2rem),22rem)] gap-3 overflow-y-auto overscroll-contain rounded-[18px] border p-3 shadow-[var(--shadow-lg)]"
           id="marketing-compact-menu"
           style={{
             backgroundColor: "var(--surface-elevated)",

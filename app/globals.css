@@ -9,7 +9,7 @@ Related:
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-06-19
+Last Updated: 2026-06-20
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
@@ -18,6 +18,7 @@ Change Log:
 - 2026-06-18: Added public responsive tokens, no-overflow primitives, and legal/dashboard containers.
 - 2026-06-19: Added semantic System/Light/Dark tokens shared by marketing, auth, quote, dashboard, and admin shells.
 - 2026-06-19: Aligned Light/Dark tokens with the final polish contrast baseline.
+- 2026-06-20: Stabilized public grids and wrapping before dashboard work.
 ============================================================
 */
 
@@ -244,7 +245,7 @@ canvas {
 }
 
 :where(h1, h2, h3, p, a, button, label, td, th, span, li) {
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 input,
@@ -327,7 +328,6 @@ select {
 .homepage-use-case-grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-auto-rows: 1fr;
   gap: 1rem;
 }
 
@@ -339,7 +339,16 @@ select {
 }
 
 .supporting-six-grid {
-  grid-auto-rows: 1fr;
+  align-items: stretch;
+}
+
+.public-card-grid > *,
+.public-card-grid-wide > *,
+.homepage-demo-grid > *,
+.homepage-use-case-grid > *,
+.supporting-six-grid > *,
+.supporting-three-grid > * {
+  min-width: 0;
 }
 
 @media (min-width: 768px) {
@@ -365,7 +374,7 @@ select {
   }
 
   .supporting-three-grid {
-    grid-auto-rows: 1fr;
+    align-items: stretch;
   }
 }
 

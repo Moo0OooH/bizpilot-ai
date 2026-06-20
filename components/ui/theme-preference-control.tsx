@@ -13,10 +13,11 @@
  * - components/auth/auth-ui.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-20
  * Change Log:
  * - 2026-06-19: Added accessible shared theme selector for the unified theme foundation.
  * - 2026-06-19: Rebuilt the selector as a compact sun/moon menu and defaulted fresh sessions to Light.
+ * - 2026-06-20: Stabilized the menu width so theme choices do not shift public layout.
  * ============================================================
  */
 
@@ -411,7 +412,7 @@ export function ThemePreferenceControl({
       {isOpen ? (
         <div
           aria-label={text.label}
-          className="absolute right-0 top-full z-50 mt-2 grid w-60 gap-1 rounded-[12px] border p-2 text-[13px] font-black shadow-lg"
+          className="absolute right-0 top-full z-50 mt-2 grid w-[min(15rem,calc(100vw-2rem))] gap-1 rounded-[12px] border p-2 text-[13px] font-black shadow-lg"
           id={menuId}
           role="menu"
           style={{
