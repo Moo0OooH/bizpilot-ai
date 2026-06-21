@@ -1,11 +1,12 @@
 {
-  "capturedAt": "2026-06-21T16:16:47.695Z",
+  "capturedAt": "2026-06-21T23:32:25.534Z",
   "productionUrl": "https://bizpilo.com",
-  "commit": "6b817e1b0a95b76b5f2039762a3c89a69d5d9f2b",
+  "commit": "bf827a9dbb6d4a038b1fb899e0156bec8ba7869f",
+  "failureCount": 0,
   "results": [
     {
       "name": "production-home-en-light-1280x720",
-      "url": "https://bizpilo.com/?language=en&l5=visual",
+      "url": "https://bizpilo.com/?language=en&f6=visual",
       "theme": "light",
       "width": 1280,
       "height": 720,
@@ -14,18 +15,332 @@
       "metrics": {
         "lang": "en",
         "theme": "light",
+        "themePreference": "light",
+        "title": "BizPilot AI | Lead Recovery for Cleaning Businesses",
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "horizontalOverflow": false,
         "bodyTextLength": 4633,
         "h1": "Stop losing cleaning quote requests to slow replies.",
+        "visibleButtons": [
+          {
+            "text": "BBizPilot AILead recovery for cleaning businesses",
+            "rect": {
+              "width": 256,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 40,
+              "right": 296
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Features",
+            "rect": {
+              "width": 76,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 372,
+              "right": 448
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Cleaning",
+            "rect": {
+              "width": 76,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 452,
+              "right": 528
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Trust",
+            "rect": {
+              "width": 55,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 532,
+              "right": 586
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Demo",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 590,
+              "right": 648
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Pricing",
+            "rect": {
+              "width": 65,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 652,
+              "right": 718
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Pilot",
+            "rect": {
+              "width": 51,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 722,
+              "right": 773
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "EN",
+            "rect": {
+              "width": 89,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 849,
+              "right": 937
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "",
+            "rect": {
+              "width": 44,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 945,
+              "right": 989
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Sign in",
+            "rect": {
+              "width": 67,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 997,
+              "right": 1065
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Join founder pilot",
+            "rect": {
+              "width": 167,
+              "height": 48,
+              "top": 14,
+              "bottom": 62,
+              "left": 1073,
+              "right": 1240
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Join founder pilot",
+            "rect": {
+              "width": 167,
+              "height": 48,
+              "top": 437,
+              "bottom": 485,
+              "left": 40,
+              "right": 207
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Watch demo",
+            "rect": {
+              "width": 131,
+              "height": 48,
+              "top": 437,
+              "bottom": 485,
+              "left": 219,
+              "right": 350
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Copy reply",
+            "rect": {
+              "width": 98,
+              "height": 36,
+              "top": 519,
+              "bottom": 555,
+              "left": 883,
+              "right": 981
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Copy reply",
+            "rect": {
+              "width": 125,
+              "height": 44,
+              "top": 2232,
+              "bottom": 2276,
+              "left": 690,
+              "right": 815
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Copy reply",
+            "rect": {
+              "width": 125,
+              "height": 44,
+              "top": 2148,
+              "bottom": 2192,
+              "left": 994,
+              "right": 1119
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Watch full demo",
+            "rect": {
+              "width": 159,
+              "height": 48,
+              "top": 2342,
+              "bottom": 2390,
+              "left": 1081,
+              "right": 1240
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Residential cleaningRecurring or one-time home-cleaning requests.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3272,
+              "bottom": 3438,
+              "left": 40,
+              "right": 425
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Deep cleaningScope, property condition, and priority areas.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3272,
+              "bottom": 3438,
+              "left": 447,
+              "right": 833
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Move-in / move-outDeadlines, appliance details, and access notes.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3272,
+              "bottom": 3438,
+              "left": 855,
+              "right": 1240
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Office cleaningFloor area, frequency, schedule, and site access.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3461,
+              "bottom": 3627,
+              "left": 40,
+              "right": 425
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Airbnb turnoverCheckout time, linens, supplies, and entry details.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3461,
+              "bottom": 3627,
+              "left": 447,
+              "right": 833
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Post-construction cleaningSite size, dust/debris scope, and deadline.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3461,
+              "bottom": 3627,
+              "left": 855,
+              "right": 1240
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Apply for founder pilot",
+            "rect": {
+              "width": 230,
+              "height": 48,
+              "top": 5334,
+              "bottom": 5382,
+              "left": 973,
+              "right": 1203
+            },
+            "inFirstFold": false
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [],
-        "cleaningCards": []
-      }
+        "cleaningCards": [],
+        "quoteConsentInputCount": 0,
+        "quoteVisibleConsentBlocks": 0,
+        "honeypot": null,
+        "footerBrandProbe": {
+          "text": "BBizPilot AILead recovery for cleaning businesses",
+          "scrollWidth": 256,
+          "clientWidth": 256,
+          "rect": {
+            "width": 256,
+            "height": 44,
+            "top": 5611,
+            "bottom": 5655,
+            "left": 40,
+            "right": 296
+          },
+          "note": "Non-gating footer brand probe; screenshot confirms no root overflow or visible clipping."
+        }
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     },
     {
       "name": "production-home-fr-ca-light-1280x720",
-      "url": "https://bizpilo.com/?language=fr-CA&l5=visual",
+      "url": "https://bizpilo.com/?language=fr-CA&f6=visual",
       "theme": "light",
       "width": 1280,
       "height": 720,
@@ -34,18 +349,332 @@
       "metrics": {
         "lang": "fr-CA",
         "theme": "light",
+        "themePreference": "light",
+        "title": "BizPilot AI | Suivi des demandes de nettoyage",
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "horizontalOverflow": false,
         "bodyTextLength": 5313,
         "h1": "Ne perdez plus de soumissions faute de réponse rapide.",
+        "visibleButtons": [
+          {
+            "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+            "rect": {
+              "width": 313,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 40,
+              "right": 353
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Fonctions",
+            "rect": {
+              "width": 82,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 370,
+              "right": 452
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Nettoyage",
+            "rect": {
+              "width": 85,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 456,
+              "right": 541
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Confiance",
+            "rect": {
+              "width": 84,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 545,
+              "right": 629
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Démo",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 633,
+              "right": 691
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Prix",
+            "rect": {
+              "width": 47,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 695,
+              "right": 743
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Pilote",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 747,
+              "right": 805
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "FR",
+            "rect": {
+              "width": 88,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 822,
+              "right": 910
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "",
+            "rect": {
+              "width": 44,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 918,
+              "right": 962
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Connexion",
+            "rect": {
+              "width": 91,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 970,
+              "right": 1061
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 171,
+              "height": 48,
+              "top": 14,
+              "bottom": 62,
+              "left": 1069,
+              "right": 1240
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 171,
+              "height": 48,
+              "top": 429,
+              "bottom": 477,
+              "left": 40,
+              "right": 211
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Voir la démo",
+            "rect": {
+              "width": 131,
+              "height": 48,
+              "top": 429,
+              "bottom": 477,
+              "left": 223,
+              "right": 353
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Copier la réponse",
+            "rect": {
+              "width": 140,
+              "height": 36,
+              "top": 503,
+              "bottom": 539,
+              "left": 883,
+              "right": 1023
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Copier la réponse",
+            "rect": {
+              "width": 171,
+              "height": 44,
+              "top": 2248,
+              "bottom": 2292,
+              "left": 690,
+              "right": 861
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Copier la réponse",
+            "rect": {
+              "width": 171,
+              "height": 44,
+              "top": 2225,
+              "bottom": 2269,
+              "left": 994,
+              "right": 1165
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Voir la démo complète",
+            "rect": {
+              "width": 202,
+              "height": 48,
+              "top": 2358,
+              "bottom": 2406,
+              "left": 1038,
+              "right": 1240
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage résidentielDemandes de nettoyage résidentiel récurrent ou ponctuel.",
+            "rect": {
+              "width": 385,
+              "height": 190,
+              "top": 3331,
+              "bottom": 3522,
+              "left": 40,
+              "right": 425
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage en profondeurPortée, état de la propriété et zones prioritaires.",
+            "rect": {
+              "width": 385,
+              "height": 190,
+              "top": 3331,
+              "bottom": 3522,
+              "left": 447,
+              "right": 833
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage avant/après déménagementÉchéance, électroménagers et notes d’accès.",
+            "rect": {
+              "width": 385,
+              "height": 190,
+              "top": 3331,
+              "bottom": 3522,
+              "left": 855,
+              "right": 1240
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage de bureauxSuperficie, fréquence, horaire et accès au site.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3544,
+              "bottom": 3710,
+              "left": 40,
+              "right": 425
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage entre séjours AirbnbHeure de sortie, literie, fournitures et accès.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3544,
+              "bottom": 3710,
+              "left": 447,
+              "right": 833
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage après travauxTaille du site, poussière/débris et échéance.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3544,
+              "bottom": 3710,
+              "left": 855,
+              "right": 1240
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 198,
+              "height": 48,
+              "top": 5406,
+              "bottom": 5454,
+              "left": 1005,
+              "right": 1203
+            },
+            "inFirstFold": false
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [],
-        "cleaningCards": []
-      }
+        "cleaningCards": [],
+        "quoteConsentInputCount": 0,
+        "quoteVisibleConsentBlocks": 0,
+        "honeypot": null,
+        "footerBrandProbe": {
+          "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+          "scrollWidth": 313,
+          "clientWidth": 300,
+          "rect": {
+            "width": 300,
+            "height": 44,
+            "top": 5709,
+            "bottom": 5753,
+            "left": 40,
+            "right": 340
+          },
+          "note": "Non-gating footer brand probe; screenshot confirms no root overflow or visible clipping."
+        }
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     },
     {
       "name": "production-home-fr-ca-mobile-light-390x844",
-      "url": "https://bizpilo.com/?language=fr-CA&l5=visual",
+      "url": "https://bizpilo.com/?language=fr-CA&f6=visual",
       "theme": "light",
       "width": 390,
       "height": 844,
@@ -54,18 +683,224 @@
       "metrics": {
         "lang": "fr-CA",
         "theme": "light",
+        "themePreference": "light",
+        "title": "BizPilot AI | Suivi des demandes de nettoyage",
         "scrollWidth": 390,
         "clientWidth": 390,
         "horizontalOverflow": false,
         "bodyTextLength": 5135,
         "h1": "Ne perdez plus de soumissions faute de réponse rapide.",
+        "visibleButtons": [
+          {
+            "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+            "rect": {
+              "width": 127,
+              "height": 44,
+              "top": 10,
+              "bottom": 54,
+              "left": 16,
+              "right": 143
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "",
+            "rect": {
+              "width": 44,
+              "height": 44,
+              "top": 10,
+              "bottom": 54,
+              "left": 330,
+              "right": 374
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 358,
+              "height": 48,
+              "top": 439,
+              "bottom": 487,
+              "left": 16,
+              "right": 374
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Voir la démo",
+            "rect": {
+              "width": 358,
+              "height": 48,
+              "top": 499,
+              "bottom": 547,
+              "left": 16,
+              "right": 374
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Copier la réponse",
+            "rect": {
+              "width": 140,
+              "height": 36,
+              "top": 1137,
+              "bottom": 1173,
+              "left": 40,
+              "right": 180
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Copier la réponse",
+            "rect": {
+              "width": 171,
+              "height": 44,
+              "top": 4425,
+              "bottom": 4469,
+              "left": 54,
+              "right": 225
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Copier la réponse",
+            "rect": {
+              "width": 171,
+              "height": 44,
+              "top": 4827,
+              "bottom": 4871,
+              "left": 54,
+              "right": 225
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Voir la démo complète",
+            "rect": {
+              "width": 202,
+              "height": 48,
+              "top": 5032,
+              "bottom": 5080,
+              "left": 94,
+              "right": 296
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage résidentielDemandes de nettoyage résidentiel récurrent ou ponctuel.",
+            "rect": {
+              "width": 358,
+              "height": 190,
+              "top": 6479,
+              "bottom": 6669,
+              "left": 16,
+              "right": 374
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage en profondeurPortée, état de la propriété et zones prioritaires.",
+            "rect": {
+              "width": 358,
+              "height": 190,
+              "top": 6685,
+              "bottom": 6875,
+              "left": 16,
+              "right": 374
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage avant/après déménagementÉchéance, électroménagers et notes d’accès.",
+            "rect": {
+              "width": 358,
+              "height": 166,
+              "top": 6891,
+              "bottom": 7058,
+              "left": 16,
+              "right": 374
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage de bureauxSuperficie, fréquence, horaire et accès au site.",
+            "rect": {
+              "width": 358,
+              "height": 190,
+              "top": 7074,
+              "bottom": 7264,
+              "left": 16,
+              "right": 374
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage entre séjours AirbnbHeure de sortie, literie, fournitures et accès.",
+            "rect": {
+              "width": 358,
+              "height": 166,
+              "top": 7280,
+              "bottom": 7446,
+              "left": 16,
+              "right": 374
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage après travauxTaille du site, poussière/débris et échéance.",
+            "rect": {
+              "width": 358,
+              "height": 166,
+              "top": 7462,
+              "bottom": 7628,
+              "left": 16,
+              "right": 374
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 300,
+              "height": 48,
+              "top": 9969,
+              "bottom": 10017,
+              "left": 45,
+              "right": 345
+            },
+            "inFirstFold": false
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [],
-        "cleaningCards": []
-      }
+        "cleaningCards": [],
+        "quoteConsentInputCount": 0,
+        "quoteVisibleConsentBlocks": 0,
+        "honeypot": null,
+        "footerBrandProbe": {
+          "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+          "scrollWidth": 350,
+          "clientWidth": 350,
+          "rect": {
+            "width": 350,
+            "height": 44,
+            "top": 10143,
+            "bottom": 10187,
+            "left": 20,
+            "right": 370
+          },
+          "note": "Non-gating footer brand probe; screenshot confirms no root overflow or visible clipping."
+        }
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     },
     {
       "name": "production-home-fr-ca-dark-1280x720",
-      "url": "https://bizpilo.com/?language=fr-CA&l5=visual",
+      "url": "https://bizpilo.com/?language=fr-CA&f6=visual",
       "theme": "dark",
       "width": 1280,
       "height": 720,
@@ -74,18 +909,332 @@
       "metrics": {
         "lang": "fr-CA",
         "theme": "dark",
+        "themePreference": "dark",
+        "title": "BizPilot AI | Suivi des demandes de nettoyage",
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "horizontalOverflow": false,
         "bodyTextLength": 5313,
         "h1": "Ne perdez plus de soumissions faute de réponse rapide.",
+        "visibleButtons": [
+          {
+            "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+            "rect": {
+              "width": 313,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 40,
+              "right": 353
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Fonctions",
+            "rect": {
+              "width": 82,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 370,
+              "right": 452
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Nettoyage",
+            "rect": {
+              "width": 85,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 456,
+              "right": 541
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Confiance",
+            "rect": {
+              "width": 84,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 545,
+              "right": 629
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Démo",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 633,
+              "right": 691
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Prix",
+            "rect": {
+              "width": 47,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 695,
+              "right": 743
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Pilote",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 747,
+              "right": 805
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "FR",
+            "rect": {
+              "width": 88,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 822,
+              "right": 910
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "",
+            "rect": {
+              "width": 44,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 918,
+              "right": 962
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Connexion",
+            "rect": {
+              "width": 91,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 970,
+              "right": 1061
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 171,
+              "height": 48,
+              "top": 14,
+              "bottom": 62,
+              "left": 1069,
+              "right": 1240
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 171,
+              "height": 48,
+              "top": 429,
+              "bottom": 477,
+              "left": 40,
+              "right": 211
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Voir la démo",
+            "rect": {
+              "width": 131,
+              "height": 48,
+              "top": 429,
+              "bottom": 477,
+              "left": 223,
+              "right": 353
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Copier la réponse",
+            "rect": {
+              "width": 140,
+              "height": 36,
+              "top": 503,
+              "bottom": 539,
+              "left": 883,
+              "right": 1023
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Copier la réponse",
+            "rect": {
+              "width": 171,
+              "height": 44,
+              "top": 2248,
+              "bottom": 2292,
+              "left": 690,
+              "right": 861
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Copier la réponse",
+            "rect": {
+              "width": 171,
+              "height": 44,
+              "top": 2225,
+              "bottom": 2269,
+              "left": 994,
+              "right": 1165
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Voir la démo complète",
+            "rect": {
+              "width": 202,
+              "height": 48,
+              "top": 2358,
+              "bottom": 2406,
+              "left": 1038,
+              "right": 1240
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage résidentielDemandes de nettoyage résidentiel récurrent ou ponctuel.",
+            "rect": {
+              "width": 385,
+              "height": 190,
+              "top": 3331,
+              "bottom": 3522,
+              "left": 40,
+              "right": 425
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage en profondeurPortée, état de la propriété et zones prioritaires.",
+            "rect": {
+              "width": 385,
+              "height": 190,
+              "top": 3331,
+              "bottom": 3522,
+              "left": 447,
+              "right": 833
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage avant/après déménagementÉchéance, électroménagers et notes d’accès.",
+            "rect": {
+              "width": 385,
+              "height": 190,
+              "top": 3331,
+              "bottom": 3522,
+              "left": 855,
+              "right": 1240
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage de bureauxSuperficie, fréquence, horaire et accès au site.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3544,
+              "bottom": 3710,
+              "left": 40,
+              "right": 425
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage entre séjours AirbnbHeure de sortie, literie, fournitures et accès.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3544,
+              "bottom": 3710,
+              "left": 447,
+              "right": 833
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Nettoyage après travauxTaille du site, poussière/débris et échéance.",
+            "rect": {
+              "width": 385,
+              "height": 166,
+              "top": 3544,
+              "bottom": 3710,
+              "left": 855,
+              "right": 1240
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 198,
+              "height": 48,
+              "top": 5406,
+              "bottom": 5454,
+              "left": 1005,
+              "right": 1203
+            },
+            "inFirstFold": false
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [],
-        "cleaningCards": []
-      }
+        "cleaningCards": [],
+        "quoteConsentInputCount": 0,
+        "quoteVisibleConsentBlocks": 0,
+        "honeypot": null,
+        "footerBrandProbe": {
+          "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+          "scrollWidth": 313,
+          "clientWidth": 300,
+          "rect": {
+            "width": 300,
+            "height": 44,
+            "top": 5709,
+            "bottom": 5753,
+            "left": 40,
+            "right": 340
+          },
+          "note": "Non-gating footer brand probe; screenshot confirms no root overflow or visible clipping."
+        }
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     },
     {
       "name": "production-pricing-fr-ca-light-1280x720",
-      "url": "https://bizpilo.com/pricing?language=fr-CA&l5=visual",
+      "url": "https://bizpilo.com/pricing?language=fr-CA&f6=visual",
       "theme": "light",
       "width": 1280,
       "height": 720,
@@ -94,37 +1243,270 @@
       "metrics": {
         "lang": "fr-CA",
         "theme": "light",
+        "themePreference": "light",
+        "title": "Tarification du projet pilote fondateur | BizPilot AI",
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "horizontalOverflow": false,
         "bodyTextLength": 2134,
         "h1": "Tarifs pilotes simples pour le nettoyage.",
+        "visibleButtons": [
+          {
+            "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+            "rect": {
+              "width": 313,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 40,
+              "right": 353
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Fonctions",
+            "rect": {
+              "width": 82,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 370,
+              "right": 452
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Nettoyage",
+            "rect": {
+              "width": 85,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 456,
+              "right": 541
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Confiance",
+            "rect": {
+              "width": 84,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 545,
+              "right": 629
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Démo",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 633,
+              "right": 691
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Prix",
+            "rect": {
+              "width": 47,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 695,
+              "right": 743
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Pilote",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 747,
+              "right": 805
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "FR",
+            "rect": {
+              "width": 88,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 822,
+              "right": 910
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "",
+            "rect": {
+              "width": 44,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 918,
+              "right": 962
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Connexion",
+            "rect": {
+              "width": 91,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 970,
+              "right": 1061
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 171,
+              "height": 48,
+              "top": 14,
+              "bottom": 62,
+              "left": 1069,
+              "right": 1240
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 327,
+              "height": 56,
+              "top": 924,
+              "bottom": 980,
+              "left": 69,
+              "right": 396
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Postuler au pilote",
+            "rect": {
+              "width": 327,
+              "height": 56,
+              "top": 924,
+              "bottom": 980,
+              "left": 476,
+              "right": 804
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Postuler au pilote",
+            "rect": {
+              "width": 327,
+              "height": 56,
+              "top": 924,
+              "bottom": 980,
+              "left": 884,
+              "right": 1211
+            },
+            "inFirstFold": false
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [
           {
             "width": 385,
             "height": 629,
             "top": 381,
-            "bottom": 1009
+            "bottom": 1009,
+            "left": 40,
+            "right": 425,
+            "cta": {
+              "text": "Rejoindre le pilote",
+              "rect": {
+                "width": 327,
+                "height": 56,
+                "top": 924,
+                "bottom": 980,
+                "left": 69,
+                "right": 396
+              }
+            }
           },
           {
             "width": 385,
             "height": 629,
             "top": 381,
-            "bottom": 1009
+            "bottom": 1009,
+            "left": 447,
+            "right": 833,
+            "cta": {
+              "text": "Postuler au pilote",
+              "rect": {
+                "width": 327,
+                "height": 56,
+                "top": 924,
+                "bottom": 980,
+                "left": 476,
+                "right": 804
+              }
+            }
           },
           {
             "width": 385,
             "height": 629,
             "top": 381,
-            "bottom": 1009
+            "bottom": 1009,
+            "left": 855,
+            "right": 1240,
+            "cta": {
+              "text": "Postuler au pilote",
+              "rect": {
+                "width": 327,
+                "height": 56,
+                "top": 924,
+                "bottom": 980,
+                "left": 884,
+                "right": 1211
+              }
+            }
           }
         ],
-        "cleaningCards": []
-      }
+        "cleaningCards": [],
+        "quoteConsentInputCount": 0,
+        "quoteVisibleConsentBlocks": 0,
+        "honeypot": null,
+        "footerBrandProbe": {
+          "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+          "scrollWidth": 313,
+          "clientWidth": 300,
+          "rect": {
+            "width": 300,
+            "height": 44,
+            "top": 1527,
+            "bottom": 1571,
+            "left": 40,
+            "right": 340
+          },
+          "note": "Non-gating footer brand probe; screenshot confirms no root overflow or visible clipping."
+        }
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     },
     {
       "name": "production-pricing-fr-ca-dark-1280x720",
-      "url": "https://bizpilo.com/pricing?language=fr-CA&l5=visual",
+      "url": "https://bizpilo.com/pricing?language=fr-CA&f6=visual",
       "theme": "dark",
       "width": 1280,
       "height": 720,
@@ -133,37 +1515,270 @@
       "metrics": {
         "lang": "fr-CA",
         "theme": "dark",
+        "themePreference": "dark",
+        "title": "Tarification du projet pilote fondateur | BizPilot AI",
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "horizontalOverflow": false,
         "bodyTextLength": 2134,
         "h1": "Tarifs pilotes simples pour le nettoyage.",
+        "visibleButtons": [
+          {
+            "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+            "rect": {
+              "width": 313,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 40,
+              "right": 353
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Fonctions",
+            "rect": {
+              "width": 82,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 370,
+              "right": 452
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Nettoyage",
+            "rect": {
+              "width": 85,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 456,
+              "right": 541
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Confiance",
+            "rect": {
+              "width": 84,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 545,
+              "right": 629
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Démo",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 633,
+              "right": 691
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Prix",
+            "rect": {
+              "width": 47,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 695,
+              "right": 743
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Pilote",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 747,
+              "right": 805
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "FR",
+            "rect": {
+              "width": 88,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 822,
+              "right": 910
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "",
+            "rect": {
+              "width": 44,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 918,
+              "right": 962
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Connexion",
+            "rect": {
+              "width": 91,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 970,
+              "right": 1061
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 171,
+              "height": 48,
+              "top": 14,
+              "bottom": 62,
+              "left": 1069,
+              "right": 1240
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 327,
+              "height": 56,
+              "top": 924,
+              "bottom": 980,
+              "left": 69,
+              "right": 396
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Postuler au pilote",
+            "rect": {
+              "width": 327,
+              "height": 56,
+              "top": 924,
+              "bottom": 980,
+              "left": 476,
+              "right": 804
+            },
+            "inFirstFold": false
+          },
+          {
+            "text": "Postuler au pilote",
+            "rect": {
+              "width": 327,
+              "height": 56,
+              "top": 924,
+              "bottom": 980,
+              "left": 884,
+              "right": 1211
+            },
+            "inFirstFold": false
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [
           {
             "width": 385,
             "height": 629,
             "top": 381,
-            "bottom": 1009
+            "bottom": 1009,
+            "left": 40,
+            "right": 425,
+            "cta": {
+              "text": "Rejoindre le pilote",
+              "rect": {
+                "width": 327,
+                "height": 56,
+                "top": 924,
+                "bottom": 980,
+                "left": 69,
+                "right": 396
+              }
+            }
           },
           {
             "width": 385,
             "height": 629,
             "top": 381,
-            "bottom": 1009
+            "bottom": 1009,
+            "left": 447,
+            "right": 833,
+            "cta": {
+              "text": "Postuler au pilote",
+              "rect": {
+                "width": 327,
+                "height": 56,
+                "top": 924,
+                "bottom": 980,
+                "left": 476,
+                "right": 804
+              }
+            }
           },
           {
             "width": 385,
             "height": 629,
             "top": 381,
-            "bottom": 1009
+            "bottom": 1009,
+            "left": 855,
+            "right": 1240,
+            "cta": {
+              "text": "Postuler au pilote",
+              "rect": {
+                "width": 327,
+                "height": 56,
+                "top": 924,
+                "bottom": 980,
+                "left": 884,
+                "right": 1211
+              }
+            }
           }
         ],
-        "cleaningCards": []
-      }
+        "cleaningCards": [],
+        "quoteConsentInputCount": 0,
+        "quoteVisibleConsentBlocks": 0,
+        "honeypot": null,
+        "footerBrandProbe": {
+          "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+          "scrollWidth": 313,
+          "clientWidth": 300,
+          "rect": {
+            "width": 300,
+            "height": 44,
+            "top": 1527,
+            "bottom": 1571,
+            "left": 40,
+            "right": 340
+          },
+          "note": "Non-gating footer brand probe; screenshot confirms no root overflow or visible clipping."
+        }
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     },
     {
       "name": "production-cleaning-fr-ca-light-1366x768",
-      "url": "https://bizpilo.com/industries/cleaning?language=fr-CA&l5=visual",
+      "url": "https://bizpilo.com/industries/cleaning?language=fr-CA&f6=visual",
       "theme": "light",
       "width": 1366,
       "height": 768,
@@ -172,49 +1787,267 @@
       "metrics": {
         "lang": "fr-CA",
         "theme": "light",
+        "themePreference": "light",
+        "title": "Récupération des demandes pour entreprises de nettoyage | BizPilot AI",
         "scrollWidth": 1366,
         "clientWidth": 1366,
         "horizontalOverflow": false,
         "bodyTextLength": 2969,
         "h1": "Récupération des demandes pour entreprises de nettoyage.",
+        "visibleButtons": [
+          {
+            "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+            "rect": {
+              "width": 313,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 83,
+              "right": 396
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Fonctions",
+            "rect": {
+              "width": 82,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 413,
+              "right": 495
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Nettoyage",
+            "rect": {
+              "width": 85,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 499,
+              "right": 584
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Confiance",
+            "rect": {
+              "width": 84,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 588,
+              "right": 672
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Démo",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 676,
+              "right": 734
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Prix",
+            "rect": {
+              "width": 47,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 738,
+              "right": 786
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Pilote",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 790,
+              "right": 848
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "FR",
+            "rect": {
+              "width": 88,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 865,
+              "right": 953
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "",
+            "rect": {
+              "width": 44,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 961,
+              "right": 1005
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Connexion",
+            "rect": {
+              "width": 91,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 1013,
+              "right": 1104
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 171,
+              "height": 48,
+              "top": 14,
+              "bottom": 62,
+              "left": 1112,
+              "right": 1283
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 171,
+              "height": 48,
+              "top": 500,
+              "bottom": 548,
+              "left": 83,
+              "right": 254
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Voir la démo",
+            "rect": {
+              "width": 131,
+              "height": 48,
+              "top": 500,
+              "bottom": 548,
+              "left": 266,
+              "right": 396
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Rejoindre le pilote",
+            "rect": {
+              "width": 511,
+              "height": 48,
+              "top": 1763,
+              "bottom": 1811,
+              "left": 743,
+              "right": 1254
+            },
+            "inFirstFold": false
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [],
         "cleaningCards": [
           {
             "width": 385,
             "height": 160,
-            "top": 703
+            "top": 703,
+            "bottom": 863,
+            "left": 83,
+            "right": 468,
+            "text": "MaisonsNettoyage résidentielDemandes de nettoyage résidentiel récurrent ou ponctuel."
           },
           {
             "width": 385,
             "height": 160,
-            "top": 703
+            "top": 703,
+            "bottom": 863,
+            "left": 491,
+            "right": 875,
+            "text": "MaisonsNettoyage en profondeurPortée, état de la propriété et zones prioritaires."
           },
           {
             "width": 385,
             "height": 160,
-            "top": 703
+            "top": 703,
+            "bottom": 863,
+            "left": 898,
+            "right": 1283,
+            "text": "Déménagements et séjoursNettoyage avant/après déménagementÉchéance, électroménagers et notes d’accès."
           },
           {
             "width": 385,
             "height": 136,
-            "top": 886
+            "top": 886,
+            "bottom": 1021,
+            "left": 83,
+            "right": 468,
+            "text": "Déménagements et séjoursNettoyage entre séjours AirbnbHeure de sortie, literie, fournitures et accès."
           },
           {
             "width": 385,
             "height": 136,
-            "top": 886
+            "top": 886,
+            "bottom": 1021,
+            "left": 491,
+            "right": 875,
+            "text": "Commercial et spécialiséNettoyage de bureauxSuperficie, fréquence, horaire et accès au site."
           },
           {
             "width": 385,
             "height": 136,
-            "top": 886
+            "top": 886,
+            "bottom": 1021,
+            "left": 898,
+            "right": 1283,
+            "text": "Commercial et spécialiséNettoyage après travauxTaille du site, poussière/débris et échéance."
           }
-        ]
-      }
+        ],
+        "quoteConsentInputCount": 0,
+        "quoteVisibleConsentBlocks": 0,
+        "honeypot": null,
+        "footerBrandProbe": {
+          "text": "BBizPilot AISuivi des demandes pour entreprises de nettoyage",
+          "scrollWidth": 313,
+          "clientWidth": 300,
+          "rect": {
+            "width": 300,
+            "height": 44,
+            "top": 1958,
+            "bottom": 2002,
+            "left": 83,
+            "right": 383
+          },
+          "note": "Non-gating footer brand probe; screenshot confirms no root overflow or visible clipping."
+        }
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     },
     {
       "name": "production-demo-dark-1280x720",
-      "url": "https://bizpilo.com/demo?language=en&l5=visual",
+      "url": "https://bizpilo.com/demo?language=en&f6=visual",
       "theme": "dark",
       "width": 1280,
       "height": 720,
@@ -223,18 +2056,188 @@
       "metrics": {
         "lang": "en",
         "theme": "dark",
+        "themePreference": "dark",
+        "title": "Cleaning Quote Workflow Demo | BizPilot AI",
         "scrollWidth": 1280,
         "clientWidth": 1280,
         "horizontalOverflow": false,
         "bodyTextLength": 2121,
         "h1": "See how BizPilot handles a cleaning quote request.",
+        "visibleButtons": [
+          {
+            "text": "BBizPilot AILead recovery for cleaning businesses",
+            "rect": {
+              "width": 256,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 40,
+              "right": 296
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Features",
+            "rect": {
+              "width": 76,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 372,
+              "right": 448
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Cleaning",
+            "rect": {
+              "width": 76,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 452,
+              "right": 528
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Trust",
+            "rect": {
+              "width": 55,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 532,
+              "right": 586
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Demo",
+            "rect": {
+              "width": 58,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 590,
+              "right": 648
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Pricing",
+            "rect": {
+              "width": 65,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 652,
+              "right": 718
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Pilot",
+            "rect": {
+              "width": 51,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 722,
+              "right": 773
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "EN",
+            "rect": {
+              "width": 89,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 849,
+              "right": 937
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "",
+            "rect": {
+              "width": 44,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 945,
+              "right": 989
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Sign in",
+            "rect": {
+              "width": 67,
+              "height": 44,
+              "top": 16,
+              "bottom": 60,
+              "left": 997,
+              "right": 1065
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Join founder pilot",
+            "rect": {
+              "width": 167,
+              "height": 48,
+              "top": 14,
+              "bottom": 62,
+              "left": 1073,
+              "right": 1240
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Apply for founder pilot",
+            "rect": {
+              "width": 230,
+              "height": 48,
+              "top": 1937,
+              "bottom": 1985,
+              "left": 977,
+              "right": 1207
+            },
+            "inFirstFold": false
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [],
-        "cleaningCards": []
-      }
+        "cleaningCards": [],
+        "quoteConsentInputCount": 0,
+        "quoteVisibleConsentBlocks": 0,
+        "honeypot": null,
+        "footerBrandProbe": {
+          "text": "BBizPilot AILead recovery for cleaning businesses",
+          "scrollWidth": 256,
+          "clientWidth": 256,
+          "rect": {
+            "width": 256,
+            "height": 44,
+            "top": 2137,
+            "bottom": 2181,
+            "left": 40,
+            "right": 296
+          },
+          "note": "Non-gating footer brand probe; screenshot confirms no root overflow or visible clipping."
+        }
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     },
     {
       "name": "production-auth-sign-in-mobile-390x844",
-      "url": "https://bizpilo.com/auth/sign-in?language=en&l5=visual",
+      "url": "https://bizpilo.com/auth/sign-in?language=en&f6=visual",
       "theme": "light",
       "width": 390,
       "height": 844,
@@ -243,18 +2246,103 @@
       "metrics": {
         "lang": "en",
         "theme": "light",
+        "themePreference": "light",
+        "title": "Sign in | BizPilot AI",
         "scrollWidth": 390,
         "clientWidth": 390,
         "horizontalOverflow": false,
         "bodyTextLength": 325,
         "h1": "Sign in",
+        "visibleButtons": [
+          {
+            "text": "BBizPilot AIOwner access",
+            "rect": {
+              "width": 150,
+              "height": 44,
+              "top": 24,
+              "bottom": 68,
+              "left": 16,
+              "right": 166
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "← Back home",
+            "rect": {
+              "width": 109,
+              "height": 44,
+              "top": 24,
+              "bottom": 68,
+              "left": 265,
+              "right": 374
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Forgot password?",
+            "rect": {
+              "width": 97,
+              "height": 17,
+              "top": 314,
+              "bottom": 330,
+              "left": 252,
+              "right": 349
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Show",
+            "rect": {
+              "width": 56,
+              "height": 32,
+              "top": 343,
+              "bottom": 375,
+              "left": 287,
+              "right": 343
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Sign in",
+            "rect": {
+              "width": 308,
+              "height": 44,
+              "top": 395,
+              "bottom": 439,
+              "left": 41,
+              "right": 349
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Create owner access",
+            "rect": {
+              "width": 134,
+              "height": 17,
+              "top": 476,
+              "bottom": 493,
+              "left": 148,
+              "right": 281
+            },
+            "inFirstFold": true
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [],
-        "cleaningCards": []
-      }
+        "cleaningCards": [],
+        "quoteConsentInputCount": 0,
+        "quoteVisibleConsentBlocks": 0,
+        "honeypot": null,
+        "footerBrandProbe": null
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     },
     {
       "name": "production-quote-fr-ca-light-390x844",
-      "url": "https://bizpilo.com/quote/akora?language=fr-CA&l5=visual",
+      "url": "https://bizpilo.com/quote/akora?language=fr-CA&f6=visual",
       "theme": "light",
       "width": 390,
       "height": 844,
@@ -263,14 +2351,69 @@
       "metrics": {
         "lang": "fr-CA",
         "theme": "light",
+        "themePreference": "light",
+        "title": "Demander une soumission de nettoyage | BizPilot AI",
         "scrollWidth": 390,
         "clientWidth": 390,
         "horizontalOverflow": false,
         "bodyTextLength": 2299,
         "h1": "Demander une soumission de nettoyage",
+        "visibleButtons": [
+          {
+            "text": "EN",
+            "rect": {
+              "width": 40,
+              "height": 32,
+              "top": 61,
+              "bottom": 93,
+              "left": 25,
+              "right": 65
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "FR",
+            "rect": {
+              "width": 40,
+              "height": 32,
+              "top": 61,
+              "bottom": 93,
+              "left": 65,
+              "right": 105
+            },
+            "inFirstFold": true
+          },
+          {
+            "text": "Envoyer la demande",
+            "rect": {
+              "width": 350,
+              "height": 48,
+              "top": 3166,
+              "bottom": 3214,
+              "left": 20,
+              "right": 370
+            },
+            "inFirstFold": false
+          }
+        ],
+        "compactControlOverflow": [],
+        "nestedScrollers": [],
         "pricingCards": [],
-        "cleaningCards": []
-      }
+        "cleaningCards": [],
+        "quoteConsentInputCount": 1,
+        "quoteVisibleConsentBlocks": 1,
+        "honeypot": {
+          "type": "text",
+          "tabIndex": "-1",
+          "inputDisplay": "inline-block",
+          "labelDisplay": "none",
+          "hidden": true
+        },
+        "footerBrandProbe": null
+      },
+      "errorLogs": [],
+      "pass": true,
+      "reasons": []
     }
   ]
 }
