@@ -20,7 +20,9 @@
 
 type RouteContract = Readonly<{
   h1: string;
+  maxOccurrences?: readonly Readonly<{ max: number; text: string }>[];
   mustContain?: readonly string[];
+  mustNotContain?: readonly string[];
   path: string;
 }>;
 
@@ -32,19 +34,39 @@ const routes: readonly RouteContract[] = [
     h1: "Stop losing cleaning quote requests to slow replies.",
     mustContain: [
       "href=\"/demo\"",
+      "homepage-demo-grid",
       "homepage-use-case-grid",
       "No auto-send",
       "Owner-reviewed AI drafts",
     ],
+    mustNotContain: ["homepage-workflow-grid"],
     path: "/",
   },
   {
     h1: "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    maxOccurrences: [
+      {
+        max: 1,
+        text: "Rejoindre le pilote fondateur",
+      },
+    ],
     mustContain: [
       "href=\"/demo\"",
+      "homepage-demo-grid",
       "homepage-use-case-grid",
       "Aucun envoi automatique",
       "Brouillons révisés par le propriétaire",
+    ],
+    mustNotContain: [
+      "Confidentialite",
+      "Securite",
+      "Demo par onglets",
+      "demande realiste",
+      "Le systeme",
+      "Le proprietaire",
+      "Aucun prix invente",
+      "Pret a reviser",
+      "homepage-workflow-grid",
     ],
     path: "/?language=fr-CA",
   },
@@ -149,6 +171,10 @@ function countOccurrences(value: string, needle: string): number {
   return value.split(needle).length - 1;
 }
 
+function stripScripts(html: string): string {
+  return html.replace(/<script\b[\s\S]*?<\/script>/gi, "");
+}
+
 async function fetchHtml(url: URL): Promise<string> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -173,6 +199,7 @@ async function fetchHtml(url: URL): Promise<string> {
 
 function assertContract(route: RouteContract, html: string): string[] {
   const failures: string[] = [];
+  const visibleHtml = stripScripts(html);
 
   if (!html.includes(route.h1)) {
     failures.push(`missing H1 text ${JSON.stringify(route.h1)}`);
@@ -186,6 +213,21 @@ function assertContract(route: RouteContract, html: string): string[] {
   for (const expected of route.mustContain ?? []) {
     if (!html.includes(expected)) {
       failures.push(`missing expected text ${JSON.stringify(expected)}`);
+    }
+  }
+
+  for (const rejected of route.mustNotContain ?? []) {
+    if (html.includes(rejected)) {
+      failures.push(`unexpected text found ${JSON.stringify(rejected)}`);
+    }
+  }
+
+  for (const item of route.maxOccurrences ?? []) {
+    const count = countOccurrences(visibleHtml, item.text);
+    if (count > item.max) {
+      failures.push(
+        `expected ${JSON.stringify(item.text)} at most ${item.max} time(s), found ${count}`,
+      );
     }
   }
 
@@ -204,6 +246,18 @@ function assertContract(route: RouteContract, html: string): string[] {
   for (const artifact of ["MISSING_COPY", "__MISSING", ">undefined<"]) {
     if (html.includes(artifact)) {
       failures.push(`missing-copy artifact found: ${artifact}`);
+    }
+  }
+
+  for (const artifact of [
+    "Confidentialite",
+    "Securite",
+    "Demo par onglets",
+    "Aucun prix invente",
+    "Pret a reviser",
+  ]) {
+    if (html.includes(artifact)) {
+      failures.push(`public acceptance artifact found: ${artifact}`);
     }
   }
 
