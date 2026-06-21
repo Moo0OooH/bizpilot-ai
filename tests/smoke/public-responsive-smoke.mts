@@ -45,7 +45,7 @@ const routes: readonly RouteContract[] = [
     path: "/",
   },
   {
-    h1: "Répondez plus vite aux demandes de nettoyage.",
+    h1: "Ne perdez plus de soumissions faute de réponse rapide.",
     maxOccurrences: [
       {
         max: 1,
@@ -56,8 +56,9 @@ const routes: readonly RouteContract[] = [
       "href=\"/demo\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
-      "Aucun envoi auto",
-      "Brouillons IA révisés",
+      "Aucun envoi automatique",
+      "Brouillons IA validés par vous",
+      "Copie et envoi manuels",
     ],
     mustNotContain: [
       "Confidentialite",
@@ -68,6 +69,10 @@ const routes: readonly RouteContract[] = [
       "Le proprietaire",
       "Aucun prix invente",
       "Pret a reviser",
+      "Leads pour le nettoyage",
+      "Nettoyage de départ",
+      "révisé par le propriétaire",
+      "espace propriétaire",
       "homepage-workflow-grid",
     ],
     path: "/?language=fr-CA",

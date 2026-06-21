@@ -1,8 +1,8 @@
 # BizPilot fr-CA Terminology Standard v1.0
 
 Date: 2026-06-21
-Status: Active for the final public localization, copy, sizing, and visual
-acceptance program.
+Status: Active L2 applied terminology for the final public localization, copy,
+sizing, and visual acceptance program.
 
 ## Purpose
 
@@ -114,6 +114,16 @@ a rejected example in documentation or tests:
 | Mockup draft title | Brouillon suggéré |
 | Mockup tag | L'IA prépare. Vous envoyez. |
 | Mockup button | Copier la réponse |
+
+## L2 Applied Notes
+
+Phase L2 removed earlier literal or hybrid wording from the public-facing
+French copy baseline:
+
+- `Leads pour le nettoyage` is replaced by `Suivi des demandes pour entreprises de nettoyage`.
+- `Nettoyage de départ` is replaced by `nettoyage après déménagement` or `nettoyage avant/après déménagement`.
+- Repeated `révisé par le propriétaire` phrasing is replaced by `à valider` or `validé par vous` where the owner is the reader.
+- Compact controls use `Aucun envoi automatique`, `Brouillons IA validés par vous`, and `Copie et envoi manuels`.
 
 ## Style Rules
 

@@ -1174,48 +1174,48 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     },
     signIn: {
       description:
-        "Connectez-vous à un espace propriétaire BizPilot AI approuvé pour réviser les demandes de soumission et les brouillons.",
+        "Connectez-vous à un espace de travail BizPilot AI approuvé pour réviser les demandes de soumission et les réponses à valider.",
       title: "Connexion | BizPilot AI",
     },
     signUp: {
       description:
-        "Créez un espace propriétaire BizPilot AI après l'approbation du projet pilote.",
-      title: "Créer l'accès propriétaire | BizPilot AI",
+        "Créez un accès BizPilot AI après l'approbation du projet pilote.",
+      title: "Créer un accès | BizPilot AI",
     },
     signUpPilotCta: "Postulez d'abord sur la page du projet pilote.",
     signUpPilotPrompt: "Vous voulez rejoindre le projet pilote?",
   },
   cleaning: {
-    badge: "Entreprises de nettoyage d'abord",
+    badge: "Entreprises de nettoyage d’abord",
     beforeAfter: {
       after:
-        "Merci pour votre message. Pourriez-vous confirmer la superficie approximative, si les électroménagers doivent être nettoyés à l'intérieur et les notes d'accès afin que je prépare une soumission responsable?",
-      afterLabel: "Brouillon de réponse révisé par le propriétaire",
+        "Merci pour votre message. Pouvez-vous confirmer la superficie, les électroménagers à nettoyer et les notes d’accès afin que je prépare une soumission responsable?",
+      afterLabel: "Réponse à valider",
       before:
-        "\"Combien pour un nettoyage avant déménagement d'ici vendredi?\"",
+        "\"Combien pour un nettoyage après déménagement d’ici vendredi?\"",
       beforeLabel: "Avant",
       body:
-        "BizPilot transforme un message vague de nettoyage en détails utiles avant la réponse du propriétaire.",
+        "BizPilot transforme un message vague en détails utiles avant votre réponse.",
       title: "D'une demande vague à une prochaine réponse claire.",
     },
     body:
-      "BizPilot aide les propriétaires d'entreprises de nettoyage à recueillir les demandes de soumission, à organiser les prospects et à préparer rapidement des réponses révisées par le propriétaire.",
-    ctaPrimary: "Participer au projet pilote nettoyage",
+      "BizPilot aide les entreprises de nettoyage à centraliser les demandes, organiser les prospects et préparer des réponses à valider.",
+    ctaPrimary: "Rejoindre le pilote",
     ctaSecondary: "Voir la démo",
     example: {
       fields: [
-        ["Service", "Nettoyage avant ou après déménagement"],
+        ["Service", "Nettoyage après déménagement"],
         ["Propriété", "Appartement de 2 chambres"],
         ["Moment", "Avant vendredi"],
         ["Manquant", "superficie, électroménagers, notes d'accès"],
-        ["Statut", "Réponse requise"],
+        ["Statut", "À répondre"],
       ],
       request:
-        '"Bonjour, pouvez-vous faire un nettoyage avant vendredi? C’est un appartement de 2 chambres."',
+        '"Bonjour, pouvez-vous faire un nettoyage après déménagement avant vendredi? C’est un appartement de 2 chambres."',
       requestLabel: "Exemple de demande",
       title: "Flux de demande de soumission",
       workflow:
-        "Le client demande une soumission -> Le propriétaire voit les détails du service -> L'IA résume -> L'IA prépare un brouillon -> Le propriétaire copie et envoie manuellement",
+        "Le client demande une soumission -> Le prospect est organisé -> L’IA prépare un brouillon -> Vous validez, copiez et envoyez manuellement",
     },
     families: [
       {
@@ -1249,10 +1249,10 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         body:
           "Les travaux liés aux dates limites demandent le moment, l'accès et les détails de remise en état au même endroit.",
         details: [
-          "Date de déménagement ou heure de départ",
+          "Date de déménagement ou heure de sortie",
           "Électroménagers et armoires à l'intérieur",
           "Instructions d'entrée",
-          "Fournitures ou notes de literie manquantes",
+          "Fournitures ou notes de literie à confirmer",
         ],
         detailsTitle: "Détails que BizPilot garde clairs",
         request:
@@ -1260,17 +1260,17 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         requestLabel: "Exemple de demande",
         services: [
           {
-            body: "Délais, détails des électroménagers et notes d'accès.",
+            body: "Échéance, électroménagers et notes d’accès.",
             id: "move-in-out",
-            title: "Nettoyage avant ou après déménagement",
+            title: "Nettoyage avant/après déménagement",
           },
           {
-            body: "Heure de départ, literie, fournitures et détails d'entrée.",
+            body: "Heure de sortie, literie, fournitures et accès.",
             id: "airbnb",
-            title: "Remise en état entre séjours Airbnb",
+            title: "Nettoyage entre séjours Airbnb",
           },
         ],
-        title: "Déménagements et turnovers",
+        title: "Déménagements et séjours",
       },
       {
         body:
@@ -1292,7 +1292,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
             title: "Nettoyage de bureaux",
           },
           {
-            body: "Demandes de petit commercial avec suivi manuel clair.",
+            body: "Demandes commerciales simples avec suivi manuel clair.",
             id: "small-commercial",
             title: "Petit nettoyage commercial",
           },
@@ -1309,25 +1309,25 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       "Les propriétaires d'entreprises de nettoyage sont souvent loin d'un bureau. Ils sont sur les chantiers, sur la route, avec leur équipe ou avec des clients. Les demandes de soumission arrivent au mauvais moment, et une réponse lente peut coûter des mandats.",
     meta: {
       description:
-        "BizPilot AI aide les propriétaires d'entreprises de nettoyage à recueillir les demandes de soumission, organiser les prospects et préparer des réponses révisées par le propriétaire.",
-      title: "Logiciel de récupération de prospects pour le nettoyage | BizPilot AI",
+        "BizPilot AI aide les entreprises de nettoyage à centraliser les demandes, organiser les prospects et préparer des réponses à valider.",
+      title: "Récupération des demandes pour entreprises de nettoyage | BizPilot AI",
     },
     services: [
       "Nettoyage résidentiel",
       "Nettoyage en profondeur",
-      "Nettoyage avant ou après déménagement",
+      "Nettoyage avant/après déménagement",
       "Nettoyage de bureaux",
-      "Remise en état entre séjours Airbnb",
+      "Nettoyage entre séjours Airbnb",
       "Nettoyage après travaux",
       "Petit nettoyage commercial",
     ],
     servicesTitle: "Services soutenus pendant le projet pilote",
-    title: "Récupération de prospects pour les entreprises de nettoyage.",
+    title: "Récupération des demandes pour entreprises de nettoyage.",
   },
   contentStudio: {
     badge: "Feuille de route",
     body:
-      "Cette page présente seulement une direction future. BizPilot pourrait plus tard aider les entreprises locales à créer du contenu marketing révisé par le propriétaire, après la validation du flux de récupération des demandes de nettoyage.",
+      "Cette page présente seulement une direction future. BizPilot pourrait plus tard aider les entreprises locales à préparer du contenu marketing à valider, après la validation du flux de récupération des demandes de nettoyage.",
     cards: [
       {
         body: "Futurs brouillons pour expliquer les services clairement.",
@@ -1338,11 +1338,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         title: "Mises à jour Google Business",
       },
       {
-        body: "Plans promotionnels qui restent soumis à l'approbation.",
+        body: "Plans promotionnels qui restent à valider avant publication.",
         title: "Promotions saisonnières",
       },
       {
-        body: "Réponses brouillons que le propriétaire révise d'abord.",
+        body: "Brouillons de réponse à valider avant publication.",
         title: "Réponses aux avis",
       },
       {
@@ -1350,16 +1350,16 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         title: "Scripts vidéo courts",
       },
       {
-        body: "Briefs simples pour de futurs visuels révisés par l'équipe.",
+        body: "Briefs simples pour de futurs visuels à valider.",
         title: "Briefs créatifs visuels",
       },
     ],
-    cta: "Participer au projet pilote",
+    cta: "Rejoindre le pilote",
     footer:
-      "Comme les brouillons de réponse, les futurs brouillons de contenu devraient être révisés par le propriétaire avant publication. Aucune publication automatique n'est promise.",
+      "Comme les brouillons de réponse, les futurs brouillons de contenu devront être validés avant publication. Aucune publication automatique n'est promise.",
     meta: {
       description:
-        "Feuille de route du futur Content Studio BizPilot AI pour du contenu marketing local révisé par le propriétaire, après validation de la récupération de prospects.",
+        "Feuille de route du futur Content Studio BizPilot AI pour du contenu marketing local à valider, après validation de la récupération des demandes.",
       title: "Feuille de route Content Studio | BizPilot AI",
     },
     title: "Futur Content Studio pour la croissance locale.",
@@ -1367,14 +1367,14 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   demo: {
     badge: "Démo de 60 secondes",
     body:
-      "Suivez une demande réaliste de nettoyage avant ou après déménagement, du message client à la réponse révisée par le propriétaire.",
+      "Suivez une demande réaliste de nettoyage après déménagement, du message client à la réponse à valider.",
     chapters: [
       {
         body:
           "Une demande vague arrive pendant que le propriétaire est occupé. Des détails manquent, le prix serait risqué et le message est facile à oublier.",
         eyebrow: "1",
         panelItems: [
-          "\"Bonjour, combien pour un nettoyage avant déménagement d'ici vendredi?\"",
+          "\"Bonjour, combien pour un nettoyage après déménagement d’ici vendredi?\"",
         ],
         panelTitle: "Message client",
         title: "La demande arrive.",
@@ -1384,29 +1384,29 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
           "BizPilot transforme le message en contexte propre au nettoyage et indique ce qui manque avant une soumission responsable.",
         eyebrow: "2",
         panelItems: [
-          "Service : nettoyage avant ou après déménagement",
+          "Service : nettoyage après déménagement",
           "Moment : avant vendredi",
-          "Statut : réponse requise",
+          "Statut : à répondre",
           "Manquant : superficie, électroménagers, notes d'accès",
-          "Consentement : réponse révisée par le propriétaire attendue",
+          "Consentement : validation requise avant envoi",
         ],
         panelTitle: "Prospect organisé",
-        title: "BizPilot organise la demande et souligne les détails manquants.",
+        title: "BizPilot organise le prospect.",
       },
       {
         body:
-          "L'IA prépare un court résumé pour le propriétaire et un premier brouillon utile. Le brouillon demande les détails manquants au lieu d'inventer un prix.",
+          "L'IA prépare un court résumé et un premier brouillon utile. Le brouillon demande les détails manquants au lieu d'inventer un prix.",
         eyebrow: "3",
         panelItems: [
           "Sarah a besoin d'un nettoyage avant vendredi, mais le prix serait risqué sans la superficie, les détails sur les électroménagers et les notes d'accès.",
-          "Bonjour Sarah, merci pour votre message. Pourriez-vous confirmer la superficie approximative, si les électroménagers doivent être nettoyés à l'intérieur, et les notes d'accès afin que je prépare une soumission exacte?",
+          "Bonjour Sarah, merci pour votre message. Pouvez-vous confirmer la superficie, les électroménagers à nettoyer et les notes d’accès afin que je prépare une soumission exacte?",
         ],
         panelTitle: "Résumé IA et brouillon",
-        title: "L'IA prépare un brouillon révisé par le propriétaire.",
+        title: "L'IA prépare un brouillon à valider.",
       },
       {
         body:
-          "Le propriétaire révise, ajuste au besoin, copie la réponse et l'envoie manuellement depuis son propre canal. Les garde-fous restent visibles.",
+          "Vous validez, ajustez au besoin, copiez la réponse et l'envoyez manuellement depuis votre propre canal. Les garde-fous restent visibles.",
         eyebrow: "4",
         panelItems: [
           "Réviser",
@@ -1420,19 +1420,19 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
           "Aucune promesse de CRM complet",
         ],
         panelTitle: "Envoi manuel et garde-fous",
-        title: "Envoi manuel + garde-fous.",
+        title: "Vous validez, copiez et envoyez manuellement.",
       },
     ],
     cta: {
       body:
-        "BizPilot commence avec les entreprises de nettoyage afin que le produit soit façonné autour de vraies demandes de soumission et de commentaires de propriétaires.",
-      button: "Participer au projet pilote",
+        "BizPilot commence avec les entreprises de nettoyage afin que le produit soit façonné autour de vraies demandes de soumission et de commentaires terrain.",
+      button: "Rejoindre le pilote",
       title:
         "Essayez le flux du projet pilote avec de vraies demandes de nettoyage.",
     },
     meta: {
       description:
-        "Voyez comment BizPilot AI capte une demande de soumission de nettoyage, organise le prospect, signale les détails manquants et prépare une réponse révisée par le propriétaire.",
+        "Voyez comment BizPilot AI capte une demande de soumission de nettoyage, organise le prospect, signale les détails manquants et prépare une réponse à valider.",
       title: "Démo du flux de soumission de nettoyage | BizPilot AI",
     },
     title: "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
@@ -1442,8 +1442,8 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     badges: [
       "Aucun envoi automatique",
       "Aucun prix inventé",
-      "Le propriétaire décide",
-      "Copier/envoyer manuellement",
+      "Vous décidez",
+      "Copie et envoi manuels",
       "Projet pilote axé sur le nettoyage",
     ],
     cards: [
@@ -1454,7 +1454,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Voyez les nouvelles demandes de nettoyage dans un espace propriétaire plutôt que dans des messages dispersés.",
+          "Voyez les nouvelles demandes de nettoyage dans un espace de travail plutôt que dans des messages dispersés.",
         title: "Savoir qui attend une réponse maintenant.",
       },
       {
@@ -1465,11 +1465,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       {
         body:
           "Utilisez une première réponse pratique qui demande les détails manquants au lieu de deviner.",
-        title: "Commencer avec un brouillon révisé par le propriétaire.",
+        title: "Préparer un brouillon à valider.",
       },
       {
         body:
-          "Gardez la communication finale entre les mains du propriétaire tout en avançant plus vite.",
+          "Gardez la communication finale entre vos mains tout en avançant plus vite.",
         title: "Copier et envoyer depuis le canal que vous utilisez déjà.",
       },
       {
@@ -1480,21 +1480,21 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     ],
     meta: {
       description:
-        "Fonctions BizPilot AI pour les entreprises de nettoyage : lien de soumission, boîte de prospects, détails, brouillons révisés par le propriétaire et envoi manuel.",
+        "Fonctions BizPilot AI pour les entreprises de nettoyage : lien de soumission, demandes reçues, détails, brouillons IA à valider et envoi manuel.",
       title: "Fonctions de récupération de prospects | BizPilot AI",
     },
-    primaryCta: "Participer au projet pilote",
+    primaryCta: "Rejoindre le pilote",
     proof: {
       badge: "Preuve produit",
       body:
-        "Une demande réaliste de nettoyage passe par un chemin simple, manuel d'abord.",
+        "Une demande réaliste de nettoyage passe par un chemin simple et contrôlé.",
       items: [
         "Le client envoie une demande de soumission",
         "BizPilot organise le service, le moment et les détails manquants",
-        "L'IA prépare un brouillon révisé par le propriétaire",
-        "Le propriétaire copie, ajuste au besoin et envoie manuellement",
+        "L'IA prépare un brouillon à valider",
+        "Vous copiez, ajustez au besoin et envoyez manuellement",
       ],
-      title: "Du lien de soumission à la réponse révisée par le propriétaire.",
+      title: "Du lien de soumission à la réponse à valider.",
     },
     roadmap: {
       badge: "Feuille de route",
@@ -1508,7 +1508,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   home: {
     ai: {
       body:
-        "BizPilot n'envoie pas automatiquement de messages aux clients pendant le premier projet pilote. L'IA aide à préparer les réponses, mais chaque message est révisé, ajusté et envoyé manuellement par le propriétaire.",
+        "BizPilot n'envoie pas automatiquement de messages aux clients pendant le premier projet pilote. L'IA aide à préparer les réponses, mais chaque message est validé, ajusté et envoyé manuellement par vous.",
       canHelp: [
         "Résumer les demandes de soumission",
         "Préparer des réponses amicales",
@@ -1517,14 +1517,14 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Créer des brouillons de réponse en français ou en anglais",
       ],
       canHelpTitle: "L'IA peut aider à",
-      eyebrow: "IA d'abord manuelle",
+      eyebrow: "IA sous votre contrôle",
       title: "L'IA prépare. Vous décidez.",
       willNot: [
         "Envoyer des messages automatiquement",
         "Inventer des prix",
         "Promettre des disponibilités",
         "Confirmer des réservations",
-        "Remplacer le jugement du propriétaire",
+        "Remplacer votre jugement",
       ],
       willNotTitle: "L'IA ne va pas",
     },
@@ -1538,7 +1538,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         },
         {
           answer:
-            "Non. Pendant le premier projet pilote, BizPilot prépare des brouillons et le propriétaire révise, modifie, copie et envoie manuellement.",
+            "Non. Pendant le premier projet pilote, BizPilot prépare des brouillons. Vous validez, modifiez, copiez et envoyez manuellement.",
           question: "BizPilot envoie-t-il des messages automatiquement?",
         },
         {
@@ -1553,7 +1553,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         },
         {
           answer:
-            "La demande devient un prospect organisé avec le service, le moment, les détails de propriété, le statut et, quand il y a assez de contexte, un brouillon de réponse révisé par le propriétaire.",
+            "La demande devient un prospect organisé avec le service, le moment, les détails de propriété, le statut et, quand il y a assez de contexte, un brouillon de réponse à valider.",
           question: "Que se passe-t-il quand un client envoie une demande?",
         },
         {
@@ -1563,7 +1563,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         },
         {
           answer:
-            "Content Studio est une direction future pour des publications, mises à jour, campagnes, descriptions de service et briefs visuels révisés par le propriétaire. Ce n'est pas une promesse du premier projet pilote.",
+            "Content Studio est une direction future pour des publications, mises à jour, campagnes, descriptions de service et briefs visuels à valider. Ce n'est pas une promesse du premier projet pilote.",
           question: "Qu'est-ce que le futur Content Studio?",
         },
       ],
@@ -1571,45 +1571,45 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     },
     finalCta: {
       body:
-        "Nous commençons avec un petit groupe d'entreprises de nettoyage afin de tester le flux, d'améliorer le produit et de bâtir autour de vrais commentaires de propriétaires.",
-      cta: "Postuler au projet pilote",
-      note: "Projet pilote limité. Onboarding manuel. Aucun envoi automatique.",
-      title: "Participez au projet pilote pour entreprises de nettoyage.",
+        "Nous commençons avec un petit groupe d'entreprises de nettoyage afin de tester le flux, d'améliorer le produit et de bâtir autour de vrais commentaires terrain.",
+      cta: "Rejoindre le pilote",
+      note: "Projet pilote limité. Configuration manuelle. Aucun envoi automatique.",
+      title: "Rejoignez le projet pilote pour entreprises de nettoyage.",
     },
     hero: {
-      badge: "Conçu d'abord pour les entreprises de nettoyage",
+      badge: "Pour les entreprises de nettoyage, d’abord.",
       body:
-        "BizPilot aide les entreprises de nettoyage à capter les demandes, organiser les prospects et préparer des réponses révisées par le propriétaire, sans envoi automatique.",
+        "Centralisez les demandes, organisez les prospects et préparez des réponses à valider — sans envoi automatique.",
       primaryCta: "Rejoindre le pilote",
       secondaryCta: "Voir la démo",
       title:
-        "Répondez plus vite aux demandes de nettoyage.",
+        "Ne perdez plus de soumissions faute de réponse rapide.",
       trustBadges: [
-        "Aucun envoi auto",
-        "Brouillons IA révisés",
-        "Copie/envoi manuel",
+        "Aucun envoi automatique",
+        "Brouillons IA validés par vous",
+        "Copie et envoi manuels",
       ],
     },
     meta: {
       description:
-        "BizPilot AI aide les entreprises de nettoyage à recueillir les demandes de soumission, organiser les demandes clients et préparer des réponses révisées par le propriétaire, sans envoi automatique.",
-      title: "BizPilot AI | Récupération de prospects pour le nettoyage",
+        "BizPilot AI aide les entreprises de nettoyage à centraliser les demandes, organiser les prospects et préparer des réponses à valider sans envoi automatique.",
+      title: "BizPilot AI | Suivi des demandes de nettoyage",
     },
     mockup: {
       copyButton: "Copier la réponse",
       draftBody:
-        "Bonjour Maria, merci pour votre message. Pourriez-vous confirmer le secteur et si les électroménagers doivent être nettoyés afin que je prépare une soumission exacte?",
+        "Bonjour Maria, merci pour votre message. Pouvez-vous confirmer le secteur et si les électroménagers doivent être nettoyés afin que je prépare une soumission exacte?",
       draftTag: "L'IA prépare. Vous envoyez.",
-      draftTitle: "Brouillon IA",
+      draftTitle: "Brouillon suggéré",
       fields: [
-        ["Service", "Nettoyage de départ"],
+        ["Service", "Nettoyage après déménagement"],
         ["Propriété", "2 chambres / 1 salle de bain"],
         ["Moment", "Samedi matin"],
         ["Statut", "À répondre"],
       ],
       name: "Maria L.",
       status: "À répondre",
-      title: "Nouvelle demande de soumission",
+      title: "Nouvelle demande",
     },
     preview: {
       badges: [
@@ -1618,18 +1618,18 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Envoi manuel",
       ],
       body:
-        "Suivez une demande réaliste de nettoyage avant déménagement, du message désordonné à la réponse révisée par le propriétaire. BizPilot organise le travail; le propriétaire garde le contrôle.",
+        "Suivez une demande réaliste de nettoyage après déménagement, du message désordonné à la réponse à valider. BizPilot organise le travail; vous gardez le contrôle.",
       copyButton: "Copier la réponse",
       cta: "Voir la démo complète",
       steps: [
         {
           quote:
-            "\"Bonjour, combien pour un nettoyage avant déménagement d'ici vendredi?\"",
+            "\"Bonjour, combien pour un nettoyage après déménagement d’ici vendredi?\"",
           title: "Demande vague",
         },
         {
           fields: [
-            ["Service", "Nettoyage de départ"],
+            ["Service", "Nettoyage après déménagement"],
             ["Moment", "Avant vendredi"],
             ["Manquant", "superficie, électroménagers, notes d'accès"],
             ["Statut", "À répondre"],
@@ -1638,13 +1638,13 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         },
         {
           body:
-            "Bonjour Sarah, merci pour votre message. Pourriez-vous confirmer la superficie approximative, si les électroménagers doivent être nettoyés à l'intérieur, et les notes d'accès afin que je prépare une soumission exacte?",
-          title: "Brouillon révisé par le propriétaire",
+            "Bonjour Sarah, merci pour votre message. Pouvez-vous confirmer la superficie, les électroménagers à nettoyer et les notes d’accès afin que je prépare une soumission exacte?",
+          title: "Brouillon à valider",
         },
         {
           body:
-            "Le propriétaire révise le brouillon, l'ajuste au besoin, le copie et l'envoie manuellement depuis le canal qu'il utilise déjà.",
-          title: "Le propriétaire copie et envoie manuellement",
+            "Vous validez le brouillon, l'ajustez au besoin, le copiez et l'envoyez manuellement depuis le canal que vous utilisez déjà.",
+          title: "Vous copiez et envoyez manuellement",
         },
       ],
       title: "Voyez le flux de récupération en 60 secondes.",
@@ -1675,7 +1675,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     roadmap: {
       badge: "Feuille de route",
       body:
-        "BizPilot est conçu pour aider plus tard les entreprises locales à créer des publications révisées par le propriétaire, des mises à jour Google Business, des campagnes de suivi, des descriptions de service, des promotions saisonnières et des briefs visuels.",
+        "BizPilot est conçu pour aider plus tard les entreprises locales à créer des publications à valider, des mises à jour Google Business, des campagnes de suivi, des descriptions de service, des promotions saisonnières et des briefs visuels.",
       cards: [
         "Légendes sociales",
         "Publications Google Business",
@@ -1706,7 +1706,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       ],
       eyebrow: "Solution",
       title:
-        "Un système simple de récupération de prospects pour entreprises de nettoyage.",
+        "Un système simple pour récupérer les demandes de nettoyage.",
     },
     useCases: {
       body:
@@ -1723,9 +1723,9 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
           title: "Nettoyage en profondeur",
         },
         {
-          body: "Délais, détails des électroménagers et notes d'accès.",
+          body: "Échéance, électroménagers et notes d’accès.",
           href: "/industries/cleaning#move-in-out",
-          title: "Nettoyage avant ou après déménagement",
+          title: "Nettoyage avant/après déménagement",
         },
         {
           body: "Superficie, fréquence, horaire et accès au site.",
@@ -1733,9 +1733,9 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
           title: "Nettoyage de bureaux",
         },
         {
-          body: "Heure de départ, literie, fournitures et détails d'entrée.",
+          body: "Heure de sortie, literie, fournitures et accès.",
           href: "/industries/cleaning#airbnb",
-          title: "Remise en état entre séjours Airbnb",
+          title: "Nettoyage entre séjours Airbnb",
         },
         {
           body: "Taille du site, poussière/débris et échéance.",
@@ -1751,15 +1751,15 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       steps: [
         "Partagez votre lien de soumission BizPilot",
         "Le client envoie une demande",
-        "Le prospect apparaît dans votre tableau de bord",
-        "BizPilot prépare une réponse",
-        "Vous révisez et envoyez manuellement",
+        "Le prospect apparaît dans votre espace de travail",
+        "BizPilot prépare un brouillon",
+        "Vous validez et envoyez manuellement",
       ],
       title: "Cinq étapes, aucune automatisation cachée.",
     },
   },
   pilot: {
-    badge: "Projet pilote fondateur",
+    badge: "Projet pilote",
     body:
       "Joignez-vous à un petit projet pilote guidé par le fondateur, conçu pour aider les entreprises de nettoyage à capter les demandes de soumission, répondre plus vite et garder le contrôle.",
     conversion: {
@@ -1790,22 +1790,22 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       "Entreprises de nettoyage exploitées par le propriétaire",
       "Petites équipes de nettoyage",
       "Entreprises qui reçoivent déjà des demandes de soumission en ligne",
-      "Propriétaires qui veulent de la vitesse sans complexité de CRM complet",
+      "Équipes qui veulent aller plus vite sans complexité de CRM complet",
     ],
     fitTitle: "Bon profil",
     getItems: [
       "Lien de demande de soumission",
-      "Boîte de prospects organisée",
+      "Demandes reçues organisées",
       "Résumé assisté par IA et brouillon de réponse",
-      "Flux copier/envoyer manuellement",
+      "Flux de copie et d’envoi manuels",
       "Configuration guidée par le fondateur",
       "Améliorations basées sur les commentaires",
     ],
     getTitle: "Ce que vous obtenez",
     meta: {
       description:
-        "Postulez au projet pilote BizPilot AI pour les entreprises de nettoyage qui veulent répondre plus vite aux soumissions sans complexité CRM.",
-      title: "Projet pilote fondateur pour le nettoyage | BizPilot AI",
+        "Postulez au projet pilote BizPilot AI pour les entreprises de nettoyage qui veulent répondre plus vite aux demandes de soumission sans complexité CRM.",
+      title: "Projet pilote pour le nettoyage | BizPilot AI",
     },
     nextSteps: [
       "Envoyez une courte demande pilote",
@@ -1818,7 +1818,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   pricing: {
     afterApply: {
       steps: [
-        "Le fondateur révise le fit et le flux actuel de soumission",
+        "Le fondateur vérifie le profil et le flux actuel de soumission",
         "La configuration pilote reste manuelle et soumise à approbation",
         "Tout paiement utilise seulement une facture ou un Stripe Payment Link",
       ],
@@ -1832,14 +1832,14 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         bullets: [
           "Configuration guidée par le fondateur",
           "Lien de demande de soumission",
-          "Boîte de prospects",
+          "Demandes reçues",
           "Résumé IA et aide au brouillon de réponse",
-          "Flux copier/envoyer manuellement",
+          "Copie et envoi manuels",
           "Engagement de commentaires à 30 et 60 jours",
           "Aucun envoi automatique",
         ],
         cohort: "Entreprises 1 à 5",
-        cta: "Postuler au projet pilote",
+        cta: "Rejoindre le pilote",
         highlight: "Engagement de commentaires requis",
         priceLines: ["$0 setup"],
         title: "Pilote fondateur",
@@ -1848,7 +1848,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         bullets: [
           "Page publique de soumission",
           "Tableau de bord de récupération",
-          "Brouillons IA révisés par le propriétaire",
+          "Brouillons IA à valider par vous",
           "Suivi manuel visible",
           "Guidage de configuration par le fondateur",
           "Facture manuelle ou Stripe Payment Link seulement",
@@ -1862,11 +1862,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       {
         bullets: [
           "Tout dans Starter",
-          "Page de soumission mieux personnalisée",
+          "Page de soumission plus personnalisée",
           "Ajustement du style de réponse et des FAQ",
           "Ajustement des brouillons de suivi",
           "Meilleure organisation des prospects",
-          "Onboarding prioritaire",
+          "Accueil prioritaire",
           "Aperçus d'utilisation simples",
         ],
         cohort: "Après 20 clients",
@@ -1890,14 +1890,14 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   },
   quoteShell: {
     guardrail:
-      "Ce formulaire ne confirme ni réservation ni prix. Le propriétaire de l'entreprise révisera votre demande et vous répondra.",
-    subtitle: "Dites-nous ce dont vous avez besoin et nous réviserons votre demande.",
+      "Ce formulaire ne confirme ni réservation ni prix. L'entreprise révisera votre demande et vous répondra.",
+    subtitle: "Un court formulaire de soumission. L'entreprise révise chaque demande et répond directement.",
     title: "Demander une soumission de nettoyage",
   },
   trust: {
-    badge: "Flux axé sur la confiance",
+    badge: "Confiance et contrôle",
     body:
-      "BizPilot est d'abord manuel. L'IA aide avec les brouillons, mais le propriétaire révise et envoie chaque message client.",
+      "BizPilot garde l'envoi entre vos mains. L'IA aide avec les brouillons, mais vous validez et envoyez chaque message client.",
     items: [
       {
         body:
@@ -1906,8 +1906,8 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Les brouillons IA sont révisés, modifiés et envoyés manuellement par le propriétaire.",
-        title: "IA révisée par le propriétaire",
+          "Les brouillons IA sont validés, modifiés et envoyés manuellement par vous.",
+        title: "Brouillons IA validés par vous",
       },
       {
         body:
@@ -1926,24 +1926,24 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Si l'IA est indisponible, le propriétaire garde un flux manuel clair.",
+          "Si l'IA est indisponible, vous gardez un flux manuel clair.",
         title: "Solution manuelle si l'IA est indisponible",
       },
       {
         body:
-          "Le premier projet pilote est bâti autour du contrôle copier/envoyer par le propriétaire.",
+          "Le premier projet pilote est bâti autour de la copie et de l'envoi manuels.",
         title: "Communication manuelle seulement au premier pilote",
       },
     ],
     meta: {
       description:
-        "BizPilot AI est d'abord manuel : l'IA prépare, les propriétaires révisent et aucun message client n'est envoyé automatiquement pendant le premier projet pilote.",
-      title: "IA contrôlée par le propriétaire et confiance | BizPilot AI",
+        "BizPilot AI garde l'envoi entre vos mains : l'IA prépare, vous validez et aucun message client n'est envoyé automatiquement pendant le premier projet pilote.",
+      title: "IA sous contrôle et confiance | BizPilot AI",
     },
     notes: {
       badge: "Notes de préparation technique",
       body:
-        "Les conditions commerciales du projet pilote BizPilot sont par étapes, mais les vraies données client et l'exécution payante dépendent encore de portes de préparation : smoke de production sans secret, approbation explicite du propriétaire avant toute vraie donnée client, et facture manuelle ou Stripe Payment Link préparé avant tout paiement.",
+        "Les conditions commerciales du projet pilote BizPilot sont par étapes, mais les vraies données client et l'exécution payante dépendent encore de points d'approbation : smoke de production sans secret, approbation explicite avant toute vraie donnée client, et facture manuelle ou Stripe Payment Link préparé avant tout paiement.",
     },
     pillars: [
       {
@@ -1951,14 +1951,14 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
           "BizPilot aide à préparer le travail, mais le propriétaire décide ce que le client reçoit.",
         points: [
           "Aucun envoi automatique",
-          "Le propriétaire révise, modifie et envoie",
+          "Vous validez, modifiez et envoyez",
           "Communication manuelle pendant le projet pilote",
         ],
         title: "Vous gardez le contrôle",
       },
       {
         body:
-          "Les demandes de soumission restent honnêtes jusqu'à ce que le propriétaire ait les faits nécessaires pour chiffrer le travail.",
+          "Les demandes de soumission restent honnêtes jusqu'à ce que vous ayez les faits nécessaires pour chiffrer le travail.",
         points: [
           "Aucun prix inventé",
           "Aucune confirmation automatique de réservation",
@@ -1968,19 +1968,19 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Si une aide automatisée est indisponible, le propriétaire garde un flux manuel clair.",
+          "Si une aide automatisée est indisponible, vous gardez un flux manuel clair.",
         points: [
-          "Porte d'approbation des vraies données client",
+          "Point d'approbation des vraies données client",
           "Solution de repli si l'IA est indisponible",
           "Le flux manuel reste disponible",
         ],
         title: "Le flux échoue prudemment",
       },
     ],
-    primaryCta: "Postuler au projet pilote",
+    primaryCta: "Rejoindre le pilote",
     privacyCta: "Lire la confidentialité",
     securityCta: "Lire la sécurité",
-    title: "Bâti pour le contrôle du propriétaire et la confiance.",
+    title: "Conçu pour le contrôle et la confiance.",
   },
 };
 

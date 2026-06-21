@@ -361,6 +361,21 @@ describe("BizPilot language copy", () => {
       true,
       "Quote form guardrail copy should follow the selected quote language.",
     );
+
+    const proxySource = readFileSync("proxy.ts", "utf8");
+    for (const authPath of [
+      "/auth/sign-in",
+      "/auth/sign-up",
+      "/auth/forgot-password",
+      "/auth/reset-password",
+      "/auth/check-email",
+    ]) {
+      assert.equal(
+        proxySource.includes(authPath),
+        true,
+        `proxy.ts should apply language query cookies to ${authPath}.`,
+      );
+    }
   });
 
   it("keeps fr-CA public marketing copy localized and claim-equivalent", () => {
@@ -369,7 +384,7 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       frenchPublicCopy.home.hero.title,
-      "Répondez plus vite aux demandes de nettoyage.",
+      "Ne perdez plus de soumissions faute de réponse rapide.",
     );
     assert.ok(
       frenchPublicCopy.home.hero.title.length <= 58,
@@ -380,6 +395,20 @@ describe("BizPilot language copy", () => {
       "Rejoindre le pilote",
     );
     assert.equal(frenchPublicCopy.home.hero.secondaryCta, "Voir la démo");
+    assert.equal(
+      frenchPublicCopy.home.hero.body,
+      "Centralisez les demandes, organisez les prospects et préparez des réponses à valider — sans envoi automatique.",
+    );
+    assert.deepEqual(frenchPublicCopy.home.hero.trustBadges, [
+      "Aucun envoi automatique",
+      "Brouillons IA validés par vous",
+      "Copie et envoi manuels",
+    ]);
+    assert.equal(frenchPublicCopy.home.mockup.title, "Nouvelle demande");
+    assert.equal(frenchPublicCopy.home.mockup.status, "À répondre");
+    assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon suggéré");
+    assert.equal(frenchPublicCopy.home.mockup.draftTag, "L'IA prépare. Vous envoyez.");
+    assert.equal(frenchPublicCopy.home.mockup.copyButton, "Copier la réponse");
 
     for (const englishPhrase of [
       "Stop losing cleaning quote requests to slow replies.",
@@ -394,6 +423,59 @@ describe("BizPilot language copy", () => {
         frenchPublicText.includes(englishPhrase),
         false,
         `fr-CA public copy should not contain English phrase: ${englishPhrase}`,
+      );
+    }
+  });
+
+  it("keeps fr-CA terminology professional and consistent", () => {
+    const frenchPublicCopy = getPublicSiteCopy("fr-CA");
+    const frenchHomeCopy = getHomeCopy("fr-CA");
+    const frenchPublicText = JSON.stringify(frenchPublicCopy);
+    const frenchHomeText = JSON.stringify(frenchHomeCopy);
+    const combinedFrenchPublicText = `${frenchPublicText} ${frenchHomeText}`;
+
+    assert.equal(
+      frenchHomeCopy.nav.brandSubtitle,
+      "Suivi des demandes pour entreprises de nettoyage",
+    );
+    assert.equal(
+      frenchPublicCopy.cleaning.services.includes("Nettoyage avant/après déménagement"),
+      true,
+    );
+    assert.equal(
+      frenchPublicCopy.cleaning.services.includes("Nettoyage entre séjours Airbnb"),
+      true,
+    );
+    assert.equal(
+      frenchPublicCopy.trust.items.some(
+        (item) => item.title === "Brouillons IA validés par vous",
+      ),
+      true,
+    );
+
+    for (const forbidden of [
+      /Leads pour le nettoyage/u,
+      /Nettoyage de départ/u,
+      /nettoyage de départ/u,
+      /manuel d'abord/u,
+      /espace propriétaire/u,
+      /révisé par le propriétaire/u,
+      /réponse requise/u,
+      /Brouillons IA révisés/u,
+      /Aucun envoi auto(?!matique)/u,
+      /Copie\/envoi manuel/u,
+      /Projet pilote fondateur/u,
+      /Participer au projet pilote/u,
+      /Postuler au projet pilote/u,
+      /turnovers/u,
+      /Onboarding/u,
+      /Remise en état entre séjours/u,
+      /Aucune automation/u,
+    ]) {
+      assert.equal(
+        forbidden.test(combinedFrenchPublicText),
+        false,
+        `fr-CA public copy should not contain stale or literal terminology: ${forbidden}`,
       );
     }
   });

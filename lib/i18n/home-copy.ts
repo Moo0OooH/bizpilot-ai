@@ -648,18 +648,18 @@ const frenchHomeCopy: HomeCopy = {
       "Aucun état de suivi",
     ],
     beforeLabel: "Avant",
-    beforeTitle: "Un lead chaud arrive en désordre.",
+    beforeTitle: "Un prospect chaud arrive en désordre.",
     recoveredDetailHeader: "Détail récupéré",
     serviceActionHeader: "Action de service",
   },
   commandCenter: {
     body:
-      "Un poste de pilotage pour le lead, les détails manquants, le brouillon révisé par le propriétaire et la prochaine action manuelle.",
+      "Un espace clair pour le prospect, les détails manquants, le brouillon à valider et la prochaine action manuelle.",
     eyebrow: "Centre de commande",
     mock: {
       actions: [
         {
-          body: "Le propriétaire vérifie le brouillon d'abord.",
+          body: "Vous validez le brouillon d'abord.",
           title: "Réviser la réponse",
         },
         {
@@ -677,9 +677,9 @@ const frenchHomeCopy: HomeCopy = {
       draft:
         "Bonjour Sarah, merci pour votre demande. Pouvez-vous partager la taille du logement, la fréquence souhaitée et les zones prioritaires afin que je prépare une soumission précise?",
       draftLabel: "Brouillon de réponse",
-      leadCount: "12 leads",
-      leadQueueTitle: "File de leads",
-      ownerReviewStatus: "Révision propriétaire",
+      leadCount: "12 prospects",
+      leadQueueTitle: "Demandes reçues",
+      ownerReviewStatus: "À valider",
       queue: [
         {
           customer: "Sarah M.",
@@ -741,7 +741,7 @@ const frenchHomeCopy: HomeCopy = {
       "Annulez quand vous voulez",
     ],
     body:
-      "Captez les demandes, demandez les détails manquants, répondez plus vite et ne perdez plus un lead dans le silence.",
+      "Captez les demandes, demandez les détails manquants, répondez plus vite et ne perdez plus un prospect dans le silence.",
     primaryCta: "Rejoindre le pilote fondateur",
     secondaryCta: "Voir les prix",
     title:
@@ -750,7 +750,7 @@ const frenchHomeCopy: HomeCopy = {
   hero: {
     badge: "Pour les équipes de nettoyage",
     body:
-      "BizPilot capte les demandes de soumission, organise chaque lead et prépare des réponses et suivis révisés par le propriétaire afin que les entreprises de nettoyage répondent plus vite sans envoi automatique.",
+      "BizPilot capte les demandes de soumission, organise chaque prospect et prépare des réponses et suivis à valider afin que les entreprises de nettoyage répondent plus vite sans envoi automatique.",
     bullets: [
       "Fonctionne avec les demandes venant de plusieurs canaux",
       "Les brouillons IA restent sous votre contrôle",
@@ -766,12 +766,12 @@ const frenchHomeCopy: HomeCopy = {
     copyResponse: "Copier la réponse",
     fromLabel: "Source",
     journey: [
-      { label: "Demande", value: "Soumission départ" },
+      { label: "Demande", value: "Soumission déménagement" },
       { label: "Organisée", value: "Source + délai" },
       { label: "Manquant", value: "Pieds carrés" },
       { label: "Brouillon", value: "Révision" },
       { label: "Envoyée", value: "Copie manuelle" },
-      { label: "Sauvée", value: "Lead gardé chaud" },
+      { label: "Sauvée", value: "Prospect gardé chaud" },
     ],
     leads: [
       {
@@ -792,7 +792,7 @@ const frenchHomeCopy: HomeCopy = {
       },
       {
         customer: "Emily R.",
-        detail: "Nettoyage de départ",
+        detail: "Nettoyage après déménagement",
         source: "Google Business",
         status: "Brouillon prêt",
         time: "42 min",
@@ -826,7 +826,7 @@ const frenchHomeCopy: HomeCopy = {
     replyTitle: "Réponse suggérée",
     reviewReply: "Réviser la réponse",
     title: "Bureau de récupération en direct",
-    viewAll: "Voir tous les leads",
+    viewAll: "Voir tous les prospects",
   },
   metrics: {
     eyebrow: "Instantané récupération",
@@ -842,7 +842,7 @@ const frenchHomeCopy: HomeCopy = {
         value: "8",
       },
       {
-        label: "Leads à risque",
+        label: "Prospects à risque",
         note: "Besoin de votre suivi",
         value: "3",
       },
@@ -858,7 +858,7 @@ const frenchHomeCopy: HomeCopy = {
       "Les mandats perdus ne semblent pas toujours perdus sur le moment. Ils ressemblent à une journée chargée, jusqu'à ce que le client ait déjà choisi une autre entreprise.",
     closing:
       "BizPilot garde la demande visible pendant qu'il reste encore le temps de répondre.",
-    eyebrow: "À quoi ressemble vraiment un lead perdu",
+    eyebrow: "À quoi ressemble vraiment un prospect perdu",
     items: [
       "Vous terminez un nettoyage.",
       "Vous regardez Instagram trois heures plus tard.",
@@ -866,10 +866,10 @@ const frenchHomeCopy: HomeCopy = {
       "Il manque les pieds carrés et les détails d'accès.",
       "Il a déjà écrit à une autre entreprise.",
     ],
-    title: "Le lead était chaud. La réponse était tardive.",
+    title: "Le prospect était chaud. La réponse était tardive.",
   },
   nav: {
-    brandSubtitle: "Leads pour le nettoyage",
+    brandSubtitle: "Suivi des demandes pour entreprises de nettoyage",
     cleaning: "Nettoyage",
     comparison: "Comparaison",
     copyright: "Copyright 2026 BizPilot AI. Tous droits réservés.",
@@ -891,7 +891,7 @@ const frenchHomeCopy: HomeCopy = {
   },
   problem: {
     body:
-      "Les leads de nettoyage ne disparaissent pas toujours d'un coup. Ils fuient par de petites brèches: délai, canaux éparpillés, détails manquants et suivis oubliés.",
+      "Les prospects de nettoyage ne disparaissent pas toujours d'un coup. Ils fuient par de petites brèches: délai, canaux éparpillés, détails manquants et suivis oubliés.",
     eyebrow: "Carte des fuites",
     items: [
       {
@@ -931,46 +931,46 @@ const frenchHomeCopy: HomeCopy = {
       },
       {
         body:
-          "L'assistant prépare la réponse pendant que le propriétaire garde l'approbation finale.",
+          "L'assistant prépare la réponse pendant que vous gardez l'approbation finale.",
         kicker: "Rédiger",
         title: "Réponse approuvée",
       },
       {
         body:
-          "Les leads silencieux restent visibles pour rendre le prochain suivi évident.",
+          "Les prospects silencieux restent visibles pour rendre le prochain suivi évident.",
         kicker: "Récupérer",
         title: "Radar de suivi",
       },
     ],
     title:
-      "Une boucle opérationnelle pour garder les leads chauds en mouvement.",
+      "Une boucle opérationnelle pour garder les prospects chauds en mouvement.",
   },
   workflowDemo: {
     body:
-      "Suivez une demande réaliste, de la question client au lead signalé, à l'avis au propriétaire, à la réponse révisée et au suivi. Rien n'est envoyé automatiquement.",
+      "Suivez une demande réaliste, de la question client au prospect signalé, à l'avis de révision, à la réponse validée et au suivi. Rien n'est envoyé automatiquement.",
     eyebrow: "Démo par onglets",
     outcome: "Réponse prête à réviser sans deviner.",
     safety: "Confidentialité, consentement et envoi manuel restent visibles.",
     steps: [
       {
         body:
-          "Un client pose une question vague sur le prix. BizPilot garde la demande originale, capte le canal et crée un lead structuré au lieu de le laisser dans une boîte de réception.",
+          "Un client pose une question vague sur le prix. BizPilot garde la demande originale, capte le canal et crée un prospect structuré au lieu de le laisser dans une boîte de réception.",
         kicker: "1 / Question client",
         rows: [
           { label: "Question", value: "Combien pour un départ?" },
           { label: "Source", value: "DM Instagram" },
-          { label: "État", value: "Nouveau lead créé" },
+          { label: "État", value: "Nouveau prospect créé" },
         ],
         system: [
           { label: "Capture", tone: "new", value: "Le texte original et la source restent visibles." },
           { label: "Confidentialité", tone: "draft", value: "Seulement les champs de soumission sont organisés." },
           { label: "Prochaine étape", tone: "info", value: "Analyse des infos manquantes." },
         ],
-        title: "La demande vague devient un lead.",
+        title: "La demande vague devient un prospect.",
       },
       {
         body:
-          "Le système signale ce qui manque avant que le propriétaire donne un prix trop tôt: pieds carrés, accès, date souhaitée et urgence.",
+          "Le système signale ce qui manque avant qu'un prix soit donné trop tôt: superficie, accès, date souhaitée et urgence.",
         kicker: "2 / Signaux",
         rows: [
           { label: "Manquant", value: "Pieds carrés" },
@@ -979,18 +979,18 @@ const frenchHomeCopy: HomeCopy = {
         ],
         system: [
           { label: "Signal", tone: "risk", value: "Infos requises avant estimation." },
-          { label: "Priorité", tone: "info", value: "Le départ rend le lead sensible au temps." },
+          { label: "Priorité", tone: "info", value: "Le déménagement rend le prospect sensible au temps." },
           { label: "Vue vendeur", tone: "draft", value: "La file explique pourquoi réviser." },
         ],
-        title: "Le propriétaire voit ce qui manque.",
+        title: "Vous voyez ce qui manque.",
       },
       {
         body:
-          "BizPilot prépare une réponse qui demande les bons détails. Le propriétaire révise, ajuste au besoin, puis copie et envoie dans le vrai canal.",
+          "BizPilot prépare une réponse qui demande les bons détails. Vous validez, ajustez au besoin, puis copiez et envoyez dans le vrai canal.",
         kicker: "3 / Réponse",
         rows: [
           { label: "Demande", value: "Taille, date, accès" },
-          { label: "Contrôle", value: "Révision propriétaire" },
+          { label: "Contrôle", value: "À valider" },
           { label: "Envoi", value: "Copie manuelle" },
         ],
         system: [
@@ -1002,19 +1002,19 @@ const frenchHomeCopy: HomeCopy = {
       },
       {
         body:
-          "Après la réponse, le lead garde un état clair. Si le client ne répond pas, le prochain suivi manuel reste visible.",
+          "Après la réponse, le prospect garde un état clair. Si le client ne répond pas, le prochain suivi manuel reste visible.",
         kicker: "4 / Suivi",
         rows: [
           { label: "Statut", value: "En attente client" },
           { label: "Suivi", value: "Demain" },
-          { label: "Résultat", value: "Lead gardé chaud" },
+          { label: "Résultat", value: "Prospect gardé chaud" },
         ],
         system: [
           { label: "Suivi", tone: "new", value: "La prochaine touche manuelle reste visible." },
-          { label: "Audit", tone: "draft", value: "Action propriétaire séparée du brouillon IA." },
+          { label: "Audit", tone: "draft", value: "Action humaine séparée du brouillon IA." },
           { label: "Limite", tone: "risk", value: "Pas de réservation, facture, SMS, WhatsApp ou calendrier." },
         ],
-        title: "Le lead chaud reste visible.",
+        title: "Le prospect chaud reste visible.",
       },
     ],
     title: "Voyez tout le processus de récupération, onglet par onglet.",
@@ -1036,11 +1036,11 @@ const frenchHomeCopy: HomeCopy = {
       },
       {
         body: "Vous révisez, copiez et envoyez.",
-        title: "Contrôle IA propriétaire",
+        title: "Contrôle humain de l'IA",
       },
       {
         body: "Vous gardez le contrôle.",
-        title: "Aucun envoi auto. Aucune automation.",
+        title: "Aucun envoi automatique. Aucune automatisation.",
       },
     ],
     title:

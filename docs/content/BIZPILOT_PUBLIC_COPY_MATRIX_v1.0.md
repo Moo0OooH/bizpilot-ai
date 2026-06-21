@@ -1,7 +1,7 @@
 # BizPilot Public Copy Matrix v1.0
 
 Date: 2026-06-21
-Status: Active L0 content and localization contract.
+Status: Active L2 applied content and localization contract.
 Scope: Public marketing routes, legal routes, auth shells, safe quote shells,
 and report shells when present.
 
@@ -212,12 +212,37 @@ Each row uses this meaning:
 | ID | Route | Role | Canonical EN | Intent | Approved fr-CA | Prohibited Claims | Target | Line Budget | Wrap | A11y/Full Label |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | meta.home.title | / | metadata title | BizPilot AI | Brand title. | BizPilot AI | none | <= 60 | N/A | N/A | Browser/SEO title. |
-| meta.home.description | / | metadata description | BizPilot helps cleaning businesses collect quote requests, organize leads, and prepare owner-reviewed replies without auto-send. | Search summary. | BizPilot aide les entreprises de nettoyage à centraliser les demandes, organiser les prospects et préparer des réponses à valider sans envoi automatique. | auto-send, guaranteed revenue | <= 155 | N/A | N/A | SEO description. |
+| meta.home.description | / | metadata description | BizPilot helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send. | Search summary. | BizPilot aide les entreprises de nettoyage à centraliser les demandes, organiser les prospects et préparer des réponses à valider sans envoi automatique. | auto-send, guaranteed revenue | <= 155 | N/A | N/A | SEO description. |
 | meta.features.title | /features | metadata title | Features | Feature route. | Fonctions | none | <= 60 | N/A | N/A | Browser/SEO title. |
 | meta.cleaning.title | /industries/cleaning | metadata title | Cleaning Business Lead Recovery Software | Cleaning SEO. | Récupération des demandes pour entreprises de nettoyage | multi-industry | <= 65 | N/A | N/A | Browser/SEO title. |
 | meta.privacy.title | /privacy | metadata title | Privacy Notice | Privacy route. | Avis de confidentialité | compliance guarantee | <= 60 | N/A | N/A | Browser/SEO title. |
 | meta.security.title | /security | metadata title | Security Summary | Security route. | Résumé de sécurité | certification | <= 60 | N/A | N/A | Browser/SEO title. |
 | meta.terms.title | /terms | metadata title | Pilot Terms | Terms route. | Conditions pilote | paid launch | <= 60 | N/A | N/A | Browser/SEO title. |
+
+## L2 Applied fr-CA Strings
+
+These strings are the applied professional Canadian-French public-site baseline
+after Phase L2. They supersede earlier literal or compact placeholder wording.
+
+| ID | Applied fr-CA |
+| --- | --- |
+| shell.brand.tagline | Suivi des demandes pour entreprises de nettoyage |
+| home.hero.eyebrow | Pour les entreprises de nettoyage, d’abord. |
+| home.hero.h1 | Ne perdez plus de soumissions faute de réponse rapide. |
+| home.hero.body | Centralisez les demandes, organisez les prospects et préparez des réponses à valider — sans envoi automatique. |
+| home.hero.badge.no-auto | Aucun envoi automatique |
+| home.hero.badge.ai | Brouillons IA validés par vous |
+| home.hero.badge.manual | Copie et envoi manuels |
+| home.mockup.title | Nouvelle demande |
+| home.mockup.status | À répondre |
+| home.mockup.service.value | Nettoyage après déménagement |
+| home.mockup.draft.title | Brouillon suggéré |
+| cleaning.service.move | Nettoyage avant/après déménagement |
+| cleaning.service.airbnb | Nettoyage entre séjours Airbnb |
+| demo.chapter.3 | L’IA prépare un brouillon à valider. |
+| demo.chapter.4 | Vous validez, copiez et envoyez manuellement. |
+| trust.item.ai | Brouillons IA validés par vous |
+| quote.shell.subtitle | Un court formulaire de soumission. L'entreprise révise chaque demande et répond directement. |
 
 ## Route Responsibility Summary
 

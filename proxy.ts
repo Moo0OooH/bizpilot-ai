@@ -13,6 +13,7 @@
  * Change Log:
  * - 2026-05-04: Created Phase 2 dashboard proxy guard.
  * - 2026-05-04: Awaited official Supabase SSR dashboard guard.
+ * - 2026-06-21: Included public auth shells in language query cookie handling.
  * ============================================================
  */
 
@@ -118,6 +119,11 @@ export const config = {
     "/privacy",
     "/security",
     "/terms",
+    "/auth/sign-in",
+    "/auth/sign-up",
+    "/auth/forgot-password",
+    "/auth/reset-password",
+    "/auth/check-email",
     "/quote/:path*",
     "/dashboard/:path*",
   ],
