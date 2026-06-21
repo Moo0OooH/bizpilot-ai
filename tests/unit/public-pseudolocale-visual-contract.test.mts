@@ -10,6 +10,9 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-06-21
+ * Last Updated: 2026-06-21
+ * Change Log:
+ * - 2026-06-21: Added accented pseudolocale output and final UI matrix source contracts.
  * ============================================================
  */
 
@@ -35,17 +38,30 @@ const TEST_PSEUDO_LOCALE = "en-XA";
 const protectedTokenPattern =
   /(\{[^}]+\}|%[sdifjoO]|https?:\/\/[^\s]+|\$[0-9][\w./-]*)/g;
 const accentMap: Record<string, string> = {
-  A: "A",
-  E: "E",
-  I: "I",
-  O: "O",
-  U: "U",
-  a: "a",
-  e: "e",
-  i: "i",
-  o: "o",
-  u: "u",
+  A: "Å",
+  E: "É",
+  I: "Ï",
+  O: "Ø",
+  U: "Û",
+  a: "å",
+  e: "é",
+  i: "ï",
+  o: "ø",
+  u: "û",
 };
+const pseudoAccentPattern = /[ÅÉÏØÛåéïøû]/;
+const requiredViewportMatrix = [
+  "320x568",
+  "360x800",
+  "390x844",
+  "430x932",
+  "768x1024",
+  "1024x768",
+  "1280x720",
+  "1366x768",
+  "1440x900",
+  "1920x1080",
+] as const;
 
 function pseudoLocalizeString(value: string): string {
   const parts = value.split(protectedTokenPattern);
@@ -111,6 +127,7 @@ describe("public pseudolocale visual contracts", () => {
     for (const token of ["{ownerName}", "$49/month", "https://example.test", "%s"]) {
       assert.equal(expandedSample.includes(token), true);
     }
+    assert.match(expandedSample, pseudoAccentPattern);
 
     const publicCopy = getPublicSiteCopy("en");
     const pseudoCopy = pseudoLocalizeCopy(publicCopy);
@@ -143,6 +160,50 @@ describe("public pseudolocale visual contracts", () => {
         ratio >= 1.35 && ratio <= 1.55,
         true,
         `Pseudo expansion ratio ${ratio.toFixed(2)} for ${source}`,
+      );
+      assert.match(
+        pseudoStrings[index] ?? "",
+        pseudoAccentPattern,
+        `Pseudo string should include accented expansion characters for ${source}`,
+      );
+    }
+  });
+
+  it("keeps final UI matrix coverage tied to visual and bilingual contracts", () => {
+    const matrixSmoke = readFileSync(
+      "tests/smoke/final-ui-matrix-smoke.mts",
+      "utf8",
+    );
+
+    for (const viewport of requiredViewportMatrix) {
+      assert.equal(
+        matrixSmoke.includes(`"${viewport}"`),
+        true,
+        `Final UI matrix missing viewport ${viewport}`,
+      );
+    }
+
+    for (const required of [
+      'type Locale = "en" | "fr-CA"',
+      'const TEST_PSEUDO_LOCALE = "en-XA"',
+      'const themeMatrix = ["light", "dark"]',
+      "test pseudolocale falls back to production English",
+      "no stale header control text",
+      "no missing-copy artifacts",
+      "no pseudolocale exposed",
+      "cleaning has six compact cards",
+      "cleaning has desktop tabs and mobile accordion",
+      "pricing has three plan cards",
+      "pricing CTAs anchored",
+      "external link target/rel",
+      "internal links same tab",
+      "sitemap localized alternates",
+      "robots excludes private/intake paths",
+    ]) {
+      assert.equal(
+        matrixSmoke.includes(required),
+        true,
+        `Final UI matrix should not be HTTP-only; missing ${required}`,
       );
     }
   });
