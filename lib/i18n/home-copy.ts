@@ -10,9 +10,10 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-19: Shortened public header tagline and corrected compact French pilot CTA.
+ * - 2026-06-21: Corrected compact CTA text and fr-CA accent defects visible in public shell/homepage copy.
  * ============================================================
  */
 
@@ -451,7 +452,7 @@ const englishHomeCopy: HomeCopy = {
     security: "Security",
     signIn: "Sign in",
     startFull: "Join founder pilot",
-    startShort: "Join founder pilot",
+    startShort: "Join pilot",
     terms: "Terms",
     trust: "Trust",
     why: "Why BizPilot",
@@ -753,7 +754,7 @@ const frenchHomeCopy: HomeCopy = {
     bullets: [
       "Fonctionne avec les demandes venant de plusieurs canaux",
       "Les brouillons IA restent sous votre contrôle",
-      "Aucun envoi automatique, aucun prix invente",
+      "Aucun envoi automatique, aucun prix inventé",
     ],
     primaryCta: "Postuler au pilote fondateur",
     secondaryCta: "Voir le fonctionnement",
@@ -765,12 +766,12 @@ const frenchHomeCopy: HomeCopy = {
     copyResponse: "Copier la réponse",
     fromLabel: "Source",
     journey: [
-      { label: "Demande", value: "Soumission depart" },
-      { label: "Organisee", value: "Source + delai" },
-      { label: "Manquant", value: "Pieds carres" },
-      { label: "Brouillon", value: "Revision" },
-      { label: "Envoyee", value: "Copie manuelle" },
-      { label: "Sauvee", value: "Lead garde chaud" },
+      { label: "Demande", value: "Soumission départ" },
+      { label: "Organisée", value: "Source + délai" },
+      { label: "Manquant", value: "Pieds carrés" },
+      { label: "Brouillon", value: "Révision" },
+      { label: "Envoyée", value: "Copie manuelle" },
+      { label: "Sauvée", value: "Lead gardé chaud" },
     ],
     leads: [
       {
@@ -846,7 +847,7 @@ const frenchHomeCopy: HomeCopy = {
         value: "3",
       },
       {
-        label: "Messages auto-envoyes",
+        label: "Messages auto-envoyés",
         note: "Vous gardez le contrôle",
         value: "0",
       },
@@ -854,36 +855,36 @@ const frenchHomeCopy: HomeCopy = {
   },
   painStory: {
     body:
-      "Les mandats perdus ne semblent pas toujours perdus sur le moment. Ils ressemblent a une journee chargee, jusqu'a ce que le client ait deja choisi une autre entreprise.",
+      "Les mandats perdus ne semblent pas toujours perdus sur le moment. Ils ressemblent à une journée chargée, jusqu'à ce que le client ait déjà choisi une autre entreprise.",
     closing:
-      "BizPilot garde la demande visible pendant qu'il reste encore le temps de repondre.",
-    eyebrow: "A quoi ressemble vraiment un lead perdu",
+      "BizPilot garde la demande visible pendant qu'il reste encore le temps de répondre.",
+    eyebrow: "À quoi ressemble vraiment un lead perdu",
     items: [
       "Vous terminez un nettoyage.",
       "Vous regardez Instagram trois heures plus tard.",
-      "Un client a demande une soumission.",
-      "Il manque les pieds carres et les details d'acces.",
-      "Il a deja ecrit a une autre entreprise.",
+      "Un client a demandé une soumission.",
+      "Il manque les pieds carrés et les détails d'accès.",
+      "Il a déjà écrit à une autre entreprise.",
     ],
-    title: "Le lead etait chaud. La reponse etait tardive.",
+    title: "Le lead était chaud. La réponse était tardive.",
   },
   nav: {
     brandSubtitle: "Récupération de leads pour le nettoyage",
     cleaning: "Nettoyage",
     comparison: "Comparaison",
     copyright: "Copyright 2026 BizPilot AI. Tous droits réservés.",
-    demo: "Demo",
+    demo: "Démo",
     faq: "FAQ",
     features: "Fonctions",
     flow: "Fonctionnement",
     languageLabel: "Langue de la page d'accueil",
     pilot: "Pilote",
     pricing: "Prix",
-    privacy: "Confidentialite",
-    security: "Securite",
+    privacy: "Confidentialité",
+    security: "Sécurité",
     signIn: "Connexion",
     startFull: "Rejoindre le pilote fondateur",
-    startShort: "Rejoindre le pilote",
+    startShort: "Participer au pilote",
     terms: "Conditions",
     trust: "Confiance",
     why: "Pourquoi BizPilot",
@@ -898,7 +899,7 @@ const frenchHomeCopy: HomeCopy = {
         title: "Réponse lente",
       },
       {
-        body: "Instagram, Google, texto et courriel restent disperses.",
+        body: "Instagram, Google, texto et courriel restent dispersés.",
         title: "Boîtes éparpillées",
       },
       {
@@ -906,7 +907,7 @@ const frenchHomeCopy: HomeCopy = {
         title: "Infos manquantes",
       },
       {
-        body: "Le client passe a autre chose sans que personne le voie.",
+        body: "Le client passe à autre chose sans que personne le voie.",
         title: "Perte silencieuse",
       },
     ],
@@ -946,77 +947,77 @@ const frenchHomeCopy: HomeCopy = {
   },
   workflowDemo: {
     body:
-      "Suivez une demande realiste, de la question client au lead signale, a l'avis au proprietaire, a la reponse revisee et au suivi. Rien n'est envoye automatiquement.",
-    eyebrow: "Demo par onglets",
-    outcome: "Reponse prete a reviser sans deviner.",
-    safety: "Confidentialite, consentement et envoi manuel restent visibles.",
+      "Suivez une demande réaliste, de la question client au lead signalé, à l'avis au propriétaire, à la réponse révisée et au suivi. Rien n'est envoyé automatiquement.",
+    eyebrow: "Démo par onglets",
+    outcome: "Réponse prête à réviser sans deviner.",
+    safety: "Confidentialité, consentement et envoi manuel restent visibles.",
     steps: [
       {
         body:
-          "Un client pose une question vague sur le prix. BizPilot garde la demande originale, capte le canal et cree un lead structure au lieu de le laisser dans une boite de reception.",
+          "Un client pose une question vague sur le prix. BizPilot garde la demande originale, capte le canal et crée un lead structuré au lieu de le laisser dans une boîte de réception.",
         kicker: "1 / Question client",
         rows: [
-          { label: "Question", value: "Combien pour un depart?" },
+          { label: "Question", value: "Combien pour un départ?" },
           { label: "Source", value: "DM Instagram" },
-          { label: "Etat", value: "Nouveau lead cree" },
+          { label: "État", value: "Nouveau lead créé" },
         ],
         system: [
           { label: "Capture", tone: "new", value: "Le texte original et la source restent visibles." },
-          { label: "Confidentialite", tone: "draft", value: "Seulement les champs de soumission sont organises." },
-          { label: "Prochaine etape", tone: "info", value: "Analyse des infos manquantes." },
+          { label: "Confidentialité", tone: "draft", value: "Seulement les champs de soumission sont organisés." },
+          { label: "Prochaine étape", tone: "info", value: "Analyse des infos manquantes." },
         ],
         title: "La demande vague devient un lead.",
       },
       {
         body:
-          "Le systeme signale ce qui manque avant que le proprietaire donne un prix trop tot: pieds carres, acces, date souhaitee et urgence.",
+          "Le système signale ce qui manque avant que le propriétaire donne un prix trop tôt: pieds carrés, accès, date souhaitée et urgence.",
         kicker: "2 / Signaux",
         rows: [
-          { label: "Manquant", value: "Pieds carres" },
-          { label: "Manquant", value: "Stationnement/acces" },
-          { label: "Risque", value: "Prix premature" },
+          { label: "Manquant", value: "Pieds carrés" },
+          { label: "Manquant", value: "Stationnement/accès" },
+          { label: "Risque", value: "Prix prématuré" },
         ],
         system: [
           { label: "Signal", tone: "risk", value: "Infos requises avant estimation." },
-          { label: "Priorite", tone: "info", value: "Le depart rend le lead sensible au temps." },
-          { label: "Vue vendeur", tone: "draft", value: "La file explique pourquoi reviser." },
+          { label: "Priorité", tone: "info", value: "Le départ rend le lead sensible au temps." },
+          { label: "Vue vendeur", tone: "draft", value: "La file explique pourquoi réviser." },
         ],
-        title: "Le proprietaire voit ce qui manque.",
+        title: "Le propriétaire voit ce qui manque.",
       },
       {
         body:
-          "BizPilot prepare une reponse qui demande les bons details. Le proprietaire revise, ajuste au besoin, puis copie et envoie dans le vrai canal.",
-        kicker: "3 / Reponse",
+          "BizPilot prépare une réponse qui demande les bons détails. Le propriétaire révise, ajuste au besoin, puis copie et envoie dans le vrai canal.",
+        kicker: "3 / Réponse",
         rows: [
-          { label: "Demande", value: "Taille, date, acces" },
-          { label: "Controle", value: "Revision proprietaire" },
+          { label: "Demande", value: "Taille, date, accès" },
+          { label: "Contrôle", value: "Révision propriétaire" },
           { label: "Envoi", value: "Copie manuelle" },
         ],
         system: [
-          { label: "Scope IA", tone: "draft", value: "Aide a la redaction seulement." },
-          { label: "Securite", tone: "new", value: "Aucun prix invente sans contexte." },
-          { label: "Action vendeur", tone: "info", value: "Copier, envoyer, marquer contacte." },
+          { label: "Scope IA", tone: "draft", value: "Aide à la rédaction seulement." },
+          { label: "Sécurité", tone: "new", value: "Aucun prix inventé sans contexte." },
+          { label: "Action vendeur", tone: "info", value: "Copier, envoyer, marquer contacté." },
         ],
         title: "Le vendeur obtient un brouillon utile.",
       },
       {
         body:
-          "Apres la reponse, le lead garde un etat clair. Si le client ne repond pas, le prochain suivi manuel reste visible.",
+          "Après la réponse, le lead garde un état clair. Si le client ne répond pas, le prochain suivi manuel reste visible.",
         kicker: "4 / Suivi",
         rows: [
           { label: "Statut", value: "En attente client" },
           { label: "Suivi", value: "Demain" },
-          { label: "Resultat", value: "Lead garde chaud" },
+          { label: "Résultat", value: "Lead gardé chaud" },
         ],
         system: [
           { label: "Suivi", tone: "new", value: "La prochaine touche manuelle reste visible." },
-          { label: "Audit", tone: "draft", value: "Action proprietaire separee du brouillon IA." },
-          { label: "Limite", tone: "risk", value: "Pas de reservation, facture, SMS, WhatsApp ou calendrier." },
+          { label: "Audit", tone: "draft", value: "Action propriétaire séparée du brouillon IA." },
+          { label: "Limite", tone: "risk", value: "Pas de réservation, facture, SMS, WhatsApp ou calendrier." },
         ],
         title: "Le lead chaud reste visible.",
       },
     ],
-    title: "Voyez tout le processus de recuperation, onglet par onglet.",
+    title: "Voyez tout le processus de récupération, onglet par onglet.",
   },
   trust: {
     eyebrow: "Conditions pilote",

@@ -11,6 +11,9 @@
  * - components/ui/theme-preference-control.tsx
  * Author: MoOoH
  * Created: 2026-06-20
+ * Last Updated: 2026-06-21
+ * Change Log:
+ * - 2026-06-21: Added homepage demo numbering regression coverage.
  * ============================================================
  */
 
@@ -90,6 +93,26 @@ describe("public visual stability source contracts", () => {
       globals.includes("@media (min-width: 1100px) and (max-height: 780px)"),
       true,
       "Short desktop viewports need reduced hero padding instead of smaller body text.",
+    );
+  });
+
+  it("keeps homepage demo cards from rendering duplicate visible step numbers", () => {
+    const homepage = source("app/page.tsx");
+    const previewStart = homepage.indexOf("function ProductPreview");
+    const previewEnd = homepage.indexOf("function ListColumn");
+    const productPreviewSource = homepage.slice(previewStart, previewEnd);
+
+    assert.notEqual(previewStart, -1, "ProductPreview should exist on the homepage.");
+    assert.notEqual(previewEnd, -1, "ProductPreview source slice should remain findable.");
+    assert.equal(
+      productPreviewSource.match(/\{index \+ 1\}/g)?.length,
+      1,
+      "ProductPreview should render one visible step number per card.",
+    );
+    assert.equal(
+      productPreviewSource.includes("justify-between gap-3"),
+      false,
+      "ProductPreview should not keep the old two-number header layout.",
     );
   });
 

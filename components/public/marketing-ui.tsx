@@ -10,11 +10,12 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
  * - 2026-06-19: Rebuilt public header utilities around compact locale/theme controls and content-fit navigation.
+ * - 2026-06-21: Removed duplicated compact header CTA markup so each shell state exposes one primary pilot action.
  * ============================================================
  */
 
@@ -66,7 +67,7 @@ const defaultMarketingNavCopy: HomeNavCopy = {
   security: "Security",
   signIn: "Sign in",
   startFull: "Join founder pilot",
-  startShort: "Join founder pilot",
+  startShort: "Join pilot",
   terms: "Terms",
   trust: "Trust",
   why: "Why BizPilot",
@@ -475,11 +476,6 @@ export function MarketingHeader({
           </MarketingButton>
         </div>
         <div className="flex shrink-0 items-center gap-2 min-[1240px]:hidden">
-          <div className="hidden sm:block min-[1240px]:hidden">
-            <MarketingButton className="min-h-11 px-4 text-[13px]" href="/pilot">
-              {copy.startShort}
-            </MarketingButton>
-          </div>
           <MarketingCompactMenu>
             <div className="grid gap-1">
               {navItems.map((item) => {
@@ -514,7 +510,7 @@ export function MarketingHeader({
                 {copy.signIn}
               </Link>
               <MarketingButton className="w-full" href="/pilot">
-                {copy.startFull}
+                {copy.startShort}
               </MarketingButton>
             </div>
           </MarketingCompactMenu>

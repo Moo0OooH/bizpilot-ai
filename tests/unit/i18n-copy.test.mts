@@ -9,9 +9,10 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
+ * - 2026-06-21: Added fr-CA public shell accent regression checks.
  * ============================================================
  */
 
@@ -390,6 +391,51 @@ describe("BizPilot language copy", () => {
         `fr-CA public copy should not contain English phrase: ${englishPhrase}`,
       );
     }
+  });
+
+  it("keeps fr-CA public shell and homepage copy accented", () => {
+    const frenchHomeCopy = getHomeCopy("fr-CA");
+    const frenchHomeText = JSON.stringify(frenchHomeCopy);
+    const interactiveDemoSource = readFileSync(
+      "components/public/interactive-cleaning-demo.tsx",
+      "utf8",
+    );
+
+    assert.equal(frenchHomeCopy.nav.demo, "Démo");
+    assert.equal(frenchHomeCopy.nav.privacy, "Confidentialité");
+    assert.equal(frenchHomeCopy.nav.security, "Sécurité");
+    assert.equal(frenchHomeCopy.nav.startShort, "Participer au pilote");
+    assert.equal(frenchHomeCopy.workflowDemo.eyebrow, "Démo par onglets");
+    assert.equal(
+      frenchHomeCopy.workflowDemo.safety,
+      "Confidentialité, consentement et envoi manuel restent visibles.",
+    );
+
+    for (const forbidden of [
+      "Confidentialite",
+      "Securite",
+      "Demo par onglets",
+      "demande realiste",
+      "Le systeme",
+      "Le proprietaire",
+      "Aucun prix invente",
+      "Pret a reviser",
+    ]) {
+      assert.equal(
+        frenchHomeText.includes(forbidden),
+        false,
+        `fr-CA home copy should not contain no-accent phrase: ${forbidden}`,
+      );
+      assert.equal(
+        interactiveDemoSource.includes(forbidden),
+        false,
+        `fr-CA interactive demo source should not contain no-accent phrase: ${forbidden}`,
+      );
+    }
+
+    assert.equal(interactiveDemoSource.includes("Démo nettoyage"), true);
+    assert.equal(interactiveDemoSource.includes("Brouillon pour révision"), true);
+    assert.equal(interactiveDemoSource.includes("Étape ${current} de ${total}"), true);
   });
 
   it("keeps homepage cleaning use-case cards locked to six service anchors", () => {

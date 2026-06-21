@@ -10,6 +10,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-25
+ * Last Updated: 2026-06-21
+ * Change Log:
+ * - 2026-06-21: Corrected fr-CA accents and moved the draft label into localized demo copy.
  * ============================================================
  */
 "use client";
@@ -37,6 +40,7 @@ type DemoStep = Readonly<{
 
 type DemoCopy = Readonly<{
   cta: string;
+  draftLabel: string;
   eyebrow: string;
   intro: string;
   next: string;
@@ -48,6 +52,7 @@ type DemoCopy = Readonly<{
 
 const englishDemo: DemoCopy = {
   cta: "See founder pilot terms",
+  draftLabel: "Owner review draft",
   eyebrow: "Live cleaning demo",
   intro:
     "Follow one realistic move-out cleaning quote request from customer question to follow-up. The system organizes the work; the owner stays in control.",
@@ -159,109 +164,110 @@ const englishDemo: DemoCopy = {
 
 const frenchDemo: DemoCopy = {
   cta: "Voir les conditions pilote",
-  eyebrow: "Demo nettoyage",
+  draftLabel: "Brouillon pour révision",
+  eyebrow: "Démo nettoyage",
   intro:
-    "Suivez une demande realiste de nettoyage de depart, de la question client jusqu'au suivi. Le systeme organise; le proprietaire garde le controle.",
+    "Suivez une demande réaliste de nettoyage de départ, de la question client jusqu'au suivi. Le système organise; le propriétaire garde le contrôle.",
   next: "Suivant",
-  previous: "Precedent",
-  stepLabel: (current, total) => `Etape ${current} de ${total}`,
+  previous: "Précédent",
+  stepLabel: (current, total) => `Étape ${current} de ${total}`,
   title: "Voyez comment BizPilot traite une demande de soumission confuse.",
   steps: [
     {
       detail:
-        "Une cliente demande une soumission de nettoyage de depart avec seulement une partie des details.",
+        "Une cliente demande une soumission de nettoyage de départ avec seulement une partie des détails.",
       draft:
-        "Sarah veut un nettoyage de depart avant vendredi, mais le prix serait risque sans superficie, acces et details des electros.",
+        "Sarah veut un nettoyage de départ avant vendredi, mais le prix serait risqué sans superficie, accès et détails des électros.",
       fields: [
         { label: "Cliente", value: "Sarah J." },
-        { label: "Demande", value: "Nettoyage de depart" },
+        { label: "Demande", value: "Nettoyage de départ" },
         { label: "Moment", value: "Avant vendredi" },
       ],
-      guardrail: "Aucun envoi automatique. Aucun prix invente.",
-      outcome: "Le lead est capture avant de disparaitre.",
+      guardrail: "Aucun envoi automatique. Aucun prix inventé.",
+      outcome: "Le lead est capturé avant de disparaître.",
       title: "Question client",
     },
     {
       detail:
-        "BizPilot transforme le message en lead structure avec source, statut et urgence.",
+        "BizPilot transforme le message en lead structuré avec source, statut et urgence.",
       draft:
-        "Le proprietaire voit la demande au meme endroit au lieu de reconstruire le contexte depuis courriel, DM ou appels manques.",
+        "Le propriétaire voit la demande au même endroit au lieu de reconstruire le contexte depuis courriel, DM ou appels manqués.",
       fields: [
         { label: "Source", value: "Lien de soumission" },
         { label: "Statut", value: "Nouveau lead" },
-        { label: "Urgence", value: "Reponse rapide requise" },
+        { label: "Urgence", value: "Réponse rapide requise" },
       ],
-      guardrail: "Les donnees restent limitees a l'entreprise.",
-      outcome: "La demande devient operationnelle.",
-      title: "Lead organise",
+      guardrail: "Les données restent limitées à l'entreprise.",
+      outcome: "La demande devient opérationnelle.",
+      title: "Lead organisé",
     },
     {
       detail:
-        "Le systeme signale ce qui manque avant que le proprietaire donne un prix ou une promesse.",
+        "Le système signale ce qui manque avant que le propriétaire donne un prix ou une promesse.",
       draft:
-        "Demander superficie, stationnement/acces et nettoyage interieur des electros avant l'estimation finale.",
+        "Demander superficie, stationnement/accès et nettoyage intérieur des électros avant l'estimation finale.",
       fields: [
         { label: "Manquant", value: "Superficie" },
-        { label: "Manquant", value: "Details d'acces" },
-        { label: "Risque", value: "Ne pas chiffrer trop tot" },
+        { label: "Manquant", value: "Détails d'accès" },
+        { label: "Risque", value: "Ne pas chiffrer trop tôt" },
       ],
-      guardrail: "Aucune promesse de reservation. Aucun prix devine.",
-      outcome: "Le proprietaire sait quoi confirmer.",
+      guardrail: "Aucune promesse de réservation. Aucun prix deviné.",
+      outcome: "Le propriétaire sait quoi confirmer.",
       title: "Infos manquantes",
     },
     {
       detail:
-        "BizPilot prepare un court resume pour que le proprietaire comprenne vite le lead.",
+        "BizPilot prépare un court résumé pour que le propriétaire comprenne vite le lead.",
       draft:
-        "Demande de nettoyage de depart pour un condo 2 chambres avant vendredi. La cliente semble prete apres confirmation des details manquants.",
+        "Demande de nettoyage de départ pour un condo 2 chambres avant vendredi. La cliente semble prête après confirmation des détails manquants.",
       fields: [
-        { label: "Intent", value: "Soumission nettoyage" },
-        { label: "Qualite", value: "Lead chaud" },
+        { label: "Intention", value: "Soumission nettoyage" },
+        { label: "Qualité", value: "Lead chaud" },
         { label: "Action", value: "Demander les infos" },
       ],
-      guardrail: "L'IA aide. Le proprietaire revise.",
-      outcome: "Le lead est plus facile a prioriser.",
-      title: "Resume systeme",
+      guardrail: "L'IA aide. Le propriétaire révise.",
+      outcome: "Le lead est plus facile à prioriser.",
+      title: "Résumé système",
     },
     {
       detail:
-        "Le proprietaire recoit un brouillon utile qui demande seulement les details necessaires.",
+        "Le propriétaire reçoit un brouillon utile qui demande seulement les détails nécessaires.",
       draft:
-        "Bonjour Sarah, merci de nous avoir ecrit. Pouvez-vous confirmer la superficie approximative, l'acces/stationnement et si les electros doivent etre nettoyes?",
+        "Bonjour Sarah, merci de nous avoir écrit. Pouvez-vous confirmer la superficie approximative, l'accès/stationnement et si les électros doivent être nettoyés?",
       fields: [
         { label: "Ton", value: "Professionnel" },
-        { label: "Action", value: "Revision proprietaire" },
+        { label: "Action", value: "Révision propriétaire" },
         { label: "Envoi", value: "Copier/envoyer manuel" },
       ],
-      guardrail: "Le message n'est pas envoye automatiquement.",
-      outcome: "Une reponse plus sure est prete plus vite.",
-      title: "Reponse preparee",
+      guardrail: "Le message n'est pas envoyé automatiquement.",
+      outcome: "Une réponse plus sûre est prête plus vite.",
+      title: "Réponse préparée",
     },
     {
       detail:
-        "Le proprietaire modifie, copie et envoie depuis son canal client habituel.",
+        "Le propriétaire modifie, copie et envoie depuis son canal client habituel.",
       draft:
-        "BizPilot garde le proprietaire dans la decision pour ne jamais perdre le controle des prix, promesses ou du ton.",
+        "BizPilot garde le propriétaire dans la décision pour ne jamais perdre le contrôle des prix, promesses ou du ton.",
       fields: [
-        { label: "Revision", value: "Le proprietaire verifie" },
-        { label: "Modifier", value: "Ton/details" },
-        { label: "Envoyer", value: "Controle proprietaire" },
+        { label: "Révision", value: "Le propriétaire vérifie" },
+        { label: "Modifier", value: "Ton/détails" },
+        { label: "Envoyer", value: "Contrôle propriétaire" },
       ],
       guardrail: "Copier/envoyer manuellement seulement.",
-      outcome: "Le client recoit une reponse plus rapide et revisee.",
-      title: "Gate proprietaire",
+      outcome: "Le client reçoit une réponse plus rapide et révisée.",
+      title: "Validation propriétaire",
     },
     {
       detail:
-        "Si la cliente ne repond pas, BizPilot garde le suivi visible au lieu de laisser refroidir le lead.",
+        "Si la cliente ne répond pas, BizPilot garde le suivi visible au lieu de laisser refroidir le lead.",
       draft:
-        "Bonjour Sarah, je fais un suivi. Des que vous confirmez la superficie et les details d'acces, je peux vous envoyer la prochaine etape.",
+        "Bonjour Sarah, je fais un suivi. Dès que vous confirmez la superficie et les détails d'accès, je peux vous envoyer la prochaine étape.",
       fields: [
         { label: "Statut", value: "En attente" },
         { label: "Suivi", value: "Demain" },
-        { label: "Brouillon", value: "Pret a reviser" },
+        { label: "Brouillon", value: "Prêt à réviser" },
       ],
-      guardrail: "Le proprietaire decide si et quand faire le suivi.",
+      guardrail: "Le propriétaire décide si et quand faire le suivi.",
       outcome: "Les leads chauds restent visibles.",
       title: "Suivi visible",
     },
@@ -438,7 +444,7 @@ export function InteractiveCleaningDemoSection({
                   className="text-[11px] font-black uppercase"
                   style={{ color: "#0F766E" }}
                 >
-                  Owner review draft
+                  {copy.draftLabel}
                 </p>
                 <p
                   className="mt-3 text-[14px] leading-7"

@@ -10,9 +10,10 @@
  * - components/public/marketing-compact-menu.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-19: Added Phase 02 header/navigation source contract coverage.
+ * - 2026-06-21: Added public acceptance guards for duplicate pilot CTA markup.
  * ============================================================
  */
 
@@ -65,6 +66,29 @@ describe("public marketing header source contract", () => {
     assert.match(marketingUiSource, /ThemePreferenceControl/);
     assert.match(marketingUiSource, /aria-current=\{selected \? "page"/);
     assert.equal(marketingUiSource.includes("supportedLanguages.map"), false);
+  });
+
+  it("keeps compact and desktop pilot CTAs from duplicating visible shell markup", () => {
+    assert.equal(
+      marketingUiSource.includes('className="hidden sm:block min-[1240px]:hidden"'),
+      false,
+      "MarketingHeader should not keep the old standalone compact pilot CTA wrapper.",
+    );
+    assert.match(
+      marketingUiSource,
+      /\{copy\.startFull\}\r?\n\s+<\/MarketingButton>/,
+      "Desktop header should keep one full pilot CTA.",
+    );
+    assert.match(
+      marketingUiSource,
+      /\{copy\.startShort\}\r?\n\s+<\/MarketingButton>/,
+      "Compact menu should use the short pilot CTA.",
+    );
+    assert.equal(
+      marketingUiSource.match(/<MarketingButton[^>]+href="\/pilot"/g)?.length,
+      2,
+      "MarketingHeader should expose only desktop and compact-menu pilot CTA buttons.",
+    );
   });
 
   it("keeps language switching as a compact menu that preserves anchors", () => {

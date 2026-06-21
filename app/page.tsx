@@ -9,7 +9,7 @@
  * - lib/i18n/home-copy.ts
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-18: Applied responsive hero, section density, and no-inner-scroll demo hardening.
  * - 2026-06-19: Mapped the hero product preview to semantic theme surfaces for dark contrast.
@@ -17,6 +17,7 @@
  * - 2026-06-19: Finalized balanced homepage rhythm, four-step demo, and locked cleaning-use-case links.
  * - 2026-06-20: Stabilized bilingual hero scale and first-fold CTA placement.
  * - 2026-06-20: Removed forced card heights from demo and cleaning-use-case grids.
+ * - 2026-06-21: Removed duplicate visible numbering from the homepage product preview.
  * ============================================================
  */
 
@@ -296,10 +297,7 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
         <div className="homepage-demo-grid mt-8">
           {copy.steps.map((step, index) => (
             <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={step.title}>
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-[12px] font-black uppercase tracking-[0.14em] text-slate-500">
-                  {index + 1}
-                </span>
+              <div className="flex items-center justify-end">
                 <span
                   className="flex h-9 w-9 items-center justify-center rounded-[10px] text-[13px] font-black text-white"
                   style={{
