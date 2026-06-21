@@ -18,6 +18,7 @@
  * - 2026-06-21: Added homepage workflow de-duplication coverage.
  * - 2026-06-21: Added multilingual pricing-card action alignment contracts.
  * - 2026-06-21: Added public dark-theme callout contrast contracts.
+ * - 2026-06-21: Added localization-aware copy role and cleaning detail layout contracts.
  * ============================================================
  */
 
@@ -235,5 +236,65 @@ describe("public visual stability source contracts", () => {
     }
 
     assert.equal(globals.includes("var(--primary-contrast)"), true);
+  });
+
+  it("keeps localization-aware copy roles and cleaning details locked", () => {
+    const globals = source("app/globals.css");
+    const marketingUi = source("components/public/marketing-ui.tsx");
+    const homepage = source("app/page.tsx");
+    const features = source("app/features/page.tsx");
+    const cleaning = source("app/industries/cleaning/page.tsx");
+    const pricing = source("app/pricing/page.tsx");
+
+    for (const required of [
+      ".bp-copy-nav",
+      ".bp-copy-button",
+      ".bp-copy-status",
+      ".bp-copy-eyebrow",
+      ".bp-copy-hero",
+      ".bp-copy-hero-body",
+      ".bp-copy-section-title",
+      ".bp-copy-card-title",
+      ".bp-copy-card-body",
+      ".bp-copy-meta",
+      ".bp-copy-plan-title",
+      ".bp-card-structured",
+    ]) {
+      assert.equal(globals.includes(required), true, `Missing ${required}`);
+    }
+
+    assert.equal(globals.includes("white-space: nowrap;"), true);
+    assert.equal(globals.includes("text-wrap: pretty;"), true);
+    assert.equal(globals.includes("min-block-size: 2lh;"), true);
+    assert.equal(marketingUi.includes("bp-copy-nav"), true);
+    assert.equal(homepage.includes("bp-copy-hero"), true);
+    assert.equal(features.includes("bp-card-structured"), true);
+    assert.equal(pricing.includes("bp-copy-plan-title"), true);
+
+    for (const required of [
+      "const compactServices = copy.families.flatMap",
+      'service.id !== "small-commercial"',
+      "cleaning-service-grid",
+      "cleaning-service-card",
+      "cleaning-detail-tabs",
+      'role="tablist"',
+      'role="tabpanel"',
+      "cleaning-detail-mobile",
+      "<details",
+    ]) {
+      assert.equal(cleaning.includes(required), true, `Cleaning layout missing ${required}`);
+    }
+
+    assert.equal(
+      cleaning.includes("supporting-three-grid mt-8"),
+      false,
+      "Cleaning page should not render the previous three oversized family mega-cards.",
+    );
+    assert.equal(globals.includes(".cleaning-service-grid"), true);
+    assert.equal(
+      globals.includes(".cleaning-service-grid {\n    grid-template-columns: repeat(3, minmax(0, 1fr));"),
+      true,
+      "Cleaning service cards should use the canonical three-column desktop grid.",
+    );
   });
 });

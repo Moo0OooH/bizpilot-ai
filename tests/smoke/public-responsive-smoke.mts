@@ -16,6 +16,7 @@
  * - 2026-06-20: Locked balanced public grid classes into route-level smoke coverage.
  * - 2026-06-21: Locked canonical four-step grid classes into smoke coverage.
  * - 2026-06-21: Added fr-CA hero/pricing parity markers.
+ * - 2026-06-21: Locked cleaning service grid and detail panel responsive markers.
  * ============================================================
  */
 
@@ -94,7 +95,8 @@ const routes: readonly RouteContract[] = [
       "Example request",
       "Move-out cleaning",
       "Needs reply",
-      "supporting-three-grid",
+      "cleaning-service-grid",
+      "cleaning-detail-tabs",
     ],
     path: "/industries/cleaning",
   },

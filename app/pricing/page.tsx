@@ -17,6 +17,7 @@
  * - 2026-06-19: Added post-apply strip and balanced staged pricing cards.
  * - 2026-06-20: Tightened pricing spacing without changing staged pricing or guardrails.
  * - 2026-06-21: Anchored plan card actions and header rows for EN/fr-CA visual parity.
+ * - 2026-06-21: Applied localization-aware copy roles to plan cards and supporting panels.
  * ============================================================
  */
 
@@ -80,10 +81,10 @@ export default async function PricingPage({
         <MarketingShell>
           <div className="mx-auto max-w-[820px] text-center">
             <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1 className="public-pricing-title mx-auto mt-6 max-w-[580px] text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
+            <h1 className="bp-copy-hero public-pricing-title mx-auto mt-6 max-w-[580px] text-[length:var(--text-page)] font-black leading-[1.06]" style={{ color: marketingTone.text }}>
               {copy.title}
             </h1>
-            <p className="mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
+            <p className="bp-copy-hero-body mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
               {copy.body}
             </p>
           </div>
@@ -101,10 +102,10 @@ export default async function PricingPage({
                 }}
               >
                 <div className="public-plan-card-header">
-                  <p className="text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
+                  <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
                     {card.cohort}
                   </p>
-                  <h2 className="mt-3 text-[25px] font-black leading-tight" style={{ color: marketingTone.text }}>
+                  <h2 className="bp-copy-plan-title mt-3 text-[25px] font-black leading-tight" style={{ color: marketingTone.text }}>
                     {card.title}
                   </h2>
                   <div className="mt-5 public-plan-card-price">
@@ -114,14 +115,14 @@ export default async function PricingPage({
                       </p>
                     ))}
                   </div>
-                  <p className="public-plan-card-highlight mt-3 rounded-[12px] border px-3 py-2 text-[13px] font-black" style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
+                  <p className="bp-copy-status public-plan-card-highlight mt-3 rounded-[12px] border px-3 py-2 text-[13px] font-black" style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
                     {card.highlight}
                   </p>
                 </div>
 
                 <div className="public-plan-card-features mt-5 grid gap-3">
                   {card.bullets.map((item) => (
-                    <div className="flex min-w-0 items-start gap-3 text-[14px] font-bold leading-6" key={item} style={{ color: marketingTone.soft }}>
+                    <div className="bp-copy-card-body flex min-w-0 items-start gap-3 text-[14px] font-bold leading-6" key={item} style={{ color: marketingTone.soft }}>
                       <span className="mt-0.5 shrink-0" style={{ color: marketingTone.teal }}>
                         <MarketingIcon name="check" />
                       </span>
@@ -139,12 +140,12 @@ export default async function PricingPage({
 
           <MarketingCard className="mt-8 p-5 sm:p-6">
             <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.34fr)_minmax(0,1fr)] lg:items-center">
-              <h2 className="text-[21px] font-black leading-tight" style={{ color: marketingTone.text }}>
+              <h2 className="bp-copy-section-title text-[21px] font-black leading-tight" style={{ color: marketingTone.text }}>
                 {copy.afterApply.title}
               </h2>
               <div className="grid gap-3 min-[900px]:grid-cols-3">
                 {copy.afterApply.steps.map((step, index) => (
-                  <div className="flex min-w-0 items-start gap-3 rounded-[14px] border px-4 py-3 text-[14px] font-bold leading-6" key={step} style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border, color: marketingTone.soft }}>
+                  <div className="bp-copy-card-body flex min-w-0 items-start gap-3 rounded-[14px] border px-4 py-3 text-[14px] font-bold leading-6" key={step} style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border, color: marketingTone.soft }}>
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] text-[12px] font-black" style={{ backgroundColor: "color-mix(in srgb, var(--primary) 14%, transparent)", color: marketingTone.blue }}>
                       {index + 1}
                     </span>
@@ -161,10 +162,10 @@ export default async function PricingPage({
                 <MarketingIcon name="lock" />
               </span>
               <div>
-                <h2 className="text-[23px] font-black" style={{ color: marketingTone.text }}>
+                <h2 className="bp-copy-section-title text-[23px] font-black" style={{ color: marketingTone.text }}>
                   {copy.guardrail.title}
                 </h2>
-                <p className="mt-3 text-[15px] font-bold leading-7" style={{ color: marketingTone.soft }}>
+                <p className="bp-copy-card-body mt-3 text-[15px] font-bold leading-7" style={{ color: marketingTone.soft }}>
                   {copy.guardrail.body}
                 </p>
               </div>

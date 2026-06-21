@@ -793,7 +793,8 @@ describe("BizPilot language copy", () => {
     > = [
       ["app/features/page.tsx", "supporting-six-grid"],
       ["app/features/page.tsx", "supporting-four-grid"],
-      ["app/industries/cleaning/page.tsx", "supporting-three-grid"],
+      ["app/industries/cleaning/page.tsx", "cleaning-service-grid"],
+      ["app/industries/cleaning/page.tsx", "cleaning-detail-tabs"],
       ["app/trust/page.tsx", "copy.pillars", "copy.items"],
       ["app/trust/page.tsx", "supporting-three-grid"],
       ["app/pricing/page.tsx", "copy.afterApply"],

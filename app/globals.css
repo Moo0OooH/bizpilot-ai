@@ -24,6 +24,7 @@ Change Log:
 - 2026-06-21: Removed the homepage workflow grid after the repeated workflow section was collapsed.
 - 2026-06-21: Added multilingual plan-card alignment utilities for pricing and future dashboard parity.
 - 2026-06-21: Added public dark-theme mappings for teal callout panels and dark utility buttons.
+- 2026-06-21: Added localization-aware copy roles and cleaning service/detail grids.
 ============================================================
 */
 
@@ -74,6 +75,12 @@ Change Log:
   --public-warning: var(--warning);
   --public-focus: var(--focus-ring);
   --public-shadow: var(--shadow-md);
+  --surface-1: var(--surface);
+  --surface-2: var(--surface-interactive);
+  --surface-accent: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  --text-strong-semantic: var(--text-strong);
+  --border-default-semantic: var(--border-default);
+  --teal-accent: var(--accent);
   --public-max: 75rem;
   --public-gutter: clamp(1rem, 0.55rem + 1.8vw, 2.5rem);
   --legal-max: 50rem;
@@ -174,6 +181,12 @@ Change Log:
   --public-warning: var(--warning);
   --public-focus: var(--focus-ring);
   --public-shadow: var(--shadow-md);
+  --surface-1: var(--surface);
+  --surface-2: var(--surface-interactive);
+  --surface-accent: color-mix(in srgb, var(--accent) 14%, var(--surface-elevated));
+  --text-strong-semantic: var(--text-strong);
+  --border-default-semantic: var(--border-default);
+  --teal-accent: var(--accent);
   --biz-page-bg: var(--canvas);
   --biz-page-bg-deep: var(--canvas-subtle);
   --biz-page-surface: var(--surface);
@@ -344,6 +357,47 @@ select {
   gap: var(--grid-gap);
 }
 
+.bp-copy-nav,
+.bp-copy-button,
+.bp-copy-status {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+.bp-copy-eyebrow {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  text-wrap: balance;
+}
+
+.bp-copy-hero {
+  text-wrap: balance;
+}
+
+.bp-copy-hero-body,
+.bp-copy-card-body,
+.bp-copy-meta {
+  text-wrap: pretty;
+}
+
+.bp-copy-section-title {
+  max-inline-size: 100%;
+  text-wrap: balance;
+}
+
+.bp-copy-card-title,
+.bp-copy-plan-title {
+  min-block-size: 2lh;
+  text-wrap: balance;
+}
+
+.bp-card-structured {
+  display: grid;
+  grid-template-rows: auto minmax(2lh, auto) 1fr auto;
+}
+
 .homepage-hero-section {
   padding-block: clamp(2.75rem, 6vh, 5.5rem);
 }
@@ -383,6 +437,76 @@ select {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--grid-gap);
+}
+
+.cleaning-service-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--grid-gap);
+}
+
+.cleaning-service-card {
+  display: grid;
+  grid-template-rows: auto minmax(2lh, auto) 1fr;
+  min-width: 0;
+}
+
+.cleaning-detail-desktop {
+  display: none;
+}
+
+.cleaning-detail-mobile {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.cleaning-tab-input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cleaning-tab-label {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-default);
+  border-radius: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--surface);
+  color: var(--text-default);
+  font-size: 0.8125rem;
+  font-weight: 900;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.cleaning-detail-tabs:has(#cleaning-tab-0:focus-visible) label[for="cleaning-tab-0"],
+.cleaning-detail-tabs:has(#cleaning-tab-1:focus-visible) label[for="cleaning-tab-1"],
+.cleaning-detail-tabs:has(#cleaning-tab-2:focus-visible) label[for="cleaning-tab-2"] {
+  outline: 4px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.cleaning-tab-panel {
+  display: none;
+}
+
+.cleaning-detail-tabs:has(#cleaning-tab-0:checked) label[for="cleaning-tab-0"],
+.cleaning-detail-tabs:has(#cleaning-tab-1:checked) label[for="cleaning-tab-1"],
+.cleaning-detail-tabs:has(#cleaning-tab-2:checked) label[for="cleaning-tab-2"] {
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--border-default));
+  background: var(--surface-accent);
+  color: var(--text-strong);
+}
+
+.cleaning-detail-tabs:has(#cleaning-tab-0:checked) .cleaning-panel-0,
+.cleaning-detail-tabs:has(#cleaning-tab-1:checked) .cleaning-panel-1,
+.cleaning-detail-tabs:has(#cleaning-tab-2:checked) .cleaning-panel-2 {
+  display: block;
 }
 
 .supporting-six-grid,
@@ -440,6 +564,18 @@ select {
   .supporting-six-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .cleaning-service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cleaning-detail-desktop {
+    display: block;
+  }
+
+  .cleaning-detail-mobile {
+    display: none;
+  }
 }
 
 @media (min-width: 1180px) {
@@ -457,6 +593,9 @@ select {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .cleaning-service-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1100px) and (max-height: 780px) {

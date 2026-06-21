@@ -16,6 +16,7 @@
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
  * - 2026-06-19: Rebuilt public header utilities around compact locale/theme controls and content-fit navigation.
  * - 2026-06-21: Removed duplicated compact header CTA markup so each shell state exposes one primary pilot action.
+ * - 2026-06-21: Attached localization-aware copy role classes to shared primitives.
  * ============================================================
  */
 
@@ -290,7 +291,7 @@ export function MarketingBadge({
 
   return (
     <span
-      className="inline-flex max-w-full shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-black uppercase leading-tight"
+      className="bp-copy-eyebrow inline-flex max-w-full shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-black uppercase leading-tight"
       style={{
         backgroundColor: selected.bg,
         borderColor: selected.border,
@@ -319,7 +320,7 @@ export function MarketingButton({
   variant?: ButtonVariant;
 }>) {
   const base =
-    "inline-flex min-h-12 max-w-full min-w-0 items-center justify-center gap-3 rounded-[14px] px-5 text-center text-[14px] font-black leading-tight transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]";
+    "bp-copy-button inline-flex min-h-12 max-w-full min-w-0 items-center justify-center gap-3 rounded-[14px] px-5 text-center text-[14px] font-black leading-tight transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]";
 
   if (variant === "primary") {
     return (
@@ -355,7 +356,7 @@ export function MarketingButton({
 
   return (
     <Link
-      className={`inline-flex min-h-11 min-w-0 items-center justify-center rounded-[12px] px-3 py-2 text-center text-[13px] font-bold leading-tight transition hover:bg-[var(--surface-interactive)] ${className}`}
+      className={`bp-copy-button inline-flex min-h-11 min-w-0 items-center justify-center rounded-[12px] px-3 py-2 text-center text-[13px] font-bold leading-tight transition hover:bg-[var(--surface-interactive)] ${className}`}
       href={href}
       style={{ color: marketingTone.soft }}
     >
@@ -385,7 +386,7 @@ export function MarketingBrand({
           BizPilot AI
         </span>
         <span
-          className="hidden whitespace-nowrap text-[9px] font-black uppercase min-[1240px]:block"
+          className="bp-copy-nav hidden text-[9px] font-black uppercase min-[1240px]:block"
           style={{ color: marketingTone.muted }}
         >
           {subtitle}
@@ -446,7 +447,7 @@ export function MarketingHeader({
             return (
               <Link
                 aria-current={selected ? "page" : undefined}
-                className="inline-flex min-h-11 items-center whitespace-nowrap rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                className="bp-copy-nav inline-flex min-h-11 items-center rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                 href={item.href}
                 key={item.href}
                 style={{
@@ -465,7 +466,7 @@ export function MarketingHeader({
           {renderLanguageMenu()}
           <ThemePreferenceControl language={language ?? "en"} />
           <Link
-            className="inline-flex min-h-11 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+            className="bp-copy-nav inline-flex min-h-11 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
             href="/auth/sign-in"
             style={{ color: marketingTone.soft }}
           >
@@ -484,7 +485,7 @@ export function MarketingHeader({
                 return (
                   <Link
                     aria-current={selected ? "page" : undefined}
-                    className="min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                    className="bp-copy-nav min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                     href={item.href}
                     key={item.href}
                     style={{
@@ -503,7 +504,7 @@ export function MarketingHeader({
               {renderLanguageMenu(true)}
               <ThemePreferenceControl className="w-full justify-center" language={language ?? "en"} />
               <Link
-                className="inline-flex min-h-11 items-center justify-center rounded-[12px] border px-4 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                className="bp-copy-nav inline-flex min-h-11 items-center justify-center rounded-[12px] border px-4 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                 href="/auth/sign-in"
                 style={{ borderColor: marketingTone.borderStrong, color: marketingTone.soft }}
               >

@@ -20,6 +20,7 @@
  * - 2026-06-21: Removed duplicate visible numbering from the homepage product preview.
  * - 2026-06-21: Moved the workflow strip onto canonical responsive grid classes.
  * - 2026-06-21: Removed the repeated five-card workflow section so the product demo carries the workflow story once.
+ * - 2026-06-21: Attached localization-aware copy roles to homepage headings, cards, and badges.
  * ============================================================
  */
 
@@ -81,21 +82,21 @@ function SectionTitle({
     <div className="mx-auto max-w-[780px] text-center">
       {eyebrow ? (
         <p
-          className="text-[12px] font-black uppercase tracking-[0.16em]"
+          className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.16em]"
           style={{ color: marketingTone.teal }}
         >
           {eyebrow}
         </p>
       ) : null}
       <h2
-        className="mt-3 text-[30px] font-black leading-[1.08] sm:text-[40px]"
+        className="bp-copy-section-title mt-3 text-[30px] font-black leading-[1.08] sm:text-[40px]"
         style={{ color: marketingTone.text }}
       >
         {title}
       </h2>
       {body ? (
         <p
-          className="mt-4 text-[16px] leading-8"
+          className="bp-copy-card-body mt-4 text-[16px] leading-8"
           style={{ color: marketingTone.soft }}
         >
           {body}
@@ -122,20 +123,20 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
       >
         <div>
           <p
-            className="text-[12px] font-black uppercase tracking-[0.14em]"
+            className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.14em]"
             style={{ color: "var(--accent)" }}
           >
             {copy.title}
           </p>
           <h3
-            className="mt-1 text-[20px] font-black"
+            className="bp-copy-card-title mt-1 text-[20px] font-black"
             style={{ color: "var(--text-strong)" }}
           >
             {copy.name}
           </h3>
         </div>
         <span
-          className="rounded-full border px-3 py-1 text-[12px] font-black"
+          className="bp-copy-status rounded-full border px-3 py-1 text-[12px] font-black"
           style={{
             backgroundColor:
               "color-mix(in srgb, var(--warning) 14%, var(--surface))",
@@ -159,13 +160,13 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
             }}
           >
             <p
-              className="text-[11px] font-black uppercase tracking-[0.12em]"
+              className="bp-copy-meta text-[11px] font-black uppercase tracking-[0.12em]"
               style={{ color: "var(--text-muted)" }}
             >
               {label}
             </p>
             <p
-              className="mt-1 text-[14px] font-black"
+              className="mt-1 min-h-[3rem] text-[14px] font-black leading-6"
               style={{ color: "var(--text-strong)" }}
             >
               {value}
@@ -185,13 +186,13 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p
-            className="text-[13px] font-black"
+            className="bp-copy-card-title text-[13px] font-black"
             style={{ color: "var(--text-strong)" }}
           >
             {copy.draftTitle}
           </p>
           <span
-            className="rounded-full px-3 py-1 text-[11px] font-black"
+            className="bp-copy-status rounded-full px-3 py-1 text-[11px] font-black"
             style={{
               backgroundColor: "var(--surface-elevated)",
               color: "var(--accent)",
@@ -201,13 +202,13 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           </span>
         </div>
         <p
-          className="mt-3 text-[13px] leading-6"
+          className="bp-copy-card-body mt-3 text-[13px] leading-6"
           style={{ color: "var(--text-default)" }}
         >
           {copy.draftBody}
         </p>
         <button
-          className="mt-3 inline-flex min-h-10 items-center justify-center rounded-[10px] px-4 text-[13px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+          className="bp-copy-button mt-3 inline-flex min-h-10 items-center justify-center rounded-[10px] px-4 text-[13px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
           style={{
             backgroundColor: "var(--primary)",
             color: "var(--primary-contrast)",
@@ -229,13 +230,13 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
           <div className="homepage-hero-copy min-w-0">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
             <h1
-              className="homepage-hero-title mt-5 text-[clamp(2.75rem,5vw,5.25rem)] font-black leading-[1] [text-wrap:pretty]"
+              className="bp-copy-hero homepage-hero-title mt-5 text-[clamp(2.75rem,5vw,5.25rem)] font-black leading-[1]"
               style={{ color: marketingTone.text }}
             >
               {copy.hero.title}
             </h1>
             <p
-              className="homepage-hero-body mt-5 text-[17px] leading-8 [text-wrap:pretty] sm:text-[18px]"
+              className="bp-copy-hero-body homepage-hero-body mt-5 text-[17px] leading-8 sm:text-[18px]"
               style={{ color: marketingTone.soft }}
             >
               {copy.hero.body}
@@ -249,7 +250,7 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
             <div className="mt-6 flex flex-wrap gap-2">
               {copy.hero.trustBadges.map((item) => (
                 <span
-                  className="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-black"
+                  className="bp-copy-status inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-black"
                   key={item}
                   style={{
                     backgroundColor: "rgba(255,255,255,0.045)",
@@ -278,11 +279,11 @@ function CardGrid({
   return (
     <div className="public-card-grid mt-8">
       {items.map((item) => (
-        <MarketingCard className="p-5" key={item.title}>
-          <h3 className="text-[18px] font-black" style={{ color: marketingTone.text }}>
+        <MarketingCard className="bp-card-structured p-5" key={item.title}>
+          <h3 className="bp-copy-card-title text-[18px] font-black" style={{ color: marketingTone.text }}>
             {item.title}
           </h3>
-          <p className="mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
+          <p className="bp-copy-card-body mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
             {item.body}
           </p>
         </MarketingCard>
@@ -298,7 +299,7 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
         <SectionTitle body={copy.body} title={copy.title} />
         <div className="homepage-demo-grid mt-8">
           {copy.steps.map((step, index) => (
-            <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={step.title}>
+            <MarketingCard className="bp-card-structured min-w-0 p-5 sm:p-6" key={step.title}>
               <div className="flex items-center justify-end">
                 <span
                   className="flex h-9 w-9 items-center justify-center rounded-[10px] text-[13px] font-black text-white"
@@ -314,7 +315,7 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                   {index + 1}
                 </span>
               </div>
-              <h3 className="mt-5 text-[22px] font-black text-slate-950">
+              <h3 className="bp-copy-card-title mt-5 text-[22px] font-black text-slate-950">
                 {step.title}
               </h3>
               {step.quote ? (
@@ -341,11 +342,11 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
               ) : null}
               {step.body ? (
                 <div className="mt-4 rounded-[16px] border border-teal-200 bg-teal-50 p-4">
-                  <p className="text-[15px] font-bold leading-7 text-slate-950">
+                  <p className="bp-copy-card-body text-[15px] font-bold leading-7 text-slate-950">
                     {step.body}
                   </p>
                   <button
-                    className="mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-[12px] bg-slate-950 px-4 text-[13px] font-black text-white"
+                    className="bp-copy-button mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-[12px] bg-slate-950 px-4 text-[13px] font-black text-white"
                     type="button"
                   >
                     <MarketingIcon name="copy" />
@@ -386,12 +387,12 @@ function ListColumn({
 }: Readonly<{ items: readonly string[]; title: string; tone: "good" | "limit" }>) {
   return (
     <MarketingCard className="p-5">
-      <h3 className="text-[19px] font-black" style={{ color: marketingTone.text }}>
+      <h3 className="bp-copy-card-title text-[19px] font-black" style={{ color: marketingTone.text }}>
         {title}
       </h3>
       <div className="mt-5 grid gap-3">
         {items.map((item) => (
-          <div className="flex items-start gap-3 text-[14px] leading-6" key={item} style={{ color: marketingTone.soft }}>
+          <div className="bp-copy-card-body flex items-start gap-3 text-[14px] leading-6" key={item} style={{ color: marketingTone.soft }}>
             <span style={{ color: tone === "good" ? marketingTone.teal : marketingTone.gold }}>
               <MarketingIcon name={tone === "good" ? "check" : "minus"} />
             </span>
@@ -464,11 +465,11 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
                 }}
               >
                 <span>
-                  <span className="block text-[18px] font-black">
+                  <span className="bp-copy-card-title block text-[18px] font-black">
                     {item.title}
                   </span>
                   <span
-                    className="mt-3 block text-[14px] font-bold leading-6"
+                    className="bp-copy-card-body mt-3 block text-[14px] font-bold leading-6"
                     style={{ color: marketingTone.soft }}
                   >
                     {item.body}
@@ -490,15 +491,15 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
         <MarketingShell>
           <MarketingCard className="p-6 sm:p-8">
             <MarketingBadge toneName="gold">{copy.roadmap.badge}</MarketingBadge>
-            <h2 className="mt-5 max-w-[820px] text-[30px] font-black leading-[1.08] sm:text-[40px]" style={{ color: marketingTone.text }}>
+            <h2 className="bp-copy-section-title mt-5 max-w-[820px] text-[30px] font-black leading-[1.08] sm:text-[40px]" style={{ color: marketingTone.text }}>
               {copy.roadmap.title}
             </h2>
-            <p className="mt-5 max-w-[860px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
+            <p className="bp-copy-card-body mt-5 max-w-[860px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
               {copy.roadmap.body}
             </p>
             <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {copy.roadmap.cards.map((item) => (
-                <div className="rounded-[10px] border px-4 py-3 text-[14px] font-black" key={item} style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
+                <div className="bp-copy-card-body rounded-[10px] border px-4 py-3 text-[14px] font-black" key={item} style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
                   {item}
                 </div>
               ))}
@@ -514,10 +515,10 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
             {copy.faq.items.map((item) => (
               <MarketingCard className="p-5" key={item.question}>
                 <details>
-                  <summary className="cursor-pointer list-none text-[16px] font-black" style={{ color: marketingTone.text }}>
+                  <summary className="bp-copy-card-title cursor-pointer list-none text-[16px] font-black" style={{ color: marketingTone.text }}>
                     {item.question}
                   </summary>
-                  <p className="mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
+                  <p className="bp-copy-card-body mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
                     {item.answer}
                   </p>
                 </details>
@@ -532,13 +533,13 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
           <MarketingCard className="p-7 sm:p-9" style={{ borderColor: "rgba(45,212,191,0.24)" }}>
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
               <div>
-                <h2 className="text-[30px] font-black leading-[1.08] sm:text-[42px]" style={{ color: marketingTone.text }}>
+                <h2 className="bp-copy-section-title text-[30px] font-black leading-[1.08] sm:text-[42px]" style={{ color: marketingTone.text }}>
                   {copy.finalCta.title}
                 </h2>
-                <p className="mt-4 max-w-[720px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
+                <p className="bp-copy-card-body mt-4 max-w-[720px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
                   {copy.finalCta.body}
                 </p>
-                <p className="mt-4 text-[13px] font-black" style={{ color: marketingTone.teal }}>
+                <p className="bp-copy-meta mt-4 text-[13px] font-black" style={{ color: marketingTone.teal }}>
                   {copy.finalCta.note}
                 </p>
               </div>
