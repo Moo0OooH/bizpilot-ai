@@ -206,7 +206,7 @@ const englishPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot helps cleaning businesses capture quote requests, organize leads, draft owner-reviewed replies, and keep follow-up visible. It is not an auto-send tool, booking system, invoice system, SMS/WhatsApp sender, or full CRM.",
+          "BizPilot helps cleaning businesses capture quote requests, organize leads, prepare replies for owner review, and keep follow-up visible. It is not an auto-send tool, booking system, invoice system, SMS/WhatsApp sender, or full CRM.",
         title: "Product scope",
       },
       {

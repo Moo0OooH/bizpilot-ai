@@ -587,8 +587,13 @@ describe("BizPilot language copy", () => {
   });
 
   it("keeps canonical English public copy manual-first and dictionary-owned", () => {
+    const englishBizPilotCopy = getBizPilotCopy("en");
     const englishPublicCopy = getPublicSiteCopy("en");
-    const englishPublicText = JSON.stringify(englishPublicCopy);
+    const englishPolicyCopy = getPolicyCopy("en");
+    const englishPublicText = JSON.stringify({
+      policy: englishPolicyCopy,
+      public: englishPublicCopy,
+    });
 
     assert.equal(
       englishPublicCopy.home.hero.title,
@@ -608,6 +613,11 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.home.mockup.draftTitle, "Suggested reply");
     assert.equal(englishPublicCopy.home.mockup.draftTag, "AI drafts. You send.");
     assert.equal(englishPublicCopy.home.mockup.copyButton, "Copy reply");
+    assert.deepEqual(englishBizPilotCopy.quoteSuccess.steps(""), [
+      "The business reviews your request and any missing details.",
+      "They prepare a reply for owner review - no automatic messages.",
+      "You hear back through the contact details you submitted.",
+    ]);
 
     for (const forbidden of [
       "AI draft card",

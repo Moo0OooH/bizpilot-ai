@@ -191,6 +191,28 @@ tests.
   service.
 - Unavailable quote routes must fail safely and clearly.
 
+## F1 Quote Contact Field Audit
+
+The current quote-field dictionary and schema adapters support both a legacy
+generic contact field and split contact fields:
+
+- `customer_contact`
+- `customer_email`
+- `customer_phone`
+
+This can be contradictory if a future owner/template renders the generic
+contact field together with both split email and phone fields. F1 does not
+change schema, stored field keys, RLS, form submission behavior, or owner
+configuration. The approved F1 posture is:
+
+- keep all three keys supported for backwards compatibility;
+- keep the generic field label as "Customer contact" and the split fields as
+  "Email address" and "Phone number";
+- avoid introducing a new default visible form that asks for both the generic
+  contact field and both split fields at the same time;
+- resolve any template migration or schema simplification only in a later
+  owner-approved data/schema phase.
+
 ## Test And Verification Contract
 
 F0 must pass:

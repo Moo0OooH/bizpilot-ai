@@ -2230,7 +2230,7 @@ const englishCopy: BizPilotCopy = {
       businessName
         ? `${businessName} reviews your request and any missing details.`
         : "The business reviews your request and any missing details.",
-      "They prepare an owner-reviewed reply - no automatic messages.",
+      "They prepare a reply for owner review - no automatic messages.",
       "You hear back through the contact details you submitted.",
     ],
     submitAnother: "Submit another request",

@@ -108,6 +108,33 @@ describe("final shell polish source contracts", () => {
     assert.equal(quoteUnavailable.includes("focus-visible:ring-4"), true);
   });
 
+  it("keeps quote consent single and honeypot hidden from normal flow", () => {
+    const quoteWizard = source("components/public/quote-form-wizard.tsx");
+
+    assert.equal(
+      quoteWizard.match(/<ConsentBlock/g)?.length,
+      1,
+      "Quote form should render one visible consent block.",
+    );
+    assert.equal(
+      quoteWizard.match(/copy\.quoteForm\.aiDisclosure/g)?.length,
+      1,
+      "AI disclosure should appear only inside the consent block.",
+    );
+    assert.equal(
+      /<label className="hidden">\s*Company website\s*<input autoComplete="off" name="companyWebsite" tabIndex=\{-1\} \/>/s.test(
+        quoteWizard,
+      ),
+      true,
+      "Company website honeypot must stay display-hidden and out of tab order.",
+    );
+    assert.equal(
+      quoteWizard.includes("consentNotice={page.consentVersion.consent_notice}"),
+      true,
+      "Visible consent copy should come from the active consent version.",
+    );
+  });
+
   it("keeps quote success actions aligned to shared shell tokens", () => {
     const quoteSuccess = source("app/(public)/quote/[slug]/success/page.tsx");
 
