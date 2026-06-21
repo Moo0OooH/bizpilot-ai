@@ -8,12 +8,13 @@ Before reading or implementing anything, start with:
 2. `AI_CODING_AGENT_START_HERE_v1.7.md`
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
 4. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
-5. `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
-6. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
-7. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
-8. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
-9. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
-10. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+5. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+6. `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
+7. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
+8. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
+9. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+10. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
+11. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
 
@@ -37,6 +38,13 @@ the dashboard D0 audit are complete. Use
 component, data-flow, UX, and risk baseline. The next correct implementation
 phase is scoped dashboard visual stabilization, not real-data, billing, auth,
 RLS, AI provider, or production data-flow expansion.
+
+2026-06-21 public-site acceptance override: public-site acceptance P0-P5 is
+complete and production verified. Use
+`readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` as the latest public-site
+GO evidence. Phase D1 dashboard visual stabilization may start, but all
+real-data, paid-pilot, billing, auth/RLS/database, AI provider, and production
+data-flow blockers remain in force.
 
 ## Active MVP Direction
 
@@ -99,6 +107,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 ## Latest Readiness Evidence
 
 - `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
 - `docs/readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
 - `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
 - `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`

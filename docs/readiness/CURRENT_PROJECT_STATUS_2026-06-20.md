@@ -1,15 +1,16 @@
 # BizPilot AI - Current Project Status
 
 Date: 2026-06-20
-Status: Active post-public-site, post-D0 dashboard baseline
+Last acceptance update: 2026-06-21
+Status: Active post-public-site acceptance, post-D0 dashboard baseline
 
 ## One-Line Status
 
-BizPilot AI has a verified public-site foundation and a completed dashboard D0
-design audit. The next correct implementation work is dashboard shell and lead
-workflow visual stabilization. Real customer data, paid pilot launch, billing
-automation, auth/RLS/database changes, AI provider changes, and production
-data-flow expansion remain blocked.
+BizPilot AI has completed public-site acceptance P0-P5 and has a completed
+dashboard D0 design audit. The next correct implementation work is dashboard
+shell and lead workflow visual stabilization. Real customer data, paid pilot
+launch, billing automation, auth/RLS/database changes, AI provider changes, and
+production data-flow expansion remain blocked.
 
 ## Current Repository Baseline
 
@@ -20,7 +21,7 @@ data-flow expansion remain blocked.
 | Baseline subject | `docs(audit): map dashboard design baseline` |
 | Remote state at D0 close | `main` aligned with `origin/main` |
 | Public production domain | `https://bizpilo.com` |
-| Latest public-site production evidence | `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` |
+| Latest public-site production evidence | `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` |
 | Latest dashboard baseline evidence | `docs/readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` |
 
 ## Product Truth
@@ -83,6 +84,7 @@ Not approved:
 | Phase 11D auth/quote/report shell alignment | Closed | Commit `df24dc4`; aligned non-marketing shells |
 | Phase 11E final production visual verification | Closed | `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md` |
 | Phase 12 public-site visual truth fix | Closed and deployed | `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` |
+| Public-site acceptance P0-P5 | Closed and production verified | `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` |
 
 ### Dashboard Readiness
 
@@ -95,7 +97,7 @@ Not approved:
 
 | Area | Status | Meaning |
 | --- | --- | --- |
-| Public site | GO | Public marketing/auth/quote/report shells are visually stable enough to begin dashboard work. |
+| Public site | GO | Public-site acceptance P0-P5 is complete and production verified for starting scoped D1 dashboard visual work. |
 | Dashboard visual planning | GO | D0 route, component, data-flow, auth/workspace, UX, and risk audit is complete. |
 | Dashboard visual implementation | GO for scoped D1 only | Visual hierarchy, shell density, lead inbox/detail clarity, and manual-owner workflow polish may start. |
 | Real customer data | NO-GO | Phase 24G explicit owner approval is not recorded. |
@@ -189,6 +191,31 @@ Recommended D1 scope:
 D1 should not include configuration redesign, schema/storage work,
 billing/payment work, AI provider changes, auth changes, or production
 data-flow changes.
+
+## 2026-06-21 Public Acceptance Sync
+
+This update records public-site acceptance P0-P5 as complete and production
+verified. The latest acceptance record is:
+
+- `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+
+Updated canonical entry points:
+
+- `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `docs/README.md`
+- `docs/CURRENT_CANONICAL_DOCS_v1.7.md`
+- `docs/AI_CODING_AGENT_START_HERE_v1.7.md`
+
+Verification for this P5 documentation closeout:
+
+| Command | Result |
+| --- | --- |
+| `pnpm verify` | PASS |
+| `git diff --check` | PASS |
+
+`pnpm smoke:dashboard` was intentionally not run because the current dashboard
+smoke creates synthetic workspace data and must not be used with
+production-like Supabase credentials.
 
 ## Documentation Sync Completed In This Status Pass
 

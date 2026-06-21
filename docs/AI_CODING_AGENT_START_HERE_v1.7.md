@@ -30,15 +30,15 @@ Every implementation must improve at least one of these outcomes:
 
 If the change does not improve one of these, keep it out of the active surface or place it behind an owner-controlled feature level with honest Settings state.
 
-## Active Priority Override - 2026-06-20
+## Active Priority Override - 2026-06-21
 
 For the shortest current status, read `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`.
 
-2026-06-20 update: the final public-site polish, visual stability patch, visual
-truth fix, and dashboard D0 design audit are complete. The next correct
-implementation phase is scoped dashboard shell and lead workflow visual
-stabilization. Do not restart homepage/public-site work unless a new defect is
-reported.
+2026-06-21 update: public-site acceptance P0-P5, final public-site polish,
+visual stability patch, visual truth fix, and dashboard D0 design audit are
+complete. The next correct implementation phase is scoped dashboard shell and
+lead workflow visual stabilization. Do not restart homepage/public-site work
+unless a new defect is reported.
 
 Read `docs/operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` before choosing execution order.
 

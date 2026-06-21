@@ -42,6 +42,14 @@ visual work. Real customer data, paid pilot launch, billing automation,
 auth/RLS/database changes, AI provider changes, and production data-flow
 expansion remain NO-GO.
 
+2026-06-21 public-site acceptance override: treat
+`readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` as the latest public-site
+GO evidence. Public-site acceptance P0-P5 is complete and production verified,
+so Phase D1 dashboard shell and lead workflow visual stabilization may start.
+This does not approve real customer data, paid pilot launch, billing
+automation, auth/RLS/database work, AI provider changes, or production
+data-flow expansion.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
@@ -53,14 +61,16 @@ Read these first, in this exact order:
 1. `CURRENT_CANONICAL_DOCS_v1.7.md` - this file.
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` - current agent instructions.
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - active post-D0 project status and phase map.
-4. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
-5. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - latest public-site visual truth evidence.
-6. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
-7. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
+4. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - latest public-site acceptance and production GO evidence.
+5. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
+6. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - public-site visual truth evidence.
+7. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
+8. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
 
 2026-06-18 public responsive authorities:
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
 - `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
 - `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
 - `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
@@ -102,13 +112,16 @@ Additional active lifecycle/deletion authorities:
 - `operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 - `readiness/PHASE_19_BUSINESS_LIFECYCLE_DELETION_READINESS.md`
 
-## Current Readiness Snapshot - 2026-06-20
+## Current Readiness Snapshot - 2026-06-21
 
 Use these files for the latest production and documentation status before
 starting new work:
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - current post-D0 project
   status, closed/open phase map, GO/NO-GO table, and recommended next phase.
+- `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - final public-site
+  acceptance P0-P5 evidence, production smoke results, browser DOM matrix, and
+  GO decision for starting scoped D1 dashboard visual work.
 - `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route map,
   shell map, data-flow map, UX issues, implementation plan, and boundaries.
 - `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - final
@@ -155,9 +168,9 @@ starting new work:
 
 Current top-level interpretation:
 
-- Public-site work through final visual truth verification is closed enough for
-  dashboard visual work. The next correct implementation phase is scoped
-  dashboard shell and lead workflow visual stabilization.
+- Public-site work through final acceptance P0-P5 is production verified and
+  closed enough for dashboard visual work. The next correct implementation
+  phase is scoped dashboard shell and lead workflow visual stabilization.
 - Dashboard D0 is closed. It approved planning and scoped visual
   implementation only; it did not approve real customer data, paid pilot,
   billing, auth/RLS/database changes, AI provider changes, or production
@@ -210,6 +223,7 @@ Current top-level interpretation:
 ### Product and UX
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
 - `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
 - `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
 - `readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`
