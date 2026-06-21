@@ -27,6 +27,8 @@ Change Log:
 - 2026-06-21: Added localization-aware copy roles and cleaning service/detail grids.
 - 2026-06-21: Tightened homepage hero first-fold spacing and preview-card sizing.
 - 2026-06-21: Added pricing-card container query behavior for compact multilingual CTAs.
+- 2026-06-21: Mapped public amber utility surfaces to semantic dark-theme tokens.
+- 2026-06-21: Added hydration-stable theme trigger icon switching.
 ============================================================
 */
 
@@ -300,8 +302,16 @@ select {
   background-color: color-mix(in srgb, var(--accent) 13%, var(--surface-elevated));
 }
 
+[data-theme="dark"] .public-site :where(.bg-amber-50) {
+  background-color: color-mix(in srgb, var(--warning) 15%, var(--surface-elevated));
+}
+
 [data-theme="dark"] .public-site :where(.border-teal-200) {
   border-color: color-mix(in srgb, var(--accent) 38%, var(--border-default));
+}
+
+[data-theme="dark"] .public-site :where(.border-amber-200) {
+  border-color: color-mix(in srgb, var(--warning) 38%, var(--border-default));
 }
 
 [data-theme="dark"] .public-site :where(.border-slate-100, .border-slate-200, .border-zinc-100, .border-zinc-200) {
@@ -324,12 +334,28 @@ select {
   color: var(--accent);
 }
 
+[data-theme="dark"] .public-site :where(.text-amber-600, .text-amber-700) {
+  color: var(--warning);
+}
+
 [data-theme="dark"] .public-site :where(.bg-slate-950) {
   background-color: var(--primary);
 }
 
 [data-theme="dark"] .public-site :where(.text-white) {
   color: var(--primary-contrast);
+}
+
+.theme-preference-trigger [data-theme-icon] {
+  grid-area: 1 / 1;
+}
+
+[data-theme="dark"] .theme-preference-trigger [data-theme-icon="sun"] {
+  display: none;
+}
+
+[data-theme="dark"] .theme-preference-trigger [data-theme-icon="moon"] {
+  display: inline-flex;
 }
 
 .public-container {

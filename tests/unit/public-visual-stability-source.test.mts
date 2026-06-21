@@ -20,6 +20,8 @@
  * - 2026-06-21: Added public dark-theme callout contrast contracts.
  * - 2026-06-21: Added localization-aware copy role and cleaning detail layout contracts.
  * - 2026-06-21: Locked pricing-card container queries for compact multilingual actions.
+ * - 2026-06-21: Locked public amber utility mappings for dark-theme guardrails.
+ * - 2026-06-21: Locked hydration-stable theme trigger icon switching.
  * ============================================================
  */
 
@@ -209,11 +211,19 @@ describe("public visual stability source contracts", () => {
   });
 
   it("keeps theme and compact menus viewport-safe and layout-stable", () => {
+    const globals = source("app/globals.css");
     const themeControl = source("components/ui/theme-preference-control.tsx");
     const compactMenu = source("components/public/marketing-compact-menu.tsx");
     const marketingUi = source("components/public/marketing-ui.tsx");
 
     assert.equal(themeControl.includes("h-11 w-11"), true);
+    assert.equal(themeControl.includes("theme-preference-trigger inline-grid h-11 w-11"), true);
+    assert.equal(themeControl.includes('data-theme-icon="sun"'), true);
+    assert.equal(themeControl.includes('data-theme-icon="moon"'), true);
+    assert.equal(
+      globals.includes('[data-theme="dark"] .theme-preference-trigger [data-theme-icon="moon"]'),
+      true,
+    );
     assert.equal(themeControl.includes("calc(100vw-2rem)"), true);
     assert.equal(compactMenu.includes("calc(100vw-2rem)"), true);
     assert.equal(compactMenu.includes('aria-haspopup="menu"'), true);
@@ -240,8 +250,11 @@ describe("public visual stability source contracts", () => {
 
     for (const required of [
       '[data-theme="dark"] .public-site :where(.bg-teal-50)',
+      '[data-theme="dark"] .public-site :where(.bg-amber-50)',
       '[data-theme="dark"] .public-site :where(.border-teal-200)',
+      '[data-theme="dark"] .public-site :where(.border-amber-200)',
       '[data-theme="dark"] .public-site :where(.text-teal-700)',
+      '[data-theme="dark"] .public-site :where(.text-amber-600, .text-amber-700)',
       '[data-theme="dark"] .public-site :where(.bg-slate-950)',
       '[data-theme="dark"] .public-site :where(.text-white)',
     ]) {

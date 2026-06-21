@@ -13,11 +13,12 @@
  * - components/auth/auth-ui.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-19: Added accessible shared theme selector for the unified theme foundation.
  * - 2026-06-19: Rebuilt the selector as a compact sun/moon menu and defaulted fresh sessions to Light.
  * - 2026-06-20: Stabilized the menu width so theme choices do not shift public layout.
+ * - 2026-06-21: Made the closed trigger hydration-stable while CSS reflects the effective theme.
  * ============================================================
  */
 
@@ -39,7 +40,6 @@ import {
   THEME_PREFERENCE_STORAGE_KEY,
   type ResolvedTheme,
   type ThemePreference,
-  readResolvedTheme,
   readThemePreference,
   resolveEffectiveTheme,
 } from "@/lib/theme";
@@ -218,14 +218,6 @@ function readInitialPreference(): ThemePreference {
     : readThemePreference(stored, rootPreference);
 }
 
-function readInitialResolvedTheme(): ResolvedTheme {
-  if (typeof document === "undefined") {
-    return "light";
-  }
-
-  return readResolvedTheme(document.documentElement.dataset.theme);
-}
-
 export function ThemePreferenceControl({
   className = "",
   language = "en",
@@ -244,11 +236,7 @@ export function ThemePreferenceControl({
   const [preference, setPreference] = useState<ThemePreference>(
     readInitialPreference,
   );
-  const [effectiveTheme, setEffectiveTheme] = useState<ResolvedTheme>(
-    readInitialResolvedTheme,
-  );
   const selectedIndex = Math.max(0, themeOptions.indexOf(preference));
-  const effectiveLabel = effectiveTheme === "dark" ? text.dark : text.light;
 
   const closeMenu = useCallback((restoreFocus = false) => {
     setIsOpen(false);
@@ -270,7 +258,7 @@ export function ThemePreferenceControl({
         readThemePreference(document.documentElement.dataset.themePreference) ===
         "system"
       ) {
-        setEffectiveTheme(applyThemePreference("system"));
+        applyThemePreference("system");
       }
     }
 
@@ -332,7 +320,7 @@ export function ThemePreferenceControl({
 
   function selectPreference(nextPreference: ThemePreference) {
     setPreference(nextPreference);
-    setEffectiveTheme(applyThemePreference(nextPreference));
+    applyThemePreference(nextPreference);
     trackPublicEvent("theme_preference_change");
     closeMenu(true);
   }
@@ -393,8 +381,8 @@ export function ThemePreferenceControl({
         aria-controls={isOpen ? menuId : undefined}
         aria-expanded={isOpen}
         aria-haspopup="menu"
-        aria-label={`${text.label}: ${effectiveLabel}. ${text.change}.`}
-        className="inline-flex h-11 w-11 items-center justify-center rounded-[12px] border shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+        aria-label={`${text.label}. ${text.change}.`}
+        className="theme-preference-trigger inline-grid h-11 w-11 place-items-center rounded-[12px] border shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
         onClick={() => setIsOpen((current) => !current)}
         onKeyDown={handleTriggerKeyDown}
         ref={buttonRef}
@@ -403,10 +391,23 @@ export function ThemePreferenceControl({
           borderColor: "var(--border-default)",
           color: "var(--text-strong)",
         }}
-        title={`${text.label}: ${effectiveLabel}`}
+        title={text.change}
         type="button"
       >
-        <ThemeIcon name={effectiveTheme === "dark" ? "moon" : "sun"} />
+        <span
+          aria-hidden="true"
+          className="inline-flex h-5 w-5 items-center justify-center"
+          data-theme-icon="sun"
+        >
+          <ThemeIcon name="sun" />
+        </span>
+        <span
+          aria-hidden="true"
+          className="hidden h-5 w-5 items-center justify-center"
+          data-theme-icon="moon"
+        >
+          <ThemeIcon name="moon" />
+        </span>
       </button>
 
       {isOpen ? (
