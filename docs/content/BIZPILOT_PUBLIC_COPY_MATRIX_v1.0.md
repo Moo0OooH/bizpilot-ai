@@ -4,6 +4,8 @@ Date: 2026-06-21
 Status: Active L2 applied content and localization contract.
 Scope: Public marketing routes, legal routes, auth shells, safe quote shells,
 and report shells when present.
+Related F0 contract:
+`docs/content/BIZPILOT_FINAL_BILINGUAL_COPY_AND_UX_SPEC_v1.0.md`.
 
 ## Purpose
 
