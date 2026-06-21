@@ -21,6 +21,7 @@
  * - 2026-06-21: Moved the workflow strip onto canonical responsive grid classes.
  * - 2026-06-21: Removed the repeated five-card workflow section so the product demo carries the workflow story once.
  * - 2026-06-21: Attached localization-aware copy roles to homepage headings, cards, and badges.
+ * - 2026-06-21: Tightened first-fold hero rhythm so the preview card stays visible on desktop.
  * ============================================================
  */
 
@@ -109,7 +110,7 @@ function SectionTitle({
 function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
   return (
     <MarketingCard
-      className="homepage-hero-mockup w-full p-3 sm:p-4"
+      className="homepage-hero-mockup w-full p-3"
       style={{
         background:
           "linear-gradient(180deg, var(--surface-elevated), var(--surface))",
@@ -118,25 +119,25 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
       }}
     >
       <div
-        className="flex items-center justify-between gap-3 border-b pb-3"
+        className="flex items-center justify-between gap-3 border-b pb-2.5"
         style={{ borderColor: "var(--border-default)" }}
       >
         <div>
           <p
-            className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.14em]"
+            className="bp-copy-eyebrow text-[11px] font-black uppercase tracking-[0.14em]"
             style={{ color: "var(--accent)" }}
           >
             {copy.title}
           </p>
           <h3
-            className="bp-copy-card-title mt-1 text-[20px] font-black"
+            className="bp-copy-card-title mt-0.5 text-[18px] font-black"
             style={{ color: "var(--text-strong)" }}
           >
             {copy.name}
           </h3>
         </div>
         <span
-          className="bp-copy-status rounded-full border px-3 py-1 text-[12px] font-black"
+          className="bp-copy-status rounded-full border px-3 py-1 text-[11px] font-black"
           style={{
             backgroundColor:
               "color-mix(in srgb, var(--warning) 14%, var(--surface))",
@@ -149,10 +150,10 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
         </span>
       </div>
 
-      <div className="mt-3 grid grid-cols-2 gap-2">
+      <div className="mt-2.5 grid grid-cols-2 gap-2">
         {copy.fields.map(([label, value]) => (
           <div
-            className="rounded-[10px] border p-2.5"
+            className="rounded-[10px] border p-2"
             key={label}
             style={{
               backgroundColor: "var(--surface-interactive)",
@@ -160,13 +161,13 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
             }}
           >
             <p
-              className="bp-copy-meta text-[11px] font-black uppercase tracking-[0.12em]"
+              className="bp-copy-meta text-[10px] font-black uppercase tracking-[0.12em]"
               style={{ color: "var(--text-muted)" }}
             >
               {label}
             </p>
             <p
-              className="mt-1 min-h-[3rem] text-[14px] font-black leading-6"
+              className="mt-1 min-h-[2.25rem] text-[13px] font-black leading-5"
               style={{ color: "var(--text-strong)" }}
             >
               {value}
@@ -176,7 +177,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
       </div>
 
       <div
-        className="mt-3 rounded-[14px] border p-3"
+        className="mt-2.5 rounded-[14px] border p-2.5"
         style={{
           backgroundColor:
             "color-mix(in srgb, var(--accent-decorative) 14%, var(--surface-elevated))",
@@ -186,13 +187,13 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p
-            className="bp-copy-card-title text-[13px] font-black"
+            className="bp-copy-card-title text-[12px] font-black"
             style={{ color: "var(--text-strong)" }}
           >
             {copy.draftTitle}
           </p>
           <span
-            className="bp-copy-status rounded-full px-3 py-1 text-[11px] font-black"
+            className="bp-copy-status rounded-full px-2.5 py-1 text-[10px] font-black"
             style={{
               backgroundColor: "var(--surface-elevated)",
               color: "var(--accent)",
@@ -202,13 +203,13 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           </span>
         </div>
         <p
-          className="bp-copy-card-body mt-3 text-[13px] leading-6"
+          className="bp-copy-card-body mt-2.5 text-[12px] leading-5"
           style={{ color: "var(--text-default)" }}
         >
           {copy.draftBody}
         </p>
         <button
-          className="bp-copy-button mt-3 inline-flex min-h-10 items-center justify-center rounded-[10px] px-4 text-[13px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+          className="bp-copy-button mt-2.5 inline-flex min-h-9 items-center justify-center rounded-[10px] px-4 text-[12px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
           style={{
             backgroundColor: "var(--primary)",
             color: "var(--primary-contrast)",
@@ -226,28 +227,28 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
   return (
     <section className="homepage-hero-section">
       <MarketingShell>
-        <div className="homepage-hero-grid grid min-w-0 items-center gap-8 min-[1100px]:grid-cols-[minmax(0,1fr)_minmax(20rem,0.5fr)] min-[1100px]:gap-8">
+        <div className="homepage-hero-grid grid min-w-0 items-center gap-6 min-[1100px]:grid-cols-[minmax(0,1fr)_minmax(20rem,0.48fr)] min-[1100px]:gap-7">
           <div className="homepage-hero-copy min-w-0">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
             <h1
-              className="bp-copy-hero homepage-hero-title mt-5 text-[clamp(2.75rem,5vw,5.25rem)] font-black leading-[1]"
+              className="bp-copy-hero homepage-hero-title mt-4 text-[2.75rem] font-black leading-[0.98] sm:text-[3.45rem] min-[1100px]:text-[4.25rem] min-[1500px]:text-[4.55rem]"
               style={{ color: marketingTone.text }}
             >
               {copy.hero.title}
             </h1>
             <p
-              className="bp-copy-hero-body homepage-hero-body mt-5 text-[17px] leading-8 sm:text-[18px]"
+              className="bp-copy-hero-body homepage-hero-body mt-4 text-[16px] leading-7 sm:text-[17px]"
               style={{ color: marketingTone.soft }}
             >
               {copy.hero.body}
             </p>
-            <div className="homepage-hero-actions mt-6 flex flex-col gap-3 min-[460px]:flex-row">
+            <div className="homepage-hero-actions mt-5 flex flex-col gap-3 min-[460px]:flex-row">
               <MarketingButton href="/pilot">{copy.hero.primaryCta}</MarketingButton>
               <MarketingButton href="/demo" variant="secondary">
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-wrap gap-2">
               {copy.hero.trustBadges.map((item) => (
                 <span
                   className="bp-copy-status inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-black"

@@ -159,15 +159,25 @@ describe("public visual stability source contracts", () => {
     assert.equal(homepage.includes("homepage-hero-title"), true);
     assert.equal(homepage.includes("homepage-hero-actions"), true);
     assert.equal(
-      homepage.includes("text-[clamp(2.75rem,5vw,5.25rem)]"),
+      homepage.includes("min-[1100px]:text-[4.25rem]"),
       true,
-      "Homepage hero should use the Phase 12 readable clamp size.",
+      "Homepage hero should use the compact desktop first-fold title size.",
     );
-    assert.equal(globals.includes("max-inline-size: min(100%, 46rem);"), true);
+    assert.equal(globals.includes("max-inline-size: min(100%, 50rem);"), true);
     assert.equal(
       globals.includes("@media (min-width: 1100px) and (max-height: 780px)"),
       true,
       "Short desktop viewports need reduced hero padding instead of smaller body text.",
+    );
+    assert.equal(
+      globals.includes("max-inline-size: min(100%, 27rem);"),
+      true,
+      "Short desktop viewports need a compact hero preview card to stay inside the first fold.",
+    );
+    assert.equal(
+      homepage.includes("min-h-[2.25rem]"),
+      true,
+      "Homepage mockup field values should keep compact field heights for first-fold visibility.",
     );
   });
 

@@ -25,6 +25,7 @@ Change Log:
 - 2026-06-21: Added multilingual plan-card alignment utilities for pricing and future dashboard parity.
 - 2026-06-21: Added public dark-theme mappings for teal callout panels and dark utility buttons.
 - 2026-06-21: Added localization-aware copy roles and cleaning service/detail grids.
+- 2026-06-21: Tightened homepage hero first-fold spacing and preview-card sizing.
 ============================================================
 */
 
@@ -399,7 +400,7 @@ select {
 }
 
 .homepage-hero-section {
-  padding-block: clamp(2.75rem, 6vh, 5.5rem);
+  padding-block: clamp(2rem, 4.5vh, 4rem);
 }
 
 .homepage-hero-copy,
@@ -408,15 +409,15 @@ select {
 }
 
 .homepage-hero-title {
-  max-inline-size: min(100%, 46rem);
+  max-inline-size: min(100%, 50rem);
 }
 
 .homepage-hero-visual {
-  align-self: center;
+  align-self: start;
 }
 
 .homepage-hero-mockup {
-  max-inline-size: min(100%, 30rem);
+  max-inline-size: min(100%, 28.5rem);
 }
 
 .homepage-demo-grid,
@@ -600,7 +601,7 @@ select {
 
 @media (min-width: 1100px) and (max-height: 780px) {
   .homepage-hero-section {
-    padding-block: clamp(2rem, 4.5vh, 3rem);
+    padding-block: clamp(1.5rem, 3.25vh, 2.5rem);
   }
 
   .homepage-hero-grid {
@@ -608,7 +609,7 @@ select {
   }
 
   .homepage-hero-mockup {
-    max-inline-size: min(100%, 28.5rem);
+    max-inline-size: min(100%, 27rem);
   }
 }
 
