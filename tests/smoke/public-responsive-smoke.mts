@@ -15,6 +15,7 @@
  * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
  * - 2026-06-20: Locked balanced public grid classes into route-level smoke coverage.
  * - 2026-06-21: Locked canonical four-step grid classes into smoke coverage.
+ * - 2026-06-21: Added fr-CA hero/pricing parity markers.
  * ============================================================
  */
 
@@ -31,7 +32,7 @@ const TIMEOUT_MS = 15_000;
 
 const routes: readonly RouteContract[] = [
   {
-    h1: "Stop losing cleaning quote requests to slow replies.",
+    h1: "Stop losing cleaning quotes to slow replies.",
     mustContain: [
       "href=\"/demo\"",
       "homepage-demo-grid",
@@ -43,7 +44,7 @@ const routes: readonly RouteContract[] = [
     path: "/",
   },
   {
-    h1: "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+    h1: "Répondez plus vite aux demandes de nettoyage.",
     maxOccurrences: [
       {
         max: 1,
@@ -54,8 +55,8 @@ const routes: readonly RouteContract[] = [
       "href=\"/demo\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
-      "Aucun envoi automatique",
-      "Brouillons révisés par le propriétaire",
+      "Aucun envoi auto",
+      "Brouillons IA révisés",
     ],
     mustNotContain: [
       "Confidentialite",
@@ -109,6 +110,8 @@ const routes: readonly RouteContract[] = [
   {
     h1: "Simple pilot pricing for cleaning businesses.",
     mustContain: [
+      "public-pricing-grid",
+      "public-plan-card",
       "$149 setup",
       "$49/month",
       "$199 setup",
@@ -116,6 +119,22 @@ const routes: readonly RouteContract[] = [
       "supporting-three-grid",
     ],
     path: "/pricing",
+  },
+  {
+    h1: "Tarifs pilotes simples pour le nettoyage.",
+    mustContain: [
+      "public-pricing-grid",
+      "public-plan-card",
+      "Entreprises 1 à 5",
+      "Pilote fondateur",
+      "Facturation après approbation",
+      "$149 setup",
+      "$49/month",
+      "$199 setup",
+      "$79/month",
+      "supporting-three-grid",
+    ],
+    path: "/pricing?language=fr-CA",
   },
   {
     h1: "Help shape BizPilot around real cleaning work.",

@@ -32,7 +32,7 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 
 const smokeTargets: readonly SmokeTarget[] = [
   {
-    expectedText: ["Stop losing cleaning quote requests", "Join founder pilot"],
+    expectedText: ["Stop losing cleaning quotes", "Join founder pilot"],
     path: "/",
     status: 200,
   },

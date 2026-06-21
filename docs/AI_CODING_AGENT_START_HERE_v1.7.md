@@ -40,6 +40,11 @@ complete. The next correct implementation phase is scoped dashboard shell and
 lead workflow visual stabilization. Do not restart homepage/public-site work
 unless a new defect is reported.
 
+For public-site fixes and dashboard D1 visual work, also read
+`docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`. EN/fr-CA
+text length, card heights, CTA alignment, and multi-viewport visual parity are
+now explicit implementation constraints.
+
 Read `docs/operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` before choosing execution order.
 
 BizPilot does not need a strategic reset. After the remaining Phase 24F/24G real-data gates, the main risk is product readiness, demo readiness, and customer validation.

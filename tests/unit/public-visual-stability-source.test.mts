@@ -16,6 +16,7 @@
  * - 2026-06-21: Added homepage demo numbering regression coverage.
  * - 2026-06-21: Added canonical public responsive-grid regression coverage.
  * - 2026-06-21: Added homepage workflow de-duplication coverage.
+ * - 2026-06-21: Added multilingual pricing-card action alignment contracts.
  * ============================================================
  */
 
@@ -94,6 +95,33 @@ describe("public visual stability source contracts", () => {
     }
 
     assert.equal(publicSources.includes("supporting-four-grid"), true);
+  });
+
+  it("keeps pricing cards equal-height with anchored actions", () => {
+    const pricing = source("app/pricing/page.tsx");
+    const globals = source("app/globals.css");
+
+    for (const required of [
+      "public-pricing-title",
+      "public-pricing-grid",
+      "public-plan-card",
+      "public-plan-card-header",
+      "public-plan-card-price",
+      "public-plan-card-highlight",
+      "public-plan-card-features",
+      "public-plan-card-cta mt-auto w-full",
+    ]) {
+      assert.equal(
+        pricing.includes(required) || globals.includes(required),
+        true,
+        `Pricing alignment contract missing ${required}`,
+      );
+    }
+
+    assert.equal(globals.includes(".supporting-three-grid {\n  display: grid;"), true);
+    assert.equal(globals.includes(".public-plan-card-header"), true);
+    assert.equal(globals.includes("grid-template-rows: minmax(2rem, auto) minmax(3.75rem, auto) minmax(4rem, auto) minmax(3rem, auto);"), true);
+    assert.equal(globals.includes("min-block-size: 3.5rem;"), true);
   });
 
   it("keeps the homepage from repeating the workflow before the demo", () => {

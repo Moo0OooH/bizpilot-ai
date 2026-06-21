@@ -2,15 +2,17 @@
 
 Date: 2026-06-20
 Last acceptance update: 2026-06-21
-Status: Active post-public-site acceptance, post-D0 dashboard baseline
+Status: Active post-public-site acceptance, multilingual public polish, post-D0 dashboard baseline
 
 ## One-Line Status
 
 BizPilot AI has completed public-site acceptance P0-P5 and has a completed
 dashboard D0 design audit. The next correct implementation work is dashboard
-shell and lead workflow visual stabilization. Real customer data, paid pilot
-launch, billing automation, auth/RLS/database changes, AI provider changes, and
-production data-flow expansion remain blocked.
+shell and lead workflow visual stabilization, with newly reported public
+EN/fr-CA sizing defects handled under the multilingual responsive UI standard.
+Real customer data, paid pilot launch, billing automation, auth/RLS/database
+changes, AI provider changes, and production data-flow expansion remain
+blocked.
 
 ## Current Repository Baseline
 
@@ -22,6 +24,8 @@ production data-flow expansion remain blocked.
 | Remote state at D0 close | `main` aligned with `origin/main` |
 | Public production domain | `https://bizpilo.com` |
 | Latest public-site production evidence | `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` |
+| Latest multilingual responsive fix evidence | `docs/readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md` |
+| Latest multilingual responsive standard | `docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` |
 | Latest dashboard baseline evidence | `docs/readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` |
 
 ## Product Truth
@@ -85,6 +89,7 @@ Not approved:
 | Phase 11E final production visual verification | Closed | `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md` |
 | Phase 12 public-site visual truth fix | Closed and deployed | `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` |
 | Public-site acceptance P0-P5 | Closed and production verified | `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` |
+| Multilingual responsive public polish | Local PASS for owner-reported EN/fr-CA sizing and pricing alignment defects | `docs/readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md` |
 
 ### Dashboard Readiness
 
@@ -100,6 +105,7 @@ Not approved:
 | Public site | GO | Public-site acceptance P0-P5 is complete and production verified for starting scoped D1 dashboard visual work. |
 | Dashboard visual planning | GO | D0 route, component, data-flow, auth/workspace, UX, and risk audit is complete. |
 | Dashboard visual implementation | GO for scoped D1 only | Visual hierarchy, shell density, lead inbox/detail clarity, and manual-owner workflow polish may start. |
+| Multilingual public/dashboard visual parity | GO for scoped visual/copy/layout work only | EN/fr-CA sizing, card alignment, and CTA anchoring may be corrected without touching blocked systems. |
 | Real customer data | NO-GO | Phase 24G explicit owner approval is not recorded. |
 | Paid pilot launch | NO-GO | Requires owner approval, payment/support operating packet, and deferred restore/RLS proof before paid/risky work. |
 | Billing/payment automation | NO-GO | Do not implement or imply automated billing. |

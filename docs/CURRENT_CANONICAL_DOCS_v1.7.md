@@ -50,6 +50,12 @@ This does not approve real customer data, paid pilot launch, billing
 automation, auth/RLS/database work, AI provider changes, or production
 data-flow expansion.
 
+2026-06-21 multilingual responsive override: treat
+`product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` as the active
+standard for EN/fr-CA public-site and dashboard sizing, CTA anchoring, card-deck
+alignment, and multi-viewport visual parity. This standard governs public
+defect fixes and dashboard D1 visual work.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
@@ -62,15 +68,17 @@ Read these first, in this exact order:
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` - current agent instructions.
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - active post-D0 project status and phase map.
 4. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - latest public-site acceptance and production GO evidence.
-5. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
-6. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - public-site visual truth evidence.
-7. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
-8. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
+5. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
+6. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
+7. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - public-site visual truth evidence.
+8. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
+9. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
 
 2026-06-18 public responsive authorities:
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
 - `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+- `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
 - `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
 - `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
 - `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
@@ -119,9 +127,14 @@ starting new work:
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - current post-D0 project
   status, closed/open phase map, GO/NO-GO table, and recommended next phase.
+- `readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md` -
+  owner-reported EN/fr-CA public sizing and pricing alignment fix evidence.
 - `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - final public-site
   acceptance P0-P5 evidence, production smoke results, browser DOM matrix, and
   GO decision for starting scoped D1 dashboard visual work.
+- `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - active
+  EN/fr-CA public and dashboard responsive UI standard for copy budgets,
+  equal-height card decks, CTA anchoring, and browser parity checks.
 - `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route map,
   shell map, data-flow map, UX issues, implementation plan, and boundaries.
 - `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - final
@@ -171,6 +184,9 @@ Current top-level interpretation:
 - Public-site work through final acceptance P0-P5 is production verified and
   closed enough for dashboard visual work. The next correct implementation
   phase is scoped dashboard shell and lead workflow visual stabilization.
+- Newly reported multilingual public sizing defects should be handled with the
+  multilingual responsive standard before or alongside D1, without changing
+  product truth or blocked systems.
 - Dashboard D0 is closed. It approved planning and scoped visual
   implementation only; it did not approve real customer data, paid pilot,
   billing, auth/RLS/database changes, AI provider changes, or production
@@ -223,7 +239,9 @@ Current top-level interpretation:
 ### Product and UX
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md`
 - `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+- `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
 - `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
 - `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
 - `readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`

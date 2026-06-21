@@ -14,6 +14,7 @@
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
  * - 2026-06-21: Added canonical four-step public grid coverage.
+ * - 2026-06-21: Added multilingual copy length budgets for hero and pricing parity.
  * ============================================================
  */
 
@@ -367,16 +368,17 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       frenchPublicCopy.home.hero.title,
-      "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
+      "Répondez plus vite aux demandes de nettoyage.",
     );
     assert.ok(
-      frenchPublicCopy.home.hero.title.length <= 70,
-      "fr-CA homepage hero title should stay short enough for first-fold parity.",
+      frenchPublicCopy.home.hero.title.length <= 58,
+      "fr-CA homepage hero title should stay inside the first-fold parity budget.",
     );
     assert.equal(
       frenchPublicCopy.home.hero.primaryCta,
-      "Participer au projet pilote",
+      "Rejoindre le pilote",
     );
+    assert.equal(frenchPublicCopy.home.hero.secondaryCta, "Voir la démo");
 
     for (const englishPhrase of [
       "Stop losing cleaning quote requests to slow replies.",
@@ -385,6 +387,7 @@ describe("BizPilot language copy", () => {
       "Manual copy/send workflow",
       "Payment and product guardrails",
       "Ne perdez plus de demandes de soumission à cause de réponses trop lentes.",
+      "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
     ]) {
       assert.equal(
         frenchPublicText.includes(englishPhrase),
@@ -405,7 +408,8 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchHomeCopy.nav.demo, "Démo");
     assert.equal(frenchHomeCopy.nav.privacy, "Confidentialité");
     assert.equal(frenchHomeCopy.nav.security, "Sécurité");
-    assert.equal(frenchHomeCopy.nav.startShort, "Participer au pilote");
+    assert.equal(frenchHomeCopy.nav.startFull, "Rejoindre le pilote");
+    assert.equal(frenchHomeCopy.nav.startShort, "Pilote");
     assert.equal(frenchHomeCopy.workflowDemo.eyebrow, "Démo par onglets");
     assert.equal(
       frenchHomeCopy.workflowDemo.safety,
@@ -437,6 +441,25 @@ describe("BizPilot language copy", () => {
     assert.equal(interactiveDemoSource.includes("Démo nettoyage"), true);
     assert.equal(interactiveDemoSource.includes("Brouillon pour révision"), true);
     assert.equal(interactiveDemoSource.includes("Étape ${current} de ${total}"), true);
+  });
+
+  it("keeps public hero and pricing copy inside multilingual visual budgets", () => {
+    for (const language of supportedLanguages) {
+      const copy = getPublicSiteCopy(language);
+      const pricingCards = copy.pricing.cards;
+
+      assert.ok(copy.home.hero.title.length <= 58, `${language} hero title is too long for first-fold parity.`);
+      assert.ok(copy.home.hero.primaryCta.length <= 22, `${language} primary hero CTA is too long.`);
+      assert.ok(copy.home.hero.secondaryCta.length <= 18, `${language} secondary hero CTA is too long.`);
+      assert.equal(pricingCards.length, 3, `${language} pricing should keep three plan cards.`);
+
+      for (const card of pricingCards) {
+        assert.ok(card.cohort.length <= 36, `${language} pricing cohort is too long: ${card.cohort}`);
+        assert.ok(card.title.length <= 28, `${language} pricing title is too long: ${card.title}`);
+        assert.ok(card.highlight.length <= 38, `${language} pricing highlight is too long: ${card.highlight}`);
+        assert.ok(card.cta.length <= 28, `${language} pricing CTA is too long: ${card.cta}`);
+      }
+    }
   });
 
   it("keeps homepage cleaning use-case cards locked to six service anchors", () => {
