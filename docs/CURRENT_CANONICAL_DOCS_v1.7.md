@@ -53,8 +53,9 @@ data-flow expansion.
 2026-06-21 multilingual responsive override: treat
 `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` as the active
 standard for EN/fr-CA public-site and dashboard sizing, CTA anchoring, card-deck
-alignment, and multi-viewport visual parity. This standard governs public
-defect fixes and dashboard D1 visual work.
+alignment, Light/Dark contrast mappings, fr-CA accent quality, and
+multi-viewport visual parity. This standard governs public defect fixes and
+dashboard D1 visual work.
 
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
@@ -69,10 +70,11 @@ Read these first, in this exact order:
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - active post-D0 project status and phase map.
 4. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - latest public-site acceptance and production GO evidence.
 5. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
-6. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
-7. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - public-site visual truth evidence.
-8. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
-9. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
+6. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md` - latest public multilingual Dark-theme and fr-CA policy localization fix evidence.
+7. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
+8. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - public-site visual truth evidence.
+9. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
+10. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
 
 2026-06-18 public responsive authorities:
 
@@ -127,6 +129,9 @@ starting new work:
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - current post-D0 project
   status, closed/open phase map, GO/NO-GO table, and recommended next phase.
+- `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md` -
+  owner-reported Dark-theme callout contrast and fr-CA public policy
+  localization fix evidence.
 - `readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md` -
   owner-reported EN/fr-CA public sizing and pricing alignment fix evidence.
 - `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - final public-site
@@ -185,7 +190,8 @@ Current top-level interpretation:
   closed enough for dashboard visual work. The next correct implementation
   phase is scoped dashboard shell and lead workflow visual stabilization.
 - Newly reported multilingual public sizing defects should be handled with the
-  multilingual responsive standard before or alongside D1, without changing
+  multilingual responsive standard before or alongside D1, including
+  Light/Dark contrast mappings and fr-CA accent quality, without changing
   product truth or blocked systems.
 - Dashboard D0 is closed. It approved planning and scoped visual
   implementation only; it did not approve real customer data, paid pilot,
@@ -239,6 +245,7 @@ Current top-level interpretation:
 ### Product and UX
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
 - `readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md`
 - `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
 - `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`

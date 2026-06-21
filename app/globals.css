@@ -23,6 +23,7 @@ Change Log:
 - 2026-06-21: Added canonical four-step and workflow grid classes for public responsive acceptance.
 - 2026-06-21: Removed the homepage workflow grid after the repeated workflow section was collapsed.
 - 2026-06-21: Added multilingual plan-card alignment utilities for pricing and future dashboard parity.
+- 2026-06-21: Added public dark-theme mappings for teal callout panels and dark utility buttons.
 ============================================================
 */
 
@@ -280,6 +281,14 @@ select {
   background-color: var(--surface-interactive);
 }
 
+[data-theme="dark"] .public-site :where(.bg-teal-50) {
+  background-color: color-mix(in srgb, var(--accent) 13%, var(--surface-elevated));
+}
+
+[data-theme="dark"] .public-site :where(.border-teal-200) {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border-default));
+}
+
 [data-theme="dark"] .public-site :where(.border-slate-100, .border-slate-200, .border-zinc-100, .border-zinc-200) {
   border-color: var(--border-default);
 }
@@ -294,6 +303,18 @@ select {
 
 [data-theme="dark"] .public-site :where(.text-slate-500, .text-slate-400, .text-zinc-500, .text-zinc-400) {
   color: var(--text-muted);
+}
+
+[data-theme="dark"] .public-site :where(.text-teal-700) {
+  color: var(--accent);
+}
+
+[data-theme="dark"] .public-site :where(.bg-slate-950) {
+  background-color: var(--primary);
+}
+
+[data-theme="dark"] .public-site :where(.text-white) {
+  color: var(--primary-contrast);
 }
 
 .public-container {

@@ -42,8 +42,9 @@ unless a new defect is reported.
 
 For public-site fixes and dashboard D1 visual work, also read
 `docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`. EN/fr-CA
-text length, card heights, CTA alignment, and multi-viewport visual parity are
-now explicit implementation constraints.
+text length, fr-CA accent/meaning quality, Light/Dark contrast mappings, card
+heights, CTA alignment, and multi-viewport visual parity are now explicit
+implementation constraints.
 
 Read `docs/operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` before choosing execution order.
 

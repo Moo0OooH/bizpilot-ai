@@ -42,6 +42,10 @@ These references were reviewed on 2026-06-21:
   `https://localizejs.com/articles/ui-localization-how-to-adapt-your-web-ui-for-global-audiences`
 - Ben Myers, "Lost in Translation: Tips for Multilingual Web Accessibility":
   `https://benmyers.dev/blog/multilingual-web-accessibility/`
+- W3C, "Web Content Accessibility Guidelines (WCAG) 2.2":
+  `https://www.w3.org/TR/WCAG22/`
+- W3C WAI, "Understanding Success Criterion 1.4.3: Contrast (Minimum)":
+  `https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum`
 
 The shared guidance is consistent: translated text can expand substantially,
 small UI strings expand the most, fixed-width English-first components break,
@@ -153,6 +157,28 @@ Dashboard visual stabilization must apply the same rules:
 D1 remains visual/layout/copy scoped. This standard does not approve database,
 auth, RLS, AI provider, payment, billing, or production data-flow changes.
 
+### 6. Light And Dark Must Use The Same Meaningful Surface Tokens
+
+Dark theme is not a color inversion layer. Any public or dashboard component
+that uses a light utility panel in Light mode must have an explicit Dark-mode
+mapping before the change is accepted.
+
+Required behavior:
+
+- small text meets WCAG AA contrast against its actual panel background,
+- large/bold text and icon-only controls keep visible contrast,
+- tinted panels such as teal/mint callouts map to semantic surface tokens in
+  Dark mode,
+- hard-coded `bg-*-50`, `border-*-200`, `text-*-700`, `text-white`, and
+  `bg-slate-950` utilities must be covered by scoped theme mappings or replaced
+  with semantic tokens,
+- screenshots are not enough; inspect computed foreground/background colors
+  after switching the real theme control.
+
+Do not keep a bright Light-mode panel in Dark mode while its children inherit
+Dark-mode text. That creates unreadable white-on-near-white content and fails
+the public visual stability gate.
+
 ## Required QA Matrix
 
 Before claiming multilingual visual stability for a public or dashboard surface,
@@ -169,6 +195,8 @@ run or record equivalent evidence for:
 - no nested scroll inside marketing sections or dashboard cards,
 - no hidden/truncated CTA text,
 - aligned pricing/action rows where repeated CTAs exist.
+- no Light-mode utility panel remains unmapped in Dark mode,
+- no no-accent fr-CA public/legal fallback text appears on visible routes.
 
 `pnpm smoke:dashboard` remains prohibited against production-like Supabase
 credentials because it creates synthetic workspace data. Dashboard visual QA
@@ -180,6 +208,7 @@ Use a mix of source, copy, smoke, and browser checks:
 
 - copy budget unit tests for high-risk strings,
 - source tests that require shared layout classes,
+- source tests that require Dark-mode utility mappings for public callouts,
 - smoke tests for EN/fr-CA route output,
 - browser DOM measurements for hero, card, and CTA parity,
 - screenshots only after DOM metrics are clean.

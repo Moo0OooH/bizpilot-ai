@@ -17,6 +17,7 @@
  * - 2026-06-21: Added canonical public responsive-grid regression coverage.
  * - 2026-06-21: Added homepage workflow de-duplication coverage.
  * - 2026-06-21: Added multilingual pricing-card action alignment contracts.
+ * - 2026-06-21: Added public dark-theme callout contrast contracts.
  * ============================================================
  */
 
@@ -214,5 +215,25 @@ describe("public visual stability source contracts", () => {
 
     assert.equal(themeControl.includes("fr-CA"), true);
     assert.equal(themeControl.includes("Utiliser le"), true);
+  });
+
+  it("keeps public dark-theme callout panels contrast-safe", () => {
+    const globals = source("app/globals.css");
+
+    for (const required of [
+      '[data-theme="dark"] .public-site :where(.bg-teal-50)',
+      '[data-theme="dark"] .public-site :where(.border-teal-200)',
+      '[data-theme="dark"] .public-site :where(.text-teal-700)',
+      '[data-theme="dark"] .public-site :where(.bg-slate-950)',
+      '[data-theme="dark"] .public-site :where(.text-white)',
+    ]) {
+      assert.equal(
+        globals.includes(required),
+        true,
+        `Dark public theme mapping missing ${required}`,
+      );
+    }
+
+    assert.equal(globals.includes("var(--primary-contrast)"), true);
   });
 });

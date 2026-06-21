@@ -156,14 +156,32 @@ const routes: readonly RouteContract[] = [
     path: "/privacy",
   },
   {
+    h1: "Règles de confidentialité pour la récupération des soumissions.",
+    mustContain: ["Résumé simple", "Avis de confidentialité"],
+    mustNotContain: ["Regles", "confidentialite", "recuperation"],
+    path: "/privacy?language=fr-CA",
+  },
+  {
     h1: "Security boundaries before real pilot data.",
     mustContain: ["Plain-language summary"],
     path: "/security",
   },
   {
+    h1: "Frontières de sécurité avant les données réelles.",
+    mustContain: ["Résumé simple", "Posture de sécurité"],
+    mustNotContain: ["Frontieres", "securite", "donnees reelles"],
+    path: "/security?language=fr-CA",
+  },
+  {
     h1: "Clear founder-pilot terms, no hidden automation.",
     mustContain: ["$149 setup", "$79/month", "Manual billing only"],
     path: "/terms",
+  },
+  {
+    h1: "Conditions claires, sans automatisation cachée.",
+    mustContain: ["Résumé simple", "$149 setup", "$79/month"],
+    mustNotContain: ["automation cachee", "donnees reelles", "proprietaire"],
+    path: "/terms?language=fr-CA",
   },
 ];
 

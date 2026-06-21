@@ -11,10 +11,11 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-06-16
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-16: Updated public trust copy to reflect Phase 23/24 synthetic proof and remaining real-data gates.
  * - 2026-06-18: Reframed public policy copy around owner-friendly summaries and approved staged pilot pricing.
+ * - 2026-06-21: Restored fr-CA accents and cleaner localized wording for public legal pages.
  * ============================================================
  */
 
@@ -236,140 +237,140 @@ const englishPolicyCopy: PolicyCopy = {
 
 const frenchPolicyCopy: PolicyCopy = {
   privacy: {
-    badge: "Avis de confidentialite",
+    badge: "Avis de confidentialité",
     boundaryBody:
-      "BizPilot est manuel d'abord. Il doit collecter seulement ce qu'un proprietaire de nettoyage doit savoir pour reviser une demande et repondre prudemment.",
-    boundaryTitle: "Resume simple",
+      "BizPilot est manuel d'abord. Il doit collecter seulement ce qu'un propriétaire d'entreprise de nettoyage doit savoir pour réviser une demande et répondre prudemment.",
+    boundaryTitle: "Résumé simple",
     body:
-      "BizPilot est prepare pour les premiers pilotes avec des entreprises de nettoyage. Cet avis explique les regles pratiques avant l'utilisation de donnees reelles de clients.",
-    effectiveDate: "Derniere mise a jour: 16 juin 2026",
+      "BizPilot est préparé pour les premiers pilotes avec des entreprises de nettoyage. Cet avis explique les règles pratiques avant l'utilisation de données client réelles.",
+    effectiveDate: "Dernière mise à jour : 16 juin 2026",
     externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
-      "Avant tout pilote reel, BizPilot doit garder le premier pilote manuel et enregistrer l'approbation finale du proprietaire.",
+      "Avant tout pilote réel, BizPilot doit garder le premier pilote manuel et enregistrer l'approbation finale du propriétaire.",
     meta: {
       description:
-        "Avis de confidentialite BizPilot AI pour la recuperation prudente des soumissions de nettoyage, le consentement et les portes de preparation.",
-      title: "Avis de confidentialite | BizPilot AI",
+        "Avis de confidentialité BizPilot AI pour la récupération prudente des soumissions de nettoyage, le consentement et les portes de préparation.",
+      title: "Avis de confidentialité | BizPilot AI",
     },
     references: [
       {
         description:
-          "Sujets sur la loi federale canadienne applicable au secteur prive.",
+          "Sujets sur la loi fédérale canadienne applicable au secteur privé.",
         href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/",
-        title: "Commissariat a la protection de la vie privee du Canada: LPRPDE",
+        title: "Commissariat à la protection de la vie privée du Canada : LPRPDE",
       },
       {
         description:
-          "Apercu du regulateur quebecois sur les changements de la Loi 25.",
+          "Aperçu du régulateur québécois sur les changements de la Loi 25.",
         href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
-        title: "Commission d'acces a l'information: changements de la Loi 25",
+        title: "Commission d'accès à l'information : changements de la Loi 25",
       },
     ],
-    referenceEyebrow: "Reference",
-    referenceTitle: "References publiques de confidentialite et securite.",
+    referenceEyebrow: "Référence",
+    referenceTitle: "Références publiques de confidentialité et sécurité.",
     sections: [
       {
         body:
-          "BizPilot sert a recuperer les demandes de soumission: formulaires publics, details du lead, notes du proprietaire, resumes IA, brouillons manuels et statut de suivi. Il ne doit pas recevoir de cartes de paiement, pieces d'identite, donnees de sante ou dossiers sensibles non relies.",
+          "BizPilot sert à récupérer les demandes de soumission : formulaires publics, détails du prospect, notes du propriétaire, résumés IA, brouillons manuels et statut de suivi. Il ne doit pas recevoir de cartes de paiement, pièces d'identité, données de santé ou dossiers sensibles non reliés.",
         title: "Ce que BizPilot doit collecter",
       },
       {
         body:
-          "La collecte doit rester limitee a ce qu'un proprietaire de nettoyage doit savoir pour repondre: contact, type de service, lieu, moment, contexte de propriete et message du client.",
-        title: "Minimisation des donnees",
+          "La collecte doit rester limitée à ce qu'un propriétaire d'entreprise de nettoyage doit savoir pour répondre : contact, type de service, lieu, moment, contexte de propriété et message du client.",
+        title: "Minimisation des données",
       },
       {
         body:
-          "Les formulaires de soumission doivent afficher un texte de consentement. Le proprietaire reste responsable d'envoyer les messages manuellement depuis son propre canal; BizPilot n'envoie pas automatiquement les messages clients.",
+          "Les formulaires de soumission doivent afficher un texte de consentement. Le propriétaire reste responsable d'envoyer les messages manuellement depuis son propre canal; BizPilot n'envoie pas automatiquement les messages clients.",
         title: "Consentement et communication manuelle",
       },
       {
         body:
-          "Les donnees de chaque entreprise doivent rester separees par l'adhesion et la securite RLS. La preuve production synthetique, OpenAI, courriel auth et sauvegarde/restauration DB-level est enregistree; les donnees reelles restent bloquees jusqu'a la gate finale d'approbation.",
-        title: "Gate des donnees reelles",
+          "Les données de chaque entreprise doivent rester séparées par l'adhésion et la sécurité RLS. La preuve production synthétique, OpenAI, courriel auth et sauvegarde/restauration DB-level est enregistrée; les données réelles restent bloquées jusqu'à la gate finale d'approbation.",
+        title: "Gate des données réelles",
       },
       {
         body:
-          "Les demandes de confidentialite passent par le canal d'onboarding/support fourni par le fondateur jusqu'a verification d'une boite dediee. Les demandes peuvent porter sur l'acces, la correction, la suppression, l'utilisation ou la conservation.",
-        title: "Acces, correction et suppression",
+          "Les demandes de confidentialité passent par le canal d'onboarding/support fourni par le fondateur jusqu'à vérification d'une boîte dédiée. Les demandes peuvent porter sur l'accès, la correction, la suppression, l'utilisation ou la conservation.",
+        title: "Accès, correction et suppression",
       },
     ],
-    technicalNotesTitle: "Notes techniques et limites operationnelles",
-    title: "Regles de confidentialite pour la recuperation des soumissions.",
+    technicalNotesTitle: "Notes techniques et limites opérationnelles",
+    title: "Règles de confidentialité pour la récupération des soumissions.",
   },
   security: {
-    badge: "Posture de securite",
+    badge: "Posture de sécurité",
     boundaryBody:
-      "BizPilot applique des protections conservatrices pour les soumissions publiques, l'acces tenant, les secrets et les brouillons IA revises par le proprietaire.",
-    boundaryTitle: "Resume simple",
+      "BizPilot applique des protections conservatrices pour les soumissions publiques, l'accès tenant, les secrets et les brouillons IA révisés par le propriétaire.",
+    boundaryTitle: "Résumé simple",
     body:
-      "Le modele de securite BizPilot reste conservateur: l'intake public est traite comme surface critique, et l'IA reste revisee par le proprietaire.",
-    effectiveDate: "Derniere mise a jour: 16 juin 2026",
+      "Le modèle de sécurité BizPilot reste conservateur : l'intake public est traité comme surface critique, et l'IA reste révisée par le propriétaire.",
+    effectiveDate: "Dernière mise à jour : 16 juin 2026",
     externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
-      "Cette page resume la securite produit. Elle ne remplace pas un audit formel, une politique d'incident ou un exercice de restauration.",
+      "Cette page résume la sécurité produit. Elle ne remplace pas un audit formel, une politique d'incident ou un exercice de restauration.",
     meta: {
       description:
-        "Resume de securite BizPilot AI pour les soumissions publiques, l'isolation des tenants, les brouillons IA revises et les portes de preparation.",
-      title: "Resume de securite | BizPilot AI",
+        "Résumé de sécurité BizPilot AI pour les soumissions publiques, l'isolation des tenants, les brouillons IA révisés et les portes de préparation.",
+      title: "Résumé de sécurité | BizPilot AI",
     },
     references: [
       {
         description:
-          "Sujets sur la loi federale, incluant les mesures de protection et l'aide a la conformite.",
+          "Sujets sur la loi fédérale, incluant les mesures de protection et l'aide à la conformité.",
         href: "https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/",
-        title: "Commissariat a la protection de la vie privee du Canada: LPRPDE",
+        title: "Commissariat à la protection de la vie privée du Canada : LPRPDE",
       },
       {
         description:
-          "Changements quebecois en protection des renseignements personnels pour les organisations.",
+          "Changements québécois en protection des renseignements personnels pour les organisations.",
         href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
-        title: "Commission d'acces a l'information: changements de la Loi 25",
+        title: "Commission d'accès à l'information : changements de la Loi 25",
       },
     ],
-    referenceEyebrow: "Reference",
-    referenceTitle: "References publiques de confidentialite et securite.",
+    referenceEyebrow: "Référence",
+    referenceTitle: "Références publiques de confidentialité et sécurité.",
     sections: [
       {
         body:
-          "Les pages de soumission publiques valident le lien actif, le formulaire attendu, le consentement, les champs caches, le temps de soumission et les signaux d'abus avant d'accepter une soumission synthetique ou pilote.",
+          "Les pages de soumission publiques valident le lien actif, le formulaire attendu, le consentement, les champs cachés, le temps de soumission et les signaux d'abus avant d'accepter une soumission synthétique ou pilote.",
         title: "Durcissement des soumissions publiques",
       },
       {
         body:
-          "L'acces aux donnees d'entreprise passe par l'authentification, l'adhesion, le statut lifecycle et la securite RLS de la base de donnees. Les helpers service-role doivent rester cote serveur.",
+          "L'accès aux données d'entreprise passe par l'authentification, l'adhésion, le statut lifecycle et la sécurité RLS de la base de données. Les helpers service-role doivent rester côté serveur.",
         title: "Isolation des tenants",
       },
       {
         body:
-          "L'IA aide seulement a preparer un brouillon. BizPilot ne doit pas envoyer automatiquement, inventer des prix, confirmer des reservations ou agir comme operateur cache.",
-        title: "Limite de securite IA",
+          "L'IA aide seulement à préparer un brouillon. BizPilot ne doit pas envoyer automatiquement, inventer des prix, confirmer des réservations ou agir comme opérateur caché.",
+        title: "Limite de sécurité IA",
       },
       {
         body:
-          "Les secrets doivent rester dans les environnements fournisseurs, jamais dans le code, les logs, captures, docs ou commits. Les cles manquantes doivent echouer proprement ou utiliser un fallback documente.",
+          "Les secrets doivent rester dans les environnements fournisseurs, jamais dans le code, les logs, captures, docs ou commits. Les clés manquantes doivent échouer proprement ou utiliser un fallback documenté.",
         title: "Gestion des secrets",
       },
       {
         body:
-          "La preuve export/restauration DB-level est passee pour la cible synthetique. La preuve stricte app/dashboard/RLS restauree reste differee a P1 avant pilote payant, migrations production, nettoyage destructif, travail bulk ou echelle plus large.",
+          "La preuve export/restauration DB-level est passée pour la cible synthétique. La preuve stricte app/dashboard/RLS restaurée reste différée à P1 avant pilote payant, migrations production, nettoyage destructif, travail bulk ou échelle plus large.",
         title: "Gate sauvegarde et restauration",
       },
     ],
-    technicalNotesTitle: "Notes techniques et limites operationnelles",
-    title: "Frontieres de securite avant les donnees reelles.",
+    technicalNotesTitle: "Notes techniques et limites opérationnelles",
+    title: "Frontières de sécurité avant les données réelles.",
   },
   terms: {
     badge: "Conditions pilote",
     boundaryBody:
-      "Le setup, la facturation et les donnees reelles restent guides par le fondateur, manuels et soumis a approbation pendant le pilote.",
-    boundaryTitle: "Resume simple",
+      "La mise en place, la facturation et les données réelles restent guidées par le fondateur, manuelles et soumises à approbation pendant le pilote.",
+    boundaryTitle: "Résumé simple",
     body:
-      "Ces conditions de pilote gardent l'offre claire pendant que BizPilot reste guide par le fondateur avec facturation manuelle.",
-    effectiveDate: "Derniere mise a jour: 16 juin 2026",
+      "Ces conditions de pilote gardent l'offre claire pendant que BizPilot reste guidé par le fondateur avec facturation manuelle.",
+    effectiveDate: "Dernière mise à jour : 16 juin 2026",
     externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
-      "Tout pilote payant doit avoir une offre ecrite, facture ou lien de paiement separe avant toute collecte d'argent.",
+      "Tout pilote payant doit avoir une offre écrite, facture ou lien de paiement séparé avant toute collecte d'argent.",
     meta: {
       description:
         "Conditions du projet pilote BizPilot AI couvrant la facturation manuelle, les tarifs pilotes, les remboursements et les limites sans garantie.",
@@ -378,32 +379,32 @@ const frenchPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot aide les entreprises de nettoyage a capter les demandes, organiser les leads, preparer des brouillons revises par le proprietaire et garder les suivis visibles. Ce n'est pas un outil d'envoi automatique, reservation, facturation, SMS/WhatsApp ou CRM complet.",
-        title: "Scope produit",
+          "BizPilot aide les entreprises de nettoyage à capter les demandes, organiser les prospects, préparer des brouillons révisés par le propriétaire et garder les suivis visibles. Ce n'est pas un outil d'envoi automatique, réservation, facturation, SMS/WhatsApp ou CRM complet.",
+        title: "Portée produit",
       },
       {
         body:
-          "BizPilot utilise des conditions pilote par etapes: les 1-5 premieres entreprises de nettoyage peuvent rejoindre le Founder Feedback Pilot a $0 setup avec engagement de feedback a 30 et 60 jours; les clients 6-20 utilisent Starter Pilot a $149 setup et $49/month; apres preuve ou apres les 20 premiers clients, Pro Pilot est a $199 setup et $79/month.",
+          "BizPilot utilise des conditions pilote par étapes : les 1 à 5 premières entreprises de nettoyage peuvent rejoindre le Founder Feedback Pilot à $0 setup avec engagement de feedback à 30 et 60 jours; les clients 6 à 20 utilisent Starter Pilot à $149 setup et $49/month; après preuve ou après les 20 premiers clients, Pro Pilot est à $199 setup et $79/month.",
         title: "Tarifs pilote",
       },
       {
         body:
-          "Le setup payant est remboursable avant le debut du travail d'onboarding. Apres le debut du setup, le remboursement n'est pas automatique. Le client peut annuler avant le prochain cycle mensuel; aucun contrat long terme n'est promis.",
+          "Le setup payant est remboursable avant le début du travail d'onboarding. Après le début du setup, le remboursement n'est pas automatique. Le client peut annuler avant le prochain cycle mensuel; aucun contrat long terme n'est promis.",
         title: "Remboursements et annulation",
       },
       {
         body:
-          "La facturation reste manuelle par facture ou lien de paiement separe. BizPilot n'inclut pas encore de billing in-app, facturation, collecte de paiement ou webhook paiement.",
+          "La facturation reste manuelle par facture ou lien de paiement séparé. BizPilot n'inclut pas encore de billing in-app, facturation, collecte de paiement ou webhook paiement.",
         title: "Facturation manuelle seulement",
       },
       {
         body:
-          "BizPilot ne garantit pas les revenus, jobs recuperes, taux de reponse, classement, conversion client ou conformite reglementaire. Le proprietaire reste responsable de reviser chaque reponse.",
+          "BizPilot ne garantit pas les revenus, jobs récupérés, taux de réponse, classement, conversion client ou conformité réglementaire. Le propriétaire reste responsable de réviser chaque réponse.",
         title: "Aucune garantie",
       },
     ],
-    technicalNotesTitle: "Notes techniques et limites operationnelles",
-    title: "Conditions claires, sans automation cachee.",
+    technicalNotesTitle: "Notes techniques et limites opérationnelles",
+    title: "Conditions claires, sans automatisation cachée.",
   },
 };
 

@@ -15,6 +15,7 @@
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
  * - 2026-06-21: Added canonical four-step public grid coverage.
  * - 2026-06-21: Added multilingual copy length budgets for hero and pricing parity.
+ * - 2026-06-21: Added fr-CA public policy accent and meaning guards.
  * ============================================================
  */
 
@@ -441,6 +442,47 @@ describe("BizPilot language copy", () => {
     assert.equal(interactiveDemoSource.includes("Démo nettoyage"), true);
     assert.equal(interactiveDemoSource.includes("Brouillon pour révision"), true);
     assert.equal(interactiveDemoSource.includes("Étape ${current} de ${total}"), true);
+  });
+
+  it("keeps fr-CA public policy copy accented and meaning-equivalent", () => {
+    const frenchPolicyCopy = getPolicyCopy("fr-CA");
+    const frenchPolicyText = JSON.stringify(frenchPolicyCopy);
+
+    assert.equal(
+      frenchPolicyCopy.privacy.title,
+      "Règles de confidentialité pour la récupération des soumissions.",
+    );
+    assert.equal(
+      frenchPolicyCopy.security.title,
+      "Frontières de sécurité avant les données réelles.",
+    );
+    assert.equal(
+      frenchPolicyCopy.terms.title,
+      "Conditions claires, sans automatisation cachée.",
+    );
+    assert.equal(
+      frenchPolicyCopy.terms.sections[0]?.title,
+      "Portée produit",
+    );
+
+    for (const forbidden of [
+      "Avis de confidentialite",
+      "Regles de confidentialite",
+      "recuperation des soumissions",
+      "Frontieres de securite",
+      "donnees reelles",
+      "automation cachee",
+      "Scope produit",
+      "proprietaire",
+      "reponse",
+      "resume",
+    ]) {
+      assert.equal(
+        frenchPolicyText.includes(forbidden),
+        false,
+        `fr-CA policy copy should not contain no-accent or English artifact: ${forbidden}`,
+      );
+    }
   });
 
   it("keeps public hero and pricing copy inside multilingual visual budgets", () => {
