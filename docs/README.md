@@ -8,15 +8,16 @@ Before reading or implementing anything, start with:
 2. `AI_CODING_AGENT_START_HERE_v1.7.md`
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
 4. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
-5. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
-6. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
-7. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
-8. `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
-9. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
-10. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
-11. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
-12. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
-13. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+5. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
+6. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+7. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
+8. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
+9. `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
+10. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
+11. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
+12. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+13. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
+14. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
 
@@ -53,6 +54,15 @@ data-flow blockers remain in force.
 and dashboard EN/fr-CA sizing, card alignment, CTA anchoring, and multi-viewport
 visual parity. New public or D1 dashboard work must preserve this standard,
 including Light/Dark contrast mappings and fr-CA accent/meaning quality.
+
+2026-06-21 final bilingual content/layout acceptance override: use
+`readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` as the latest
+production-verified acceptance record for EN/fr-CA public copy, sizing, pricing
+alignment, Light/Dark evidence, pseudolocalization guardrails, and the GO
+decision for starting scoped Dashboard Phase D1 visual stabilization. This does
+not approve real customer data, paid pilot launch, billing automation,
+auth/RLS/database changes, AI provider changes, or production data-flow
+expansion.
 
 ## Active MVP Direction
 
@@ -117,6 +127,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 - `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
 - `docs/readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
 - `docs/readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md`
+- `docs/readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
 - `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
 - `docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
 - `docs/readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`

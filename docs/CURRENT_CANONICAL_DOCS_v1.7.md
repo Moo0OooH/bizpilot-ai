@@ -57,6 +57,15 @@ alignment, Light/Dark contrast mappings, fr-CA accent quality, and
 multi-viewport visual parity. This standard governs public defect fixes and
 dashboard D1 visual work.
 
+2026-06-21 final bilingual content/layout acceptance override: treat
+`readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` as the latest
+production-verified public-site acceptance record for EN/fr-CA copy, sizing,
+pricing alignment, Light/Dark evidence, pseudolocalization guardrails, and the
+GO decision for starting scoped Dashboard Phase D1 visual stabilization. This
+does not approve real customer data, paid pilot launch, billing automation,
+auth/RLS/database changes, AI provider changes, or production data-flow
+expansion.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
@@ -68,17 +77,19 @@ Read these first, in this exact order:
 1. `CURRENT_CANONICAL_DOCS_v1.7.md` - this file.
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` - current agent instructions.
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - active post-D0 project status and phase map.
-4. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - latest public-site acceptance and production GO evidence.
-5. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
-6. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md` - latest public multilingual Dark-theme and fr-CA policy localization fix evidence.
-7. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
-8. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - public-site visual truth evidence.
-9. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
-10. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
+4. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - latest EN/fr-CA public copy, sizing, theme, production evidence, and D1 GO/NO-GO record.
+5. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - latest public-site acceptance and production GO evidence.
+6. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
+7. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md` - latest public multilingual Dark-theme and fr-CA policy localization fix evidence.
+8. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
+9. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - public-site visual truth evidence.
+10. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
+11. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
 
 2026-06-18 public responsive authorities:
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
 - `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
 - `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
 - `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
@@ -134,6 +145,10 @@ starting new work:
   localization fix evidence.
 - `readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md` -
   owner-reported EN/fr-CA public sizing and pricing alignment fix evidence.
+- `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - final
+  production-verified bilingual content/layout acceptance, screenshot evidence,
+  line-budget results, pseudolocalization results, and GO decision for starting
+  scoped D1 dashboard visual work.
 - `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - final public-site
   acceptance P0-P5 evidence, production smoke results, browser DOM matrix, and
   GO decision for starting scoped D1 dashboard visual work.
@@ -247,6 +262,7 @@ Current top-level interpretation:
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
 - `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
 - `readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md`
+- `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
 - `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
 - `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
 - `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`

@@ -1,0 +1,276 @@
+{
+  "capturedAt": "2026-06-21T16:16:47.695Z",
+  "productionUrl": "https://bizpilo.com",
+  "commit": "6b817e1b0a95b76b5f2039762a3c89a69d5d9f2b",
+  "results": [
+    {
+      "name": "production-home-en-light-1280x720",
+      "url": "https://bizpilo.com/?language=en&l5=visual",
+      "theme": "light",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "screenshot": "production-home-en-light-1280x720.png",
+      "metrics": {
+        "lang": "en",
+        "theme": "light",
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "horizontalOverflow": false,
+        "bodyTextLength": 4633,
+        "h1": "Stop losing cleaning quote requests to slow replies.",
+        "pricingCards": [],
+        "cleaningCards": []
+      }
+    },
+    {
+      "name": "production-home-fr-ca-light-1280x720",
+      "url": "https://bizpilo.com/?language=fr-CA&l5=visual",
+      "theme": "light",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "screenshot": "production-home-fr-ca-light-1280x720.png",
+      "metrics": {
+        "lang": "fr-CA",
+        "theme": "light",
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "horizontalOverflow": false,
+        "bodyTextLength": 5313,
+        "h1": "Ne perdez plus de soumissions faute de réponse rapide.",
+        "pricingCards": [],
+        "cleaningCards": []
+      }
+    },
+    {
+      "name": "production-home-fr-ca-mobile-light-390x844",
+      "url": "https://bizpilo.com/?language=fr-CA&l5=visual",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "screenshot": "production-home-fr-ca-mobile-light-390x844.png",
+      "metrics": {
+        "lang": "fr-CA",
+        "theme": "light",
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "bodyTextLength": 5135,
+        "h1": "Ne perdez plus de soumissions faute de réponse rapide.",
+        "pricingCards": [],
+        "cleaningCards": []
+      }
+    },
+    {
+      "name": "production-home-fr-ca-dark-1280x720",
+      "url": "https://bizpilo.com/?language=fr-CA&l5=visual",
+      "theme": "dark",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "screenshot": "production-home-fr-ca-dark-1280x720.png",
+      "metrics": {
+        "lang": "fr-CA",
+        "theme": "dark",
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "horizontalOverflow": false,
+        "bodyTextLength": 5313,
+        "h1": "Ne perdez plus de soumissions faute de réponse rapide.",
+        "pricingCards": [],
+        "cleaningCards": []
+      }
+    },
+    {
+      "name": "production-pricing-fr-ca-light-1280x720",
+      "url": "https://bizpilo.com/pricing?language=fr-CA&l5=visual",
+      "theme": "light",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "screenshot": "production-pricing-fr-ca-light-1280x720.png",
+      "metrics": {
+        "lang": "fr-CA",
+        "theme": "light",
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "horizontalOverflow": false,
+        "bodyTextLength": 2134,
+        "h1": "Tarifs pilotes simples pour le nettoyage.",
+        "pricingCards": [
+          {
+            "width": 385,
+            "height": 629,
+            "top": 381,
+            "bottom": 1009
+          },
+          {
+            "width": 385,
+            "height": 629,
+            "top": 381,
+            "bottom": 1009
+          },
+          {
+            "width": 385,
+            "height": 629,
+            "top": 381,
+            "bottom": 1009
+          }
+        ],
+        "cleaningCards": []
+      }
+    },
+    {
+      "name": "production-pricing-fr-ca-dark-1280x720",
+      "url": "https://bizpilo.com/pricing?language=fr-CA&l5=visual",
+      "theme": "dark",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "screenshot": "production-pricing-fr-ca-dark-1280x720.png",
+      "metrics": {
+        "lang": "fr-CA",
+        "theme": "dark",
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "horizontalOverflow": false,
+        "bodyTextLength": 2134,
+        "h1": "Tarifs pilotes simples pour le nettoyage.",
+        "pricingCards": [
+          {
+            "width": 385,
+            "height": 629,
+            "top": 381,
+            "bottom": 1009
+          },
+          {
+            "width": 385,
+            "height": 629,
+            "top": 381,
+            "bottom": 1009
+          },
+          {
+            "width": 385,
+            "height": 629,
+            "top": 381,
+            "bottom": 1009
+          }
+        ],
+        "cleaningCards": []
+      }
+    },
+    {
+      "name": "production-cleaning-fr-ca-light-1366x768",
+      "url": "https://bizpilo.com/industries/cleaning?language=fr-CA&l5=visual",
+      "theme": "light",
+      "width": 1366,
+      "height": 768,
+      "status": 200,
+      "screenshot": "production-cleaning-fr-ca-light-1366x768.png",
+      "metrics": {
+        "lang": "fr-CA",
+        "theme": "light",
+        "scrollWidth": 1366,
+        "clientWidth": 1366,
+        "horizontalOverflow": false,
+        "bodyTextLength": 2969,
+        "h1": "Récupération des demandes pour entreprises de nettoyage.",
+        "pricingCards": [],
+        "cleaningCards": [
+          {
+            "width": 385,
+            "height": 160,
+            "top": 703
+          },
+          {
+            "width": 385,
+            "height": 160,
+            "top": 703
+          },
+          {
+            "width": 385,
+            "height": 160,
+            "top": 703
+          },
+          {
+            "width": 385,
+            "height": 136,
+            "top": 886
+          },
+          {
+            "width": 385,
+            "height": 136,
+            "top": 886
+          },
+          {
+            "width": 385,
+            "height": 136,
+            "top": 886
+          }
+        ]
+      }
+    },
+    {
+      "name": "production-demo-dark-1280x720",
+      "url": "https://bizpilo.com/demo?language=en&l5=visual",
+      "theme": "dark",
+      "width": 1280,
+      "height": 720,
+      "status": 200,
+      "screenshot": "production-demo-dark-1280x720.png",
+      "metrics": {
+        "lang": "en",
+        "theme": "dark",
+        "scrollWidth": 1280,
+        "clientWidth": 1280,
+        "horizontalOverflow": false,
+        "bodyTextLength": 2121,
+        "h1": "See how BizPilot handles a cleaning quote request.",
+        "pricingCards": [],
+        "cleaningCards": []
+      }
+    },
+    {
+      "name": "production-auth-sign-in-mobile-390x844",
+      "url": "https://bizpilo.com/auth/sign-in?language=en&l5=visual",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "screenshot": "production-auth-sign-in-mobile-390x844.png",
+      "metrics": {
+        "lang": "en",
+        "theme": "light",
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "bodyTextLength": 325,
+        "h1": "Sign in",
+        "pricingCards": [],
+        "cleaningCards": []
+      }
+    },
+    {
+      "name": "production-quote-fr-ca-light-390x844",
+      "url": "https://bizpilo.com/quote/akora?language=fr-CA&l5=visual",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "screenshot": "production-quote-fr-ca-light-390x844.png",
+      "metrics": {
+        "lang": "fr-CA",
+        "theme": "light",
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "horizontalOverflow": false,
+        "bodyTextLength": 2299,
+        "h1": "Demander une soumission de nettoyage",
+        "pricingCards": [],
+        "cleaningCards": []
+      }
+    }
+  ]
+}
