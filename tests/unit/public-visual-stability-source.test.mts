@@ -15,6 +15,7 @@
  * Change Log:
  * - 2026-06-21: Added homepage demo numbering regression coverage.
  * - 2026-06-21: Added canonical public responsive-grid regression coverage.
+ * - 2026-06-21: Added homepage workflow de-duplication coverage.
  * ============================================================
  */
 
@@ -68,15 +69,9 @@ describe("public visual stability source contracts", () => {
       true,
       "desktop public grids should keep minmax(0, 1fr) tracks",
     );
-    assert.equal(globals.includes(".homepage-workflow-grid"), true);
     assert.equal(globals.includes(".homepage-use-case-grid > *"), true);
     assert.equal(globals.includes(".supporting-four-grid > *"), true);
     assert.equal(globals.includes(".supporting-six-grid > *"), true);
-    assert.equal(
-      globals.includes(".homepage-workflow-grid {\n    grid-template-columns: repeat(3, minmax(0, 1fr));"),
-      true,
-      "Homepage workflow grid should avoid the old squeezed five-column desktop row.",
-    );
     assert.equal(
       globals.includes(".supporting-four-grid {\n    grid-template-columns: repeat(4, minmax(0, 1fr));"),
       true,
@@ -98,8 +93,27 @@ describe("public visual stability source contracts", () => {
       );
     }
 
-    assert.equal(publicSources.includes("homepage-workflow-grid"), true);
     assert.equal(publicSources.includes("supporting-four-grid"), true);
+  });
+
+  it("keeps the homepage from repeating the workflow before the demo", () => {
+    const homepage = source("app/page.tsx");
+
+    assert.equal(
+      homepage.includes("copy.workflow.steps.map"),
+      false,
+      "Homepage should not render the old repeated five-card workflow section.",
+    );
+    assert.equal(
+      homepage.includes("homepage-workflow-grid"),
+      false,
+      "Homepage should not keep the removed workflow-grid surface.",
+    );
+    assert.equal(
+      homepage.match(/<ProductPreview copy=\{copy\.preview\} \/>/g)?.length,
+      1,
+      "Homepage should keep one product preview workflow demo.",
+    );
   });
 
   it("keeps the bilingual homepage hero from regressing to a narrow first-fold layout", () => {

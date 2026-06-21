@@ -21,6 +21,7 @@ Change Log:
 - 2026-06-20: Stabilized public grids and wrapping before dashboard work.
 - 2026-06-20: Balanced public marketing grids with fluid gaps and content-driven card heights.
 - 2026-06-21: Added canonical four-step and workflow grid classes for public responsive acceptance.
+- 2026-06-21: Removed the homepage workflow grid after the repeated workflow section was collapsed.
 ============================================================
 */
 
@@ -343,7 +344,6 @@ select {
 }
 
 .homepage-demo-grid,
-.homepage-workflow-grid,
 .supporting-four-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -370,7 +370,6 @@ select {
 .public-card-grid > *,
 .public-card-grid-wide > *,
 .homepage-demo-grid > *,
-.homepage-workflow-grid > *,
 .homepage-use-case-grid > *,
 .supporting-four-grid > *,
 .supporting-six-grid > *,
@@ -380,7 +379,6 @@ select {
 
 @media (min-width: 768px) {
   .homepage-demo-grid,
-  .homepage-workflow-grid,
   .homepage-use-case-grid,
   .supporting-four-grid,
   .supporting-six-grid {
@@ -392,10 +390,6 @@ select {
   .homepage-demo-grid,
   .supporting-four-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .homepage-workflow-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .homepage-use-case-grid {

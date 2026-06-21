@@ -19,6 +19,7 @@
  * - 2026-06-20: Removed forced card heights from demo and cleaning-use-case grids.
  * - 2026-06-21: Removed duplicate visible numbering from the homepage product preview.
  * - 2026-06-21: Moved the workflow strip onto canonical responsive grid classes.
+ * - 2026-06-21: Removed the repeated five-card workflow section so the product demo carries the workflow story once.
  * ============================================================
  */
 
@@ -430,27 +431,6 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
             title={copy.solution.title}
           />
           <CardGrid items={copy.solution.cards} />
-        </MarketingShell>
-      </section>
-
-      <section className="py-[var(--section-space-compact)]">
-        <MarketingShell>
-          <SectionTitle
-            eyebrow={copy.workflow.eyebrow}
-            title={copy.workflow.title}
-          />
-          <div className="homepage-workflow-grid mt-8">
-            {copy.workflow.steps.map((step, index) => (
-              <MarketingCard className="p-5" key={step}>
-                <p className="text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
-                  {copy.workflow.stepLabel} {index + 1}
-                </p>
-                <p className="mt-3 text-[16px] font-black leading-6" style={{ color: marketingTone.text }}>
-                  {step}
-                </p>
-              </MarketingCard>
-            ))}
-          </div>
         </MarketingShell>
       </section>
 
