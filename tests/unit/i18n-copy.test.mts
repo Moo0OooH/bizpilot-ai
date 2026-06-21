@@ -508,6 +508,9 @@ describe("BizPilot language copy", () => {
       "Le proprietaire",
       "Aucun prix invente",
       "Pret a reviser",
+      "nettoyage de départ",
+      "Nouveau lead",
+      "Lead chaud",
     ]) {
       assert.equal(
         frenchHomeText.includes(forbidden),
@@ -554,6 +557,22 @@ describe("BizPilot language copy", () => {
       "Frontieres de securite",
       "donnees reelles",
       "automation cachee",
+      "manuel d'abord",
+      "Gate des données réelles",
+      "gate finale",
+      "DB-level",
+      "travail bulk",
+      "révisé par le propriétaire",
+      "révisée par le propriétaire",
+      "révisés par le propriétaire",
+      "Founder Feedback Pilot",
+      "Starter Pilot",
+      "travail d'onboarding",
+      "billing in-app",
+      "webhook paiement",
+      "jobs récupérés",
+      "l'intake public",
+      "Isolation des tenants",
       "Scope produit",
       "proprietaire",
       "reponse",
@@ -563,6 +582,47 @@ describe("BizPilot language copy", () => {
         frenchPolicyText.includes(forbidden),
         false,
         `fr-CA policy copy should not contain no-accent or English artifact: ${forbidden}`,
+      );
+    }
+  });
+
+  it("keeps fr-CA auth and quote shell copy natural and owner-controlled", () => {
+    const frenchCopy = getBizPilotCopy("fr-CA");
+    const visibleFrenchAuthAndQuoteText = [
+      JSON.stringify(frenchCopy.auth),
+      JSON.stringify(frenchCopy.quoteForm),
+      JSON.stringify(frenchCopy.quotePage),
+      frenchCopy.quoteSuccess.footer("BizPilot Test"),
+      frenchCopy.quoteSuccess.title("BizPilot Test"),
+      ...frenchCopy.quoteSuccess.steps("BizPilot Test"),
+    ].join(" ");
+
+    assert.equal(
+      frenchCopy.auth.resetPasswordSubtitle,
+      "Choisissez un nouveau mot de passe pour votre espace de travail.",
+    );
+    assert.equal(
+      frenchCopy.auth.signInSubtitle,
+      "Gérez les demandes de soumission, les brouillons IA à valider et les suivis manuels depuis votre espace BizPilot.",
+    );
+    assert.equal(
+      frenchCopy.quoteSuccess.steps("BizPilot Test")[1],
+      "Elle prépare une réponse à valider avant tout envoi manuel - aucun message automatique.",
+    );
+
+    for (const forbidden of [
+      "espace propriétaire",
+      "onboardées",
+      "révisé par le propriétaire",
+      "révisée par le propriétaire",
+      "révisés par le propriétaire",
+      "message automatique envoyé",
+      "réservation confirmée",
+    ]) {
+      assert.equal(
+        visibleFrenchAuthAndQuoteText.includes(forbidden),
+        false,
+        `fr-CA auth/quote copy should not contain stale or literal wording: ${forbidden}`,
       );
     }
   });

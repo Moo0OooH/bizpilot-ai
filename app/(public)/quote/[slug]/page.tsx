@@ -11,12 +11,13 @@
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-05-06: Created public quote page with dynamic form rendering.
  * - 2026-05-19: Replaced inline single-page form with grouped quote sections for higher completion rate per UX research.
  * - 2026-05-22: Kept all grouped sections visible so public submit does not depend on client-side step navigation.
  * - 2026-06-19: Mapped public quote shell colors to shared semantic theme tokens.
+ * - 2026-06-21: Localized noindex metadata from the active quote language.
  * ============================================================
  */
 
@@ -36,12 +37,6 @@ import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = buildNoIndexMetadata({
-  description:
-    "Submit a cleaning quote request for owner review. No booking or price is confirmed by the form.",
-  title: "Request a cleaning quote | BizPilot AI",
-});
-
 type QuotePageProps = Readonly<{
   params: Promise<{
     slug: string;
@@ -58,6 +53,21 @@ type QuotePageProps = Readonly<{
 }>;
 
 const appTimeZone = "America/New_York";
+
+function readQuoteLanguage(query: Awaited<QuotePageProps["searchParams"]>) {
+  return query?.language
+    ? readSupportedLanguage(query.language)
+    : DEFAULT_LANGUAGE;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: QuotePageProps): Promise<Metadata> {
+  const query = await searchParams;
+  const activeLanguage = readQuoteLanguage(query);
+
+  return buildNoIndexMetadata(getPublicSiteCopy(activeLanguage).quoteShell.meta);
+}
 
 function quoteLanguageHref({
   language,
@@ -88,9 +98,7 @@ export default async function QuotePage({
   const { slug } = await params;
   const query = await searchParams;
   const page = await getPublicIntakePage({ slug });
-  const activeLanguage = query?.language
-    ? readSupportedLanguage(query.language)
-    : DEFAULT_LANGUAGE;
+  const activeLanguage = readQuoteLanguage(query);
   const copy = getPublicSiteCopy(activeLanguage).quoteShell;
 
   if (!page) {

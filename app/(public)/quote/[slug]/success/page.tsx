@@ -10,11 +10,12 @@
  * - docs/product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-05-06: Created public quote request success page.
  * - 2026-06-20: Aligned success actions with shared public shell focus and short-height behavior.
  * - 2026-05-19: Rebuilt to match the approved index — dark navy surface, emerald check, next-steps card, return link. Removed the light slate theme that broke design-system parity.
+ * - 2026-06-21: Localized noindex metadata from the active quote language.
  * ============================================================
  */
 
@@ -32,12 +33,6 @@ import { getPublicIntakePage } from "@/server/services/public-intake.service";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = buildNoIndexMetadata({
-  description:
-    "Quote request received for owner review. No booking or price is confirmed by this page.",
-  title: "Quote request received | BizPilot AI",
-});
-
 type SuccessPageProps = Readonly<{
   params: Promise<{
     slug: string;
@@ -46,6 +41,19 @@ type SuccessPageProps = Readonly<{
     language?: string;
   }>;
 }>;
+
+function readSuccessLanguage(query: Awaited<SuccessPageProps["searchParams"]>) {
+  return readSupportedLanguage(query?.language);
+}
+
+export async function generateMetadata({
+  searchParams,
+}: SuccessPageProps): Promise<Metadata> {
+  const query = await searchParams;
+  const language = readSuccessLanguage(query);
+
+  return buildNoIndexMetadata(getBizPilotCopy(language).quoteSuccess.meta);
+}
 
 function quoteLanguageSuffix(language: string): string {
   return language === DEFAULT_LANGUAGE ? "" : `?language=${encodeURIComponent(language)}`;
@@ -93,7 +101,7 @@ export default async function QuoteSuccessPage({
   }
 
   const businessName = readDisplayableBusinessName(page.publicLink.display_name);
-  const language = readSupportedLanguage(query?.language);
+  const language = readSuccessLanguage(query);
   const copy = getBizPilotCopy(language);
   const quotePath = `/quote/${slug}${quoteLanguageSuffix(language)}`;
 

@@ -10,11 +10,12 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
  * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
  * - 2026-06-20: Shortened fr-CA homepage hero copy for first-fold parity.
+ * - 2026-06-21: Added localized quote shell noindex metadata.
  * ============================================================
  */
 
@@ -310,6 +311,7 @@ type AuthMetaCopy = Readonly<{
 
 type QuoteShellCopy = Readonly<{
   guardrail: string;
+  meta: MetaCopy;
   subtitle: string;
   title: string;
 }>;
@@ -1062,6 +1064,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   quoteShell: {
     guardrail:
       "This form does not confirm booking or pricing. The business owner will review your request and reply.",
+    meta: {
+      description:
+        "Submit a cleaning quote request for owner review. No booking or price is confirmed by the form.",
+      title: "Request a cleaning quote | BizPilot AI",
+    },
     subtitle: "Tell us what you need and we will review your request.",
     title: "Request a cleaning quote",
   },
@@ -1891,6 +1898,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   quoteShell: {
     guardrail:
       "Ce formulaire ne confirme ni réservation ni prix. L'entreprise révisera votre demande et vous répondra.",
+    meta: {
+      description:
+        "Envoyez une demande de soumission de nettoyage pour validation par l'entreprise. Ce formulaire ne confirme ni réservation ni prix.",
+      title: "Demander une soumission de nettoyage | BizPilot AI",
+    },
     subtitle: "Un court formulaire de soumission. L'entreprise révise chaque demande et répond directement.",
     title: "Demander une soumission de nettoyage",
   },

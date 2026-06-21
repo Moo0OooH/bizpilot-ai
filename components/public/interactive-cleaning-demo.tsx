@@ -167,7 +167,7 @@ const frenchDemo: DemoCopy = {
   draftLabel: "Brouillon pour révision",
   eyebrow: "Démo nettoyage",
   intro:
-    "Suivez une demande réaliste de nettoyage de départ, de la question client jusqu'au suivi. Le système organise; le propriétaire garde le contrôle.",
+    "Suivez une demande réaliste de nettoyage après déménagement, de la question client jusqu'au suivi. Le système organise; le propriétaire garde le contrôle.",
   next: "Suivant",
   previous: "Précédent",
   stepLabel: (current, total) => `Étape ${current} de ${total}`,
@@ -175,26 +175,26 @@ const frenchDemo: DemoCopy = {
   steps: [
     {
       detail:
-        "Une cliente demande une soumission de nettoyage de départ avec seulement une partie des détails.",
+        "Une cliente demande une soumission de nettoyage après déménagement avec seulement une partie des détails.",
       draft:
-        "Sarah veut un nettoyage de départ avant vendredi, mais le prix serait risqué sans superficie, accès et détails des électros.",
+        "Sarah veut un nettoyage après déménagement avant vendredi, mais le prix serait risqué sans superficie, accès et détails des électros.",
       fields: [
         { label: "Cliente", value: "Sarah J." },
-        { label: "Demande", value: "Nettoyage de départ" },
+        { label: "Demande", value: "Nettoyage après déménagement" },
         { label: "Moment", value: "Avant vendredi" },
       ],
       guardrail: "Aucun envoi automatique. Aucun prix inventé.",
-      outcome: "Le lead est capturé avant de disparaître.",
+      outcome: "Le prospect est capté avant de disparaître.",
       title: "Question client",
     },
     {
       detail:
-        "BizPilot transforme le message en lead structuré avec source, statut et urgence.",
+        "BizPilot transforme le message en prospect structuré avec source, statut et urgence.",
       draft:
         "Le propriétaire voit la demande au même endroit au lieu de reconstruire le contexte depuis courriel, DM ou appels manqués.",
       fields: [
         { label: "Source", value: "Lien de soumission" },
-        { label: "Statut", value: "Nouveau lead" },
+        { label: "Statut", value: "Nouveau prospect" },
         { label: "Urgence", value: "Réponse rapide requise" },
       ],
       guardrail: "Les données restent limitées à l'entreprise.",
@@ -217,16 +217,16 @@ const frenchDemo: DemoCopy = {
     },
     {
       detail:
-        "BizPilot prépare un court résumé pour que le propriétaire comprenne vite le lead.",
+        "BizPilot prépare un court résumé pour que le propriétaire comprenne vite le prospect.",
       draft:
-        "Demande de nettoyage de départ pour un condo 2 chambres avant vendredi. La cliente semble prête après confirmation des détails manquants.",
+        "Demande de nettoyage après déménagement pour un condo 2 chambres avant vendredi. La cliente semble prête après confirmation des détails manquants.",
       fields: [
         { label: "Intention", value: "Soumission nettoyage" },
-        { label: "Qualité", value: "Lead chaud" },
+        { label: "Qualité", value: "Prospect chaud" },
         { label: "Action", value: "Demander les infos" },
       ],
       guardrail: "L'IA aide. Le propriétaire révise.",
-      outcome: "Le lead est plus facile à prioriser.",
+      outcome: "Le prospect est plus facile à prioriser.",
       title: "Résumé système",
     },
     {
@@ -236,8 +236,8 @@ const frenchDemo: DemoCopy = {
         "Bonjour Sarah, merci de nous avoir écrit. Pouvez-vous confirmer la superficie approximative, l'accès/stationnement et si les électros doivent être nettoyés?",
       fields: [
         { label: "Ton", value: "Professionnel" },
-        { label: "Action", value: "Révision propriétaire" },
-        { label: "Envoi", value: "Copier/envoyer manuel" },
+        { label: "Action", value: "Validation propriétaire" },
+        { label: "Envoi", value: "Copie et envoi manuels" },
       ],
       guardrail: "Le message n'est pas envoyé automatiquement.",
       outcome: "Une réponse plus sûre est prête plus vite.",

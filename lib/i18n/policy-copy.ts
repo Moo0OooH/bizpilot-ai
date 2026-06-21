@@ -239,7 +239,7 @@ const frenchPolicyCopy: PolicyCopy = {
   privacy: {
     badge: "Avis de confidentialité",
     boundaryBody:
-      "BizPilot est manuel d'abord. Il doit collecter seulement ce qu'un propriétaire d'entreprise de nettoyage doit savoir pour réviser une demande et répondre prudemment.",
+      "BizPilot reste manuel et contrôlé par le propriétaire. Il doit collecter seulement ce qu'une entreprise de nettoyage doit savoir pour réviser une demande et répondre prudemment.",
     boundaryTitle: "Résumé simple",
     body:
       "BizPilot est préparé pour les premiers pilotes avec des entreprises de nettoyage. Cet avis explique les règles pratiques avant l'utilisation de données client réelles.",
@@ -249,7 +249,7 @@ const frenchPolicyCopy: PolicyCopy = {
       "Avant tout pilote réel, BizPilot doit garder le premier pilote manuel et enregistrer l'approbation finale du propriétaire.",
     meta: {
       description:
-        "Avis de confidentialité BizPilot AI pour la récupération prudente des soumissions de nettoyage, le consentement et les portes de préparation.",
+        "Avis de confidentialité BizPilot AI pour la récupération prudente des soumissions de nettoyage, le consentement et les étapes de préparation.",
       title: "Avis de confidentialité | BizPilot AI",
     },
     references: [
@@ -286,8 +286,8 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "Les données de chaque entreprise doivent rester séparées par l'adhésion et la sécurité RLS. La preuve production synthétique, OpenAI, courriel auth et sauvegarde/restauration DB-level est enregistrée; les données réelles restent bloquées jusqu'à la gate finale d'approbation.",
-        title: "Gate des données réelles",
+          "Les données de chaque entreprise doivent rester séparées par l'adhésion et la sécurité RLS. Les preuves synthétiques de production, du fournisseur OpenAI, du courriel d'authentification et de la sauvegarde/restauration sont enregistrées; les données réelles restent bloquées jusqu'à l'approbation finale.",
+        title: "Approbation des données réelles",
       },
       {
         body:
@@ -301,17 +301,17 @@ const frenchPolicyCopy: PolicyCopy = {
   security: {
     badge: "Posture de sécurité",
     boundaryBody:
-      "BizPilot applique des protections conservatrices pour les soumissions publiques, l'accès tenant, les secrets et les brouillons IA révisés par le propriétaire.",
+      "BizPilot applique des protections conservatrices pour les soumissions publiques, l'accès aux espaces clients, les secrets et les brouillons IA à valider avant envoi.",
     boundaryTitle: "Résumé simple",
     body:
-      "Le modèle de sécurité BizPilot reste conservateur : l'intake public est traité comme surface critique, et l'IA reste révisée par le propriétaire.",
+      "Le modèle de sécurité BizPilot reste conservateur : la prise de demandes publique est traitée comme surface critique, et l'IA reste à valider avant tout envoi manuel.",
     effectiveDate: "Dernière mise à jour : 16 juin 2026",
     externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
       "Cette page résume la sécurité produit. Elle ne remplace pas un audit formel, une politique d'incident ou un exercice de restauration.",
     meta: {
       description:
-        "Résumé de sécurité BizPilot AI pour les soumissions publiques, l'isolation des tenants, les brouillons IA révisés et les portes de préparation.",
+        "Résumé de sécurité BizPilot AI pour les soumissions publiques, l'isolation des espaces clients, les brouillons IA à valider et les étapes de préparation.",
       title: "Résumé de sécurité | BizPilot AI",
     },
     references: [
@@ -338,8 +338,8 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "L'accès aux données d'entreprise passe par l'authentification, l'adhésion, le statut lifecycle et la sécurité RLS de la base de données. Les helpers service-role doivent rester côté serveur.",
-        title: "Isolation des tenants",
+          "L'accès aux données d'entreprise passe par l'authentification, l'adhésion, l'état du cycle de vie et la sécurité RLS de la base de données. Les helpers de rôle service doivent rester côté serveur.",
+        title: "Isolation des espaces clients",
       },
       {
         body:
@@ -348,13 +348,13 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "Les secrets doivent rester dans les environnements fournisseurs, jamais dans le code, les logs, captures, docs ou commits. Les clés manquantes doivent échouer proprement ou utiliser un fallback documenté.",
+          "Les secrets doivent rester dans les environnements fournisseurs, jamais dans le code, les journaux, captures, docs ou commits. Les clés manquantes doivent échouer proprement ou utiliser une solution de repli documentée.",
         title: "Gestion des secrets",
       },
       {
         body:
-          "La preuve export/restauration DB-level est passée pour la cible synthétique. La preuve stricte app/dashboard/RLS restaurée reste différée à P1 avant pilote payant, migrations production, nettoyage destructif, travail bulk ou échelle plus large.",
-        title: "Gate sauvegarde et restauration",
+          "La preuve d'export et de restauration est enregistrée pour la cible synthétique. La preuve stricte de l'application restaurée, du tableau de bord et de la sécurité RLS reste différée à P1 avant un pilote payant, des migrations de production, un nettoyage destructif ou un travail à plus grande échelle.",
+        title: "Approbation sauvegarde et restauration",
       },
     ],
     technicalNotesTitle: "Notes techniques et limites opérationnelles",
@@ -379,27 +379,27 @@ const frenchPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot aide les entreprises de nettoyage à capter les demandes, organiser les prospects, préparer des brouillons révisés par le propriétaire et garder les suivis visibles. Ce n'est pas un outil d'envoi automatique, réservation, facturation, SMS/WhatsApp ou CRM complet.",
+          "BizPilot aide les entreprises de nettoyage à capter les demandes, organiser les prospects, préparer des brouillons à valider et garder les suivis visibles. Ce n'est pas un outil d'envoi automatique, réservation, facturation, SMS/WhatsApp ou CRM complet.",
         title: "Portée produit",
       },
       {
         body:
-          "BizPilot utilise des conditions pilote par étapes : les 1 à 5 premières entreprises de nettoyage peuvent rejoindre le Founder Feedback Pilot à $0 setup avec engagement de feedback à 30 et 60 jours; les clients 6 à 20 utilisent Starter Pilot à $149 setup et $49/month; après preuve ou après les 20 premiers clients, Pro Pilot est à $199 setup et $79/month.",
+          "BizPilot utilise des conditions pilote par étapes : les 1 à 5 premières entreprises de nettoyage peuvent rejoindre le pilote fondateur à $0 setup avec un engagement de commentaires à 30 et 60 jours; les clients 6 à 20 utilisent le pilote de départ à $149 setup et $49/month; après preuve ou après les 20 premiers clients, le pilote Pro est à $199 setup et $79/month.",
         title: "Tarifs pilote",
       },
       {
         body:
-          "Le setup payant est remboursable avant le début du travail d'onboarding. Après le début du setup, le remboursement n'est pas automatique. Le client peut annuler avant le prochain cycle mensuel; aucun contrat long terme n'est promis.",
+          "Les frais de mise en place payants sont remboursables avant le début du travail d'intégration. Après le début de la mise en place, le remboursement n'est pas automatique. Le client peut annuler avant le prochain cycle mensuel; aucun contrat long terme n'est promis.",
         title: "Remboursements et annulation",
       },
       {
         body:
-          "La facturation reste manuelle par facture ou lien de paiement séparé. BizPilot n'inclut pas encore de billing in-app, facturation, collecte de paiement ou webhook paiement.",
+          "La facturation reste manuelle par facture ou lien de paiement séparé. BizPilot n'inclut pas encore de facturation intégrée à l'application, de collecte de paiement ou d'automatisation de paiement.",
         title: "Facturation manuelle seulement",
       },
       {
         body:
-          "BizPilot ne garantit pas les revenus, jobs récupérés, taux de réponse, classement, conversion client ou conformité réglementaire. Le propriétaire reste responsable de réviser chaque réponse.",
+          "BizPilot ne garantit pas les revenus, travaux récupérés, taux de réponse, classement, conversion client ou conformité réglementaire. Le propriétaire reste responsable de réviser chaque réponse.",
         title: "Aucune garantie",
       },
     ],

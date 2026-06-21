@@ -11,10 +11,11 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-16: Aligned Settings copy with Phase 23/24 readiness and first-pilot manual-only decisions.
  * - 2026-06-19: Updated dashboard theme help copy for the Light-by-default public theme foundation.
+ * - 2026-06-21: Added localized quote success noindex metadata.
  * ============================================================
  */
 
@@ -52,6 +53,11 @@ type QuoteFieldTypeLabelKey =
   | "text"
   | "textarea"
   | "time_window";
+
+type MetaCopy = Readonly<{
+  description: string;
+  title: string;
+}>;
 
 export type QuoteStepCopy = Readonly<{
   description: string;
@@ -841,6 +847,7 @@ export type BizPilotCopy = Readonly<{
     backHome: string;
     body: string;
     footer: (businessName: string | null) => string;
+    meta: MetaCopy;
     nextTitle: string;
     requestSent: string;
     submitAnother: string;
@@ -2224,6 +2231,11 @@ const englishCopy: BizPilotCopy = {
       businessName
         ? `BizPilot helps ${businessName} reply faster while keeping every message owner-reviewed.`
         : "BizPilot helps the business reply faster while keeping every message owner-reviewed.",
+    meta: {
+      description:
+        "Quote request received for owner review. No booking or price is confirmed by this page.",
+      title: "Quote request received | BizPilot AI",
+    },
     nextTitle: "What happens next",
     requestSent: "Request sent",
     steps: (businessName) => [
@@ -2279,7 +2291,7 @@ const frenchCopy: BizPilotCopy = {
     createAccount: "Créer l'accès propriétaire",
     createAccountPending: "Création de l'accès...",
     createWorkspaceFooter:
-      "Accès propriétaire pour les entreprises déjà onboardées sur BizPilot AI.",
+      "Accès propriétaire pour les entreprises déjà intégrées à BizPilot AI.",
     createWorkspaceSubtitle:
       "Créez votre espace BizPilot seulement si vous avez été invité ou approuvé pour le pilote.",
     createWorkspaceTitle: "Créer l'accès propriétaire",
@@ -2308,7 +2320,7 @@ const frenchCopy: BizPilotCopy = {
     resetPasswordReuseHelp:
       "Choisissez un nouveau mot de passe. Vous ne pouvez pas réutiliser l'ancien.",
     resetPasswordSubtitle:
-      "Choisissez un nouveau mot de passe pour votre espace propriétaire.",
+      "Choisissez un nouveau mot de passe pour votre espace de travail.",
     resetPasswordTitle: "Définir un nouveau mot de passe",
     resetPreparing: "Préparation de votre session de réinitialisation...",
     resetRequestPending: "Envoi des instructions...",
@@ -2318,7 +2330,7 @@ const frenchCopy: BizPilotCopy = {
     signInPending: "Ouverture de l'espace...",
     signInQuestion: "Vous avez déjà un compte?",
     signInSubtitle:
-      "Gérez les demandes de soumission, les brouillons IA révisés par le propriétaire et les suivis manuels depuis votre espace BizPilot.",
+      "Gérez les demandes de soumission, les brouillons IA à valider et les suivis manuels depuis votre espace BizPilot.",
     signInTitle: "Connexion",
     showPassword: "Afficher le mot de passe",
     showPasswordShort: "Afficher",
@@ -3625,15 +3637,20 @@ const frenchCopy: BizPilotCopy = {
       "L'entreprise examinera votre demande et vous contactera directement pour la suite. Aucune réservation ni aucun prix n'est confirmé pour le moment.",
     footer: (businessName) =>
       businessName
-        ? `BizPilot aide ${businessName} à répondre plus vite tout en gardant chaque message révisé par le propriétaire.`
-        : "BizPilot aide l'entreprise à répondre plus vite tout en gardant chaque message révisé par le propriétaire.",
+        ? `BizPilot aide ${businessName} à répondre plus vite tout en gardant chaque message validé avant envoi.`
+        : "BizPilot aide l'entreprise à répondre plus vite tout en gardant chaque message validé avant envoi.",
+    meta: {
+      description:
+        "Demande de soumission reçue pour validation par l'entreprise. Aucune réservation ni aucun prix n'est confirmé par cette page.",
+      title: "Demande de soumission reçue | BizPilot AI",
+    },
     nextTitle: "Prochaines étapes",
     requestSent: "Demande envoyée",
     steps: (businessName) => [
       businessName
         ? `${businessName} examine votre demande et les détails manquants.`
         : "L'entreprise examine votre demande et les détails manquants.",
-      "Elle prépare une réponse révisée par le propriétaire - aucun message automatique.",
+      "Elle prépare une réponse à valider avant tout envoi manuel - aucun message automatique.",
       "Vous recevrez une réponse avec les coordonnées que vous avez soumises.",
     ],
     submitAnother: "Envoyer une autre demande",
