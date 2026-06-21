@@ -32,13 +32,14 @@ const TIMEOUT_MS = 15_000;
 
 const routes: readonly RouteContract[] = [
   {
-    h1: "Stop losing cleaning quotes to slow replies.",
+    h1: "Stop losing cleaning quote requests to slow replies.",
     mustContain: [
       "href=\"/demo\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "No auto-send",
-      "Owner-reviewed AI drafts",
+      "AI drafts reviewed by you",
+      "Manual copy and send",
     ],
     mustNotContain: ["homepage-workflow-grid"],
     path: "/",
@@ -104,7 +105,11 @@ const routes: readonly RouteContract[] = [
   },
   {
     h1: "See how BizPilot handles a cleaning quote request.",
-    mustContain: ["Request arrives.", "Manual send + guardrails.", "No invented price"],
+    mustContain: [
+      "Request arrives.",
+      "Owner reviews, copies, and sends manually.",
+      "No invented price",
+    ],
     path: "/demo",
   },
   {

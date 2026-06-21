@@ -360,7 +360,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     signIn: {
       description:
-        "Sign in to an approved BizPilot AI owner workspace to review cleaning quote requests and owner-reviewed drafts.",
+        "Sign in to an approved BizPilot AI owner workspace to review cleaning quote requests and replies prepared for owner review.",
       title: "Sign in | BizPilot AI",
     },
     signUp: {
@@ -376,7 +376,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     beforeAfter: {
       after:
         "Thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and access notes so I can prepare a responsible quote?",
-      afterLabel: "Owner-reviewed reply draft",
+      afterLabel: "Reply for owner review",
       before: '"How much for a move-out clean before Friday?"',
       beforeLabel: "Before",
       body:
@@ -384,7 +384,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "From vague request to clear next reply.",
     },
     body:
-      "BizPilot helps cleaning business owners collect quote requests, organize leads, and draft fast owner-reviewed replies.",
+      "BizPilot helps cleaning business owners collect quote requests, organize leads, and prepare replies for owner review.",
     ctaPrimary: "Join the cleaning founder pilot",
     ctaSecondary: "See demo",
     example: {
@@ -398,9 +398,9 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       request:
         '"Hi, can you do a move-out cleaning before Friday? It is a 2-bedroom apartment."',
       requestLabel: "Example request",
-      title: "Cleaning quote workflow",
+      title: "Cleaning quote request workflow",
       workflow:
-        "Customer requests quote -> Owner sees service details -> AI summarizes -> AI drafts reply -> Owner copies and sends manually",
+        "Customer requests a quote -> Owner sees service details -> AI summarizes -> AI prepares a draft reply -> Owner copies and sends manually",
     },
     families: [
       {
@@ -494,7 +494,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Cleaning owners are often away from a desk. They are on jobs, driving, managing staff, or answering existing customers. Quote requests arrive at the worst time, and slow replies can cost jobs.",
     meta: {
       description:
-        "BizPilot AI helps cleaning business owners collect quote requests, organize leads, and draft fast owner-reviewed replies.",
+        "BizPilot AI helps cleaning business owners collect quote requests, organize leads, and prepare replies for owner review.",
       title: "Cleaning Business Lead Recovery Software | BizPilot AI",
     },
     services: [
@@ -512,14 +512,14 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   contentStudio: {
     badge: "Roadmap",
     body:
-      "This page is roadmap only. BizPilot may later help local businesses create owner-reviewed marketing content after the cleaning lead recovery workflow is validated.",
+      "This page is roadmap only. BizPilot may later help local businesses create marketing content drafts for owner review after the cleaning lead recovery workflow is validated.",
     cards: [
       {
         body: "Future drafts for explaining cleaning services clearly.",
         title: "Service post drafts",
       },
       {
-        body: "Owner-reviewed ideas for local profile updates.",
+        body: "Ideas for local profile updates that still need owner review.",
         title: "Google Business Profile ideas",
       },
       {
@@ -544,7 +544,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Like AI reply drafts, future content drafts should be reviewed by the owner before publishing. No automatic posting is promised.",
     meta: {
       description:
-        "Future BizPilot AI Content Studio roadmap for owner-reviewed local business marketing content after lead recovery is validated.",
+        "Future BizPilot AI Content Studio roadmap for local business marketing content drafts after lead recovery is validated.",
       title: "Content Studio Roadmap | BizPilot AI",
     },
     title: "Future Content Studio for local business growth.",
@@ -552,7 +552,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   demo: {
     badge: "60-second workflow demo",
     body:
-      "Follow one realistic move-out cleaning request from customer message to owner-reviewed reply.",
+      "Follow one realistic move-out cleaning quote request from customer message to reply prepared for owner review.",
     chapters: [
       {
         body:
@@ -571,7 +571,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "Timing: Before Friday",
           "Status: Needs reply",
           "Missing: square footage, appliances, access notes",
-          "Consent: owner-reviewed reply expected",
+          "Consent: owner review expected",
         ],
         panelTitle: "Organized lead",
         title: "BizPilot organizes it and highlights missing details.",
@@ -585,7 +585,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
         ],
         panelTitle: "AI summary and draft",
-        title: "AI prepares an owner-reviewed draft.",
+        title: "AI prepares a draft for owner review.",
       },
       {
         body:
@@ -603,7 +603,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "No full CRM claim",
         ],
         panelTitle: "Manual send and guardrails",
-        title: "Manual send + guardrails.",
+        title: "Owner reviews, copies, and sends manually.",
       },
     ],
     cta: {
@@ -614,7 +614,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     meta: {
       description:
-        "See how BizPilot AI captures a cleaning quote request, organizes the lead, highlights missing details, and prepares an owner-reviewed reply.",
+        "See how BizPilot AI captures a cleaning quote request, organizes the lead, highlights missing details, and prepares a reply for owner review.",
       title: "Cleaning Quote Workflow Demo | BizPilot AI",
     },
     title: "See how BizPilot handles a cleaning quote request.",
@@ -646,7 +646,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       {
         body:
           "Use a practical first response that asks for missing details instead of guessing.",
-        title: "Start with an owner-reviewed draft.",
+        title: "Prepare a draft reply for review.",
       },
       {
         body:
@@ -661,7 +661,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     ],
     meta: {
       description:
-        "BizPilot AI features for cleaning businesses: quote link, lead inbox, lead detail, owner-reviewed AI drafts, and manual copy/send workflow.",
+        "BizPilot AI features for cleaning businesses: quote link, lead inbox, lead detail, AI-assisted drafts reviewed by you, and manual copy and send workflow.",
       title: "Cleaning Lead Recovery Features | BizPilot AI",
     },
     primaryCta: "Join founder pilot",
@@ -672,10 +672,10 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       items: [
         "Customer submits a quote request",
         "BizPilot organizes service, timing, and missing details",
-        "AI prepares an owner-reviewed draft",
+        "AI prepares a draft reply for owner review",
         "Owner copies, edits if needed, and sends manually",
       ],
-      title: "From quote link to owner-reviewed reply.",
+      title: "From quote link to reply prepared for review.",
     },
     roadmap: {
       badge: "Roadmap",
@@ -719,7 +719,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         },
         {
           answer:
-            "No. In the first pilot, BizPilot drafts replies and the owner reviews, edits, copies, and sends manually.",
+            "No. In the first pilot, BizPilot prepares draft replies and the owner reviews, edits, copies, and sends manually.",
           question: "Does BizPilot send messages automatically?",
         },
         {
@@ -734,7 +734,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         },
         {
           answer:
-            "The request appears as an organized lead with the service, timing, property details, status, and an owner-reviewed reply draft when enough context is available.",
+            "The request appears as an organized lead with the service, timing, property details, status, and a draft reply for owner review when enough context is available.",
           question: "What happens when a customer submits a quote request?",
         },
         {
@@ -744,7 +744,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         },
         {
           answer:
-            "Content Studio is a roadmap direction for owner-reviewed posts, updates, campaigns, service descriptions, and visual content briefs. It is not the first pilot promise.",
+            "Content Studio is a roadmap direction for posts, updates, campaigns, service descriptions, and visual content briefs prepared for owner review. It is not the first pilot promise.",
           question: "What is the future Content Studio?",
         },
       ],
@@ -760,19 +760,19 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "Built for cleaning businesses first",
       body:
-        "BizPilot helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies - so owners can respond faster without giving up control.",
+        "Capture quote requests, organize leads, and prepare replies for owner review — without auto-send.",
       primaryCta: "Join founder pilot",
       secondaryCta: "Watch demo",
-      title: "Stop losing cleaning quotes to slow replies.",
+      title: "Stop losing cleaning quote requests to slow replies.",
       trustBadges: [
         "No auto-send",
-        "Owner-reviewed AI drafts",
-        "Manual copy/send workflow",
+        "AI drafts reviewed by you",
+        "Manual copy and send",
       ],
     },
     meta: {
       description:
-        "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies without auto-sending customer messages.",
+        "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
       title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
     },
     mockup: {
@@ -780,7 +780,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       draftBody:
         "Hi Maria, thanks for reaching out. I can help with your move-out cleaning. Could you confirm the address area and whether appliances need cleaning so I can prepare an accurate quote?",
       draftTag: "AI drafts. You send.",
-      draftTitle: "AI draft card",
+      draftTitle: "Suggested reply",
       fields: [
         ["Service", "Move-out cleaning"],
         ["Property", "2 bed / 1 bath"],
@@ -794,7 +794,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     preview: {
       badges: ["No auto-send", "No invented price", "Manual send"],
       body:
-        "Follow one realistic move-out cleaning request from messy message to owner-reviewed reply. BizPilot organizes the work; the owner stays in control.",
+        "Follow one realistic move-out cleaning request from messy message to reply prepared for owner review. BizPilot organizes the work; the owner stays in control.",
       copyButton: "Copy reply",
       cta: "Watch full demo",
       steps: [
@@ -814,7 +814,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         {
           body:
             "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
-          title: "Owner-reviewed draft",
+          title: "Draft reply for owner review",
         },
         {
           body:
@@ -849,7 +849,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     roadmap: {
       badge: "Roadmap",
       body:
-        "BizPilot is being designed to help local service businesses create owner-reviewed social posts, Google Business updates, follow-up campaigns, service descriptions, seasonal promotions, and visual content briefs.",
+        "BizPilot is being designed to help local service businesses create social posts, Google Business updates, follow-up campaigns, service descriptions, seasonal promotions, and visual content briefs for owner review.",
       cards: [
         "Social captions",
         "Google Business posts",
@@ -923,7 +923,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         "Share your BizPilot quote link",
         "Customer submits a request",
         "Lead appears in your dashboard",
-        "BizPilot drafts a response",
+        "BizPilot prepares a draft reply",
         "You review and send manually",
       ],
       title: "Five steps, no hidden automation.",
@@ -968,14 +968,14 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Cleaning quote request link",
       "Organized lead inbox",
       "AI-assisted summary and reply draft",
-      "Manual copy/send workflow",
+      "Manual copy and send workflow",
       "Founder-led setup",
       "Feedback-based improvements",
     ],
     getTitle: "What you get",
     meta: {
       description:
-        "Apply for the BizPilot AI founder pilot for cleaning businesses that want faster owner-reviewed quote replies without full CRM complexity.",
+        "Apply for the BizPilot AI founder pilot for cleaning businesses that want faster quote replies prepared for owner review without full CRM complexity.",
       title: "Cleaning Business Founder Pilot | BizPilot AI",
     },
     nextSteps: [
@@ -1004,8 +1004,8 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "Founder-led setup",
           "Cleaning quote request link",
           "Lead inbox",
-          "AI summary and reply draft assistance",
-          "Manual copy/send workflow",
+          "AI summary and draft reply assistance",
+          "Manual copy and send workflow",
           "30- and 60-day feedback commitment",
           "No auto-send",
         ],
@@ -1019,7 +1019,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         bullets: [
           "Public quote page",
           "Lead recovery dashboard",
-          "AI reply drafts owner reviews",
+          "AI draft replies you review",
           "Manual follow-up visibility",
           "Founder setup guidance",
           "Manual invoice or Stripe Payment Link only",
@@ -1078,7 +1078,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       {
         body:
           "AI drafts are reviewed, edited, and sent manually by the business owner.",
-        title: "Owner-reviewed AI",
+        title: "AI drafts reviewed by you",
       },
       {
         body:

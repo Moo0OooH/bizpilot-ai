@@ -384,8 +384,8 @@ describe("BizPilot language copy", () => {
     for (const englishPhrase of [
       "Stop losing cleaning quote requests to slow replies.",
       "Built for cleaning businesses first",
-      "Owner-reviewed AI drafts",
-      "Manual copy/send workflow",
+      "AI drafts reviewed by you",
+      "Manual copy and send",
       "Payment and product guardrails",
       "Ne perdez plus de demandes de soumission à cause de réponses trop lentes.",
       "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
@@ -504,6 +504,61 @@ describe("BizPilot language copy", () => {
     }
   });
 
+  it("keeps canonical English public copy manual-first and dictionary-owned", () => {
+    const englishPublicCopy = getPublicSiteCopy("en");
+    const englishPublicText = JSON.stringify(englishPublicCopy);
+
+    assert.equal(
+      englishPublicCopy.home.hero.title,
+      "Stop losing cleaning quote requests to slow replies.",
+    );
+    assert.equal(
+      englishPublicCopy.home.hero.body,
+      "Capture quote requests, organize leads, and prepare replies for owner review — without auto-send.",
+    );
+    assert.deepEqual(englishPublicCopy.home.hero.trustBadges, [
+      "No auto-send",
+      "AI drafts reviewed by you",
+      "Manual copy and send",
+    ]);
+    assert.equal(englishPublicCopy.home.mockup.title, "New quote request");
+    assert.equal(englishPublicCopy.home.mockup.status, "Needs reply");
+    assert.equal(englishPublicCopy.home.mockup.draftTitle, "Suggested reply");
+    assert.equal(englishPublicCopy.home.mockup.draftTag, "AI drafts. You send.");
+    assert.equal(englishPublicCopy.home.mockup.copyButton, "Copy reply");
+
+    for (const forbidden of [
+      "AI draft card",
+      "Stop losing cleaning quotes to slow replies.",
+      "draft fast owner-reviewed replies",
+      "owner-reviewed replies",
+      "owner-reviewed draft",
+      "Owner-reviewed reply draft",
+      "Owner-reviewed AI drafts",
+      "Manual send + guardrails.",
+      "command center",
+      "cockpit",
+    ]) {
+      assert.equal(
+        englishPublicText.includes(forbidden),
+        false,
+        `English public copy should not contain stale wording: ${forbidden}`,
+      );
+    }
+
+    const homepageSource = readFileSync("app/page.tsx", "utf8");
+    assert.equal(
+      homepageSource.includes("Stop losing cleaning quote requests to slow replies."),
+      false,
+      "Homepage route should read the canonical hero title from the dictionary.",
+    );
+    assert.equal(
+      homepageSource.includes("AI drafts reviewed by you"),
+      false,
+      "Homepage route should read trust badges from the dictionary.",
+    );
+  });
+
   it("keeps homepage cleaning use-case cards locked to six service anchors", () => {
     const englishUseCases = getPublicSiteCopy("en").home.useCases;
 
@@ -566,7 +621,7 @@ describe("BizPilot language copy", () => {
         "Capture every quote request in one clean flow.",
         "Know who needs a reply now.",
         "See the job context before you answer.",
-        "Start with an owner-reviewed draft.",
+        "Prepare a draft reply for review.",
         "Copy and send from the channel you already use.",
         "Keep the next manual action clear.",
       ],
@@ -576,7 +631,7 @@ describe("BizPilot language copy", () => {
       [
         "Customer submits a quote request",
         "BizPilot organizes service, timing, and missing details",
-        "AI prepares an owner-reviewed draft",
+        "AI prepares a draft reply for owner review",
         "Owner copies, edits if needed, and sends manually",
       ],
     );

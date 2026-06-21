@@ -17,6 +17,7 @@
  * - 2026-05-17: Updated metadata for the quote recovery landing page.
  * - 2026-06-19: Added shared System/Light/Dark theme preference bootstrapping.
  * - 2026-06-19: Defaulted fresh sessions to Light and synced theme-color before paint.
+ * - 2026-06-21: Aligned global metadata with canonical manual-first public copy.
  * ============================================================
  */
 
@@ -51,11 +52,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   description:
-    "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies without auto-sending customer messages.",
+    "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
   metadataBase: new URL(getPublicSiteOrigin()),
   openGraph: {
     description:
-      "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies without auto-sending customer messages.",
+      "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
     siteName: PUBLIC_SITE_NAME,
     title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
     type: "website",
@@ -65,7 +66,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary",
     description:
-      "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and draft fast owner-reviewed replies without auto-sending customer messages.",
+      "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
     title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
   },
 };
