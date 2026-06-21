@@ -13,6 +13,7 @@
  * Change Log:
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
+ * - 2026-06-21: Added canonical four-step public grid coverage.
  * ============================================================
  */
 
@@ -589,6 +590,7 @@ describe("BizPilot language copy", () => {
       readonly [file: string, required: string, forbidden?: string]
     > = [
       ["app/features/page.tsx", "supporting-six-grid"],
+      ["app/features/page.tsx", "supporting-four-grid"],
       ["app/industries/cleaning/page.tsx", "supporting-three-grid"],
       ["app/trust/page.tsx", "copy.pillars", "copy.items"],
       ["app/trust/page.tsx", "supporting-three-grid"],

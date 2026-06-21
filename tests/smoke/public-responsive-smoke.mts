@@ -9,11 +9,12 @@
  * - docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
  * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
  * - 2026-06-20: Locked balanced public grid classes into route-level smoke coverage.
+ * - 2026-06-21: Locked canonical four-step and workflow grid classes into smoke coverage.
  * ============================================================
  */
 
@@ -31,6 +32,7 @@ const routes: readonly RouteContract[] = [
     h1: "Stop losing cleaning quote requests to slow replies.",
     mustContain: [
       "href=\"/demo\"",
+      "homepage-workflow-grid",
       "homepage-use-case-grid",
       "No auto-send",
       "Owner-reviewed AI drafts",
@@ -41,6 +43,7 @@ const routes: readonly RouteContract[] = [
     h1: "Ne perdez plus de demandes de nettoyage à cause de réponses lentes.",
     mustContain: [
       "href=\"/demo\"",
+      "homepage-workflow-grid",
       "homepage-use-case-grid",
       "Aucun envoi automatique",
       "Brouillons révisés par le propriétaire",
@@ -53,6 +56,7 @@ const routes: readonly RouteContract[] = [
       "Product proof",
       "Roadmap",
       "Manual copy/send",
+      "supporting-four-grid",
       "supporting-six-grid",
     ],
     path: "/features",

@@ -10,12 +10,13 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-18: Added compact proof visual, trust strip, and responsive intrinsic grid.
  * - 2026-06-19: Moved visible feature-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Locked the feature grid and rebuilt product proof as one workflow strip.
  * - 2026-06-20: Removed fixed feature-card height and tightened grid rhythm.
+ * - 2026-06-21: Moved the four-step proof strip onto the canonical responsive grid.
  * ============================================================
  */
 
@@ -113,7 +114,7 @@ export default async function FeaturesPage({
                   {copy.proof.body}
                 </p>
               </div>
-              <div className="grid gap-3 min-[900px]:grid-cols-4">
+              <div className="supporting-four-grid">
                 {copy.proof.items.map((item, index) => (
                   <div className="min-w-0 rounded-[14px] border border-slate-200 bg-slate-50 p-4 text-slate-950" key={item}>
                     <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-slate-950 text-[12px] font-black text-white">

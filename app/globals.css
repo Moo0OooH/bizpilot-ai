@@ -9,7 +9,7 @@ Related:
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-06-20
+Last Updated: 2026-06-21
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
@@ -20,6 +20,7 @@ Change Log:
 - 2026-06-19: Aligned Light/Dark tokens with the final polish contrast baseline.
 - 2026-06-20: Stabilized public grids and wrapping before dashboard work.
 - 2026-06-20: Balanced public marketing grids with fluid gaps and content-driven card heights.
+- 2026-06-21: Added canonical four-step and workflow grid classes for public responsive acceptance.
 ============================================================
 */
 
@@ -341,7 +342,9 @@ select {
   max-inline-size: min(100%, 30rem);
 }
 
-.homepage-demo-grid {
+.homepage-demo-grid,
+.homepage-workflow-grid,
+.supporting-four-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
@@ -367,7 +370,9 @@ select {
 .public-card-grid > *,
 .public-card-grid-wide > *,
 .homepage-demo-grid > *,
+.homepage-workflow-grid > *,
 .homepage-use-case-grid > *,
+.supporting-four-grid > *,
 .supporting-six-grid > *,
 .supporting-three-grid > * {
   min-width: 0;
@@ -375,15 +380,22 @@ select {
 
 @media (min-width: 768px) {
   .homepage-demo-grid,
+  .homepage-workflow-grid,
   .homepage-use-case-grid,
+  .supporting-four-grid,
   .supporting-six-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1180px) {
-  .homepage-demo-grid {
+  .homepage-demo-grid,
+  .supporting-four-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .homepage-workflow-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .homepage-use-case-grid {

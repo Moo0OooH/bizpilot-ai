@@ -14,6 +14,7 @@
  * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-21: Added homepage demo numbering regression coverage.
+ * - 2026-06-21: Added canonical public responsive-grid regression coverage.
  * ============================================================
  */
 
@@ -67,8 +68,38 @@ describe("public visual stability source contracts", () => {
       true,
       "desktop public grids should keep minmax(0, 1fr) tracks",
     );
+    assert.equal(globals.includes(".homepage-workflow-grid"), true);
     assert.equal(globals.includes(".homepage-use-case-grid > *"), true);
+    assert.equal(globals.includes(".supporting-four-grid > *"), true);
     assert.equal(globals.includes(".supporting-six-grid > *"), true);
+    assert.equal(
+      globals.includes(".homepage-workflow-grid {\n    grid-template-columns: repeat(3, minmax(0, 1fr));"),
+      true,
+      "Homepage workflow grid should avoid the old squeezed five-column desktop row.",
+    );
+    assert.equal(
+      globals.includes(".supporting-four-grid {\n    grid-template-columns: repeat(4, minmax(0, 1fr));"),
+      true,
+      "Four-step proof strips should reach four columns only at the wide public breakpoint.",
+    );
+  });
+
+  it("keeps public routes off one-off fragile grid breakpoints", () => {
+    const publicSources = publicRouteFiles.map((path) => source(path)).join("\n");
+
+    for (const forbidden of [
+      "min-[900px]:grid-cols-4",
+      "min-[1180px]:grid-cols-5",
+    ]) {
+      assert.equal(
+        publicSources.includes(forbidden),
+        false,
+        `Public routes should use canonical CSS grid classes instead of ${forbidden}.`,
+      );
+    }
+
+    assert.equal(publicSources.includes("homepage-workflow-grid"), true);
+    assert.equal(publicSources.includes("supporting-four-grid"), true);
   });
 
   it("keeps the bilingual homepage hero from regressing to a narrow first-fold layout", () => {

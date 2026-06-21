@@ -18,6 +18,7 @@
  * - 2026-06-20: Stabilized bilingual hero scale and first-fold CTA placement.
  * - 2026-06-20: Removed forced card heights from demo and cleaning-use-case grids.
  * - 2026-06-21: Removed duplicate visible numbering from the homepage product preview.
+ * - 2026-06-21: Moved the workflow strip onto canonical responsive grid classes.
  * ============================================================
  */
 
@@ -438,7 +439,7 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
             eyebrow={copy.workflow.eyebrow}
             title={copy.workflow.title}
           />
-          <div className="mt-8 grid gap-3 min-[1180px]:grid-cols-5">
+          <div className="homepage-workflow-grid mt-8">
             {copy.workflow.steps.map((step, index) => (
               <MarketingCard className="p-5" key={step}>
                 <p className="text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
