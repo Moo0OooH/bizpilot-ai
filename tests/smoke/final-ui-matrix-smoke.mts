@@ -10,6 +10,9 @@
  * - tests/smoke/quote-route-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
+ * Last Updated: 2026-06-21
+ * Change Log:
+ * - 2026-06-21: Added light/dark theme matrix, visual markers, and en-XA fallback checks.
  * ============================================================
  */
 
@@ -25,6 +28,7 @@ import {
 } from "../../lib/seo.ts";
 
 type Locale = "en" | "fr-CA";
+type Theme = "light" | "dark";
 
 type PublicRouteContract = Readonly<{
   h1: (locale: Locale) => string;
@@ -55,6 +59,8 @@ const viewportMatrix = [
   "1440x900",
   "1920x1080",
 ] as const;
+const themeMatrix = ["light", "dark"] as const satisfies readonly Theme[];
+const TEST_PSEUDO_LOCALE = "en-XA";
 
 const routeContracts: readonly PublicRouteContract[] = [
   {
@@ -166,14 +172,28 @@ function toTargetUrl(baseUrl: URL, path: string): URL {
   return new URL(path, normalizedBase);
 }
 
-async function fetchText(url: URL, timeoutMs: number): Promise<string> {
+async function fetchText(
+  url: URL,
+  timeoutMs: number,
+  theme?: Theme,
+): Promise<string> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  const headers: Record<string, string> = {
+    "user-agent": "BizPilot-final-ui-matrix-smoke/1.0",
+  };
+
+  if (theme) {
+    headers.cookie = [
+      `bizpilot-theme-preference=${theme}`,
+      `bizpilot-dashboard-theme=${theme}`,
+    ].join("; ");
+  }
 
   try {
     const response = await fetch(url, {
       cache: "no-store",
-      headers: { "user-agent": "BizPilot-final-ui-matrix-smoke/1.0" },
+      headers,
       redirect: "follow",
       signal: controller.signal,
     });
@@ -206,9 +226,14 @@ function headIncludes(html: string, value: string): boolean {
   return decodeHtml(html).includes(value);
 }
 
+function stripScripts(html: string): string {
+  return html.replace(/<script\b[\s\S]*?<\/script>/gi, "");
+}
+
 function checkPublicRoute(
   route: PublicRouteContract,
   locale: Locale,
+  theme: Theme,
   html: string,
 ): CheckResult[] {
   const meta = route.meta(locale);
@@ -217,40 +242,48 @@ function checkPublicRoute(
     ? publicUrl(route.path, "fr-CA")
     : publicUrl(route.path, "en");
   const results: CheckResult[] = [];
+  const visibleHtml = stripScripts(html);
 
   results.push({
     detail: route.path,
-    name: `${locale} h1`,
+    name: `${locale} ${theme} h1`,
     pass: headIncludes(html, route.h1(locale)),
   });
   results.push({
     detail: route.path,
-    name: `${locale} one h1`,
+    name: `${locale} ${theme} one h1`,
     pass: countOccurrences(html, "<h1") === 1,
   });
   results.push({
     detail: route.path,
-    name: `${locale} document lang`,
+    name: `${locale} ${theme} document lang`,
     pass: html.includes(`<html lang="${expectedLang}"`),
   });
   results.push({
     detail: route.path,
-    name: `${locale} title metadata`,
+    name: `${locale} ${theme} data-theme`,
+    pass:
+      html.includes(`data-theme="${theme}"`) &&
+      html.includes(`data-theme-preference="${theme}"`),
+  });
+  results.push({
+    detail: route.path,
+    name: `${locale} ${theme} title metadata`,
     pass: headIncludes(html, `<title>${meta.title}</title>`),
   });
   results.push({
     detail: route.path,
-    name: `${locale} description metadata`,
+    name: `${locale} ${theme} description metadata`,
     pass: headIncludes(html, meta.description),
   });
   results.push({
     detail: route.path,
-    name: `${locale} canonical metadata`,
+    name: `${locale} ${theme} canonical metadata`,
     pass: headIncludes(html, expectedCanonical),
   });
   results.push({
     detail: route.path,
-    name: `${locale} hreflang metadata`,
+    name: `${locale} ${theme} hreflang metadata`,
     pass:
       headIncludes(html, publicLanguageAlternates(route.path)["en-CA"]) &&
       headIncludes(html, publicLanguageAlternates(route.path)["fr-CA"]) &&
@@ -260,29 +293,64 @@ function checkPublicRoute(
   if (locale === "fr-CA" && route.rejectFrText) {
     results.push({
       detail: route.path,
-      name: "fr-CA rejects English h1",
+      name: `fr-CA ${theme} rejects English h1`,
       pass: !headIncludes(html, route.rejectFrText),
     });
   }
 
   results.push({
     detail: route.path,
-    name: `${locale} no overflow escape hatch`,
+    name: `${locale} ${theme} no overflow escape hatch`,
     pass: !html.includes("overflow-x-hidden"),
   });
   results.push({
     detail: route.path,
-    name: `${locale} no stale header control text`,
+    name: `${locale} ${theme} no stale header control text`,
     pass: !html.includes("ENFR") && !html.includes("System Light Dark"),
   });
   results.push({
     detail: route.path,
-    name: `${locale} no missing-copy artifacts`,
+    name: `${locale} ${theme} no missing-copy artifacts`,
     pass:
       !html.includes("MISSING_COPY") &&
       !html.includes("__MISSING") &&
       !html.includes(">undefined<"),
   });
+  results.push({
+    detail: route.path,
+    name: `${locale} ${theme} no pseudolocale exposed`,
+    pass: !visibleHtml.includes(TEST_PSEUDO_LOCALE),
+  });
+
+  if (route.path === "/industries/cleaning") {
+    results.push({
+      detail: route.path,
+      name: `${locale} ${theme} cleaning has six compact cards`,
+      pass: countOccurrences(visibleHtml, "cleaning-service-card") === 6,
+    });
+    results.push({
+      detail: route.path,
+      name: `${locale} ${theme} cleaning has desktop tabs and mobile accordion`,
+      pass:
+        visibleHtml.includes("cleaning-detail-tabs") &&
+        visibleHtml.includes('role="tablist"') &&
+        visibleHtml.includes("cleaning-detail-mobile") &&
+        visibleHtml.includes("<details"),
+    });
+  }
+
+  if (route.path === "/pricing") {
+    results.push({
+      detail: route.path,
+      name: `${locale} ${theme} pricing has three plan cards`,
+      pass: countOccurrences(visibleHtml, "public-plan-card flex") === 3,
+    });
+    results.push({
+      detail: route.path,
+      name: `${locale} ${theme} pricing CTAs anchored`,
+      pass: countOccurrences(visibleHtml, "public-plan-card-cta mt-auto w-full") === 3,
+    });
+  }
 
   return results;
 }
@@ -356,6 +424,10 @@ function checkSitemapAndRobots(sitemap: string, robots: string): CheckResult[] {
       pass: !sitemap.includes("/auth") && !sitemap.includes("/quote"),
     },
     {
+      name: "sitemap excludes test pseudolocale",
+      pass: !sitemap.includes(TEST_PSEUDO_LOCALE),
+    },
+    {
       name: "robots excludes private/intake paths",
       pass:
         robots.includes("Disallow: /auth") &&
@@ -421,26 +493,45 @@ async function main(): Promise<void> {
 
   console.log(`BizPilot final UI matrix target: ${baseUrl.origin}`);
   console.log(`Viewport matrix recorded: ${viewportMatrix.join(", ")}`);
+  console.log(`Theme matrix recorded: ${themeMatrix.join(", ")}`);
+  console.log(`Pseudolocale recorded as test-only: ${TEST_PSEUDO_LOCALE}`);
   console.log(`Routes: ${routeContracts.length} public, 3 auth, optional quote fixtures`);
   console.log("");
 
   for (const route of routeContracts) {
     for (const locale of ["en", "fr-CA"] as const) {
-      const html = await fetchText(
-        toTargetUrl(baseUrl, localizedPath(route.path, locale)),
-        timeoutMs,
-      );
+      for (const theme of themeMatrix) {
+        const html = await fetchText(
+          toTargetUrl(baseUrl, localizedPath(route.path, locale)),
+          timeoutMs,
+          theme,
+        );
 
-      results.push(...checkPublicRoute(route, locale, html));
-      if (["/privacy", "/security"].includes(route.path)) {
-        results.push(...checkExternalLinks(route.path, html));
+        results.push(...checkPublicRoute(route, locale, theme, html));
+        if (["/privacy", "/security"].includes(route.path)) {
+          results.push(...checkExternalLinks(route.path, html));
+        }
+        results.push(checkNoInternalNewTabs(route.path, html));
       }
-      results.push(checkNoInternalNewTabs(route.path, html));
     }
   }
 
+  const pseudoFallbackHtml = await fetchText(
+    toTargetUrl(baseUrl, `/?language=${TEST_PSEUDO_LOCALE}`),
+    timeoutMs,
+    "light",
+  );
+  results.push({
+    detail: `/?language=${TEST_PSEUDO_LOCALE}`,
+    name: "test pseudolocale falls back to production English",
+    pass:
+      pseudoFallbackHtml.includes('<html lang="en"') &&
+      headIncludes(pseudoFallbackHtml, getPublicSiteCopy("en").home.hero.title) &&
+      !stripScripts(pseudoFallbackHtml).includes(TEST_PSEUDO_LOCALE),
+  });
+
   for (const path of ["/auth/sign-in", "/auth/sign-up", "/auth/forgot-password"]) {
-    const html = await fetchText(toTargetUrl(baseUrl, path), timeoutMs);
+    const html = await fetchText(toTargetUrl(baseUrl, path), timeoutMs, "light");
     results.push(...checkAuthRoute(path, html));
   }
 
