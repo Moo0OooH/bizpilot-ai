@@ -19,6 +19,7 @@
  * - 2026-06-21: Added multilingual pricing-card action alignment contracts.
  * - 2026-06-21: Added public dark-theme callout contrast contracts.
  * - 2026-06-21: Added localization-aware copy role and cleaning detail layout contracts.
+ * - 2026-06-21: Locked pricing-card container queries for compact multilingual actions.
  * ============================================================
  */
 
@@ -124,6 +125,12 @@ describe("public visual stability source contracts", () => {
     assert.equal(globals.includes(".public-plan-card-header"), true);
     assert.equal(globals.includes("grid-template-rows: minmax(2rem, auto) minmax(3.75rem, auto) minmax(4rem, auto) minmax(3rem, auto);"), true);
     assert.equal(globals.includes("min-block-size: 3.5rem;"), true);
+    assert.equal(globals.includes("container: public-plan-card / inline-size;"), true);
+    assert.equal(globals.includes("@container public-plan-card (max-width: 20rem)"), true);
+    assert.equal(
+      globals.includes(".public-plan-card-cta {\n    padding-inline: 1rem;"),
+      true,
+    );
   });
 
   it("keeps the homepage from repeating the workflow before the demo", () => {

@@ -26,6 +26,7 @@ Change Log:
 - 2026-06-21: Added public dark-theme mappings for teal callout panels and dark utility buttons.
 - 2026-06-21: Added localization-aware copy roles and cleaning service/detail grids.
 - 2026-06-21: Tightened homepage hero first-fold spacing and preview-card sizing.
+- 2026-06-21: Added pricing-card container query behavior for compact multilingual CTAs.
 ============================================================
 */
 
@@ -521,6 +522,7 @@ select {
 
 .public-plan-card {
   block-size: 100%;
+  container: public-plan-card / inline-size;
 }
 
 .public-plan-card-header {
@@ -546,6 +548,16 @@ select {
 
 .public-plan-card-cta {
   min-block-size: 3.5rem;
+}
+
+@container public-plan-card (max-width: 20rem) {
+  .public-plan-card-highlight {
+    padding-inline: 0.75rem;
+  }
+
+  .public-plan-card-cta {
+    padding-inline: 1rem;
+  }
 }
 
 .public-card-grid > *,
