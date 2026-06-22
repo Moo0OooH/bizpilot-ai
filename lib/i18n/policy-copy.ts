@@ -16,6 +16,7 @@
  * - 2026-06-16: Updated public trust copy to reflect Phase 23/24 synthetic proof and remaining real-data gates.
  * - 2026-06-18: Reframed public policy copy around owner-friendly summaries and approved staged pilot pricing.
  * - 2026-06-21: Restored fr-CA accents and cleaner localized wording for public legal pages.
+ * - 2026-06-21: Polished final public privacy, security, and terms wording.
  * ============================================================
  */
 
@@ -66,17 +67,17 @@ const englishPolicyCopy: PolicyCopy = {
   privacy: {
     badge: "Privacy notice",
     boundaryBody:
-      "BizPilot is manual-first. It should collect only what a cleaning owner needs to review a quote request and reply responsibly.",
+      "BizPilot keeps communication in the business's hands and collects only the details needed to answer a cleaning quote request.",
     boundaryTitle: "Plain-language summary",
     body:
-      "BizPilot is being prepared for early cleaning-business pilots. This notice explains the practical privacy rules that apply before real customer data is allowed.",
+      "This notice explains the practical privacy rules for BizPilot quote recovery: collect less, show consent, and keep customer communication under business control.",
     effectiveDate: "Last updated: June 16, 2026",
     externalNewTabLabel: "Opens in a new tab",
     footerNote:
-      "Before any real customer pilot, BizPilot must keep the first pilot manual-only and record final readiness approval from the owner.",
+      "Before any real customer pilot, BizPilot stays manual-only and requires explicit pilot approval.",
     meta: {
       description:
-        "BizPilot AI privacy notice for careful cleaning quote recovery, consent, data minimization, and real customer data readiness gates.",
+        "BizPilot AI privacy notice for careful cleaning quote recovery, consent, data minimization, and business-controlled customer communication.",
       title: "Privacy Notice | BizPilot AI",
     },
     references: [
@@ -90,7 +91,7 @@ const englishPolicyCopy: PolicyCopy = {
         description:
           "Quebec regulator overview of privacy-law modernization changes.",
         href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
-        title: "Commission d'acces a l'information: Law 25 changes",
+        title: "Commission d’accès à l’information du Québec: Law 25 changes",
       },
     ],
     referenceEyebrow: "Reference",
@@ -98,23 +99,23 @@ const englishPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot is for cleaning quote recovery: quote-page submissions, lead details, owner notes, AI-assisted summaries, manual reply drafts, and follow-up status. It is not for payment cards, government IDs, health data, or unrelated sensitive records.",
+          "BizPilot is for cleaning quote recovery: quote-page submissions, lead details, business notes, AI-assisted summaries, manual reply drafts, and follow-up status. It is not for payment cards, government IDs, health data, or unrelated sensitive records.",
         title: "What BizPilot is designed to collect",
       },
       {
         body:
-          "Collection must stay limited to what a cleaning owner needs to understand and answer a quote request: contact details, service type, location, timing, property context, and the customer's message.",
+          "Collection must stay limited to what a cleaning business needs to understand and answer a quote request: contact details, service type, location, timing, property context, and the customer's message.",
         title: "Data minimization",
       },
       {
         body:
-          "Quote forms must show consent language before submission. The owner remains responsible for sending customer messages manually from their own channel; BizPilot does not auto-send customer messages.",
+          "Quote forms must show consent language before submission. The business remains responsible for sending customer messages manually from its own channel; BizPilot does not auto-send customer messages.",
         title: "Consent and manual communication",
       },
       {
         body:
-          "Tenant data must stay separated by business membership and row-level security. Synthetic production proof, OpenAI provider proof, Auth email proof, and DB-level backup/export/restore proof are recorded; real customer data remains blocked until the final readiness approval gate closes.",
-        title: "Real customer data gate",
+          "Tenant data must stay separated by business membership and row-level security. Synthetic production proof, OpenAI provider proof, Auth email proof, and DB-level backup/export/restore proof are recorded; real customer data remains blocked until explicit pilot approval.",
+        title: "Real customer data approval",
       },
       {
         body:
@@ -128,17 +129,17 @@ const englishPolicyCopy: PolicyCopy = {
   security: {
     badge: "Security posture",
     boundaryBody:
-      "BizPilot uses conservative safeguards for public quote intake, tenant access, secret handling, and owner-reviewed AI drafts.",
+      "BizPilot uses conservative safeguards for public quote forms, account access, secret handling, and AI text that the business approves before sending.",
     boundaryTitle: "Plain-language summary",
     body:
-      "BizPilot's security model is intentionally conservative: public quote intake is treated as the highest-risk surface, and AI remains owner-reviewed.",
+      "BizPilot treats public quote intake as a sensitive surface. The workflow is designed to keep access scoped, secrets out of source, and final customer messages under business control.",
     effectiveDate: "Last updated: June 16, 2026",
     externalNewTabLabel: "Opens in a new tab",
     footerNote:
       "This page is a product security summary. It does not replace a formal security review, incident response policy, or production backup drill.",
     meta: {
       description:
-        "BizPilot AI security summary for public quote intake, tenant isolation, owner-reviewed AI drafts, and readiness gates.",
+        "BizPilot AI security summary for public quote intake, tenant isolation, approved AI drafts, and production safeguards.",
       title: "Security Summary | BizPilot AI",
     },
     references: [
@@ -152,7 +153,7 @@ const englishPolicyCopy: PolicyCopy = {
         description:
           "Quebec privacy-law changes that affect private-sector organizations.",
         href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
-        title: "Commission d'acces a l'information: Law 25 changes",
+        title: "Commission d’accès à l’information du Québec: Law 25 changes",
       },
     ],
     referenceEyebrow: "Reference",
@@ -206,7 +207,7 @@ const englishPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot helps cleaning businesses capture quote requests, organize leads, prepare replies for owner review, and keep follow-up visible. It is not an auto-send tool, booking system, invoice system, SMS/WhatsApp sender, or full CRM.",
+          "BizPilot helps cleaning businesses capture quote requests, organize leads, prepare replies the business approves, and keep follow-up visible. It is not an auto-send tool, booking system, invoice system, SMS/WhatsApp sender, or full CRM.",
         title: "Product scope",
       },
       {
@@ -239,17 +240,17 @@ const frenchPolicyCopy: PolicyCopy = {
   privacy: {
     badge: "Avis de confidentialité",
     boundaryBody:
-      "BizPilot reste manuel et contrôlé par le propriétaire. Il doit collecter seulement ce qu'une entreprise de nettoyage doit savoir pour réviser une demande et répondre prudemment.",
+      "BizPilot garde la communication entre les mains de l'entreprise et collecte seulement les détails utiles pour répondre à une demande de soumission.",
     boundaryTitle: "Résumé simple",
     body:
-      "BizPilot est préparé pour les premiers pilotes avec des entreprises de nettoyage. Cet avis explique les règles pratiques avant l'utilisation de données client réelles.",
+      "Cet avis explique les règles pratiques de confidentialité pour BizPilot : collecter moins, afficher le consentement et laisser l'entreprise contrôler les messages aux clients.",
     effectiveDate: "Dernière mise à jour : 16 juin 2026",
     externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
-      "Avant tout pilote réel, BizPilot doit garder le premier pilote manuel et enregistrer l'approbation finale du propriétaire.",
+      "Avant toute utilisation avec de vraies données clients, BizPilot reste manuel et exige une approbation explicite du projet pilote.",
     meta: {
       description:
-        "Avis de confidentialité BizPilot AI pour la récupération prudente des soumissions de nettoyage, le consentement et les étapes de préparation.",
+        "Avis de confidentialité BizPilot AI pour la récupération prudente des soumissions de nettoyage, le consentement, la minimisation des données et le contrôle des messages par l'entreprise.",
       title: "Avis de confidentialité | BizPilot AI",
     },
     references: [
@@ -263,7 +264,7 @@ const frenchPolicyCopy: PolicyCopy = {
         description:
           "Aperçu du régulateur québécois sur les changements de la Loi 25.",
         href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
-        title: "Commission d'accès à l'information : changements de la Loi 25",
+        title: "Commission d’accès à l’information du Québec : changements de la Loi 25",
       },
     ],
     referenceEyebrow: "Référence",
@@ -271,17 +272,17 @@ const frenchPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot sert à récupérer les demandes de soumission : formulaires publics, détails du prospect, notes du propriétaire, résumés IA, brouillons manuels et statut de suivi. Il ne doit pas recevoir de cartes de paiement, pièces d'identité, données de santé ou dossiers sensibles non reliés.",
+          "BizPilot sert à récupérer les demandes de soumission : formulaires publics, détails du prospect, notes de l'entreprise, résumés IA, brouillons manuels et statut de suivi. Il ne doit pas recevoir de cartes de paiement, pièces d'identité, données de santé ou dossiers sensibles non reliés.",
         title: "Ce que BizPilot doit collecter",
       },
       {
         body:
-          "La collecte doit rester limitée à ce qu'un propriétaire d'entreprise de nettoyage doit savoir pour répondre : contact, type de service, lieu, moment, contexte de propriété et message du client.",
+          "La collecte doit rester limitée à ce qu'une entreprise de nettoyage doit savoir pour répondre : contact, type de service, lieu, moment, contexte de propriété et message du client.",
         title: "Minimisation des données",
       },
       {
         body:
-          "Les formulaires de soumission doivent afficher un texte de consentement. Le propriétaire reste responsable d'envoyer les messages manuellement depuis son propre canal; BizPilot n'envoie pas automatiquement les messages clients.",
+          "Les formulaires de soumission doivent afficher un texte de consentement. L'entreprise reste responsable d'envoyer les messages manuellement depuis son propre canal; BizPilot n'envoie pas automatiquement les messages clients.",
         title: "Consentement et communication manuelle",
       },
       {
@@ -301,17 +302,17 @@ const frenchPolicyCopy: PolicyCopy = {
   security: {
     badge: "Posture de sécurité",
     boundaryBody:
-      "BizPilot applique des protections conservatrices pour les soumissions publiques, l'accès aux espaces clients, les secrets et les brouillons IA à valider avant envoi.",
+      "BizPilot applique des protections conservatrices pour les formulaires publics, l'accès aux comptes, les secrets et les textes IA à valider avant l'envoi.",
     boundaryTitle: "Résumé simple",
     body:
-      "Le modèle de sécurité BizPilot reste conservateur : la prise de demandes publique est traitée comme surface critique, et l'IA reste à valider avant tout envoi manuel.",
+      "BizPilot traite les demandes publiques comme une surface sensible. Le flux garde l'accès limité, les secrets hors du code et les messages finaux sous le contrôle de l'entreprise.",
     effectiveDate: "Dernière mise à jour : 16 juin 2026",
     externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
       "Cette page résume la sécurité produit. Elle ne remplace pas un audit formel, une politique d'incident ou un exercice de restauration.",
     meta: {
       description:
-        "Résumé de sécurité BizPilot AI pour les soumissions publiques, l'isolation des espaces clients, les brouillons IA à valider et les étapes de préparation.",
+        "Résumé de sécurité BizPilot AI pour les soumissions publiques, l'isolation des espaces clients, les brouillons IA à valider et les protections de production.",
       title: "Résumé de sécurité | BizPilot AI",
     },
     references: [
@@ -325,7 +326,7 @@ const frenchPolicyCopy: PolicyCopy = {
         description:
           "Changements québécois en protection des renseignements personnels pour les organisations.",
         href: "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/sujets-et-domaines-dinteret/principaux-changements-loi-25/",
-        title: "Commission d'accès à l'information : changements de la Loi 25",
+        title: "Commission d’accès à l’information du Québec : changements de la Loi 25",
       },
     ],
     referenceEyebrow: "Référence",
@@ -379,7 +380,7 @@ const frenchPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot aide les entreprises de nettoyage à capter les demandes, organiser les prospects, préparer des brouillons à valider et garder les suivis visibles. Ce n'est pas un outil d'envoi automatique, réservation, facturation, SMS/WhatsApp ou CRM complet.",
+          "BizPilot aide les entreprises de nettoyage à capter les demandes, organiser les prospects, préparer des réponses à valider et garder les suivis visibles. Ce n'est pas un outil d'envoi automatique, réservation, facturation, SMS/WhatsApp ou CRM complet.",
         title: "Portée produit",
       },
       {

@@ -405,7 +405,7 @@ describe("BizPilot language copy", () => {
     );
     assert.deepEqual(frenchPublicCopy.home.hero.trustBadges, [
       "Aucun envoi automatique",
-      "Brouillons IA validés par vous",
+      "Brouillons IA à valider par vous",
       "Copie et envoi manuels",
     ]);
     assert.equal(frenchPublicCopy.home.mockup.title, "Nouvelle demande");
@@ -452,7 +452,7 @@ describe("BizPilot language copy", () => {
     );
     assert.equal(
       frenchPublicCopy.trust.items.some(
-        (item) => item.title === "Brouillons IA validés par vous",
+        (item) => item.title === "Brouillons IA à valider par vous",
       ),
       true,
     );
@@ -665,11 +665,11 @@ describe("BizPilot language copy", () => {
     );
     assert.equal(
       englishPublicCopy.home.hero.body,
-      "Capture quote requests, organize leads, and prepare replies for owner review — without auto-send.",
+      "Capture quote requests, organize leads, and prepare replies to approve — without auto-send.",
     );
     assert.deepEqual(englishPublicCopy.home.hero.trustBadges, [
       "No auto-send",
-      "AI drafts reviewed by you",
+      "AI drafts you approve",
       "Manual copy and send",
     ]);
     assert.equal(englishPublicCopy.home.mockup.title, "New quote request");
@@ -679,7 +679,7 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.home.mockup.copyButton, "Copy reply");
     assert.deepEqual(englishBizPilotCopy.quoteSuccess.steps(""), [
       "The business reviews your request and any missing details.",
-      "They prepare a reply for owner review - no automatic messages.",
+      "They prepare a reply for approval - no automatic messages.",
       "You hear back through the contact details you submitted.",
     ]);
 
@@ -691,6 +691,11 @@ describe("BizPilot language copy", () => {
       "owner-reviewed draft",
       "Owner-reviewed reply draft",
       "Owner-reviewed AI drafts",
+      "prepared for owner review",
+      "reply draft for owner review",
+      "manual-first path",
+      "privacy readiness",
+      "Commission d'acces a l'information",
       "Manual send + guardrails.",
       "command center",
       "cockpit",
@@ -821,7 +826,7 @@ describe("BizPilot language copy", () => {
         "Capture every quote request in one clean flow.",
         "Know who needs a reply now.",
         "See the job context before you answer.",
-        "Prepare a draft reply for review.",
+        "Prepare a reply draft to approve.",
         "Copy and send from the channel you already use.",
         "Keep the next manual action clear.",
       ],
@@ -831,8 +836,8 @@ describe("BizPilot language copy", () => {
       [
         "Customer submits a quote request",
         "BizPilot organizes service, timing, and missing details",
-        "AI prepares a draft reply for owner review",
-        "Owner copies, edits if needed, and sends manually",
+        "AI prepares a reply draft to approve",
+        "You copy, edit if needed, and send manually",
       ],
     );
 

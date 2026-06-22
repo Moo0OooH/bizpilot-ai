@@ -950,7 +950,7 @@ const englishCopy: BizPilotCopy = {
     signInPending: "Opening workspace...",
     signInQuestion: "Already have an account?",
     signInSubtitle:
-      "Manage quote requests, owner-reviewed AI drafts, and manual follow-up from your BizPilot workspace.",
+      "Manage quote requests, AI reply drafts you approve, and manual follow-up from your BizPilot workspace.",
     signInTitle: "Sign in",
     showPassword: "Show password",
     showPasswordShort: "Show",
@@ -2132,11 +2132,11 @@ const englishCopy: BizPilotCopy = {
       label: "Cleaning type",
     },
     customer_contact: {
-      helpText: "Email or phone for owner follow-up.",
+      helpText: "Email or phone so the business can follow up.",
       label: "Customer contact",
     },
     customer_email: {
-      helpText: "Best email address for owner follow-up.",
+      helpText: "Best email address so the business can follow up.",
       label: "Email address",
     },
     customer_name: {
@@ -2144,7 +2144,7 @@ const englishCopy: BizPilotCopy = {
       label: "Customer name",
     },
     customer_phone: {
-      helpText: "Best phone number for owner follow-up.",
+      helpText: "Best phone number so the business can follow up.",
       label: "Phone number",
     },
     home_address: {
@@ -2153,7 +2153,7 @@ const englishCopy: BizPilotCopy = {
       label: "Home address",
     },
     notes: {
-      helpText: "Extra context for the owner.",
+      helpText: "Extra context for the business.",
       label: "Notes",
     },
     pets: {
@@ -2190,14 +2190,14 @@ const englishCopy: BizPilotCopy = {
     steps: [
       {
         description:
-          "A few quick details so the owner can prepare an accurate reply.",
+          "A few quick details so the business can prepare an accurate reply.",
         id: "service",
         label: "Service",
         title: "What kind of cleaning?",
       },
       {
         description:
-          "Timing and location help the owner check availability and travel.",
+          "Timing and location help the business check availability and travel.",
         id: "when_where",
         label: "When & where",
         title: "When and where?",
@@ -2207,7 +2207,7 @@ const englishCopy: BizPilotCopy = {
           "We pass these details directly to the business. Nothing is sent automatically.",
         id: "contact",
         label: "Contact",
-        title: "How should the owner reach you?",
+        title: "How should the business reach you?",
       },
     ],
     submitButton: "Send quote request",
@@ -2215,7 +2215,7 @@ const englishCopy: BizPilotCopy = {
   quotePage: {
     badge: "Cleaning quote",
     description:
-      "A short quote form. The business owner reviews every request and replies directly - nothing is sent automatically.",
+      "A short quote form. The business reviews every request and replies directly - nothing is sent automatically.",
     subtitle: "Quote request",
     unavailableBody:
       "This quote page is not accepting requests right now. Check that the link is complete, or contact the business directly if you need help with an existing request.",
@@ -2229,11 +2229,11 @@ const englishCopy: BizPilotCopy = {
       "The business will review your request and follow up directly. Nothing is booked and no price is confirmed yet.",
     footer: (businessName) =>
       businessName
-        ? `BizPilot helps ${businessName} reply faster while keeping every message owner-reviewed.`
-        : "BizPilot helps the business reply faster while keeping every message owner-reviewed.",
+        ? `BizPilot helps ${businessName} reply faster while keeping every message approved by the business.`
+        : "BizPilot helps the business reply faster while keeping every message approved by the business.",
     meta: {
       description:
-        "Quote request received for owner review. No booking or price is confirmed by this page.",
+        "Quote request received for business review. No booking or price is confirmed by this page.",
       title: "Quote request received | BizPilot AI",
     },
     nextTitle: "What happens next",
@@ -2242,7 +2242,7 @@ const englishCopy: BizPilotCopy = {
       businessName
         ? `${businessName} reviews your request and any missing details.`
         : "The business reviews your request and any missing details.",
-      "They prepare a reply for owner review - no automatic messages.",
+      "They prepare a reply for approval - no automatic messages.",
       "You hear back through the contact details you submitted.",
     ],
     submitAnother: "Submit another request",
@@ -3539,11 +3539,11 @@ const frenchCopy: BizPilotCopy = {
       label: "Type de nettoyage",
     },
     customer_contact: {
-      helpText: "Courriel ou téléphone pour le suivi du propriétaire.",
+      helpText: "Courriel ou téléphone pour que l'entreprise puisse faire le suivi.",
       label: "Coordonnées",
     },
     customer_email: {
-      helpText: "Meilleur courriel pour le suivi du propriétaire.",
+      helpText: "Meilleur courriel pour que l'entreprise puisse faire le suivi.",
       label: "Adresse courriel",
     },
     customer_name: {
@@ -3551,7 +3551,7 @@ const frenchCopy: BizPilotCopy = {
       label: "Nom du client",
     },
     customer_phone: {
-      helpText: "Meilleur numéro de téléphone pour le suivi du propriétaire.",
+      helpText: "Meilleur numéro de téléphone pour que l'entreprise puisse faire le suivi.",
       label: "Numéro de téléphone",
     },
     home_address: {
@@ -3560,7 +3560,7 @@ const frenchCopy: BizPilotCopy = {
       label: "Adresse du domicile",
     },
     notes: {
-      helpText: "Contexte supplémentaire pour le propriétaire.",
+      helpText: "Contexte supplémentaire pour l'entreprise.",
       label: "Notes",
     },
     pets: {
@@ -3598,14 +3598,14 @@ const frenchCopy: BizPilotCopy = {
     steps: [
       {
         description:
-          "Quelques détails rapides pour aider le propriétaire à préparer une réponse précise.",
+          "Quelques détails rapides pour aider l'entreprise à préparer une réponse précise.",
         id: "service",
         label: "Service",
         title: "Quel type de nettoyage?",
       },
       {
         description:
-          "Le moment et l'emplacement aident le propriétaire à vérifier la disponibilité et le déplacement.",
+          "Le moment et l'emplacement aident l'entreprise à vérifier la disponibilité et le déplacement.",
         id: "when_where",
         label: "Quand et où",
         title: "Quand et où?",
@@ -3615,7 +3615,7 @@ const frenchCopy: BizPilotCopy = {
           "Ces détails sont transmis directement à l'entreprise. Rien n'est envoyé automatiquement.",
         id: "contact",
         label: "Contact",
-        title: "Comment le propriétaire peut-il vous joindre?",
+        title: "Comment l'entreprise peut-elle vous joindre?",
       },
     ],
     submitButton: "Envoyer la demande",
@@ -3623,7 +3623,7 @@ const frenchCopy: BizPilotCopy = {
   quotePage: {
     badge: "Soumission de nettoyage",
     description:
-      "Un court formulaire de soumission. Le propriétaire révise chaque demande et répond directement - rien n'est envoyé automatiquement.",
+      "Un court formulaire de soumission. L'entreprise révise chaque demande et répond directement - rien n'est envoyé automatiquement.",
     subtitle: "Demande de soumission",
     unavailableBody:
       "Cette page de soumission n'accepte pas de demandes en ce moment. Vérifiez que le lien est complet ou contactez l'entreprise directement si vous avez besoin d'aide pour une demande existante.",

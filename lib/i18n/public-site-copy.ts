@@ -18,6 +18,7 @@
  * - 2026-06-21: Added localized quote shell noindex metadata.
  * - 2026-06-21: Split the full public FAQ into a dedicated localized route and shortened the homepage FAQ.
  * - 2026-06-21: Simplified Cleaning page service detail copy and removed the extra commercial service from the public surface.
+ * - 2026-06-21: Polished final English and Canadian French public copy.
  * ============================================================
  */
 
@@ -389,7 +390,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     signIn: {
       description:
-        "Sign in to an approved BizPilot AI owner workspace to review cleaning quote requests and replies prepared for owner review.",
+        "Sign in to an approved BizPilot AI workspace to manage cleaning quote requests and reply drafts.",
       title: "Sign in | BizPilot AI",
     },
     signUp: {
@@ -405,7 +406,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     beforeAfter: {
       after:
         "Thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and access notes so I can prepare a responsible quote?",
-      afterLabel: "Reply for owner review",
+      afterLabel: "Reply draft",
       before: '"How much for a move-out clean before Friday?"',
       beforeLabel: "Before",
       body:
@@ -413,7 +414,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "From vague request to clear next reply.",
     },
     body:
-      "BizPilot helps cleaning business owners collect quote requests, organize leads, and prepare replies for owner review.",
+      "BizPilot helps cleaning business owners collect quote requests, organize leads, and prepare replies to approve before sending.",
     ctaPrimary: "Join the cleaning founder pilot",
     ctaSecondary: "See demo",
     detailHelp: {
@@ -434,7 +435,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       requestLabel: "Example request",
       title: "Cleaning quote request workflow",
       workflow:
-        "Customer requests a quote -> Owner sees service details -> AI summarizes -> AI prepares a draft reply -> Owner copies and sends manually",
+        "Customer requests a quote -> You see service details -> AI summarizes -> BizPilot prepares a reply draft -> You copy and send manually",
     },
     families: [
       {
@@ -523,7 +524,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Cleaning owners are often away from a desk. They are on jobs, driving, managing staff, or answering existing customers. Quote requests arrive at the worst time, and slow replies can cost jobs.",
     meta: {
       description:
-        "BizPilot AI helps cleaning business owners collect quote requests, organize leads, and prepare replies for owner review.",
+        "BizPilot AI helps cleaning business owners collect quote requests, organize leads, and prepare replies to approve before sending.",
       title: "Cleaning Business Lead Recovery Software | BizPilot AI",
     },
     services: [
@@ -540,14 +541,14 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   contentStudio: {
     badge: "Roadmap",
     body:
-      "This page is roadmap only. BizPilot may later help local businesses create marketing content drafts for owner review after the cleaning lead recovery workflow is validated.",
+      "This page is roadmap only. BizPilot may later help local businesses prepare marketing content for approval after the cleaning lead recovery workflow is validated.",
     cards: [
       {
         body: "Future drafts for explaining cleaning services clearly.",
         title: "Service post drafts",
       },
       {
-        body: "Ideas for local profile updates that still need owner review.",
+        body: "Ideas for local profile updates that still need your approval.",
         title: "Google Business Profile ideas",
       },
       {
@@ -569,7 +570,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     ],
     cta: "Apply for founder pilot",
     footer:
-      "Like AI reply drafts, future content drafts should be reviewed by the owner before publishing. No automatic posting is promised.",
+      "Like reply drafts, future content should be approved by the business before publishing. No automatic posting is promised.",
     meta: {
       description:
         "Future BizPilot AI Content Studio roadmap for local business marketing content drafts after lead recovery is validated.",
@@ -580,7 +581,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   demo: {
     badge: "60-second workflow demo",
     body:
-      "Follow one realistic move-out cleaning quote request from customer message to reply prepared for owner review.",
+      "Follow one realistic move-out cleaning quote request from customer message to reply ready for approval.",
     chapters: [
       {
         body:
@@ -599,7 +600,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "Timing: Before Friday",
           "Status: Needs reply",
           "Missing: square footage, appliances, access notes",
-          "Consent: owner review expected",
+          "Consent: business approval expected",
         ],
         panelTitle: "Organized lead",
         title: "BizPilot organizes it and highlights missing details.",
@@ -613,11 +614,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
         ],
         panelTitle: "AI summary and draft",
-        title: "AI prepares a draft for owner review.",
+        title: "AI prepares a reply to approve.",
       },
       {
         body:
-          "The owner reviews, edits if needed, copies the reply, and sends it manually from their own channel. Guardrails stay visible.",
+          "You review, edit if needed, copy the reply, and send it manually from your own channel. Guardrails stay visible.",
         eyebrow: "4",
         panelItems: [
           "Review",
@@ -631,7 +632,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "No full CRM claim",
         ],
         panelTitle: "Manual send and guardrails",
-        title: "Owner reviews, copies, and sends manually.",
+        title: "You review, copy, and send manually.",
       },
     ],
     cta: {
@@ -642,7 +643,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     meta: {
       description:
-        "See how BizPilot AI captures a cleaning quote request, organizes the lead, highlights missing details, and prepares a reply for owner review.",
+        "See how BizPilot AI captures a cleaning quote request, organizes the lead, highlights missing details, and prepares a reply to approve.",
       title: "Cleaning Quote Workflow Demo | BizPilot AI",
     },
     title: "See how BizPilot handles a cleaning quote request.",
@@ -674,7 +675,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       {
         body:
           "Use a practical first response that asks for missing details instead of guessing.",
-        title: "Prepare a draft reply for review.",
+        title: "Prepare a reply draft to approve.",
       },
       {
         body:
@@ -689,21 +690,21 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     ],
     meta: {
       description:
-        "BizPilot AI features for cleaning businesses: quote link, lead inbox, lead detail, AI-assisted drafts reviewed by you, and manual copy and send workflow.",
+        "BizPilot AI features for cleaning businesses: quote link, lead inbox, lead detail, AI-assisted reply drafts, and manual copy and send workflow.",
       title: "Cleaning Lead Recovery Features | BizPilot AI",
     },
     primaryCta: "Join founder pilot",
     proof: {
       badge: "Product proof",
       body:
-        "A realistic cleaning request moves through one simple manual-first path.",
+        "A realistic cleaning request moves through one simple manual workflow.",
       items: [
         "Customer submits a quote request",
         "BizPilot organizes service, timing, and missing details",
-        "AI prepares a draft reply for owner review",
-        "Owner copies, edits if needed, and sends manually",
+        "AI prepares a reply draft to approve",
+        "You copy, edit if needed, and send manually",
       ],
-      title: "From quote link to reply prepared for review.",
+      title: "From quote link to reply ready to send.",
     },
     roadmap: {
       badge: "Roadmap",
@@ -720,7 +721,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Clear answers about the first BizPilot pilot: what it does, what stays manual, how pricing works, and what is still roadmap.",
     meta: {
       description:
-        "Read BizPilot AI FAQ answers about the cleaning business founder pilot, owner-reviewed AI drafts, manual sending, pricing, privacy readiness, and roadmap scope.",
+        "Read BizPilot AI FAQ answers about the cleaning business founder pilot, AI reply drafts, manual sending, pricing, privacy, and roadmap scope.",
       title: "FAQ for Cleaning Business Owners | BizPilot AI",
     },
     sections: [
@@ -738,7 +739,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           },
           {
             answer:
-              "The request becomes an organized lead with service, timing, property details, status, and a reply draft for owner review when there is enough context.",
+              "The request becomes an organized lead with service, timing, property details, status, and a reply draft you can approve when there is enough context.",
             question: "What happens when a customer submits a quote request?",
           },
           {
@@ -753,7 +754,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         items: [
           {
             answer:
-              "No. In the first pilot, BizPilot prepares draft replies and the owner reviews, edits, copies, and sends manually.",
+              "No. In the first pilot, BizPilot prepares reply drafts and you review, edit, copy, and send manually.",
             question: "Does BizPilot send messages automatically?",
           },
           {
@@ -763,11 +764,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           },
           {
             answer:
-              "The business owner stays in control. BizPilot can organize the request and prepare a draft, but the owner decides what to send.",
+              "The business stays in control. BizPilot can organize the request and prepare a draft, but you decide what to send.",
             question: "Who sends the reply?",
           },
         ],
-        title: "AI and owner control",
+        title: "AI and business control",
       },
       {
         items: [
@@ -783,7 +784,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           },
           {
             answer:
-              "Setup is founder-guided during the controlled pilot so services, quote questions, and owner review flow can be checked before real use.",
+              "Setup is founder-guided during the controlled pilot so services, quote questions, and the reply flow can be checked before real use.",
             question: "What happens during setup?",
           },
         ],
@@ -793,7 +794,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         items: [
           {
             answer:
-              "Real customer data is only for approved pilot use after the required readiness gates. The public site should not be treated as approval to send production data.",
+              "Use real customer data only after explicit pilot approval. The public site is not approval to send production data.",
             question: "Is real customer data approved yet?",
           },
           {
@@ -813,7 +814,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         items: [
           {
             answer:
-              "Content Studio is a future direction for owner-reviewed posts, service descriptions, updates, campaigns, and visual content briefs. It is not part of the first pilot promise.",
+              "Content Studio is a future direction for approved posts, service descriptions, updates, campaigns, and visual content briefs. It is not part of the first pilot promise.",
             question: "What is the future Content Studio?",
           },
           {
@@ -835,7 +836,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   home: {
     ai: {
       body:
-        "BizPilot does not automatically send customer messages in the first pilot. AI helps prepare replies, but every message is reviewed, edited, and sent manually by the owner.",
+        "BizPilot does not automatically send customer messages in the first pilot. AI helps prepare replies, but you review, edit, and send every message.",
       canHelp: [
         "Summarizing quote requests",
         "Drafting friendly replies",
@@ -844,7 +845,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         "Creating English or French response drafts",
       ],
       canHelpTitle: "AI can help with",
-      eyebrow: "Manual-first AI",
+      eyebrow: "AI with business control",
       title: "AI drafts. You decide.",
       willNot: [
         "Send messages automatically",
@@ -861,7 +862,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       items: [
         {
           answer:
-            "No. In the first pilot, BizPilot prepares draft replies and the owner reviews, edits, copies, and sends manually.",
+            "No. In the first pilot, BizPilot prepares reply drafts and you review, edit, copy, and send manually.",
           question: "Does BizPilot send messages automatically?",
         },
         {
@@ -887,19 +888,19 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "Built for cleaning businesses first",
       body:
-        "Capture quote requests, organize leads, and prepare replies for owner review — without auto-send.",
+        "Capture quote requests, organize leads, and prepare replies to approve — without auto-send.",
       primaryCta: "Join founder pilot",
       secondaryCta: "Watch demo",
       title: "Stop losing cleaning quote requests to slow replies.",
       trustBadges: [
         "No auto-send",
-        "AI drafts reviewed by you",
+        "AI drafts you approve",
         "Manual copy and send",
       ],
     },
     meta: {
       description:
-        "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
+        "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies to approve without auto-send.",
       title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
     },
     mockup: {
@@ -921,7 +922,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     preview: {
       badges: ["No auto-send", "No invented price", "Manual send"],
       body:
-        "Follow one realistic move-out cleaning request from messy message to reply prepared for owner review. BizPilot organizes the work; the owner stays in control.",
+        "Follow one realistic move-out cleaning request from messy message to reply ready for approval. BizPilot organizes the work; you stay in control.",
       copyButton: "Copy reply",
       cta: "Watch full demo",
       steps: [
@@ -941,12 +942,12 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         {
           body:
             "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
-          title: "Draft reply for owner review",
+          title: "Reply draft to approve",
         },
         {
           body:
-            "The owner reviews the draft, adjusts it if needed, copies it, and sends it manually from the channel they already use.",
-          title: "Owner copies and sends manually",
+            "You review the draft, adjust it if needed, copy it, and send it manually from the channel you already use.",
+          title: "Copy and send manually",
         },
       ],
       title: "See the quote recovery workflow in 60 seconds.",
@@ -975,8 +976,8 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     roadmap: {
       badge: "Roadmap",
-      body:
-        "BizPilot is being designed to help local service businesses create social posts, Google Business updates, follow-up campaigns, service descriptions, seasonal promotions, and visual content briefs for owner review.",
+    body:
+      "BizPilot is being designed to help local service businesses create social posts, Google Business updates, follow-up campaigns, service descriptions, seasonal promotions, and visual content briefs for approval.",
       cards: [
         "Social captions",
         "Google Business posts",
@@ -1102,7 +1103,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     getTitle: "What you get",
     meta: {
       description:
-        "Apply for the BizPilot AI founder pilot for cleaning businesses that want faster quote replies prepared for owner review without full CRM complexity.",
+        "Apply for the BizPilot AI founder pilot for cleaning businesses that want faster quote replies without full CRM complexity.",
       title: "Cleaning Business Founder Pilot | BizPilot AI",
     },
     nextSteps: [
@@ -1176,8 +1177,8 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     ],
     guardrail: {
       body:
-        "Payment collection starts only after final readiness approval and a manual invoice or Stripe Payment Link process is prepared. BizPilot does not include in-app billing automation, booking, invoicing, SMS/WhatsApp automation, or auto-send.",
-      title: "Payment and product guardrails",
+        "Payment collection starts only after pilot approval and a manual invoice or Stripe Payment Link process is prepared. BizPilot does not include in-app billing automation, booking, invoicing, SMS/WhatsApp automation, or auto-send.",
+      title: "Payment and product limits",
     },
     meta: {
       description:
@@ -1188,10 +1189,10 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   },
   quoteShell: {
     guardrail:
-      "This form does not confirm booking or pricing. The business owner will review your request and reply.",
+      "This form does not confirm booking or pricing. The business will review your request and reply.",
     meta: {
       description:
-        "Submit a cleaning quote request for owner review. No booking or price is confirmed by the form.",
+        "Submit a cleaning quote request. No booking or price is confirmed by the form.",
       title: "Request a cleaning quote | BizPilot AI",
     },
     subtitle: "Tell us what you need and we will review your request.",
@@ -1200,7 +1201,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   trust: {
     badge: "Trust-first workflow",
     body:
-      "BizPilot is manual-first. AI assists with drafts, but the owner reviews and sends every customer message.",
+      "BizPilot keeps customer communication in your hands. AI can help prepare text, but you decide what the customer receives.",
     items: [
       {
         body:
@@ -1209,8 +1210,8 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "AI drafts are reviewed, edited, and sent manually by the business owner.",
-        title: "AI drafts reviewed by you",
+          "AI drafts are reviewed, edited, and sent manually by you.",
+        title: "AI drafts you approve",
       },
       {
         body:
@@ -1224,44 +1225,44 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Real customer data stays blocked until final readiness approval is complete.",
-        title: "Real customer data readiness gate",
+          "Real customer data stays blocked until explicit pilot approval is complete.",
+        title: "Real customer data requires approval",
       },
       {
         body:
-          "If AI is unavailable, the owner still has a clear manual workflow.",
+          "If AI is unavailable, you still have a clear manual workflow.",
         title: "Safe fallback if AI is unavailable",
       },
       {
         body:
-          "The first pilot is built around copy/send owner control.",
+          "The first pilot is built around business control and manual sending.",
         title: "Manual communication only in first pilot",
       },
     ],
     meta: {
       description:
-        "BizPilot AI is manual-first: AI drafts, owners review, and no customer messages are sent automatically in the first pilot.",
-      title: "Owner-Controlled AI and Trust | BizPilot AI",
+        "BizPilot AI keeps message control with the business: AI helps draft, you approve, and no customer messages are sent automatically in the first pilot.",
+      title: "Business-Controlled AI and Trust | BizPilot AI",
     },
     notes: {
-      badge: "Technical readiness notes",
+      badge: "Pilot readiness notes",
       body:
-        "BizPilot's commercial pilot terms are staged, but real customer data and paid pilot execution still depend on readiness gates, including final no-secret production smoke, explicit owner approval before real customer data, and a prepared manual invoice or Stripe Payment Link process before collecting payment.",
+        "BizPilot's commercial pilot terms are staged. Real customer data and paid pilot use still require final approval, production checks, and a prepared manual invoice or Stripe Payment Link before payment collection.",
     },
     pillars: [
       {
         body:
-          "BizPilot helps prepare the work, but the owner decides what the customer receives.",
+          "BizPilot helps prepare the work, but you decide what the customer receives.",
         points: [
           "No auto-send",
-          "Owner reviews, edits, and sends",
+          "You review, edit, and send",
           "Manual communication during the pilot",
         ],
         title: "You stay in control",
       },
       {
         body:
-          "Quote requests stay honest until the owner has the facts needed to price the work.",
+          "Quote requests stay honest until you have the facts needed to price the work.",
         points: [
           "No invented pricing",
           "No automatic booking confirmation",
@@ -1271,9 +1272,9 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "If an automated aid is unavailable, the owner still has a clear manual workflow.",
+          "If an automated aid is unavailable, you still have a clear manual workflow.",
         points: [
-          "Real-customer-data readiness gate",
+          "Real customer data requires approval",
           "Safe fallback when AI is unavailable",
           "Manual workflow remains available",
         ],
@@ -1283,7 +1284,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     primaryCta: "Apply for founder pilot",
     privacyCta: "Read privacy",
     securityCta: "Read security",
-    title: "Built for owner control and trust.",
+    title: "Built for business control and trust.",
   },
 };
 
@@ -1291,22 +1292,22 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   authMeta: {
     checkEmail: {
       description:
-        "Consultez votre courriel pour continuer la configuration de votre compte propriétaire BizPilot AI.",
+        "Consultez votre courriel pour continuer la configuration de votre accès BizPilot AI.",
       title: "Vérifiez votre courriel | BizPilot AI",
     },
     forgotPassword: {
       description:
-        "Demandez un lien sécurisé pour réinitialiser le mot de passe de votre compte propriétaire BizPilot AI.",
+        "Demandez un lien sécurisé pour réinitialiser le mot de passe de votre accès BizPilot AI.",
       title: "Réinitialiser le mot de passe | BizPilot AI",
     },
     resetPassword: {
       description:
-        "Choisissez un nouveau mot de passe pour votre compte propriétaire BizPilot AI.",
+        "Choisissez un nouveau mot de passe pour votre accès BizPilot AI.",
       title: "Réinitialiser le mot de passe | BizPilot AI",
     },
     signIn: {
       description:
-        "Connectez-vous à un espace de travail BizPilot AI approuvé pour réviser les demandes de soumission et les réponses à valider.",
+        "Connectez-vous à un espace de travail BizPilot AI approuvé pour gérer les demandes de soumission et les brouillons de réponse.",
       title: "Connexion | BizPilot AI",
     },
     signUp: {
@@ -1322,7 +1323,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     beforeAfter: {
       after:
         "Merci pour votre message. Pouvez-vous confirmer la superficie, les électroménagers à nettoyer et les notes d’accès afin que je prépare une soumission responsable?",
-      afterLabel: "Réponse à valider",
+      afterLabel: "Brouillon de réponse",
       before:
         "\"Combien pour un nettoyage après déménagement d’ici vendredi?\"",
       beforeLabel: "Avant",
@@ -1331,7 +1332,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "D'une demande vague à une prochaine réponse claire.",
     },
     body:
-      "BizPilot aide les entreprises de nettoyage à centraliser les demandes, organiser les prospects et préparer des réponses à valider.",
+      "BizPilot aide les entreprises de nettoyage à centraliser les demandes de soumission, organiser les prospects et préparer des réponses à valider avant l'envoi.",
     ctaPrimary: "Rejoindre le pilote",
     ctaSecondary: "Voir la démo",
     detailHelp: {
@@ -1352,7 +1353,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       requestLabel: "Exemple de demande",
       title: "Flux de demande de soumission",
       workflow:
-        "Le client demande une soumission -> Le prospect est organisé -> L’IA prépare un brouillon -> Vous validez, copiez et envoyez manuellement",
+        "Le client demande une soumission -> Vous voyez les détails du service -> BizPilot résume -> BizPilot prépare un brouillon de réponse -> Vous copiez et envoyez manuellement",
     },
     families: [
       {
@@ -1438,10 +1439,10 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
     ],
     intro:
-      "Les propriétaires d'entreprises de nettoyage sont souvent loin d'un bureau. Ils sont sur les chantiers, sur la route, avec leur équipe ou avec des clients. Les demandes de soumission arrivent au mauvais moment, et une réponse lente peut coûter des mandats.",
+      "Les responsables d'entreprises de nettoyage sont souvent loin d'un bureau. Ils sont sur les chantiers, sur la route, avec leur équipe ou avec des clients. Les demandes de soumission arrivent au mauvais moment, et une réponse lente peut coûter des mandats.",
     meta: {
       description:
-        "BizPilot AI aide les entreprises de nettoyage à centraliser les demandes, organiser les prospects et préparer des réponses à valider.",
+        "BizPilot AI aide les entreprises de nettoyage à centraliser les demandes de soumission, organiser les prospects et préparer des réponses à valider avant l'envoi.",
       title: "Récupération des demandes pour entreprises de nettoyage | BizPilot AI",
     },
     services: [
@@ -1465,7 +1466,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         title: "Publications de services",
       },
       {
-        body: "Idées locales à réviser avant toute publication.",
+        body: "Idées locales à valider avant toute publication.",
         title: "Mises à jour Google Business",
       },
       {
@@ -1487,7 +1488,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     ],
     cta: "Rejoindre le pilote",
     footer:
-      "Comme les brouillons de réponse, les futurs brouillons de contenu devront être validés avant publication. Aucune publication automatique n'est promise.",
+      "Comme les brouillons de réponse, les futurs contenus devront être validés avant publication. Aucune publication automatique n'est promise.",
     meta: {
       description:
         "Feuille de route du futur Content Studio BizPilot AI pour du contenu marketing local à valider, après validation de la récupération des demandes.",
@@ -1502,7 +1503,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     chapters: [
       {
         body:
-          "Une demande vague arrive pendant que le propriétaire est occupé. Des détails manquent, le prix serait risqué et le message est facile à oublier.",
+          "Une demande vague arrive pendant que vous êtes occupé. Des détails manquent, le prix serait risqué et le message est facile à oublier.",
         eyebrow: "1",
         panelItems: [
           "\"Bonjour, combien pour un nettoyage après déménagement d’ici vendredi?\"",
@@ -1605,7 +1606,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Suivez si la prochaine étape est répondre, demander des détails, faire un suivi ou marquer comme révisé.",
+          "Suivez si la prochaine étape est répondre, demander des détails, faire un suivi ou marquer comme traité.",
         title: "Garder la prochaine action manuelle claire.",
       },
     ],
@@ -1685,11 +1686,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
           },
           {
             answer:
-              "Le propriétaire garde le contrôle. BizPilot peut organiser la demande et préparer un brouillon, mais vous décidez quoi envoyer.",
+              "Vous gardez le contrôle. BizPilot peut organiser la demande et préparer un brouillon, mais vous décidez quoi envoyer.",
             question: "Qui envoie la réponse?",
           },
         ],
-        title: "IA et contrôle du propriétaire",
+        title: "IA et contrôle par l'entreprise",
       },
       {
         items: [
@@ -1715,7 +1716,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         items: [
           {
             answer:
-              "Les données réelles des clients sont réservées aux pilotes approuvés après les étapes de préparation requises. Le site public ne doit pas être traité comme une autorisation d'envoyer des données de production.",
+              "Utilisez des données réelles de clients seulement après l'approbation explicite du projet pilote. Le site public ne constitue pas une autorisation d'envoyer des données de production.",
             question: "Les données réelles des clients sont-elles approuvées?",
           },
           {
@@ -1729,7 +1730,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
             question: "BizPilot donne-t-il des conseils juridiques?",
           },
         ],
-        title: "Données, confidentialité et préparation",
+        title: "Données, confidentialité et approbation",
       },
       {
         items: [
@@ -1816,7 +1817,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Ne perdez plus de soumissions faute de réponse rapide.",
       trustBadges: [
         "Aucun envoi automatique",
-        "Brouillons IA validés par vous",
+        "Brouillons IA à valider par vous",
         "Copie et envoi manuels",
       ],
     },
@@ -1881,7 +1882,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     },
     problem: {
       body:
-        "Les propriétaires reçoivent des demandes pendant qu'ils travaillent, conduisent, gèrent leur équipe ou répondent à des clients. Quand les messages se perdent ou que les réponses tardent, les clients passent à autre chose.",
+        "Les responsables reçoivent des demandes pendant qu'ils travaillent, conduisent, gèrent leur équipe ou répondent à des clients. Quand les messages se perdent ou que les réponses tardent, les clients passent à autre chose.",
       cards: [
         {
           body:
@@ -1895,7 +1896,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         },
         {
           body:
-            "Les propriétaires perdent du temps à écrire la même première réponse.",
+            "Les équipes perdent du temps à écrire la même première réponse.",
           title: "Aucune réponse prête",
         },
       ],
@@ -2017,7 +2018,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "Les demandes pour le projet pilote sont en préparation.",
     },
     fitItems: [
-      "Entreprises de nettoyage exploitées par le propriétaire",
+      "Entreprises de nettoyage dirigées par vous",
       "Petites équipes de nettoyage",
       "Entreprises qui reçoivent déjà des demandes de soumission en ligne",
       "Équipes qui veulent aller plus vite sans complexité de CRM complet",
@@ -2039,7 +2040,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     },
     nextSteps: [
       "Envoyez une courte demande pilote",
-      "Le fondateur révise le flux",
+      "Le fondateur valide le flux",
       "Les entreprises sélectionnées reçoivent une configuration et un flux exemple",
     ],
     nextStepsTitle: "Ce qui se passe ensuite",
@@ -2108,8 +2109,8 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     ],
     guardrail: {
       body:
-        "La collecte de paiement commence seulement après l'approbation finale et la préparation d'une facture manuelle ou d'un processus Stripe Payment Link. BizPilot n'inclut pas la facturation automatisée dans l'app, la réservation, la facturation comptable, l'automatisation SMS/WhatsApp ni l'envoi automatique.",
-      title: "Garde-fous de paiement et de produit",
+        "La collecte de paiement commence seulement après l'approbation du projet pilote et la préparation d'une facture manuelle ou d'un processus Stripe Payment Link. BizPilot n'inclut pas la facturation automatisée dans l'app, la réservation, la facturation comptable, l'automatisation SMS/WhatsApp ni l'envoi automatique.",
+      title: "Limites de paiement et de produit",
     },
     meta: {
       description:
@@ -2132,7 +2133,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   trust: {
     badge: "Confiance et contrôle",
     body:
-      "BizPilot garde l'envoi entre vos mains. L'IA aide avec les brouillons, mais vous validez et envoyez chaque message client.",
+      "BizPilot garde la communication entre vos mains. L'IA peut aider à préparer le texte, mais vous décidez ce que le client reçoit.",
     items: [
       {
         body:
@@ -2142,7 +2143,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       {
         body:
           "Les brouillons IA sont validés, modifiés et envoyés manuellement par vous.",
-        title: "Brouillons IA validés par vous",
+        title: "Brouillons IA à valider par vous",
       },
       {
         body:
@@ -2156,8 +2157,8 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Les vraies données client restent bloquées jusqu'à l'approbation finale de préparation.",
-        title: "Porte d'approbation des vraies données client",
+          "Les données réelles de clients restent bloquées jusqu'à l'approbation explicite du projet pilote.",
+        title: "Données client réelles sur approbation",
       },
       {
         body:
@@ -2176,14 +2177,14 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "IA sous contrôle et confiance | BizPilot AI",
     },
     notes: {
-      badge: "Notes de préparation technique",
+      badge: "Notes de préparation du pilote",
       body:
-        "Les conditions commerciales du projet pilote BizPilot sont par étapes, mais les vraies données client et l'exécution payante dépendent encore de points d'approbation : smoke de production sans secret, approbation explicite avant toute vraie donnée client, et facture manuelle ou Stripe Payment Link préparé avant tout paiement.",
+        "Les conditions commerciales du projet pilote BizPilot sont par étapes. Les données réelles de clients et l'utilisation payante exigent encore une approbation finale, des vérifications de production et une facture manuelle ou un Stripe Payment Link préparé avant tout paiement.",
     },
     pillars: [
       {
         body:
-          "BizPilot aide à préparer le travail, mais le propriétaire décide ce que le client reçoit.",
+          "BizPilot aide à préparer le travail, mais vous décidez ce que le client reçoit.",
         points: [
           "Aucun envoi automatique",
           "Vous validez, modifiez et envoyez",
@@ -2205,7 +2206,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         body:
           "Si une aide automatisée est indisponible, vous gardez un flux manuel clair.",
         points: [
-          "Point d'approbation des vraies données client",
+          "Données client réelles sur approbation",
           "Solution de repli si l'IA est indisponible",
           "Le flux manuel reste disponible",
         ],

@@ -82,7 +82,7 @@ describe("final shell polish source contracts", () => {
 
     assert.equal(
       authCopy.signInSubtitle,
-      "Manage quote requests, owner-reviewed AI drafts, and manual follow-up from your BizPilot workspace.",
+      "Manage quote requests, AI reply drafts you approve, and manual follow-up from your BizPilot workspace.",
     );
     assert.equal(
       authCopy.needAccount,

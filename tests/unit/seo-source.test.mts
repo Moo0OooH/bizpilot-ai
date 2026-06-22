@@ -55,7 +55,7 @@ describe("final public SEO and legal source contracts", () => {
     );
     assert.equal(
       copy.trust.meta.title,
-      "Owner-Controlled AI and Trust | BizPilot AI",
+      "Business-Controlled AI and Trust | BizPilot AI",
     );
     assert.equal(
       copy.demo.meta.title,

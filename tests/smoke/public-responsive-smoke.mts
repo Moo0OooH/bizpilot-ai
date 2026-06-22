@@ -48,7 +48,7 @@ const routes: readonly RouteContract[] = [
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "No auto-send",
-      "AI drafts reviewed by you",
+      "AI drafts you approve",
       "Manual copy and send",
     ],
     mustNotContain: ["homepage-workflow-grid"],
@@ -72,7 +72,7 @@ const routes: readonly RouteContract[] = [
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "Aucun envoi automatique",
-      "Brouillons IA validés par vous",
+      "Brouillons IA à valider par vous",
       "Copie et envoi manuels",
     ],
     mustNotContain: [
@@ -98,7 +98,7 @@ const routes: readonly RouteContract[] = [
       "public-faq-section",
       "public-faq-grid",
       "Pilot basics",
-      "AI and owner control",
+      "AI and business control",
     ],
     path: "/faq",
   },
@@ -108,7 +108,7 @@ const routes: readonly RouteContract[] = [
       "public-faq-section",
       "public-faq-grid",
       "Bases du projet pilote",
-      "IA et contrôle du propriétaire",
+      "IA et contrôle par l'entreprise",
     ],
     path: "/faq?language=fr-CA",
   },
@@ -165,11 +165,11 @@ const routes: readonly RouteContract[] = [
     path: "/industries/cleaning?language=fr-CA",
   },
   {
-    h1: "Built for owner control and trust.",
+    h1: "Built for business control and trust.",
     mustContain: [
       "Read privacy",
       "Read security",
-      "Technical readiness notes",
+      "Pilot readiness notes",
       "supporting-three-grid",
     ],
     path: "/trust",
@@ -178,7 +178,7 @@ const routes: readonly RouteContract[] = [
     h1: "See how BizPilot handles a cleaning quote request.",
     mustContain: [
       "Request arrives.",
-      "Owner reviews, copies, and sends manually.",
+      "You review, copy, and send manually.",
       "No invented price",
     ],
     path: "/demo",
@@ -223,7 +223,7 @@ const routes: readonly RouteContract[] = [
   },
   {
     h1: "Future Content Studio for local business growth.",
-    mustContain: ["Roadmap", "owner before publishing", "supporting-six-grid"],
+    mustContain: ["Roadmap", "business before publishing", "supporting-six-grid"],
     path: "/content-studio",
   },
   {
