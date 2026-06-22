@@ -18,6 +18,7 @@
  * - 2026-06-21: Added fr-CA hero/pricing parity markers.
  * - 2026-06-21: Locked cleaning service grid and detail panel responsive markers.
  * - 2026-06-21: Added homepage mini FAQ and dedicated FAQ route smoke coverage.
+ * - 2026-06-21: Added Cleaning service de-duplication and small-commercial smoke guards.
  * ============================================================
  */
 
@@ -124,14 +125,44 @@ const routes: readonly RouteContract[] = [
   },
   {
     h1: "Lead recovery software for cleaning businesses.",
+    maxOccurrences: [
+      { max: 1, text: "Residential cleaning" },
+      { max: 1, text: "Deep cleaning" },
+      { max: 1, text: "Move-in / move-out" },
+      { max: 1, text: "Office cleaning" },
+      { max: 1, text: "Airbnb turnover" },
+      { max: 1, text: "Post-construction cleaning" },
+    ],
     mustContain: [
       "Example request",
       "Move-out cleaning",
       "Needs reply",
       "cleaning-service-grid",
       "cleaning-detail-tabs",
+      "Missing details BizPilot can help ask for",
     ],
+    mustNotContain: ["Small commercial cleaning"],
     path: "/industries/cleaning",
+  },
+  {
+    h1: "Récupération des demandes pour entreprises de nettoyage.",
+    maxOccurrences: [
+      { max: 1, text: "Nettoyage résidentiel" },
+      { max: 1, text: "Nettoyage en profondeur" },
+      { max: 1, text: "Nettoyage avant/après déménagement" },
+      { max: 1, text: "Nettoyage de bureaux" },
+      { max: 1, text: "Nettoyage entre séjours Airbnb" },
+      { max: 1, text: "Nettoyage après travaux" },
+    ],
+    mustContain: [
+      "Exemple de demande",
+      "À répondre",
+      "cleaning-service-grid",
+      "cleaning-detail-tabs",
+      "Détails manquants que BizPilot peut aider à demander",
+    ],
+    mustNotContain: ["Petit nettoyage commercial"],
+    path: "/industries/cleaning?language=fr-CA",
   },
   {
     h1: "Built for owner control and trust.",

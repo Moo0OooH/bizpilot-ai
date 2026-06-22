@@ -17,6 +17,7 @@
  * - 2026-06-21: Added multilingual copy length budgets for hero and pricing parity.
  * - 2026-06-21: Added fr-CA public policy accent and meaning guards.
  * - 2026-06-21: Added homepage/full FAQ split copy guards.
+ * - 2026-06-21: Locked the Cleaning page to six services without small-commercial copy.
  * ============================================================
  */
 
@@ -837,7 +838,7 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.cleaning.families.length, 3);
     assert.deepEqual(
       englishPublicCopy.cleaning.families.map((family) => family.services.length),
-      [2, 2, 3],
+      [2, 2, 2],
     );
     const cleaningServiceIds = new Set(
       englishPublicCopy.cleaning.families.flatMap((family) =>
@@ -858,6 +859,11 @@ describe("BizPilot language copy", () => {
         `Cleaning page should expose #${serviceId}.`,
       );
     }
+    assert.equal(cleaningServiceIds.has("small-commercial"), false);
+    assert.equal(
+      englishPublicCopy.cleaning.detailHelp.title,
+      "Missing details BizPilot can help ask for",
+    );
 
     assert.equal(englishPublicCopy.trust.pillars.length, 3);
     assert.deepEqual(

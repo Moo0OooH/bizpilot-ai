@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-06-21: Added light/dark theme matrix, visual markers, and en-XA fallback checks.
  * - 2026-06-21: Added the dedicated FAQ route to localized metadata coverage.
+ * - 2026-06-21: Added Cleaning service de-duplication checks across locales and themes.
  * ============================================================
  */
 
@@ -330,6 +331,24 @@ function checkPublicRoute(
   });
 
   if (route.path === "/industries/cleaning") {
+    const serviceTitles = locale === "fr-CA"
+      ? [
+          "Nettoyage résidentiel",
+          "Nettoyage en profondeur",
+          "Nettoyage avant/après déménagement",
+          "Nettoyage de bureaux",
+          "Nettoyage entre séjours Airbnb",
+          "Nettoyage après travaux",
+        ]
+      : [
+          "Residential cleaning",
+          "Deep cleaning",
+          "Move-in / move-out",
+          "Office cleaning",
+          "Airbnb turnover",
+          "Post-construction cleaning",
+        ];
+
     results.push({
       detail: route.path,
       name: `${locale} ${theme} cleaning has six compact cards`,
@@ -343,6 +362,18 @@ function checkPublicRoute(
         visibleHtml.includes('role="tablist"') &&
         visibleHtml.includes("cleaning-detail-mobile") &&
         visibleHtml.includes("<details"),
+    });
+    results.push({
+      detail: route.path,
+      name: `${locale} ${theme} cleaning services are not duplicated`,
+      pass: serviceTitles.every((title) => countOccurrences(visibleHtml, title) <= 1),
+    });
+    results.push({
+      detail: route.path,
+      name: `${locale} ${theme} cleaning excludes small commercial`,
+      pass:
+        !visibleHtml.includes("Small commercial cleaning") &&
+        !visibleHtml.includes("Petit nettoyage commercial"),
     });
   }
 

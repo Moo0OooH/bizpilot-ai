@@ -22,6 +22,7 @@
  * - 2026-06-21: Locked pricing-card container queries for compact multilingual actions.
  * - 2026-06-21: Locked public amber utility mappings for dark-theme guardrails.
  * - 2026-06-21: Locked hydration-stable theme trigger icon switching.
+ * - 2026-06-21: Added guards against duplicated Cleaning service detail cards.
  * ============================================================
  */
 
@@ -274,6 +275,7 @@ describe("public visual stability source contracts", () => {
     const homepage = source("app/page.tsx");
     const features = source("app/features/page.tsx");
     const cleaning = source("app/industries/cleaning/page.tsx");
+    const publicSiteCopy = source("lib/i18n/public-site-copy.ts");
     const pricing = source("app/pricing/page.tsx");
 
     for (const required of [
@@ -303,18 +305,31 @@ describe("public visual stability source contracts", () => {
 
     for (const required of [
       "const compactServices = copy.families.flatMap",
-      'service.id !== "small-commercial"',
       "cleaning-service-grid",
       "cleaning-service-card",
       "cleaning-detail-tabs",
       'role="tablist"',
       'role="tabpanel"',
       "cleaning-detail-mobile",
+      "copy.detailHelp.title",
+      "copy.detailHelp.body",
       "<details",
     ]) {
       assert.equal(cleaning.includes(required), true, `Cleaning layout missing ${required}`);
     }
 
+    assert.equal(
+      cleaning.match(/family\.services\.map/g)?.length,
+      1,
+      "Cleaning page should render service cards once and not repeat them inside detail panels.",
+    );
+    assert.equal(
+      publicSiteCopy.includes("small-commercial"),
+      false,
+      "Small commercial should not remain in the final public Cleaning page copy.",
+    );
+    assert.equal(publicSiteCopy.includes("Small commercial cleaning"), false);
+    assert.equal(publicSiteCopy.includes("Petit nettoyage commercial"), false);
     assert.equal(
       cleaning.includes("supporting-three-grid mt-8"),
       false,

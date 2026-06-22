@@ -17,6 +17,7 @@
  * - 2026-06-20: Shortened fr-CA homepage hero copy for first-fold parity.
  * - 2026-06-21: Added localized quote shell noindex metadata.
  * - 2026-06-21: Split the full public FAQ into a dedicated localized route and shortened the homepage FAQ.
+ * - 2026-06-21: Simplified Cleaning page service detail copy and removed the extra commercial service from the public surface.
  * ============================================================
  */
 
@@ -180,6 +181,10 @@ type CleaningCopy = Readonly<{
   }>;
   ctaPrimary: string;
   ctaSecondary: string;
+  detailHelp: Readonly<{
+    body: string;
+    title: string;
+  }>;
   example: Readonly<{
     fields: ReadonlyArray<LabelValue>;
     request: string;
@@ -411,6 +416,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "BizPilot helps cleaning business owners collect quote requests, organize leads, and prepare replies for owner review.",
     ctaPrimary: "Join the cleaning founder pilot",
     ctaSecondary: "See demo",
+    detailHelp: {
+      body:
+        "When a request is vague, BizPilot helps prepare the right follow-up question instead of guessing price, timing, or booking details.",
+      title: "Missing details BizPilot can help ask for",
+    },
     example: {
       fields: [
         ["Service", "Move-out cleaning"],
@@ -501,11 +511,6 @@ const englishPublicSiteCopy: PublicSiteCopy = {
             title: "Office cleaning",
           },
           {
-            body: "Small commercial requests with clear manual follow-up.",
-            id: "small-commercial",
-            title: "Small commercial cleaning",
-          },
-          {
             body: "Site size, dust/debris scope, and deadline.",
             id: "post-construction",
             title: "Post-construction cleaning",
@@ -528,7 +533,6 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Office cleaning",
       "Airbnb turnover",
       "Post-construction cleaning",
-      "Small commercial cleaning",
     ],
     servicesTitle: "Services supported in the pilot",
     title: "Lead recovery software for cleaning businesses.",
@@ -1330,6 +1334,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       "BizPilot aide les entreprises de nettoyage à centraliser les demandes, organiser les prospects et préparer des réponses à valider.",
     ctaPrimary: "Rejoindre le pilote",
     ctaSecondary: "Voir la démo",
+    detailHelp: {
+      body:
+        "Quand une demande est vague, BizPilot aide à préparer la bonne question de suivi au lieu de deviner le prix, le moment ou une réservation.",
+      title: "Détails manquants que BizPilot peut aider à demander",
+    },
     example: {
       fields: [
         ["Service", "Nettoyage après déménagement"],
@@ -1420,11 +1429,6 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
             title: "Nettoyage de bureaux",
           },
           {
-            body: "Demandes commerciales simples avec suivi manuel clair.",
-            id: "small-commercial",
-            title: "Petit nettoyage commercial",
-          },
-          {
             body: "Taille du site, poussière/débris et échéance.",
             id: "post-construction",
             title: "Nettoyage après travaux",
@@ -1447,7 +1451,6 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       "Nettoyage de bureaux",
       "Nettoyage entre séjours Airbnb",
       "Nettoyage après travaux",
-      "Petit nettoyage commercial",
     ],
     servicesTitle: "Services soutenus pendant le projet pilote",
     title: "Récupération des demandes pour entreprises de nettoyage.",

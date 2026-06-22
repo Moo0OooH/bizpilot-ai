@@ -17,6 +17,7 @@
  * - 2026-06-19: Rebuilt cleaning page around three service-family panels with stable service anchors.
  * - 2026-06-20: Tightened service-family card spacing while preserving all cleaning anchors.
  * - 2026-06-21: Replaced oversized service-family cards with compact services and shared details.
+ * - 2026-06-21: Removed repeated service cards from detail panels and simplified the six-service Cleaning page.
  * ============================================================
  */
 
@@ -73,12 +74,10 @@ export default async function CleaningPage({
   const navCopy = getHomeCopy(language).nav;
   const copy = getPublicSiteCopy(language).cleaning;
   const compactServices = copy.families.flatMap((family) =>
-    family.services
-      .filter((service) => service.id !== "small-commercial")
-      .map((service) => ({
-        ...service,
-        familyTitle: family.title,
-      })),
+    family.services.map((service) => ({
+      ...service,
+      familyTitle: family.title,
+    })),
   );
 
   return (
@@ -192,17 +191,13 @@ export default async function CleaningPage({
                         <p className="bp-copy-card-body mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
                           {family.body}
                         </p>
-                        <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                          {family.services.map((service) => (
-                            <div className="rounded-[12px] border border-slate-200 bg-slate-50 p-3" key={service.id}>
-                              <p className="bp-copy-card-title text-[15px] font-black leading-tight text-slate-950">
-                                {service.title}
-                              </p>
-                              <p className="bp-copy-card-body mt-2 text-[13px] font-bold leading-6 text-slate-700">
-                                {service.body}
-                              </p>
-                            </div>
-                          ))}
+                        <div className="mt-4 rounded-[14px] border border-teal-200 bg-teal-50 p-4">
+                          <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.12em] text-teal-700">
+                            {copy.detailHelp.title}
+                          </p>
+                          <p className="bp-copy-card-body mt-2 text-[14px] font-bold leading-7 text-slate-950">
+                            {copy.detailHelp.body}
+                          </p>
                         </div>
                       </div>
                       <div className="grid gap-4">
@@ -247,17 +242,13 @@ export default async function CleaningPage({
                   <p className="bp-copy-card-body mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
                     {family.body}
                   </p>
-                  <div className="mt-4 grid gap-2">
-                    {family.services.map((service) => (
-                      <div className="rounded-[12px] border border-slate-200 bg-white p-3" key={service.id}>
-                        <h3 className="bp-copy-card-title text-[15px] font-black leading-tight text-slate-950">
-                          {service.title}
-                        </h3>
-                        <p className="bp-copy-card-body mt-2 text-[13px] font-bold leading-6 text-slate-700">
-                          {service.body}
-                        </p>
-                      </div>
-                    ))}
+                  <div className="mt-4 rounded-[12px] border border-teal-200 bg-teal-50 p-3.5">
+                    <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.12em] text-teal-700">
+                      {copy.detailHelp.title}
+                    </p>
+                    <p className="bp-copy-card-body mt-2 text-[14px] font-bold leading-7 text-slate-950">
+                      {copy.detailHelp.body}
+                    </p>
                   </div>
                   <div className="mt-4 rounded-[12px] border border-slate-200 bg-white p-3.5">
                     <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.12em] text-slate-500">
