@@ -187,6 +187,7 @@ const routes: readonly RouteContract[] = [
     h1: "Simple pilot pricing for cleaning businesses.",
     mustContain: [
       "public-pricing-grid",
+      "public-pricing-hero-cta",
       "public-plan-card",
       "$149 setup",
       "$49/month",
@@ -200,6 +201,7 @@ const routes: readonly RouteContract[] = [
     h1: "Tarifs pilotes simples pour le nettoyage.",
     mustContain: [
       "public-pricing-grid",
+      "public-pricing-hero-cta",
       "public-plan-card",
       "Entreprises 1 à 5",
       "Pilote fondateur",

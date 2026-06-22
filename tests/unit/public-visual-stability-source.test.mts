@@ -110,6 +110,7 @@ describe("public visual stability source contracts", () => {
 
     for (const required of [
       "public-pricing-title",
+      "public-pricing-hero-cta",
       "public-pricing-grid",
       "public-plan-card",
       "public-plan-card-header",

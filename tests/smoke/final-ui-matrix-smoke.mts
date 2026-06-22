@@ -386,6 +386,11 @@ function checkPublicRoute(
     });
     results.push({
       detail: route.path,
+      name: `${locale} ${theme} pricing has first-fold CTA`,
+      pass: visibleHtml.includes("public-pricing-hero-cta"),
+    });
+    results.push({
+      detail: route.path,
       name: `${locale} ${theme} pricing CTAs anchored`,
       pass: countOccurrences(visibleHtml, "public-plan-card-cta mt-auto w-full") === 3,
     });

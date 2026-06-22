@@ -18,6 +18,7 @@
  * - 2026-06-20: Tightened pricing spacing without changing staged pricing or guardrails.
  * - 2026-06-21: Anchored plan card actions and header rows for EN/fr-CA visual parity.
  * - 2026-06-21: Applied localization-aware copy roles to plan cards and supporting panels.
+ * - 2026-06-21: Added a first-fold pricing CTA before the long plan-card grid.
  * ============================================================
  */
 
@@ -87,6 +88,11 @@ export default async function PricingPage({
             <p className="bp-copy-hero-body mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
               {copy.body}
             </p>
+            <div className="public-pricing-hero-cta mt-6 flex justify-center">
+              <MarketingButton href="/pilot">
+                {copy.cards[0]?.cta ?? navCopy.pilot}
+              </MarketingButton>
+            </div>
           </div>
 
           <div className="public-pricing-grid supporting-three-grid mt-8">
