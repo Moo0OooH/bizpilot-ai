@@ -9,11 +9,19 @@
  * - docs/readiness/PHASE_21P_NO_COST_READINESS_HARDENING.md
  * Author: MoOoH
  * Created: 2026-05-25
+ * Change Log:
+ * - 2026-06-21: Added GET-only quote honeypot and single-review-notice guards.
  * ============================================================
  */
 
+type TextOccurrenceLimit = Readonly<{
+  max: number;
+  text: string;
+}>;
+
 type QuoteSmokeCheck = Readonly<{
   expectedText: readonly string[];
+  maxOccurrences?: readonly TextOccurrenceLimit[];
   name: string;
   path: string;
   rejectedText?: readonly string[];
@@ -108,7 +116,13 @@ function normalizeSlug(raw: string): string {
 }
 
 function quotePathFromSlug(slug: string): string {
-  return `/quote/${encodeURIComponent(normalizeSlug(slug))}`;
+  const normalized = normalizeSlug(slug);
+  const queryIndex = normalized.indexOf("?");
+  const pathSlug =
+    queryIndex >= 0 ? normalized.slice(0, queryIndex) : normalized;
+  const query = queryIndex >= 0 ? normalized.slice(queryIndex) : "";
+
+  return `/quote/${encodeURIComponent(pathSlug)}${query}`;
 }
 
 function toTargetUrl(baseUrl: URL, path: string): URL {
@@ -117,6 +131,17 @@ function toTargetUrl(baseUrl: URL, path: string): URL {
   normalizedBase.search = "";
   normalizedBase.hash = "";
   return new URL(path, normalizedBase);
+}
+
+function countOccurrences(value: string, marker: string): number {
+  return marker.length > 0 ? value.split(marker).length - 1 : 0;
+}
+
+function readableHtml(value: string): string {
+  return value
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, "");
 }
 
 async function fetchWithTimeout(url: URL, timeoutMs: number): Promise<Response> {
@@ -148,6 +173,7 @@ async function runCheck(
   try {
     const response = await fetchWithTimeout(url, timeoutMs);
     const body = await response.text();
+    const readableBody = readableHtml(body);
     const durationMs = Date.now() - startedAt;
 
     if (response.status !== check.status) {
@@ -175,7 +201,7 @@ async function runCheck(
     }
 
     for (const expected of check.expectedText) {
-      if (!body.includes(expected)) {
+      if (!readableBody.includes(expected)) {
         return {
           durationMs,
           error: `missing expected text: ${JSON.stringify(expected)}`,
@@ -188,10 +214,24 @@ async function runCheck(
     }
 
     for (const rejected of check.rejectedText ?? []) {
-      if (body.includes(rejected)) {
+      if (readableBody.includes(rejected)) {
         return {
           durationMs,
           error: `unexpected text present: ${JSON.stringify(rejected)}`,
+          name: check.name,
+          pass: false,
+          path: check.path,
+          status: response.status,
+        };
+      }
+    }
+
+    for (const limit of check.maxOccurrences ?? []) {
+      const count = countOccurrences(readableBody, limit.text);
+      if (count > limit.max) {
+        return {
+          durationMs,
+          error: `expected at most ${limit.max} occurrence(s) of ${JSON.stringify(limit.text)}, found ${count}`,
           name: check.name,
           pass: false,
           path: check.path,
@@ -241,10 +281,22 @@ function buildChecks(): QuoteSmokeCheck[] {
 
   if (activeSlug) {
     checks.push({
-      expectedText: ["What kind of cleaning?", "Send quote request"],
+      expectedText: [
+        "What kind of cleaning?",
+        "Send quote request",
+        "By sending this request, you agree to share your information with this business so they can respond to your quote request. BizPilot may help prepare an internal draft, but the business reviews every message before sending it.",
+        "Submitting this form does not confirm pricing, availability, or booking.",
+      ],
+      maxOccurrences: [
+        { max: 1, text: "BizPilot may help prepare an internal draft" },
+      ],
       name: "active synthetic quote link",
       path: quotePathFromSlug(activeSlug),
-      rejectedText: ["Quote page unavailable"],
+      rejectedText: [
+        "Quote page unavailable",
+        "Company website",
+        "BizPilot may help prepare internal AI drafts later",
+      ],
       status: 200,
     });
   }
@@ -260,10 +312,23 @@ function buildChecks(): QuoteSmokeCheck[] {
 
   if (frSlug) {
     checks.push({
-      expectedText: ["Quel type de nettoyage?", "Envoyer la demande"],
+      expectedText: [
+        "Quel type de nettoyage?",
+        "Envoyer la demande",
+        "En envoyant cette demande, vous acceptez que vos renseignements soient partagés avec cette entreprise afin qu’elle puisse répondre à votre demande de soumission. BizPilot peut aider à préparer un brouillon interne, mais l’entreprise révise chaque message avant de l’envoyer.",
+        "L’envoi de ce formulaire ne confirme ni prix, ni disponibilité, ni réservation.",
+      ],
+      maxOccurrences: [
+        { max: 1, text: "BizPilot peut aider à préparer un brouillon interne" },
+      ],
       name: "fr-CA synthetic quote link",
       path: quotePathFromSlug(frSlug),
-      rejectedText: ["Quote page unavailable", "Send quote request"],
+      rejectedText: [
+        "Quote page unavailable",
+        "Send quote request",
+        "Company website",
+        "BizPilot peut aider à préparer des brouillons IA internes plus tard",
+      ],
       status: 200,
     });
   }

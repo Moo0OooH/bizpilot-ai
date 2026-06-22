@@ -18,6 +18,7 @@
  * - 2026-06-21: Added fr-CA public policy accent and meaning guards.
  * - 2026-06-21: Added homepage/full FAQ split copy guards.
  * - 2026-06-21: Locked the Cleaning page to six services without small-commercial copy.
+ * - 2026-06-21: Locked final quote consent and no-confirmation notices.
  * ============================================================
  */
 
@@ -1178,9 +1179,34 @@ describe("BizPilot language copy", () => {
     const frenchNotice = getBizPilotCopy("fr-CA").quoteForm.consentNoticeDefault;
 
     assert.equal(
+      englishNotice,
+      "By sending this request, you agree to share your information with this business so they can respond to your quote request. BizPilot may help prepare an internal draft, but the business reviews every message before sending it.",
+    );
+    assert.equal(
+      frenchNotice,
+      "En envoyant cette demande, vous acceptez que vos renseignements soient partagés avec cette entreprise afin qu’elle puisse répondre à votre demande de soumission. BizPilot peut aider à préparer un brouillon interne, mais l’entreprise révise chaque message avant de l’envoyer.",
+    );
+    assert.equal(
+      getBizPilotCopy("en").quoteForm.guardrail,
+      "Submitting this form does not confirm pricing, availability, or booking.",
+    );
+    assert.equal(
+      getBizPilotCopy("fr-CA").quoteForm.guardrail,
+      "L’envoi de ce formulaire ne confirme ni prix, ni disponibilité, ni réservation.",
+    );
+
+    assert.equal(
       resolveConsentNoticeForLanguage({
         language: "fr-CA",
         value: englishNotice,
+      }),
+      frenchNotice,
+    );
+    assert.equal(
+      resolveConsentNoticeForLanguage({
+        language: "fr-CA",
+        value:
+          "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.",
       }),
       frenchNotice,
     );

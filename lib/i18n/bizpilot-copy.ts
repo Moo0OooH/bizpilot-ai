@@ -2179,9 +2179,9 @@ const englishCopy: BizPilotCopy = {
   },
   quoteForm: {
     aiDisclosure:
-      "BizPilot may help prepare internal AI drafts later, but the business reviews messages before sending.",
+      "BizPilot may help prepare an internal draft, but the business reviews every message before sending it.",
     consentNoticeDefault:
-      "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.",
+      "By sending this request, you agree to share your information with this business so they can respond to your quote request. BizPilot may help prepare an internal draft, but the business reviews every message before sending it.",
     emptySection: "Nothing to fill on this section.",
     guardrail:
       "Submitting this form does not confirm pricing, availability, or booking.",
@@ -3586,12 +3586,12 @@ const frenchCopy: BizPilotCopy = {
   },
   quoteForm: {
     aiDisclosure:
-      "BizPilot peut aider à préparer des brouillons IA internes plus tard, mais l'entreprise révise les messages avant de les envoyer.",
+      "BizPilot peut aider à préparer un brouillon interne, mais l’entreprise révise chaque message avant de l’envoyer.",
     consentNoticeDefault:
-      "En envoyant cette demande, vous acceptez que vos renseignements soient partagés avec cette entreprise afin qu'elle réponde à votre demande de soumission. BizPilot peut aider à préparer des brouillons IA internes, mais l'entreprise révise les messages avant de les envoyer.",
+      "En envoyant cette demande, vous acceptez que vos renseignements soient partagés avec cette entreprise afin qu’elle puisse répondre à votre demande de soumission. BizPilot peut aider à préparer un brouillon interne, mais l’entreprise révise chaque message avant de l’envoyer.",
     emptySection: "Rien à remplir dans cette section.",
     guardrail:
-      "Envoyer ce formulaire ne confirme ni prix, ni disponibilité, ni réservation.",
+      "L’envoi de ce formulaire ne confirme ni prix, ni disponibilité, ni réservation.",
     selectPlaceholder: "Sélectionner une option",
     stepProgress: (index, total, label) =>
       `Étape ${index} sur ${total} - ${label}`,
@@ -3707,8 +3707,16 @@ export function resolveConsentNoticeForLanguage(input: {
   const defaultConsentNotices = Object.values(copyByLanguage).map(
     (copy) => copy.quoteForm.consentNoticeDefault,
   );
+  const legacyDefaultConsentNotices = [
+    "By submitting this request, you agree that your information will be shared with this business to respond to your quote request. BizPilot may help prepare internal AI drafts, but the business reviews messages before sending.",
+    "En envoyant cette demande, vous acceptez que vos renseignements soient partagés avec cette entreprise afin qu'elle réponde à votre demande de soumission. BizPilot peut aider à préparer des brouillons IA internes, mais l'entreprise révise les messages avant de les envoyer.",
+  ];
 
-  if (!value || defaultConsentNotices.includes(value)) {
+  if (
+    !value ||
+    defaultConsentNotices.includes(value) ||
+    legacyDefaultConsentNotices.includes(value)
+  ) {
     return copyByLanguage[language].quoteForm.consentNoticeDefault;
   }
 

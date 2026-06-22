@@ -10,9 +10,10 @@
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-20: Added 11D shell alignment contracts for auth, quote, and dashboard setup shells.
+ * - 2026-06-21: Locked quote honeypot hiding and single consent review notice rendering.
  * ============================================================
  */
 
@@ -118,20 +119,25 @@ describe("final shell polish source contracts", () => {
     );
     assert.equal(
       quoteWizard.match(/copy\.quoteForm\.aiDisclosure/g)?.length,
-      1,
-      "AI disclosure should appear only inside the consent block.",
+      undefined,
+      "AI disclosure should not render as a separate duplicate notice.",
     );
     assert.equal(
-      /<label className="hidden">\s*Company website\s*<input autoComplete="off" name="companyWebsite" tabIndex=\{-1\} \/>/s.test(
+      quoteWizard.includes("Company website"),
+      false,
+      "Company website honeypot text should not be exposed in rendered markup.",
+    );
+    assert.equal(
+      /<input\s+aria-hidden="true"\s+autoComplete="off"\s+className="hidden"\s+name="companyWebsite"\s+tabIndex=\{-1\}\s+type="text"\s+\/>/s.test(
         quoteWizard,
       ),
       true,
-      "Company website honeypot must stay display-hidden and out of tab order.",
+      "Company website honeypot must stay display-hidden, assistive-tech hidden, and out of tab order.",
     );
     assert.equal(
-      quoteWizard.includes("consentNotice={page.consentVersion.consent_notice}"),
+      quoteWizard.includes("consentNotice={copy.quoteForm.consentNoticeDefault}"),
       true,
-      "Visible consent copy should come from the active consent version.",
+      "Visible quote consent copy should use the final localized notice.",
     );
   });
 

@@ -15,6 +15,7 @@
  * - 2026-05-19: Created 3-step grouped public quote form.
  * - 2026-05-22: Removed client-side step navigation dependency so public submissions cannot get stuck before submit.
  * - 2026-06-19: Mapped quote form visual styling to shared System/Light/Dark tokens.
+ * - 2026-06-21: Hid the honeypot from all normal users and kept the review notice single.
  * ============================================================
  */
 
@@ -284,13 +285,9 @@ function FieldRow({
 }
 
 function ConsentBlock({
-  aiDisclosureEnabled,
   consentNotice,
-  copy,
 }: Readonly<{
-  aiDisclosureEnabled: boolean;
   consentNotice: string;
-  copy: BizPilotCopy;
 }>) {
   return (
     <label className="mt-4 flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] p-4 text-[13px] leading-6 text-[var(--text-default)]">
@@ -302,11 +299,6 @@ function ConsentBlock({
       />
       <span>
         {consentNotice}
-        {aiDisclosureEnabled ? (
-          <span className="mt-1.5 block text-[11px] text-[var(--text-muted)]">
-            {copy.quoteForm.aiDisclosure}
-          </span>
-        ) : null}
       </span>
     </label>
   );
@@ -353,10 +345,14 @@ export function QuoteFormWizard({
       <input name="utmSource" type="hidden" value={query?.utm_source ?? ""} />
       <input name="utmMedium" type="hidden" value={query?.utm_medium ?? ""} />
       <input name="utmCampaign" type="hidden" value={query?.utm_campaign ?? ""} />
-      <label className="hidden">
-        Company website
-        <input autoComplete="off" name="companyWebsite" tabIndex={-1} />
-      </label>
+      <input
+        aria-hidden="true"
+        autoComplete="off"
+        className="hidden"
+        name="companyWebsite"
+        tabIndex={-1}
+        type="text"
+      />
 
       {page.fields.map((field) => (
         <input
@@ -407,9 +403,7 @@ export function QuoteFormWizard({
 
             {index === steps.length - 1 ? (
               <ConsentBlock
-                aiDisclosureEnabled={page.consentVersion.ai_disclosure_enabled}
-                consentNotice={page.consentVersion.consent_notice}
-                copy={copy}
+                consentNotice={copy.quoteForm.consentNoticeDefault}
               />
             ) : null}
           </section>

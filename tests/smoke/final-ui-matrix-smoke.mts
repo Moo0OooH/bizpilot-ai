@@ -15,6 +15,7 @@
  * - 2026-06-21: Added light/dark theme matrix, visual markers, and en-XA fallback checks.
  * - 2026-06-21: Added the dedicated FAQ route to localized metadata coverage.
  * - 2026-06-21: Added Cleaning service de-duplication checks across locales and themes.
+ * - 2026-06-21: Updated optional quote fixtures to verify active safe GET quote forms.
  * ============================================================
  */
 
@@ -494,17 +495,23 @@ async function maybeCheckQuoteUrl(
   }
 
   const html = await fetchText(new URL(rawUrl), timeoutMs);
+  const readableHtml = stripScripts(html);
 
   return [
     {
       detail: rawUrl,
       name: `${label} quote renders`,
-      pass: expectedText.every((text) => headIncludes(html, text)),
+      pass: expectedText.every((text) => headIncludes(readableHtml, text)),
     },
     {
       detail: rawUrl,
       name: `${label} quote noindex`,
       pass: html.includes("noindex") && html.includes("nofollow"),
+    },
+    {
+      detail: rawUrl,
+      name: `${label} quote hides honeypot label`,
+      pass: !headIncludes(readableHtml, "Company website"),
     },
   ];
 }
@@ -585,7 +592,11 @@ async function main(): Promise<void> {
       "EN safe",
       readCliValue("en-quote-url") ?? process.env.BIZPILOT_SMOKE_EN_QUOTE_URL,
       timeoutMs,
-      ["Quote page unavailable"],
+      [
+        "What kind of cleaning",
+        "Send quote request",
+        "By sending this request",
+      ],
     )),
   );
   results.push(
