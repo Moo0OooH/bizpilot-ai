@@ -10,6 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-20
+ * Last Updated: 2026-06-21
+ * Change Log:
+ * - 2026-06-21: Added the dedicated public FAQ route to canonical metadata helpers.
  * ============================================================
  */
 
@@ -39,6 +42,7 @@ export const PUBLIC_SITE_NAME = "BizPilot AI";
 
 export const publicCanonicalRoutes = [
   "/",
+  "/faq",
   "/features",
   "/industries/cleaning",
   "/trust",

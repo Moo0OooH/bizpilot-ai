@@ -17,6 +17,7 @@
  * - 2026-06-19: Rebuilt public header utilities around compact locale/theme controls and content-fit navigation.
  * - 2026-06-21: Removed duplicated compact header CTA markup so each shell state exposes one primary pilot action.
  * - 2026-06-21: Attached localization-aware copy role classes to shared primitives.
+ * - 2026-06-21: Added the dedicated FAQ route to the public footer links.
  * ============================================================
  */
 
@@ -531,6 +532,7 @@ export function MarketingFooter({
     { href: "/demo", label: copy.demo },
     { href: "/pricing", label: copy.pricing },
     { href: "/pilot", label: copy.pilot },
+    { href: "/faq", label: copy.faq },
     { href: "/privacy", label: copy.privacy },
     { href: "/security", label: copy.security },
     { href: "/terms", label: copy.terms },

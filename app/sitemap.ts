@@ -9,6 +9,9 @@
  * - app/robots.ts
  * Author: MoOoH
  * Created: 2026-06-20
+ * Last Updated: 2026-06-21
+ * Change Log:
+ * - 2026-06-21: Included the dedicated public FAQ route in the sitemap.
  * ============================================================
  */
 
@@ -20,7 +23,7 @@ import {
   publicUrl,
 } from "@/lib/seo";
 
-const lastPublicPolishDate = new Date("2026-06-20T00:00:00.000Z");
+const lastPublicPolishDate = new Date("2026-06-21T00:00:00.000Z");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return publicCanonicalRoutes.map((path) => ({

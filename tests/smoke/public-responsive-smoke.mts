@@ -17,6 +17,7 @@
  * - 2026-06-21: Locked canonical four-step grid classes into smoke coverage.
  * - 2026-06-21: Added fr-CA hero/pricing parity markers.
  * - 2026-06-21: Locked cleaning service grid and detail panel responsive markers.
+ * - 2026-06-21: Added homepage mini FAQ and dedicated FAQ route smoke coverage.
  * ============================================================
  */
 
@@ -34,8 +35,15 @@ const TIMEOUT_MS = 15_000;
 const routes: readonly RouteContract[] = [
   {
     h1: "Stop losing cleaning quote requests to slow replies.",
+    maxOccurrences: [
+      {
+        max: 3,
+        text: "<details",
+      },
+    ],
     mustContain: [
       "href=\"/demo\"",
+      "href=\"/faq\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "No auto-send",
@@ -49,12 +57,17 @@ const routes: readonly RouteContract[] = [
     h1: "Ne perdez plus de soumissions faute de réponse rapide.",
     maxOccurrences: [
       {
+        max: 3,
+        text: "<details",
+      },
+      {
         max: 1,
         text: "Rejoindre le pilote fondateur",
       },
     ],
     mustContain: [
       "href=\"/demo\"",
+      "href=\"/faq\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "Aucun envoi automatique",
@@ -77,6 +90,26 @@ const routes: readonly RouteContract[] = [
       "homepage-workflow-grid",
     ],
     path: "/?language=fr-CA",
+  },
+  {
+    h1: "Questions cleaning business owners ask before joining.",
+    mustContain: [
+      "public-faq-section",
+      "public-faq-grid",
+      "Pilot basics",
+      "AI and owner control",
+    ],
+    path: "/faq",
+  },
+  {
+    h1: "Questions que les entreprises de nettoyage posent avant de participer.",
+    mustContain: [
+      "public-faq-section",
+      "public-faq-grid",
+      "Bases du projet pilote",
+      "IA et contrôle du propriétaire",
+    ],
+    path: "/faq?language=fr-CA",
   },
   {
     h1: "A simple system to capture, organize, and reply to cleaning leads faster.",

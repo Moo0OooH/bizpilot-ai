@@ -22,6 +22,7 @@
  * - 2026-06-21: Removed the repeated five-card workflow section so the product demo carries the workflow story once.
  * - 2026-06-21: Attached localization-aware copy roles to homepage headings, cards, and badges.
  * - 2026-06-21: Tightened first-fold hero rhythm so the preview card stays visible on desktop.
+ * - 2026-06-21: Shortened the homepage FAQ and linked to the dedicated full FAQ route.
  * ============================================================
  */
 
@@ -525,6 +526,11 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
                 </details>
               </MarketingCard>
             ))}
+          </div>
+          <div className="mt-7 flex justify-center">
+            <MarketingButton href="/faq" variant="secondary">
+              {copy.faq.cta} <MarketingIcon name="arrow" />
+            </MarketingButton>
           </div>
         </MarketingShell>
       </section>

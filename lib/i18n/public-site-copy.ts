@@ -16,6 +16,7 @@
  * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
  * - 2026-06-20: Shortened fr-CA homepage hero copy for first-fold parity.
  * - 2026-06-21: Added localized quote shell noindex metadata.
+ * - 2026-06-21: Split the full public FAQ into a dedicated localized route and shortened the homepage FAQ.
  * ============================================================
  */
 
@@ -37,6 +38,11 @@ type TextPair = Readonly<{
 
 type LabelValue = readonly [string, string];
 
+type FaqItem = Readonly<{
+  answer: string;
+  question: string;
+}>;
+
 type HomeCopy = Readonly<{
   ai: Readonly<{
     body: string;
@@ -48,8 +54,9 @@ type HomeCopy = Readonly<{
     eyebrow: string;
   }>;
   faq: Readonly<{
+    cta: string;
     eyebrow: string;
-    items: ReadonlyArray<Readonly<{ answer: string; question: string }>>;
+    items: ReadonlyArray<FaqItem>;
     title: string;
   }>;
   finalCta: Readonly<{
@@ -146,6 +153,19 @@ type FeaturesCopy = Readonly<{
   secondaryCta: string;
   title: string;
   badge: string;
+}>;
+
+type FaqCopy = Readonly<{
+  badge: string;
+  body: string;
+  meta: MetaCopy;
+  sections: ReadonlyArray<
+    Readonly<{
+      items: ReadonlyArray<FaqItem>;
+      title: string;
+    }>
+  >;
+  title: string;
 }>;
 
 type CleaningCopy = Readonly<{
@@ -321,6 +341,7 @@ export type PublicSiteCopy = Readonly<{
   cleaning: CleaningCopy;
   contentStudio: ContentStudioCopy;
   demo: DemoCopy;
+  faq: FaqCopy;
   features: FeaturesCopy;
   home: HomeCopy;
   pilot: PilotCopy;
@@ -333,6 +354,7 @@ export const PUBLIC_SITE_COPY_SOURCE_LANGUAGE = DEFAULT_LANGUAGE;
 export const publicSiteCopyNamespaces = [
   "home",
   "features",
+  "faq",
   "cleaning",
   "trust",
   "demo",
@@ -688,6 +710,124 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     title:
       "A simple system to capture, organize, and reply to cleaning leads faster.",
   },
+  faq: {
+    badge: "FAQ",
+    body:
+      "Clear answers about the first BizPilot pilot: what it does, what stays manual, how pricing works, and what is still roadmap.",
+    meta: {
+      description:
+        "Read BizPilot AI FAQ answers about the cleaning business founder pilot, owner-reviewed AI drafts, manual sending, pricing, privacy readiness, and roadmap scope.",
+      title: "FAQ for Cleaning Business Owners | BizPilot AI",
+    },
+    sections: [
+      {
+        items: [
+          {
+            answer:
+              "No. BizPilot starts as a focused lead recovery workflow for cleaning quote requests, not a full CRM.",
+            question: "Is BizPilot a full CRM?",
+          },
+          {
+            answer:
+              "BizPilot is built for cleaning businesses first: residential, deep cleaning, move-out, office, Airbnb turnover, post-construction, and related quote requests.",
+            question: "Who is the pilot for first?",
+          },
+          {
+            answer:
+              "The request becomes an organized lead with service, timing, property details, status, and a reply draft for owner review when there is enough context.",
+            question: "What happens when a customer submits a quote request?",
+          },
+          {
+            answer:
+              "Later, possibly. The founder pilot stays cleaning-first so the workflow can be proven before expanding.",
+            question: "Will BizPilot support other industries?",
+          },
+        ],
+        title: "Pilot basics",
+      },
+      {
+        items: [
+          {
+            answer:
+              "No. In the first pilot, BizPilot prepares draft replies and the owner reviews, edits, copies, and sends manually.",
+            question: "Does BizPilot send messages automatically?",
+          },
+          {
+            answer:
+              "No. BizPilot should not invent prices. It can help ask for the missing details needed before you quote responsibly.",
+            question: "Can AI create prices for me?",
+          },
+          {
+            answer:
+              "The business owner stays in control. BizPilot can organize the request and prepare a draft, but the owner decides what to send.",
+            question: "Who sends the reply?",
+          },
+        ],
+        title: "AI and owner control",
+      },
+      {
+        items: [
+          {
+            answer:
+              "The published pilot pricing is shown on the pricing page. Billing only follows approval and manual onboarding; there is no self-serve checkout on the public site.",
+            question: "How does pilot pricing work?",
+          },
+          {
+            answer:
+              "No open self-serve trial is available. Cleaning businesses apply for the founder pilot first.",
+            question: "Is there a free trial?",
+          },
+          {
+            answer:
+              "Setup is founder-guided during the controlled pilot so services, quote questions, and owner review flow can be checked before real use.",
+            question: "What happens during setup?",
+          },
+        ],
+        title: "Pricing and billing",
+      },
+      {
+        items: [
+          {
+            answer:
+              "Real customer data is only for approved pilot use after the required readiness gates. The public site should not be treated as approval to send production data.",
+            question: "Is real customer data approved yet?",
+          },
+          {
+            answer:
+              "Only the details a cleaning owner needs for a quote request: contact path, service type, location, timing, property context, and the customer's message.",
+            question: "What data should a quote form collect?",
+          },
+          {
+            answer:
+              "No. BizPilot provides product guardrails and plain-language references, but it does not replace legal, privacy, or security advice.",
+            question: "Does BizPilot provide legal advice?",
+          },
+        ],
+        title: "Data, privacy, and readiness",
+      },
+      {
+        items: [
+          {
+            answer:
+              "Content Studio is a future direction for owner-reviewed posts, service descriptions, updates, campaigns, and visual content briefs. It is not part of the first pilot promise.",
+            question: "What is the future Content Studio?",
+          },
+          {
+            answer:
+              "Follow-up drafts, reporting, integrations, and multi-industry templates are roadmap items after validation. They are not automatic promises for the first pilot.",
+            question: "What features are still roadmap?",
+          },
+          {
+            answer:
+              "Yes. The founder pilot is intentionally small so real cleaning-business feedback can shape the workflow before broader rollout.",
+            question: "Can pilot businesses influence the product?",
+          },
+        ],
+        title: "Roadmap",
+      },
+    ],
+    title: "Questions cleaning business owners ask before joining.",
+  },
   home: {
     ai: {
       body:
@@ -712,13 +852,9 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       willNotTitle: "AI will not",
     },
     faq: {
+      cta: "Read the full FAQ",
       eyebrow: "FAQ",
       items: [
-        {
-          answer:
-            "No. BizPilot starts as a focused lead recovery workflow for cleaning quote requests, not a full CRM.",
-          question: "Is BizPilot a full CRM?",
-        },
         {
           answer:
             "No. In the first pilot, BizPilot prepares draft replies and the owner reviews, edits, copies, and sends manually.",
@@ -732,25 +868,10 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         {
           answer:
             "BizPilot is built for cleaning businesses first: residential, deep cleaning, move-out, office, Airbnb turnover, and related quote requests.",
-          question: "Who is BizPilot for first?",
-        },
-        {
-          answer:
-            "The request appears as an organized lead with the service, timing, property details, status, and a draft reply for owner review when enough context is available.",
-          question: "What happens when a customer submits a quote request?",
-        },
-        {
-          answer:
-            "Later, possibly. The founder pilot is cleaning-only so the workflow can be proven before expanding.",
-          question: "Will BizPilot support other industries?",
-        },
-        {
-          answer:
-            "Content Studio is a roadmap direction for posts, updates, campaigns, service descriptions, and visual content briefs prepared for owner review. It is not the first pilot promise.",
-          question: "What is the future Content Studio?",
+          question: "Who is the pilot for first?",
         },
       ],
-      title: "Straight answers for the founder pilot.",
+      title: "Straight answers before the full FAQ.",
     },
     finalCta: {
       body:
@@ -1512,6 +1633,124 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     title:
       "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
   },
+  faq: {
+    badge: "FAQ",
+    body:
+      "Des réponses claires sur le premier projet pilote BizPilot : ce qu'il fait, ce qui reste manuel, la tarification et ce qui demeure sur la feuille de route.",
+    meta: {
+      description:
+        "Consultez les réponses FAQ de BizPilot AI sur le projet pilote pour entreprises de nettoyage, les brouillons IA à valider, l'envoi manuel, les tarifs, la confidentialité et la feuille de route.",
+      title: "FAQ pour entreprises de nettoyage | BizPilot AI",
+    },
+    sections: [
+      {
+        items: [
+          {
+            answer:
+              "Non. BizPilot commence comme un flux ciblé de récupération des demandes de soumission de nettoyage, pas comme un CRM complet.",
+            question: "BizPilot est-il un CRM complet?",
+          },
+          {
+            answer:
+              "BizPilot est d'abord conçu pour les entreprises de nettoyage : résidentiel, nettoyage en profondeur, déménagement, bureaux, Airbnb, après-construction et demandes connexes.",
+            question: "À qui le projet pilote s'adresse-t-il d'abord?",
+          },
+          {
+            answer:
+              "La demande devient un prospect organisé avec le service, le moment, les détails de propriété, le statut et, quand il y a assez de contexte, un brouillon de réponse à valider.",
+            question: "Que se passe-t-il quand un client envoie une demande?",
+          },
+          {
+            answer:
+              "Peut-être plus tard. Le projet pilote reste axé sur le nettoyage afin de valider le flux avant d'élargir.",
+            question: "BizPilot soutiendra-t-il d'autres secteurs?",
+          },
+        ],
+        title: "Bases du projet pilote",
+      },
+      {
+        items: [
+          {
+            answer:
+              "Non. Pendant le premier projet pilote, BizPilot prépare des brouillons. Vous validez, modifiez, copiez et envoyez manuellement.",
+            question: "BizPilot envoie-t-il des messages automatiquement?",
+          },
+          {
+            answer:
+              "Non. BizPilot ne doit pas inventer de prix. Il peut aider à demander les détails manquants avant de préparer une soumission responsable.",
+            question: "L'IA peut-elle créer des prix pour moi?",
+          },
+          {
+            answer:
+              "Le propriétaire garde le contrôle. BizPilot peut organiser la demande et préparer un brouillon, mais vous décidez quoi envoyer.",
+            question: "Qui envoie la réponse?",
+          },
+        ],
+        title: "IA et contrôle du propriétaire",
+      },
+      {
+        items: [
+          {
+            answer:
+              "Les tarifs pilotes publiés sont affichés sur la page Tarifs. La facturation suit seulement l'approbation et l'intégration manuelle; il n'y a pas de paiement libre-service sur le site public.",
+            question: "Comment les tarifs pilotes fonctionnent-ils?",
+          },
+          {
+            answer:
+              "Il n'y a pas d'essai libre-service ouvert. Les entreprises de nettoyage doivent d'abord demander l'accès au projet pilote.",
+            question: "Y a-t-il un essai gratuit?",
+          },
+          {
+            answer:
+              "La configuration est guidée par le fondateur pendant le projet pilote contrôlé afin de vérifier les services, les questions de soumission et le flux de validation avant l'utilisation réelle.",
+            question: "Que se passe-t-il pendant la configuration?",
+          },
+        ],
+        title: "Tarifs et facturation",
+      },
+      {
+        items: [
+          {
+            answer:
+              "Les données réelles des clients sont réservées aux pilotes approuvés après les étapes de préparation requises. Le site public ne doit pas être traité comme une autorisation d'envoyer des données de production.",
+            question: "Les données réelles des clients sont-elles approuvées?",
+          },
+          {
+            answer:
+              "Seulement les détails nécessaires à une soumission de nettoyage : canal de contact, type de service, secteur, moment, contexte de propriété et message du client.",
+            question: "Quelles données un formulaire de soumission devrait-il recueillir?",
+          },
+          {
+            answer:
+              "Non. BizPilot fournit des garde-fous produit et des références en langage clair, mais ne remplace pas les conseils juridiques, de confidentialité ou de sécurité.",
+            question: "BizPilot donne-t-il des conseils juridiques?",
+          },
+        ],
+        title: "Données, confidentialité et préparation",
+      },
+      {
+        items: [
+          {
+            answer:
+              "Content Studio est une direction future pour des publications, descriptions de service, mises à jour, campagnes et briefs visuels à valider. Ce n'est pas une promesse du premier projet pilote.",
+            question: "Qu'est-ce que le futur Content Studio?",
+          },
+          {
+            answer:
+              "Les brouillons de suivi, rapports, intégrations et modèles pour d'autres secteurs sont des éléments de feuille de route après validation. Ce ne sont pas des promesses automatiques du premier pilote.",
+            question: "Quelles fonctions restent sur la feuille de route?",
+          },
+          {
+            answer:
+              "Oui. Le projet pilote reste volontairement petit afin que les commentaires réels des entreprises de nettoyage façonnent le flux avant un lancement plus large.",
+            question: "Les entreprises pilotes peuvent-elles influencer le produit?",
+          },
+        ],
+        title: "Feuille de route",
+      },
+    ],
+    title: "Questions que les entreprises de nettoyage posent avant de participer.",
+  },
   home: {
     ai: {
       body:
@@ -1536,13 +1775,9 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       willNotTitle: "L'IA ne va pas",
     },
     faq: {
+      cta: "Lire la FAQ complète",
       eyebrow: "FAQ",
       items: [
-        {
-          answer:
-            "Non. BizPilot commence comme un flux ciblé de récupération des demandes de soumission de nettoyage, pas comme un CRM complet.",
-          question: "BizPilot est-il un CRM complet?",
-        },
         {
           answer:
             "Non. Pendant le premier projet pilote, BizPilot prépare des brouillons. Vous validez, modifiez, copiez et envoyez manuellement.",
@@ -1556,25 +1791,10 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         {
           answer:
             "BizPilot est d'abord conçu pour les entreprises de nettoyage : résidentiel, nettoyage en profondeur, déménagement, bureaux, Airbnb et demandes connexes.",
-          question: "Pour qui BizPilot est-il conçu en premier?",
-        },
-        {
-          answer:
-            "La demande devient un prospect organisé avec le service, le moment, les détails de propriété, le statut et, quand il y a assez de contexte, un brouillon de réponse à valider.",
-          question: "Que se passe-t-il quand un client envoie une demande?",
-        },
-        {
-          answer:
-            "Peut-être plus tard. Le projet pilote reste axé sur le nettoyage afin de valider le flux avant d'élargir.",
-          question: "BizPilot soutiendra-t-il d'autres secteurs?",
-        },
-        {
-          answer:
-            "Content Studio est une direction future pour des publications, mises à jour, campagnes, descriptions de service et briefs visuels à valider. Ce n'est pas une promesse du premier projet pilote.",
-          question: "Qu'est-ce que le futur Content Studio?",
+          question: "À qui le projet pilote s'adresse-t-il d'abord?",
         },
       ],
-      title: "Réponses claires pour le projet pilote.",
+      title: "Réponses rapides avant la FAQ complète.",
     },
     finalCta: {
       body:

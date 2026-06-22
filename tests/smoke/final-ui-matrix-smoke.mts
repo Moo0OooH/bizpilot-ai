@@ -13,6 +13,7 @@
  * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-21: Added light/dark theme matrix, visual markers, and en-XA fallback checks.
+ * - 2026-06-21: Added the dedicated FAQ route to localized metadata coverage.
  * ============================================================
  */
 
@@ -68,6 +69,12 @@ const routeContracts: readonly PublicRouteContract[] = [
     meta: (locale) => getPublicSiteCopy(locale).home.meta,
     path: "/",
     rejectFrText: getPublicSiteCopy("en").home.hero.title,
+  },
+  {
+    h1: (locale) => getPublicSiteCopy(locale).faq.title,
+    meta: (locale) => getPublicSiteCopy(locale).faq.meta,
+    path: "/faq",
+    rejectFrText: getPublicSiteCopy("en").faq.title,
   },
   {
     h1: (locale) => getPublicSiteCopy(locale).features.title,

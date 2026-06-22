@@ -11,6 +11,9 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-06-20
+ * Last Updated: 2026-06-21
+ * Change Log:
+ * - 2026-06-21: Added public FAQ route SEO coverage.
  * ============================================================
  */
 
@@ -41,6 +44,10 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(
       copy.features.meta.title,
       "Cleaning Lead Recovery Features | BizPilot AI",
+    );
+    assert.equal(
+      copy.faq.meta.title,
+      "FAQ for Cleaning Business Owners | BizPilot AI",
     );
     assert.equal(
       copy.cleaning.meta.title,
@@ -109,6 +116,7 @@ describe("final public SEO and legal source contracts", () => {
   it("generates canonical public URLs and hreflang alternates only for real public pages", () => {
     assert.deepEqual(publicCanonicalRoutes, [
       "/",
+      "/faq",
       "/features",
       "/industries/cleaning",
       "/trust",
@@ -167,6 +175,7 @@ describe("final public SEO and legal source contracts", () => {
 
     for (const route of [
       "app/page.tsx",
+      "app/faq/page.tsx",
       "app/features/page.tsx",
       "app/industries/cleaning/page.tsx",
       "app/trust/page.tsx",

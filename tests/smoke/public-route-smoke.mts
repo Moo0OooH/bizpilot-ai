@@ -9,6 +9,9 @@
  * - docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md
  * Author: MoOoH
  * Created: 2026-05-25
+ * Last Updated: 2026-06-21
+ * Change Log:
+ * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
  * ============================================================
  */
 
@@ -37,6 +40,14 @@ const smokeTargets: readonly SmokeTarget[] = [
       "Join founder pilot",
     ],
     path: "/",
+    status: 200,
+  },
+  {
+    expectedText: [
+      "Questions cleaning business owners ask before joining.",
+      "Pilot basics",
+    ],
+    path: "/faq",
     status: 200,
   },
   {

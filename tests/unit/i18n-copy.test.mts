@@ -16,6 +16,7 @@
  * - 2026-06-21: Added canonical four-step public grid coverage.
  * - 2026-06-21: Added multilingual copy length budgets for hero and pricing parity.
  * - 2026-06-21: Added fr-CA public policy accent and meaning guards.
+ * - 2026-06-21: Added homepage/full FAQ split copy guards.
  * ============================================================
  */
 
@@ -115,6 +116,7 @@ const dashboardSourceFiles = userFacingSourceFiles.filter((file) =>
 
 const finalPublicRouteSourceFiles = [
   "app/page.tsx",
+  "app/faq/page.tsx",
   "app/features/page.tsx",
   "app/industries/cleaning/page.tsx",
   "app/trust/page.tsx",
@@ -764,6 +766,50 @@ describe("BizPilot language copy", () => {
     );
   });
 
+  it("keeps homepage FAQ short and the full FAQ on a dedicated route", () => {
+    const englishPublicCopy = getPublicSiteCopy("en");
+
+    assert.equal(englishPublicCopy.home.faq.items.length, 3);
+    assert.deepEqual(
+      englishPublicCopy.home.faq.items.map((item) => item.question),
+      [
+        "Does BizPilot send messages automatically?",
+        "Can AI create prices for me?",
+        "Who is the pilot for first?",
+      ],
+    );
+    assert.equal(englishPublicCopy.faq.sections.length, 5);
+    assert.equal(
+      englishPublicCopy.faq.sections.reduce(
+        (total, section) => total + section.items.length,
+        0,
+      ) > englishPublicCopy.home.faq.items.length,
+      true,
+    );
+
+    for (const language of supportedLanguages) {
+      const copy = getPublicSiteCopy(language);
+      assert.equal(
+        copy.home.faq.items.length,
+        3,
+        `${language} homepage FAQ should stay a compact mini FAQ.`,
+      );
+      assert.equal(
+        copy.faq.sections.length,
+        5,
+        `${language} full FAQ should keep the five approved sections.`,
+      );
+    }
+
+    const homepageSource = readFileSync("app/page.tsx", "utf8");
+    const faqSource = readFileSync("app/faq/page.tsx", "utf8");
+    const proxySource = readFileSync("proxy.ts", "utf8");
+    assert.equal(homepageSource.includes('href="/faq"'), true);
+    assert.equal(faqSource.includes('"/faq"'), true);
+    assert.equal(faqSource.includes("getPublicSiteCopy(language).faq"), true);
+    assert.equal(proxySource.includes('"/faq"'), true);
+  });
+
   it("keeps final supporting-page polish structure locked", () => {
     const englishPublicCopy = getPublicSiteCopy("en");
 
@@ -1030,6 +1076,7 @@ describe("BizPilot language copy", () => {
       [
         "home",
         "features",
+        "faq",
         "cleaning",
         "trust",
         "demo",

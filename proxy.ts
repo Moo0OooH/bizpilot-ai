@@ -14,6 +14,7 @@
  * - 2026-05-04: Created Phase 2 dashboard proxy guard.
  * - 2026-05-04: Awaited official Supabase SSR dashboard guard.
  * - 2026-06-21: Included public auth shells in language query cookie handling.
+ * - 2026-06-21: Included the public FAQ route in language query cookie handling.
  * ============================================================
  */
 
@@ -109,6 +110,7 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/",
+    "/faq",
     "/features",
     "/industries/cleaning",
     "/trust",
