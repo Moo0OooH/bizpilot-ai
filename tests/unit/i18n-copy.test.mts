@@ -773,7 +773,7 @@ describe("BizPilot language copy", () => {
     );
   });
 
-  it("keeps homepage FAQ short and the full FAQ on a dedicated route", () => {
+  it("keeps homepage compressed with a short FAQ and the full FAQ on a dedicated route", () => {
     const englishPublicCopy = getPublicSiteCopy("en");
 
     assert.equal(englishPublicCopy.home.faq.items.length, 3);
@@ -810,8 +810,19 @@ describe("BizPilot language copy", () => {
 
     const homepageSource = readFileSync("app/page.tsx", "utf8");
     const faqSource = readFileSync("app/faq/page.tsx", "utf8");
+    const featuresSource = readFileSync("app/features/page.tsx", "utf8");
     const proxySource = readFileSync("proxy.ts", "utf8");
     assert.equal(homepageSource.includes('href="/faq"'), true);
+    assert.equal(
+      homepageSource.includes("copy.roadmap"),
+      false,
+      "Homepage should stay compressed and leave roadmap disclosure to supporting pages.",
+    );
+    assert.equal(
+      featuresSource.includes("copy.roadmap"),
+      true,
+      "Features should keep roadmap disclosure after the homepage compression.",
+    );
     assert.equal(faqSource.includes('"/faq"'), true);
     assert.equal(faqSource.includes("getPublicSiteCopy(language).faq"), true);
     assert.equal(proxySource.includes('"/faq"'), true);

@@ -23,6 +23,7 @@
  * - 2026-06-21: Attached localization-aware copy roles to homepage headings, cards, and badges.
  * - 2026-06-21: Tightened first-fold hero rhythm so the preview card stays visible on desktop.
  * - 2026-06-21: Shortened the homepage FAQ and linked to the dedicated full FAQ route.
+ * - 2026-06-21: Removed the homepage roadmap band so the page stays focused on quote recovery proof.
  * ============================================================
  */
 
@@ -486,27 +487,6 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
               </Link>
             ))}
           </div>
-        </MarketingShell>
-      </section>
-
-      <section className="py-[var(--section-space-compact)]">
-        <MarketingShell>
-          <MarketingCard className="p-6 sm:p-8">
-            <MarketingBadge toneName="gold">{copy.roadmap.badge}</MarketingBadge>
-            <h2 className="bp-copy-section-title mt-5 max-w-[820px] text-[30px] font-black leading-[1.08] sm:text-[40px]" style={{ color: marketingTone.text }}>
-              {copy.roadmap.title}
-            </h2>
-            <p className="bp-copy-card-body mt-5 max-w-[860px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
-              {copy.roadmap.body}
-            </p>
-            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {copy.roadmap.cards.map((item) => (
-                <div className="bp-copy-card-body rounded-[10px] border px-4 py-3 text-[14px] font-black" key={item} style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
-                  {item}
-                </div>
-              ))}
-            </div>
-          </MarketingCard>
         </MarketingShell>
       </section>
 
