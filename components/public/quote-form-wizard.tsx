@@ -16,6 +16,7 @@
  * - 2026-05-22: Removed client-side step navigation dependency so public submissions cannot get stuck before submit.
  * - 2026-06-19: Mapped quote form visual styling to shared System/Light/Dark tokens.
  * - 2026-06-21: Hid the honeypot from all normal users and kept the review notice single.
+ * - 2026-06-21: Tightened mobile quote-card spacing while preserving 48px controls and safe submit behavior.
  * ============================================================
  */
 
@@ -46,7 +47,7 @@ type QueryParams = Readonly<{
 type StepId = QuoteStepCopy["id"];
 
 const FIELD_INPUT =
-  "h-12 w-full rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] px-3 text-[15px] text-[var(--text-strong)] outline-none transition placeholder:text-[var(--text-muted)] focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]";
+  "quote-field-control h-12 w-full rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] px-3 text-[15px] text-[var(--text-strong)] outline-none transition placeholder:text-[var(--text-muted)] focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]";
 
 function groupForField(field: FieldRecord): StepId {
   const key = field.field_key.toLowerCase();
@@ -171,7 +172,7 @@ function FieldInput({
       <div className="grid gap-2">
         {getOptions(field.options).map((option) => (
           <label
-            className="flex min-h-11 items-center gap-2 rounded-[12px] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-[14px] font-semibold text-[var(--text-strong)]"
+            className="quote-radio-option flex min-h-11 items-center gap-2 rounded-[12px] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-[14px] font-semibold text-[var(--text-strong)]"
             key={option}
           >
             <input
@@ -236,7 +237,7 @@ function FieldRow({
   if (field.field_type === "boolean") {
     return (
       <label
-        className={`flex items-center gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-3 ${colSpan}`}
+        className={`quote-boolean-field flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-3 ${colSpan}`}
       >
         <FieldInput
           copy={copy}
@@ -252,7 +253,7 @@ function FieldRow({
             ) : null}
           </span>
           {field.help_text ? (
-            <span className="mt-0.5 block text-[12px] leading-5 text-[var(--text-muted)]">
+            <span className="quote-field-helper mt-0.5 block text-[12px] leading-5 text-[var(--text-muted)]">
               {field.help_text}
             </span>
           ) : null}
@@ -262,7 +263,7 @@ function FieldRow({
   }
 
   return (
-    <label className={`flex min-w-0 flex-col gap-1.5 ${colSpan}`}>
+    <label className={`quote-field-row flex min-w-0 flex-col gap-1.5 ${colSpan}`}>
       <span className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[var(--text-default)]">
         {field.label}
         {field.is_required ? (
@@ -276,7 +277,7 @@ function FieldRow({
         todayDate={todayDate}
       />
       {field.help_text ? (
-        <span className="text-[12px] leading-5 text-[var(--text-muted)]">
+        <span className="quote-field-helper text-[12px] leading-5 text-[var(--text-muted)]">
           {field.help_text}
         </span>
       ) : null}
@@ -290,7 +291,7 @@ function ConsentBlock({
   consentNotice: string;
 }>) {
   return (
-    <label className="mt-4 flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] p-4 text-[13px] leading-6 text-[var(--text-default)]">
+    <label className="quote-consent-block mt-4 flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] p-3.5 text-[13px] leading-6 text-[var(--text-default)] sm:p-4">
       <input
         className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--accent)]"
         name="consentAccepted"
@@ -324,7 +325,7 @@ export function QuoteFormWizard({
   return (
     <form
       action={submitPublicIntakeAction}
-      className="mx-auto w-full max-w-[780px] space-y-5 px-5 py-8 pb-12 sm:px-8"
+      className="quote-form-shell mx-auto w-full max-w-[780px] space-y-4 px-4 py-6 pb-10 sm:space-y-5 sm:px-8 sm:py-8 sm:pb-12"
     >
       <input name="businessSlug" type="hidden" value={slug} />
       <input name="language" type="hidden" value={language} />
@@ -368,7 +369,7 @@ export function QuoteFormWizard({
 
         return (
           <section
-            className="rounded-[24px] border border-[var(--border-default)] bg-[var(--surface)] p-5 shadow-[var(--shadow-sm)]"
+            className="quote-step-card rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-4 shadow-[var(--shadow-sm)] sm:rounded-[24px] sm:p-5"
             id={`quote-step-${index}`}
             key={step.id}
           >
@@ -413,7 +414,7 @@ export function QuoteFormWizard({
       {query?.source === "rate_limited_demo" ? null : null}
 
       <p
-        className="rounded-[14px] border p-4 text-[13px] leading-6"
+        className="quote-submit-guardrail rounded-[14px] border p-3.5 text-[13px] leading-6 sm:p-4"
         style={{
           backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
           borderColor: "color-mix(in srgb, var(--warning) 34%, var(--border-default))",
@@ -423,9 +424,9 @@ export function QuoteFormWizard({
         {copy.quoteForm.guardrail}
       </p>
 
-      <div className="flex justify-end pt-1">
+      <div className="quote-submit-row flex justify-end pt-1">
         <button
-          className="inline-flex min-h-12 w-full items-center justify-center rounded-[14px] px-5 text-[15px] font-extrabold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[var(--focus-ring)] sm:w-auto sm:min-w-[220px]"
+          className="quote-submit-button inline-flex min-h-12 w-full items-center justify-center rounded-[14px] px-5 text-[15px] font-extrabold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[var(--focus-ring)] sm:w-auto sm:min-w-[220px]"
           style={{
             background: "linear-gradient(135deg, var(--primary), var(--primary-hover))",
             boxShadow: "0 14px 30px color-mix(in srgb, var(--primary) 22%, transparent)",

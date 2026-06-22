@@ -102,6 +102,24 @@ describe("final shell polish source contracts", () => {
     assert.equal(quotePage.includes("languageShortLabels"), true);
     assert.equal(quotePage.includes("ThemePreferenceControl"), false);
     assert.equal(quoteWizard.includes("max-w-[780px]"), true);
+    for (const required of [
+      "quote-form-shell",
+      "quote-step-card",
+      "quote-field-row",
+      "quote-field-control h-12",
+      "quote-field-helper",
+      "quote-consent-block",
+      "quote-submit-guardrail",
+      "quote-submit-button",
+      "px-4 py-6 pb-10",
+      "sm:space-y-5",
+    ]) {
+      assert.equal(
+        quoteWizard.includes(required),
+        true,
+        `Quote form mobile polish missing ${required}.`,
+      );
+    }
     assert.equal(quoteWizard.includes("overflow-y-auto"), false);
     assert.equal(quoteUnavailable.includes("<main"), false);
     assert.equal(quoteUnavailable.includes("var(--biz-primary)"), false);
