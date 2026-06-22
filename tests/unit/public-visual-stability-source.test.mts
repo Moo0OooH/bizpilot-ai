@@ -23,6 +23,7 @@
  * - 2026-06-21: Locked public amber utility mappings for dark-theme guardrails.
  * - 2026-06-21: Locked hydration-stable theme trigger icon switching.
  * - 2026-06-21: Added guards against duplicated Cleaning service detail cards.
+ * - 2026-06-21: Updated homepage hero rhythm guardrails for CSS-owned type and compact mockup sizing.
  * ============================================================
  */
 
@@ -170,8 +171,18 @@ describe("public visual stability source contracts", () => {
     assert.equal(homepage.includes("homepage-hero-actions"), true);
     assert.equal(
       homepage.includes("min-[1100px]:text-[4.25rem]"),
+      false,
+      "Homepage hero title size should be owned by the rhythm CSS contract.",
+    );
+    assert.equal(
+      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 50rem);\n  font-size: 2.35rem;"),
       true,
-      "Homepage hero should use the compact desktop first-fold title size.",
+      "Homepage hero should keep a compact mobile/base title size in CSS.",
+    );
+    assert.equal(
+      globals.includes("@media (min-width: 1100px) {\n  .homepage-hero-title {\n    font-size: 3.45rem;"),
+      true,
+      "Homepage hero should keep a compact desktop title size in CSS.",
     );
     assert.equal(globals.includes("max-inline-size: min(100%, 50rem);"), true);
     assert.equal(
@@ -180,14 +191,19 @@ describe("public visual stability source contracts", () => {
       "Short desktop viewports need reduced hero padding instead of smaller body text.",
     );
     assert.equal(
-      globals.includes("max-inline-size: min(100%, 27rem);"),
+      globals.includes("max-inline-size: min(100%, 25rem);"),
       true,
       "Short desktop viewports need a compact hero preview card to stay inside the first fold.",
     );
     assert.equal(
-      homepage.includes("min-h-[2.25rem]"),
+      homepage.includes("min-h-[1.75rem]"),
       true,
       "Homepage mockup field values should keep compact field heights for first-fold visibility.",
+    );
+    assert.equal(
+      globals.includes(".homepage-problem-section"),
+      true,
+      "Homepage should keep tighter first follow-up section spacing after the hero.",
     );
   });
 
