@@ -129,3 +129,32 @@ Required local verification after writing this docs-only audit:
 | `pnpm test:unit` | PASS: `133` tests, `0` failures |
 | `pnpm build` | PASS |
 | `git diff --check` | PASS |
+
+## V4 Cleaning Closeout Addendum
+
+V4 required no product-code change. The current Cleaning page already renders the de-duplicated structure introduced before this phase:
+
+- `app/industries/cleaning/page.tsx` flattens service anchors into one compact `cleaning-service-grid`.
+- Detail content renders as desktop tabs and mobile accordion panels without repeating service cards.
+- The public copy keeps three families with two services each: `6` total cards.
+- `Small commercial cleaning` / `Petit nettoyage commercial` remains absent from the final public Cleaning page copy.
+
+Verification for the V4 closeout:
+
+| Command / Check | Result |
+| --- | --- |
+| `git status --short` before verification | PASS: clean |
+| `pnpm lint` | PASS |
+| `pnpm typecheck` | PASS |
+| `pnpm test:unit` | PASS: `133` tests, `0` failures |
+| `pnpm build` | PASS |
+| `git diff --check` | PASS |
+| `pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3100 --en-quote-url=http://127.0.0.1:3100/quote/akora?language=en --fr-quote-url=http://127.0.0.1:3100/quote/akora?language=fr-CA` | PASS: final UI matrix failures `0` |
+| `pnpm smoke:responsive -- --base-url=http://127.0.0.1:3100` | PASS: responsive smoke failures `0` |
+
+Cleaning-specific assertions covered in smoke:
+
+- EN and fr-CA, light and dark, each render `6` compact service cards.
+- EN and fr-CA, light and dark, each keep desktop tabs and mobile accordion markers.
+- EN and fr-CA, light and dark, each keep service titles at `<= 1` visible occurrence.
+- EN and fr-CA, light and dark, each exclude small-commercial cleaning copy.
