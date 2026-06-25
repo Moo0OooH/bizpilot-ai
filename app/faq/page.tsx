@@ -13,6 +13,7 @@
  * Last Updated: 2026-06-21
  * Change Log:
  * - 2026-06-21: Created the dedicated full FAQ route moved out of the homepage.
+ * - 2026-06-25: Normalized FAQ rhythm and compact section headings to bp primitives.
  * ============================================================
  */
 
@@ -69,32 +70,32 @@ export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
   const copy = getPublicSiteCopy(language).faq;
 
   return (
-    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader copy={navCopy} language={language} redirectPath="/faq" />
-      <section className="py-[var(--section-space-compact)]">
+      <section className="bp-section-tight">
         <MarketingShell>
           <div className="max-w-[900px]">
             <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1 className="bp-copy-hero mt-6 text-[length:var(--text-page)] font-black leading-[1.06]" style={{ color: marketingTone.text }}>
+            <h1 className="bp-page-title bp-copy-hero mt-5 font-black leading-[1.06]" style={{ color: marketingTone.text }}>
               {copy.title}
             </h1>
-            <p className="bp-copy-hero-body mt-5 max-w-[780px] text-[17px] leading-8" style={{ color: marketingTone.soft }}>
+            <p className="bp-body bp-copy-hero-body mt-5 max-w-[780px] leading-8" style={{ color: marketingTone.soft }}>
               {copy.body}
             </p>
           </div>
         </MarketingShell>
       </section>
 
-      <section className="pb-[var(--section-space)]">
+      <section className="pb-[var(--bp-section-tight-space)]">
         <MarketingShell>
-          <div className="grid gap-10">
+          <div className="grid gap-8">
             {copy.sections.map((section, sectionIndex) => {
               const sectionId = `faq-section-${sectionIndex + 1}`;
 
               return (
                 <section aria-labelledby={sectionId} className="public-faq-section" key={section.title}>
                   <div className="max-w-[760px]">
-                    <h2 className="bp-copy-section-title text-[26px] font-black leading-tight" id={sectionId} style={{ color: marketingTone.text }}>
+                    <h2 className="bp-card-title bp-copy-section-title font-black leading-tight" id={sectionId} style={{ color: marketingTone.text }}>
                       {section.title}
                     </h2>
                   </div>
@@ -116,7 +117,7 @@ export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
               );
             })}
           </div>
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <div className="bp-button-row mt-10 flex flex-col gap-3 sm:flex-row">
             <MarketingButton href="/pilot">
               {navCopy.startFull} <MarketingIcon name="arrow" />
             </MarketingButton>

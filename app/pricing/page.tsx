@@ -19,6 +19,7 @@
  * - 2026-06-21: Anchored plan card actions and header rows for EN/fr-CA visual parity.
  * - 2026-06-21: Applied localization-aware copy roles to plan cards and supporting panels.
  * - 2026-06-21: Added a first-fold pricing CTA before the long plan-card grid.
+ * - 2026-06-25: Normalized pricing rhythm to bp primitives without changing price values.
  * ============================================================
  */
 
@@ -76,26 +77,26 @@ export default async function PricingPage({
   const copy = getPublicSiteCopy(language).pricing;
 
   return (
-    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader active="pricing" copy={navCopy} language={language} redirectPath="/pricing" />
-      <section className="py-[var(--section-space-compact)]">
+      <section className="bp-section-tight">
         <MarketingShell>
           <div className="mx-auto max-w-[820px] text-center">
             <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1 className="bp-copy-hero public-pricing-title mx-auto mt-6 max-w-[580px] text-[length:var(--text-page)] font-black leading-[1.06]" style={{ color: marketingTone.text }}>
+            <h1 className="bp-page-title bp-copy-hero public-pricing-title mx-auto mt-5 max-w-[580px] font-black leading-[1.06]" style={{ color: marketingTone.text }}>
               {copy.title}
             </h1>
-            <p className="bp-copy-hero-body mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
+            <p className="bp-body bp-copy-hero-body mt-5 leading-8" style={{ color: marketingTone.soft }}>
               {copy.body}
             </p>
-            <div className="public-pricing-hero-cta mt-6 flex justify-center">
+            <div className="bp-button-row public-pricing-hero-cta mt-6 flex justify-center">
               <MarketingButton href="/pilot">
                 {copy.cards[0]?.cta ?? navCopy.pilot}
               </MarketingButton>
             </div>
           </div>
 
-          <div className="public-pricing-grid supporting-three-grid mt-8">
+          <div className="bp-pricing-grid public-pricing-grid supporting-three-grid mt-8">
             {copy.cards.map((card, index) => (
               <MarketingCard
                 className="public-plan-card flex min-w-0 flex-col p-6 sm:p-7"
@@ -111,7 +112,7 @@ export default async function PricingPage({
                   <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
                     {card.cohort}
                   </p>
-                  <h2 className="bp-copy-plan-title mt-3 text-[25px] font-black leading-tight" style={{ color: marketingTone.text }}>
+                  <h2 className="bp-card-title bp-copy-plan-title mt-3 font-black leading-tight" style={{ color: marketingTone.text }}>
                     {card.title}
                   </h2>
                   <div className="mt-5 public-plan-card-price">
@@ -146,7 +147,7 @@ export default async function PricingPage({
 
           <MarketingCard className="mt-8 p-5 sm:p-6">
             <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.34fr)_minmax(0,1fr)] lg:items-center">
-              <h2 className="bp-copy-section-title text-[21px] font-black leading-tight" style={{ color: marketingTone.text }}>
+              <h2 className="bp-card-title bp-copy-section-title font-black leading-tight" style={{ color: marketingTone.text }}>
                 {copy.afterApply.title}
               </h2>
               <div className="grid gap-3 min-[900px]:grid-cols-3">
@@ -168,7 +169,7 @@ export default async function PricingPage({
                 <MarketingIcon name="lock" />
               </span>
               <div>
-                <h2 className="bp-copy-section-title text-[23px] font-black" style={{ color: marketingTone.text }}>
+                <h2 className="bp-card-title bp-copy-section-title font-black" style={{ color: marketingTone.text }}>
                   {copy.guardrail.title}
                 </h2>
                 <p className="bp-copy-card-body mt-3 text-[15px] font-bold leading-7" style={{ color: marketingTone.soft }}>

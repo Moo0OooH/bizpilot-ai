@@ -18,6 +18,7 @@
  * - 2026-05-22: Kept all grouped sections visible so public submit does not depend on client-side step navigation.
  * - 2026-06-19: Mapped public quote shell colors to shared semantic theme tokens.
  * - 2026-06-21: Localized noindex metadata from the active quote language.
+ * - 2026-06-25: Polished quote shell spacing while preserving safe GET and submit behavior.
  * ============================================================
  */
 
@@ -108,8 +109,8 @@ export default async function QuotePage({
   const todayDate = todayDateString();
 
   return (
-    <main className="public-site min-h-svh bg-[var(--canvas)] text-[var(--text-strong)]">
-      <section className="border-b border-[var(--border-default)] px-5 py-6 sm:px-8">
+    <main className="bp-page public-site min-h-svh bg-[var(--canvas)] text-[var(--text-strong)]">
+      <section className="border-b border-[var(--border-default)] px-4 py-5 sm:px-8 sm:py-6">
         <div className="mx-auto w-full max-w-[780px]">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-[13px] font-black uppercase tracking-[0.14em] text-[var(--primary)]">
@@ -143,7 +144,7 @@ export default async function QuotePage({
               })}
             </nav>
           </div>
-          <h1 className="mt-3 text-[34px] font-black leading-[1.06] sm:text-[44px]">
+          <h1 className="mt-3 text-[32px] font-black leading-[1.06] sm:text-[40px]">
             {copy.title}
           </h1>
           <p className="mt-4 max-w-[620px] text-[16px] leading-7 text-[var(--text-default)]">

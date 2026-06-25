@@ -15,6 +15,7 @@
  * - 2026-06-18: Grouped the demo into concise responsive chapters with visible guardrails.
  * - 2026-06-19: Moved visible demo-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-20: Tightened demo chapter spacing for a shorter normal-flow page.
+ * - 2026-06-25: Normalized demo page rhythm to canonical bp primitives.
  * ============================================================
  */
 
@@ -95,23 +96,23 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
 
   return (
     <main
-      className="public-site min-h-svh"
+      className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
       <MarketingHeader copy={navCopy} language={language} redirectPath="/demo" />
 
-      <section className="py-[var(--section-space-compact)]">
+      <section className="bp-section-tight">
         <MarketingShell>
           <div className="mx-auto max-w-[920px] text-center">
             <MarketingBadge>{copy.badge}</MarketingBadge>
             <h1
-              className="mt-5 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]"
+              className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]"
               style={{ color: marketingTone.text }}
             >
               {copy.title}
             </h1>
             <p
-              className="mx-auto mt-5 max-w-[760px] text-[17px] leading-8"
+              className="bp-body mx-auto mt-5 max-w-[760px] leading-8"
               style={{ color: marketingTone.soft }}
             >
               {copy.body}
@@ -120,7 +121,7 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
         </MarketingShell>
       </section>
 
-      <section className="pb-[var(--section-space-compact)]">
+      <section className="pb-[var(--bp-section-tight-space)]">
         <MarketingShell>
           <div className="grid gap-3">
             {copy.chapters.map((item) => (
@@ -133,7 +134,7 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
                     >
                       {item.eyebrow}
                     </span>
-                    <h2 className="mt-4 text-[24px] font-black leading-tight text-slate-950">
+                    <h2 className="bp-card-title mt-4 font-black leading-tight text-slate-950">
                       {item.title}
                     </h2>
                     <p
@@ -151,7 +152,7 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
             <MarketingCard className="p-6 sm:p-8">
               <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
                 <div>
-                  <h2 className="text-[28px] font-black leading-tight text-slate-950">
+                  <h2 className="bp-section-title font-black leading-tight text-slate-950">
                     {copy.cta.title}
                   </h2>
                   <p

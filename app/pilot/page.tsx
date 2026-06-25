@@ -16,6 +16,7 @@
  * - 2026-06-18: Made the request UI unmistakably preview-only with non-submitting controls.
  * - 2026-06-19: Moved visible pilot-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Replaced the inactive request UI with a concise copy-template conversion card.
+ * - 2026-06-25: Normalized pilot page rhythm while keeping the non-submitting template flow.
  * ============================================================
  */
 
@@ -78,7 +79,7 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
 
   return (
     <main
-      className="public-site min-h-svh"
+      className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
       <MarketingHeader
@@ -87,29 +88,29 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
         language={language}
         redirectPath="/pilot"
       />
-      <section className="py-[var(--section-space-compact)]">
+      <section className="bp-section-tight">
         <MarketingShell>
           <div className="grid gap-8 min-[1100px]:grid-cols-[minmax(0,0.9fr)_minmax(340px,0.72fr)] min-[1100px]:items-start">
             <div>
               <MarketingBadge>{copy.badge}</MarketingBadge>
               <h1
-                className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]"
+                className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]"
                 style={{ color: marketingTone.text }}
               >
                 {copy.title}
               </h1>
               <p
-                className="mt-6 max-w-[760px] text-[17px] leading-8"
+                className="bp-body mt-5 max-w-[760px] leading-8"
                 style={{ color: marketingTone.soft }}
               >
                 {copy.body}
               </p>
 
-              <div className="mt-8 grid gap-4">
+              <div className="mt-7 grid gap-4">
                 {valueSections.map((section) => (
                   <MarketingCard className="p-5 sm:p-6" key={section.title}>
                     <h2
-                      className="text-[21px] font-black leading-tight"
+                      className="bp-card-title font-black leading-tight"
                       style={{ color: marketingTone.text }}
                     >
                       {section.title}

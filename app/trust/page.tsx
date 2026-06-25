@@ -17,6 +17,7 @@
  * - 2026-06-19: Moved visible trust-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Replaced trust cards with three full-width owner-control pillars.
  * - 2026-06-20: Balanced trust as three grouped pillar columns on desktop.
+ * - 2026-06-25: Normalized trust page spacing and type to canonical bp primitives.
  * ============================================================
  */
 
@@ -72,27 +73,27 @@ export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
   const copy = getPublicSiteCopy(language).trust;
 
   return (
-    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader copy={navCopy} language={language} redirectPath="/trust" />
-      <section className="py-[var(--section-space-compact)]">
+      <section className="bp-section-tight">
         <MarketingShell>
           <div className="mx-auto max-w-[820px] text-center">
             <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1 className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
+            <h1 className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
               {copy.title}
             </h1>
-            <p className="mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
+            <p className="bp-body mt-5 leading-8" style={{ color: marketingTone.soft }}>
               {copy.body}
             </p>
           </div>
-          <div className="supporting-three-grid mt-8">
+          <div className="bp-trust-grid supporting-three-grid mt-8">
             {copy.pillars.map((pillar) => (
               <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={pillar.title}>
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-[14px]" style={{ backgroundColor: "color-mix(in srgb, var(--accent) 12%, transparent)", color: marketingTone.teal }}>
                   <MarketingIcon name="shield" />
                 </span>
-                <h2 className="mt-4 text-[23px] font-black leading-tight" style={{ color: marketingTone.text }}>{pillar.title}</h2>
-                <p className="mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>{pillar.body}</p>
+                <h2 className="bp-card-title mt-4 font-black leading-tight" style={{ color: marketingTone.text }}>{pillar.title}</h2>
+                <p className="bp-copy-card-body mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>{pillar.body}</p>
                 <div className="mt-5 grid gap-3">
                   {pillar.points.map((point) => (
                     <div className="flex min-w-0 items-start gap-3 rounded-[14px] border p-3.5 text-[14px] font-black leading-6" key={point} style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border, color: marketingTone.text }}>
@@ -108,11 +109,11 @@ export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
           </div>
           <MarketingCard className="mt-8 p-6" style={{ borderColor: "rgba(245,158,11,0.28)" }}>
             <MarketingBadge toneName="gold">{copy.notes.badge}</MarketingBadge>
-            <p className="mt-4 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
+            <p className="bp-copy-card-body mt-4 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
               {copy.notes.body}
             </p>
           </MarketingCard>
-          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+          <div className="bp-button-row mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <MarketingButton href="/privacy" variant="secondary">{copy.privacyCta}</MarketingButton>
             <MarketingButton href="/security" variant="secondary">{copy.securityCta}</MarketingButton>
             <MarketingButton href="/pilot">{copy.primaryCta}</MarketingButton>

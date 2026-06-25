@@ -17,6 +17,7 @@
  * - 2026-06-18: Switched auth shell to short-height-safe svh layout.
  * - 2026-06-19: Added the shared System/Light/Dark preference control to auth chrome.
  * - 2026-06-19: Removed auth utility controls and aligned auth actions to the public blue primary.
+ * - 2026-06-25: Tightened auth card spacing for final public rhythm polish.
  * ============================================================
  */
 
@@ -82,14 +83,14 @@ export function AuthShell({
 }: AuthShellProps) {
   return (
     <main
-      className="flex min-h-svh flex-col items-center justify-start px-4 py-6 sm:px-6 sm:py-8"
+      className="flex min-h-svh flex-col items-center justify-start px-4 py-5 sm:px-6 sm:py-6"
       style={{
         background:
           "linear-gradient(180deg, color-mix(in srgb, var(--canvas-subtle) 72%, var(--canvas)) 0%, var(--canvas) 100%)",
         color: "var(--biz-page-text)",
       }}
     >
-      <div className={`mb-5 flex w-full ${maxWidthClassName} items-center justify-between gap-3`}>
+      <div className={`mb-4 flex w-full ${maxWidthClassName} items-center justify-between gap-3`}>
         <BrandMark copy={copy} />
         <Link
           className="inline-flex min-h-11 items-center rounded-[12px] border px-3 text-[12px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
@@ -120,7 +121,7 @@ export function AuthShell({
 export function AuthCard({ children, subtitle, title }: AuthCardProps) {
   return (
     <div
-      className="w-full rounded-[20px] border p-6 sm:p-7"
+      className="w-full rounded-[20px] border p-5 sm:p-6"
       style={{
         backgroundColor: "var(--biz-page-surface)",
         borderColor: "var(--biz-page-border)",
@@ -129,7 +130,7 @@ export function AuthCard({ children, subtitle, title }: AuthCardProps) {
     >
       <div className="text-center">
         <h1
-          className="text-[24px] font-extrabold leading-tight tracking-[-0.02em]"
+          className="text-[22px] font-extrabold leading-tight tracking-[-0.02em]"
           style={{ color: "var(--biz-page-text)" }}
         >
           {title}

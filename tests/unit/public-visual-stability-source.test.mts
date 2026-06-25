@@ -27,6 +27,7 @@
  * - 2026-06-25: Locked the canonical bp responsive primitive foundation.
  * - 2026-06-25: Updated homepage hero rhythm guardrails for the final balanced fold.
  * - 2026-06-25: Updated Cleaning guards for six service detail entries and one shared selector.
+ * - 2026-06-25: Locked supporting public pages to canonical rhythm primitives.
  * ============================================================
  */
 
@@ -170,6 +171,29 @@ describe("public visual stability source contracts", () => {
     }
 
     assert.equal(publicSources.includes("supporting-four-grid"), true);
+  });
+
+  it("keeps supporting public pages on the canonical rhythm primitives", () => {
+    for (const route of [
+      "app/features/page.tsx",
+      "app/trust/page.tsx",
+      "app/demo/page.tsx",
+      "app/pricing/page.tsx",
+      "app/pilot/page.tsx",
+      "app/content-studio/page.tsx",
+      "app/faq/page.tsx",
+    ]) {
+      const routeSource = source(route);
+      assert.equal(routeSource.includes("bp-page public-site"), true, `${route} should use bp-page.`);
+      assert.equal(routeSource.includes("bp-section-tight"), true, `${route} should use bp-section-tight.`);
+      assert.equal(routeSource.includes("bp-page-title"), true, `${route} should use bp-page-title.`);
+    }
+
+    const policyPage = source("components/public/policy-page.tsx");
+    assert.equal(policyPage.includes("bp-page public-site"), true);
+    assert.equal(policyPage.includes("bp-section-tight"), true);
+    assert.equal(policyPage.includes("bp-page-title"), true);
+    assert.equal(policyPage.includes("bp-body"), true);
   });
 
   it("keeps pricing cards equal-height with anchored actions", () => {

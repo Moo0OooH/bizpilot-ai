@@ -17,6 +17,7 @@
  * - 2026-06-19: Mapped quote form visual styling to shared System/Light/Dark tokens.
  * - 2026-06-21: Hid the honeypot from all normal users and kept the review notice single.
  * - 2026-06-21: Tightened mobile quote-card spacing while preserving 48px controls and safe submit behavior.
+ * - 2026-06-25: Polished quote field/helper spacing for final public rhythm.
  * ============================================================
  */
 
@@ -263,7 +264,7 @@ function FieldRow({
   }
 
   return (
-    <label className={`quote-field-row flex min-w-0 flex-col gap-1.5 ${colSpan}`}>
+    <label className={`quote-field-row flex min-w-0 flex-col gap-2 ${colSpan}`}>
       <span className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[var(--text-default)]">
         {field.label}
         {field.is_required ? (
@@ -277,7 +278,7 @@ function FieldRow({
         todayDate={todayDate}
       />
       {field.help_text ? (
-        <span className="quote-field-helper text-[12px] leading-5 text-[var(--text-muted)]">
+        <span className="quote-field-helper mt-0.5 text-[12px] leading-5 text-[var(--text-muted)]">
           {field.help_text}
         </span>
       ) : null}
@@ -291,7 +292,7 @@ function ConsentBlock({
   consentNotice: string;
 }>) {
   return (
-    <label className="quote-consent-block mt-4 flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] p-3.5 text-[13px] leading-6 text-[var(--text-default)] sm:p-4">
+    <label className="quote-consent-block mt-4 flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] p-4 text-[13px] leading-6 text-[var(--text-default)]">
       <input
         className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--accent)]"
         name="consentAccepted"
@@ -325,7 +326,7 @@ export function QuoteFormWizard({
   return (
     <form
       action={submitPublicIntakeAction}
-      className="quote-form-shell mx-auto w-full max-w-[780px] space-y-4 px-4 py-6 pb-10 sm:space-y-5 sm:px-8 sm:py-8 sm:pb-12"
+      className="quote-form-shell mx-auto w-full max-w-[780px] space-y-5 px-4 py-6 pb-10 sm:space-y-5 sm:px-8 sm:py-8 sm:pb-12"
     >
       <input name="businessSlug" type="hidden" value={slug} />
       <input name="language" type="hidden" value={language} />
@@ -373,7 +374,7 @@ export function QuoteFormWizard({
             id={`quote-step-${index}`}
             key={step.id}
           >
-            <header className="mb-4 space-y-1">
+            <header className="mb-4 space-y-1.5">
               <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[var(--text-muted)]">
                 {copy.quoteForm.stepProgress(index + 1, steps.length, step.label)}
               </p>
@@ -386,7 +387,7 @@ export function QuoteFormWizard({
             </header>
 
             {fields.length > 0 ? (
-              <div className="grid gap-3 md:grid-cols-2">
+              <div className="grid gap-3.5 md:grid-cols-2">
                 {fields.map((field) => (
                   <FieldRow
                     copy={copy}
@@ -414,7 +415,7 @@ export function QuoteFormWizard({
       {query?.source === "rate_limited_demo" ? null : null}
 
       <p
-        className="quote-submit-guardrail rounded-[14px] border p-3.5 text-[13px] leading-6 sm:p-4"
+        className="quote-submit-guardrail rounded-[14px] border p-4 text-[13px] leading-6"
         style={{
           backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
           borderColor: "color-mix(in srgb, var(--warning) 34%, var(--border-default))",

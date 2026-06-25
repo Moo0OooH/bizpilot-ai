@@ -16,6 +16,7 @@
  * - 2026-06-20: Aligned success actions with shared public shell focus and short-height behavior.
  * - 2026-05-19: Rebuilt to match the approved index — dark navy surface, emerald check, next-steps card, return link. Removed the light slate theme that broke design-system parity.
  * - 2026-06-21: Localized noindex metadata from the active quote language.
+ * - 2026-06-25: Added canonical public page primitive to the quote success shell.
  * ============================================================
  */
 
@@ -107,7 +108,7 @@ export default async function QuoteSuccessPage({
 
   return (
     <main
-      className="public-site flex min-h-svh items-start justify-center px-4 py-8 sm:items-center sm:px-6 sm:py-10"
+      className="bp-page public-site flex min-h-svh items-start justify-center px-4 py-8 sm:items-center sm:px-6 sm:py-10"
       style={{
         background: "var(--marketing-background)",
         color: "var(--text-strong)",

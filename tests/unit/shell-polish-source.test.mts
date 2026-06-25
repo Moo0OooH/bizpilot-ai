@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-06-20: Added 11D shell alignment contracts for auth, quote, and dashboard setup shells.
  * - 2026-06-21: Locked quote honeypot hiding and single consent review notice rendering.
+ * - 2026-06-25: Locked final auth and quote spacing polish markers.
  * ============================================================
  */
 
@@ -49,6 +50,8 @@ describe("final shell polish source contracts", () => {
 
     assert.equal(authUi.includes("max-w-[520px]"), true);
     assert.equal(authUi.includes("max-w-[650px]"), false);
+    assert.equal(authUi.includes("px-4 py-5 sm:px-6 sm:py-6"), true);
+    assert.equal(authUi.includes("rounded-[20px] border p-5 sm:p-6"), true);
     assert.equal(authUi.includes("copy.backHome"), true);
     assert.equal(submitButton.includes("var(--primary)"), true);
     assert.equal(submitButton.includes("bizTheme"), false);
@@ -112,6 +115,9 @@ describe("final shell polish source contracts", () => {
       "quote-submit-guardrail",
       "quote-submit-button",
       "px-4 py-6 pb-10",
+      "space-y-5 px-4 py-6 pb-10",
+      "gap-3.5 md:grid-cols-2",
+      "space-y-1.5",
       "sm:space-y-5",
     ]) {
       assert.equal(

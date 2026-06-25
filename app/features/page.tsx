@@ -18,6 +18,7 @@
  * - 2026-06-20: Removed fixed feature-card height and tightened grid rhythm.
  * - 2026-06-21: Moved the four-step proof strip onto the canonical responsive grid.
  * - 2026-06-21: Applied localization-aware copy roles to feature and proof cards.
+ * - 2026-06-25: Normalized page rhythm to canonical bp sizing primitives.
  * ============================================================
  */
 
@@ -77,17 +78,17 @@ export default async function FeaturesPage({
   const featureIcons = ["link", "inbox", "briefcase", "spark", "copy", "target"] as const;
 
   return (
-    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader copy={navCopy} language={language} redirectPath="/features" />
-      <section className="py-[var(--section-space-compact)]">
+      <section className="bp-section-tight">
         <MarketingShell>
           <div className="max-w-[820px]">
             <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1 className="bp-copy-hero mt-6 text-[length:var(--text-page)] font-black leading-[1.06]" style={{ color: marketingTone.text }}>
+            <h1 className="bp-page-title bp-copy-hero mt-5 font-black leading-[1.06]" style={{ color: marketingTone.text }}>
               {copy.title}
             </h1>
           </div>
-          <div className="supporting-six-grid mt-8">
+          <div className="bp-grid-six supporting-six-grid mt-8">
             {copy.cards.map((item, index) => (
               <MarketingCard className="bp-card-structured min-w-0 p-5 sm:p-6" key={item.title}>
                 <span
@@ -99,7 +100,7 @@ export default async function FeaturesPage({
                 >
                   <MarketingIcon name={featureIcons[index] ?? "check"} />
                 </span>
-                <h2 className="bp-copy-card-title text-[20px] font-black leading-tight" style={{ color: marketingTone.text }}>{item.title}</h2>
+                <h2 className="bp-card-title bp-copy-card-title font-black leading-tight" style={{ color: marketingTone.text }}>{item.title}</h2>
                 <p className="bp-copy-card-body mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>{item.body}</p>
               </MarketingCard>
             ))}
@@ -108,7 +109,7 @@ export default async function FeaturesPage({
             <div className="grid gap-5">
               <div>
                 <MarketingBadge>{copy.proof.badge}</MarketingBadge>
-                <h2 className="bp-copy-section-title mt-4 text-[26px] font-black leading-tight" style={{ color: marketingTone.text }}>
+                <h2 className="bp-section-title bp-copy-section-title mt-4 font-black leading-tight" style={{ color: marketingTone.text }}>
                   {copy.proof.title}
                 </h2>
                 <p className="bp-copy-card-body mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
@@ -135,12 +136,12 @@ export default async function FeaturesPage({
               {copy.roadmap.body}
             </p>
           </MarketingCard>
-          <div className="mt-8 flex flex-wrap gap-2 rounded-[16px] border border-slate-200 bg-white p-4 text-[13px] font-black" style={{ color: marketingTone.soft }}>
+          <div className="bp-button-row mt-8 flex flex-wrap gap-2 rounded-[16px] border border-slate-200 bg-white p-4 text-[13px] font-black" style={{ color: marketingTone.soft }}>
             {copy.badges.map((item) => (
               <span className="bp-copy-status inline-flex min-h-10 items-center rounded-full border border-slate-200 px-3" key={item}>{item}</span>
             ))}
           </div>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="bp-button-row mt-8 flex flex-col gap-3 sm:flex-row">
             <MarketingButton href="/pilot">{copy.primaryCta} <MarketingIcon name="arrow" /></MarketingButton>
             <MarketingButton href="/trust" variant="secondary">{copy.secondaryCta}</MarketingButton>
           </div>

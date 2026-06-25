@@ -14,6 +14,7 @@
  * Last Updated: 2026-06-18
  * Change Log:
  * - 2026-06-18: Switched policy pages to narrow readable containers and owner-first summaries.
+ * - 2026-06-25: Normalized policy page rhythm to canonical bp sizing primitives.
  * ============================================================
  */
 
@@ -46,7 +47,7 @@ export function PolicyPage({
 }>) {
   return (
     <main
-      className="public-site min-h-svh"
+      className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
       <MarketingHeader
@@ -55,19 +56,19 @@ export function PolicyPage({
         redirectPath={pagePath}
       />
 
-      <section className="pb-8 pt-10 sm:pt-14">
+      <section className="bp-section-tight">
         <div className="legal-container">
           <div className="grid min-w-0 gap-6">
             <div className="min-w-0">
               <MarketingBadge>{copy.badge}</MarketingBadge>
               <h1
-                className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]"
+                className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]"
                 style={{ color: marketingTone.text }}
               >
                 {copy.title}
               </h1>
               <p
-                className="mt-5 max-w-[720px] text-[16px] leading-8 sm:text-[17px]"
+                className="bp-body mt-5 max-w-[720px] leading-8"
                 style={{ color: marketingTone.soft }}
               >
                 {copy.body}
@@ -99,7 +100,7 @@ export function PolicyPage({
       </section>
 
       {copy.references?.length ? (
-        <section className="py-8">
+        <section className="py-6">
           <div className="legal-container">
             <MarketingSectionTitle
               {...(copy.referenceEyebrow
@@ -122,7 +123,7 @@ export function PolicyPage({
         </section>
       ) : null}
 
-      <section className="py-8">
+      <section className="py-6">
         <div className="legal-container">
           <details
             className="rounded-[18px] border p-5"
@@ -159,7 +160,7 @@ export function PolicyPage({
                     <MarketingIcon name="shield" />
                   </span>
                   <h2
-                    className="mt-5 text-[18px] font-black leading-snug"
+                    className="bp-card-title mt-5 font-black leading-snug"
                     style={{ color: marketingTone.text }}
                   >
                     {section.title}
@@ -177,7 +178,7 @@ export function PolicyPage({
         </div>
       </section>
 
-      <section className="py-8">
+      <section className="pb-[var(--bp-section-tight-space)] pt-6">
         <div className="legal-container">
           <MarketingCard
             className="grid min-w-0 gap-5 p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center"

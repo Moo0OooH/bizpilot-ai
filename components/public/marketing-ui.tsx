@@ -19,6 +19,7 @@
  * - 2026-06-21: Attached localization-aware copy role classes to shared primitives.
  * - 2026-06-21: Added the dedicated FAQ route to the public footer links.
  * - 2026-06-25: Attached public shell containers to canonical bp responsive primitives.
+ * - 2026-06-25: Gave the desktop brand subtitle enough inline budget for fr-CA without truncation.
  * ============================================================
  */
 
@@ -371,7 +372,7 @@ export function MarketingBrand({
   subtitle = defaultMarketingNavCopy.brandSubtitle,
 }: Readonly<{ subtitle?: string }>) {
   return (
-    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3" href="/">
+    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1240px]:min-w-[20rem]" href="/">
       <span
         aria-hidden
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[16px] font-black"
@@ -388,7 +389,7 @@ export function MarketingBrand({
           BizPilot AI
         </span>
         <span
-          className="bp-copy-nav hidden text-[9px] font-black uppercase min-[1240px]:block"
+          className="bp-copy-nav hidden text-[8px] font-black uppercase min-[1240px]:block"
           style={{ color: marketingTone.muted }}
         >
           {subtitle}

@@ -16,6 +16,7 @@
  * - 2026-06-19: Moved visible Content Studio roadmap copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Rebuilt the page as a clear owner-reviewed roadmap surface.
  * - 2026-06-20: Removed fixed roadmap-card height and tightened six-card rhythm.
+ * - 2026-06-25: Normalized roadmap page rhythm to canonical bp primitives.
  * ============================================================
  */
 
@@ -73,26 +74,26 @@ export default async function ContentStudioPage({
   const copy = getPublicSiteCopy(language).contentStudio;
 
   return (
-    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader copy={navCopy} language={language} redirectPath="/content-studio" />
-      <section className="py-[var(--section-space-compact)]">
+      <section className="bp-section-tight">
         <MarketingShell>
           <div className="max-w-[860px]">
             <MarketingBadge toneName="gold">{copy.badge}</MarketingBadge>
-            <h1 className="mt-6 text-[length:var(--text-page)] font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
+            <h1 className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
               {copy.title}
             </h1>
-            <p className="mt-6 text-[17px] leading-8" style={{ color: marketingTone.soft }}>
+            <p className="bp-body mt-5 leading-8" style={{ color: marketingTone.soft }}>
               {copy.body}
             </p>
           </div>
-          <div className="supporting-six-grid mt-8">
+          <div className="bp-grid-six supporting-six-grid mt-8">
             {copy.cards.map((card, index) => (
               <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={card.title}>
                 <span className="flex h-9 w-9 items-center justify-center rounded-[12px] text-[12px] font-black" style={{ backgroundColor: "color-mix(in srgb, var(--warning) 14%, transparent)", color: marketingTone.gold }}>
                   {index + 1}
                 </span>
-                <h2 className="mt-4 text-[18px] font-black leading-tight" style={{ color: marketingTone.text }}>{card.title}</h2>
+                <h2 className="bp-card-title mt-4 font-black leading-tight" style={{ color: marketingTone.text }}>{card.title}</h2>
                 <p className="mt-3 text-[14px] font-bold leading-6" style={{ color: marketingTone.soft }}>{card.body}</p>
               </MarketingCard>
             ))}
@@ -107,7 +108,9 @@ export default async function ContentStudioPage({
                   {copy.footer}
                 </p>
               </div>
-              <MarketingButton href="/pilot">{copy.cta}</MarketingButton>
+              <div className="bp-button-row">
+                <MarketingButton href="/pilot">{copy.cta}</MarketingButton>
+              </div>
             </div>
           </MarketingCard>
         </MarketingShell>
