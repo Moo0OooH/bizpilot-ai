@@ -18,6 +18,7 @@
  * - 2026-06-21: Hid the honeypot from all normal users and kept the review notice single.
  * - 2026-06-21: Tightened mobile quote-card spacing while preserving 48px controls and safe submit behavior.
  * - 2026-06-25: Polished quote field/helper spacing for final public rhythm.
+ * - 2026-06-25: Improved final quote form field groups, helper spacing, consent rhythm, and submit spacing.
  * ============================================================
  */
 
@@ -48,7 +49,7 @@ type QueryParams = Readonly<{
 type StepId = QuoteStepCopy["id"];
 
 const FIELD_INPUT =
-  "quote-field-control h-12 w-full rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] px-3 text-[15px] text-[var(--text-strong)] outline-none transition placeholder:text-[var(--text-muted)] focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]";
+  "quote-field-control h-12 w-full rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 text-[15px] text-[var(--text-strong)] outline-none transition placeholder:text-[var(--text-muted)] focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]";
 
 function groupForField(field: FieldRecord): StepId {
   const key = field.field_key.toLowerCase();
@@ -151,7 +152,7 @@ function FieldInput({
   if (field.field_type === "textarea") {
     return (
       <textarea
-        className={`${FIELD_INPUT} h-auto min-h-[84px] py-2 leading-6`}
+        className={`${FIELD_INPUT} h-auto min-h-[96px] py-2.5 leading-6`}
         name={`field:${field.field_key}`}
         required={required}
       />
@@ -170,10 +171,10 @@ function FieldInput({
 
   if (field.field_type === "radio") {
     return (
-      <div className="grid gap-2">
+      <div className="grid gap-2.5">
         {getOptions(field.options).map((option) => (
           <label
-            className="quote-radio-option flex min-h-11 items-center gap-2 rounded-[12px] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-2 text-[14px] font-semibold text-[var(--text-strong)]"
+            className="quote-radio-option flex min-h-12 items-center gap-2.5 rounded-[12px] border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-[14px] font-semibold text-[var(--text-strong)]"
             key={option}
           >
             <input
@@ -254,7 +255,7 @@ function FieldRow({
             ) : null}
           </span>
           {field.help_text ? (
-            <span className="quote-field-helper mt-0.5 block text-[12px] leading-5 text-[var(--text-muted)]">
+            <span className="quote-field-helper mt-1 block text-[12px] leading-5 text-[var(--text-muted)]">
               {field.help_text}
             </span>
           ) : null}
@@ -264,7 +265,7 @@ function FieldRow({
   }
 
   return (
-    <label className={`quote-field-row flex min-w-0 flex-col gap-2 ${colSpan}`}>
+    <label className={`quote-field-row flex min-w-0 flex-col gap-2.5 ${colSpan}`}>
       <span className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[var(--text-default)]">
         {field.label}
         {field.is_required ? (
@@ -278,7 +279,7 @@ function FieldRow({
         todayDate={todayDate}
       />
       {field.help_text ? (
-        <span className="quote-field-helper mt-0.5 text-[12px] leading-5 text-[var(--text-muted)]">
+        <span className="quote-field-helper mt-1 text-[12px] leading-5 text-[var(--text-muted)]">
           {field.help_text}
         </span>
       ) : null}
@@ -292,7 +293,7 @@ function ConsentBlock({
   consentNotice: string;
 }>) {
   return (
-    <label className="quote-consent-block mt-4 flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] p-4 text-[13px] leading-6 text-[var(--text-default)]">
+    <label className="quote-consent-block mt-5 flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] p-4 text-[13px] leading-6 text-[var(--text-default)] sm:p-5">
       <input
         className="mt-0.5 h-4 w-4 shrink-0 accent-[var(--accent)]"
         name="consentAccepted"
@@ -326,7 +327,7 @@ export function QuoteFormWizard({
   return (
     <form
       action={submitPublicIntakeAction}
-      className="quote-form-shell mx-auto w-full max-w-[780px] space-y-5 px-4 py-6 pb-10 sm:space-y-5 sm:px-8 sm:py-8 sm:pb-12"
+      className="quote-form-shell mx-auto w-full max-w-[780px] space-y-5 px-4 py-6 pb-10 sm:space-y-6 sm:px-8 sm:py-8 sm:pb-12"
     >
       <input name="businessSlug" type="hidden" value={slug} />
       <input name="language" type="hidden" value={language} />
@@ -370,11 +371,11 @@ export function QuoteFormWizard({
 
         return (
           <section
-            className="quote-step-card rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-4 shadow-[var(--shadow-sm)] sm:rounded-[24px] sm:p-5"
+            className="quote-step-card rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-4 shadow-[var(--shadow-sm)] sm:rounded-[24px] sm:p-6"
             id={`quote-step-${index}`}
             key={step.id}
           >
-            <header className="mb-4 space-y-1.5">
+            <header className="mb-5 space-y-2">
               <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[var(--text-muted)]">
                 {copy.quoteForm.stepProgress(index + 1, steps.length, step.label)}
               </p>
@@ -387,7 +388,7 @@ export function QuoteFormWizard({
             </header>
 
             {fields.length > 0 ? (
-              <div className="grid gap-3.5 md:grid-cols-2">
+              <div className="grid gap-4 md:grid-cols-2">
                 {fields.map((field) => (
                   <FieldRow
                     copy={copy}
@@ -415,7 +416,7 @@ export function QuoteFormWizard({
       {query?.source === "rate_limited_demo" ? null : null}
 
       <p
-        className="quote-submit-guardrail rounded-[14px] border p-4 text-[13px] leading-6"
+        className="quote-submit-guardrail rounded-[14px] border p-4 text-[13px] leading-6 sm:p-5"
         style={{
           backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
           borderColor: "color-mix(in srgb, var(--warning) 34%, var(--border-default))",
@@ -425,7 +426,7 @@ export function QuoteFormWizard({
         {copy.quoteForm.guardrail}
       </p>
 
-      <div className="quote-submit-row flex justify-end pt-1">
+      <div className="quote-submit-row flex justify-end pt-2">
         <button
           className="quote-submit-button inline-flex min-h-12 w-full items-center justify-center rounded-[14px] px-5 text-[15px] font-extrabold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[var(--focus-ring)] sm:w-auto sm:min-w-[220px]"
           style={{

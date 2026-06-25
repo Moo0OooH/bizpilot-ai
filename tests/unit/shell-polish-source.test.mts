@@ -10,11 +10,12 @@
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-20: Added 11D shell alignment contracts for auth, quote, and dashboard setup shells.
  * - 2026-06-21: Locked quote honeypot hiding and single consent review notice rendering.
  * - 2026-06-25: Locked final auth and quote spacing polish markers.
+ * - 2026-06-25: Updated quote form rhythm markers for final field/helper spacing.
  * ============================================================
  */
 
@@ -116,9 +117,9 @@ describe("final shell polish source contracts", () => {
       "quote-submit-button",
       "px-4 py-6 pb-10",
       "space-y-5 px-4 py-6 pb-10",
-      "gap-3.5 md:grid-cols-2",
-      "space-y-1.5",
-      "sm:space-y-5",
+      "gap-4 md:grid-cols-2",
+      "space-y-2",
+      "sm:space-y-6",
     ]) {
       assert.equal(
         quoteWizard.includes(required),
