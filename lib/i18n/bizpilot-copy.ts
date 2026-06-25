@@ -11,11 +11,12 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-16: Aligned Settings copy with Phase 23/24 readiness and first-pilot manual-only decisions.
  * - 2026-06-19: Updated dashboard theme help copy for the Light-by-default public theme foundation.
  * - 2026-06-21: Added localized quote success noindex metadata.
+ * - 2026-06-25: Polished owner-review wording in dashboard and status helper copy.
  * ============================================================
  */
 
@@ -1563,7 +1564,7 @@ const englishCopy: BizPilotCopy = {
         title: "Founder Admin Console",
       },
       leadDetail: {
-        subtitle: "Lead details, missing info, and owner-reviewed AI drafts",
+        subtitle: "Lead details, missing info, and AI-assisted drafts reviewed by you",
         title: "Lead Response Desk",
       },
       leads: {
@@ -2834,7 +2835,7 @@ const frenchCopy: BizPilotCopy = {
       openQuoteSetup: "Ouvrir Configuration",
       quoteLinkHealth: "Santé du lien public",
       statusRulesBody:
-        "Nouveau -> Réponse requise -> Révisé / Gagné / Perdu. Les brouillons IA sont révisés par le propriétaire seulement; aucun envoi automatique.",
+        "Nouveau -> Réponse requise -> Validé / Gagné / Perdu. Les brouillons IA restent à valider par vous; aucun envoi automatique.",
       statusRulesTitle: "Règles de statut",
     },
     overview: {

@@ -408,7 +408,7 @@ describe("BizPilot language copy", () => {
     );
     assert.deepEqual(frenchPublicCopy.home.hero.trustBadges, [
       "Aucun envoi automatique",
-      "Brouillons IA à valider par vous",
+      "Brouillons assistés par IA à valider par vous",
       "Copie et envoi manuels",
     ]);
     assert.equal(frenchPublicCopy.home.mockup.title, "Nouvelle demande");
@@ -464,6 +464,7 @@ describe("BizPilot language copy", () => {
       /Leads pour le nettoyage/u,
       /Nettoyage de départ/u,
       /nettoyage de départ/u,
+      /prospects de nettoyage/u,
       /manuel d'abord/u,
       /espace propriétaire/u,
       /révisé par le propriétaire/u,
@@ -570,6 +571,8 @@ describe("BizPilot language copy", () => {
       "DB-level",
       "travail bulk",
       "révisé par le propriétaire",
+      "Suivez si la prochaine étape est répondre",
+      "projet pilote fondateur",
       "révisée par le propriétaire",
       "révisés par le propriétaire",
       "Founder Feedback Pilot",
@@ -672,7 +675,7 @@ describe("BizPilot language copy", () => {
     );
     assert.deepEqual(englishPublicCopy.home.hero.trustBadges, [
       "No auto-send",
-      "AI drafts you approve",
+      "AI-assisted drafts reviewed by you",
       "Manual copy and send",
     ]);
     assert.equal(englishPublicCopy.home.mockup.title, "New quote request");
@@ -688,6 +691,8 @@ describe("BizPilot language copy", () => {
 
     for (const forbidden of [
       "AI draft card",
+      "prepare replies to approve",
+      "reply to approve",
       "Stop losing cleaning quotes to slow replies.",
       "draft fast owner-reviewed replies",
       "owner-reviewed replies",
@@ -840,7 +845,7 @@ describe("BizPilot language copy", () => {
         "Capture every quote request in one clean flow.",
         "Know who needs a reply now.",
         "See the job context before you answer.",
-        "Prepare a reply draft to approve.",
+        "Prepare a reply for owner review.",
         "Copy and send from the channel you already use.",
         "Keep the next manual action clear.",
       ],
@@ -850,7 +855,7 @@ describe("BizPilot language copy", () => {
       [
         "Customer submits a quote request",
         "BizPilot organizes service, timing, and missing details",
-        "AI prepares a reply draft to approve",
+        "AI prepares a reply for owner review",
         "You copy, edit if needed, and send manually",
       ],
     );

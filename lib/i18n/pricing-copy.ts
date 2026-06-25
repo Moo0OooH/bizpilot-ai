@@ -10,6 +10,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
+ * Last Updated: 2026-06-25
+ * Change Log:
+ * - 2026-06-25: Polished fr-CA pricing wording around project-pilot and owner-review terminology.
  * ============================================================
  */
 
@@ -108,7 +111,7 @@ const englishPricingCopy: PricingCopy = {
       },
       {
         answer:
-          "No. AI drafts stay owner-reviewed. You review, edit, copy, and send from your own channel.",
+          "No. AI drafts stay reviewed by you. You review, edit, copy, and send from your own channel.",
         question: "Will BizPilot message customers automatically?",
       },
       {
@@ -139,7 +142,7 @@ const englishPricingCopy: PricingCopy = {
   hero: {
     badge: "Founder pilot pricing",
     body:
-      "BizPilot is being prepared as a founder-guided quote recovery system: quote link, organized leads, owner-reviewed AI drafts, and manual follow-up visibility. No auto-send, no booking system, no bloated CRM.",
+      "BizPilot is being prepared as a founder-guided quote recovery system: quote link, organized leads, AI-assisted drafts reviewed by you, and manual follow-up visibility. No auto-send, no booking system, no bloated CRM.",
     primaryCta: "Join founder pilot",
     promise: {
       bullets: [
@@ -208,7 +211,7 @@ const englishPricingCopy: PricingCopy = {
       {
         cta: "Apply for pilot",
         description:
-          "For early customers after the first proof points are collected: one clean quote link, one lead workspace, and owner-reviewed AI drafts.",
+          "For early customers after the first proof points are collected: one clean quote link, one lead workspace, and AI-assisted drafts reviewed by you.",
         features: [
           "Pilot customers 6-20",
           "One quote page",
@@ -267,13 +270,13 @@ const frenchPricingCopy: PricingCopy = {
       },
       {
         answer:
-          "Non. Les brouillons IA restent révisés par le propriétaire. Vous révisez, modifiez, copiez et envoyez depuis votre propre canal.",
+          "Non. Les brouillons IA restent à valider par vous. Vous révisez, modifiez, copiez et envoyez depuis votre propre canal.",
         question: "BizPilot envoie-t-il automatiquement des messages aux clients?",
       },
       {
         answer:
-          "Le fondateur aide à configurer votre page de soumission, la liste de services, l'identité visuelle de base, les questions d'intake, un lead exemple et le workflow de la première semaine.",
-        question: "Que se passe-t-il pendant le pilote fondateur?",
+          "Le fondateur aide à configurer votre page de soumission, la liste de services, l'identité visuelle de base, les questions de soumission, une demande exemple et le flux de la première semaine.",
+        question: "Que se passe-t-il pendant le projet pilote?",
       },
       {
         answer:
@@ -296,13 +299,13 @@ const frenchPricingCopy: PricingCopy = {
       "L'assistant vous aide à répondre plus vite. Il ne devient pas votre opérateur.",
   },
   hero: {
-    badge: "Tarifs du pilote fondateur",
+    badge: "Tarifs du projet pilote",
     body:
-      "BizPilot est vendu comme un système de récupération de soumissions fait pour vous: configuration, lien de soumission, leads organisés, brouillons IA révisés par le propriétaire et visibilité des suivis. Aucun envoi automatique, aucun système de réservation, aucun CRM gonflé.",
-    primaryCta: "Rejoindre le pilote fondateur",
+      "BizPilot est vendu comme un système de récupération de soumissions fait pour vous: configuration, lien de soumission, prospects organisés, brouillons IA à valider par vous et visibilité des suivis. Aucun envoi automatique, aucun système de réservation, aucun CRM gonflé.",
+    primaryCta: "Rejoindre le pilote",
     promise: {
       bullets: [
-        "Le propriétaire révise chaque brouillon IA",
+        "Vous validez chaque brouillon IA",
         "Rien n'est envoyé automatiquement",
         "Aucun prix ou disponibilité inventé",
         "La configuration est guidée par le fondateur",
@@ -327,17 +330,17 @@ const frenchPricingCopy: PricingCopy = {
       {
         body:
           "Chaque demande arrive dans une file claire avec statut, urgence, source et détails manquants.",
-        title: "File de leads",
+        title: "File de prospects",
       },
       {
         body:
-          "BizPilot prépare les réponses et suivis. Le propriétaire révise, modifie, copie et envoie manuellement.",
-        title: "IA révisée par le propriétaire",
+          "BizPilot prépare les réponses et suivis. Vous validez, modifiez, copiez et envoyez manuellement.",
+        title: "IA à valider par vous",
       },
       {
         body:
           "Le soutien de la première semaine aide à ajuster les questions, services, FAQ et le workflow du propriétaire.",
-        title: "Onboarding guidé par le fondateur",
+        title: "Configuration guidée par le fondateur",
       },
     ],
     title: "Un workflow de récupération ciblé, pas un autre labyrinthe logiciel.",
@@ -346,33 +349,33 @@ const frenchPricingCopy: PricingCopy = {
     eyebrow: "Offres fondatrices simples",
     items: [
       {
-        cta: "Rejoindre le pilote fondateur",
+        cta: "Rejoindre le pilote",
         description:
           "Pour les premières entreprises de nettoyage qui valident le workflow de récupération avec configuration fondatrice et soutien manuel.",
         features: [
-          "Clients pilotes 1 a 5",
+          "Clients pilotes 1 à 5",
           "Configuration fondateur gratuite",
           "Page publique de soumission",
-          "File de récupération des leads",
+          "File de récupération des prospects",
           "Résumé IA",
           "Brouillons de réponse IA à réviser",
           "Visibilité simple des suivis manuels",
-          "Feedback requis a 30 et 60 jours",
+          "Commentaires requis à 30 et 60 jours",
           "Copie/envoi manuel seulement",
         ],
-        monthly: "Setup pilote a 0 $",
-        name: "Pilote fondateur",
+        monthly: "Setup pilote à 0 $",
+        name: "Projet pilote",
         recommended: true,
         setup: "application requise",
       },
       {
         cta: "Choisir Starter",
         description:
-          "Pour les premiers clients apres les premieres preuves: un lien de soumission clair, un espace lead et des brouillons IA revises par le proprietaire.",
+          "Pour les premiers clients après les premières preuves: un lien de soumission clair, un espace de travail pour les prospects et des brouillons IA à valider par vous.",
         features: [
-          "Clients pilotes 6 a 20",
+          "Clients pilotes 6 à 20",
           "Une page de soumission",
-          "Espace lead",
+          "Espace de travail pour les prospects",
           "Brouillons IA de base",
           "Visibilité simple des suivis manuels",
           "Branding de base",
@@ -385,14 +388,14 @@ const frenchPricingCopy: PricingCopy = {
       {
         cta: "Choisir Pro",
         description:
-          "Pour l'offre payante standard apres que les premiers temoignages prouvent que la recuperation des soumissions fonctionne.",
+          "Pour l'offre payante standard après que les premiers témoignages prouvent que la récupération des soumissions fonctionne.",
         features: [
-          "Apres les 20 premiers clients",
+          "Après les 20 premiers clients",
           "Tout ce qui est inclus dans Starter",
           "Page de soumission plus fortement brandée",
           "Réglage du style de réponse et des FAQ",
           "Réglage des brouillons de suivi",
-          "Meilleure organisation des leads",
+          "Meilleure organisation des prospects",
           "Configuration prioritaire",
           "Insights d'usage simples",
         ],
@@ -402,7 +405,7 @@ const frenchPricingCopy: PricingCopy = {
       },
     ],
     lead:
-      "Les premiers pilotes restent volontairement ciblés: capture des demandes, leads organisés, brouillons plus sûrs et visibilité des suivis.",
+      "Les premiers pilotes restent volontairement ciblés: capture des demandes, prospects organisés, brouillons plus sûrs et visibilité des suivis.",
     recommendedLabel: "Recommandé",
     title: "Tarifs pour récupérer les soumissions de nettoyage.",
   },

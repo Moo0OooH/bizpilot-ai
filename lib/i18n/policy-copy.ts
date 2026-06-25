@@ -11,12 +11,13 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-16: Updated public trust copy to reflect Phase 23/24 synthetic proof and remaining real-data gates.
  * - 2026-06-18: Reframed public policy copy around owner-friendly summaries and approved staged pilot pricing.
  * - 2026-06-21: Restored fr-CA accents and cleaner localized wording for public legal pages.
  * - 2026-06-21: Polished final public privacy, security, and terms wording.
+ * - 2026-06-25: Polished fr-CA terms wording around project-pilot terminology.
  * ============================================================
  */
 
@@ -385,7 +386,7 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "BizPilot utilise des conditions pilote par étapes : les 1 à 5 premières entreprises de nettoyage peuvent rejoindre le pilote fondateur à $0 setup avec un engagement de commentaires à 30 et 60 jours; les clients 6 à 20 utilisent le pilote de départ à $149 setup et $49/month; après preuve ou après les 20 premiers clients, le pilote Pro est à $199 setup et $79/month.",
+          "BizPilot utilise des conditions pilote par étapes : les 1 à 5 premières entreprises de nettoyage peuvent rejoindre le projet pilote à $0 setup avec un engagement de commentaires à 30 et 60 jours; les clients 6 à 20 utilisent le pilote de départ à $149 setup et $49/month; après preuve ou après les 20 premiers clients, le pilote Pro est à $199 setup et $79/month.",
         title: "Tarifs pilote",
       },
       {

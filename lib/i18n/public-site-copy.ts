@@ -22,6 +22,7 @@
  * - 2026-06-25: Aligned homepage hero subcopy with the owner-review wording.
  * - 2026-06-25: Replaced Cleaning family groups with six compact service detail entries.
  * - 2026-06-25: Shortened the founder pricing highlight labels for 320px visual acceptance.
+ * - 2026-06-25: Finalized bilingual public wording around owner review, quote requests, and natural fr-CA phrasing.
  * ============================================================
  */
 
@@ -420,7 +421,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "From vague request to clear next reply.",
     },
     body:
-      "BizPilot helps cleaning business owners collect quote requests, organize leads, and prepare replies to approve before sending.",
+      "BizPilot helps cleaning business owners collect quote requests, organize leads, and prepare replies for owner review before sending.",
     ctaPrimary: "Join the cleaning founder pilot",
     ctaSecondary: "See demo",
     detailHelp: {
@@ -569,7 +570,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Cleaning owners are often away from a desk. They are on jobs, driving, managing staff, or answering existing customers. Quote requests arrive at the worst time, and slow replies can cost jobs.",
     meta: {
       description:
-        "BizPilot AI helps cleaning business owners collect quote requests, organize leads, and prepare replies to approve before sending.",
+        "BizPilot AI helps cleaning business owners collect quote requests, organize leads, and prepare replies for owner review before sending.",
       title: "Cleaning Business Lead Recovery Software | BizPilot AI",
     },
     services: [
@@ -659,7 +660,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
         ],
         panelTitle: "AI summary and draft",
-        title: "AI prepares a reply to approve.",
+        title: "AI prepares a reply for owner review.",
       },
       {
         body:
@@ -688,7 +689,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     meta: {
       description:
-        "See how BizPilot AI captures a cleaning quote request, organizes the lead, highlights missing details, and prepares a reply to approve.",
+        "See how BizPilot AI captures a cleaning quote request, organizes the lead, highlights missing details, and prepares a reply for owner review.",
       title: "Cleaning Quote Workflow Demo | BizPilot AI",
     },
     title: "See how BizPilot handles a cleaning quote request.",
@@ -720,7 +721,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       {
         body:
           "Use a practical first response that asks for missing details instead of guessing.",
-        title: "Prepare a reply draft to approve.",
+        title: "Prepare a reply for owner review.",
       },
       {
         body:
@@ -746,7 +747,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       items: [
         "Customer submits a quote request",
         "BizPilot organizes service, timing, and missing details",
-        "AI prepares a reply draft to approve",
+        "AI prepares a reply for owner review",
         "You copy, edit if needed, and send manually",
       ],
       title: "From quote link to reply ready to send.",
@@ -757,8 +758,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         "Follow-up drafts, reporting, Content Studio, integrations, and multi-industry templates are planned after validation.",
     },
     secondaryCta: "Read trust approach",
-    title:
-      "A simple system to capture, organize, and reply to cleaning leads faster.",
+    title: "A simple system to manage cleaning quote requests faster.",
   },
   faq: {
     badge: "FAQ",
@@ -939,7 +939,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "Stop losing cleaning quote requests to slow replies.",
       trustBadges: [
         "No auto-send",
-        "AI drafts you approve",
+        "AI-assisted drafts reviewed by you",
         "Manual copy and send",
       ],
     },
@@ -1256,7 +1256,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       {
         body:
           "AI drafts are reviewed, edited, and sent manually by you.",
-        title: "AI drafts you approve",
+        title: "AI-assisted drafts reviewed by you",
       },
       {
         body:
@@ -1690,7 +1690,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Suivez si la prochaine étape est répondre, demander des détails, faire un suivi ou marquer comme traité.",
+          "Voyez clairement la prochaine action : répondre, demander des détails, faire un suivi ou marquer la demande comme traitée.",
         title: "Garder la prochaine action manuelle claire.",
       },
     ],
@@ -1718,8 +1718,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Brouillons de suivi, rapports, Content Studio, intégrations et modèles pour d'autres secteurs sont prévus après validation.",
     },
     secondaryCta: "Lire l'approche de confiance",
-    title:
-      "Un système simple pour capter, organiser et répondre plus vite aux prospects de nettoyage.",
+    title: "Un système simple pour mieux gérer les demandes de nettoyage.",
   },
   faq: {
     badge: "FAQ",
@@ -1901,7 +1900,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Ne perdez plus de soumissions faute de réponse rapide.",
       trustBadges: [
         "Aucun envoi automatique",
-        "Brouillons IA à valider par vous",
+        "Brouillons assistés par IA à valider par vous",
         "Copie et envoi manuels",
       ],
     },
@@ -2157,7 +2156,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         cta: "Rejoindre le pilote",
         highlight: "Commentaires requis",
         priceLines: ["$0 setup"],
-        title: "Pilote fondateur",
+        title: "Projet pilote",
       },
       {
         bullets: [
@@ -2199,7 +2198,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     meta: {
       description:
         "Tarification pilote approuvée pour les entreprises de nettoyage qui explorent BizPilot AI, avec configuration manuelle et garde-fous de paiement.",
-      title: "Tarification du projet pilote fondateur | BizPilot AI",
+      title: "Tarification du projet pilote | BizPilot AI",
     },
     title: "Tarifs pilotes simples pour le nettoyage.",
   },

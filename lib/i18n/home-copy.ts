@@ -10,10 +10,11 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-19: Shortened public header tagline and corrected compact French pilot CTA.
  * - 2026-06-21: Corrected compact CTA text and fr-CA accent defects visible in public shell/homepage copy.
+ * - 2026-06-25: Replaced literal fr-CA lead phrasing with natural cleaning-request wording.
  * ============================================================
  */
 
@@ -230,7 +231,7 @@ const englishHomeCopy: HomeCopy = {
   },
   commandCenter: {
     body:
-      "One simple view for the lead, the missing details, the owner-reviewed draft, and the next manual action.",
+      "One simple view for the lead, the missing details, the draft reviewed by you, and the next manual action.",
     eyebrow: "Command center",
     mock: {
       actions: [
@@ -742,7 +743,7 @@ const frenchHomeCopy: HomeCopy = {
     ],
     body:
       "Captez les demandes, demandez les détails manquants, répondez plus vite et ne perdez plus un prospect dans le silence.",
-    primaryCta: "Rejoindre le pilote fondateur",
+    primaryCta: "Rejoindre le pilote",
     secondaryCta: "Voir les prix",
     title:
       "Transformez plus de demandes de soumission en vraies conversations.",
@@ -756,7 +757,7 @@ const frenchHomeCopy: HomeCopy = {
       "Les brouillons IA restent sous votre contrôle",
       "Aucun envoi automatique, aucun prix inventé",
     ],
-    primaryCta: "Postuler au pilote fondateur",
+    primaryCta: "Postuler au pilote",
     secondaryCta: "Voir le fonctionnement",
     title:
       "Arrêtez de perdre des mandats de nettoyage à cause des réponses lentes.",
@@ -891,7 +892,7 @@ const frenchHomeCopy: HomeCopy = {
   },
   problem: {
     body:
-      "Les prospects de nettoyage ne disparaissent pas toujours d'un coup. Ils fuient par de petites brèches: délai, canaux éparpillés, détails manquants et suivis oubliés.",
+      "Les demandes de nettoyage ne disparaissent pas toujours d'un coup. Elles se perdent par petites brèches: délai, canaux éparpillés, détails manquants et suivis oubliés.",
     eyebrow: "Carte des fuites",
     items: [
       {

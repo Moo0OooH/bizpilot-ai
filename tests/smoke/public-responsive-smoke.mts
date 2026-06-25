@@ -50,7 +50,7 @@ const routes: readonly RouteContract[] = [
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "No auto-send",
-      "AI drafts you approve",
+      "AI-assisted drafts reviewed by you",
       "Manual copy and send",
     ],
     mustNotContain: ["homepage-workflow-grid"],
@@ -63,10 +63,6 @@ const routes: readonly RouteContract[] = [
         max: 3,
         text: "<details",
       },
-      {
-        max: 1,
-        text: "Rejoindre le pilote fondateur",
-      },
     ],
     mustContain: [
       "href=\"/demo\"",
@@ -74,7 +70,7 @@ const routes: readonly RouteContract[] = [
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "Aucun envoi automatique",
-      "Brouillons IA à valider par vous",
+      "Brouillons assistés par IA à valider par vous",
       "Copie et envoi manuels",
     ],
     mustNotContain: [
@@ -115,7 +111,7 @@ const routes: readonly RouteContract[] = [
     path: "/faq?language=fr-CA",
   },
   {
-    h1: "A simple system to capture, organize, and reply to cleaning leads faster.",
+    h1: "A simple system to manage cleaning quote requests faster.",
     mustContain: [
       "Product proof",
       "Roadmap",
@@ -196,7 +192,7 @@ const routes: readonly RouteContract[] = [
       "public-pricing-hero-cta",
       "public-plan-card",
       "Entreprises 1 à 5",
-      "Pilote fondateur",
+      "Projet pilote",
       "Facturation après approbation",
       "$149 setup",
       "$49/month",
