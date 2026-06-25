@@ -10,13 +10,14 @@
  * - tests/smoke/quote-route-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-21: Added light/dark theme matrix, visual markers, and en-XA fallback checks.
  * - 2026-06-21: Added the dedicated FAQ route to localized metadata coverage.
  * - 2026-06-21: Added Cleaning service de-duplication checks across locales and themes.
  * - 2026-06-21: Updated optional quote fixtures to verify active safe GET quote forms.
  * - 2026-06-25: Updated Cleaning checks for six service cards and six shared detail panels.
+ * - 2026-06-25: Added final visual acceptance guards for hero hooks and six-card grid compression.
  * ============================================================
  */
 
@@ -331,6 +332,47 @@ function checkPublicRoute(
     name: `${locale} ${theme} no pseudolocale exposed`,
     pass: !visibleHtml.includes(TEST_PSEUDO_LOCALE),
   });
+  results.push({
+    detail: route.path,
+    name: `${locale} ${theme} no stale CTA artifacts`,
+    pass:
+      !visibleHtml.includes("Start free recovery") &&
+      !visibleHtml.includes("Start Join founder pilot"),
+  });
+
+  if (
+    visibleHtml.includes("supporting-six-grid") ||
+    visibleHtml.includes("cleaning-service-grid")
+  ) {
+    results.push({
+      detail: route.path,
+      name: `${locale} ${theme} six-card grids avoid four-column compression`,
+      pass:
+        !visibleHtml.includes("grid-cols-4") &&
+        !visibleHtml.includes("min-[900px]:grid-cols-4") &&
+        !visibleHtml.includes("min-[1180px]:grid-cols-4"),
+    });
+  }
+
+  if (route.path === "/") {
+    results.push({
+      detail: route.path,
+      name: `${locale} ${theme} home has final first-fold visual hooks`,
+      pass:
+        visibleHtml.includes("homepage-hero-section") &&
+        visibleHtml.includes("homepage-hero-actions") &&
+        visibleHtml.includes("homepage-hero-mockup") &&
+        visibleHtml.includes("homepage-problem-section") &&
+        visibleHtml.includes("homepage-demo-grid"),
+    });
+    results.push({
+      detail: route.path,
+      name: `${locale} ${theme} home old workflow duplication removed`,
+      pass:
+        !visibleHtml.includes("homepage-workflow-grid") &&
+        countOccurrences(visibleHtml, "homepage-demo-grid") === 1,
+    });
+  }
 
   if (route.path === "/industries/cleaning") {
     results.push({

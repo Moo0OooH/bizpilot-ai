@@ -21,6 +21,7 @@
  * - 2026-06-21: Polished final English and Canadian French public copy.
  * - 2026-06-25: Aligned homepage hero subcopy with the owner-review wording.
  * - 2026-06-25: Replaced Cleaning family groups with six compact service detail entries.
+ * - 2026-06-25: Shortened the founder pricing highlight labels for 320px visual acceptance.
  * ============================================================
  */
 
@@ -1183,7 +1184,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         ],
         cohort: "Businesses 1-5",
         cta: "Apply for founder pilot",
-        highlight: "Feedback commitment required",
+        highlight: "Feedback required",
         priceLines: ["$0 setup"],
         title: "Founder Feedback Pilot",
       },
@@ -2154,7 +2155,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         ],
         cohort: "Entreprises 1 à 5",
         cta: "Rejoindre le pilote",
-        highlight: "Engagement de commentaires requis",
+        highlight: "Commentaires requis",
         priceLines: ["$0 setup"],
         title: "Pilote fondateur",
       },

@@ -28,6 +28,7 @@
  * - 2026-06-25: Updated homepage hero rhythm guardrails for the final balanced fold.
  * - 2026-06-25: Updated Cleaning guards for six service detail entries and one shared selector.
  * - 2026-06-25: Locked supporting public pages to canonical rhythm primitives.
+ * - 2026-06-25: Added final acceptance guards for visual hooks and nested-card scroll traps.
  * ============================================================
  */
 
@@ -154,6 +155,11 @@ describe("public visual stability source contracts", () => {
       true,
       "Four-step proof strips should reach four columns only at the wide public breakpoint.",
     );
+    assert.equal(
+      globals.includes(".supporting-six-grid,\n  .supporting-three-grid {\n    grid-template-columns: repeat(3, minmax(0, 1fr));"),
+      true,
+      "Six-card/supporting grids should top out at three columns, not four cramped columns.",
+    );
   });
 
   it("keeps public routes off one-off fragile grid breakpoints", () => {
@@ -171,6 +177,59 @@ describe("public visual stability source contracts", () => {
     }
 
     assert.equal(publicSources.includes("supporting-four-grid"), true);
+  });
+
+  it("keeps final acceptance visual hooks measurable and nested-card scroll-free", () => {
+    const globals = source("app/globals.css");
+    const homepage = source("app/page.tsx");
+    const pilotTemplate = source("components/public/pilot-request-template-card.tsx");
+    const publicMarketingSources = [
+      source("components/public/marketing-ui.tsx"),
+      pilotTemplate,
+      ...publicRouteFiles.map((path) => source(path)),
+    ].join("\n");
+
+    for (const required of [
+      "homepage-hero-section",
+      "homepage-hero-grid",
+      "homepage-hero-actions",
+      "homepage-hero-mockup",
+      "homepage-problem-section",
+      "homepage-demo-grid",
+    ]) {
+      assert.equal(homepage.includes(required), true, `Homepage visual hook missing ${required}.`);
+    }
+
+    for (const required of [
+      ".homepage-hero-title",
+      ".homepage-hero-mockup",
+      ".homepage-problem-section",
+      "@media (min-width: 1100px) and (max-height: 780px)",
+      "@media (min-width: 1180px)",
+      ".cleaning-service-grid {\n    grid-template-columns: repeat(3, minmax(0, 1fr));",
+    ]) {
+      assert.equal(globals.includes(required), true, `Final visual CSS hook missing ${required}.`);
+    }
+
+    for (const forbidden of [
+      "homepage-workflow-grid",
+      "max-h-[18rem] overflow-auto",
+      "max-h-[18rem]",
+      "overflow-auto",
+      "overflow-y-auto",
+    ]) {
+      assert.equal(
+        publicMarketingSources.includes(forbidden),
+        false,
+        `Public marketing cards should not reintroduce nested scroll trap ${forbidden}.`,
+      );
+    }
+
+    assert.equal(
+      source("components/public/marketing-compact-menu.tsx").includes("overflow-y-auto"),
+      true,
+      "The compact navigation menu is the only allowed public overflow-y-auto exception.",
+    );
   });
 
   it("keeps supporting public pages on the canonical rhythm primitives", () => {

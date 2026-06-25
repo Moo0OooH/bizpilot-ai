@@ -10,9 +10,10 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-06-21
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-21: Added accented pseudolocale output and final UI matrix source contracts.
+ * - 2026-06-25: Locked final visual acceptance matrix labels for homepage and six-card checks.
  * ============================================================
  */
 
@@ -189,8 +190,12 @@ describe("public pseudolocale visual contracts", () => {
       'const themeMatrix = ["light", "dark"]',
       "test pseudolocale falls back to production English",
       "no stale header control text",
+      "no stale CTA artifacts",
       "no missing-copy artifacts",
       "no pseudolocale exposed",
+      "home has final first-fold visual hooks",
+      "home old workflow duplication removed",
+      "six-card grids avoid four-column compression",
       "cleaning has six compact cards",
       "cleaning has desktop tabs and mobile accordion",
       "pricing has three plan cards",

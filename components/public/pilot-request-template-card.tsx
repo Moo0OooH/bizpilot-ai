@@ -11,9 +11,10 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-19: Added Branch B pilot copy-template action with clipboard fallback.
+ * - 2026-06-25: Removed the fallback template preview's nested scroll cap for final visual acceptance.
  * ============================================================
  */
 
@@ -158,7 +159,7 @@ export function PilotRequestTemplateCard({
             {copy.templateLabel}
           </p>
           <pre
-            className="max-h-[18rem] overflow-auto whitespace-pre-wrap rounded-[12px] border p-4 text-[13px] font-bold leading-7"
+            className="whitespace-pre-wrap rounded-[12px] border p-4 text-[13px] font-bold leading-7"
             ref={templateRef}
             style={{
               backgroundColor: "var(--surface-interactive)",
