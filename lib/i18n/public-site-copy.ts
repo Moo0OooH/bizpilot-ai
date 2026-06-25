@@ -20,6 +20,7 @@
  * - 2026-06-21: Simplified Cleaning page service detail copy and removed the extra commercial service from the public surface.
  * - 2026-06-21: Polished final English and Canadian French public copy.
  * - 2026-06-25: Aligned homepage hero subcopy with the owner-review wording.
+ * - 2026-06-25: Replaced Cleaning family groups with six compact service detail entries.
  * ============================================================
  */
 
@@ -187,6 +188,11 @@ type CleaningCopy = Readonly<{
     body: string;
     title: string;
   }>;
+  detailSection: Readonly<{
+    body: string;
+    clearTitle: string;
+    title: string;
+  }>;
   example: Readonly<{
     fields: ReadonlyArray<LabelValue>;
     request: string;
@@ -194,20 +200,18 @@ type CleaningCopy = Readonly<{
     title: string;
     workflow: string;
   }>;
-  families: ReadonlyArray<
+  finalCta: Readonly<{
+    body: string;
+    title: string;
+  }>;
+  serviceActionLabel: string;
+  serviceCards: ReadonlyArray<
     Readonly<{
       body: string;
-      details: readonly string[];
-      detailsTitle: string;
+      clearDetails: readonly string[];
+      id: string;
+      missingDetails: readonly string[];
       request: string;
-      requestLabel: string;
-      services: ReadonlyArray<
-        Readonly<{
-          body: string;
-          id: string;
-          title: string;
-        }>
-      >;
       title: string;
     }>
   >;
@@ -423,6 +427,12 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         "When a request is vague, BizPilot helps prepare the right follow-up question instead of guessing price, timing, or booking details.",
       title: "Missing details BizPilot can help ask for",
     },
+    detailSection: {
+      body:
+        "One shared detail panel keeps the example request, quote details, and missing follow-up questions clear without repeating service groups.",
+      clearTitle: "Details BizPilot keeps clear",
+      title: "Choose the cleaning request type.",
+    },
     example: {
       fields: [
         ["Service", "Move-out cleaning"],
@@ -438,87 +448,120 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       workflow:
         "Customer requests a quote -> You see service details -> AI summarizes -> BizPilot prepares a reply draft -> You copy and send manually",
     },
-    families: [
+    finalCta: {
+      body:
+        "Bring the cleaning quote flow you already use. BizPilot stays manual-first while the pilot checks what should be captured, organized, and drafted.",
+      title: "Help shape the cleaning pilot around real quote requests.",
+    },
+    serviceActionLabel: "View details",
+    serviceCards: [
       {
-        body:
-          "Common home requests still need the right scope before an owner can quote responsibly.",
-        details: [
-          "Service type",
+        body: "Recurring or one-time home-cleaning requests.",
+        clearDetails: [
+          "Service frequency",
           "Bedrooms, bathrooms, or square footage",
-          "Priority rooms and condition",
+          "Priority rooms",
           "Pets, supplies, and access notes",
         ],
-        detailsTitle: "Details BizPilot keeps clear",
+        id: "residential",
+        missingDetails: [
+          "Preferred first date",
+          "Current condition",
+          "Special surfaces or allergies",
+        ],
+        request:
+          '"Can you quote weekly cleaning for a 3-bedroom house in Boucherville?"',
+        title: "Residential cleaning",
+      },
+      {
+        body: "Scope, condition, and priority areas for heavier jobs.",
+        clearDetails: [
+          "Service type",
+          "Property size",
+          "Priority rooms and surfaces",
+          "Current condition",
+        ],
+        id: "deep-cleaning",
+        missingDetails: [
+          "Preferred date window",
+          "Appliance or cabinet interior needs",
+          "Access notes",
+        ],
         request:
           '"Can you do a deep clean for a 3-bedroom house next week?"',
-        requestLabel: "Example request",
-        services: [
-          {
-            body: "Recurring or one-time home-cleaning requests.",
-            id: "residential",
-            title: "Residential cleaning",
-          },
-          {
-            body: "Scope, property condition, and priority areas.",
-            id: "deep-cleaning",
-            title: "Deep cleaning",
-          },
-        ],
-        title: "Homes",
+        title: "Deep cleaning",
       },
       {
-        body:
-          "Deadline-driven work needs timing, access, and turnover details in one place.",
-        details: [
-          "Move date or checkout time",
-          "Appliance and cabinet interior needs",
-          "Entry instructions",
-          "Missing supplies or linen notes",
+        body: "Deadline, appliance, cabinet, and entry details.",
+        clearDetails: [
+          "Move date",
+          "Property type",
+          "Appliance and cabinet scope",
+          "Entry and access notes",
         ],
-        detailsTitle: "Details BizPilot keeps clear",
+        id: "move-in-out",
+        missingDetails: [
+          "Square footage",
+          "Parking or key instructions",
+          "Any photos or priority areas",
+        ],
         request:
-          '"The tenant leaves Friday morning. Can someone clean before the new guest arrives?"',
-        requestLabel: "Example request",
-        services: [
-          {
-            body: "Deadlines, appliance details, and access notes.",
-            id: "move-in-out",
-            title: "Move-in / move-out",
-          },
-          {
-            body: "Checkout time, linens, supplies, and entry details.",
-            id: "airbnb",
-            title: "Airbnb turnover",
-          },
-        ],
-        title: "Moves and turnovers",
+          '"How much for a move-out clean before Friday?"',
+        title: "Move-in / move-out",
       },
       {
-        body:
-          "Commercial and specialist requests become easier to triage when scope and site access are visible.",
-        details: [
-          "Floor area and frequency",
+        body: "Floor area, frequency, schedule, and site access.",
+        clearDetails: [
+          "Floor area",
+          "Cleaning frequency",
           "Preferred schedule",
           "Site access and contact",
-          "Dust, debris, or specialist scope",
         ],
-        detailsTitle: "Details BizPilot keeps clear",
+        id: "office",
+        missingDetails: [
+          "Washroom or kitchen count",
+          "Supply expectations",
+          "Alarm, key, or building rules",
+        ],
         request:
-          '"We need office cleaning twice a week and a post-renovation cleanup next month."',
-        requestLabel: "Example request",
-        services: [
-          {
-            body: "Floor area, frequency, schedule, and site access.",
-            id: "office",
-            title: "Office cleaning",
-          },
-          {
-            body: "Site size, dust/debris scope, and deadline.",
-            id: "post-construction",
-            title: "Post-construction cleaning",
-          },
+          '"We need office cleaning twice a week after 6 pm. Can you quote it?"',
+        title: "Office cleaning",
+      },
+      {
+        body: "Checkout timing, linen, restock, and entry details.",
+        clearDetails: [
+          "Checkout and check-in window",
+          "Bedrooms and bathrooms",
+          "Linen and restock needs",
+          "Entry instructions",
         ],
-        title: "Commercial and specialist",
+        id: "airbnb",
+        missingDetails: [
+          "Laundry location",
+          "Supply inventory",
+          "Damage or photo notes",
+        ],
+        request:
+          '"Can you turn over our Airbnb between checkout at 11 and check-in at 4?"',
+        title: "Airbnb turnover",
+      },
+      {
+        body: "Dust, debris, site size, deadline, and specialist scope.",
+        clearDetails: [
+          "Site size",
+          "Dust and debris scope",
+          "Deadline",
+          "Access and site contact",
+        ],
+        id: "post-construction",
+        missingDetails: [
+          "Debris removal responsibility",
+          "Floor, glass, or fixture details",
+          "Safety or PPE constraints",
+        ],
+        request:
+          '"Can you clean after a small renovation before inspection next week?"',
+        title: "Post-construction cleaning",
       },
     ],
     intro:
@@ -1341,6 +1384,12 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Quand une demande est vague, BizPilot aide à préparer la bonne question de suivi au lieu de deviner le prix, le moment ou une réservation.",
       title: "Détails manquants que BizPilot peut aider à demander",
     },
+    detailSection: {
+      body:
+        "Un seul panneau de détails garde l'exemple, les informations de soumission et les questions de suivi au clair sans répéter les groupes de services.",
+      clearTitle: "Détails que BizPilot garde clairs",
+      title: "Choisissez le type de demande de nettoyage.",
+    },
     example: {
       fields: [
         ["Service", "Nettoyage après déménagement"],
@@ -1356,87 +1405,120 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       workflow:
         "Le client demande une soumission -> Vous voyez les détails du service -> BizPilot résume -> BizPilot prépare un brouillon de réponse -> Vous copiez et envoyez manuellement",
     },
-    families: [
+    finalCta: {
+      body:
+        "Apportez le flux de soumission que vous utilisez déjà. BizPilot garde une approche manuelle pendant que le pilote valide quoi capter, organiser et préparer.",
+      title: "Aidez à façonner le pilote autour de vraies demandes.",
+    },
+    serviceActionLabel: "Voir les détails",
+    serviceCards: [
       {
-        body:
-          "Les demandes résidentielles courantes exigent tout de même le bon contexte avant une soumission responsable.",
-        details: [
-          "Type de service",
+        body: "Demandes de nettoyage résidentiel récurrent ou ponctuel.",
+        clearDetails: [
+          "Fréquence du service",
           "Chambres, salles de bain ou superficie",
-          "Pièces prioritaires et état du logement",
+          "Pièces prioritaires",
           "Animaux, fournitures et notes d'accès",
         ],
-        detailsTitle: "Détails que BizPilot garde clairs",
+        id: "residential",
+        missingDetails: [
+          "Date souhaitée pour commencer",
+          "État actuel du logement",
+          "Surfaces spéciales ou allergies",
+        ],
+        request:
+          "\"Pouvez-vous soumissionner un nettoyage hebdomadaire pour une maison de 3 chambres à Boucherville?\"",
+        title: "Nettoyage résidentiel",
+      },
+      {
+        body: "Portée, état de la propriété et zones prioritaires.",
+        clearDetails: [
+          "Type de service",
+          "Taille de la propriété",
+          "Pièces et surfaces prioritaires",
+          "État actuel",
+        ],
+        id: "deep-cleaning",
+        missingDetails: [
+          "Fenêtre de date souhaitée",
+          "Électroménagers ou armoires à l'intérieur",
+          "Notes d'accès",
+        ],
         request:
           "\"Pouvez-vous faire un grand ménage pour une maison de 3 chambres la semaine prochaine?\"",
-        requestLabel: "Exemple de demande",
-        services: [
-          {
-            body: "Demandes de nettoyage résidentiel récurrent ou ponctuel.",
-            id: "residential",
-            title: "Nettoyage résidentiel",
-          },
-          {
-            body: "Portée, état de la propriété et zones prioritaires.",
-            id: "deep-cleaning",
-            title: "Nettoyage en profondeur",
-          },
-        ],
-        title: "Maisons",
+        title: "Nettoyage en profondeur",
       },
       {
-        body:
-          "Les travaux liés aux dates limites demandent le moment, l'accès et les détails de remise en état au même endroit.",
-        details: [
-          "Date de déménagement ou heure de sortie",
-          "Électroménagers et armoires à l'intérieur",
-          "Instructions d'entrée",
-          "Fournitures ou notes de literie à confirmer",
+        body: "Échéance, électroménagers, armoires et accès.",
+        clearDetails: [
+          "Date de déménagement",
+          "Type de propriété",
+          "Électroménagers et armoires",
+          "Entrée et accès",
         ],
-        detailsTitle: "Détails que BizPilot garde clairs",
+        id: "move-in-out",
+        missingDetails: [
+          "Superficie",
+          "Stationnement ou clés",
+          "Photos ou zones prioritaires",
+        ],
         request:
-          "\"Le locataire quitte vendredi matin. Pouvez-vous nettoyer avant l'arrivée du prochain invité?\"",
-        requestLabel: "Exemple de demande",
-        services: [
-          {
-            body: "Échéance, électroménagers et notes d’accès.",
-            id: "move-in-out",
-            title: "Nettoyage avant/après déménagement",
-          },
-          {
-            body: "Heure de sortie, literie, fournitures et accès.",
-            id: "airbnb",
-            title: "Nettoyage entre séjours Airbnb",
-          },
-        ],
-        title: "Déménagements et séjours",
+          "\"Combien pour un nettoyage après déménagement d'ici vendredi?\"",
+        title: "Nettoyage avant/après déménagement",
       },
       {
-        body:
-          "Les demandes commerciales et spécialisées sont plus simples à trier quand la portée et l'accès au site sont visibles.",
-        details: [
-          "Superficie et fréquence",
+        body: "Superficie, fréquence, horaire et accès au site.",
+        clearDetails: [
+          "Superficie",
+          "Fréquence de nettoyage",
           "Horaire préféré",
           "Accès au site et contact",
-          "Poussière, débris ou portée spécialisée",
         ],
-        detailsTitle: "Détails que BizPilot garde clairs",
+        id: "office",
+        missingDetails: [
+          "Nombre de salles d'eau ou cuisines",
+          "Fournitures attendues",
+          "Alarme, clés ou règles d'immeuble",
+        ],
         request:
-          "\"Nous avons besoin d'un nettoyage de bureaux deux fois par semaine et d'un nettoyage après rénovation le mois prochain.\"",
-        requestLabel: "Exemple de demande",
-        services: [
-          {
-            body: "Superficie, fréquence, horaire et accès au site.",
-            id: "office",
-            title: "Nettoyage de bureaux",
-          },
-          {
-            body: "Taille du site, poussière/débris et échéance.",
-            id: "post-construction",
-            title: "Nettoyage après travaux",
-          },
+          "\"Nous avons besoin d'un nettoyage de bureaux deux fois par semaine après 18 h. Pouvez-vous soumissionner?\"",
+        title: "Nettoyage de bureaux",
+      },
+      {
+        body: "Heure de sortie, literie, fournitures et accès.",
+        clearDetails: [
+          "Heure de départ et d'arrivée",
+          "Chambres et salles de bain",
+          "Literie et réapprovisionnement",
+          "Instructions d'entrée",
         ],
-        title: "Commercial et spécialisé",
+        id: "airbnb",
+        missingDetails: [
+          "Lieu de lavage",
+          "Inventaire des fournitures",
+          "Notes de dommages ou photos",
+        ],
+        request:
+          "\"Pouvez-vous préparer notre Airbnb entre le départ à 11 h et l'arrivée à 16 h?\"",
+        title: "Nettoyage entre séjours Airbnb",
+      },
+      {
+        body: "Poussière, débris, taille du site, échéance et portée.",
+        clearDetails: [
+          "Taille du site",
+          "Portée de poussière et débris",
+          "Échéance",
+          "Accès et contact sur place",
+        ],
+        id: "post-construction",
+        missingDetails: [
+          "Responsabilité pour les débris",
+          "Détails des planchers, vitres ou installations",
+          "Contraintes de sécurité ou EPI",
+        ],
+        request:
+          "\"Pouvez-vous nettoyer après une petite rénovation avant l'inspection la semaine prochaine?\"",
+        title: "Nettoyage après travaux",
       },
     ],
     intro:

@@ -26,6 +26,7 @@
  * - 2026-06-21: Updated homepage hero rhythm guardrails for CSS-owned type and compact mockup sizing.
  * - 2026-06-25: Locked the canonical bp responsive primitive foundation.
  * - 2026-06-25: Updated homepage hero rhythm guardrails for the final balanced fold.
+ * - 2026-06-25: Updated Cleaning guards for six service detail entries and one shared selector.
  * ============================================================
  */
 
@@ -395,24 +396,39 @@ describe("public visual stability source contracts", () => {
     assert.equal(pricing.includes("bp-copy-plan-title"), true);
 
     for (const required of [
-      "const compactServices = copy.families.flatMap",
+      "const services = copy.serviceCards",
       "cleaning-service-grid",
       "cleaning-service-card",
       "cleaning-detail-tabs",
+      "cleaning-tab-list",
       'role="tablist"',
       'role="tabpanel"',
       "cleaning-detail-mobile",
+      "copy.detailSection.clearTitle",
       "copy.detailHelp.title",
       "copy.detailHelp.body",
+      "copy.serviceActionLabel",
+      "service.clearDetails.map",
+      "service.missingDetails.map",
       "<details",
     ]) {
       assert.equal(cleaning.includes(required), true, `Cleaning layout missing ${required}`);
     }
 
     assert.equal(
-      cleaning.match(/family\.services\.map/g)?.length,
-      1,
-      "Cleaning page should render service cards once and not repeat them inside detail panels.",
+      cleaning.includes("copy.families"),
+      false,
+      "Cleaning page should not render the old repeated family groups.",
+    );
+    assert.equal(
+      publicSiteCopy.includes("families: ["),
+      false,
+      "Cleaning copy should no longer keep repeated Homes / Moves / Commercial family groups.",
+    );
+    assert.equal(
+      publicSiteCopy.includes("serviceCards: ["),
+      true,
+      "Cleaning copy should expose six compact service detail entries.",
     );
     assert.equal(
       publicSiteCopy.includes("small-commercial"),

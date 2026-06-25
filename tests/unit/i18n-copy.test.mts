@@ -20,6 +20,7 @@
  * - 2026-06-21: Locked the Cleaning page to six services without small-commercial copy.
  * - 2026-06-21: Locked final quote consent and no-confirmation notices.
  * - 2026-06-25: Updated canonical homepage hero copy for owner-review wording.
+ * - 2026-06-25: Locked Cleaning copy to six service detail entries instead of repeated families.
  * ============================================================
  */
 
@@ -853,15 +854,20 @@ describe("BizPilot language copy", () => {
       ],
     );
 
-    assert.equal(englishPublicCopy.cleaning.families.length, 3);
+    assert.equal(englishPublicCopy.cleaning.serviceCards.length, 6);
     assert.deepEqual(
-      englishPublicCopy.cleaning.families.map((family) => family.services.length),
-      [2, 2, 2],
+      englishPublicCopy.cleaning.serviceCards.map((service) => service.title),
+      [
+        "Residential cleaning",
+        "Deep cleaning",
+        "Move-in / move-out",
+        "Office cleaning",
+        "Airbnb turnover",
+        "Post-construction cleaning",
+      ],
     );
     const cleaningServiceIds = new Set(
-      englishPublicCopy.cleaning.families.flatMap((family) =>
-        family.services.map((service) => service.id),
-      ),
+      englishPublicCopy.cleaning.serviceCards.map((service) => service.id),
     );
     for (const serviceId of [
       "residential",
@@ -878,6 +884,17 @@ describe("BizPilot language copy", () => {
       );
     }
     assert.equal(cleaningServiceIds.has("small-commercial"), false);
+    assert.equal(
+      englishPublicCopy.cleaning.serviceCards.every(
+        (service) =>
+          service.body.length >= 24 &&
+          service.clearDetails.length >= 4 &&
+          service.missingDetails.length >= 3 &&
+          service.request.includes("?"),
+      ),
+      true,
+      "Cleaning services should have compact card copy and full detail-panel content.",
+    );
     assert.equal(
       englishPublicCopy.cleaning.detailHelp.title,
       "Missing details BizPilot can help ask for",

@@ -16,6 +16,7 @@
  * - 2026-06-21: Added the dedicated FAQ route to localized metadata coverage.
  * - 2026-06-21: Added Cleaning service de-duplication checks across locales and themes.
  * - 2026-06-21: Updated optional quote fixtures to verify active safe GET quote forms.
+ * - 2026-06-25: Updated Cleaning checks for six service cards and six shared detail panels.
  * ============================================================
  */
 
@@ -332,24 +333,6 @@ function checkPublicRoute(
   });
 
   if (route.path === "/industries/cleaning") {
-    const serviceTitles = locale === "fr-CA"
-      ? [
-          "Nettoyage résidentiel",
-          "Nettoyage en profondeur",
-          "Nettoyage avant/après déménagement",
-          "Nettoyage de bureaux",
-          "Nettoyage entre séjours Airbnb",
-          "Nettoyage après travaux",
-        ]
-      : [
-          "Residential cleaning",
-          "Deep cleaning",
-          "Move-in / move-out",
-          "Office cleaning",
-          "Airbnb turnover",
-          "Post-construction cleaning",
-        ];
-
     results.push({
       detail: route.path,
       name: `${locale} ${theme} cleaning has six compact cards`,
@@ -357,17 +340,27 @@ function checkPublicRoute(
     });
     results.push({
       detail: route.path,
+      name: `${locale} ${theme} cleaning has six detail panels`,
+      pass: countOccurrences(visibleHtml, "cleaning-tab-panel") === 6,
+    });
+    results.push({
+      detail: route.path,
       name: `${locale} ${theme} cleaning has desktop tabs and mobile accordion`,
       pass:
         visibleHtml.includes("cleaning-detail-tabs") &&
+        visibleHtml.includes("cleaning-tab-list") &&
         visibleHtml.includes('role="tablist"') &&
         visibleHtml.includes("cleaning-detail-mobile") &&
         visibleHtml.includes("<details"),
     });
     results.push({
       detail: route.path,
-      name: `${locale} ${theme} cleaning services are not duplicated`,
-      pass: serviceTitles.every((title) => countOccurrences(visibleHtml, title) <= 1),
+      name: `${locale} ${theme} cleaning old service groups are removed`,
+      pass:
+        !visibleHtml.includes("Commercial and specialist") &&
+        !visibleHtml.includes("Moves and turnovers") &&
+        !visibleHtml.includes("Commercial et spécialisé") &&
+        !visibleHtml.includes("Déménagements et séjours"),
     });
     results.push({
       detail: route.path,

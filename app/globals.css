@@ -31,6 +31,7 @@ Change Log:
 - 2026-06-21: Added hydration-stable theme trigger icon switching.
 - 2026-06-25: Added canonical bp responsive sizing, typography, container, section, and grid primitives.
 - 2026-06-25: Rebalanced homepage hero and Problem section rhythm for final visual sizing.
+- 2026-06-25: Reworked Cleaning page service/detail rhythm around one six-service selector.
 ============================================================
 */
 
@@ -652,6 +653,19 @@ select {
   gap: var(--grid-gap);
 }
 
+.cleaning-page-section {
+  padding-block: clamp(2rem, 4.8vw, 4.5rem);
+}
+
+.cleaning-hero-grid {
+  align-items: center;
+}
+
+.cleaning-before-after-card {
+  max-inline-size: min(100%, 31rem);
+  justify-self: center;
+}
+
 .cleaning-service-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -660,7 +674,7 @@ select {
 
 .cleaning-service-card {
   display: grid;
-  grid-template-rows: auto minmax(2lh, auto) 1fr;
+  grid-template-rows: auto 1fr auto;
   min-width: 0;
 }
 
@@ -671,6 +685,20 @@ select {
 .cleaning-detail-mobile {
   display: grid;
   gap: 0.75rem;
+}
+
+.cleaning-detail-tabs {
+  margin-block-start: 1.25rem;
+}
+
+.cleaning-tab-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.cleaning-tab-item {
+  display: contents;
 }
 
 .cleaning-tab-input {
@@ -686,6 +714,8 @@ select {
   min-block-size: 2.75rem;
   align-items: center;
   justify-content: center;
+  flex: 1 1 100%;
+  min-inline-size: 0;
   border: 1px solid var(--border-default);
   border-radius: 0.75rem;
   padding: 0.65rem 0.85rem;
@@ -697,28 +727,25 @@ select {
   text-wrap: balance;
 }
 
-.cleaning-detail-tabs:has(#cleaning-tab-0:focus-visible) label[for="cleaning-tab-0"],
-.cleaning-detail-tabs:has(#cleaning-tab-1:focus-visible) label[for="cleaning-tab-1"],
-.cleaning-detail-tabs:has(#cleaning-tab-2:focus-visible) label[for="cleaning-tab-2"] {
+.cleaning-tab-input:focus-visible + .cleaning-tab-label {
   outline: 4px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
 .cleaning-tab-panel {
   display: none;
+  flex: 0 0 100%;
+  min-width: 0;
+  margin-block-start: 0.35rem;
 }
 
-.cleaning-detail-tabs:has(#cleaning-tab-0:checked) label[for="cleaning-tab-0"],
-.cleaning-detail-tabs:has(#cleaning-tab-1:checked) label[for="cleaning-tab-1"],
-.cleaning-detail-tabs:has(#cleaning-tab-2:checked) label[for="cleaning-tab-2"] {
+.cleaning-tab-input:checked + .cleaning-tab-label {
   border-color: color-mix(in srgb, var(--accent) 42%, var(--border-default));
   background: var(--surface-accent);
   color: var(--text-strong);
 }
 
-.cleaning-detail-tabs:has(#cleaning-tab-0:checked) .cleaning-panel-0,
-.cleaning-detail-tabs:has(#cleaning-tab-1:checked) .cleaning-panel-1,
-.cleaning-detail-tabs:has(#cleaning-tab-2:checked) .cleaning-panel-2 {
+.cleaning-tab-input:checked + .cleaning-tab-label + .cleaning-tab-panel {
   display: block;
 }
 
@@ -815,6 +842,10 @@ select {
   .cleaning-detail-mobile {
     display: none;
   }
+
+  .cleaning-tab-label {
+    flex-basis: calc(50% - 0.65rem);
+  }
 }
 
 @media (min-width: 1180px) {
@@ -856,6 +887,14 @@ select {
 
   .cleaning-service-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cleaning-before-after-card {
+    justify-self: end;
+  }
+
+  .cleaning-tab-label {
+    flex-basis: calc(33.333% - 0.65rem);
   }
 }
 
