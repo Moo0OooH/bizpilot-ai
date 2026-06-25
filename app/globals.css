@@ -32,6 +32,7 @@ Change Log:
 - 2026-06-25: Added canonical bp responsive sizing, typography, container, section, and grid primitives.
 - 2026-06-25: Rebalanced homepage hero and Problem section rhythm for final visual sizing.
 - 2026-06-25: Reworked Cleaning page service/detail rhythm around one six-service selector.
+- 2026-06-25: Replaced duplicated Cleaning desktop/mobile detail CSS with one active detail selector.
 ============================================================
 */
 
@@ -678,43 +679,23 @@ select {
   min-width: 0;
 }
 
-.cleaning-detail-desktop {
-  display: none;
-}
-
-.cleaning-detail-mobile {
-  display: grid;
-  gap: 0.75rem;
-}
-
 .cleaning-detail-tabs {
   margin-block-start: 1.25rem;
+  display: grid;
+  gap: 1rem;
 }
 
 .cleaning-tab-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 0.65rem;
 }
 
-.cleaning-tab-item {
-  display: contents;
-}
-
-.cleaning-tab-input {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.cleaning-tab-label {
+.cleaning-tab-button {
   display: inline-flex;
   min-block-size: 2.75rem;
   align-items: center;
   justify-content: center;
-  flex: 1 1 100%;
   min-inline-size: 0;
   border: 1px solid var(--border-default);
   border-radius: 0.75rem;
@@ -723,30 +704,29 @@ select {
   color: var(--text-default);
   font-size: 0.8125rem;
   font-weight: 900;
+  line-height: 1.2;
   text-align: center;
   text-wrap: balance;
+  white-space: normal;
 }
 
-.cleaning-tab-input:focus-visible + .cleaning-tab-label {
+.cleaning-tab-button:focus-visible {
   outline: 4px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
-.cleaning-tab-panel {
-  display: none;
-  flex: 0 0 100%;
-  min-width: 0;
-  margin-block-start: 0.35rem;
-}
-
-.cleaning-tab-input:checked + .cleaning-tab-label {
+.cleaning-tab-button[aria-selected="true"] {
   border-color: color-mix(in srgb, var(--accent) 42%, var(--border-default));
   background: var(--surface-accent);
   color: var(--text-strong);
 }
 
-.cleaning-tab-input:checked + .cleaning-tab-label + .cleaning-tab-panel {
-  display: block;
+.cleaning-detail-panel {
+  min-width: 0;
+  border: 1px solid var(--border-default);
+  border-radius: 1rem;
+  background: var(--surface-interactive);
+  padding: 1rem;
 }
 
 .supporting-six-grid,
@@ -835,16 +815,8 @@ select {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .cleaning-detail-desktop {
-    display: block;
-  }
-
-  .cleaning-detail-mobile {
-    display: none;
-  }
-
-  .cleaning-tab-label {
-    flex-basis: calc(50% - 0.65rem);
+  .cleaning-tab-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -893,8 +865,8 @@ select {
     justify-self: end;
   }
 
-  .cleaning-tab-label {
-    flex-basis: calc(33.333% - 0.65rem);
+  .cleaning-tab-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

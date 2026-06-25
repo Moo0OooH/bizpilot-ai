@@ -18,6 +18,7 @@
  * - 2026-06-21: Updated optional quote fixtures to verify active safe GET quote forms.
  * - 2026-06-25: Updated Cleaning checks for six service cards and six shared detail panels.
  * - 2026-06-25: Added final visual acceptance guards for hero hooks and six-card grid compression.
+ * - 2026-06-25: Locked Cleaning smoke coverage to one active shared detail panel.
  * ============================================================
  */
 
@@ -382,18 +383,20 @@ function checkPublicRoute(
     });
     results.push({
       detail: route.path,
-      name: `${locale} ${theme} cleaning has six detail panels`,
-      pass: countOccurrences(visibleHtml, "cleaning-tab-panel") === 6,
+      name: `${locale} ${theme} cleaning has one active detail panel`,
+      pass: countOccurrences(visibleHtml, "cleaning-detail-panel") === 1,
     });
     results.push({
       detail: route.path,
-      name: `${locale} ${theme} cleaning has desktop tabs and mobile accordion`,
+      name: `${locale} ${theme} cleaning has one shared detail selector`,
       pass:
         visibleHtml.includes("cleaning-detail-tabs") &&
         visibleHtml.includes("cleaning-tab-list") &&
         visibleHtml.includes('role="tablist"') &&
-        visibleHtml.includes("cleaning-detail-mobile") &&
-        visibleHtml.includes("<details"),
+        visibleHtml.includes("cleaning-tab-button") &&
+        visibleHtml.includes('role="tabpanel"') &&
+        !visibleHtml.includes("cleaning-detail-mobile") &&
+        !visibleHtml.includes("cleaning-mobile-detail"),
     });
     results.push({
       detail: route.path,

@@ -9,7 +9,7 @@
  * - docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
  * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
@@ -20,6 +20,7 @@
  * - 2026-06-21: Added homepage mini FAQ and dedicated FAQ route smoke coverage.
  * - 2026-06-21: Added Cleaning service de-duplication and small-commercial smoke guards.
  * - 2026-06-25: Updated Cleaning checks for service cards plus shared detail selector markup.
+ * - 2026-06-25: Locked Cleaning to one active detail panel instead of duplicated desktop/mobile details.
  * ============================================================
  */
 
@@ -133,8 +134,8 @@ const routes: readonly RouteContract[] = [
       "cleaning-service-grid",
       "cleaning-service-card",
       "cleaning-detail-tabs",
-      "cleaning-tab-panel",
-      "cleaning-mobile-detail",
+      "cleaning-tab-button",
+      "cleaning-detail-panel",
       "Missing details BizPilot can help ask for",
     ],
     mustNotContain: ["Small commercial cleaning", "Commercial and specialist"],
@@ -148,8 +149,8 @@ const routes: readonly RouteContract[] = [
       "cleaning-service-grid",
       "cleaning-service-card",
       "cleaning-detail-tabs",
-      "cleaning-tab-panel",
-      "cleaning-mobile-detail",
+      "cleaning-tab-button",
+      "cleaning-detail-panel",
       "Détails manquants que BizPilot peut aider à demander",
     ],
     mustNotContain: ["Petit nettoyage commercial", "Commercial et spécialisé"],

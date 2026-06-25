@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-06-21: Added accented pseudolocale output and final UI matrix source contracts.
  * - 2026-06-25: Locked final visual acceptance matrix labels for homepage and six-card checks.
+ * - 2026-06-25: Updated Cleaning matrix labels for one shared detail selector.
  * ============================================================
  */
 
@@ -197,7 +198,8 @@ describe("public pseudolocale visual contracts", () => {
       "home old workflow duplication removed",
       "six-card grids avoid four-column compression",
       "cleaning has six compact cards",
-      "cleaning has desktop tabs and mobile accordion",
+      "cleaning has one active detail panel",
+      "cleaning has one shared detail selector",
       "pricing has three plan cards",
       "pricing CTAs anchored",
       "external link target/rel",

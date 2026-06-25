@@ -29,6 +29,7 @@
  * - 2026-06-25: Updated Cleaning guards for six service detail entries and one shared selector.
  * - 2026-06-25: Locked supporting public pages to canonical rhythm primitives.
  * - 2026-06-25: Added final acceptance guards for visual hooks and nested-card scroll traps.
+ * - 2026-06-25: Locked Cleaning details to one active selector panel without responsive duplicate blocks.
  * ============================================================
  */
 
@@ -185,6 +186,7 @@ describe("public visual stability source contracts", () => {
     const pilotTemplate = source("components/public/pilot-request-template-card.tsx");
     const publicMarketingSources = [
       source("components/public/marketing-ui.tsx"),
+      source("components/public/cleaning-service-details.tsx"),
       pilotTemplate,
       ...publicRouteFiles.map((path) => source(path)),
     ].join("\n");
@@ -450,6 +452,7 @@ describe("public visual stability source contracts", () => {
     const homepage = source("app/page.tsx");
     const features = source("app/features/page.tsx");
     const cleaning = source("app/industries/cleaning/page.tsx");
+    const cleaningDetails = source("components/public/cleaning-service-details.tsx");
     const publicSiteCopy = source("lib/i18n/public-site-copy.ts");
     const pricing = source("app/pricing/page.tsx");
 
@@ -480,22 +483,32 @@ describe("public visual stability source contracts", () => {
 
     for (const required of [
       "const services = copy.serviceCards",
+      "CleaningServiceDetails",
       "cleaning-service-grid",
       "cleaning-service-card",
-      "cleaning-detail-tabs",
-      "cleaning-tab-list",
-      'role="tablist"',
-      'role="tabpanel"',
-      "cleaning-detail-mobile",
       "copy.detailSection.clearTitle",
       "copy.detailHelp.title",
       "copy.detailHelp.body",
       "copy.serviceActionLabel",
-      "service.clearDetails.map",
-      "service.missingDetails.map",
-      "<details",
     ]) {
       assert.equal(cleaning.includes(required), true, `Cleaning layout missing ${required}`);
+    }
+
+    for (const required of [
+      "cleaning-detail-tabs",
+      "cleaning-tab-list",
+      "cleaning-tab-button",
+      "cleaning-detail-panel",
+      'role="tablist"',
+      'role="tabpanel"',
+      "activeService.clearDetails",
+      "activeService.missingDetails",
+    ]) {
+      assert.equal(
+        cleaningDetails.includes(required),
+        true,
+        `Cleaning detail component missing ${required}`,
+      );
     }
 
     assert.equal(
@@ -525,7 +538,25 @@ describe("public visual stability source contracts", () => {
       false,
       "Cleaning page should not render the previous three oversized family mega-cards.",
     );
+    for (const duplicateMarker of [
+      "cleaning-detail-desktop",
+      "cleaning-detail-mobile",
+      "cleaning-mobile-detail",
+      "cleaning-tab-panel",
+      "<details",
+    ]) {
+      assert.equal(
+        `${cleaning}\n${cleaningDetails}`.includes(duplicateMarker),
+        false,
+        `Cleaning should not keep duplicated responsive detail marker ${duplicateMarker}.`,
+      );
+    }
     assert.equal(globals.includes(".cleaning-service-grid"), true);
+    assert.equal(globals.includes(".cleaning-detail-desktop"), false);
+    assert.equal(globals.includes(".cleaning-detail-mobile"), false);
+    assert.equal(globals.includes(".cleaning-tab-panel"), false);
+    assert.equal(globals.includes(".cleaning-tab-button"), true);
+    assert.equal(globals.includes(".cleaning-detail-panel"), true);
     assert.equal(
       globals.includes(".cleaning-service-grid {\n    grid-template-columns: repeat(3, minmax(0, 1fr));"),
       true,

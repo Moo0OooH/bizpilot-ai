@@ -21,6 +21,7 @@
  * - 2026-06-21: Locked final quote consent and no-confirmation notices.
  * - 2026-06-25: Updated canonical homepage hero copy for owner-review wording.
  * - 2026-06-25: Locked Cleaning copy to six service detail entries instead of repeated families.
+ * - 2026-06-25: Updated Cleaning layout source guard to the shared detail selector component.
  * ============================================================
  */
 
@@ -951,7 +952,8 @@ describe("BizPilot language copy", () => {
       ["app/features/page.tsx", "supporting-six-grid"],
       ["app/features/page.tsx", "supporting-four-grid"],
       ["app/industries/cleaning/page.tsx", "cleaning-service-grid"],
-      ["app/industries/cleaning/page.tsx", "cleaning-detail-tabs"],
+      ["app/industries/cleaning/page.tsx", "CleaningServiceDetails"],
+      ["components/public/cleaning-service-details.tsx", "cleaning-detail-tabs"],
       ["app/trust/page.tsx", "copy.pillars", "copy.items"],
       ["app/trust/page.tsx", "supporting-three-grid"],
       ["app/pricing/page.tsx", "copy.afterApply"],
