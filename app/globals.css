@@ -33,6 +33,7 @@ Change Log:
 - 2026-06-25: Rebalanced homepage hero and Problem section rhythm for final visual sizing.
 - 2026-06-25: Reworked Cleaning page service/detail rhythm around one six-service selector.
 - 2026-06-25: Replaced duplicated Cleaning desktop/mobile detail CSS with one active detail selector.
+- 2026-06-25: Tightened homepage hero width, mockup density, and section typography scale.
 ============================================================
 */
 
@@ -97,10 +98,10 @@ Change Log:
   --bp-section-tight-space: clamp(2rem, 4.5vw, 4rem);
   --bp-section-hero-space: clamp(2.25rem, 5vh, 4.75rem);
   --bp-hero-grid-gap: clamp(2rem, 4vw, 4rem);
-  --bp-display-size: clamp(2.6rem, 4.6vw, 4.9rem);
+  --bp-display-size: clamp(2.55rem, 4.45vw, 4.75rem);
   --bp-page-title-size: clamp(2.15rem, 1.55rem + 1.4vw, 3.45rem);
-  --bp-section-title-size: clamp(1.85rem, 3vw, 3.2rem);
-  --bp-card-title-size: clamp(1.2rem, 1.35vw, 1.5rem);
+  --bp-section-title-size: clamp(1.85rem, 2.85vw, 3.05rem);
+  --bp-card-title-size: clamp(1.15rem, 1.1vw, 1.4rem);
   --bp-body-size: clamp(1rem, 0.22vw + 0.95rem, 1.125rem);
   --bp-meta-size: clamp(0.82rem, 0.15vw + 0.78rem, 0.95rem);
   --public-max: var(--bp-container-max);
@@ -595,10 +596,13 @@ select {
 }
 
 .homepage-hero-section {
-  padding-block: clamp(1.75rem, 3.6vh, 3.25rem);
+  padding-block: clamp(1.5rem, 3vh, 2.75rem);
 }
 
-.homepage-hero-copy,
+.homepage-hero-copy {
+  max-inline-size: min(100%, 48rem);
+}
+
 .homepage-hero-body {
   max-inline-size: min(100%, 44rem);
 }
@@ -614,24 +618,24 @@ select {
 }
 
 .homepage-hero-mockup {
-  max-inline-size: min(100%, 24.5rem);
+  max-inline-size: min(100%, 23.5rem);
 }
 
 .homepage-mockup-draft-body {
   display: -webkit-box;
-  max-block-size: 4.65rem;
+  max-block-size: 3.05rem;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
 }
 
 .homepage-section-heading {
-  font-size: 1.65rem;
+  font-size: 1.72rem;
   line-height: 1.12;
 }
 
 .homepage-problem-section {
-  padding-block: 1.25rem 2rem;
+  padding-block: 1rem 1.75rem;
 }
 
 .homepage-demo-grid,
@@ -801,7 +805,7 @@ select {
   }
 
   .homepage-section-heading {
-    font-size: 1.95rem;
+    font-size: 2rem;
   }
 
   .homepage-demo-grid,
@@ -840,7 +844,7 @@ select {
   }
 
   .homepage-section-heading {
-    font-size: 2.05rem;
+    font-size: 2.15rem;
   }
 
   .homepage-demo-grid,
@@ -878,23 +882,23 @@ select {
 
 @media (min-width: 1100px) {
   .homepage-hero-title {
-    font-size: 3.28rem;
+    font-size: 3.18rem;
   }
 
   .homepage-problem-section {
-    padding-block: 2rem 2.5rem;
+    padding-block: 1.25rem 2.25rem;
   }
 }
 
 @media (min-width: 1500px) {
   .homepage-hero-title {
-    font-size: 3.65rem;
+    font-size: 3.45rem;
   }
 }
 
 @media (min-width: 1100px) and (max-height: 780px) {
   .homepage-hero-section {
-    padding-block: clamp(1.25rem, 2.8vh, 2.15rem);
+    padding-block: clamp(1.05rem, 2.4vh, 1.8rem);
   }
 
   .homepage-hero-grid {
@@ -902,7 +906,7 @@ select {
   }
 
   .homepage-hero-mockup {
-    max-inline-size: min(100%, 23.5rem);
+    max-inline-size: min(100%, 22rem);
   }
 }
 

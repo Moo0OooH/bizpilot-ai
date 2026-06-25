@@ -30,6 +30,7 @@
  * - 2026-06-25: Locked supporting public pages to canonical rhythm primitives.
  * - 2026-06-25: Added final acceptance guards for visual hooks and nested-card scroll traps.
  * - 2026-06-25: Locked Cleaning details to one active selector panel without responsive duplicate blocks.
+ * - 2026-06-25: Updated homepage hero rhythm guards for the final tighter first fold.
  * ============================================================
  */
 
@@ -100,10 +101,10 @@ describe("public visual stability source contracts", () => {
       "--bp-section-tight-space: clamp(2rem, 4.5vw, 4rem);",
       "--bp-section-hero-space: clamp(2.25rem, 5vh, 4.75rem);",
       "--bp-hero-grid-gap: clamp(2rem, 4vw, 4rem);",
-      "--bp-display-size: clamp(2.6rem, 4.6vw, 4.9rem);",
+      "--bp-display-size: clamp(2.55rem, 4.45vw, 4.75rem);",
       "--bp-page-title-size: clamp(2.15rem, 1.55rem + 1.4vw, 3.45rem);",
-      "--bp-section-title-size: clamp(1.85rem, 3vw, 3.2rem);",
-      "--bp-card-title-size: clamp(1.2rem, 1.35vw, 1.5rem);",
+      "--bp-section-title-size: clamp(1.85rem, 2.85vw, 3.05rem);",
+      "--bp-card-title-size: clamp(1.15rem, 1.1vw, 1.4rem);",
       "--bp-body-size: clamp(1rem, 0.22vw + 0.95rem, 1.125rem);",
       "--bp-meta-size: clamp(0.82rem, 0.15vw + 0.78rem, 0.95rem);",
     ]) {
@@ -340,8 +341,13 @@ describe("public visual stability source contracts", () => {
     );
     assert.equal(
       globals.includes("@media (min-width: 1100px) {\n  .homepage-hero-title {\n    font-size: 3.28rem;"),
+      false,
+      "Homepage hero should no longer use the previous taller desktop title size.",
+    );
+    assert.equal(
+      globals.includes("@media (min-width: 1100px) {\n  .homepage-hero-title {\n    font-size: 3.18rem;"),
       true,
-      "Homepage hero should keep a compact desktop title size in CSS.",
+      "Homepage hero should keep a tighter desktop title size in CSS.",
     );
     assert.equal(globals.includes("max-inline-size: min(100%, 49rem);"), true);
     assert.equal(
@@ -350,12 +356,12 @@ describe("public visual stability source contracts", () => {
       "Short desktop viewports need reduced hero padding instead of smaller body text.",
     );
     assert.equal(
-      globals.includes("max-inline-size: min(100%, 23.5rem);"),
+      globals.includes("max-inline-size: min(100%, 22rem);"),
       true,
       "Short desktop viewports need a compact hero preview card to stay inside the first fold.",
     );
     assert.equal(
-      homepage.includes("min-h-[1.5rem]"),
+      homepage.includes("min-h-[1.25rem]"),
       true,
       "Homepage mockup field values should keep compact field heights for first-fold visibility.",
     );
