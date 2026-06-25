@@ -9,7 +9,7 @@ Related:
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-06-21
+Last Updated: 2026-06-25
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
@@ -29,6 +29,7 @@ Change Log:
 - 2026-06-21: Added pricing-card container query behavior for compact multilingual CTAs.
 - 2026-06-21: Mapped public amber utility surfaces to semantic dark-theme tokens.
 - 2026-06-21: Added hydration-stable theme trigger icon switching.
+- 2026-06-25: Added canonical bp responsive sizing, typography, container, section, and grid primitives.
 ============================================================
 */
 
@@ -85,16 +86,30 @@ Change Log:
   --text-strong-semantic: var(--text-strong);
   --border-default-semantic: var(--border-default);
   --teal-accent: var(--accent);
-  --public-max: 75rem;
-  --public-gutter: clamp(1rem, 0.55rem + 1.8vw, 2.5rem);
-  --legal-max: 50rem;
+  --bp-container-padding: clamp(1.25rem, 4vw, 2.5rem);
+  --bp-container-max: 73.75rem;
+  --bp-container-wide-max: 80rem;
+  --bp-container-narrow-max: 50rem;
+  --bp-section-space: clamp(3rem, 6.5vw, 6rem);
+  --bp-section-tight-space: clamp(2rem, 4.5vw, 4rem);
+  --bp-section-hero-space: clamp(2.25rem, 5vh, 4.75rem);
+  --bp-hero-grid-gap: clamp(2rem, 4vw, 4rem);
+  --bp-display-size: clamp(2.6rem, 4.6vw, 4.9rem);
+  --bp-page-title-size: clamp(2.15rem, 1.55rem + 1.4vw, 3.45rem);
+  --bp-section-title-size: clamp(1.85rem, 3vw, 3.2rem);
+  --bp-card-title-size: clamp(1.2rem, 1.35vw, 1.5rem);
+  --bp-body-size: clamp(1rem, 0.22vw + 0.95rem, 1.125rem);
+  --bp-meta-size: clamp(0.82rem, 0.15vw + 0.78rem, 0.95rem);
+  --public-max: var(--bp-container-max);
+  --public-gutter: var(--bp-container-padding);
+  --legal-max: var(--bp-container-narrow-max);
   --dashboard-max: 90rem;
-  --text-hero: clamp(2.5rem, 1.85rem + 2.25vw, 4.5rem);
-  --text-section: clamp(1.9rem, 1.55rem + 1.25vw, 3rem);
-  --text-page: clamp(2rem, 1.7rem + 0.9vw, 2.75rem);
-  --text-lead: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
-  --section-space: clamp(3.5rem, 2.6rem + 2.4vw, 6rem);
-  --section-space-compact: clamp(2.5rem, 2rem + 1.4vw, 4.5rem);
+  --text-hero: var(--bp-display-size);
+  --text-section: var(--bp-section-title-size);
+  --text-page: var(--bp-page-title-size);
+  --text-lead: var(--bp-body-size);
+  --section-space: var(--bp-section-space);
+  --section-space-compact: var(--bp-section-tight-space);
   --card-pad: clamp(1rem, 0.75rem + 0.9vw, 2rem);
   --grid-gap: clamp(1rem, 0.75rem + 0.8vw, 1.75rem);
   --biz-page-bg: var(--canvas);
@@ -358,6 +373,156 @@ select {
   display: inline-flex;
 }
 
+.bp-page {
+  min-block-size: 100svh;
+  background: var(--canvas);
+  color: var(--text-default);
+}
+
+.bp-container,
+.bp-container-wide,
+.bp-container-narrow {
+  margin-inline: auto;
+  min-inline-size: 0;
+}
+
+.bp-container {
+  width: min(100% - (2 * var(--bp-container-padding)), var(--bp-container-max));
+}
+
+.bp-container-wide {
+  width: min(100% - (2 * var(--bp-container-padding)), var(--bp-container-wide-max));
+}
+
+.bp-container-narrow {
+  width: min(100% - (2 * var(--bp-container-padding)), var(--bp-container-narrow-max));
+}
+
+.bp-section {
+  padding-block: var(--bp-section-space);
+}
+
+.bp-section-tight {
+  padding-block: var(--bp-section-tight-space);
+}
+
+.bp-section-hero {
+  padding-block: var(--bp-section-hero-space);
+}
+
+.bp-hero-grid {
+  display: grid;
+  min-inline-size: 0;
+  align-items: center;
+  gap: var(--bp-hero-grid-gap);
+}
+
+.bp-grid-six,
+.bp-grid-three,
+.bp-grid-two,
+.bp-pricing-grid,
+.bp-trust-grid {
+  display: grid;
+  min-inline-size: 0;
+  gap: var(--grid-gap);
+}
+
+.bp-grid-six,
+.bp-grid-three,
+.bp-pricing-grid,
+.bp-trust-grid {
+  grid-template-columns: 1fr;
+}
+
+.bp-grid-two {
+  grid-template-columns: 1fr;
+}
+
+.bp-grid-six > *,
+.bp-grid-three > *,
+.bp-grid-two > *,
+.bp-pricing-grid > *,
+.bp-trust-grid > * {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.bp-display,
+.bp-page-title,
+.bp-section-title,
+.bp-card-title {
+  color: var(--text-strong);
+  font-weight: 900;
+  text-wrap: balance;
+}
+
+.bp-display {
+  max-inline-size: min(100%, 58rem);
+  font-size: var(--bp-display-size);
+  line-height: 1.02;
+}
+
+.bp-page-title {
+  max-inline-size: min(100%, 52rem);
+  font-size: var(--bp-page-title-size);
+  line-height: 1.06;
+}
+
+.bp-section-title {
+  max-inline-size: min(100%, 46rem);
+  font-size: var(--bp-section-title-size);
+  line-height: 1.1;
+}
+
+.bp-card-title {
+  min-block-size: 2lh;
+  font-size: var(--bp-card-title-size);
+  line-height: 1.18;
+}
+
+.bp-body {
+  max-inline-size: min(100%, 46rem);
+  color: var(--text-default);
+  font-size: var(--bp-body-size);
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+
+.bp-meta,
+.bp-eyebrow,
+.bp-badge {
+  font-size: var(--bp-meta-size);
+  line-height: 1.25;
+}
+
+.bp-meta {
+  color: var(--text-muted);
+}
+
+.bp-eyebrow,
+.bp-badge {
+  color: var(--accent);
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.bp-badge {
+  display: inline-flex;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.bp-button-row {
+  display: flex;
+  min-inline-size: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+}
+
 .public-container {
   width: min(100% - (2 * var(--public-gutter)), var(--public-max));
   margin-inline: auto;
@@ -616,6 +781,17 @@ select {
 }
 
 @media (min-width: 768px) {
+  .bp-grid-six {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bp-grid-two,
+  .bp-grid-three,
+  .bp-pricing-grid,
+  .bp-trust-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .homepage-section-heading {
     font-size: 2.05rem;
   }
@@ -641,6 +817,24 @@ select {
 }
 
 @media (min-width: 1180px) {
+  .bp-hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(19rem, 0.44fr);
+  }
+
+  .bp-grid-six {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bp-grid-three,
+  .bp-pricing-grid,
+  .bp-trust-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bp-grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .homepage-section-heading {
     font-size: 2.25rem;
   }

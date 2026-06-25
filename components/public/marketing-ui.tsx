@@ -10,7 +10,7 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
@@ -18,6 +18,7 @@
  * - 2026-06-21: Removed duplicated compact header CTA markup so each shell state exposes one primary pilot action.
  * - 2026-06-21: Attached localization-aware copy role classes to shared primitives.
  * - 2026-06-21: Added the dedicated FAQ route to the public footer links.
+ * - 2026-06-25: Attached public shell containers to canonical bp responsive primitives.
  * ============================================================
  */
 
@@ -227,7 +228,7 @@ export function MarketingShell({
   className = "",
 }: Readonly<{ children: ReactNode; className?: string }>) {
   return (
-    <div className={`public-container ${className}`}>
+    <div className={`bp-container public-container ${className}`}>
       {children}
     </div>
   );
@@ -439,7 +440,7 @@ export function MarketingHeader({
       className="sticky top-0 z-40 border-b backdrop-blur-xl"
       style={{ backgroundColor: "color-mix(in srgb, var(--canvas) 88%, transparent)", borderColor: marketingTone.border }}
     >
-      <nav className="public-container flex min-h-[64px] items-center justify-between gap-3 py-2 min-[1240px]:min-h-[76px]">
+      <nav className="bp-container public-container flex min-h-[64px] items-center justify-between gap-3 py-2 min-[1240px]:min-h-[76px]">
         <MarketingBrand subtitle={copy.brandSubtitle} />
         <div className="hidden items-center gap-1 min-[1240px]:flex">
           {navItems.map((item) => {
@@ -540,7 +541,7 @@ export function MarketingFooter({
 
   return (
     <footer className="border-t px-5 py-10 sm:px-8 lg:px-10" style={{ borderColor: marketingTone.border }}>
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 text-[12px] md:flex-row md:items-center md:justify-between">
+      <div className="bp-container-wide mx-auto flex w-full max-w-[1200px] flex-col gap-6 text-[12px] md:flex-row md:items-center md:justify-between">
         <MarketingBrand subtitle={copy.brandSubtitle} />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2" style={{ color: marketingTone.soft }}>
           {links.map((link) => (

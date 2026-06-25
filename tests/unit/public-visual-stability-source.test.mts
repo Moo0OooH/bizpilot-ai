@@ -11,7 +11,7 @@
  * - components/ui/theme-preference-control.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-21: Added homepage demo numbering regression coverage.
  * - 2026-06-21: Added canonical public responsive-grid regression coverage.
@@ -24,6 +24,7 @@
  * - 2026-06-21: Locked hydration-stable theme trigger icon switching.
  * - 2026-06-21: Added guards against duplicated Cleaning service detail cards.
  * - 2026-06-21: Updated homepage hero rhythm guardrails for CSS-owned type and compact mockup sizing.
+ * - 2026-06-25: Locked the canonical bp responsive primitive foundation.
  * ============================================================
  */
 
@@ -50,6 +51,71 @@ const publicRouteFiles = [
 ] as const;
 
 describe("public visual stability source contracts", () => {
+  it("keeps the canonical bp responsive primitive foundation available", () => {
+    const globals = source("app/globals.css");
+    const marketingUi = source("components/public/marketing-ui.tsx");
+
+    for (const primitive of [
+      ".bp-page",
+      ".bp-container",
+      ".bp-container-wide",
+      ".bp-container-narrow",
+      ".bp-section",
+      ".bp-section-tight",
+      ".bp-section-hero",
+      ".bp-hero-grid",
+      ".bp-grid-six",
+      ".bp-grid-three",
+      ".bp-grid-two",
+      ".bp-pricing-grid",
+      ".bp-trust-grid",
+      ".bp-display",
+      ".bp-page-title",
+      ".bp-section-title",
+      ".bp-card-title",
+      ".bp-body",
+      ".bp-meta",
+      ".bp-eyebrow",
+      ".bp-badge",
+      ".bp-button-row",
+    ]) {
+      assert.equal(
+        globals.includes(primitive),
+        true,
+        `Missing canonical public primitive ${primitive}.`,
+      );
+    }
+
+    for (const token of [
+      "--bp-container-padding: clamp(1.25rem, 4vw, 2.5rem);",
+      "--bp-container-max: 73.75rem;",
+      "--bp-container-wide-max: 80rem;",
+      "--bp-container-narrow-max: 50rem;",
+      "--bp-section-space: clamp(3rem, 6.5vw, 6rem);",
+      "--bp-section-tight-space: clamp(2rem, 4.5vw, 4rem);",
+      "--bp-section-hero-space: clamp(2.25rem, 5vh, 4.75rem);",
+      "--bp-hero-grid-gap: clamp(2rem, 4vw, 4rem);",
+      "--bp-display-size: clamp(2.6rem, 4.6vw, 4.9rem);",
+      "--bp-page-title-size: clamp(2.15rem, 1.55rem + 1.4vw, 3.45rem);",
+      "--bp-section-title-size: clamp(1.85rem, 3vw, 3.2rem);",
+      "--bp-card-title-size: clamp(1.2rem, 1.35vw, 1.5rem);",
+      "--bp-body-size: clamp(1rem, 0.22vw + 0.95rem, 1.125rem);",
+      "--bp-meta-size: clamp(0.82rem, 0.15vw + 0.78rem, 0.95rem);",
+    ]) {
+      assert.equal(
+        globals.includes(token),
+        true,
+        `Missing canonical public token ${token}.`,
+      );
+    }
+
+    assert.equal(globals.includes("--public-max: var(--bp-container-max);"), true);
+    assert.equal(globals.includes("--public-gutter: var(--bp-container-padding);"), true);
+    assert.equal(globals.includes("--legal-max: var(--bp-container-narrow-max);"), true);
+    assert.equal(marketingUi.includes("bp-container public-container"), true);
+    assert.equal(marketingUi.includes("bp-container-wide mx-auto"), true);
+  });
+
   it("keeps public surfaces free of overflow masking and viewport-width traps", () => {
     const globals = source("app/globals.css");
     const publicSources = [
