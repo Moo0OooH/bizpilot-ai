@@ -25,6 +25,7 @@
  * - 2026-06-21: Added guards against duplicated Cleaning service detail cards.
  * - 2026-06-21: Updated homepage hero rhythm guardrails for CSS-owned type and compact mockup sizing.
  * - 2026-06-25: Locked the canonical bp responsive primitive foundation.
+ * - 2026-06-25: Updated homepage hero rhythm guardrails for the final balanced fold.
  * ============================================================
  */
 
@@ -242,31 +243,38 @@ describe("public visual stability source contracts", () => {
       "Homepage hero title size should be owned by the rhythm CSS contract.",
     );
     assert.equal(
-      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 50rem);\n  font-size: 2.35rem;"),
+      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 49rem);\n  font-size: 2.25rem;"),
       true,
       "Homepage hero should keep a compact mobile/base title size in CSS.",
     );
     assert.equal(
       globals.includes("@media (min-width: 1100px) {\n  .homepage-hero-title {\n    font-size: 3.45rem;"),
+      false,
+      "Homepage hero should no longer use the older heavier desktop title size.",
+    );
+    assert.equal(
+      globals.includes("@media (min-width: 1100px) {\n  .homepage-hero-title {\n    font-size: 3.28rem;"),
       true,
       "Homepage hero should keep a compact desktop title size in CSS.",
     );
-    assert.equal(globals.includes("max-inline-size: min(100%, 50rem);"), true);
+    assert.equal(globals.includes("max-inline-size: min(100%, 49rem);"), true);
     assert.equal(
       globals.includes("@media (min-width: 1100px) and (max-height: 780px)"),
       true,
       "Short desktop viewports need reduced hero padding instead of smaller body text.",
     );
     assert.equal(
-      globals.includes("max-inline-size: min(100%, 25rem);"),
+      globals.includes("max-inline-size: min(100%, 23.5rem);"),
       true,
       "Short desktop viewports need a compact hero preview card to stay inside the first fold.",
     );
     assert.equal(
-      homepage.includes("min-h-[1.75rem]"),
+      homepage.includes("min-h-[1.5rem]"),
       true,
       "Homepage mockup field values should keep compact field heights for first-fold visibility.",
     );
+    assert.equal(homepage.includes("bp-button-row homepage-hero-actions"), true);
+    assert.equal(homepage.includes("min-[360px]:flex-row"), true);
     assert.equal(
       globals.includes(".homepage-problem-section"),
       true,

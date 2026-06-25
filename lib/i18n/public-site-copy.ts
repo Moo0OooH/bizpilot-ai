@@ -10,7 +10,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
  * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
@@ -19,6 +19,7 @@
  * - 2026-06-21: Split the full public FAQ into a dedicated localized route and shortened the homepage FAQ.
  * - 2026-06-21: Simplified Cleaning page service detail copy and removed the extra commercial service from the public surface.
  * - 2026-06-21: Polished final English and Canadian French public copy.
+ * - 2026-06-25: Aligned homepage hero subcopy with the owner-review wording.
  * ============================================================
  */
 
@@ -888,7 +889,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "Built for cleaning businesses first",
       body:
-        "Capture quote requests, organize leads, and prepare replies to approve — without auto-send.",
+        "Capture quote requests, organize leads, and prepare replies for owner review — without auto-send.",
       primaryCta: "Join founder pilot",
       secondaryCta: "Watch demo",
       title: "Stop losing cleaning quote requests to slow replies.",
@@ -900,7 +901,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     meta: {
       description:
-        "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies to approve without auto-send.",
+        "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
       title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
     },
     mockup: {

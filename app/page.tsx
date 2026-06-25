@@ -9,7 +9,7 @@
  * - lib/i18n/home-copy.ts
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-18: Applied responsive hero, section density, and no-inner-scroll demo hardening.
  * - 2026-06-19: Mapped the hero product preview to semantic theme surfaces for dark contrast.
@@ -24,6 +24,7 @@
  * - 2026-06-21: Tightened first-fold hero rhythm so the preview card stays visible on desktop.
  * - 2026-06-21: Shortened the homepage FAQ and linked to the dedicated full FAQ route.
  * - 2026-06-21: Removed the homepage roadmap band so the page stays focused on quote recovery proof.
+ * - 2026-06-25: Rebalanced homepage hero, CTA grouping, mockup density, and Problem section rhythm.
  * ============================================================
  */
 
@@ -112,7 +113,7 @@ function SectionTitle({
 function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
   return (
     <MarketingCard
-      className="homepage-hero-mockup w-full p-2.5 sm:p-3"
+      className="homepage-hero-mockup w-full p-2 sm:p-2.5"
       style={{
         background:
           "linear-gradient(180deg, var(--surface-elevated), var(--surface))",
@@ -121,7 +122,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
       }}
     >
       <div
-        className="flex items-center justify-between gap-2 border-b pb-2"
+        className="flex items-center justify-between gap-2 border-b pb-1.5"
         style={{ borderColor: "var(--border-default)" }}
       >
         <div>
@@ -152,10 +153,10 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
         </span>
       </div>
 
-      <div className="mt-2 grid grid-cols-2 gap-1.5">
+      <div className="mt-1.5 grid grid-cols-2 gap-1.5">
         {copy.fields.map(([label, value]) => (
           <div
-            className="rounded-[10px] border p-1.5 sm:p-2"
+            className="rounded-[10px] border p-1.5"
             key={label}
             style={{
               backgroundColor: "var(--surface-interactive)",
@@ -169,7 +170,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
               {label}
             </p>
             <p
-              className="mt-1 min-h-[1.75rem] text-[12px] font-black leading-4"
+              className="mt-1 min-h-[1.5rem] text-[12px] font-black leading-4"
               style={{ color: "var(--text-strong)" }}
             >
               {value}
@@ -179,7 +180,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
       </div>
 
       <div
-        className="mt-2 rounded-[12px] border p-2"
+        className="mt-1.5 rounded-[12px] border p-2"
         style={{
           backgroundColor:
             "color-mix(in srgb, var(--accent-decorative) 14%, var(--surface-elevated))",
@@ -205,13 +206,13 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           </span>
         </div>
         <p
-          className="bp-copy-card-body homepage-mockup-draft-body mt-2 text-[11px] leading-[1.55]"
+          className="bp-copy-card-body homepage-mockup-draft-body mt-1.5 text-[11px] leading-[1.5]"
           style={{ color: "var(--text-default)" }}
         >
           {copy.draftBody}
         </p>
         <button
-          className="bp-copy-button mt-2 inline-flex min-h-8 items-center justify-center rounded-[10px] px-3 text-[11px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+          className="bp-copy-button mt-1.5 inline-flex min-h-7 items-center justify-center rounded-[10px] px-3 text-[11px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
           style={{
             backgroundColor: "var(--primary)",
             color: "var(--primary-contrast)",
@@ -227,9 +228,9 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
 
 function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
   return (
-    <section className="homepage-hero-section">
+    <section className="bp-section-hero homepage-hero-section">
       <MarketingShell>
-        <div className="homepage-hero-grid grid min-w-0 items-center gap-5 min-[1100px]:grid-cols-[minmax(0,1fr)_minmax(19rem,0.44fr)] min-[1100px]:gap-8">
+        <div className="bp-hero-grid homepage-hero-grid grid min-w-0 items-center gap-5 min-[1100px]:grid-cols-[minmax(0,1fr)_minmax(19rem,0.44fr)] min-[1100px]:gap-8">
           <div className="homepage-hero-copy min-w-0">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
             <h1
@@ -244,16 +245,16 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
             >
               {copy.hero.body}
             </p>
-            <div className="homepage-hero-actions mt-5 flex flex-col gap-3 min-[460px]:flex-row">
+            <div className="bp-button-row homepage-hero-actions mt-5 flex flex-col gap-3 min-[360px]:flex-row">
               <MarketingButton href="/pilot">{copy.hero.primaryCta}</MarketingButton>
               <MarketingButton href="/demo" variant="secondary">
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="bp-button-row mt-4 flex flex-wrap gap-1.5">
               {copy.hero.trustBadges.map((item) => (
                 <span
-                  className="bp-copy-status inline-flex items-center gap-2 rounded-full border px-3 py-2 text-[12px] font-black"
+                  className="bp-copy-status inline-flex items-center gap-2 rounded-full border px-2.5 py-1.5 text-[12px] font-black"
                   key={item}
                   style={{
                     backgroundColor: "rgba(255,255,255,0.045)",
@@ -413,7 +414,7 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
   const copy = getPublicSiteCopy(language).home;
 
   return (
-    <main className="public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <MarketingHeader copy={navCopy} language={language} redirectPath="/" />
       <HeroSection copy={copy} />
 

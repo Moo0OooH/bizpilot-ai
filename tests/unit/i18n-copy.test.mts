@@ -9,7 +9,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-06-25
  * Change Log:
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
@@ -19,6 +19,7 @@
  * - 2026-06-21: Added homepage/full FAQ split copy guards.
  * - 2026-06-21: Locked the Cleaning page to six services without small-commercial copy.
  * - 2026-06-21: Locked final quote consent and no-confirmation notices.
+ * - 2026-06-25: Updated canonical homepage hero copy for owner-review wording.
  * ============================================================
  */
 
@@ -665,7 +666,7 @@ describe("BizPilot language copy", () => {
     );
     assert.equal(
       englishPublicCopy.home.hero.body,
-      "Capture quote requests, organize leads, and prepare replies to approve — without auto-send.",
+      "Capture quote requests, organize leads, and prepare replies for owner review — without auto-send.",
     );
     assert.deepEqual(englishPublicCopy.home.hero.trustBadges, [
       "No auto-send",
