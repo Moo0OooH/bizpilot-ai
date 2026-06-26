@@ -170,8 +170,8 @@ starting new work:
   owner/team access audit/spec; implementation remains blocked.
 - `D1_OWNER_VISUAL_REVIEW_PREP_2026-06-26.md` - owner visual review prep and
   D1 synthetic visual acceptance note.
-- `TEMP_D1_REQUIRED_FILES_AND_REPO_INSPECTION_REPORT.md` - D1 repo inspection
-  and required-files report preserved for traceability.
+- `D1_REQUIRED_FILES_AND_REPO_INSPECTION_REPORT_2026-06-26.md` - D1 repo
+  inspection and required-files report preserved for traceability.
 - `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - public homepage
   chaos-to-clarity acceptance and main sync record.
 - `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - dashboard D1 local

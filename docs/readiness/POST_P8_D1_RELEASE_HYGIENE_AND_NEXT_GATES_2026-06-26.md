@@ -147,6 +147,10 @@ Safe tracked cleanup:
 
 - Removed obsolete repeated file-allocation comments from
   `app/(dashboard)/layout.tsx`.
+- Renamed the D1 required-files inspection report from the temporary
+  `TEMP_D1_REQUIRED_FILES_AND_REPO_INSPECTION_REPORT.md` name to the permanent
+  `D1_REQUIRED_FILES_AND_REPO_INSPECTION_REPORT_2026-06-26.md` name, then
+  updated active references.
 
 Generated/ignored cleanup policy:
 
@@ -221,3 +225,33 @@ Next phase:
 P1 real-data gate prep: local DB/RLS proof, local synthetic QA, quote smoke,
 and explicit owner approval review. No real data until the approval is written.
 ```
+
+## L. Final Repo Hygiene Pass
+
+Second-pass cleanup after the report commit:
+
+- Active docs no longer reference a `TEMP_` D1 report as current authority.
+- No generated `.next` cache or TypeScript build info is kept.
+- Empty/local Supabase branch cache `supabase/.branches` was removed.
+- Ignored local-only paths are intentionally preserved:
+  `.env.local`, `.env.local.codex-backup`, `.codex-secrets`, `.vercel`,
+  `node_modules`, `artifacts`, `docs.rar`, and `next-env.d.ts`.
+- No real credentials were printed.
+- No real customer data was entered.
+- No production mutation was performed.
+
+Second-pass verification after the cleanup:
+
+| Command | Result | Notes |
+|---|---:|---|
+| `pnpm verify` | PASS | Lint, typecheck, 139/139 unit tests, and build passed. |
+| `pnpm verify:local-db` | PASS | 139/139 unit tests and 13/13 local RLS tests passed. |
+| `pnpm smoke:public -- --base-url=http://127.0.0.1:3032` | PASS | 10/10 routes passed. |
+| `pnpm smoke:responsive -- --base-url=http://127.0.0.1:3032` | PASS | 19 routes checked, 0 failures. |
+| `pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3032` | PASS | Final UI matrix failures: 0. |
+| `pnpm smoke:quote -- --base-url=http://127.0.0.1:3032 --inactive-slug=phase1-unavailable-synthetic` | PASS | 1/1 inactive synthetic quote check passed. |
+| Production P8 GET check | PASS | P8 headline/chaos/clarity present; old/trial copy absent. |
+| `git diff --check` | PASS | No whitespace errors after final doc cleanup. |
+
+Dashboard auth smoke remains intentionally blocked while the configured
+Supabase URL is non-local.
