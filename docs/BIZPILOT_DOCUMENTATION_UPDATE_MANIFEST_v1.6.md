@@ -161,3 +161,40 @@ This addendum does not approve real customer data, paid pilot launch, billing
 automation, auth/RLS/database changes, AI provider changes, production data-flow
 expansion, or feature expansion beyond the manual-first owner-reviewed lead
 recovery surface.
+
+
+---
+
+# 2026-06-26 Post-P8/D1 Hygiene Addendum
+
+## Update Type
+
+Release hygiene, language-isolation fix evidence, admin/user access audit, and
+next-gate execution planning.
+
+## New Current Files Added
+
+- `TEMP_D1_REQUIRED_FILES_AND_REPO_INSPECTION_REPORT.md`
+- `D1_OWNER_VISUAL_REVIEW_PREP_2026-06-26.md`
+- `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
+- `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
+- `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
+- `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
+
+## Existing Files Updated
+
+- `README.md`
+- `CURRENT_CANONICAL_DOCS_v1.7.md`
+- `AI_CODING_AGENT_START_HERE_v1.7.md`
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`
+- `BIZPILOT_DOCS_FILE_INVENTORY_v1.7.md`
+
+## Current Interpretation
+
+P8 and D1 remain on `main`. P9 dashboard language isolation is a safe copy-only
+fix for the protected dashboard error boundary. A1 admin/owner user access is
+not approved for implementation in this pass because it needs separate
+schema/RLS/route decisions.
+
+Real customer data, paid pilot launch, billing automation, auth/RLS/database
+changes, AI provider changes, and production data-flow expansion remain blocked.

@@ -68,13 +68,18 @@ expansion.
 
 2026-06-26 P8/D1 status override: treat
 `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`,
+`readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`,
+`readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`,
+`P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`,
+`A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`,
 `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`, and
 `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` as the latest authority
 for the current `main` state. P8 public homepage clarity and D1 dashboard shell
 and lead workflow visual stabilization are on `main`. D1 is code/test/visual
-ready on local synthetic data only. Real customer data, paid pilot launch,
-billing automation, auth/RLS/database changes, AI provider changes, and
-production data-flow expansion remain NO-GO.
+ready on local synthetic data only. P9 language isolation is a safe dashboard
+copy fix. A1 admin/owner user access remains audit/spec only. Real customer
+data, paid pilot launch, billing automation, auth/RLS/database changes, AI
+provider changes, and production data-flow expansion remain NO-GO.
 
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
@@ -87,14 +92,18 @@ Read these first, in this exact order:
 1. `CURRENT_CANONICAL_DOCS_v1.7.md` - this file.
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` - current agent instructions.
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - active post-P8/D1 status, cleanup, and gate map.
-4. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - latest P8 public homepage evidence.
-5. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - latest D1 dashboard evidence.
-6. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - post-D0 project status and historical phase map, superseded by the 2026-06-26 status where different.
-7. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - EN/fr-CA public copy, sizing, theme, production evidence, and D1 GO/NO-GO record.
-8. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - public-site acceptance and production GO evidence before P8.
-9. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
-10. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
-11. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
+4. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest hygiene, verification, warning triage, and next gates.
+5. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md` - P0-P4 execution map.
+6. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md` - dashboard language-isolation fix report.
+7. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md` - admin/owner user access audit/spec.
+8. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - latest P8 public homepage evidence.
+9. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - latest D1 dashboard evidence.
+10. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - post-D0 project status and historical phase map, superseded by the 2026-06-26 status where different.
+11. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - EN/fr-CA public copy, sizing, theme, production evidence, and D1 GO/NO-GO record.
+12. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - public-site acceptance and production GO evidence before P8.
+13. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
+14. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
+15. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
 
 2026-06-18 public responsive authorities:
 
@@ -150,6 +159,19 @@ starting new work:
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
+- `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest
+  release hygiene, verification matrix, warning triage, and next gates.
+- `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md` - P0-P4 sequence from
+  release hygiene through real-data gate prep, A1 access design, pilot ops, and
+  future expansion.
+- `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md` - D1 dashboard
+  language-isolation audit and error-boundary copy fix.
+- `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md` - admin/founder and
+  owner/team access audit/spec; implementation remains blocked.
+- `D1_OWNER_VISUAL_REVIEW_PREP_2026-06-26.md` - owner visual review prep and
+  D1 synthetic visual acceptance note.
+- `TEMP_D1_REQUIRED_FILES_AND_REPO_INSPECTION_REPORT.md` - D1 repo inspection
+  and required-files report preserved for traceability.
 - `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - public homepage
   chaos-to-clarity acceptance and main sync record.
 - `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - dashboard D1 local

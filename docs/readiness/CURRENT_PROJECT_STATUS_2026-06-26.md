@@ -3,14 +3,16 @@
 Date: 2026-06-26
 Repo: `E:\bizpilot-ai`
 Branch: `main`
-Status scope: repo inspection, D1/P8 sync, cleanup, and release hygiene
+Status scope: repo inspection, D1/P8 sync, P9 language isolation, A1 access audit, cleanup, and release hygiene
 
 ## One-Line Status
 
 BizPilot AI is in a controlled post-P8/public-homepage and post-D1-dashboard
 stabilization phase. P8 public homepage clarity is on `main`. D1 dashboard
 shell and lead workflow stabilization is on `main` as local synthetic
-code/test/visual ready. Real customer data and paid pilot remain blocked.
+code/test/visual ready. P9 fixed a small dashboard language-isolation gap.
+A1 admin/owner user access remains audit/spec only. Real customer data and
+paid pilot remain blocked.
 
 ## Current Repo State
 
@@ -46,6 +48,35 @@ code/test/visual ready. Real customer data and paid pilot remain blocked.
 | Real data | BLOCKED | Phase 24G explicit owner approval is not recorded. |
 | Paid pilot | BLOCKED | Requires separate owner, ops, support, payment/refund, and restored app/RLS readiness gates. |
 | Feature expansion | BLOCKED before validation | No auto-send, booking, invoices, SMS/WhatsApp automation, full CRM, or autonomous AI. |
+
+## 2026-06-26 Post-P8/D1 Hygiene Addendum
+
+New current reports:
+
+```text
+docs/TEMP_D1_REQUIRED_FILES_AND_REPO_INSPECTION_REPORT.md
+docs/D1_OWNER_VISUAL_REVIEW_PREP_2026-06-26.md
+docs/P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md
+docs/A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md
+docs/readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md
+docs/readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md
+```
+
+Current interpretation:
+
+- Production homepage cache/deploy checks show the P8 chaos-to-clarity hero on
+  `https://bizpilo.com/`.
+- D1 remains visually accepted for local synthetic dashboard scope.
+- P9 moved dashboard error-boundary copy into the EN/fr-CA dictionary.
+- A1 owner/team access management must not start until a separate owner-approved
+  schema/RLS/route gate exists.
+- Current post-P8/D1 hygiene verification is recorded in
+  `docs/readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`.
+- Local DB/RLS proof passed in this session with a redacted local
+  `127.0.0.1:54322` target.
+- Dashboard auth smoke remains blocked while the configured Supabase URL is
+  non-local.
+- Real data and paid pilot remain blocked.
 
 ## Completed Work Now Reflected On Main
 
@@ -172,6 +203,8 @@ Not run in this status sync:
 | P8 report referenced old review/commit instructions | RESOLVED IN THIS SYNC | Updated to reflect main state. |
 | D1 report referenced review-branch readiness | RESOLVED IN THIS SYNC | Updated to reflect main commit state. |
 | Historical docs still contain older phase language | NON-BLOCKING | Current canonical map and this status file supersede older conflicts. |
+| Dashboard error boundary hardcoded English | RESOLVED | P9 moved visible copy to `lib/i18n/bizpilot-copy.ts` and added unit guards. |
+| A1 owner/team access implementation | BLOCKED | Audit/spec only; likely requires schema/RLS and route decisions. |
 | Dashboard smoke creates synthetic data | CONTROLLED | Run only against local/synthetic Supabase, not production-like env. |
 | Real customer data | BLOCKED | No approval recorded. |
 | Paid pilot | BLOCKED | Separate business/ops gate required. |
@@ -193,6 +226,8 @@ Current decision:
 ```text
 D1 code/test/visual ready on local synthetic data.
 P8 public homepage code/test/visual ready on main.
+P9 dashboard language-isolation fix ready.
+A1 admin/user access remains audit/spec only.
 Real data and paid pilot remain blocked.
 ```
 

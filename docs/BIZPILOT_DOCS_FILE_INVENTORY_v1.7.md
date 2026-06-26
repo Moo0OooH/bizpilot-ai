@@ -10,6 +10,12 @@ Docs and reports added or promoted as current after P8 homepage clarity and D1
 dashboard stabilization landed on `main`:
 
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`
+- `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
+- `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
+- `TEMP_D1_REQUIRED_FILES_AND_REPO_INSPECTION_REPORT.md`
+- `D1_OWNER_VISUAL_REVIEW_PREP_2026-06-26.md`
+- `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
+- `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
 - `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
 - `P8_PUBLIC_SITE_CLARITY_AUDIT_2026-06-26.md`
 - `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
@@ -19,6 +25,10 @@ Current interpretation:
 - P8 public homepage clarity is on `main` in commit `6e7cfc3`.
 - D1 dashboard shell and lead workflow stabilization is on `main` in commit
   `654a645` and is code/test/visual ready on local synthetic data only.
+- P9 dashboard language isolation moved error-boundary copy into EN/fr-CA
+  dictionaries.
+- A1 admin/owner user access is audit/spec only and remains blocked from
+  implementation until an owner-approved schema/RLS/route gate exists.
 - Real customer data, paid pilot launch, billing automation,
   auth/RLS/database changes, AI provider changes, and production data-flow
   expansion remain blocked.

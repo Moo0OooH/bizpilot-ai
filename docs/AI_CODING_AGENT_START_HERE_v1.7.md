@@ -37,11 +37,13 @@ For the shortest current status, read
 
 2026-06-26 update: P8 public homepage clarity and D1 dashboard shell/lead
 workflow stabilization are both on `main`. D1 is code/test/visual ready on
-local synthetic data only. Do not start new feature expansion. The next safe
-work is release hygiene, production deploy confirmation, local synthetic QA,
-quote slug smoke, local DB/RLS proof, Phase 24G explicit owner approval before
-real customer data, and a separate pilot ops/payment/support gate before paid
-pilot.
+local synthetic data only. P9 language isolation moved dashboard error-boundary
+copy into the EN/fr-CA dictionary. A1 admin/owner user access remains
+audit/spec only and must not be implemented without a separate owner-approved
+schema/RLS/route gate. Do not start new feature expansion. The next safe work is
+release hygiene, production deploy confirmation, local synthetic QA, quote slug
+smoke, local DB/RLS proof, Phase 24G explicit owner approval before real
+customer data, and a separate pilot ops/payment/support gate before paid pilot.
 
 Real customer data and paid pilot remain blocked.
 
@@ -68,10 +70,11 @@ BizPilot does not need a strategic reset. After the remaining Phase 24F/24G real
 Highest current execution priorities after the 2026-06-26 sync:
 
 1. Release hygiene and production deploy/cache confirmation
-2. Local synthetic dashboard QA only
-3. Quote slug smoke and local DB/RLS proof
-4. Phase 24G explicit owner real-data approval gate
-5. Pilot ops/payment/support readiness gate
+2. P9 language-isolation guardrails and no hardcoded user-facing dashboard copy
+3. Local synthetic dashboard QA only
+4. Quote slug smoke and local DB/RLS proof
+5. Phase 24G explicit owner real-data approval gate
+6. Pilot ops/payment/support readiness gate
 
 Historical execution priorities before D1 landed:
 
