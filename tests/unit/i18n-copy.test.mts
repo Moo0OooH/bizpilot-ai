@@ -109,6 +109,7 @@ const userFacingSourceFiles = [
   "app/(dashboard)/dashboard/page.tsx",
   "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
   "app/(dashboard)/dashboard/leads/page.tsx",
+  "app/(dashboard)/dashboard/error.tsx",
   "app/(dashboard)/dashboard/settings/page.tsx",
   "app/(dashboard)/dashboard/business-profile/page.tsx",
   "app/(dashboard)/dashboard/configuration/page.tsx",
@@ -425,9 +426,38 @@ describe("BizPilot language copy", () => {
       frenchDashboardCopy.settings.featureRegistry.stateLabels.setup_required,
       "Configuration requise",
     );
+    assert.equal(
+      englishDashboardCopy.errorBoundary.reload,
+      "Reload dashboard",
+    );
+    assert.equal(
+      frenchDashboardCopy.errorBoundary.reload,
+      "Recharger le tableau de bord",
+    );
+
+    const dashboardErrorSource = readFileSync(
+      "app/(dashboard)/dashboard/error.tsx",
+      "utf8",
+    );
+    assert.equal(
+      dashboardErrorSource.includes("getBizPilotCopy(language).dashboard.errorBoundary"),
+      true,
+      "Dashboard error boundary should read visible labels from the dictionary.",
+    );
+    for (const hardcodedErrorCopy of [
+      "This workspace needs a refresh.",
+      "Reload dashboard",
+    ]) {
+      assert.equal(
+        dashboardErrorSource.includes(hardcodedErrorCopy),
+        false,
+        `Dashboard error boundary should not hardcode visible copy: ${hardcodedErrorCopy}`,
+      );
+    }
 
     const visibleFrenchDashboardText = JSON.stringify({
       demo: getBizPilotCopy("fr-CA").demo,
+      errorBoundary: frenchDashboardCopy.errorBoundary,
       leadRules: getBizPilotCopy("fr-CA").leadRules,
       nav: frenchDashboardCopy.nav,
       leadQueue: frenchDashboardCopy.leadQueue,

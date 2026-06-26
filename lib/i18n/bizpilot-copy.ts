@@ -626,6 +626,13 @@ type DashboardWorkspaceAccessCopy = Readonly<{
   signedInAs: (email: string) => string;
 }>;
 
+type DashboardErrorBoundaryCopy = Readonly<{
+  body: string;
+  eyebrow: string;
+  reload: string;
+  title: string;
+}>;
+
 type DashboardFeatureRegistryCopy = Readonly<{
   activationLabel: string;
   categoryLabels: Readonly<Record<FeatureCategory, string>>;
@@ -720,6 +727,7 @@ type DashboardCopy = Readonly<{
   }>;
   businessProfile: DashboardBusinessProfileCopy;
   configuration: DashboardConfigurationCopy;
+  errorBoundary: DashboardErrorBoundaryCopy;
   leadDetail: DashboardLeadDetailCopy;
   leadQueue: DashboardLeadQueueCopy;
   leadsPage: DashboardLeadsPageCopy;
@@ -991,6 +999,13 @@ const englishCopy: BizPilotCopy = {
       previewQuotePage: "Preview quote page",
       saveConfiguration: "Save configuration",
       signOut: "Sign out",
+    },
+    errorBoundary: {
+      body:
+        "BizPilot caught a safe dashboard error. Reload the workspace to try again without exposing internal details.",
+      eyebrow: "Dashboard",
+      reload: "Reload dashboard",
+      title: "This workspace needs a refresh.",
     },
     businessProfile: {
       accountEmailHelp: "Account email - change it from Settings.",
@@ -2394,6 +2409,13 @@ const frenchCopy: BizPilotCopy = {
       previewQuotePage: "Aperçu de la soumission",
       saveConfiguration: "Enregistrer",
       signOut: "Déconnexion",
+    },
+    errorBoundary: {
+      body:
+        "BizPilot a intercepté une erreur sûre du tableau de bord. Rechargez l'espace pour réessayer sans exposer de détails internes.",
+      eyebrow: "Tableau de bord",
+      reload: "Recharger le tableau de bord",
+      title: "Cet espace doit être rafraîchi.",
     },
     businessProfile: {
       accountEmailHelp: "Courriel du compte - modifiez-le dans les réglages.",
