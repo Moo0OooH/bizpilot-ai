@@ -84,7 +84,10 @@ type HomeCopy = Readonly<{
   }>;
   meta: MetaCopy;
   mockup: Readonly<{
+    boardLabel: string;
+    boardSafety: string;
     bizPilotActions: readonly string[];
+    bizPilotBody: string;
     bizPilotTitle: string;
     chaosSubtitle: string;
     chaosTitle: string;
@@ -962,7 +965,10 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
     },
     mockup: {
+      boardLabel: "Lead signal board",
+      boardSafety: "Owner reviews first",
       bizPilotActions: ["Capture", "Organize", "Prioritize", "Draft"],
+      bizPilotBody: "Signal becomes workflow",
       bizPilotTitle: "BizPilot",
       chaosSubtitle: "Messages from everywhere",
       chaosTitle: "THE CHAOS",
@@ -1931,7 +1937,10 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "BizPilot AI | Récupération des demandes",
     },
     mockup: {
+      boardLabel: "Tableau des signaux",
+      boardSafety: "Validation par le propriétaire",
       bizPilotActions: ["Capter", "Organiser", "Prioriser", "Rédiger"],
+      bizPilotBody: "Le signal devient un flux",
       bizPilotTitle: "BizPilot",
       chaosSubtitle: "Messages de partout",
       chaosTitle: "LE CHAOS",

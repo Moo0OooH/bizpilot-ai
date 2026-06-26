@@ -53,8 +53,18 @@ describe("Founder admin source safety", () => {
       actionSource.includes("workspaceRepairAcknowledgement"),
       true,
     );
-    assert.equal(pageSource.includes("FounderWorkspaceRepairControls"), true);
-    assert.equal(pageSource.includes("Recover owner workspace"), true);
+    assert.equal(pageSource.includes("FounderWorkspaceRepairControls"), false);
+    assert.equal(pageSource.includes("Recover owner workspace"), false);
+    assert.equal(
+      pageSource.includes(
+        "Workspace repair remains a founder-admin action outside this read-only",
+      ),
+      true,
+    );
+    assert.equal(
+      pageSource.includes("Requires owner-approved security gate."),
+      true,
+    );
   });
 
   it("keeps founder production health checks server-only and safe", () => {

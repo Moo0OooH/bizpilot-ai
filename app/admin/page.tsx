@@ -22,7 +22,6 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { FounderAuthUserDeleteForm } from "@/components/admin/founder-auth-user-delete-form";
 import {
   FounderAdminThemeFrame,
   FounderAdminThemeSelector,
@@ -45,9 +44,6 @@ import { languageLabels } from "@/lib/i18n/language";
 import {
   founderInboxLeadDeleteAction,
   founderInboxLeadStatusAction,
-  founderPasswordResetAction,
-  founderTemporaryPasswordAction,
-  founderWorkspaceRepairAction,
   updateFounderInternalNoteAction,
   updateFounderPlanAction,
   updateFounderQuoteLinkAction,
@@ -1740,123 +1736,6 @@ function BusinessControlCard({
   );
 }
 
-function FounderWorkspaceRepairControls({
-  user,
-}: Readonly<{ user: FounderAdminUser }>) {
-  if (user.businessName) {
-    return null;
-  }
-
-  return (
-    <form
-      action={founderWorkspaceRepairAction}
-      className="grid gap-3 rounded-lg border border-[var(--dash-border-strong)] bg-[var(--dash-warning-soft)] p-4"
-    >
-      <input name="targetUserId" type="hidden" value={user.userId} />
-      <div>
-        <p className="text-sm font-black text-[var(--dash-text)]">
-          Recover owner workspace
-        </p>
-        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-          Use for confirmed auth users created while signup did not finish
-          workspace bootstrap.
-        </p>
-      </div>
-      <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-        Business name
-        <input
-          className={inputClass}
-          maxLength={80}
-          name="businessName"
-          placeholder="Customer cleaning business"
-          required
-          type="text"
-        />
-      </label>
-      <label className="flex items-start gap-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
-        <input
-          className="mt-0.5 h-4 w-4 accent-[var(--dash-primary)]"
-          name="workspaceRepairAcknowledgement"
-          type="checkbox"
-        />
-        <span>This confirmed user has no existing workspace or membership.</span>
-      </label>
-      <button
-        className={primaryButtonClass}
-        disabled={!user.emailConfirmed}
-        type="submit"
-      >
-        Recover workspace
-      </button>
-      {!user.emailConfirmed ? (
-        <p className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
-          Confirm the email before creating a workspace.
-        </p>
-      ) : null}
-    </form>
-  );
-}
-
-function FounderPasswordControls({
-  user,
-}: Readonly<{ user: FounderAdminUser }>) {
-  return (
-    <div className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 xl:grid-cols-1 2xl:grid-cols-2">
-      <form
-        action={founderPasswordResetAction}
-        className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3"
-      >
-        <input name="targetUserId" type="hidden" value={user.userId} />
-        <div>
-          <p className="text-sm font-black text-[var(--dash-text)]">
-            Reset password
-          </p>
-          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Sends the standard reset email to {user.authEmail ?? "this auth user"}.
-          </p>
-        </div>
-        <button className={buttonClass} disabled={!user.authEmail} type="submit">
-          Send reset email
-        </button>
-      </form>
-
-      <form
-        action={founderTemporaryPasswordAction}
-        className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3"
-      >
-        <input name="targetUserId" type="hidden" value={user.userId} />
-        <div>
-          <p className="text-sm font-black text-[var(--dash-text)]">
-            Temporary password
-          </p>
-          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Use only after identity check. The password is never written to logs.
-          </p>
-        </div>
-        <input
-          autoComplete="new-password"
-          className={inputClass}
-          minLength={12}
-          name="temporaryPassword"
-          placeholder="12+ character temporary password"
-          type="text"
-        />
-        <label className="flex items-start gap-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
-          <input
-            className="mt-0.5 h-4 w-4 accent-[var(--dash-primary)]"
-            name="temporaryPasswordAcknowledgement"
-            type="checkbox"
-          />
-          <span>Share securely and ask the user to change it after sign-in.</span>
-        </label>
-        <button className={primaryButtonClass} type="submit">
-          Set temporary password
-        </button>
-      </form>
-    </div>
-  );
-}
-
 function FounderBusinessesSection({
   businessById,
   dryRun,
@@ -1968,9 +1847,170 @@ function FounderBusinessesSection({
   );
 }
 
+function FounderUsersOverviewPanel({
+  shownUsers,
+  usersSearchMode,
+  usersTotal,
+}: Readonly<{
+  shownUsers: FounderAdminUser[];
+  usersSearchMode: "auth_filter" | "paged";
+  usersTotal: number;
+}>) {
+  const unconfirmed = shownUsers.filter((user) => !user.emailConfirmed).length;
+  const unlinked = shownUsers.filter((user) => !user.businessName).length;
+  const pausedAccess = shownUsers.filter(
+    (user) =>
+      user.businessAccessStatus === "suspended" ||
+      user.businessAccessStatus === "cancelled",
+  ).length;
+
+  return (
+    <DashboardCard className="p-4 sm:p-5" variant="priority">
+      <PageHeader
+        actions={<StatusBadge tone="blue">Read-only foundation</StatusBadge>}
+        description="Founder-only user search, list, and detail review. Access changes stay blocked until the owner-approved security/RLS gate is closed."
+        eyebrow="Founder Admin"
+        title="Users"
+      />
+      <section className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <MetricCard
+          detail="Auth users available through founder-only paging/search."
+          label="Auth users"
+          tone="blue"
+          value={usersTotal}
+        />
+        <MetricCard
+          detail="Loaded users with email confirmation still pending."
+          label="Unconfirmed"
+          tone={unconfirmed > 0 ? "amber" : "emerald"}
+          value={unconfirmed}
+        />
+        <MetricCard
+          detail="Loaded users without a linked workspace."
+          label="No business"
+          tone={unlinked > 0 ? "amber" : "neutral"}
+          value={unlinked}
+        />
+        <MetricCard
+          detail="Loaded users attached to suspended or cancelled access."
+          label="Paused access"
+          tone={pausedAccess > 0 ? "red" : "emerald"}
+          value={pausedAccess}
+        />
+      </section>
+      <p className="mt-3 rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text)]">
+        Search mode: {usersSearchMode === "auth_filter" ? "indexed auth filter" : "paged auth list"}.
+        Invite, role change, suspend, and remove actions require owner-approved
+        security gate.
+      </p>
+    </DashboardCard>
+  );
+}
+
+function LockedAccessManagementPanel() {
+  const actions = [
+    "Invite member",
+    "Change role",
+    "Suspend access",
+    "Remove from workspace",
+  ] as const;
+
+  return (
+    <section className={`${toolboxSectionClass} content-start`}>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Access management
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Requires owner-approved security gate.
+          </p>
+        </div>
+        <StatusBadge tone="amber">Blocked</StatusBadge>
+      </div>
+      <div className="grid gap-2">
+        {actions.map((action) => (
+          <button
+            aria-disabled="true"
+            className="inline-flex min-h-10 cursor-not-allowed items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 text-left text-[12px] font-black text-[var(--dash-text-muted)]"
+            disabled
+            key={action}
+            type="button"
+          >
+            <span>{action}</span>
+            <span className="text-[11px] font-bold">
+              Requires owner-approved security gate.
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function UserWorkspaceReadOnlyPanel({
+  linkedBusiness,
+  user,
+}: Readonly<{
+  linkedBusiness: FounderAdminBusiness | null;
+  user: FounderAdminUser;
+}>) {
+  return (
+    <section className={`${toolboxSectionClass} content-start`}>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            User detail
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Read-only account and workspace context for founder review.
+          </p>
+        </div>
+        <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
+          {formatUserValue(user.businessAccessStatus)}
+        </StatusBadge>
+      </div>
+      <dl className="grid gap-2 text-[12px] sm:grid-cols-2">
+        {[
+          ["Business", user.businessName ?? "No business linked"],
+          ["Role", formatUserValue(user.membershipRole)],
+          ["Membership", formatUserValue(user.membershipStatus)],
+          ["Plan", user.planSlug ? planLabels[user.planSlug] : "No plan"],
+          ["Quote link", user.publicLinkActive ? "Active" : "Inactive or missing"],
+          ["Workspace kind", linkedBusiness ? workspaceKindLabels[linkedBusiness.workspaceKind] : "None"],
+        ].map(([label, value]) => (
+          <div
+            className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2"
+            key={label}
+          >
+            <dt className="font-bold text-[var(--dash-text-muted)]">{label}</dt>
+            <dd className="mt-0.5 break-words font-black text-[var(--dash-text)]">
+              {value}
+            </dd>
+          </div>
+        ))}
+      </dl>
+      {linkedBusiness ? (
+        <Link
+          className={`${buttonClass} mt-3 w-full justify-center`}
+          href={adminUsersHref({ adminPanel: "businesses" }, {
+            businessId: linkedBusiness.businessId,
+          })}
+        >
+          Open business controls
+        </Link>
+      ) : (
+        <p className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
+          Workspace repair remains a founder-admin action outside this read-only
+          Users foundation.
+        </p>
+      )}
+    </section>
+  );
+}
+
 function FounderUsersSection({
   businessById,
-  dryRun,
   params,
   shownUsers,
   usersLastPage,
@@ -1981,7 +2021,6 @@ function FounderUsersSection({
   users,
 }: Readonly<{
   businessById: Map<string, FounderAdminBusiness>;
-  dryRun: FounderCleanupDryRun | null;
   params: AdminSearchParams;
   shownUsers: FounderAdminUser[];
   users: FounderAdminUser[];
@@ -1994,43 +2033,14 @@ function FounderUsersSection({
   const hasPreviousPage = usersPage > 1;
   const hasNextPage = usersPage < usersLastPage;
   const selectedPriority = safeParam(params.userPriority);
-  const businesses = sortBusinessesByOperationalPriority(
-    Array.from(businessById.values()),
-  );
-  const selectedBusinessId = safeParam(params.businessId);
-  const featuredBusiness =
-    businessById.get(selectedBusinessId) ??
-    shownUsers
-      .map((user) =>
-        user.businessId ? (businessById.get(user.businessId) ?? null) : null,
-      )
-      .find((business): business is FounderAdminBusiness => Boolean(business)) ??
-    businesses[0] ??
-    null;
 
   return (
     <div className="grid gap-3">
-      <div className="grid min-w-0 gap-3 xl:grid-cols-[320px_minmax(0,1fr)]">
-        <FounderBusinessMasterRail
-          businesses={businesses}
-          params={params}
-          selectedBusinessId={featuredBusiness?.businessId ?? null}
-        />
-        <DashboardCard className="min-w-0 p-3 sm:p-4" variant="elevated">
-          {featuredBusiness ? (
-            <BusinessControlCard
-              business={featuredBusiness}
-              dryRun={
-                dryRun?.businessId === featuredBusiness.businessId ? dryRun : null
-              }
-            />
-          ) : (
-            <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-4 py-8 text-center text-sm text-[var(--dash-text-secondary)]">
-              No business workspace is available yet.
-            </p>
-          )}
-        </DashboardCard>
-      </div>
+      <FounderUsersOverviewPanel
+        shownUsers={shownUsers}
+        usersSearchMode={usersSearchMode}
+        usersTotal={usersTotal}
+      />
 
       <DashboardCard className="space-y-4 p-4 sm:p-5" variant="elevated">
         <details>
@@ -2243,7 +2253,7 @@ function FounderUsersSection({
               </div>
 
               <span className="justify-self-start rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2 text-[11px] font-black text-[var(--dash-text-secondary)] group-open:border-[var(--dash-primary)] group-open:bg-[var(--dash-primary-soft)] group-open:text-[var(--dash-text)] xl:justify-self-end">
-                Modify
+                Details
               </span>
               </summary>
 
@@ -2274,49 +2284,12 @@ function FounderUsersSection({
                     </dd>
                   </div>
                 </dl>
-                <div className="grid gap-3 2xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
-                  <div className="min-w-0">
-                    {linkedBusiness ? (
-                      <BusinessControlCard
-                        business={linkedBusiness}
-                        dryRun={
-                          dryRun?.businessId === linkedBusiness.businessId
-                            ? dryRun
-                            : null
-                        }
-                      />
-                    ) : (
-                      <FounderWorkspaceRepairControls user={user} />
-                    )}
-                  </div>
-
-                  <section className={`${toolboxSectionClass} content-start`}>
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div>
-                        <p className="text-sm font-black text-[var(--dash-text)]">
-                          Account tools
-                        </p>
-                        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                          Password reset and auth cleanup for this user only.
-                        </p>
-                      </div>
-                      <StatusBadge tone="blue">Identity</StatusBadge>
-                    </div>
-                    <div className="grid min-w-0 gap-3">
-                      <section className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
-                        <p className="text-xs font-black text-[var(--dash-text-muted)]">1) Passwords</p>
-                        <FounderPasswordControls user={user} />
-                      </section>
-                      <section className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
-                        <p className="text-xs font-black text-[var(--dash-text-muted)]">2) Auth deletion</p>
-                        <FounderAuthUserDeleteForm
-                          deletionBlockedReason={user.authDeletionBlockedReason}
-                          targetEmail={user.authEmail}
-                          targetUserId={user.userId}
-                        />
-                      </section>
-                    </div>
-                  </section>
+                <div className="grid gap-3 2xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.75fr)]">
+                  <UserWorkspaceReadOnlyPanel
+                    linkedBusiness={linkedBusiness}
+                    user={user}
+                  />
+                  <LockedAccessManagementPanel />
                 </div>
               </div>
             </details>
@@ -2842,7 +2815,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           {activePanel === "users" ? (
             <FounderUsersSection
               businessById={businessById}
-              dryRun={dryRun}
               params={params}
               shownUsers={shownUsers}
               users={overview.users}

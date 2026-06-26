@@ -94,13 +94,17 @@ export type MarketingIconName =
   | "check"
   | "clock"
   | "copy"
+  | "camera"
+  | "globe"
   | "inbox"
   | "link"
   | "lock"
   | "message"
   | "minus"
   | "pen"
+  | "phone"
   | "radar"
+  | "search"
   | "shield"
   | "spark"
   | "target"
@@ -137,6 +141,18 @@ export function MarketingIcon({ name }: Readonly<{ name: MarketingIconName }>) {
         <path d="M5 16H4V5h11v1" />
       </>
     ),
+    camera: (
+      <>
+        <path d="M5 7h3l1.5-2h5L16 7h3v12H5z" />
+        <circle cx="12" cy="13" r="3.25" />
+      </>
+    ),
+    globe: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
+      </>
+    ),
     inbox: (
       <>
         <path d="M3 12h6l2 3h2l2-3h6" />
@@ -163,11 +179,23 @@ export function MarketingIcon({ name }: Readonly<{ name: MarketingIconName }>) {
         <path d="m13 7 4 4" />
       </>
     ),
+    phone: (
+      <>
+        <path d="M7 4h10v16H7z" />
+        <path d="M11 17h2" />
+      </>
+    ),
     radar: (
       <>
         <circle cx="12" cy="12" r="9" />
         <path d="M12 12 18 6" />
         <path d="M7.5 16.5a6.4 6.4 0 0 1 0-9" />
+      </>
+    ),
+    search: (
+      <>
+        <circle cx="10.5" cy="10.5" r="6.5" />
+        <path d="m15.5 15.5 4 4" />
       </>
     ),
     shield: (
