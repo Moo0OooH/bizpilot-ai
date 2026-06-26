@@ -287,3 +287,65 @@ Updated next safe sequence:
 4. Keep real-data approval separate.
 5. Keep paid pilot approval separate.
 ```
+
+## Addendum - P12 Dashboard Professionalization And Auth Gate
+
+Date: 2026-06-26
+
+P12 dashboard visual/readability polish is being implemented on:
+
+```text
+review/p12-dashboard-professionalization-gates
+```
+
+P12 safe scope:
+
+- Dashboard overview manual recovery lane.
+- Lead queue insight strip, mobile next-action visibility, sticky desktop
+  header, and accessibility labels.
+- Lead detail owner-review workflow steps.
+- Shared badge copy fix so acronym text such as `AI` is not visually mutated.
+- EN/fr-CA copy parity for the new dashboard labels.
+- Source guard tests for the P12 dashboard boundaries.
+
+P12 explicit blocks:
+
+- No real auth user deletion.
+- No production test account creation.
+- No use of shared owner credentials in automation.
+- No Google/phone auth implementation yet.
+- No database schema, migration, RLS, billing/payment, AI provider, or
+  production data-flow changes.
+
+Current P12 recommendation:
+
+```text
+Dashboard P12 visual/readability polish is safe to review.
+Auth/user cleanup remains gate-blocked.
+Real data and paid pilot remain blocked.
+```
+
+P12 verification recorded:
+
+```text
+pnpm verify                                      PASS
+pnpm smoke:public                               PASS
+pnpm smoke:responsive                           PASS
+pnpm smoke:ui-matrix                            PASS
+pnpm smoke:quote -- --inactive-slug=...         PASS
+browser public/dashboard-redirect check         PASS
+git diff --check                                PASS
+```
+
+P12 skipped by safety:
+
+```text
+pnpm smoke:dashboard   SKIPPED - Supabase URL classified managed non-local
+pnpm verify:local-db   SKIPPED - DATABASE_URL missing in shell
+```
+
+Canonical P12 report:
+
+```text
+docs/readiness/P12_DASHBOARD_PROFESSIONALIZATION_AND_AUTH_GATE_REPORT_2026-06-26.md
+```

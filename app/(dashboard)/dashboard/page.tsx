@@ -164,6 +164,31 @@ export default async function DashboardOverviewPage() {
   const replyActions = desk.todaysActions.filter((action) => action.action_type === "reply").length;
   const askInfoActions = desk.todaysActions.filter((action) => action.action_type === "ask_info").length;
   const followUpActions = desk.todaysActions.filter((action) => action.action_type === "follow_up").length;
+  const manualFlowMetrics = [
+    {
+      href: quotePath,
+      tone: "emerald",
+      value: newQuoteCount,
+    },
+    {
+      href: "/dashboard/leads",
+      tone: needsReplyCount + atRiskCount > 0 ? "amber" : "neutral",
+      value: needsReplyCount + atRiskCount,
+    },
+    {
+      href: "/dashboard/leads",
+      tone: "blue",
+      value: aiDraftReadyCount,
+    },
+    {
+      href: "/dashboard/leads",
+      tone:
+        replyActions + askInfoActions + followUpActions > 0
+          ? "red"
+          : "neutral",
+      value: replyActions + askInfoActions + followUpActions,
+    },
+  ] as const;
   const readinessPercent = Math.round(
     (readiness.completed / Math.max(readiness.total, 1)) * 100,
   );
@@ -255,6 +280,42 @@ export default async function DashboardOverviewPage() {
             <span className="font-extrabold text-[var(--dash-text)]">{overviewCopy.suggestedNextAction}</span>{" "}
             {featuredNextAction}
           </div>
+        </div>
+      </DashboardCard>
+
+      <DashboardCard className="p-3.5 sm:p-4">
+        <SectionHeader
+          description={overviewCopy.commandFlow.description}
+          title={overviewCopy.commandFlow.title}
+        />
+        <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          {overviewCopy.commandFlow.items.map(([label, detail], index) => {
+            const metric = manualFlowMetrics[index] ?? {
+              href: "/dashboard/leads",
+              tone: "neutral" as const,
+              value: 0,
+            };
+
+            return (
+              <Link
+                className="grid min-h-[92px] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                href={metric.href}
+                key={label}
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span className="truncate text-[13px] font-black text-[var(--dash-text)]">
+                    {label}
+                  </span>
+                  <StatusBadge tone={metric.tone}>
+                    {String(metric.value)}
+                  </StatusBadge>
+                </div>
+                <span className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  {detail}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </DashboardCard>
 
