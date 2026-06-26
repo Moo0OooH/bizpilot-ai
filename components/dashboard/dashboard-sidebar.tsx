@@ -268,7 +268,9 @@ export function DashboardSidebar({
             </div>
             <CopyButton
               className="w-full"
+              failedLabel={copy.actions.copyFailed}
               label={copy.actions.copyQuoteLink}
+              successLabel={copy.actions.copySuccess}
               value={quotePath}
             />
           </div>

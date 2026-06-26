@@ -120,19 +120,21 @@ export function DashboardTopbar({
           </p>
         </div>
 
-        <div className="flex min-w-0 basis-full items-center justify-between gap-2 sm:basis-auto sm:justify-end">
+        <div className="flex min-w-0 basis-full flex-wrap items-center justify-start gap-2 sm:basis-auto sm:flex-nowrap sm:justify-end">
           <details className="group relative">
             <summary
               className={`${buttonClass} list-none cursor-pointer [&::-webkit-details-marker]:hidden`}
               title={copy.actions.copyQuoteLink}
             >
               <MoreIcon />
-              <span className="hidden md:inline">Actions</span>
+              <span className="hidden md:inline">{copy.actions.moreActions}</span>
             </summary>
             <div className="absolute right-0 top-11 z-30 grid w-[220px] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)]">
               <CopyButton
                 className="!w-full !justify-start"
+                failedLabel={copy.actions.copyFailed}
                 label={copy.actions.copyQuoteLink}
+                successLabel={copy.actions.copySuccess}
                 value={quotePath}
               />
               <Link className={`${buttonClass} w-full justify-start`} href={quotePath}>
@@ -156,8 +158,8 @@ export function DashboardTopbar({
                 aria-pressed={activeLanguage === language}
                 className={
                   activeLanguage === language
-                    ? "h-8 rounded-md bg-[var(--dash-primary)] px-2.5 text-[12px] font-black text-white shadow-sm"
-                    : "h-8 rounded-md px-2.5 text-[12px] font-bold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
+                    ? "h-8 whitespace-nowrap rounded-md bg-[var(--dash-primary)] px-2.5 text-[12px] font-black text-white shadow-sm"
+                    : "h-8 whitespace-nowrap rounded-md px-2.5 text-[12px] font-bold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
                 }
                 key={language}
                 name="language"
@@ -178,7 +180,7 @@ export function DashboardTopbar({
               title={userLabel}
               type="submit"
             >
-              <span className="truncate">{copy.actions.signOut}</span>
+              <span className="truncate whitespace-nowrap">{copy.actions.signOut}</span>
             </button>
           </form>
         </div>

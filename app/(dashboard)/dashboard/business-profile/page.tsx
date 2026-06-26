@@ -126,7 +126,9 @@ export default async function BusinessProfilePage({
         actions={
           <>
             <CopyButton
+              failedLabel={dashboardCopy.actions.copyFailed}
               label={dashboardCopy.actions.copyQuoteLink}
+              successLabel={dashboardCopy.actions.copySuccess}
               value={quotePath}
             />
             <Link className={buttonClass} href="/dashboard/configuration">

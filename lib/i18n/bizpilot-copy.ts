@@ -380,6 +380,7 @@ type DashboardLeadQueueCopy = Readonly<{
   fallbacks: Readonly<{
     area: string;
     service: string;
+    unnamedLead: string;
   }>;
   filters: Readonly<{
     aiReady: string;
@@ -470,6 +471,13 @@ type DashboardLeadDetailCopy = Readonly<{
   mark: string;
   markReplyCopied: string;
   markWon: string;
+  manualWorkflow: Readonly<{
+    description: string;
+    outcomeNote: string;
+    primaryAction: string;
+    secondaryAction: string;
+    title: string;
+  }>;
   missing: Readonly<{
     description: string;
     noRequiredMissing: string;
@@ -512,6 +520,7 @@ type DashboardLeadDetailCopy = Readonly<{
     leadDetailsDescription: string;
     leadDetailsTitle: string;
   }>;
+  manualOutcomeHelp: string;
   statusLabels: Record<string, string>;
   timeline: string;
   values: Readonly<{
@@ -547,6 +556,7 @@ type DashboardOverviewCopy = Readonly<{
   featuredFallbackCustomer: string;
   featuredFallbackService: string;
   finishSetup: string;
+  guidesAndAiControls: string;
   heroBadge: string;
   heroDescription: string;
   heroTitle: (count: number) => string;
@@ -596,6 +606,7 @@ type DashboardOverviewCopy = Readonly<{
     ready: string;
   }>;
   suggestedNextAction: string;
+  setupChecklist: string;
   queue: Readonly<{
     description: string;
     title: string;
@@ -603,11 +614,16 @@ type DashboardOverviewCopy = Readonly<{
 }>;
 
 type DashboardWorkspaceAccessCopy = Readonly<{
+  businessNameLabel: string;
+  businessNamePlaceholder: string;
   deletionRequestedBody: string;
   deletionRequestedTitle: string;
   eyebrow: string;
   pausedBody: string;
   pausedTitle: string;
+  recoverWorkspace: string;
+  recoveryHelp: string;
+  signedInAs: (email: string) => string;
 }>;
 
 type DashboardFeatureRegistryCopy = Readonly<{
@@ -692,7 +708,10 @@ type AuthCopy = Readonly<{
 
 type DashboardCopy = Readonly<{
   actions: Readonly<{
+    copyFailed: string;
     copyQuoteLink: string;
+    copySuccess: string;
+    moreActions: string;
     openLeadQueue: string;
     previewPublicPage: string;
     previewQuotePage: string;
@@ -963,7 +982,10 @@ const englishCopy: BizPilotCopy = {
   },
   dashboard: {
     actions: {
+      copyFailed: "Copy failed",
       copyQuoteLink: "Copy quote link",
+      copySuccess: "Copied",
+      moreActions: "Actions",
       openLeadQueue: "Open Lead Queue",
       previewPublicPage: "Preview public page",
       previewQuotePage: "Preview quote page",
@@ -1219,6 +1241,7 @@ const englishCopy: BizPilotCopy = {
       fallbacks: {
         area: "Area pending",
         service: "Service not set",
+        unnamedLead: "Unnamed lead",
       },
       filters: {
         aiReady: "AI draft ready",
@@ -1277,13 +1300,13 @@ const englishCopy: BizPilotCopy = {
         missingInfo: "Missing info",
         modelDraft: "Model draft",
         nextAction: "Next action",
-        noSend: "No Send button in MVP. You copy and send manually.",
+        noSend: "No send button in MVP. You copy, edit, and send manually.",
         ownerReviewRequired: "Review required",
         regenerate: "Regenerate",
         ruleFallback: "Rule fallback",
         source: "Source",
         suggestedReply: "Suggested reply",
-        title: "AI Summary",
+        title: "AI draft support",
       },
       backToQueue: "Back to Lead Recovery Queue",
       completeAction: "Complete",
@@ -1312,8 +1335,17 @@ const englishCopy: BizPilotCopy = {
         status: "Status",
       },
       mark: "Mark",
-      markReplyCopied: "Mark Reply Copied",
-      markWon: "Mark Won",
+      markReplyCopied: "Mark reply copied",
+      markWon: "Record won manually",
+      manualWorkflow: {
+        description:
+          "Start with the safest owner action: review the request, use the AI draft only as support, then copy and send through your normal customer channel.",
+        outcomeNote:
+          "Record won or lost only after you have contacted the customer outside BizPilot.",
+        primaryAction: "Mark reply copied after review",
+        secondaryAction: "Record outcome after contact",
+        title: "Next manual step",
+      },
       missing: {
         description: "Ask these before estimating or promising availability.",
         noRequiredMissing: "No required quote details missing",
@@ -1328,9 +1360,9 @@ const englishCopy: BizPilotCopy = {
       notYet: "Not yet",
       ownerNotes: {
         description:
-          "Private notes for pilot learning and follow-up quality. Storage will be wired in a later phase; the field is visible to remind you what to track.",
+          "Private notes for pilot learning and follow-up quality. This field is a local reminder only until notes storage is approved.",
         persistenceNote:
-          "Notes persistence is part of Phase 18B and is not yet stored server-side.",
+          "Not saved yet: notes persistence is part of a later approved phase.",
         placeholder:
           "Add notes about this request, objections, pricing context, or follow-up outcome...",
         title: "Workspace notes",
@@ -1386,18 +1418,20 @@ const englishCopy: BizPilotCopy = {
       save: "Save",
       sections: {
         controlsDescription:
-          "You control status and manual outcome tracking. Nothing changes automatically.",
+          "You control status and manual outcome tracking. Nothing is sent, booked, or changed automatically.",
         controlsTitle: "Lead controls",
         leadDetailsDescription:
           "Quote intake values captured from the public form.",
         leadDetailsTitle: "Lead details",
       },
+      manualOutcomeHelp:
+        "Use manual outcome only after the owner has replied or confirmed the result outside BizPilot.",
       statusLabels: {
         archived: "Archived",
         action_completed: "Action completed",
         ask_info: "Ask info",
         asked_info: "Asked info",
-        booked: "Booked",
+        booked: "Won (manual outcome)",
         completed: "Completed",
         dismissed: "Dismissed",
         follow_up: "Follow-up",
@@ -1460,6 +1494,7 @@ const englishCopy: BizPilotCopy = {
       featuredFallbackCustomer: "Sarah M.",
       featuredFallbackService: "Move-out cleaning",
       finishSetup: "Finish setup",
+      guidesAndAiControls: "Manual workflow guide",
       heroBadge: "Manual-first recovery",
       heroDescription:
         "Respond while the customer is still comparing options. BizPilot organizes urgent quote requests, drafts a reply, and keeps you in control.",
@@ -1536,6 +1571,7 @@ const englishCopy: BizPilotCopy = {
         ready: "Ready",
       },
       suggestedNextAction: "Suggested next action:",
+      setupChecklist: "Setup checklist",
     },
     nav: {
       businessProfile: "Business Profile",
@@ -1962,6 +1998,8 @@ const englishCopy: BizPilotCopy = {
       system: "System",
     },
     workspaceAccess: {
+      businessNameLabel: "Business name",
+      businessNamePlaceholder: "Your cleaning business",
       deletionRequestedBody:
         "This business workspace is locked while the deletion request is reviewed. Your login account is not deleted automatically.",
       deletionRequestedTitle: "Workspace deletion has been requested.",
@@ -1969,6 +2007,10 @@ const englishCopy: BizPilotCopy = {
       pausedBody:
         "Your dashboard is currently blocked because no active business membership is available. Your data is retained; contact BizPilot support if this looks unexpected.",
       pausedTitle: "This workspace is paused or unavailable.",
+      recoverWorkspace: "Recover workspace",
+      recoveryHelp:
+        "Use this only if signup created your login but did not finish the workspace setup.",
+      signedInAs: (email) => `Signed in as ${email}`,
     },
   },
   demo: {
@@ -2343,7 +2385,10 @@ const frenchCopy: BizPilotCopy = {
   },
   dashboard: {
     actions: {
+      copyFailed: "Copie impossible",
       copyQuoteLink: "Copier le lien",
+      copySuccess: "Copié",
+      moreActions: "Actions",
       openLeadQueue: "Ouvrir les prospects",
       previewPublicPage: "Voir la page publique",
       previewQuotePage: "Aperçu de la soumission",
@@ -2606,6 +2651,7 @@ const frenchCopy: BizPilotCopy = {
       fallbacks: {
         area: "Secteur à confirmer",
         service: "Service non défini",
+        unnamedLead: "Prospect sans nom",
       },
       filters: {
         aiReady: "Brouillon IA prêt",
@@ -2666,13 +2712,13 @@ const frenchCopy: BizPilotCopy = {
         modelDraft: "Brouillon modèle",
         nextAction: "Prochaine action",
         noSend:
-          "Aucun bouton Envoyer dans le MVP. Vous copiez et envoyez manuellement.",
+          "Aucun bouton d'envoi dans le MVP. Vous copiez, modifiez et envoyez manuellement.",
         ownerReviewRequired: "Validation requise",
         regenerate: "Regénérer",
         ruleFallback: "Repli par règles",
         source: "Source",
         suggestedReply: "Réponse suggérée",
-        title: "Résumé IA",
+        title: "Soutien brouillon IA",
       },
       backToQueue: "Retour à la file de récupération",
       completeAction: "Compléter",
@@ -2701,8 +2747,17 @@ const frenchCopy: BizPilotCopy = {
         status: "Statut",
       },
       mark: "Marquer",
-      markReplyCopied: "Réponse copiée",
-      markWon: "Marquer gagné",
+      markReplyCopied: "Marquer la réponse copiée",
+      markWon: "Noter gagné manuellement",
+      manualWorkflow: {
+        description:
+          "Commencez par l'action propriétaire la plus sûre: révisez la demande, utilisez le brouillon IA seulement comme soutien, puis copiez et envoyez par votre canal client habituel.",
+        outcomeNote:
+          "Notez gagné ou perdu seulement après avoir contacté le client hors de BizPilot.",
+        primaryAction: "Marquer la réponse copiée après révision",
+        secondaryAction: "Noter le résultat après contact",
+        title: "Prochaine étape manuelle",
+      },
       missing: {
         description:
           "Demandez ces détails avant d'estimer ou de promettre une disponibilité.",
@@ -2718,9 +2773,9 @@ const frenchCopy: BizPilotCopy = {
       notYet: "Pas encore",
       ownerNotes: {
         description:
-          "Notes privées pour apprendre pendant le pilote et améliorer les suivis. La sauvegarde sera reliée dans une phase future; le champ rappelle quoi suivre.",
+          "Notes privées pour apprendre pendant le pilote et améliorer les suivis. Ce champ est seulement un rappel local jusqu'à l'approbation du stockage.",
         persistenceNote:
-          "La sauvegarde des notes fait partie de la Phase 18B et n'est pas encore stockée côté serveur.",
+          "Pas encore sauvegardé: la persistance des notes fait partie d'une phase approuvée plus tard.",
         placeholder:
           "Ajoutez des notes sur la demande, les objections, le contexte de prix ou le résultat du suivi...",
         title: "Notes privées",
@@ -2779,18 +2834,20 @@ const frenchCopy: BizPilotCopy = {
       save: "Enregistrer",
       sections: {
         controlsDescription:
-          "Vous contrôlez le statut et le résultat manuel. Rien ne change automatiquement.",
+          "Vous contrôlez le statut et le résultat manuel. Rien n'est envoyé, réservé ou changé automatiquement.",
         controlsTitle: "Contrôles du prospect",
         leadDetailsDescription:
           "Valeurs capturées depuis le formulaire public.",
         leadDetailsTitle: "Détails du prospect",
       },
+      manualOutcomeHelp:
+        "Utilisez le résultat manuel seulement après que le responsable a répondu ou confirmé le résultat hors de BizPilot.",
       statusLabels: {
         archived: "Archivé",
         action_completed: "Action complétée",
         ask_info: "Demander infos",
         asked_info: "Infos demandées",
-        booked: "Gagné",
+        booked: "Gagné (résultat manuel)",
         completed: "Complété",
         dismissed: "Ignoré",
         follow_up: "Suivi",
@@ -2857,6 +2914,7 @@ const frenchCopy: BizPilotCopy = {
       featuredFallbackCustomer: "Sarah M.",
       featuredFallbackService: "Nettoyage de déménagement",
       finishSetup: "Terminer la configuration",
+      guidesAndAiControls: "Guide du flux manuel",
       heroBadge: "Récupération manuelle",
       heroDescription:
         "Répondez pendant que le client compare encore ses options. BizPilot organise les demandes urgentes, prépare une réponse et vous garde en contrôle.",
@@ -2932,6 +2990,7 @@ const frenchCopy: BizPilotCopy = {
         ready: "Prêt",
       },
       suggestedNextAction: "Prochaine action suggérée:",
+      setupChecklist: "Liste de configuration",
     },
     nav: {
       businessProfile: "Profil d'entreprise",
@@ -3360,6 +3419,8 @@ const frenchCopy: BizPilotCopy = {
       system: "Système",
     },
     workspaceAccess: {
+      businessNameLabel: "Nom de l'entreprise",
+      businessNamePlaceholder: "Votre entreprise de nettoyage",
       deletionRequestedBody:
         "Cet espace d'entreprise est verrouillé pendant la révision de la demande de suppression. Votre compte de connexion n'est pas supprimé automatiquement.",
       deletionRequestedTitle: "La suppression de l'espace a été demandée.",
@@ -3367,6 +3428,10 @@ const frenchCopy: BizPilotCopy = {
       pausedBody:
         "Votre tableau de bord est bloqué, car aucune adhésion active à une entreprise n'est disponible. Vos données sont conservées; contactez le support BizPilot si cela semble inattendu.",
       pausedTitle: "Cet espace est suspendu ou indisponible.",
+      recoverWorkspace: "Récupérer l'espace",
+      recoveryHelp:
+        "Utilisez ceci seulement si l'inscription a créé votre connexion sans terminer la configuration de l'espace.",
+      signedInAs: (email) => `Connecté comme ${email}`,
     },
   },
   demo: {

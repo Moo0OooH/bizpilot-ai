@@ -39,11 +39,15 @@ function resolveCopyValue(value: string): string {
 
 export function CopyButton({
   className = "",
-  label = "Copy",
+  failedLabel,
+  label,
+  successLabel,
   value,
 }: Readonly<{
   className?: string;
-  label?: string;
+  failedLabel?: string;
+  label: string;
+  successLabel?: string;
   value: string;
 }>) {
   const [copied, setCopied] = useState(false);
@@ -76,7 +80,7 @@ export function CopyButton({
       }}
       type="button"
     >
-      {failed ? "Copy failed" : copied ? "Copied" : label}
+      {failed ? (failedLabel ?? label) : copied ? (successLabel ?? label) : label}
     </button>
   );
 }

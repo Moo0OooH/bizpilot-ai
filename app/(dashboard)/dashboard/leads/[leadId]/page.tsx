@@ -218,9 +218,10 @@ export default async function LeadDetailPage({
   });
 
   const customerName = detail.lead.customer_name ?? detailCopy.fallbacks.unnamedLead;
-  const customerShort = detail.lead.customer_name
-    ? shortCustomerName(detail.lead.customer_name)
-    : detailCopy.fallbacks.unnamedLead;
+  const customerShort = shortCustomerName(
+    detail.lead.customer_name,
+    detailCopy.fallbacks.unnamedLead,
+  );
   const serviceType = detail.lead.service_type ?? detailCopy.fallbacks.service;
   const cityArea = detail.lead.city_or_service_area ?? detailCopy.fallbacks.area;
   const contact = detail.lead.customer_contact ?? detailCopy.fallbacks.contact;
@@ -242,23 +243,6 @@ export default async function LeadDetailPage({
       </Link>
 
       <PageHeader
-        actions={
-          <>
-            <form action={markReplyCopiedAction}>
-              <input name="leadId" type="hidden" value={detail.lead.id} />
-              <button className={buttonClass} type="submit">
-                {detailCopy.markReplyCopied}
-              </button>
-            </form>
-            <form action={markLeadOutcomeAction}>
-              <input name="leadId" type="hidden" value={detail.lead.id} />
-              <input name="manualOutcome" type="hidden" value="booked" />
-              <button className={primaryButtonClass} type="submit">
-                {detailCopy.markWon}
-              </button>
-            </form>
-          </>
-        }
         description={detailCopy.detailDescription(
           serviceType,
           cityArea,
@@ -282,6 +266,45 @@ export default async function LeadDetailPage({
           {query.error}
         </FlashMessage>
       ) : null}
+
+      <DashboardCard className="p-[18px]" variant="priority">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+          <div className="min-w-0">
+            <SectionHeader
+              description={detailCopy.manualWorkflow.description}
+              title={detailCopy.manualWorkflow.title}
+            />
+            <div className="mt-3 grid gap-2 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
+              <p>
+                <span className="font-bold text-[var(--dash-text)]">
+                  {detailCopy.labels.primaryIssue}:
+                </span>{" "}
+                {detail.primaryIssue}
+              </p>
+              <p>
+                <span className="font-bold text-[var(--dash-text)]">
+                  {detailCopy.labels.recommendedAction}:
+                </span>{" "}
+                {detail.recommendedAction}
+              </p>
+              <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
+                {detailCopy.manualWorkflow.outcomeNote}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2 lg:justify-end">
+            <form action={markReplyCopiedAction}>
+              <input name="leadId" type="hidden" value={detail.lead.id} />
+              <button className={primaryButtonClass} type="submit">
+                {detailCopy.manualWorkflow.primaryAction}
+              </button>
+            </form>
+            <a className={buttonClass} href="#lead-owner-controls">
+              {detailCopy.manualWorkflow.secondaryAction}
+            </a>
+          </div>
+        </div>
+      </DashboardCard>
 
       {/* Detail Header — avatar + identity + SLA badges + quick actions */}
       <DashboardCard className="p-[22px]" variant="elevated">
@@ -462,78 +485,83 @@ export default async function LeadDetailPage({
           </DashboardCard>
 
           {/* Owner controls — status + manual outcome */}
-          <DashboardCard className="p-[22px]">
-            <SectionHeader
-              description={detailCopy.sections.controlsDescription}
-              title={detailCopy.sections.controlsTitle}
-            />
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <form action={updateLeadStatusAction} className="grid gap-2">
-                <span className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
-                  {detailCopy.labels.status}
-                </span>
-                <input name="leadId" type="hidden" value={detail.lead.id} />
-                <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
-                  <select
-                    className={inputClass}
-                    defaultValue={detail.lead.status}
-                    name="status"
-                  >
-                    <option value="new">{detailCopy.statusLabels.new}</option>
-                    <option value="reviewed">
-                      {detailCopy.statusLabels.reviewed}
-                    </option>
-                    <option value="replied">
-                      {detailCopy.statusLabels.replied}
-                    </option>
-                    <option value="follow_up_needed">
-                      {detailCopy.statusLabels.follow_up_needed}
-                    </option>
-                    <option value="booked">
-                      {detailCopy.statusLabels.booked}
-                    </option>
-                    <option value="lost">{detailCopy.statusLabels.lost}</option>
-                    <option value="archived">
-                      {detailCopy.statusLabels.archived}
-                    </option>
-                  </select>
-                  <button className={buttonClass} type="submit">
-                    {detailCopy.save}
-                  </button>
-                </div>
-              </form>
-              <form action={markLeadOutcomeAction} className="grid gap-2">
-                <span className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
-                  {detailCopy.labels.manualOutcome}
-                </span>
-                <input name="leadId" type="hidden" value={detail.lead.id} />
-                <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
-                  <select
-                    className={inputClass}
-                    defaultValue={detail.lead.manual_outcome ?? "booked"}
-                    name="manualOutcome"
-                  >
-                    <option value="booked">
-                      {detailCopy.statusLabels.booked}
-                    </option>
-                    <option value="lost">{detailCopy.statusLabels.lost}</option>
-                    <option value="no_response">
-                      {detailCopy.statusLabels.no_response}
-                    </option>
-                    <option value="not_a_fit">
-                      {detailCopy.statusLabels.not_a_fit}
-                    </option>
-                    <option value="asked_info">
-                      {detailCopy.statusLabels.asked_info}
-                    </option>
-                  </select>
-                  <button className={buttonClass} type="submit">
-                    {detailCopy.mark}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </DashboardCard>
+          <div id="lead-owner-controls">
+            <DashboardCard className="p-[22px]">
+              <SectionHeader
+                description={detailCopy.sections.controlsDescription}
+                title={detailCopy.sections.controlsTitle}
+              />
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <form action={updateLeadStatusAction} className="grid gap-2">
+                  <span className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                    {detailCopy.labels.status}
+                  </span>
+                  <input name="leadId" type="hidden" value={detail.lead.id} />
+                  <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                    <select
+                      className={inputClass}
+                      defaultValue={detail.lead.status}
+                      name="status"
+                    >
+                      <option value="new">{detailCopy.statusLabels.new}</option>
+                      <option value="reviewed">
+                        {detailCopy.statusLabels.reviewed}
+                      </option>
+                      <option value="replied">
+                        {detailCopy.statusLabels.replied}
+                      </option>
+                      <option value="follow_up_needed">
+                        {detailCopy.statusLabels.follow_up_needed}
+                      </option>
+                      <option value="booked">
+                        {detailCopy.statusLabels.booked}
+                      </option>
+                      <option value="lost">{detailCopy.statusLabels.lost}</option>
+                      <option value="archived">
+                        {detailCopy.statusLabels.archived}
+                      </option>
+                    </select>
+                    <button className={buttonClass} type="submit">
+                      {detailCopy.save}
+                    </button>
+                  </div>
+                </form>
+                <form action={markLeadOutcomeAction} className="grid gap-2">
+                  <span className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                    {detailCopy.labels.manualOutcome}
+                  </span>
+                  <input name="leadId" type="hidden" value={detail.lead.id} />
+                  <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                    <select
+                      className={inputClass}
+                      defaultValue={detail.lead.manual_outcome ?? "booked"}
+                      name="manualOutcome"
+                    >
+                      <option value="booked">
+                        {detailCopy.statusLabels.booked}
+                      </option>
+                      <option value="lost">{detailCopy.statusLabels.lost}</option>
+                      <option value="no_response">
+                        {detailCopy.statusLabels.no_response}
+                      </option>
+                      <option value="not_a_fit">
+                        {detailCopy.statusLabels.not_a_fit}
+                      </option>
+                      <option value="asked_info">
+                        {detailCopy.statusLabels.asked_info}
+                      </option>
+                    </select>
+                    <button className={buttonClass} type="submit">
+                      {detailCopy.mark}
+                    </button>
+                  </div>
+                  <p className="text-[11px] leading-5 text-[var(--dash-text-muted)]">
+                    {detailCopy.manualOutcomeHelp}
+                  </p>
+                </form>
+              </div>
+            </DashboardCard>
+          </div>
 
           {/* Owner notes (private). Storage TBD — local-only textarea for now. */}
           <DashboardCard className="p-[22px]">
@@ -632,7 +660,9 @@ export default async function LeadDetailPage({
                 </pre>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <CopyButton
+                    failedLabel={dashboardCopy.actions.copyFailed}
                     label={detailCopy.ai.copyReply}
+                    successLabel={dashboardCopy.actions.copySuccess}
                     value={aiOutput.output.replyDraft}
                   />
                   <button
@@ -656,7 +686,9 @@ export default async function LeadDetailPage({
                 <div className="mt-3">
                   <CopyButton
                     className="w-full"
+                    failedLabel={dashboardCopy.actions.copyFailed}
                     label={detailCopy.ai.copyFollowUp}
+                    successLabel={dashboardCopy.actions.copySuccess}
                     value={aiOutput.output.followUpDraft}
                   />
                 </div>

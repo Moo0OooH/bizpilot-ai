@@ -93,13 +93,15 @@ export const labelClass =
 
 const toneClasses: Record<Tone, string> = {
   amber:
-    "border-amber-300/35 bg-amber-500/12 text-amber-700 dark:text-amber-200",
-  blue: "border-blue-500/35 bg-blue-600/10 text-blue-700 dark:text-blue-200",
+    "border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] text-[var(--dash-warning-strong)]",
+  blue:
+    "border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] text-[var(--dash-primary-strong)]",
   emerald:
-    "border-emerald-300/35 bg-emerald-500/12 text-emerald-700 dark:text-emerald-200",
+    "border-[var(--dash-success-border)] bg-[var(--dash-success-soft)] text-[var(--dash-success-strong)]",
   neutral:
     "border-[var(--dash-border-strong)] bg-[var(--dash-surface-muted)] text-[var(--dash-text-secondary)]",
-  red: "border-red-300/35 bg-red-500/12 text-red-700 dark:text-red-200",
+  red:
+    "border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] text-[var(--dash-danger-strong)]",
 };
 
 const toneDotClasses: Record<Tone, string> = {
@@ -133,11 +135,14 @@ export function initials(value: string | null | undefined): string {
  * "Sarah Mansfield" -> "Sarah M."; "Mohammad Ghoorchibeigi" -> "Mohammad G.".
  * Single-word names pass through.
  */
-export function shortCustomerName(value: string | null | undefined): string {
-  if (!value) return "Unnamed lead";
+export function shortCustomerName(
+  value: string | null | undefined,
+  fallback: string,
+): string {
+  if (!value) return fallback;
   const parts = value.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "Unnamed lead";
-  if (parts.length === 1) return parts[0] ?? "Unnamed lead";
+  if (parts.length === 0) return fallback;
+  if (parts.length === 1) return parts[0] ?? fallback;
   return `${parts[0]} ${(parts[1]?.charAt(0) ?? "").toUpperCase()}.`;
 }
 
@@ -299,7 +304,7 @@ export function StatusBadge({ children, tone = "neutral" }: StatusBadgeProps) {
       className={`inline-flex min-h-6 max-w-full items-center justify-center gap-1.5 rounded-md border px-2 py-1 text-[11px] font-extrabold leading-none ${toneClasses[tone]}`}
     >
       <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${toneDotClasses[tone]}`} />
-      <span className="truncate capitalize">{children}</span>
+      <span className="whitespace-nowrap capitalize">{children}</span>
     </span>
   );
 }

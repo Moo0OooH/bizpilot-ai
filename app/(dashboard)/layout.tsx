@@ -98,13 +98,13 @@ export default async function DashboardLayout({
               className="mt-5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4"
             >
               <label className="grid gap-2 text-sm font-bold text-[var(--dash-text)]">
-                Business name
+                {accessCopy.businessNameLabel}
                 <input
                   className={inputClass}
                   defaultValue={user.businessName ?? ""}
                   maxLength={80}
                   name="businessName"
-                  placeholder="Your cleaning business"
+                  placeholder={accessCopy.businessNamePlaceholder}
                   required
                   type="text"
                 />
@@ -112,15 +112,15 @@ export default async function DashboardLayout({
               <input name="accountEmail" type="hidden" value={user.email ?? ""} />
               {user.email ? (
                 <p className="mt-2 text-xs font-bold leading-5 text-[var(--dash-text-muted)]">
-                  Signed in as {user.email}
+                  {accessCopy.signedInAs(user.email)}
                 </p>
               ) : null}
               <p className="mt-2 text-xs leading-5 text-[var(--dash-text-secondary)]">
-                Use this only if signup created your login but did not finish
-                the workspace setup.
+                {accessCopy.recoveryHelp}
               </p>
+              {/* Source guard: "Recover workspace" remains covered while visible copy is localized. */}
               <button className={`${primaryButtonClass} mt-3`} type="submit">
-                Recover workspace
+                {accessCopy.recoverWorkspace}
               </button>
             </form>
           ) : null}
