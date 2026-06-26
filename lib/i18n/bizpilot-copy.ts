@@ -11,12 +11,13 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-06-26
  * Change Log:
  * - 2026-06-16: Aligned Settings copy with Phase 23/24 readiness and first-pilot manual-only decisions.
  * - 2026-06-19: Updated dashboard theme help copy for the Light-by-default public theme foundation.
  * - 2026-06-21: Added localized quote success noindex metadata.
  * - 2026-06-25: Polished owner-review wording in dashboard and status helper copy.
+ * - 2026-06-26: Removed legacy owner-heavy and desk wording before Dashboard D1.
  * ============================================================
  */
 
@@ -1269,15 +1270,15 @@ const englishCopy: BizPilotCopy = {
         guardrailBadges: [
           "No auto-send",
           "No invented pricing",
-          "Owner reviewed",
+          "Reviewed by you",
         ],
         manualDraftDescription:
-          "Generate a draft when ready. BizPilot prepares a summary, reply draft, follow-up draft, and next action. Owner reviews, copies, and sends manually.",
+          "Generate a draft when ready. BizPilot prepares a summary, reply draft, follow-up draft, and next action. You review, copy, and send manually.",
         missingInfo: "Missing info",
         modelDraft: "Model draft",
         nextAction: "Next action",
-        noSend: "No Send button in MVP. Owner copies and sends manually.",
-        ownerReviewRequired: "Owner review required",
+        noSend: "No Send button in MVP. You copy and send manually.",
+        ownerReviewRequired: "Review required",
         regenerate: "Regenerate",
         ruleFallback: "Rule fallback",
         source: "Source",
@@ -1321,18 +1322,18 @@ const englishCopy: BizPilotCopy = {
       noActionItemsBody: "Follow-up and reply tasks will appear here.",
       noActionItemsTitle: "No action items",
       noTimelineBody:
-        "Lead activity will appear here as the owner reviews and acts.",
+        "Lead activity will appear here as you review and act.",
       noTimelineTitle: "No timeline events",
       notProvided: "Not provided",
       notYet: "Not yet",
       ownerNotes: {
         description:
-          "Private notes for pilot learning and follow-up quality. Storage will be wired in a later phase; the field is visible to remind the owner of what to track.",
+          "Private notes for pilot learning and follow-up quality. Storage will be wired in a later phase; the field is visible to remind you what to track.",
         persistenceNote:
           "Notes persistence is part of Phase 18B and is not yet stored server-side.",
         placeholder:
           "Add notes about this request, objections, pricing context, or follow-up outcome...",
-        title: "Owner notes",
+        title: "Workspace notes",
       },
       quoteIntakeFields: "Quote intake fields",
       routing: {
@@ -1353,7 +1354,7 @@ const englishCopy: BizPilotCopy = {
           commercial_cleaning: "Commercial Cleaning",
           intake_review: "Intake Review",
           move_out_cleaning: "Move-out Cleaning",
-          owner_review: "Owner Review",
+          owner_review: "Review",
           recurring_opportunity: "Recurring Opportunity",
         },
         reasonLabel: "Reason",
@@ -1364,13 +1365,13 @@ const englishCopy: BizPilotCopy = {
           move_out_request: "Move-out cleaning request",
           outside_service_area: "Outside configured service area",
           preferred_date_soon: "Preferred date is soon",
-          ready_for_owner_reply: "Ready for owner reply",
+          ready_for_owner_reply: "Ready for your reply",
           recurring_request: "Recurring cleaning opportunity",
           response_overdue: "Response is overdue",
         },
         reviewerLabel: "Suggested reviewer",
         reviewers: {
-          owner: "Owner",
+          owner: "You",
         },
         nextActions: {
           ask_missing_info: "Ask for missing information before estimating.",
@@ -1385,7 +1386,7 @@ const englishCopy: BizPilotCopy = {
       save: "Save",
       sections: {
         controlsDescription:
-          "Owner-controlled status and manual outcome tracking. Nothing changes automatically.",
+          "You control status and manual outcome tracking. Nothing changes automatically.",
         controlsTitle: "Lead controls",
         leadDetailsDescription:
           "Quote intake values captured from the public form.",
@@ -1442,13 +1443,13 @@ const englishCopy: BizPilotCopy = {
       openQuoteSetup: "Open Quote Setup",
       quoteLinkHealth: "Quote link health",
       statusRulesBody:
-        "New -> Needs reply -> Reviewed / Won / Lost. AI drafts are owner-reviewed only; no automatic sending.",
+        "New -> Needs reply -> Reviewed / Won / Lost. AI drafts are reviewed by you only; no automatic sending.",
       statusRulesTitle: "Status rules",
     },
     overview: {
       aiControlBody:
         "BizPilot drafts replies, summaries, and follow-ups. Nothing is sent automatically.",
-      aiControlBadges: ["No auto-send", "No invented pricing", "Owner reviewed"],
+      aiControlBadges: ["No auto-send", "No invented pricing", "Reviewed by you"],
       aiControlTitle: "AI stays under your control",
       atRiskSoon: "At risk soon",
       copyLink: "Copy link",
@@ -1461,7 +1462,7 @@ const englishCopy: BizPilotCopy = {
       finishSetup: "Finish setup",
       heroBadge: "Manual-first recovery",
       heroDescription:
-        "Respond while the customer is still comparing options. BizPilot organizes urgent quote requests, drafts a reply, and keeps the owner in control.",
+        "Respond while the customer is still comparing options. BizPilot organizes urgent quote requests, drafts a reply, and keeps you in control.",
       heroTitle: (count) =>
         count === 1
           ? "1 quote request needs attention today."
@@ -1476,7 +1477,7 @@ const englishCopy: BizPilotCopy = {
           label: "At risk leads",
         },
         needsReply: {
-          detail: "Waiting for owner response",
+          detail: "Waiting for your response",
           label: "Needs reply",
         },
         newQuoteRequests: {
@@ -1503,7 +1504,7 @@ const englishCopy: BizPilotCopy = {
         title: "Quote link readiness",
       },
       recentActivity: {
-        description: "Operational timeline for quote recovery and owner actions.",
+        description: "Operational timeline for quote recovery and manual actions.",
         emptyBody:
           "New quote requests, AI summaries, review actions, and quote link copies will appear here.",
         emptyTitle: "No recent activity yet.",
@@ -1527,7 +1528,7 @@ const englishCopy: BizPilotCopy = {
           ["2", "Copy AI replies", "Edit before sending manually."],
           ["3", "Follow up unanswered requests", "Use owner-approved drafts."],
         ],
-        title: "Owner routine suggestion",
+        title: "Workspace routine suggestion",
       },
       status: {
         aiDraftReady: "AI draft ready",
@@ -1540,10 +1541,10 @@ const englishCopy: BizPilotCopy = {
       businessProfile: "Business Profile",
       leads: "Leads",
       overview: "Overview",
-      ownerWorkspace: "Owner workspace",
+      ownerWorkspace: "Workspace",
       quoteSetup: "Quote Setup",
       settings: "Settings",
-      workspaceSubtitle: "Quote Recovery Desk",
+      workspaceSubtitle: "Lead recovery workspace",
     },
     pages: {
       businessProfile: {
@@ -2289,20 +2290,20 @@ const frenchCopy: BizPilotCopy = {
     checkEmailTitle: "Prochaines étapes",
     checkEmailUseAnother: "Utiliser un autre courriel",
     confirmPassword: "Confirmer le mot de passe",
-    createAccount: "Créer l'accès propriétaire",
+    createAccount: "Créer l'accès à l'espace",
     createAccountPending: "Création de l'accès...",
     createWorkspaceFooter:
-      "Accès propriétaire pour les entreprises déjà intégrées à BizPilot AI.",
+      "Accès à l'espace pour les entreprises déjà intégrées à BizPilot AI.",
     createWorkspaceSubtitle:
       "Créez votre espace BizPilot seulement si vous avez été invité ou approuvé pour le pilote.",
-    createWorkspaceTitle: "Créer l'accès propriétaire",
+    createWorkspaceTitle: "Créer l'accès à l'espace",
     email: "Courriel",
     forgotPassword: "Mot de passe oublié?",
     forgotPasswordFooter:
       "La réinitialisation passe par le courriel de récupération Supabase Auth.",
     forgotPasswordQuestion: "Mot de passe retrouvé?",
     forgotPasswordSubtitle:
-      "Entrez votre courriel propriétaire. Nous enverrons les instructions si un compte existe.",
+      "Entrez le courriel du responsable. Nous enverrons les instructions si un compte existe.",
     forgotPasswordTitle: "Réinitialiser le mot de passe",
     hidePassword: "Masquer le mot de passe",
     hidePasswordShort: "Masquer",
@@ -2310,7 +2311,7 @@ const frenchCopy: BizPilotCopy = {
     needAccount: "Approuvé pour le pilote, mais vous n'avez pas encore créé votre accès?",
     needNewResetLink: "Besoin d'un nouveau lien?",
     newPassword: "Nouveau mot de passe",
-    ownerAccess: "Accès propriétaire",
+    ownerAccess: "Accès à l'espace",
     password: "Mot de passe",
     passwordHelp: "Utilisez au moins 8 caractères pour votre mot de passe.",
     repeatNewPassword: "Répétez le nouveau mot de passe",
@@ -2343,7 +2344,7 @@ const frenchCopy: BizPilotCopy = {
   dashboard: {
     actions: {
       copyQuoteLink: "Copier le lien",
-      openLeadQueue: "Ouvrir les leads",
+      openLeadQueue: "Ouvrir les prospects",
       previewPublicPage: "Voir la page publique",
       previewQuotePage: "Aperçu de la soumission",
       saveConfiguration: "Enregistrer",
@@ -2353,7 +2354,7 @@ const frenchCopy: BizPilotCopy = {
       accountEmailHelp: "Courriel du compte - modifiez-le dans les réglages.",
       aiNotes: "Zone de service et notes opérationnelles",
       aiNotesDescription:
-        "Contexte qui aide le propriétaire et l'IA à préparer de meilleurs brouillons. Les garde-fous IA et FAQ restent dans Configuration.",
+        "Contexte qui aide votre équipe et l'IA à préparer de meilleurs brouillons. Les garde-fous IA et FAQ restent dans Configuration.",
       business: "Entreprise",
       businessIdentity: "Identité de l'entreprise",
       businessIdentityDescription:
@@ -2371,16 +2372,16 @@ const frenchCopy: BizPilotCopy = {
       logoUrl: "URL du logo",
       notInMvp: "Hors MVP",
       oneAreaPerLine:
-        "Une zone par ligne. Utilisée pour scorer les leads et expliquer la couverture.",
+        "Une zone par ligne. Utilisée pour scorer les prospects et expliquer la couverture.",
       openQuoteSetup: "Ouvrir Configuration",
-      ownerEmail: "Courriel propriétaire (lecture seule)",
+      ownerEmail: "Courriel du responsable (lecture seule)",
       preferredLanguage: "Langue préférée",
       previewQuotePage: "Aperçu page de soumission",
       publicQuoteLink: "Lien public",
       publicSlug: "Slug public",
       roadmapFields: [
-        ["Nom public propriétaire", "Phase 18B"],
-        ["Téléphone propriétaire", "Phase 18B"],
+        ["Nom public du responsable", "Phase 18B"],
+        ["Téléphone du responsable", "Phase 18B"],
         ["Site web public", "Phase 18B"],
         ["Ville", "Phase 18B"],
         ["Province", "Phase 18B"],
@@ -2434,12 +2435,12 @@ const frenchCopy: BizPilotCopy = {
         advancedSettings: "Paramètres avancés",
         close: "Fermer",
         customFieldBuilder:
-          "Créez des questions propres au propriétaire. Les options apparaissent seulement quand le type du champ les exige.",
+          "Créez des questions internes. Les options apparaissent seulement quand le type du champ les exige.",
         customerFacingQuestion: "Question visible par le client",
         customerQuestion: "Question client",
         customize: "Personnaliser",
         description:
-          "Choisissez les questions affichées sur le formulaire public, ajoutez des champs propres au propriétaire et définissez leur priorité.",
+          "Choisissez les questions affichées sur le formulaire public, ajoutez des champs internes et définissez leur priorité.",
         fieldKey: "Clé du champ",
         fieldKeyHelp:
           "Optionnel. Lettres minuscules, chiffres et traits de soulignement. Laissez vide pour générer depuis le libellé.",
@@ -2464,7 +2465,7 @@ const frenchCopy: BizPilotCopy = {
           number: "Nombre",
           phone: "Téléphone",
           radio: "Radio",
-          select: "Select",
+          select: "Liste déroulante",
           text: "Texte",
           textarea: "Texte long",
           time_window: "Plage horaire",
@@ -2486,14 +2487,14 @@ const frenchCopy: BizPilotCopy = {
         "Aucune entreprise locataire n'est disponible pour cet utilisateur.",
       notifications: {
         description:
-          "Le premier pilote est manuel: le proprietaire verifie le tableau de bord. Les notifications courriel proprietaire, SMS et WhatsApp restent desactivees avant validation.",
+          "Le premier pilote est manuel: vous vérifiez le tableau de bord. Les notifications courriel, SMS et WhatsApp restent désactivées avant validation.",
         emailActive: "Verification manuelle du tableau de bord",
         futureDisabled: "Desactive avant validation",
         newQuoteRequest: "Nouvelle demande",
         off: "Désactivé",
-        ownerEmail: "Courriel propriétaire",
+        ownerEmail: "Courriel du responsable",
         summary:
-          "Verification manuelle du tableau de bord - notification proprietaire differee",
+          "Vérification manuelle du tableau de bord - notification courriel différée",
         title: "Notifications",
       },
       overview: {
@@ -2555,7 +2556,7 @@ const frenchCopy: BizPilotCopy = {
       services: {
         areasHelp: "Exemple: Montréal, Laval, Longueuil, Rive-Sud",
         description:
-          "Entrez une ville, un quartier ou une région par ligne. Les leads hors zone peuvent être marqués comme moins compatibles.",
+          "Entrez une ville, un quartier ou une région par ligne. Les prospects hors zone peuvent être marqués comme moins compatibles.",
         serviceAreas: "Zones desservies",
         services: "Services",
         servicesHelp: "Un service par ligne. Format: Nom du service | Note optionnelle",
@@ -2597,10 +2598,10 @@ const frenchCopy: BizPilotCopy = {
         clearFilters: "Réinitialiser",
         filteredBody:
           "Essayez une autre recherche, réinitialisez les filtres ou triez par demandes récentes.",
-        filteredTitle: "Aucun lead ne correspond à ces filtres.",
+        filteredTitle: "Aucun prospect ne correspond à ces filtres.",
         noLeadsBody:
           "Partagez votre lien de soumission pour commencer à recevoir des demandes.",
-        noLeadsTitle: "Aucun lead pour l'instant.",
+        noLeadsTitle: "Aucune demande pour l'instant.",
       },
       fallbacks: {
         area: "Secteur à confirmer",
@@ -2625,7 +2626,7 @@ const frenchCopy: BizPilotCopy = {
         status: "Statut",
       },
       reset: "Réinitialiser",
-      searchPlaceholder: "Rechercher leads, ville, service...",
+      searchPlaceholder: "Rechercher prospects, ville, service...",
       sorts: {
         mostUrgent: "Plus urgent",
         newest: "Plus récent",
@@ -2648,7 +2649,7 @@ const frenchCopy: BizPilotCopy = {
         copyReply: "Copier la réponse",
         editManually: "Modifier manuellement",
         editManuallyTitle:
-          "La modification intégrée est une amélioration de workflow future.",
+          "La modification intégrée est une amélioration de flux future.",
         estimatedCost: "Coût estimé",
         fallbackReason: "Raison du repli IA",
         followUpDraft: "Brouillon de suivi",
@@ -2657,16 +2658,16 @@ const frenchCopy: BizPilotCopy = {
         guardrailBadges: [
           "Aucun envoi automatique",
           "Aucun prix inventé",
-          "Révisé par le propriétaire",
+          "À valider par vous",
         ],
         manualDraftDescription:
-          "Générez un brouillon quand vous êtes prêt. BizPilot prépare un résumé, une réponse, un suivi et la prochaine action. Le propriétaire révise, copie et envoie manuellement.",
+          "Générez un brouillon quand vous êtes prêt. BizPilot prépare un résumé, une réponse, un suivi et la prochaine action. Vous validez, copiez et envoyez manuellement.",
         missingInfo: "Infos manquantes",
         modelDraft: "Brouillon modèle",
         nextAction: "Prochaine action",
         noSend:
-          "Aucun bouton Envoyer dans le MVP. Le propriétaire copie et envoie manuellement.",
-        ownerReviewRequired: "Révision propriétaire requise",
+          "Aucun bouton Envoyer dans le MVP. Vous copiez et envoyez manuellement.",
+        ownerReviewRequired: "Validation requise",
         regenerate: "Regénérer",
         ruleFallback: "Repli par règles",
         source: "Source",
@@ -2691,7 +2692,7 @@ const frenchCopy: BizPilotCopy = {
         contact: "Aucun contact capturé",
         service: "Service non défini",
         source: "Lien de soumission",
-        unnamedLead: "Lead sans nom",
+        unnamedLead: "Prospect sans nom",
       },
       labels: {
         manualOutcome: "Résultat manuel",
@@ -2711,7 +2712,7 @@ const frenchCopy: BizPilotCopy = {
       noActionItemsBody: "Les tâches de réponse et de suivi apparaîtront ici.",
       noActionItemsTitle: "Aucune action",
       noTimelineBody:
-        "L'activité du lead apparaîtra ici pendant la révision par le propriétaire.",
+        "L'activité du prospect apparaîtra ici pendant votre validation.",
       noTimelineTitle: "Aucun événement",
       notProvided: "Non fourni",
       notYet: "Pas encore",
@@ -2722,7 +2723,7 @@ const frenchCopy: BizPilotCopy = {
           "La sauvegarde des notes fait partie de la Phase 18B et n'est pas encore stockée côté serveur.",
         placeholder:
           "Ajoutez des notes sur la demande, les objections, le contexte de prix ou le résultat du suivi...",
-        title: "Notes propriétaire",
+        title: "Notes privées",
       },
       quoteIntakeFields: "Champs de soumission",
       routing: {
@@ -2741,9 +2742,9 @@ const frenchCopy: BizPilotCopy = {
         queueLabel: "File suggérée",
         queues: {
           commercial_cleaning: "Nettoyage commercial",
-          intake_review: "Révision intake",
+          intake_review: "Révision de demande",
           move_out_cleaning: "Nettoyage de déménagement",
-          owner_review: "Révision propriétaire",
+          owner_review: "Validation",
           recurring_opportunity: "Occasion récurrente",
         },
         reasonLabel: "Raison",
@@ -2754,13 +2755,13 @@ const frenchCopy: BizPilotCopy = {
           move_out_request: "Demande de nettoyage de déménagement",
           outside_service_area: "Hors zone desservie configurée",
           preferred_date_soon: "Date souhaitée bientôt",
-          ready_for_owner_reply: "Prêt pour une réponse propriétaire",
+          ready_for_owner_reply: "Prêt pour votre réponse",
           recurring_request: "Occasion de nettoyage récurrent",
           response_overdue: "Réponse en retard",
         },
         reviewerLabel: "Réviseur suggéré",
         reviewers: {
-          owner: "Propriétaire",
+          owner: "Vous",
         },
         nextActions: {
           ask_missing_info:
@@ -2778,11 +2779,11 @@ const frenchCopy: BizPilotCopy = {
       save: "Enregistrer",
       sections: {
         controlsDescription:
-          "Statut et résultat manuel contrôlés par le propriétaire. Rien ne change automatiquement.",
-        controlsTitle: "Contrôles du lead",
+          "Vous contrôlez le statut et le résultat manuel. Rien ne change automatiquement.",
+        controlsTitle: "Contrôles du prospect",
         leadDetailsDescription:
           "Valeurs capturées depuis le formulaire public.",
-        leadDetailsTitle: "Détails du lead",
+        leadDetailsTitle: "Détails du prospect",
       },
       statusLabels: {
         archived: "Archivé",
@@ -2796,8 +2797,8 @@ const frenchCopy: BizPilotCopy = {
         follow_up_due: "Suivi dû",
         follow_up_marked: "Suivi marqué",
         follow_up_needed: "Suivi requis",
-        lead_created: "Lead créé",
-        lead_viewed: "Lead vu",
+        lead_created: "Prospect créé",
+        lead_viewed: "Prospect vu",
         lost: "Perdu",
         low_fit: "Peu compatible",
         new: "Nouveau",
@@ -2825,9 +2826,9 @@ const frenchCopy: BizPilotCopy = {
       active: "Actif",
       atRiskBadge: (count) => `${count} à risque`,
       focusAtRiskDescription: (count) =>
-        `${count} lead${count === 1 ? "" : "s"} à risque. Révisez-les avant les demandes déjà révisées ou archivées.`,
+        `${count} prospect${count === 1 ? "" : "s"} à risque. Révisez-les avant les demandes déjà validées ou archivées.`,
       focusHealthyDescription:
-        "Aucun lead à risque pour l'instant. Continuez à vérifier les nouvelles demandes.",
+        "Aucun prospect à risque pour l'instant. Continuez à vérifier les nouvelles demandes.",
       focusTitle: "Focus récupération du jour",
       lastSubmission: (age) => `Dernière demande: ${age}.`,
       missingInfoBadge: (count) => `${count} infos manquantes`,
@@ -2844,7 +2845,7 @@ const frenchCopy: BizPilotCopy = {
       aiControlBadges: [
         "Aucun envoi automatique",
         "Aucun prix inventé",
-        "Révisé par le propriétaire",
+        "À valider par vous",
       ],
       aiControlTitle: "L'IA reste sous votre contrôle",
       atRiskSoon: "Bientôt à risque",
@@ -2858,7 +2859,7 @@ const frenchCopy: BizPilotCopy = {
       finishSetup: "Terminer la configuration",
       heroBadge: "Récupération manuelle",
       heroDescription:
-        "Répondez pendant que le client compare encore ses options. BizPilot organise les demandes urgentes, prépare une réponse et garde le propriétaire en contrôle.",
+        "Répondez pendant que le client compare encore ses options. BizPilot organise les demandes urgentes, prépare une réponse et vous garde en contrôle.",
       heroTitle: (count) =>
         `${count} demande${count === 1 ? "" : "s"} de soumission demandent votre attention aujourd'hui.`,
       metrics: {
@@ -2868,10 +2869,10 @@ const frenchCopy: BizPilotCopy = {
         },
         atRiskLeads: {
           detail: "Aucune réponse après le seuil de récupération",
-          label: "Leads à risque",
+          label: "Prospects à risque",
         },
         needsReply: {
-          detail: "En attente d'une réponse du propriétaire",
+          detail: "En attente de votre réponse",
           label: "Réponse requise",
         },
         newQuoteRequests: {
@@ -2885,7 +2886,7 @@ const frenchCopy: BizPilotCopy = {
       openQueue: "Ouvrir la file",
       queue: {
         description:
-          "Les 5 demandes les plus urgentes. Ouvrez la file complète pour filtrer, trier et agir sur chaque lead.",
+          "Les 5 demandes les plus urgentes. Ouvrez la file complète pour filtrer, trier et agir sur chaque prospect.",
         title: "File de récupération",
       },
       readiness: {
@@ -2899,7 +2900,7 @@ const frenchCopy: BizPilotCopy = {
       },
       recentActivity: {
         description:
-          "Chronologie opérationnelle des demandes et actions du propriétaire.",
+          "Chronologie opérationnelle des demandes et actions manuelles.",
         emptyBody:
           "Les nouvelles demandes, résumés IA, actions de révision et copies du lien apparaîtront ici.",
         emptyTitle: "Aucune activité récente pour l'instant.",
@@ -2910,20 +2911,20 @@ const frenchCopy: BizPilotCopy = {
         followUpDetail: (count) => `${count} suivi dû aujourd'hui`,
         followUpTitle: "Suivi dû",
         itemCount: (count) => String(count),
-        missingInfoDetail: (count) => `${count} lead a besoin de détails`,
+        missingInfoDetail: (count) => `${count} prospect a besoin de détails`,
         missingInfoTitle: "Infos manquantes",
-        replyDetail: (count) => `${count} leads en attente`,
+        replyDetail: (count) => `${count} prospect${count === 1 ? "" : "s"} en attente`,
         replyTitle: "Réponse requise",
         title: "Focus récupération du jour",
       },
-      reviewUrgentLead: "Réviser le lead urgent",
+      reviewUrgentLead: "Réviser le prospect urgent",
       routine: {
         steps: [
-          ["1", "Réviser les leads à risque", "Commencer par les demandes en retard."],
+          ["1", "Réviser les prospects à risque", "Commencer par les demandes en retard."],
           ["2", "Copier les réponses IA", "Modifier avant l'envoi manuel."],
           ["3", "Relancer les demandes sans réponse", "Utiliser les brouillons approuvés."],
         ],
-        title: "Routine suggérée au propriétaire",
+        title: "Routine suggérée",
       },
       status: {
         aiDraftReady: "Brouillon IA prêt",
@@ -2934,12 +2935,12 @@ const frenchCopy: BizPilotCopy = {
     },
     nav: {
       businessProfile: "Profil d'entreprise",
-      leads: "Leads",
+      leads: "Prospects",
       overview: "Vue d'ensemble",
-      ownerWorkspace: "Espace propriétaire",
+      ownerWorkspace: "Espace de travail",
       quoteSetup: "Configuration",
       settings: "Réglages",
-      workspaceSubtitle: "Bureau Quote Recovery",
+      workspaceSubtitle: "Espace de récupération",
     },
     pages: {
       businessProfile: {
@@ -2952,7 +2953,7 @@ const frenchCopy: BizPilotCopy = {
         title: "Configuration",
       },
       dashboard: {
-        subtitle: "Vue d'aujourd'hui pour récupérer les leads",
+        subtitle: "Vue d'aujourd'hui pour récupérer les demandes",
         title: "Tableau de bord",
       },
       founder: {
@@ -2960,7 +2961,7 @@ const frenchCopy: BizPilotCopy = {
         title: "Console fondateur",
       },
       leadDetail: {
-        subtitle: "Détails du lead, infos manquantes et brouillons IA révisés",
+        subtitle: "Détails du prospect, infos manquantes et brouillons IA à valider",
         title: "Bureau de réponse",
       },
       leads: {
@@ -3001,18 +3002,18 @@ const frenchCopy: BizPilotCopy = {
           settings: "Reglages",
         },
         description:
-          "Niveaux de fonctionnalites controles par le proprietaire principal. Les outils actifs sont clairs, les outils a configurer affichent le blocage, et les outils planifies restent non cliquables.",
+          "Niveaux de fonctionnalites contrôlés par le responsable principal. Les outils actifs sont clairs, les outils à configurer affichent le blocage, et les outils planifiés restent non cliquables.",
         featureCopy: {
           ai_draft_assistant: {
             activation:
-              "Le fondateur active l'IA modele pour un pilote approuve apres le smoke final sans secret et l'approbation proprietaire.",
+              "Le fondateur active l'IA modèle pour un pilote approuvé après le smoke final sans secret et votre approbation.",
             name: "Assistant IA de brouillons",
             ownerGuide:
-              "Verifier les gates Phase 24F/24G, surveiller l'usage et garder la revue proprietaire obligatoire.",
+              "Vérifier les gates Phase 24F/24G, surveiller l'usage et garder la validation humaine obligatoire.",
             setup:
-              "La preuve fournisseur OpenAI synthetique est passee; l'usage donnees reelles reste gate par smoke final et approbation proprietaire.",
+              "La preuve fournisseur OpenAI synthétique est passée; l'usage données réelles reste gate par smoke final et approbation finale.",
             summary:
-              "Les resumes, brouillons de reponse et suivis restent relus par le proprietaire.",
+              "Les résumés, brouillons de réponse et suivis restent validés par vous.",
             textGuide:
               "Explique le fallback, la confidentialite et le fait que BizPilot n'envoie pas automatiquement.",
             visualGuide:
@@ -3031,24 +3032,24 @@ const frenchCopy: BizPilotCopy = {
             textGuide:
               "Explique ce qui est sauvegarde, ou les exports vivent et qui peut restaurer.",
             visualGuide:
-              "Montrer checklist, statut de drill et decision proprietaire.",
+              "Montrer checklist, statut de drill et décision responsable.",
           },
           billing_payment_links: {
             activation:
-              "Le fondateur garde la facturation manuelle ou ajoute des liens de paiement apres setup.",
+              "Le fondateur garde la facturation manuelle ou ajoute des liens de paiement après configuration.",
             name: "Facturation et liens de paiement",
             ownerGuide:
               "Confirmer prix, fournisseur, annulation/remboursement et smoke.",
             setup: "Fournisseur/compte paiement requis.",
             summary:
-              "La facturation pilote peut etre suivie sans pretendre que le billing in-app existe.",
+              "La facturation pilote peut être suivie sans prétendre que la facturation intégrée existe.",
             textGuide:
               "Explique facturation manuelle, liens de paiement, annulation et limites de remboursement.",
             visualGuide:
-              "Montrer forfait, setup paiement requis et actions billing non cliquables.",
+              "Montrer forfait, configuration paiement requise et actions de facturation non cliquables.",
           },
           business_branding: {
-            activation: "Le proprietaire modifie la marque dans Quote Setup.",
+            activation: "Vous modifiez la marque dans Configuration.",
             name: "Marque d'entreprise",
             ownerGuide:
               "Verifier contraste et apercu public apres les changements logo/couleur.",
@@ -3065,9 +3066,9 @@ const frenchCopy: BizPilotCopy = {
               "Le courriel auth est actif apres Resend DNS, SMTP Supabase, confirmation signup et reset smokes passes.",
             name: "SMTP personnalise auth email",
             ownerGuide:
-              "Ne jamais imprimer les identifiants. Garder la notification proprietaire app separee et differee.",
+              "Ne jamais imprimer les identifiants. Garder la notification courriel app séparée et différée.",
             setup:
-              "La preuve courriel auth est passee; la notification proprietaire reste differee pour le premier pilote.",
+              "La preuve courriel auth est passée; la notification courriel reste différée pour le premier pilote.",
             summary:
               "Livraison des confirmations signup et resets mot de passe pour vrais pilotes.",
             textGuide:
@@ -3076,7 +3077,7 @@ const frenchCopy: BizPilotCopy = {
               "Montrer email signup, email reset, logs fournisseur et retry.",
           },
           fr_ca_language: {
-            activation: "Le proprietaire choisit la langue de l'espace.",
+            activation: "Vous choisissez la langue de l'espace.",
             name: "Langue anglais / fr-CA",
             ownerGuide:
               "Garder les textes dans les dictionnaires centraux et lancer les smokes langue.",
@@ -3093,7 +3094,7 @@ const frenchCopy: BizPilotCopy = {
             name: "Controles admin fondateur",
             ownerGuide:
               "Utiliser dry-run d'abord, journaliser les actions et separer les actions destructives.",
-            setup: "Controle par le proprietaire principal.",
+            setup: "Contrôle par le responsable principal.",
             summary:
               "Type d'espace, forfait/statut, lien public, session, notes et securite cleanup.",
             textGuide:
@@ -3120,34 +3121,34 @@ const frenchCopy: BizPilotCopy = {
               "Le fondateur active apres regles de consentement, retention, export et acces premium.",
             name: "Liste de contacts clients",
             ownerGuide:
-              "Definir visibilite owner/admin, import contacts, opt-out et limites export.",
+              "Définir visibilité responsable/admin, import contacts, opt-out et limites export.",
             setup:
               "Fonction premium planifiee; regles contact et posture backup requises d'abord.",
             summary:
-              "Liste premium owner/admin creee depuis email ou telephone client pour suivi et statistiques.",
+              "Liste premium responsable/admin créée depuis courriel ou téléphone client pour suivi et statistiques.",
             textGuide:
               "Explique qui voit la liste, quels contacts sont stockes et les limites d'usage publicitaire.",
             visualGuide:
-              "Montrer liste clients, filtres par contact, visibilite owner/admin, consentement et export desactive.",
+              "Montrer liste clients, filtres par contact, visibilité responsable/admin, consentement et export désactivé.",
           },
           lead_source_attribution_analytics: {
             activation:
               "Le fondateur active apres taxonomie source et regles de confidentialite des graphiques.",
-            name: "Analytics des sources de leads",
+            name: "Analyse des sources de prospects",
             ownerGuide:
               "Utiliser leads.source_channel et lead_source_metadata; ne jamais ajouter leads.source.",
             setup:
               "Fonction premium/admin planifiee; taxonomie source et graphiques non actifs.",
             summary:
-              "Montre si les leads viennent du site web, Instagram, Facebook, Google, liens directs ou campagnes.",
+              "Montre si les prospects viennent du site web, Instagram, Facebook, Google, liens directs ou campagnes.",
             textGuide:
               "Explique libelles de source, UTM, referents et pourquoi les sources inconnues restent honnetes.",
             visualGuide:
               "Montrer graphique des sources, meilleurs canaux, liste recente, bucket inconnu et filtre date.",
           },
           quote_link_intake: {
-            activation: "Le proprietaire controle le lien public actif.",
-            name: "Lien public et intake",
+            activation: "Vous contrôlez le lien public actif.",
+            name: "Lien public et formulaire",
             ownerGuide:
               "Lancer le smoke securite quote quand le formulaire change.",
             setup: "Disponible maintenant.",
@@ -3160,28 +3161,28 @@ const frenchCopy: BizPilotCopy = {
           },
           quote_recovery_queue: {
             activation: "Fonction coeur du tableau de bord.",
-            name: "File de relance leads",
+            name: "File de relance prospects",
             ownerGuide:
-              "Garder priorite, statut et suivi alignes avec le vrai workflow.",
+              "Garder priorité, statut et suivi alignés avec le vrai flux.",
             setup: "Disponible maintenant.",
             summary:
-              "Priorise nouveaux leads, urgences, infos manquantes et suivis.",
+              "Priorise nouvelles demandes, urgences, infos manquantes et suivis.",
             textGuide:
-              "Explique statuts, prochaines actions, revue proprietaire et copier/envoyer.",
+              "Explique statuts, prochaines actions, validation et copier/envoyer.",
             visualGuide:
-              "Montrer file, filtres, detail lead, brouillon IA et action copier.",
+              "Montrer file, filtres, detail prospect, brouillon IA et action copier.",
           },
           scheduling_booking: {
             activation:
               "Le fondateur choisit fournisseur et niveau apres preuve quote recovery.",
-            name: "Planification et booking",
+            name: "Planification et réservation",
             ownerGuide:
               "Definir limite manuel/auto, sync fournisseur, conflits et annulations.",
             setup: "Planifie; non active.",
             summary:
-              "Workflow futur qui ne confirme pas de booking avant la vraie integration.",
+              "Flux futur qui ne confirme pas de réservation avant la vraie integration.",
             textGuide:
-              "Explique demande versus booking confirme et regles d'approbation.",
+              "Explique demande versus réservation confirmée et regles d'approbation.",
             visualGuide:
               "Montrer heure demandee, approbation, confirmation, conflit et annulation.",
           },
@@ -3201,7 +3202,7 @@ const frenchCopy: BizPilotCopy = {
           },
           team_members: {
             activation:
-              "Le fondateur choisit le niveau equipe apres stabilite owner-only.",
+              "Le fondateur choisit le niveau équipe après stabilité du compte principal.",
             name: "Membres d'equipe",
             ownerGuide:
               "Definir roles, invitations, RLS, audit log et offboarding.",
@@ -3223,8 +3224,8 @@ const frenchCopy: BizPilotCopy = {
         levelLabel: "Niveau",
         levelLabels: {
           admin: "Admin",
-          core: "Core",
-          custom: "Custom",
+          core: "Base",
+          custom: "Personnalisé",
           founder: "Fondateur",
           pilot: "Pilote",
           plus: "Plus",
@@ -3234,9 +3235,9 @@ const frenchCopy: BizPilotCopy = {
         stateLabels: {
           blocked_external: "Blocage externe",
           enabled: "Actif",
-          owner_controlled: "Controle owner",
+          owner_controlled: "Contrôle responsable",
           planned: "Planifie",
-          setup_required: "Setup requis",
+          setup_required: "Configuration requise",
         },
         statusLabel: "Statut",
         title: "Niveaux de fonctionnalites",
@@ -3246,18 +3247,18 @@ const frenchCopy: BizPilotCopy = {
       futureSectionsDescription:
         "Les éléments de feuille de route restent visibles mais verrouillés avant validation.",
       futureSectionHints: {
-        billing: "Stripe Payment Links en premier",
+        billing: "Liens de paiement Stripe en premier",
         integrations: "Webhooks reportés",
-        teamMembers: "Propriétaire seulement pendant le pilote",
+        teamMembers: "Compte principal seulement pendant le pilote",
       },
       guardrails: "Garde-fous de préparation production",
       guardrailsDescription:
         "Ce qui reste vrai pendant que BizPilot grandit avec des niveaux de fonctionnalites controles.",
       guardrailItems: [
         "Ne pas activer par defaut les fonctions fournisseur, paiement ou automatisation.",
-        "Ne pas impliquer envoi, booking, facture ou paiement reussi avant que BizPilot le fasse vraiment.",
-        "Chaque nouvelle fonction exige guide visuel, guide texte, guide owner et etat dans Settings.",
-        "Les blocages externes restent visibles jusqu'a la fin du setup API, compte, DNS, fournisseur ou paiement.",
+        "Ne pas impliquer envoi, réservation, facture ou paiement réussi avant que BizPilot le fasse vraiment.",
+        "Chaque nouvelle fonction exige guide visuel, guide texte, guide responsable et état dans Réglages.",
+        "Les blocages externes restent visibles jusqu'à la fin de la configuration API, compte, DNS, fournisseur ou paiement.",
       ],
       integrations: "Intégrations",
       language: "Langue de l'espace",
@@ -3269,9 +3270,9 @@ const frenchCopy: BizPilotCopy = {
         deletionIneligibleBody:
           "Cet espace n'est pas admissible à une nouvelle demande de suppression, ou votre rôle ne peut pas en demander une.",
         deletionIneligibleTitle:
-          "Les demandes de suppression d'espace sont réservées au propriétaire.",
+          "Les demandes de suppression d'espace sont réservées au responsable principal.",
         description:
-          "Contrôles de cycle de vie réservés au propriétaire. La suppression du compte de connexion est séparée.",
+          "Contrôles de cycle de vie réservés au responsable principal. La suppression du compte de connexion est séparée.",
         lifecycleStatus: "Statut du cycle de vie",
         lockBehavior: "Comportement du verrouillage",
         lockBehaviorDescription:
@@ -3311,7 +3312,7 @@ const frenchCopy: BizPilotCopy = {
         },
         changeFallback: "Paramètre de l'espace modifié",
         description:
-          "Vue traçable, côté propriétaire, des changements fondateur/admin qui ont touché cet espace.",
+          "Vue traçable des changements fondateur/admin qui ont touché cet espace.",
         emptyBody:
           "Quand le support fondateur BizPilot change le forfait, l'accès, les liens de soumission ou la politique de session, l'événement apparaît ici.",
         emptyTitle: "Aucun changement système enregistré.",
@@ -3344,7 +3345,7 @@ const frenchCopy: BizPilotCopy = {
         "Les nouvelles sessions commencent en mode clair. Choisissez Sombre ou Système pour une vue fixe ou basée sur l'appareil.",
       workspace: "Espace",
       workspaceDescription:
-        "Espace, compte, theme, langue, niveaux de fonctionnalites et setup controle par le proprietaire principal.",
+        "Espace, compte, thème, langue, niveaux de fonctionnalités et configuration contrôlée par le responsable principal.",
     },
     status: {
       active: "Actif",
@@ -3383,7 +3384,7 @@ const frenchCopy: BizPilotCopy = {
     detailTwo:
       "Grand ménage avec chambres, salles de bain et horaire déjà fournis.",
     disappearsNote:
-      "Cet état démo est seulement affiché dans l'interface. Il n'est pas enregistré comme vrai lead et disparaît dès que de vraies demandes arrivent.",
+      "Cet état démo est seulement affiché dans l'interface. Il n'est pas enregistré comme vrai prospect et disparaît dès que de vraies demandes arrivent.",
     featuredLeadTitle: "Maria S. - nettoyage de déménagement",
     followUpDraft:
       "Bonjour Maria, je fais un suivi pour savoir si vous avez toujours besoin d'aide avec le nettoyage de déménagement. Envoyez la taille du logement et la plage horaire souhaitée, et je pourrai préparer la prochaine étape.",
@@ -3419,7 +3420,7 @@ const frenchCopy: BizPilotCopy = {
         detail:
           "Grand ménage avec chambres, salles de bain et horaire déjà fournis.",
         followUpDraft:
-          "Bonjour Daniel, je fais un suivi sur votre demande de grand ménage. Si l'horaire convient toujours, le propriétaire peut revoir les détails et vous répondre avec la prochaine étape.",
+          "Bonjour Daniel, je fais un suivi sur votre demande de grand ménage. Si l'horaire convient toujours, vous pouvez revoir les détails et répondre avec la prochaine étape.",
         replyDraft:
           "Bonjour Daniel, merci pour les détails. Je peux revoir la demande et préparer une fourchette d'estimation après confirmation de l'accès et des zones prioritaires.",
         status: "Brouillon prêt",
@@ -3445,7 +3446,7 @@ const frenchCopy: BizPilotCopy = {
         followUpDraft:
           "Bonjour, je fais un suivi sur la demande de nettoyage du bureau. Dites-moi si vous voulez avancer ou ajuster l'étendue du travail.",
         replyDraft:
-          "Merci pour les détails du nettoyage de bureau. Le propriétaire révisera l'étendue et répondra manuellement avec la prochaine étape.",
+          "Merci pour les détails du nettoyage de bureau. Nous réviserons l'étendue et répondrons manuellement avec la prochaine étape.",
         status: "Copié",
         tone: "emerald",
       },
@@ -3453,7 +3454,7 @@ const frenchCopy: BizPilotCopy = {
     sampleStatuses: ["Infos manquantes", "Brouillon prêt", "Suivi dû", "Copié"],
     shareQuoteLink: "Partager le lien",
     suggestedNextAction:
-      "Réviser le brouillon, le copier manuellement et l'envoyer par le canal client que le propriétaire utilise déjà.",
+      "Réviser le brouillon, le copier manuellement et l'envoyer par le canal client que vous utilisez déjà.",
     suggestedNextActionLabel: "Prochaine action suggérée:",
   },
   intakeErrors: {
@@ -3477,9 +3478,9 @@ const frenchCopy: BizPilotCopy = {
   },
   leadRules: {
     actionAskInfo: "Demander les détails manquants",
-    actionFollowUp: "Faire un suivi avec ce lead",
-    actionReply: "Répondre à ce lead",
-    actionReplyOverdue: "Répondre au lead en retard",
+    actionFollowUp: "Faire un suivi avec ce prospect",
+    actionReply: "Répondre à ce prospect",
+    actionReplyOverdue: "Répondre au prospect en retard",
     archiveOrReviewArea: "Vérifier le secteur desservi avant de répondre",
     completeExplanation:
       "Contact, service, secteur, horaire et détails de soumission présents.",
@@ -3492,7 +3493,7 @@ const frenchCopy: BizPilotCopy = {
     noOpenAction: "Aucune action ouverte",
     outcomeBooked: "Résultat gagné",
     outcomeLost: "Résultat perdu",
-    readyForReply: "Prêt pour une réponse du propriétaire.",
+    readyForReply: "Prêt pour votre réponse.",
     recommendedAskInfo: "Demander les infos manquantes",
     replyCopiedWaiting: "Réponse copiée, résultat en attente.",
     responseState: (state) => `État de réponse: ${state}.`,

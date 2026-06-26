@@ -10,9 +10,10 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-06-26
  * Change Log:
  * - 2026-06-25: Polished fr-CA pricing wording around project-pilot and owner-review terminology.
+ * - 2026-06-26: Removed legacy English CTAs and workflow wording from fr-CA pricing copy.
  * ============================================================
  */
 
@@ -256,9 +257,9 @@ const frenchPricingCopy: PricingCopy = {
     badge: "Prêt pour la configuration pilote",
     body:
       "L'objectif est simple: prouver qu'une réponse de soumission plus rapide et plus claire aide votre entreprise de nettoyage à récupérer plus de conversations.",
-    button: "Apply for founder pilot",
+    button: "Rejoindre le pilote",
     title:
-      "Commencez avec le workflow de récupération, puis décidez à partir de l'usage réel.",
+      "Commencez avec le flux de récupération, puis décidez à partir de l'usage réel.",
   },
   faq: {
     eyebrow: "FAQ",
@@ -313,14 +314,14 @@ const frenchPricingCopy: PricingCopy = {
       eyebrow: "Promesse du pilote",
       title: "Vous gardez le contrôle de chaque message client.",
     },
-    secondaryCta: "Voir le workflow",
+    secondaryCta: "Voir le fonctionnement",
     title:
-      "Commencez avec un seul workflow qui peut récupérer de vrais mandats de nettoyage.",
+      "Commencez avec un seul flux qui peut récupérer de vrais mandats de nettoyage.",
   },
   included: {
     badge: "Ce qui est inclus",
     body:
-      "L'offre est conçue pour les propriétaires de nettoyage qui ont besoin de répondre plus vite, de mieux capter les demandes et de garder le suivi visible avant d'avoir besoin d'une plateforme opérationnelle complète.",
+      "L'offre est conçue pour les entreprises de nettoyage qui ont besoin de répondre plus vite, de mieux capter les demandes et de garder le suivi visible avant d'avoir besoin d'une plateforme opérationnelle complète.",
     items: [
       {
         body:
@@ -339,11 +340,11 @@ const frenchPricingCopy: PricingCopy = {
       },
       {
         body:
-          "Le soutien de la première semaine aide à ajuster les questions, services, FAQ et le workflow du propriétaire.",
+          "Le soutien de la première semaine aide à ajuster les questions, services, FAQ et le fonctionnement de votre espace.",
         title: "Configuration guidée par le fondateur",
       },
     ],
-    title: "Un workflow de récupération ciblé, pas un autre labyrinthe logiciel.",
+    title: "Un flux de récupération ciblé, pas un autre labyrinthe logiciel.",
   },
   plans: {
     eyebrow: "Offres fondatrices simples",
@@ -351,7 +352,7 @@ const frenchPricingCopy: PricingCopy = {
       {
         cta: "Rejoindre le pilote",
         description:
-          "Pour les premières entreprises de nettoyage qui valident le workflow de récupération avec configuration fondatrice et soutien manuel.",
+          "Pour les premières entreprises de nettoyage qui valident le flux de récupération avec configuration fondatrice et soutien manuel.",
         features: [
           "Clients pilotes 1 à 5",
           "Configuration fondateur gratuite",
@@ -366,10 +367,10 @@ const frenchPricingCopy: PricingCopy = {
         monthly: "Setup pilote à 0 $",
         name: "Projet pilote",
         recommended: true,
-        setup: "application requise",
+        setup: "candidature requise",
       },
       {
-        cta: "Choisir Starter",
+        cta: "Postuler au pilote",
         description:
           "Pour les premiers clients après les premières preuves: un lien de soumission clair, un espace de travail pour les prospects et des brouillons IA à valider par vous.",
         features: [
@@ -386,7 +387,7 @@ const frenchPricingCopy: PricingCopy = {
         setup: "après approbation",
       },
       {
-        cta: "Choisir Pro",
+        cta: "Postuler au pilote",
         description:
           "Pour l'offre payante standard après que les premiers témoignages prouvent que la récupération des soumissions fonctionne.",
         features: [
@@ -401,7 +402,7 @@ const frenchPricingCopy: PricingCopy = {
         ],
         monthly: "Offre future",
         name: "Pro",
-        setup: "roadmap",
+        setup: "feuille de route",
       },
     ],
     lead:

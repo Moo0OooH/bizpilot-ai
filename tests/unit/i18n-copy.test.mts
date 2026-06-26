@@ -310,6 +310,168 @@ describe("BizPilot language copy", () => {
     }
   });
 
+  it("keeps legacy public homepage wording out of dictionary copy", () => {
+    const publicHomepageText = JSON.stringify({
+      en: getHomeCopy("en"),
+      fr: getHomeCopy("fr-CA"),
+    });
+
+    for (const forbidden of [
+      /Quote Recovery Desk/u,
+      /Command center/u,
+      /Centre de commande/u,
+      /Stop losing cleaning jobs one delayed reply at a time\./u,
+      /no[- ]risk pilot/i,
+      /credit card/i,
+      /cancel anytime/i,
+      /Pilote sans risque/u,
+      /Aucune carte requise/u,
+      /Annulez quand vous voulez/u,
+      /Bureau de récupération des soumissions/u,
+      /Bureau de réponse IA/u,
+    ]) {
+      assert.equal(
+        forbidden.test(publicHomepageText),
+        false,
+        `Homepage dictionaries should not contain legacy public wording: ${forbidden}`,
+      );
+    }
+  });
+
+  it("keeps fr-CA pricing CTAs localized without changing pilot values", () => {
+    const frenchPricingCopy = getPricingCopy("fr-CA");
+    const frenchPricingText = JSON.stringify(frenchPricingCopy);
+
+    assert.equal(frenchPricingCopy.cta.button, "Rejoindre le pilote");
+    assert.equal(frenchPricingCopy.hero.primaryCta, "Rejoindre le pilote");
+    assert.equal(frenchPricingCopy.hero.secondaryCta, "Voir le fonctionnement");
+    assert.equal(frenchPricingCopy.plans.items[0]?.cta, "Rejoindre le pilote");
+    assert.equal(frenchPricingCopy.plans.items[1]?.cta, "Postuler au pilote");
+    assert.equal(frenchPricingCopy.plans.items[2]?.cta, "Postuler au pilote");
+    assert.equal(frenchPricingCopy.plans.items[0]?.monthly, "Setup pilote à 0 $");
+    assert.equal(frenchPricingCopy.plans.items[1]?.monthly, "Tarif pilote");
+    assert.equal(frenchPricingCopy.plans.items[2]?.monthly, "Offre future");
+
+    for (const forbidden of [
+      "Apply for founder pilot",
+      "Apply for pilot",
+      "See workflow",
+      "Voir le workflow",
+      "Choisir Starter",
+      "Choisir Pro",
+      "application requise",
+      "roadmap",
+    ]) {
+      assert.equal(
+        frenchPricingText.includes(forbidden),
+        false,
+        `fr-CA pricing copy should not contain stale CTA/setup wording: ${forbidden}`,
+      );
+    }
+  });
+
+  it("keeps dashboard copy shape synced while replacing legacy visible labels", () => {
+    const englishDashboardCopy = getBizPilotCopy("en").dashboard;
+    const frenchDashboardCopy = getBizPilotCopy("fr-CA").dashboard;
+
+    assert.deepEqual(
+      copyShape(frenchDashboardCopy),
+      copyShape(englishDashboardCopy),
+      "fr-CA dashboard copy must keep keys and function arity synced with English.",
+    );
+
+    assert.equal(englishDashboardCopy.nav.ownerWorkspace, "Workspace");
+    assert.equal(
+      englishDashboardCopy.nav.workspaceSubtitle,
+      "Lead recovery workspace",
+    );
+    assert.equal(
+      englishDashboardCopy.leadDetail.ai.ownerReviewRequired,
+      "Review required",
+    );
+    assert.deepEqual(englishDashboardCopy.overview.aiControlBadges, [
+      "No auto-send",
+      "No invented pricing",
+      "Reviewed by you",
+    ]);
+
+    assert.equal(frenchDashboardCopy.nav.ownerWorkspace, "Espace de travail");
+    assert.equal(
+      frenchDashboardCopy.nav.workspaceSubtitle,
+      "Espace de récupération",
+    );
+    assert.equal(
+      frenchDashboardCopy.leadDetail.ai.ownerReviewRequired,
+      "Validation requise",
+    );
+    assert.deepEqual(frenchDashboardCopy.overview.aiControlBadges, [
+      "Aucun envoi automatique",
+      "Aucun prix inventé",
+      "À valider par vous",
+    ]);
+    assert.equal(
+      frenchDashboardCopy.leadQueue.searchPlaceholder,
+      "Rechercher prospects, ville, service...",
+    );
+    assert.equal(
+      frenchDashboardCopy.settings.featureRegistry.levelLabels.core,
+      "Base",
+    );
+    assert.equal(
+      frenchDashboardCopy.settings.featureRegistry.levelLabels.custom,
+      "Personnalisé",
+    );
+    assert.equal(
+      frenchDashboardCopy.settings.featureRegistry.stateLabels.setup_required,
+      "Configuration requise",
+    );
+
+    const visibleFrenchDashboardText = JSON.stringify({
+      demo: getBizPilotCopy("fr-CA").demo,
+      leadRules: getBizPilotCopy("fr-CA").leadRules,
+      nav: frenchDashboardCopy.nav,
+      leadQueue: frenchDashboardCopy.leadQueue,
+      leadDetailAi: frenchDashboardCopy.leadDetail.ai,
+      leadDetailFallbacks: frenchDashboardCopy.leadDetail.fallbacks,
+      leadDetailNotes: frenchDashboardCopy.leadDetail.ownerNotes,
+      leadDetailRouting: frenchDashboardCopy.leadDetail.routing,
+      leadDetailSections: frenchDashboardCopy.leadDetail.sections,
+      leadsPage: frenchDashboardCopy.leadsPage,
+      overview: frenchDashboardCopy.overview,
+      featureRegistryLabels: {
+        levelLabels: frenchDashboardCopy.settings.featureRegistry.levelLabels,
+        stateLabels: frenchDashboardCopy.settings.featureRegistry.stateLabels,
+      },
+    });
+
+    for (const forbidden of [
+      "Révisé par le propriétaire",
+      "Révision propriétaire requise",
+      "Révision propriétaire",
+      "Espace propriétaire",
+      "Bureau Quote Recovery",
+      "Rechercher leads",
+      "Aucun lead",
+      "Lead sans nom",
+      "Leads à risque",
+      "leads en attente",
+      "réponse propriétaire",
+      "réponse du propriétaire",
+      "Setup requis",
+      "Controle owner",
+      "Owner workspace",
+      "Quote Recovery Desk",
+      "Owner reviewed",
+      "Owner review required",
+    ]) {
+      assert.equal(
+        visibleFrenchDashboardText.includes(forbidden),
+        false,
+        `Visible dashboard copy should not contain legacy wording: ${forbidden}`,
+      );
+    }
+  });
+
   it("keeps final public routes wired to dictionaries instead of hardcoded marketing copy", () => {
     const dictionaryBackedRoutes = finalPublicRouteSourceFiles.filter(
       (file) =>

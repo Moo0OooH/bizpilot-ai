@@ -10,11 +10,12 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-06-26
  * Change Log:
  * - 2026-06-19: Shortened public header tagline and corrected compact French pilot CTA.
  * - 2026-06-21: Corrected compact CTA text and fr-CA accent defects visible in public shell/homepage copy.
  * - 2026-06-25: Replaced literal fr-CA lead phrasing with natural cleaning-request wording.
+ * - 2026-06-26: Removed legacy desk, command-center, and no-risk pilot wording from homepage copy.
  * ============================================================
  */
 
@@ -232,7 +233,7 @@ const englishHomeCopy: HomeCopy = {
   commandCenter: {
     body:
       "One simple view for the lead, the missing details, the draft reviewed by you, and the next manual action.",
-    eyebrow: "Command center",
+    eyebrow: "Lead recovery workspace",
     mock: {
       actions: [
         {
@@ -250,7 +251,7 @@ const englishHomeCopy: HomeCopy = {
       ],
       aiDraftStatus: "AI draft",
       deskSubtitle: "Sarah M. - House cleaning",
-      deskTitle: "AI response desk",
+      deskTitle: "AI draft workspace",
       draft:
         "Hi Sarah, thanks for reaching out. Could you share your home size, preferred frequency, and any priority areas so I can prepare an accurate cleaning quote?",
       draftLabel: "Draft reply",
@@ -304,7 +305,7 @@ const englishHomeCopy: HomeCopy = {
       summaryLabel: "Summary",
       tags: ["Home size", "Frequency", "Priority areas", "Parking"],
     },
-    title: "Quote Recovery Desk",
+    title: "Lead recovery workspace",
   },
   finalCta: {
     assurances: [
@@ -329,7 +330,7 @@ const englishHomeCopy: HomeCopy = {
     ],
     primaryCta: "Apply for founder pilot",
     secondaryCta: "See the quote recovery workflow",
-    title: "Stop losing cleaning jobs one delayed reply at a time.",
+    title: "Recover more cleaning quote requests before slow replies cost the job.",
   },
   heroDesk: {
     aiDraft: "AI draft",
@@ -656,7 +657,7 @@ const frenchHomeCopy: HomeCopy = {
   commandCenter: {
     body:
       "Un espace clair pour le prospect, les détails manquants, le brouillon à valider et la prochaine action manuelle.",
-    eyebrow: "Centre de commande",
+    eyebrow: "Espace de récupération",
     mock: {
       actions: [
         {
@@ -674,7 +675,7 @@ const frenchHomeCopy: HomeCopy = {
       ],
       aiDraftStatus: "Brouillon IA",
       deskSubtitle: "Sarah M. - Nettoyage maison",
-      deskTitle: "Bureau de réponse IA",
+      deskTitle: "Espace de brouillon IA",
       draft:
         "Bonjour Sarah, merci pour votre demande. Pouvez-vous partager la taille du logement, la fréquence souhaitée et les zones prioritaires afin que je prépare une soumission précise?",
       draftLabel: "Brouillon de réponse",
@@ -733,13 +734,13 @@ const frenchHomeCopy: HomeCopy = {
         "Stationnement",
       ],
     },
-    title: "Bureau de récupération des soumissions",
+    title: "Espace de récupération des demandes",
   },
   finalCta: {
     assurances: [
-      "Aucune carte requise",
-      "Pilote sans risque de 14 jours",
-      "Annulez quand vous voulez",
+      "Projet pilote limité",
+      "Configuration accompagnée",
+      "Aucun envoi automatique",
     ],
     body:
       "Captez les demandes, demandez les détails manquants, répondez plus vite et ne perdez plus un prospect dans le silence.",
@@ -826,7 +827,7 @@ const frenchHomeCopy: HomeCopy = {
     },
     replyTitle: "Réponse suggérée",
     reviewReply: "Réviser la réponse",
-    title: "Bureau de récupération en direct",
+    title: "Espace de récupération en direct",
     viewAll: "Voir tous les prospects",
   },
   metrics: {
@@ -1029,7 +1030,7 @@ const frenchHomeCopy: HomeCopy = {
       },
       {
         body: "Essayez. Voyez la valeur. Décidez.",
-        title: "Pilote sans risque de 14 jours",
+        title: "Projet pilote accompagné",
       },
       {
         body: "Un focus. Un résultat.",
