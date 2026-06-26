@@ -95,7 +95,12 @@ export default async function LeadConversionDeskPage() {
       <PageHeader
         actions={
           <>
-            <CopyButton label={copy.actions.copyQuoteLink} value={quotePath} />
+            <CopyButton
+              failedLabel={copy.actions.copyFailed}
+              label={copy.actions.copyQuoteLink}
+              successLabel={copy.actions.copySuccess}
+              value={quotePath}
+            />
             <Link className={primaryButtonClass} href={quotePath}>
               {copy.actions.previewQuotePage}
             </Link>
@@ -152,7 +157,9 @@ export default async function LeadConversionDeskPage() {
             <div className="mt-3">
               <CopyButton
                 className="w-full"
+                failedLabel={copy.actions.copyFailed}
                 label={copy.actions.copyQuoteLink}
+                successLabel={copy.actions.copySuccess}
                 value={quotePath}
               />
             </div>

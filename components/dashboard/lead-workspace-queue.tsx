@@ -201,7 +201,7 @@ function CustomerCell({
       <Avatar name={item.lead.customer_name} size={36} />
       <div className="min-w-0">
         <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
-          {shortCustomerName(item.lead.customer_name)}
+          {shortCustomerName(item.lead.customer_name, copy.fallbacks.unnamedLead)}
         </p>
         <p className="mt-0.5 truncate text-[12px] text-[var(--dash-text-muted)]">
           {sub}
@@ -248,7 +248,7 @@ function LeadMobileCard({
 }
 
 const COL_TEMPLATE =
-  "grid-cols-[minmax(0,1.35fr)_minmax(0,0.95fr)_minmax(0,0.95fr)_96px_minmax(92px,0.7fr)_minmax(0,1.25fr)]";
+  "grid-cols-[minmax(0,1.35fr)_minmax(0,0.95fr)_minmax(0,0.95fr)_96px_minmax(112px,0.75fr)_minmax(0,1.2fr)]";
 
 function LeadDesktopRow({
   copy,
@@ -326,7 +326,10 @@ function SampleLeadEmptyState({
           <Avatar name={featured.customer} size={44} tone="primary" />
           <div>
             <p className="text-[15px] font-black text-[var(--dash-text)]">
-              {shortCustomerName(featured.customer)}
+              {shortCustomerName(
+                featured.customer,
+                copy.dashboard.leadQueue.fallbacks.unnamedLead,
+              )}
             </p>
             <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
               {featured.detail}
@@ -359,7 +362,10 @@ function SampleLeadEmptyState({
                 <Avatar name={lead.customer} size={34} />
                 <span className="min-w-0">
                   <span className="block truncate text-[13px] font-black text-[var(--dash-text)]">
-                    {shortCustomerName(lead.customer)}
+                    {shortCustomerName(
+                      lead.customer,
+                      copy.dashboard.leadQueue.fallbacks.unnamedLead,
+                    )}
                   </span>
                   <span className="mt-0.5 block truncate text-[12px] text-[var(--dash-text-muted)]">
                     {lead.area}
@@ -398,11 +404,21 @@ function SampleLeadEmptyState({
         <Link className={primaryButtonClass} href="/dashboard/leads">
           {copy.demo.reviewReply}
         </Link>
-        <CopyButton label={copy.demo.copyResponse} value={featured.replyDraft} />
+        <CopyButton
+          failedLabel={copy.dashboard.actions.copyFailed}
+          label={copy.demo.copyResponse}
+          successLabel={copy.dashboard.actions.copySuccess}
+          value={featured.replyDraft}
+        />
         <button className={buttonClass} disabled type="button">
           {copy.demo.markContacted}
         </button>
-        <CopyButton label={copy.demo.shareQuoteLink} value={quotePath} />
+        <CopyButton
+          failedLabel={copy.dashboard.actions.copyFailed}
+          label={copy.demo.shareQuoteLink}
+          successLabel={copy.dashboard.actions.copySuccess}
+          value={quotePath}
+        />
       </div>
 
       <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
@@ -425,7 +441,12 @@ function LeadQueueEmptyStarter({
         {queueCopy.empty.noLeadsBody}
       </EmptyState>
       <div className="flex flex-wrap justify-center gap-2">
-        <CopyButton label={copy.demo.shareQuoteLink} value={quotePath} />
+        <CopyButton
+          failedLabel={copy.dashboard.actions.copyFailed}
+          label={copy.demo.shareQuoteLink}
+          successLabel={copy.dashboard.actions.copySuccess}
+          value={quotePath}
+        />
         <Link className={buttonClass} href="/dashboard/quote-setup">
           {copy.dashboard.nav.quoteSetup}
         </Link>

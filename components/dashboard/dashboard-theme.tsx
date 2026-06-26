@@ -141,15 +141,15 @@ export function DashboardThemeSelector() {
       role="group"
     >
       {(["system", "light", "dark"] as const).map((option) => (
-        <button
-          aria-pressed={theme === option}
-          className={
-            theme === option
-              ? "rounded-md bg-[var(--dash-primary)] px-2.5 text-white"
-              : "rounded-md px-2.5 text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
-          }
-          key={option}
-          onClick={() => setTheme(option)}
+          <button
+            aria-pressed={theme === option}
+            className={
+              theme === option
+                ? "whitespace-nowrap rounded-md bg-[var(--dash-primary)] px-2.5 text-white"
+                : "whitespace-nowrap rounded-md px-2.5 text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
+            }
+            key={option}
+            onClick={() => setTheme(option)}
           type="button"
         >
           {option === "system"

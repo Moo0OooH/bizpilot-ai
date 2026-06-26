@@ -204,7 +204,9 @@ export default async function DashboardOverviewPage() {
             </Link>
             <CopyButton
               className="md:!hidden"
+              failedLabel={dashboardCopy.actions.copyFailed}
               label={overviewCopy.copyLink}
+              successLabel={dashboardCopy.actions.copySuccess}
               value={quotePath}
             />
           </div>
@@ -235,7 +237,7 @@ export default async function DashboardOverviewPage() {
             <Avatar name={featuredLeadName} size={36} tone="primary" />
             <span className="min-w-0">
               <span className="block truncate text-[14px] font-extrabold text-[var(--dash-text)]">
-                {shortCustomerName(featuredLeadName)}
+                {shortCustomerName(featuredLeadName, queueCopy.fallbacks.unnamedLead)}
               </span>
               <span className="mt-0.5 block truncate text-[12px] leading-4 text-[var(--dash-text-secondary)]">
                 {featuredLeadService} / {featuredLeadArea} / {featuredLeadAge}
@@ -320,7 +322,10 @@ export default async function DashboardOverviewPage() {
                     <Avatar name={item.lead.customer_name} size={32} />
                     <span className="min-w-0">
                       <span className="block truncate text-[12.5px] font-extrabold text-[var(--dash-text)]">
-                        {shortCustomerName(item.lead.customer_name)}
+                        {shortCustomerName(
+                          item.lead.customer_name,
+                          queueCopy.fallbacks.unnamedLead,
+                        )}
                       </span>
                       <span className="mt-0.5 block truncate text-[11px] leading-4 text-[var(--dash-text-secondary)]">
                         {item.primaryIssue || item.recommendedAction}
@@ -370,14 +375,19 @@ export default async function DashboardOverviewPage() {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <CopyButton label={overviewCopy.copyLink} value={quotePath} />
+                <CopyButton
+                  failedLabel={dashboardCopy.actions.copyFailed}
+                  label={overviewCopy.copyLink}
+                  successLabel={dashboardCopy.actions.copySuccess}
+                  value={quotePath}
+                />
                 <Link className={buttonClass} href="/dashboard/configuration">
                   {overviewCopy.finishSetup}
                 </Link>
               </div>
               <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
                 <summary className="cursor-pointer list-none px-3 py-2 text-[12px] font-black text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
-                  Setup checklist
+                  {overviewCopy.setupChecklist}
                 </summary>
                 <div className="grid gap-2 border-t border-[var(--dash-border)] p-3 text-[13px]">
                   {readiness.items.slice(0, 5).map((item) => (
@@ -450,7 +460,7 @@ export default async function DashboardOverviewPage() {
 
           <details className="overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]">
             <summary className="cursor-pointer list-none px-3.5 py-3 text-[13px] font-black text-[var(--dash-text)] transition hover:bg-[var(--dash-surface-muted)] [&::-webkit-details-marker]:hidden">
-              Guides and AI controls
+              {overviewCopy.guidesAndAiControls}
             </summary>
             <div className="grid gap-3 border-t border-[var(--dash-border)] p-3.5">
               <div>
