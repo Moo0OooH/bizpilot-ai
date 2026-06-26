@@ -242,3 +242,48 @@ Next safe sequence:
 6. Record Phase 24G explicit owner approval before real customer data.
 7. Close pilot ops/payment/support/rollback gates before any paid pilot.
 ```
+
+## Addendum - P10/A2 Public Hero And Admin Gate Sync
+
+Date: 2026-06-26
+
+P10 public homepage polish has been implemented on
+`review/p10-hero-admin-console-polish` and recorded in:
+
+```text
+docs/readiness/P10_A2_PREMIUM_HERO_ADMIN_CONSOLE_REPORT_2026-06-26.md
+```
+
+Current P10 result:
+
+```text
+P10 public homepage code/test/visual ready for review.
+A2 admin/owner console implementation remains blocked behind a security/RLS gate.
+Real data and paid pilot remain blocked.
+```
+
+Verification recorded for P10:
+
+```text
+pnpm verify                                      PASS
+git diff --check                                PASS
+pnpm smoke:public                               PASS
+pnpm smoke:responsive                           PASS
+pnpm smoke:ui-matrix                            PASS
+pnpm smoke:quote -- --inactive-slug=...         PASS
+pnpm verify:local-db with local DATABASE_URL    PASS
+```
+
+Dashboard smoke was intentionally skipped because the current public Supabase
+URL classification is not local. It must only run against confirmed
+local/synthetic Supabase.
+
+Updated next safe sequence:
+
+```text
+1. Review and merge P10 public homepage polish.
+2. Keep A2 implementation blocked until the security/RLS gate is approved.
+3. Run dashboard smoke only against local/synthetic Supabase.
+4. Keep real-data approval separate.
+5. Keep paid pilot approval separate.
+```
