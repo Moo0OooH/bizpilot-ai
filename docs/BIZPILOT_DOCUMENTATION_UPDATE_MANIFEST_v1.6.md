@@ -126,3 +126,38 @@ This addendum does not approve real customer data, paid pilot launch, billing
 automation, auth/RLS/database changes, AI provider changes, production data-flow
 expansion, or feature expansion beyond the manual-first cleaning lead recovery
 surface.
+
+
+---
+
+# 2026-06-26 P8/D1 Status Sync Addendum
+
+## Update Type
+
+Release hygiene, source-of-truth correction, and post-P8/D1 status sync.
+
+## New Current Files Added
+
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`
+- `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
+- `P8_PUBLIC_SITE_CLARITY_AUDIT_2026-06-26.md`
+- `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
+
+## Existing Files Updated
+
+- `README.md`
+- `CURRENT_CANONICAL_DOCS_v1.7.md`
+- `AI_CODING_AGENT_START_HERE_v1.7.md`
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+- `BIZPILOT_DOCS_FILE_INVENTORY_v1.7.md`
+
+## Current Interpretation
+
+P8 public homepage clarity is on `main` in commit `6e7cfc3`. D1 dashboard shell
+and lead workflow stabilization is on `main` in commit `654a645` and is
+code/test/visual ready on local synthetic data only.
+
+This addendum does not approve real customer data, paid pilot launch, billing
+automation, auth/RLS/database changes, AI provider changes, production data-flow
+expansion, or feature expansion beyond the manual-first owner-reviewed lead
+recovery surface.

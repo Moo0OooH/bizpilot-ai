@@ -30,7 +30,22 @@ Every implementation must improve at least one of these outcomes:
 
 If the change does not improve one of these, keep it out of the active surface or place it behind an owner-controlled feature level with honest Settings state.
 
-## Active Priority Override - 2026-06-21
+## Active Priority Override - 2026-06-26
+
+For the shortest current status, read
+`docs/readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`.
+
+2026-06-26 update: P8 public homepage clarity and D1 dashboard shell/lead
+workflow stabilization are both on `main`. D1 is code/test/visual ready on
+local synthetic data only. Do not start new feature expansion. The next safe
+work is release hygiene, production deploy confirmation, local synthetic QA,
+quote slug smoke, local DB/RLS proof, Phase 24G explicit owner approval before
+real customer data, and a separate pilot ops/payment/support gate before paid
+pilot.
+
+Real customer data and paid pilot remain blocked.
+
+## Previous Active Priority Override - 2026-06-21
 
 For the shortest current status, read `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`.
 
@@ -50,7 +65,15 @@ Read `docs/operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_
 
 BizPilot does not need a strategic reset. After the remaining Phase 24F/24G real-data gates, the main risk is product readiness, demo readiness, and customer validation.
 
-Highest current execution priorities:
+Highest current execution priorities after the 2026-06-26 sync:
+
+1. Release hygiene and production deploy/cache confirmation
+2. Local synthetic dashboard QA only
+3. Quote slug smoke and local DB/RLS proof
+4. Phase 24G explicit owner real-data approval gate
+5. Pilot ops/payment/support readiness gate
+
+Historical execution priorities before D1 landed:
 
 1. Dashboard shell and lead workflow visual stabilization
 2. Manual email templates

@@ -6,20 +6,26 @@ Before reading or implementing anything, start with:
 
 1. `CURRENT_CANONICAL_DOCS_v1.7.md`
 2. `AI_CODING_AGENT_START_HERE_v1.7.md`
-3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
-4. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
-5. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
-6. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
-7. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
-8. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
-9. `product/BIZPILOT_FINAL_PUBLIC_SITE_STANDARD_v1.0.md`
-10. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
-11. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
+3. `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`
+4. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
+5. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
+6. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+7. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+8. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
+9. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+10. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
+11. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
 12. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
 13. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
 14. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
+
+2026-06-26 status override: P8 public homepage clarity and D1 dashboard shell
+and lead workflow stabilization are now on `main`. D1 is code/test/visual ready
+on local synthetic data only. The next safe work is release hygiene, production
+deploy/cache confirmation, local synthetic QA, quote slug smoke, local DB/RLS
+proof, and explicit owner gates before real customer data or paid pilot.
 
 2026-06-01 status override: BizPilot is synthetic-ready, not
 real-data-approved, and not paid-pilot-ready. The next gates are Phase 24F final

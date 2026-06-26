@@ -4,10 +4,12 @@ Date: 2026-06-26
 
 ## 1. Current Branch And Commit
 
-- Branch: `review/public-site-clarity-and-breathing-room`
-- Base commit: `5f84f13 fix(dashboard): stabilize d1 owner lead workflow`
+- Original branch: `review/public-site-clarity-and-breathing-room`
+- Original review commit: `8848259 feat(home): add chaos-to-clarity hero`
+- Main public-site commit: `6e7cfc3 feat(home): add chaos-to-clarity hero`
+- Main dashboard D1 sync commit after P8: `654a645 fix(dashboard): stabilize d1 owner lead workflow`
 - Starting git status: clean (`git status --short --branch` showed only the branch line)
-- D1 remains committed and isolated before P8.
+- D1 was later applied to `main` in a separate commit after the P8 public-site commit.
 
 ## 2. Route Audit Matrix
 

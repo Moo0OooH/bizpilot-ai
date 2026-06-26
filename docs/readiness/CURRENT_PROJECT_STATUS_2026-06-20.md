@@ -2,18 +2,26 @@
 
 Date: 2026-06-20
 Last acceptance update: 2026-06-21
-Status: Active post-public-site acceptance, multilingual public polish, post-D0 dashboard baseline
+Last status sync: 2026-06-26
+Status: Active post-public-site acceptance, multilingual public polish, post-D0 dashboard baseline, post-P8 public homepage clarity, and post-D1 dashboard stabilization
 
 ## One-Line Status
 
-BizPilot AI has completed public-site acceptance P0-P5 and has a completed
-dashboard D0 design audit. The next correct implementation work is dashboard
-shell and lead workflow visual stabilization, with newly reported public
-EN/fr-CA sizing, Dark-theme contrast, and fr-CA policy localization defects
-handled under the multilingual responsive UI standard.
+2026-06-26 update: BizPilot AI has P8 public homepage clarity on `main` and D1
+dashboard shell/lead workflow stabilization on `main` as local synthetic
+code/test/visual ready. The next correct work is release hygiene, production
+deploy confirmation, local synthetic QA, quote slug smoke, local DB/RLS proof,
+and explicit owner gates before real data or paid pilot.
+
+Historical baseline: BizPilot AI completed public-site acceptance P0-P5 and
+has a completed dashboard D0 design audit.
 Real customer data, paid pilot launch, billing automation, auth/RLS/database
 changes, AI provider changes, and production data-flow expansion remain
 blocked.
+
+Latest status report:
+
+- `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`
 
 ## Current Repository Baseline
 
@@ -25,10 +33,12 @@ blocked.
 | Remote state at D0 close | `main` aligned with `origin/main` |
 | Public production domain | `https://bizpilo.com` |
 | Latest public-site production evidence | `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` |
+| Latest public homepage clarity evidence | `docs/P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` |
 | Latest multilingual theme/policy fix evidence | `docs/readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md` |
 | Latest multilingual responsive fix evidence | `docs/readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md` |
 | Latest multilingual responsive standard | `docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` |
 | Latest dashboard baseline evidence | `docs/readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` |
+| Latest dashboard D1 evidence | `docs/D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` |
 
 ## Product Truth
 
@@ -91,6 +101,7 @@ Not approved:
 | Phase 11E final production visual verification | Closed | `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md` |
 | Phase 12 public-site visual truth fix | Closed and deployed | `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` |
 | Public-site acceptance P0-P5 | Closed and production verified | `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` |
+| P8 public homepage clarity | Closed on main | Commit `6e7cfc3`; `docs/P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` |
 | Multilingual responsive public polish | Local PASS for owner-reported EN/fr-CA sizing and pricing alignment defects | `docs/readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md` |
 | Multilingual theme/policy public polish | Local PASS for owner-reported Dark-theme callout contrast and fr-CA public policy localization defects | `docs/readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md` |
 
@@ -99,7 +110,7 @@ Not approved:
 | Phase | Status | Evidence |
 | --- | --- | --- |
 | Phase D0 dashboard design audit | Closed and pushed | Commit `079ac14`; `docs/readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` |
-| Phase D1 dashboard shell and lead workflow visual stabilization | Next recommended implementation phase | Not started |
+| Phase D1 dashboard shell and lead workflow visual stabilization | Code/test/visual ready on local synthetic data and applied to main | Commit `654a645`; `docs/D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` |
 
 ## Current GO / NO-GO
 
@@ -107,7 +118,7 @@ Not approved:
 | --- | --- | --- |
 | Public site | GO | Public-site acceptance P0-P5 is complete and production verified for starting scoped D1 dashboard visual work. |
 | Dashboard visual planning | GO | D0 route, component, data-flow, auth/workspace, UX, and risk audit is complete. |
-| Dashboard visual implementation | GO for scoped D1 only | Visual hierarchy, shell density, lead inbox/detail clarity, and manual-owner workflow polish may start. |
+| Dashboard visual implementation | D1 ready on local synthetic data | Visual hierarchy, shell density, lead inbox/detail clarity, and manual-owner workflow polish are applied to main for D1 scope only. |
 | Multilingual public/dashboard visual parity | GO for scoped visual/copy/layout work only | EN/fr-CA sizing, accent quality, Dark-theme contrast, card alignment, and CTA anchoring may be corrected without touching blocked systems. |
 | Real customer data | NO-GO | Phase 24G explicit owner approval is not recorded. |
 | Paid pilot launch | NO-GO | Requires owner approval, payment/support operating packet, and deferred restore/RLS proof before paid/risky work. |
@@ -131,13 +142,10 @@ Not approved:
 
 ### P1 - Next Product Readiness Work
 
-- Phase D1 dashboard shell and lead workflow visual stabilization:
-  - reduce dashboard topbar/control density,
-  - make the overview clearly answer "which lead needs attention now?",
-  - improve lead inbox empty/sample state and scanning,
-  - make lead detail next manual owner action primary,
-  - present AI as owner-reviewed draft support,
-  - ensure manual outcome controls do not imply booking confirmation,
+- Post-D1 release hygiene:
+  - confirm production deploy/cache after main push,
+  - re-run local synthetic dashboard QA when dashboard changes resume,
+  - keep D1 manual-first and owner-reviewed,
   - keep EN/fr-CA and Light/Dark layout parity.
 - Manual initial reply, follow-up, and re-engagement templates.
 - End-to-end smoke plan using safe, approved synthetic/local data only.
@@ -177,13 +185,13 @@ These remain blocked before validation:
 
 ## Next Correct Phase
 
-Recommended next phase:
+Recommended next phase after the 2026-06-26 sync:
 
 ```text
-Phase D1 - Dashboard shell and lead workflow visual stabilization
+Post-D1 release hygiene and guarded readiness gates
 ```
 
-Recommended D1 scope:
+Completed D1 scope:
 
 - `components/dashboard/dashboard-shell.tsx`
 - `components/dashboard/dashboard-topbar.tsx`
@@ -197,9 +205,8 @@ Recommended D1 scope:
 - `app/globals.css` only for token-based dashboard layout adjustments
 - focused source/unit checks for product-truth copy and dictionary structure
 
-D1 should not include configuration redesign, schema/storage work,
-billing/payment work, AI provider changes, auth changes, or production
-data-flow changes.
+D1 did not include configuration redesign, schema/storage work, billing/payment
+work, AI provider changes, auth changes, or production data-flow changes.
 
 ## 2026-06-21 Public Acceptance Sync
 

@@ -66,24 +66,34 @@ does not approve real customer data, paid pilot launch, billing automation,
 auth/RLS/database changes, AI provider changes, or production data-flow
 expansion.
 
+2026-06-26 P8/D1 status override: treat
+`readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`,
+`P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`, and
+`D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` as the latest authority
+for the current `main` state. P8 public homepage clarity and D1 dashboard shell
+and lead workflow visual stabilization are on `main`. D1 is code/test/visual
+ready on local synthetic data only. Real customer data, paid pilot launch,
+billing automation, auth/RLS/database changes, AI provider changes, and
+production data-flow expansion remain NO-GO.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
 
 Read these first, in this exact order:
 
-2026-06-20 current read-first override:
+2026-06-26 current read-first override:
 
 1. `CURRENT_CANONICAL_DOCS_v1.7.md` - this file.
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` - current agent instructions.
-3. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - active post-D0 project status and phase map.
-4. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - latest EN/fr-CA public copy, sizing, theme, production evidence, and D1 GO/NO-GO record.
-5. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - latest public-site acceptance and production GO evidence.
-6. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
-7. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md` - latest public multilingual Dark-theme and fr-CA policy localization fix evidence.
-8. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
-9. `readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md` - public-site visual truth evidence.
-10. `readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md` - final public-site readiness evidence.
+3. `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - active post-P8/D1 status, cleanup, and gate map.
+4. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - latest P8 public homepage evidence.
+5. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - latest D1 dashboard evidence.
+6. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - post-D0 project status and historical phase map, superseded by the 2026-06-26 status where different.
+7. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - EN/fr-CA public copy, sizing, theme, production evidence, and D1 GO/NO-GO record.
+8. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - public-site acceptance and production GO evidence before P8.
+9. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
+10. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
 11. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
 
 2026-06-18 public responsive authorities:
@@ -133,11 +143,17 @@ Additional active lifecycle/deletion authorities:
 - `operations/BIZPILOT_DELETION_AND_CLEANUP_RUNBOOK_v1.0.md`
 - `readiness/PHASE_19_BUSINESS_LIFECYCLE_DELETION_READINESS.md`
 
-## Current Readiness Snapshot - 2026-06-21
+## Current Readiness Snapshot - 2026-06-26
 
 Use these files for the latest production and documentation status before
 starting new work:
 
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
+  cleanup record, warning triage, gate map, and final recommendation.
+- `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - public homepage
+  chaos-to-clarity acceptance and main sync record.
+- `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - dashboard D1 local
+  synthetic visual/test acceptance and main sync record.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - current post-D0 project
   status, closed/open phase map, GO/NO-GO table, and recommended next phase.
 - `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md` -
@@ -201,9 +217,10 @@ starting new work:
 
 Current top-level interpretation:
 
-- Public-site work through final acceptance P0-P5 is production verified and
-  closed enough for dashboard visual work. The next correct implementation
-  phase is scoped dashboard shell and lead workflow visual stabilization.
+- Public-site work through final acceptance P0-P5 is production verified, and
+  P8 homepage clarity is now on `main`.
+- Dashboard D1 shell and lead workflow visual stabilization is now on `main`
+  and code/test/visual ready on local synthetic data only.
 - Newly reported multilingual public sizing defects should be handled with the
   multilingual responsive standard before or alongside D1, including
   Light/Dark contrast mappings and fr-CA accent quality, without changing
@@ -240,12 +257,13 @@ Current top-level interpretation:
 - Broader feature work remains allowed only through feature entitlement,
   Settings visibility, guide coverage, smoke evidence, and honest
   customer-facing copy.
-- 2026-06-20 execution override: the highest active work is product readiness,
-  demo readiness, and customer validation. Homepage/public-site polish and
-  visual truth verification are now closed enough for dashboard work. Dashboard
-  shell and lead workflow visual stabilization, manual email templates,
-  end-to-end smoke, demo creation, demo video, and founder-led outreach take
-  priority over feature expansion.
+- 2026-06-26 execution override: the highest active work is release hygiene,
+  production deploy/cache confirmation, local synthetic dashboard QA, quote
+  slug smoke, local DB/RLS proof, Phase 24G owner approval before real data,
+  and a separate pilot ops/payment/support gate before paid pilot.
+  Manual email templates, end-to-end smoke, demo creation, demo video, and
+  founder-led outreach remain next product-readiness work after the guarded
+  release checks.
   P1-after-validation items include owner notes, source attribution, validation
   dashboard, payment process, support process, French pilot expansion, and
   strict restored app/RLS proof. P2 hardening includes IP hash salt, abuse

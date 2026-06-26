@@ -4,6 +4,25 @@
 **Generated From Repo:** yes
 **Scope:** Markdown and text documentation files only; packaged archives are excluded.
 
+## 2026-06-26 P8/D1 Status Sync Addendum
+
+Docs and reports added or promoted as current after P8 homepage clarity and D1
+dashboard stabilization landed on `main`:
+
+- `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`
+- `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
+- `P8_PUBLIC_SITE_CLARITY_AUDIT_2026-06-26.md`
+- `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
+
+Current interpretation:
+
+- P8 public homepage clarity is on `main` in commit `6e7cfc3`.
+- D1 dashboard shell and lead workflow stabilization is on `main` in commit
+  `654a645` and is code/test/visual ready on local synthetic data only.
+- Real customer data, paid pilot launch, billing automation,
+  auth/RLS/database changes, AI provider changes, and production data-flow
+  expansion remain blocked.
+
 ## 2026-06-20 Public-Site/D0 Readiness Addendum
 
 Docs-only sync after final public-site visual stabilization and dashboard D0

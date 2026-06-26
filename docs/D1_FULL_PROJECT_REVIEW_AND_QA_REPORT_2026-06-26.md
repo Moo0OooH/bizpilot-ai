@@ -2,8 +2,10 @@
 
 Date: 2026-06-26
 Repo: `E:\bizpilot-ai`
-Branch: `review/d1-dashboard-stabilization`
-Latest commit inspected: `fa0b6ef fix(copy): remove legacy wording before dashboard d1`
+Branch: `main`
+Original review branch: `review/d1-dashboard-stabilization`
+Latest pre-D1 commit inspected: `fa0b6ef fix(copy): remove legacy wording before dashboard d1`
+D1 main commit: `654a645 fix(dashboard): stabilize d1 owner lead workflow`
 
 ## 1. Final Decision
 
@@ -42,7 +44,7 @@ Real data and paid pilot remain blocked.
 
 ## 2. Git Status and Changed Files
 
-Expected D1 source-code change set:
+D1 source-code change set:
 
 ```text
 M app/(dashboard)/dashboard/business-profile/page.tsx
@@ -65,7 +67,7 @@ Expected consolidated report file:
 docs/D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md
 ```
 
-Removed stale temporary/superseded reports:
+Removed stale temporary/superseded reports in the original D1 review branch:
 
 ```text
 docs/TEMP_D1_REQUIRED_FILES_AND_REPO_INSPECTION_REPORT.md
@@ -73,7 +75,7 @@ docs/D1_FINAL_SITE_AND_DASHBOARD_STABILIZATION_REPORT_2026-06-26.md
 docs/D1_OWNER_VISUAL_REVIEW_PREP_2026-06-26.md
 ```
 
-No commit was made.
+The D1 change was later cherry-picked to `main` as commit `654a645`.
 
 ## 3. Project and Route Inspection
 
@@ -233,13 +235,13 @@ Remaining non-blocking polish:
 
 ## 10. Final Recommendation
 
-D1 can move to review/commit readiness.
+D1 has moved from review-branch readiness to `main` code/test readiness.
 
 Recommended next operational sequence:
 
 ```text
-1. Review final git diff.
-2. Commit D1 dashboard stabilization on review/d1-dashboard-stabilization.
+1. Keep D1 limited to dashboard visual/manual workflow stabilization.
+2. Confirm production deploy if main is connected to deployment.
 3. Keep real data blocked.
 4. Keep paid pilot blocked.
 5. Run local synthetic dashboard QA again after commit if needed.

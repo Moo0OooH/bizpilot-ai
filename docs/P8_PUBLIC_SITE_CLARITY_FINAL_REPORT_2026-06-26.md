@@ -2,8 +2,11 @@
 
 Date: 2026-06-26
 Repo: `E:\bizpilot-ai`
-Branch: `review/public-site-clarity-and-breathing-room`
-Base commit: `5f84f13 fix(dashboard): stabilize d1 owner lead workflow`
+Branch: `main`
+Original review branch: `review/public-site-clarity-and-breathing-room`
+Original review commit: `8848259 feat(home): add chaos-to-clarity hero`
+Main public-site commit: `6e7cfc3 feat(home): add chaos-to-clarity hero`
+D1 main sync commit after this P8 commit: `654a645 fix(dashboard): stabilize d1 owner lead workflow`
 
 ## 1. Final Decision
 
@@ -34,8 +37,8 @@ This does not approve:
 Current safe statement:
 
 ```text
-P8 public homepage code/test/visual ready.
-D1 remains code/test/visual ready on local synthetic data per the current D1 report.
+P8 public homepage code/test/visual ready and pushed to main.
+D1 dashboard code/test/visual ready on local synthetic data and applied to main.
 Real data and paid pilot remain blocked.
 ```
 
@@ -215,16 +218,16 @@ Public quote submit behavior was not changed.
 
 ## 8. Recommendation
 
-P8 is ready for owner review and commit.
+P8 has been committed and pushed to `main`.
 
 Recommended next sequence:
 
 ```text
-1. Review the P8 public homepage diff.
-2. Commit P8 on review/public-site-clarity-and-breathing-room if accepted.
+1. Confirm the production deploy picks up main commit 6e7cfc3 or newer.
+2. Hard-refresh the homepage after deploy/cache settles.
 3. Keep real data blocked.
 4. Keep paid pilot blocked.
-5. Run local synthetic dashboard QA again only when dashboard changes resume.
+5. Use the separate D1 report for dashboard status.
 6. Run quote slug smoke and local DB/RLS proof before any real-data approval gate.
 7. Use a separate owner approval gate before real data.
 8. Use a separate ops/payment/support readiness gate before any limited paid pilot.
@@ -234,6 +237,6 @@ Final recommendation:
 
 ```text
 P8 visually accepted.
-D1 remains visually accepted for local synthetic dashboard scope per docs/D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md.
+D1 is visually accepted for local synthetic dashboard scope per docs/D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md.
 Real data and paid pilot remain blocked.
 ```
