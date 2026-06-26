@@ -24,6 +24,7 @@
  * - 2026-06-25: Shortened the founder pricing highlight labels for 320px visual acceptance.
  * - 2026-06-25: Finalized bilingual public wording around owner review, quote requests, and natural fr-CA phrasing.
  * - 2026-06-26: Reworked homepage workflow preview copy into one compact owner-review panel.
+ * - 2026-06-26: Shortened homepage hero badge/body copy for premium mobile fit.
  * ============================================================
  */
 
@@ -942,9 +943,9 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "Join the founder pilot for cleaning businesses.",
     },
     hero: {
-      badge: "For local service businesses - starting with cleaning",
+      badge: "Local services - cleaning first",
       body:
-        "Requests come from your website, Google, Facebook, Instagram, texts, and missed calls. BizPilot turns messy messages into a clear queue, a reply draft, and the next manual step.",
+        "Requests arrive from your website, Google, social, texts, and missed calls. BizPilot turns messy messages into a clear queue, a draft, and the next manual step.",
       bullets: [
         "Capture every request",
         "Know what needs a reply first",
@@ -1910,9 +1911,9 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "Rejoignez le projet pilote pour entreprises de nettoyage.",
     },
     hero: {
-      badge: "Pour les entreprises de services locales - d'abord le nettoyage",
+      badge: "Services locaux - nettoyage d'abord",
       body:
-        "Les demandes arrivent du site web, Google, Facebook, Instagram, textos et appels manqués. BizPilot transforme ces messages en file claire, en brouillon de réponse et en prochaine étape manuelle.",
+        "Les demandes arrivent du site web, Google, réseaux sociaux, textos et appels manqués. BizPilot en fait une file claire, un brouillon et la prochaine étape manuelle.",
       bullets: [
         "Capter chaque demande",
         "Voir qui répondre d'abord",

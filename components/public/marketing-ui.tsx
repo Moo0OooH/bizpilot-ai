@@ -10,7 +10,7 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-06-26
  * Change Log:
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
@@ -20,6 +20,7 @@
  * - 2026-06-21: Added the dedicated FAQ route to the public footer links.
  * - 2026-06-25: Attached public shell containers to canonical bp responsive primitives.
  * - 2026-06-25: Gave the desktop brand subtitle enough inline budget for fr-CA without truncation.
+ * - 2026-06-26: Allowed marketing badges to wrap inside narrow mobile viewports.
  * ============================================================
  */
 
@@ -294,7 +295,7 @@ export function MarketingBadge({
 
   return (
     <span
-      className="bp-copy-eyebrow inline-flex max-w-full shrink-0 items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-black uppercase leading-tight"
+      className="bp-copy-eyebrow inline-flex min-w-0 max-w-full flex-wrap items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-black uppercase leading-tight"
       style={{
         backgroundColor: selected.bg,
         borderColor: selected.border,
@@ -306,7 +307,9 @@ export function MarketingBadge({
         className="h-1.5 w-1.5 rounded-full"
         style={{ backgroundColor: selected.color }}
       />
-      {children}
+      <span className="min-w-0 max-w-full whitespace-normal">
+        {children}
+      </span>
     </span>
   );
 }

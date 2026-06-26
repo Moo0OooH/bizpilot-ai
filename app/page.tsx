@@ -27,6 +27,7 @@
  * - 2026-06-25: Rebalanced homepage hero, CTA grouping, mockup density, and Problem section rhythm.
  * - 2026-06-25: Tightened hero copy rhythm, mockup density, and Problem-section handoff.
  * - 2026-06-26: Replaced the four-card workflow preview with one compact owner-review panel.
+ * - 2026-06-26: Upgraded the hero mockup into a premium signal-flow board.
  * ============================================================
  */
 
@@ -122,16 +123,17 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
 
   return (
     <div
-      className="homepage-hero-mockup w-full rounded-[20px] border p-3 sm:p-4"
+      className="homepage-hero-mockup homepage-signal-board w-full rounded-[20px] border p-3 sm:p-4"
       style={{
         background:
-          "linear-gradient(180deg, var(--surface-elevated), var(--surface))",
+          "linear-gradient(135deg, color-mix(in srgb, var(--surface-elevated) 92%, var(--primary) 8%), var(--surface))",
         borderColor: "var(--border-strong)",
         boxShadow: "var(--shadow-lg)",
       }}
     >
-      <div className="homepage-chaos-clarity-flow grid min-w-0 items-stretch gap-3">
-        <section className="homepage-chaos-panel min-w-0">
+      <div className="homepage-signal-rail" aria-hidden="true" />
+      <div className="homepage-chaos-clarity-flow homepage-signal-flow grid min-w-0 items-stretch gap-3">
+        <section className="homepage-chaos-panel homepage-signal-panel min-w-0">
           <div className="homepage-visual-heading">
             <p className="bp-copy-eyebrow text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.gold }}>
               {copy.chaosTitle}
@@ -144,7 +146,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           <div className="homepage-chaos-source-grid mt-3 grid gap-2">
             {copy.sources.slice(0, 4).map((source, index) => (
               <span
-                className="bp-copy-status min-w-0 rounded-[10px] border px-2.5 py-2 text-[11px] font-black leading-4"
+                className="homepage-source-chip bp-copy-status min-w-0 rounded-[10px] border px-2.5 py-2 text-[11px] font-black leading-4"
                 key={source}
                 style={{
                   backgroundColor: "var(--surface-interactive)",
@@ -152,6 +154,13 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
                   color: sourceTones[index] ?? marketingTone.text,
                 }}
               >
+                <span
+                  aria-hidden
+                  className="homepage-source-dot"
+                  style={{
+                    backgroundColor: sourceTones[index] ?? marketingTone.text,
+                  }}
+                />
                 {source}
               </span>
             ))}
@@ -160,7 +169,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           <div className="homepage-chaos-messages mt-3 grid gap-2">
             {copy.messages.slice(0, 4).map((message) => (
               <p
-                className="bp-copy-card-body min-w-0 rounded-[12px] border px-3 py-2 text-[11px] font-bold leading-4"
+                className="homepage-signal-message bp-copy-card-body min-w-0 rounded-[12px] border px-3 py-2 text-[11px] font-bold leading-4"
                 key={message}
                 style={{
                   backgroundColor: "var(--surface)",
@@ -174,7 +183,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           </div>
         </section>
 
-        <div className="homepage-flow-connector" aria-hidden="true">
+        <div className="homepage-flow-connector homepage-flow-connector--desktop" aria-hidden="true">
           <MarketingIcon name="arrow" />
         </div>
 
@@ -190,6 +199,11 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           <p className="bp-copy-card-title min-h-0 text-[16px] font-black" style={{ color: "var(--text-strong)" }}>
             {copy.bizPilotTitle}
           </p>
+          <div className="homepage-bizpilot-pulse" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
           <div className="homepage-bizpilot-action-grid mt-3 grid gap-2">
             {copy.bizPilotActions.slice(0, 4).map((action) => (
               <span
@@ -207,11 +221,11 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           </div>
         </section>
 
-        <div className="homepage-flow-connector" aria-hidden="true">
+        <div className="homepage-flow-connector homepage-flow-connector--desktop" aria-hidden="true">
           <MarketingIcon name="arrow" />
         </div>
 
-        <section className="homepage-clarity-panel min-w-0">
+        <section className="homepage-clarity-panel homepage-signal-panel min-w-0">
           <div className="homepage-visual-heading">
             <p className="bp-copy-eyebrow text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
               {copy.clarityTitle}
@@ -224,7 +238,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           <div className="homepage-clarity-leads mt-3 grid gap-2">
             {copy.leads.slice(0, 2).map((lead, index) => (
               <div
-                className="homepage-clarity-lead min-w-0 rounded-[12px] border p-3"
+                className="homepage-clarity-lead homepage-signal-lead min-w-0 rounded-[12px] border p-3"
                 key={lead.title}
                 style={{
                   backgroundColor:
@@ -248,7 +262,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           </div>
 
           <div
-            className="homepage-hero-draft-card mt-3 rounded-[14px] border p-3"
+            className="homepage-hero-draft-card homepage-signal-draft mt-3 rounded-[14px] border p-3"
             style={{
               backgroundColor:
                 "color-mix(in srgb, var(--accent-decorative) 12%, var(--surface-elevated))",
@@ -298,10 +312,10 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
             >
               {copy.hero.body}
             </p>
-            <ul className="homepage-hero-bullets mt-4 grid gap-2 sm:grid-cols-3">
+            <ul className="homepage-hero-bullets mt-4 flex flex-wrap gap-2">
               {copy.hero.bullets.map((item) => (
                 <li
-                  className="bp-copy-status flex min-w-0 items-start gap-2 text-[13px] font-black leading-5"
+                  className="homepage-hero-bullet flex min-w-0 items-start gap-2 text-[13px] font-black leading-5"
                   key={item}
                   style={{ color: marketingTone.text }}
                 >

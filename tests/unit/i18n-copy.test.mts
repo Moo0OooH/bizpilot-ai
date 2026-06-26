@@ -597,7 +597,7 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.hero.secondaryCta, "Voir le flux");
     assert.equal(
       frenchPublicCopy.home.hero.body,
-      "Les demandes arrivent du site web, Google, Facebook, Instagram, textos et appels manqués. BizPilot transforme ces messages en file claire, en brouillon de réponse et en prochaine étape manuelle.",
+      "Les demandes arrivent du site web, Google, réseaux sociaux, textos et appels manqués. BizPilot en fait une file claire, un brouillon et la prochaine étape manuelle.",
     );
     assert.deepEqual(frenchPublicCopy.home.hero.bullets, [
       "Capter chaque demande",
@@ -898,7 +898,7 @@ describe("BizPilot language copy", () => {
     );
     assert.equal(
       englishPublicCopy.home.hero.body,
-      "Requests come from your website, Google, Facebook, Instagram, texts, and missed calls. BizPilot turns messy messages into a clear queue, a reply draft, and the next manual step.",
+      "Requests arrive from your website, Google, social, texts, and missed calls. BizPilot turns messy messages into a clear queue, a draft, and the next manual step.",
     );
     assert.deepEqual(englishPublicCopy.home.hero.bullets, [
       "Capture every request",

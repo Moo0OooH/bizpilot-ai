@@ -35,6 +35,7 @@ Change Log:
 - 2026-06-25: Replaced duplicated Cleaning desktop/mobile detail CSS with one active detail selector.
 - 2026-06-25: Tightened homepage hero width, mockup density, and section typography scale.
 - 2026-06-26: Converted the homepage demo hook from four-card grid behavior to one compact preview panel.
+- 2026-06-26: Upgraded homepage hero signal-flow board and mobile no-overflow behavior.
 ============================================================
 */
 
@@ -622,6 +623,31 @@ select {
   max-inline-size: min(100%, 43rem);
 }
 
+.homepage-signal-board {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.homepage-signal-board::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, transparent 0 19%, color-mix(in srgb, var(--warning) 12%, transparent) 19% 20%, transparent 20% 49%, color-mix(in srgb, var(--accent) 14%, transparent) 49% 51%, transparent 51% 79%, color-mix(in srgb, var(--primary) 10%, transparent) 79% 80%, transparent 80%),
+    radial-gradient(circle at 48% 50%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 14rem);
+  content: "";
+}
+
+.homepage-signal-rail {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 1.25rem;
+  z-index: -1;
+  block-size: 2px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 42%, transparent), transparent);
+}
+
 .homepage-chaos-clarity-flow {
   grid-template-columns: minmax(0, 1fr) auto minmax(8.5rem, 0.72fr) auto minmax(0, 1.08fr);
 }
@@ -632,8 +658,33 @@ select {
   min-width: 0;
 }
 
+.homepage-signal-panel {
+  border: 1px solid color-mix(in srgb, var(--border-default) 76%, transparent);
+  border-radius: 1rem;
+  padding: 0.75rem;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+
 .homepage-chaos-source-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.homepage-source-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: normal;
+}
+
+.homepage-source-dot {
+  block-size: 0.45rem;
+  inline-size: 0.45rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+}
+
+.homepage-signal-message {
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.04);
 }
 
 .homepage-flow-connector {
@@ -644,11 +695,38 @@ select {
 }
 
 .homepage-bizpilot-node {
+  position: relative;
   align-self: center;
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.homepage-bizpilot-pulse {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem;
+  margin-block-start: 0.7rem;
+}
+
+.homepage-bizpilot-pulse span {
+  block-size: 0.28rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 46%, var(--surface));
+}
+
+.homepage-signal-lead {
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+}
+
+.homepage-signal-draft {
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--accent-decorative) 16%, transparent);
 }
 
 .homepage-visual-heading {
   min-width: 0;
+}
+
+.homepage-hero-mockup .bp-copy-card-title {
+  min-block-size: 0;
 }
 
 .homepage-mockup-draft-body {
@@ -657,6 +735,12 @@ select {
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+.homepage-hero-bullet {
+  flex: 1 1 min(100%, 12rem);
+  max-inline-size: 100%;
+  white-space: normal;
 }
 
 .homepage-section-heading {
@@ -950,40 +1034,62 @@ select {
 
 @media (max-width: 767px) {
   .homepage-hero-section {
-    padding-block: 0.9rem 1rem;
+    padding-block: 0.75rem 0.1rem;
   }
 
   .homepage-hero-grid {
-    gap: 0.85rem;
+    gap: 0.6rem;
   }
 
   .homepage-hero-title {
-    font-size: 1.9rem;
+    font-size: 1.68rem;
   }
 
   .homepage-hero-body {
     margin-block-start: 0.7rem;
-    font-size: 0.9375rem;
-    line-height: 1.55;
+    font-size: 0.875rem;
+    line-height: 1.42;
   }
 
   .homepage-hero-actions {
-    margin-block-start: 0.8rem;
+    margin-block-start: 0.65rem;
+  }
+
+  .homepage-hero-actions .bp-copy-button {
+    min-block-size: 2.65rem;
+    padding-inline: 1rem;
   }
 
   .homepage-hero-bullets {
-    grid-template-columns: 1fr;
     gap: 0.45rem;
+  }
+
+  .homepage-hero-bullet {
+    flex: 0 1 min(100%, 9.4rem);
+    font-size: 0.72rem;
+    line-height: 1.28;
   }
 
   .homepage-hero-note {
     display: flex;
-    margin-block-start: 0.7rem;
+    margin-block-start: 0.5rem;
+    font-size: 0.68rem;
+    line-height: 1.35;
   }
 
   .homepage-chaos-clarity-flow {
     grid-template-columns: 1fr;
     gap: 0.65rem;
+  }
+
+  .homepage-signal-board {
+    border-radius: 1rem;
+    padding: 0.65rem;
+  }
+
+  .homepage-signal-board::before,
+  .homepage-signal-rail {
+    display: none;
   }
 
   .homepage-flow-connector {
@@ -994,15 +1100,16 @@ select {
   .homepage-bizpilot-node,
   .homepage-clarity-panel,
   .homepage-hero-draft-card {
-    padding: 0.65rem;
+    padding: 0.55rem;
   }
 
   .homepage-visual-heading {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.25rem 0.65rem;
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .homepage-visual-heading .bp-copy-card-title {
+    display: none;
   }
 
   .homepage-chaos-source-grid {
@@ -1020,15 +1127,16 @@ select {
   }
 
   .homepage-bizpilot-action-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.45rem;
     margin-block-start: 0.55rem;
   }
 
   .homepage-bizpilot-action-grid .bp-copy-status {
-    gap: 0.35rem;
+    justify-content: center;
+    gap: 0.2rem;
     padding: 0.35rem 0.45rem;
-    font-size: 0.625rem;
+    font-size: 0.58rem;
     line-height: 1.2;
   }
 
@@ -1040,26 +1148,34 @@ select {
     margin-block-start: 0.55rem;
   }
 
+  .homepage-clarity-panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .homepage-clarity-panel .homepage-visual-heading {
+    grid-column: 1 / -1;
+  }
+
+  .homepage-clarity-leads {
+    margin-block-start: 0;
+  }
+
   .homepage-clarity-lead {
-    padding: 0.65rem;
+    padding: 0.55rem;
   }
 
   .homepage-clarity-lead .bp-copy-card-body {
-    margin-block-start: 0.25rem;
-    font-size: 0.625rem;
-    line-height: 1.35;
+    display: none;
   }
 
   .homepage-hero-draft-card {
-    margin-block-start: 0.55rem;
+    margin-block-start: 0;
   }
 
   .homepage-mockup-draft-body {
-    margin-block-start: 0.35rem;
-    max-block-size: 1.1rem;
-    font-size: 0.625rem;
-    line-height: 1.35;
-    -webkit-line-clamp: 1;
+    display: none;
   }
 
   .homepage-hero-draft-card .bp-copy-button {
