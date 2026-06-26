@@ -37,7 +37,7 @@ const TIMEOUT_MS = 15_000;
 
 const routes: readonly RouteContract[] = [
   {
-    h1: "Stop losing cleaning quote requests to slow replies.",
+    h1: "Never lose a quote request in the chaos.",
     maxOccurrences: [
       {
         max: 3,
@@ -49,15 +49,18 @@ const routes: readonly RouteContract[] = [
       "href=\"/faq\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
+      "THE CHAOS",
+      "THE CLARITY",
+      "Smart lead queue",
+      "Review draft",
+      "Founder-led pilot. Approval required. No auto-send.",
       "No auto-send",
-      "AI-assisted drafts reviewed by you",
-      "Manual copy and send",
     ],
     mustNotContain: ["homepage-workflow-grid"],
     path: "/",
   },
   {
-    h1: "Ne perdez plus de soumissions faute de réponse rapide.",
+    h1: "Ne perdez jamais une demande dans le chaos.",
     maxOccurrences: [
       {
         max: 3,
@@ -69,9 +72,12 @@ const routes: readonly RouteContract[] = [
       "href=\"/faq\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
+      "LE CHAOS",
+      "LA CLARTÉ",
+      "File de prospects intelligente",
+      "Réviser le brouillon",
+      "Projet pilote guidé. Approbation requise. Aucun envoi automatique.",
       "Aucun envoi automatique",
-      "Brouillons assistés par IA à valider par vous",
-      "Copie et envoi manuels",
     ],
     mustNotContain: [
       "Confidentialite",

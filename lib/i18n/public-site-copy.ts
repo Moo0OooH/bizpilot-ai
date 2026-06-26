@@ -75,21 +75,26 @@ type HomeCopy = Readonly<{
   hero: Readonly<{
     badge: string;
     body: string;
+    bullets: readonly string[];
+    note: string;
     primaryCta: string;
     secondaryCta: string;
     title: string;
-    trustBadges: readonly string[];
   }>;
   meta: MetaCopy;
   mockup: Readonly<{
+    bizPilotActions: readonly string[];
+    bizPilotTitle: string;
+    chaosSubtitle: string;
+    chaosTitle: string;
+    claritySubtitle: string;
+    clarityTitle: string;
     copyButton: string;
     draftBody: string;
-    draftTag: string;
     draftTitle: string;
-    fields: ReadonlyArray<LabelValue>;
-    name: string;
-    status: string;
-    title: string;
+    leads: ReadonlyArray<TextPair>;
+    messages: readonly string[];
+    sources: readonly string[];
   }>;
   preview: Readonly<{
     badges: readonly string[];
@@ -931,49 +936,63 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     finalCta: {
       body:
-        "We are starting with a small group of cleaning businesses to test the workflow, improve the product, and build around real owner feedback.",
+        "Founder-led setup stays approval-gated while we test one clean quote recovery workflow with cleaning businesses.",
       cta: "Apply for founder pilot",
-      note: "Limited pilot. Manual onboarding. No auto-send.",
+      note: "Limited pilot. Manual setup. Real data and paid pilot still require approval.",
       title: "Join the founder pilot for cleaning businesses.",
     },
     hero: {
-      badge: "Built for cleaning businesses first",
+      badge: "For local service businesses - starting with cleaning",
       body:
-        "Capture quote requests, organize leads, and prepare replies for owner review — without auto-send.",
-      primaryCta: "Join founder pilot",
-      secondaryCta: "Watch demo",
-      title: "Stop losing cleaning quote requests to slow replies.",
-      trustBadges: [
-        "No auto-send",
-        "AI-assisted drafts reviewed by you",
-        "Manual copy and send",
+        "Requests come from your website, Google, Facebook, Instagram, texts, and missed calls. BizPilot turns messy messages into a clear queue, a reply draft, and the next manual step.",
+      bullets: [
+        "Capture every request",
+        "Know what needs a reply first",
+        "Review the draft, then copy and send",
       ],
+      note: "Founder-led pilot. Approval required. No auto-send.",
+      primaryCta: "Join the pilot",
+      secondaryCta: "See how it works",
+      title: "Never lose a quote request in the chaos.",
     },
     meta: {
       description:
-        "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
+        "BizPilot AI helps local service businesses, starting with cleaning, turn messy quote requests into organized leads and reply drafts for owner review.",
       title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
     },
     mockup: {
-      copyButton: "Copy reply",
+      bizPilotActions: ["Capture", "Organize", "Prioritize", "Draft"],
+      bizPilotTitle: "BizPilot",
+      chaosSubtitle: "Messages from everywhere",
+      chaosTitle: "THE CHAOS",
+      claritySubtitle: "Smart lead queue",
+      clarityTitle: "THE CLARITY",
+      copyButton: "Review draft",
       draftBody:
-        "Hi Maria, thanks for reaching out. I can help with your move-out cleaning. Could you confirm the address area and whether appliances need cleaning so I can prepare an accurate quote?",
-      draftTag: "AI drafts. You send.",
-      draftTitle: "Suggested reply",
-      fields: [
-        ["Service", "Move-out cleaning"],
-        ["Property", "2 bed / 1 bath"],
-        ["Timing", "Saturday morning"],
-        ["Status", "Needs reply"],
+        "Hi Maria, thanks for reaching out. Could you confirm the square footage and access notes so I can prepare an accurate quote?",
+      draftTitle: "Draft ready for owner review",
+      leads: [
+        {
+          body: "Move-out cleaning - missing square footage",
+          title: "Needs reply first",
+        },
+        {
+          body: "Office cleaning - follow-up due",
+          title: "Review next",
+        },
       ],
-      name: "Maria L.",
-      status: "Needs reply",
-      title: "New quote request",
+      messages: [
+        "Can you clean before Friday?",
+        "How much for a move-out?",
+        "Do you service condos?",
+        "I called yesterday...",
+      ],
+      sources: ["Website", "Google", "Facebook", "Instagram/Text"],
     },
     preview: {
-      badges: ["No auto-send", "No invented price", "Manual send"],
+      badges: ["No auto-send", "No invented price", "No booking confirmation"],
       body:
-        "One messy request becomes an organized lead and a draft you can review before sending manually.",
+        "A simple three-step flow keeps the next owner action obvious.",
       copyButton: "Copy reply",
       cta: "Watch full demo",
       draft: {
@@ -994,12 +1013,12 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         quote: '"Hi, how much for move-out cleaning before Friday?"',
         title: "Messy request",
       },
-      steps: ["Request", "Organized lead", "Draft for review", "Manual send"],
-      title: "See the quote recovery workflow in 60 seconds.",
+      steps: ["Capture quote request", "Organize and draft", "Owner reviews and sends"],
+      title: "From request to reviewed reply in three steps.",
     },
     problem: {
       body:
-        "Cleaning owners receive quote requests while working, driving, managing a team, or answering customers. When messages get buried or replies are delayed, customers move on.",
+        "Cleaning owners are busy on jobs. When quote requests scatter across channels, the next customer can quietly move on.",
       cards: [
         {
           body:
@@ -1017,7 +1036,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         },
       ],
       eyebrow: "Problem",
-      title: "Your next customer may already be waiting.",
+      title: "The leak is small until the job is gone.",
     },
     roadmap: {
       badge: "Roadmap",
@@ -1054,7 +1073,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     useCases: {
       body:
-        "BizPilot keeps the service, timing, missing details, and next reply clear across common residential and commercial cleaning requests.",
+        "Keep the service, timing, missing details, and next reply clear across common cleaning requests.",
       cards: [
         {
           body: "Recurring or one-time home-cleaning requests.",
@@ -1885,54 +1904,68 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     },
     finalCta: {
       body:
-        "Nous commençons avec un petit groupe d'entreprises de nettoyage afin de tester le flux, d'améliorer le produit et de bâtir autour de vrais commentaires terrain.",
+        "La configuration reste guidée et soumise à approbation pendant que nous testons un flux clair de récupération des soumissions.",
       cta: "Rejoindre le pilote",
-      note: "Projet pilote limité. Configuration manuelle. Aucun envoi automatique.",
+      note: "Projet pilote limité. Configuration manuelle. Données réelles et pilote payé encore soumis à approbation.",
       title: "Rejoignez le projet pilote pour entreprises de nettoyage.",
     },
     hero: {
-      badge: "Pour les entreprises de nettoyage, d’abord.",
+      badge: "Pour les entreprises de services locales - d'abord le nettoyage",
       body:
-        "Centralisez les demandes, organisez les prospects et préparez des réponses à valider — sans envoi automatique.",
-      primaryCta: "Rejoindre le pilote",
-      secondaryCta: "Voir la démo",
-      title:
-        "Ne perdez plus de soumissions faute de réponse rapide.",
-      trustBadges: [
-        "Aucun envoi automatique",
-        "Brouillons assistés par IA à valider par vous",
-        "Copie et envoi manuels",
+        "Les demandes arrivent du site web, Google, Facebook, Instagram, textos et appels manqués. BizPilot transforme ces messages en file claire, en brouillon de réponse et en prochaine étape manuelle.",
+      bullets: [
+        "Capter chaque demande",
+        "Voir qui répondre d'abord",
+        "Valider le brouillon, puis copier et envoyer",
       ],
+      note: "Projet pilote guidé. Approbation requise. Aucun envoi automatique.",
+      primaryCta: "Rejoindre le pilote",
+      secondaryCta: "Voir le flux",
+      title:
+        "Ne perdez jamais une demande dans le chaos.",
     },
     meta: {
       description:
-        "BizPilot AI aide les entreprises de nettoyage à centraliser les demandes, organiser les prospects et préparer des réponses à valider sans envoi automatique.",
-      title: "BizPilot AI | Suivi des demandes de nettoyage",
+        "BizPilot AI aide les entreprises de services locales, d'abord le nettoyage, à transformer les demandes de soumission en prospects organisés et brouillons à valider.",
+      title: "BizPilot AI | Récupération des demandes",
     },
     mockup: {
-      copyButton: "Copier la réponse",
+      bizPilotActions: ["Capter", "Organiser", "Prioriser", "Rédiger"],
+      bizPilotTitle: "BizPilot",
+      chaosSubtitle: "Messages de partout",
+      chaosTitle: "LE CHAOS",
+      claritySubtitle: "File de prospects intelligente",
+      clarityTitle: "LA CLARTÉ",
+      copyButton: "Réviser le brouillon",
       draftBody:
-        "Bonjour Maria, merci pour votre message. Pouvez-vous confirmer le secteur et si les électroménagers doivent être nettoyés afin que je prépare une soumission exacte?",
-      draftTag: "L'IA prépare. Vous envoyez.",
-      draftTitle: "Brouillon suggéré",
-      fields: [
-        ["Service", "Nettoyage après déménagement"],
-        ["Propriété", "2 chambres / 1 salle de bain"],
-        ["Moment", "Samedi matin"],
-        ["Statut", "À répondre"],
+        "Bonjour Maria, merci pour votre message. Pouvez-vous confirmer la superficie et les notes d'accès afin que je prépare une soumission exacte?",
+      draftTitle: "Brouillon prêt pour validation",
+      leads: [
+        {
+          body: "Nettoyage après déménagement - superficie manquante",
+          title: "À répondre d'abord",
+        },
+        {
+          body: "Bureaux - suivi dû",
+          title: "À réviser ensuite",
+        },
       ],
-      name: "Maria L.",
-      status: "À répondre",
-      title: "Nouvelle demande",
+      messages: [
+        "Pouvez-vous nettoyer avant vendredi?",
+        "Combien pour un départ?",
+        "Servez-vous les condos?",
+        "J'ai appelé hier...",
+      ],
+      sources: ["Site web", "Google", "Facebook", "Instagram/Textos"],
     },
     preview: {
       badges: [
         "Aucun envoi automatique",
         "Aucun prix inventé",
-        "Envoi manuel",
+        "Aucune réservation confirmée",
       ],
       body:
-        "Une demande vague devient un prospect organisé et un brouillon à valider avant l'envoi manuel.",
+        "Un flux simple en trois étapes garde la prochaine action du propriétaire visible.",
       copyButton: "Copier la réponse",
       cta: "Voir la démo complète",
       draft: {
@@ -1954,12 +1987,12 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
           "\"Bonjour, combien pour un nettoyage après déménagement d'ici vendredi?\"",
         title: "Demande vague",
       },
-      steps: ["Demande", "Prospect organisé", "Brouillon à valider", "Envoi manuel"],
-      title: "Voyez le flux de récupération en 60 secondes.",
+      steps: ["Capter la demande", "Organiser et rédiger", "Valider puis envoyer"],
+      title: "De la demande à la réponse validée en trois étapes.",
     },
     problem: {
       body:
-        "Les responsables reçoivent des demandes pendant qu'ils travaillent, conduisent, gèrent leur équipe ou répondent à des clients. Quand les messages se perdent ou que les réponses tardent, les clients passent à autre chose.",
+        "Les responsables sont souvent sur le terrain. Quand les demandes se dispersent, le prochain client peut passer à autre chose.",
       cards: [
         {
           body:
@@ -1978,7 +2011,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         },
       ],
       eyebrow: "Problème",
-      title: "Votre prochain client attend peut-être déjà.",
+      title: "La fuite est petite jusqu'au mandat perdu.",
     },
     roadmap: {
       badge: "Feuille de route",
@@ -2018,7 +2051,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     },
     useCases: {
       body:
-        "BizPilot garde le service, le moment, les détails manquants et la prochaine réponse clairs pour les demandes courantes de nettoyage résidentiel et commercial.",
+        "Gardez le service, le moment, les détails manquants et la prochaine réponse clairs.",
       cards: [
         {
           body: "Demandes de nettoyage résidentiel récurrent ou ponctuel.",

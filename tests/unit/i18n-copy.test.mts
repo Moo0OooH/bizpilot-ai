@@ -554,7 +554,7 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       frenchPublicCopy.home.hero.title,
-      "Ne perdez plus de soumissions faute de réponse rapide.",
+      "Ne perdez jamais une demande dans le chaos.",
     );
     assert.ok(
       frenchPublicCopy.home.hero.title.length <= 58,
@@ -564,34 +564,48 @@ describe("BizPilot language copy", () => {
       frenchPublicCopy.home.hero.primaryCta,
       "Rejoindre le pilote",
     );
-    assert.equal(frenchPublicCopy.home.hero.secondaryCta, "Voir la démo");
+    assert.equal(frenchPublicCopy.home.hero.secondaryCta, "Voir le flux");
     assert.equal(
       frenchPublicCopy.home.hero.body,
-      "Centralisez les demandes, organisez les prospects et préparez des réponses à valider — sans envoi automatique.",
+      "Les demandes arrivent du site web, Google, Facebook, Instagram, textos et appels manqués. BizPilot transforme ces messages en file claire, en brouillon de réponse et en prochaine étape manuelle.",
     );
-    assert.deepEqual(frenchPublicCopy.home.hero.trustBadges, [
-      "Aucun envoi automatique",
-      "Brouillons assistés par IA à valider par vous",
-      "Copie et envoi manuels",
+    assert.deepEqual(frenchPublicCopy.home.hero.bullets, [
+      "Capter chaque demande",
+      "Voir qui répondre d'abord",
+      "Valider le brouillon, puis copier et envoyer",
     ]);
-    assert.equal(frenchPublicCopy.home.mockup.title, "Nouvelle demande");
-    assert.equal(frenchPublicCopy.home.mockup.status, "À répondre");
-    assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon suggéré");
-    assert.equal(frenchPublicCopy.home.mockup.draftTag, "L'IA prépare. Vous envoyez.");
-    assert.equal(frenchPublicCopy.home.mockup.copyButton, "Copier la réponse");
+    assert.equal(
+      frenchPublicCopy.home.hero.note,
+      "Projet pilote guidé. Approbation requise. Aucun envoi automatique.",
+    );
+    assert.equal(frenchPublicCopy.home.mockup.chaosTitle, "LE CHAOS");
+    assert.equal(frenchPublicCopy.home.mockup.chaosSubtitle, "Messages de partout");
+    assert.equal(frenchPublicCopy.home.mockup.bizPilotTitle, "BizPilot");
+    assert.deepEqual(frenchPublicCopy.home.mockup.bizPilotActions, [
+      "Capter",
+      "Organiser",
+      "Prioriser",
+      "Rédiger",
+    ]);
+    assert.equal(frenchPublicCopy.home.mockup.clarityTitle, "LA CLARTÉ");
+    assert.equal(frenchPublicCopy.home.mockup.claritySubtitle, "File de prospects intelligente");
+    assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon prêt pour validation");
+    assert.equal(frenchPublicCopy.home.mockup.copyButton, "Réviser le brouillon");
+    assert.equal(frenchPublicCopy.home.mockup.sources.length, 4);
+    assert.equal(frenchPublicCopy.home.mockup.messages.length, 4);
+    assert.equal(frenchPublicCopy.home.mockup.leads.length, 2);
     assert.equal(
       frenchPublicCopy.home.preview.title,
-      "Voyez le flux de récupération en 60 secondes.",
+      "De la demande à la réponse validée en trois étapes.",
     );
     assert.equal(
       frenchPublicCopy.home.preview.body,
-      "Une demande vague devient un prospect organisé et un brouillon à valider avant l'envoi manuel.",
+      "Un flux simple en trois étapes garde la prochaine action du propriétaire visible.",
     );
     assert.deepEqual(frenchPublicCopy.home.preview.steps, [
-      "Demande",
-      "Prospect organisé",
-      "Brouillon à valider",
-      "Envoi manuel",
+      "Capter la demande",
+      "Organiser et rédiger",
+      "Valider puis envoyer",
     ]);
     assert.equal(frenchPublicCopy.home.preview.request.title, "Demande vague");
     assert.equal(frenchPublicCopy.home.preview.organizedLead.title, "Prospect organisé");
@@ -600,7 +614,9 @@ describe("BizPilot language copy", () => {
 
     for (const englishPhrase of [
       "Stop losing cleaning quote requests to slow replies.",
+      "Turn missed quote requests into replies ready to send.",
       "Built for cleaning businesses first",
+      "Cleaning quote recovery",
       "AI drafts reviewed by you",
       "Manual copy and send",
       "Payment and product guardrails",
@@ -848,35 +864,49 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       englishPublicCopy.home.hero.title,
-      "Stop losing cleaning quote requests to slow replies.",
+      "Never lose a quote request in the chaos.",
     );
     assert.equal(
       englishPublicCopy.home.hero.body,
-      "Capture quote requests, organize leads, and prepare replies for owner review — without auto-send.",
+      "Requests come from your website, Google, Facebook, Instagram, texts, and missed calls. BizPilot turns messy messages into a clear queue, a reply draft, and the next manual step.",
     );
-    assert.deepEqual(englishPublicCopy.home.hero.trustBadges, [
-      "No auto-send",
-      "AI-assisted drafts reviewed by you",
-      "Manual copy and send",
+    assert.deepEqual(englishPublicCopy.home.hero.bullets, [
+      "Capture every request",
+      "Know what needs a reply first",
+      "Review the draft, then copy and send",
     ]);
-    assert.equal(englishPublicCopy.home.mockup.title, "New quote request");
-    assert.equal(englishPublicCopy.home.mockup.status, "Needs reply");
-    assert.equal(englishPublicCopy.home.mockup.draftTitle, "Suggested reply");
-    assert.equal(englishPublicCopy.home.mockup.draftTag, "AI drafts. You send.");
-    assert.equal(englishPublicCopy.home.mockup.copyButton, "Copy reply");
+    assert.equal(
+      englishPublicCopy.home.hero.note,
+      "Founder-led pilot. Approval required. No auto-send.",
+    );
+    assert.equal(englishPublicCopy.home.mockup.chaosTitle, "THE CHAOS");
+    assert.equal(englishPublicCopy.home.mockup.chaosSubtitle, "Messages from everywhere");
+    assert.equal(englishPublicCopy.home.mockup.bizPilotTitle, "BizPilot");
+    assert.deepEqual(englishPublicCopy.home.mockup.bizPilotActions, [
+      "Capture",
+      "Organize",
+      "Prioritize",
+      "Draft",
+    ]);
+    assert.equal(englishPublicCopy.home.mockup.clarityTitle, "THE CLARITY");
+    assert.equal(englishPublicCopy.home.mockup.claritySubtitle, "Smart lead queue");
+    assert.equal(englishPublicCopy.home.mockup.draftTitle, "Draft ready for owner review");
+    assert.equal(englishPublicCopy.home.mockup.copyButton, "Review draft");
+    assert.equal(englishPublicCopy.home.mockup.sources.length, 4);
+    assert.equal(englishPublicCopy.home.mockup.messages.length, 4);
+    assert.equal(englishPublicCopy.home.mockup.leads.length, 2);
     assert.equal(
       englishPublicCopy.home.preview.title,
-      "See the quote recovery workflow in 60 seconds.",
+      "From request to reviewed reply in three steps.",
     );
     assert.equal(
       englishPublicCopy.home.preview.body,
-      "One messy request becomes an organized lead and a draft you can review before sending manually.",
+      "A simple three-step flow keeps the next owner action obvious.",
     );
     assert.deepEqual(englishPublicCopy.home.preview.steps, [
-      "Request",
-      "Organized lead",
-      "Draft for review",
-      "Manual send",
+      "Capture quote request",
+      "Organize and draft",
+      "Owner reviews and sends",
     ]);
     assert.equal(englishPublicCopy.home.preview.request.title, "Messy request");
     assert.equal(englishPublicCopy.home.preview.organizedLead.title, "Organized lead");
@@ -937,7 +967,7 @@ describe("BizPilot language copy", () => {
     );
     assert.equal(
       englishUseCases.body,
-      "BizPilot keeps the service, timing, missing details, and next reply clear across common residential and commercial cleaning requests.",
+      "Keep the service, timing, missing details, and next reply clear across common cleaning requests.",
     );
     assert.deepEqual(
       englishUseCases.cards.map((card) => card.href),
@@ -959,8 +989,8 @@ describe("BizPilot language copy", () => {
       );
       assert.equal(
         getPublicSiteCopy(language).home.preview.steps.length,
-        4,
-        `${language} homepage demo must keep four compact workflow labels.`,
+        3,
+        `${language} homepage demo must keep three compact workflow labels.`,
       );
     }
 

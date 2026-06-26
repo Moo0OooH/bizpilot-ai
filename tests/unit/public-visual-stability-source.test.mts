@@ -331,7 +331,7 @@ describe("public visual stability source contracts", () => {
       "Homepage hero title size should be owned by the rhythm CSS contract.",
     );
     assert.equal(
-      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 49rem);\n  font-size: 2.25rem;"),
+      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 43rem);\n  font-size: 2.25rem;"),
       true,
       "Homepage hero should keep a compact mobile/base title size in CSS.",
     );
@@ -346,25 +346,39 @@ describe("public visual stability source contracts", () => {
       "Homepage hero should no longer use the previous taller desktop title size.",
     );
     assert.equal(
-      globals.includes("@media (min-width: 1100px) {\n  .homepage-hero-title {\n    font-size: 3.18rem;"),
+      globals.includes(".homepage-hero-title {\n    font-size: 3.18rem;"),
       true,
       "Homepage hero should keep a tighter desktop title size in CSS.",
     );
-    assert.equal(globals.includes("max-inline-size: min(100%, 49rem);"), true);
+    assert.equal(
+      globals.includes(".homepage-hero-grid {\n    grid-template-columns: minmax(0, 0.76fr) minmax(39rem, 0.96fr);"),
+      true,
+      "Homepage hero should override the shared public grid with enough room for the chaos-to-clarity visual.",
+    );
+    assert.equal(globals.includes("max-inline-size: min(100%, 43rem);"), true);
     assert.equal(
       globals.includes("@media (min-width: 1100px) and (max-height: 780px)"),
       true,
       "Short desktop viewports need reduced hero padding instead of smaller body text.",
     );
     assert.equal(
-      globals.includes("max-inline-size: min(100%, 22rem);"),
+      globals.includes("max-inline-size: min(100%, 41rem);"),
       true,
-      "Short desktop viewports need a compact hero preview card to stay inside the first fold.",
+      "Short desktop viewports need a compact chaos-to-clarity hero visual to stay inside the first fold.",
     );
     assert.equal(
-      homepage.includes("min-h-[1.25rem]"),
+      homepage.includes("copy.sources.slice(0, 4)") &&
+        homepage.includes("copy.messages.slice(0, 4)") &&
+        homepage.includes("copy.bizPilotActions.slice(0, 4)") &&
+        homepage.includes("copy.leads.slice(0, 2)"),
       true,
-      "Homepage mockup field values should keep compact field heights for first-fold visibility.",
+      "Homepage hero visual should cap chaos sources, messages, BizPilot actions, and clarity leads.",
+    );
+    assert.equal(
+      globals.includes(".homepage-chaos-messages,\n  .homepage-chaos-messages > * {\n    display: none;") &&
+        globals.includes(".homepage-clarity-lead:nth-child(n + 2)"),
+      true,
+      "Mobile homepage hero should simplify chaos-to-clarity density.",
     );
     assert.equal(homepage.includes("bp-button-row homepage-hero-actions"), true);
     assert.equal(homepage.includes("min-[360px]:flex-row"), true);
@@ -379,7 +393,7 @@ describe("public visual stability source contracts", () => {
     const homepage = source("app/page.tsx");
     const globals = source("app/globals.css");
     const previewStart = homepage.indexOf("function ProductPreview");
-    const previewEnd = homepage.indexOf("function ListColumn");
+    const previewEnd = homepage.indexOf("function GuardrailStrip");
     const productPreviewSource = homepage.slice(previewStart, previewEnd);
 
     assert.notEqual(previewStart, -1, "ProductPreview should exist on the homepage.");

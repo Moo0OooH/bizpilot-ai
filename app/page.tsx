@@ -113,9 +113,16 @@ function SectionTitle({
 }
 
 function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
+  const sourceTones = [
+    marketingTone.gold,
+    marketingTone.blue,
+    marketingTone.teal,
+    marketingTone.red,
+  ] as const;
+
   return (
-    <MarketingCard
-      className="homepage-hero-mockup w-full p-1.5 sm:p-2"
+    <div
+      className="homepage-hero-mockup w-full rounded-[20px] border p-3 sm:p-4"
       style={{
         background:
           "linear-gradient(180deg, var(--surface-elevated), var(--surface))",
@@ -123,108 +130,152 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
         boxShadow: "var(--shadow-lg)",
       }}
     >
-      <div
-        className="flex items-center justify-between gap-2 border-b pb-1"
-        style={{ borderColor: "var(--border-default)" }}
-      >
-        <div>
-          <p
-            className="bp-copy-eyebrow text-[10px] font-black uppercase tracking-[0.14em]"
-            style={{ color: "var(--accent)" }}
-          >
-            {copy.title}
-          </p>
-          <h3
-            className="bp-copy-card-title mt-0.5 text-[16px] font-black"
-            style={{ color: "var(--text-strong)" }}
-          >
-            {copy.name}
-          </h3>
+      <div className="homepage-chaos-clarity-flow grid min-w-0 items-stretch gap-3">
+        <section className="homepage-chaos-panel min-w-0">
+          <div className="homepage-visual-heading">
+            <p className="bp-copy-eyebrow text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.gold }}>
+              {copy.chaosTitle}
+            </p>
+            <h3 className="bp-copy-card-title mt-1 min-h-0 text-[15px] font-black leading-tight" style={{ color: "var(--text-strong)" }}>
+              {copy.chaosSubtitle}
+            </h3>
+          </div>
+
+          <div className="homepage-chaos-source-grid mt-3 grid gap-2">
+            {copy.sources.slice(0, 4).map((source, index) => (
+              <span
+                className="bp-copy-status min-w-0 rounded-[10px] border px-2.5 py-2 text-[11px] font-black leading-4"
+                key={source}
+                style={{
+                  backgroundColor: "var(--surface-interactive)",
+                  borderColor: "var(--border-default)",
+                  color: sourceTones[index] ?? marketingTone.text,
+                }}
+              >
+                {source}
+              </span>
+            ))}
+          </div>
+
+          <div className="homepage-chaos-messages mt-3 grid gap-2">
+            {copy.messages.slice(0, 4).map((message) => (
+              <p
+                className="bp-copy-card-body min-w-0 rounded-[12px] border px-3 py-2 text-[11px] font-bold leading-4"
+                key={message}
+                style={{
+                  backgroundColor: "var(--surface)",
+                  borderColor: "var(--border-default)",
+                  color: "var(--text-default)",
+                }}
+              >
+                {message}
+              </p>
+            ))}
+          </div>
+        </section>
+
+        <div className="homepage-flow-connector" aria-hidden="true">
+          <MarketingIcon name="arrow" />
         </div>
-        <span
-          className="bp-copy-status rounded-full border px-2.5 py-1 text-[10px] font-black"
+
+        <section
+          className="homepage-bizpilot-node min-w-0 rounded-[16px] border p-3"
           style={{
             backgroundColor:
-              "color-mix(in srgb, var(--warning) 14%, var(--surface))",
+              "color-mix(in srgb, var(--accent) 10%, var(--surface-elevated))",
             borderColor:
-              "color-mix(in srgb, var(--warning) 32%, var(--border-default))",
-            color: "var(--warning)",
+              "color-mix(in srgb, var(--accent) 36%, var(--border-default))",
           }}
         >
-          {copy.status}
-        </span>
-      </div>
-
-      <div className="mt-1 grid grid-cols-2 gap-1">
-        {copy.fields.map(([label, value]) => (
-          <div
-            className="rounded-[10px] border p-1.5"
-            key={label}
-            style={{
-              backgroundColor: "var(--surface-interactive)",
-              borderColor: "var(--border-default)",
-            }}
-          >
-            <p
-              className="bp-copy-meta text-[9px] font-black uppercase tracking-[0.12em]"
-              style={{ color: "var(--text-muted)" }}
-            >
-              {label}
-            </p>
-            <p
-              className="mt-0.5 min-h-[1.25rem] text-[12px] font-black leading-4"
-              style={{ color: "var(--text-strong)" }}
-            >
-              {value}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <div
-        className="mt-1 rounded-[12px] border p-1.5"
-        style={{
-          backgroundColor:
-            "color-mix(in srgb, var(--accent-decorative) 14%, var(--surface-elevated))",
-          borderColor:
-            "color-mix(in srgb, var(--accent-decorative) 38%, var(--border-default))",
-        }}
-      >
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <p
-            className="bp-copy-card-title text-[11px] font-black"
-            style={{ color: "var(--text-strong)" }}
-          >
-            {copy.draftTitle}
+          <p className="bp-copy-card-title min-h-0 text-[16px] font-black" style={{ color: "var(--text-strong)" }}>
+            {copy.bizPilotTitle}
           </p>
-          <span
-            className="bp-copy-status rounded-full px-2 py-1 text-[9px] font-black"
+          <div className="homepage-bizpilot-action-grid mt-3 grid gap-2">
+            {copy.bizPilotActions.slice(0, 4).map((action) => (
+              <span
+                className="bp-copy-status inline-flex min-w-0 items-center gap-2 rounded-[10px] px-2.5 py-1.5 text-[11px] font-black"
+                key={action}
+                style={{
+                  backgroundColor: "var(--surface)",
+                  color: "var(--text-strong)",
+                }}
+              >
+                <MarketingIcon name="check" />
+                {action}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        <div className="homepage-flow-connector" aria-hidden="true">
+          <MarketingIcon name="arrow" />
+        </div>
+
+        <section className="homepage-clarity-panel min-w-0">
+          <div className="homepage-visual-heading">
+            <p className="bp-copy-eyebrow text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
+              {copy.clarityTitle}
+            </p>
+            <h3 className="bp-copy-card-title mt-1 min-h-0 text-[15px] font-black leading-tight" style={{ color: "var(--text-strong)" }}>
+              {copy.claritySubtitle}
+            </h3>
+          </div>
+
+          <div className="homepage-clarity-leads mt-3 grid gap-2">
+            {copy.leads.slice(0, 2).map((lead, index) => (
+              <div
+                className="homepage-clarity-lead min-w-0 rounded-[12px] border p-3"
+                key={lead.title}
+                style={{
+                  backgroundColor:
+                    index === 0
+                      ? "color-mix(in srgb, var(--warning) 10%, var(--surface))"
+                      : "var(--surface-interactive)",
+                  borderColor:
+                    index === 0
+                      ? "color-mix(in srgb, var(--warning) 32%, var(--border-default))"
+                      : "var(--border-default)",
+                }}
+              >
+                <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
+                  {lead.title}
+                </p>
+                <p className="bp-copy-card-body mt-1 text-[11px] font-bold leading-4" style={{ color: "var(--text-default)" }}>
+                  {lead.body}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="homepage-hero-draft-card mt-3 rounded-[14px] border p-3"
             style={{
-              backgroundColor: "var(--surface-elevated)",
-              color: "var(--accent)",
+              backgroundColor:
+                "color-mix(in srgb, var(--accent-decorative) 12%, var(--surface-elevated))",
+              borderColor:
+                "color-mix(in srgb, var(--accent-decorative) 34%, var(--border-default))",
             }}
           >
-            {copy.draftTag}
-          </span>
-        </div>
-        <p
-          className="bp-copy-card-body homepage-mockup-draft-body mt-1 text-[11px] leading-[1.45]"
-          style={{ color: "var(--text-default)" }}
-        >
-          {copy.draftBody}
-        </p>
-        <button
-          className="bp-copy-button mt-1 inline-flex min-h-6 items-center justify-center rounded-[10px] px-2.5 text-[11px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-          style={{
-            backgroundColor: "var(--primary)",
-            color: "var(--primary-contrast)",
-          }}
-          type="button"
-        >
-          {copy.copyButton}
-        </button>
+            <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
+              {copy.draftTitle}
+            </p>
+            <p className="bp-copy-card-body homepage-mockup-draft-body mt-1.5 text-[11px] leading-4" style={{ color: "var(--text-default)" }}>
+              {copy.draftBody}
+            </p>
+            <button
+              className="bp-copy-button mt-3 inline-flex min-h-8 items-center justify-center rounded-[10px] px-3 text-[11px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+              style={{
+                backgroundColor: "var(--primary)",
+                color: "var(--primary-contrast)",
+              }}
+              type="button"
+            >
+              {copy.copyButton}
+            </button>
+          </div>
+        </section>
       </div>
-    </MarketingCard>
+    </div>
   );
 }
 
@@ -232,7 +283,7 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
   return (
     <section className="bp-section-hero homepage-hero-section">
       <MarketingShell>
-        <div className="bp-hero-grid homepage-hero-grid grid min-w-0 items-center gap-5 min-[1100px]:grid-cols-[minmax(0,1fr)_minmax(19rem,0.44fr)] min-[1100px]:gap-8">
+        <div className="bp-hero-grid homepage-hero-grid grid min-w-0 items-center gap-5 min-[1100px]:grid-cols-[minmax(0,0.88fr)_minmax(32rem,0.98fr)] min-[1100px]:gap-8">
           <div className="homepage-hero-copy min-w-0">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
             <h1
@@ -247,28 +298,30 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
             >
               {copy.hero.body}
             </p>
+            <ul className="homepage-hero-bullets mt-4 grid gap-2 sm:grid-cols-3">
+              {copy.hero.bullets.map((item) => (
+                <li
+                  className="bp-copy-status flex min-w-0 items-start gap-2 text-[13px] font-black leading-5"
+                  key={item}
+                  style={{ color: marketingTone.text }}
+                >
+                  <span className="mt-0.5 shrink-0" style={{ color: marketingTone.teal }}>
+                    <MarketingIcon name="check" />
+                  </span>
+                  <span className="min-w-0">{item}</span>
+                </li>
+              ))}
+            </ul>
             <div className="bp-button-row homepage-hero-actions mt-4 flex flex-col gap-3 min-[360px]:flex-row">
               <MarketingButton href="/pilot">{copy.hero.primaryCta}</MarketingButton>
               <MarketingButton href="/demo" variant="secondary">
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
-            <div className="bp-button-row mt-3 flex flex-wrap gap-1.5">
-              {copy.hero.trustBadges.map((item) => (
-                <span
-                  className="bp-copy-status inline-flex items-center gap-2 rounded-full border px-2.5 py-1.5 text-[12px] font-black"
-                  key={item}
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.045)",
-                    borderColor: marketingTone.border,
-                    color: marketingTone.soft,
-                  }}
-                >
-                  <MarketingIcon name="check" />
-                  {item}
-                </span>
-              ))}
-            </div>
+            <p className="bp-copy-meta homepage-hero-note mt-3 inline-flex min-w-0 items-center gap-2 text-[12px] font-black leading-5" style={{ color: marketingTone.teal }}>
+              <MarketingIcon name="shield" />
+              {copy.hero.note}
+            </p>
           </div>
           <div className="homepage-hero-visual flex min-w-0 justify-center min-[1100px]:justify-end">
             <MiniProductMockup copy={copy.mockup} />
@@ -305,7 +358,7 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
         <SectionTitle body={copy.body} title={copy.title} />
         <MarketingCard className="homepage-demo-grid mt-7 p-4 sm:p-5 lg:p-6">
           <div className="grid gap-4">
-            <div className="grid gap-2 sm:grid-cols-4">
+            <div className="grid gap-2 sm:grid-cols-3">
               {copy.steps.map((step, index) => (
                 <div
                   className="flex min-w-0 items-center gap-2 rounded-[12px] border px-3 py-2"
@@ -472,27 +525,30 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
   );
 }
 
-function ListColumn({
-  items,
-  title,
-  tone,
-}: Readonly<{ items: readonly string[]; title: string; tone: "good" | "limit" }>) {
+function GuardrailStrip({ items }: Readonly<{ items: readonly string[] }>) {
   return (
-    <MarketingCard className="p-5">
-      <h3 className="bp-copy-card-title text-[19px] font-black" style={{ color: marketingTone.text }}>
-        {title}
-      </h3>
-      <div className="mt-5 grid gap-3">
+    <section
+      className="homepage-guardrail-strip border-y"
+      id="trust"
+      style={{
+        backgroundColor:
+          "color-mix(in srgb, var(--accent) 6%, var(--canvas))",
+        borderColor: marketingTone.border,
+      }}
+    >
+      <MarketingShell>
+        <div className="grid gap-3 py-5 sm:grid-cols-3">
         {items.map((item) => (
-          <div className="bp-copy-card-body flex items-start gap-3 text-[14px] leading-6" key={item} style={{ color: marketingTone.soft }}>
-            <span style={{ color: tone === "good" ? marketingTone.teal : marketingTone.gold }}>
-              <MarketingIcon name={tone === "good" ? "check" : "minus"} />
+          <div className="bp-copy-card-body flex min-w-0 items-start gap-3 text-[14px] font-black leading-6" key={item} style={{ color: marketingTone.text }}>
+            <span className="mt-0.5 shrink-0" style={{ color: marketingTone.teal }}>
+              <MarketingIcon name="check" />
             </span>
-            {item}
+            <span className="min-w-0">{item}</span>
           </div>
         ))}
-      </div>
-    </MarketingCard>
+        </div>
+      </MarketingShell>
+    </section>
   );
 }
 
@@ -517,31 +573,9 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
         </MarketingShell>
       </section>
 
-      <section className="py-[var(--section-space-compact)]" id="cleaning">
-        <MarketingShell>
-          <SectionTitle
-            eyebrow={copy.solution.eyebrow}
-            title={copy.solution.title}
-          />
-          <CardGrid items={copy.solution.cards} />
-        </MarketingShell>
-      </section>
-
       <ProductPreview copy={copy.preview} />
 
-      <section className="py-[var(--section-space-compact)]" id="trust">
-        <MarketingShell>
-          <SectionTitle
-            body={copy.ai.body}
-            eyebrow={copy.ai.eyebrow}
-            title={copy.ai.title}
-          />
-          <div className="mt-8 grid gap-5 lg:grid-cols-2">
-            <ListColumn items={copy.ai.canHelp} title={copy.ai.canHelpTitle} tone="good" />
-            <ListColumn items={copy.ai.willNot} title={copy.ai.willNotTitle} tone="limit" />
-          </div>
-        </MarketingShell>
-      </section>
+      <GuardrailStrip items={copy.preview.badges} />
 
       <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
@@ -579,6 +613,29 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
         </MarketingShell>
       </section>
 
+      <section className="py-[var(--section-space)]" id="pilot">
+        <MarketingShell>
+          <MarketingCard className="p-7 sm:p-9" style={{ borderColor: "rgba(45,212,191,0.24)" }}>
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+              <div>
+                <h2 className="bp-copy-section-title text-[30px] font-black leading-[1.08] sm:text-[42px]" style={{ color: marketingTone.text }}>
+                  {copy.finalCta.title}
+                </h2>
+                <p className="bp-copy-card-body mt-4 max-w-[720px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
+                  {copy.finalCta.body}
+                </p>
+                <p className="bp-copy-meta mt-4 text-[13px] font-black" style={{ color: marketingTone.teal }}>
+                  {copy.finalCta.note}
+                </p>
+              </div>
+              <MarketingButton href="/pilot">
+                {copy.finalCta.cta} <MarketingIcon name="arrow" />
+              </MarketingButton>
+            </div>
+          </MarketingCard>
+        </MarketingShell>
+      </section>
+
       <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
           <SectionTitle eyebrow={copy.faq.eyebrow} title={copy.faq.title} />
@@ -601,29 +658,6 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
               {copy.faq.cta} <MarketingIcon name="arrow" />
             </MarketingButton>
           </div>
-        </MarketingShell>
-      </section>
-
-      <section className="py-[var(--section-space)]" id="pilot">
-        <MarketingShell>
-          <MarketingCard className="p-7 sm:p-9" style={{ borderColor: "rgba(45,212,191,0.24)" }}>
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-              <div>
-                <h2 className="bp-copy-section-title text-[30px] font-black leading-[1.08] sm:text-[42px]" style={{ color: marketingTone.text }}>
-                  {copy.finalCta.title}
-                </h2>
-                <p className="bp-copy-card-body mt-4 max-w-[720px] text-[16px] leading-8" style={{ color: marketingTone.soft }}>
-                  {copy.finalCta.body}
-                </p>
-                <p className="bp-copy-meta mt-4 text-[13px] font-black" style={{ color: marketingTone.teal }}>
-                  {copy.finalCta.note}
-                </p>
-              </div>
-              <MarketingButton href="/pilot">
-                {copy.finalCta.cta} <MarketingIcon name="arrow" />
-              </MarketingButton>
-            </div>
-          </MarketingCard>
         </MarketingShell>
       </section>
 

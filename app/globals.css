@@ -601,15 +601,15 @@ select {
 }
 
 .homepage-hero-copy {
-  max-inline-size: min(100%, 48rem);
+  max-inline-size: min(100%, 46rem);
 }
 
 .homepage-hero-body {
-  max-inline-size: min(100%, 44rem);
+  max-inline-size: min(100%, 43rem);
 }
 
 .homepage-hero-title {
-  max-inline-size: min(100%, 49rem);
+  max-inline-size: min(100%, 43rem);
   font-size: 2.25rem;
   line-height: 1.03;
 }
@@ -619,15 +619,44 @@ select {
 }
 
 .homepage-hero-mockup {
-  max-inline-size: min(100%, 23.5rem);
+  max-inline-size: min(100%, 43rem);
+}
+
+.homepage-chaos-clarity-flow {
+  grid-template-columns: minmax(0, 1fr) auto minmax(8.5rem, 0.72fr) auto minmax(0, 1.08fr);
+}
+
+.homepage-chaos-panel,
+.homepage-bizpilot-node,
+.homepage-clarity-panel {
+  min-width: 0;
+}
+
+.homepage-chaos-source-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.homepage-flow-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.homepage-bizpilot-node {
+  align-self: center;
+}
+
+.homepage-visual-heading {
+  min-width: 0;
 }
 
 .homepage-mockup-draft-body {
   display: -webkit-box;
-  max-block-size: 3.05rem;
+  max-block-size: 2.75rem;
   overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 2;
 }
 
 .homepage-section-heading {
@@ -637,6 +666,10 @@ select {
 
 .homepage-problem-section {
   padding-block: 1rem 1.75rem;
+}
+
+.homepage-guardrail-strip {
+  margin-block: 0.25rem 0;
 }
 
 .supporting-four-grid {
@@ -882,6 +915,10 @@ select {
 }
 
 @media (min-width: 1100px) {
+  .homepage-hero-grid {
+    grid-template-columns: minmax(0, 0.76fr) minmax(39rem, 0.96fr);
+  }
+
   .homepage-hero-title {
     font-size: 3.18rem;
   }
@@ -907,18 +944,129 @@ select {
   }
 
   .homepage-hero-mockup {
-    max-inline-size: min(100%, 22rem);
+    max-inline-size: min(100%, 41rem);
   }
 }
 
 @media (max-width: 767px) {
   .homepage-hero-section {
-    padding-block: 1.35rem 1.5rem;
+    padding-block: 0.9rem 1rem;
+  }
+
+  .homepage-hero-grid {
+    gap: 0.85rem;
+  }
+
+  .homepage-hero-title {
+    font-size: 1.9rem;
+  }
+
+  .homepage-hero-body {
+    margin-block-start: 0.7rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .homepage-hero-actions {
+    margin-block-start: 0.8rem;
+  }
+
+  .homepage-hero-bullets {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+
+  .homepage-hero-note {
+    display: flex;
+    margin-block-start: 0.7rem;
+  }
+
+  .homepage-chaos-clarity-flow {
+    grid-template-columns: 1fr;
+    gap: 0.65rem;
+  }
+
+  .homepage-flow-connector {
+    transform: rotate(90deg);
+  }
+
+  .homepage-chaos-panel,
+  .homepage-bizpilot-node,
+  .homepage-clarity-panel,
+  .homepage-hero-draft-card {
+    padding: 0.65rem;
+  }
+
+  .homepage-visual-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 0.65rem;
+  }
+
+  .homepage-chaos-source-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-block-start: 0.55rem;
+  }
+
+  .homepage-chaos-source-grid > *:nth-child(n + 3) {
+    display: none;
+  }
+
+  .homepage-chaos-messages,
+  .homepage-chaos-messages > * {
+    display: none;
+  }
+
+  .homepage-bizpilot-action-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+    margin-block-start: 0.55rem;
+  }
+
+  .homepage-bizpilot-action-grid .bp-copy-status {
+    gap: 0.35rem;
+    padding: 0.35rem 0.45rem;
+    font-size: 0.625rem;
+    line-height: 1.2;
+  }
+
+  .homepage-clarity-lead:nth-child(n + 2) {
+    display: none;
+  }
+
+  .homepage-clarity-leads {
+    margin-block-start: 0.55rem;
+  }
+
+  .homepage-clarity-lead {
+    padding: 0.65rem;
+  }
+
+  .homepage-clarity-lead .bp-copy-card-body {
+    margin-block-start: 0.25rem;
+    font-size: 0.625rem;
+    line-height: 1.35;
+  }
+
+  .homepage-hero-draft-card {
+    margin-block-start: 0.55rem;
   }
 
   .homepage-mockup-draft-body {
-    max-block-size: 3.55rem;
-    -webkit-line-clamp: 3;
+    margin-block-start: 0.35rem;
+    max-block-size: 1.1rem;
+    font-size: 0.625rem;
+    line-height: 1.35;
+    -webkit-line-clamp: 1;
+  }
+
+  .homepage-hero-draft-card .bp-copy-button {
+    min-block-size: 1.75rem;
+    margin-block-start: 0.45rem;
+    padding-inline: 0.75rem;
+    font-size: 0.625rem;
   }
 }
 
