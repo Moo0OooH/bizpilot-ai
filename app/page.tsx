@@ -9,7 +9,7 @@
  * - lib/i18n/home-copy.ts
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-06-26
  * Change Log:
  * - 2026-06-18: Applied responsive hero, section density, and no-inner-scroll demo hardening.
  * - 2026-06-19: Mapped the hero product preview to semantic theme surfaces for dark contrast.
@@ -26,6 +26,7 @@
  * - 2026-06-21: Removed the homepage roadmap band so the page stays focused on quote recovery proof.
  * - 2026-06-25: Rebalanced homepage hero, CTA grouping, mockup density, and Problem section rhythm.
  * - 2026-06-25: Tightened hero copy rhythm, mockup density, and Problem-section handoff.
+ * - 2026-06-26: Replaced the four-card workflow preview with one compact owner-review panel.
  * ============================================================
  */
 
@@ -302,84 +303,170 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
     <section className="py-[var(--section-space-compact)]" id="demo">
       <MarketingShell>
         <SectionTitle body={copy.body} title={copy.title} />
-        <div className="homepage-demo-grid mt-8">
-          {copy.steps.map((step, index) => (
-            <MarketingCard className="bp-card-structured min-w-0 p-5 sm:p-6" key={step.title}>
-              <div className="flex items-center justify-end">
-                <span
-                  className="flex h-9 w-9 items-center justify-center rounded-[10px] text-[13px] font-black text-white"
+        <MarketingCard className="homepage-demo-grid mt-7 p-4 sm:p-5 lg:p-6">
+          <div className="grid gap-4">
+            <div className="grid gap-2 sm:grid-cols-4">
+              {copy.steps.map((step, index) => (
+                <div
+                  className="flex min-w-0 items-center gap-2 rounded-[12px] border px-3 py-2"
+                  key={step}
                   style={{
-                    backgroundColor:
-                      index === 0
-                        ? marketingTone.text
-                        : index === 1
-                          ? marketingTone.blue
-                          : marketingTone.teal,
+                    backgroundColor: "var(--surface-interactive)",
+                    borderColor: "var(--border-default)",
                   }}
                 >
-                  {index + 1}
-                </span>
-              </div>
-              <h3 className="bp-copy-card-title mt-5 text-[22px] font-black text-slate-950">
-                {step.title}
-              </h3>
-              {step.quote ? (
-                <p className="mt-4 rounded-[16px] border border-slate-200 bg-slate-50 p-4 text-[16px] font-black leading-7 text-slate-950">
-                  {step.quote}
-                </p>
-              ) : null}
-              {step.fields ? (
-                <div className="mt-4 grid gap-2">
-                  {step.fields.map(([label, value]) => (
-                    <div
-                      className="grid min-w-0 gap-1 rounded-[12px] border border-slate-200 bg-white px-3 py-2 sm:grid-cols-[86px_minmax(0,1fr)]"
-                      key={label}
-                    >
-                      <span className="text-[12px] font-black uppercase tracking-[0.08em] text-slate-500">
-                        {label}
-                      </span>
-                      <span className="min-w-0 break-words text-[14px] font-black text-slate-950">
-                        {value}
-                      </span>
-                    </div>
-                  ))}
+                  <span
+                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px] text-[11px] font-black"
+                    style={{
+                      backgroundColor:
+                        index === 0
+                          ? marketingTone.text
+                          : index === 1
+                            ? marketingTone.blue
+                            : marketingTone.teal,
+                      color: "var(--primary-contrast)",
+                    }}
+                  >
+                    {index + 1}
+                  </span>
+                  <span
+                    className="bp-copy-status min-w-0 text-[12px] font-black leading-4"
+                    style={{ color: "var(--text-strong)" }}
+                  >
+                    {step}
+                  </span>
                 </div>
-              ) : null}
-              {step.body ? (
-                <div className="mt-4 rounded-[16px] border border-teal-200 bg-teal-50 p-4">
-                  <p className="bp-copy-card-body text-[15px] font-bold leading-7 text-slate-950">
-                    {step.body}
+              ))}
+            </div>
+
+            <div className="grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+              <div
+                className="rounded-[18px] border p-4"
+                style={{
+                  backgroundColor: "var(--surface-elevated)",
+                  borderColor: "var(--border-default)",
+                }}
+              >
+                <p
+                  className="bp-copy-eyebrow text-[11px] font-black uppercase tracking-[0.14em]"
+                  style={{ color: marketingTone.gold }}
+                >
+                  {copy.request.title}
+                </p>
+                <p
+                  className="mt-3 rounded-[14px] border p-4 text-[16px] font-black leading-7"
+                  style={{
+                    backgroundColor: "var(--surface)",
+                    borderColor: "var(--border-default)",
+                    color: "var(--text-strong)",
+                  }}
+                >
+                  {copy.request.quote}
+                </p>
+              </div>
+
+              <div className="grid gap-3">
+                <div
+                  className="rounded-[18px] border p-4"
+                  style={{
+                    backgroundColor: "var(--surface-elevated)",
+                    borderColor: "var(--border-default)",
+                  }}
+                >
+                  <p
+                    className="bp-copy-eyebrow text-[11px] font-black uppercase tracking-[0.14em]"
+                    style={{ color: marketingTone.teal }}
+                  >
+                    {copy.organizedLead.title}
+                  </p>
+                  <div className="mt-3 grid gap-2">
+                    {copy.organizedLead.fields.map(([label, value]) => (
+                      <div
+                        className="grid min-w-0 gap-1 rounded-[12px] border px-3 py-2 sm:grid-cols-[92px_minmax(0,1fr)]"
+                        key={label}
+                        style={{
+                          backgroundColor: "var(--surface)",
+                          borderColor: "var(--border-default)",
+                        }}
+                      >
+                        <span
+                          className="bp-copy-meta text-[11px] font-black uppercase tracking-[0.08em]"
+                          style={{ color: "var(--text-muted)" }}
+                        >
+                          {label}
+                        </span>
+                        <span
+                          className="min-w-0 break-words text-[14px] font-black leading-5"
+                          style={{ color: "var(--text-strong)" }}
+                        >
+                          {value}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div
+                  className="rounded-[18px] border p-4"
+                  style={{
+                    backgroundColor:
+                      "color-mix(in srgb, var(--accent-decorative) 10%, var(--surface-elevated))",
+                    borderColor:
+                      "color-mix(in srgb, var(--accent-decorative) 34%, var(--border-default))",
+                  }}
+                >
+                  <p
+                    className="bp-copy-card-title text-[16px] font-black"
+                    style={{ color: "var(--text-strong)" }}
+                  >
+                    {copy.draft.title}
+                  </p>
+                  <p
+                    className="bp-copy-card-body mt-2 text-[14px] font-bold leading-6"
+                    style={{ color: "var(--text-default)" }}
+                  >
+                    {copy.draft.body}
                   </p>
                   <button
-                    className="bp-copy-button mt-4 inline-flex h-11 items-center justify-center gap-2 rounded-[12px] bg-slate-950 px-4 text-[13px] font-black text-white"
+                    className="bp-copy-button mt-3 inline-flex min-h-10 items-center justify-center gap-2 rounded-[12px] px-4 text-[13px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                    style={{
+                      backgroundColor: "var(--primary)",
+                      color: "var(--primary-contrast)",
+                    }}
                     type="button"
                   >
                     <MarketingIcon name="copy" />
                     {copy.copyButton}
                   </button>
                 </div>
-              ) : null}
-            </MarketingCard>
-          ))}
-        </div>
+              </div>
+            </div>
 
-        <div className="mt-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-            {copy.badges.map((item) => (
-              <span
-                className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-black"
-                key={item}
-                style={{ borderColor: marketingTone.border, color: marketingTone.teal }}
-              >
-                <MarketingIcon name="check" />
-                {item}
-              </span>
-            ))}
+            <div
+              className="flex flex-col items-center justify-between gap-4 border-t pt-4 sm:flex-row"
+              style={{ borderColor: "var(--border-default)" }}
+            >
+              <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
+                {copy.badges.map((item) => (
+                  <span
+                    className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] font-black"
+                    key={item}
+                    style={{
+                      borderColor: marketingTone.border,
+                      color: marketingTone.teal,
+                    }}
+                  >
+                    <MarketingIcon name="check" />
+                    {item}
+                  </span>
+                ))}
+              </div>
+              <MarketingButton href="/demo" variant="secondary">
+                {copy.cta}
+              </MarketingButton>
+            </div>
           </div>
-          <MarketingButton href="/demo" variant="secondary">
-            {copy.cta}
-          </MarketingButton>
-        </div>
+        </MarketingCard>
       </MarketingShell>
     </section>
   );

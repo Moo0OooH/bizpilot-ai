@@ -10,7 +10,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-06-26
  * Change Log:
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
  * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
@@ -23,6 +23,7 @@
  * - 2026-06-25: Replaced Cleaning family groups with six compact service detail entries.
  * - 2026-06-25: Shortened the founder pricing highlight labels for 320px visual acceptance.
  * - 2026-06-25: Finalized bilingual public wording around owner review, quote requests, and natural fr-CA phrasing.
+ * - 2026-06-26: Reworked homepage workflow preview copy into one compact owner-review panel.
  * ============================================================
  */
 
@@ -95,14 +96,19 @@ type HomeCopy = Readonly<{
     body: string;
     copyButton: string;
     cta: string;
-    steps: ReadonlyArray<
-      Readonly<{
-        body?: string;
-        fields?: ReadonlyArray<LabelValue>;
-        quote?: string;
-        title: string;
-      }>
-    >;
+    draft: Readonly<{
+      body: string;
+      title: string;
+    }>;
+    organizedLead: Readonly<{
+      fields: ReadonlyArray<LabelValue>;
+      title: string;
+    }>;
+    request: Readonly<{
+      quote: string;
+      title: string;
+    }>;
+    steps: readonly string[];
     title: string;
   }>;
   problem: Readonly<{
@@ -967,34 +973,28 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     preview: {
       badges: ["No auto-send", "No invented price", "Manual send"],
       body:
-        "Follow one realistic move-out cleaning request from messy message to reply ready for approval. BizPilot organizes the work; you stay in control.",
+        "One messy request becomes an organized lead and a draft you can review before sending manually.",
       copyButton: "Copy reply",
       cta: "Watch full demo",
-      steps: [
-        {
-          quote: '"Hi, how much for move-out cleaning before Friday?"',
-          title: "Messy request",
-        },
-        {
-          fields: [
-            ["Service", "Move-out cleaning"],
-            ["Timing", "Before Friday"],
-            ["Missing", "square footage, appliances, access notes"],
-            ["Status", "Needs reply"],
-          ],
-          title: "BizPilot organizes it",
-        },
-        {
-          body:
-            "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
-          title: "Reply draft to approve",
-        },
-        {
-          body:
-            "You review the draft, adjust it if needed, copy it, and send it manually from the channel you already use.",
-          title: "Copy and send manually",
-        },
-      ],
+      draft: {
+        body:
+          "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
+        title: "Draft for owner review",
+      },
+      organizedLead: {
+        fields: [
+          ["Service", "Move-out cleaning"],
+          ["Timing", "Before Friday"],
+          ["Missing", "square footage, appliances, access notes"],
+          ["Status", "Needs reply"],
+        ],
+        title: "Organized lead",
+      },
+      request: {
+        quote: '"Hi, how much for move-out cleaning before Friday?"',
+        title: "Messy request",
+      },
+      steps: ["Request", "Organized lead", "Draft for review", "Manual send"],
       title: "See the quote recovery workflow in 60 seconds.",
     },
     problem: {
@@ -1932,35 +1932,29 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Envoi manuel",
       ],
       body:
-        "Suivez une demande réaliste de nettoyage après déménagement, du message désordonné à la réponse à valider. BizPilot organise le travail; vous gardez le contrôle.",
+        "Une demande vague devient un prospect organisé et un brouillon à valider avant l'envoi manuel.",
       copyButton: "Copier la réponse",
       cta: "Voir la démo complète",
-      steps: [
-        {
-          quote:
-            "\"Bonjour, combien pour un nettoyage après déménagement d’ici vendredi?\"",
-          title: "Demande vague",
-        },
-        {
-          fields: [
-            ["Service", "Nettoyage après déménagement"],
-            ["Moment", "Avant vendredi"],
-            ["Manquant", "superficie, électroménagers, notes d'accès"],
-            ["Statut", "À répondre"],
-          ],
-          title: "BizPilot l'organise",
-        },
-        {
-          body:
-            "Bonjour Sarah, merci pour votre message. Pouvez-vous confirmer la superficie, les électroménagers à nettoyer et les notes d’accès afin que je prépare une soumission exacte?",
-          title: "Brouillon à valider",
-        },
-        {
-          body:
-            "Vous validez le brouillon, l'ajustez au besoin, le copiez et l'envoyez manuellement depuis le canal que vous utilisez déjà.",
-          title: "Vous copiez et envoyez manuellement",
-        },
-      ],
+      draft: {
+        body:
+          "Bonjour Sarah, merci pour votre message. Pouvez-vous confirmer la superficie, les électroménagers à nettoyer et les notes d'accès afin que je prépare une soumission exacte?",
+        title: "Brouillon à valider",
+      },
+      organizedLead: {
+        fields: [
+          ["Service", "nettoyage après déménagement"],
+          ["Moment", "avant vendredi"],
+          ["Manquant", "superficie, électroménagers, notes d'accès"],
+          ["Statut", "à répondre"],
+        ],
+        title: "Prospect organisé",
+      },
+      request: {
+        quote:
+          "\"Bonjour, combien pour un nettoyage après déménagement d'ici vendredi?\"",
+        title: "Demande vague",
+      },
+      steps: ["Demande", "Prospect organisé", "Brouillon à valider", "Envoi manuel"],
       title: "Voyez le flux de récupération en 60 secondes.",
     },
     problem: {

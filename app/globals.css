@@ -9,7 +9,7 @@ Related:
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-06-25
+Last Updated: 2026-06-26
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
@@ -34,6 +34,7 @@ Change Log:
 - 2026-06-25: Reworked Cleaning page service/detail rhythm around one six-service selector.
 - 2026-06-25: Replaced duplicated Cleaning desktop/mobile detail CSS with one active detail selector.
 - 2026-06-25: Tightened homepage hero width, mockup density, and section typography scale.
+- 2026-06-26: Converted the homepage demo hook from four-card grid behavior to one compact preview panel.
 ============================================================
 */
 
@@ -638,11 +639,14 @@ select {
   padding-block: 1rem 1.75rem;
 }
 
-.homepage-demo-grid,
 .supporting-four-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
+}
+
+.homepage-demo-grid {
+  display: block;
 }
 
 .homepage-use-case-grid {
@@ -784,7 +788,6 @@ select {
 
 .public-card-grid > *,
 .public-card-grid-wide > *,
-.homepage-demo-grid > *,
 .homepage-use-case-grid > *,
 .supporting-four-grid > *,
 .supporting-six-grid > *,
@@ -808,7 +811,6 @@ select {
     font-size: 2rem;
   }
 
-  .homepage-demo-grid,
   .homepage-use-case-grid,
   .supporting-four-grid,
   .supporting-six-grid {
@@ -847,7 +849,6 @@ select {
     font-size: 2.15rem;
   }
 
-  .homepage-demo-grid,
   .supporting-four-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }

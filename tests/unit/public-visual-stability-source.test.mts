@@ -11,7 +11,7 @@
  * - components/ui/theme-preference-control.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-06-26
  * Change Log:
  * - 2026-06-21: Added homepage demo numbering regression coverage.
  * - 2026-06-21: Added canonical public responsive-grid regression coverage.
@@ -31,6 +31,7 @@
  * - 2026-06-25: Added final acceptance guards for visual hooks and nested-card scroll traps.
  * - 2026-06-25: Locked Cleaning details to one active selector panel without responsive duplicate blocks.
  * - 2026-06-25: Updated homepage hero rhythm guards for the final tighter first fold.
+ * - 2026-06-26: Locked the homepage workflow preview to one compact panel instead of four cards.
  * ============================================================
  */
 
@@ -374,8 +375,9 @@ describe("public visual stability source contracts", () => {
     );
   });
 
-  it("keeps homepage demo cards from rendering duplicate visible step numbers", () => {
+  it("keeps the homepage workflow preview as one compact panel", () => {
     const homepage = source("app/page.tsx");
+    const globals = source("app/globals.css");
     const previewStart = homepage.indexOf("function ProductPreview");
     const previewEnd = homepage.indexOf("function ListColumn");
     const productPreviewSource = homepage.slice(previewStart, previewEnd);
@@ -385,12 +387,47 @@ describe("public visual stability source contracts", () => {
     assert.equal(
       productPreviewSource.match(/\{index \+ 1\}/g)?.length,
       1,
-      "ProductPreview should render one visible step number per card.",
+      "ProductPreview should render one visible step number per compact label.",
+    );
+    assert.equal(productPreviewSource.includes("copy.request.title"), true);
+    assert.equal(productPreviewSource.includes("copy.request.quote"), true);
+    assert.equal(productPreviewSource.includes("copy.organizedLead.fields.map"), true);
+    assert.equal(productPreviewSource.includes("copy.draft.title"), true);
+    assert.equal(productPreviewSource.includes("copy.draft.body"), true);
+    assert.equal(
+      productPreviewSource.match(/copy\.copyButton/g)?.length,
+      1,
+      "ProductPreview should render one Copy reply button in the preview.",
     );
     assert.equal(
       productPreviewSource.includes("justify-between gap-3"),
       false,
       "ProductPreview should not keep the old two-number header layout.",
+    );
+    for (const oldCardMarker of [
+      "step.title",
+      "step.quote",
+      "step.fields",
+      "step.body",
+      "bp-card-structured min-w-0 p-5 sm:p-6",
+      "Reply draft to approve",
+    ]) {
+      assert.equal(
+        productPreviewSource.includes(oldCardMarker),
+        false,
+        `ProductPreview should not keep the old four-card preview marker ${oldCardMarker}.`,
+      );
+    }
+    assert.equal(globals.includes(".homepage-demo-grid {\n  display: block;"), true);
+    assert.equal(
+      globals.includes(".homepage-demo-grid,\n  .homepage-use-case-grid"),
+      false,
+      "Homepage demo should not inherit the two-column card-grid breakpoint.",
+    );
+    assert.equal(
+      globals.includes(".homepage-demo-grid,\n  .supporting-four-grid {\n    grid-template-columns: repeat(4"),
+      false,
+      "Homepage demo should not inherit the four-column card-grid breakpoint.",
     );
   });
 

@@ -9,7 +9,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-06-26
  * Change Log:
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
@@ -22,6 +22,7 @@
  * - 2026-06-25: Updated canonical homepage hero copy for owner-review wording.
  * - 2026-06-25: Locked Cleaning copy to six service detail entries instead of repeated families.
  * - 2026-06-25: Updated Cleaning layout source guard to the shared detail selector component.
+ * - 2026-06-26: Locked the compact homepage workflow preview copy and legacy wording cleanup guards.
  * ============================================================
  */
 
@@ -416,6 +417,24 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon suggéré");
     assert.equal(frenchPublicCopy.home.mockup.draftTag, "L'IA prépare. Vous envoyez.");
     assert.equal(frenchPublicCopy.home.mockup.copyButton, "Copier la réponse");
+    assert.equal(
+      frenchPublicCopy.home.preview.title,
+      "Voyez le flux de récupération en 60 secondes.",
+    );
+    assert.equal(
+      frenchPublicCopy.home.preview.body,
+      "Une demande vague devient un prospect organisé et un brouillon à valider avant l'envoi manuel.",
+    );
+    assert.deepEqual(frenchPublicCopy.home.preview.steps, [
+      "Demande",
+      "Prospect organisé",
+      "Brouillon à valider",
+      "Envoi manuel",
+    ]);
+    assert.equal(frenchPublicCopy.home.preview.request.title, "Demande vague");
+    assert.equal(frenchPublicCopy.home.preview.organizedLead.title, "Prospect organisé");
+    assert.equal(frenchPublicCopy.home.preview.draft.title, "Brouillon à valider");
+    assert.equal(frenchPublicCopy.home.preview.copyButton, "Copier la réponse");
 
     for (const englishPhrase of [
       "Stop losing cleaning quote requests to slow replies.",
@@ -683,6 +702,24 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.home.mockup.draftTitle, "Suggested reply");
     assert.equal(englishPublicCopy.home.mockup.draftTag, "AI drafts. You send.");
     assert.equal(englishPublicCopy.home.mockup.copyButton, "Copy reply");
+    assert.equal(
+      englishPublicCopy.home.preview.title,
+      "See the quote recovery workflow in 60 seconds.",
+    );
+    assert.equal(
+      englishPublicCopy.home.preview.body,
+      "One messy request becomes an organized lead and a draft you can review before sending manually.",
+    );
+    assert.deepEqual(englishPublicCopy.home.preview.steps, [
+      "Request",
+      "Organized lead",
+      "Draft for review",
+      "Manual send",
+    ]);
+    assert.equal(englishPublicCopy.home.preview.request.title, "Messy request");
+    assert.equal(englishPublicCopy.home.preview.organizedLead.title, "Organized lead");
+    assert.equal(englishPublicCopy.home.preview.draft.title, "Draft for owner review");
+    assert.equal(englishPublicCopy.home.preview.copyButton, "Copy reply");
     assert.deepEqual(englishBizPilotCopy.quoteSuccess.steps(""), [
       "The business reviews your request and any missing details.",
       "They prepare a reply for approval - no automatic messages.",
@@ -700,6 +737,7 @@ describe("BizPilot language copy", () => {
       "Owner-reviewed reply draft",
       "Owner-reviewed AI drafts",
       "prepared for owner review",
+      "Reply draft to approve",
       "reply draft for owner review",
       "manual-first path",
       "privacy readiness",
@@ -760,7 +798,7 @@ describe("BizPilot language copy", () => {
       assert.equal(
         getPublicSiteCopy(language).home.preview.steps.length,
         4,
-        `${language} homepage demo must keep three states plus manual-send outcome.`,
+        `${language} homepage demo must keep four compact workflow labels.`,
       );
     }
 
