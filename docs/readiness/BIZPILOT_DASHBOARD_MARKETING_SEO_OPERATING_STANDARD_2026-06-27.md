@@ -155,6 +155,13 @@ P19 follow-up:
   for the public/auth route-message safety layer, owner/admin flash-message
   standardization, browser QA evidence, and final workflow checks.
 
+P20 follow-up:
+
+- See `docs/readiness/P20_DASHBOARD_PRIORITY_HIERARCHY_REDESIGN_2026-06-27.md`
+  for the Owner/User first-viewport next-action cockpit, Founder/Admin
+  search-first user-control lane, priority workspace strip, source guards,
+  browser QA evidence, and final build/test verification.
+
 Safety notes:
 
 - No production cleanup or deletion action was executed.

@@ -65,6 +65,7 @@ describe("dashboard heading hierarchy", () => {
       overviewSource.includes("Consolidated the owner command lane and KPI strip"),
       true,
     );
-    assert.equal(overviewSource.includes("grid-rows-[auto_1fr_auto]"), true);
+    assert.equal(overviewSource.includes("overflow-hidden p-0"), true);
+    assert.equal(overviewSource.includes("grid min-h-[86px]"), true);
   });
 });

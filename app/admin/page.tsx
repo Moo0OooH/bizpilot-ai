@@ -19,6 +19,7 @@
  * - 2026-06-27: Split business-selection URLs from user paging/filter URLs.
  * - 2026-06-27: Promoted Users as the default admin control lane and made business routes explicit.
  * - 2026-06-27: Sanitized admin route flash messages before rendering.
+ * - 2026-06-27: Reordered Users into a search-first founder operations cockpit.
  * ============================================================
  */
 
@@ -1786,6 +1787,9 @@ function FounderBusinessesSection({
   );
   const selectedBusinessId = safeParam(params.businessId);
   const featuredBusiness = businessById.get(selectedBusinessId) ?? businesses[0] ?? null;
+  const featuredRecommendation = featuredBusiness
+    ? recommendedPriorityAction(featuredBusiness)
+    : null;
   const inactiveLinks = businesses.filter((business) => !business.publicLinkActive).length;
   const onboarding = businesses.filter(
     (business) => business.status === "onboarding",
@@ -1815,6 +1819,35 @@ function FounderBusinessesSection({
           eyebrow="Founder Admin"
           title="Business Operations"
         />
+
+        {featuredBusiness && featuredRecommendation ? (
+          <section className="mt-4 grid gap-3 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3.5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <div className="min-w-0">
+              <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-primary-strong)]">
+                Priority workspace
+              </p>
+              <p className="mt-1 truncate text-lg font-black text-[var(--dash-text)]">
+                {featuredBusiness.name}
+              </p>
+              <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+                {featuredRecommendation.text}
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2 lg:justify-end">
+              <StatusBadge tone={featuredRecommendation.tone}>
+                {statusLabels[featuredBusiness.status]}
+              </StatusBadge>
+              <Link
+                className={primaryButtonClass}
+                href={adminBusinessHref(params, {
+                  businessId: featuredBusiness.businessId,
+                })}
+              >
+                Open controls
+              </Link>
+            </div>
+          </section>
+        ) : null}
 
         <section className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-5">
           <MetricCard
@@ -1897,43 +1930,61 @@ function FounderUsersOverviewPanel({
   return (
     <DashboardCard className="p-4 sm:p-5" variant="priority">
       <PageHeader
-        actions={<StatusBadge tone="amber">Gated operations</StatusBadge>}
+        actions={
+          <>
+            <Link className={buttonClass} href="/admin?adminPanel=businesses">
+              Businesses
+            </Link>
+            <Link className={buttonClass} href="/admin?adminPanel=health">
+              Health
+            </Link>
+            <StatusBadge tone="amber">Gated operations</StatusBadge>
+          </>
+        }
         description="Founder-only user search, account support, fake/test cleanup, and detail review. Role and production access changes stay blocked until the owner-approved security/RLS gate is closed."
         eyebrow="Founder Admin"
         title="Users"
       />
-      <section className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <MetricCard
-          detail="Auth users available through founder-only paging/search."
-          label="Auth users"
-          tone="blue"
-          value={usersTotal}
-        />
-        <MetricCard
-          detail="Loaded users with email confirmation still pending."
-          label="Unconfirmed"
-          tone={unconfirmed > 0 ? "amber" : "emerald"}
-          value={unconfirmed}
-        />
-        <MetricCard
-          detail="Loaded users without a linked workspace."
-          label="No business"
-          tone={unlinked > 0 ? "amber" : "neutral"}
-          value={unlinked}
-        />
-        <MetricCard
-          detail="Loaded users attached to suspended or cancelled access."
-          label="Paused access"
-          tone={pausedAccess > 0 ? "red" : "emerald"}
-          value={pausedAccess}
-        />
+      <section className="mt-4 grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.42fr)]">
+        <div className="grid min-w-0 gap-2 sm:grid-cols-2 2xl:grid-cols-4">
+          <MetricCard
+            detail="Auth users available through founder-only paging/search."
+            label="Auth users"
+            tone="blue"
+            value={usersTotal}
+          />
+          <MetricCard
+            detail="Loaded users with email confirmation still pending."
+            label="Unconfirmed"
+            tone={unconfirmed > 0 ? "amber" : "emerald"}
+            value={unconfirmed}
+          />
+          <MetricCard
+            detail="Loaded users without a linked workspace."
+            label="No business"
+            tone={unlinked > 0 ? "amber" : "neutral"}
+            value={unlinked}
+          />
+          <MetricCard
+            detail="Loaded users attached to suspended or cancelled access."
+            label="Paused access"
+            tone={pausedAccess > 0 ? "red" : "emerald"}
+            value={pausedAccess}
+          />
+        </div>
+        <div className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] p-3">
+          <p className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--dash-warning-strong)]">
+            Operating rule
+          </p>
+          <p className="mt-2 text-[12px] font-bold leading-5 text-[var(--dash-text)]">
+            Search mode: {usersSearchMode === "auth_filter" ? "indexed auth filter" : "paged auth list"}.
+            Password reset and fake/test auth cleanup are guarded.
+          </p>
+          <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Invite, role change, suspend, remove, and production user deletion require the owner-approved security/RLS gate.
+          </p>
+        </div>
       </section>
-      <p className="mt-3 rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text)]">
-        Search mode: {usersSearchMode === "auth_filter" ? "indexed auth filter" : "paged auth list"}.
-        Password reset and fake/test auth cleanup are guarded. Invite, role
-        change, suspend, remove, and production user deletion require the
-        owner-approved security/RLS gate.
-      </p>
     </DashboardCard>
   );
 }
@@ -2264,7 +2315,79 @@ function FounderUsersSection({
             </div>
           </div>
 
-          <div className="mt-4 grid gap-4">
+          <div className="mt-4 grid gap-3">
+            <form
+              className="grid gap-3 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 sm:grid-cols-2 xl:grid-cols-[minmax(220px,1fr)_120px_minmax(140px,0.72fr)_minmax(140px,0.72fr)_auto] xl:items-end 2xl:grid-cols-[minmax(260px,1fr)_120px_168px_168px_auto]"
+              method="get"
+            >
+              <input name="userPage" type="hidden" value="1" />
+              <input name="userPriority" type="hidden" value={selectedPriority} />
+              <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+                Search users
+                <input
+                  className={inputClass}
+                  defaultValue={params.userQuery ?? ""}
+                  name="userQuery"
+                  placeholder="Name, email, phone"
+                />
+              </label>
+              <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+                Show
+                <select
+                  className={inputClass}
+                  defaultValue={String(usersPageSize)}
+                  name="userPageSize"
+                >
+                  <option value="10">10 users</option>
+                  <option value="5">5 users</option>
+                </select>
+              </label>
+              <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+                Access status
+                <select
+                  className={inputClass}
+                  defaultValue={safeParam(params.userAccess)}
+                  name="userAccess"
+                >
+                  <option value="all">All users</option>
+                  <option value="active">Active access</option>
+                  <option value="onboarding">Onboarding</option>
+                  <option value="suspended">Suspended</option>
+                  <option value="cancelled">Cancelled</option>
+                  <option value="unlinked">No business linked</option>
+                </select>
+              </label>
+              <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+                Auth
+                <select
+                  className={inputClass}
+                  defaultValue={safeParam(params.userConfirmed)}
+                  name="userConfirmed"
+                >
+                  <option value="all">All auth states</option>
+                  <option value="confirmed">Confirmed email</option>
+                  <option value="unconfirmed">Unconfirmed email</option>
+                  <option value="founder">Founder accounts</option>
+                </select>
+              </label>
+              <div className="flex flex-wrap gap-2 sm:col-span-2 xl:col-span-1 xl:min-w-[190px] xl:flex-nowrap">
+                <button className={`${primaryButtonClass} flex-1`} type="submit">
+                  Search
+                </button>
+                <Link
+                  className={`${buttonClass} flex-1`}
+                  href={adminUsersHref(params, {
+                    userAccess: undefined,
+                    userConfirmed: undefined,
+                    userPage: "1",
+                    userPriority: undefined,
+                    userQuery: undefined,
+                  })}
+                >
+                  Reset
+                </Link>
+              </div>
+            </form>
 
       <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
         <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
@@ -2308,79 +2431,6 @@ function FounderUsersSection({
           ))}
         </div>
       </details>
-
-      <form
-        className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 sm:grid-cols-2 xl:grid-cols-[minmax(220px,1fr)_120px_minmax(140px,0.72fr)_minmax(140px,0.72fr)] 2xl:grid-cols-[minmax(260px,1fr)_120px_168px_168px_auto] 2xl:items-end"
-        method="get"
-      >
-        <input name="userPage" type="hidden" value="1" />
-        <input name="userPriority" type="hidden" value={selectedPriority} />
-        <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-          Search users
-          <input
-            className={inputClass}
-            defaultValue={params.userQuery ?? ""}
-            name="userQuery"
-            placeholder="Name, email, phone"
-          />
-        </label>
-        <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-          Show
-          <select
-            className={inputClass}
-            defaultValue={String(usersPageSize)}
-            name="userPageSize"
-          >
-            <option value="10">10 users</option>
-            <option value="5">5 users</option>
-          </select>
-        </label>
-        <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-          Access status
-          <select
-            className={inputClass}
-            defaultValue={safeParam(params.userAccess)}
-            name="userAccess"
-          >
-            <option value="all">All users</option>
-            <option value="active">Active access</option>
-            <option value="onboarding">Onboarding</option>
-            <option value="suspended">Suspended</option>
-            <option value="cancelled">Cancelled</option>
-            <option value="unlinked">No business linked</option>
-          </select>
-        </label>
-        <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-          Auth
-          <select
-            className={inputClass}
-            defaultValue={safeParam(params.userConfirmed)}
-            name="userConfirmed"
-          >
-            <option value="all">All auth states</option>
-            <option value="confirmed">Confirmed email</option>
-            <option value="unconfirmed">Unconfirmed email</option>
-            <option value="founder">Founder accounts</option>
-          </select>
-        </label>
-        <div className="flex flex-wrap gap-2 sm:col-span-2 xl:col-span-4 2xl:col-span-1 2xl:flex-nowrap">
-          <button className={`${primaryButtonClass} flex-1 2xl:flex-none`} type="submit">
-            Search
-          </button>
-          <Link
-            className={`${buttonClass} flex-1 2xl:flex-none`}
-            href={adminUsersHref(params, {
-              userAccess: undefined,
-              userConfirmed: undefined,
-              userPage: "1",
-              userPriority: undefined,
-              userQuery: undefined,
-            })}
-          >
-            Reset
-          </Link>
-        </div>
-      </form>
 
       <div className="space-y-3">
         {shownUsers.length > 0 ? (

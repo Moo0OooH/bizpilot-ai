@@ -92,6 +92,8 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes('label: "Businesses", panel: "businesses"'), true);
     assert.equal(pageSource.indexOf('label: "Users", panel: "users"') < pageSource.indexOf('label: "Businesses", panel: "businesses"'), true);
     assert.equal(pageSource.includes('User directory'), true);
+    assert.equal(pageSource.includes("Operating rule"), true);
+    assert.equal(pageSource.indexOf("Search users") < pageSource.indexOf("Work queues"), true);
     assert.equal(pageSource.includes("UserAccountSupportPanel"), true);
     assert.equal(pageSource.includes("UserDestructiveZone"), true);
     assert.equal(pageSource.includes("FounderAuthUserDeleteForm"), true);
@@ -133,6 +135,7 @@ describe("Founder admin source safety", () => {
       "Production Health",
       "Admin Inbox",
       "Activity Log",
+      "Priority workspace",
       "xl:top-[5.75rem]",
     ]) {
       assert.equal(

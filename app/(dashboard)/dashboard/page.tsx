@@ -16,6 +16,7 @@
  * - 2026-06-27: Promoted the overview hero title to the page H1 after topbar heading cleanup.
  * - 2026-06-27: Consolidated the owner command lane and KPI strip into one calmer action board.
  * - 2026-06-27: Added a first-run Start Here path for owner setup, sharing, and lead review.
+ * - 2026-06-27: Reworked the first viewport into a prioritized next-action cockpit.
  * ============================================================
  */
 
@@ -222,129 +223,159 @@ export default async function DashboardOverviewPage() {
   const featuredNextAction =
     featuredLead?.recommendedAction ??
     overviewCopy.featuredFallbackAction;
+  const primaryActionHref = firstMissingReadinessLabel
+    ? "/dashboard/configuration"
+    : featuredLead
+      ? `/dashboard/leads/${featuredLead.lead.id}`
+      : "/dashboard/leads";
+  const primaryActionLabel = firstMissingReadinessLabel
+    ? overviewCopy.finishSetup
+    : featuredLead
+      ? overviewCopy.reviewUrgentLead
+      : dashboardCopy.actions.openLeadQueue;
+  const primaryActionDetail = firstMissingReadinessLabel
+    ? `${overviewCopy.startGuide.next}: ${firstMissingReadinessLabel}`
+    : featuredNextAction;
+  const priorityTiles = [
+    {
+      detail: overviewCopy.metrics.newQuoteRequests.detail,
+      href: quotePath,
+      label: overviewCopy.metrics.newQuoteRequests.label,
+      tone: "emerald" as const,
+      value: newQuoteCount,
+    },
+    {
+      detail: overviewCopy.metrics.needsReply.detail,
+      href: "/dashboard/leads",
+      label: overviewCopy.metrics.needsReply.label,
+      tone: needsReplyCount > 0 ? ("amber" as const) : ("neutral" as const),
+      value: needsReplyCount,
+    },
+    {
+      detail: overviewCopy.metrics.atRiskLeads.detail,
+      href: "/dashboard/leads",
+      label: overviewCopy.metrics.atRiskLeads.label,
+      tone: atRiskCount > 0 ? ("red" as const) : ("neutral" as const),
+      value: atRiskCount,
+    },
+    {
+      detail: overviewCopy.metrics.aiDraftsReady.detail,
+      href: "/dashboard/leads",
+      label: overviewCopy.metrics.aiDraftsReady.label,
+      tone: aiDraftReadyCount > 0 ? ("blue" as const) : ("neutral" as const),
+      value: aiDraftReadyCount,
+    },
+  ];
 
   return (
     <main className="space-y-3">
       <DashboardCard
-        className="grid gap-4 p-4 md:p-5 xl:grid-cols-[minmax(0,1.38fr)_minmax(300px,0.62fr)] xl:items-stretch"
+        className="overflow-hidden p-0"
         variant="priority"
       >
-        <div className="min-w-0">
-          <StatusBadge tone="blue">{overviewCopy.heroBadge}</StatusBadge>
-          <h1 className="mt-3 max-w-3xl text-[22px] font-extrabold leading-tight text-[var(--dash-text)] sm:text-[26px]">
-            {overviewCopy.heroTitle(attentionCount)}
-          </h1>
-          <p className="mt-2.5 max-w-2xl text-[13px] leading-6 text-[var(--dash-text-secondary)]">
-            {overviewCopy.heroDescription}
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Link className={primaryButtonClass} href={featuredLead ? `/dashboard/leads/${featuredLead.lead.id}` : "/dashboard/leads"}>
-              {overviewCopy.reviewUrgentLead}
-            </Link>
-            <Link className={buttonClass} href="/dashboard/leads">
-              {dashboardCopy.actions.openLeadQueue}
-            </Link>
-            <CopyButton
-              className="md:!hidden"
-              failedLabel={dashboardCopy.actions.copyFailed}
-              label={overviewCopy.copyLink}
-              successLabel={dashboardCopy.actions.copySuccess}
-              value={quotePath}
-            />
-          </div>
-          <div className="mt-4 grid gap-2 sm:grid-cols-3">
-            {[
-              [overviewCopy.recoveryFocus.replyTitle, needsReplyCount, "blue"],
-              [overviewCopy.status.missingInfo, missingInfoCount, "amber"],
-              [overviewCopy.metrics.atRiskLeads.label, atRiskCount, "red"],
-            ].map(([label, value, tone]) => (
-              <Link
-                className="flex min-h-12 items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[13px] transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
-                href="/dashboard/leads"
-                key={String(label)}
-              >
-                <span className="truncate font-bold text-[var(--dash-text-secondary)]">
-                  {label}
-                </span>
-                <StatusBadge tone={tone as "amber" | "blue" | "red"}>
-                  {String(value)}
+        <div className="grid xl:grid-cols-[minmax(0,1.08fr)_minmax(330px,0.92fr)]">
+          <section className="min-w-0 p-4 md:p-5">
+            <StatusBadge tone="blue">{overviewCopy.heroBadge}</StatusBadge>
+            <h1 className="mt-3 max-w-3xl text-[24px] font-black leading-tight text-[var(--dash-text)] sm:text-[30px]">
+              {overviewCopy.heroTitle(attentionCount)}
+            </h1>
+            <p className="mt-3 max-w-2xl text-[13px] leading-6 text-[var(--dash-text-secondary)]">
+              {overviewCopy.heroDescription}
+            </p>
+
+            <div className="mt-5 grid gap-3 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+              <div className="min-w-0">
+                <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-primary-strong)]">
+                  {overviewCopy.suggestedNextAction}
+                </p>
+                <p className="mt-1 text-[18px] font-black leading-6 text-[var(--dash-text)]">
+                  {primaryActionLabel}
+                </p>
+                <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+                  {primaryActionDetail}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2 lg:justify-end">
+                <Link className={primaryButtonClass} href={primaryActionHref}>
+                  {primaryActionLabel}
+                </Link>
+                <Link className={buttonClass} href="/dashboard/leads">
+                  {dashboardCopy.actions.openLeadQueue}
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          <section className="min-w-0 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4 md:p-5 xl:border-l xl:border-t-0">
+            <SectionHeader
+              action={
+                <StatusBadge tone={missingReadinessItems.length === 0 ? "emerald" : "amber"}>
+                  {missingReadinessItems.length === 0
+                    ? overviewCopy.startGuide.done
+                    : overviewCopy.startGuide.next}
                 </StatusBadge>
-              </Link>
-            ))}
-          </div>
-        </div>
+              }
+              description={
+                firstMissingReadinessLabel
+                  ? `${overviewCopy.startGuide.description} ${overviewCopy.startGuide.next}: ${firstMissingReadinessLabel}`
+                  : overviewCopy.startGuide.description
+              }
+              title={overviewCopy.startGuide.title}
+            />
+            <div className="mt-3 grid gap-2">
+              {overviewCopy.startGuide.items.map(([title, detail], index) => {
+                const done = Boolean(startGuideDoneStates[index]);
 
-        <div className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
-          <div className="flex min-w-0 items-center gap-2.5">
-            <Avatar name={featuredLeadName} size={36} tone="primary" />
-            <span className="min-w-0">
-              <span className="block truncate text-[14px] font-extrabold text-[var(--dash-text)]">
-                {shortCustomerName(featuredLeadName, queueCopy.fallbacks.unnamedLead)}
-              </span>
-              <span className="mt-0.5 block truncate text-[12px] leading-4 text-[var(--dash-text-secondary)]">
-                {featuredLeadService} / {featuredLeadArea} / {featuredLeadAge}
-              </span>
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            <StatusBadge tone={atRiskCount > 0 ? "red" : "amber"}>{overviewCopy.atRiskSoon}</StatusBadge>
-            <StatusBadge tone="emerald">{overviewCopy.status.aiDraftReady}</StatusBadge>
-            <StatusBadge tone={missingInfoCount > 0 ? "amber" : "neutral"}>
-              {missingInfoCount > 0 ? overviewCopy.status.missingInfo : overviewCopy.status.ready}
-            </StatusBadge>
-          </div>
-          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2.5 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            <span className="font-extrabold text-[var(--dash-text)]">{overviewCopy.suggestedNextAction}</span>{" "}
-            {featuredNextAction}
-          </div>
-        </div>
-      </DashboardCard>
-
-      <DashboardCard className="p-3.5 sm:p-4" variant="elevated">
-        <SectionHeader
-          action={
-            <StatusBadge tone={missingReadinessItems.length === 0 ? "emerald" : "amber"}>
-              {missingReadinessItems.length === 0
-                ? overviewCopy.readiness.ready
-                : overviewCopy.readiness.tasksLeft(missingReadinessItems.length)}
-            </StatusBadge>
-          }
-          description={
-            firstMissingReadinessLabel
-              ? `${overviewCopy.startGuide.description} ${overviewCopy.startGuide.next}: ${firstMissingReadinessLabel}`
-              : overviewCopy.startGuide.description
-          }
-          title={overviewCopy.startGuide.title}
-        />
-        <div className="mt-3 grid gap-2 md:grid-cols-3">
-          {overviewCopy.startGuide.items.map(([title, detail], index) => {
-            const done = Boolean(startGuideDoneStates[index]);
-
-            return (
-              <Link
-                className="grid min-h-[98px] grid-cols-[2rem_minmax(0,1fr)] gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
-                href={startGuideLinks[index] ?? "/dashboard"}
-                key={title}
-              >
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--dash-primary-soft)] text-[12px] font-black text-[var(--dash-primary)]">
-                  {index + 1}
-                </span>
-                <span className="min-w-0">
-                  <span className="flex flex-wrap items-center gap-2">
-                    <span className="text-[13px] font-black text-[var(--dash-text)]">
-                      {title}
+                return (
+                  <Link
+                    className={[
+                      "grid min-h-[72px] grid-cols-[2rem_minmax(0,1fr)_auto] items-start gap-3 rounded-lg border p-3 transition",
+                      done
+                        ? "border-[var(--dash-success-border)] bg-[var(--dash-success-soft)]"
+                        : "border-[var(--dash-border)] bg-[var(--dash-surface)] hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]",
+                    ].join(" ")}
+                    href={startGuideLinks[index] ?? "/dashboard"}
+                    key={title}
+                  >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--dash-primary-soft)] text-[12px] font-black text-[var(--dash-primary)]">
+                      {index + 1}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block text-[13px] font-black text-[var(--dash-text)]">
+                        {title}
+                      </span>
+                      <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                        {detail}
+                      </span>
                     </span>
                     <StatusBadge tone={done ? "emerald" : "blue"}>
                       {done ? overviewCopy.startGuide.done : overviewCopy.startGuide.next}
                     </StatusBadge>
-                  </span>
-                  <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                    {detail}
-                  </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        </div>
+
+        <div className="grid gap-2 border-t border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 sm:grid-cols-2 xl:grid-cols-4">
+          {priorityTiles.map((tile) => (
+            <Link
+              className="grid min-h-[86px] grid-cols-[minmax(0,1fr)_auto] gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+              href={tile.href}
+              key={tile.label}
+            >
+              <span className="min-w-0">
+                <span className="block truncate text-[12px] font-black text-[var(--dash-text-secondary)]">
+                  {tile.label}
                 </span>
-              </Link>
-            );
-          })}
+                <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-muted)]">
+                  {tile.detail}
+                </span>
+              </span>
+              <StatusBadge tone={tile.tone}>{String(tile.value)}</StatusBadge>
+            </Link>
+          ))}
         </div>
       </DashboardCard>
 
@@ -363,13 +394,13 @@ export default async function DashboardOverviewPage() {
 
             return (
               <Link
-                className="grid min-h-[112px] grid-rows-[auto_1fr_auto] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                className="grid min-h-[104px] grid-rows-[auto_1fr] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
                 href={metric.href}
                 key={label}
               >
                 <div className="flex items-center justify-between gap-3">
-                  <span className="truncate text-[13px] font-black text-[var(--dash-text)]">
-                    {label}
+                  <span className="text-[13px] font-black text-[var(--dash-text)]">
+                    {index + 1}. {label}
                   </span>
                   <StatusBadge tone={metric.tone}>
                     {String(metric.value)}
@@ -378,18 +409,38 @@ export default async function DashboardOverviewPage() {
                 <span className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
                   {detail}
                 </span>
-                <span className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--dash-text-muted)]">
-                  {index === 0
-                    ? overviewCopy.metrics.newQuoteRequests.label
-                    : index === 1
-                      ? overviewCopy.metrics.atRiskLeads.label
-                      : index === 2
-                        ? overviewCopy.metrics.aiDraftsReady.label
-                        : overviewCopy.recoveryFocus.title}
-                </span>
               </Link>
             );
           })}
+        </div>
+      </DashboardCard>
+
+      <DashboardCard className="p-3.5 sm:p-4" variant="elevated">
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.42fr)] lg:items-center">
+          <div className="min-w-0">
+            <div className="flex min-w-0 items-center gap-2.5">
+              <Avatar name={featuredLeadName} size={40} tone="primary" />
+              <span className="min-w-0">
+                <span className="block truncate text-[15px] font-black text-[var(--dash-text)]">
+                  {shortCustomerName(featuredLeadName, queueCopy.fallbacks.unnamedLead)}
+                </span>
+                <span className="mt-0.5 block truncate text-[12px] leading-4 text-[var(--dash-text-secondary)]">
+                  {featuredLeadService} / {featuredLeadArea} / {featuredLeadAge}
+                </span>
+              </span>
+            </div>
+            <p className="mt-3 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+              <span className="font-black text-[var(--dash-text)]">{overviewCopy.suggestedNextAction}</span>{" "}
+              {featuredNextAction}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-1.5 lg:justify-end">
+            <StatusBadge tone={atRiskCount > 0 ? "red" : "amber"}>{overviewCopy.atRiskSoon}</StatusBadge>
+            <StatusBadge tone="emerald">{overviewCopy.status.aiDraftReady}</StatusBadge>
+            <StatusBadge tone={missingInfoCount > 0 ? "amber" : "neutral"}>
+              {missingInfoCount > 0 ? overviewCopy.status.missingInfo : overviewCopy.status.ready}
+            </StatusBadge>
+          </div>
         </div>
       </DashboardCard>
 

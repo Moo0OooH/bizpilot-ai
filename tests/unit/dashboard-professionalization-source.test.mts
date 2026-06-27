@@ -18,6 +18,8 @@ describe("P12 dashboard professionalization source guards", () => {
 
     assert.equal(overviewSource.includes("overviewCopy.commandFlow"), true);
     assert.equal(overviewSource.includes("overviewCopy.startGuide"), true);
+    assert.equal(overviewSource.includes("primaryActionHref"), true);
+    assert.equal(overviewSource.includes("priorityTiles"), true);
     assert.equal(copySource.includes("Start here"), true);
     assert.equal(copySource.includes("Finish quote setup"), true);
     assert.equal(copySource.includes("Today's manual recovery lane"), true);
