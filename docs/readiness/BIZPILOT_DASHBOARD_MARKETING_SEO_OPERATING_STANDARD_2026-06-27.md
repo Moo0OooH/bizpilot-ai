@@ -5,6 +5,11 @@ Repo: `E:\bizpilot-ai`
 Current main merge: `2bcbde1 merge: founder admin console professionalization gates`
 Audience: founder, product, design, frontend, growth/SEO, QA
 
+> Canonical dashboard design note, 2026-06-27: future Owner/User and
+> Founder/Admin dashboard design and Codex execution decisions are now governed
+> by `docs/readiness/BIZPILOT_DASHBOARD_MASTER_STANDARD_AND_CODEX_GUIDE_2026-06-27.md`.
+> This document remains supporting operating/SEO/readiness context.
+
 ## Purpose
 
 This is the canonical operating standard for the next BizPilot dashboard,
@@ -161,6 +166,13 @@ P20 follow-up:
   for the Owner/User first-viewport next-action cockpit, Founder/Admin
   search-first user-control lane, priority workspace strip, source guards,
   browser QA evidence, and final build/test verification.
+
+Master dashboard standard follow-up:
+
+- See `docs/readiness/BIZPILOT_DASHBOARD_MASTER_STANDARD_AND_CODEX_GUIDE_2026-06-27.md`
+  for the consolidated imported DOCX standard, dashboard V3 source of truth,
+  Figma/component architecture, Codex execution prompts, security guardrails,
+  route map, acceptance scorecard, and definition of done.
 
 Safety notes:
 

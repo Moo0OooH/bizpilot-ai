@@ -5,6 +5,10 @@ Repo: `E:\bizpilot-ai`
 Branch: `codex/full-system-dashboard-qa-polish`
 Scope: Owner/User Dashboard and Founder/Admin Dashboard
 
+> Canonical dashboard design note, 2026-06-27: this P20 report remains
+> implementation evidence. Future dashboard design and Codex execution decisions
+> are governed by `docs/readiness/BIZPILOT_DASHBOARD_MASTER_STANDARD_AND_CODEX_GUIDE_2026-06-27.md`.
+
 ## Why This Pass Exists
 
 The dashboards had the right raw ingredients, but the visual priority was weak:
