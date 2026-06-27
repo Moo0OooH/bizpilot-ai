@@ -9,6 +9,7 @@
  * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-06-27: Reworked cleanup warning styles to use founder admin semantic tokens.
+ * - 2026-06-27: Tightened cleanup panel contrast and compact default layout.
  * ============================================================
  */
 
@@ -72,16 +73,19 @@ export function FounderTestCleanupForm({
   ]);
 
   return (
-    <details className="rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] p-3">
-      <summary className="cursor-pointer text-sm font-black text-[var(--dash-danger-strong)]">
-        Test/demo cleanup
+    <details className="rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-surface)] p-3">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-black text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
+        <span>Test/demo cleanup</span>
+        <span className="rounded-md border border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] px-2 py-1 text-[11px] font-extrabold text-[var(--dash-danger-strong)]">
+          Guarded
+        </span>
       </summary>
       <div className="mt-3 grid gap-3">
         <div
           className={
             eligible
-              ? "rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] p-3 text-[12px] leading-5 text-[var(--dash-text-secondary)]"
-              : "rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-surface)] p-3 text-[12px] leading-5 text-[var(--dash-text-secondary)]"
+              ? "rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] p-3 text-[12px] leading-5 text-[var(--dash-text)]"
+              : "rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] p-3 text-[12px] leading-5 text-[var(--dash-text)]"
           }
         >
           <p
@@ -93,12 +97,12 @@ export function FounderTestCleanupForm({
           >
             Workspace kind: {workspaceKindLabel}
           </p>
-          <p className="mt-1 font-semibold">
+          <p className="mt-1 font-bold">
             {eligible
               ? "Cleanup is still blocked until a dry-run is complete and the exact business name or slug is typed."
               : "Hard purge is blocked for production_customer workspaces. Mark a workspace as Founder test, Demo, or Seed only after confirming it contains fake data."}
           </p>
-          <p className="mt-1">
+          <p className="mt-1 text-[var(--dash-text-secondary)]">
             Workspace cleanup never deletes Supabase Auth users; fake/test login
             deletion is a separate control and requires its own confirmation.
           </p>

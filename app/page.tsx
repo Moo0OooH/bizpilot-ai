@@ -646,37 +646,41 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
 
       <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
-          <SectionTitle body={copy.useCases.body} title={copy.useCases.title} />
-          <div className="homepage-use-case-grid mt-8">
-            {copy.useCases.cards.map((item) => (
-              <Link
-                className="group flex min-w-0 flex-col justify-between rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-5 shadow-[var(--shadow-md)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] active:translate-y-0"
-                href={item.href}
-                key={item.href}
-                style={{
-                  color: marketingTone.text,
-                }}
-              >
-                <span>
-                  <span className="bp-copy-card-title block text-[18px] font-black">
-                    {item.title}
+          <details>
+            <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+              <SectionTitle body={copy.useCases.body} title={copy.useCases.title} />
+            </summary>
+            <div className="homepage-use-case-grid mt-6">
+              {copy.useCases.cards.map((item) => (
+                <Link
+                  className="group flex min-w-0 flex-col justify-between rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-5 shadow-[var(--shadow-md)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] active:translate-y-0"
+                  href={item.href}
+                  key={item.href}
+                  style={{
+                    color: marketingTone.text,
+                  }}
+                >
+                  <span>
+                    <span className="bp-copy-card-title block text-[18px] font-black">
+                      {item.title}
+                    </span>
+                    <span
+                      className="bp-copy-card-body mt-3 block text-[14px] font-bold leading-6"
+                      style={{ color: marketingTone.soft }}
+                    >
+                      {item.body}
+                    </span>
                   </span>
                   <span
-                    className="bp-copy-card-body mt-3 block text-[14px] font-bold leading-6"
-                    style={{ color: marketingTone.soft }}
+                    className="mt-5 inline-flex items-center gap-2 text-[13px] font-black transition group-hover:translate-x-1"
+                    style={{ color: marketingTone.teal }}
                   >
-                    {item.body}
+                    <MarketingIcon name="arrow" />
                   </span>
-                </span>
-                <span
-                  className="mt-5 inline-flex items-center gap-2 text-[13px] font-black transition group-hover:translate-x-1"
-                  style={{ color: marketingTone.teal }}
-                >
-                  <MarketingIcon name="arrow" />
-                </span>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          </details>
         </MarketingShell>
       </section>
 
@@ -705,26 +709,30 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
 
       <section className="py-[var(--section-space-compact)]">
         <MarketingShell>
-          <SectionTitle eyebrow={copy.faq.eyebrow} title={copy.faq.title} />
-          <div className="mx-auto mt-8 grid max-w-[900px] gap-3">
-            {copy.faq.items.map((item) => (
-              <MarketingCard className="p-5" key={item.question}>
-                <details>
-                  <summary className="bp-copy-card-title cursor-pointer list-none text-[16px] font-black" style={{ color: marketingTone.text }}>
-                    {item.question}
-                  </summary>
-                  <p className="bp-copy-card-body mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
-                    {item.answer}
-                  </p>
-                </details>
-              </MarketingCard>
-            ))}
-          </div>
-          <div className="mt-7 flex justify-center">
-            <MarketingButton href="/faq" variant="secondary">
-              {copy.faq.cta} <MarketingIcon name="arrow" />
-            </MarketingButton>
-          </div>
+          <details>
+            <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+              <SectionTitle eyebrow={copy.faq.eyebrow} title={copy.faq.title} />
+            </summary>
+            <div className="mx-auto mt-6 grid max-w-[900px] gap-3">
+              {copy.faq.items.map((item) => (
+                <MarketingCard className="p-5" key={item.question}>
+                  <details>
+                    <summary className="bp-copy-card-title cursor-pointer list-none text-[16px] font-black" style={{ color: marketingTone.text }}>
+                      {item.question}
+                    </summary>
+                    <p className="bp-copy-card-body mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
+                      {item.answer}
+                    </p>
+                  </details>
+                </MarketingCard>
+              ))}
+            </div>
+            <div className="mt-7 flex justify-center">
+              <MarketingButton href="/faq" variant="secondary">
+                {copy.faq.cta} <MarketingIcon name="arrow" />
+              </MarketingButton>
+            </div>
+          </details>
         </MarketingShell>
       </section>
 

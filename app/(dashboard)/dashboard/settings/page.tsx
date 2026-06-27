@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-05-18: Created Settings shell.
  * - 2026-05-19: Rebuilt as three-card row exactly matching the index — Account, Theme, Future — and added a sticky workspace-info side panel + scope guard.
+ * - 2026-06-27: Collapsed long feature/history documentation behind compact settings summaries.
  * ============================================================
  */
 
@@ -36,6 +37,7 @@ import {
 import {
   featureRegistry,
   getFeatureStateTone,
+  type FeatureState,
 } from "@/lib/features/feature-registry";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { canUserRequestWorkspaceDeletion } from "@/lib/business-deletion/owner-eligibility";
@@ -135,6 +137,22 @@ function formatOwnerAuthority(value: string): string {
   return value.replaceAll("_", " ");
 }
 
+function countFeaturesByState() {
+  return featureRegistry.reduce(
+    (counts, feature) => {
+      counts[feature.state] += 1;
+      return counts;
+    },
+    {
+      blocked_external: 0,
+      enabled: 0,
+      owner_controlled: 0,
+      planned: 0,
+      setup_required: 0,
+    } satisfies Record<FeatureState, number>,
+  );
+}
+
 export default async function SettingsPage({ searchParams }: SettingsPageProps) {
   const [query, user] = await Promise.all([searchParams, getCurrentUser()]);
   if (!user) redirect("/auth/sign-in");
@@ -174,6 +192,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     minutes: activeBusiness.session_timeout_minutes ?? null,
     mode: activeBusiness.session_timeout_mode ?? "always_on",
   });
+  const featureStateCounts = countFeaturesByState();
 
   return (
     <main className="space-y-4">
@@ -282,104 +301,91 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               </div>
             </DashboardCard>
 
-            <DashboardCard className="p-[18px] lg:col-span-2 2xl:col-span-3">
+            <DashboardCard className="p-4 lg:col-span-2 2xl:col-span-3">
               <SectionHeader
                 description={settingsCopy.featureRegistry.description}
                 title={settingsCopy.featureRegistry.title}
               />
-              <div className="my-3 h-px bg-[var(--dash-border)]" />
-              <div className="grid gap-3 xl:grid-cols-2">
-                {featureRegistry.map((feature) => {
-                  const featureText = settingsCopy.featureRegistry.featureCopy[feature.key];
+              <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-5">
+                {(
+                  [
+                    ["enabled", "emerald"],
+                    ["owner_controlled", "blue"],
+                    ["setup_required", "amber"],
+                    ["planned", "neutral"],
+                    ["blocked_external", "red"],
+                  ] as const
+                ).map(([state, tone]) => (
+                  <div
+                    className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+                    key={state}
+                  >
+                    <p className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--dash-text-muted)]">
+                      {settingsCopy.featureRegistry.stateLabels[state]}
+                    </p>
+                    <p className="mt-1 flex items-center justify-between gap-2 text-lg font-black text-[var(--dash-text)]">
+                      {featureStateCounts[state]}
+                      <StatusBadge tone={tone}>{featureStateCounts[state]}</StatusBadge>
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <details className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2.5 text-[13px] font-black text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
+                  <span>{settingsCopy.featureRegistry.guidesLabel}</span>
+                  <StatusBadge tone="blue">{featureRegistry.length}</StatusBadge>
+                </summary>
+                <div className="grid gap-2 border-t border-[var(--dash-border)] p-3 xl:grid-cols-2">
+                  {featureRegistry.map((feature) => {
+                    const featureText = settingsCopy.featureRegistry.featureCopy[feature.key];
 
-                  return (
-                    <div
-                      className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
-                      key={feature.key}
-                    >
-                      <div className="flex flex-wrap items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
-                            {settingsCopy.featureRegistry.categoryLabels[feature.category]}
-                          </p>
-                          <p className="mt-1 text-sm font-extrabold text-[var(--dash-text)]">
-                            {featureText.name}
-                          </p>
+                    return (
+                      <div
+                        className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3"
+                        key={feature.key}
+                      >
+                        <div className="flex flex-wrap items-start justify-between gap-2">
+                          <div className="min-w-0">
+                            <p className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--dash-text-muted)]">
+                              {settingsCopy.featureRegistry.categoryLabels[feature.category]}
+                            </p>
+                            <p className="mt-1 text-sm font-extrabold text-[var(--dash-text)]">
+                              {featureText.name}
+                            </p>
+                          </div>
+                          <StatusBadge tone={getFeatureStateTone(feature.state)}>
+                            {settingsCopy.featureRegistry.stateLabels[feature.state]}
+                          </StatusBadge>
                         </div>
-                        <StatusBadge tone={getFeatureStateTone(feature.state)}>
-                          {settingsCopy.featureRegistry.stateLabels[feature.state]}
-                        </StatusBadge>
-                      </div>
-
-                      <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                        {featureText.summary}
-                      </p>
-
-                      <div className="grid gap-2 text-[12px] sm:grid-cols-2">
-                        <div className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2">
-                          <p className="font-extrabold text-[var(--dash-text-muted)]">
-                            {settingsCopy.featureRegistry.levelLabel}
-                          </p>
-                          <p className="mt-1 font-bold text-[var(--dash-text)]">
-                            {settingsCopy.featureRegistry.levelLabels[feature.level]}
-                          </p>
-                        </div>
-                        <div className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2">
-                          <p className="font-extrabold text-[var(--dash-text-muted)]">
-                            {settingsCopy.featureRegistry.ownerLabel}
-                          </p>
-                          <p className="mt-1 font-bold capitalize text-[var(--dash-text)]">
-                            {formatOwnerAuthority(feature.ownerAuthority)}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="space-y-1.5 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                        <p>
-                          <span className="font-extrabold text-[var(--dash-text)]">
-                            {settingsCopy.featureRegistry.activationLabel}:
-                          </span>{" "}
-                          {featureText.activation}
+                        <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                          {featureText.summary}
                         </p>
-                        <p>
-                          <span className="font-extrabold text-[var(--dash-text)]">
-                            {settingsCopy.featureRegistry.statusLabel}:
-                          </span>{" "}
-                          {featureText.setup}
-                        </p>
-                      </div>
-
-                      <div className="grid gap-2 text-[12px]">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="font-extrabold text-[var(--dash-text)]">
-                            {settingsCopy.featureRegistry.guidesLabel}
-                          </span>
+                        <div className="flex flex-wrap gap-1.5">
                           <StatusBadge>
+                            {settingsCopy.featureRegistry.levelLabels[feature.level]}
+                          </StatusBadge>
+                          <StatusBadge tone="neutral">
+                            {formatOwnerAuthority(feature.ownerAuthority)}
+                          </StatusBadge>
+                          <StatusBadge tone="blue">
                             {settingsCopy.featureRegistry.guideLabels[feature.guideStatus]}
                           </StatusBadge>
                         </div>
-                        <p className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 leading-5 text-[var(--dash-text-secondary)]">
-                          {featureText.visualGuide}
-                        </p>
-                        <p className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 leading-5 text-[var(--dash-text-secondary)]">
-                          {featureText.textGuide}
-                        </p>
-                        <p className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 leading-5 text-[var(--dash-text-secondary)]">
-                          {featureText.ownerGuide}
-                        </p>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
+              </details>
             </DashboardCard>
           </section>
 
-          <DashboardCard className="p-4">
+          <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-sm">
+            <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
             <SectionHeader
               description={settingsCopy.guardrailsDescription}
               title={settingsCopy.guardrails}
             />
+            </summary>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               {settingsCopy.guardrailItems.map((item) => (
                 <p
@@ -390,13 +396,15 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                 </p>
               ))}
             </div>
-          </DashboardCard>
+          </details>
 
-          <DashboardCard className="p-4">
+          <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-sm">
+            <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
             <SectionHeader
               description={settingsCopy.systemHistory.description}
               title={settingsCopy.systemHistory.title}
             />
+            </summary>
             <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
               {systemChangeLog.length > 0 ? (
                 systemChangeLog.map((action) => (
@@ -440,13 +448,15 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                 </div>
               )}
             </div>
-          </DashboardCard>
+          </details>
 
-          <DashboardCard className="p-[22px]">
+          <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-sm">
+            <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
             <SectionHeader
               description={settingsCopy.lifecycle.description}
               title={settingsCopy.lifecycle.title}
             />
+            </summary>
             <div className="my-3 h-px bg-[var(--dash-border)]" />
             <div className="mb-3 grid gap-2 sm:grid-cols-2">
               <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
@@ -482,7 +492,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                 </p>
               </div>
             )}
-          </DashboardCard>
+          </details>
         </div>
 
         <aside className="space-y-4 xl:sticky xl:top-[92px]">

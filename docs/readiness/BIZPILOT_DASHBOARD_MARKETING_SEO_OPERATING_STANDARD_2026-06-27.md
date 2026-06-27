@@ -130,6 +130,13 @@ P14 follow-up:
   dashboard consolidation, admin/founder polish, verification log, and
   production-safety notes.
 
+P15 follow-up:
+
+- See `docs/readiness/P15_BILINGUAL_LAYOUT_SCROLL_QA_AND_FINAL_POLISH_2026-06-27.md`
+  for the bilingual public route audit, owner settings scroll reduction,
+  founder/admin rail cleanup, final compactness scores, and 86-route/viewport
+  Browser verification pass.
+
 Safety notes:
 
 - No production cleanup or deletion action was executed.

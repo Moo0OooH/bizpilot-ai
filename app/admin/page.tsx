@@ -1205,7 +1205,7 @@ function FounderBusinessMasterRail({
   selectedBusinessId: string | null;
 }>) {
   return (
-    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm xl:sticky xl:top-[5.75rem] xl:max-h-[calc(100dvh-6.5rem)] xl:overflow-y-auto">
+    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm xl:sticky xl:top-[5.75rem]">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1218,7 +1218,7 @@ function FounderBusinessMasterRail({
         <StatusBadge tone="blue">{businesses.length}</StatusBadge>
       </div>
 
-      <div className="mt-3 flex gap-1.5 overflow-x-auto pb-1 xl:grid xl:overflow-visible xl:pb-0">
+      <div className="mt-3 grid gap-1.5 sm:grid-cols-2 xl:grid-cols-1">
         {businesses.map((business) => {
           const selected = business.businessId === selectedBusinessId;
           const leadBlocked =
@@ -1227,7 +1227,7 @@ function FounderBusinessMasterRail({
           return (
             <Link
               className={[
-                "grid min-w-[260px] gap-2 rounded-lg border px-3 py-3 text-left transition xl:min-w-0",
+                "grid min-w-0 gap-2 rounded-lg border px-3 py-3 text-left transition",
                 selected
                   ? "border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] shadow-sm"
                   : "border-[var(--dash-border)] bg-[var(--dash-surface-muted)] hover:border-[var(--dash-primary-border)] hover:bg-[var(--dash-surface)]",
@@ -1598,7 +1598,7 @@ function BusinessControlCard({
         </div>
       </section>
 
-      <div className="grid gap-3 xl:grid-cols-[minmax(0,0.94fr)_minmax(0,1.1fr)] 2xl:grid-cols-[minmax(420px,1fr)_minmax(520px,1.18fr)_minmax(300px,0.72fr)]">
+      <div className="grid items-start gap-3 xl:grid-cols-[minmax(0,0.94fr)_minmax(0,1.1fr)] 2xl:grid-cols-[minmax(420px,1fr)_minmax(520px,1.18fr)_minmax(300px,0.72fr)]">
         <section className={toolboxSectionClass}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
@@ -1611,7 +1611,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="amber">Controlled</StatusBadge>
             </div>
-            <div className="grid gap-3">
+            <div className="grid gap-3 lg:grid-cols-2 2xl:grid-cols-1">
           <form
             action={updateFounderWorkspaceKindAction}
             className={controlPanelClass}
@@ -1663,7 +1663,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="red">Sensitive</StatusBadge>
             </div>
-            <div className="grid gap-3">
+            <div className="grid items-start gap-3 lg:grid-cols-2 2xl:grid-cols-1">
           <form
             action={updateFounderInternalNoteAction}
             className={controlPanelClass}

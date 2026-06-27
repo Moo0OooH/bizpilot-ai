@@ -21,6 +21,7 @@
  * - 2026-06-21: Removed repeated service cards from detail panels and simplified the six-service Cleaning page.
  * - 2026-06-25: Rebuilt the page around six compact services, one shared detail selector, and a shorter workflow.
  * - 2026-06-25: Replaced duplicated desktop/mobile detail blocks with one active service detail panel.
+ * - 2026-06-27: Collapsed secondary service detail/workflow panels to reduce mobile scroll.
  * ============================================================
  */
 
@@ -161,58 +162,65 @@ export default async function CleaningPage({
 
           <div id="cleaning-details">
             <MarketingCard className="mt-8 p-5 sm:p-6">
-              <div className="max-w-[52rem]">
-                <h2 className="bp-section-title bp-copy-section-title font-black leading-tight" style={{ color: marketingTone.text }}>
-                  {copy.detailSection.title}
-                </h2>
-                <p className="bp-copy-card-body mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
-                  {copy.detailSection.body}
-                </p>
-                <p className="bp-copy-card-body mt-3 text-[14px] font-bold leading-7" style={{ color: marketingTone.soft }}>
+              <details>
+                <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                  <div className="max-w-[52rem]">
+                    <h2 className="bp-section-title bp-copy-section-title font-black leading-tight" style={{ color: marketingTone.text }}>
+                      {copy.detailSection.title}
+                    </h2>
+                    <p className="bp-copy-card-body mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
+                      {copy.detailSection.body}
+                    </p>
+                  </div>
+                </summary>
+                <p className="bp-copy-card-body mt-4 text-[14px] font-bold leading-7" style={{ color: marketingTone.soft }}>
                   {copy.detailHelp.body}
                 </p>
-              </div>
-
-              <CleaningServiceDetails
-                clearTitle={copy.detailSection.clearTitle}
-                helpTitle={copy.detailHelp.title}
-                requestLabel={copy.example.requestLabel}
-                selectorLabel={copy.detailSection.title}
-                services={services}
-              />
+                <CleaningServiceDetails
+                  clearTitle={copy.detailSection.clearTitle}
+                  helpTitle={copy.detailHelp.title}
+                  requestLabel={copy.example.requestLabel}
+                  selectorLabel={copy.detailSection.title}
+                  services={services}
+                />
+              </details>
             </MarketingCard>
           </div>
 
           <MarketingCard className="mt-8 p-5 sm:p-6">
-            <div className="grid gap-5 lg:grid-cols-[minmax(0,0.86fr)_minmax(300px,0.72fr)] lg:items-start">
-              <div>
+            <details>
+              <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                 <h2 className="bp-section-title bp-copy-section-title font-black" style={{ color: marketingTone.text }}>{copy.example.title}</h2>
-                <ul className="mt-4 grid gap-2">
-                  {workflowSteps.map((step, index) => (
-                    <li className="bp-copy-card-body flex items-start gap-3 text-[14px] font-bold leading-6" key={step} style={{ color: marketingTone.soft }}>
-                      <span className="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full text-[11px] font-black" style={{ backgroundColor: "var(--surface-accent)", color: marketingTone.teal }}>
-                        {index + 1}
-                      </span>
-                      {step}
-                    </li>
+              </summary>
+              <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,0.86fr)_minmax(300px,0.72fr)] lg:items-start">
+                <div>
+                  <ul className="grid gap-2">
+                    {workflowSteps.map((step, index) => (
+                      <li className="bp-copy-card-body flex items-start gap-3 text-[14px] font-bold leading-6" key={step} style={{ color: marketingTone.soft }}>
+                        <span className="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full text-[11px] font-black" style={{ backgroundColor: "var(--surface-accent)", color: marketingTone.teal }}>
+                          {index + 1}
+                        </span>
+                        {step}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-5 rounded-[14px] border p-4" style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border }}>
+                    <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.muted }}>{copy.example.requestLabel}</p>
+                    <p className="bp-copy-card-body mt-2 text-[15px] font-black leading-7" style={{ color: marketingTone.text }}>
+                      {copy.example.request}
+                    </p>
+                  </div>
+                </div>
+                <div className="grid gap-3">
+                  {copy.example.fields.map(([label, value]) => (
+                    <div className="grid min-w-0 gap-1 rounded-[12px] border px-3 py-2 sm:grid-cols-[88px_minmax(0,1fr)]" key={label} style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border }}>
+                      <span className="text-[12px] font-black uppercase tracking-[0.08em]" style={{ color: marketingTone.muted }}>{label}</span>
+                      <span className="min-w-0 text-[14px] font-black" style={{ color: marketingTone.text }}>{value}</span>
+                    </div>
                   ))}
-                </ul>
-                <div className="mt-5 rounded-[14px] border p-4" style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border }}>
-                  <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.muted }}>{copy.example.requestLabel}</p>
-                  <p className="bp-copy-card-body mt-2 text-[15px] font-black leading-7" style={{ color: marketingTone.text }}>
-                    {copy.example.request}
-                  </p>
                 </div>
               </div>
-              <div className="grid gap-3">
-                {copy.example.fields.map(([label, value]) => (
-                  <div className="grid min-w-0 gap-1 rounded-[12px] border px-3 py-2 sm:grid-cols-[88px_minmax(0,1fr)]" key={label} style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border }}>
-                    <span className="text-[12px] font-black uppercase tracking-[0.08em]" style={{ color: marketingTone.muted }}>{label}</span>
-                    <span className="min-w-0 text-[14px] font-black" style={{ color: marketingTone.text }}>{value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            </details>
           </MarketingCard>
 
           <MarketingCard className="mt-8 p-6 sm:p-7">

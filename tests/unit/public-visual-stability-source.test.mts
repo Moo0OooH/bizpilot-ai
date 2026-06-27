@@ -600,7 +600,6 @@ describe("public visual stability source contracts", () => {
       "cleaning-detail-mobile",
       "cleaning-mobile-detail",
       "cleaning-tab-panel",
-      "<details",
     ]) {
       assert.equal(
         `${cleaning}\n${cleaningDetails}`.includes(duplicateMarker),
@@ -608,6 +607,11 @@ describe("public visual stability source contracts", () => {
         `Cleaning should not keep duplicated responsive detail marker ${duplicateMarker}.`,
       );
     }
+    assert.equal(
+      cleaning.includes("Collapsed secondary service detail/workflow panels"),
+      true,
+      "Cleaning may use intentional accordions for secondary detail sections.",
+    );
     assert.equal(globals.includes(".cleaning-service-grid"), true);
     assert.equal(globals.includes(".cleaning-detail-desktop"), false);
     assert.equal(globals.includes(".cleaning-detail-mobile"), false);

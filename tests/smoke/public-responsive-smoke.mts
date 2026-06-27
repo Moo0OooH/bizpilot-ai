@@ -40,7 +40,7 @@ const routes: readonly RouteContract[] = [
     h1: "Never lose a quote request in the chaos.",
     maxOccurrences: [
       {
-        max: 3,
+        max: 5,
         text: "<details",
       },
     ],
@@ -63,7 +63,7 @@ const routes: readonly RouteContract[] = [
     h1: "Ne perdez jamais une demande dans le chaos.",
     maxOccurrences: [
       {
-        max: 3,
+        max: 5,
         text: "<details",
       },
     ],
