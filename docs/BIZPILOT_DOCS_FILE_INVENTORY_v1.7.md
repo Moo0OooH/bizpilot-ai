@@ -33,6 +33,19 @@ Current interpretation:
   auth/RLS/database changes, AI provider changes, and production data-flow
   expansion remain blocked.
 
+## 2026-06-27 Dashboard, Marketing, and SEO Operating Standard Addendum
+
+Added one canonical operating standard and removed the temporary resource drafts:
+
+- `readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md`
+
+This file is the active English standard for owner dashboard, founder admin,
+public-site marketing, SEO/AI search, accessibility, analytics, and QA work.
+It replaces:
+
+- `readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_RESOURCE_2026-06-27.md`
+- `readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_RESOURCE_FA_2026-06-27.md`
+
 ## 2026-06-20 Public-Site/D0 Readiness Addendum
 
 Docs-only sync after final public-site visual stabilization and dashboard D0

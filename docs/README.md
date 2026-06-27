@@ -7,21 +7,22 @@ Before reading or implementing anything, start with:
 1. `CURRENT_CANONICAL_DOCS_v1.7.md`
 2. `AI_CODING_AGENT_START_HERE_v1.7.md`
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`
-4. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
-5. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
-6. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
-7. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
-8. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
-9. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
-10. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
-11. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
-12. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
-13. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
-14. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
-15. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
-16. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
-17. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
-18. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+4. `readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md`
+5. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
+6. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
+7. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
+8. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
+9. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
+10. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
+11. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+12. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+13. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
+14. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+15. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
+16. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
+17. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+18. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
+19. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
 
@@ -32,6 +33,13 @@ copy into the EN/fr-CA dictionary. A1 admin/owner user access remains audit/spec
 only. The next safe work is release hygiene, production deploy/cache
 confirmation, local synthetic QA, quote slug smoke, local DB/RLS proof, and
 explicit owner gates before real customer data or paid pilot.
+
+2026-06-27 operating-standard override: use
+`readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md`
+as the canonical dashboard, founder-admin, public-site, marketing, SEO,
+accessibility, analytics, and QA standard before new UI or growth work. This
+replaces the temporary dashboard/marketing/SEO resource drafts and keeps real
+data and paid pilot gates blocked.
 
 2026-06-01 status override: BizPilot is synthetic-ready, not
 real-data-approved, and not paid-pilot-ready. The next gates are Phase 24F final

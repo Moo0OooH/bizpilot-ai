@@ -407,3 +407,34 @@ Canonical P13 report:
 ```text
 docs/readiness/P13_FOUNDER_ADMIN_CONSOLE_PROFESSIONALIZATION_REPORT_2026-06-26.md
 ```
+
+## Addendum - 2026-06-27 Dashboard, Marketing, and SEO Operating Standard
+
+P11, P12, and P13 were merged to `main` in merge commit:
+
+```text
+2bcbde1 merge: founder admin console professionalization gates
+```
+
+The two temporary dashboard/marketing/SEO resource drafts were consolidated
+into one canonical English operating standard:
+
+```text
+docs/readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md
+```
+
+Removed from the repo:
+
+```text
+docs/readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_RESOURCE_2026-06-27.md
+docs/readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_RESOURCE_FA_2026-06-27.md
+```
+
+Current interpretation:
+
+- Use the new operating standard before dashboard, founder-admin, public-site,
+  marketing, SEO, accessibility, analytics, or QA expansion.
+- Keep real customer data blocked until explicit owner approval and local
+  DB/RLS proof are recorded.
+- Keep paid pilot blocked until real-data, support, payment/refund, rollback,
+  and production readiness gates are closed.
