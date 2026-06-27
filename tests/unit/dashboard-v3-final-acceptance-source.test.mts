@@ -14,6 +14,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
       "docs/readiness/DASHBOARD_V3_FINAL_COMPLETION_REPORT_2026-06-27.md",
       "utf8",
     );
+    const figmaHandoff = readFileSync(
+      "docs/readiness/DASHBOARD_V3_FIGMA_HANDOFF_AND_VISUAL_QA_2026-06-27.md",
+      "utf8",
+    );
 
     assert.equal(report.includes("# Dashboard V3 Final Completion Report"), true);
     assert.equal(report.includes("Prompt Completion Scorecard"), true);
@@ -26,6 +30,14 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(report.includes("git diff --check"), true);
     assert.equal(report.includes("forbidden internal seed matches are zero"), true);
     assert.equal(report.includes("Generated artifacts remain untracked"), true);
+    assert.equal(report.includes("Figma / Visual Handoff"), true);
+    assert.equal(report.includes("https://www.figma.com/design/dkklUNcV1JxIpHXk2q27n9"), true);
+    assert.equal(report.includes("dashboard-v3-final-handoff-browser-qa.json"), true);
+    assert.equal(figmaHandoff.includes("# Dashboard V3 Figma Handoff and Visual QA"), true);
+    assert.equal(figmaHandoff.includes("Figma Starter"), true);
+    assert.equal(figmaHandoff.includes("Desktop / Owner Overview / 1440"), true);
+    assert.equal(figmaHandoff.includes("Mobile / Lead Detail / 390"), true);
+    assert.equal(figmaHandoff.includes("pnpm verify"), true);
   });
 
   it("keeps owner navigation compact and route-owned", () => {
@@ -77,20 +89,60 @@ describe("Dashboard V3 final acceptance source guards", () => {
       "app/(dashboard)/dashboard/business-profile/page.tsx",
       "utf8",
     );
+    const leadDetail = readFileSync(
+      "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
+      "utf8",
+    );
     const settings = readFileSync(
       "app/(dashboard)/dashboard/settings/page.tsx",
       "utf8",
     );
+    const dashboardLayout = readFileSync(
+      "app/(dashboard)/layout.tsx",
+      "utf8",
+    );
+    const flashMessage = readFileSync(
+      "components/dashboard/flash-message.tsx",
+      "utf8",
+    );
+    const workspaceDeletion = readFileSync(
+      "components/dashboard/workspace-deletion-request-form.tsx",
+      "utf8",
+    );
+    const globals = readFileSync("app/globals.css", "utf8");
 
     assert.equal(configuration.includes("ConfigurationTabs"), true);
     assert.equal(configuration.includes("ConfigurationPanel"), true);
+    assert.equal(configuration.includes("rgba(23,212,146"), false);
+    assert.equal(configuration.includes("bg-[#071018]"), false);
+    assert.equal(configuration.includes("text-emerald-700"), false);
+    assert.equal(configuration.includes("text-amber-700"), false);
+    assert.equal(configuration.includes("text-red-700"), false);
+    assert.equal(configuration.includes("var(--dash-preview-bg)"), true);
+    assert.equal(globals.includes("--dash-preview-bg: #071018;"), true);
     assert.equal(businessProfile.includes("Change Log:"), true);
     assert.equal(businessProfile.includes("openQuoteSetup"), true);
+    assert.equal(businessProfile.includes("p-[22px]"), false);
+    assert.equal(leadDetail.includes("p-[18px]"), false);
+    assert.equal(leadDetail.includes("p-[22px]"), false);
+    assert.equal(leadDetail.includes("p-4 sm:p-5"), true);
     assert.equal(settings.includes("countFeaturesByState"), true);
     assert.equal(settings.includes("<details className="), true);
     assert.equal(settings.includes("WorkspaceDeletionRequestForm"), true);
     assert.equal(settings.includes("rounded-[14px]"), false);
     assert.equal(settings.includes("rounded-[16px]"), false);
+    assert.equal(flashMessage.includes("rounded-[14px]"), false);
+    assert.equal(flashMessage.includes("var(--dash-danger-border)"), true);
+    assert.equal(flashMessage.includes("var(--dash-success-border)"), true);
+    assert.equal(flashMessage.includes("var(--dash-warning-border)"), true);
+    assert.equal(workspaceDeletion.includes("var(--dash-danger-border)"), true);
+    assert.equal(workspaceDeletion.includes("var(--dash-danger-soft)"), true);
+    assert.equal(workspaceDeletion.includes("var(--dash-danger-strong)"), true);
+    assert.equal(workspaceDeletion.includes("border-red"), false);
+    assert.equal(workspaceDeletion.includes("bg-red"), false);
+    assert.equal(workspaceDeletion.includes("text-red"), false);
+    assert.equal(dashboardLayout.includes("var(--dash-danger-border)"), true);
+    assert.equal(dashboardLayout.includes("border-red"), false);
   });
 
   it("keeps founder/admin search-first and business cleanup gated", () => {

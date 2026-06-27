@@ -9,7 +9,9 @@
  * - server/actions/business-deletion.actions.ts
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-05-24
+ * Last Updated: 2026-06-27
+ * Change Log:
+ * - 2026-06-27: Tokenized destructive styling for Dashboard V3 settings polish.
  * ============================================================
  */
 
@@ -17,7 +19,7 @@
 
 import { useMemo, useState } from "react";
 
-import { inputClass, primaryButtonClass } from "@/components/dashboard/dashboard-ui";
+import { inputClass } from "@/components/dashboard/dashboard-ui";
 import { requestBusinessDeletionAction } from "@/server/actions/business-deletion.actions";
 
 type WorkspaceDeletionFormCopy = Readonly<{
@@ -53,13 +55,13 @@ export function WorkspaceDeletionRequestForm({
   );
 
   return (
-    <details className="rounded-lg border border-red-400/30 bg-red-500/10 p-4">
-      <summary className="cursor-pointer text-sm font-black text-red-700 dark:text-red-200">
+    <details className="rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] p-4">
+      <summary className="cursor-pointer text-sm font-black text-[var(--dash-danger-strong)]">
         {copy.dangerZone}
       </summary>
       <form action={requestBusinessDeletionAction} className="mt-4 grid gap-3">
         <input name="businessId" type="hidden" value={businessId} />
-        <div className="rounded-lg border border-red-400/25 bg-[var(--dash-surface-muted)] p-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
+        <div className="rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-surface-muted)] p-3 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
           <p className="font-black text-[var(--dash-text)]">
             {copy.title}
           </p>
@@ -93,7 +95,7 @@ export function WorkspaceDeletionRequestForm({
           />
         </label>
         <button
-          className={`${primaryButtonClass} border-red-400/40 bg-red-600 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-45`}
+          className="inline-flex min-h-9 items-center justify-center rounded-lg border border-[var(--dash-danger-strong)] bg-[var(--dash-danger-strong)] px-4 py-2 text-sm font-black text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
           disabled={!canSubmit}
           type="submit"
         >

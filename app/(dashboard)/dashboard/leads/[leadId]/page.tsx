@@ -17,6 +17,7 @@
  * - 2026-05-10: Refactored detail view into SaaS workspace primitives.
  * - 2026-05-19: Rebuilt to match approved index.html dark navy command center: detail header, AI Summary, Suggested reply, Follow-up draft, missing-info badges, owner notes, controls, action items, timeline.
  * - 2026-06-27: Hid synthetic/internal seed labels behind owner-safe display fallbacks.
+ * - 2026-06-27: Normalized Lead Detail cards to compact Dashboard V3 spacing.
  * ============================================================
  */
 
@@ -294,7 +295,7 @@ export default async function LeadDetailPage({
         </FlashMessage>
       ) : null}
 
-      <DashboardCard className="p-[18px]" variant="priority">
+      <DashboardCard className="p-4" variant="priority">
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
           <div className="min-w-0">
             <SectionHeader
@@ -354,7 +355,7 @@ export default async function LeadDetailPage({
       </DashboardCard>
 
       {/* Detail Header — avatar + identity + SLA badges + quick actions */}
-      <DashboardCard className="p-[22px]" variant="elevated">
+      <DashboardCard className="p-4 sm:p-5" variant="elevated">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex min-w-0 items-center gap-3.5">
             <Avatar name={customerName} size={52} tone="primary" />
@@ -384,7 +385,7 @@ export default async function LeadDetailPage({
       <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
         <div className="min-w-0 space-y-4">
           {/* Lead details (read-only fields) */}
-          <DashboardCard className="p-[22px]">
+          <DashboardCard className="p-4 sm:p-5">
             <SectionHeader
               description={detailCopy.sections.leadDetailsDescription}
               title={detailCopy.sections.leadDetailsTitle}
@@ -427,7 +428,7 @@ export default async function LeadDetailPage({
           </DashboardCard>
 
           {/* Missing info detected */}
-          <DashboardCard className="p-[22px]">
+          <DashboardCard className="p-4 sm:p-5">
             <SectionHeader
               description={detailCopy.missing.description}
               title={detailCopy.missing.title}
@@ -459,7 +460,7 @@ export default async function LeadDetailPage({
             </p>
           </DashboardCard>
 
-          <DashboardCard className="p-[22px]" variant="priority">
+          <DashboardCard className="p-4 sm:p-5" variant="priority">
             <SectionHeader
               description={detailCopy.routing.description}
               title={detailCopy.routing.title}
@@ -533,7 +534,7 @@ export default async function LeadDetailPage({
 
           {/* Owner controls — status + manual outcome */}
           <div id="lead-owner-controls">
-            <DashboardCard className="p-[22px]">
+            <DashboardCard className="p-4 sm:p-5">
               <SectionHeader
                 description={detailCopy.sections.controlsDescription}
                 title={detailCopy.sections.controlsTitle}
@@ -611,7 +612,7 @@ export default async function LeadDetailPage({
           </div>
 
           {/* Owner notes (private). Storage TBD — local-only textarea for now. */}
-          <DashboardCard className="p-[22px]">
+          <DashboardCard className="p-4 sm:p-5">
             <SectionHeader
               description={detailCopy.ownerNotes.description}
               title={detailCopy.ownerNotes.title}
@@ -629,7 +630,7 @@ export default async function LeadDetailPage({
 
         {/* Right column — AI Response Desk */}
         <aside className="min-w-0 space-y-4 xl:sticky xl:top-[92px] xl:self-start">
-          <DashboardCard className="biz-card-ai p-[22px]">
+          <DashboardCard className="biz-card-ai p-4 sm:p-5">
             <SectionHeader
               action={
                 <form action={generateLeadAiBundleAction}>
@@ -700,7 +701,7 @@ export default async function LeadDetailPage({
 
           {aiOutput ? (
             <>
-              <DashboardCard className="biz-card-ai p-[22px]">
+              <DashboardCard className="biz-card-ai p-4 sm:p-5">
                 <SectionHeader title={detailCopy.ai.suggestedReply} />
                 <pre className="biz-draft-box mt-3 whitespace-pre-wrap font-sans">
                   {aiOutput.output.replyDraft}
@@ -725,7 +726,7 @@ export default async function LeadDetailPage({
                 </p>
               </DashboardCard>
 
-              <DashboardCard className="p-[22px]">
+              <DashboardCard className="p-4 sm:p-5">
                 <SectionHeader title={detailCopy.ai.followUpDraft} />
                 <pre className="biz-draft-box mt-3 whitespace-pre-wrap font-sans">
                   {aiOutput.output.followUpDraft}
@@ -743,7 +744,7 @@ export default async function LeadDetailPage({
             </>
           ) : null}
 
-          <DashboardCard className="p-[22px]">
+          <DashboardCard className="p-4 sm:p-5">
             <SectionHeader title={detailCopy.ai.guardrails} />
             <div className="mt-3 flex flex-wrap gap-2">
               {detailCopy.ai.guardrailBadges.map((badge, index) => (
@@ -761,7 +762,7 @@ export default async function LeadDetailPage({
 
       {/* Action items + Timeline */}
       <section className="grid min-w-0 gap-4 xl:grid-cols-2">
-        <DashboardCard className="p-[22px]">
+        <DashboardCard className="p-4 sm:p-5">
           <SectionHeader title={detailCopy.actionItems} />
           <div className="mt-3 overflow-hidden rounded-lg border border-[var(--dash-border)]">
             {detail.actions.length > 0 ? (
@@ -812,7 +813,7 @@ export default async function LeadDetailPage({
           </div>
         </DashboardCard>
 
-        <DashboardCard className="p-[22px]">
+        <DashboardCard className="p-4 sm:p-5">
           <SectionHeader title={detailCopy.timeline} />
           <div className="mt-3 grid gap-3">
             {detail.events.length > 0 ? (

@@ -12,6 +12,9 @@
  * - app/(dashboard)/dashboard/configuration/page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
+ * Last Updated: 2026-06-27
+ * Change Log:
+ * - 2026-06-27: Replaced ad-hoc alert colors/radius with Dashboard V3 tokens.
  * ============================================================
  */
 
@@ -23,11 +26,11 @@ const defaultClearParams = ["notice", "error"] as const;
 
 const toneClasses: Record<FlashTone, string> = {
   error:
-    "border-red-300/35 bg-red-500/12 text-red-700 dark:text-red-200",
+    "border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] text-[var(--dash-danger-strong)]",
   notice:
-    "border-emerald-300/35 bg-emerald-500/12 text-emerald-700 dark:text-emerald-200",
+    "border-[var(--dash-success-border)] bg-[var(--dash-success-soft)] text-[var(--dash-success-strong)]",
   warning:
-    "border-amber-300/35 bg-amber-500/12 text-amber-700 dark:text-amber-200",
+    "border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] text-[var(--dash-warning-strong)]",
 };
 
 function clearFlashParams(paramNames: readonly string[]) {
@@ -75,7 +78,7 @@ export function FlashMessage({
   return (
     <p
       aria-live={tone === "error" ? "assertive" : "polite"}
-      className={`rounded-[14px] border p-3 text-xs font-medium transition ${toneClasses[tone]}`}
+      className={`rounded-lg border p-3 text-xs font-medium transition ${toneClasses[tone]}`}
       role={tone === "error" ? "alert" : "status"}
     >
       {children}

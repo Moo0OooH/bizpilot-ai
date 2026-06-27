@@ -15,6 +15,7 @@
  * - 2026-06-19: Resolved theme preference from cookies for hydration-safe dashboard rendering.
  * - 2026-06-20: Made the workspace-access recovery shell short-height safe with svh and natural overflow.
  * - 2026-06-27: Sanitized workspace recovery flash copy before rendering.
+ * - 2026-06-27: Tokenized workspace recovery error styling for Dashboard V3.
  * ============================================================
  */
 
@@ -93,7 +94,7 @@ export default async function DashboardLayout({
             </p>
           ) : null}
           {recoveryError ? (
-            <p className="mt-4 rounded-lg border border-red-300/50 bg-red-50 p-3 text-sm font-bold leading-5 text-red-700">
+            <p className="mt-4 rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] p-3 text-sm font-bold leading-5 text-[var(--dash-danger-strong)]">
               {recoveryError}
             </p>
           ) : null}

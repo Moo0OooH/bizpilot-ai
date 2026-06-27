@@ -10,7 +10,7 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-18
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-04: Created protected Phase 2 dashboard shell.
  * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
@@ -26,6 +26,7 @@
  * - 2026-05-10: Moved Business Configuration from /dashboard to /dashboard/configuration.
  * - 2026-06-16: Aligned notifications and forward-only privacy controls with first-pilot readiness gates.
  * - 2026-06-20: Replaced the no-business setup fallback with an svh-based shell-safe layout.
+ * - 2026-06-27: Normalized Quote Setup source structure and Dashboard V3 token usage.
  * ============================================================
  */
 
@@ -242,33 +243,33 @@ export default async function DashboardPage({
         ) : null}
 
         <form
-            action={saveBusinessConfigurationAction}
-            className="space-y-3"
-            id="business-configuration-form"
-          >
-            <input name="businessId" type="hidden" value={activeBusiness.id} />
-            <input
-              name="templateId"
-              type="hidden"
-              value={cleaningTemplate.template.id}
-            />
+          action={saveBusinessConfigurationAction}
+          className="space-y-3"
+          id="business-configuration-form"
+        >
+          <input name="businessId" type="hidden" value={activeBusiness.id} />
+          <input
+            name="templateId"
+            type="hidden"
+            value={cleaningTemplate.template.id}
+          />
 
           <section className="grid items-start gap-4 2xl:grid-cols-[minmax(0,1fr)_320px]">
             <div className="min-w-0">
-          <ConfigurationTabs
-            sections={[
-              { id: "configuration-overview", label: configurationTabs.overview },
-              { id: "business-profile", label: configurationTabs.basics },
-              { id: "cleaning-template-fields", label: configurationTabs.fields },
-              { id: "services-areas", label: configurationTabs.services },
-              { id: "branding", label: configurationTabs.branding },
-              { id: "faq", label: configurationTabs.ai },
-              { id: "public-page", label: configurationTabs.link },
-              { id: "notifications", label: configurationTabs.notifications },
-              { id: "privacy-consent", label: configurationTabs.privacy },
-              { id: "setup-checklist", label: configurationTabs.readiness },
-            ]}
-          >
+              <ConfigurationTabs
+                sections={[
+                  { id: "configuration-overview", label: configurationTabs.overview },
+                  { id: "business-profile", label: configurationTabs.basics },
+                  { id: "cleaning-template-fields", label: configurationTabs.fields },
+                  { id: "services-areas", label: configurationTabs.services },
+                  { id: "branding", label: configurationTabs.branding },
+                  { id: "faq", label: configurationTabs.ai },
+                  { id: "public-page", label: configurationTabs.link },
+                  { id: "notifications", label: configurationTabs.notifications },
+                  { id: "privacy-consent", label: configurationTabs.privacy },
+                  { id: "setup-checklist", label: configurationTabs.readiness },
+                ]}
+              >
             <ConfigurationPanel
               description={configCopy.overview.description}
               id="configuration-overview"
@@ -278,10 +279,7 @@ export default async function DashboardPage({
               <div className="grid gap-3.5 2xl:grid-cols-[minmax(0,1fr)_20rem]">
                 <div className="grid gap-3.5 xl:grid-cols-[17rem_minmax(0,1fr)]">
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
-                    <div
-                      className="flex h-28 items-center justify-center overflow-hidden rounded-lg border bg-[var(--dash-surface)]"
-                      style={{ borderColor: "rgba(23,212,146,0.22)" }}
-                    >
+                    <div className="flex h-28 items-center justify-center overflow-hidden rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-surface)]">
                       {logoUrl ? (
                         <LogoPreviewImage
                           className="h-full max-h-28 w-full object-contain p-4"
@@ -400,8 +398,8 @@ export default async function DashboardPage({
                         <span
                           className={
                             item.complete
-                              ? "font-medium text-emerald-700 dark:text-emerald-300"
-                              : "font-medium text-amber-700 dark:text-amber-300"
+                              ? "font-medium text-[var(--dash-success-strong)]"
+                              : "font-medium text-[var(--dash-warning-strong)]"
                           }
                         >
                           {item.complete ? configCopy.overview.done : configCopy.overview.open}
@@ -523,7 +521,7 @@ export default async function DashboardPage({
                     <p className="text-xs font-medium text-[var(--dash-text-secondary)]">
                       {configCopy.branding.whereColorsApply}
                     </p>
-                    <div className="mt-2 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[#071018] p-3">
+                    <div className="mt-2 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-preview-bg)] p-3">
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-xs font-semibold text-[#F5F7FA]">
                           {configCopy.branding.publicQuoteButton}
@@ -716,7 +714,7 @@ export default async function DashboardPage({
                         value={field.field_key}
                       />
                     ) : null}
-                    <summary className="grid cursor-pointer list-none gap-2 px-3 py-2 text-xs transition hover:bg-[rgba(23,212,146,0.08)] lg:grid-cols-[minmax(0,1fr)_7rem_5rem_7rem_4rem_6rem] lg:items-center [&::-webkit-details-marker]:hidden">
+                    <summary className="grid cursor-pointer list-none gap-2 px-3 py-2 text-xs transition hover:bg-[var(--dash-primary-soft)] lg:grid-cols-[minmax(0,1fr)_7rem_5rem_7rem_4rem_6rem] lg:items-center [&::-webkit-details-marker]:hidden">
                       <span className="min-w-0 truncate font-medium text-[var(--dash-text)]">
                         {field.label}
                       </span>
@@ -726,7 +724,7 @@ export default async function DashboardPage({
                       <span
                         className={
                           field.is_required
-                            ? "text-emerald-700 dark:text-emerald-300"
+                            ? "text-[var(--dash-success-strong)]"
                             : "text-[var(--dash-text-muted)]"
                         }
                       >
@@ -736,7 +734,9 @@ export default async function DashboardPage({
                       </span>
                       <span
                         className={
-                          field.is_hidden ? "text-[var(--dash-text-muted)]" : "text-emerald-700 dark:text-emerald-300"
+                          field.is_hidden
+                            ? "text-[var(--dash-text-muted)]"
+                            : "text-[var(--dash-success-strong)]"
                         }
                       >
                         {field.is_hidden
@@ -815,7 +815,7 @@ export default async function DashboardPage({
                           />
                         </label>
                         {field.is_custom ? (
-                          <label className="flex h-8 items-center gap-2 text-xs font-medium text-red-700 dark:text-red-300">
+                          <label className="flex h-8 items-center gap-2 text-xs font-medium text-[var(--dash-danger-strong)]">
                             <input
                               name={`fieldDelete:${field.field_key}`}
                               type="checkbox"
@@ -951,7 +951,7 @@ export default async function DashboardPage({
                     <span
                       className={
                         item.complete
-                          ? "font-medium text-emerald-700 dark:text-emerald-300"
+                          ? "font-medium text-[var(--dash-success-strong)]"
                           : "font-medium text-[var(--dash-text-muted)]"
                       }
                     >
@@ -964,7 +964,7 @@ export default async function DashboardPage({
                 ))}
               </div>
             </ConfigurationPanel>
-          </ConfigurationTabs>
+              </ConfigurationTabs>
             </div>
 
             <aside className="space-y-3 2xl:sticky 2xl:top-20">
@@ -996,8 +996,8 @@ export default async function DashboardPage({
                       <span
                         className={
                           item.complete
-                            ? "font-medium text-emerald-700 dark:text-emerald-300"
-                            : "font-medium text-amber-700 dark:text-amber-300"
+                            ? "font-medium text-[var(--dash-success-strong)]"
+                            : "font-medium text-[var(--dash-warning-strong)]"
                         }
                       >
                         {item.complete ? configCopy.overview.done : configCopy.overview.open}
@@ -1011,10 +1011,7 @@ export default async function DashboardPage({
                 <p className="text-[18px] font-extrabold text-[var(--dash-text)]">
                   {configCopy.side.brandingPreview}
                 </p>
-                <div
-                  className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-lg border bg-[var(--dash-surface-muted)]"
-                  style={{ borderColor: "rgba(23,212,146,0.22)" }}
-                >
+                <div className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-surface-muted)]">
                   {logoUrl ? (
                     <LogoPreviewImage
                       className="h-full max-h-24 w-full object-contain p-3"

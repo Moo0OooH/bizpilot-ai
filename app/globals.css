@@ -158,6 +158,7 @@ Change Log:
   --dash-primary: #059669;
   --dash-primary-hover: #047857;
   --dash-primary-soft: rgba(5, 150, 105, 0.1);
+  --dash-preview-bg: #071018;
   --dash-warning-soft: rgba(245, 158, 11, 0.12);
   --dash-danger-soft: rgba(239, 68, 68, 0.1);
   --dash-ai-soft: rgba(139, 92, 246, 0.1);
@@ -249,6 +250,7 @@ Change Log:
   --dash-primary: var(--accent);
   --dash-primary-hover: #5eead4;
   --dash-primary-soft: rgba(45, 212, 191, 0.12);
+  --dash-preview-bg: #071018;
   --dash-warning-soft: rgba(251, 191, 36, 0.12);
   --dash-danger-soft: rgba(251, 113, 133, 0.1);
   --dash-ai-soft: rgba(96, 165, 250, 0.12);
@@ -1856,6 +1858,7 @@ select {
   --dash-primary-hover: #2dd4bf;
   --dash-primary-soft: rgba(20, 184, 166, 0.13);
   --dash-primary-border: rgba(20, 184, 166, 0.24);
+  --dash-preview-bg: #071018;
   --dash-warning-soft: rgba(255, 184, 77, 0.12);
   --dash-warning-border: rgba(255, 184, 77, 0.24);
   --dash-warning-strong: #f59e0b;
@@ -1916,6 +1919,7 @@ select {
   --dash-primary-hover: #5eead4;
   --dash-primary-soft: rgba(45, 212, 191, 0.11);
   --dash-primary-border: rgba(45, 212, 191, 0.22);
+  --dash-preview-bg: #071018;
   --dash-warning-soft: rgba(245, 158, 11, 0.1);
   --dash-warning-border: rgba(245, 158, 11, 0.2);
   --dash-warning-strong: #fbbf24;

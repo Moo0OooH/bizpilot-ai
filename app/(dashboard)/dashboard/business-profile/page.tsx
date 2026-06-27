@@ -15,6 +15,7 @@
  * - 2026-05-18: Split Business Profile from Quote Setup.
  * - 2026-05-23: Localized owner-facing business profile copy.
  * - 2026-06-27: Documented Dashboard V3 profile separation and final completion evidence.
+ * - 2026-06-27: Normalized remaining profile cards to compact Dashboard V3 spacing.
  * ============================================================
  */
 
@@ -250,7 +251,7 @@ export default async function BusinessProfilePage({
         ))}
 
         <section className="grid min-w-0 gap-4 xl:grid-cols-2">
-          <DashboardCard className="p-[22px]" variant="elevated">
+          <DashboardCard className="p-4 sm:p-5" variant="elevated">
             <SectionHeader
               description={text.businessIdentityDescription}
               title={text.businessIdentity}
@@ -334,7 +335,7 @@ export default async function BusinessProfilePage({
             </div>
           </DashboardCard>
 
-          <DashboardCard className="p-[22px]">
+          <DashboardCard className="p-4 sm:p-5">
             <SectionHeader
               description={text.aiNotesDescription}
               title={text.aiNotes}
@@ -374,7 +375,7 @@ export default async function BusinessProfilePage({
           </DashboardCard>
         </section>
 
-        <DashboardCard className="p-[22px]" variant="priority">
+        <DashboardCard className="p-4 sm:p-5" variant="priority">
           <SectionHeader
             description={text.futureDescription}
             title={text.futureFields}
