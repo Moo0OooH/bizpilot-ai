@@ -2,7 +2,7 @@
 
 Date: 2026-06-27
 Repo: `E:\bizpilot-ai`
-Branch: `codex/full-system-dashboard-qa-polish`
+Branch: `main`
 Scope: public/auth messages, owner dashboard flashes, Founder/Admin route flashes, and route-level workflow QA.
 
 ## Purpose

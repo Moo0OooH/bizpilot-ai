@@ -2,7 +2,7 @@
 
 Date: 2026-06-27
 Repo: `E:\bizpilot-ai`
-Branch: `codex/full-system-dashboard-qa-polish`
+Branch: `main`
 Scope: Quote Setup custom-field type crash, founder/admin business routing,
 field-type UI copy, browser retest, and release checks.
 

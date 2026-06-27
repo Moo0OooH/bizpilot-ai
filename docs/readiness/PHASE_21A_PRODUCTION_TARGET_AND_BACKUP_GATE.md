@@ -4,7 +4,7 @@
 **Document Type:** Production target, backup, and SQL approval gate
 **Status:** Owner-approved for database/security alignment with no-real-customer-data risk acceptance
 **Owner:** MoOoH
-**Last Updated:** 2026-05-24
+**Last Updated:** 2026-06-27
 
 ---
 
@@ -33,6 +33,8 @@ Production SQL has been limited to owner-approved grant-only migration `0019_lif
 | Vercel framework/root | Next.js / `.` |
 | Vercel production deployment | `bizpilot-ezv7ttflm-moo0ooohs-projects.vercel.app`, target `production`, status `Ready` |
 | Vercel production aliases | `https://bizpilo.com`, `https://bizpilot-ai-gamma.vercel.app`, `https://bizpilot-ai-moo0ooohs-projects.vercel.app`, `https://bizpilot-ai-git-main-moo0ooohs-projects.vercel.app` |
+| Dashboard V3 Git route | `main` only; temporary preview branch deleted locally and from origin |
+| Dashboard V3 stale preview cleanup | Preview alias `bizpilot-ai-git-codex-full-system-das-6f5dea-moo0ooohs-projects.vercel.app` and deployments `bizpilot-i188fjl3j-moo0ooohs-projects.vercel.app`, `bizpilot-lognjt8fl-moo0ooohs-projects.vercel.app` removed through Vercel CLI |
 | Dashboard last migration shown by owner screenshot | No migrations |
 | Dashboard last backup shown by owner screenshot | No backups |
 
@@ -52,7 +54,7 @@ Evidence sources:
 | --- | --- | --- |
 | Secure Vercel env template outside repo | `NEXT_PUBLIC_SUPABASE_URL` host is `qfqendrqimqvkoojpjao.supabase.co` | Matches owner-provided production Supabase dashboard. |
 | Secure Vercel env template outside repo | `NEXT_PUBLIC_APP_URL` host is `bizpilo.com` | Matches production app URL. |
-| Local `.env.local` | `NEXT_PUBLIC_SUPABASE_URL` host is `cwiuajpbpyybxxtodpaq.supabase.co` | Does not match corrected production target; treat local env as stale or non-production until intentionally updated. |
+| Local `.env.local` | `NEXT_PUBLIC_SUPABASE_URL` host is `qfqendrqimqvkoojpjao.supabase.co` and `NEXT_PUBLIC_APP_URL` is local development | Supabase target matches the corrected production project; app URL remains local for local development. |
 | Vercel project env names/scopes | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_APP_URL`, `BIZPILOT_FOUNDER_EMAILS`, and `OPENAI_API_KEY` exist as encrypted variables for Production and Preview | Required variable names/scopes are present. Values were not pulled or revealed, so secret handling remains clean. |
 | Deployed public bundle check | `https://bizpilo.com` returned HTTP 200; scanned homepage JS did not expose either the corrected or stale Supabase host | No value confirmation from public bundle. If runtime env mismatch is suspected, confirm through Vercel UI without sharing values or approve a controlled one-variable public-value check. |
 

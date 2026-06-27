@@ -1,8 +1,12 @@
 # Dashboard V3 Final Completion Report
 
 Date: 2026-06-27
-Branch: `codex/full-system-dashboard-qa-polish`
+Branch: `main`
 Canonical source: `docs/readiness/BIZPILOT_DASHBOARD_MASTER_STANDARD_AND_CODEX_GUIDE_2026-06-27.md`
+
+Single-route lock: this work is now merged to `main`; the previous preview
+branch `codex/full-system-dashboard-qa-polish` was deleted locally and on
+origin after fast-forwarding `main`.
 
 ## Scope
 

@@ -1,7 +1,7 @@
 # Dashboard V3 0-to-100 Visual Dashboard Pass
 
 Date: 2026-06-27
-Branch: `codex/full-system-dashboard-qa-polish`
+Branch: `main`
 Reference image: `C:\Users\mbeag\AppData\Local\Temp\codex-clipboard-b9674911-97ac-4574-9b0d-f1bd23da4eda.png`
 Canonical standard: `docs/readiness/BIZPILOT_DASHBOARD_MASTER_STANDARD_AND_CODEX_GUIDE_2026-06-27.md`
 

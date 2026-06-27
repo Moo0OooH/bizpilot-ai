@@ -2,7 +2,7 @@
 
 Date: 2026-06-27
 Repo: `E:\bizpilot-ai`
-Branch: `codex/full-system-dashboard-qa-polish`
+Branch: `main`
 Scope: Owner/User Dashboard and Founder/Admin Dashboard
 
 > Canonical dashboard design note, 2026-06-27: this P20 report remains

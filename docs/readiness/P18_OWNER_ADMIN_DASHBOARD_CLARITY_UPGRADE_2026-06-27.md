@@ -2,7 +2,7 @@
 
 Date: 2026-06-27
 Repo: `E:\bizpilot-ai`
-Branch: `codex/full-system-dashboard-qa-polish`
+Branch: `main`
 Scope: Owner first-run guidance, founder/admin user-control priority,
 searchable 10-user default directory, admin route defaults, and release checks.
 

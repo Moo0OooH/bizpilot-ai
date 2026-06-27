@@ -2,7 +2,7 @@
 
 Date: 2026-06-27
 Repo: `E:\bizpilot-ai`
-Branch: `codex/full-system-dashboard-qa-polish`
+Branch: `main`
 Scope: Public homepage hero clarity, owner first-run guidance,
 founder/admin user-control priority, searchable 10-user default directory,
 navigation order, and release checks.

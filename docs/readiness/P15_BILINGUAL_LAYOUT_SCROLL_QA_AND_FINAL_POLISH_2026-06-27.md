@@ -2,7 +2,7 @@
 
 Date: 2026-06-27
 Repo: `E:\bizpilot-ai`
-Branch: `codex/full-system-dashboard-qa-polish`
+Branch: `main`
 Scope: public site EN/fr-CA checks, owner dashboard layout, founder/admin
 dashboard layout, settings scroll reduction, cleanup contrast, smoke tests, and
 readiness documentation.

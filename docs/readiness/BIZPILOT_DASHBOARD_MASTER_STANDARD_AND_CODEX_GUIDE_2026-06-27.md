@@ -9,6 +9,13 @@ Language: Persian-first decisions with English product/code labels
 
 This is now the master dashboard standard for BizPilot.
 
+As of the 2026-06-27 single-route cleanup, the canonical implementation path is
+`main` on GitHub and the production Vercel project `moo0ooohs-projects/bizpilot-ai`.
+The temporary preview branch `codex/full-system-dashboard-qa-polish` and its
+Vercel preview alias/deployments were removed after the Dashboard V3 work was
+merged forward. Future dashboard work must start from `main`; historical
+preview URLs are not a source of truth.
+
 Use this document before any new dashboard design or implementation pass. Older
 dashboard notes, P20/P21 drafts, visual audits, and implementation reports are
 supporting evidence only. If another document conflicts with this one, this
