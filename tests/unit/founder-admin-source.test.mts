@@ -162,4 +162,78 @@ describe("Founder admin source safety", () => {
     assert.equal(founderHandoffSource.includes("Open Founder Admin"), true);
     assert.equal(founderHandoffSource.includes("Phase 18B shell"), false);
   });
+
+  it("keeps founder business detail search-driven and cleanup secondary", () => {
+    const pageSource = readFileSync("app/admin/page.tsx", "utf8");
+    const cleanupSource = readFileSync(
+      "components/admin/founder-test-cleanup-form.tsx",
+      "utf8",
+    );
+    const businessSection = pageSource.slice(
+      pageSource.indexOf("function FounderBusinessesSection"),
+    );
+    const businessDetail = pageSource.slice(
+      pageSource.indexOf("function BusinessControlCard"),
+    );
+    const tileSection = businessDetail.slice(
+      businessDetail.indexOf('label="Access status"'),
+      businessDetail.indexOf("<section className={toolboxSectionClass}>"),
+    );
+
+    assert.equal(pageSource.includes("businessQuery?: string"), true);
+    assert.equal(pageSource.includes("function matchesBusinessQuery"), true);
+    assert.equal(pageSource.includes("function limitedBusinessRows"), true);
+    assert.equal(
+      pageSource.includes("const selectedRows = selectedBusiness ? [selectedBusiness] : [];"),
+      true,
+    );
+    assert.equal(pageSource.includes("].slice(0, 10);"), true);
+    assert.equal(pageSource.includes("Search businesses"), true);
+    assert.equal(pageSource.includes("Showing the first 10 matched workspaces"), true);
+    assert.equal(
+      pageSource.indexOf("Search businesses") < pageSource.indexOf("visibleBusinesses.map"),
+      true,
+    );
+    assert.equal(
+      businessSection.indexOf("Priority workspace") <
+        businessSection.indexOf("<MetricCard"),
+      true,
+    );
+    assert.equal(
+      tileSection.indexOf('label="Access status"') <
+        tileSection.indexOf('label="Quote link"'),
+      true,
+    );
+    assert.equal(
+      tileSection.indexOf('label="Quote link"') <
+        tileSection.indexOf('label="Plan"'),
+      true,
+    );
+    assert.equal(
+      tileSection.indexOf('label="Plan"') <
+        tileSection.indexOf('label="Session policy"'),
+      true,
+    );
+    assert.equal(
+      tileSection.indexOf('label="Session policy"') <
+        tileSection.indexOf('label="Audit events"'),
+      true,
+    );
+    assert.equal(
+      businessDetail.indexOf("Business snapshot") <
+        businessDetail.indexOf("FounderTestCleanupForm"),
+      true,
+    );
+    assert.equal(cleanupSource.includes("<details className="), true);
+    assert.equal(cleanupSource.includes("<details open"), false);
+    assert.equal(
+      cleanupSource.indexOf("Dry run cleanup") <
+        cleanupSource.indexOf("Hard purge test workspace"),
+      true,
+    );
+    assert.equal(
+      cleanupSource.includes("Dry run blocked for production"),
+      true,
+    );
+  });
 });

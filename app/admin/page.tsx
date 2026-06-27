@@ -20,6 +20,7 @@
  * - 2026-06-27: Promoted Users as the default admin control lane and made business routes explicit.
  * - 2026-06-27: Sanitized admin route flash messages before rendering.
  * - 2026-06-27: Reordered Users into a search-first founder operations cockpit.
+ * - 2026-06-27: Added search-driven 10-row business rail and V3 priority workspace tiles.
  * ============================================================
  */
 
@@ -84,6 +85,7 @@ export const dynamic = "force-dynamic";
 type AdminSearchParams = {
   adminPanel?: string | undefined;
   businessId?: string | undefined;
+  businessQuery?: string | undefined;
   cleanupBusinessId?: string | undefined;
   error?: string | undefined;
   notice?: string | undefined;
@@ -466,6 +468,38 @@ function matchesQuery(values: ReadonlyArray<string | null | undefined>, query: s
   return values.some((value) => normalizeSearch(value).includes(query));
 }
 
+function matchesBusinessQuery(
+  business: FounderAdminBusiness,
+  query: string,
+): boolean {
+  return matchesQuery(
+    [
+      business.name,
+      business.ownerEmail,
+      business.slug,
+      business.publicSlug,
+      business.status,
+      business.planSlug,
+      business.workspaceKind,
+    ],
+    query,
+  );
+}
+
+function limitedBusinessRows(
+  businesses: FounderAdminBusiness[],
+  selectedBusiness: FounderAdminBusiness | null,
+): FounderAdminBusiness[] {
+  const selectedRows = selectedBusiness ? [selectedBusiness] : [];
+
+  return [
+    ...selectedRows,
+    ...businesses.filter(
+      (business) => business.businessId !== selectedBusiness?.businessId,
+    ),
+  ].slice(0, 10);
+}
+
 function matchesUserFilters(user: FounderAdminUser, params: AdminSearchParams): boolean {
   const query = normalizeSearch(params.userQuery);
   const access = safeParam(params.userAccess);
@@ -629,11 +663,20 @@ function adminUsersHref(
 
 function adminBusinessHref(
   params: AdminSearchParams,
-  updates: Partial<Pick<AdminSearchParams, "businessId" | "cleanupBusinessId">>,
+  updates: Partial<
+    Pick<
+      AdminSearchParams,
+      "businessId" | "businessQuery" | "cleanupBusinessId"
+    >
+  >,
 ): string {
-  const merged: Pick<AdminSearchParams, "adminPanel" | "businessId" | "cleanupBusinessId"> = {
+  const merged: Pick<
+    AdminSearchParams,
+    "adminPanel" | "businessId" | "businessQuery" | "cleanupBusinessId"
+  > = {
     adminPanel: "businesses",
     businessId: params.businessId,
+    businessQuery: params.businessQuery,
     cleanupBusinessId: params.cleanupBusinessId,
     ...updates,
   };
@@ -1232,6 +1275,28 @@ function FounderBusinessMasterRail({
   params: AdminSearchParams;
   selectedBusinessId: string | null;
 }>) {
+  const businessQuery = params.businessQuery?.trim() ?? "";
+  const normalizedBusinessQuery = normalizeSearch(businessQuery);
+  const filteredBusinesses = businesses.filter((business) =>
+    matchesBusinessQuery(business, normalizedBusinessQuery),
+  );
+  const selectedBusiness =
+    businesses.find((business) => business.businessId === selectedBusinessId) ??
+    null;
+  const visibleBusinesses = limitedBusinessRows(
+    filteredBusinesses,
+    selectedBusiness,
+  );
+  const hiddenMatchCount = Math.max(
+    filteredBusinesses.length -
+      visibleBusinesses.filter((business) =>
+        filteredBusinesses.some(
+          (filtered) => filtered.businessId === business.businessId,
+        ),
+      ).length,
+    0,
+  );
+
   return (
     <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm xl:sticky xl:top-[5.75rem]">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -1243,11 +1308,44 @@ function FounderBusinessMasterRail({
             Select one workspace; edit it in the detail panel.
           </p>
         </div>
-        <StatusBadge tone="blue">{businesses.length}</StatusBadge>
+        <StatusBadge tone="blue">
+          {visibleBusinesses.length} / {businesses.length}
+        </StatusBadge>
       </div>
 
+      <form
+        className="mt-3 grid gap-2 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-2.5"
+        method="get"
+      >
+        <input name="adminPanel" type="hidden" value="businesses" />
+        {selectedBusinessId ? (
+          <input name="businessId" type="hidden" value={selectedBusinessId} />
+        ) : null}
+        <label className="grid gap-1 text-[12px] font-black text-[var(--dash-text)]">
+          Search businesses
+          <input
+            className={inputClass}
+            defaultValue={businessQuery}
+            name="businessQuery"
+            placeholder="Business, owner, slug"
+          />
+        </label>
+        <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+          <button className={`${primaryButtonClass} min-h-9`} type="submit">
+            Search
+          </button>
+          <Link
+            className={`${buttonClass} min-h-9 justify-center`}
+            href={adminBusinessHref(params, { businessQuery: undefined })}
+          >
+            Reset
+          </Link>
+        </div>
+      </form>
+
       <div className="mt-3 grid gap-1.5 sm:grid-cols-2 xl:grid-cols-1">
-        {businesses.map((business) => {
+        {visibleBusinesses.length > 0 ? (
+          visibleBusinesses.map((business) => {
           const selected = business.businessId === selectedBusinessId;
           const leadBlocked =
             business.status !== "active" || !business.publicLinkActive;
@@ -1286,8 +1384,29 @@ function FounderBusinessMasterRail({
               </div>
             </Link>
           );
-        })}
+          })
+        ) : (
+          <p className="rounded-lg border border-dashed border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-5 text-center text-[12px] font-semibold leading-5 text-[var(--dash-text-secondary)]">
+            No businesses match this search.
+          </p>
+        )}
       </div>
+      {hiddenMatchCount > 0 ? (
+        <p className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
+          Showing the first 10 matched workspaces. Search by owner, business,
+          or slug to narrow the list.
+        </p>
+      ) : null}
+      {selectedBusiness &&
+      normalizedBusinessQuery &&
+      !filteredBusinesses.some(
+        (business) => business.businessId === selectedBusiness.businessId,
+      ) ? (
+        <p className="mt-3 rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
+          Selected workspace stays visible even when it does not match the
+          current search.
+        </p>
+      ) : null}
     </aside>
   );
 }
@@ -1322,11 +1441,9 @@ function BusinessControlCard({
       "quote_link_enabled",
     ].includes(action.actionType),
   );
-  const leadIntakeBlocked =
-    business.status !== "active" || !business.publicLinkActive;
-  const lastActivityText = business.lastActivityAt
-    ? formatDate(business.lastActivityAt)
-    : "No recent activity yet";
+  const latestAdminChange = business.actionLog[0]
+    ? formatDateTime(business.actionLog[0].createdAt)
+    : "No admin changes recorded yet";
 
   return (
     <div className="grid gap-3">
@@ -1381,12 +1498,6 @@ function BusinessControlCard({
             value={statusLabels[business.status]}
           />
           <SnapshotTile
-            description="Plan is founder controlled. Customer cannot change plan."
-            label="Plan"
-            tone={planTone(business.planSlug)}
-            value={planLabels[business.planSlug]}
-          />
-          <SnapshotTile
             description={
               business.publicLinkActive
                 ? "Public quote form can accept new leads."
@@ -1397,24 +1508,29 @@ function BusinessControlCard({
             value={business.publicLinkActive ? "Active" : "Inactive"}
           />
           <SnapshotTile
-            description={
-              business.lastActivityAt
-                ? formatDateTime(business.lastActivityAt)
-                : "No recent activity yet"
-            }
-            label="Last activity"
-            tone={business.lastActivityAt ? "emerald" : "neutral"}
-            value={lastActivityText}
+            description="Plan is founder controlled. Customer cannot change plan."
+            label="Plan"
+            tone={planTone(business.planSlug)}
+            value={planLabels[business.planSlug]}
           />
           <SnapshotTile
             description={
-              leadIntakeBlocked
-                ? "Quote submissions are disabled for this customer."
-                : `${business.leadCount} lead(s) available for review.`
+              business.sessionTimeoutMode === "always_on"
+                ? "Customer access stays active until sign-out."
+                : "Customer sessions expire after the selected duration."
             }
-            label="Lead intake"
-            tone={leadIntakeBlocked ? "red" : "emerald"}
-            value={leadIntakeBlocked ? "Blocked" : "Open"}
+            label="Session policy"
+            tone={business.sessionTimeoutMode === "always_on" ? "emerald" : "amber"}
+            value={sessionPolicyLabel(
+              business.sessionTimeoutMode,
+              business.sessionTimeoutMinutes,
+            )}
+          />
+          <SnapshotTile
+            description={latestAdminChange}
+            label="Audit events"
+            tone={business.actionLog.length > 0 ? "blue" : "neutral"}
+            value={`${business.actionLog.length} logged`}
           />
         </div>
       </section>
