@@ -11,7 +11,7 @@
  * - server/actions/business-configuration.actions.ts
  * Author: MoOoH
  * Created: 2026-05-16
- * Last Updated: 2026-05-18
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-16: Created mounted tab panels so the parent form receives every required input on submit.
  * - 2026-05-18: Finalized sticky anchor tabs with theme-safe styling and mobile overflow.
@@ -35,12 +35,12 @@ export function ConfigurationTabs({ children, sections }: Props) {
   const [activeSection, setActiveSection] = useState(sections[0]?.id ?? "");
 
   return (
-    <div className="grid gap-3 xl:grid-cols-[13rem_minmax(0,1fr)] xl:items-start">
+    <div className="grid min-w-0 gap-3 xl:grid-cols-[13rem_minmax(0,1fr)] xl:items-start">
       <nav
         aria-label="Quote setup sections"
-        className="sticky top-[70px] z-10 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)]/95 p-1.5 shadow-sm backdrop-blur xl:p-2"
+        className="sticky top-[70px] z-10 min-w-0 max-w-full overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)]/95 p-1.5 shadow-sm backdrop-blur xl:p-2"
       >
-        <div className="flex gap-1 overflow-x-auto pb-0.5 xl:grid xl:overflow-visible xl:pb-0">
+        <div className="flex min-w-0 gap-1 overflow-x-auto pb-0.5 xl:grid xl:overflow-visible xl:pb-0">
           {sections.map((section) => (
             <button
               className={

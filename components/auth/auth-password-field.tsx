@@ -13,13 +13,14 @@
  * - app/auth/reset-password/reset-password-form.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-06-19: Added conventional password visibility toggle for auth forms.
+ * - 2026-06-27: Split the visible label from the reveal button so password fields keep a clean accessible name.
  * ============================================================
  */
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import type { ReactNode } from "react";
 
 import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
@@ -43,18 +44,22 @@ export function AuthPasswordField({
   minLength,
   name,
 }: AuthPasswordFieldProps) {
+  const inputId = useId();
   const [visible, setVisible] = useState(false);
 
   return (
-    <label className={authLabelClassName}>
+    <div className={authLabelClassName}>
       <span className="flex items-center justify-between gap-3">
-        <span style={{ color: "var(--biz-page-text-soft)" }}>{label}</span>
+        <label htmlFor={inputId} style={{ color: "var(--biz-page-text-soft)" }}>
+          {label}
+        </label>
         {action}
       </span>
       <span className="relative block">
         <input
           autoComplete={autoComplete}
           className="h-11 w-full rounded-[12px] border px-3 pr-20 text-[14px] outline-none transition placeholder:opacity-50 focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]"
+          id={inputId}
           minLength={minLength}
           name={name}
           placeholder={label}
@@ -76,6 +81,6 @@ export function AuthPasswordField({
           {visible ? copy.hidePasswordShort : copy.showPasswordShort}
         </button>
       </span>
-    </label>
+    </div>
   );
 }

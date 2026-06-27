@@ -12,7 +12,7 @@
  * - components/dashboard/dashboard-ui.tsx
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-19: Rebuilt to match the approved index.html exactly — initials avatar, short customer name, no min-width horizontal scroll, single SectionHeader (page-level header lives on the route), and a `limit` prop for dashboard previews.
  * ============================================================
@@ -194,16 +194,29 @@ function summarizeArea(item: LeadDeskItem, copy: LeadQueueCopy): string {
 function CustomerCell({
   copy,
   item,
-}: Readonly<{ copy: LeadQueueCopy; item: LeadDeskItem }>) {
+  wrap = false,
+}: Readonly<{ copy: LeadQueueCopy; item: LeadDeskItem; wrap?: boolean }>) {
   const sub = item.lead.customer_contact ?? summarizeService(item, copy);
   return (
     <div className="flex min-w-0 items-center gap-2.5">
       <Avatar name={item.lead.customer_name} size={36} />
       <div className="min-w-0">
-        <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
+        <p
+          className={
+            wrap
+              ? "break-words text-[13px] font-black leading-5 text-[var(--dash-text)]"
+              : "truncate text-[13px] font-black text-[var(--dash-text)]"
+          }
+        >
           {shortCustomerName(item.lead.customer_name, copy.fallbacks.unnamedLead)}
         </p>
-        <p className="mt-0.5 truncate text-[12px] text-[var(--dash-text-muted)]">
+        <p
+          className={
+            wrap
+              ? "mt-0.5 break-all text-[12px] leading-4 text-[var(--dash-text-muted)]"
+              : "mt-0.5 truncate text-[12px] text-[var(--dash-text-muted)]"
+          }
+        >
           {sub}
         </p>
       </div>
@@ -218,11 +231,11 @@ function LeadMobileCard({
   const status = displayStatus(item, copy);
   return (
     <Link
-      className="grid gap-3 border-b border-[var(--dash-border)] p-3.5 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:hidden"
+      className="grid min-w-0 gap-3 overflow-hidden border-b border-[var(--dash-border)] p-3.5 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:hidden"
       href={`/dashboard/leads/${item.lead.id}`}
     >
-      <div className="flex items-start justify-between gap-3">
-        <CustomerCell copy={copy} item={item} />
+      <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
+        <CustomerCell copy={copy} item={item} wrap />
         <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
       </div>
       <div className="grid gap-2 sm:grid-cols-2">
@@ -230,7 +243,7 @@ function LeadMobileCard({
           <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
             {copy.headers.service}
           </span>
-          <span className="mt-1 block truncate text-[var(--dash-text)]">
+          <span className="mt-1 block break-words text-[var(--dash-text)]">
             {summarizeService(item, copy)}
           </span>
         </span>
@@ -238,7 +251,7 @@ function LeadMobileCard({
           <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
             {copy.headers.location}
           </span>
-          <span className="mt-1 block truncate text-[var(--dash-text)]">
+          <span className="mt-1 block break-words text-[var(--dash-text)]">
             {summarizeArea(item, copy)}
           </span>
         </span>

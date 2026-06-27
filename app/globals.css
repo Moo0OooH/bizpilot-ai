@@ -9,7 +9,7 @@ Related:
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-06-26
+Last Updated: 2026-06-27
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
@@ -36,6 +36,7 @@ Change Log:
 - 2026-06-25: Tightened homepage hero width, mockup density, and section typography scale.
 - 2026-06-26: Converted the homepage demo hook from four-card grid behavior to one compact preview panel.
 - 2026-06-26: Upgraded homepage hero signal-flow board and mobile no-overflow behavior.
+- 2026-06-27: Tightened dashboard container sizing so nested setup panels cannot create mobile horizontal overflow.
 ============================================================
 */
 
@@ -540,8 +541,10 @@ select {
 }
 
 .dashboard-container {
-  width: min(100% - 2rem, var(--dashboard-max));
+  width: 100%;
+  max-width: var(--dashboard-max);
   margin-inline: auto;
+  min-inline-size: 0;
 }
 
 .public-card-grid {

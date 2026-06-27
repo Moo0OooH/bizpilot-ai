@@ -6,7 +6,9 @@
  * Role: Provides dry-run and double-confirmed hard purge forms for non-production workspaces.
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-05-24
+ * Last Updated: 2026-06-27
+ * Change Log:
+ * - 2026-06-27: Reworked cleanup warning styles to use founder admin semantic tokens.
  * ============================================================
  */
 
@@ -14,7 +16,11 @@
 
 import { useMemo, useState } from "react";
 
-import { inputClass, primaryButtonClass } from "@/components/dashboard/dashboard-ui";
+import {
+  disabledButtonClass,
+  inputClass,
+  primaryButtonClass,
+} from "@/components/dashboard/dashboard-ui";
 import {
   FOUNDER_TEST_CLEANUP_ACKNOWLEDGEMENT,
   isCleanupEligibleWorkspaceKind,
@@ -66,19 +72,25 @@ export function FounderTestCleanupForm({
   ]);
 
   return (
-    <details className="rounded-[14px] border border-red-400/25 bg-red-500/10 p-3">
-      <summary className="cursor-pointer text-sm font-black text-red-700 dark:text-red-200">
+    <details className="rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] p-3">
+      <summary className="cursor-pointer text-sm font-black text-[var(--dash-danger-strong)]">
         Test/demo cleanup
       </summary>
       <div className="mt-3 grid gap-3">
         <div
           className={
             eligible
-              ? "rounded-[10px] border border-amber-400/25 bg-amber-500/10 p-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]"
-              : "rounded-[10px] border border-red-400/25 bg-red-500/10 p-2 text-[12px] leading-5 text-red-200"
+              ? "rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] p-3 text-[12px] leading-5 text-[var(--dash-text-secondary)]"
+              : "rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-surface)] p-3 text-[12px] leading-5 text-[var(--dash-text-secondary)]"
           }
         >
-          <p className="font-black">
+          <p
+            className={
+              eligible
+                ? "font-black text-[var(--dash-warning-strong)]"
+                : "font-black text-[var(--dash-danger-strong)]"
+            }
+          >
             Workspace kind: {workspaceKindLabel}
           </p>
           <p className="mt-1 font-semibold">
@@ -94,7 +106,11 @@ export function FounderTestCleanupForm({
         <form action={founderCleanupDryRunAction}>
           <input name="businessId" type="hidden" value={businessId} />
           <button
-            className={`${primaryButtonClass} w-full`}
+            className={
+              eligible
+                ? `${primaryButtonClass} w-full`
+                : `${disabledButtonClass} w-full`
+            }
             disabled={!eligible}
             type="submit"
           >
@@ -149,7 +165,11 @@ export function FounderTestCleanupForm({
             <span>Final confirm: purge this test/demo/seed workspace now.</span>
           </label>
           <button
-            className={`${primaryButtonClass} border-red-400/40 bg-red-600 text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-45`}
+            className={
+              canPurge
+                ? "inline-flex min-h-9 w-full items-center justify-center gap-2 rounded-lg border border-[var(--dash-danger-strong)] bg-[var(--dash-danger-strong)] px-3 py-2 text-[13px] font-bold leading-none text-[var(--dash-bg)] shadow-sm transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-danger-strong)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]"
+                : `${disabledButtonClass} w-full`
+            }
             disabled={!canPurge}
             type="submit"
           >

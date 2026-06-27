@@ -4,7 +4,7 @@
  * File: components/dashboard/dashboard-theme.tsx
  * Project: BizPilot AI
  * Role: Hydration-safe dashboard theme provider and System/Light/Dark selector.
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-27
  */
 
 import {
@@ -137,7 +137,7 @@ export function DashboardThemeSelector() {
   return (
     <div
       aria-label={labels.label}
-      className="inline-flex h-9 rounded-lg border border-[var(--dash-border-strong)] bg-[var(--dash-surface-elevated)] p-1 text-xs font-semibold shadow-sm"
+      className="inline-flex min-h-10 rounded-lg border border-[var(--dash-border-strong)] bg-[var(--dash-surface-elevated)] p-1 text-xs font-semibold shadow-sm"
       role="group"
     >
       {(["system", "light", "dark"] as const).map((option) => (
@@ -145,8 +145,8 @@ export function DashboardThemeSelector() {
             aria-pressed={theme === option}
             className={
               theme === option
-                ? "whitespace-nowrap rounded-md bg-[var(--dash-primary)] px-2.5 text-white"
-                : "whitespace-nowrap rounded-md px-2.5 text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
+                ? "min-h-8 whitespace-nowrap rounded-md bg-[var(--dash-primary)] px-2.5 text-white"
+                : "min-h-8 whitespace-nowrap rounded-md px-2.5 text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
             }
             key={option}
             onClick={() => setTheme(option)}

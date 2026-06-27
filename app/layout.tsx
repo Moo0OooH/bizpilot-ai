@@ -9,7 +9,7 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-04: Added standard project file header.
  * - 2026-05-04: Updated metadata description for Phase 2 tenant foundation.
@@ -18,13 +18,13 @@
  * - 2026-06-19: Added shared System/Light/Dark theme preference bootstrapping.
  * - 2026-06-19: Defaulted fresh sessions to Light and synced theme-color before paint.
  * - 2026-06-21: Aligned global metadata with canonical manual-first public copy.
+ * - 2026-06-27: Moved theme bootstrap into the document head to avoid hydration warnings.
  * ============================================================
  */
 
 import type { Metadata, Viewport } from "next";
 import { cookies } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import {
   INTERFACE_LANGUAGE_COOKIE,
   readSupportedLanguage,
@@ -49,6 +49,8 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const themeBootstrapScript = `(function(){try{var r=document.documentElement;var k="${THEME_PREFERENCE_STORAGE_KEY}";var c="${THEME_PREFERENCE_COOKIE}";var lightColor="${THEME_COLOR_BY_RESOLVED.light}";var darkColor="${THEME_COLOR_BY_RESOLVED.dark}";var valid=function(value){return value==="system"||value==="light"||value==="dark"?value:""};var m=document.cookie.match(new RegExp("(?:^|; )"+c+"=([^;]*)"));var cookie=m?decodeURIComponent(m[1]):"";var stored="";try{stored=window.localStorage.getItem(k)||""}catch(error){}var pref=valid(stored)||valid(cookie)||valid(r.dataset.themePreference)||"${DEFAULT_THEME_PREFERENCE}";var systemDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;var theme=pref==="system"?(systemDark?"dark":"light"):pref;r.dataset.themePreference=pref;r.dataset.theme=theme;r.style.colorScheme=theme;var meta=document.querySelector('meta[name="theme-color"]');if(!meta){meta=document.createElement("meta");meta.setAttribute("name","theme-color");document.head.appendChild(meta)}meta.setAttribute("content",theme==="dark"?darkColor:lightColor);}catch(error){}})();`;
 
 export const metadata: Metadata = {
   description:
@@ -100,13 +102,12 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <Script
-        id="bizpilot-theme-bootstrap"
-        strategy="beforeInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `(function(){try{var r=document.documentElement;var k="${THEME_PREFERENCE_STORAGE_KEY}";var c="${THEME_PREFERENCE_COOKIE}";var lightColor="${THEME_COLOR_BY_RESOLVED.light}";var darkColor="${THEME_COLOR_BY_RESOLVED.dark}";var valid=function(value){return value==="system"||value==="light"||value==="dark"?value:""};var m=document.cookie.match(new RegExp("(?:^|; )"+c+"=([^;]*)"));var cookie=m?decodeURIComponent(m[1]):"";var stored="";try{stored=window.localStorage.getItem(k)||""}catch(error){}var pref=valid(stored)||valid(cookie)||valid(r.dataset.themePreference)||"${DEFAULT_THEME_PREFERENCE}";var systemDark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;var theme=pref==="system"?(systemDark?"dark":"light"):pref;r.dataset.themePreference=pref;r.dataset.theme=theme;r.style.colorScheme=theme;var meta=document.querySelector('meta[name="theme-color"]');if(!meta){meta=document.createElement("meta");meta.setAttribute("name","theme-color");document.head.appendChild(meta)}meta.setAttribute("content",theme==="dark"?darkColor:lightColor);}catch(error){}})();`,
-        }}
-      />
+      <head>
+        <script
+          id="bizpilot-theme-bootstrap"
+          dangerouslySetInnerHTML={{ __html: themeBootstrapScript }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

@@ -78,6 +78,67 @@ Current readiness interpretation:
 | Paid pilot | BLOCKED | Requires business, ops, support, payment/refund, app/RLS, and rollback gates. |
 | New product features | CONTROLLED | Do not add automation or broad CRM scope before validation. |
 
+## 2026-06-27 Admin and Dashboard Execution Addendum
+
+This addendum records the first implementation pass after the founder review of
+the owner dashboard, founder admin console, and legacy `/founder` surface.
+
+Implemented standardization:
+
+- Owner dashboard pages now keep the route bar secondary and give the page
+  content exactly one primary H1.
+- Mobile lead cards wrap long customer identities and avoid horizontal layout
+  spill at small viewport widths.
+- Founder admin `inbox`, `health`, `leads`, and `activity` panels each expose a
+  scannable page-level heading instead of relying on tab chrome.
+- Founder admin workspace controls now stack into readable cards before they
+  split into dense columns.
+- Founder cleanup warnings use semantic danger/warning tokens instead of
+  hard-coded pale red text, preserving light/dark contrast.
+- `/founder` is no longer a stale phase shell. It now acts as a focused founder
+  admin handoff that points to the owner dashboard and the operational admin
+  console.
+- Theme bootstrap and local dev origin handling remain part of the readiness
+  path so local visual QA does not create noisy hydration or origin warnings.
+
+External standards used for this pass:
+
+- Google Search Central SEO Starter Guide: pages should have clear, helpful
+  content and crawlable, descriptive links.
+- web.dev Core Web Vitals: layout stability and responsive rendering remain
+  product quality requirements even for authenticated surfaces.
+- W3C WCAG 2.2 Quick Reference: status, warning, and destructive controls must
+  keep readable contrast and clear labels.
+- Nielsen Norman Group dashboard guidance: admin dashboards should optimize for
+  fast scanning, obvious priority, and minimal visual noise.
+
+Verification completed for this pass:
+
+- Authenticated browser review of `/dashboard`, `/dashboard/leads`,
+  `/dashboard/settings`, `/admin`, `/admin?adminPanel=health`,
+  `/admin?adminPanel=leads`, `/admin?adminPanel=activity`, and `/founder` on
+  desktop and mobile.
+- Each checked route had exactly one H1 and no horizontal overflow.
+- `pnpm typecheck`, `pnpm lint`, `pnpm test:unit`, and `pnpm build`.
+- Public smoke, responsive smoke, quote smoke, and UI matrix smoke against the
+  local dev server.
+
+P14 follow-up:
+
+- See `docs/readiness/P14_FULL_SYSTEM_DASHBOARD_QA_AND_POLISH_2026-06-27.md`
+  for the full-system fake signup QA, final authenticated route audit, owner
+  dashboard consolidation, admin/founder polish, verification log, and
+  production-safety notes.
+
+Safety notes:
+
+- No production cleanup or deletion action was executed.
+- Synthetic dashboard smoke that creates auth/workspace/lead data remains
+  skipped unless the target is explicitly approved as safe for synthetic writes.
+- Local founder admin service-role reads may show zero data or a service warning
+  when the local environment cannot perform admin reads; this does not grant
+  approval to loosen service-role or RLS boundaries.
+
 ## Role Separation
 
 Do not blend these surfaces.

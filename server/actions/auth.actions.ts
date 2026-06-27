@@ -20,6 +20,8 @@
  * - 2026-05-04: Use service-role tenant bootstrap after sign-up to avoid cookie timing gaps.
  * - 2026-05-11: Added user-facing sign-in validation and auth error copy.
  * - 2026-05-12: Added user-facing sign-up validation and auth error copy.
+ * - 2026-06-27: Kept owner signup successful when auth identity exists but
+ *               workspace bootstrap must be recovered after email confirmation.
  * ============================================================
  */
 
@@ -706,6 +708,7 @@ export async function signUpAction(formData: FormData): Promise<never> {
   const callbackRedirectTo = await getConfiguredAuthCallbackRedirectTo();
   let existingIdentityResponse = false;
   let sessionCreated = false;
+  let workspaceBootstrapDeferred = false;
 
   safeLogger.info("auth.signup.request_received", {
     callbackRedirectTo,
@@ -737,16 +740,26 @@ export async function signUpAction(formData: FormData): Promise<never> {
       existingIdentityResponse = true;
       sessionCreated = false;
     } else {
-      await createFoundingBusiness({
-        businessName,
-        ownerUserId: result.user.id,
-        serviceRole: true,
-      });
+      try {
+        await createFoundingBusiness({
+          businessName,
+          ownerUserId: result.user.id,
+          serviceRole: true,
+        });
 
-      safeLogger.info("auth.signup.workspace_bootstrap_succeeded", {
-        domain: emailDomain,
-        sessionCreated,
-      });
+        safeLogger.info("auth.signup.workspace_bootstrap_succeeded", {
+          domain: emailDomain,
+          sessionCreated,
+        });
+      } catch (bootstrapError) {
+        workspaceBootstrapDeferred = true;
+        safeLogger.warn("auth.signup.workspace_bootstrap_deferred", {
+          domain: emailDomain,
+          errorName:
+            bootstrapError instanceof Error ? bootstrapError.name : "unknown",
+          sessionCreated,
+        });
+      }
     }
   } catch (error) {
     safeLogger.error("auth.signup.failed", {
@@ -762,6 +775,10 @@ export async function signUpAction(formData: FormData): Promise<never> {
 
   if (!sessionCreated) {
     redirectWithCheckEmail();
+  }
+
+  if (workspaceBootstrapDeferred) {
+    redirect("/dashboard");
   }
 
   redirect("/dashboard");

@@ -10,11 +10,12 @@
  * - docs/product/BIZPILOT_FOUNDER_ADMIN_CONSOLE_SPEC_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-26: Moved production health ahead of data grids so empty admin data is tied to safe runtime diagnostics.
  * - 2026-06-18: Updated founder access fallback to svh/clip frame for responsive hardening.
  * - 2026-06-19: Read the shared theme preference cookie while preserving legacy dashboard theme fallback.
+ * - 2026-06-27: Added panel headings and loosened dense admin control grids.
  * ============================================================
  */
 
@@ -1204,7 +1205,7 @@ function FounderBusinessMasterRail({
   selectedBusinessId: string | null;
 }>) {
   return (
-    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm xl:sticky xl:top-0 xl:max-h-[calc(100dvh-11rem)] xl:overflow-y-auto">
+    <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm xl:sticky xl:top-[5.75rem] xl:max-h-[calc(100dvh-6.5rem)] xl:overflow-y-auto">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1610,7 +1611,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="amber">Controlled</StatusBadge>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3">
           <form
             action={updateFounderWorkspaceKindAction}
             className={controlPanelClass}
@@ -1662,7 +1663,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="red">Sensitive</StatusBadge>
             </div>
-            <div className="grid gap-3 xl:grid-cols-2">
+            <div className="grid gap-3">
           <form
             action={updateFounderInternalNoteAction}
             className={controlPanelClass}
@@ -2527,10 +2528,11 @@ function FounderInboxSection({
 }>) {
   return (
     <DashboardCard className="space-y-4 p-4 sm:p-5" variant="priority">
-      <SectionHeader
-        action={<StatusBadge tone="blue">{items.length}</StatusBadge>}
+      <PageHeader
+        actions={<StatusBadge tone="blue">{items.length} inbox items</StatusBadge>}
         description="Incoming user quote messages for founder triage. Review, archive, or permanently delete spam/test submissions."
-        title="Admin inbox"
+        eyebrow="Founder Admin"
+        title="Admin Inbox"
       />
       <div className="space-y-3">
         {items.length > 0 ? (
@@ -2621,6 +2623,62 @@ function FounderInboxSection({
         )}
       </div>
     </DashboardCard>
+  );
+}
+
+function FounderHealthSection({
+  health,
+  healthNeedsAttention,
+  totals,
+  usersTotal,
+}: Readonly<{
+  health: FounderProductionHealth | null;
+  healthNeedsAttention: boolean;
+  totals: FounderAdminOverview["totals"];
+  usersTotal: number;
+}>) {
+  return (
+    <div className="space-y-3">
+      <DashboardCard className="p-4 sm:p-5" variant="priority">
+        <PageHeader
+          actions={
+            <StatusBadge tone={healthNeedsAttention ? "red" : "emerald"}>
+              {healthNeedsAttention ? "Needs attention" : "Healthy"}
+            </StatusBadge>
+          }
+          description="Read-only production diagnostics for founder operations. Failed checks explain why admin counts can look empty or incomplete."
+          eyebrow="Founder Admin"
+          title="Production Health"
+        />
+      </DashboardCard>
+      {healthNeedsAttention ? (
+        <AdminNotice tone="error">
+          Founder data may be incomplete because one or more production runtime
+          checks failed. Treat zero users or zero businesses as diagnostic until
+          this panel is clean.
+        </AdminNotice>
+      ) : null}
+      <FounderAdminMetricsPanel totals={totals} usersTotal={usersTotal} />
+      <FounderProductionHealthPanel health={health} />
+    </div>
+  );
+}
+
+function FounderActivitySection({
+  actions,
+}: Readonly<{ actions: FounderAdminOverview["recentActions"] }>) {
+  return (
+    <div className="space-y-3">
+      <DashboardCard className="p-4 sm:p-5" variant="priority">
+        <PageHeader
+          actions={<StatusBadge tone="blue">{actions.length} logged</StatusBadge>}
+          description="Trace founder-admin writes after authorization. Use this as the review trail for support, cleanup, and access changes."
+          eyebrow="Founder Admin"
+          title="Activity Log"
+        />
+      </DashboardCard>
+      <FounderRecentActionsPanel actions={actions} />
+    </div>
   );
 }
 
@@ -2996,20 +3054,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           ) : null}
 
           {activePanel === "health" ? (
-            <div className="space-y-3">
-              {productionHealthNeedsAttention ? (
-                <AdminNotice tone="error">
-                  Founder data may be incomplete because one or more production
-                  runtime checks failed. Treat zero users or zero businesses as
-                  diagnostic until this panel is clean.
-                </AdminNotice>
-              ) : null}
-              <FounderAdminMetricsPanel
-                totals={overview.totals}
-                usersTotal={overview.usersTotal}
-              />
-              <FounderProductionHealthPanel health={productionHealth} />
-            </div>
+            <FounderHealthSection
+              health={productionHealth}
+              healthNeedsAttention={productionHealthNeedsAttention}
+              totals={overview.totals}
+              usersTotal={overview.usersTotal}
+            />
           ) : null}
 
           {activePanel === "leads" ? (
@@ -3017,7 +3067,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           ) : null}
 
           {activePanel === "activity" ? (
-            <FounderRecentActionsPanel actions={overview.recentActions} />
+            <FounderActivitySection actions={overview.recentActions} />
           ) : null}
         </main>
       </div>

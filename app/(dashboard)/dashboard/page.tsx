@@ -10,9 +10,11 @@
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-19: Rebuilt the overview from the approved index.html source of truth with workflow-first hierarchy.
+ * - 2026-06-27: Promoted the overview hero title to the page H1 after topbar heading cleanup.
+ * - 2026-06-27: Consolidated the owner command lane and KPI strip into one calmer action board.
  * ============================================================
  */
 
@@ -27,7 +29,6 @@ import {
   buttonClass,
   DashboardCard,
   EmptyState,
-  MetricCard,
   primaryButtonClass,
   RightRailPanel,
   SectionHeader,
@@ -214,9 +215,9 @@ export default async function DashboardOverviewPage() {
       >
         <div className="min-w-0">
           <StatusBadge tone="blue">{overviewCopy.heroBadge}</StatusBadge>
-          <h2 className="mt-3 max-w-3xl text-[22px] font-extrabold leading-tight text-[var(--dash-text)] sm:text-[26px]">
+          <h1 className="mt-3 max-w-3xl text-[22px] font-extrabold leading-tight text-[var(--dash-text)] sm:text-[26px]">
             {overviewCopy.heroTitle(attentionCount)}
-          </h2>
+          </h1>
           <p className="mt-2.5 max-w-2xl text-[13px] leading-6 text-[var(--dash-text-secondary)]">
             {overviewCopy.heroDescription}
           </p>
@@ -298,7 +299,7 @@ export default async function DashboardOverviewPage() {
 
             return (
               <Link
-                className="grid min-h-[92px] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                className="grid min-h-[112px] grid-rows-[auto_1fr_auto] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
                 href={metric.href}
                 key={label}
               >
@@ -313,38 +314,20 @@ export default async function DashboardOverviewPage() {
                 <span className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
                   {detail}
                 </span>
+                <span className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--dash-text-muted)]">
+                  {index === 0
+                    ? overviewCopy.metrics.newQuoteRequests.label
+                    : index === 1
+                      ? overviewCopy.metrics.atRiskLeads.label
+                      : index === 2
+                        ? overviewCopy.metrics.aiDraftsReady.label
+                        : overviewCopy.recoveryFocus.title}
+                </span>
               </Link>
             );
           })}
         </div>
       </DashboardCard>
-
-      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <MetricCard
-          detail={overviewCopy.metrics.newQuoteRequests.detail}
-          label={overviewCopy.metrics.newQuoteRequests.label}
-          tone="emerald"
-          value={newQuoteCount}
-        />
-        <MetricCard
-          detail={overviewCopy.metrics.needsReply.detail}
-          label={overviewCopy.metrics.needsReply.label}
-          tone={needsReplyCount > 0 ? "amber" : "neutral"}
-          value={needsReplyCount}
-        />
-        <MetricCard
-          detail={overviewCopy.metrics.atRiskLeads.detail}
-          label={overviewCopy.metrics.atRiskLeads.label}
-          tone={atRiskCount > 0 ? "red" : "neutral"}
-          value={atRiskCount}
-        />
-        <MetricCard
-          detail={overviewCopy.metrics.aiDraftsReady.detail}
-          label={overviewCopy.metrics.aiDraftsReady.label}
-          tone="blue"
-          value={aiDraftReadyCount}
-        />
-      </section>
 
       <section className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1.42fr)_minmax(300px,0.58fr)]">
         <div className="grid min-w-0 gap-3">

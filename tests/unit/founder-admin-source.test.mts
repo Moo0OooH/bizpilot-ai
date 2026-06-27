@@ -104,4 +104,43 @@ describe("Founder admin source safety", () => {
       true,
     );
   });
+
+  it("keeps founder admin panels scannable and cleanup controls readable", () => {
+    const pageSource = readFileSync("app/admin/page.tsx", "utf8");
+    const cleanupSource = readFileSync(
+      "components/admin/founder-test-cleanup-form.tsx",
+      "utf8",
+    );
+    const founderHandoffSource = readFileSync(
+      "app/(dashboard)/founder/page.tsx",
+      "utf8",
+    );
+
+    for (const required of [
+      "FounderHealthSection",
+      "FounderActivitySection",
+      "Production Health",
+      "Admin Inbox",
+      "Activity Log",
+      "xl:top-[5.75rem]",
+    ]) {
+      assert.equal(
+        pageSource.includes(required),
+        true,
+        `Founder admin page missing ${required}.`,
+      );
+    }
+
+    assert.equal(cleanupSource.includes("disabledButtonClass"), true);
+    assert.equal(cleanupSource.includes("var(--dash-danger-border)"), true);
+    assert.equal(cleanupSource.includes("var(--dash-danger-strong)"), true);
+    assert.equal(cleanupSource.includes("text-red-200"), false);
+    assert.equal(cleanupSource.includes("rounded-[14px]"), false);
+
+    assert.equal(founderHandoffSource.includes("Founder Admin Handoff"), true);
+    assert.equal(founderHandoffSource.includes("Admin surface map"), true);
+    assert.equal(founderHandoffSource.includes("Safety gates"), true);
+    assert.equal(founderHandoffSource.includes("Open Founder Admin"), true);
+    assert.equal(founderHandoffSource.includes("Phase 18B shell"), false);
+  });
 });

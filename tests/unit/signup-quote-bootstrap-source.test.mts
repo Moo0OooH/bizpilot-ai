@@ -34,11 +34,19 @@ describe("Signup quote bootstrap source safety", () => {
   it("stores signup business name for future workspace recovery", () => {
     const authSource = readFileSync("server/services/auth.service.ts", "utf8");
     const actionSource = readFileSync("server/actions/auth.actions.ts", "utf8");
+    const signupPageSource = readFileSync("app/auth/sign-up/page.tsx", "utf8");
 
     assert.equal(authSource.includes("businessName?: string"), true);
     assert.equal(authSource.includes("business_name: input.businessName"), true);
     assert.equal(authSource.includes("readMetadataText"), true);
     assert.equal(actionSource.includes("businessName,"), true);
+    assert.equal(actionSource.includes("workspaceBootstrapDeferred"), true);
+    assert.equal(
+      actionSource.includes("auth.signup.workspace_bootstrap_deferred"),
+      true,
+    );
+    assert.equal(signupPageSource.includes("htmlFor={fieldId}"), true);
+    assert.equal(signupPageSource.includes("id={fieldId}"), true);
   });
 
   it("exposes a guarded owner workspace recovery path", () => {

@@ -11,11 +11,13 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-26
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-19: Matched approved index.html topbar hierarchy: page title left, focused actions right, no global search clutter.
  * - 2026-05-23: Localized route context and actions through the central dashboard copy dictionary.
  * - 2026-05-26: Tightened responsive controls and made founder entry visible on desktop dashboards.
+ * - 2026-06-27: Rendered topbar route context as display text so page content owns the H1.
+ * - 2026-06-27: Kept the mobile action menu inside the viewport.
  * ============================================================
  */
 
@@ -112,9 +114,9 @@ export function DashboardTopbar({
     <header className="dashboard-topbar sticky top-0 z-20 shrink-0 border-b backdrop-blur">
       <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 px-3 py-2 sm:min-h-[60px] sm:flex-nowrap sm:gap-3 sm:px-5 md:px-6 lg:px-5">
         <div className="min-w-0 flex-1 basis-[12rem]">
-          <h1 className="truncate text-[16px] font-extrabold leading-[1.2] text-[var(--dash-text)] sm:text-[17px]">
+          <p className="truncate text-[16px] font-extrabold leading-[1.2] text-[var(--dash-text)] sm:text-[17px]">
             {pageContext.title}
-          </h1>
+          </p>
           <p className="mt-0.5 hidden truncate text-[11px] leading-4 text-[var(--dash-text-muted)] sm:block">
             {pageContext.subtitle}
           </p>
@@ -129,7 +131,7 @@ export function DashboardTopbar({
               <MoreIcon />
               <span className="hidden md:inline">{copy.actions.moreActions}</span>
             </summary>
-            <div className="absolute right-0 top-11 z-30 grid w-[220px] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)]">
+            <div className="absolute left-0 top-11 z-30 grid w-[min(220px,calc(100vw-1.5rem))] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)] sm:left-auto sm:right-0">
               <CopyButton
                 className="!w-full !justify-start"
                 failedLabel={copy.actions.copyFailed}

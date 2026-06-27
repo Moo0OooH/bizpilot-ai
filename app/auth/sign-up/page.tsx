@@ -8,10 +8,11 @@
  * - server/actions/auth.actions.ts
  * - components/auth/auth-ui.tsx
  * Author: MoOoH
- * Last Updated: 2026-05-23
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-19: Migrated to the single-centered-card AuthShell.
  * - 2026-05-23: Localized auth copy from the central language dictionary.
+ * - 2026-06-27: Added explicit input ids so signup labels stay accessible in browser QA.
  * ============================================================
  */
 
@@ -93,27 +94,32 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
               "organization",
             ],
             ["email", copy.email, "you@example.com", "email", "email", "email"],
-          ].map(([name, label, placeholder, icon, type, autoComplete]) => (
-            <label className={authLabelClassName} key={name}>
-              <span style={{ color: "var(--biz-page-text-soft)" }}>{label}</span>
-              <span className="relative block">
-                <AuthFieldIcon type={icon as "business" | "email" | "name"} />
-                <input
-                  autoComplete={autoComplete}
-                  className={authInputClassName}
-                  name={name}
-                  placeholder={placeholder}
-                  required
-                  style={{
-                    backgroundColor: "var(--surface)",
-                    borderColor: "var(--biz-border-medium)",
-                    color: "var(--biz-page-text)",
-                  }}
-                  type={type}
-                />
-              </span>
-            </label>
-          ))}
+          ].map(([name, label, placeholder, icon, type, autoComplete]) => {
+            const fieldId = `sign-up-${name}`;
+
+            return (
+              <label className={authLabelClassName} htmlFor={fieldId} key={name}>
+                <span style={{ color: "var(--biz-page-text-soft)" }}>{label}</span>
+                <span className="relative block">
+                  <AuthFieldIcon type={icon as "business" | "email" | "name"} />
+                  <input
+                    autoComplete={autoComplete}
+                    className={authInputClassName}
+                    id={fieldId}
+                    name={name}
+                    placeholder={placeholder}
+                    required
+                    style={{
+                      backgroundColor: "var(--surface)",
+                      borderColor: "var(--biz-border-medium)",
+                      color: "var(--biz-page-text)",
+                    }}
+                    type={type}
+                  />
+                </span>
+              </label>
+            );
+          })}
 
           <div className="sm:col-span-2">
             <AuthPasswordField
