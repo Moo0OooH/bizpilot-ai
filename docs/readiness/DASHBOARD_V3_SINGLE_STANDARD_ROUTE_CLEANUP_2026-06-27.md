@@ -3,9 +3,10 @@
 Date: 2026-06-27
 Repo: `E:\bizpilot-ai`
 Canonical branch: `main`
-Canonical commit at cleanup start: `db787e6276897cde48177ed05ff2a70230ee72fa`
+Canonical commit after cleanup docs: `a6b5ccef10f36478c6f9a633bb81fd72c9ca0c44`
 Production app URL: `https://bizpilo.com`
 Production Vercel project: `moo0ooohs-projects/bizpilot-ai`
+Current production deployment after final push: `bizpilot-6n75jwgnu-moo0ooohs-projects.vercel.app`
 Production Supabase project: `bizpilot-production` / `qfqendrqimqvkoojpjao`
 
 ## Decision
@@ -32,10 +33,16 @@ but it is no longer allowed to appear as a competing source of truth.
 - Vercel CLI authenticated as `moo0oooh`.
 - Confirmed the stale preview alias pointed at the deleted Dashboard V3 preview branch.
 - Removed alias `bizpilot-ai-git-codex-full-system-das-6f5dea-moo0ooohs-projects.vercel.app`.
-- Removed stale preview deployments:
+- Removed stale preview deployments tied to the deleted branch:
   - `bizpilot-i188fjl3j-moo0ooohs-projects.vercel.app`
   - `bizpilot-lognjt8fl-moo0ooohs-projects.vercel.app`
 - Verified the stale preview alias can no longer be inspected in Vercel CLI.
+- Removed 19 additional visible Preview deployments from earlier non-canonical
+  preview history.
+- Re-checked Vercel deployment pages; the current visible pages show Production
+  deployments only. Historical Production deployments remain for rollback
+  history, but the active public aliases point to the current Production
+  deployment.
 
 Production aliases remain:
 
