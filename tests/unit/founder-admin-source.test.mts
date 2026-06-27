@@ -87,6 +87,11 @@ describe("Founder admin source safety", () => {
     );
 
     assert.equal(pageSource.includes("FounderAdminCapabilityMatrix"), true);
+    assert.equal(pageSource.includes('return "users";'), true);
+    assert.equal(pageSource.includes('label: "Users", panel: "users"'), true);
+    assert.equal(pageSource.includes('label: "Businesses", panel: "businesses"'), true);
+    assert.equal(pageSource.indexOf('label: "Users", panel: "users"') < pageSource.indexOf('label: "Businesses", panel: "businesses"'), true);
+    assert.equal(pageSource.includes('User directory'), true);
     assert.equal(pageSource.includes("UserAccountSupportPanel"), true);
     assert.equal(pageSource.includes("UserDestructiveZone"), true);
     assert.equal(pageSource.includes("FounderAuthUserDeleteForm"), true);
@@ -103,6 +108,12 @@ describe("Founder admin source safety", () => {
       authDeleteSource.includes("Production-linked users cannot be deleted from this UI."),
       true,
     );
+
+    const serviceSource = readFileSync(
+      "server/services/founder-admin.service.ts",
+      "utf8",
+    );
+    assert.equal(serviceSource.includes("return founderUserPageSizes.has(pageSize) ? pageSize : 10;"), true);
   });
 
   it("keeps founder admin panels scannable and cleanup controls readable", () => {

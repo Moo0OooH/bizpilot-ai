@@ -623,7 +623,7 @@ select {
 }
 
 .homepage-hero-mockup {
-  max-inline-size: min(100%, 43rem);
+  max-inline-size: min(100%, 43.5rem);
 }
 
 .homepage-signal-board {
@@ -637,8 +637,10 @@ select {
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(90deg, transparent 0 19%, color-mix(in srgb, var(--warning) 12%, transparent) 19% 20%, transparent 20% 49%, color-mix(in srgb, var(--accent) 14%, transparent) 49% 51%, transparent 51% 79%, color-mix(in srgb, var(--primary) 10%, transparent) 79% 80%, transparent 80%),
-    radial-gradient(circle at 48% 50%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 14rem);
+    linear-gradient(90deg, transparent 0 28%, color-mix(in srgb, var(--warning) 8%, transparent) 28% 28.6%, transparent 28.6% 50%, color-mix(in srgb, var(--accent) 12%, transparent) 50% 50.8%, transparent 50.8% 75%, color-mix(in srgb, var(--primary) 8%, transparent) 75% 75.7%, transparent 75.7%),
+    radial-gradient(circle at 49% 50%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 13rem),
+    radial-gradient(circle at 15% 20%, color-mix(in srgb, var(--warning) 8%, transparent), transparent 12rem),
+    radial-gradient(circle at 84% 20%, color-mix(in srgb, var(--primary) 7%, transparent), transparent 11rem);
   content: "";
 }
 
@@ -657,7 +659,7 @@ select {
 }
 
 .homepage-chaos-clarity-flow {
-  grid-template-columns: minmax(0, 1fr) auto minmax(8.5rem, 0.72fr) auto minmax(0, 1.08fr);
+  grid-template-columns: minmax(11.5rem, 0.95fr) auto minmax(8rem, 0.56fr) auto minmax(12rem, 1.06fr);
 }
 
 .homepage-chaos-panel,
@@ -667,15 +669,17 @@ select {
 }
 
 .homepage-signal-panel {
-  border: 1px solid color-mix(in srgb, var(--border-default) 76%, transparent);
-  border-radius: 1rem;
-  padding: 0.75rem;
-  background: color-mix(in srgb, var(--surface) 91%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, white 48%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-default) 74%, transparent);
+  border-radius: 1.05rem;
+  padding: 0.85rem;
+  background: color-mix(in srgb, var(--surface) 94%, transparent);
+  box-shadow:
+    0 16px 36px rgba(15, 23, 42, 0.055),
+    inset 0 1px 0 color-mix(in srgb, white 48%, transparent);
 }
 
 .homepage-chaos-source-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .homepage-source-chip {
@@ -683,23 +687,58 @@ select {
   align-items: center;
   gap: 0.5rem;
   white-space: normal;
-  box-shadow: 0 10px 24px color-mix(in srgb, currentColor 8%, transparent);
+  color: var(--text-strong);
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.045);
 }
 
-.homepage-source-icon {
+.homepage-source-mark {
   display: grid;
-  block-size: 1.55rem;
-  inline-size: 1.55rem;
+  block-size: 1.72rem;
+  inline-size: 1.72rem;
   flex: 0 0 auto;
   place-items: center;
-  border-radius: 0.55rem;
+  border-radius: 0.6rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.homepage-source-mark svg {
+  width: 1rem;
+  height: 1rem;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.homepage-source-mark--website {
+  background: linear-gradient(135deg, #b45309, #f59e0b);
+}
+
+.homepage-source-mark--google {
+  background: linear-gradient(135deg, #4285f4, #34a853 52%, #fbbc05);
+}
+
+.homepage-source-mark--facebook {
+  background: #1877f2;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.05rem;
+}
+
+.homepage-source-mark--instagram {
+  background: radial-gradient(circle at 30% 110%, #fdf497 0 18%, #fd5949 42%, #d6249f 68%, #285aeb 100%);
+}
+
+.homepage-source-label {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
 }
 
 .homepage-signal-message {
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.045);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
 }
 
 .homepage-message-mark {
@@ -716,15 +755,25 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  min-inline-size: 1.65rem;
+  color: color-mix(in srgb, var(--accent) 62%, var(--text-muted));
 }
 
 .homepage-bizpilot-node {
   position: relative;
   align-self: center;
   box-shadow:
-    0 18px 42px color-mix(in srgb, var(--accent) 14%, transparent),
+    0 18px 46px color-mix(in srgb, var(--accent) 18%, transparent),
     inset 0 1px 0 color-mix(in srgb, white 42%, transparent);
+}
+
+.homepage-bizpilot-node::before {
+  position: absolute;
+  inset: -0.65rem;
+  z-index: -1;
+  border-radius: 1.35rem;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 18%, transparent), transparent 66%);
+  content: "";
 }
 
 .homepage-bizpilot-pulse {
@@ -741,7 +790,7 @@ select {
 }
 
 .homepage-signal-lead {
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045);
 }
 
 .homepage-priority-dot {
@@ -753,7 +802,7 @@ select {
 }
 
 .homepage-signal-draft {
-  box-shadow: 0 12px 32px color-mix(in srgb, var(--accent-decorative) 16%, transparent);
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--accent-decorative) 14%, transparent);
 }
 
 .homepage-draft-lines {
@@ -1088,6 +1137,20 @@ select {
   .homepage-hero-mockup {
     max-inline-size: min(100%, 41rem);
   }
+
+  .homepage-board-topline {
+    margin-block-end: 0.55rem;
+  }
+
+  .homepage-signal-panel,
+  .homepage-bizpilot-node,
+  .homepage-hero-draft-card {
+    padding: 0.65rem;
+  }
+
+  .homepage-chaos-messages > *:nth-child(n + 4) {
+    display: none;
+  }
 }
 
 @media (max-width: 767px) {
@@ -1142,11 +1205,15 @@ select {
 
   .homepage-signal-board {
     border-radius: 1rem;
-    padding: 0.65rem;
+    padding: 0.6rem;
   }
 
   .homepage-signal-board::before,
   .homepage-signal-rail {
+    display: none;
+  }
+
+  .homepage-board-topline {
     display: none;
   }
 
@@ -1158,7 +1225,7 @@ select {
   .homepage-bizpilot-node,
   .homepage-clarity-panel,
   .homepage-hero-draft-card {
-    padding: 0.55rem;
+    padding: 0.5rem;
   }
 
   .homepage-visual-heading {
@@ -1187,7 +1254,12 @@ select {
   .homepage-bizpilot-action-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.45rem;
-    margin-block-start: 0.55rem;
+    margin-block-start: 0;
+  }
+
+  .homepage-bizpilot-node .bp-copy-meta,
+  .homepage-bizpilot-pulse {
+    display: none;
   }
 
   .homepage-bizpilot-action-grid .bp-copy-status {

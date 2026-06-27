@@ -9,10 +9,11 @@
  * - server/repositories/founder-admin.repository.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-06-17
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-26: Sent a server user agent on Auth Admin REST fallback to avoid browser-agent secret-key rejection.
  * - 2026-06-17: Read Supabase admin credentials through the shared secret-key-compatible config.
+ * - 2026-06-27: Defaulted founder user review to a stable 10-row page for the admin console.
  * ============================================================
  */
 
@@ -212,7 +213,7 @@ export function readFounderUserPage(value: string | null | undefined): number {
 export function readFounderUserPageSize(value: string | null | undefined): number {
   const pageSize = Number.parseInt(value ?? "", 10);
 
-  return founderUserPageSizes.has(pageSize) ? pageSize : 5;
+  return founderUserPageSizes.has(pageSize) ? pageSize : 10;
 }
 
 export function readFounderTemporaryPassword(value: string): string {

@@ -143,6 +143,12 @@ P16 follow-up:
   for the Quote Setup custom-field type crash fix, field-type browser retest,
   and founder/admin business-route cleanup.
 
+P17 follow-up:
+
+- See `docs/readiness/P17_OWNER_AND_ADMIN_DASHBOARD_CLARITY_UPGRADE_2026-06-27.md`
+  for the Owner first-run Start Here path, Founder/Admin Users-first route
+  priority, 10-user directory default, and source standards applied.
+
 Safety notes:
 
 - No production cleanup or deletion action was executed.

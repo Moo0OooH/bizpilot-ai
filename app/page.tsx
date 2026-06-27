@@ -45,7 +45,6 @@ import {
   MarketingShell,
   marketingBackground,
   marketingTone,
-  type MarketingIconName,
 } from "@/components/public/marketing-ui";
 import { getHomeCopy } from "@/lib/i18n/home-copy";
 import {
@@ -114,26 +113,73 @@ function SectionTitle({
   );
 }
 
-function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
-  const sourceTones = [
-    marketingTone.gold,
-    marketingTone.blue,
-    marketingTone.teal,
-    marketingTone.red,
-  ] as const;
-  const sourceIcons: readonly MarketingIconName[] = [
-    "globe",
-    "search",
-    "message",
-    "phone",
-  ];
+function sourceChannelKey(source: string) {
+  const normalized = source.toLowerCase();
 
+  if (normalized.includes("google")) {
+    return "google";
+  }
+
+  if (normalized.includes("facebook")) {
+    return "facebook";
+  }
+
+  if (normalized.includes("instagram") || normalized.includes("text")) {
+    return "instagram";
+  }
+
+  if (normalized.includes("site") || normalized.includes("web")) {
+    return "website";
+  }
+
+  return "message";
+}
+
+function SourceChannelMark({ source }: Readonly<{ source: string }>) {
+  const channel = sourceChannelKey(source);
+
+  if (channel === "google") {
+    return (
+      <span aria-hidden className="homepage-source-mark homepage-source-mark--google">
+        G
+      </span>
+    );
+  }
+
+  if (channel === "facebook") {
+    return (
+      <span aria-hidden className="homepage-source-mark homepage-source-mark--facebook">
+        f
+      </span>
+    );
+  }
+
+  if (channel === "instagram") {
+    return (
+      <span aria-hidden className="homepage-source-mark homepage-source-mark--instagram">
+        <svg fill="none" viewBox="0 0 24 24">
+          <rect height="15" rx="4.25" width="15" x="4.5" y="4.5" />
+          <circle cx="12" cy="12" r="3.2" />
+          <circle cx="16.5" cy="7.5" r="0.8" />
+        </svg>
+      </span>
+    );
+  }
+
+  return (
+    <span aria-hidden className="homepage-source-mark homepage-source-mark--website">
+      <MarketingIcon name="globe" />
+    </span>
+  );
+}
+
+function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
   return (
     <div
       className="homepage-hero-mockup homepage-signal-board w-full rounded-[20px] border p-3 sm:p-4"
       style={{
         background:
-          "linear-gradient(135deg, color-mix(in srgb, var(--surface-elevated) 92%, var(--primary) 8%), var(--surface))",
+          "linear-gradient(135deg, color-mix(in srgb, var(--surface-elevated) 94%, var(--primary) 6%), color-mix(in srgb, var(--surface) 94%, var(--accent) 6%))",
         borderColor: "var(--border-strong)",
         boxShadow: "var(--shadow-lg)",
       }}
@@ -174,29 +220,19 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           </div>
 
           <div className="homepage-chaos-source-grid mt-3 grid gap-2">
-            {copy.sources.slice(0, 4).map((source, index) => (
+            {copy.sources.slice(0, 4).map((source) => (
               <span
-                className="homepage-source-chip bp-copy-status min-w-0 rounded-[12px] border px-2.5 py-2 text-[11px] font-black leading-4"
+                className={`homepage-source-chip homepage-source-chip--${sourceChannelKey(source)} bp-copy-status min-w-0 rounded-[12px] border px-2.5 py-2 text-[11px] font-black leading-4`}
                 key={source}
                 style={{
                   backgroundColor:
                     "color-mix(in srgb, var(--surface-interactive) 86%, var(--canvas))",
                   borderColor:
                     "color-mix(in srgb, var(--border-default) 78%, transparent)",
-                  color: sourceTones[index] ?? marketingTone.text,
                 }}
               >
-                <span
-                  aria-hidden
-                  className="homepage-source-icon"
-                  style={{
-                    backgroundColor:
-                      "color-mix(in srgb, currentColor 13%, var(--surface))",
-                  }}
-                >
-                  <MarketingIcon name={sourceIcons[index] ?? "message"} />
-                </span>
-                {source}
+                <SourceChannelMark source={source} />
+                <span className="homepage-source-label">{source}</span>
               </span>
             ))}
           </div>
@@ -227,9 +263,9 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           className="homepage-bizpilot-node min-w-0 rounded-[16px] border p-3"
           style={{
             backgroundColor:
-              "color-mix(in srgb, var(--accent) 10%, var(--surface-elevated))",
+              "color-mix(in srgb, var(--accent) 12%, var(--surface-elevated))",
             borderColor:
-              "color-mix(in srgb, var(--accent) 36%, var(--border-default))",
+              "color-mix(in srgb, var(--accent) 42%, var(--border-default))",
           }}
         >
           <p className="bp-copy-card-title min-h-0 text-[16px] font-black" style={{ color: "var(--text-strong)" }}>
@@ -249,7 +285,8 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
                 className="bp-copy-status inline-flex min-w-0 items-center gap-2 rounded-[10px] px-2.5 py-1.5 text-[11px] font-black"
                 key={action}
                 style={{
-                  backgroundColor: "var(--surface)",
+                  backgroundColor:
+                    "color-mix(in srgb, var(--surface) 92%, var(--accent) 8%)",
                   color: "var(--text-strong)",
                 }}
               >

@@ -948,11 +948,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "Local services - cleaning first",
       body:
-        "Requests arrive from your website, Google, social, texts, and missed calls. BizPilot turns messy messages into a clear queue, a draft, and the next manual step.",
+        "Quotes scatter across website, Google, Facebook, Instagram, texts, and missed calls. BizPilot turns them into one owner-reviewed queue with a draft ready to copy.",
       bullets: [
-        "Capture every request",
-        "Know what needs a reply first",
-        "Review the draft, then copy and send",
+        "One queue for every channel",
+        "Reply to hot requests first",
+        "Review the draft before sending",
       ],
       note: "Founder-led pilot. Approval required. No auto-send.",
       primaryCta: "Join the pilot",
@@ -994,7 +994,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         "Do you service condos?",
         "I called yesterday...",
       ],
-      sources: ["Website", "Google", "Facebook", "Instagram/Text"],
+      sources: ["Website", "Google", "Facebook", "Instagram / Text"],
     },
     preview: {
       badges: ["No auto-send", "No invented price", "No booking confirmation"],
@@ -1919,11 +1919,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "Services locaux - nettoyage d'abord",
       body:
-        "Les demandes arrivent du site web, Google, réseaux sociaux, textos et appels manqués. BizPilot en fait une file claire, un brouillon et la prochaine étape manuelle.",
+        "Les demandes arrivent du site web, Google, Facebook, Instagram, textos et appels manqués. BizPilot les transforme en file claire avec un brouillon à valider.",
       bullets: [
-        "Capter chaque demande",
-        "Voir qui répondre d'abord",
-        "Valider le brouillon, puis copier et envoyer",
+        "Une file pour chaque canal",
+        "Répondre d'abord aux demandes chaudes",
+        "Valider le brouillon avant l'envoi",
       ],
       note: "Projet pilote guidé. Approbation requise. Aucun envoi automatique.",
       primaryCta: "Rejoindre le pilote",
@@ -1966,7 +1966,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Servez-vous les condos?",
         "J'ai appelé hier...",
       ],
-      sources: ["Site web", "Google", "Facebook", "Instagram/Textos"],
+      sources: ["Site web", "Google", "Facebook", "Instagram / textos"],
     },
     preview: {
       badges: [

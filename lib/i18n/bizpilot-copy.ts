@@ -19,6 +19,7 @@
  * - 2026-06-25: Polished owner-review wording in dashboard and status helper copy.
  * - 2026-06-26: Removed legacy owner-heavy and desk wording before Dashboard D1.
  * - 2026-06-27: Clarified Quote Setup choice-option help for time-window custom fields.
+ * - 2026-06-27: Added owner first-run setup guidance copy for the dashboard overview.
  * ============================================================
  */
 
@@ -567,6 +568,13 @@ type DashboardOverviewCopy = Readonly<{
   heroBadge: string;
   heroDescription: string;
   heroTitle: (count: number) => string;
+  startGuide: Readonly<{
+    description: string;
+    done: string;
+    items: ReadonlyArray<readonly [string, string]>;
+    next: string;
+    title: string;
+  }>;
   commandFlow: Readonly<{
     description: string;
     items: ReadonlyArray<readonly [string, string]>;
@@ -1542,6 +1550,18 @@ const englishCopy: BizPilotCopy = {
         count === 1
           ? "1 quote request needs attention today."
           : `${count} quote requests need attention today.`,
+      startGuide: {
+        description:
+          "A calm launch path for the first owner session. Finish only the next useful step.",
+        done: "Done",
+        items: [
+          ["Finish quote setup", "Confirm services, areas, questions, privacy, and branding."],
+          ["Share the quote link", "Copy the public link when readiness is complete."],
+          ["Review new requests", "Open the queue, reply manually, then record the outcome."],
+        ],
+        next: "Next",
+        title: "Start here",
+      },
       commandFlow: {
         description:
           "Keep the day tight: capture requests, prioritize urgency, review the draft, then send manually outside BizPilot.",
@@ -2990,6 +3010,18 @@ const frenchCopy: BizPilotCopy = {
         "Répondez pendant que le client compare encore ses options. BizPilot organise les demandes urgentes, prépare une réponse et vous garde en contrôle.",
       heroTitle: (count) =>
         `${count} demande${count === 1 ? "" : "s"} de soumission demandent votre attention aujourd'hui.`,
+      startGuide: {
+        description:
+          "Un lancement calme pour la première session du responsable. Terminez seulement la prochaine étape utile.",
+        done: "Terminé",
+        items: [
+          ["Terminer la configuration", "Confirmez les services, zones, questions, confidentialité et marque."],
+          ["Partager le lien de soumission", "Copiez le lien public quand la préparation est complète."],
+          ["Réviser les nouvelles demandes", "Ouvrez la file, répondez manuellement, puis notez le résultat."],
+        ],
+        next: "Suivant",
+        title: "Commencer ici",
+      },
       commandFlow: {
         description:
           "Gardez la journée claire: capturer les demandes, prioriser l'urgence, valider le brouillon, puis envoyer manuellement hors BizPilot.",

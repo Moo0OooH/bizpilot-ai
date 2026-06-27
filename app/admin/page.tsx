@@ -17,6 +17,7 @@
  * - 2026-06-19: Read the shared theme preference cookie while preserving legacy dashboard theme fallback.
  * - 2026-06-27: Added panel headings and loosened dense admin control grids.
  * - 2026-06-27: Split business-selection URLs from user paging/filter URLs.
+ * - 2026-06-27: Promoted Users as the default admin control lane and made business routes explicit.
  * ============================================================
  */
 
@@ -451,7 +452,7 @@ function readAdminPanel(value: string | undefined): AdminPanel {
     return value;
   }
 
-  return "businesses";
+  return "users";
 }
 
 function matchesQuery(values: ReadonlyArray<string | null | undefined>, query: string) {
@@ -636,7 +637,7 @@ function adminBusinessHref(
   const search = new URLSearchParams();
 
   for (const [key, value] of Object.entries(merged)) {
-    if (value && value !== "businesses") {
+    if (value) {
       search.set(key, value);
     }
   }
@@ -2233,17 +2234,18 @@ function FounderUsersSection({
         usersTotal={usersTotal}
       />
 
-      <FounderAdminCapabilityMatrix />
-
       <DashboardCard className="space-y-4 p-4 sm:p-5" variant="elevated">
-        <details>
-          <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+        <section aria-labelledby="founder-users-list-title">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-black text-[var(--dash-text)]">
-                Users and auth tools
+              <p
+                className="text-sm font-black text-[var(--dash-text)]"
+                id="founder-users-list-title"
+              >
+                User directory
               </p>
               <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                Search auth users, recover workspaces, and open account-level tools.
+                Search first, then expand one user for account, workspace, and gated support tools.
               </p>
             </div>
             <div className="flex flex-wrap gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
@@ -2258,7 +2260,7 @@ function FounderUsersSection({
                 {usersSearchMode === "auth_filter" ? "Search indexed" : "Paged"}
               </span>
             </div>
-          </summary>
+          </div>
 
           <div className="mt-4 grid gap-4">
 
@@ -2327,8 +2329,8 @@ function FounderUsersSection({
             defaultValue={String(usersPageSize)}
             name="userPageSize"
           >
-            <option value="5">5 users</option>
             <option value="10">10 users</option>
+            <option value="5">5 users</option>
           </select>
         </label>
         <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
@@ -2530,8 +2532,10 @@ function FounderUsersSection({
         </div>
       </div>
           </div>
-        </details>
+        </section>
       </DashboardCard>
+
+      <FounderAdminCapabilityMatrix />
     </div>
   );
 }
@@ -2907,10 +2911,10 @@ function AdminTabsBar({
     label: string;
     panel: AdminPanel;
   }> = [
-    { count: totals.businesses, label: "Businesses", panel: "businesses" },
     { count: usersTotal, label: "Users", panel: "users" },
-    { label: "Health", panel: "health" },
+    { count: totals.businesses, label: "Businesses", panel: "businesses" },
     { label: "Leads", panel: "leads" },
+    { label: "Health", panel: "health" },
     { label: "Activity", panel: "activity" },
   ];
 

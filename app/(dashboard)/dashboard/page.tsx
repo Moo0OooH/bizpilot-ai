@@ -15,6 +15,7 @@
  * - 2026-05-19: Rebuilt the overview from the approved index.html source of truth with workflow-first hierarchy.
  * - 2026-06-27: Promoted the overview hero title to the page H1 after topbar heading cleanup.
  * - 2026-06-27: Consolidated the owner command lane and KPI strip into one calmer action board.
+ * - 2026-06-27: Added a first-run Start Here path for owner setup, sharing, and lead review.
  * ============================================================
  */
 
@@ -194,6 +195,21 @@ export default async function DashboardOverviewPage() {
     (readiness.completed / Math.max(readiness.total, 1)) * 100,
   );
   const missingReadinessItems = readiness.items.filter((item) => !item.complete);
+  const firstMissingReadinessLabel = missingReadinessItems[0]
+    ? (dashboardCopy.readinessTasks[
+        missingReadinessItems[0].taskKey as keyof typeof dashboardCopy.readinessTasks
+      ] ?? missingReadinessItems[0].label)
+    : null;
+  const startGuideLinks = [
+    "/dashboard/configuration",
+    quotePath,
+    "/dashboard/leads",
+  ] as const;
+  const startGuideDoneStates = [
+    missingReadinessItems.length === 0,
+    newQuoteCount > 0,
+    desk.leads.length > 0 && needsReplyCount + atRiskCount === 0,
+  ] as const;
   const featuredLeadName =
     featuredLead?.lead.customer_name ?? overviewCopy.featuredFallbackCustomer;
   const featuredLeadService =
@@ -281,6 +297,54 @@ export default async function DashboardOverviewPage() {
             <span className="font-extrabold text-[var(--dash-text)]">{overviewCopy.suggestedNextAction}</span>{" "}
             {featuredNextAction}
           </div>
+        </div>
+      </DashboardCard>
+
+      <DashboardCard className="p-3.5 sm:p-4" variant="elevated">
+        <SectionHeader
+          action={
+            <StatusBadge tone={missingReadinessItems.length === 0 ? "emerald" : "amber"}>
+              {missingReadinessItems.length === 0
+                ? overviewCopy.readiness.ready
+                : overviewCopy.readiness.tasksLeft(missingReadinessItems.length)}
+            </StatusBadge>
+          }
+          description={
+            firstMissingReadinessLabel
+              ? `${overviewCopy.startGuide.description} ${overviewCopy.startGuide.next}: ${firstMissingReadinessLabel}`
+              : overviewCopy.startGuide.description
+          }
+          title={overviewCopy.startGuide.title}
+        />
+        <div className="mt-3 grid gap-2 md:grid-cols-3">
+          {overviewCopy.startGuide.items.map(([title, detail], index) => {
+            const done = Boolean(startGuideDoneStates[index]);
+
+            return (
+              <Link
+                className="grid min-h-[98px] grid-cols-[2rem_minmax(0,1fr)] gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                href={startGuideLinks[index] ?? "/dashboard"}
+                key={title}
+              >
+                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--dash-primary-soft)] text-[12px] font-black text-[var(--dash-primary)]">
+                  {index + 1}
+                </span>
+                <span className="min-w-0">
+                  <span className="flex flex-wrap items-center gap-2">
+                    <span className="text-[13px] font-black text-[var(--dash-text)]">
+                      {title}
+                    </span>
+                    <StatusBadge tone={done ? "emerald" : "blue"}>
+                      {done ? overviewCopy.startGuide.done : overviewCopy.startGuide.next}
+                    </StatusBadge>
+                  </span>
+                  <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                    {detail}
+                  </span>
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </DashboardCard>
 

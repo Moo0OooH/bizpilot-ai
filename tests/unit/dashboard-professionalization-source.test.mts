@@ -17,6 +17,9 @@ describe("P12 dashboard professionalization source guards", () => {
     const copySource = readFileSync("lib/i18n/bizpilot-copy.ts", "utf8");
 
     assert.equal(overviewSource.includes("overviewCopy.commandFlow"), true);
+    assert.equal(overviewSource.includes("overviewCopy.startGuide"), true);
+    assert.equal(copySource.includes("Start here"), true);
+    assert.equal(copySource.includes("Finish quote setup"), true);
     assert.equal(copySource.includes("Today's manual recovery lane"), true);
     assert.equal(copySource.includes("Manual send"), true);
     assert.equal(copySource.includes("Owner copies, edits, and sends."), true);
