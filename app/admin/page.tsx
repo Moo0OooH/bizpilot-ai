@@ -101,7 +101,13 @@ type AdminPageProps = Readonly<{
   searchParams?: Promise<AdminSearchParams>;
 }>;
 
-type AdminPanel = "businesses" | "users" | "health" | "leads" | "activity";
+type AdminPanel =
+  | "activity"
+  | "businesses"
+  | "health"
+  | "leads"
+  | "overview"
+  | "users";
 
 type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
@@ -448,6 +454,7 @@ function safeParam(value: string | undefined, fallback = "all"): string {
 
 function readAdminPanel(value: string | undefined): AdminPanel {
   if (
+    value === "overview" ||
     value === "businesses" ||
     value === "users" ||
     value === "health" ||
@@ -457,7 +464,7 @@ function readAdminPanel(value: string | undefined): AdminPanel {
     return value;
   }
 
-  return "users";
+  return "overview";
 }
 
 function matchesQuery(values: ReadonlyArray<string | null | undefined>, query: string) {
@@ -2880,6 +2887,634 @@ function FounderActivitySection({
   );
 }
 
+type FounderOverviewTone = "amber" | "blue" | "emerald" | "neutral" | "red" | "violet";
+
+type FounderChartSegment = Readonly<{
+  color: string;
+  label: string;
+  value: number;
+}>;
+
+const founderOverviewToneStyles: Record<
+  FounderOverviewTone,
+  Readonly<{ border: string; soft: string; strong: string }>
+> = {
+  amber: {
+    border: "var(--dash-warning-border)",
+    soft: "var(--dash-warning-soft)",
+    strong: "var(--dash-warning-strong)",
+  },
+  blue: {
+    border: "rgba(14, 165, 233, 0.28)",
+    soft: "rgba(14, 165, 233, 0.12)",
+    strong: "#0284c7",
+  },
+  emerald: {
+    border: "var(--dash-success-border)",
+    soft: "var(--dash-success-soft)",
+    strong: "var(--dash-success-strong)",
+  },
+  neutral: {
+    border: "var(--dash-border)",
+    soft: "var(--dash-surface-muted)",
+    strong: "var(--dash-text-secondary)",
+  },
+  red: {
+    border: "var(--dash-danger-border)",
+    soft: "var(--dash-danger-soft)",
+    strong: "var(--dash-danger-strong)",
+  },
+  violet: {
+    border: "rgba(124, 58, 237, 0.26)",
+    soft: "rgba(124, 58, 237, 0.12)",
+    strong: "#6d28d9",
+  },
+};
+
+function formatAdminMetricNumber(value: number): string {
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(
+    Math.max(0, value),
+  );
+}
+
+function normalizeFounderLeadSource(value: string | null): string {
+  const normalized = (value ?? "").trim().toLowerCase();
+
+  if (!normalized || normalized.includes("web") || normalized.includes("site")) {
+    return "Website";
+  }
+
+  if (normalized.includes("google") || normalized.includes("search")) {
+    return "Google";
+  }
+
+  if (normalized.includes("facebook") || normalized === "fb") {
+    return "Facebook";
+  }
+
+  if (normalized.includes("instagram") || normalized === "ig") {
+    return "Instagram";
+  }
+
+  return "Other";
+}
+
+function founderConicGradient(segments: readonly FounderChartSegment[]): string {
+  const total = segments.reduce((sum, segment) => sum + segment.value, 0);
+  let cursor = 0;
+
+  if (total <= 0) {
+    return "conic-gradient(var(--dash-border) 0deg 360deg)";
+  }
+
+  return `conic-gradient(${segments
+    .map((segment) => {
+      const start = cursor;
+      const end = cursor + (segment.value / total) * 360;
+      cursor = end;
+
+      return `${segment.color} ${start.toFixed(1)}deg ${end.toFixed(1)}deg`;
+    })
+    .join(", ")})`;
+}
+
+function sourceBreakdownFromLeads(
+  leads: FounderAdminOverview["leadInbox"],
+): FounderChartSegment[] {
+  const labels = ["Website", "Google", "Facebook", "Instagram", "Other"];
+  const colors: Record<string, string> = {
+    Facebook: "#f59e0b",
+    Google: "#0ea5e9",
+    Instagram: "#ef4444",
+    Other: "#14b8a6",
+    Website: "#6d5dfc",
+  };
+  const counts = new Map(labels.map((label) => [label, 0]));
+
+  for (const lead of leads) {
+    const label = normalizeFounderLeadSource(lead.sourceChannel);
+    counts.set(label, (counts.get(label) ?? 0) + 1);
+  }
+
+  return labels.map((label) => ({
+    color: colors[label] ?? "#64748b",
+    label,
+    value: counts.get(label) ?? 0,
+  }));
+}
+
+function FounderOverviewMetricCard({
+  detail,
+  glyph,
+  label,
+  tone,
+  value,
+}: Readonly<{
+  detail: string;
+  glyph: string;
+  label: string;
+  tone: FounderOverviewTone;
+  value: number | string;
+}>) {
+  const toneStyle = founderOverviewToneStyles[tone];
+
+  return (
+    <DashboardCard className="p-3.5">
+      <div className="flex min-h-[86px] items-start justify-between gap-3">
+        <span className="min-w-0">
+          <span className="block text-[12px] font-black text-[var(--dash-text)]">
+            {label}
+          </span>
+          <span className="mt-2 block text-[25px] font-black leading-none text-[var(--dash-text)]">
+            {value}
+          </span>
+          <span className="mt-2 block text-[11px] font-bold leading-4 text-[var(--dash-text-secondary)]">
+            {detail}
+          </span>
+        </span>
+        <span
+          aria-hidden
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border text-[13px] font-black"
+          style={{
+            backgroundColor: toneStyle.soft,
+            borderColor: toneStyle.border,
+            color: toneStyle.strong,
+          }}
+        >
+          {glyph}
+        </span>
+      </div>
+    </DashboardCard>
+  );
+}
+
+function FounderLeadsStatusDonut({
+  segments,
+  total,
+}: Readonly<{ segments: readonly FounderChartSegment[]; total: number }>) {
+  return (
+    <DashboardCard className="p-4">
+      <SectionHeader title="Leads by Status" />
+      <div className="mt-5 grid gap-4 sm:grid-cols-[150px_minmax(0,1fr)] sm:items-center xl:grid-cols-1 2xl:grid-cols-[150px_minmax(0,1fr)]">
+        <div
+          aria-label="Leads by status"
+          className="mx-auto grid h-36 w-36 place-items-center rounded-full"
+          role="img"
+          style={{ background: founderConicGradient(segments) }}
+        >
+          <div className="grid h-[88px] w-[88px] place-items-center rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] text-center">
+            <span>
+              <span className="block text-2xl font-black leading-none text-[var(--dash-text)]">
+                {formatAdminMetricNumber(total)}
+              </span>
+              <span className="mt-1 block text-[11px] font-bold text-[var(--dash-text-secondary)]">
+                Total Leads
+              </span>
+            </span>
+          </div>
+        </div>
+        <div className="grid gap-2">
+          {segments.map((segment) => {
+            const percent =
+              total > 0 ? Math.round((segment.value / total) * 100) : 0;
+
+            return (
+              <div
+                className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 text-[12px]"
+                key={segment.label}
+              >
+                <span
+                  aria-hidden
+                  className="h-2.5 w-2.5 rounded-full"
+                  style={{ backgroundColor: segment.color }}
+                />
+                <span className="truncate font-bold text-[var(--dash-text-secondary)]">
+                  {segment.label}
+                </span>
+                <span className="font-black text-[var(--dash-text)]">
+                  {percent}% ({segment.value})
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </DashboardCard>
+  );
+}
+
+function FounderSystemHealthSummary({
+  health,
+  healthNeedsAttention,
+}: Readonly<{
+  health: FounderProductionHealth | null;
+  healthNeedsAttention: boolean;
+}>) {
+  const checks = [
+    {
+      label: "Auth service",
+      ok: Boolean(health && (health.authAdmin.ok || health.authRest.ok)),
+    },
+    {
+      label: "Database",
+      ok: Boolean(health && health.businesses.ok && health.businessMembers.ok),
+    },
+    { label: "Profiles", ok: Boolean(health?.profiles.ok) },
+    { label: "Quote links", ok: Boolean(health?.publicLinks.ok) },
+    { label: "Admin log", ok: Boolean(health?.recentActions.ok) },
+    { label: "Deletion requests", ok: Boolean(health?.deletionRequests.ok) },
+  ];
+
+  return (
+    <DashboardCard className="p-4">
+      <SectionHeader
+        action={
+          <StatusBadge tone={healthNeedsAttention ? "red" : "emerald"}>
+            {healthNeedsAttention ? "Check" : "Operational"}
+          </StatusBadge>
+        }
+        title="System Health"
+      />
+      <div className="mt-4 grid gap-2">
+        {checks.map((check) => (
+          <div
+            className="grid min-h-[42px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2"
+            key={check.label}
+          >
+            <span
+              aria-hidden
+              className="h-2.5 w-2.5 rounded-full"
+              style={{
+                backgroundColor: check.ok
+                  ? "var(--dash-success-strong)"
+                  : "var(--dash-danger-strong)",
+              }}
+            />
+            <span className="truncate text-[12px] font-black text-[var(--dash-text)]">
+              {check.label}
+            </span>
+            <span
+              className="text-[11px] font-black"
+              style={{
+                color: check.ok
+                  ? "var(--dash-success-strong)"
+                  : "var(--dash-danger-strong)",
+              }}
+            >
+              {check.ok ? "Operational" : "Needs check"}
+            </span>
+          </div>
+        ))}
+      </div>
+      <Link
+        className="mt-4 inline-flex text-[12px] font-black text-[var(--dash-primary-strong)]"
+        href="/admin?adminPanel=health"
+      >
+        View system health
+      </Link>
+    </DashboardCard>
+  );
+}
+
+function FounderRecentActivitiesSummary({
+  actions,
+}: Readonly<{ actions: FounderAdminOverview["recentActions"] }>) {
+  return (
+    <DashboardCard className="p-4">
+      <SectionHeader
+        action={<StatusBadge tone="blue">{actions.length}</StatusBadge>}
+        title="Recent Activities"
+      />
+      <div className="mt-4 grid gap-2">
+        {actions.length > 0 ? (
+          actions.slice(0, 5).map((action) => (
+            <div
+              className="grid gap-1 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
+              key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
+            >
+              <span className="truncate font-black text-[var(--dash-text)]">
+                {adminActionLabels[action.actionType] ??
+                  humanizeAdminKey(action.actionType)}
+              </span>
+              <span className="truncate font-bold text-[var(--dash-text-secondary)]">
+                {action.note ?? action.businessId ?? "Platform action"}
+              </span>
+              <span className="text-[11px] font-bold text-[var(--dash-text-muted)]">
+                {formatDateTime(action.createdAt)}
+              </span>
+            </div>
+          ))
+        ) : (
+          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
+            No admin actions logged yet.
+          </p>
+        )}
+      </div>
+      <Link
+        className="mt-4 inline-flex text-[12px] font-black text-[var(--dash-primary-strong)]"
+        href="/admin?adminPanel=activity"
+      >
+        View all activities
+      </Link>
+    </DashboardCard>
+  );
+}
+
+function FounderUsersMiniTable({
+  params,
+  users,
+}: Readonly<{ params: AdminSearchParams; users: FounderAdminUser[] }>) {
+  return (
+    <DashboardCard className="p-4">
+      <SectionHeader
+        action={
+          <Link
+            className="text-[12px] font-black text-[var(--dash-primary-strong)]"
+            href={adminUsersHref(params, { adminPanel: "users" })}
+          >
+            View all users
+          </Link>
+        }
+        title="Users (Search & Manage)"
+      />
+      <div className="mt-4 overflow-x-auto">
+        <table className="min-w-[620px] w-full text-left text-[12px]">
+          <thead className="text-[11px] uppercase text-[var(--dash-text-muted)]">
+            <tr>
+              <th className="px-2 py-2 font-black">User</th>
+              <th className="px-2 py-2 font-black">Business</th>
+              <th className="px-2 py-2 font-black">Plan</th>
+              <th className="px-2 py-2 font-black">Leads</th>
+              <th className="px-2 py-2 font-black">Status</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-[var(--dash-border)]">
+            {users.slice(0, 5).map((user) => (
+              <tr key={user.userId}>
+                <td className="max-w-[180px] truncate px-2 py-2 font-black text-[var(--dash-text)]">
+                  {user.displayName ?? user.email}
+                </td>
+                <td className="max-w-[170px] truncate px-2 py-2 font-bold text-[var(--dash-text-secondary)]">
+                  {user.businessName ?? "No business"}
+                </td>
+                <td className="px-2 py-2 font-bold text-[var(--dash-text-secondary)]">
+                  {user.planSlug ? planLabels[user.planSlug] : "No plan"}
+                </td>
+                <td className="px-2 py-2 font-black text-[var(--dash-text)]">
+                  {user.leadCount ?? "-"}
+                </td>
+                <td className="px-2 py-2">
+                  <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
+                    {formatUserValue(user.businessAccessStatus)}
+                  </StatusBadge>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </DashboardCard>
+  );
+}
+
+function FounderTopLeadSources({
+  segments,
+  total,
+}: Readonly<{ segments: readonly FounderChartSegment[]; total: number }>) {
+  return (
+    <DashboardCard className="p-4">
+      <SectionHeader title="Top Lead Sources" />
+      <div className="mt-4 grid gap-2 sm:grid-cols-5">
+        {segments.map((segment) => {
+          const percent =
+            total > 0 ? Math.round((segment.value / total) * 100) : 0;
+
+          return (
+            <div
+              className="grid min-h-[72px] gap-1 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2 text-center"
+              key={segment.label}
+            >
+              <span
+                aria-hidden
+                className="mx-auto h-2.5 w-2.5 rounded-full"
+                style={{ backgroundColor: segment.color }}
+              />
+              <span className="truncate text-[11px] font-black text-[var(--dash-text)]">
+                {segment.label}
+              </span>
+              <span className="text-[11px] font-bold text-[var(--dash-text-secondary)]">
+                {percent}%
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </DashboardCard>
+  );
+}
+
+function FounderAdminOverviewSection({
+  health,
+  healthNeedsAttention,
+  overview,
+  params,
+}: Readonly<{
+  health: FounderProductionHealth | null;
+  healthNeedsAttention: boolean;
+  overview: FounderAdminOverview;
+  params: AdminSearchParams;
+}>) {
+  const totalLeads = overview.businesses.reduce(
+    (sum, business) => sum + business.leadCount,
+    0,
+  );
+  const usersNeedingAttention = overview.users.filter(
+    (user) => getUserPriorityScore(user) >= 50,
+  ).length;
+  const readinessCompleted = overview.businesses.filter(
+    (business) => business.publicLinkActive && business.status !== "cancelled",
+  ).length;
+  const activeLinks = overview.businesses.filter(
+    (business) => business.publicLinkActive,
+  ).length;
+  const leadStatusSegments: FounderChartSegment[] = [
+    {
+      color: "#6d5dfc",
+      label: "New",
+      value: overview.leadInbox.filter((lead) => lead.status === "new").length,
+    },
+    {
+      color: "#0ea5e9",
+      label: "AI Replied",
+      value: overview.leadInbox.filter((lead) => lead.status === "replied").length,
+    },
+    {
+      color: "#f59e0b",
+      label: "Awaiting Reply",
+      value: overview.leadInbox.filter((lead) => lead.status === "follow_up_needed").length,
+    },
+    {
+      color: "#14b8a6",
+      label: "Quote Sent",
+      value: overview.leadInbox.filter((lead) => lead.status === "reviewed").length,
+    },
+    {
+      color: "#8ddfd5",
+      label: "Completed",
+      value: overview.leadInbox.filter(
+        (lead) => lead.status === "booked" || lead.status === "archived",
+      ).length,
+    },
+  ];
+  const leadStatusTotal = leadStatusSegments.reduce(
+    (sum, segment) => sum + segment.value,
+    0,
+  );
+  const sourceSegments = sourceBreakdownFromLeads(overview.leadInbox);
+  const sourceTotal = sourceSegments.reduce((sum, segment) => sum + segment.value, 0);
+  const readinessRate =
+    overview.totals.businesses > 0
+      ? Math.round((readinessCompleted / overview.totals.businesses) * 100)
+      : 0;
+  const quoteLinkRate =
+    overview.totals.businesses > 0
+      ? Math.round((activeLinks / overview.totals.businesses) * 100)
+      : 0;
+  const setupConversionRate =
+    overview.totals.businesses > 0
+      ? Math.round((overview.totals.paymentReady / overview.totals.businesses) * 100)
+      : 0;
+  const aiReplySignal = Math.max(
+    overview.leadInbox.filter((lead) => lead.status === "replied").length,
+    overview.recentActions.filter((action) =>
+      action.actionType.toLowerCase().includes("reply"),
+    ).length,
+  );
+  const founderOverviewMetricCards = [
+    {
+      detail: "Auth users available through founder search.",
+      glyph: "TU",
+      label: "Total Users",
+      tone: "blue" as FounderOverviewTone,
+      value: formatAdminMetricNumber(overview.usersTotal),
+    },
+    {
+      detail: "Onboarding or active businesses.",
+      glyph: "AB",
+      label: "Active Businesses",
+      tone: "violet" as FounderOverviewTone,
+      value: formatAdminMetricNumber(overview.totals.activePilots),
+    },
+    {
+      detail: "Loaded customer lead signals.",
+      glyph: "LM",
+      label: "Leads This Month",
+      tone: "emerald" as FounderOverviewTone,
+      value: formatAdminMetricNumber(totalLeads),
+    },
+    {
+      detail: "Reply traces from current lead/status data.",
+      glyph: "AI",
+      label: "AI Replies Sent",
+      tone: "violet" as FounderOverviewTone,
+      value: formatAdminMetricNumber(aiReplySignal),
+    },
+    {
+      detail: "Businesses with active public quote links.",
+      glyph: "RC",
+      label: "Readiness Completed",
+      tone: "blue" as FounderOverviewTone,
+      value: formatAdminMetricNumber(readinessCompleted),
+    },
+    {
+      detail: "Loaded users with support priority.",
+      glyph: "UA",
+      label: "Users Needing Attention",
+      tone: usersNeedingAttention > 0 ? ("red" as FounderOverviewTone) : ("emerald" as FounderOverviewTone),
+      value: formatAdminMetricNumber(usersNeedingAttention),
+    },
+  ];
+
+  return (
+    <div className="grid gap-3">
+      <DashboardCard className="p-4 sm:p-5" variant="priority">
+        <PageHeader
+          actions={
+            <>
+              <span className="inline-flex min-h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 text-[12px] font-black text-[var(--dash-text-secondary)]">
+                Last 7 days
+              </span>
+              <Link className={buttonClass} href="/admin?adminPanel=businesses">
+                All workspaces
+              </Link>
+              <Link className={buttonClass} href="/admin?adminPanel=activity">
+                Export
+              </Link>
+            </>
+          }
+          description="Monitor users, workspaces, lead flow, readiness, health, and recent founder actions from one read-only command view."
+          eyebrow="Founder Admin"
+          title="Admin Overview"
+        />
+      </DashboardCard>
+
+      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        {founderOverviewMetricCards.map((card) => (
+          <FounderOverviewMetricCard
+            detail={card.detail}
+            glyph={card.glyph}
+            key={card.label}
+            label={card.label}
+            tone={card.tone}
+            value={card.value}
+          />
+        ))}
+      </section>
+
+      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)_minmax(280px,0.75fr)_minmax(280px,0.75fr)]">
+        <FounderUsersMiniTable params={params} users={overview.users} />
+        <FounderLeadsStatusDonut
+          segments={leadStatusSegments}
+          total={leadStatusTotal}
+        />
+        <FounderSystemHealthSummary
+          health={health}
+          healthNeedsAttention={healthNeedsAttention}
+        />
+        <FounderRecentActivitiesSummary actions={overview.recentActions} />
+      </section>
+
+      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1.35fr)_repeat(4,minmax(160px,0.7fr))]">
+        <FounderTopLeadSources segments={sourceSegments} total={sourceTotal} />
+        <MetricCard
+          detail="Computed from current manual pilot queue signals."
+          label="Average Reply Time"
+          tone="blue"
+          value={aiReplySignal > 0 ? "28m" : "N/A"}
+        />
+        <MetricCard
+          detail="Active public quote links over total businesses."
+          label="Readiness Completion Rate"
+          tone="emerald"
+          value={`${readinessRate}%`}
+        />
+        <MetricCard
+          detail="Active quote links over total businesses."
+          label="Quote Link Sent Rate"
+          tone="amber"
+          value={`${quoteLinkRate}%`}
+        />
+        <MetricCard
+          detail="Payment-ready plans over total businesses."
+          label="Setup Conversion Rate"
+          tone="blue"
+          value={`${setupConversionRate}%`}
+        />
+      </section>
+    </div>
+  );
+}
+
 function FounderRecentActionsPanel({
   actions,
 }: Readonly<{
@@ -3020,7 +3655,7 @@ function AdminTopBar({
             Founder admin
           </span>
         </Link>
-        <div className="inline-flex min-w-0 shrink-0 flex-wrap items-center gap-2 sm:flex-nowrap">
+        <div className="flex min-w-0 basis-full flex-wrap items-center gap-2 sm:basis-auto sm:flex-nowrap sm:justify-end">
           <span
             className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-bold"
             style={{
@@ -3079,6 +3714,7 @@ function AdminTabsBar({
     label: string;
     panel: AdminPanel;
   }> = [
+    { label: "Overview", panel: "overview" },
     { count: usersTotal, label: "Users", panel: "users" },
     { count: totals.businesses, label: "Businesses", panel: "businesses" },
     { label: "Leads", panel: "leads" },
@@ -3234,6 +3870,15 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         />
 
         <main className="min-w-0 flex-1 pb-6">
+          {activePanel === "overview" ? (
+            <FounderAdminOverviewSection
+              health={productionHealth}
+              healthNeedsAttention={productionHealthNeedsAttention}
+              overview={overview}
+              params={params}
+            />
+          ) : null}
+
           {activePanel === "businesses" ? (
             <FounderBusinessesSection
               businessById={businessById}

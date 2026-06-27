@@ -71,6 +71,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(overview.includes("overviewCopy.startGuide"), true);
     assert.equal(overview.includes("priorityTiles"), true);
     assert.equal(overview.includes("<LeadWorkspaceQueue"), true);
+    assert.equal(overview.includes("ownerOverviewKpiCards"), true);
+    assert.equal(overview.includes("OwnerTrendChart"), true);
+    assert.equal(overview.includes("LeadSourcesDonut"), true);
+    assert.equal(overview.includes("OwnerTodoTodayPanel"), true);
     assert.equal(queue.includes("QueueInsightStrip"), true);
     assert.equal(queue.includes("ownerSafeLeadText"), true);
     assert.equal(queue.includes("limit?: number"), true);
@@ -152,6 +156,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
       "utf8",
     );
 
+    assert.equal(admin.includes("| \"overview\""), true);
+    assert.equal(admin.includes("FounderAdminOverviewSection"), true);
+    assert.equal(admin.includes("FounderLeadsStatusDonut"), true);
+    assert.equal(admin.includes("FounderSystemHealthSummary"), true);
     assert.equal(admin.indexOf("Search users") < admin.indexOf("Work queues"), true);
     assert.equal(admin.includes("businessQuery?: string"), true);
     assert.equal(admin.includes("function limitedBusinessRows"), true);

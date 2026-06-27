@@ -627,6 +627,36 @@ type DashboardOverviewCopy = Readonly<{
   }>;
   suggestedNextAction: string;
   setupChecklist: string;
+  visualDashboard: Readonly<{
+    aiAssistantBody: (count: number) => string;
+    aiAssistantTitle: string;
+    dateRange: string;
+    filters: string;
+    kpis: Readonly<{
+      aiRepliesSent: string;
+      awaitingReply: string;
+      dealsWon: string;
+      newLeads: string;
+      quoteLinkSent: string;
+      readinessCompleted: string;
+    }>;
+    leadQueueTitle: string;
+    leadSources: string;
+    leadsTrend: string;
+    newLead: string;
+    newLeadsCenter: string;
+    ownerReviewRequired: string;
+    todo: Readonly<{
+      completeReadiness: string;
+      prepareQuotes: string;
+      replyToLeads: string;
+      sendFollowUp: string;
+      title: string;
+    }>;
+    title: string;
+    viewAll: string;
+    viewFullReport: string;
+  }>;
   queue: Readonly<{
     description: string;
     title: string;
@@ -1708,6 +1738,38 @@ const englishCopy: BizPilotCopy = {
       },
       suggestedNextAction: "Suggested next action:",
       setupChecklist: "Setup checklist",
+      visualDashboard: {
+        aiAssistantBody: (count) =>
+          `You have ${count} lead${count === 1 ? "" : "s"} waiting for your reply. Owner review remains required before anything is sent.`,
+        aiAssistantTitle: "AI Assistant",
+        dateRange: "Last 7 days",
+        filters: "Filters",
+        kpis: {
+          aiRepliesSent: "AI Replies Sent",
+          awaitingReply: "Awaiting Your Reply",
+          dealsWon: "Deals Won (Setup)",
+          newLeads: "New Leads",
+          quoteLinkSent: "Quote Link Sent",
+          readinessCompleted: "Readiness Completed",
+        },
+        leadQueueTitle: "Lead Queue (Needs Your Action)",
+        leadSources: "Lead Sources",
+        leadsTrend: "Leads Trend",
+        newLead: "New Lead",
+        newLeadsCenter: "New Leads",
+        ownerReviewRequired:
+          "Owner review remains required before anything is sent.",
+        todo: {
+          completeReadiness: "Complete readiness",
+          prepareQuotes: "Prepare quotes",
+          replyToLeads: "Reply to leads",
+          sendFollowUp: "Send follow-up",
+          title: "To Do Today",
+        },
+        title: "Overview",
+        viewAll: "View all",
+        viewFullReport: "View full report",
+      },
     },
     nav: {
       businessProfile: "Business Profile",
@@ -3209,6 +3271,38 @@ const frenchCopy: BizPilotCopy = {
       },
       suggestedNextAction: "Prochaine action suggérée:",
       setupChecklist: "Liste de configuration",
+      visualDashboard: {
+        aiAssistantBody: (count) =>
+          `${count} prospect${count === 1 ? "" : "s"} attend${count === 1 ? "" : "ent"} votre reponse. La validation du responsable reste requise avant tout envoi.`,
+        aiAssistantTitle: "Assistant IA",
+        dateRange: "7 derniers jours",
+        filters: "Filtres",
+        kpis: {
+          aiRepliesSent: "Reponses IA envoyees",
+          awaitingReply: "En attente de votre reponse",
+          dealsWon: "Mandats gagnes (configuration)",
+          newLeads: "Nouveaux prospects",
+          quoteLinkSent: "Liens de soumission envoyes",
+          readinessCompleted: "Preparation terminee",
+        },
+        leadQueueTitle: "File de prospects (a traiter)",
+        leadSources: "Sources des prospects",
+        leadsTrend: "Tendance des prospects",
+        newLead: "Nouveau prospect",
+        newLeadsCenter: "Nouveaux prospects",
+        ownerReviewRequired:
+          "La validation du responsable reste requise avant tout envoi.",
+        todo: {
+          completeReadiness: "Completer la preparation",
+          prepareQuotes: "Preparer les soumissions",
+          replyToLeads: "Repondre aux prospects",
+          sendFollowUp: "Envoyer un suivi",
+          title: "A faire aujourd'hui",
+        },
+        title: "Vue d'ensemble",
+        viewAll: "Tout voir",
+        viewFullReport: "Voir le rapport complet",
+      },
     },
     nav: {
       businessProfile: "Profil d'entreprise",

@@ -87,7 +87,8 @@ describe("Founder admin source safety", () => {
     );
 
     assert.equal(pageSource.includes("FounderAdminCapabilityMatrix"), true);
-    assert.equal(pageSource.includes('return "users";'), true);
+    assert.equal(pageSource.includes('return "overview";'), true);
+    assert.equal(pageSource.includes('label: "Overview", panel: "overview"'), true);
     assert.equal(pageSource.includes('label: "Users", panel: "users"'), true);
     assert.equal(pageSource.includes('label: "Businesses", panel: "businesses"'), true);
     assert.equal(pageSource.indexOf('label: "Users", panel: "users"') < pageSource.indexOf('label: "Businesses", panel: "businesses"'), true);

@@ -10,6 +10,14 @@ This pass completes the Dashboard V3 prompt-pack run for local synthetic
 dashboard acceptance. The dashboard remains a cleaning-first, manual-first,
 owner-reviewed lead recovery system.
 
+Latest visual completion addendum:
+`docs/readiness/DASHBOARD_V3_0_TO_100_VISUAL_DASHBOARD_PASS_2026-06-27.md`
+
+The latest pass implements the supplied owner/founder dashboard target image as
+code-level first-screen dashboards: localized owner KPI/chart/donut/task panels
+and a default founder/admin overview with KPI, user table, lead-status donut,
+system health, recent activity, and bottom-rate metrics.
+
 No real customer data, paid pilot gate, billing/payment flow, booking flow,
 auto-send, invoice flow, full CRM expansion, production deletion, access/RLS
 mutation, or production migration gate was opened.
@@ -27,11 +35,11 @@ the canonical Dashboard V3 authority for this run.
 | 01 | PASS | `AGENTS.md` now includes Dashboard V3 guardrails. Commit `0c71de8`. |
 | 02 | PASS | Owner navigation stays parent/child aware with five primary owner routes and no lead-detail/sidebar clutter in `components/dashboard/dashboard-sidebar.tsx`. |
 | 03 | PASS | Shared primitives and dashboard tokens are compact; final polish normalized remaining Settings panels, feedback banners, and destructive controls to 8px `rounded-lg` and Dashboard V3 tokens. |
-| 04 | PASS | Owner overview has one dominant next action, short Start Here guide, compact priority tiles, and queue preview in `app/(dashboard)/dashboard/page.tsx`. |
+| 04 | PASS | Owner overview has one dominant next action plus the 0-to-100 visual dashboard first screen: localized KPI row, lead queue, trend chart, to-do panel, and source donut in `app/(dashboard)/dashboard/page.tsx`. |
 | 05 | PASS | Owner lead queue is filterable, priority-based, mobile-card friendly, and owner-safe in `components/dashboard/lead-workspace-queue.tsx`. |
 | 06 | PASS | Lead detail is a manual review workspace with owner-controlled AI draft support and sanitized internal seed labels in `app/(dashboard)/dashboard/leads/[leadId]/page.tsx`. |
 | 07 | PASS | Quote Setup, Business Profile, and Settings remain separated; Quote Setup preview/status colors, profile/lead detail card spacing, and danger/lifecycle areas now use the V3 token/spacing system. |
-| 08 | PASS | Founder/Admin Users is search-first, uses 10-user default directory behavior, inspector context, and guarded operations in `app/admin/page.tsx`. |
+| 08 | PASS | Founder/Admin now defaults to an Admin Overview dashboard while Users remains search-first with 10-user default directory behavior, inspector context, and guarded operations in `app/admin/page.tsx`. |
 | 09 | PASS | Founder/Admin Business Detail is search-driven, max 10 visible rows, selected-business preserving, and keeps cleanup collapsed/secondary. Commit `5fcc17c`. |
 | 10 | PASS | Browser QA captured desktop/laptop/mobile evidence with no horizontal overflow on checked owner/admin routes; final handoff QA covers Quote Setup, Business Profile, Settings, Lead Detail, and Admin at 1440/390. |
 | 11 | PASS | Safe copy polish added `ownerSafeLeadText`; owner routes no longer surface internal seed labels such as phase/synthetic/test tokens. Commit `825f1d8`. |
@@ -102,9 +110,14 @@ Final settings polish QA file:
 Final Figma/browser handoff QA file:
 `C:\Users\mbeag\Documents\Codex\2026-06-27\files-mentioned-by-the-user-bizpilot\outputs\dashboard-v3-final-handoff-qa\dashboard-v3-final-handoff-browser-qa.json`
 
+0-to-100 visual dashboard pass QA file:
+`C:\Users\mbeag\Documents\Codex\2026-06-27\files-mentioned-by-the-user-bizpilot\outputs\dashboard-v3-0-to-100-visual-qa\dashboard-v3-0-to-100-browser-qa.json`
+
 Owner QA metrics from the final pass:
 
 - `/dashboard` desktop/mobile: no horizontal overflow; H1 is action-first.
+- `/dashboard` latest visual pass: first viewport now includes localized KPI
+  row, lead queue, trend chart, to-do panel, and lead source donut.
 - `/dashboard/leads` desktop/mobile: no horizontal overflow; queue remains scannable.
 - `/dashboard/leads/[leadId]` desktop/mobile: no horizontal overflow; H1 is `Unnamed lead`; forbidden internal seed matches are zero.
 - `/dashboard/settings` desktop/mobile: no horizontal overflow; secondary feature/history/lifecycle sections stay collapsed behind five disclosure panels.
@@ -112,6 +125,9 @@ Owner QA metrics from the final pass:
   `/dashboard/settings`, `/dashboard/leads/[leadId]`, and `/admin`
   desktop/mobile: no horizontal overflow; no Next.js application errors;
   no alert role messages in the final handoff QA batch.
+- `/admin` latest visual pass: default route now renders Admin Overview with
+  KPI row, users mini table, lead-status donut, system health, recent activity,
+  and source/rate metrics before deep admin sections.
 
 Admin QA note: local `/admin` rendered, but the local founder/admin data source
 returned zero businesses/users in this environment. The implementation therefore

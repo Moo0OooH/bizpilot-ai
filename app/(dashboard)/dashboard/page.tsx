@@ -95,6 +95,424 @@ function featuredLeadFrom(leads: LeadDeskItem[]): LeadDeskItem | undefined {
   );
 }
 
+type DashboardTone = "amber" | "blue" | "emerald" | "neutral" | "red" | "violet";
+
+type LeadSourceSegment = Readonly<{
+  color: string;
+  label: string;
+  value: number;
+}>;
+
+type OwnerTrendPoint = Readonly<{
+  count: number;
+  label: string;
+}>;
+
+const dashboardToneStyles: Record<
+  DashboardTone,
+  Readonly<{ border: string; soft: string; strong: string }>
+> = {
+  amber: {
+    border: "var(--dash-warning-border)",
+    soft: "var(--dash-warning-soft)",
+    strong: "var(--dash-warning-strong)",
+  },
+  blue: {
+    border: "rgba(14, 165, 233, 0.28)",
+    soft: "rgba(14, 165, 233, 0.12)",
+    strong: "#0284c7",
+  },
+  emerald: {
+    border: "var(--dash-success-border)",
+    soft: "var(--dash-success-soft)",
+    strong: "var(--dash-success-strong)",
+  },
+  neutral: {
+    border: "var(--dash-border)",
+    soft: "var(--dash-surface-muted)",
+    strong: "var(--dash-text-secondary)",
+  },
+  red: {
+    border: "var(--dash-danger-border)",
+    soft: "var(--dash-danger-soft)",
+    strong: "var(--dash-danger-strong)",
+  },
+  violet: {
+    border: "rgba(124, 58, 237, 0.26)",
+    soft: "rgba(124, 58, 237, 0.12)",
+    strong: "#6d28d9",
+  },
+};
+
+function compactNumber(value: number): string {
+  return new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 }).format(
+    Math.max(0, value),
+  );
+}
+
+function normalizeLeadSource(value: string | null): string {
+  const normalized = (value ?? "").trim().toLowerCase();
+
+  if (!normalized || normalized.includes("web") || normalized.includes("site")) {
+    return "Website";
+  }
+
+  if (normalized.includes("google") || normalized.includes("search")) {
+    return "Google";
+  }
+
+  if (normalized.includes("facebook") || normalized === "fb") {
+    return "Facebook";
+  }
+
+  if (normalized.includes("instagram") || normalized === "ig") {
+    return "Instagram";
+  }
+
+  return "Other";
+}
+
+function buildLeadSourceSegments(leads: LeadDeskItem[]): LeadSourceSegment[] {
+  const sourceOrder = ["Website", "Google", "Facebook", "Instagram", "Other"];
+  const sourceColors: Record<string, string> = {
+    Facebook: "#f59e0b",
+    Google: "#0ea5e9",
+    Instagram: "#ef4444",
+    Other: "#14b8a6",
+    Website: "#6d5dfc",
+  };
+  const counts = new Map(sourceOrder.map((label) => [label, 0]));
+
+  for (const item of leads) {
+    const label = normalizeLeadSource(item.lead.source_channel);
+    counts.set(label, (counts.get(label) ?? 0) + 1);
+  }
+
+  return sourceOrder.map((label) => ({
+    color: sourceColors[label] ?? "#64748b",
+    label,
+    value: counts.get(label) ?? 0,
+  }));
+}
+
+function buildOwnerLeadTrend(leads: LeadDeskItem[], days = 8): OwnerTrendPoint[] {
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    day: "numeric",
+    month: "short",
+  });
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return Array.from({ length: days }, (_, index) => {
+    const day = new Date(today);
+    day.setDate(today.getDate() - (days - 1 - index));
+    const nextDay = new Date(day);
+    nextDay.setDate(day.getDate() + 1);
+    const count = leads.filter((item) => {
+      const createdAt = new Date(item.lead.created_at);
+
+      return createdAt >= day && createdAt < nextDay;
+    }).length;
+
+    return {
+      count,
+      label: formatter.format(day),
+    };
+  });
+}
+
+function conicGradientFor(segments: LeadSourceSegment[]): string {
+  const total = segments.reduce((sum, segment) => sum + segment.value, 0);
+  let cursor = 0;
+
+  if (total <= 0) {
+    return "conic-gradient(var(--dash-border) 0deg 360deg)";
+  }
+
+  return `conic-gradient(${segments
+    .map((segment) => {
+      const start = cursor;
+      const end = cursor + (segment.value / total) * 360;
+      cursor = end;
+
+      return `${segment.color} ${start.toFixed(1)}deg ${end.toFixed(1)}deg`;
+    })
+    .join(", ")})`;
+}
+
+function OwnerOverviewKpiCard({
+  detail,
+  glyph,
+  label,
+  tone,
+  value,
+}: Readonly<{
+  detail: string;
+  glyph: string;
+  label: string;
+  tone: DashboardTone;
+  value: number | string;
+}>) {
+  const toneStyle = dashboardToneStyles[tone];
+
+  return (
+    <DashboardCard className="p-3.5">
+      <div className="flex min-h-[86px] items-start justify-between gap-3">
+        <span className="min-w-0">
+          <span className="block text-[12px] font-black text-[var(--dash-text)]">
+            {label}
+          </span>
+          <span className="mt-2 block text-[26px] font-black leading-none text-[var(--dash-text)]">
+            {value}
+          </span>
+          <span className="mt-2 block text-[11px] font-bold leading-4 text-[var(--dash-text-secondary)]">
+            {detail}
+          </span>
+        </span>
+        <span
+          aria-hidden
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border text-[13px] font-black"
+          style={{
+            backgroundColor: toneStyle.soft,
+            borderColor: toneStyle.border,
+            color: toneStyle.strong,
+          }}
+        >
+          {glyph}
+        </span>
+      </div>
+    </DashboardCard>
+  );
+}
+
+function OwnerTrendChart({
+  ariaLabel,
+  points,
+}: Readonly<{ ariaLabel: string; points: readonly OwnerTrendPoint[] }>) {
+  const width = 320;
+  const height = 180;
+  const paddingX = 18;
+  const paddingY = 18;
+  const maxCount = Math.max(1, ...points.map((point) => point.count));
+  const coordinates = points.map((point, index) => {
+    const x =
+      paddingX +
+      (index / Math.max(points.length - 1, 1)) * (width - paddingX * 2);
+    const y =
+      height -
+      paddingY -
+      (point.count / maxCount) * (height - paddingY * 2);
+
+    return { ...point, x, y };
+  });
+  const line = coordinates
+    .map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`)
+    .join(" ");
+  const area = [
+    `${paddingX},${height - paddingY}`,
+    line,
+    `${width - paddingX},${height - paddingY}`,
+  ].join(" ");
+
+  return (
+    <div className="mt-4 min-w-0">
+      <svg
+        aria-label={ariaLabel}
+        className="h-[190px] w-full"
+        preserveAspectRatio="none"
+        role="img"
+        viewBox={`0 0 ${width} ${height}`}
+      >
+        <defs>
+          <linearGradient id="owner-trend-fill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#6d5dfc" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="#6d5dfc" stopOpacity="0.02" />
+          </linearGradient>
+        </defs>
+        {[0, 1, 2, 3].map((index) => {
+          const y = paddingY + index * ((height - paddingY * 2) / 3);
+
+          return (
+            <line
+              key={index}
+              stroke="var(--dash-border)"
+              strokeWidth="1"
+              x1={paddingX}
+              x2={width - paddingX}
+              y1={y}
+              y2={y}
+            />
+          );
+        })}
+        <polygon fill="url(#owner-trend-fill)" points={area} />
+        <polyline
+          fill="none"
+          points={line}
+          stroke="#4f46e5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+        />
+        {coordinates.map((point) => (
+          <circle
+            cx={point.x}
+            cy={point.y}
+            fill="#ffffff"
+            key={`${point.label}-${point.count}`}
+            r="3.8"
+            stroke="#4f46e5"
+            strokeWidth="2"
+          />
+        ))}
+      </svg>
+      <div className="mt-1 grid grid-cols-4 gap-1 text-[10.5px] font-bold text-[var(--dash-text-muted)] sm:grid-cols-8">
+        {points.map((point) => (
+          <span className="truncate" key={point.label}>
+            {point.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function LeadSourcesDonut({
+  centerLabel,
+  segments,
+  title,
+  total,
+  viewFullReport,
+}: Readonly<{
+  centerLabel: string;
+  segments: readonly LeadSourceSegment[];
+  title: string;
+  total: number;
+  viewFullReport: string;
+}>) {
+  const safeTotal = Math.max(total, 0);
+
+  return (
+    <DashboardCard className="p-4">
+      <SectionHeader
+        action={<StatusBadge tone="blue">{compactNumber(safeTotal)}</StatusBadge>}
+        title={title}
+      />
+      <div className="mt-5 grid gap-4 sm:grid-cols-[minmax(150px,0.7fr)_minmax(0,1fr)] sm:items-center xl:grid-cols-1 2xl:grid-cols-[minmax(150px,0.7fr)_minmax(0,1fr)]">
+        <div
+          aria-label="New leads by source"
+          className="mx-auto grid h-36 w-36 place-items-center rounded-full"
+          role="img"
+          style={{ background: conicGradientFor([...segments]) }}
+        >
+          <div className="grid h-[88px] w-[88px] place-items-center rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] text-center">
+            <span>
+              <span className="block text-2xl font-black leading-none text-[var(--dash-text)]">
+                {compactNumber(safeTotal)}
+              </span>
+              <span className="mt-1 block text-[11px] font-bold text-[var(--dash-text-secondary)]">
+                {centerLabel}
+              </span>
+            </span>
+          </div>
+        </div>
+        <div className="grid gap-2">
+          {segments.map((segment) => {
+            const percent =
+              safeTotal > 0 ? Math.round((segment.value / safeTotal) * 100) : 0;
+
+            return (
+              <div
+                className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 text-[12px]"
+                key={segment.label}
+              >
+                <span
+                  aria-hidden
+                  className="h-2.5 w-2.5 rounded-full"
+                  style={{ backgroundColor: segment.color }}
+                />
+                <span className="truncate font-bold text-[var(--dash-text-secondary)]">
+                  {segment.label}
+                </span>
+                <span className="font-black text-[var(--dash-text)]">
+                  {percent}%
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <Link
+        className="mt-5 inline-flex text-[12px] font-black text-[var(--dash-primary-strong)]"
+        href="/dashboard/leads"
+      >
+        {viewFullReport}
+      </Link>
+    </DashboardCard>
+  );
+}
+
+function OwnerTodoTodayPanel({
+  assistantBody,
+  assistantTitle,
+  items,
+  title,
+}: Readonly<{
+  assistantBody: string;
+  assistantTitle: string;
+  items: ReadonlyArray<{
+    count: number;
+    href: string;
+    label: string;
+    tone: DashboardTone;
+  }>;
+  title: string;
+}>) {
+  return (
+    <DashboardCard className="p-4">
+      <SectionHeader title={title} />
+      <div className="mt-4 grid gap-2">
+        {items.map((item) => {
+          const toneStyle = dashboardToneStyles[item.tone];
+
+          return (
+            <Link
+              className="grid min-h-[44px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+              href={item.href}
+              key={item.label}
+            >
+              <span
+                aria-hidden
+                className="flex h-7 w-7 items-center justify-center rounded-md border text-[11px] font-black"
+                style={{
+                  backgroundColor: toneStyle.soft,
+                  borderColor: toneStyle.border,
+                  color: toneStyle.strong,
+                }}
+              >
+                {compactNumber(item.count)}
+              </span>
+              <span className="truncate text-[12px] font-black text-[var(--dash-text)]">
+                {item.label}
+              </span>
+              <span className="text-[12px] font-black text-[var(--dash-primary-strong)]">
+                {compactNumber(item.count)}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+      <div className="mt-4 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3">
+        <p className="text-[12px] font-black text-[var(--dash-text)]">
+          {assistantTitle}
+        </p>
+        <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          {assistantBody}
+        </p>
+      </div>
+    </DashboardCard>
+  );
+}
+
 export default async function DashboardOverviewPage() {
   const user = await getCurrentUser();
 
@@ -129,6 +547,7 @@ export default async function DashboardOverviewPage() {
   });
   const dashboardCopy = getBizPilotCopy(activeLanguage).dashboard;
   const overviewCopy = dashboardCopy.overview;
+  const visualCopy = overviewCopy.visualDashboard;
   const queueCopy = dashboardCopy.leadQueue;
   const localizedBusiness = {
     ...activeBusiness,
@@ -274,9 +693,228 @@ export default async function DashboardOverviewPage() {
       value: aiDraftReadyCount,
     },
   ];
+  const aiRepliesSentCount = desk.leads.filter(
+    (item) =>
+      item.lead.first_reply_copied_at ||
+      item.lead.status === "replied" ||
+      item.lead.status === "booked",
+  ).length;
+  const quoteLinkSentCount = Math.max(
+    desk.recoveryProof.leadsReviewed,
+    Math.min(newQuoteCount, Math.max(aiRepliesSentCount, desk.leads.length - needsReplyCount)),
+  );
+  const dealsWonCount = desk.leads.filter(
+    (item) =>
+      item.lead.status === "booked" || item.lead.manual_outcome === "booked",
+  ).length;
+  const ownerLeadTrend = buildOwnerLeadTrend(desk.leads);
+  const leadSourceSegments = buildLeadSourceSegments(desk.leads);
+  const todayTodoItems = [
+    {
+      count: needsReplyCount + atRiskCount,
+      href: "/dashboard/leads",
+      label: visualCopy.todo.replyToLeads,
+      tone: (needsReplyCount + atRiskCount > 0 ? "violet" : "neutral") as DashboardTone,
+    },
+    {
+      count: followUpActions,
+      href: "/dashboard/leads",
+      label: visualCopy.todo.sendFollowUp,
+      tone: (followUpActions > 0 ? "blue" : "neutral") as DashboardTone,
+    },
+    {
+      count: missingReadinessItems.length,
+      href: "/dashboard/configuration",
+      label: visualCopy.todo.completeReadiness,
+      tone: (missingReadinessItems.length > 0 ? "emerald" : "neutral") as DashboardTone,
+    },
+    {
+      count: missingInfoCount + askInfoActions,
+      href: "/dashboard/leads",
+      label: visualCopy.todo.prepareQuotes,
+      tone: (missingInfoCount + askInfoActions > 0 ? "amber" : "neutral") as DashboardTone,
+    },
+  ];
+  const ownerOverviewKpiCards = [
+    {
+      detail: overviewCopy.metrics.newQuoteRequests.detail,
+      glyph: "NL",
+      label: visualCopy.kpis.newLeads,
+      tone: "violet" as DashboardTone,
+      value: compactNumber(newQuoteCount),
+    },
+    {
+      detail: overviewCopy.metrics.aiDraftsReady.detail,
+      glyph: "AI",
+      label: visualCopy.kpis.aiRepliesSent,
+      tone: "blue" as DashboardTone,
+      value: compactNumber(aiRepliesSentCount),
+    },
+    {
+      detail: atRiskCount > 0 ? overviewCopy.atRiskSoon : overviewCopy.status.ready,
+      glyph: "AR",
+      label: visualCopy.kpis.awaitingReply,
+      tone: needsReplyCount + atRiskCount > 0 ? ("amber" as DashboardTone) : ("emerald" as DashboardTone),
+      value: compactNumber(needsReplyCount + atRiskCount),
+    },
+    {
+      detail: overviewCopy.readiness.liveAndShareable,
+      glyph: "QL",
+      label: visualCopy.kpis.quoteLinkSent,
+      tone: "emerald" as DashboardTone,
+      value: compactNumber(quoteLinkSentCount),
+    },
+    {
+      detail: `${readinessPercent}%`,
+      glyph: "RC",
+      label: visualCopy.kpis.readinessCompleted,
+      tone: readinessPercent >= 100 ? ("emerald" as DashboardTone) : ("blue" as DashboardTone),
+      value: compactNumber(readiness.completed),
+    },
+    {
+      detail: dealsWonCount > 0 ? visualCopy.dateRange : visualCopy.ownerReviewRequired,
+      glyph: "DW",
+      label: visualCopy.kpis.dealsWon,
+      tone: dealsWonCount > 0 ? ("amber" as DashboardTone) : ("neutral" as DashboardTone),
+      value: compactNumber(dealsWonCount),
+    },
+  ];
 
   return (
     <main className="space-y-3">
+      <header className="flex flex-col gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-sm sm:p-5 lg:flex-row lg:items-center lg:justify-between">
+        <div className="min-w-0">
+          <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+            {activeBusiness.name}
+          </p>
+          <h1 className="mt-1 text-[24px] font-black leading-tight text-[var(--dash-text)] sm:text-[30px]">
+            {visualCopy.title}
+          </h1>
+          <p className="mt-1 max-w-3xl text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+            {overviewCopy.heroDescription}
+          </p>
+        </div>
+        <div className="flex shrink-0 flex-wrap gap-2">
+          <span className="inline-flex min-h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 text-[12px] font-black text-[var(--dash-text-secondary)]">
+            {visualCopy.dateRange}
+          </span>
+          <Link className={buttonClass} href="/dashboard/leads">
+            {visualCopy.filters}
+          </Link>
+          <Link className={primaryButtonClass} href={quotePath}>
+            {visualCopy.newLead}
+          </Link>
+        </div>
+      </header>
+
+      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        {ownerOverviewKpiCards.map((card) => (
+          <OwnerOverviewKpiCard
+            detail={card.detail}
+            glyph={card.glyph}
+            key={card.label}
+            label={card.label}
+            tone={card.tone}
+            value={card.value}
+          />
+        ))}
+      </section>
+
+      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(300px,0.95fr)_minmax(320px,1.1fr)_minmax(260px,0.78fr)_minmax(260px,0.78fr)]">
+        <DashboardCard className="p-4">
+          <SectionHeader
+            action={
+              <Link className="text-[12px] font-black text-[var(--dash-primary-strong)]" href="/dashboard/leads">
+                {visualCopy.viewAll}
+              </Link>
+            }
+            title={visualCopy.leadQueueTitle}
+          />
+          <div className="mt-4 grid gap-2">
+            {recentLeads.length > 0 ? (
+              recentLeads.slice(0, 5).map((item) => {
+                const customerDisplayName = ownerSafeLeadText(
+                  item.lead.customer_name,
+                  queueCopy.fallbacks.unnamedLead,
+                );
+                const serviceDisplay = ownerSafeLeadText(
+                  item.lead.service_type,
+                  overviewCopy.featuredFallbackService,
+                );
+                const areaDisplay = ownerSafeLeadText(
+                  item.lead.city_or_service_area,
+                  overviewCopy.featuredFallbackArea,
+                );
+                const leadTone =
+                  item.lead.response_sla_state === "overdue"
+                    ? "red"
+                    : item.score.quality_level === "needs_info"
+                      ? "amber"
+                      : "emerald";
+
+                return (
+                  <Link
+                    className="grid min-h-[56px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                    href={`/dashboard/leads/${item.lead.id}`}
+                    key={item.lead.id}
+                  >
+                    <Avatar name={customerDisplayName} size={32} />
+                    <span className="min-w-0">
+                      <span className="block truncate text-[12.5px] font-black text-[var(--dash-text)]">
+                        {shortCustomerName(
+                          customerDisplayName,
+                          queueCopy.fallbacks.unnamedLead,
+                        )}
+                      </span>
+                      <span className="mt-0.5 block truncate text-[11px] text-[var(--dash-text-secondary)]">
+                        {serviceDisplay} / {areaDisplay}
+                      </span>
+                    </span>
+                    <span className="grid justify-items-end gap-1">
+                      <StatusBadge tone={leadTone}>{item.score.quality_level}</StatusBadge>
+                      <span className="text-[10.5px] font-bold text-[var(--dash-text-muted)]">
+                        {formatAge(item.lead.created_at, queueCopy)}
+                      </span>
+                    </span>
+                  </Link>
+                );
+              })
+            ) : (
+              <EmptyState title={overviewCopy.recentActivity.emptyTitle}>
+                {overviewCopy.recentActivity.emptyBody}
+              </EmptyState>
+            )}
+          </div>
+        </DashboardCard>
+
+        <DashboardCard className="p-4">
+          <SectionHeader
+            action={
+              <span className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2.5 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
+                {visualCopy.dateRange}
+              </span>
+            }
+            title={visualCopy.leadsTrend}
+          />
+          <OwnerTrendChart ariaLabel={visualCopy.leadsTrend} points={ownerLeadTrend} />
+        </DashboardCard>
+
+        <OwnerTodoTodayPanel
+          assistantBody={visualCopy.aiAssistantBody(todayTodoItems[0]?.count ?? 0)}
+          assistantTitle={visualCopy.aiAssistantTitle}
+          items={todayTodoItems}
+          title={visualCopy.todo.title}
+        />
+
+        <LeadSourcesDonut
+          centerLabel={visualCopy.newLeadsCenter}
+          segments={leadSourceSegments}
+          title={visualCopy.leadSources}
+          total={leadSourceSegments.reduce((sum, segment) => sum + segment.value, 0)}
+          viewFullReport={visualCopy.viewFullReport}
+        />
+      </section>
+
       <DashboardCard
         className="overflow-hidden p-0"
         variant="priority"

@@ -22,6 +22,15 @@ master standard:
 - Desktop 1440px and mobile 390px responsive frames
 - EN/fr-CA bilingual readiness notes
 
+Latest code visual pass:
+`docs/readiness/DASHBOARD_V3_0_TO_100_VISUAL_DASHBOARD_PASS_2026-06-27.md`
+
+The latest pass uses the supplied dashboard target image to bring the runtime
+owner and founder/admin first screens closer to the Figma handoff structure:
+KPI rows, owner queue/trend/todo/source panels, and a default founder overview
+with user table, lead-status donut, health summary, activity, source, and rate
+metrics.
+
 ## Figma Structure
 
 The Figma Starter plan limits this file to three pages and one variable mode.
@@ -77,6 +86,10 @@ Local browser QA was captured in:
 
 `C:\Users\mbeag\Documents\Codex\2026-06-27\files-mentioned-by-the-user-bizpilot\outputs\dashboard-v3-final-handoff-qa\dashboard-v3-final-handoff-browser-qa.json`
 
+Latest 0-to-100 visual pass browser QA is captured in:
+
+`C:\Users\mbeag\Documents\Codex\2026-06-27\files-mentioned-by-the-user-bizpilot\outputs\dashboard-v3-0-to-100-visual-qa\dashboard-v3-0-to-100-browser-qa.json`
+
 Checked routes and viewports:
 
 | Route | Desktop 1440x900 | Mobile 390x844 |
@@ -85,6 +98,13 @@ Checked routes and viewports:
 | `/dashboard/business-profile` | PASS | PASS |
 | `/dashboard/settings` | PASS | PASS |
 | `/dashboard/leads/20830d88-a456-456f-96e1-5bb305bf6192` | PASS | PASS |
+| `/admin` | PASS | PASS |
+
+Latest visual pass checked routes and viewports:
+
+| Route | Desktop 1440x900 | Mobile 390x844 |
+| --- | --- | --- |
+| `/dashboard` | PASS | PASS |
 | `/admin` | PASS | PASS |
 
 All checked routes reported:
