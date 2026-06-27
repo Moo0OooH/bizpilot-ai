@@ -302,13 +302,18 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
         </div>
 
         <section className="homepage-clarity-panel homepage-signal-panel min-w-0">
-          <div className="homepage-visual-heading">
-            <p className="bp-copy-eyebrow text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
-              {copy.clarityTitle}
-            </p>
-            <h3 className="bp-copy-card-title mt-1 min-h-0 text-[15px] font-black leading-tight" style={{ color: "var(--text-strong)" }}>
-              {copy.claritySubtitle}
-            </h3>
+          <div className="homepage-visual-heading homepage-clarity-heading">
+            <div className="min-w-0">
+              <p className="bp-copy-eyebrow text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
+                {copy.clarityTitle}
+              </p>
+              <h3 className="bp-copy-card-title mt-1 min-h-0 text-[15px] font-black leading-tight" style={{ color: "var(--text-strong)" }}>
+                {copy.claritySubtitle}
+              </h3>
+            </div>
+            <span aria-hidden className="homepage-clarity-count">
+              {copy.leads.slice(0, 2).length}
+            </span>
           </div>
 
           <div className="homepage-clarity-leads mt-3 grid gap-2">
@@ -327,6 +332,9 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
                       : "var(--border-default)",
                 }}
               >
+                <span className="homepage-lead-rank" aria-hidden>
+                  {index + 1}
+                </span>
                 <div className="flex min-w-0 items-start justify-between gap-2">
                   <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
                     {lead.title}
@@ -355,9 +363,14 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
                 "color-mix(in srgb, var(--accent-decorative) 34%, var(--border-default))",
             }}
           >
-            <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
-              {copy.draftTitle}
-            </p>
+            <div className="homepage-draft-header flex min-w-0 items-start justify-between gap-3">
+              <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
+                {copy.draftTitle}
+              </p>
+              <span className="homepage-review-ready" aria-hidden>
+                <MarketingIcon name="check" />
+              </span>
+            </div>
             <div className="homepage-draft-lines mt-2" aria-hidden="true">
               <span />
               <span />
