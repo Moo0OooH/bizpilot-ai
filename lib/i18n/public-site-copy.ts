@@ -89,8 +89,11 @@ type HomeCopy = Readonly<{
     bizPilotActions: readonly string[];
     bizPilotBody: string;
     bizPilotTitle: string;
+    chaosBadge: string;
+    chaosHint: string;
     chaosSubtitle: string;
     chaosTitle: string;
+    clarityBadge: string;
     claritySubtitle: string;
     clarityTitle: string;
     copyButton: string;
@@ -970,8 +973,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       bizPilotActions: ["Capture", "Organize", "Prioritize", "Draft"],
       bizPilotBody: "Signal becomes workflow",
       bizPilotTitle: "BizPilot",
+      chaosBadge: "10 customer PMs",
+      chaosHint: "Different people. Different channels. No clear next reply.",
       chaosSubtitle: "Messages from everywhere",
       chaosTitle: "THE CHAOS",
+      clarityBadge: "Priority sorted",
       claritySubtitle: "Smart lead queue",
       clarityTitle: "THE CLARITY",
       copyButton: "Review draft",
@@ -994,7 +1000,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         "Do you service condos?",
         "I called yesterday...",
       ],
-      sources: ["Website", "Google", "Facebook", "Instagram / Text"],
+      sources: ["Google", "Facebook", "Instagram", "Text"],
     },
     preview: {
       badges: ["No auto-send", "No invented price", "No booking confirmation"],
@@ -1942,8 +1948,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       bizPilotActions: ["Capter", "Organiser", "Prioriser", "Rédiger"],
       bizPilotBody: "Le signal devient un flux",
       bizPilotTitle: "BizPilot",
+      chaosBadge: "10 messages client",
+      chaosHint: "Plusieurs personnes. Plusieurs canaux. Aucun prochain suivi clair.",
       chaosSubtitle: "Messages de partout",
       chaosTitle: "LE CHAOS",
+      clarityBadge: "Priorités triées",
       claritySubtitle: "File de prospects intelligente",
       clarityTitle: "LA CLARTÉ",
       copyButton: "Réviser le brouillon",
@@ -1966,7 +1975,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Servez-vous les condos?",
         "J'ai appelé hier...",
       ],
-      sources: ["Site web", "Google", "Facebook", "Instagram / textos"],
+      sources: ["Google", "Facebook", "Instagram", "Texto"],
     },
     preview: {
       badges: [
