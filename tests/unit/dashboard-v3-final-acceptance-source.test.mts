@@ -1,0 +1,114 @@
+/**
+ * File: tests/unit/dashboard-v3-final-acceptance-source.test.mts
+ * Project: BizPilot AI
+ * Description: Final source guards for the Dashboard V3 completion package.
+ */
+
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { describe, it } from "node:test";
+
+describe("Dashboard V3 final acceptance source guards", () => {
+  it("keeps the final completion report tied to the prompt pack and safety gates", () => {
+    const report = readFileSync(
+      "docs/readiness/DASHBOARD_V3_FINAL_COMPLETION_REPORT_2026-06-27.md",
+      "utf8",
+    );
+
+    assert.equal(report.includes("# Dashboard V3 Final Completion Report"), true);
+    assert.equal(report.includes("Prompt Completion Scorecard"), true);
+    assert.equal(report.includes("| 00 | PASS |"), true);
+    assert.equal(report.includes("| 14 | PASS |"), true);
+    assert.equal(report.includes("standalone P21 blueprint"), true);
+    assert.equal(report.includes("No real customer data"), true);
+    assert.equal(report.includes("paid pilot"), true);
+    assert.equal(report.includes("pnpm verify"), true);
+    assert.equal(report.includes("git diff --check"), true);
+    assert.equal(report.includes("forbidden internal seed matches are zero"), true);
+    assert.equal(report.includes("Generated artifacts remain untracked"), true);
+  });
+
+  it("keeps owner navigation compact and route-owned", () => {
+    const sidebar = readFileSync(
+      "components/dashboard/dashboard-sidebar.tsx",
+      "utf8",
+    );
+
+    assert.equal(sidebar.includes('href: "/dashboard"'), true);
+    assert.equal(sidebar.includes('href: "/dashboard/leads"'), true);
+    assert.equal(sidebar.includes('href: "/dashboard/configuration"'), true);
+    assert.equal(sidebar.includes('href: "/dashboard/business-profile"'), true);
+    assert.equal(sidebar.includes('href: "/dashboard/settings"'), true);
+    assert.equal(sidebar.includes('pathname.startsWith("/dashboard/leads")'), true);
+    assert.equal(sidebar.includes(".slice(0, 5)"), true);
+    assert.equal(sidebar.includes('href: "/dashboard/founder"'), false);
+  });
+
+  it("keeps owner lead recovery action-first and manual-safe", () => {
+    const overview = readFileSync("app/(dashboard)/dashboard/page.tsx", "utf8");
+    const queue = readFileSync(
+      "components/dashboard/lead-workspace-queue.tsx",
+      "utf8",
+    );
+    const detail = readFileSync(
+      "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
+      "utf8",
+    );
+
+    assert.equal(overview.includes("overviewCopy.suggestedNextAction"), true);
+    assert.equal(overview.includes("overviewCopy.startGuide"), true);
+    assert.equal(overview.includes("priorityTiles"), true);
+    assert.equal(overview.includes("<LeadWorkspaceQueue"), true);
+    assert.equal(queue.includes("QueueInsightStrip"), true);
+    assert.equal(queue.includes("ownerSafeLeadText"), true);
+    assert.equal(queue.includes("limit?: number"), true);
+    assert.equal(detail.includes("detailCopy.manualWorkflow.steps.map"), true);
+    assert.equal(detail.includes("generateLeadAiBundleAction"), true);
+    assert.equal(detail.includes("ownerSafeLeadText"), true);
+    assert.equal(detail.includes("markReplyCopiedAction"), true);
+  });
+
+  it("keeps setup/profile/settings cleanup secondary and compact", () => {
+    const configuration = readFileSync(
+      "app/(dashboard)/dashboard/configuration/page.tsx",
+      "utf8",
+    );
+    const businessProfile = readFileSync(
+      "app/(dashboard)/dashboard/business-profile/page.tsx",
+      "utf8",
+    );
+    const settings = readFileSync(
+      "app/(dashboard)/dashboard/settings/page.tsx",
+      "utf8",
+    );
+
+    assert.equal(configuration.includes("ConfigurationTabs"), true);
+    assert.equal(configuration.includes("ConfigurationPanel"), true);
+    assert.equal(businessProfile.includes("Change Log:"), true);
+    assert.equal(businessProfile.includes("openQuoteSetup"), true);
+    assert.equal(settings.includes("countFeaturesByState"), true);
+    assert.equal(settings.includes("<details className="), true);
+    assert.equal(settings.includes("WorkspaceDeletionRequestForm"), true);
+    assert.equal(settings.includes("rounded-[14px]"), false);
+    assert.equal(settings.includes("rounded-[16px]"), false);
+  });
+
+  it("keeps founder/admin search-first and business cleanup gated", () => {
+    const admin = readFileSync("app/admin/page.tsx", "utf8");
+    const cleanup = readFileSync(
+      "components/admin/founder-test-cleanup-form.tsx",
+      "utf8",
+    );
+
+    assert.equal(admin.indexOf("Search users") < admin.indexOf("Work queues"), true);
+    assert.equal(admin.includes("businessQuery?: string"), true);
+    assert.equal(admin.includes("function limitedBusinessRows"), true);
+    assert.equal(admin.includes("].slice(0, 10);"), true);
+    assert.equal(admin.includes("Search businesses"), true);
+    assert.equal(admin.indexOf("Search businesses") < admin.indexOf("visibleBusinesses.map"), true);
+    assert.equal(cleanup.includes("<details className="), true);
+    assert.equal(cleanup.includes("<details open"), false);
+    assert.equal(cleanup.includes("Dry run cleanup"), true);
+    assert.equal(cleanup.includes("Hard purge is blocked for production_customer"), true);
+  });
+});

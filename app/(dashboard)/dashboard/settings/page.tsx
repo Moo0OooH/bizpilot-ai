@@ -10,11 +10,12 @@
  * - docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-18: Created Settings shell.
  * - 2026-05-19: Rebuilt as three-card row exactly matching the index — Account, Theme, Future — and added a sticky workspace-info side panel + scope guard.
  * - 2026-06-27: Collapsed long feature/history documentation behind compact settings summaries.
+ * - 2026-06-27: Normalized remaining compact dashboard panels to the V3 8px radius standard.
  * ============================================================
  */
 
@@ -297,7 +298,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                 title={settingsCopy.sessionPolicy.title}
               />
               <div className="my-3 h-px bg-[var(--dash-border)]" />
-              <div className="rounded-[14px] border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+              <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
                 <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
                   {settingsCopy.sessionPolicy.title}
                 </p>
@@ -414,7 +415,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               title={settingsCopy.systemHistory.title}
             />
             </summary>
-            <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-[16px] border border-[var(--dash-border)]">
+            <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-lg border border-[var(--dash-border)]">
               {systemChangeLog.length > 0 ? (
                 systemChangeLog.map((action) => (
                   <div
