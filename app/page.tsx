@@ -145,7 +145,11 @@ function SourceChannelMark({ source }: Readonly<{ source: string }>) {
   if (channel === "google") {
     return (
       <span aria-hidden className="homepage-source-mark homepage-source-mark--google">
-        G
+        <svg className="homepage-source-brand" fill="none" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="8.25" />
+          <path d="M12 12h7.2" />
+          <path d="M18.1 15.6A7.4 7.4 0 0 1 12 19.4a7.4 7.4 0 1 1 5.2-12.7" />
+        </svg>
       </span>
     );
   }
@@ -153,7 +157,9 @@ function SourceChannelMark({ source }: Readonly<{ source: string }>) {
   if (channel === "facebook") {
     return (
       <span aria-hidden className="homepage-source-mark homepage-source-mark--facebook">
-        f
+        <svg className="homepage-source-brand homepage-source-brand--facebook" fill="none" viewBox="0 0 24 24">
+          <path d="M14.4 8.2h2.15V4.7h-2.9c-3.25 0-4.72 1.94-4.72 4.54v2.06H6.6v3.82h2.33v4.18h4.16v-4.18h2.78l0.47-3.82h-3.25V9.68c0-.96.34-1.48 1.31-1.48Z" />
+        </svg>
       </span>
     );
   }
@@ -161,7 +167,7 @@ function SourceChannelMark({ source }: Readonly<{ source: string }>) {
   if (channel === "instagram") {
     return (
       <span aria-hidden className="homepage-source-mark homepage-source-mark--instagram">
-        <svg fill="none" viewBox="0 0 24 24">
+        <svg className="homepage-source-brand" fill="none" viewBox="0 0 24 24">
           <rect height="15" rx="4.25" width="15" x="4.5" y="4.5" />
           <circle cx="12" cy="12" r="3.2" />
           <circle cx="16.5" cy="7.5" r="0.8" />
@@ -173,7 +179,10 @@ function SourceChannelMark({ source }: Readonly<{ source: string }>) {
   if (channel === "text") {
     return (
       <span aria-hidden className="homepage-source-mark homepage-source-mark--text">
-        <MarketingIcon name="message" />
+        <svg className="homepage-source-brand" fill="none" viewBox="0 0 24 24">
+          <path d="M5.2 6.5h13.6v8.2H10l-4.8 3.8z" />
+          <path d="M8.4 9.3h7.2M8.4 12h5.3" />
+        </svg>
       </span>
     );
   }
@@ -189,6 +198,7 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
   const chaosMessages = copy.messages.slice(0, 4);
   const chaosPeople = ["Maria", "Alex", "Nadia", "Chris"] as const;
   const chaosTimes = ["2m", "9m", "22m", "1h"] as const;
+  const chaosInitials = ["M", "A", "N", "C"] as const;
 
   return (
     <div
@@ -242,10 +252,10 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
             </div>
           </div>
 
-          <div className="homepage-chaos-source-grid homepage-chaos-inbox-stack mt-3 grid gap-2">
+          <div className="homepage-chaos-source-grid homepage-chaos-inbox-stack mt-3">
             {copy.sources.slice(0, 4).map((source, index) => (
               <article
-                className={`homepage-source-chip homepage-chaos-inbox-card homepage-source-chip--${sourceChannelKey(source)} min-w-0 rounded-[12px] border px-2.5 py-2`}
+                className={`homepage-source-chip homepage-chaos-inbox-card homepage-source-chip--${sourceChannelKey(source)} min-w-0 border px-2.5 py-2`}
                 key={source}
                 style={{
                   backgroundColor:
@@ -255,6 +265,9 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
                 }}
               >
                 <SourceChannelMark source={source} />
+                <span className="homepage-chaos-person" aria-hidden>
+                  {chaosInitials[index] ?? "L"}
+                </span>
                 <span className="homepage-chaos-message-copy min-w-0">
                   <span className="homepage-chaos-message-meta">
                     <strong>{chaosPeople[index] ?? "Lead"}</strong>

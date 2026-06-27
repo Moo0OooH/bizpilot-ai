@@ -668,6 +668,44 @@ select {
   min-width: 0;
 }
 
+.homepage-chaos-panel {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 20% 18%, color-mix(in srgb, var(--warning) 14%, transparent), transparent 5.8rem),
+    radial-gradient(circle at 82% 28%, color-mix(in srgb, var(--primary) 12%, transparent), transparent 5.4rem),
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-elevated) 95%, var(--warning) 5%), var(--surface));
+}
+
+.homepage-chaos-panel::before,
+.homepage-chaos-panel::after {
+  position: absolute;
+  z-index: 0;
+  border: 1px dashed color-mix(in srgb, var(--warning) 28%, transparent);
+  border-radius: 999px;
+  content: "";
+}
+
+.homepage-chaos-panel::before {
+  inset-block-start: 5.7rem;
+  inset-inline-start: -2.4rem;
+  block-size: 11rem;
+  inline-size: 11rem;
+}
+
+.homepage-chaos-panel::after {
+  inset-block-start: 9.2rem;
+  inset-inline-end: -3.6rem;
+  block-size: 13rem;
+  inline-size: 13rem;
+  border-color: color-mix(in srgb, var(--primary) 22%, transparent);
+}
+
+.homepage-chaos-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
 .homepage-clarity-panel {
   position: relative;
   overflow: hidden;
@@ -763,10 +801,14 @@ select {
 }
 
 .homepage-chaos-overload {
-  border: 1px dashed color-mix(in srgb, var(--warning) 34%, var(--border-default));
-  border-radius: 0.9rem;
-  background: color-mix(in srgb, var(--warning) 7%, var(--surface));
-  padding: 0.55rem;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  border: 1px solid color-mix(in srgb, var(--warning) 38%, var(--border-default));
+  border-radius: 999px 999px 999px 0.55rem;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--warning) 13%, var(--surface)), color-mix(in srgb, var(--surface) 92%, var(--primary) 8%));
+  padding: 0.52rem 0.72rem;
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--warning) 12%, transparent);
 }
 
 .homepage-chaos-overload-head {
@@ -799,22 +841,33 @@ select {
 
 .homepage-source-mark {
   display: grid;
-  block-size: 1.72rem;
-  inline-size: 1.72rem;
+  block-size: 2rem;
+  inline-size: 2rem;
   flex: 0 0 auto;
   place-items: center;
-  border-radius: 0.6rem;
+  border: 2px solid color-mix(in srgb, white 66%, transparent);
+  border-radius: 999px;
   color: #ffffff;
   font-size: 0.9rem;
   font-weight: 900;
   line-height: 1;
+  box-shadow:
+    0 8px 18px rgba(15, 23, 42, 0.16),
+    inset 0 1px 0 color-mix(in srgb, white 55%, transparent);
 }
 
-.homepage-source-mark svg {
-  width: 1rem;
-  height: 1rem;
+.homepage-source-brand {
+  width: 1.08rem;
+  height: 1.08rem;
   stroke: currentColor;
-  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.15;
+}
+
+.homepage-source-brand--facebook {
+  fill: currentColor;
+  stroke: none;
 }
 
 .homepage-source-mark--website {
@@ -822,7 +875,8 @@ select {
 }
 
 .homepage-source-mark--google {
-  background: linear-gradient(135deg, #4285f4, #34a853 52%, #fbbc05);
+  background:
+    conic-gradient(from -45deg, #4285f4 0 26%, #34a853 26% 50%, #fbbc05 50% 72%, #ea4335 72% 100%);
 }
 
 .homepage-source-mark--facebook {
@@ -846,26 +900,48 @@ select {
 
 .homepage-chaos-inbox-stack {
   position: relative;
+  min-block-size: 20.5rem;
+  isolation: isolate;
 }
 
 .homepage-chaos-inbox-card {
-  position: relative;
+  position: absolute;
   align-items: flex-start;
-  min-block-size: 4.1rem;
+  inline-size: min(12.8rem, 92%);
+  min-block-size: 4.35rem;
   color: var(--text-strong);
+  border-radius: 1.35rem 1.35rem 1.35rem 0.38rem;
+  box-shadow:
+    0 18px 34px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 color-mix(in srgb, white 62%, transparent);
   transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
+.homepage-chaos-inbox-card:nth-child(1) {
+  inset-block-start: 0.2rem;
+  inset-inline-start: 0;
+  transform: rotate(-3deg);
+}
+
 .homepage-chaos-inbox-card:nth-child(2) {
-  transform: translateX(0.35rem);
+  inset-block-start: 4.3rem;
+  inset-inline-end: 0.1rem;
+  z-index: 2;
+  transform: rotate(2.6deg);
 }
 
 .homepage-chaos-inbox-card:nth-child(3) {
-  transform: translateX(-0.15rem);
+  inset-block-start: 8.65rem;
+  inset-inline-start: 0.35rem;
+  z-index: 3;
+  transform: rotate(-1.8deg);
 }
 
 .homepage-chaos-inbox-card:nth-child(4) {
-  transform: translateX(0.2rem);
+  inset-block-start: 13rem;
+  inset-inline-end: 0.45rem;
+  z-index: 4;
+  transform: rotate(3deg);
 }
 
 .homepage-chaos-inbox-card::after {
@@ -884,6 +960,23 @@ select {
   display: grid;
   gap: 0.2rem;
   padding-inline-end: 0.75rem;
+}
+
+.homepage-chaos-person {
+  position: absolute;
+  inset-block-start: -0.48rem;
+  inset-inline-start: 1.55rem;
+  display: grid;
+  block-size: 1.15rem;
+  inline-size: 1.15rem;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, white 70%, var(--border-default));
+  border-radius: 999px;
+  background: var(--surface-elevated);
+  color: var(--text-strong);
+  font-size: 0.58rem;
+  font-weight: 900;
+  box-shadow: 0 7px 14px rgba(15, 23, 42, 0.12);
 }
 
 .homepage-chaos-message-meta {
@@ -914,10 +1007,14 @@ select {
 }
 
 .homepage-chaos-buried {
+  position: absolute;
+  inset-block-end: 0.3rem;
+  inset-inline-start: 0.15rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-block-size: 1.9rem;
+  min-block-size: 2.3rem;
+  min-inline-size: 2.3rem;
   border: 1px solid color-mix(in srgb, var(--warning) 26%, var(--border-default));
   border-radius: 999px;
   background: color-mix(in srgb, var(--warning) 10%, var(--surface));
@@ -1481,8 +1578,25 @@ select {
   }
 
   .homepage-chaos-source-grid {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-block-start: 0.55rem;
+  }
+
+  .homepage-chaos-inbox-stack {
+    min-block-size: auto;
+  }
+
+  .homepage-chaos-inbox-card,
+  .homepage-chaos-inbox-card:nth-child(1),
+  .homepage-chaos-inbox-card:nth-child(2),
+  .homepage-chaos-inbox-card:nth-child(3),
+  .homepage-chaos-inbox-card:nth-child(4) {
+    position: relative;
+    inset: auto;
+    inline-size: 100%;
+    min-block-size: 4rem;
+    transform: none;
   }
 
   .homepage-chaos-source-grid > *:nth-child(n + 3) {
