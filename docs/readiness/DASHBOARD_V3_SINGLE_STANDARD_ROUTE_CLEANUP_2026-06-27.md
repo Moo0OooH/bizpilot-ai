@@ -6,7 +6,8 @@ Canonical branch: `main`
 Canonical commit after cleanup docs: `a6b5ccef10f36478c6f9a633bb81fd72c9ca0c44`
 Production app URL: `https://bizpilo.com`
 Production Vercel project: `moo0ooohs-projects/bizpilot-ai`
-Current production deployment after final push: `bizpilot-6n75jwgnu-moo0ooohs-projects.vercel.app`
+Production deployment rule: use the `bizpilo.com` alias as the stable target;
+individual Vercel deployment URLs roll on every `main` push.
 Production Supabase project: `bizpilot-production` / `qfqendrqimqvkoojpjao`
 
 ## Decision

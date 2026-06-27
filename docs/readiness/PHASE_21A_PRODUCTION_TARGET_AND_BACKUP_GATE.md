@@ -31,7 +31,7 @@ Production SQL has been limited to owner-approved grant-only migration `0019_lif
 | Vercel project ID | `prj_EHGqbwmTvwDranhRNXAlEJ52z7uJ` |
 | Vercel org/team ID | `team_vJYSqQIcvlHSX4LYCRnYzDXJ` |
 | Vercel framework/root | Next.js / `.` |
-| Vercel production deployment | `bizpilot-6n75jwgnu-moo0ooohs-projects.vercel.app`, target `production`, status `Ready` |
+| Vercel production deployment | Latest `main` deployment is target `production`, status `Ready`; use `https://bizpilo.com` as the stable canonical alias because individual Vercel deployment URLs roll on every push |
 | Vercel production aliases | `https://bizpilo.com`, `https://bizpilot-ai-gamma.vercel.app`, `https://bizpilot-ai-moo0ooohs-projects.vercel.app`, `https://bizpilot-ai-git-main-moo0ooohs-projects.vercel.app` |
 | Dashboard V3 Git route | `main` only; temporary preview branch deleted locally and from origin |
 | Dashboard V3 stale preview cleanup | Preview alias `bizpilot-ai-git-codex-full-system-das-6f5dea-moo0ooohs-projects.vercel.app`, its two tied deployments, and 19 additional visible Preview deployments removed through Vercel CLI |
