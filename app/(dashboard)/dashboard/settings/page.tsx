@@ -40,6 +40,7 @@ import {
   type FeatureState,
 } from "@/lib/features/feature-registry";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import { canUserRequestWorkspaceDeletion } from "@/lib/business-deletion/owner-eligibility";
 import {
   INTERFACE_LANGUAGE_COOKIE,
@@ -182,6 +183,14 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
   });
   const copy = getBizPilotCopy(activeLanguage).dashboard;
   const settingsCopy = copy.settings;
+  const routeNotice = readSafeRouteFlashMessage(
+    query?.notice,
+    copy.routeMessages.genericNotice,
+  );
+  const routeError = readSafeRouteFlashMessage(
+    query?.error,
+    copy.routeMessages.genericError,
+  );
   const systemChangeLog = await getOwnerSystemChangeLog({
     businessId: activeBusiness.id,
     userId: user.id,
@@ -202,14 +211,14 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
         title={copy.pages.settings.title}
       />
 
-      {query?.notice ? (
+      {routeNotice ? (
         <FlashMessage tone="notice">
-          {query.notice}
+          {routeNotice}
         </FlashMessage>
       ) : null}
-      {query?.error ? (
+      {routeError ? (
         <FlashMessage durationMs={10000} tone="error">
-          {query.error}
+          {routeError}
         </FlashMessage>
       ) : null}
 

@@ -40,6 +40,7 @@ import {
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import {
   INTERFACE_LANGUAGE_COOKIE,
   resolveWorkspaceInterfaceLanguage,
@@ -197,6 +198,14 @@ export default async function LeadDetailPage({
   const missingInfoLabels = getBizPilotCopy(activeLanguage).missingInfoLabels;
   const detailCopy = dashboardCopy.leadDetail;
   const queueCopy = dashboardCopy.leadQueue;
+  const routeNotice = readSafeRouteFlashMessage(
+    query?.notice,
+    dashboardCopy.routeMessages.genericNotice,
+  );
+  const routeError = readSafeRouteFlashMessage(
+    query?.error,
+    dashboardCopy.routeMessages.genericError,
+  );
   const localizedBusiness = {
     ...activeBusiness,
     preferred_language: activeLanguage,
@@ -252,18 +261,18 @@ export default async function LeadDetailPage({
         title={customerShort}
       />
 
-      {query?.notice ? (
+      {routeNotice ? (
         <FlashMessage
-          durationMs={query.notice.startsWith("Fallback") ? 9000 : 6500}
-          tone={query.notice.startsWith("Fallback") ? "warning" : "notice"}
+          durationMs={routeNotice.startsWith("Fallback") ? 9000 : 6500}
+          tone={routeNotice.startsWith("Fallback") ? "warning" : "notice"}
         >
-          {query.notice}
+          {routeNotice}
         </FlashMessage>
       ) : null}
 
-      {query?.error ? (
+      {routeError ? (
         <FlashMessage durationMs={10000} tone="error">
-          {query.error}
+          {routeError}
         </FlashMessage>
       ) : null}
 

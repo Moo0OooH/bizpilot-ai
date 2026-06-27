@@ -711,6 +711,32 @@ type AuthCopy = Readonly<{
   passwordHelp: string;
   repeatNewPassword: string;
   requestAgain: string;
+  routeMessages: Readonly<{
+    accountExists: string;
+    businessRequired: string;
+    checkEmail: string;
+    confirmEmail: string;
+    emailConfirmed: string;
+    emailDelivery: string;
+    emailInvalid: string;
+    emailRequired: string;
+    genericError: string;
+    genericNotice: string;
+    nameRequired: string;
+    newPasswordRequired: string;
+    passwordIncorrect: string;
+    passwordMismatch: string;
+    passwordRequired: string;
+    passwordReuse: string;
+    passwordUpdated: string;
+    rateLimit: string;
+    reload: string;
+    resetInvalid: string;
+    resetInstructions: string;
+    signInFailed: string;
+    signUpFailed: string;
+    strongPassword: string;
+  }>;
   resetInvalid: string;
   resetPasswordFooter: string;
   resetPasswordReuseHelp: string;
@@ -752,6 +778,10 @@ type DashboardCopy = Readonly<{
   leadQueue: DashboardLeadQueueCopy;
   leadsPage: DashboardLeadsPageCopy;
   overview: DashboardOverviewCopy;
+  routeMessages: Readonly<{
+    genericError: string;
+    genericNotice: string;
+  }>;
   nav: Readonly<{
     businessProfile: string;
     leads: string;
@@ -983,6 +1013,36 @@ const englishCopy: BizPilotCopy = {
     passwordHelp: "Use at least 8 characters for your password.",
     repeatNewPassword: "Repeat your new password",
     requestAgain: "Request again",
+    routeMessages: {
+      accountExists: "An account with this email already exists. Sign in instead.",
+      businessRequired: "Enter your business name.",
+      checkEmail: "Email confirmed. Please sign in to continue.",
+      confirmEmail: "Confirm your email before signing in.",
+      emailConfirmed: "Email confirmed. Your workspace is ready.",
+      emailDelivery:
+        "We couldn't send the confirmation email. Please wait a few minutes and try again.",
+      emailInvalid: "Enter a valid email address.",
+      emailRequired: "Enter your email address.",
+      genericError: "We couldn't complete that request. Check the form and try again.",
+      genericNotice: "Your account update was received.",
+      nameRequired: "Enter your name.",
+      newPasswordRequired: "Enter your new password.",
+      passwordIncorrect: "Email or password is incorrect.",
+      passwordMismatch: "Passwords do not match.",
+      passwordRequired: "Enter your password.",
+      passwordReuse:
+        "You can't reuse your previous password. Choose a new password you have not used for this account.",
+      passwordUpdated: "Password updated. Sign in with your new password.",
+      rateLimit: "Too many attempts. Please wait a few minutes and try again.",
+      reload: "Reload the page and try again.",
+      resetInvalid:
+        "This reset link is invalid or expired. Request a new password reset.",
+      resetInstructions:
+        "If an account exists, we'll send reset instructions.",
+      signInFailed: "We couldn't sign you in. Please try again.",
+      signUpFailed: "We couldn't create your account. Please try again.",
+      strongPassword: "Use a stronger password with at least 8 characters.",
+    },
     resetInvalid:
       "This reset link is invalid or expired. Request a new password reset.",
     resetPasswordFooter: "Use a new password that is unique to BizPilot.",
@@ -1026,6 +1086,11 @@ const englishCopy: BizPilotCopy = {
       eyebrow: "Dashboard",
       reload: "Reload dashboard",
       title: "This workspace needs a refresh.",
+    },
+    routeMessages: {
+      genericError:
+        "We couldn't complete that action. Review the fields and try again.",
+      genericNotice: "Done. The workspace has been updated.",
     },
     businessProfile: {
       accountEmailHelp: "Account email - change it from Settings.",
@@ -2429,6 +2494,41 @@ const frenchCopy: BizPilotCopy = {
     passwordHelp: "Utilisez au moins 8 caractères pour votre mot de passe.",
     repeatNewPassword: "Répétez le nouveau mot de passe",
     requestAgain: "Demander à nouveau",
+    routeMessages: {
+      accountExists:
+        "Un compte existe déjà avec ce courriel. Connectez-vous plutôt.",
+      businessRequired: "Entrez le nom de votre entreprise.",
+      checkEmail: "Courriel confirmé. Connectez-vous pour continuer.",
+      confirmEmail: "Confirmez votre courriel avant de vous connecter.",
+      emailConfirmed: "Courriel confirmé. Votre espace est prêt.",
+      emailDelivery:
+        "Nous n'avons pas pu envoyer le courriel de confirmation. Attendez quelques minutes, puis réessayez.",
+      emailInvalid: "Entrez une adresse courriel valide.",
+      emailRequired: "Entrez votre adresse courriel.",
+      genericError:
+        "Nous n'avons pas pu compléter cette demande. Vérifiez le formulaire et réessayez.",
+      genericNotice: "La mise à jour du compte a été reçue.",
+      nameRequired: "Entrez votre nom.",
+      newPasswordRequired: "Entrez votre nouveau mot de passe.",
+      passwordIncorrect: "Le courriel ou le mot de passe est incorrect.",
+      passwordMismatch: "Les mots de passe ne correspondent pas.",
+      passwordRequired: "Entrez votre mot de passe.",
+      passwordReuse:
+        "Vous ne pouvez pas réutiliser votre ancien mot de passe. Choisissez un nouveau mot de passe pour ce compte.",
+      passwordUpdated:
+        "Mot de passe mis à jour. Connectez-vous avec votre nouveau mot de passe.",
+      rateLimit:
+        "Trop de tentatives. Attendez quelques minutes, puis réessayez.",
+      reload: "Rechargez la page et réessayez.",
+      resetInvalid:
+        "Ce lien de réinitialisation est invalide ou expiré. Demandez un nouveau lien.",
+      resetInstructions:
+        "Si un compte existe, nous enverrons les instructions de réinitialisation.",
+      signInFailed: "Nous n'avons pas pu vous connecter. Réessayez.",
+      signUpFailed: "Nous n'avons pas pu créer votre compte. Réessayez.",
+      strongPassword:
+        "Utilisez un mot de passe plus fort avec au moins 8 caractères.",
+    },
     resetInvalid:
       "Ce lien de réinitialisation est invalide ou expiré. Demandez un nouveau lien.",
     resetPasswordFooter: "Utilisez un mot de passe unique pour BizPilot.",
@@ -2472,6 +2572,11 @@ const frenchCopy: BizPilotCopy = {
       eyebrow: "Tableau de bord",
       reload: "Recharger le tableau de bord",
       title: "Cet espace doit être rafraîchi.",
+    },
+    routeMessages: {
+      genericError:
+        "Nous n'avons pas pu compléter cette action. Vérifiez les champs et réessayez.",
+      genericNotice: "Terminé. L'espace a été mis à jour.",
     },
     businessProfile: {
       accountEmailHelp: "Courriel du compte - modifiez-le dans les réglages.",

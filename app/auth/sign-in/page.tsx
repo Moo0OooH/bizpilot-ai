@@ -12,6 +12,7 @@
  * Change Log:
  * - 2026-05-19: Migrated to the single-centered-card AuthShell.
  * - 2026-05-23: Localized auth copy from the central language dictionary.
+ * - 2026-06-27: Sanitized route flash messages before rendering.
  * ============================================================
  */
 
@@ -32,6 +33,10 @@ import {
   readSupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import {
+  readSafeAuthRouteError,
+  readSafeAuthRouteNotice,
+} from "@/lib/i18n/route-messages";
 import { buildNoIndexMetadata } from "@/lib/seo";
 import { signInAction } from "@/server/actions/auth.actions";
 import type { Metadata } from "next";
@@ -77,6 +82,11 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   const redirectTo = readSafeSignInRedirect(requestedRedirect);
   const language = await readAuthLanguage();
   const copy = getBizPilotCopy(language).auth;
+  const routeNotice = readSafeAuthRouteNotice(
+    params?.notice,
+    copy.routeMessages,
+  );
+  const routeError = readSafeAuthRouteError(params?.error, copy.routeMessages);
 
   return (
     <AuthShell
@@ -84,23 +94,23 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
       footer={copy.signInFooter}
     >
       <AuthCard subtitle={copy.signInSubtitle} title={copy.signInTitle}>
-        {params?.notice ? (
+        {routeNotice ? (
           <p
             aria-live="polite"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
             style={authSuccessStyle}
           >
-            {params.notice}
+            {routeNotice}
           </p>
         ) : null}
 
-        {params?.error ? (
+        {routeError ? (
           <p
             aria-live="assertive"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
             style={authErrorStyle}
           >
-            {params.error}
+            {routeError}
           </p>
         ) : null}
 

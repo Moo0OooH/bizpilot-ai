@@ -149,6 +149,12 @@ P18 follow-up:
   for the Owner first-run Start Here path, Founder/Admin Users-first route
   priority, 10-user directory default, and source standards applied.
 
+P19 follow-up:
+
+- See `docs/readiness/P19_PUBLIC_MESSAGES_AND_DASHBOARD_WORKFLOW_STANDARD_2026-06-27.md`
+  for the public/auth route-message safety layer, owner/admin flash-message
+  standardization, browser QA evidence, and final workflow checks.
+
 Safety notes:
 
 - No production cleanup or deletion action was executed.

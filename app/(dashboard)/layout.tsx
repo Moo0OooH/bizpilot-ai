@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-06-19: Resolved theme preference from cookies for hydration-safe dashboard rendering.
  * - 2026-06-20: Made the workspace-access recovery shell short-height safe with svh and natural overflow.
+ * - 2026-06-27: Sanitized workspace recovery flash copy before rendering.
  * ============================================================
  */
 
@@ -33,6 +34,7 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   resolveWorkspaceInterfaceLanguage,
 } from "@/lib/i18n/language";
+import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import { readThemePreference } from "@/lib/theme";
 import { WORKSPACE_RECOVERY_ERROR_COOKIE } from "@/lib/workspace-recovery/constants";
 import { signOutAction } from "@/server/actions/auth.actions";
@@ -57,7 +59,6 @@ export default async function DashboardLayout({
   const activeBusiness = workspace.businesses[0];
   if (!activeBusiness) {
     const accessSummary = await getWorkspaceAccessSummary({ userId: user.id });
-    const recoveryError = cookieStore.get(WORKSPACE_RECOVERY_ERROR_COOKIE)?.value;
     const isDeletionRequested =
       accessSummary?.lifecycleStatus === "deletion_requested";
     const activeLanguage = resolveWorkspaceInterfaceLanguage({
@@ -65,6 +66,10 @@ export default async function DashboardLayout({
     });
     const copy = getBizPilotCopy(activeLanguage).dashboard;
     const accessCopy = copy.workspaceAccess;
+    const recoveryError = readSafeRouteFlashMessage(
+      cookieStore.get(WORKSPACE_RECOVERY_ERROR_COOKIE)?.value,
+      copy.routeMessages.genericError,
+    );
 
     return (
       <main className="flex min-h-svh min-w-0 items-start justify-center bg-[var(--dash-bg)] px-4 py-8 text-[var(--dash-text)] sm:items-center">

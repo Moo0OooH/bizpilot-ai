@@ -18,6 +18,7 @@
  * - 2026-06-27: Added panel headings and loosened dense admin control grids.
  * - 2026-06-27: Split business-selection URLs from user paging/filter URLs.
  * - 2026-06-27: Promoted Users as the default admin control lane and made business routes explicit.
+ * - 2026-06-27: Sanitized admin route flash messages before rendering.
  * ============================================================
  */
 
@@ -46,6 +47,7 @@ import {
 } from "@/components/dashboard/dashboard-ui";
 import { readThemePreference } from "@/lib/theme";
 import { languageLabels } from "@/lib/i18n/language";
+import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import {
   founderInboxLeadDeleteAction,
   founderInboxLeadStatusAction,
@@ -3034,18 +3036,26 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     overview.users.filter((adminUser) => matchesUserFilters(adminUser, params)),
   );
   const productionHealthNeedsAttention = isProductionHealthUnhealthy(productionHealth);
+  const routeNotice = readSafeRouteFlashMessage(
+    params.notice,
+    "Done. The admin workspace has been updated.",
+  );
+  const routeError = readSafeRouteFlashMessage(
+    params.error,
+    "Founder admin action could not be completed.",
+  );
 
   return (
     <FounderAdminThemeFrame initialTheme={initialTheme}>
       <div className="mx-auto flex min-h-[calc(100dvh-2rem)] w-full max-w-[1440px] flex-col">
         <AdminTopBar healthNeedsAttention={productionHealthNeedsAttention} />
 
-        {params.notice ? (
-          <FlashMessage tone="notice">{params.notice}</FlashMessage>
+        {routeNotice ? (
+          <FlashMessage tone="notice">{routeNotice}</FlashMessage>
         ) : null}
-        {params.error ? (
+        {routeError ? (
           <FlashMessage durationMs={10000} tone="error">
-            {params.error}
+            {routeError}
           </FlashMessage>
         ) : null}
 

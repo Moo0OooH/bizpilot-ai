@@ -19,11 +19,16 @@
  * - 2026-06-19: Mapped public quote shell colors to shared semantic theme tokens.
  * - 2026-06-21: Localized noindex metadata from the active quote language.
  * - 2026-06-25: Polished quote shell spacing while preserving safe GET and submit behavior.
+ * - 2026-06-27: Guarded route error copy against raw provider or database messages.
  * ============================================================
  */
 
 import { QuoteFormWizard } from "@/components/public/quote-form-wizard";
 import { QuoteUnavailable } from "@/components/public/quote-unavailable";
+import {
+  getBizPilotCopy,
+  isSafePublicIntakeMessage,
+} from "@/lib/i18n/bizpilot-copy";
 import {
   DEFAULT_LANGUAGE,
   languageShortLabels,
@@ -101,6 +106,13 @@ export default async function QuotePage({
   const page = await getPublicIntakePage({ slug });
   const activeLanguage = readQuoteLanguage(query);
   const copy = getPublicSiteCopy(activeLanguage).quoteShell;
+  const intakeErrors = getBizPilotCopy(activeLanguage).intakeErrors;
+  const routeError =
+    query?.error
+      ? isSafePublicIntakeMessage(query.error)
+        ? query.error
+        : intakeErrors.fallbackSubmit
+      : null;
 
   if (!page) {
     return <QuoteUnavailable language={activeLanguage} pathname={`/quote/${slug}`} />;
@@ -157,13 +169,13 @@ export default async function QuotePage({
           }}>
             {copy.guardrail}
           </p>
-          {query?.error ? (
+          {routeError ? (
             <p className="mt-4 rounded-[14px] border p-3 text-[14px]" style={{
               backgroundColor: "color-mix(in srgb, var(--danger) 12%, var(--surface))",
               borderColor: "color-mix(in srgb, var(--danger) 34%, var(--border-default))",
               color: "var(--text-strong)",
             }}>
-              {query.error}
+              {routeError}
             </p>
           ) : null}
         </div>

@@ -44,6 +44,7 @@ import {
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import {
   INTERFACE_LANGUAGE_COOKIE,
   languageLabels,
@@ -199,6 +200,14 @@ export default async function DashboardPage({
   const dashboardCopy = copy.dashboard;
   const configurationTabs = dashboardCopy.configuration.tabs;
   const configCopy = dashboardCopy.configuration;
+  const routeNotice = readSafeRouteFlashMessage(
+    params?.notice,
+    dashboardCopy.routeMessages.genericNotice,
+  );
+  const routeError = readSafeRouteFlashMessage(
+    params?.error,
+    dashboardCopy.routeMessages.genericError,
+  );
   const readinessLabel = (item: { label: string; taskKey: string }) =>
     dashboardCopy.readinessTasks[
       item.taskKey as keyof typeof dashboardCopy.readinessTasks
@@ -220,15 +229,15 @@ export default async function DashboardPage({
           title={dashboardCopy.nav.quoteSetup}
         />
 
-        {params?.notice ? (
+        {routeNotice ? (
           <FlashMessage tone="notice">
-            {params.notice}
+            {routeNotice}
           </FlashMessage>
         ) : null}
 
-        {params?.error ? (
+        {routeError ? (
           <FlashMessage durationMs={10000} tone="error">
-            {params.error}
+            {routeError}
           </FlashMessage>
         ) : null}
 
