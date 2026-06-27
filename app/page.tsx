@@ -45,6 +45,7 @@ import {
   MarketingShell,
   marketingBackground,
   marketingTone,
+  type MarketingIconName,
 } from "@/components/public/marketing-ui";
 import { getHomeCopy } from "@/lib/i18n/home-copy";
 import {
@@ -120,6 +121,12 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
     marketingTone.teal,
     marketingTone.red,
   ] as const;
+  const sourceIcons: readonly MarketingIconName[] = [
+    "globe",
+    "search",
+    "message",
+    "phone",
+  ];
 
   return (
     <div
@@ -132,6 +139,29 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
       }}
     >
       <div className="homepage-signal-rail" aria-hidden="true" />
+      <div className="homepage-board-topline mb-3 flex min-w-0 items-center justify-between gap-3">
+        <span
+          className="bp-copy-status inline-flex min-w-0 items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-black"
+          style={{
+            backgroundColor: "var(--surface)",
+            borderColor: "var(--border-default)",
+            color: "var(--text-strong)",
+          }}
+        >
+          <MarketingIcon name="radar" />
+          {copy.boardLabel}
+        </span>
+        <span
+          className="homepage-board-safety bp-copy-status hidden rounded-full border px-3 py-1.5 text-[11px] font-black sm:inline-flex"
+          style={{
+            backgroundColor: "color-mix(in srgb, var(--accent) 10%, var(--surface))",
+            borderColor: "color-mix(in srgb, var(--accent) 30%, var(--border-default))",
+            color: "var(--accent)",
+          }}
+        >
+          {copy.boardSafety}
+        </span>
+      </div>
       <div className="homepage-chaos-clarity-flow homepage-signal-flow grid min-w-0 items-stretch gap-3">
         <section className="homepage-chaos-panel homepage-signal-panel min-w-0">
           <div className="homepage-visual-heading">
@@ -146,21 +176,26 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           <div className="homepage-chaos-source-grid mt-3 grid gap-2">
             {copy.sources.slice(0, 4).map((source, index) => (
               <span
-                className="homepage-source-chip bp-copy-status min-w-0 rounded-[10px] border px-2.5 py-2 text-[11px] font-black leading-4"
+                className="homepage-source-chip bp-copy-status min-w-0 rounded-[12px] border px-2.5 py-2 text-[11px] font-black leading-4"
                 key={source}
                 style={{
-                  backgroundColor: "var(--surface-interactive)",
-                  borderColor: "var(--border-default)",
+                  backgroundColor:
+                    "color-mix(in srgb, var(--surface-interactive) 86%, var(--canvas))",
+                  borderColor:
+                    "color-mix(in srgb, var(--border-default) 78%, transparent)",
                   color: sourceTones[index] ?? marketingTone.text,
                 }}
               >
                 <span
                   aria-hidden
-                  className="homepage-source-dot"
+                  className="homepage-source-icon"
                   style={{
-                    backgroundColor: sourceTones[index] ?? marketingTone.text,
+                    backgroundColor:
+                      "color-mix(in srgb, currentColor 13%, var(--surface))",
                   }}
-                />
+                >
+                  <MarketingIcon name={sourceIcons[index] ?? "message"} />
+                </span>
                 {source}
               </span>
             ))}
@@ -177,7 +212,8 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
                   color: "var(--text-default)",
                 }}
               >
-                {message}
+                <span aria-hidden className="homepage-message-mark" />
+                <span>{message}</span>
               </p>
             ))}
           </div>
@@ -198,6 +234,9 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
         >
           <p className="bp-copy-card-title min-h-0 text-[16px] font-black" style={{ color: "var(--text-strong)" }}>
             {copy.bizPilotTitle}
+          </p>
+          <p className="bp-copy-meta mt-1 text-[11px] font-bold leading-4" style={{ color: "var(--text-default)" }}>
+            {copy.bizPilotBody}
           </p>
           <div className="homepage-bizpilot-pulse" aria-hidden="true">
             <span />
@@ -251,9 +290,18 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
                       : "var(--border-default)",
                 }}
               >
-                <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
-                  {lead.title}
-                </p>
+                <div className="flex min-w-0 items-start justify-between gap-2">
+                  <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
+                    {lead.title}
+                  </p>
+                  <span
+                    className="homepage-priority-dot"
+                    aria-hidden
+                    style={{
+                      backgroundColor: index === 0 ? "var(--warning)" : "var(--accent)",
+                    }}
+                  />
+                </div>
                 <p className="bp-copy-card-body mt-1 text-[11px] font-bold leading-4" style={{ color: "var(--text-default)" }}>
                   {lead.body}
                 </p>
@@ -273,6 +321,11 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
             <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
               {copy.draftTitle}
             </p>
+            <div className="homepage-draft-lines mt-2" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
             <p className="bp-copy-card-body homepage-mockup-draft-body mt-1.5 text-[11px] leading-4" style={{ color: "var(--text-default)" }}>
               {copy.draftBody}
             </p>

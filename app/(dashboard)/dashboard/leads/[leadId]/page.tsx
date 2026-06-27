@@ -287,10 +287,30 @@ export default async function LeadDetailPage({
                 </span>{" "}
                 {detail.recommendedAction}
               </p>
-              <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
-                {detailCopy.manualWorkflow.outcomeNote}
-              </p>
-            </div>
+            <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
+              {detailCopy.manualWorkflow.outcomeNote}
+            </p>
+          </div>
+          <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            {detailCopy.manualWorkflow.steps.map(([title, detailText], index) => (
+              <div
+                className="grid min-h-[78px] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+                key={title}
+              >
+                <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-[11px] font-black text-[var(--dash-primary)]">
+                  {index + 1}
+                </span>
+                <span>
+                  <span className="block text-[13px] font-black text-[var(--dash-text)]">
+                    {title}
+                  </span>
+                  <span className="mt-0.5 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                    {detailText}
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
           </div>
           <div className="flex flex-wrap gap-2 lg:justify-end">
             <form action={markReplyCopiedAction}>

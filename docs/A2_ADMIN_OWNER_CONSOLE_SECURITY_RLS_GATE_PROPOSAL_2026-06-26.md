@@ -12,6 +12,22 @@ The repo has a safe founder-only admin console and a tenant-scoped owner
 dashboard, but it does not yet have a completed owner-facing team-management
 route with local RLS proof.
 
+## P11 Foundation Addendum
+
+P11 added a safe founder-admin Users foundation in `/admin?adminPanel=users`.
+This is read-only at the Users-tab level and does not approve owner-facing
+access management.
+
+The P11 Users view may show future actions such as invite, change role,
+suspend access, and remove access, but those actions are disabled and labeled:
+
+```text
+Requires owner-approved security gate.
+```
+
+This addendum does not approve schema, RLS, auth, migrations, owner team
+management, cross-tenant owner visibility, real customer data, or paid pilot.
+
 ## Proposed Owner-Approved Scope
 
 Allowed after gate approval:

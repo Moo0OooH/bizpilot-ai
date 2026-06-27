@@ -243,6 +243,14 @@ function LeadMobileCard({
           </span>
         </span>
       </div>
+      <span className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5">
+        <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+          {copy.headers.nextAction}
+        </span>
+        <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          {item.recommendedAction}
+        </span>
+      </span>
     </Link>
   );
 }
@@ -281,7 +289,7 @@ function LeadDesktopRow({
 function LeadDesktopHeader({ copy }: Readonly<{ copy: LeadQueueCopy }>) {
   return (
     <div
-      className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[11px] font-black uppercase text-[var(--dash-text-muted)] xl:grid`}
+      className={`sticky top-0 z-10 hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[11px] font-black uppercase text-[var(--dash-text-muted)] xl:grid`}
     >
       <span>{copy.headers.customer}</span>
       <span>{copy.headers.service}</span>
@@ -289,6 +297,44 @@ function LeadDesktopHeader({ copy }: Readonly<{ copy: LeadQueueCopy }>) {
       <span>{copy.headers.requested}</span>
       <span>{copy.headers.status}</span>
       <span>{copy.headers.nextAction}</span>
+    </div>
+  );
+}
+
+function QueueInsightStrip({
+  atRiskCount,
+  copy,
+  missingInfoCount,
+  needsReplyCount,
+  totalCount,
+  visibleCount,
+}: Readonly<{
+  atRiskCount: number;
+  copy: LeadQueueCopy;
+  missingInfoCount: number;
+  needsReplyCount: number;
+  totalCount: number;
+  visibleCount: number;
+}>) {
+  return (
+    <div className="mt-3 grid gap-2 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+      <div className="flex flex-wrap gap-2">
+        <StatusBadge tone="neutral">
+          {copy.resultSummary(visibleCount, totalCount)}
+        </StatusBadge>
+        <StatusBadge tone={needsReplyCount > 0 ? "blue" : "neutral"}>
+          {copy.status.needsReply}: {needsReplyCount}
+        </StatusBadge>
+        <StatusBadge tone={atRiskCount > 0 ? "red" : "neutral"}>
+          {copy.status.atRisk}: {atRiskCount}
+        </StatusBadge>
+        <StatusBadge tone={missingInfoCount > 0 ? "amber" : "neutral"}>
+          {copy.status.missingInfo}: {missingInfoCount}
+        </StatusBadge>
+      </div>
+      <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
+        {copy.priorityHint}
+      </p>
     </div>
   );
 }
@@ -480,6 +526,9 @@ export function LeadWorkspaceQueue({
   const [sort, setSort] = useState<LeadSort>("most_urgent");
 
   const hasActiveFilter = activeFilter !== "all" || search.trim().length > 0;
+  const needsReplyCount = leads.filter((item) => matchesFilter(item, "needs_reply")).length;
+  const atRiskCount = leads.filter((item) => matchesFilter(item, "at_risk")).length;
+  const missingInfoCount = leads.filter((item) => matchesFilter(item, "missing_info")).length;
 
   const filteredLeads = useMemo(() => {
     const sorted = sortLeads(
@@ -503,6 +552,7 @@ export function LeadWorkspaceQueue({
         <div className="border-b border-[var(--dash-border)] p-3">
           <div className="flex flex-wrap items-center gap-2">
             <input
+              aria-label={queueCopy.searchAriaLabel}
               className={`${inputClass} min-w-0 flex-[1_1_280px]`}
               onChange={(event) => setSearch(event.target.value)}
               placeholder={queueCopy.searchPlaceholder}
@@ -510,6 +560,7 @@ export function LeadWorkspaceQueue({
               value={search}
             />
             <select
+              aria-label={queueCopy.filterAriaLabel}
               className={`${inputClass} flex-[0_0_176px]`}
               onChange={(event) => setActiveFilter(event.target.value as LeadFilter)}
               value={activeFilter}
@@ -521,6 +572,7 @@ export function LeadWorkspaceQueue({
               ))}
             </select>
             <select
+              aria-label={queueCopy.sortAriaLabel}
               className={`${inputClass} flex-[0_0_154px]`}
               onChange={(event) => setSort(event.target.value as LeadSort)}
               value={sort}
@@ -537,6 +589,14 @@ export function LeadWorkspaceQueue({
               {queueCopy.reset}
             </button>
           </div>
+          <QueueInsightStrip
+            atRiskCount={atRiskCount}
+            copy={queueCopy}
+            missingInfoCount={missingInfoCount}
+            needsReplyCount={needsReplyCount}
+            totalCount={leads.length}
+            visibleCount={filteredLeads.length}
+          />
         </div>
       ) : null}
 

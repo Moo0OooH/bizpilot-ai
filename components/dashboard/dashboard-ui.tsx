@@ -113,7 +113,8 @@ const toneDotClasses: Record<Tone, string> = {
 };
 
 function humanize(value: string): string {
-  return value.replaceAll("_", " ");
+  const normalized = value.replaceAll("_", " ");
+  return normalized.charAt(0).toUpperCase() + normalized.slice(1);
 }
 
 /**
@@ -304,7 +305,7 @@ export function StatusBadge({ children, tone = "neutral" }: StatusBadgeProps) {
       className={`inline-flex min-h-6 max-w-full items-center justify-center gap-1.5 rounded-md border px-2 py-1 text-[11px] font-extrabold leading-none ${toneClasses[tone]}`}
     >
       <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${toneDotClasses[tone]}`} />
-      <span className="whitespace-nowrap capitalize">{children}</span>
+      <span className="whitespace-nowrap">{children}</span>
     </span>
   );
 }

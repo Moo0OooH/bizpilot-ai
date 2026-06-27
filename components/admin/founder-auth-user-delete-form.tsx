@@ -32,19 +32,11 @@ export function FounderAuthUserDeleteForm({
 }>) {
   const [acknowledged, setAcknowledged] = useState(false);
   const [finalConfirmed, setFinalConfirmed] = useState(false);
-  const [productionReclassification, setProductionReclassification] =
-    useState(false);
   const [typedConfirmation, setTypedConfirmation] = useState("");
   const confirmationLabel = targetEmail ?? targetUserId;
-  const canOverrideProductionBlock =
-    deletionBlockedReason ===
-      "Auth user deletion is blocked for production workspaces." ||
-    deletionBlockedReason ===
-      "Auth user deletion is blocked until linked workspaces are marked as test, demo, or seed.";
   const canDelete = useMemo(
     () =>
-      (!deletionBlockedReason ||
-        (canOverrideProductionBlock && productionReclassification)) &&
+      !deletionBlockedReason &&
       acknowledged &&
       finalConfirmed &&
       isExactAuthUserDeleteConfirmation({
@@ -54,10 +46,8 @@ export function FounderAuthUserDeleteForm({
       }),
     [
       acknowledged,
-      canOverrideProductionBlock,
       deletionBlockedReason,
       finalConfirmed,
-      productionReclassification,
       targetEmail,
       targetUserId,
       typedConfirmation,
@@ -91,28 +81,11 @@ export function FounderAuthUserDeleteForm({
           <div className="rounded-lg border border-[rgba(185,28,28,0.28)] bg-[rgba(254,242,242,0.86)] p-2 text-[12px] leading-5 text-[#991b1b] dark:bg-[rgba(127,29,29,0.2)] dark:text-red-200">
             <p className="font-black">Deletion is blocked by the safety rail.</p>
             <p className="mt-1 font-semibold">{deletionBlockedReason}</p>
-            {canOverrideProductionBlock ? (
-              <label className="mt-2 flex gap-2 font-semibold text-[var(--dash-text-secondary)]">
-                <input
-                  checked={productionReclassification}
-                  className="mt-1"
-                  name="productionWorkspaceReclassificationAcknowledgement"
-                  onChange={(event) =>
-                    setProductionReclassification(event.currentTarget.checked)
-                  }
-                  type="checkbox"
-                />
-                <span>
-                  This is fake/test data. Reclassify owned production-marked
-                  workspaces to Founder test, then delete this login.
-                </span>
-              </label>
-            ) : (
-              <p className="mt-1 font-semibold">
-                Mark the workspace as Founder test, Demo, or Seed when safe,
-                then run cleanup before deleting the login.
-              </p>
-            )}
+            <p className="mt-1 font-semibold">
+              Mark the workspace as Founder test, Demo, or Seed only after
+              confirming it contains fake data, then run cleanup before deleting
+              the login. Production-linked users cannot be deleted from this UI.
+            </p>
           </div>
         ) : null}
         <label className="flex gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">

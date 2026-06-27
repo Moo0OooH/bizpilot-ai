@@ -287,3 +287,123 @@ Updated next safe sequence:
 4. Keep real-data approval separate.
 5. Keep paid pilot approval separate.
 ```
+
+## Addendum - P12 Dashboard Professionalization And Auth Gate
+
+Date: 2026-06-26
+
+P12 dashboard visual/readability polish is being implemented on:
+
+```text
+review/p12-dashboard-professionalization-gates
+```
+
+P12 safe scope:
+
+- Dashboard overview manual recovery lane.
+- Lead queue insight strip, mobile next-action visibility, sticky desktop
+  header, and accessibility labels.
+- Lead detail owner-review workflow steps.
+- Shared badge copy fix so acronym text such as `AI` is not visually mutated.
+- EN/fr-CA copy parity for the new dashboard labels.
+- Source guard tests for the P12 dashboard boundaries.
+
+P12 explicit blocks:
+
+- No real auth user deletion.
+- No production test account creation.
+- No use of shared owner credentials in automation.
+- No Google/phone auth implementation yet.
+- No database schema, migration, RLS, billing/payment, AI provider, or
+  production data-flow changes.
+
+Current P12 recommendation:
+
+```text
+Dashboard P12 visual/readability polish is safe to review.
+Auth/user cleanup remains gate-blocked.
+Real data and paid pilot remain blocked.
+```
+
+P12 verification recorded:
+
+```text
+pnpm verify                                      PASS
+pnpm smoke:public                               PASS
+pnpm smoke:responsive                           PASS
+pnpm smoke:ui-matrix                            PASS
+pnpm smoke:quote -- --inactive-slug=...         PASS
+browser public/dashboard-redirect check         PASS
+git diff --check                                PASS
+```
+
+P12 skipped by safety:
+
+```text
+pnpm smoke:dashboard   SKIPPED - Supabase URL classified managed non-local
+pnpm verify:local-db   SKIPPED - DATABASE_URL missing in shell
+```
+
+Canonical P12 report:
+
+```text
+docs/readiness/P12_DASHBOARD_PROFESSIONALIZATION_AND_AUTH_GATE_REPORT_2026-06-26.md
+```
+
+## Addendum - P13 Founder Admin Console Professionalization
+
+Date: 2026-06-26
+
+P13 founder admin console work is ready for review on:
+
+```text
+review/p13-founder-admin-console-professionalization
+```
+
+P13 safe scope:
+
+- Founder admin topbar responsive hardening.
+- Users panel upgraded from read-only wording to gate-aware operations.
+- Admin capability matrix added.
+- User detail split into workspace context, account support, destructive zone,
+  and blocked access-management controls.
+- Password reset email support surfaced for non-founder users with an email.
+- Existing fake/test auth deletion UI surfaced in user detail.
+- Production-linked user deletion removed from the UI path.
+- Temporary password setting remains gated and not exposed in the UI.
+
+P13 explicit blocks:
+
+- No real production user deletion.
+- No invite/role/suspend/remove access management.
+- No database schema, migration, or RLS change.
+- No Google/phone auth provider change.
+- No real customer data approval.
+- No paid pilot approval.
+
+P13 verification recorded:
+
+```text
+pnpm typecheck                                 PASS
+pnpm test:unit -- tests/unit/...              PASS (143/143 unit tests)
+pnpm verify                                    PASS
+pnpm smoke:public                             PASS
+pnpm smoke:responsive                         PASS
+pnpm smoke:ui-matrix                          PASS
+pnpm smoke:quote -- --inactive-slug=...       PASS
+browser unauth /admin redirect gate           PASS
+git diff --check                              PASS
+```
+
+P13 skipped by safety:
+
+```text
+pnpm smoke:dashboard   SKIPPED - NEXT_PUBLIC_SUPABASE_URL missing in shell
+pnpm verify:local-db   SKIPPED - DATABASE_URL missing in shell
+```
+
+Canonical P13 report:
+
+```text
+docs/readiness/P13_FOUNDER_ADMIN_CONSOLE_PROFESSIONALIZATION_REPORT_2026-06-26.md
+```

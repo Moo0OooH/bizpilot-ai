@@ -406,6 +406,11 @@ type DashboardLeadQueueCopy = Readonly<{
     newest: string;
     oldest: string;
   }>;
+  priorityHint: string;
+  resultSummary: (visible: number, total: number) => string;
+  searchAriaLabel: string;
+  filterAriaLabel: string;
+  sortAriaLabel: string;
   status: Readonly<{
     archived: string;
     atRisk: string;
@@ -476,6 +481,7 @@ type DashboardLeadDetailCopy = Readonly<{
     outcomeNote: string;
     primaryAction: string;
     secondaryAction: string;
+    steps: ReadonlyArray<readonly [string, string]>;
     title: string;
   }>;
   missing: Readonly<{
@@ -560,6 +566,11 @@ type DashboardOverviewCopy = Readonly<{
   heroBadge: string;
   heroDescription: string;
   heroTitle: (count: number) => string;
+  commandFlow: Readonly<{
+    description: string;
+    items: ReadonlyArray<readonly [string, string]>;
+    title: string;
+  }>;
   metrics: Readonly<{
     aiDraftsReady: Readonly<{ detail: string; label: string }>;
     atRiskLeads: Readonly<{ detail: string; label: string }>;
@@ -1283,6 +1294,12 @@ const englishCopy: BizPilotCopy = {
         newest: "Newest",
         oldest: "Oldest",
       },
+      priorityHint:
+        "Priority order favors overdue requests, missing details, new leads, and open owner actions.",
+      resultSummary: (visible, total) => `${visible}/${total} visible`,
+      searchAriaLabel: "Search the lead recovery queue",
+      filterAriaLabel: "Filter leads by status",
+      sortAriaLabel: "Sort leads",
       status: {
         archived: "Archived",
         atRisk: "At risk",
@@ -1359,6 +1376,12 @@ const englishCopy: BizPilotCopy = {
           "Record won or lost only after you have contacted the customer outside BizPilot.",
         primaryAction: "Mark reply copied after review",
         secondaryAction: "Record outcome after contact",
+        steps: [
+          ["Review", "Check the request and missing details."],
+          ["Draft", "Generate or inspect the AI-supported reply."],
+          ["Copy", "Edit and send through your normal channel."],
+          ["Record", "Update status after the manual contact."],
+        ],
         title: "Next manual step",
       },
       missing: {
@@ -1517,6 +1540,17 @@ const englishCopy: BizPilotCopy = {
         count === 1
           ? "1 quote request needs attention today."
           : `${count} quote requests need attention today.`,
+      commandFlow: {
+        description:
+          "Keep the day tight: capture requests, prioritize urgency, review the draft, then send manually outside BizPilot.",
+        items: [
+          ["Capture", "New quote requests land in one queue."],
+          ["Prioritize", "At-risk and missing-detail leads rise first."],
+          ["Draft", "AI support stays review-only."],
+          ["Manual send", "Owner copies, edits, and sends."],
+        ],
+        title: "Today's manual recovery lane",
+      },
       metrics: {
         aiDraftsReady: {
           detail: "Review before using. No auto-send.",
@@ -2700,6 +2734,12 @@ const frenchCopy: BizPilotCopy = {
         newest: "Plus récent",
         oldest: "Plus ancien",
       },
+      priorityHint:
+        "L'ordre de priorité met d'abord les demandes en retard, les détails manquants, les nouveaux prospects et les actions ouvertes.",
+      resultSummary: (visible, total) => `${visible}/${total} visibles`,
+      searchAriaLabel: "Rechercher dans la file de récupération",
+      filterAriaLabel: "Filtrer les prospects par statut",
+      sortAriaLabel: "Trier les prospects",
       status: {
         archived: "Archivé",
         atRisk: "À risque",
@@ -2778,6 +2818,12 @@ const frenchCopy: BizPilotCopy = {
           "Notez gagné ou perdu seulement après avoir contacté le client hors de BizPilot.",
         primaryAction: "Marquer la réponse copiée après révision",
         secondaryAction: "Noter le résultat après contact",
+        steps: [
+          ["Réviser", "Vérifier la demande et les détails manquants."],
+          ["Brouillon", "Générer ou vérifier la réponse aidée par l'IA."],
+          ["Copier", "Modifier et envoyer par votre canal habituel."],
+          ["Noter", "Mettre à jour le statut après le contact manuel."],
+        ],
         title: "Prochaine étape manuelle",
       },
       missing: {
@@ -2942,6 +2988,17 @@ const frenchCopy: BizPilotCopy = {
         "Répondez pendant que le client compare encore ses options. BizPilot organise les demandes urgentes, prépare une réponse et vous garde en contrôle.",
       heroTitle: (count) =>
         `${count} demande${count === 1 ? "" : "s"} de soumission demandent votre attention aujourd'hui.`,
+      commandFlow: {
+        description:
+          "Gardez la journée claire: capturer les demandes, prioriser l'urgence, valider le brouillon, puis envoyer manuellement hors BizPilot.",
+        items: [
+          ["Capturer", "Les nouvelles demandes arrivent dans une seule file."],
+          ["Prioriser", "Les prospects à risque ou incomplets montent d'abord."],
+          ["Brouillon", "Le soutien IA reste à valider."],
+          ["Envoi manuel", "Le responsable copie, modifie et envoie."],
+        ],
+        title: "Flux manuel de récupération du jour",
+      },
       metrics: {
         aiDraftsReady: {
           detail: "Réviser avant utilisation. Aucun envoi automatique.",

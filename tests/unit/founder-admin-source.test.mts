@@ -53,8 +53,18 @@ describe("Founder admin source safety", () => {
       actionSource.includes("workspaceRepairAcknowledgement"),
       true,
     );
-    assert.equal(pageSource.includes("FounderWorkspaceRepairControls"), true);
-    assert.equal(pageSource.includes("Recover owner workspace"), true);
+    assert.equal(pageSource.includes("FounderWorkspaceRepairControls"), false);
+    assert.equal(pageSource.includes("Recover owner workspace"), false);
+    assert.equal(
+      pageSource.includes(
+        "Workspace repair remains a founder-admin action outside this read-only",
+      ),
+      true,
+    );
+    assert.equal(
+      pageSource.includes("Requires owner-approved security gate."),
+      true,
+    );
   });
 
   it("keeps founder production health checks server-only and safe", () => {
@@ -67,5 +77,31 @@ describe("Founder admin source safety", () => {
     assert.equal(source.includes("qfqendrqimqvkoojpjao"), true);
     assert.equal(pageSource.includes("FounderProductionHealthPanel"), true);
     assert.equal(pageSource.includes("Production health"), true);
+  });
+
+  it("keeps founder user operations capability-gated", () => {
+    const pageSource = readFileSync("app/admin/page.tsx", "utf8");
+    const authDeleteSource = readFileSync(
+      "components/admin/founder-auth-user-delete-form.tsx",
+      "utf8",
+    );
+
+    assert.equal(pageSource.includes("FounderAdminCapabilityMatrix"), true);
+    assert.equal(pageSource.includes("UserAccountSupportPanel"), true);
+    assert.equal(pageSource.includes("UserDestructiveZone"), true);
+    assert.equal(pageSource.includes("FounderAuthUserDeleteForm"), true);
+    assert.equal(pageSource.includes("founderPasswordResetAction"), true);
+    assert.equal(pageSource.includes("founderTemporaryPasswordAction"), false);
+    assert.equal(pageSource.includes("Temporary password gated"), true);
+    assert.equal(pageSource.includes("Production user delete"), true);
+    assert.equal(pageSource.includes("Blocked"), true);
+    assert.equal(
+      authDeleteSource.includes("productionWorkspaceReclassificationAcknowledgement"),
+      false,
+    );
+    assert.equal(
+      authDeleteSource.includes("Production-linked users cannot be deleted from this UI."),
+      true,
+    );
   });
 });

@@ -635,8 +635,13 @@ select {
   z-index: -1;
   background:
     linear-gradient(90deg, transparent 0 19%, color-mix(in srgb, var(--warning) 12%, transparent) 19% 20%, transparent 20% 49%, color-mix(in srgb, var(--accent) 14%, transparent) 49% 51%, transparent 51% 79%, color-mix(in srgb, var(--primary) 10%, transparent) 79% 80%, transparent 80%),
-    radial-gradient(circle at 48% 50%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 14rem);
+    radial-gradient(circle at 48% 50%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 14rem);
   content: "";
+}
+
+.homepage-board-topline {
+  position: relative;
+  z-index: 1;
 }
 
 .homepage-signal-rail {
@@ -662,7 +667,8 @@ select {
   border: 1px solid color-mix(in srgb, var(--border-default) 76%, transparent);
   border-radius: 1rem;
   padding: 0.75rem;
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 91%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 48%, transparent);
 }
 
 .homepage-chaos-source-grid {
@@ -672,19 +678,35 @@ select {
 .homepage-source-chip {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
   white-space: normal;
+  box-shadow: 0 10px 24px color-mix(in srgb, currentColor 8%, transparent);
 }
 
-.homepage-source-dot {
-  block-size: 0.45rem;
-  inline-size: 0.45rem;
+.homepage-source-icon {
+  display: grid;
+  block-size: 1.55rem;
+  inline-size: 1.55rem;
   flex: 0 0 auto;
-  border-radius: 999px;
+  place-items: center;
+  border-radius: 0.55rem;
 }
 
 .homepage-signal-message {
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.04);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.045);
+}
+
+.homepage-message-mark {
+  display: inline-block;
+  block-size: 0.46rem;
+  inline-size: 0.46rem;
+  margin-block-start: 0.28rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: var(--warning);
 }
 
 .homepage-flow-connector {
@@ -697,7 +719,9 @@ select {
 .homepage-bizpilot-node {
   position: relative;
   align-self: center;
-  box-shadow: 0 18px 42px color-mix(in srgb, var(--accent) 18%, transparent);
+  box-shadow:
+    0 18px 42px color-mix(in srgb, var(--accent) 14%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 42%, transparent);
 }
 
 .homepage-bizpilot-pulse {
@@ -717,8 +741,39 @@ select {
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
 }
 
+.homepage-priority-dot {
+  block-size: 0.48rem;
+  inline-size: 0.48rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 12%, transparent);
+}
+
 .homepage-signal-draft {
   box-shadow: 0 12px 32px color-mix(in srgb, var(--accent-decorative) 16%, transparent);
+}
+
+.homepage-draft-lines {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.homepage-draft-lines span {
+  block-size: 0.36rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-decorative) 24%, var(--surface));
+}
+
+.homepage-draft-lines span:nth-child(1) {
+  inline-size: 82%;
+}
+
+.homepage-draft-lines span:nth-child(2) {
+  inline-size: 96%;
+}
+
+.homepage-draft-lines span:nth-child(3) {
+  inline-size: 58%;
 }
 
 .homepage-visual-heading {
