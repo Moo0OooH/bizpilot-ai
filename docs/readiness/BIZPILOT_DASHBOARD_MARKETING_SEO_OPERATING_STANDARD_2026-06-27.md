@@ -137,6 +137,12 @@ P15 follow-up:
   founder/admin rail cleanup, final compactness scores, and 86-route/viewport
   Browser verification pass.
 
+P16 follow-up:
+
+- See `docs/readiness/P16_QUOTE_SETUP_FIELD_TYPE_AND_ADMIN_ROUTE_FIX_2026-06-27.md`
+  for the Quote Setup custom-field type crash fix, field-type browser retest,
+  and founder/admin business-route cleanup.
+
 Safety notes:
 
 - No production cleanup or deletion action was executed.

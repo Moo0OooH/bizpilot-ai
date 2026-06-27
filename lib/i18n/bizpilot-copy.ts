@@ -18,6 +18,7 @@
  * - 2026-06-21: Added localized quote success noindex metadata.
  * - 2026-06-25: Polished owner-review wording in dashboard and status helper copy.
  * - 2026-06-26: Removed legacy owner-heavy and desk wording before Dashboard D1.
+ * - 2026-06-27: Clarified Quote Setup choice-option help for time-window custom fields.
  * ============================================================
  */
 
@@ -1115,7 +1116,8 @@ const englishCopy: BizPilotCopy = {
         newFieldName: "New customer question",
         optional: "Optional",
         options: "Options",
-        optionsHelp: "For select or radio fields. One option per line or comma.",
+        optionsHelp:
+          "For select, radio, or time-window fields. One option per line or comma.",
         position: "Position",
         priority: "Priority",
         removeField: "Remove field",
@@ -2551,7 +2553,7 @@ const frenchCopy: BizPilotCopy = {
         optional: "Optionnel",
         options: "Options",
         optionsHelp:
-          "Pour les champs select ou radio. Une option par ligne ou séparée par une virgule.",
+          "Pour les champs de liste, radio ou plage horaire. Une option par ligne ou séparée par une virgule.",
         position: "Position",
         priority: "Priorité",
         removeField: "Retirer le champ",

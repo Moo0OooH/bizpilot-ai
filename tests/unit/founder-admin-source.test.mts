@@ -136,6 +136,11 @@ describe("Founder admin source safety", () => {
     assert.equal(cleanupSource.includes("var(--dash-danger-strong)"), true);
     assert.equal(cleanupSource.includes("text-red-200"), false);
     assert.equal(cleanupSource.includes("rounded-[14px]"), false);
+    assert.equal(pageSource.includes("function adminBusinessHref"), true);
+    assert.equal(
+      pageSource.includes("href={adminUsersHref(params, {\n                businessId: business.businessId"),
+      false,
+    );
 
     assert.equal(founderHandoffSource.includes("Founder Admin Handoff"), true);
     assert.equal(founderHandoffSource.includes("Admin surface map"), true);

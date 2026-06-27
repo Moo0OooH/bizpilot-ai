@@ -16,6 +16,7 @@
  * - 2026-06-18: Updated founder access fallback to svh/clip frame for responsive hardening.
  * - 2026-06-19: Read the shared theme preference cookie while preserving legacy dashboard theme fallback.
  * - 2026-06-27: Added panel headings and loosened dense admin control grids.
+ * - 2026-06-27: Split business-selection URLs from user paging/filter URLs.
  * ============================================================
  */
 
@@ -613,6 +614,29 @@ function adminUsersHref(
 
   for (const [key, value] of Object.entries(merged)) {
     if (value && value !== "all" && value !== "1") {
+      search.set(key, value);
+    }
+  }
+
+  const query = search.toString();
+
+  return query ? `/admin?${query}` : "/admin";
+}
+
+function adminBusinessHref(
+  params: AdminSearchParams,
+  updates: Partial<Pick<AdminSearchParams, "businessId" | "cleanupBusinessId">>,
+): string {
+  const merged: Pick<AdminSearchParams, "adminPanel" | "businessId" | "cleanupBusinessId"> = {
+    adminPanel: "businesses",
+    businessId: params.businessId,
+    cleanupBusinessId: params.cleanupBusinessId,
+    ...updates,
+  };
+  const search = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(merged)) {
+    if (value && value !== "businesses") {
       search.set(key, value);
     }
   }
@@ -1232,9 +1256,8 @@ function FounderBusinessMasterRail({
                   ? "border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] shadow-sm"
                   : "border-[var(--dash-border)] bg-[var(--dash-surface-muted)] hover:border-[var(--dash-primary-border)] hover:bg-[var(--dash-surface)]",
               ].join(" ")}
-              href={adminUsersHref(params, {
+              href={adminBusinessHref(params, {
                 businessId: business.businessId,
-                userPage: "1",
               })}
               key={business.businessId}
             >
@@ -2116,9 +2139,11 @@ function UserDestructiveZone({
 
 function UserWorkspaceReadOnlyPanel({
   linkedBusiness,
+  params,
   user,
 }: Readonly<{
   linkedBusiness: FounderAdminBusiness | null;
+  params: AdminSearchParams;
   user: FounderAdminUser;
 }>) {
   return (
@@ -2159,7 +2184,7 @@ function UserWorkspaceReadOnlyPanel({
       {linkedBusiness ? (
         <Link
           className={`${buttonClass} mt-3 w-full justify-center`}
-          href={adminUsersHref({ adminPanel: "businesses" }, {
+          href={adminBusinessHref(params, {
             businessId: linkedBusiness.businessId,
           })}
         >
@@ -2455,6 +2480,7 @@ function FounderUsersSection({
                 <div className="grid gap-3 xl:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.72fr)_minmax(320px,0.72fr)_minmax(320px,0.72fr)]">
                   <UserWorkspaceReadOnlyPanel
                     linkedBusiness={linkedBusiness}
+                    params={params}
                     user={user}
                   />
                   <UserAccountSupportPanel user={user} />

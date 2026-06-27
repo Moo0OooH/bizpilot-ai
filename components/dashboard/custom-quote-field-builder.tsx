@@ -125,19 +125,19 @@ export function CustomQuoteFieldBuilder({
                   <select
                     className={fieldInputClass}
                     name={`newFieldType:${field.id}`}
-                    onChange={(event) =>
+                    onChange={(event) => {
+                      const nextType = event.currentTarget.value as QuoteFieldType;
                       setFields((current) =>
                         current.map((item) =>
                           item.id === field.id
                             ? {
                                 ...item,
-                                type: event.currentTarget
-                                  .value as QuoteFieldType,
+                                type: nextType,
                               }
                             : item,
                         ),
-                      )
-                    }
+                      );
+                    }}
                     value={field.type}
                   >
                     {configurableFieldTypes.map((type) => (
