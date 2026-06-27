@@ -349,3 +349,61 @@ Canonical P12 report:
 ```text
 docs/readiness/P12_DASHBOARD_PROFESSIONALIZATION_AND_AUTH_GATE_REPORT_2026-06-26.md
 ```
+
+## Addendum - P13 Founder Admin Console Professionalization
+
+Date: 2026-06-26
+
+P13 founder admin console work is ready for review on:
+
+```text
+review/p13-founder-admin-console-professionalization
+```
+
+P13 safe scope:
+
+- Founder admin topbar responsive hardening.
+- Users panel upgraded from read-only wording to gate-aware operations.
+- Admin capability matrix added.
+- User detail split into workspace context, account support, destructive zone,
+  and blocked access-management controls.
+- Password reset email support surfaced for non-founder users with an email.
+- Existing fake/test auth deletion UI surfaced in user detail.
+- Production-linked user deletion removed from the UI path.
+- Temporary password setting remains gated and not exposed in the UI.
+
+P13 explicit blocks:
+
+- No real production user deletion.
+- No invite/role/suspend/remove access management.
+- No database schema, migration, or RLS change.
+- No Google/phone auth provider change.
+- No real customer data approval.
+- No paid pilot approval.
+
+P13 verification recorded:
+
+```text
+pnpm typecheck                                 PASS
+pnpm test:unit -- tests/unit/...              PASS (143/143 unit tests)
+pnpm verify                                    PASS
+pnpm smoke:public                             PASS
+pnpm smoke:responsive                         PASS
+pnpm smoke:ui-matrix                          PASS
+pnpm smoke:quote -- --inactive-slug=...       PASS
+browser unauth /admin redirect gate           PASS
+git diff --check                              PASS
+```
+
+P13 skipped by safety:
+
+```text
+pnpm smoke:dashboard   SKIPPED - NEXT_PUBLIC_SUPABASE_URL missing in shell
+pnpm verify:local-db   SKIPPED - DATABASE_URL missing in shell
+```
+
+Canonical P13 report:
+
+```text
+docs/readiness/P13_FOUNDER_ADMIN_CONSOLE_PROFESSIONALIZATION_REPORT_2026-06-26.md
+```

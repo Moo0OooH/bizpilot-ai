@@ -26,11 +26,13 @@ import {
   FounderAdminThemeFrame,
   FounderAdminThemeSelector,
 } from "@/components/admin/founder-admin-theme";
+import { FounderAuthUserDeleteForm } from "@/components/admin/founder-auth-user-delete-form";
 import { FounderTestCleanupForm } from "@/components/admin/founder-test-cleanup-form";
 import { FlashMessage } from "@/components/dashboard/flash-message";
 import {
   buttonClass,
   DashboardCard,
+  disabledButtonClass,
   inputClass,
   MetricCard,
   PageHeader,
@@ -44,6 +46,7 @@ import { languageLabels } from "@/lib/i18n/language";
 import {
   founderInboxLeadDeleteAction,
   founderInboxLeadStatusAction,
+  founderPasswordResetAction,
   updateFounderInternalNoteAction,
   updateFounderPlanAction,
   updateFounderQuoteLinkAction,
@@ -1867,8 +1870,8 @@ function FounderUsersOverviewPanel({
   return (
     <DashboardCard className="p-4 sm:p-5" variant="priority">
       <PageHeader
-        actions={<StatusBadge tone="blue">Read-only foundation</StatusBadge>}
-        description="Founder-only user search, list, and detail review. Access changes stay blocked until the owner-approved security/RLS gate is closed."
+        actions={<StatusBadge tone="amber">Gated operations</StatusBadge>}
+        description="Founder-only user search, account support, fake/test cleanup, and detail review. Role and production access changes stay blocked until the owner-approved security/RLS gate is closed."
         eyebrow="Founder Admin"
         title="Users"
       />
@@ -1900,8 +1903,9 @@ function FounderUsersOverviewPanel({
       </section>
       <p className="mt-3 rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text)]">
         Search mode: {usersSearchMode === "auth_filter" ? "indexed auth filter" : "paged auth list"}.
-        Invite, role change, suspend, and remove actions require owner-approved
-        security gate.
+        Password reset and fake/test auth cleanup are guarded. Invite, role
+        change, suspend, remove, and production user deletion require the
+        owner-approved security/RLS gate.
       </p>
     </DashboardCard>
   );
@@ -1944,6 +1948,167 @@ function LockedAccessManagementPanel() {
           </button>
         ))}
       </div>
+    </section>
+  );
+}
+
+function FounderAdminCapabilityMatrix() {
+  const capabilities: ReadonlyArray<{
+    detail: string;
+    label: string;
+    tone: "amber" | "blue" | "emerald" | "neutral" | "red";
+    value: string;
+  }> = [
+    {
+      detail: "Founder-only, audited business controls.",
+      label: "Plan, status, quote link",
+      tone: "emerald",
+      value: "Active",
+    },
+    {
+      detail: "Review/archive and exact-ID hard delete for spam/test leads.",
+      label: "Lead inbox cleanup",
+      tone: "amber",
+      value: "Guarded",
+    },
+    {
+      detail: "Sends a reset email; founder accounts stay protected in the UI.",
+      label: "Password reset",
+      tone: "blue",
+      value: "Available",
+    },
+    {
+      detail: "Exact email/ID confirmation; production-linked users are blocked.",
+      label: "Fake/test auth delete",
+      tone: "amber",
+      value: "Guarded",
+    },
+    {
+      detail: "Requires owner-approved schema/RLS and last-owner protection.",
+      label: "Invite / role / suspend",
+      tone: "red",
+      value: "Blocked",
+    },
+    {
+      detail: "Real customer account deletion needs backup, proof, and approval.",
+      label: "Production user delete",
+      tone: "red",
+      value: "Blocked",
+    },
+  ];
+
+  return (
+    <DashboardCard className="p-4 sm:p-5">
+      <SectionHeader
+        action={<StatusBadge tone="amber">Gate-aware</StatusBadge>}
+        description="Operational capability map for founder/admin work. Destructive and access-changing actions stay explicit."
+        title="Admin capability matrix"
+      />
+      <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+        {capabilities.map((capability) => (
+          <div
+            className="grid min-h-[92px] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+            key={capability.label}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <p className="text-[13px] font-black text-[var(--dash-text)]">
+                {capability.label}
+              </p>
+              <StatusBadge tone={capability.tone}>
+                {capability.value}
+              </StatusBadge>
+            </div>
+            <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+              {capability.detail}
+            </p>
+          </div>
+        ))}
+      </div>
+    </DashboardCard>
+  );
+}
+
+function UserAccountSupportPanel({
+  user,
+}: Readonly<{ user: FounderAdminUser }>) {
+  const canRequestReset = Boolean(user.authEmail) && !user.isFounder;
+
+  return (
+    <section className={`${toolboxSectionClass} content-start`}>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Account support
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Founder-only auth support. Prefer reset email over temporary passwords.
+          </p>
+        </div>
+        <StatusBadge tone={canRequestReset ? "blue" : "amber"}>
+          {canRequestReset ? "Available" : "Restricted"}
+        </StatusBadge>
+      </div>
+
+      {canRequestReset ? (
+        <form action={founderPasswordResetAction} className={controlPanelClass}>
+          <input name="targetUserId" type="hidden" value={user.userId} />
+          <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Sends a Supabase reset email to the target account and logs a trace.
+            No password is printed or stored here.
+          </p>
+          <button className={`${primaryButtonClass} w-full`} type="submit">
+            Send password reset
+          </button>
+        </form>
+      ) : (
+        <div className={controlPanelClass}>
+          <p className="text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
+            Password reset is disabled for founder accounts or accounts without
+            an email address.
+          </p>
+          <button className={`${disabledButtonClass} w-full`} disabled type="button">
+            Password reset unavailable
+          </button>
+        </div>
+      )}
+
+      <div className={controlPanelClass}>
+        <p className="text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
+          Temporary password setting remains emergency-only and is intentionally
+          not exposed in the console. Use reset email unless a separate support
+          incident gate approves otherwise.
+        </p>
+        <button className={`${disabledButtonClass} w-full`} disabled type="button">
+          Temporary password gated
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function UserDestructiveZone({
+  user,
+}: Readonly<{ user: FounderAdminUser }>) {
+  return (
+    <section className={`${toolboxSectionClass} content-start`}>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            Destructive account zone
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Fake/test auth deletion only. Real production users stay blocked.
+          </p>
+        </div>
+        <StatusBadge tone={user.authDeletionBlockedReason ? "red" : "amber"}>
+          {user.authDeletionBlockedReason ? "Blocked" : "Guarded"}
+        </StatusBadge>
+      </div>
+      <FounderAuthUserDeleteForm
+        deletionBlockedReason={user.authDeletionBlockedReason}
+        targetEmail={user.authEmail}
+        targetUserId={user.userId}
+      />
     </section>
   );
 }
@@ -2041,6 +2206,8 @@ function FounderUsersSection({
         usersSearchMode={usersSearchMode}
         usersTotal={usersTotal}
       />
+
+      <FounderAdminCapabilityMatrix />
 
       <DashboardCard className="space-y-4 p-4 sm:p-5" variant="elevated">
         <details>
@@ -2284,11 +2451,13 @@ function FounderUsersSection({
                     </dd>
                   </div>
                 </dl>
-                <div className="grid gap-3 2xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.75fr)]">
+                <div className="grid gap-3 xl:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.72fr)_minmax(320px,0.72fr)_minmax(320px,0.72fr)]">
                   <UserWorkspaceReadOnlyPanel
                     linkedBusiness={linkedBusiness}
                     user={user}
                   />
+                  <UserAccountSupportPanel user={user} />
+                  <UserDestructiveZone user={user} />
                   <LockedAccessManagementPanel />
                 </div>
               </div>
@@ -2568,7 +2737,7 @@ function AdminTopBar({
         WebkitBackdropFilter: "blur(16px) saturate(140%)",
       }}
     >
-      <div className="flex h-14 items-center justify-between gap-4">
+      <div className="flex min-h-14 flex-wrap items-center justify-between gap-2 py-2 sm:flex-nowrap sm:gap-4 sm:py-0">
         <Link className="inline-flex items-center gap-2.5" href="/admin">
           <span
             aria-hidden
@@ -2595,7 +2764,7 @@ function AdminTopBar({
             Founder admin
           </span>
         </Link>
-        <div className="inline-flex shrink-0 items-center gap-2">
+        <div className="inline-flex min-w-0 shrink-0 flex-wrap items-center gap-2 sm:flex-nowrap">
           <span
             className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-bold"
             style={{
