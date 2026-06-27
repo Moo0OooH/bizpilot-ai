@@ -17,6 +17,7 @@
  * - 2026-06-27: Consolidated the owner command lane and KPI strip into one calmer action board.
  * - 2026-06-27: Added a first-run Start Here path for owner setup, sharing, and lead review.
  * - 2026-06-27: Reworked the first viewport into a prioritized next-action cockpit.
+ * - 2026-06-27: Hid synthetic/internal seed labels behind owner-safe display fallbacks.
  * ============================================================
  */
 
@@ -31,6 +32,7 @@ import {
   buttonClass,
   DashboardCard,
   EmptyState,
+  ownerSafeLeadText,
   primaryButtonClass,
   RightRailPanel,
   SectionHeader,
@@ -211,12 +213,18 @@ export default async function DashboardOverviewPage() {
     newQuoteCount > 0,
     desk.leads.length > 0 && needsReplyCount + atRiskCount === 0,
   ] as const;
-  const featuredLeadName =
-    featuredLead?.lead.customer_name ?? overviewCopy.featuredFallbackCustomer;
-  const featuredLeadService =
-    featuredLead?.lead.service_type ?? overviewCopy.featuredFallbackService;
-  const featuredLeadArea =
-    featuredLead?.lead.city_or_service_area ?? overviewCopy.featuredFallbackArea;
+  const featuredLeadName = ownerSafeLeadText(
+    featuredLead?.lead.customer_name,
+    overviewCopy.featuredFallbackCustomer,
+  );
+  const featuredLeadService = ownerSafeLeadText(
+    featuredLead?.lead.service_type,
+    overviewCopy.featuredFallbackService,
+  );
+  const featuredLeadArea = ownerSafeLeadText(
+    featuredLead?.lead.city_or_service_area,
+    overviewCopy.featuredFallbackArea,
+  );
   const featuredLeadAge = featuredLead
     ? formatAge(featuredLead.lead.created_at, queueCopy)
     : overviewCopy.featuredFallbackAge;
@@ -472,29 +480,36 @@ export default async function DashboardOverviewPage() {
             />
             <div className="mt-3 grid gap-2">
               {recentLeads.length > 0 ? (
-                recentLeads.slice(0, 5).map((item) => (
-                  <Link
-                    className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
-                    href={`/dashboard/leads/${item.lead.id}`}
-                    key={item.lead.id}
-                  >
-                    <Avatar name={item.lead.customer_name} size={32} />
-                    <span className="min-w-0">
-                      <span className="block truncate text-[12.5px] font-extrabold text-[var(--dash-text)]">
-                        {shortCustomerName(
-                          item.lead.customer_name,
-                          queueCopy.fallbacks.unnamedLead,
-                        )}
+                recentLeads.slice(0, 5).map((item) => {
+                  const customerDisplayName = ownerSafeLeadText(
+                    item.lead.customer_name,
+                    queueCopy.fallbacks.unnamedLead,
+                  );
+
+                  return (
+                    <Link
+                      className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                      href={`/dashboard/leads/${item.lead.id}`}
+                      key={item.lead.id}
+                    >
+                      <Avatar name={customerDisplayName} size={32} />
+                      <span className="min-w-0">
+                        <span className="block truncate text-[12.5px] font-extrabold text-[var(--dash-text)]">
+                          {shortCustomerName(
+                            customerDisplayName,
+                            queueCopy.fallbacks.unnamedLead,
+                          )}
+                        </span>
+                        <span className="mt-0.5 block truncate text-[11px] leading-4 text-[var(--dash-text-secondary)]">
+                          {item.primaryIssue || item.recommendedAction}
+                        </span>
                       </span>
-                      <span className="mt-0.5 block truncate text-[11px] leading-4 text-[var(--dash-text-secondary)]">
-                        {item.primaryIssue || item.recommendedAction}
+                      <span className="whitespace-nowrap text-[11px] text-[var(--dash-text-muted)]">
+                        {formatAge(item.lead.created_at, queueCopy)}
                       </span>
-                    </span>
-                    <span className="whitespace-nowrap text-[11px] text-[var(--dash-text-muted)]">
-                      {formatAge(item.lead.created_at, queueCopy)}
-                    </span>
-                  </Link>
-                ))
+                    </Link>
+                  );
+                })
               ) : (
                 <EmptyState title={overviewCopy.recentActivity.emptyTitle}>
                   {overviewCopy.recentActivity.emptyBody}

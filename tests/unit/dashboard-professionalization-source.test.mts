@@ -43,6 +43,45 @@ describe("P12 dashboard professionalization source guards", () => {
     assert.equal(copySource.includes("Priority order favors overdue requests"), true);
   });
 
+  it("keeps internal seed lead labels out of owner-facing lead surfaces", () => {
+    const uiSource = readFileSync("components/dashboard/dashboard-ui.tsx", "utf8");
+    const overviewSource = readFileSync(
+      "app/(dashboard)/dashboard/page.tsx",
+      "utf8",
+    );
+    const queueSource = readFileSync(
+      "components/dashboard/lead-workspace-queue.tsx",
+      "utf8",
+    );
+    const detailSource = readFileSync(
+      "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
+      "utf8",
+    );
+
+    assert.equal(uiSource.includes("ownerSafeLeadText"), true);
+    assert.equal(uiSource.includes("internalLeadTextPattern"), true);
+    assert.equal(uiSource.includes('return "?"'), true);
+    assert.equal(uiSource.includes("phase\\s*\\d"), true);
+    assert.equal(uiSource.includes("phase\\d+[a-z]?\\+bizpilotowner"), true);
+    assert.equal(uiSource.includes("synthetic"), true);
+    assert.equal(uiSource.includes("bizpilotowner(?:\\s+|\\+)"), true);
+    assert.equal(overviewSource.includes("ownerSafeLeadText"), true);
+    assert.equal(queueSource.includes("ownerSafeLeadText"), true);
+    assert.equal(detailSource.includes("ownerSafeLeadText"), true);
+    assert.equal(
+      detailSource.includes("return ownerSafeLeadText(value, detailCopy.notProvided);"),
+      true,
+    );
+    assert.equal(
+      queueSource.includes("Avatar name={customerDisplayName}"),
+      true,
+    );
+    assert.equal(
+      overviewSource.includes("Avatar name={customerDisplayName}"),
+      true,
+    );
+  });
+
   it("keeps owner review steps explicit on lead detail", () => {
     const detailSource = readFileSync(
       "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",

@@ -9,9 +9,10 @@
  * - app/(dashboard)/dashboard/page.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-19: Rebuilt primitives to follow the approved index.html Quote Recovery Command Center visual system.
+ * - 2026-06-27: Added owner-safe lead text fallback for synthetic/internal seed labels.
  * ============================================================
  */
 
@@ -117,18 +118,33 @@ function humanize(value: string): string {
   return normalized.charAt(0).toUpperCase() + normalized.slice(1);
 }
 
+const internalLeadTextPattern =
+  /\b(?:phase\s*\d+[a-z]?|synthetic|phase\d+[a-z]?\+bizpilotowner\+(?=[a-z0-9]*\d)[a-z0-9]+|bizpilotowner(?:\s+|\+)(?=[a-z0-9]*\d)[a-z0-9]{4,})\b/i;
+
 /**
  * Compact initials helper for avatars (max 2 chars).
  * "Sarah Mansfield" -> "SM"; "Mohammad Ghoorchibeigi" -> "MG"; null -> "?".
  */
 export function initials(value: string | null | undefined): string {
   if (!value) return "?";
-  const parts = value.trim().split(/\s+/).filter(Boolean);
+  const text = value.trim();
+  if (internalLeadTextPattern.test(text)) return "?";
+  const parts = text.split(/\s+/).filter(Boolean);
   if (parts.length === 0) return "?";
   if (parts.length === 1) {
     return (parts[0]?.slice(0, 2) ?? "?").toUpperCase();
   }
   return `${parts[0]?.charAt(0) ?? ""}${parts[1]?.charAt(0) ?? ""}`.toUpperCase();
+}
+
+export function ownerSafeLeadText(
+  value: string | null | undefined,
+  fallback: string,
+): string {
+  if (!value) return fallback;
+  const text = value.trim();
+  if (!text) return fallback;
+  return internalLeadTextPattern.test(text) ? fallback : text;
 }
 
 /**
@@ -141,7 +157,9 @@ export function shortCustomerName(
   fallback: string,
 ): string {
   if (!value) return fallback;
-  const parts = value.trim().split(/\s+/).filter(Boolean);
+  const safeValue = ownerSafeLeadText(value, fallback);
+  if (safeValue === fallback) return fallback;
+  const parts = safeValue.split(/\s+/).filter(Boolean);
   if (parts.length === 0) return fallback;
   if (parts.length === 1) return parts[0] ?? fallback;
   return `${parts[0]} ${(parts[1]?.charAt(0) ?? "").toUpperCase()}.`;

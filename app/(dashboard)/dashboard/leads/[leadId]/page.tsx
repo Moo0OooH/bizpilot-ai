@@ -11,11 +11,12 @@
  * - docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-06-27
  * Change Log:
  * - 2026-05-07: Created Phase 5 lead detail workflow page.
  * - 2026-05-10: Refactored detail view into SaaS workspace primitives.
  * - 2026-05-19: Rebuilt to match approved index.html dark navy command center: detail header, AI Summary, Suggested reply, Follow-up draft, missing-info badges, owner notes, controls, action items, timeline.
+ * - 2026-06-27: Hid synthetic/internal seed labels behind owner-safe display fallbacks.
  * ============================================================
  */
 
@@ -32,6 +33,7 @@ import {
   disabledButtonClass,
   EmptyState,
   inputClass,
+  ownerSafeLeadText,
   PageHeader,
   primaryButtonClass,
   SectionHeader,
@@ -130,11 +132,15 @@ function jsonValueToText(value: Json, detailCopy: LeadDetailCopy): string {
     return value ? detailCopy.values.yes : detailCopy.values.no;
   }
 
-  if (typeof value === "number" || typeof value === "string") {
+  if (typeof value === "number") {
     return String(value);
   }
 
-  return JSON.stringify(value);
+  if (typeof value === "string") {
+    return ownerSafeLeadText(value, detailCopy.notProvided);
+  }
+
+  return ownerSafeLeadText(JSON.stringify(value), detailCopy.notProvided);
 }
 
 function statusTone(value: string) {
@@ -226,14 +232,26 @@ export default async function LeadDetailPage({
     leadId,
   });
 
-  const customerName = detail.lead.customer_name ?? detailCopy.fallbacks.unnamedLead;
+  const customerName = ownerSafeLeadText(
+    detail.lead.customer_name,
+    detailCopy.fallbacks.unnamedLead,
+  );
   const customerShort = shortCustomerName(
     detail.lead.customer_name,
     detailCopy.fallbacks.unnamedLead,
   );
-  const serviceType = detail.lead.service_type ?? detailCopy.fallbacks.service;
-  const cityArea = detail.lead.city_or_service_area ?? detailCopy.fallbacks.area;
-  const contact = detail.lead.customer_contact ?? detailCopy.fallbacks.contact;
+  const serviceType = ownerSafeLeadText(
+    detail.lead.service_type,
+    detailCopy.fallbacks.service,
+  );
+  const cityArea = ownerSafeLeadText(
+    detail.lead.city_or_service_area,
+    detailCopy.fallbacks.area,
+  );
+  const contact = ownerSafeLeadText(
+    detail.lead.customer_contact,
+    detailCopy.fallbacks.contact,
+  );
   const createdAge = formatAge(detail.lead.created_at, detailCopy, queueCopy);
   const slaTone =
     detail.lead.response_sla_state === "overdue"

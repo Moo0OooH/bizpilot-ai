@@ -14,6 +14,7 @@
  * Created: 2026-05-11
  * Last Updated: 2026-06-27
  * Change Log:
+ * - 2026-06-27: Hid synthetic/internal seed labels from owner-facing lead queue cells.
  * - 2026-05-19: Rebuilt to match the approved index.html exactly — initials avatar, short customer name, no min-width horizontal scroll, single SectionHeader (page-level header lives on the route), and a `limit` prop for dashboard previews.
  * ============================================================
  */
@@ -27,6 +28,7 @@ import {
   DashboardCard,
   EmptyState,
   inputClass,
+  ownerSafeLeadText,
   primaryButtonClass,
   shortCustomerName,
   StatusBadge,
@@ -184,11 +186,11 @@ function displayStatus(item: LeadDeskItem, copy: LeadQueueCopy): {
 }
 
 function summarizeService(item: LeadDeskItem, copy: LeadQueueCopy): string {
-  return item.lead.service_type ?? copy.fallbacks.service;
+  return ownerSafeLeadText(item.lead.service_type, copy.fallbacks.service);
 }
 
 function summarizeArea(item: LeadDeskItem, copy: LeadQueueCopy): string {
-  return item.lead.city_or_service_area ?? copy.fallbacks.area;
+  return ownerSafeLeadText(item.lead.city_or_service_area, copy.fallbacks.area);
 }
 
 function CustomerCell({
@@ -196,10 +198,18 @@ function CustomerCell({
   item,
   wrap = false,
 }: Readonly<{ copy: LeadQueueCopy; item: LeadDeskItem; wrap?: boolean }>) {
-  const sub = item.lead.customer_contact ?? summarizeService(item, copy);
+  const customerDisplayName = ownerSafeLeadText(
+    item.lead.customer_name,
+    copy.fallbacks.unnamedLead,
+  );
+  const sub = ownerSafeLeadText(
+    item.lead.customer_contact,
+    summarizeService(item, copy),
+  );
+
   return (
     <div className="flex min-w-0 items-center gap-2.5">
-      <Avatar name={item.lead.customer_name} size={36} />
+      <Avatar name={customerDisplayName} size={36} />
       <div className="min-w-0">
         <p
           className={
@@ -208,7 +218,7 @@ function CustomerCell({
               : "truncate text-[13px] font-black text-[var(--dash-text)]"
           }
         >
-          {shortCustomerName(item.lead.customer_name, copy.fallbacks.unnamedLead)}
+          {shortCustomerName(customerDisplayName, copy.fallbacks.unnamedLead)}
         </p>
         <p
           className={
