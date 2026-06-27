@@ -36,3 +36,13 @@ Use this TypeScript/TSX format:
  * ============================================================
  */
 ```
+
+## Dashboard V3 Guardrails
+
+- Inspect the real repo before assuming routes, components, data services, migrations, tests, or docs exist.
+- Owner dashboard work stays manual-first lead recovery: quote requests, review drafts, copy/send manually, follow-up, setup readiness.
+- Founder/Admin work stays gated internal oversight: users, workspaces, quote-link state, access state, notes, audit, and guarded support actions.
+- Do not add or imply auto-send, booking, invoices, payments, full CRM scope, fake revenue, fake analytics, or unsupported automation.
+- Do not open real customer data, paid pilot, destructive cleanup, production deletion, access mutation, RLS, or migration gates without explicit owner approval.
+- Dashboard UI should be calm, compact, low-scroll, action-first, and responsive with no first-viewport nested scroll or horizontal overflow.
+- Commit only after relevant validation, and report any failure honestly with the exact command and whether it appears pre-existing.
