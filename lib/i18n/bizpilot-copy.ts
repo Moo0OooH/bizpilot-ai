@@ -814,6 +814,9 @@ type DashboardCopy = Readonly<{
   }>;
   nav: Readonly<{
     businessProfile: string;
+    groupCommand: string;
+    groupControl: string;
+    groupSetup: string;
     leads: string;
     overview: string;
     ownerWorkspace: string;
@@ -1773,6 +1776,9 @@ const englishCopy: BizPilotCopy = {
     },
     nav: {
       businessProfile: "Business Profile",
+      groupCommand: "Command",
+      groupControl: "Control",
+      groupSetup: "Setup",
       leads: "Leads",
       overview: "Overview",
       ownerWorkspace: "Workspace",
@@ -3306,6 +3312,9 @@ const frenchCopy: BizPilotCopy = {
     },
     nav: {
       businessProfile: "Profil d'entreprise",
+      groupCommand: "Commandes",
+      groupControl: "Contrôle",
+      groupSetup: "Configuration",
       leads: "Prospects",
       overview: "Vue d'ensemble",
       ownerWorkspace: "Espace de travail",

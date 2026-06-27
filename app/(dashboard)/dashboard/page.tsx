@@ -820,7 +820,7 @@ export default async function DashboardOverviewPage() {
         ))}
       </section>
 
-      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(300px,0.95fr)_minmax(320px,1.1fr)_minmax(260px,0.78fr)_minmax(260px,0.78fr)]">
+      <section className="grid min-w-0 gap-3 xl:grid-cols-2 2xl:grid-cols-[minmax(300px,0.95fr)_minmax(320px,1.1fr)_minmax(260px,0.78fr)_minmax(260px,0.78fr)]">
         <DashboardCard className="p-4">
           <SectionHeader
             action={

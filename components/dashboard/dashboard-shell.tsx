@@ -62,7 +62,7 @@ export function DashboardShell({
         copy={copy}
         userLabel={userLabel}
       />
-      <section className="flex min-h-svh min-w-0 flex-col pb-20 lg:pb-0">
+      <section className="flex h-svh min-w-0 flex-col overflow-hidden pb-20 lg:pb-0">
         <DashboardTopbar
           activeBusinessName={activeBusinessName}
           activeLanguage={activeLanguage}
@@ -72,7 +72,7 @@ export function DashboardShell({
           showFounderAdmin={showFounderAdmin}
           userLabel={userLabel}
         />
-        <div className="min-h-0 flex-1 px-3 py-3 pb-8 sm:px-5 md:px-6 lg:px-6 2xl:px-8">
+        <div className="min-h-0 flex-1 overflow-y-auto px-3 py-3 pb-8 sm:px-5 md:px-6 lg:px-6 2xl:px-8">
           <div className="dashboard-container min-w-0">
             {children}
           </div>

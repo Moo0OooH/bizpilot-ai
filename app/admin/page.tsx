@@ -3616,12 +3616,31 @@ function FounderAdminMetricsPanel({
   );
 }
 
+function adminPanelTitle(panel: AdminPanel): string {
+  switch (panel) {
+    case "activity":
+      return "Activity Log";
+    case "businesses":
+      return "Businesses";
+    case "health":
+      return "Production Health";
+    case "leads":
+      return "Admin Inbox";
+    case "users":
+      return "Users";
+    case "overview":
+    default:
+      return "Admin Overview";
+  }
+}
+
 function AdminTopBar({
+  activePanel,
   healthNeedsAttention,
-}: Readonly<{ healthNeedsAttention: boolean }>) {
+}: Readonly<{ activePanel: AdminPanel; healthNeedsAttention: boolean }>) {
   return (
     <div
-      className="sticky top-0 z-40 -mx-3 mb-3 border-b border-[var(--dash-border)] px-3 sm:-mx-5 sm:px-5 2xl:-mx-6 2xl:px-6"
+      className="z-40 border-b border-[var(--dash-border)] px-3 sm:px-4 lg:px-5"
       style={{
         backgroundColor: "color-mix(in srgb, var(--dash-bg) 86%, transparent)",
         backdropFilter: "blur(16px) saturate(140%)",
@@ -3629,23 +3648,12 @@ function AdminTopBar({
       }}
     >
       <div className="flex min-h-14 flex-wrap items-center justify-between gap-2 py-2 sm:flex-nowrap sm:gap-4 sm:py-0">
-        <Link className="inline-flex items-center gap-2.5" href="/admin">
+        <div className="min-w-0">
+          <p className="truncate text-[15px] font-black text-[var(--dash-text)]">
+            {adminPanelTitle(activePanel)}
+          </p>
           <span
-            aria-hidden
-            className="inline-flex h-7 w-7 items-center justify-center rounded-[7px] text-[13px] font-extrabold"
-            style={{
-              background:
-                "linear-gradient(135deg, var(--dash-primary) 0%, var(--dash-primary-hover) 100%)",
-              color: "var(--dash-bg)",
-            }}
-          >
-            B
-          </span>
-          <span className="text-[14px] font-bold tracking-[-0.01em] text-[var(--dash-text)]">
-            BizPilot
-          </span>
-          <span
-            className="ml-1 inline-flex items-center rounded-md border px-2 py-[2px] text-[10.5px] font-bold uppercase tracking-[0.04em]"
+            className="mt-1 inline-flex items-center rounded-md border px-2 py-[2px] text-[10.5px] font-bold uppercase tracking-[0.04em]"
             style={{
               backgroundColor: "var(--dash-primary-soft)",
               borderColor: "var(--dash-primary-border)",
@@ -3654,7 +3662,7 @@ function AdminTopBar({
           >
             Founder admin
           </span>
-        </Link>
+        </div>
         <div className="flex min-w-0 basis-full flex-wrap items-center gap-2 sm:basis-auto sm:flex-nowrap sm:justify-end">
           <span
             className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-bold"
@@ -3711,15 +3719,48 @@ function AdminTabsBar({
 }>) {
   const items: ReadonlyArray<{
     count?: number;
+    description: string;
     label: string;
     panel: AdminPanel;
   }> = [
-    { label: "Overview", panel: "overview" },
-    { count: usersTotal, label: "Users", panel: "users" },
-    { count: totals.businesses, label: "Businesses", panel: "businesses" },
-    { label: "Leads", panel: "leads" },
-    { label: "Health", panel: "health" },
-    { label: "Activity", panel: "activity" },
+    {
+      description: "Read-only command view",
+      label: "Overview", panel: "overview",
+    },
+    {
+      count: usersTotal,
+      description: "Search, support, gated tools",
+      label: "Users", panel: "users",
+    },
+    {
+      count: totals.businesses,
+      description: "Workspace controls",
+      label: "Businesses", panel: "businesses",
+    },
+    {
+      description: "Lead review and cleanup",
+      label: "Leads",
+      panel: "leads",
+    },
+    {
+      description: "Runtime checks",
+      label: "Health",
+      panel: "health",
+    },
+    {
+      description: "Audit trail",
+      label: "Activity",
+      panel: "activity",
+    },
+  ];
+
+  const groups: ReadonlyArray<{
+    items: typeof items;
+    label: string;
+  }> = [
+    { items: items.slice(0, 2), label: "Command" },
+    { items: items.slice(2, 4), label: "Operations" },
+    { items: items.slice(4), label: "System" },
   ];
 
   const snapshot: ReadonlyArray<{ label: string; value: number }> = [
@@ -3729,64 +3770,125 @@ function AdminTabsBar({
   ];
 
   return (
-    <div className="mb-3 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--dash-border)] pb-2">
-      <nav aria-label="Admin sections" className="-mb-[1px] flex gap-1 overflow-x-auto">
+    <>
+      <aside className="hidden h-full w-[272px] shrink-0 border-r border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-3 lg:flex lg:flex-col">
+        <Link
+          className="flex items-center gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-3"
+          href="/admin"
+        >
+          <span
+            aria-hidden
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-[15px] font-extrabold"
+            style={{
+              background:
+                "linear-gradient(135deg, var(--dash-primary) 0%, var(--dash-primary-hover) 100%)",
+              color: "var(--dash-bg)",
+            }}
+          >
+            B
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate text-[15px] font-black text-[var(--dash-text)]">
+              BizPilot
+            </span>
+            <span className="mt-0.5 block truncate text-[12px] font-bold text-[var(--dash-text-muted)]">
+              Founder operations
+            </span>
+          </span>
+        </Link>
+
+        <nav aria-label="Admin sections" className="mt-4 grid gap-5 text-[13px]">
+          {groups.map((group) => (
+            <section className="grid gap-1.5" key={group.label}>
+              <p className="px-2 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
+                {group.label}
+              </p>
+              {group.items.map((item) => {
+                const active = activePanel === item.panel;
+                const showCheck = item.panel === "health" && healthNeedsAttention;
+
+                return (
+                  <Link
+                    className="grid min-h-[54px] gap-1 rounded-lg border px-3 py-2 transition"
+                    href={adminUsersHref(params, { adminPanel: item.panel })}
+                    key={item.panel}
+                    style={{
+                      backgroundColor: active
+                        ? "var(--dash-primary-soft)"
+                        : "transparent",
+                      borderColor: active
+                        ? "var(--dash-primary-border)"
+                        : "transparent",
+                      color: active
+                        ? "var(--dash-text)"
+                        : "var(--dash-text-secondary)",
+                    }}
+                  >
+                    <span className="flex items-center justify-between gap-2">
+                      <span className="font-black">{item.label}</span>
+                      <span className="flex items-center gap-1.5">
+                        {item.count !== undefined ? (
+                          <span className="rounded-full bg-[var(--dash-surface-muted)] px-2 py-0.5 text-[10.5px] font-black text-[var(--dash-text-muted)]">
+                            {item.count}
+                          </span>
+                        ) : null}
+                        {showCheck ? <StatusBadge tone="red">Check</StatusBadge> : null}
+                      </span>
+                    </span>
+                    <span className="truncate text-[11.5px] font-bold text-[var(--dash-text-muted)]">
+                      {item.description}
+                    </span>
+                  </Link>
+                );
+              })}
+            </section>
+          ))}
+        </nav>
+
+        <div className="mt-auto grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+          {snapshot.map((tile) => (
+            <div className="flex items-center justify-between gap-2" key={tile.label}>
+              <span className="text-[11px] font-black uppercase tracking-[0.06em] text-[var(--dash-text-muted)]">
+                {tile.label}
+              </span>
+              <span className="text-[14px] font-black text-[var(--dash-text)]">
+                {tile.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      </aside>
+
+      <nav
+        aria-label="Admin sections"
+        className="grid grid-cols-3 gap-1 border-b border-[var(--dash-border)] bg-[var(--dash-surface)] px-2 py-2 lg:hidden"
+      >
         {items.map((item) => {
           const active = activePanel === item.panel;
-          const showCheck = item.panel === "health" && healthNeedsAttention;
-
           return (
             <Link
-              className="inline-flex items-center gap-2 whitespace-nowrap border-b-2 px-3 py-2 text-[13px] font-semibold transition"
+              className="inline-flex min-h-10 min-w-0 items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-center text-[12px] font-black"
               href={adminUsersHref(params, { adminPanel: item.panel })}
               key={item.panel}
               style={{
-                borderColor: active ? "var(--dash-primary)" : "transparent",
+                backgroundColor: active ? "var(--dash-primary-soft)" : "transparent",
+                borderColor: active
+                  ? "var(--dash-primary-border)"
+                  : "var(--dash-border)",
                 color: active ? "var(--dash-text)" : "var(--dash-text-secondary)",
               }}
             >
               {item.label}
               {item.count !== undefined ? (
-                <span
-                  className="inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full px-[5px] text-[10.5px] font-bold"
-                  style={{
-                    backgroundColor: active
-                      ? "var(--dash-primary-soft)"
-                      : "var(--dash-surface-muted)",
-                    color: active
-                      ? "var(--dash-primary-strong)"
-                      : "var(--dash-text-muted)",
-                  }}
-                >
+                <span className="shrink-0 rounded-full bg-[var(--dash-surface-muted)] px-1.5 py-0.5 text-[10px]">
                   {item.count}
                 </span>
               ) : null}
-              {showCheck ? <StatusBadge tone="red">Check</StatusBadge> : null}
             </Link>
           );
         })}
       </nav>
-      <div className="flex flex-wrap items-center gap-1.5">
-        {snapshot.map((tile) => (
-          <span
-            className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-[11.5px] font-bold"
-            key={tile.label}
-            style={{
-              backgroundColor: "var(--dash-surface-muted)",
-              borderColor: "var(--dash-border)",
-              color: "var(--dash-text-secondary)",
-            }}
-          >
-            <span className="uppercase tracking-[0.06em] text-[var(--dash-text-muted)]">
-              {tile.label}
-            </span>
-            <span className="text-[13px] font-extrabold text-[var(--dash-text)]">
-              {tile.value}
-            </span>
-          </span>
-        ))}
-      </div>
-    </div>
+    </>
   );
 }
 
@@ -3849,18 +3951,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
   return (
     <FounderAdminThemeFrame initialTheme={initialTheme}>
-      <div className="mx-auto flex min-h-[calc(100dvh-2rem)] w-full max-w-[1440px] flex-col">
-        <AdminTopBar healthNeedsAttention={productionHealthNeedsAttention} />
-
-        {routeNotice ? (
-          <FlashMessage tone="notice">{routeNotice}</FlashMessage>
-        ) : null}
-        {routeError ? (
-          <FlashMessage durationMs={10000} tone="error">
-            {routeError}
-          </FlashMessage>
-        ) : null}
-
+      <div className="flex h-dvh min-h-0 w-full flex-col overflow-hidden lg:flex-row">
         <AdminTabsBar
           activePanel={activePanel}
           healthNeedsAttention={productionHealthNeedsAttention}
@@ -3869,58 +3960,76 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           usersTotal={overview.usersTotal}
         />
 
-        <main className="min-w-0 flex-1 pb-6">
-          {activePanel === "overview" ? (
-            <FounderAdminOverviewSection
-              health={productionHealth}
-              healthNeedsAttention={productionHealthNeedsAttention}
-              overview={overview}
-              params={params}
-            />
-          ) : null}
+        <section className="flex min-h-0 min-w-0 flex-1 flex-col">
+          <AdminTopBar
+            activePanel={activePanel}
+            healthNeedsAttention={productionHealthNeedsAttention}
+          />
 
-          {activePanel === "businesses" ? (
-            <FounderBusinessesSection
-              businessById={businessById}
-              dryRun={dryRun}
-              params={params}
-              recentActions={overview.recentActions}
-              totals={overview.totals}
-              usersTotal={overview.usersTotal}
-            />
-          ) : null}
+          <div className="grid gap-2 px-3 pt-3 sm:px-4 lg:px-5">
+            {routeNotice ? (
+              <FlashMessage tone="notice">{routeNotice}</FlashMessage>
+            ) : null}
+            {routeError ? (
+              <FlashMessage durationMs={10000} tone="error">
+                {routeError}
+              </FlashMessage>
+            ) : null}
+          </div>
 
-          {activePanel === "users" ? (
-            <FounderUsersSection
-              businessById={businessById}
-              params={params}
-              shownUsers={shownUsers}
-              users={overview.users}
-              usersLastPage={overview.usersLastPage}
-              usersPage={usersPage}
-              usersPageSize={usersPageSize}
-              usersSearchMode={overview.usersSearchMode}
-              usersTotal={overview.usersTotal}
-            />
-          ) : null}
+          <main className="min-h-0 min-w-0 flex-1 overflow-y-auto px-3 py-3 sm:px-4 lg:px-5">
+            {activePanel === "overview" ? (
+              <FounderAdminOverviewSection
+                health={productionHealth}
+                healthNeedsAttention={productionHealthNeedsAttention}
+                overview={overview}
+                params={params}
+              />
+            ) : null}
 
-          {activePanel === "health" ? (
-            <FounderHealthSection
-              health={productionHealth}
-              healthNeedsAttention={productionHealthNeedsAttention}
-              totals={overview.totals}
-              usersTotal={overview.usersTotal}
-            />
-          ) : null}
+            {activePanel === "businesses" ? (
+              <FounderBusinessesSection
+                businessById={businessById}
+                dryRun={dryRun}
+                params={params}
+                recentActions={overview.recentActions}
+                totals={overview.totals}
+                usersTotal={overview.usersTotal}
+              />
+            ) : null}
 
-          {activePanel === "leads" ? (
-            <FounderInboxSection items={overview.leadInbox} />
-          ) : null}
+            {activePanel === "users" ? (
+              <FounderUsersSection
+                businessById={businessById}
+                params={params}
+                shownUsers={shownUsers}
+                users={overview.users}
+                usersLastPage={overview.usersLastPage}
+                usersPage={usersPage}
+                usersPageSize={usersPageSize}
+                usersSearchMode={overview.usersSearchMode}
+                usersTotal={overview.usersTotal}
+              />
+            ) : null}
 
-          {activePanel === "activity" ? (
-            <FounderActivitySection actions={overview.recentActions} />
-          ) : null}
-        </main>
+            {activePanel === "health" ? (
+              <FounderHealthSection
+                health={productionHealth}
+                healthNeedsAttention={productionHealthNeedsAttention}
+                totals={overview.totals}
+                usersTotal={overview.usersTotal}
+              />
+            ) : null}
+
+            {activePanel === "leads" ? (
+              <FounderInboxSection items={overview.leadInbox} />
+            ) : null}
+
+            {activePanel === "activity" ? (
+              <FounderActivitySection actions={overview.recentActions} />
+            ) : null}
+          </main>
+        </section>
       </div>
     </FounderAdminThemeFrame>
   );

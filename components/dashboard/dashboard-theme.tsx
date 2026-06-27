@@ -117,7 +117,7 @@ export function DashboardThemeFrame({
   return (
     <ThemeContext.Provider value={value}>
       <main
-        className={`${themeClass} dashboard-frame min-h-svh min-w-0 transition-colors lg:grid lg:grid-cols-[224px_minmax(0,1fr)]`}
+        className={`${themeClass} dashboard-frame h-svh min-w-0 overflow-hidden transition-colors lg:grid lg:grid-cols-[224px_minmax(0,1fr)]`}
       >
         {children}
       </main>

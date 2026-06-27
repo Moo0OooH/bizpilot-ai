@@ -57,7 +57,7 @@ type DashboardNavIconName =
 function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
   return [
     {
-      label: copy.nav.ownerWorkspace,
+      label: copy.nav.groupCommand,
       items: [
         {
           href: "/dashboard",
@@ -71,6 +71,11 @@ function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
           label: copy.nav.leads,
           match: (pathname) => pathname.startsWith("/dashboard/leads"),
         },
+      ],
+    },
+    {
+      label: copy.nav.groupSetup,
+      items: [
         {
           href: "/dashboard/configuration",
           icon: "quote",
@@ -85,6 +90,11 @@ function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
           label: copy.nav.businessProfile,
           match: (pathname) => pathname === "/dashboard/business-profile",
         },
+      ],
+    },
+    {
+      label: copy.nav.groupControl,
+      items: [
         {
           href: "/dashboard/settings",
           icon: "settings",

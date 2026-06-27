@@ -98,7 +98,7 @@ export function FounderAdminThemeFrame({
   return (
     <FounderAdminThemeContext.Provider value={value}>
       <main
-        className={`biz-founder-admin biz-founder-admin-${effectiveTheme} min-h-svh overflow-x-clip px-3 py-3 text-[var(--dash-text)] sm:px-5 sm:py-5 lg:px-5 2xl:px-6`}
+        className={`biz-founder-admin biz-founder-admin-${effectiveTheme} h-svh overflow-hidden text-[var(--dash-text)]`}
       >
         {children}
       </main>
