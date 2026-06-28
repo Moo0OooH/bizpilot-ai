@@ -286,6 +286,16 @@ function formatDateTime(value: string | null): string {
   }).format(new Date(value));
 }
 
+function daysSince(value: string): number | null {
+  const timestamp = Date.parse(value);
+
+  if (Number.isNaN(timestamp)) {
+    return null;
+  }
+
+  return Math.max(0, Math.floor((Date.now() - timestamp) / 86_400_000));
+}
+
 function formatSlug(value: string | null): string {
   return value ? `/quote/${value}` : "No quote link";
 }
@@ -1009,7 +1019,7 @@ function FounderSessionPolicyForm({
         customer system log.
       </p>
       <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
-        Save session policy
+        Save policy
       </button>
     </form>
   );
@@ -1748,7 +1758,7 @@ function BusinessControlCard({
         </div>
       </section>
 
-      <div className="grid items-start gap-3 xl:grid-cols-[minmax(0,0.94fr)_minmax(0,1.1fr)] 2xl:grid-cols-[minmax(420px,1fr)_minmax(520px,1.18fr)_minmax(300px,0.72fr)]">
+      <div className="grid min-w-0 items-start gap-3 2xl:grid-cols-[minmax(360px,0.82fr)_minmax(0,1.18fr)]">
         <section className={toolboxSectionClass}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
@@ -1761,7 +1771,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="amber">Controlled</StatusBadge>
             </div>
-            <div className="grid gap-3 lg:grid-cols-2 2xl:grid-cols-1">
+            <div className="grid min-w-0 gap-3 md:grid-cols-2 2xl:grid-cols-1">
           <form
             action={updateFounderWorkspaceKindAction}
             className={controlPanelClass}
@@ -1793,7 +1803,7 @@ function BusinessControlCard({
               audit={controlAuditText(business.actionLog, ["workspace_kind_changed"])}
             />
             <button className={`${primaryButtonClass} w-full`} type="submit">
-              Save workspace kind
+              Save kind
             </button>
           </form>
 
@@ -1813,7 +1823,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="red">Sensitive</StatusBadge>
             </div>
-            <div className="grid items-start gap-3 lg:grid-cols-2 2xl:grid-cols-1">
+            <div className="grid min-w-0 items-start gap-3 xl:grid-cols-[minmax(260px,0.9fr)_minmax(280px,1fr)]">
           <form
             action={updateFounderInternalNoteAction}
             className={controlPanelClass}
@@ -1841,7 +1851,9 @@ function BusinessControlCard({
             workspaceKind={business.workspaceKind}
           />
 
-          <FounderAdminSafetyRail />
+          <div className="xl:col-span-2">
+            <FounderAdminSafetyRail />
+          </div>
             </div>
           {dryRun ? (
             <div className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 text-sm">
@@ -2424,7 +2436,7 @@ function FounderUsersSection({
         usersTotal={usersTotal}
       />
 
-      <DashboardCard className="space-y-4 p-4 sm:p-5" variant="elevated">
+      <DashboardCard className="space-y-4 p-2.5 sm:p-5" variant="elevated">
         <section aria-labelledby="founder-users-list-title">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
@@ -2454,12 +2466,12 @@ function FounderUsersSection({
 
           <div className="mt-4 grid gap-3">
             <form
-              className="grid gap-3 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 sm:grid-cols-2 xl:grid-cols-[minmax(220px,1fr)_120px_minmax(140px,0.72fr)_minmax(140px,0.72fr)_auto] xl:items-end 2xl:grid-cols-[minmax(260px,1fr)_120px_168px_168px_auto]"
+              className="grid w-full max-w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-2 overflow-hidden rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-2 max-[279px]:w-[calc(100vw-46px)] max-[279px]:max-w-[calc(100vw-46px)] sm:grid-cols-2 sm:gap-3 sm:p-3 xl:grid-cols-[minmax(220px,1fr)_120px_minmax(140px,0.72fr)_minmax(140px,0.72fr)_auto] xl:items-end 2xl:grid-cols-[minmax(260px,1fr)_120px_168px_168px_auto]"
               method="get"
             >
               <input name="userPage" type="hidden" value="1" />
               <input name="userPriority" type="hidden" value={selectedPriority} />
-              <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+              <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
                 Search users
                 <input
                   className={inputClass}
@@ -2468,7 +2480,7 @@ function FounderUsersSection({
                   placeholder="Name, email, phone"
                 />
               </label>
-              <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+              <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
                 Show
                 <select
                   className={inputClass}
@@ -2479,7 +2491,7 @@ function FounderUsersSection({
                   <option value="5">5 users</option>
                 </select>
               </label>
-              <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+              <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
                 Access status
                 <select
                   className={inputClass}
@@ -2494,7 +2506,7 @@ function FounderUsersSection({
                   <option value="unlinked">No business linked</option>
                 </select>
               </label>
-              <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+              <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
                 Auth
                 <select
                   className={inputClass}
@@ -2507,12 +2519,12 @@ function FounderUsersSection({
                   <option value="founder">Founder accounts</option>
                 </select>
               </label>
-              <div className="flex flex-wrap gap-2 sm:col-span-2 xl:col-span-1 xl:min-w-[190px] xl:flex-nowrap">
-                <button className={`${primaryButtonClass} flex-1`} type="submit">
+              <div className="flex min-w-0 flex-wrap gap-2 sm:col-span-2 xl:col-span-1 xl:min-w-[190px] xl:flex-nowrap">
+                <button className={`${primaryButtonClass} min-w-0 flex-1`} type="submit">
                   Search
                 </button>
                 <Link
-                  className={`${buttonClass} flex-1`}
+                  className={`${buttonClass} min-w-0 flex-1`}
                   href={adminUsersHref(params, {
                     userAccess: undefined,
                     userConfirmed: undefined,
@@ -3298,6 +3310,95 @@ function FounderUsersMiniList({
   );
 }
 
+function FounderNewUsersNotice({
+  params,
+  users,
+}: Readonly<{ params: AdminSearchParams; users: FounderAdminUser[] }>) {
+  const newestUsers = [...users]
+    .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
+    .slice(0, 3);
+  const recentUsers = newestUsers.filter((user) => {
+    const age = daysSince(user.createdAt);
+
+    return age !== null && age <= 7;
+  });
+
+  if (newestUsers.length === 0) {
+    return null;
+  }
+
+  const hasRecentUsers = recentUsers.length > 0;
+  const visibleUsers = hasRecentUsers ? recentUsers : newestUsers.slice(0, 2);
+
+  return (
+    <section
+      aria-live="polite"
+      className={`grid gap-3 rounded-lg border p-3.5 ${
+        hasRecentUsers
+          ? "border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)]"
+          : "border-[var(--dash-border)] bg-[var(--dash-surface-muted)]"
+      } lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start`}
+    >
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2">
+          <StatusBadge tone={hasRecentUsers ? "blue" : "neutral"}>
+            {hasRecentUsers ? `${recentUsers.length} new` : "Latest"}
+          </StatusBadge>
+          <p className="text-sm font-black text-[var(--dash-text)]">
+            {hasRecentUsers ? "New users detected" : "Latest user activity"}
+          </p>
+        </div>
+        <p className="mt-2 max-w-[820px] text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          Review confirmation, workspace link, plan, and access status before the
+          next owner handoff.
+        </p>
+        <div className="mt-3 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+          {visibleUsers.map((user) => {
+            const age = daysSince(user.createdAt);
+            const joinedLabel =
+              age === null
+                ? formatDateTime(user.createdAt)
+                : age === 0
+                  ? "Today"
+                  : `${age}d ago`;
+
+            return (
+              <div
+                className="grid min-w-0 gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3"
+                key={user.userId}
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
+                    {user.displayName ?? user.email}
+                  </p>
+                  <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                    {user.email}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  <StatusBadge tone={user.emailConfirmed ? "emerald" : "amber"}>
+                    {user.emailConfirmed ? "Confirmed" : "Email pending"}
+                  </StatusBadge>
+                  <StatusBadge tone={user.businessName ? "blue" : "amber"}>
+                    {user.businessName ?? "No workspace"}
+                  </StatusBadge>
+                  <StatusBadge tone="neutral">{joinedLabel}</StatusBadge>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <Link
+        className={`${hasRecentUsers ? primaryButtonClass : buttonClass} w-full sm:w-auto`}
+        href={adminUsersHref(params, { adminPanel: "users" })}
+      >
+        Review users
+      </Link>
+    </section>
+  );
+}
+
 function FounderTopLeadSources({
   segments,
   total,
@@ -3477,6 +3578,8 @@ function FounderAdminOverviewSection({
           title="Admin Overview"
         />
       </DashboardCard>
+
+      <FounderNewUsersNotice params={params} users={overview.users} />
 
       <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         {founderOverviewMetricCards.map((card) => (

@@ -168,6 +168,9 @@ describe("Founder admin source safety", () => {
       false,
     );
     assert.equal(pageSource.includes("function FounderUsersMiniList"), true);
+    assert.equal(pageSource.includes("function FounderNewUsersNotice"), true);
+    assert.equal(pageSource.includes("New users detected"), true);
+    assert.equal(pageSource.includes("Review users"), true);
     assert.equal(pageSource.includes("FounderUsersMiniTable"), false);
     assert.equal(pageSource.includes("hidden overflow-x-auto sm:block"), false);
     assert.equal(pageSource.includes('className="mt-4 grid gap-2"'), true);
@@ -207,6 +210,9 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("].slice(0, 10);"), true);
     assert.equal(pageSource.includes("Search businesses"), true);
     assert.equal(pageSource.includes("Showing the first 10 matched workspaces"), true);
+    assert.equal(pageSource.includes("2xl:grid-cols-[minmax(360px,0.82fr)_minmax(0,1.18fr)]"), true);
+    assert.equal(pageSource.includes("Save workspace kind"), false);
+    assert.equal(pageSource.includes("Save session policy"), false);
     assert.equal(
       pageSource.indexOf("Search businesses") < pageSource.indexOf("visibleBusinesses.map"),
       true,

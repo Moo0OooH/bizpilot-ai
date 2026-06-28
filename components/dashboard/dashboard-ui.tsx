@@ -84,10 +84,10 @@ export const disabledButtonClass =
   "inline-flex min-h-9 cursor-not-allowed items-center justify-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[13px] font-bold leading-none text-[var(--dash-text-muted)] opacity-60";
 
 export const inputClass =
-  "biz-field min-h-10 w-full rounded-lg border px-3 py-2 text-sm outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
+  "biz-field min-h-10 min-w-0 w-full rounded-lg border px-3 py-2 text-sm outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
 
 export const textareaClass =
-  "biz-field w-full rounded-lg border px-3 py-2.5 text-sm leading-6 outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
+  "biz-field min-w-0 w-full rounded-lg border px-3 py-2.5 text-sm leading-6 outline-none transition placeholder:text-[var(--dash-text-muted)] focus:border-[var(--dash-primary)] focus-visible:ring-4 focus-visible:ring-[var(--dash-primary-soft)]";
 
 export const labelClass =
   "grid gap-1.5 text-sm font-semibold text-[var(--dash-text)]";
