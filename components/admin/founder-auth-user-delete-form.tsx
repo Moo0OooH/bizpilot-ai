@@ -54,15 +54,56 @@ export function FounderAuthUserDeleteForm({
     ],
   );
 
+  if (deletionBlockedReason) {
+    return (
+      <details className="rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-danger-soft)] p-3 text-[var(--dash-text)]">
+        <summary className="cursor-pointer text-[12px] font-black text-[var(--dash-text)]">
+          Fake/test login deletion blocked
+        </summary>
+        <div className="mt-3 grid gap-3">
+          <div className="rounded-lg border border-[var(--dash-danger-border)] bg-[var(--dash-surface)] p-3 text-[12px] leading-5">
+            <p className="font-black text-[var(--dash-danger-strong)]">
+              Delete fake/test login remains locked.
+            </p>
+            <p className="mt-1 font-semibold text-[var(--dash-text)]">
+              {deletionBlockedReason}
+            </p>
+            <p className="mt-2 text-[var(--dash-text-secondary)]">
+              Production-linked users cannot be deleted from this UI. Mark a
+              workspace as Founder test, Demo, or Seed only after confirming it
+              contains fake data, then run workspace cleanup first.
+            </p>
+          </div>
+          <dl className="grid gap-2 text-[12px] sm:grid-cols-2">
+            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
+              <dt className="font-bold text-[var(--dash-text-muted)]">
+                Target
+              </dt>
+              <dd className="mt-0.5 break-all font-black text-[var(--dash-text)]">
+                {confirmationLabel}
+              </dd>
+            </div>
+            <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
+              <dt className="font-bold text-[var(--dash-text-muted)]">
+                Available action
+              </dt>
+              <dd className="mt-0.5 font-black text-[var(--dash-text)]">
+                Review workspace kind
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </details>
+    );
+  }
+
   return (
     <details
       className="rounded-lg border border-[rgba(185,28,28,0.22)] bg-[var(--dash-surface)] p-3 text-[var(--dash-text)] shadow-sm"
-      open={!deletionBlockedReason}
+      open
     >
       <summary className="cursor-pointer text-[12px] font-black text-[var(--dash-text)]">
-        {deletionBlockedReason
-          ? "Fake/test login deletion blocked"
-          : "Delete fake/test login"}
+        Delete fake/test login
       </summary>
       <form action={founderTestAuthUserDeleteAction} className="mt-3 grid gap-3">
         <input name="targetUserId" type="hidden" value={targetUserId} />
@@ -77,17 +118,6 @@ export function FounderAuthUserDeleteForm({
             Supabase Auth deletion.
           </p>
         </div>
-        {deletionBlockedReason ? (
-          <div className="rounded-lg border border-[rgba(185,28,28,0.28)] bg-[rgba(254,242,242,0.86)] p-2 text-[12px] leading-5 text-[#991b1b] dark:bg-[rgba(127,29,29,0.2)] dark:text-red-200">
-            <p className="font-black">Deletion is blocked by the safety rail.</p>
-            <p className="mt-1 font-semibold">{deletionBlockedReason}</p>
-            <p className="mt-1 font-semibold">
-              Mark the workspace as Founder test, Demo, or Seed only after
-              confirming it contains fake data, then run cleanup before deleting
-              the login. Production-linked users cannot be deleted from this UI.
-            </p>
-          </div>
-        ) : null}
         <label className="flex gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
           <input
             checked={acknowledged}

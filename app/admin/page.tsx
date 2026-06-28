@@ -2114,10 +2114,22 @@ function FounderUsersOverviewPanel({
 
 function LockedAccessManagementPanel() {
   const actions = [
-    "Invite member",
-    "Change role",
-    "Suspend access",
-    "Remove from workspace",
+    {
+      label: "Invite member",
+      reason: "Needs team-member schema and invite audit flow.",
+    },
+    {
+      label: "Change role",
+      reason: "Needs owner-approved role policy and last-owner protection.",
+    },
+    {
+      label: "Suspend access",
+      reason: "Needs reversible access state and customer-facing notice.",
+    },
+    {
+      label: "Remove from workspace",
+      reason: "Needs membership audit, ownership checks, and recovery path.",
+    },
   ] as const;
 
   return (
@@ -2135,18 +2147,20 @@ function LockedAccessManagementPanel() {
       </div>
       <div className="grid gap-2">
         {actions.map((action) => (
-          <button
-            aria-disabled="true"
-            className="inline-flex min-h-10 cursor-not-allowed items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 text-left text-[12px] font-black text-[var(--dash-text-muted)]"
-            disabled
-            key={action}
-            type="button"
+          <div
+            className="grid gap-1 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2.5 text-[12px]"
+            key={action.label}
           >
-            <span>{action}</span>
-            <span className="text-[11px] font-bold">
-              Requires owner-approved security gate.
-            </span>
-          </button>
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-black text-[var(--dash-text)]">
+                {action.label}
+              </span>
+              <StatusBadge tone="red">Blocked</StatusBadge>
+            </div>
+            <p className="leading-5 text-[var(--dash-text-secondary)]">
+              {action.reason}
+            </p>
+          </div>
         ))}
       </div>
     </section>
@@ -2654,15 +2668,19 @@ function FounderUsersSection({
                     </dd>
                   </div>
                 </dl>
-                <div className="grid gap-3 xl:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.72fr)_minmax(320px,0.72fr)_minmax(320px,0.72fr)]">
-                  <UserWorkspaceReadOnlyPanel
-                    linkedBusiness={linkedBusiness}
-                    params={params}
-                    user={user}
-                  />
-                  <UserAccountSupportPanel user={user} />
-                  <UserDestructiveZone user={user} />
-                  <LockedAccessManagementPanel />
+                <div className="grid gap-3 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
+                  <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+                    <UserWorkspaceReadOnlyPanel
+                      linkedBusiness={linkedBusiness}
+                      params={params}
+                      user={user}
+                    />
+                    <UserAccountSupportPanel user={user} />
+                  </div>
+                  <div className="grid gap-3">
+                    <LockedAccessManagementPanel />
+                    <UserDestructiveZone user={user} />
+                  </div>
                 </div>
               </div>
             </details>

@@ -103,14 +103,25 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("Temporary password gated"), true);
     assert.equal(pageSource.includes("Production user delete"), true);
     assert.equal(pageSource.includes("Blocked"), true);
+    assert.equal(pageSource.includes("Needs owner-approved role policy"), true);
+    assert.equal(
+      pageSource.includes("aria-disabled=\"true\""),
+      false,
+    );
     assert.equal(
       authDeleteSource.includes("productionWorkspaceReclassificationAcknowledgement"),
       false,
+    );
+    assert.equal(authDeleteSource.includes("if (deletionBlockedReason)"), true);
+    assert.equal(
+      authDeleteSource.includes("Delete fake/test login remains locked."),
+      true,
     );
     assert.equal(
       authDeleteSource.includes("Production-linked users cannot be deleted from this UI."),
       true,
     );
+    assert.equal(authDeleteSource.includes("dark:text-red-200"), false);
 
     const serviceSource = readFileSync(
       "server/services/founder-admin.service.ts",
