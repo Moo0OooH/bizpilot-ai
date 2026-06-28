@@ -167,6 +167,13 @@ describe("Founder admin source safety", () => {
       pageSource.includes("href={adminUsersHref(params, {\n                businessId: business.businessId"),
       false,
     );
+    assert.equal(pageSource.includes("function FounderUsersMiniTable"), true);
+    assert.equal(pageSource.includes("sm:hidden"), true);
+    assert.equal(pageSource.includes("hidden overflow-x-auto sm:block"), true);
+    assert.equal(
+      pageSource.includes('<span className="whitespace-nowrap">(Search & Manage)</span>'),
+      true,
+    );
 
     assert.equal(founderHandoffSource.includes("Founder Admin Handoff"), true);
     assert.equal(founderHandoffSource.includes("Admin surface map"), true);

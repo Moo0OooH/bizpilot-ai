@@ -3242,20 +3242,58 @@ function FounderUsersMiniTable({
   params,
   users,
 }: Readonly<{ params: AdminSearchParams; users: FounderAdminUser[] }>) {
+  const previewUsers = users.slice(0, 5);
+
   return (
     <DashboardCard className="p-4">
-      <SectionHeader
-        action={
-          <Link
-            className="text-[12px] font-black text-[var(--dash-primary-strong)]"
-            href={adminUsersHref(params, { adminPanel: "users" })}
-          >
-            View all users
-          </Link>
-        }
-        title="Users (Search & Manage)"
-      />
-      <div className="mt-4 overflow-x-auto">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <h2 className="min-w-[11rem] flex-1 text-[15px] font-extrabold leading-5 text-[var(--dash-text)]">
+          Users <span className="whitespace-nowrap">(Search & Manage)</span>
+        </h2>
+        <Link
+          className="shrink-0 text-[12px] font-black text-[var(--dash-primary-strong)]"
+          href={adminUsersHref(params, { adminPanel: "users" })}
+        >
+          View all users
+        </Link>
+      </div>
+
+      <div className="mt-4 grid gap-2 sm:hidden">
+        {previewUsers.length > 0 ? (
+          previewUsers.map((user) => (
+            <div
+              className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+              key={user.userId}
+            >
+              <div className="min-w-0">
+                <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
+                  {user.displayName ?? user.email}
+                </p>
+                <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                  {user.businessName ?? "No business"}
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
+                  {formatUserValue(user.businessAccessStatus)}
+                </StatusBadge>
+                <StatusBadge tone={user.planSlug ? planTone(user.planSlug) : "neutral"}>
+                  {user.planSlug ? planLabels[user.planSlug] : "No plan"}
+                </StatusBadge>
+                <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
+                  {user.leadCount ?? "-"} leads
+                </span>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
+            No users loaded yet.
+          </p>
+        )}
+      </div>
+
+      <div className="mt-4 hidden overflow-x-auto sm:block">
         <table className="min-w-[620px] w-full text-left text-[12px]">
           <thead className="text-[11px] uppercase text-[var(--dash-text-muted)]">
             <tr>
@@ -3267,7 +3305,7 @@ function FounderUsersMiniTable({
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--dash-border)]">
-            {users.slice(0, 5).map((user) => (
+            {previewUsers.map((user) => (
               <tr key={user.userId}>
                 <td className="max-w-[180px] truncate px-2 py-2 font-black text-[var(--dash-text)]">
                   {user.displayName ?? user.email}
