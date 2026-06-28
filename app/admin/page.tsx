@@ -3238,7 +3238,7 @@ function FounderRecentActivitiesSummary({
   );
 }
 
-function FounderUsersMiniTable({
+function FounderUsersMiniList({
   params,
   users,
 }: Readonly<{ params: AdminSearchParams; users: FounderAdminUser[] }>) {
@@ -3247,8 +3247,8 @@ function FounderUsersMiniTable({
   return (
     <DashboardCard className="p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
-        <h2 className="min-w-[11rem] flex-1 text-[15px] font-extrabold leading-5 text-[var(--dash-text)]">
-          Users <span className="whitespace-nowrap">(Search & Manage)</span>
+        <h2 className="min-w-0 flex-1 text-[15px] font-extrabold leading-5 text-[var(--dash-text)]">
+          Users
         </h2>
         <Link
           className="shrink-0 text-[12px] font-black text-[var(--dash-primary-strong)]"
@@ -3258,28 +3258,30 @@ function FounderUsersMiniTable({
         </Link>
       </div>
 
-      <div className="mt-4 grid gap-2 sm:hidden">
+      <div className="mt-4 grid gap-2">
         {previewUsers.length > 0 ? (
           previewUsers.map((user) => (
             <div
               className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
               key={user.userId}
             >
-              <div className="min-w-0">
-                <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
-                  {user.displayName ?? user.email}
-                </p>
-                <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
-                  {user.businessName ?? "No business"}
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center gap-1.5">
+              <div className="grid min-w-0 gap-1 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+                <div className="min-w-0">
+                  <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
+                    {user.displayName ?? user.email}
+                  </p>
+                  <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                    {user.businessName ?? "No business"}
+                  </p>
+                </div>
                 <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
                   {formatUserValue(user.businessAccessStatus)}
                 </StatusBadge>
-                <StatusBadge tone={user.planSlug ? planTone(user.planSlug) : "neutral"}>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
                   {user.planSlug ? planLabels[user.planSlug] : "No plan"}
-                </StatusBadge>
+                </span>
                 <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
                   {user.leadCount ?? "-"} leads
                 </span>
@@ -3291,43 +3293,6 @@ function FounderUsersMiniTable({
             No users loaded yet.
           </p>
         )}
-      </div>
-
-      <div className="mt-4 hidden overflow-x-auto sm:block">
-        <table className="min-w-[620px] w-full text-left text-[12px]">
-          <thead className="text-[11px] uppercase text-[var(--dash-text-muted)]">
-            <tr>
-              <th className="px-2 py-2 font-black">User</th>
-              <th className="px-2 py-2 font-black">Business</th>
-              <th className="px-2 py-2 font-black">Plan</th>
-              <th className="px-2 py-2 font-black">Leads</th>
-              <th className="px-2 py-2 font-black">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-[var(--dash-border)]">
-            {previewUsers.map((user) => (
-              <tr key={user.userId}>
-                <td className="max-w-[180px] truncate px-2 py-2 font-black text-[var(--dash-text)]">
-                  {user.displayName ?? user.email}
-                </td>
-                <td className="max-w-[170px] truncate px-2 py-2 font-bold text-[var(--dash-text-secondary)]">
-                  {user.businessName ?? "No business"}
-                </td>
-                <td className="px-2 py-2 font-bold text-[var(--dash-text-secondary)]">
-                  {user.planSlug ? planLabels[user.planSlug] : "No plan"}
-                </td>
-                <td className="px-2 py-2 font-black text-[var(--dash-text)]">
-                  {user.leadCount ?? "-"}
-                </td>
-                <td className="px-2 py-2">
-                  <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
-                    {formatUserValue(user.businessAccessStatus)}
-                  </StatusBadge>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
     </DashboardCard>
   );
@@ -3368,7 +3333,6 @@ function FounderTopLeadSources({
     </DashboardCard>
   );
 }
-
 function FounderAdminOverviewSection({
   health,
   healthNeedsAttention,
@@ -3528,7 +3492,7 @@ function FounderAdminOverviewSection({
       </section>
 
       <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)_minmax(280px,0.75fr)_minmax(280px,0.75fr)]">
-        <FounderUsersMiniTable params={params} users={overview.users} />
+        <FounderUsersMiniList params={params} users={overview.users} />
         <FounderLeadsStatusDonut
           segments={leadStatusSegments}
           total={leadStatusTotal}
