@@ -65,6 +65,7 @@ import {
 
 export type FounderAdminActionSummary = Readonly<{
   actionType: string;
+  actorUserId: string | null;
   createdAt: string;
   id: string;
   newValues: FounderAdminLogRecord["new_values"];
@@ -137,6 +138,7 @@ export type FounderAdminOverview = Readonly<{
   }>;
   recentActions: ReadonlyArray<{
     actionType: string;
+    actorUserId: string | null;
     businessId: string | null;
     createdAt: string;
     note: string | null;
@@ -502,6 +504,7 @@ function mapFounderAdminAction(
 ): FounderAdminActionSummary {
   return {
     actionType: action.action_type,
+    actorUserId: action.actor_user_id,
     createdAt: action.created_at,
     id: action.id,
     newValues: action.new_values,
@@ -1075,6 +1078,7 @@ export async function getFounderAdminOverview(input: {
     })),
     recentActions: recentActions.map((action) => ({
       actionType: action.action_type,
+      actorUserId: action.actor_user_id,
       businessId: action.business_id,
       createdAt: action.created_at,
       note: action.note,

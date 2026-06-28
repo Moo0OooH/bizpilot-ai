@@ -169,6 +169,10 @@ describe("Founder admin source safety", () => {
     );
     assert.equal(pageSource.includes("function FounderUsersMiniList"), true);
     assert.equal(pageSource.includes("function FounderNewUsersNotice"), true);
+    assert.equal(pageSource.includes("function FounderAdminNewsroom"), true);
+    assert.equal(pageSource.includes("Latest founder/admin changes with actor"), true);
+    assert.equal(pageSource.includes("function actionActorLabel"), true);
+    assert.equal(pageSource.includes("activityFilter?: string"), true);
     assert.equal(pageSource.includes("New users detected"), true);
     assert.equal(pageSource.includes("Review users"), true);
     assert.equal(pageSource.includes("FounderUsersMiniTable"), false);

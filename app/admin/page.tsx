@@ -84,6 +84,7 @@ export const dynamic = "force-dynamic";
 
 type AdminSearchParams = {
   adminPanel?: string | undefined;
+  activityFilter?: string | undefined;
   businessId?: string | undefined;
   businessQuery?: string | undefined;
   cleanupBusinessId?: string | undefined;
@@ -108,6 +109,16 @@ type AdminPanel =
   | "leads"
   | "overview"
   | "users";
+
+type ActivityFilter =
+  | "access"
+  | "all"
+  | "auth"
+  | "cleanup"
+  | "notes"
+  | "plan"
+  | "quote"
+  | "system";
 
 type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
@@ -258,6 +269,20 @@ const userPriorityGroups: ReadonlyArray<
   { options: followUpPriorityOptions, title: "Priority" },
   { options: planPriorityOptions, title: "Plan" },
   { options: accessPriorityOptions, title: "Access status" },
+];
+
+const activityFilters: ReadonlyArray<{
+  label: string;
+  value: ActivityFilter;
+}> = [
+  { label: "All", value: "all" },
+  { label: "Access", value: "access" },
+  { label: "Quote", value: "quote" },
+  { label: "Plan", value: "plan" },
+  { label: "Cleanup", value: "cleanup" },
+  { label: "Notes", value: "notes" },
+  { label: "Auth", value: "auth" },
+  { label: "System", value: "system" },
 ];
 
 function formatDate(value: string | null): string {
@@ -678,6 +703,28 @@ function adminUsersHref(
   return query ? `/admin?${query}` : "/admin";
 }
 
+function adminActivityHref(
+  params: AdminSearchParams,
+  updates: Partial<Pick<AdminSearchParams, "activityFilter" | "adminPanel">>,
+): string {
+  const merged: Pick<AdminSearchParams, "activityFilter" | "adminPanel"> = {
+    activityFilter: params.activityFilter,
+    adminPanel: params.adminPanel ?? "overview",
+    ...updates,
+  };
+  const search = new URLSearchParams();
+
+  for (const [key, value] of Object.entries(merged)) {
+    if (value && value !== "all") {
+      search.set(key, value);
+    }
+  }
+
+  const query = search.toString();
+
+  return query ? `/admin?${query}` : "/admin";
+}
+
 function adminBusinessHref(
   params: AdminSearchParams,
   updates: Partial<
@@ -708,6 +755,126 @@ function adminBusinessHref(
   const query = search.toString();
 
   return query ? `/admin?${query}` : "/admin";
+}
+
+function readActivityFilter(value: string | undefined): ActivityFilter {
+  return activityFilters.some((filter) => filter.value === value)
+    ? (value as ActivityFilter)
+    : "all";
+}
+
+function actionActivityFilter(actionType: string): ActivityFilter {
+  if (
+    actionType.includes("status") ||
+    actionType.includes("suspended") ||
+    actionType.includes("reactivated") ||
+    actionType.includes("cancelled")
+  ) {
+    return "access";
+  }
+
+  if (actionType.includes("quote_link")) {
+    return "quote";
+  }
+
+  if (actionType.includes("plan")) {
+    return "plan";
+  }
+
+  if (actionType.includes("cleanup") || actionType.includes("deleted")) {
+    return "cleanup";
+  }
+
+  if (actionType.includes("note")) {
+    return "notes";
+  }
+
+  if (actionType.includes("password") || actionType.includes("auth")) {
+    return "auth";
+  }
+
+  return "system";
+}
+
+function activityFilterTone(
+  filter: ActivityFilter,
+): "amber" | "blue" | "emerald" | "neutral" | "red" {
+  switch (filter) {
+    case "access":
+      return "red";
+    case "auth":
+      return "amber";
+    case "cleanup":
+      return "red";
+    case "notes":
+      return "blue";
+    case "plan":
+      return "emerald";
+    case "quote":
+      return "blue";
+    case "system":
+      return "neutral";
+    case "all":
+    default:
+      return "neutral";
+  }
+}
+
+function actionTargetHref(
+  action: FounderAdminOverview["recentActions"][number],
+  businessById: Map<string, FounderAdminBusiness>,
+  params: AdminSearchParams,
+): string {
+  if (action.businessId && businessById.has(action.businessId)) {
+    return adminBusinessHref(params, { businessId: action.businessId });
+  }
+
+  const filter = actionActivityFilter(action.actionType);
+
+  if (filter === "auth") {
+    return adminUsersHref(params, { adminPanel: "users" });
+  }
+
+  if (action.actionType.includes("lead") || action.actionType.includes("inbox")) {
+    return "/admin?adminPanel=leads";
+  }
+
+  return adminActivityHref(params, {
+    activityFilter: filter,
+    adminPanel: "activity",
+  });
+}
+
+function actionTargetLabel(
+  action: FounderAdminOverview["recentActions"][number],
+  businessById: Map<string, FounderAdminBusiness>,
+): string {
+  if (action.businessId) {
+    return businessById.get(action.businessId)?.name ?? shortActionId(action.businessId);
+  }
+
+  if (action.actionType.includes("lead") || action.actionType.includes("inbox")) {
+    return "Lead inbox";
+  }
+
+  return "Platform";
+}
+
+function actionActorLabel(
+  action: FounderAdminOverview["recentActions"][number],
+  usersById: Map<string, FounderAdminUser>,
+): string {
+  if (!action.actorUserId) {
+    return "System";
+  }
+
+  const user = usersById.get(action.actorUserId);
+
+  if (user) {
+    return user.displayName ?? user.email;
+  }
+
+  return `Actor ${shortActionId(action.actorUserId)}`;
 }
 
 function AdminNotice({
@@ -2437,7 +2604,7 @@ function FounderUsersSection({
       />
 
       <DashboardCard className="space-y-4 p-2.5 sm:p-5" variant="elevated">
-        <section aria-labelledby="founder-users-list-title">
+        <section aria-labelledby="founder-users-list-title" className="min-w-0">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p
@@ -2464,7 +2631,7 @@ function FounderUsersSection({
             </div>
           </div>
 
-          <div className="mt-4 grid gap-3">
+          <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
             <form
               className="grid w-full max-w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-2 overflow-hidden rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-2 max-[279px]:w-[calc(100vw-46px)] max-[279px]:max-w-[calc(100vw-46px)] sm:grid-cols-2 sm:gap-3 sm:p-3 xl:grid-cols-[minmax(220px,1fr)_120px_minmax(140px,0.72fr)_minmax(140px,0.72fr)_auto] xl:items-end 2xl:grid-cols-[minmax(260px,1fr)_120px_168px_168px_auto]"
               method="get"
@@ -2901,7 +3068,15 @@ function FounderHealthSection({
 
 function FounderActivitySection({
   actions,
-}: Readonly<{ actions: FounderAdminOverview["recentActions"] }>) {
+  businesses,
+  params,
+  users,
+}: Readonly<{
+  actions: FounderAdminOverview["recentActions"];
+  businesses: FounderAdminBusiness[];
+  params: AdminSearchParams;
+  users: FounderAdminUser[];
+}>) {
   return (
     <div className="space-y-3">
       <DashboardCard className="p-4 sm:p-5" variant="priority">
@@ -2912,7 +3087,14 @@ function FounderActivitySection({
           title="Activity Log"
         />
       </DashboardCard>
-      <FounderRecentActionsPanel actions={actions} />
+      <FounderAdminNewsroom
+        actions={actions}
+        businesses={businesses}
+        limit={20}
+        params={params}
+        title="Activity command feed"
+        users={users}
+      />
     </div>
   );
 }
@@ -3250,6 +3432,135 @@ function FounderRecentActivitiesSummary({
   );
 }
 
+function FounderAdminNewsroom({
+  actions,
+  businesses,
+  limit = 5,
+  params,
+  title = "Admin newsroom",
+  users,
+}: Readonly<{
+  actions: FounderAdminOverview["recentActions"];
+  businesses: FounderAdminBusiness[];
+  limit?: number;
+  params: AdminSearchParams;
+  title?: string;
+  users: FounderAdminUser[];
+}>) {
+  const selectedFilter = readActivityFilter(params.activityFilter);
+  const businessById = new Map(
+    businesses.map((business) => [business.businessId, business]),
+  );
+  const usersById = new Map(users.map((user) => [user.userId, user]));
+  const filteredActions =
+    selectedFilter === "all"
+      ? actions
+      : actions.filter(
+          (action) => actionActivityFilter(action.actionType) === selectedFilter,
+        );
+  const visibleActions = filteredActions.slice(0, limit);
+
+  return (
+    <DashboardCard className="p-4 sm:p-5" variant="elevated">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusBadge tone="blue">{visibleActions.length} shown</StatusBadge>
+            <p className="text-sm font-black text-[var(--dash-text)]">
+              {title}
+            </p>
+          </div>
+          <p className="mt-1 max-w-[780px] text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            Latest founder/admin changes with actor, target, category, timestamp,
+            and direct review links.
+          </p>
+        </div>
+        <Link
+          className={`${buttonClass} w-full sm:w-auto`}
+          href={adminActivityHref(params, {
+            activityFilter: selectedFilter,
+            adminPanel: "activity",
+          })}
+        >
+          View full log
+        </Link>
+      </div>
+
+      <div className="mt-4 flex flex-wrap gap-1.5">
+        {activityFilters.map((filter) => {
+          const active = selectedFilter === filter.value;
+
+          return (
+            <Link
+              className={
+                active
+                  ? "inline-flex min-h-8 shrink-0 items-center rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-2.5 text-[12px] font-black text-[var(--dash-text)] sm:px-3"
+                  : "inline-flex min-h-8 shrink-0 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2.5 text-[12px] font-black text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)] sm:px-3"
+              }
+              href={adminActivityHref(params, {
+                activityFilter: filter.value,
+                adminPanel: params.adminPanel ?? "overview",
+              })}
+              key={filter.value}
+            >
+              {filter.label}
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className="mt-3 grid gap-2">
+        {visibleActions.length > 0 ? (
+          visibleActions.map((action) => {
+            const filter = actionActivityFilter(action.actionType);
+
+            return (
+              <Link
+                className="grid min-w-0 gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.9fr)_auto] md:items-center"
+                href={actionTargetHref(action, businessById, params)}
+                key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
+              >
+                <div className="min-w-0">
+                  <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
+                    {adminActionLabels[action.actionType] ??
+                      humanizeAdminKey(action.actionType)}
+                  </p>
+                  <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                    {action.note ?? "No note recorded"}
+                  </p>
+                </div>
+                <div className="min-w-0 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  <p className="truncate">
+                    <span className="font-black text-[var(--dash-text)]">By:</span>{" "}
+                    {actionActorLabel(action, usersById)}
+                  </p>
+                  <p className="truncate">
+                    <span className="font-black text-[var(--dash-text)]">Target:</span>{" "}
+                    {actionTargetLabel(action, businessById)}
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-1.5 md:justify-end">
+                  <StatusBadge tone={activityFilterTone(filter)}>
+                    {activityFilters.find((item) => item.value === filter)?.label ??
+                      "System"}
+                  </StatusBadge>
+                  <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2.5 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
+                    {formatDateTime(action.createdAt)}
+                  </span>
+                </div>
+              </Link>
+            );
+          })
+        ) : (
+          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
+            No matching admin actions yet.
+          </p>
+        )}
+      </div>
+    </DashboardCard>
+  );
+}
+
 function FounderUsersMiniList({
   params,
   users,
@@ -3578,6 +3889,13 @@ function FounderAdminOverviewSection({
           title="Admin Overview"
         />
       </DashboardCard>
+
+      <FounderAdminNewsroom
+        actions={overview.recentActions}
+        businesses={overview.businesses}
+        params={params}
+        users={overview.users}
+      />
 
       <FounderNewUsersNotice params={params} users={overview.users} />
 
@@ -4149,7 +4467,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             ) : null}
 
             {activePanel === "activity" ? (
-              <FounderActivitySection actions={overview.recentActions} />
+              <FounderActivitySection
+                actions={overview.recentActions}
+                businesses={overview.businesses}
+                params={params}
+                users={overview.users}
+              />
             ) : null}
           </main>
         </section>
