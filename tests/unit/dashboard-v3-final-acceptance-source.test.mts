@@ -56,6 +56,45 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(sidebar.includes('href: "/dashboard/founder"'), false);
   });
 
+  it("keeps dashboard and admin routes in a fixed viewport shell", () => {
+    const dashboardFrame = readFileSync(
+      "components/dashboard/dashboard-theme.tsx",
+      "utf8",
+    );
+    const dashboardShell = readFileSync(
+      "components/dashboard/dashboard-shell.tsx",
+      "utf8",
+    );
+    const sidebar = readFileSync(
+      "components/dashboard/dashboard-sidebar.tsx",
+      "utf8",
+    );
+    const adminFrame = readFileSync(
+      "components/admin/founder-admin-theme.tsx",
+      "utf8",
+    );
+    const admin = readFileSync("app/admin/page.tsx", "utf8");
+    const topbar = readFileSync(
+      "components/dashboard/dashboard-topbar.tsx",
+      "utf8",
+    );
+
+    assert.equal(dashboardFrame.includes("dashboard-frame h-svh"), true);
+    assert.equal(dashboardFrame.includes("overflow-hidden"), true);
+    assert.equal(dashboardShell.includes("flex h-svh min-w-0 flex-col overflow-hidden"), true);
+    assert.equal(dashboardShell.includes("flex-1 overflow-y-auto"), true);
+    assert.equal(sidebar.includes("sticky top-0 hidden h-svh w-[224px]"), true);
+    assert.equal(sidebar.includes("dashboard-mobile-nav fixed inset-x-0 bottom-0"), true);
+    assert.equal(topbar.includes('const quotePath = `/quote/${businessSlug}`'), true);
+    assert.equal(topbar.includes('href="/admin"'), true);
+    assert.equal(adminFrame.includes("h-svh overflow-hidden"), true);
+    assert.equal(admin.includes("flex h-dvh min-h-0 w-full flex-col overflow-hidden lg:flex-row"), true);
+    assert.equal(admin.includes('href={adminUsersHref(params, { adminPanel: item.panel })}'), true);
+    assert.equal(admin.includes('aria-label="Admin sections"'), true);
+    assert.equal(admin.includes("grid grid-cols-3 gap-1"), true);
+    assert.equal(admin.includes("flex-1 overflow-y-auto"), true);
+  });
+
   it("keeps owner lead recovery action-first and manual-safe", () => {
     const overview = readFileSync("app/(dashboard)/dashboard/page.tsx", "utf8");
     const queue = readFileSync(
