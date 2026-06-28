@@ -262,7 +262,7 @@ export default async function LeadDetailPage({
         : "blue";
 
   return (
-    <main className="space-y-4">
+    <main className="space-y-3">
       <Link
         className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--dash-text-muted)] transition hover:text-[var(--dash-text)]"
         href="/dashboard/leads"
@@ -295,8 +295,8 @@ export default async function LeadDetailPage({
         </FlashMessage>
       ) : null}
 
-      <DashboardCard className="p-4" variant="priority">
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+      <DashboardCard className="p-3 sm:p-4" variant="priority">
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
           <div className="min-w-0">
             <SectionHeader
               description={detailCopy.manualWorkflow.description}
@@ -319,20 +319,20 @@ export default async function LeadDetailPage({
               {detailCopy.manualWorkflow.outcomeNote}
             </p>
           </div>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
             {detailCopy.manualWorkflow.steps.map(([title, detailText], index) => (
               <div
-                className="grid min-h-[78px] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+                className="grid min-h-[64px] grid-cols-[1.5rem_minmax(0,1fr)] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5"
                 key={title}
               >
                 <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-[11px] font-black text-[var(--dash-primary)]">
                   {index + 1}
                 </span>
-                <span>
-                  <span className="block text-[13px] font-black text-[var(--dash-text)]">
+                <span className="min-w-0">
+                  <span className="block truncate text-[12px] font-black text-[var(--dash-text)]">
                     {title}
                   </span>
-                  <span className="mt-0.5 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  <span className="mt-0.5 block text-[11px] leading-4 text-[var(--dash-text-secondary)]">
                     {detailText}
                   </span>
                 </span>
@@ -355,12 +355,12 @@ export default async function LeadDetailPage({
       </DashboardCard>
 
       {/* Detail Header — avatar + identity + SLA badges + quick actions */}
-      <DashboardCard className="p-4 sm:p-5" variant="elevated">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex min-w-0 items-center gap-3.5">
-            <Avatar name={customerName} size={52} tone="primary" />
+      <DashboardCard className="p-3 sm:p-3.5" variant="elevated">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <Avatar name={customerName} size={40} tone="primary" />
             <div className="min-w-0">
-              <h2 className="truncate text-[22px] font-extrabold leading-tight text-[var(--dash-text)]">
+              <h2 className="truncate text-[16px] font-extrabold leading-tight text-[var(--dash-text)]">
                 {customerShort}
               </h2>
               <p className="mt-1 truncate text-[13px] text-[var(--dash-text-secondary)]">
@@ -382,15 +382,15 @@ export default async function LeadDetailPage({
       </DashboardCard>
 
       {/* Two-column command center: left = data + missing-info + notes; right = AI desk */}
-      <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.65fr)]">
-        <div className="min-w-0 space-y-4">
+      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_24rem]">
+        <div className="min-w-0 space-y-3">
           {/* Lead details (read-only fields) */}
-          <DashboardCard className="p-4 sm:p-5">
+          <DashboardCard className="p-3 sm:p-4">
             <SectionHeader
               description={detailCopy.sections.leadDetailsDescription}
               title={detailCopy.sections.leadDetailsTitle}
             />
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
               <ReadOnlyField label={detailCopy.fields.name} value={customerShort} />
               <ReadOnlyField label={detailCopy.fields.contact} value={contact} />
               <ReadOnlyField
@@ -414,7 +414,7 @@ export default async function LeadDetailPage({
                 <p className="mb-3 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
                   {detailCopy.quoteIntakeFields}
                 </p>
-                <div className="grid gap-2 sm:grid-cols-2">
+                <div className="grid max-h-[26rem] gap-2 overflow-y-auto pr-1 sm:grid-cols-2 xl:grid-cols-3">
                   {detail.submissionValues.map((value) => (
                     <ReadOnlyField
                       key={value.id}
@@ -428,7 +428,8 @@ export default async function LeadDetailPage({
           </DashboardCard>
 
           {/* Missing info detected */}
-          <DashboardCard className="p-4 sm:p-5">
+          <div className="grid gap-3 lg:grid-cols-2">
+          <DashboardCard className="p-3 sm:p-4">
             <SectionHeader
               description={detailCopy.missing.description}
               title={detailCopy.missing.title}
@@ -460,7 +461,7 @@ export default async function LeadDetailPage({
             </p>
           </DashboardCard>
 
-          <DashboardCard className="p-4 sm:p-5" variant="priority">
+          <DashboardCard className="p-3 sm:p-4" variant="priority">
             <SectionHeader
               description={detailCopy.routing.description}
               title={detailCopy.routing.title}
@@ -472,7 +473,7 @@ export default async function LeadDetailPage({
                 </StatusBadge>
               ))}
             </div>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
               <ReadOnlyField
                 label={detailCopy.routing.priorityLabel}
                 value={
@@ -498,7 +499,7 @@ export default async function LeadDetailPage({
                 }
               />
             </div>
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="mt-3 flex flex-wrap gap-2">
               <StatusBadge
                 tone={routingPriorityTone(detail.routingSuggestion.priority)}
               >
@@ -533,8 +534,10 @@ export default async function LeadDetailPage({
           </DashboardCard>
 
           {/* Owner controls — status + manual outcome */}
+          </div>
+          <div className="grid gap-3 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
           <div id="lead-owner-controls">
-            <DashboardCard className="p-4 sm:p-5">
+            <DashboardCard className="p-3 sm:p-4">
               <SectionHeader
                 description={detailCopy.sections.controlsDescription}
                 title={detailCopy.sections.controlsTitle}
@@ -612,7 +615,7 @@ export default async function LeadDetailPage({
           </div>
 
           {/* Owner notes (private). Storage TBD — local-only textarea for now. */}
-          <DashboardCard className="p-4 sm:p-5">
+          <DashboardCard className="p-3 sm:p-4">
             <SectionHeader
               description={detailCopy.ownerNotes.description}
               title={detailCopy.ownerNotes.title}
@@ -626,11 +629,12 @@ export default async function LeadDetailPage({
               {detailCopy.ownerNotes.persistenceNote}
             </p>
           </DashboardCard>
+          </div>
         </div>
 
         {/* Right column — AI Response Desk */}
-        <aside className="min-w-0 space-y-4 xl:sticky xl:top-[92px] xl:self-start">
-          <DashboardCard className="biz-card-ai p-4 sm:p-5">
+        <aside className="min-w-0 space-y-3 xl:sticky xl:top-[76px] xl:self-start">
+          <DashboardCard className="biz-card-ai p-3 sm:p-4">
             <SectionHeader
               action={
                 <form action={generateLeadAiBundleAction}>
@@ -701,9 +705,9 @@ export default async function LeadDetailPage({
 
           {aiOutput ? (
             <>
-              <DashboardCard className="biz-card-ai p-4 sm:p-5">
+              <DashboardCard className="biz-card-ai p-3 sm:p-4">
                 <SectionHeader title={detailCopy.ai.suggestedReply} />
-                <pre className="biz-draft-box mt-3 whitespace-pre-wrap font-sans">
+                <pre className="biz-draft-box mt-3 max-h-[18rem] overflow-y-auto whitespace-pre-wrap font-sans">
                   {aiOutput.output.replyDraft}
                 </pre>
                 <div className="mt-3 flex flex-wrap gap-2">
@@ -726,9 +730,9 @@ export default async function LeadDetailPage({
                 </p>
               </DashboardCard>
 
-              <DashboardCard className="p-4 sm:p-5">
+              <DashboardCard className="p-3 sm:p-4">
                 <SectionHeader title={detailCopy.ai.followUpDraft} />
-                <pre className="biz-draft-box mt-3 whitespace-pre-wrap font-sans">
+                <pre className="biz-draft-box mt-3 max-h-[14rem] overflow-y-auto whitespace-pre-wrap font-sans">
                   {aiOutput.output.followUpDraft}
                 </pre>
                 <div className="mt-3">
@@ -744,7 +748,7 @@ export default async function LeadDetailPage({
             </>
           ) : null}
 
-          <DashboardCard className="p-4 sm:p-5">
+          <DashboardCard className="p-3 sm:p-4">
             <SectionHeader title={detailCopy.ai.guardrails} />
             <div className="mt-3 flex flex-wrap gap-2">
               {detailCopy.ai.guardrailBadges.map((badge, index) => (
@@ -761,8 +765,8 @@ export default async function LeadDetailPage({
       </section>
 
       {/* Action items + Timeline */}
-      <section className="grid min-w-0 gap-4 xl:grid-cols-2">
-        <DashboardCard className="p-4 sm:p-5">
+      <section className="grid min-w-0 gap-3 xl:grid-cols-2">
+        <DashboardCard className="p-3 sm:p-4">
           <SectionHeader title={detailCopy.actionItems} />
           <div className="mt-3 overflow-hidden rounded-lg border border-[var(--dash-border)]">
             {detail.actions.length > 0 ? (
@@ -813,7 +817,7 @@ export default async function LeadDetailPage({
           </div>
         </DashboardCard>
 
-        <DashboardCard className="p-4 sm:p-5">
+        <DashboardCard className="p-3 sm:p-4">
           <SectionHeader title={detailCopy.timeline} />
           <div className="mt-3 grid gap-3">
             {detail.events.length > 0 ? (
@@ -852,14 +856,21 @@ export default async function LeadDetailPage({
 
 function ReadOnlyField({
   label: fieldLabel,
+  compact = false,
   value,
-}: Readonly<{ label: string; value: string }>) {
+}: Readonly<{ compact?: boolean; label: string; value: string }>) {
   return (
-    <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-      <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+    <div
+      className={
+        compact
+          ? "rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5"
+          : "rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+      }
+    >
+      <p className="text-[10.5px] font-extrabold uppercase tracking-[0.1em] text-[var(--dash-text-muted)]">
         {fieldLabel}
       </p>
-      <p className="mt-1 break-words text-[13px] font-semibold text-[var(--dash-text)]">
+      <p className="mt-1 break-words text-[12.5px] font-semibold text-[var(--dash-text)]">
         {value}
       </p>
     </div>

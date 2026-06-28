@@ -58,7 +58,6 @@ export function DashboardShell({
     <DashboardThemeFrame initialTheme={initialTheme} labels={copy.theme}>
       <DashboardSidebar
         activeBusinessName={activeBusinessName}
-        businessSlug={businessSlug}
         copy={copy}
         userLabel={userLabel}
       />

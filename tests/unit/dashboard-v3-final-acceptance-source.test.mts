@@ -54,6 +54,9 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(sidebar.includes('pathname.startsWith("/dashboard/leads")'), true);
     assert.equal(sidebar.includes(".slice(0, 5)"), true);
     assert.equal(sidebar.includes('href: "/dashboard/founder"'), false);
+    assert.equal(sidebar.includes("CopyButton"), false);
+    assert.equal(sidebar.includes("StatusBadge"), false);
+    assert.equal(sidebar.includes("overflow-y-auto"), false);
   });
 
   it("keeps dashboard and admin routes in a fixed viewport shell", () => {
@@ -168,7 +171,9 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(businessProfile.includes("p-[22px]"), false);
     assert.equal(leadDetail.includes("p-[18px]"), false);
     assert.equal(leadDetail.includes("p-[22px]"), false);
-    assert.equal(leadDetail.includes("p-4 sm:p-5"), true);
+    assert.equal(leadDetail.includes("p-3 sm:p-4"), true);
+    assert.equal(leadDetail.includes("max-h-[26rem]"), true);
+    assert.equal(leadDetail.includes("xl:grid-cols-[minmax(0,1fr)_24rem]"), true);
     assert.equal(settings.includes("countFeaturesByState"), true);
     assert.equal(settings.includes("<details className="), true);
     assert.equal(settings.includes("WorkspaceDeletionRequestForm"), true);

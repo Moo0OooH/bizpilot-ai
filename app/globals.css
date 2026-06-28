@@ -110,7 +110,7 @@ Change Log:
   --public-max: var(--bp-container-max);
   --public-gutter: var(--bp-container-padding);
   --legal-max: var(--bp-container-narrow-max);
-  --dashboard-max: 90rem;
+  --dashboard-max: 108rem;
   --text-hero: var(--bp-display-size);
   --text-section: var(--bp-section-title-size);
   --text-page: var(--bp-page-title-size);

@@ -252,6 +252,18 @@ type DashboardConfigurationCopy = Readonly<{
     optional: string;
     options: string;
     optionsHelp: string;
+    placeholders?: Readonly<
+      Record<
+        QuoteFieldTypeLabelKey,
+        Readonly<{
+          fieldKey: string;
+          helper: string;
+          label: string;
+          options: string;
+          preview: string;
+        }>
+      >
+    >;
     position: string;
     priority: string;
     removeField: string;

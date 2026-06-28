@@ -25,12 +25,8 @@ import { usePathname } from "next/navigation";
 
 import type { DashboardShellCopy } from "./dashboard-shell";
 
-import { CopyButton } from "./copy-button";
-import { StatusBadge } from "./dashboard-ui";
-
 type DashboardSidebarProps = Readonly<{
   activeBusinessName: string;
-  businessSlug: string;
   copy: DashboardShellCopy;
   userLabel: string;
 }>;
@@ -206,12 +202,10 @@ function MobileNavLink({
 
 export function DashboardSidebar({
   activeBusinessName,
-  businessSlug,
   copy,
   userLabel,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
-  const quotePath = `/quote/${businessSlug}`;
   const navigation = getOwnerNavigation(copy);
   const mobileNavigation = navigation
     .flatMap((group) => group.items)
@@ -237,7 +231,7 @@ export function DashboardSidebar({
           </span>
         </Link>
 
-        <nav className="mt-4 flex-1 space-y-4 overflow-y-auto text-[13px]">
+        <nav className="mt-4 flex-1 space-y-4 text-[13px]">
           {navigation.map((group) => (
             <div key={group.label}>
               <p className="mx-2.5 mb-2 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
@@ -264,29 +258,9 @@ export function DashboardSidebar({
           ))}
         </nav>
 
-        <div className="mt-auto grid gap-3">
-          <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-            <div className="mb-2.5 flex items-center justify-between gap-3 text-[12px] text-[var(--dash-text-muted)]">
-              <span>{copy.actions.copyQuoteLink}</span>
-              <StatusBadge tone="emerald">{copy.status.active}</StatusBadge>
-            </div>
-            <div className="mb-2.5 flex items-center justify-between gap-3 text-[12px] text-[var(--dash-text-muted)]">
-              <span>{copy.settings.plan}</span>
-              <span className="font-bold text-[var(--dash-text-secondary)]">
-                {copy.status.pilot}
-              </span>
-            </div>
-            <CopyButton
-              className="w-full"
-              failedLabel={copy.actions.copyFailed}
-              label={copy.actions.copyQuoteLink}
-              successLabel={copy.actions.copySuccess}
-              value={quotePath}
-            />
-          </div>
-
+        <div className="mt-auto">
           <div
-            className="flex items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
+            className="flex items-center gap-2.5 border-t border-[var(--dash-border)] px-2 pt-3 text-[12px]"
             title={userLabel}
           >
             <span
@@ -300,7 +274,7 @@ export function DashboardSidebar({
                 {activeBusinessName}
               </span>
               <span className="mt-0.5 block truncate text-[var(--dash-text-muted)]">
-                {copy.nav.ownerWorkspace}
+                {userLabel}
               </span>
             </span>
           </div>
