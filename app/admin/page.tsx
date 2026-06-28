@@ -193,9 +193,9 @@ const adminActionLabels: Readonly<Record<string, string>> = {
 };
 
 const controlPanelClass =
-  "grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm";
+  "grid min-w-0 max-w-full gap-3 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 sm:p-3.5 shadow-sm";
 const toolboxSectionClass =
-  "grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5";
+  "grid min-w-0 max-w-full gap-3 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:p-3.5";
 
 type UserPriorityOption = Readonly<{
   description: string;
@@ -1463,8 +1463,8 @@ function BusinessControlCard({
     : "No admin changes recorded yet";
 
   return (
-    <div className="grid gap-3">
-      <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
+    <div className="grid min-w-0 max-w-full gap-3">
+      <section className="min-w-0 max-w-full overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:p-3.5">
         <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1714,7 +1714,7 @@ function BusinessControlCard({
             </p>
           </div>
 
-          <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_12px_32px_rgba(15,23,42,0.05)]">
+          <aside className="min-w-0 max-w-full overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 sm:p-3.5 shadow-[0_12px_32px_rgba(15,23,42,0.05)]">
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
