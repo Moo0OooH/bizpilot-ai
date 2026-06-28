@@ -1463,7 +1463,7 @@ function BusinessControlCard({
     : "No admin changes recorded yet";
 
   return (
-    <div className="grid w-full min-w-0 max-w-full gap-3">
+    <div className="grid w-full min-w-0 max-w-full grid-cols-[minmax(0,1fr)] gap-3">
       <section className="w-full min-w-0 max-w-full overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:p-3.5">
         <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
           <div>
@@ -1503,7 +1503,7 @@ function BusinessControlCard({
             View full customer profile
           </Link>
         </div>
-        <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
           <SnapshotTile
             description={
               business.status === "active"
@@ -1569,7 +1569,7 @@ function BusinessControlCard({
           </StatusBadge>
         </div>
 
-        <div className="grid gap-3 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_280px]">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_280px]">
           <div className="grid gap-2">
             <form action={updateFounderStatusAction} className={controlPanelClass}>
                 <input name="businessId" type="hidden" value={business.businessId} />
@@ -1758,7 +1758,7 @@ function BusinessControlCard({
         </div>
       </section>
 
-      <div className="grid min-w-0 items-start gap-3 2xl:grid-cols-[minmax(360px,0.82fr)_minmax(0,1.18fr)]">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] items-start gap-3 2xl:grid-cols-[minmax(360px,0.82fr)_minmax(0,1.18fr)]">
         <section className={toolboxSectionClass}>
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
@@ -1771,7 +1771,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="amber">Controlled</StatusBadge>
             </div>
-            <div className="grid min-w-0 gap-3 md:grid-cols-2 2xl:grid-cols-1">
+            <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-2 2xl:grid-cols-1">
           <form
             action={updateFounderWorkspaceKindAction}
             className={controlPanelClass}
@@ -1823,7 +1823,7 @@ function BusinessControlCard({
               </div>
               <StatusBadge tone="red">Sensitive</StatusBadge>
             </div>
-            <div className="grid min-w-0 items-start gap-3 xl:grid-cols-[minmax(260px,0.9fr)_minmax(280px,1fr)]">
+            <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] items-start gap-3 xl:grid-cols-[minmax(260px,0.9fr)_minmax(280px,1fr)]">
           <form
             action={updateFounderInternalNoteAction}
             className={controlPanelClass}
@@ -2653,8 +2653,8 @@ function FounderUsersSection({
               </span>
               </summary>
 
-              <div className="grid gap-4 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4">
-                <dl className="grid gap-2 text-[12px] sm:grid-cols-2 lg:grid-cols-4">
+              <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-4 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:p-4">
+                <dl className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2 text-[12px] sm:grid-cols-2 lg:grid-cols-4">
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
                     <dt className="font-bold text-[var(--dash-text-muted)]">Leads</dt>
                     <dd className="mt-0.5 font-black text-[var(--dash-text)]">
@@ -2680,8 +2680,8 @@ function FounderUsersSection({
                     </dd>
                   </div>
                 </dl>
-                <div className="grid gap-3 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
-                  <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+                <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
+                  <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 lg:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
                     <UserWorkspaceReadOnlyPanel
                       linkedBusiness={linkedBusiness}
                       params={params}
@@ -2689,7 +2689,7 @@ function FounderUsersSection({
                     />
                     <UserAccountSupportPanel user={user} />
                   </div>
-                  <div className="grid gap-3">
+                  <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
                     <LockedAccessManagementPanel />
                     <UserDestructiveZone user={user} />
                   </div>
