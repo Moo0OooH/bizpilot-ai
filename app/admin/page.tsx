@@ -1399,7 +1399,7 @@ function RecentAdminChangesPanel({
   actions,
 }: Readonly<{ actions: FounderAdminActionSummary[] }>) {
   return (
-    <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_12px_32px_rgba(15,23,42,0.05)]">
+    <section className="min-w-0 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_12px_32px_rgba(15,23,42,0.05)]">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
@@ -1411,28 +1411,28 @@ function RecentAdminChangesPanel({
         </div>
         <StatusBadge tone="blue">{actions.length} logged</StatusBadge>
       </div>
-      <div className="mt-4 grid gap-2">
+      <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2">
         {actions.length > 0 ? (
           actions.slice(0, 4).map((action) => (
             <div
-              className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
+              className="grid min-w-0 gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
               key={action.id}
             >
-              <div className="flex items-start justify-between gap-3">
+              <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
                 <div className="min-w-0">
-                  <p className="font-black text-[var(--dash-text)]">
+                  <p className="break-words font-black text-[var(--dash-text)] [overflow-wrap:anywhere]">
                     {adminActionLabels[action.actionType] ??
                       humanizeAdminKey(action.actionType)}
                   </p>
-                  <p className="mt-1 truncate font-semibold text-[var(--dash-text-secondary)]">
+                  <p className="mt-1 break-words font-semibold text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
                     {formatActionChange(action)}
                   </p>
                 </div>
-                <p className="shrink-0 text-right font-bold text-[var(--dash-text-muted)]">
+                <p className="text-left font-bold text-[var(--dash-text-muted)] sm:text-right">
                   {formatDate(action.createdAt)}
                 </p>
               </div>
-              <p className="truncate font-bold text-[var(--dash-text-muted)]">
+              <p className="break-all font-bold text-[var(--dash-text-muted)]">
                 trace_{shortActionId(action.id)}
               </p>
             </div>
@@ -1908,7 +1908,7 @@ function BusinessControlCard({
               {recentPriorityActions.length > 0 ? (
                 recentPriorityActions.slice(0, 2).map((action) => (
                   <p
-                    className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold text-[var(--dash-text-secondary)]"
+                    className="break-words rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]"
                     key={action.id}
                   >
                     {adminActionLabels[action.actionType] ??
@@ -2940,22 +2940,22 @@ function FounderInboxSection({
         {items.length > 0 ? (
           items.slice(0, 30).map((item) => (
             <details
-              className="overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]"
+              className="min-w-0 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]"
               key={item.leadId}
             >
-              <summary className="grid cursor-pointer list-none gap-3 px-4 py-3 hover:bg-[var(--dash-surface-muted)]">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="truncate text-sm font-black text-[var(--dash-text)]">
+              <summary className="grid min-w-0 cursor-pointer list-none gap-3 px-4 py-3 hover:bg-[var(--dash-surface-muted)]">
+                <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
+                  <p className="min-w-0 break-words text-sm font-black text-[var(--dash-text)] [overflow-wrap:anywhere]">
                     {item.customerName ?? "Unknown sender"}
                   </p>
                   <StatusBadge tone={leadStatusTone(item.status)}>
                     {item.status.replaceAll("_", " ")}
                   </StatusBadge>
                 </div>
-                <p className="text-[12px] text-[var(--dash-text-secondary)]">
+                <p className="break-words text-[12px] text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
                   {item.businessName} | {formatDateTime(item.createdAt)}
                 </p>
-                <p className="truncate text-[12px] text-[var(--dash-text-muted)]">
+                <p className="break-words text-[12px] text-[var(--dash-text-muted)] [overflow-wrap:anywhere]">
                   {item.serviceType ?? "Service not set"} | {item.cityOrServiceArea ?? "Area not set"}
                 </p>
               </summary>
