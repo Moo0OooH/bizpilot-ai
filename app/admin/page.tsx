@@ -3390,32 +3390,68 @@ function FounderSystemHealthSummary({
 
 function FounderRecentActivitiesSummary({
   actions,
-}: Readonly<{ actions: FounderAdminOverview["recentActions"] }>) {
+  businesses,
+  params,
+  users,
+}: Readonly<{
+  actions: FounderAdminOverview["recentActions"];
+  businesses: FounderAdminBusiness[];
+  params: AdminSearchParams;
+  users: FounderAdminUser[];
+}>) {
+  const latestAction = actions[0] ?? null;
+  const remainingActions = actions.slice(1, 5);
+  const businessById = new Map(
+    businesses.map((business) => [business.businessId, business]),
+  );
+  const usersById = new Map(users.map((user) => [user.userId, user]));
+
   return (
     <DashboardCard className="p-4">
       <SectionHeader
         action={<StatusBadge tone="blue">{actions.length}</StatusBadge>}
         title="Recent Activities"
       />
-      <div className="mt-4 grid gap-2">
-        {actions.length > 0 ? (
-          actions.slice(0, 5).map((action) => (
-            <div
-              className="grid gap-1 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
-              key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
+      <div className="mt-4 grid min-w-0 gap-2">
+        {latestAction ? (
+          <>
+            <Link
+              className="grid min-w-0 gap-2 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-3 py-2.5 text-[12px] transition hover:border-[var(--dash-primary)]"
+              href={actionTargetHref(latestAction, businessById, params)}
             >
-              <span className="truncate font-black text-[var(--dash-text)]">
-                {adminActionLabels[action.actionType] ??
-                  humanizeAdminKey(action.actionType)}
-              </span>
-              <span className="truncate font-bold text-[var(--dash-text-secondary)]">
-                {action.note ?? action.businessId ?? "Platform action"}
-              </span>
-              <span className="text-[11px] font-bold text-[var(--dash-text-muted)]">
-                {formatDateTime(action.createdAt)}
-              </span>
-            </div>
-          ))
+              <div className="flex flex-wrap items-center gap-1.5">
+                <StatusBadge tone={activityFilterTone(actionActivityFilter(latestAction.actionType))}>
+                  Latest
+                </StatusBadge>
+                <span className="font-black text-[var(--dash-text)]">
+                  {adminActionLabels[latestAction.actionType] ??
+                    humanizeAdminKey(latestAction.actionType)}
+                </span>
+              </div>
+              <p className="break-words font-bold leading-5 text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
+                By {actionActorLabel(latestAction, usersById)} on{" "}
+                {actionTargetLabel(latestAction, businessById)}
+              </p>
+              <p className="text-[11px] font-bold text-[var(--dash-text-muted)]">
+                {formatDateTime(latestAction.createdAt)}
+              </p>
+            </Link>
+            {remainingActions.map((action) => (
+              <Link
+                className="grid min-w-0 gap-1 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px] transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                href={actionTargetHref(action, businessById, params)}
+                key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
+              >
+                <span className="truncate font-black text-[var(--dash-text)]">
+                  {adminActionLabels[action.actionType] ??
+                    humanizeAdminKey(action.actionType)}
+                </span>
+                <span className="truncate font-bold text-[var(--dash-text-secondary)]">
+                  {actionTargetLabel(action, businessById)}
+                </span>
+              </Link>
+            ))}
+          </>
         ) : (
           <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
             No admin actions logged yet.
@@ -3565,30 +3601,30 @@ function FounderUsersMiniList({
   params,
   users,
 }: Readonly<{ params: AdminSearchParams; users: FounderAdminUser[] }>) {
-  const previewUsers = users.slice(0, 5);
+  const previewUsers = users.slice(0, 4);
 
   return (
     <DashboardCard className="p-4">
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <h2 className="min-w-0 flex-1 text-[15px] font-extrabold leading-5 text-[var(--dash-text)]">
+      <div className="flex items-start justify-between gap-2">
+        <h2 className="min-w-0 text-[15px] font-extrabold leading-5 text-[var(--dash-text)]">
           Users
         </h2>
         <Link
           className="shrink-0 text-[12px] font-black text-[var(--dash-primary-strong)]"
           href={adminUsersHref(params, { adminPanel: "users" })}
         >
-          View all users
+          All users
         </Link>
       </div>
 
-      <div className="mt-4 grid gap-2">
+      <div className="mt-4 grid min-w-0 gap-2">
         {previewUsers.length > 0 ? (
           previewUsers.map((user) => (
             <div
-              className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+              className="grid min-w-0 gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
               key={user.userId}
             >
-              <div className="grid min-w-0 gap-1 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+              <div className="grid min-w-0 gap-1 min-[420px]:grid-cols-[minmax(0,1fr)_auto] min-[420px]:items-start">
                 <div className="min-w-0">
                   <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
                     {user.displayName ?? user.email}
@@ -3639,16 +3675,27 @@ function FounderNewUsersNotice({
   }
 
   const hasRecentUsers = recentUsers.length > 0;
-  const visibleUsers = hasRecentUsers ? recentUsers : newestUsers.slice(0, 2);
+  const visibleUser = (hasRecentUsers ? recentUsers : newestUsers)[0];
+  if (!visibleUser) {
+    return null;
+  }
+
+  const age = daysSince(visibleUser.createdAt);
+  const joinedLabel =
+    age === null
+      ? formatDateTime(visibleUser.createdAt)
+      : age === 0
+        ? "Today"
+        : `${age}d ago`;
 
   return (
     <section
       aria-live="polite"
-      className={`grid gap-3 rounded-lg border p-3.5 ${
+      className={`grid min-w-0 gap-3 rounded-lg border px-3.5 py-3 ${
         hasRecentUsers
           ? "border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)]"
           : "border-[var(--dash-border)] bg-[var(--dash-surface-muted)]"
-      } lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start`}
+      } lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center`}
     >
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
@@ -3659,45 +3706,17 @@ function FounderNewUsersNotice({
             {hasRecentUsers ? "New users detected" : "Latest user activity"}
           </p>
         </div>
-        <p className="mt-2 max-w-[820px] text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-          Review confirmation, workspace link, plan, and access status before the
-          next owner handoff.
-        </p>
-        <div className="mt-3 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-          {visibleUsers.map((user) => {
-            const age = daysSince(user.createdAt);
-            const joinedLabel =
-              age === null
-                ? formatDateTime(user.createdAt)
-                : age === 0
-                  ? "Today"
-                  : `${age}d ago`;
-
-            return (
-              <div
-                className="grid min-w-0 gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3"
-                key={user.userId}
-              >
-                <div className="min-w-0">
-                  <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
-                    {user.displayName ?? user.email}
-                  </p>
-                  <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
-                    {user.email}
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  <StatusBadge tone={user.emailConfirmed ? "emerald" : "amber"}>
-                    {user.emailConfirmed ? "Confirmed" : "Email pending"}
-                  </StatusBadge>
-                  <StatusBadge tone={user.businessName ? "blue" : "amber"}>
-                    {user.businessName ?? "No workspace"}
-                  </StatusBadge>
-                  <StatusBadge tone="neutral">{joinedLabel}</StatusBadge>
-                </div>
-              </div>
-            );
-          })}
+        <div className="mt-2 flex min-w-0 flex-wrap items-center gap-1.5 text-[12px] font-bold text-[var(--dash-text-secondary)]">
+          <span className="max-w-full truncate font-black text-[var(--dash-text)]">
+            {visibleUser.displayName ?? visibleUser.email}
+          </span>
+          <StatusBadge tone={visibleUser.emailConfirmed ? "emerald" : "amber"}>
+            {visibleUser.emailConfirmed ? "Confirmed" : "Email pending"}
+          </StatusBadge>
+          <StatusBadge tone={visibleUser.businessName ? "blue" : "amber"}>
+            {visibleUser.businessName ?? "No workspace"}
+          </StatusBadge>
+          <StatusBadge tone="neutral">{joinedLabel}</StatusBadge>
         </div>
       </div>
       <Link
@@ -3824,42 +3843,42 @@ function FounderAdminOverviewSection({
   );
   const founderOverviewMetricCards = [
     {
-      detail: "Auth users available through founder search.",
+      detail: "Auth users in founder search.",
       glyph: "TU",
       label: "Total Users",
       tone: "blue" as FounderOverviewTone,
       value: formatAdminMetricNumber(overview.usersTotal),
     },
     {
-      detail: "Onboarding or active businesses.",
+      detail: "Active or onboarding workspaces.",
       glyph: "AB",
       label: "Active Businesses",
       tone: "violet" as FounderOverviewTone,
       value: formatAdminMetricNumber(overview.totals.activePilots),
     },
     {
-      detail: "Loaded customer lead signals.",
+      detail: "Loaded lead signals.",
       glyph: "LM",
       label: "Leads This Month",
       tone: "emerald" as FounderOverviewTone,
       value: formatAdminMetricNumber(totalLeads),
     },
     {
-      detail: "Reply traces from current lead/status data.",
+      detail: "Reply/status traces.",
       glyph: "AI",
       label: "AI Replies Sent",
       tone: "violet" as FounderOverviewTone,
       value: formatAdminMetricNumber(aiReplySignal),
     },
     {
-      detail: "Businesses with active public quote links.",
+      detail: "Active public quote links.",
       glyph: "RC",
       label: "Readiness Completed",
       tone: "blue" as FounderOverviewTone,
       value: formatAdminMetricNumber(readinessCompleted),
     },
     {
-      detail: "Loaded users with support priority.",
+      detail: "Support-priority users.",
       glyph: "UA",
       label: "Users Needing Attention",
       tone: usersNeedingAttention > 0 ? ("red" as FounderOverviewTone) : ("emerald" as FounderOverviewTone),
@@ -3890,16 +3909,9 @@ function FounderAdminOverviewSection({
         />
       </DashboardCard>
 
-      <FounderAdminNewsroom
-        actions={overview.recentActions}
-        businesses={overview.businesses}
-        params={params}
-        users={overview.users}
-      />
-
       <FounderNewUsersNotice params={params} users={overview.users} />
 
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+      <section className="grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
         {founderOverviewMetricCards.map((card) => (
           <FounderOverviewMetricCard
             detail={card.detail}
@@ -3912,7 +3924,7 @@ function FounderAdminOverviewSection({
         ))}
       </section>
 
-      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1.25fr)_minmax(280px,0.75fr)_minmax(280px,0.75fr)_minmax(280px,0.75fr)]">
+      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(300px,0.9fr)_minmax(320px,1fr)_minmax(320px,1fr)] 2xl:grid-cols-[minmax(320px,0.95fr)_minmax(340px,1fr)_minmax(340px,1fr)_minmax(340px,1fr)]">
         <FounderUsersMiniList params={params} users={overview.users} />
         <FounderLeadsStatusDonut
           segments={leadStatusSegments}
@@ -3922,10 +3934,15 @@ function FounderAdminOverviewSection({
           health={health}
           healthNeedsAttention={healthNeedsAttention}
         />
-        <FounderRecentActivitiesSummary actions={overview.recentActions} />
+        <FounderRecentActivitiesSummary
+          actions={overview.recentActions}
+          businesses={overview.businesses}
+          params={params}
+          users={overview.users}
+        />
       </section>
 
-      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1.35fr)_repeat(4,minmax(160px,0.7fr))]">
+      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(280px,1.1fr)_repeat(2,minmax(180px,0.7fr))] 2xl:grid-cols-[minmax(320px,1.2fr)_repeat(4,minmax(170px,0.7fr))]">
         <FounderTopLeadSources segments={sourceSegments} total={sourceTotal} />
         <MetricCard
           detail="Computed from current manual pilot queue signals."
