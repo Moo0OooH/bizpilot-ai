@@ -21,6 +21,7 @@
  * - 2026-06-25: Attached public shell containers to canonical bp responsive primitives.
  * - 2026-06-25: Gave the desktop brand subtitle enough inline budget for fr-CA without truncation.
  * - 2026-06-26: Allowed marketing badges to wrap inside narrow mobile viewports.
+ * - 2026-07-04: Added the public comparison route to desktop and compact navigation.
  * ============================================================
  */
 
@@ -80,6 +81,7 @@ const defaultMarketingNavCopy: HomeNavCopy = {
 
 type MarketingNavKey =
   | "cleaning"
+  | "comparison"
   | "demo"
   | "features"
   | "home"
@@ -446,6 +448,7 @@ export function MarketingHeader({
   > = [
     { href: "/features", key: "features", label: copy.features },
     { href: "/industries/cleaning", key: "cleaning", label: copy.cleaning },
+    { href: "/comparison", key: "comparison", label: copy.comparison },
     { href: "/trust", key: "trust", label: copy.trust },
     { href: "/demo", key: "demo", label: copy.demo },
     { href: "/pricing", key: "pricing", label: copy.pricing },
@@ -561,6 +564,7 @@ export function MarketingFooter({
   const links: ReadonlyArray<Readonly<{ href: string; label: string }>> = [
     { href: "/features", label: copy.features },
     { href: "/industries/cleaning", label: copy.cleaning },
+    { href: "/comparison", label: copy.comparison },
     { href: "/trust", label: copy.trust },
     { href: "/demo", label: copy.demo },
     { href: "/pricing", label: copy.pricing },

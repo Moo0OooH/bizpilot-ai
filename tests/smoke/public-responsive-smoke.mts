@@ -21,6 +21,7 @@
  * - 2026-06-21: Added Cleaning service de-duplication and small-commercial smoke guards.
  * - 2026-06-25: Updated Cleaning checks for service cards plus shared detail selector markup.
  * - 2026-06-25: Locked Cleaning to one active detail panel instead of duplicated desktop/mobile details.
+ * - 2026-07-04: Added comparison route responsive contract coverage.
  * ============================================================
  */
 
@@ -115,6 +116,30 @@ const routes: readonly RouteContract[] = [
       "IA et contrôle par l'entreprise",
     ],
     path: "/faq?language=fr-CA",
+  },
+  {
+    h1: "BizPilot compared with CRMs, forms, booking tools, and manual inboxes.",
+    mustContain: [
+      "comparison-grid",
+      "Full CRM",
+      "Form builder",
+      "Booking or invoice software",
+      "Manual inboxes and spreadsheets",
+      "The boundary matters.",
+    ],
+    path: "/comparison",
+  },
+  {
+    h1: "BizPilot comparé aux CRM, formulaires, outils de réservation et boîtes de réception.",
+    mustContain: [
+      "comparison-grid",
+      "CRM complet",
+      "Générateur de formulaire",
+      "Réservation ou facturation",
+      "Boîtes de réception et tableurs",
+      "La limite est importante.",
+    ],
+    path: "/comparison?language=fr-CA",
   },
   {
     h1: "A simple system to manage cleaning quote requests faster.",

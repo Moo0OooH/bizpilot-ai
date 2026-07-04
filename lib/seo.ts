@@ -10,9 +10,10 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-06-21: Added the dedicated public FAQ route to canonical metadata helpers.
+ * - 2026-07-04: Added comparison as a canonical route, removed roadmap-only Content Studio from canonical indexing, and wired social preview assets.
  * ============================================================
  */
 
@@ -43,13 +44,13 @@ export const PUBLIC_SITE_NAME = "BizPilot AI";
 export const publicCanonicalRoutes = [
   "/",
   "/faq",
+  "/comparison",
   "/features",
   "/industries/cleaning",
   "/trust",
   "/demo",
   "/pricing",
   "/pilot",
-  "/content-studio",
   "/privacy",
   "/security",
   "/terms",
@@ -90,6 +91,10 @@ export function publicUrl(
   return url.toString();
 }
 
+export function publicAssetUrl(path: `/${string}`): string {
+  return new URL(path, getPublicSiteOrigin()).toString();
+}
+
 export function publicLanguageAlternates(path: PublicCanonicalRoute) {
   return {
     "en-CA": publicUrl(path, "en"),
@@ -115,6 +120,14 @@ export function buildPublicMetadata(
     metadataBase: new URL(getPublicSiteOrigin()),
     openGraph: {
       description: copy.description,
+      images: [
+        {
+          alt: "BizPilot AI lead recovery workspace preview",
+          height: 630,
+          url: publicAssetUrl("/opengraph-image"),
+          width: 1200,
+        },
+      ],
       locale,
       siteName: PUBLIC_SITE_NAME,
       title: copy.title,
@@ -123,8 +136,9 @@ export function buildPublicMetadata(
     },
     title: copy.title,
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       description: copy.description,
+      images: [publicAssetUrl("/opengraph-image")],
       title: copy.title,
     },
   };

@@ -152,6 +152,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ## Latest Readiness Evidence
 
+- `docs/readiness/PHASE_25A_SEO_COMPARISON_FOUNDATION_2026-07-04.md`
 - `docs/readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md`
 - `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
 - `docs/readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`

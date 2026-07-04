@@ -14,12 +14,14 @@
  * Change Log:
  * - 2026-06-21: Created the dedicated full FAQ route moved out of the homepage.
  * - 2026-06-25: Normalized FAQ rhythm and compact section headings to bp primitives.
+ * - 2026-07-04: Added FAQPage and breadcrumb JSON-LD for AI-search/SEO clarity.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { JsonLdScript } from "@/components/public/json-ld";
 import {
   MarketingBadge,
   MarketingButton,
@@ -36,6 +38,10 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import {
+  buildBreadcrumbJsonLd,
+  buildFaqPageJsonLd,
+} from "@/lib/public-structured-data";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -68,9 +74,24 @@ export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
   const copy = getPublicSiteCopy(language).faq;
+  const faqItems = copy.sections.flatMap((section) => section.items);
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+      <JsonLdScript
+        data={buildBreadcrumbJsonLd(
+          [
+            { name: "Home", path: "/" },
+            { name: copy.title, path: "/faq" },
+          ],
+          language,
+        )}
+        id="bizpilot-faq-breadcrumb-jsonld"
+      />
+      <JsonLdScript
+        data={buildFaqPageJsonLd(faqItems, language)}
+        id="bizpilot-faq-jsonld"
+      />
       <MarketingHeader copy={navCopy} language={language} redirectPath="/faq" />
       <section className="bp-section-tight">
         <MarketingShell>

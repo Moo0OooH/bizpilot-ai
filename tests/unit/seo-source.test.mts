@@ -11,9 +11,10 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-06-21: Added public FAQ route SEO coverage.
+ * - 2026-07-04: Added comparison route, JSON-LD, OG image, and roadmap noindex guards.
  * ============================================================
  */
 
@@ -48,6 +49,10 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(
       copy.faq.meta.title,
       "FAQ for Cleaning Business Owners | BizPilot AI",
+    );
+    assert.equal(
+      copy.comparison.meta.title,
+      "BizPilot vs CRM, Forms, and Booking Tools | BizPilot AI",
     );
     assert.equal(
       copy.cleaning.meta.title,
@@ -117,13 +122,13 @@ describe("final public SEO and legal source contracts", () => {
     assert.deepEqual(publicCanonicalRoutes, [
       "/",
       "/faq",
+      "/comparison",
       "/features",
       "/industries/cleaning",
       "/trust",
       "/demo",
       "/pricing",
       "/pilot",
-      "/content-studio",
       "/privacy",
       "/security",
       "/terms",
@@ -172,17 +177,20 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(seo.includes('"en-CA"'), true);
     assert.equal(seo.includes('"fr-CA"'), true);
     assert.equal(seo.includes('"x-default"'), true);
+    assert.equal(seo.includes("summary_large_image"), true);
+    assert.equal(seo.includes("/opengraph-image"), true);
+    assert.equal(sitemap.includes("2026-07-04T00:00:00.000Z"), true);
 
     for (const route of [
       "app/page.tsx",
       "app/faq/page.tsx",
+      "app/comparison/page.tsx",
       "app/features/page.tsx",
       "app/industries/cleaning/page.tsx",
       "app/trust/page.tsx",
       "app/demo/page.tsx",
       "app/pricing/page.tsx",
       "app/pilot/page.tsx",
-      "app/content-studio/page.tsx",
       "app/privacy/page.tsx",
       "app/security/page.tsx",
       "app/terms/page.tsx",
@@ -191,6 +199,12 @@ describe("final public SEO and legal source contracts", () => {
       assert.equal(routeSource.includes("buildPublicMetadata"), true, route);
       assert.equal(routeSource.includes("resolvePublicRouteLanguage"), true, route);
     }
+
+    assert.equal(
+      source("app/content-studio/page.tsx").includes("buildNoIndexMetadata"),
+      true,
+      "Content Studio should remain available but noindex while it is roadmap-only.",
+    );
 
     for (const route of [
       "app/auth/sign-in/page.tsx",
@@ -240,5 +254,25 @@ describe("final public SEO and legal source contracts", () => {
       ),
       true,
     );
+  });
+
+  it("emits structured data only through the approved public JSON-LD helper", () => {
+    const jsonLd = source("components/public/json-ld.tsx");
+    const structured = source("lib/public-structured-data.ts");
+    const home = source("app/page.tsx");
+    const faq = source("app/faq/page.tsx");
+    const comparison = source("app/comparison/page.tsx");
+    const ogImage = source("app/opengraph-image.tsx");
+
+    assert.equal(jsonLd.includes('type="application/ld+json"'), true);
+    assert.equal(jsonLd.includes("replaceAll(\"<\", \"\\\\u003c\")"), true);
+    assert.equal(structured.includes('"FAQPage"'), true);
+    assert.equal(structured.includes('"BreadcrumbList"'), true);
+    assert.equal(structured.includes('"SoftwareApplication"'), true);
+    assert.equal(structured.includes('"Service"'), true);
+    assert.equal(home.includes("buildHomeJsonLd"), true);
+    assert.equal(faq.includes("buildFaqPageJsonLd"), true);
+    assert.equal(comparison.includes("buildBreadcrumbJsonLd"), true);
+    assert.equal(ogImage.includes("ImageResponse"), true);
   });
 });

@@ -124,6 +124,7 @@ const dashboardSourceFiles = userFacingSourceFiles.filter((file) =>
 const finalPublicRouteSourceFiles = [
   "app/page.tsx",
   "app/faq/page.tsx",
+  "app/comparison/page.tsx",
   "app/features/page.tsx",
   "app/industries/cleaning/page.tsx",
   "app/trust/page.tsx",
@@ -1078,9 +1079,15 @@ describe("BizPilot language copy", () => {
 
     const homepageSource = readFileSync("app/page.tsx", "utf8");
     const faqSource = readFileSync("app/faq/page.tsx", "utf8");
+    const comparisonSource = readFileSync("app/comparison/page.tsx", "utf8");
     const featuresSource = readFileSync("app/features/page.tsx", "utf8");
     const proxySource = readFileSync("proxy.ts", "utf8");
     assert.equal(homepageSource.includes('href="/faq"'), true);
+    assert.equal(comparisonSource.includes('"/comparison"'), true);
+    assert.equal(
+      comparisonSource.includes("getPublicSiteCopy(language).comparison"),
+      true,
+    );
     assert.equal(
       homepageSource.includes("copy.roadmap"),
       false,
@@ -1093,6 +1100,7 @@ describe("BizPilot language copy", () => {
     );
     assert.equal(faqSource.includes('"/faq"'), true);
     assert.equal(faqSource.includes("getPublicSiteCopy(language).faq"), true);
+    assert.equal(proxySource.includes('"/comparison"'), true);
     assert.equal(proxySource.includes('"/faq"'), true);
   });
 
@@ -1216,6 +1224,8 @@ describe("BizPilot language copy", () => {
     > = [
       ["app/features/page.tsx", "supporting-six-grid"],
       ["app/features/page.tsx", "supporting-four-grid"],
+      ["app/comparison/page.tsx", "comparison-grid"],
+      ["app/comparison/page.tsx", "supporting-four-grid"],
       ["app/industries/cleaning/page.tsx", "cleaning-service-grid"],
       ["app/industries/cleaning/page.tsx", "CleaningServiceDetails"],
       ["components/public/cleaning-service-details.tsx", "cleaning-detail-tabs"],
@@ -1385,6 +1395,7 @@ describe("BizPilot language copy", () => {
         "home",
         "features",
         "faq",
+        "comparison",
         "cleaning",
         "trust",
         "demo",

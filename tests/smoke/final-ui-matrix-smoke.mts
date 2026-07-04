@@ -19,6 +19,7 @@
  * - 2026-06-25: Updated Cleaning checks for six service cards and six shared detail panels.
  * - 2026-06-25: Added final visual acceptance guards for hero hooks and six-card grid compression.
  * - 2026-06-25: Locked Cleaning smoke coverage to one active shared detail panel.
+ * - 2026-07-04: Added comparison route to canonical matrix and kept roadmap-only Content Studio out of sitemap assertions.
  * ============================================================
  */
 
@@ -88,6 +89,12 @@ const routeContracts: readonly PublicRouteContract[] = [
     rejectFrText: getPublicSiteCopy("en").features.title,
   },
   {
+    h1: (locale) => getPublicSiteCopy(locale).comparison.title,
+    meta: (locale) => getPublicSiteCopy(locale).comparison.meta,
+    path: "/comparison",
+    rejectFrText: getPublicSiteCopy("en").comparison.title,
+  },
+  {
     h1: (locale) => getPublicSiteCopy(locale).cleaning.title,
     meta: (locale) => getPublicSiteCopy(locale).cleaning.meta,
     path: "/industries/cleaning",
@@ -116,12 +123,6 @@ const routeContracts: readonly PublicRouteContract[] = [
     meta: (locale) => getPublicSiteCopy(locale).pilot.meta,
     path: "/pilot",
     rejectFrText: getPublicSiteCopy("en").pilot.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).contentStudio.title,
-    meta: (locale) => getPublicSiteCopy(locale).contentStudio.meta,
-    path: "/content-studio",
-    rejectFrText: getPublicSiteCopy("en").contentStudio.title,
   },
   ...(["privacy", "security", "terms"] as const satisfies readonly PolicyPageKey[]).map(
     (key) => ({

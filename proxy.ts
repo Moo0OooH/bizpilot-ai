@@ -15,6 +15,7 @@
  * - 2026-05-04: Awaited official Supabase SSR dashboard guard.
  * - 2026-06-21: Included public auth shells in language query cookie handling.
  * - 2026-06-21: Included the public FAQ route in language query cookie handling.
+ * - 2026-07-04: Included the comparison route in language query cookie handling.
  * ============================================================
  */
 
@@ -111,6 +112,7 @@ export const config = {
   matcher: [
     "/",
     "/faq",
+    "/comparison",
     "/features",
     "/industries/cleaning",
     "/trust",

@@ -28,6 +28,7 @@
  * - 2026-06-25: Tightened hero copy rhythm, mockup density, and Problem-section handoff.
  * - 2026-06-26: Replaced the four-card workflow preview with one compact owner-review panel.
  * - 2026-06-26: Upgraded the hero mockup into a premium signal-flow board.
+ * - 2026-07-04: Added public JSON-LD for WebSite, Organization, SoftwareApplication, and Service.
  * ============================================================
  */
 
@@ -35,6 +36,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
+import { JsonLdScript } from "@/components/public/json-ld";
 import {
   MarketingBadge,
   MarketingButton,
@@ -54,6 +56,7 @@ import {
   getPublicSiteCopy,
   type PublicSiteCopy,
 } from "@/lib/i18n/public-site-copy";
+import { buildHomeJsonLd } from "@/lib/public-structured-data";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -692,6 +695,7 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+      <JsonLdScript data={buildHomeJsonLd(language)} id="bizpilot-home-jsonld" />
       <MarketingHeader copy={navCopy} language={language} redirectPath="/" />
       <HeroSection copy={copy} />
 

@@ -25,6 +25,7 @@
  * - 2026-06-25: Finalized bilingual public wording around owner review, quote requests, and natural fr-CA phrasing.
  * - 2026-06-26: Reworked homepage workflow preview copy into one compact owner-review panel.
  * - 2026-06-26: Shortened homepage hero badge/body copy for premium mobile fit.
+ * - 2026-07-04: Added honest comparison-route copy for Phase 25 SEO and buyer education.
  * ============================================================
  */
 
@@ -311,6 +312,34 @@ type PricingCopy = Readonly<{
   badge: string;
 }>;
 
+type ComparisonCopy = Readonly<{
+  badge: string;
+  body: string;
+  bestForLabel: string;
+  cautionLabel: string;
+  guardrail: Readonly<{
+    body: string;
+    title: string;
+  }>;
+  meta: MetaCopy;
+  primaryCta: string;
+  proof: Readonly<{
+    body: string;
+    items: readonly string[];
+    title: string;
+  }>;
+  rows: ReadonlyArray<
+    Readonly<{
+      bestFor: string;
+      caution: string;
+      difference: string;
+      option: string;
+    }>
+  >;
+  secondaryCta: string;
+  title: string;
+}>;
+
 export type PilotConversionCopy = Readonly<{
   body: string;
   copiedStatus: string;
@@ -370,6 +399,7 @@ type QuoteShellCopy = Readonly<{
 export type PublicSiteCopy = Readonly<{
   authMeta: AuthMetaCopy;
   cleaning: CleaningCopy;
+  comparison: ComparisonCopy;
   contentStudio: ContentStudioCopy;
   demo: DemoCopy;
   faq: FaqCopy;
@@ -386,6 +416,7 @@ export const publicSiteCopyNamespaces = [
   "home",
   "features",
   "faq",
+  "comparison",
   "cleaning",
   "trust",
   "demo",
@@ -602,6 +633,75 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     servicesTitle: "Services supported in the pilot",
     title: "Lead recovery software for cleaning businesses.",
   },
+  comparison: {
+    badge: "Comparison",
+    body:
+      "BizPilot is not trying to replace every tool in a cleaning business. It is built for one painful moment: a quote request arrives, details are missing, and the owner needs a clear next reply without losing control.",
+    bestForLabel: "Best fit",
+    cautionLabel: "Watch out",
+    guardrail: {
+      body:
+        "BizPilot stays manual-first in the founder pilot. It does not auto-send messages, invent prices, confirm bookings, replace a CRM, run invoices, or promise revenue.",
+      title: "The boundary matters.",
+    },
+    meta: {
+      description:
+        "Compare BizPilot AI with CRMs, form builders, booking software, and manual inbox workflows for cleaning business quote recovery.",
+      title: "BizPilot vs CRM, Forms, and Booking Tools | BizPilot AI",
+    },
+    primaryCta: "Join founder pilot",
+    proof: {
+      body:
+        "The pilot should prove whether a focused quote recovery workflow helps owners reply faster and follow up more consistently.",
+      items: [
+        "Capture quote requests from the places owners already share",
+        "Organize service, timing, contact path, and missing details",
+        "Prepare a practical reply you can review",
+        "Keep sending manual until automation is explicitly approved",
+      ],
+      title: "The job is lead recovery, not software sprawl.",
+    },
+    rows: [
+      {
+        bestFor:
+          "A business that already has a trained team, pipeline rules, and broad sales process.",
+        caution:
+          "Can feel heavy when the urgent problem is simply replying to cleaning quote requests faster.",
+        difference:
+          "BizPilot starts with quote intake, missing details, drafts for owner review, and the next manual action.",
+        option: "Full CRM",
+      },
+      {
+        bestFor:
+          "Collecting basic fields when the owner already knows how every request should be handled.",
+        caution:
+          "Forms often stop at capture; the owner still has to read, interpret, prioritize, and reply.",
+        difference:
+          "BizPilot turns a request into a lead with service context, missing details, and a reply draft.",
+        option: "Form builder",
+      },
+      {
+        bestFor:
+          "Confirmed jobs, calendars, staff schedules, deposits, and operational booking workflows.",
+        caution:
+          "A quote request is not always ready to become a booking, especially when price or scope is unclear.",
+        difference:
+          "BizPilot avoids booking claims and helps ask the right follow-up before an owner commits.",
+        option: "Booking or invoice software",
+      },
+      {
+        bestFor:
+          "Very small volume where every request is easy to remember and reply to quickly.",
+        caution:
+          "Requests from Google, Instagram, website, email, and text become easy to miss during busy days.",
+        difference:
+          "BizPilot gives the owner one recovery workspace while keeping final communication manual.",
+        option: "Manual inboxes and spreadsheets",
+      },
+    ],
+    secondaryCta: "See workflow demo",
+    title: "BizPilot compared with CRMs, forms, booking tools, and manual inboxes.",
+  },
   contentStudio: {
     badge: "Roadmap",
     body:
@@ -810,6 +910,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
               "Later, possibly. The founder pilot stays cleaning-first so the workflow can be proven before expanding.",
             question: "Will BizPilot support other industries?",
           },
+          {
+            answer:
+              "Start with the places customers already check: your website, Google Business Profile, Instagram bio, saved replies, and email signature. BizPilot does not require a new integration to make the link useful.",
+            question: "Where should a cleaning business place the quote link?",
+          },
         ],
         title: "Pilot basics",
       },
@@ -829,6 +934,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
             answer:
               "The business stays in control. BizPilot can organize the request and prepare a draft, but you decide what to send.",
             question: "Who sends the reply?",
+          },
+          {
+            answer:
+              "No. BizPilot can help collect quote details before a responsible reply, but it does not confirm bookings, schedules, prices, deposits, or invoices.",
+            question: "Is BizPilot a booking system?",
           },
         ],
         title: "AI and business control",
@@ -1572,6 +1682,75 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     servicesTitle: "Services soutenus pendant le projet pilote",
     title: "Récupération des demandes pour entreprises de nettoyage.",
   },
+  comparison: {
+    badge: "Comparaison",
+    body:
+      "BizPilot ne cherche pas à remplacer tous les outils d'une entreprise de nettoyage. Il cible un moment précis: une demande de soumission arrive, des détails manquent et le propriétaire a besoin d'une prochaine réponse claire sans perdre le contrôle.",
+    bestForLabel: "Idéal pour",
+    cautionLabel: "À surveiller",
+    guardrail: {
+      body:
+        "BizPilot reste manuel pendant le projet pilote fondateur. Il n'envoie pas automatiquement les messages, n'invente pas les prix, ne confirme pas les réservations, ne remplace pas un CRM, ne gère pas les factures et ne promet pas de revenus.",
+      title: "La limite est importante.",
+    },
+    meta: {
+      description:
+        "Comparez BizPilot AI avec les CRM, formulaires, outils de réservation et boîtes de réception manuelles pour la récupération des demandes de nettoyage.",
+      title: "BizPilot vs CRM, formulaires et outils de réservation | BizPilot AI",
+    },
+    primaryCta: "Rejoindre le pilote",
+    proof: {
+      body:
+        "Le projet pilote doit vérifier si un flux ciblé de récupération des demandes aide les propriétaires à répondre plus vite et à faire des suivis plus régulièrement.",
+      items: [
+        "Capter les demandes depuis les endroits déjà partagés",
+        "Organiser le service, le moment, le canal de contact et les détails manquants",
+        "Préparer un brouillon pratique à valider",
+        "Garder l'envoi manuel jusqu'à une approbation explicite de l'automatisation",
+      ],
+      title: "Le travail est la récupération des demandes, pas la complexité logicielle.",
+    },
+    rows: [
+      {
+        bestFor:
+          "Une entreprise qui a déjà une équipe formée, des règles de pipeline et un processus de vente large.",
+        caution:
+          "Peut devenir lourd quand le problème urgent est seulement de répondre plus vite aux demandes de nettoyage.",
+        difference:
+          "BizPilot commence par la demande de soumission, les détails manquants, les brouillons à valider et la prochaine action manuelle.",
+        option: "CRM complet",
+      },
+      {
+        bestFor:
+          "Collecter des champs de base quand le propriétaire sait déjà comment traiter chaque demande.",
+        caution:
+          "Les formulaires s'arrêtent souvent à la capture; il faut encore lire, interpréter, prioriser et répondre.",
+        difference:
+          "BizPilot transforme la demande en prospect avec contexte de service, détails manquants et brouillon de réponse.",
+        option: "Générateur de formulaire",
+      },
+      {
+        bestFor:
+          "Travaux confirmés, calendriers, horaires, dépôts et opérations de réservation.",
+        caution:
+          "Une demande de soumission n'est pas toujours prête à devenir une réservation, surtout si le prix ou la portée est incertain.",
+        difference:
+          "BizPilot évite les promesses de réservation et aide à poser la bonne question de suivi avant de s'engager.",
+        option: "Réservation ou facturation",
+      },
+      {
+        bestFor:
+          "Très petit volume où chaque demande est facile à retenir et à traiter rapidement.",
+        caution:
+          "Les demandes venant de Google, Instagram, du site, des courriels et des textos deviennent faciles à manquer pendant les journées chargées.",
+        difference:
+          "BizPilot donne au propriétaire un espace de récupération tout en gardant la communication finale manuelle.",
+        option: "Boîtes de réception et tableurs",
+      },
+    ],
+    secondaryCta: "Voir la démo",
+    title: "BizPilot comparé aux CRM, formulaires, outils de réservation et boîtes de réception.",
+  },
   contentStudio: {
     badge: "Feuille de route",
     body:
@@ -1784,6 +1963,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
               "Peut-être plus tard. Le projet pilote reste axé sur le nettoyage afin de valider le flux avant d'élargir.",
             question: "BizPilot soutiendra-t-il d'autres secteurs?",
           },
+          {
+            answer:
+              "Commencez par les endroits que les clients consultent déjà: votre site web, votre profil Google Business, votre bio Instagram, vos réponses enregistrées et votre signature courriel. BizPilot n'exige pas une nouvelle intégration pour rendre le lien utile.",
+            question: "Où placer le lien de soumission?",
+          },
         ],
         title: "Bases du projet pilote",
       },
@@ -1803,6 +1987,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
             answer:
               "Vous gardez le contrôle. BizPilot peut organiser la demande et préparer un brouillon, mais vous décidez quoi envoyer.",
             question: "Qui envoie la réponse?",
+          },
+          {
+            answer:
+              "Non. BizPilot peut aider à recueillir les détails avant une réponse responsable, mais il ne confirme pas les réservations, les horaires, les prix, les dépôts ou les factures.",
+            question: "BizPilot est-il un système de réservation?",
           },
         ],
         title: "IA et contrôle par l'entreprise",

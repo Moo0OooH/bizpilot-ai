@@ -9,9 +9,10 @@
  * - docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
+ * - 2026-07-04: Added comparison route smoke coverage.
  * ============================================================
  */
 
@@ -50,6 +51,16 @@ const smokeTargets: readonly SmokeTarget[] = [
       "Pilot basics",
     ],
     path: "/faq",
+    status: 200,
+  },
+  {
+    expectedText: [
+      "BizPilot compared with CRMs, forms, booking tools, and manual inboxes.",
+      "Full CRM",
+      "Form builder",
+      "The boundary matters.",
+    ],
+    path: "/comparison",
     status: 200,
   },
   {

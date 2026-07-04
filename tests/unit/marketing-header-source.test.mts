@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-06-19: Added Phase 02 header/navigation source contract coverage.
  * - 2026-06-21: Added public acceptance guards for duplicate pilot CTA markup.
+ * - 2026-07-04: Added comparison route navigation guard.
  * ============================================================
  */
 
@@ -39,6 +40,7 @@ describe("public marketing header source contract", () => {
     const expectedOrder = [
       'key: "features"',
       'key: "cleaning"',
+      'key: "comparison"',
       'key: "trust"',
       'key: "demo"',
       'key: "pricing"',

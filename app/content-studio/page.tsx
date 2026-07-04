@@ -10,13 +10,14 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-06-18: Applied responsive section spacing and intrinsic card grid.
  * - 2026-06-19: Moved visible Content Studio roadmap copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Rebuilt the page as a clear owner-reviewed roadmap surface.
  * - 2026-06-20: Removed fixed roadmap-card height and tightened six-card rhythm.
  * - 2026-06-25: Normalized roadmap page rhythm to canonical bp primitives.
+ * - 2026-07-04: Marked roadmap-only Content Studio as noindex while keeping the route available for visitors.
  * ============================================================
  */
 
@@ -39,7 +40,7 @@ import {
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 import {
-  buildPublicMetadata,
+  buildNoIndexMetadata,
   resolvePublicRouteLanguage,
   type PublicRouteSearchParams,
 } from "@/lib/seo";
@@ -59,11 +60,7 @@ export async function generateMetadata({
   searchParams,
 }: ContentStudioPageProps = {}): Promise<Metadata> {
   const language = await readPublicLanguage(searchParams);
-  return buildPublicMetadata(
-    "/content-studio",
-    getPublicSiteCopy(language).contentStudio.meta,
-    language,
-  );
+  return buildNoIndexMetadata(getPublicSiteCopy(language).contentStudio.meta);
 }
 
 export default async function ContentStudioPage({

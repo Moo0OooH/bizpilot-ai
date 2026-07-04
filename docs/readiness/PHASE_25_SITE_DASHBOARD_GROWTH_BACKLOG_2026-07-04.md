@@ -331,3 +331,54 @@ documentation alignment plus SEO/public-conversion hardening. Dashboard
 implementation should follow after seeded data-rich QA is prepared so the final
 dashboard polish is based on realistic owner/admin states instead of only empty
 or sparse screens.
+
+## Progress Addendum - Phase 25A
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25A_SEO_COMPARISON_FOUNDATION_2026-07-04.md`:
+
+- Added canonical `/comparison` route and EN/fr-CA comparison copy.
+- Added comparison to public navigation, footer, proxy language handling,
+  sitemap, metadata, smoke coverage, and final UI matrix.
+- Marked roadmap-only `/content-studio` noindex and removed it from the
+  canonical sitemap route list.
+- Refreshed sitemap `lastModified` to `2026-07-04`.
+- Added Open Graph/Twitter large image metadata plus generated
+  `/opengraph-image`.
+- Added JSON-LD foundation for homepage, FAQ, and comparison breadcrumbs.
+- Expanded FAQ with quote-link placement and booking-boundary questions.
+
+Backlog items advanced:
+
+```text
+13 done
+15 done
+16 done
+17 done
+18 started
+19 done
+20 done
+28 started
+30 done
+32 started
+42 done
+```
+
+Verification:
+
+```text
+pnpm verify                                                  PASS
+pnpm test:unit                                               PASS
+pnpm typecheck                                               PASS
+pnpm build                                                   PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3030        PASS
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3030    PASS
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3030 --timeout-ms=60000 PASS
+```
+
+Next recommended slice:
+
+```text
+Phase 25B - intake attribution, sourceUrl/UTM tests, quote-link placement guide, and seeded dashboard/admin QA prep.
+```

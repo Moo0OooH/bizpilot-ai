@@ -45,6 +45,7 @@ function source(path: string): string {
 
 const publicRouteFiles = [
   "app/page.tsx",
+  "app/comparison/page.tsx",
   "app/features/page.tsx",
   "app/industries/cleaning/page.tsx",
   "app/trust/page.tsx",
@@ -238,6 +239,7 @@ describe("public visual stability source contracts", () => {
 
   it("keeps supporting public pages on the canonical rhythm primitives", () => {
     for (const route of [
+      "app/comparison/page.tsx",
       "app/features/page.tsx",
       "app/trust/page.tsx",
       "app/demo/page.tsx",
