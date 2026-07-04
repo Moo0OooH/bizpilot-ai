@@ -209,73 +209,50 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
       }}
     >
       <div className="homepage-signal-rail" aria-hidden="true" />
-      <div className="homepage-board-topline mb-3 flex min-w-0 items-center justify-between gap-3">
-        <span
-          className="bp-copy-status inline-flex min-w-0 items-center gap-2 rounded-full border px-3 py-1.5 text-[11px] font-black"
-          style={{
-            backgroundColor: "var(--surface)",
-            borderColor: "var(--border-default)",
-            color: "var(--text-strong)",
-          }}
-        >
-          <MarketingIcon name="radar" />
-          {copy.boardLabel}
-        </span>
-        <span
-          className="homepage-board-safety bp-copy-status hidden rounded-full border px-3 py-1.5 text-[11px] font-black sm:inline-flex"
-          style={{
-            backgroundColor: "color-mix(in srgb, var(--accent) 10%, var(--surface))",
-            borderColor: "color-mix(in srgb, var(--accent) 30%, var(--border-default))",
-            color: "var(--accent)",
-          }}
-        >
-          {copy.boardSafety}
-        </span>
-      </div>
       <div className="homepage-chaos-clarity-flow homepage-signal-flow grid min-w-0 items-stretch gap-3">
         <section className="homepage-chaos-panel homepage-signal-panel min-w-0">
-          <div className="homepage-visual-heading">
-            <p className="bp-copy-eyebrow text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.gold }}>
-              {copy.chaosTitle}
-            </p>
+          <div className="homepage-step-heading homepage-step-heading--chaos">
+            <span className="homepage-step-index" aria-hidden>
+              1
+            </span>
+            <span className="sr-only">{copy.chaosTitle}</span>
             <h3 className="bp-copy-card-title mt-1 min-h-0 text-[15px] font-black leading-tight" style={{ color: "var(--text-strong)" }}>
               {copy.chaosSubtitle}
             </h3>
           </div>
 
-          <div className="homepage-chaos-source-grid mt-3">
-            {incomingSources.map((source) => (
-              <span
-                className={`homepage-source-chip homepage-source-chip--${sourceChannelKey(source)} min-w-0 rounded-full border px-2 py-1.5`}
-                key={source}
-              >
-                <SourceChannelMark source={source} />
-                <span className="homepage-source-label">{source}</span>
-              </span>
-            ))}
-          </div>
+          <div className="homepage-chaos-stream mt-3">
+            <div className="homepage-chaos-channel-rail" aria-label={copy.chaosTitle}>
+              {incomingSources.map((source) => (
+                <span className="homepage-chaos-channel" key={source}>
+                  <SourceChannelMark source={source} />
+                  <span className="sr-only">{source}</span>
+                </span>
+              ))}
+            </div>
 
-          <div className="homepage-chaos-messages mt-3 grid gap-2">
-            {chaosMessages.map((message, index) => (
-              <p
-                className="homepage-signal-message bp-copy-card-body min-w-0 rounded-[12px] border px-3 py-2 text-[11px] font-bold leading-4"
-                key={message}
-                style={{
-                  backgroundColor:
-                    index < 3
-                      ? "color-mix(in srgb, var(--warning) 9%, var(--surface))"
-                      : "var(--surface)",
-                  borderColor:
-                    index < 3
-                      ? "color-mix(in srgb, var(--warning) 28%, var(--border-default))"
-                      : "var(--border-default)",
-                  color: "var(--text-default)",
-                }}
-              >
-                <span aria-hidden className="homepage-message-mark" />
-                <span>{message}</span>
-              </p>
-            ))}
+            <div className="homepage-chaos-messages grid gap-2">
+              {chaosMessages.map((message, index) => (
+                <p
+                  className="homepage-signal-message bp-copy-card-body min-w-0 rounded-[12px] border px-3 py-2 text-[11px] font-bold leading-4"
+                  key={message}
+                  style={{
+                    backgroundColor:
+                      index < 3
+                        ? "color-mix(in srgb, var(--warning) 9%, var(--surface))"
+                        : "var(--surface)",
+                    borderColor:
+                      index < 3
+                        ? "color-mix(in srgb, var(--warning) 28%, var(--border-default))"
+                        : "var(--border-default)",
+                    color: "var(--text-default)",
+                  }}
+                >
+                  <span aria-hidden className="homepage-message-mark" />
+                  <span>{message}</span>
+                </p>
+              ))}
+            </div>
           </div>
 
           <p className="homepage-chaos-overload mt-3">
@@ -297,9 +274,14 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
               "color-mix(in srgb, var(--accent) 42%, var(--border-default))",
           }}
         >
-          <p className="bp-copy-card-title min-h-0 text-[16px] font-black" style={{ color: "var(--text-strong)" }}>
-            {copy.bizPilotTitle}
-          </p>
+          <div className="homepage-step-heading homepage-step-heading--bizpilot">
+            <span className="homepage-step-index" aria-hidden>
+              2
+            </span>
+            <p className="bp-copy-card-title min-h-0 text-[16px] font-black" style={{ color: "var(--text-strong)" }}>
+              {copy.bizPilotTitle}
+            </p>
+          </div>
           <p className="bp-copy-meta mt-1 text-[11px] font-bold leading-4" style={{ color: "var(--text-default)" }}>
             {copy.bizPilotBody}
           </p>
@@ -324,6 +306,10 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
               </span>
             ))}
           </div>
+          <p className="homepage-owner-review-badge">
+            <MarketingIcon name="shield" />
+            <span>{copy.boardSafety}</span>
+          </p>
         </section>
 
         <div className="homepage-flow-connector homepage-flow-connector--desktop" aria-hidden="true">
@@ -333,16 +319,16 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
         <section className="homepage-clarity-panel homepage-signal-panel min-w-0">
           <div className="homepage-visual-heading homepage-clarity-heading">
             <div className="min-w-0">
-              <p className="bp-copy-eyebrow text-[10px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
-                {copy.clarityTitle}
-              </p>
-              <h3 className="bp-copy-card-title mt-1 min-h-0 text-[15px] font-black leading-tight" style={{ color: "var(--text-strong)" }}>
-                {copy.claritySubtitle}
-              </h3>
+              <div className="homepage-step-heading homepage-step-heading--clarity">
+                <span className="homepage-step-index" aria-hidden>
+                  3
+                </span>
+                <span className="sr-only">{copy.clarityTitle}</span>
+                <h3 className="bp-copy-card-title mt-1 min-h-0 text-[15px] font-black leading-tight" style={{ color: "var(--text-strong)" }}>
+                  {copy.claritySubtitle}
+                </h3>
+              </div>
             </div>
-            <span aria-hidden className="homepage-clarity-count">
-              {copy.leads.slice(0, 2).length}
-            </span>
           </div>
           <p className="homepage-clarity-badge">{copy.clarityBadge}</p>
 
