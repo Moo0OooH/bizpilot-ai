@@ -47,6 +47,12 @@ pagination, page-size controls, reset behavior, and EN/fr-CA copy. Protected
 dashboard/admin browser QA and screenshot matrix remain blocked until the
 environment points at a confirmed local/synthetic Supabase target.
 
+2026-07-04 local-gate update: Phase 25Y added `pnpm check:targets`,
+`pnpm check:dashboard-local`, and `pnpm check:db-local`. `pnpm test:rls` now
+loads `DATABASE_URL` from local env files and passed against the confirmed
+local DB. Mutating dashboard smoke remains blocked while
+`NEXT_PUBLIC_SUPABASE_URL` points at a managed/non-local Supabase host.
+
 Real customer data, paid pilot launch, production mutations, automation,
 booking, invoices, SMS/WhatsApp, autonomous AI, and broad feature expansion
 remain blocked unless a separate explicit gate closes.

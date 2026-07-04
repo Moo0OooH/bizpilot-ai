@@ -10,6 +10,9 @@
  * - lib/public-structured-data.ts
  * Author: MoOoH
  * Created: 2026-07-04
+ * Last Updated: 2026-07-04
+ * Change Log:
+ * - 2026-07-04: Created the public quote-link placement guide for Phase 25C.
  * ============================================================
  */
 

@@ -1,3 +1,21 @@
+/**
+ * ============================================================
+ * File: tests/unit/feature-registry.test.mts
+ * Project: BizPilot AI
+ * Description: Source guards for Settings-visible feature registry states.
+ * Role: Verifies feature states, localized guide copy, and blocked-scope honesty.
+ * Related:
+ * - lib/features/feature-registry.ts
+ * - app/(dashboard)/dashboard/settings/page.tsx
+ * - lib/i18n/bizpilot-copy.ts
+ * Author: MoOoH
+ * Created: 2026-05-26
+ * Last Updated: 2026-07-04
+ * Change Log:
+ * - 2026-07-04: Added Settings guide-detail source guards without enabling blocked features.
+ * ============================================================
+ */
+
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";

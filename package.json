@@ -10,6 +10,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "check:dashboard-local": "node --experimental-strip-types scripts/check-local-targets.mts --require-dashboard-local",
+    "check:db-local": "node --experimental-strip-types scripts/check-local-targets.mts --require-db-local",
+    "check:targets": "node --experimental-strip-types scripts/check-local-targets.mts",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",

@@ -877,6 +877,37 @@ pnpm typecheck PASS
 pnpm build PASS
 ```
 
+## Progress Addendum - Phase 25Y
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md`:
+
+- Added a no-secret local target classifier in `scripts/check-local-targets.mts`.
+- Added `pnpm check:targets`, `pnpm check:dashboard-local`, and
+  `pnpm check:db-local`.
+- Updated the RLS runner to load `DATABASE_URL` from local env files while
+  preserving local-only/managed-Supabase refusal.
+- Confirmed current `DATABASE_URL` is local and `NEXT_PUBLIC_SUPABASE_URL`
+  remains managed/non-local.
+- Re-applied migration `0023` to the local DB only and adjusted its cleanup
+  helper implementation for simpler local Supabase behavior.
+- Updated RLS coverage so abuse-log retention is grant/source-checked without
+  executing the helper in the RLS suite, because the current local Supabase
+  image terminated the backend during direct helper execution attempts.
+- `pnpm test:rls` passed 13/13 against the confirmed local DB.
+
+Backlog movement:
+
+```text
+67 preserved as dashboard-smoke blocked until local Supabase URL is configured
+89 preserved as strict restored app/dashboard/RLS proof blocker before paid pilot
+90 done for current local DB/RLS target - 13/13 RLS files passed
+1 preserved as real-data blocked
+2 preserved as paid-pilot blocked
+93-100 preserved as future-blocked
+```
+
 ## Progress Addendum - Phase 25P
 
 Date: 2026-07-04

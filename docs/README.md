@@ -49,6 +49,12 @@ AI-search, local GTM, analytics, demo, and pilot-ops work. This does not approve
 real customer data, paid pilot launch, production mutations, automation,
 booking, invoices, SMS/WhatsApp, autonomous AI, or broad feature expansion.
 
+2026-07-04 Phase 25Y local-gate override: use
+`readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md` for the
+latest local target classification and RLS evidence. Local DB/RLS passed
+against the confirmed local `DATABASE_URL`; dashboard/admin smoke and browser
+QA remain blocked until `NEXT_PUBLIC_SUPABASE_URL` is local/synthetic.
+
 2026-06-01 status override: BizPilot is synthetic-ready, not
 real-data-approved, and not paid-pilot-ready. The next gates are Phase 24F final
 no-secret production smoke and Phase 24G explicit owner approval. After those,
@@ -153,6 +159,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 ## Latest Readiness Evidence
 
 - `docs/readiness/PHASE_25X_DASHBOARD_LEAD_QUEUE_PAGINATION_2026-07-04.md`
+- `docs/readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md`
 - `docs/readiness/PHASE_25W_POST_25V_RECHECK_AND_REMAINING_MAP_2026-07-04.md`
 - `docs/readiness/PHASE_25V_SETTINGS_FEATURE_GUIDE_DETAILS_2026-07-04.md`
 - `docs/readiness/PHASE_25U_REPLY_SPEED_CONTENT_GUIDE_2026-07-04.md`

@@ -97,6 +97,12 @@ assessment and execution-order document only. It does not approve real customer
 data, paid pilot launch, production mutations, automation, booking, invoices,
 SMS/WhatsApp, autonomous AI, or broad feature expansion.
 
+2026-07-04 Phase 25Y local-gate override: treat
+`readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md` as the
+latest local target and RLS gate evidence. Local DB/RLS proof passed for the
+current local `DATABASE_URL`; authenticated dashboard/admin smoke remains
+blocked because `NEXT_PUBLIC_SUPABASE_URL` is still managed/non-local.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
@@ -258,6 +264,10 @@ starting new work:
   latest dashboard source-level evidence: full lead queue pagination, page-size
   controls, reset behavior, EN/fr-CA copy, and source guards while keeping
   protected-route browser QA blocked until confirmed local Supabase.
+- `readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md` -
+  latest local gate evidence: no-secret target classifier, env-file RLS runner
+  loading, local DB/RLS 13/13 pass, and preserved dashboard smoke block while
+  `NEXT_PUBLIC_SUPABASE_URL` remains managed/non-local.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

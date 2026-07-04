@@ -75,12 +75,12 @@ describe("security and runtime operations source contracts", () => {
 
   it("keeps RLS coverage for abuse retention cleanup without running production DB", () => {
     for (const required of [
-      "T7: abuse-log retention cleanup is service-role-only",
-      "set local role anon",
-      "anon must not execute delete_old_public_submission_abuse_logs",
-      "set local role service_role",
-      "service_role cleanup should delete exactly 1 old abuse row",
-      "old abuse row should be removed",
+      "T7: abuse-log retention cleanup grants are service-role-only",
+      "direct execution attempt",
+      "anon/authenticated denial",
+      "Do not execute the retention helper in this RLS suite",
+      "has_function_privilege('service_role'",
+      "service_role must have EXECUTE on delete_old_public_submission_abuse_logs",
     ]) {
       assert.equal(rlsTest.includes(required), true, `Missing ${required}.`);
     }

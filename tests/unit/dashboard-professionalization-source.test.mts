@@ -1,7 +1,19 @@
 /**
+ * ============================================================
  * File: tests/unit/dashboard-professionalization-source.test.mts
  * Project: BizPilot AI
  * Description: Source guards for P12 dashboard visual/readability polish.
+ * Role: Keeps dashboard queue, detail, and owner-review source contracts stable as dashboard phases evolve.
+ * Related:
+ * - components/dashboard/lead-workspace-queue.tsx
+ * - app/(dashboard)/dashboard/leads/[leadId]/page.tsx
+ * - lib/i18n/bizpilot-copy.ts
+ * Author: MoOoH
+ * Created: 2026-06-26
+ * Last Updated: 2026-07-04
+ * Change Log:
+ * - 2026-07-04: Added lead queue pagination source guards.
+ * ============================================================
  */
 
 import assert from "node:assert/strict";

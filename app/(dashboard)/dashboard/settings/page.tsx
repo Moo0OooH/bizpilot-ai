@@ -10,8 +10,9 @@
  * - docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-04
  * Change Log:
+ * - 2026-07-04: Added collapsed feature guide details without enabling blocked feature states.
  * - 2026-05-18: Created Settings shell.
  * - 2026-05-19: Rebuilt as three-card row exactly matching the index — Account, Theme, Future — and added a sticky workspace-info side panel + scope guard.
  * - 2026-06-27: Collapsed long feature/history documentation behind compact settings summaries.

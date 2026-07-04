@@ -39,6 +39,12 @@ Latest dashboard source-level slice:
 adds full lead queue pagination and EN/fr-CA controls while preserving the
 local-Supabase-only dashboard QA gate.
 
+Latest local-gate slice:
+`docs/readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md`
+adds no-secret target classification and confirms local DB/RLS proof for the
+current `DATABASE_URL`. Dashboard/admin smoke remains blocked while
+`NEXT_PUBLIC_SUPABASE_URL` is managed/non-local.
+
 Phase 25 does not approve real customer data, paid pilot launch, production
 mutations, automation, booking, invoices, SMS/WhatsApp, autonomous AI, or broad
 feature expansion. Those remain gated by the canonical docs.

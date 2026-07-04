@@ -13,14 +13,15 @@
  * - docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-15
- * Last Updated: 2026-05-15
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-05-15: Created Phase 10D runner. Local-only by design; refuses non-local DATABASE_URL.
+ * - 2026-07-04: Loaded DATABASE_URL from local env files before local-only RLS tests without printing secrets.
  * ============================================================
  */
 
-import { readFileSync, readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import pg from "pg";
@@ -41,10 +42,42 @@ type TestResult = Readonly<{
   pass: boolean;
 }>;
 
+function readEnvFiles(): Map<string, string> {
+  const values = new Map<string, string>();
+
+  for (const file of [".env.local", ".env"]) {
+    const path = resolve(process.cwd(), file);
+    if (!existsSync(path)) {
+      continue;
+    }
+
+    for (const rawLine of readFileSync(path, "utf8").split(/\r?\n/)) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith("#") || !line.includes("=")) {
+        continue;
+      }
+
+      const [rawKey = "", ...rawValueParts] = line.split("=");
+      const key = rawKey.trim();
+      const rawValue = rawValueParts.join("=").trim();
+      const value = rawValue.replace(/^['"]|['"]$/g, "");
+      if (key && value && !values.has(key)) {
+        values.set(key, value);
+      }
+    }
+  }
+
+  return values;
+}
+
+function readDatabaseUrl(fileValues: Map<string, string>): string | undefined {
+  return process.env.DATABASE_URL ?? fileValues.get("DATABASE_URL");
+}
+
 function assertLocalDatabaseUrl(rawUrl: string | undefined): string {
   if (!rawUrl || rawUrl.trim().length === 0) {
     throw new Error(
-      "DATABASE_URL is not set. Set it to a local Postgres or local Supabase URL before running RLS tests.",
+      "DATABASE_URL is not set in the shell, .env.local, or .env. Set it to a local Postgres or local Supabase URL before running RLS tests.",
     );
   }
 
@@ -101,7 +134,8 @@ async function runTestFile(client: pg.Client, fileName: string): Promise<TestRes
 }
 
 async function main(): Promise<void> {
-  const databaseUrl = assertLocalDatabaseUrl(process.env.DATABASE_URL);
+  const fileValues = readEnvFiles();
+  const databaseUrl = assertLocalDatabaseUrl(readDatabaseUrl(fileValues));
   const testFiles = discoverTestFiles();
 
   if (testFiles.length === 0) {

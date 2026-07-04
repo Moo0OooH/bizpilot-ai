@@ -14,6 +14,7 @@ Created: 2026-07-04
 Last Updated: 2026-07-04
 Change Log:
 - 2026-07-04: Added service-role-only retention cleanup helper.
+- 2026-07-04: Replaced the delete CTE with DELETE plus ROW_COUNT diagnostics for local Supabase stability.
 ============================================================
 */
 
@@ -33,12 +34,10 @@ begin
     raise exception 'retention_days must be between 7 and 365.';
   end if;
 
-  with deleted as (
-    delete from public.public_submission_abuse_log
-    where created_at < now() - make_interval(days => retention_days)
-    returning 1
-  )
-  select count(*)::integer into deleted_count from deleted;
+  delete from public.public_submission_abuse_log
+  where created_at < now() - make_interval(days => retention_days);
+
+  get diagnostics deleted_count = row_count;
 
   return deleted_count;
 end;

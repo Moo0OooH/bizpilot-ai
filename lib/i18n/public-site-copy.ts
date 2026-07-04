@@ -10,7 +10,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-26
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
  * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
