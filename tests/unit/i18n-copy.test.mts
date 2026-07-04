@@ -621,7 +621,7 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.mockup.claritySubtitle, "File de prospects intelligente");
     assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon prêt pour validation");
     assert.equal(frenchPublicCopy.home.mockup.copyButton, "Réviser le brouillon");
-    assert.equal(frenchPublicCopy.home.mockup.sources.length, 4);
+    assert.equal(frenchPublicCopy.home.mockup.sources.length, 5);
     assert.equal(frenchPublicCopy.home.mockup.messages.length, 4);
     assert.equal(frenchPublicCopy.home.mockup.leads.length, 2);
     assert.equal(
@@ -922,7 +922,7 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.home.mockup.claritySubtitle, "Smart lead queue");
     assert.equal(englishPublicCopy.home.mockup.draftTitle, "Draft ready for owner review");
     assert.equal(englishPublicCopy.home.mockup.copyButton, "Review draft");
-    assert.equal(englishPublicCopy.home.mockup.sources.length, 4);
+    assert.equal(englishPublicCopy.home.mockup.sources.length, 5);
     assert.equal(englishPublicCopy.home.mockup.messages.length, 4);
     assert.equal(englishPublicCopy.home.mockup.leads.length, 2);
     assert.equal(

@@ -1000,7 +1000,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         "How much?",
         "Office cleaning quote?",
       ],
-      sources: ["Google", "Facebook", "Instagram", "Text"],
+      sources: ["Website", "Google", "Facebook", "Instagram", "Text"],
     },
     preview: {
       badges: ["No auto-send", "No invented price", "No booking confirmation"],
@@ -1975,7 +1975,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Combien?",
         "Soumission pour bureaux?",
       ],
-      sources: ["Google", "Facebook", "Instagram", "Texto"],
+      sources: ["Site web", "Google", "Facebook", "Instagram", "Texto"],
     },
     preview: {
       badges: [

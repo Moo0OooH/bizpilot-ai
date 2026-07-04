@@ -367,7 +367,7 @@ describe("public visual stability source contracts", () => {
       "Short desktop viewports need a compact chaos-to-clarity hero visual to stay inside the first fold.",
     );
     assert.equal(
-      homepage.includes("copy.sources.slice(0, 4)") &&
+      homepage.includes("copy.sources.slice(0, 5)") &&
         homepage.includes("copy.messages.slice(0, 4)") &&
         homepage.includes("copy.bizPilotActions.slice(0, 4)") &&
         homepage.includes("copy.leads.slice(0, 2)"),

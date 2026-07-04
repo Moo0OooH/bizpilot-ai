@@ -196,7 +196,7 @@ function SourceChannelMark({ source }: Readonly<{ source: string }>) {
 
 function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
   const chaosMessages = copy.messages.slice(0, 4);
-  const incomingSources = copy.sources.slice(0, 4);
+  const incomingSources = copy.sources.slice(0, 5);
 
   return (
     <div

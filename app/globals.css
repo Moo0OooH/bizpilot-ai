@@ -660,47 +660,6 @@ select {
   background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 42%, transparent), transparent);
 }
 
-.homepage-incoming-stream {
-  position: absolute;
-  inset-block-start: 2.9rem;
-  inset-inline-end: 0.7rem;
-  z-index: 2;
-  display: grid;
-  gap: 0.55rem;
-  pointer-events: none;
-}
-
-.homepage-incoming-source {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  min-inline-size: 7.2rem;
-  border: 1px solid color-mix(in srgb, var(--border-default) 70%, transparent);
-  border-radius: 999px;
-  background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-elevated) 94%, var(--primary) 6%), color-mix(in srgb, var(--surface) 92%, var(--accent) 8%));
-  color: var(--text-strong);
-  padding: 0.42rem 0.62rem 0.42rem 0.42rem;
-  font-size: 0.66rem;
-  font-weight: 900;
-  line-height: 1;
-  opacity: 0;
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
-  transform: translateX(5.4rem) translateY(0.4rem) scale(0.92);
-  animation: homepage-source-arrive 6.8s cubic-bezier(0.2, 0.82, 0.25, 1) infinite;
-}
-
-.homepage-incoming-source .homepage-source-mark {
-  block-size: 1.42rem;
-  inline-size: 1.42rem;
-  border-width: 1px;
-}
-
-.homepage-incoming-source .homepage-source-brand {
-  width: 0.8rem;
-  height: 0.8rem;
-}
-
 .homepage-chaos-clarity-flow {
   grid-template-columns: minmax(12rem, 1fr) auto minmax(7.2rem, 0.46fr) auto minmax(13.5rem, 1.08fr);
 }
@@ -857,39 +816,6 @@ select {
   box-shadow: 0 14px 28px color-mix(in srgb, var(--warning) 12%, transparent);
 }
 
-.homepage-cure-strip {
-  display: grid;
-  gap: 0.18rem;
-  max-inline-size: 100%;
-  border: 1px solid color-mix(in srgb, var(--warning) 28%, var(--border-default));
-  border-radius: 0.9rem;
-  background: color-mix(in srgb, var(--warning) 9%, var(--surface));
-  padding: 0.55rem 0.65rem;
-}
-
-.homepage-cure-strip span {
-  color: var(--text-strong);
-  font-size: 0.66rem;
-  font-weight: 900;
-  line-height: 1.2;
-}
-
-.homepage-cure-strip strong {
-  color: var(--text-muted);
-  font-size: 0.61rem;
-  font-weight: 800;
-  line-height: 1.25;
-}
-
-.homepage-cure-strip {
-  border-color: color-mix(in srgb, var(--accent) 32%, var(--border-default));
-  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
-}
-
-.homepage-cure-strip strong {
-  color: var(--accent);
-}
-
 .homepage-chaos-overload-head {
   display: grid;
   gap: 0.25rem;
@@ -980,137 +906,6 @@ select {
 .homepage-source-label {
   min-inline-size: 0;
   overflow-wrap: anywhere;
-}
-
-.homepage-chaos-inbox-stack {
-  position: relative;
-  min-block-size: 20.5rem;
-  isolation: isolate;
-}
-
-.homepage-chaos-inbox-card {
-  position: absolute;
-  align-items: flex-start;
-  inline-size: min(12.8rem, 92%);
-  min-block-size: 4.35rem;
-  color: var(--text-strong);
-  border-radius: 1.35rem 1.35rem 1.35rem 0.38rem;
-  box-shadow:
-    0 18px 34px rgba(15, 23, 42, 0.08),
-    inset 0 1px 0 color-mix(in srgb, white 62%, transparent);
-  transition: transform 180ms ease, box-shadow 180ms ease;
-  animation: homepage-chaos-card-breathe 6.8s ease-in-out infinite;
-}
-
-.homepage-chaos-inbox-card:nth-child(1) {
-  inset-block-start: 0.2rem;
-  inset-inline-start: 0;
-  transform: rotate(-3deg);
-  animation-delay: 0.1s;
-}
-
-.homepage-chaos-inbox-card:nth-child(2) {
-  inset-block-start: 4.3rem;
-  inset-inline-end: 0.1rem;
-  z-index: 2;
-  transform: rotate(2.6deg);
-  animation-delay: 0.65s;
-}
-
-.homepage-chaos-inbox-card:nth-child(3) {
-  inset-block-start: 8.65rem;
-  inset-inline-start: 0.35rem;
-  z-index: 3;
-  transform: rotate(-1.8deg);
-  animation-delay: 1.2s;
-}
-
-.homepage-chaos-inbox-card:nth-child(4) {
-  inset-block-start: 13rem;
-  inset-inline-end: 0.45rem;
-  z-index: 4;
-  transform: rotate(3deg);
-  animation-delay: 1.75s;
-}
-
-.homepage-chaos-inbox-card::after {
-  position: absolute;
-  inset-block-start: 0.55rem;
-  inset-inline-end: 0.6rem;
-  block-size: 0.5rem;
-  inline-size: 0.5rem;
-  border-radius: 999px;
-  background: var(--warning);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--warning) 12%, transparent);
-  content: "";
-}
-
-.homepage-chaos-message-copy {
-  display: grid;
-  gap: 0.2rem;
-  padding-inline-end: 0.75rem;
-}
-
-.homepage-chaos-person {
-  position: absolute;
-  inset-block-start: -0.48rem;
-  inset-inline-start: 1.55rem;
-  display: grid;
-  block-size: 1.15rem;
-  inline-size: 1.15rem;
-  place-items: center;
-  border: 1px solid color-mix(in srgb, white 70%, var(--border-default));
-  border-radius: 999px;
-  background: var(--surface-elevated);
-  color: var(--text-strong);
-  font-size: 0.58rem;
-  font-weight: 900;
-  box-shadow: 0 7px 14px rgba(15, 23, 42, 0.12);
-}
-
-.homepage-chaos-message-meta {
-  display: flex;
-  min-width: 0;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.3rem;
-  color: var(--text-muted);
-  font-size: 0.58rem;
-  font-weight: 900;
-  line-height: 1.1;
-}
-
-.homepage-chaos-message-meta strong {
-  color: var(--text-strong);
-}
-
-.homepage-chaos-message-text {
-  display: -webkit-box;
-  overflow: hidden;
-  color: var(--text-strong);
-  font-size: 0.72rem;
-  font-weight: 900;
-  line-height: 1.25;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.homepage-chaos-buried {
-  position: absolute;
-  inset-block-end: 0.3rem;
-  inset-inline-start: 0.15rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-block-size: 2.3rem;
-  min-inline-size: 2.3rem;
-  border: 1px solid color-mix(in srgb, var(--warning) 26%, var(--border-default));
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--warning) 10%, var(--surface));
-  color: var(--warning);
-  font-size: 0.74rem;
-  font-weight: 900;
-  box-shadow: 0 12px 26px color-mix(in srgb, var(--warning) 10%, transparent);
 }
 
 .homepage-signal-message {
@@ -1581,12 +1376,6 @@ select {
     margin-block-end: 0.55rem;
   }
 
-  .homepage-incoming-stream {
-    inset-block-start: 2.55rem;
-    transform: scale(0.9);
-    transform-origin: top right;
-  }
-
   .homepage-signal-panel,
   .homepage-bizpilot-node,
   .homepage-hero-draft-card {
@@ -1594,12 +1383,6 @@ select {
   }
 
   .homepage-chaos-messages > *:nth-child(n + 4) {
-    display: none;
-  }
-}
-
-@media (max-width: 1099px) {
-  .homepage-incoming-stream {
     display: none;
   }
 }
@@ -1660,8 +1443,7 @@ select {
   }
 
   .homepage-signal-board::before,
-  .homepage-signal-rail,
-  .homepage-incoming-stream {
+  .homepage-signal-rail {
     display: none;
   }
 
@@ -1695,25 +1477,8 @@ select {
     margin-block-start: 0.55rem;
   }
 
-  .homepage-chaos-overload,
-  .homepage-cure-strip {
+  .homepage-chaos-overload {
     display: none;
-  }
-
-  .homepage-chaos-inbox-stack {
-    min-block-size: auto;
-  }
-
-  .homepage-chaos-inbox-card,
-  .homepage-chaos-inbox-card:nth-child(1),
-  .homepage-chaos-inbox-card:nth-child(2),
-  .homepage-chaos-inbox-card:nth-child(3),
-  .homepage-chaos-inbox-card:nth-child(4) {
-    position: relative;
-    inset: auto;
-    inline-size: 100%;
-    min-block-size: 4rem;
-    transform: none;
   }
 
   .homepage-chaos-source-grid > *:nth-child(n + 3) {
@@ -1794,45 +1559,6 @@ select {
   }
 }
 
-@keyframes homepage-source-arrive {
-  0% {
-    opacity: 0;
-    transform: translateX(5.4rem) translateY(0.4rem) scale(0.92);
-  }
-
-  12%,
-  42% {
-    opacity: 1;
-    transform: translateX(0) translateY(0) scale(1);
-  }
-
-  58% {
-    opacity: 0.72;
-    transform: translateX(-2.9rem) translateY(0.2rem) scale(0.96);
-  }
-
-  72%,
-  100% {
-    opacity: 0;
-    transform: translateX(-5.2rem) translateY(0.2rem) scale(0.9);
-  }
-}
-
-@keyframes homepage-chaos-card-breathe {
-  0%,
-  100% {
-    filter: saturate(1);
-  }
-
-  45% {
-    filter: saturate(1.18);
-    box-shadow:
-      0 22px 40px rgba(15, 23, 42, 0.13),
-      0 0 0 1px color-mix(in srgb, var(--warning) 12%, transparent),
-      inset 0 1px 0 color-mix(in srgb, white 62%, transparent);
-  }
-}
-
 @keyframes homepage-bizpilot-processing {
   0%,
   100% {
@@ -1860,8 +1586,6 @@ select {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .homepage-incoming-source,
-  .homepage-chaos-inbox-card,
   .homepage-bizpilot-pulse span,
   .homepage-signal-draft {
     animation: none;
