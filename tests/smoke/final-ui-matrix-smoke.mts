@@ -95,6 +95,12 @@ const routeContracts: readonly PublicRouteContract[] = [
     rejectFrText: getPublicSiteCopy("en").comparison.title,
   },
   {
+    h1: (locale) => getPublicSiteCopy(locale).quoteLinkGuide.title,
+    meta: (locale) => getPublicSiteCopy(locale).quoteLinkGuide.meta,
+    path: "/quote-link-guide",
+    rejectFrText: getPublicSiteCopy("en").quoteLinkGuide.title,
+  },
+  {
     h1: (locale) => getPublicSiteCopy(locale).cleaning.title,
     meta: (locale) => getPublicSiteCopy(locale).cleaning.meta,
     path: "/industries/cleaning",
@@ -503,8 +509,10 @@ function checkSitemapAndRobots(sitemap: string, robots: string): CheckResult[] {
       ),
     },
     {
-      name: "sitemap excludes auth and quote",
-      pass: !sitemap.includes("/auth") && !sitemap.includes("/quote"),
+      name: "sitemap excludes auth and quote intake",
+      pass:
+        !sitemap.includes("/auth") &&
+        !/https:\/\/bizpilo\.com\/quote(?:[/?<]|$)/.test(sitemap),
     },
     {
       name: "sitemap excludes test pseudolocale",

@@ -414,3 +414,40 @@ pnpm typecheck PASS
 pnpm build PASS
 pnpm smoke:quote -- --base-url=http://127.0.0.1:3030 --inactive-slug=phase1-unavailable-synthetic PASS
 ```
+
+## Progress Addendum - Phase 25C
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25C_QUOTE_LINK_PLACEMENT_GUIDE_2026-07-04.md`:
+
+- Added canonical `/quote-link-guide` as a practical local-GTM guide.
+- Added source-backed placement guidance for website, Google Business Profile,
+  Instagram bio, saved replies/DMs, and email signatures.
+- Added source/UTM examples aligned with the Phase 25B attribution capture.
+- Added sitemap/canonical metadata, footer discovery, language handling, smoke
+  coverage, UI matrix coverage, and SEO source guards.
+- Kept quote links framed as request intake only, not booking confirmation.
+
+Backlog items advanced:
+
+```text
+34 done
+38 started
+41 done
+68 reinforced
+69 reinforced
+74 preserved
+```
+
+Verification:
+
+```text
+pnpm verify PASS
+pnpm test:unit PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3030 PASS
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3030 PASS
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3030 --timeout-ms=60000 PASS
+```

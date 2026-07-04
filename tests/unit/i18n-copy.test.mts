@@ -1396,6 +1396,7 @@ describe("BizPilot language copy", () => {
         "features",
         "faq",
         "comparison",
+        "quoteLinkGuide",
         "cleaning",
         "trust",
         "demo",

@@ -16,6 +16,7 @@
  * - 2026-06-21: Included public auth shells in language query cookie handling.
  * - 2026-06-21: Included the public FAQ route in language query cookie handling.
  * - 2026-07-04: Included the comparison route in language query cookie handling.
+ * - 2026-07-04: Included the quote-link guide route in language query cookie handling.
  * ============================================================
  */
 
@@ -113,6 +114,7 @@ export const config = {
     "/",
     "/faq",
     "/comparison",
+    "/quote-link-guide",
     "/features",
     "/industries/cleaning",
     "/trust",

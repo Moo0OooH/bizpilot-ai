@@ -22,6 +22,7 @@
  * - 2026-06-25: Gave the desktop brand subtitle enough inline budget for fr-CA without truncation.
  * - 2026-06-26: Allowed marketing badges to wrap inside narrow mobile viewports.
  * - 2026-07-04: Added the public comparison route to desktop and compact navigation.
+ * - 2026-07-04: Added the quote-link guide to the public footer.
  * ============================================================
  */
 
@@ -66,6 +67,7 @@ const defaultMarketingNavCopy: HomeNavCopy = {
   faq: "FAQ",
   features: "Features",
   flow: "How it works",
+  guide: "Quote link guide",
   languageLabel: "Homepage language",
   pilot: "Pilot",
   pricing: "Pricing",
@@ -565,6 +567,7 @@ export function MarketingFooter({
     { href: "/features", label: copy.features },
     { href: "/industries/cleaning", label: copy.cleaning },
     { href: "/comparison", label: copy.comparison },
+    { href: "/quote-link-guide", label: copy.guide },
     { href: "/trust", label: copy.trust },
     { href: "/demo", label: copy.demo },
     { href: "/pricing", label: copy.pricing },

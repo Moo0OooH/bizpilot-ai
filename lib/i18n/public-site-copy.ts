@@ -26,6 +26,7 @@
  * - 2026-06-26: Reworked homepage workflow preview copy into one compact owner-review panel.
  * - 2026-06-26: Shortened homepage hero badge/body copy for premium mobile fit.
  * - 2026-07-04: Added honest comparison-route copy for Phase 25 SEO and buyer education.
+ * - 2026-07-04: Added a quote-link placement guide for local-GTM onboarding.
  * ============================================================
  */
 
@@ -340,6 +341,44 @@ type ComparisonCopy = Readonly<{
   title: string;
 }>;
 
+type QuoteLinkGuideCopy = Readonly<{
+  badge: string;
+  body: string;
+  channels: ReadonlyArray<
+    Readonly<{
+      body: string;
+      caution: string;
+      steps: readonly string[];
+      tag: string;
+      template: string;
+      title: string;
+    }>
+  >;
+  checklist: readonly string[];
+  checklistTitle: string;
+  guardrail: Readonly<{
+    body: string;
+    items: readonly string[];
+    title: string;
+  }>;
+  meta: MetaCopy;
+  primaryCta: string;
+  references: ReadonlyArray<
+    Readonly<{
+      href: string;
+      label: string;
+      note: string;
+    }>
+  >;
+  referencesTitle: string;
+  secondaryCta: string;
+  sourceLabel: string;
+  templateBody: string;
+  templateTitle: string;
+  templateUrlLabel: string;
+  title: string;
+}>;
+
 export type PilotConversionCopy = Readonly<{
   body: string;
   copiedStatus: string;
@@ -407,6 +446,7 @@ export type PublicSiteCopy = Readonly<{
   home: HomeCopy;
   pilot: PilotCopy;
   pricing: PricingCopy;
+  quoteLinkGuide: QuoteLinkGuideCopy;
   quoteShell: QuoteShellCopy;
   trust: TrustCopy;
 }>;
@@ -417,6 +457,7 @@ export const publicSiteCopyNamespaces = [
   "features",
   "faq",
   "comparison",
+  "quoteLinkGuide",
   "cleaning",
   "trust",
   "demo",
@@ -701,6 +742,144 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     ],
     secondaryCta: "See workflow demo",
     title: "BizPilot compared with CRMs, forms, booking tools, and manual inboxes.",
+  },
+  quoteLinkGuide: {
+    badge: "Quote-link placement",
+    body:
+      "Use one clean quote request link anywhere a warm cleaning lead already asks for price, scope, or availability. Keep the link honest, direct, and tagged by source so the owner can see where the request came from.",
+    channels: [
+      {
+        body:
+          "Put the quote request link where visitors already decide whether to contact the cleaning business.",
+        caution:
+          "Do not hide the only quote path in a footer or a long contact paragraph.",
+        steps: [
+          "Add a primary Request a cleaning quote button on the home page.",
+          "Repeat it on contact, residential, move-out, office, and deep-cleaning pages.",
+          "Send the button to the dedicated quote request page, not to a generic link hub.",
+        ],
+        tag: "website",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=website&utm_source=website&utm_medium=cta&utm_campaign=quote_link",
+        title: "Website buttons",
+      },
+      {
+        body:
+          "Use the profile website or contact path for a clear quote request. Only use business action links when the selected action truthfully matches what the page completes.",
+        caution:
+          "Do not label a quote request as a confirmed booking. Google business links may be rejected when the landing page does not complete the selected action.",
+        steps: [
+          "Use a verified Business Profile and keep the business name, service area, website, and phone consistent.",
+          "Use a dedicated landing page for this business or location.",
+          "Keep the page crawlable, HTTPS, and free from link shorteners or login walls.",
+        ],
+        tag: "google_business_profile",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=google_business_profile&utm_source=google-business-profile&utm_medium=profile&utm_campaign=quote_link",
+        title: "Google Business Profile",
+      },
+      {
+        body:
+          "Make the profile link send visitors straight to the quote request when Instagram is a real lead source.",
+        caution:
+          "If the bio already uses multiple links, keep the quote link near the top and label it clearly.",
+        steps: [
+          "Add the quote request URL in profile links.",
+          "Use a plain label such as Request a cleaning quote.",
+          "Test the link on mobile after saving.",
+        ],
+        tag: "instagram_bio",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=instagram&utm_source=instagram&utm_medium=bio&utm_campaign=quote_link",
+        title: "Instagram bio",
+      },
+      {
+        body:
+          "Saved replies turn repeat DMs into a cleaner intake path while the owner still replies manually.",
+        caution:
+          "Do not paste customer names, phone numbers, or message details into tracking tags.",
+        steps: [
+          "Create a saved reply for quote requests.",
+          "Include one sentence that says the business reviews every request.",
+          "Paste the tracked quote link after the sentence.",
+        ],
+        tag: "saved_reply",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=saved_reply&utm_source=instagram&utm_medium=saved_reply&utm_campaign=quote_link",
+        title: "Saved replies and DMs",
+      },
+      {
+        body:
+          "Email signatures catch warm referrals, follow-ups, and returning customers without adding another tool.",
+        caution:
+          "Keep the signature short so the quote link is visible on mobile.",
+        steps: [
+          "Add one line under the phone number or website.",
+          "Use text like Request a cleaning quote.",
+          "Use the same link for every team member until separate owner-approved source tags are needed.",
+        ],
+        tag: "email_signature",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=email_signature&utm_source=email&utm_medium=signature&utm_campaign=quote_link",
+        title: "Email signature",
+      },
+    ],
+    checklist: [
+      "Use the direct HTTPS quote page, not a link shortener.",
+      "Keep the page dedicated to the right business or location.",
+      "Say request a quote, not confirmed booking.",
+      "Test the page on mobile before sharing it.",
+      "Use source tags only for placement, never for customer personal data.",
+    ],
+    checklistTitle: "Before you publish the link",
+    guardrail: {
+      body:
+        "BizPilot quote pages collect requests for owner review. They do not confirm price, availability, scheduling, payment, or a booked cleaning job.",
+      items: [
+        "Use website/contact placement first when a platform action label does not match a quote request.",
+        "Keep Google Business Profile links crawlable and specific to the business.",
+        "Do not add customer names, emails, phone numbers, or message text to UTM tags.",
+      ],
+      title: "Do not turn a quote request into a fake booking.",
+    },
+    meta: {
+      description:
+        "Where cleaning business owners should place a BizPilot quote request link across website, Google Business Profile, Instagram, saved replies, and email signatures.",
+      title: "Cleaning Quote Link Placement Guide | BizPilot AI",
+    },
+    primaryCta: "Join founder pilot",
+    references: [
+      {
+        href: "https://support.google.com/business/answer/13769188?hl=en",
+        label: "Google Business Profile business links policies",
+        note:
+          "Dedicated landing pages, action completion, crawlability, and link-shortener boundaries.",
+      },
+      {
+        href: "https://support.google.com/business/answer/3038177?hl=en",
+        label: "Google Business Profile representation guidelines",
+        note:
+          "Accurate business information, service-area guidance, and website/phone consistency.",
+      },
+      {
+        href: "https://help.instagram.com/362497417173378",
+        label: "Instagram profile link help",
+        note: "Official profile-link placement path.",
+      },
+      {
+        href: "https://help.instagram.com/1264898753662278",
+        label: "Instagram professional inbox saved replies",
+        note: "Saved replies for recurring customer messages.",
+      },
+    ],
+    referencesTitle: "Source-backed placement rules",
+    secondaryCta: "Compare BizPilot",
+    sourceLabel: "Source tag",
+    templateBody:
+      "Replace clean-team with the actual quote slug after setup. Keep tags simple and use one placement source per link.",
+    templateTitle: "Tracked link patterns",
+    templateUrlLabel: "Example link",
+    title: "Where to put your cleaning quote link.",
   },
   contentStudio: {
     badge: "Roadmap",
@@ -1750,6 +1929,144 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     ],
     secondaryCta: "Voir la démo",
     title: "BizPilot comparé aux CRM, formulaires, outils de réservation et boîtes de réception.",
+  },
+  quoteLinkGuide: {
+    badge: "Placement du lien",
+    body:
+      "Utilisez un seul lien clair de demande de soumission partout où un prospect chaud demande déjà un prix, une portée ou une disponibilité. Le lien doit rester honnête, direct et étiqueté par source afin que le propriétaire voie d'où vient la demande.",
+    channels: [
+      {
+        body:
+          "Placez le lien la ou les visiteurs decident deja s'ils vont contacter l'entreprise de nettoyage.",
+        caution:
+          "Ne cachez pas le seul chemin de soumission dans un pied de page ou un long paragraphe de contact.",
+        steps: [
+          "Ajoutez un bouton principal Demander une soumission de nettoyage sur la page d'accueil.",
+          "Repetez-le sur les pages contact, residentiel, demenagement, bureaux et grand menage.",
+          "Envoyez le bouton vers la page dediee de demande de soumission, pas vers un hub generique.",
+        ],
+        tag: "website",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=website&utm_source=website&utm_medium=cta&utm_campaign=quote_link",
+        title: "Boutons du site web",
+      },
+      {
+        body:
+          "Utilisez le site web ou le chemin de contact du profil pour une demande de soumission claire. Utilisez les liens d'action seulement quand l'action choisie correspond vraiment a ce que la page permet de faire.",
+        caution:
+          "Ne presentez pas une demande de soumission comme une reservation confirmee. Les liens d'entreprise Google peuvent etre refuses si la page ne complete pas l'action choisie.",
+        steps: [
+          "Utilisez un profil d'entreprise verifie et gardez le nom, la zone de service, le site web et le telephone coherents.",
+          "Utilisez une page dediee pour cette entreprise ou cet emplacement.",
+          "Gardez la page accessible aux robots, en HTTPS, sans raccourcisseur ni connexion obligatoire.",
+        ],
+        tag: "google_business_profile",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=google_business_profile&utm_source=google-business-profile&utm_medium=profile&utm_campaign=quote_link",
+        title: "Google Business Profile",
+      },
+      {
+        body:
+          "Faites pointer le lien du profil directement vers la demande de soumission lorsque Instagram est une vraie source de prospects.",
+        caution:
+          "Si la bio contient deja plusieurs liens, gardez le lien de soumission pres du haut avec une etiquette claire.",
+        steps: [
+          "Ajoutez l'URL de demande de soumission dans les liens du profil.",
+          "Utilisez une etiquette simple comme Demander une soumission de nettoyage.",
+          "Testez le lien sur mobile apres l'enregistrement.",
+        ],
+        tag: "instagram_bio",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=instagram&utm_source=instagram&utm_medium=bio&utm_campaign=quote_link",
+        title: "Bio Instagram",
+      },
+      {
+        body:
+          "Les reponses enregistrees transforment les DM repetitifs en chemin d'intake plus clair, tout en gardant la reponse manuelle.",
+        caution:
+          "Ne mettez pas le nom, le telephone ou le message du client dans les balises de suivi.",
+        steps: [
+          "Creez une reponse enregistree pour les demandes de soumission.",
+          "Ajoutez une phrase indiquant que l'entreprise revise chaque demande.",
+          "Collez le lien de soumission suivi apres cette phrase.",
+        ],
+        tag: "saved_reply",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=saved_reply&utm_source=instagram&utm_medium=saved_reply&utm_campaign=quote_link",
+        title: "Reponses enregistrees et DM",
+      },
+      {
+        body:
+          "La signature courriel capte les referrals, suivis et anciens clients sans ajouter un autre outil.",
+        caution:
+          "Gardez la signature courte afin que le lien soit visible sur mobile.",
+        steps: [
+          "Ajoutez une ligne sous le numero de telephone ou le site web.",
+          "Utilisez un texte comme Demander une soumission de nettoyage.",
+          "Utilisez le meme lien pour chaque membre de l'equipe jusqu'a l'approbation de sources separees.",
+        ],
+        tag: "email_signature",
+        template:
+          "https://bizpilo.com/quote/clean-team?source=email_signature&utm_source=email&utm_medium=signature&utm_campaign=quote_link",
+        title: "Signature courriel",
+      },
+    ],
+    checklist: [
+      "Utilisez la page directe HTTPS, pas un raccourcisseur.",
+      "Gardez la page dediee a la bonne entreprise ou au bon emplacement.",
+      "Dites demande de soumission, pas reservation confirmee.",
+      "Testez la page sur mobile avant de la partager.",
+      "Utilisez les balises seulement pour le placement, jamais pour les donnees personnelles du client.",
+    ],
+    checklistTitle: "Avant de publier le lien",
+    guardrail: {
+      body:
+        "Les pages de soumission BizPilot collectent des demandes pour revision par le proprietaire. Elles ne confirment pas le prix, la disponibilite, l'horaire, le paiement ou un travail de nettoyage reserve.",
+      items: [
+        "Utilisez d'abord le site web ou le contact quand l'etiquette d'action d'une plateforme ne correspond pas a une demande de soumission.",
+        "Gardez les liens Google Business Profile accessibles et propres a l'entreprise.",
+        "N'ajoutez pas de noms, courriels, numeros de telephone ou messages clients dans les balises UTM.",
+      ],
+      title: "Ne transformez pas une soumission en fausse réservation.",
+    },
+    meta: {
+      description:
+        "Où placer un lien de demande de soumission BizPilot pour une entreprise de nettoyage: site web, Google Business Profile, Instagram, réponses enregistrées et signatures courriel.",
+      title: "Guide du lien de soumission de nettoyage | BizPilot AI",
+    },
+    primaryCta: "Rejoindre le pilote",
+    references: [
+      {
+        href: "https://support.google.com/business/answer/13769188?hl=en",
+        label: "Regles Google Business Profile pour les liens d'entreprise",
+        note:
+          "Pages dediees, action completee, acces aux robots et limites des raccourcisseurs.",
+      },
+      {
+        href: "https://support.google.com/business/answer/3038177?hl=en",
+        label: "Regles de representation Google Business Profile",
+        note:
+          "Informations exactes, zones de service et coherence du site web et du telephone.",
+      },
+      {
+        href: "https://help.instagram.com/362497417173378",
+        label: "Aide Instagram pour le lien de profil",
+        note: "Chemin officiel pour ajouter un lien de profil.",
+      },
+      {
+        href: "https://help.instagram.com/1264898753662278",
+        label: "Reponses enregistrees dans l'inbox professionnelle Instagram",
+        note: "Reponses enregistrees pour les messages recurrents.",
+      },
+    ],
+    referencesTitle: "Règles de placement vérifiées",
+    secondaryCta: "Comparer BizPilot",
+    sourceLabel: "Balise source",
+    templateBody:
+      "Remplacez clean-team par le vrai slug de soumission apres la configuration. Gardez les balises simples et utilisez une source de placement par lien.",
+    templateTitle: "Modèles de liens suivis",
+    templateUrlLabel: "Lien exemple",
+    title: "Où placer votre lien de soumission de nettoyage.",
   },
   contentStudio: {
     badge: "Feuille de route",

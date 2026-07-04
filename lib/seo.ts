@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-06-21: Added the dedicated public FAQ route to canonical metadata helpers.
  * - 2026-07-04: Added comparison as a canonical route, removed roadmap-only Content Studio from canonical indexing, and wired social preview assets.
+ * - 2026-07-04: Added the quote-link placement guide as a canonical local-GTM route.
  * ============================================================
  */
 
@@ -45,6 +46,7 @@ export const publicCanonicalRoutes = [
   "/",
   "/faq",
   "/comparison",
+  "/quote-link-guide",
   "/features",
   "/industries/cleaning",
   "/trust",

@@ -22,6 +22,7 @@
  * - 2026-06-25: Updated Cleaning checks for service cards plus shared detail selector markup.
  * - 2026-06-25: Locked Cleaning to one active detail panel instead of duplicated desktop/mobile details.
  * - 2026-07-04: Added comparison route responsive contract coverage.
+ * - 2026-07-04: Added quote-link guide responsive contract coverage.
  * ============================================================
  */
 
@@ -140,6 +141,26 @@ const routes: readonly RouteContract[] = [
       "La limite est importante.",
     ],
     path: "/comparison?language=fr-CA",
+  },
+  {
+    h1: "Where to put your cleaning quote link.",
+    mustContain: [
+      "Google Business Profile",
+      "Tracked link patterns",
+      "source=website",
+      "Do not turn a quote request into a fake booking.",
+    ],
+    path: "/quote-link-guide",
+  },
+  {
+    h1: "Où placer votre lien de soumission de nettoyage.",
+    mustContain: [
+      "Google Business Profile",
+      "Modèles de liens suivis",
+      "google_business_profile",
+      "Ne transformez pas une soumission en fausse réservation.",
+    ],
+    path: "/quote-link-guide?language=fr-CA",
   },
   {
     h1: "A simple system to manage cleaning quote requests faster.",

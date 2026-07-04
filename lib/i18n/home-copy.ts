@@ -10,12 +10,13 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-26
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-06-19: Shortened public header tagline and corrected compact French pilot CTA.
  * - 2026-06-21: Corrected compact CTA text and fr-CA accent defects visible in public shell/homepage copy.
  * - 2026-06-25: Replaced literal fr-CA lead phrasing with natural cleaning-request wording.
  * - 2026-06-26: Removed legacy desk, command-center, and no-risk pilot wording from homepage copy.
+ * - 2026-07-04: Added the public quote-link guide footer label.
  * ============================================================
  */
 
@@ -61,6 +62,7 @@ export type HomeNavCopy = Readonly<{
   faq: string;
   features: string;
   flow: string;
+  guide: string;
   languageLabel: string;
   pilot: string;
   pricing: string;
@@ -447,6 +449,7 @@ const englishHomeCopy: HomeCopy = {
     faq: "FAQ",
     features: "Features",
     flow: "How it works",
+    guide: "Quote link guide",
     languageLabel: "Homepage language",
     pilot: "Pilot",
     pricing: "Pricing",
@@ -879,6 +882,7 @@ const frenchHomeCopy: HomeCopy = {
     faq: "FAQ",
     features: "Fonctions",
     flow: "Fonctionnement",
+    guide: "Guide du lien",
     languageLabel: "Langue de la page d'accueil",
     pilot: "Pilote",
     pricing: "Prix",

@@ -13,6 +13,7 @@
  * Change Log:
  * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
  * - 2026-07-04: Added comparison route smoke coverage.
+ * - 2026-07-04: Added quote-link guide smoke coverage.
  * ============================================================
  */
 
@@ -61,6 +62,16 @@ const smokeTargets: readonly SmokeTarget[] = [
       "The boundary matters.",
     ],
     path: "/comparison",
+    status: 200,
+  },
+  {
+    expectedText: [
+      "Where to put your cleaning quote link.",
+      "Google Business Profile",
+      "Tracked link patterns",
+      "Do not turn a quote request into a fake booking.",
+    ],
+    path: "/quote-link-guide",
     status: 200,
   },
   {
