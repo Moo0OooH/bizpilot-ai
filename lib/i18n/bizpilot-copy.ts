@@ -16,6 +16,7 @@
  * - 2026-07-04: Added Settings feature guide details and lead queue pagination copy.
  * - 2026-07-04: Tightened dashboard copy around manual draft review, copied replies, and unwired roadmap fields.
  * - 2026-07-04: Added local dashboard display preference copy for density, guide, and insight controls.
+ * - 2026-07-04: Clarified overview queue-filter and public quote-form action labels.
  * - 2026-06-16: Aligned Settings copy with Phase 23/24 readiness and first-pilot manual-only decisions.
  * - 2026-06-19: Updated dashboard theme help copy for the Light-by-default public theme foundation.
  * - 2026-06-21: Added localized quote success noindex metadata.
@@ -1821,7 +1822,7 @@ const englishCopy: BizPilotCopy = {
           `You have ${count} lead${count === 1 ? "" : "s"} waiting for your reply. Owner review remains required before anything is sent.`,
         aiAssistantTitle: "AI Assistant",
         dateRange: "Last 7 days",
-        filters: "Filters",
+        filters: "Filter queue",
         kpis: {
           aiRepliesSent: "Drafts Copied",
           awaitingReply: "Awaiting Your Reply",
@@ -1833,7 +1834,7 @@ const englishCopy: BizPilotCopy = {
         leadQueueTitle: "Lead Queue (Needs Your Action)",
         leadSources: "Lead Sources",
         leadsTrend: "Leads Trend",
-        newLead: "New Lead",
+        newLead: "Open quote form",
         newLeadsCenter: "New Leads",
         ownerReviewRequired:
           "Owner review remains required before anything is sent.",
@@ -3409,7 +3410,7 @@ const frenchCopy: BizPilotCopy = {
           `${count} prospect${count === 1 ? "" : "s"} attend${count === 1 ? "" : "ent"} votre reponse. La validation du responsable reste requise avant tout envoi.`,
         aiAssistantTitle: "Assistant IA",
         dateRange: "7 derniers jours",
-        filters: "Filtres",
+        filters: "Filtrer la file",
         kpis: {
           aiRepliesSent: "Brouillons copies",
           awaitingReply: "En attente de votre reponse",
@@ -3421,7 +3422,7 @@ const frenchCopy: BizPilotCopy = {
         leadQueueTitle: "File de prospects (a traiter)",
         leadSources: "Sources des prospects",
         leadsTrend: "Tendance des prospects",
-        newLead: "Nouveau prospect",
+        newLead: "Ouvrir le formulaire",
         newLeadsCenter: "Nouveaux prospects",
         ownerReviewRequired:
           "La validation du responsable reste requise avant tout envoi.",

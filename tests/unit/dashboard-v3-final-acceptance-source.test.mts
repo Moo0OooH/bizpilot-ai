@@ -15,6 +15,7 @@
  * - 2026-07-04: Updated owner overview guards for the simplified action-first cockpit.
  * - 2026-07-04: Added source guards for local dashboard display preferences.
  * - 2026-07-04: Guarded display preferences route reapply, storage fallback, and visible focus states.
+ * - 2026-07-04: Guarded focused owner queue links and complete topbar action routes.
  * ============================================================
  */
 
@@ -103,6 +104,9 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(sidebar.includes("sticky top-0 hidden h-svh w-[224px]"), true);
     assert.equal(sidebar.includes("dashboard-mobile-nav fixed inset-x-0 bottom-0"), true);
     assert.equal(topbar.includes('const quotePath = `/quote/${businessSlug}`'), true);
+    assert.equal(topbar.includes('href="/dashboard/leads"'), true);
+    assert.equal(topbar.includes('href="/dashboard/configuration"'), true);
+    assert.equal(topbar.includes('href="/dashboard/business-profile"'), true);
     assert.equal(topbar.includes('href="/admin"'), true);
     assert.equal(adminFrame.includes("h-svh overflow-hidden"), true);
     assert.equal(admin.includes("flex h-dvh min-h-0 w-full flex-col overflow-hidden lg:flex-row"), true);
@@ -118,6 +122,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
       "components/dashboard/lead-workspace-queue.tsx",
       "utf8",
     );
+    const leads = readFileSync(
+      "app/(dashboard)/dashboard/leads/page.tsx",
+      "utf8",
+    );
     const detail = readFileSync(
       "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
       "utf8",
@@ -126,6 +134,23 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(overview.includes("overviewCopy.suggestedNextAction"), true);
     assert.equal(overview.includes("overviewCopy.startGuide"), true);
     assert.equal(overview.includes("priorityTiles"), true);
+    assert.equal(
+      overview.includes('const leadQueueNeedsReplyHref = "/dashboard/leads?focus=needs_reply";'),
+      true,
+    );
+    assert.equal(
+      overview.includes('const leadQueueAtRiskHref = "/dashboard/leads?focus=at_risk";'),
+      true,
+    );
+    assert.equal(
+      overview.includes('const leadQueueMissingInfoHref = "/dashboard/leads?focus=missing_info";'),
+      true,
+    );
+    assert.equal(
+      overview.includes('const leadQueueAiReadyHref = "/dashboard/leads?focus=ai_ready";'),
+      true,
+    );
+    assert.equal(overview.includes("href: quotePath,\n      label: overviewCopy.metrics.newQuoteRequests.label"), false);
     assert.equal(overview.includes("<LeadWorkspaceQueue"), true);
     assert.equal(overview.includes("ownerOverviewKpiCards"), false);
     assert.equal(overview.includes("OwnerOverviewKpiCard"), false);
@@ -133,8 +158,12 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(overview.includes("LeadSourcesDonut"), true);
     assert.equal(overview.includes("OwnerTodoTodayPanel"), true);
     assert.equal(queue.includes("QueueInsightStrip"), true);
+    assert.equal(queue.includes("initialFilter?: LeadQueueInitialFilter"), true);
     assert.equal(queue.includes("ownerSafeLeadText"), true);
     assert.equal(queue.includes("limit?: number"), true);
+    assert.equal(leads.includes("readLeadQueueFocus"), true);
+    assert.equal(leads.includes("initialFilter={initialFilter}"), true);
+    assert.equal(leads.includes("key={initialFilter}"), true);
     assert.equal(detail.includes("detailCopy.manualWorkflow.steps.map"), true);
     assert.equal(detail.includes("generateLeadAiBundleAction"), true);
     assert.equal(detail.includes("ownerSafeLeadText"), true);

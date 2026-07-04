@@ -10,8 +10,9 @@
  * - docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-05-19
+ * Last Updated: 2026-07-04
  * Change Log:
+ * - 2026-07-04: Added safe URL focus handling so overview metrics open the queue with the right filter selected.
  * - 2026-05-19: Removed duplicate header + duplicate search/filter card; right rail rebuilt to mirror index pixel-for-pixel content.
  * ============================================================
  */
@@ -21,7 +22,10 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { CopyButton } from "@/components/dashboard/copy-button";
-import { LeadWorkspaceQueue } from "@/components/dashboard/lead-workspace-queue";
+import {
+  LeadWorkspaceQueue,
+  type LeadQueueInitialFilter,
+} from "@/components/dashboard/lead-workspace-queue";
 import {
   buttonClass,
   DashboardCard,
@@ -43,6 +47,32 @@ export const dynamic = "force-dynamic";
 
 type LeadQueueCopy = ReturnType<typeof getBizPilotCopy>["dashboard"]["leadQueue"];
 
+type LeadConversionDeskPageProps = Readonly<{
+  searchParams?: Promise<{
+    focus?: string | string[];
+  }>;
+}>;
+
+function readLeadQueueFocus(
+  value: string | string[] | undefined,
+): LeadQueueInitialFilter {
+  const rawValue = Array.isArray(value) ? value[0] : value;
+
+  if (
+    rawValue === "needs_reply" ||
+    rawValue === "at_risk" ||
+    rawValue === "missing_info" ||
+    rawValue === "ai_ready" ||
+    rawValue === "reviewed" ||
+    rawValue === "won" ||
+    rawValue === "lost"
+  ) {
+    return rawValue;
+  }
+
+  return "all";
+}
+
 function formatAgeShort(value: string | null, copy: LeadQueueCopy): string {
   if (!value) return copy.age.notAvailable;
   const diffMinutes = Math.max(
@@ -57,7 +87,9 @@ function formatAgeShort(value: string | null, copy: LeadQueueCopy): string {
   return `${copy.age.day(diffDays)}${suffix}`;
 }
 
-export default async function LeadConversionDeskPage() {
+export default async function LeadConversionDeskPage({
+  searchParams,
+}: LeadConversionDeskPageProps) {
   const user = await getCurrentUser();
   if (!user) redirect("/auth/sign-in");
 
@@ -72,6 +104,8 @@ export default async function LeadConversionDeskPage() {
   const copy = getBizPilotCopy(activeLanguage).dashboard;
   const leadsCopy = copy.leadsPage;
   const queueCopy = copy.leadQueue;
+  const query = await searchParams;
+  const initialFilter = readLeadQueueFocus(query?.focus);
 
   const desk = await getLeadConversionDesk({
     actorUserId: user.id,
@@ -113,6 +147,8 @@ export default async function LeadConversionDeskPage() {
 
       <section className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
         <LeadWorkspaceQueue
+          initialFilter={initialFilter}
+          key={initialFilter}
           language={activeLanguage}
           leads={desk.leads}
           quotePath={quotePath}

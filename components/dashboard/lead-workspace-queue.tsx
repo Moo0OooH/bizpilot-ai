@@ -14,6 +14,7 @@
  * Created: 2026-05-11
  * Last Updated: 2026-07-04
  * Change Log:
+ * - 2026-07-04: Added URL-driven initial filters so overview links open the queue in the requested focus state.
  * - 2026-07-04: Added full lead queue pagination with page-size controls and reset behavior.
  * - 2026-06-27: Hid synthetic/internal seed labels from owner-facing lead queue cells.
  * - 2026-05-19: Rebuilt to match the approved index.html exactly — initials avatar, short customer name, no min-width horizontal scroll, single SectionHeader (page-level header lives on the route), and a `limit` prop for dashboard previews.
@@ -42,7 +43,7 @@ import type { LeadDeskItem } from "@/server/services/lead-conversion.service";
 
 type LeadQueueCopy = ReturnType<typeof getBizPilotCopy>["dashboard"]["leadQueue"];
 
-type LeadFilter =
+export type LeadQueueInitialFilter =
   | "all"
   | "needs_reply"
   | "at_risk"
@@ -52,6 +53,8 @@ type LeadFilter =
   | "won"
   | "lost";
 
+type LeadFilter = LeadQueueInitialFilter;
+
 type LeadSort = "newest" | "oldest" | "most_urgent";
 
 type LeadPageSize = 10 | 25 | 50;
@@ -59,6 +62,8 @@ type LeadPageSize = 10 | 25 | 50;
 type LeadWorkspaceQueueProps = Readonly<{
   /** When true, hide filter toolbar (overview preview mode). */
   compact?: boolean;
+  /** Initial queue filter, usually read from /dashboard/leads?focus=... */
+  initialFilter?: LeadQueueInitialFilter;
   language?: SupportedLanguage | undefined;
   leads: LeadDeskItem[];
   /** Hard cap on rendered rows — used by dashboard overview (5). */
@@ -623,6 +628,7 @@ function LeadQueueEmptyStarter({
 
 export function LeadWorkspaceQueue({
   compact = false,
+  initialFilter = "all",
   language,
   leads,
   limit,
@@ -630,7 +636,7 @@ export function LeadWorkspaceQueue({
 }: LeadWorkspaceQueueProps) {
   const copy = getBizPilotCopy(language);
   const queueCopy = copy.dashboard.leadQueue;
-  const [activeFilter, setActiveFilter] = useState<LeadFilter>("all");
+  const [activeFilter, setActiveFilter] = useState<LeadFilter>(initialFilter);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState<LeadPageSize>(defaultPageSize);
   const [search, setSearch] = useState("");

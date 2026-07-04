@@ -10,7 +10,7 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-05-04: Created protected Phase 2 dashboard shell.
  * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
@@ -27,9 +27,11 @@
  * - 2026-06-16: Aligned notifications and forward-only privacy controls with first-pilot readiness gates.
  * - 2026-06-20: Replaced the no-business setup fallback with an svh-based shell-safe layout.
  * - 2026-06-27: Normalized Quote Setup source structure and Dashboard V3 token usage.
+ * - 2026-07-04: Switched internal quote preview anchors to Next Link for faster dashboard navigation.
  * ============================================================
  */
 
+import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -407,12 +409,12 @@ export default async function DashboardPage({
                       </div>
                     ))}
                   </div>
-                  <a
+                  <Link
                     className={`${buttonClass} mt-4 w-full`}
                     href={`/quote/${activeBusiness.slug}`}
                   >
                     {configCopy.overview.previewPublicQuote}
-                  </a>
+                  </Link>
                 </div>
               </div>
             </ConfigurationPanel>
@@ -585,12 +587,12 @@ export default async function DashboardPage({
                     {configCopy.publicPage.saveBeforePreview}
                   </p>
                 </div>
-                <a
+                <Link
                   className="inline-flex h-8 items-center justify-center rounded-md border border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-3 text-xs font-medium text-[var(--dash-text)]"
                   href={`/quote/${activeBusiness.slug}`}
                 >
                   {configCopy.publicPage.previewPublicPage}
-                </a>
+                </Link>
               </div>
             </ConfigurationPanel>
 
@@ -1049,12 +1051,12 @@ export default async function DashboardPage({
                 <p className="mt-3 break-all rounded-md bg-[var(--dash-surface-muted)] px-3 py-2 text-sm font-semibold text-[var(--dash-text)]">
                   /quote/{activeBusiness.slug}
                 </p>
-                <a
+                <Link
                   className={`${buttonClass} mt-3 w-full`}
                   href={`/quote/${activeBusiness.slug}`}
                 >
                   {configCopy.publicPage.previewPublicPage}
-                </a>
+                </Link>
               </section>
             </aside>
           </section>
@@ -1067,12 +1069,12 @@ export default async function DashboardPage({
             {configCopy.bottomBar.text}
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">
-            <a
+            <Link
               className="biz-button-secondary inline-flex h-8 items-center justify-center rounded-lg border px-3 text-xs font-bold"
               href={`/quote/${activeBusiness.slug}`}
             >
               {configCopy.bottomBar.openPublicQuoteLink}
-            </a>
+            </Link>
             <button
               className="biz-button-primary h-8 rounded-lg px-4 text-xs font-bold"
               form="business-configuration-form"

@@ -19,6 +19,7 @@
  * - 2026-06-27: Reworked the first viewport into a prioritized next-action cockpit.
  * - 2026-06-27: Hid synthetic/internal seed labels behind owner-safe display fallbacks.
  * - 2026-07-04: Simplified the overview hierarchy around one action-first cockpit and moved charts below the manual queue.
+ * - 2026-07-04: Routed overview metrics into focused lead queue states instead of ambiguous public-form destinations.
  * ============================================================
  */
 
@@ -517,6 +518,11 @@ export default async function DashboardOverviewPage() {
 
   const { readiness } = configurationWorkspace;
   const quotePath = `/quote/${activeBusiness.slug}`;
+  const leadQueueHref = "/dashboard/leads";
+  const leadQueueNeedsReplyHref = "/dashboard/leads?focus=needs_reply";
+  const leadQueueAtRiskHref = "/dashboard/leads?focus=at_risk";
+  const leadQueueMissingInfoHref = "/dashboard/leads?focus=missing_info";
+  const leadQueueAiReadyHref = "/dashboard/leads?focus=ai_ready";
   const recentLeads = desk.leads.slice(0, 4);
   const featuredLead = featuredLeadFrom(desk.leads);
   const attentionCount = Math.max(
@@ -596,28 +602,28 @@ export default async function DashboardOverviewPage() {
   const priorityTiles = [
     {
       detail: overviewCopy.metrics.newQuoteRequests.detail,
-      href: quotePath,
+      href: leadQueueHref,
       label: overviewCopy.metrics.newQuoteRequests.label,
       tone: "emerald" as const,
       value: newQuoteCount,
     },
     {
       detail: overviewCopy.metrics.needsReply.detail,
-      href: "/dashboard/leads",
+      href: leadQueueNeedsReplyHref,
       label: overviewCopy.metrics.needsReply.label,
       tone: needsReplyCount > 0 ? ("amber" as const) : ("neutral" as const),
       value: needsReplyCount,
     },
     {
       detail: overviewCopy.metrics.atRiskLeads.detail,
-      href: "/dashboard/leads",
+      href: leadQueueAtRiskHref,
       label: overviewCopy.metrics.atRiskLeads.label,
       tone: atRiskCount > 0 ? ("red" as const) : ("neutral" as const),
       value: atRiskCount,
     },
     {
       detail: overviewCopy.metrics.aiDraftsReady.detail,
-      href: "/dashboard/leads",
+      href: leadQueueAiReadyHref,
       label: overviewCopy.metrics.aiDraftsReady.label,
       tone: aiDraftReadyCount > 0 ? ("blue" as const) : ("neutral" as const),
       value: aiDraftReadyCount,
@@ -628,13 +634,13 @@ export default async function DashboardOverviewPage() {
   const todayTodoItems = [
     {
       count: needsReplyCount + atRiskCount,
-      href: "/dashboard/leads",
+      href: leadQueueNeedsReplyHref,
       label: visualCopy.todo.replyToLeads,
       tone: (needsReplyCount + atRiskCount > 0 ? "violet" : "neutral") as DashboardTone,
     },
     {
       count: followUpActions,
-      href: "/dashboard/leads",
+      href: leadQueueNeedsReplyHref,
       label: visualCopy.todo.sendFollowUp,
       tone: (followUpActions > 0 ? "blue" : "neutral") as DashboardTone,
     },
@@ -646,7 +652,7 @@ export default async function DashboardOverviewPage() {
     },
     {
       count: missingInfoCount + askInfoActions,
-      href: "/dashboard/leads",
+      href: leadQueueMissingInfoHref,
       label: visualCopy.todo.prepareQuotes,
       tone: (missingInfoCount + askInfoActions > 0 ? "amber" : "neutral") as DashboardTone,
     },
@@ -669,7 +675,7 @@ export default async function DashboardOverviewPage() {
           <span className="inline-flex min-h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 text-[12px] font-black text-[var(--dash-text-secondary)]">
             {visualCopy.dateRange}
           </span>
-          <Link className={buttonClass} href="/dashboard/leads">
+          <Link className={buttonClass} href={leadQueueNeedsReplyHref}>
             {visualCopy.filters}
           </Link>
           <Link className={primaryButtonClass} href={quotePath}>
@@ -708,7 +714,7 @@ export default async function DashboardOverviewPage() {
                 <Link className={primaryButtonClass} href={primaryActionHref}>
                   {primaryActionLabel}
                 </Link>
-                <Link className={buttonClass} href="/dashboard/leads">
+                <Link className={buttonClass} href={leadQueueHref}>
                   {dashboardCopy.actions.openLeadQueue}
                 </Link>
               </div>
@@ -829,7 +835,7 @@ export default async function DashboardOverviewPage() {
           <div className="grid gap-2">
             <SectionHeader
               action={
-                <Link className={buttonClass} href="/dashboard/leads">
+                <Link className={buttonClass} href={leadQueueHref}>
                   {overviewCopy.openQueue}
                 </Link>
               }

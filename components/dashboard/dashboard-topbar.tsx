@@ -19,6 +19,7 @@
  * - 2026-06-27: Rendered topbar route context as display text so page content owns the H1.
  * - 2026-06-27: Kept the mobile action menu inside the viewport.
  * - 2026-07-04: Added a direct route to local display settings from the action menu.
+ * - 2026-07-04: Added the core owner route map to Actions so every dashboard function is reachable from the topbar.
  * ============================================================
  */
 
@@ -142,6 +143,15 @@ export function DashboardTopbar({
               />
               <Link className={`${buttonClass} w-full justify-start`} href={quotePath}>
                 {copy.actions.previewQuotePage}
+              </Link>
+              <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/leads">
+                {copy.actions.openLeadQueue}
+              </Link>
+              <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/configuration">
+                {copy.nav.quoteSetup}
+              </Link>
+              <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/business-profile">
+                {copy.nav.businessProfile}
               </Link>
               <Link
                 className={`${buttonClass} w-full justify-start`}
