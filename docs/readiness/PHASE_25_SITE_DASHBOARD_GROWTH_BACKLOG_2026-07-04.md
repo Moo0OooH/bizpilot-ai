@@ -382,3 +382,35 @@ Next recommended slice:
 ```text
 Phase 25B - intake attribution, sourceUrl/UTM tests, quote-link placement guide, and seeded dashboard/admin QA prep.
 ```
+
+## Progress Addendum - Phase 25B
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25B_INTAKE_ATTRIBUTION_2026-07-04.md`:
+
+- Added safe quote attribution helpers for source URL, source/ref, UTM, and
+  language switching.
+- Filled the public quote form `sourceUrl` hidden field with an allowlisted URL
+  instead of an empty value.
+- Preserved approved attribution parameters across quote-page language changes.
+- Added regression coverage to prevent customer field data or arbitrary query
+  parameters from entering lead attribution metadata.
+
+Backlog items advanced:
+
+```text
+68 done
+69 done
+74 preserved
+```
+
+Verification:
+
+```text
+pnpm verify PASS
+pnpm test:unit PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:quote -- --base-url=http://127.0.0.1:3030 --inactive-slug=phase1-unavailable-synthetic PASS
+```

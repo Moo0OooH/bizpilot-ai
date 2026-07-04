@@ -8,10 +8,11 @@
  * - components/public/quote-form-wizard.tsx
  * - server/actions/public-intake.actions.ts
  * - server/services/public-intake.service.ts
+ * - lib/quote-attribution.ts
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-05-06: Created public quote page with dynamic form rendering.
  * - 2026-05-19: Replaced inline single-page form with grouped quote sections for higher completion rate per UX research.
@@ -20,6 +21,7 @@
  * - 2026-06-21: Localized noindex metadata from the active quote language.
  * - 2026-06-25: Polished quote shell spacing while preserving safe GET and submit behavior.
  * - 2026-06-27: Guarded route error copy against raw provider or database messages.
+ * - 2026-07-04: Preserved safe quote-link attribution across source URL capture and language switches.
  * ============================================================
  */
 
@@ -34,9 +36,12 @@ import {
   languageShortLabels,
   readSupportedLanguage,
   supportedLanguages,
-  type SupportedLanguage,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import {
+  buildQuoteAttributionFormQuery,
+  buildQuoteLanguageHref,
+} from "@/lib/quote-attribution";
 import { buildNoIndexMetadata } from "@/lib/seo";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
 import type { Metadata } from "next";
@@ -48,21 +53,25 @@ type QuotePageProps = Readonly<{
     slug: string;
   }>;
   searchParams?: Promise<{
-    error?: string;
-    language?: string;
-    ref?: string;
-    source?: string;
-    utm_campaign?: string;
-    utm_medium?: string;
-    utm_source?: string;
+    error?: string | string[];
+    language?: string | string[];
+    ref?: string | string[];
+    source?: string | string[];
+    utm_campaign?: string | string[];
+    utm_medium?: string | string[];
+    utm_source?: string | string[];
   }>;
 }>;
 
 const appTimeZone = "America/New_York";
 
 function readQuoteLanguage(query: Awaited<QuotePageProps["searchParams"]>) {
-  return query?.language
-    ? readSupportedLanguage(query.language)
+  const requestedLanguage = Array.isArray(query?.language)
+    ? query?.language[0]
+    : query?.language;
+
+  return requestedLanguage
+    ? readSupportedLanguage(requestedLanguage)
     : DEFAULT_LANGUAGE;
 }
 
@@ -73,15 +82,6 @@ export async function generateMetadata({
   const activeLanguage = readQuoteLanguage(query);
 
   return buildNoIndexMetadata(getPublicSiteCopy(activeLanguage).quoteShell.meta);
-}
-
-function quoteLanguageHref({
-  language,
-  slug,
-}: Readonly<{ language: SupportedLanguage; slug: string }>) {
-  return language === DEFAULT_LANGUAGE
-    ? `/quote/${slug}`
-    : `/quote/${slug}?language=${encodeURIComponent(language)}`;
 }
 
 function todayDateString(): string {
@@ -105,12 +105,16 @@ export default async function QuotePage({
   const query = await searchParams;
   const page = await getPublicIntakePage({ slug });
   const activeLanguage = readQuoteLanguage(query);
+  const attributionQuery = buildQuoteAttributionFormQuery({ query, slug });
   const copy = getPublicSiteCopy(activeLanguage).quoteShell;
   const intakeErrors = getBizPilotCopy(activeLanguage).intakeErrors;
+  const routeErrorParam = Array.isArray(query?.error)
+    ? query?.error[0]
+    : query?.error;
   const routeError =
-    query?.error
-      ? isSafePublicIntakeMessage(query.error)
-        ? query.error
+    routeErrorParam
+      ? isSafePublicIntakeMessage(routeErrorParam)
+        ? routeErrorParam
         : intakeErrors.fallbackSubmit
       : null;
 
@@ -143,7 +147,11 @@ export default async function QuotePage({
                   <a
                     aria-current={selected ? "page" : undefined}
                     className="inline-flex h-8 min-w-10 items-center justify-center rounded-[9px] px-3 text-[11px] font-black"
-                    href={quoteLanguageHref({ language: option, slug })}
+                    href={buildQuoteLanguageHref({
+                      language: option,
+                      query,
+                      slug,
+                    })}
                     key={option}
                     style={{
                       backgroundColor: selected ? "var(--primary)" : "transparent",
@@ -184,7 +192,7 @@ export default async function QuotePage({
       <QuoteFormWizard
         language={activeLanguage}
         page={page}
-        query={query}
+        query={attributionQuery}
         slug={slug}
         todayDate={todayDate}
       />

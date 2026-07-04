@@ -10,7 +10,7 @@
  * - docs/product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-19
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-05-19: Created 3-step grouped public quote form.
  * - 2026-05-22: Removed client-side step navigation dependency so public submissions cannot get stuck before submit.
@@ -19,6 +19,7 @@
  * - 2026-06-21: Tightened mobile quote-card spacing while preserving 48px controls and safe submit behavior.
  * - 2026-06-25: Polished quote field/helper spacing for final public rhythm.
  * - 2026-06-25: Improved final quote form field groups, helper spacing, consent rhythm, and submit spacing.
+ * - 2026-07-04: Submitted safe quote-link source URL attribution instead of an empty hidden value.
  * ============================================================
  */
 
@@ -41,6 +42,7 @@ type QueryParams = Readonly<{
   ref?: string;
   language?: string;
   source?: string;
+  sourceUrl?: string;
   utm_campaign?: string;
   utm_medium?: string;
   utm_source?: string;
@@ -344,7 +346,7 @@ export function QuoteFormWizard({
         value={query?.source ?? "public_quote_link"}
       />
       <input name="referrer" type="hidden" value={query?.ref ?? ""} />
-      <input name="sourceUrl" type="hidden" value="" />
+      <input name="sourceUrl" type="hidden" value={query?.sourceUrl ?? ""} />
       <input name="utmSource" type="hidden" value={query?.utm_source ?? ""} />
       <input name="utmMedium" type="hidden" value={query?.utm_medium ?? ""} />
       <input name="utmCampaign" type="hidden" value={query?.utm_campaign ?? ""} />

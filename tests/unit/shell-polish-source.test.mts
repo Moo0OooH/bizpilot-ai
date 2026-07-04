@@ -10,12 +10,13 @@
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-06-20: Added 11D shell alignment contracts for auth, quote, and dashboard setup shells.
  * - 2026-06-21: Locked quote honeypot hiding and single consent review notice rendering.
  * - 2026-06-25: Locked final auth and quote spacing polish markers.
  * - 2026-06-25: Updated quote form rhythm markers for final field/helper spacing.
+ * - 2026-07-04: Guarded attribution-aware quote language switching.
  * ============================================================
  */
 
@@ -102,7 +103,8 @@ describe("final shell polish source contracts", () => {
     const quoteWizard = source("components/public/quote-form-wizard.tsx");
     const quoteUnavailable = source("components/public/quote-unavailable.tsx");
 
-    assert.equal(quotePage.includes("quoteLanguageHref"), true);
+    assert.equal(quotePage.includes("buildQuoteLanguageHref"), true);
+    assert.equal(quotePage.includes("buildQuoteAttributionFormQuery"), true);
     assert.equal(quotePage.includes("languageShortLabels"), true);
     assert.equal(quotePage.includes("ThemePreferenceControl"), false);
     assert.equal(quoteWizard.includes("max-w-[780px]"), true);
