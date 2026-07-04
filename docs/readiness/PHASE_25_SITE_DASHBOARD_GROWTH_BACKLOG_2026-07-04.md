@@ -451,3 +451,53 @@ pnpm smoke:public -- --base-url=http://127.0.0.1:3030 PASS
 pnpm smoke:responsive -- --base-url=http://127.0.0.1:3030 PASS
 pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3030 --timeout-ms=60000 PASS
 ```
+
+## Progress Addendum - Phase 25D
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25D_DASHBOARD_DATA_RICH_QA_FIXTURE_2026-07-04.md`:
+
+- Added an opt-in `dense` fixture profile to `tests/smoke/dashboard-auth-smoke.mts`.
+- Kept the default dashboard smoke behavior as the existing single synthetic
+  lead profile.
+- Added `--fixture-profile=dense` and
+  `BIZPILOT_DASHBOARD_SMOKE_FIXTURE_PROFILE=dense` support.
+- Added dense synthetic leads covering long text, multiple sources, missing
+  contact info, outside service area, follow-up due, and booked/manual-outcome
+  states.
+- Preserved the production-prohibited dashboard smoke safety guard.
+- Added source guard coverage for fixture profiles, dense source variety, and
+  production safety markers.
+
+Backlog items advanced:
+
+```text
+48 done
+49 prepared
+51 prepared
+54 prepared
+59 prepared
+62 prepared
+63 prepared
+66 prepared
+67 prepared
+74 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
+```
+
+Next recommended slice:
+
+```text
+Phase 25E - point the environment at confirmed local/synthetic Supabase, run the dense dashboard smoke, and continue dashboard/admin visual QA findings.
+```

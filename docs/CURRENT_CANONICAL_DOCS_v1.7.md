@@ -179,6 +179,9 @@ starting new work:
   source-backed assessment and 100-point execution backlog for final
   public-site, dashboard, SEO, AI-search, local GTM, analytics, demo, and
   pilot-ops work. It keeps real data and paid pilot blocked.
+- `readiness/PHASE_25D_DASHBOARD_DATA_RICH_QA_FIXTURE_2026-07-04.md` - latest
+  dashboard QA prep evidence: opt-in dense synthetic dashboard smoke fixture
+  for local/synthetic data-rich owner/admin review.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

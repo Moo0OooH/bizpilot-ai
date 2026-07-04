@@ -65,11 +65,50 @@ type DashboardSmokeTarget = Readonly<{
   status?: number;
 }>;
 
+type DashboardFixtureProfile = "basic" | "dense";
+
 type SyntheticWorkspace = Readonly<{
   businessId: string;
+  fixtureProfile: DashboardFixtureProfile;
   leadId: string;
+  leadIds: readonly string[];
   slug: string;
   userId: string;
+}>;
+
+type SyntheticSubmissionValue = Readonly<{
+  fieldKey: string;
+  fieldLabel: string;
+  fieldValue: unknown;
+}>;
+
+type SyntheticLeadScenario = Readonly<{
+  cityOrServiceArea: string | null;
+  createdAt?: string | undefined;
+  customerContact: string | null;
+  customerName: string | null;
+  firstReplyCopiedAt?: string | null | undefined;
+  firstViewedAt?: string | null | undefined;
+  lastOwnerActionAt?: string | null | undefined;
+  manualOutcome?: "asked_info" | "booked" | "lost" | "no_response" | "not_a_fit" | null;
+  referrer: string | null;
+  responseSlaState: "follow_up_due" | "new" | "overdue" | "reply_copied" | "viewed";
+  responseStatus: "follow_up_due" | "new" | "overdue" | "reply_copied" | "viewed";
+  serviceType: string | null;
+  sourceChannel: string;
+  sourceUrl: string;
+  status:
+    | "archived"
+    | "booked"
+    | "follow_up_needed"
+    | "lost"
+    | "new"
+    | "replied"
+    | "reviewed";
+  utmCampaign: string;
+  utmMedium: string;
+  utmSource: string;
+  values: readonly SyntheticSubmissionValue[];
 }>;
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3000";
@@ -200,6 +239,22 @@ function resolveTimeoutMs(): number {
   return value;
 }
 
+function resolveFixtureProfile(): DashboardFixtureProfile {
+  const raw =
+    readCliValue("fixture-profile") ??
+    process.env.BIZPILOT_DASHBOARD_SMOKE_FIXTURE_PROFILE ??
+    "basic";
+  const normalized = raw.trim().toLowerCase();
+
+  if (normalized === "basic" || normalized === "dense") {
+    return normalized;
+  }
+
+  throw new Error(
+    'Dashboard smoke fixture profile must be "basic" or "dense". Use --fixture-profile=dense for data-rich QA.',
+  );
+}
+
 function readOptionalEnv(
   name: string,
   fileValues: Map<string, string>,
@@ -313,8 +368,439 @@ async function insertMany(
   }
 }
 
+function hoursAgo(hours: number): string {
+  return new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+}
+
+function daysFromNow(days: number): string {
+  return new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+}
+
+function createBasicLeadScenario(slug: string): SyntheticLeadScenario {
+  return {
+    cityOrServiceArea: "Toronto",
+    customerContact: "synthetic@example.test",
+    customerName: "Synthetic Quote Lead",
+    referrer: "https://instagram.com/",
+    responseSlaState: "new",
+    responseStatus: "new",
+    serviceType: "Deep cleaning",
+    sourceChannel: "instagram",
+    sourceUrl: `https://bizpilo.com/quote/${slug}?utm_source=instagram&utm_medium=bio`,
+    status: "new",
+    utmCampaign: "dashboard_smoke",
+    utmMedium: "bio",
+    utmSource: "instagram",
+    values: [
+      {
+        fieldKey: "cleaning_type",
+        fieldLabel: "Cleaning type",
+        fieldValue: "deep",
+      },
+      {
+        fieldKey: "city_or_service_area",
+        fieldLabel: "City or service area",
+        fieldValue: "Toronto",
+      },
+      {
+        fieldKey: "customer_contact",
+        fieldLabel: "Customer contact",
+        fieldValue: "synthetic@example.test",
+      },
+      {
+        fieldKey: "customer_name",
+        fieldLabel: "Customer name",
+        fieldValue: "Synthetic Quote Lead",
+      },
+    ],
+  };
+}
+
+function createDenseLeadScenarios(slug: string): readonly SyntheticLeadScenario[] {
+  return [
+    {
+      cityOrServiceArea:
+        "Toronto - East York / Leslieville / Riverdale urgent move-out coverage window",
+      createdAt: hoursAgo(31),
+      customerContact:
+        "synthetic.long.customer+move-out-and-post-renovation-dashboard-fixture@example.test",
+      customerName:
+        "Synthetic Alexandra Longlastname-Moveout With Extra Dashboard QA Detail",
+      referrer: "https://www.google.com/",
+      responseSlaState: "new",
+      responseStatus: "new",
+      serviceType:
+        "Move-out deep cleaning with appliance interiors, post-renovation dust, and balcony glass",
+      sourceChannel: "google_business_profile",
+      sourceUrl: `https://bizpilo.com/quote/${slug}?source=gbp&utm_source=google_business_profile&utm_medium=business_profile&utm_campaign=dense_dashboard_smoke`,
+      status: "new",
+      utmCampaign: "dense_dashboard_smoke",
+      utmMedium: "business_profile",
+      utmSource: "google_business_profile",
+      values: [
+        {
+          fieldKey: "cleaning_type",
+          fieldLabel: "Cleaning type",
+          fieldValue:
+            "Move-out deep clean, appliances, cabinets, interior windows, post-renovation dust",
+        },
+        {
+          fieldKey: "property_type",
+          fieldLabel: "Property type",
+          fieldValue: "Condo townhouse with narrow parking notes",
+        },
+        {
+          fieldKey: "bedrooms",
+          fieldLabel: "Bedrooms",
+          fieldValue: "3 bedrooms plus den",
+        },
+        {
+          fieldKey: "bathrooms",
+          fieldLabel: "Bathrooms",
+          fieldValue: "2.5 bathrooms",
+        },
+        {
+          fieldKey: "preferred_date",
+          fieldLabel: "Preferred date",
+          fieldValue: daysFromNow(1),
+        },
+        {
+          fieldKey: "preferred_time_window",
+          fieldLabel: "Preferred time window",
+          fieldValue: "Tomorrow morning before key handoff",
+        },
+        {
+          fieldKey: "city_or_service_area",
+          fieldLabel: "City or service area",
+          fieldValue:
+            "Toronto - East York / Leslieville / Riverdale urgent move-out coverage window",
+        },
+        {
+          fieldKey: "customer_contact",
+          fieldLabel: "Customer contact",
+          fieldValue:
+            "synthetic.long.customer+move-out-and-post-renovation-dashboard-fixture@example.test",
+        },
+        {
+          fieldKey: "customer_name",
+          fieldLabel: "Customer name",
+          fieldValue:
+            "Synthetic Alexandra Longlastname-Moveout With Extra Dashboard QA Detail",
+        },
+        {
+          fieldKey: "quote_notes",
+          fieldLabel: "Quote notes",
+          fieldValue:
+            "Please include oven, fridge, cabinet interiors, baseboards, dust on high shelves, and a manual owner-reviewed reply only.",
+        },
+      ],
+    },
+    {
+      cityOrServiceArea: "North York",
+      createdAt: hoursAgo(7),
+      customerContact: "synthetic.office+weekly@example.test",
+      customerName: "Synthetic Office Lead",
+      referrer: "https://example.test/cleaning-services",
+      responseSlaState: "new",
+      responseStatus: "new",
+      serviceType: "Weekly office cleaning",
+      sourceChannel: "website",
+      sourceUrl: `https://bizpilo.com/quote/${slug}?source=website&utm_source=website&utm_medium=contact_page&utm_campaign=dense_dashboard_smoke`,
+      status: "new",
+      utmCampaign: "dense_dashboard_smoke",
+      utmMedium: "contact_page",
+      utmSource: "website",
+      values: [
+        {
+          fieldKey: "cleaning_type",
+          fieldLabel: "Cleaning type",
+          fieldValue: "Weekly office cleaning",
+        },
+        {
+          fieldKey: "property_type",
+          fieldLabel: "Property type",
+          fieldValue: "Office",
+        },
+        {
+          fieldKey: "preferred_date",
+          fieldLabel: "Preferred date",
+          fieldValue: daysFromNow(3),
+        },
+        {
+          fieldKey: "city_or_service_area",
+          fieldLabel: "City or service area",
+          fieldValue: "North York",
+        },
+        {
+          fieldKey: "customer_contact",
+          fieldLabel: "Customer contact",
+          fieldValue: "synthetic.office+weekly@example.test",
+        },
+      ],
+    },
+    {
+      cityOrServiceArea: "Toronto",
+      createdAt: hoursAgo(80),
+      customerContact: "synthetic.followup@example.test",
+      customerName: "Synthetic Follow Up Lead",
+      firstReplyCopiedAt: hoursAgo(54),
+      firstViewedAt: hoursAgo(55),
+      lastOwnerActionAt: hoursAgo(54),
+      referrer: "https://instagram.com/",
+      responseSlaState: "reply_copied",
+      responseStatus: "reply_copied",
+      serviceType: "Recurring home cleaning",
+      sourceChannel: "instagram",
+      sourceUrl: `https://bizpilo.com/quote/${slug}?source=instagram&utm_source=instagram&utm_medium=bio&utm_campaign=dense_dashboard_smoke`,
+      status: "replied",
+      utmCampaign: "dense_dashboard_smoke",
+      utmMedium: "bio",
+      utmSource: "instagram",
+      values: [
+        {
+          fieldKey: "cleaning_type",
+          fieldLabel: "Cleaning type",
+          fieldValue: "Recurring home cleaning",
+        },
+        {
+          fieldKey: "property_type",
+          fieldLabel: "Property type",
+          fieldValue: "House",
+        },
+        {
+          fieldKey: "bedrooms",
+          fieldLabel: "Bedrooms",
+          fieldValue: "4",
+        },
+        {
+          fieldKey: "bathrooms",
+          fieldLabel: "Bathrooms",
+          fieldValue: "3",
+        },
+        {
+          fieldKey: "city_or_service_area",
+          fieldLabel: "City or service area",
+          fieldValue: "Toronto",
+        },
+        {
+          fieldKey: "customer_contact",
+          fieldLabel: "Customer contact",
+          fieldValue: "synthetic.followup@example.test",
+        },
+      ],
+    },
+    {
+      cityOrServiceArea: "Scarborough",
+      createdAt: hoursAgo(14),
+      customerContact: null,
+      customerName: "Synthetic Missing Contact Lead",
+      referrer: "https://mail.example.test/",
+      responseSlaState: "new",
+      responseStatus: "new",
+      serviceType: "One-time condo cleaning",
+      sourceChannel: "email_signature",
+      sourceUrl: `https://bizpilo.com/quote/${slug}?source=email_signature&utm_source=email_signature&utm_medium=email&utm_campaign=dense_dashboard_smoke`,
+      status: "new",
+      utmCampaign: "dense_dashboard_smoke",
+      utmMedium: "email",
+      utmSource: "email_signature",
+      values: [
+        {
+          fieldKey: "cleaning_type",
+          fieldLabel: "Cleaning type",
+          fieldValue: "One-time condo cleaning",
+        },
+        {
+          fieldKey: "property_type",
+          fieldLabel: "Property type",
+          fieldValue: "Condo",
+        },
+        {
+          fieldKey: "city_or_service_area",
+          fieldLabel: "City or service area",
+          fieldValue: "Scarborough",
+        },
+        {
+          fieldKey: "customer_name",
+          fieldLabel: "Customer name",
+          fieldValue: "Synthetic Missing Contact Lead",
+        },
+      ],
+    },
+    {
+      cityOrServiceArea: "Outside Region - Hamilton",
+      createdAt: hoursAgo(3),
+      customerContact: "synthetic.outside-area@example.test",
+      customerName: "Synthetic Outside Area Lead",
+      referrer: "https://facebook.com/",
+      responseSlaState: "new",
+      responseStatus: "new",
+      serviceType: "Post-construction cleaning",
+      sourceChannel: "facebook",
+      sourceUrl: `https://bizpilo.com/quote/${slug}?source=facebook&utm_source=facebook&utm_medium=post&utm_campaign=dense_dashboard_smoke`,
+      status: "new",
+      utmCampaign: "dense_dashboard_smoke",
+      utmMedium: "post",
+      utmSource: "facebook",
+      values: [
+        {
+          fieldKey: "cleaning_type",
+          fieldLabel: "Cleaning type",
+          fieldValue: "Post-construction cleaning",
+        },
+        {
+          fieldKey: "property_type",
+          fieldLabel: "Property type",
+          fieldValue: "Detached house",
+        },
+        {
+          fieldKey: "city_or_service_area",
+          fieldLabel: "City or service area",
+          fieldValue: "Outside Region - Hamilton",
+        },
+        {
+          fieldKey: "customer_contact",
+          fieldLabel: "Customer contact",
+          fieldValue: "synthetic.outside-area@example.test",
+        },
+      ],
+    },
+    {
+      cityOrServiceArea: "Toronto",
+      createdAt: hoursAgo(90),
+      customerContact: "synthetic.booked@example.test",
+      customerName: "Synthetic Booked Lead",
+      firstReplyCopiedAt: hoursAgo(88),
+      firstViewedAt: hoursAgo(89),
+      lastOwnerActionAt: hoursAgo(86),
+      manualOutcome: "booked",
+      referrer: "https://instagram.com/direct/inbox/",
+      responseSlaState: "reply_copied",
+      responseStatus: "reply_copied",
+      serviceType: "Biweekly apartment cleaning",
+      sourceChannel: "saved_reply",
+      sourceUrl: `https://bizpilo.com/quote/${slug}?source=saved_reply&utm_source=instagram&utm_medium=saved_reply&utm_campaign=dense_dashboard_smoke`,
+      status: "booked",
+      utmCampaign: "dense_dashboard_smoke",
+      utmMedium: "saved_reply",
+      utmSource: "instagram",
+      values: [
+        {
+          fieldKey: "cleaning_type",
+          fieldLabel: "Cleaning type",
+          fieldValue: "Biweekly apartment cleaning",
+        },
+        {
+          fieldKey: "property_type",
+          fieldLabel: "Property type",
+          fieldValue: "Apartment",
+        },
+        {
+          fieldKey: "bedrooms",
+          fieldLabel: "Bedrooms",
+          fieldValue: "2",
+        },
+        {
+          fieldKey: "bathrooms",
+          fieldLabel: "Bathrooms",
+          fieldValue: "1",
+        },
+        {
+          fieldKey: "city_or_service_area",
+          fieldLabel: "City or service area",
+          fieldValue: "Toronto",
+        },
+        {
+          fieldKey: "customer_contact",
+          fieldLabel: "Customer contact",
+          fieldValue: "synthetic.booked@example.test",
+        },
+      ],
+    },
+  ];
+}
+
+async function createSyntheticLead(input: {
+  businessId: string;
+  consentVersionId: string;
+  intakeFormId: string;
+  scenario: SyntheticLeadScenario;
+  service: UnsafeClient;
+}): Promise<string> {
+  const submission = await insertOne(input.service, "intake_submissions", {
+    business_id: input.businessId,
+    consent_accepted_at: new Date().toISOString(),
+    consent_version_id: input.consentVersionId,
+    ...(input.scenario.createdAt ? { created_at: input.scenario.createdAt } : {}),
+    intake_form_id: input.intakeFormId,
+    privacy_mode: "standard",
+    status: "submitted",
+  });
+  const submissionId = String(submission.id);
+
+  await insertMany(
+    input.service,
+    "intake_submission_values",
+    input.scenario.values.map((value) => ({
+      business_id: input.businessId,
+      field_key: value.fieldKey,
+      field_label: value.fieldLabel,
+      field_value: value.fieldValue,
+      submission_id: submissionId,
+    })),
+  );
+
+  const lead = await insertOne(
+    input.service,
+    "leads",
+    {
+      business_id: input.businessId,
+      city_or_service_area: input.scenario.cityOrServiceArea,
+      ...(input.scenario.createdAt ? { created_at: input.scenario.createdAt } : {}),
+      customer_contact: input.scenario.customerContact,
+      customer_name: input.scenario.customerName,
+      first_reply_copied_at: input.scenario.firstReplyCopiedAt ?? null,
+      first_viewed_at: input.scenario.firstViewedAt ?? null,
+      intake_submission_id: submissionId,
+      last_owner_action_at: input.scenario.lastOwnerActionAt ?? null,
+      manual_outcome: input.scenario.manualOutcome ?? null,
+      response_sla_state: input.scenario.responseSlaState,
+      response_status: input.scenario.responseStatus,
+      service_type: input.scenario.serviceType,
+      source_channel: input.scenario.sourceChannel,
+      status: input.scenario.status,
+      ...(input.scenario.createdAt ? { updated_at: input.scenario.createdAt } : {}),
+    },
+    [
+      "created_at",
+      "first_reply_copied_at",
+      "first_viewed_at",
+      "last_owner_action_at",
+      "manual_outcome",
+      "response_sla_state",
+      "response_status",
+      "updated_at",
+    ],
+  );
+  const leadId = String(lead.id);
+
+  await insertOne(input.service, "lead_source_metadata", {
+    business_id: input.businessId,
+    lead_id: leadId,
+    referrer: input.scenario.referrer,
+    source_channel: input.scenario.sourceChannel,
+    source_url: input.scenario.sourceUrl,
+    utm_campaign: input.scenario.utmCampaign,
+    utm_medium: input.scenario.utmMedium,
+    utm_source: input.scenario.utmSource,
+  });
+
+  return leadId;
+}
+
 async function createSyntheticWorkspace(input: {
   adminApiKey: string;
+  fixtureProfile: DashboardFixtureProfile;
   publicApiKey: string;
   supabaseUrl: string;
 }): Promise<{ cookieHeader: string; workspace: SyntheticWorkspace }> {
@@ -366,7 +852,10 @@ async function createSyntheticWorkspace(input: {
     {
       internal_note: "Synthetic dashboard-auth-smoke workspace. No real customer data.",
       lifecycle_status: "active",
-      name: `Codex Dashboard Smoke Cleaning ${stamp}`,
+      name:
+        input.fixtureProfile === "dense"
+          ? `Codex Dense Dashboard QA Cleaning With Long Owner Workspace Name ${stamp}`
+          : `Codex Dashboard Smoke Cleaning ${stamp}`,
       owner_user_id: userId,
       plan_slug: "founder_pilot",
       preferred_language: "en",
@@ -433,6 +922,26 @@ async function createSyntheticWorkspace(input: {
       name: "Residential cleaning",
       sort_order: 10,
     },
+    ...(input.fixtureProfile === "dense"
+      ? [
+          {
+            business_id: businessId,
+            description:
+              "Move-out, post-renovation, appliance interior, cabinet, and handoff-window cleaning.",
+            is_active: true,
+            name: "Move-out and post-renovation deep cleaning",
+            sort_order: 20,
+          },
+          {
+            business_id: businessId,
+            description:
+              "Recurring commercial office cleaning with owner-reviewed quote follow-up.",
+            is_active: true,
+            name: "Recurring office cleaning",
+            sort_order: 30,
+          },
+        ]
+      : []),
   ]);
   await insertMany(unsafeService, "business_service_areas", [
     {
@@ -441,6 +950,28 @@ async function createSyntheticWorkspace(input: {
       name: "Toronto",
       sort_order: 10,
     },
+    ...(input.fixtureProfile === "dense"
+      ? [
+          {
+            business_id: businessId,
+            is_active: true,
+            name: "East York / Leslieville / Riverdale",
+            sort_order: 20,
+          },
+          {
+            business_id: businessId,
+            is_active: true,
+            name: "North York",
+            sort_order: 30,
+          },
+          {
+            business_id: businessId,
+            is_active: true,
+            name: "Scarborough",
+            sort_order: 40,
+          },
+        ]
+      : []),
   ]);
   await insertMany(unsafeService, "business_faqs", [
     {
@@ -450,6 +981,26 @@ async function createSyntheticWorkspace(input: {
       question: "How fast do you reply?",
       sort_order: 10,
     },
+    ...(input.fixtureProfile === "dense"
+      ? [
+          {
+            answer:
+              "BizPilot prepares owner-reviewed drafts only. The owner copies and sends every customer reply outside BizPilot.",
+            business_id: businessId,
+            is_active: true,
+            question: "Does the system send replies automatically?",
+            sort_order: 20,
+          },
+          {
+            answer:
+              "Synthetic QA links preserve source and UTM context so dashboards can be checked without real customer data.",
+            business_id: businessId,
+            is_active: true,
+            question: "How are quote-link sources tested?",
+            sort_order: 30,
+          },
+        ]
+      : []),
   ]);
 
   const intakeForm = await insertOne(unsafeService, "intake_forms", {
@@ -485,76 +1036,27 @@ async function createSyntheticWorkspace(input: {
     ["preferred_language"],
   );
 
-  const submission = await insertOne(unsafeService, "intake_submissions", {
-    business_id: businessId,
-    consent_accepted_at: new Date().toISOString(),
-    consent_version_id: consentVersionId,
-    intake_form_id: intakeFormId,
-    privacy_mode: "standard",
-    status: "submitted",
-  });
-  const submissionId = String(submission.id);
+  const scenarios =
+    input.fixtureProfile === "dense"
+      ? createDenseLeadScenarios(slug)
+      : [createBasicLeadScenario(slug)];
+  const leadIds: string[] = [];
 
-  await insertMany(unsafeService, "intake_submission_values", [
-    {
-      business_id: businessId,
-      field_key: "cleaning_type",
-      field_label: "Cleaning type",
-      field_value: "deep",
-      submission_id: submissionId,
-    },
-    {
-      business_id: businessId,
-      field_key: "city_or_service_area",
-      field_label: "City or service area",
-      field_value: "Toronto",
-      submission_id: submissionId,
-    },
-    {
-      business_id: businessId,
-      field_key: "customer_contact",
-      field_label: "Customer contact",
-      field_value: "synthetic@example.test",
-      submission_id: submissionId,
-    },
-    {
-      business_id: businessId,
-      field_key: "customer_name",
-      field_label: "Customer name",
-      field_value: "Synthetic Quote Lead",
-      submission_id: submissionId,
-    },
-  ]);
-
-  const lead = await insertOne(
-    unsafeService,
-    "leads",
-    {
-      business_id: businessId,
-      city_or_service_area: "Toronto",
-      customer_contact: "synthetic@example.test",
-      customer_name: "Synthetic Quote Lead",
-      intake_submission_id: submissionId,
-      response_sla_state: "new",
-      response_status: "new",
-      service_type: "Deep cleaning",
-      source_channel: "instagram",
-      status: "new",
-    },
-    ["response_sla_state", "response_status"],
-  );
-  const leadId = String(lead.id);
-
-  await insertOne(unsafeService, "lead_source_metadata", {
-    business_id: businessId,
-    lead_id: leadId,
-    referrer: "https://instagram.com/",
-    source_channel: "instagram",
-    source_url: `https://bizpilo.com/quote/${slug}?utm_source=instagram&utm_medium=bio`,
-    utm_campaign: "dashboard_smoke",
-    utm_medium: "bio",
-    utm_source: "instagram",
-  });
+  for (const scenario of scenarios) {
+    leadIds.push(
+      await createSyntheticLead({
+        businessId,
+        consentVersionId,
+        intakeFormId,
+        scenario,
+        service: unsafeService,
+      }),
+    );
+  }
+  const leadId = leadIds[0];
+  if (!leadId) {
+    throw new Error("Synthetic workspace did not create a lead.");
+  }
 
   const anonClient = createClient<Database>(input.supabaseUrl, input.publicApiKey, {
     auth: {
@@ -602,7 +1104,9 @@ async function createSyntheticWorkspace(input: {
       .join("; "),
     workspace: {
       businessId,
+      fixtureProfile: input.fixtureProfile,
       leadId,
+      leadIds,
       slug,
       userId,
     },
@@ -734,6 +1238,7 @@ async function runDashboardPath(input: {
 async function main(): Promise<void> {
   const fileValues = readEnvFiles();
   const baseUrl = resolveBaseUrl();
+  const fixtureProfile = resolveFixtureProfile();
   const timeoutMs = resolveTimeoutMs();
   const supabaseUrl = readRequiredEnv("NEXT_PUBLIC_SUPABASE_URL", fileValues);
   const publicApiKey = readFirstRequiredEnv(
@@ -756,10 +1261,13 @@ async function main(): Promise<void> {
   });
 
   console.log(`BizPilot dashboard auth smoke target: ${baseUrl.origin}`);
-  console.log("Synthetic data only. Secrets and cookies are not printed.");
+  console.log(
+    `Synthetic data only. Fixture profile: ${fixtureProfile}. Secrets and cookies are not printed.`,
+  );
 
   const { cookieHeader, workspace } = await createSyntheticWorkspace({
     adminApiKey,
+    fixtureProfile,
     publicApiKey,
     supabaseUrl,
   });
@@ -772,6 +1280,7 @@ async function main(): Promise<void> {
   console.log(
     `Synthetic workspace: slug=${workspace.slug}, businessId=${workspace.businessId}, leadId=${workspace.leadId}`,
   );
+  console.log(`Synthetic leads: ${workspace.leadIds.length}`);
   console.log(`Routes: ${targets.length}`);
   console.log("");
 

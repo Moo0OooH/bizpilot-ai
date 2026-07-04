@@ -152,6 +152,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ## Latest Readiness Evidence
 
+- `docs/readiness/PHASE_25D_DASHBOARD_DATA_RICH_QA_FIXTURE_2026-07-04.md`
 - `docs/readiness/PHASE_25C_QUOTE_LINK_PLACEMENT_GUIDE_2026-07-04.md`
 - `docs/readiness/PHASE_25B_INTAKE_ATTRIBUTION_2026-07-04.md`
 - `docs/readiness/PHASE_25A_SEO_COMPARISON_FOUNDATION_2026-07-04.md`
