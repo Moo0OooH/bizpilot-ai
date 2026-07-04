@@ -30,7 +30,23 @@ Every implementation must improve at least one of these outcomes:
 
 If the change does not improve one of these, keep it out of the active surface or place it behind an owner-controlled feature level with honest Settings state.
 
-## Active Priority Override - 2026-06-26
+## Active Priority Override - 2026-07-04
+
+For the current source-backed backlog and execution order, read
+`docs/readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md`.
+
+2026-07-04 update: the next phase is guarded finalization of the public site,
+dashboard, SEO, AI-search readiness, local cleaning-business GTM, analytics,
+demo readiness, and pilot operations. Start with the Phase 25 100-point
+backlog before changing UI or code. The first recommended implementation slice
+is SEO foundation, honest public conversion content, intake attribution
+verification, seeded dashboard/admin QA, and GTM/demo packet work.
+
+Real customer data, paid pilot launch, production mutations, automation,
+booking, invoices, SMS/WhatsApp, autonomous AI, and broad feature expansion
+remain blocked unless a separate explicit gate closes.
+
+## Previous Active Priority Override - 2026-06-26
 
 For the shortest current status, read
 `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`.

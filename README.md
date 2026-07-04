@@ -2,11 +2,11 @@
 
 **Project:** BizPilot AI
 **Owner:** MoOoH
-**Current Phase:** Phase 24A docs-only readiness cleanup; Phase 23 synthetic production proof complete
+**Current Phase:** Phase 25 guarded site/dashboard/SEO/growth finalization backlog
 **Standards Layer:** v1.7 canonical docs map active
 **Product:** AI Quote Recovery & Lead Conversion Desk
 **GTM:** Cleaning-first
-**Last Updated:** 2026-05-30
+**Last Updated:** 2026-07-04
 
 ---
 
@@ -27,6 +27,16 @@ BizPilot is not a booking engine.
 BizPilot is not an AI operator.
 
 BizPilot helps small cleaning businesses capture quote requests, organize leads, identify missing information, prioritize replies and follow-ups, and show lightweight recovery proof.
+
+## Current Phase 25 Status
+
+Use `docs/readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md` as
+the current source-backed backlog for final public-site, dashboard, SEO,
+AI-search, local GTM, analytics, demo, and pilot-ops work.
+
+Phase 25 does not approve real customer data, paid pilot launch, production
+mutations, automation, booking, invoices, SMS/WhatsApp, autonomous AI, or broad
+feature expansion. Those remain gated by the canonical docs.
 
 ---
 

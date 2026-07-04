@@ -89,6 +89,14 @@ the two temporary dashboard/marketing/SEO resource drafts and does not approve
 real data, paid pilot launch, auth/RLS mutations, billing, AI provider changes,
 or production admin deletion.
 
+2026-07-04 Phase 25 growth/finalization override: treat
+`readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md` as the current
+source-backed execution backlog for final public-site, dashboard, SEO,
+AI-search, local GTM, analytics, demo, and pilot-ops work. This is an
+assessment and execution-order document only. It does not approve real customer
+data, paid pilot launch, production mutations, automation, booking, invoices,
+SMS/WhatsApp, autonomous AI, or broad feature expansion.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
@@ -101,18 +109,19 @@ Read these first, in this exact order:
 2. `AI_CODING_AGENT_START_HERE_v1.7.md` - current agent instructions.
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - active post-P8/D1 status, cleanup, and gate map.
 4. `readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md` - active dashboard, founder-admin, marketing, SEO, accessibility, analytics, and QA standard.
-5. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest hygiene, verification, warning triage, and next gates.
-6. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md` - P0-P4 execution map.
-7. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md` - dashboard language-isolation fix report.
-8. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md` - admin/owner user access audit/spec.
-9. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - latest P8 public homepage evidence.
-10. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - latest D1 dashboard evidence.
-11. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - post-D0 project status and historical phase map, superseded by the 2026-06-26 status where different.
-12. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - EN/fr-CA public copy, sizing, theme, production evidence, and D1 GO/NO-GO record.
-13. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - public-site acceptance and production GO evidence before P8.
-14. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
-15. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
-16. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
+5. `readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md` - current source-backed 100-point backlog for final site, dashboard, SEO, AI-search, GTM, analytics, demo, and pilot-ops work.
+6. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest hygiene, verification, warning triage, and next gates.
+7. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md` - P0-P4 execution map.
+8. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md` - dashboard language-isolation fix report.
+9. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md` - admin/owner user access audit/spec.
+10. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - latest P8 public homepage evidence.
+11. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - latest D1 dashboard evidence.
+12. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - post-D0 project status and historical phase map, superseded by the 2026-06-26 status where different.
+13. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - EN/fr-CA public copy, sizing, theme, production evidence, and D1 GO/NO-GO record.
+14. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - public-site acceptance and production GO evidence before P8.
+15. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
+16. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
+17. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
 
 2026-06-18 public responsive authorities:
 
@@ -166,6 +175,10 @@ Additional active lifecycle/deletion authorities:
 Use these files for the latest production and documentation status before
 starting new work:
 
+- `readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md` - current
+  source-backed assessment and 100-point execution backlog for final
+  public-site, dashboard, SEO, AI-search, local GTM, analytics, demo, and
+  pilot-ops work. It keeps real data and paid pilot blocked.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest
