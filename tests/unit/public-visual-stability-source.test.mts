@@ -375,6 +375,13 @@ describe("public visual stability source contracts", () => {
       "Homepage hero visual should cap chaos sources, messages, BizPilot actions, and clarity leads.",
     );
     assert.equal(
+      globals.includes(".homepage-source-chip {\n  display: flex;") &&
+        globals.includes("white-space: nowrap;") &&
+        globals.includes(".homepage-source-label {\n  min-inline-size: 0;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  white-space: nowrap;"),
+      true,
+      "Homepage source badges should not split channel names across awkward line breaks.",
+    );
+    assert.equal(
       globals.includes(".homepage-chaos-messages > *:nth-child(n + 3) {\n    display: none;") &&
         globals.includes(".homepage-clarity-lead:nth-child(n + 2)"),
       true,

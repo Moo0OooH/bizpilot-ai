@@ -800,8 +800,8 @@ select {
 
 .homepage-chaos-source-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.45rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.38rem;
 }
 
 .homepage-chaos-overload {
@@ -839,20 +839,25 @@ select {
   display: flex;
   align-items: center;
   gap: 0.42rem;
-  white-space: normal;
+  min-block-size: 2.08rem;
+  overflow: hidden;
+  white-space: nowrap;
   color: var(--text-strong);
-  background: color-mix(in srgb, var(--surface-interactive) 86%, var(--canvas));
-  border-color: color-mix(in srgb, var(--border-default) 78%, transparent);
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.04);
-  font-size: 0.66rem;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-elevated) 94%, white 6%), color-mix(in srgb, var(--surface-interactive) 88%, var(--canvas)));
+  border-color: color-mix(in srgb, var(--border-default) 72%, transparent);
+  box-shadow:
+    0 10px 22px rgba(15, 23, 42, 0.045),
+    inset 0 1px 0 color-mix(in srgb, white 58%, transparent);
+  font-size: 0.68rem;
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .homepage-source-mark {
   display: grid;
-  block-size: 1.55rem;
-  inline-size: 1.55rem;
+  block-size: 1.34rem;
+  inline-size: 1.34rem;
   flex: 0 0 auto;
   place-items: center;
   border: 2px solid color-mix(in srgb, white 66%, transparent);
@@ -867,8 +872,8 @@ select {
 }
 
 .homepage-source-brand {
-  width: 0.86rem;
-  height: 0.86rem;
+  width: 0.74rem;
+  height: 0.74rem;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -892,7 +897,7 @@ select {
 .homepage-source-mark--facebook {
   background: #1877f2;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.05rem;
+  font-size: 0.92rem;
 }
 
 .homepage-source-mark--instagram {
@@ -905,7 +910,9 @@ select {
 
 .homepage-source-label {
   min-inline-size: 0;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .homepage-signal-message {
@@ -1473,7 +1480,7 @@ select {
 
   .homepage-chaos-source-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     margin-block-start: 0.55rem;
   }
 
