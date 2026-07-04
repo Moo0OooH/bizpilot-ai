@@ -253,6 +253,7 @@ export default async function LeadDetailPage({
     detail.lead.customer_contact,
     detailCopy.fallbacks.contact,
   );
+  const sourceMetadata = detail.sourceMetadata;
   const createdAge = formatAge(detail.lead.created_at, detailCopy, queueCopy);
   const slaTone =
     detail.lead.response_sla_state === "overdue"
@@ -400,13 +401,73 @@ export default async function LeadDetailPage({
               <ReadOnlyField label={detailCopy.fields.cityArea} value={cityArea} />
               <ReadOnlyField
                 label={detailCopy.fields.source}
-                value={detail.lead.source_channel ?? detailCopy.fallbacks.source}
+                value={
+                  sourceMetadata?.source_channel ??
+                  detail.lead.source_channel ??
+                  detailCopy.fallbacks.source
+                }
               />
               <ReadOnlyField
                 label={detailCopy.fields.submitted}
                 value={formatDate(detail.lead.created_at, detailCopy, queueCopy)}
               />
             </div>
+
+            {sourceMetadata ? (
+              <>
+                <div className="my-4 h-px bg-[var(--dash-border)]" />
+                <div className="mb-3 grid gap-1">
+                  <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+                    {detailCopy.sourceAttribution.title}
+                  </p>
+                  <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                    {detailCopy.sourceAttribution.description}
+                  </p>
+                </div>
+                <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+                  <ReadOnlyField
+                    compact
+                    label={detailCopy.sourceAttribution.fields.sourceUrl}
+                    value={ownerSafeLeadText(
+                      sourceMetadata.source_url,
+                      detailCopy.notProvided,
+                    )}
+                  />
+                  <ReadOnlyField
+                    compact
+                    label={detailCopy.sourceAttribution.fields.referrer}
+                    value={ownerSafeLeadText(
+                      sourceMetadata.referrer,
+                      detailCopy.notProvided,
+                    )}
+                  />
+                  <ReadOnlyField
+                    compact
+                    label={detailCopy.sourceAttribution.fields.utmSource}
+                    value={ownerSafeLeadText(
+                      sourceMetadata.utm_source,
+                      detailCopy.notProvided,
+                    )}
+                  />
+                  <ReadOnlyField
+                    compact
+                    label={detailCopy.sourceAttribution.fields.utmMedium}
+                    value={ownerSafeLeadText(
+                      sourceMetadata.utm_medium,
+                      detailCopy.notProvided,
+                    )}
+                  />
+                  <ReadOnlyField
+                    compact
+                    label={detailCopy.sourceAttribution.fields.utmCampaign}
+                    value={ownerSafeLeadText(
+                      sourceMetadata.utm_campaign,
+                      detailCopy.notProvided,
+                    )}
+                  />
+                </div>
+              </>
+            ) : null}
 
             {detail.submissionValues.length > 0 ? (
               <>

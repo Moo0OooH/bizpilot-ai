@@ -29,6 +29,8 @@ export type LeadActionItemRecord =
   Database["public"]["Tables"]["lead_action_items"]["Row"];
 export type LeadEventRecord =
   Database["public"]["Tables"]["lead_events"]["Row"];
+export type LeadSourceMetadataRecord =
+  Database["public"]["Tables"]["lead_source_metadata"]["Row"];
 export type IntakeSubmissionValueRecord =
   Database["public"]["Tables"]["intake_submission_values"]["Row"];
 export type BusinessServiceAreaRecord =
@@ -102,6 +104,23 @@ export async function listSubmissionValuesForLead(input: {
   await throwIfError(error);
 
   return data ?? [];
+}
+
+export async function getSourceMetadataForLead(input: {
+  businessId: string;
+  leadId: string;
+  supabase: SupabaseClient<Database>;
+}): Promise<LeadSourceMetadataRecord | null> {
+  const { data, error } = await input.supabase
+    .from("lead_source_metadata")
+    .select("*")
+    .eq("business_id", input.businessId)
+    .eq("lead_id", input.leadId)
+    .maybeSingle();
+
+  await throwIfError(error);
+
+  return data;
 }
 
 export async function listServiceAreasForBusiness(input: {

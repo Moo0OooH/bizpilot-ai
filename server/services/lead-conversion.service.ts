@@ -25,6 +25,7 @@ import {
   dismissOpenActionItemsForLead,
   getLeadById,
   getQualityScoreForLead,
+  getSourceMetadataForLead,
   insertLeadActionItem,
   insertLeadEvent,
   listActionItemsForBusiness,
@@ -43,6 +44,7 @@ import {
   type LeadManualOutcome,
   type LeadQualityScoreRecord,
   type LeadRecord,
+  type LeadSourceMetadataRecord,
   type LeadStatus,
 } from "@/server/repositories/lead-conversion.repository";
 import type { BusinessRecord } from "@/server/repositories/businesses.repository";
@@ -83,6 +85,7 @@ export type LeadDetail = Readonly<{
   recoveryProof: RevenueRecoveryProof;
   routingSuggestion: SmartIntakeRoutingSuggestion;
   score: LeadQualityScoreRecord;
+  sourceMetadata: LeadSourceMetadataRecord | null;
   submissionValues: IntakeSubmissionValueRecord[];
 }>;
 
@@ -351,30 +354,36 @@ export async function getLeadDetail(input: {
     serviceAreaNames: serviceAreas.map((area) => area.name),
     supabase,
   });
-  const [actions, events, allLeads, allActions, allScores] = await Promise.all([
-    listActionItemsForLead({
-      businessId: input.business.id,
-      leadId: lead.id,
-      supabase,
-    }),
-    listEventsForLead({
-      businessId: input.business.id,
-      leadId: lead.id,
-      supabase,
-    }),
-    listLeadsForBusiness({
-      businessId: input.business.id,
-      supabase,
-    }),
-    listActionItemsForBusiness({
-      businessId: input.business.id,
-      supabase,
-    }),
-    listQualityScoresForLeads({
-      leadIds: [lead.id],
-      supabase,
-    }),
-  ]);
+  const [actions, events, sourceMetadata, allLeads, allActions, allScores] =
+    await Promise.all([
+      listActionItemsForLead({
+        businessId: input.business.id,
+        leadId: lead.id,
+        supabase,
+      }),
+      listEventsForLead({
+        businessId: input.business.id,
+        leadId: lead.id,
+        supabase,
+      }),
+      getSourceMetadataForLead({
+        businessId: input.business.id,
+        leadId: lead.id,
+        supabase,
+      }),
+      listLeadsForBusiness({
+        businessId: input.business.id,
+        supabase,
+      }),
+      listActionItemsForBusiness({
+        businessId: input.business.id,
+        supabase,
+      }),
+      listQualityScoresForLeads({
+        leadIds: [lead.id],
+        supabase,
+      }),
+    ]);
 
   return {
     actions,
@@ -389,6 +398,7 @@ export async function getLeadDetail(input: {
     }),
     routingSuggestion: synced.routingSuggestion,
     score: synced.score,
+    sourceMetadata,
     submissionValues: synced.submissionValues,
   };
 }

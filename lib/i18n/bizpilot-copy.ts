@@ -516,6 +516,17 @@ type DashboardLeadDetailCopy = Readonly<{
     title: string;
   }>;
   quoteIntakeFields: string;
+  sourceAttribution: Readonly<{
+    description: string;
+    fields: Readonly<{
+      referrer: string;
+      sourceUrl: string;
+      utmCampaign: string;
+      utmMedium: string;
+      utmSource: string;
+    }>;
+    title: string;
+  }>;
   routing: Readonly<{
     badges: readonly string[];
     description: string;
@@ -1526,6 +1537,18 @@ const englishCopy: BizPilotCopy = {
         title: "Workspace notes",
       },
       quoteIntakeFields: "Quote intake fields",
+      sourceAttribution: {
+        description:
+          "Captured source context for this request. Use it to understand where the quote link worked; do not treat it as a full analytics report.",
+        fields: {
+          referrer: "Referrer",
+          sourceUrl: "Source URL",
+          utmCampaign: "UTM campaign",
+          utmMedium: "UTM medium",
+          utmSource: "UTM source",
+        },
+        title: "Source attribution",
+      },
       routing: {
         badges: ["Human review required", "No auto-assignment"],
         description:
@@ -3056,6 +3079,18 @@ const frenchCopy: BizPilotCopy = {
         title: "Notes privées",
       },
       quoteIntakeFields: "Champs de soumission",
+      sourceAttribution: {
+        description:
+          "Contexte de provenance capturé pour cette demande. Utilisez-le pour comprendre où le lien de soumission a fonctionné; ce n'est pas un rapport analytique complet.",
+        fields: {
+          referrer: "Référent",
+          sourceUrl: "URL source",
+          utmCampaign: "Campagne UTM",
+          utmMedium: "Média UTM",
+          utmSource: "Source UTM",
+        },
+        title: "Attribution source",
+      },
       routing: {
         badges: ["Révision humaine requise", "Aucune assignation automatique"],
         description:

@@ -501,3 +501,41 @@ Next recommended slice:
 ```text
 Phase 25E - point the environment at confirmed local/synthetic Supabase, run the dense dashboard smoke, and continue dashboard/admin visual QA findings.
 ```
+
+## Progress Addendum - Phase 25E
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25E_LEAD_SOURCE_ATTRIBUTION_VISIBILITY_2026-07-04.md`:
+
+- Added tenant-scoped `lead_source_metadata` read support to the Lead Conversion
+  repository.
+- Added `sourceMetadata` to the Lead Detail service result.
+- Added owner-visible source attribution inside the existing Lead Details card:
+  source URL, referrer, UTM source, UTM medium, and UTM campaign.
+- Added EN/fr-CA copy that frames the section as captured source context, not a
+  full attribution analytics report.
+- Added source guards for repository scoping, service wiring, detail rendering,
+  and copy boundary.
+
+Backlog items advanced:
+
+```text
+51 advanced
+54 done
+58 preserved
+64 preserved
+74 preserved
+79 prepared
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
+```
