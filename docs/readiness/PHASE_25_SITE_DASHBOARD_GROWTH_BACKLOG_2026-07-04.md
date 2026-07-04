@@ -496,6 +496,46 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25K
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25K_SEARCH_CONSOLE_CWV_BASELINE_2026-07-04.md`:
+
+- Added a source-backed Search Console and indexing checklist using official
+  Google Search Central/PageSpeed documentation.
+- Recorded current app SEO state for canonical routes, hreflang, sitemap,
+  robots, noindex boundaries, and final UI matrix coverage.
+- Captured a local Lighthouse 13.4.0 lab baseline for `/`, `/pricing`, `/pilot`,
+  and `/trust`.
+- Recorded the INP field-data caveat: Lighthouse lab output does not replace
+  Search Console/CrUX/PageSpeed field INP.
+
+Backlog items advanced:
+
+```text
+30 verified
+31 verified
+33 done
+35 baseline captured with INP field-data caveat
+76 prepared
+77 prepared
+79 prepared
+90 preserved
+```
+
+Verification:
+
+```text
+npx --yes lighthouse@latest --version PASS - 13.4.0
+Lighthouse local lab baseline PASS with Chrome cleanup caveat
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+```
+
 ## Progress Addendum - Phase 25J
 
 Date: 2026-07-04

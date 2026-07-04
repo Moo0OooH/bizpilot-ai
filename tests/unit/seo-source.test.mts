@@ -15,6 +15,7 @@
  * Change Log:
  * - 2026-06-21: Added public FAQ route SEO coverage.
  * - 2026-07-04: Added comparison route, JSON-LD, OG image, and roadmap noindex guards.
+ * - 2026-07-04: Added Search Console and Core Web Vitals baseline evidence guards.
  * ============================================================
  */
 
@@ -286,5 +287,41 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(comparison.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(quoteLinkGuide.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(ogImage.includes("ImageResponse"), true);
+  });
+
+  it("keeps Search Console and Core Web Vitals checklist source-backed", () => {
+    const checklist = source(
+      "docs/readiness/PHASE_25K_SEARCH_CONSOLE_CWV_BASELINE_2026-07-04.md",
+    );
+
+    for (const officialSource of [
+      "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
+      "https://developers.google.com/search/docs/crawling-indexing/robots/intro",
+      "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing",
+      "https://developers.google.com/search/docs/appearance/core-web-vitals",
+      "https://developers.google.com/speed/docs/insights/v5/about",
+      "https://developers.google.com/search/updates",
+    ]) {
+      assert.equal(
+        checklist.includes(officialSource),
+        true,
+        `Missing official source ${officialSource}.`,
+      );
+    }
+
+    for (const required of [
+      "https://bizpilo.com/sitemap.xml",
+      "Use URL Inspection",
+      "Google treats sitemap submission as a discovery hint",
+      "not a noindex mechanism",
+      "LCP good: <= 2.5s",
+      "INP good: <= 200ms",
+      "CLS good: <= 0.1",
+      "Lighthouse 13.4.0",
+      "| `/` | 65 | 6505ms | 0.000 | 419ms |",
+      "INP must be verified",
+    ]) {
+      assert.equal(checklist.includes(required), true, `Missing ${required}.`);
+    }
   });
 });

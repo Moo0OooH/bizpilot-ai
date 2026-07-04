@@ -203,6 +203,10 @@ starting new work:
   latest trust/security evidence: `/trust` and `/security` now align recorded
   readiness proof with local-only dashboard QA, blocked real data, paid-pilot
   gates, and strict restored app/RLS proof.
+- `readiness/PHASE_25K_SEARCH_CONSOLE_CWV_BASELINE_2026-07-04.md` - latest
+  SEO/performance evidence: source-backed Search Console/indexing checklist and
+  local Lighthouse 13.4.0 lab baseline for `/`, `/pricing`, `/pilot`, and
+  `/trust`.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

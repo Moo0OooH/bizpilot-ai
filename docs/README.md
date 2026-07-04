@@ -152,6 +152,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ## Latest Readiness Evidence
 
+- `docs/readiness/PHASE_25K_SEARCH_CONSOLE_CWV_BASELINE_2026-07-04.md`
 - `docs/readiness/PHASE_25J_TRUST_SECURITY_EVIDENCE_ALIGNMENT_2026-07-04.md`
 - `docs/readiness/PHASE_25I_PRICING_TRUST_BOUNDARIES_2026-07-04.md`
 - `docs/readiness/PHASE_25H_PILOT_PROOF_METRICS_2026-07-04.md`
