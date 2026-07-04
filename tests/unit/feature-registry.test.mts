@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import {
@@ -72,7 +73,41 @@ describe("feature registry", () => {
         assert.ok(registryCopy.levelLabels[feature.level]);
         assert.ok(registryCopy.categoryLabels[feature.category]);
         assert.ok(registryCopy.guideLabels[feature.guideStatus]);
+        assert.ok(registryCopy.guideDetailsLabel.length > 0);
+        assert.ok(registryCopy.setupLabel.length > 0);
+        assert.ok(registryCopy.visualGuideLabel.length > 0);
+        assert.ok(registryCopy.textGuideLabel.length > 0);
+        assert.ok(registryCopy.ownerGuideLabel.length > 0);
       }
     }
+  });
+
+  it("renders Settings guide details without enabling blocked features", () => {
+    const settingsSource = readFileSync(
+      "app/(dashboard)/dashboard/settings/page.tsx",
+      "utf8",
+    );
+
+    for (const required of [
+      "settingsCopy.featureRegistry.guideDetailsLabel",
+      "featureText.activation",
+      "featureText.setup",
+      "featureText.visualGuide",
+      "featureText.textGuide",
+      "featureText.ownerGuide",
+      "getFeatureStateTone(feature.state)",
+    ]) {
+      assert.equal(
+        settingsSource.includes(required),
+        true,
+        `Settings should render ${required}.`,
+      );
+    }
+
+    assert.equal(
+      settingsSource.includes("feature.state ="),
+      false,
+      "Settings guide details should not mutate feature states.",
+    );
   });
 });

@@ -755,6 +755,52 @@ Playwright Chrome /faster-quote-replies geometry QA PASS
 Playwright screenshot review PASS - EN desktop and fr-CA mobile
 ```
 
+## Progress Addendum - Phase 25V
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25V_SETTINGS_FEATURE_GUIDE_DETAILS_2026-07-04.md`:
+
+- Added collapsed Settings guide-detail panels for every feature registry item.
+- Rendered activation, setup, visual guide, text guide, and owner/admin guide
+  copy that already existed in the localized feature registry.
+- Added EN/fr-CA labels and source guards for guide details.
+- Preserved all feature states; no planned, setup-required, or blocked feature
+  was enabled.
+- Kept authenticated dashboard browser QA and mutating dashboard smoke blocked
+  until a confirmed local Supabase target exists.
+
+Backlog items advanced:
+
+```text
+7 reinforced
+58 done
+61 prepared at source level
+66 preserved
+67 preserved
+77 preserved
+89 preserved as paid-pilot blocker
+90 preserved; no local RLS/database proof was claimed
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+98 preserved
+99 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS - 199 tests
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+```
+
 ## Progress Addendum - Phase 25P
 
 Date: 2026-07-04

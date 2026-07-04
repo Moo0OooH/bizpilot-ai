@@ -244,6 +244,11 @@ starting new work:
   four-week content calendar, quote-link-guide internal link, sitemap/hreflang
   coverage, public smoke/UI-matrix coverage, and visual geometry QA without
   automation, analytics, booking, payment, real-data, or paid-pilot expansion.
+- `readiness/PHASE_25V_SETTINGS_FEATURE_GUIDE_DETAILS_2026-07-04.md` -
+  latest dashboard source-level evidence: Settings feature registry now exposes
+  collapsed activation/setup/visual/text/owner guide details with EN/fr-CA
+  labels and source guards, without enabling blocked features or running
+  mutating dashboard smoke against a non-local Supabase target.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

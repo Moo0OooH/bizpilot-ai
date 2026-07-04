@@ -723,13 +723,18 @@ type DashboardFeatureRegistryCopy = Readonly<{
     }>
   >>;
   guideLabels: Readonly<Record<FeatureGuideStatus, string>>;
+  guideDetailsLabel: string;
   guidesLabel: string;
   levelLabel: string;
   levelLabels: Readonly<Record<FeatureLevel, string>>;
   ownerLabel: string;
+  ownerGuideLabel: string;
+  setupLabel: string;
   stateLabels: Readonly<Record<FeatureState, string>>;
   statusLabel: string;
+  textGuideLabel: string;
   title: string;
+  visualGuideLabel: string;
 }>;
 
 type AuthCopy = Readonly<{
@@ -2098,6 +2103,7 @@ const englishCopy: BizPilotCopy = {
           ready: "Guide ready",
           required: "Guide required",
         },
+        guideDetailsLabel: "Guide details",
         guidesLabel: "Guides",
         levelLabel: "Level",
         levelLabels: {
@@ -2110,6 +2116,8 @@ const englishCopy: BizPilotCopy = {
           premium: "Premium",
         },
         ownerLabel: "Owner",
+        ownerGuideLabel: "Owner/admin guide",
+        setupLabel: "Setup",
         stateLabels: {
           blocked_external: "External blocker",
           enabled: "Enabled",
@@ -2118,7 +2126,9 @@ const englishCopy: BizPilotCopy = {
           setup_required: "Setup required",
         },
         statusLabel: "Status",
+        textGuideLabel: "Text guide",
         title: "Feature levels",
+        visualGuideLabel: "Visual guide",
       },
       future: "Future",
       futureSections: "Future sections",
@@ -3647,6 +3657,7 @@ const frenchCopy: BizPilotCopy = {
           ready: "Guide pret",
           required: "Guide requis",
         },
+        guideDetailsLabel: "Details du guide",
         guidesLabel: "Guides",
         levelLabel: "Niveau",
         levelLabels: {
@@ -3659,6 +3670,8 @@ const frenchCopy: BizPilotCopy = {
           premium: "Premium",
         },
         ownerLabel: "Responsable",
+        ownerGuideLabel: "Guide responsable/admin",
+        setupLabel: "Configuration",
         stateLabels: {
           blocked_external: "Blocage externe",
           enabled: "Actif",
@@ -3667,7 +3680,9 @@ const frenchCopy: BizPilotCopy = {
           setup_required: "Configuration requise",
         },
         statusLabel: "Statut",
+        textGuideLabel: "Guide texte",
         title: "Niveaux de fonctionnalites",
+        visualGuideLabel: "Guide visuel",
       },
       future: "Futur",
       futureSections: "Sections futures",

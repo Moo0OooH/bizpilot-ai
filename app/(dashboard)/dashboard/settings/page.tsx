@@ -381,6 +381,47 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                             {settingsCopy.featureRegistry.guideLabels[feature.guideStatus]}
                           </StatusBadge>
                         </div>
+                        <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
+                          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-[12px] font-black text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
+                            <span>{settingsCopy.featureRegistry.guideDetailsLabel}</span>
+                            <StatusBadge tone={getFeatureStateTone(feature.state)}>
+                              {settingsCopy.featureRegistry.stateLabels[feature.state]}
+                            </StatusBadge>
+                          </summary>
+                          <div className="grid gap-2 border-t border-[var(--dash-border)] p-3 md:grid-cols-2">
+                            {[
+                              [
+                                settingsCopy.featureRegistry.activationLabel,
+                                featureText.activation,
+                              ],
+                              [
+                                settingsCopy.featureRegistry.setupLabel,
+                                featureText.setup,
+                              ],
+                              [
+                                settingsCopy.featureRegistry.visualGuideLabel,
+                                featureText.visualGuide,
+                              ],
+                              [
+                                settingsCopy.featureRegistry.textGuideLabel,
+                                featureText.textGuide,
+                              ],
+                              [
+                                settingsCopy.featureRegistry.ownerGuideLabel,
+                                featureText.ownerGuide,
+                              ],
+                            ].map(([label, value]) => (
+                              <div className="min-w-0 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3" key={label}>
+                                <p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[var(--dash-text-muted)]">
+                                  {label}
+                                </p>
+                                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                                  {value}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+                        </details>
                       </div>
                     );
                   })}
