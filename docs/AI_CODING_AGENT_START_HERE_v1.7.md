@@ -42,6 +42,11 @@ backlog before changing UI or code. The first recommended implementation slice
 is SEO foundation, honest public conversion content, intake attribution
 verification, seeded dashboard/admin QA, and GTM/demo packet work.
 
+2026-07-04 dashboard update: Phase 25X added source-level lead queue
+pagination, page-size controls, reset behavior, and EN/fr-CA copy. Protected
+dashboard/admin browser QA and screenshot matrix remain blocked until the
+environment points at a confirmed local/synthetic Supabase target.
+
 Real customer data, paid pilot launch, production mutations, automation,
 booking, invoices, SMS/WhatsApp, autonomous AI, and broad feature expansion
 remain blocked unless a separate explicit gate closes.

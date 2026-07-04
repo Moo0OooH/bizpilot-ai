@@ -40,7 +40,14 @@ describe("P12 dashboard professionalization source guards", () => {
     assert.equal(queueSource.includes("aria-label={queueCopy.searchAriaLabel}"), true);
     assert.equal(queueSource.includes("aria-label={queueCopy.filterAriaLabel}"), true);
     assert.equal(queueSource.includes("aria-label={queueCopy.sortAriaLabel}"), true);
+    assert.equal(queueSource.includes("type LeadPageSize = 10 | 25 | 50;"), true);
+    assert.equal(queueSource.includes("const shouldPaginate = !compact && typeof limit !== \"number\";"), true);
+    assert.equal(queueSource.includes("QueuePagination"), true);
+    assert.equal(queueSource.includes("visibleLeads.map"), true);
+    assert.equal(queueSource.includes("setCurrentPage(1);"), true);
     assert.equal(copySource.includes("Priority order favors overdue requests"), true);
+    assert.equal(copySource.includes("Choose rows per page"), true);
+    assert.equal(copySource.includes("Choisir le nombre de lignes par page"), true);
   });
 
   it("keeps internal seed lead labels out of owner-facing lead surfaces", () => {

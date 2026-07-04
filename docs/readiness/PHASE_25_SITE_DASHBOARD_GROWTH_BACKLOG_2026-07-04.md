@@ -827,6 +827,56 @@ acceptance gate is confirmed local Supabase plus authenticated dashboard/admin
 browser QA.
 ```
 
+## Progress Addendum - Phase 25X
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25X_DASHBOARD_LEAD_QUEUE_PAGINATION_2026-07-04.md`:
+
+- Added smart pagination to the full owner lead queue with 10/25/50 rows per
+  page, previous/next controls, page range, and page status.
+- Kept status filtering, search, and most-urgent sorting tied to the full
+  filtered result set while rendering only the current page.
+- Reset pagination when the owner changes search, filter, sort, page size, or
+  clears filters.
+- Preserved the dashboard overview as the deterministic five-row capped preview
+  with no pagination bar.
+- Added EN/fr-CA pagination copy and source guards for accessible lead queue
+  controls.
+- Preserved the local-Supabase-only dashboard smoke gate; no authenticated
+  browser QA or database writes were run.
+
+Backlog items advanced:
+
+```text
+51 advanced at source level
+55 reinforced
+61 prepared at source level
+66 preserved as protected-route screenshot/browser QA blocker
+67 preserved as local-Supabase dashboard smoke blocker
+77 preserved
+89 preserved as paid-pilot blocker
+90 preserved; no local RLS/database proof was claimed
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+98 preserved
+99 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS - 199 tests
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+```
+
 ## Progress Addendum - Phase 25P
 
 Date: 2026-07-04

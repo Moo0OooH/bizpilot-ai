@@ -254,6 +254,10 @@ starting new work:
   homepage, demo, public matrix, reply-speed guide, and Settings guide-detail
   phases; identifies local Supabase dashboard/admin QA as the next required
   acceptance gate.
+- `readiness/PHASE_25X_DASHBOARD_LEAD_QUEUE_PAGINATION_2026-07-04.md` -
+  latest dashboard source-level evidence: full lead queue pagination, page-size
+  controls, reset behavior, EN/fr-CA copy, and source guards while keeping
+  protected-route browser QA blocked until confirmed local Supabase.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

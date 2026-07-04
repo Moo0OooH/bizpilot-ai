@@ -414,6 +414,15 @@ type DashboardLeadQueueCopy = Readonly<{
     service: string;
     status: string;
   }>;
+  pagination: Readonly<{
+    next: string;
+    pageRange: (start: number, end: number, total: number) => string;
+    pageSizeAriaLabel: string;
+    pageSizeLabel: string;
+    pageSizeOption: (count: number) => string;
+    pageStatus: (current: number, total: number) => string;
+    previous: string;
+  }>;
   searchPlaceholder: string;
   sorts: Readonly<{
     mostUrgent: string;
@@ -1422,6 +1431,15 @@ const englishCopy: BizPilotCopy = {
         requested: "Requested",
         service: "Service",
         status: "Status",
+      },
+      pagination: {
+        next: "Next",
+        pageRange: (start, end, total) => `Showing ${start}-${end} of ${total}`,
+        pageSizeAriaLabel: "Choose rows per page",
+        pageSizeLabel: "Rows",
+        pageSizeOption: (count) => `${count} per page`,
+        pageStatus: (current, total) => `Page ${current} of ${total}`,
+        previous: "Previous",
       },
       reset: "Reset",
       searchPlaceholder: "Search leads, city, service...",
@@ -2966,6 +2984,15 @@ const frenchCopy: BizPilotCopy = {
         requested: "Demandé",
         service: "Service",
         status: "Statut",
+      },
+      pagination: {
+        next: "Suivant",
+        pageRange: (start, end, total) => `Affichage ${start}-${end} sur ${total}`,
+        pageSizeAriaLabel: "Choisir le nombre de lignes par page",
+        pageSizeLabel: "Lignes",
+        pageSizeOption: (count) => `${count} par page`,
+        pageStatus: (current, total) => `Page ${current} de ${total}`,
+        previous: "Précédent",
       },
       reset: "Réinitialiser",
       searchPlaceholder: "Rechercher prospects, ville, service...",

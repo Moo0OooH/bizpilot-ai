@@ -5,7 +5,7 @@
  * File: components/dashboard/lead-workspace-queue.tsx
  * Project: BizPilot AI
  * Description: Interactive Lead Recovery Queue table.
- * Role: Filters + sort + privacy-safe customer cell with avatar/initials; no horizontal scroll on common laptop widths; deterministic 5-row limit when used in the dashboard overview.
+ * Role: Filters + sort + pagination + privacy-safe customer cell with avatar/initials; no horizontal scroll on common laptop widths; deterministic 5-row limit when used in the dashboard overview.
  * Related:
  * - app/(dashboard)/dashboard/leads/page.tsx
  * - app/(dashboard)/dashboard/page.tsx
@@ -26,6 +26,7 @@ import {
   Avatar,
   buttonClass,
   DashboardCard,
+  disabledButtonClass,
   EmptyState,
   inputClass,
   ownerSafeLeadText,
@@ -52,6 +53,8 @@ type LeadFilter =
 
 type LeadSort = "newest" | "oldest" | "most_urgent";
 
+type LeadPageSize = 10 | 25 | 50;
+
 type LeadWorkspaceQueueProps = Readonly<{
   /** When true, hide filter toolbar (overview preview mode). */
   compact?: boolean;
@@ -75,6 +78,9 @@ const filters: ReadonlyArray<{
   { copyKey: "won", value: "won" },
   { copyKey: "lost", value: "lost" },
 ];
+
+const pageSizeOptions: readonly LeadPageSize[] = [10, 25, 50];
+const defaultPageSize: LeadPageSize = 10;
 
 function formatAge(value: string | null, copy: LeadQueueCopy): string {
   if (!value) return copy.age.notAvailable;
@@ -168,6 +174,11 @@ function sortLeads(leads: LeadDeskItem[], sort: LeadSort): LeadDeskItem[] {
     }
     return createdTimestamp(right) - createdTimestamp(left);
   });
+}
+
+function toLeadPageSize(value: string): LeadPageSize {
+  const parsed = Number(value) as LeadPageSize;
+  return pageSizeOptions.includes(parsed) ? parsed : defaultPageSize;
 }
 
 function displayStatus(item: LeadDeskItem, copy: LeadQueueCopy): {
@@ -362,6 +373,80 @@ function QueueInsightStrip({
   );
 }
 
+function QueuePagination({
+  copy,
+  currentPage,
+  onPageChange,
+  onPageSizeChange,
+  pageCount,
+  pageEnd,
+  pageSize,
+  pageStart,
+  totalCount,
+}: Readonly<{
+  copy: LeadQueueCopy;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+  onPageSizeChange: (pageSize: LeadPageSize) => void;
+  pageCount: number;
+  pageEnd: number;
+  pageSize: LeadPageSize;
+  pageStart: number;
+  totalCount: number;
+}>) {
+  const isFirstPage = currentPage <= 1;
+  const isLastPage = currentPage >= pageCount;
+
+  return (
+    <div className="border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p
+          aria-live="polite"
+          className="min-w-0 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]"
+        >
+          <span>{copy.pagination.pageRange(pageStart, pageEnd, totalCount)}</span>
+          <span className="ml-2 text-[var(--dash-text-muted)]">
+            {copy.pagination.pageStatus(currentPage, pageCount)}
+          </span>
+        </p>
+        <div className="flex min-w-0 flex-wrap items-center gap-2">
+          <label className="flex min-w-0 items-center gap-2 text-[12px] font-bold text-[var(--dash-text-muted)]">
+            <span className="shrink-0">{copy.pagination.pageSizeLabel}</span>
+            <select
+              aria-label={copy.pagination.pageSizeAriaLabel}
+              className={`${inputClass} w-[136px] text-[13px]`}
+              onChange={(event) => onPageSizeChange(toLeadPageSize(event.target.value))}
+              value={pageSize}
+            >
+              {pageSizeOptions.map((option) => (
+                <option key={option} value={option}>
+                  {copy.pagination.pageSizeOption(option)}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            className={`${isFirstPage ? disabledButtonClass : buttonClass} min-w-[6.25rem]`}
+            disabled={isFirstPage}
+            onClick={() => onPageChange(currentPage - 1)}
+            type="button"
+          >
+            {copy.pagination.previous}
+          </button>
+          <button
+            className={`${isLastPage ? disabledButtonClass : buttonClass} min-w-[6.25rem]`}
+            disabled={isLastPage}
+            onClick={() => onPageChange(currentPage + 1)}
+            type="button"
+          >
+            {copy.pagination.next}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SampleLeadEmptyState({
   language,
   quotePath,
@@ -545,6 +630,8 @@ export function LeadWorkspaceQueue({
   const copy = getBizPilotCopy(language);
   const queueCopy = copy.dashboard.leadQueue;
   const [activeFilter, setActiveFilter] = useState<LeadFilter>("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState<LeadPageSize>(defaultPageSize);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState<LeadSort>("most_urgent");
 
@@ -554,19 +641,62 @@ export function LeadWorkspaceQueue({
   const missingInfoCount = leads.filter((item) => matchesFilter(item, "missing_info")).length;
 
   const filteredLeads = useMemo(() => {
-    const sorted = sortLeads(
+    return sortLeads(
       leads.filter(
         (item) => matchesFilter(item, activeFilter) && matchesSearch(item, search),
       ),
       sort,
     );
-    return typeof limit === "number" ? sorted.slice(0, limit) : sorted;
-  }, [activeFilter, leads, limit, search, sort]);
+  }, [activeFilter, leads, search, sort]);
+
+  const renderedLeads = useMemo(() => {
+    return typeof limit === "number" ? filteredLeads.slice(0, limit) : filteredLeads;
+  }, [filteredLeads, limit]);
+
+  const shouldPaginate = !compact && typeof limit !== "number";
+  const pageCount = shouldPaginate
+    ? Math.max(1, Math.ceil(renderedLeads.length / pageSize))
+    : 1;
+  const safeCurrentPage = Math.min(currentPage, pageCount);
+  const pageOffset = (safeCurrentPage - 1) * pageSize;
+  const visibleLeads = shouldPaginate
+    ? renderedLeads.slice(pageOffset, pageOffset + pageSize)
+    : renderedLeads;
+  const showPaginationControls = shouldPaginate && renderedLeads.length > defaultPageSize;
+  const pageStart = renderedLeads.length === 0 ? 0 : pageOffset + 1;
+  const pageEnd = shouldPaginate
+    ? Math.min(pageOffset + pageSize, renderedLeads.length)
+    : renderedLeads.length;
 
   function clearFilters() {
     setActiveFilter("all");
+    setCurrentPage(1);
     setSearch("");
     setSort("most_urgent");
+  }
+
+  function updateFilter(filter: LeadFilter) {
+    setActiveFilter(filter);
+    setCurrentPage(1);
+  }
+
+  function updatePage(page: number) {
+    setCurrentPage(Math.min(Math.max(page, 1), pageCount));
+  }
+
+  function updatePageSize(nextPageSize: LeadPageSize) {
+    setPageSize(nextPageSize);
+    setCurrentPage(1);
+  }
+
+  function updateSearch(value: string) {
+    setSearch(value);
+    setCurrentPage(1);
+  }
+
+  function updateSort(nextSort: LeadSort) {
+    setSort(nextSort);
+    setCurrentPage(1);
   }
 
   return (
@@ -577,7 +707,7 @@ export function LeadWorkspaceQueue({
             <input
               aria-label={queueCopy.searchAriaLabel}
               className={`${inputClass} min-w-0 flex-[1_1_280px]`}
-              onChange={(event) => setSearch(event.target.value)}
+              onChange={(event) => updateSearch(event.target.value)}
               placeholder={queueCopy.searchPlaceholder}
               type="search"
               value={search}
@@ -585,7 +715,7 @@ export function LeadWorkspaceQueue({
             <select
               aria-label={queueCopy.filterAriaLabel}
               className={`${inputClass} flex-[0_0_176px]`}
-              onChange={(event) => setActiveFilter(event.target.value as LeadFilter)}
+              onChange={(event) => updateFilter(event.target.value as LeadFilter)}
               value={activeFilter}
             >
               {filters.map((filter) => (
@@ -597,7 +727,7 @@ export function LeadWorkspaceQueue({
             <select
               aria-label={queueCopy.sortAriaLabel}
               className={`${inputClass} flex-[0_0_154px]`}
-              onChange={(event) => setSort(event.target.value as LeadSort)}
+              onChange={(event) => updateSort(event.target.value as LeadSort)}
               value={sort}
             >
               <option value="most_urgent">{queueCopy.sorts.mostUrgent}</option>
@@ -618,25 +748,38 @@ export function LeadWorkspaceQueue({
             missingInfoCount={missingInfoCount}
             needsReplyCount={needsReplyCount}
             totalCount={leads.length}
-            visibleCount={filteredLeads.length}
+            visibleCount={renderedLeads.length}
           />
         </div>
       ) : null}
 
       <div className="min-w-0">
-        {filteredLeads.length > 0 ? (
+        {renderedLeads.length > 0 ? (
           <>
             <LeadDesktopHeader copy={queueCopy} />
             <div className="xl:hidden">
-              {filteredLeads.map((item) => (
+              {visibleLeads.map((item) => (
                 <LeadMobileCard copy={queueCopy} item={item} key={item.lead.id} />
               ))}
             </div>
             <div className="hidden xl:block">
-              {filteredLeads.map((item) => (
+              {visibleLeads.map((item) => (
                 <LeadDesktopRow copy={queueCopy} item={item} key={item.lead.id} />
               ))}
             </div>
+            {showPaginationControls ? (
+              <QueuePagination
+                copy={queueCopy}
+                currentPage={safeCurrentPage}
+                onPageChange={updatePage}
+                onPageSizeChange={updatePageSize}
+                pageCount={pageCount}
+                pageEnd={pageEnd}
+                pageSize={pageSize}
+                pageStart={pageStart}
+                totalCount={renderedLeads.length}
+              />
+            ) : null}
           </>
         ) : (
           <div className="p-4">

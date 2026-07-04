@@ -34,6 +34,11 @@ Use `docs/readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md` as
 the current source-backed backlog for final public-site, dashboard, SEO,
 AI-search, local GTM, analytics, demo, and pilot-ops work.
 
+Latest dashboard source-level slice:
+`docs/readiness/PHASE_25X_DASHBOARD_LEAD_QUEUE_PAGINATION_2026-07-04.md`
+adds full lead queue pagination and EN/fr-CA controls while preserving the
+local-Supabase-only dashboard QA gate.
+
 Phase 25 does not approve real customer data, paid pilot launch, production
 mutations, automation, booking, invoices, SMS/WhatsApp, autonomous AI, or broad
 feature expansion. Those remain gated by the canonical docs.
