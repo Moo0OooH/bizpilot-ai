@@ -496,6 +496,44 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25F
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25F_WORKFLOW_LED_PUBLIC_COPY_2026-07-04.md`:
+
+- Reworked feature-page card copy around the quote recovery workflow: capture,
+  organize/source, draft, owner review/copy/send, and follow-up.
+- Updated product proof copy to mention source context and follow-up visibility.
+- Updated cleaning-industry copy to call out residential, office, move-out,
+  deep-clean, and recurring quote requests.
+- Kept the public copy manual-first and free of booking, invoicing, CRM, SMS,
+  WhatsApp, or auto-send claims.
+- Added source guards for public growth copy.
+
+Backlog items advanced:
+
+```text
+23 done
+24 advanced
+37 advanced
+41 reinforced
+47 advanced
+51 reinforced
+54 reinforced
+74 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+```
+
 Next recommended slice:
 
 ```text

@@ -1110,21 +1110,21 @@ describe("BizPilot language copy", () => {
     assert.deepEqual(
       englishPublicCopy.features.cards.map((card) => card.title),
       [
-        "Capture every quote request in one clean flow.",
-        "Know who needs a reply now.",
-        "See the job context before you answer.",
-        "Prepare a reply for owner review.",
-        "Copy and send from the channel you already use.",
-        "Keep the next manual action clear.",
+        "Capture requests where customers already find you.",
+        "Organize each request before it becomes inbox work.",
+        "Keep source context visible on the lead.",
+        "Prepare the first reply without inventing details.",
+        "Review, copy, and send manually.",
+        "Keep follow-up from disappearing.",
       ],
     );
     assert.deepEqual(
       englishPublicCopy.features.proof.items,
       [
-        "Customer submits a quote request",
-        "BizPilot organizes service, timing, and missing details",
-        "AI prepares a reply for owner review",
-        "You copy, edit if needed, and send manually",
+        "Customer opens the quote link and submits the request",
+        "BizPilot organizes service, source, timing, and missing details",
+        "AI prepares a practical draft for owner review",
+        "You copy, send manually, and keep follow-up visible",
       ],
     );
 

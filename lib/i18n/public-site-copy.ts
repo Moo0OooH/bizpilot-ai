@@ -511,7 +511,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "From vague request to clear next reply.",
     },
     body:
-      "BizPilot helps cleaning business owners collect quote requests, organize leads, and prepare replies for owner review before sending.",
+      "BizPilot helps cleaning business owners handle residential, office, move-out, deep-clean, and recurring quote requests in one manual-first lead recovery workflow.",
     ctaPrimary: "Join the cleaning founder pilot",
     ctaSecondary: "See demo",
     detailHelp: {
@@ -521,7 +521,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     detailSection: {
       body:
-        "One shared detail panel keeps the example request, quote details, and missing follow-up questions clear without repeating service groups.",
+        "One shared detail panel keeps service, area, timing, contact path, source context, and missing follow-up questions clear before an owner replies.",
       clearTitle: "Details BizPilot keeps clear",
       title: "Choose the cleaning request type.",
     },
@@ -538,7 +538,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       requestLabel: "Example request",
       title: "Cleaning quote request workflow",
       workflow:
-        "Customer requests a quote -> You see service details -> AI summarizes -> BizPilot prepares a reply draft -> You copy and send manually",
+        "Customer opens your quote link -> BizPilot organizes the request -> Missing details stay visible -> AI prepares a draft -> You review, copy, and send manually",
     },
     finalCta: {
       body:
@@ -1002,33 +1002,34 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     ],
     cards: [
       {
-        body: "Give customers one simple place to request a quote.",
-        title: "Capture every quote request in one clean flow.",
+        body:
+          "Share one quote link from your website, Google Business Profile, Instagram bio, saved replies, or email signature.",
+        title: "Capture requests where customers already find you.",
       },
       {
         body:
-          "See new cleaning requests in one owner workspace instead of scattered messages.",
-        title: "Know who needs a reply now.",
+          "Turn scattered quote messages into one lead record with service, area, timing, contact, source, and missing details.",
+        title: "Organize each request before it becomes inbox work.",
       },
       {
         body:
-          "Review the service, timing, property details, notes, and contact path before replying.",
-        title: "See the job context before you answer.",
+          "See whether a request came from the website, Google, Instagram, Facebook, email, or another quote-link placement.",
+        title: "Keep source context visible on the lead.",
       },
       {
         body:
-          "Use a practical first response that asks for missing details instead of guessing.",
-        title: "Prepare a reply for owner review.",
+          "Use a practical first response that asks for missing details instead of guessing price, timing, or availability.",
+        title: "Prepare the first reply without inventing details.",
       },
       {
         body:
-          "Keep final communication in the owner's hands while still moving faster.",
-        title: "Copy and send from the channel you already use.",
+          "Review the draft, adjust the wording, copy it, and send it from the channel you already use.",
+        title: "Review, copy, and send manually.",
       },
       {
         body:
-          "Track whether the next step is reply, ask for details, follow up, or mark reviewed.",
-        title: "Keep the next manual action clear.",
+          "Keep the next step visible: reply, ask for details, follow up, mark reviewed, or record the manual outcome.",
+        title: "Keep follow-up from disappearing.",
       },
     ],
     meta: {
@@ -1042,17 +1043,17 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       body:
         "A realistic cleaning request moves through one simple manual workflow.",
       items: [
-        "Customer submits a quote request",
-        "BizPilot organizes service, timing, and missing details",
-        "AI prepares a reply for owner review",
-        "You copy, edit if needed, and send manually",
+        "Customer opens the quote link and submits the request",
+        "BizPilot organizes service, source, timing, and missing details",
+        "AI prepares a practical draft for owner review",
+        "You copy, send manually, and keep follow-up visible",
       ],
       title: "From quote link to reply ready to send.",
     },
     roadmap: {
       badge: "Roadmap",
       body:
-        "Follow-up drafts, reporting, Content Studio, integrations, and multi-industry templates are planned after validation.",
+        "Advanced reporting, Content Studio, integrations, and multi-industry templates are planned after validation.",
     },
     secondaryCta: "Read trust approach",
     title: "A simple system to manage cleaning quote requests faster.",
@@ -1698,7 +1699,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "D'une demande vague à une prochaine réponse claire.",
     },
     body:
-      "BizPilot aide les entreprises de nettoyage à centraliser les demandes de soumission, organiser les prospects et préparer des réponses à valider avant l'envoi.",
+      "BizPilot aide les entreprises de nettoyage à traiter les demandes résidentielles, commerciales, après déménagement, grand ménage et récurrentes dans un flux manuel de récupération.",
     ctaPrimary: "Rejoindre le pilote",
     ctaSecondary: "Voir la démo",
     detailHelp: {
@@ -1708,7 +1709,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     },
     detailSection: {
       body:
-        "Un seul panneau de détails garde l'exemple, les informations de soumission et les questions de suivi au clair sans répéter les groupes de services.",
+        "Un seul panneau de détails garde le service, le secteur, le moment, le canal de contact, la source et les questions de suivi au clair avant la réponse.",
       clearTitle: "Détails que BizPilot garde clairs",
       title: "Choisissez le type de demande de nettoyage.",
     },
@@ -1725,7 +1726,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       requestLabel: "Exemple de demande",
       title: "Flux de demande de soumission",
       workflow:
-        "Le client demande une soumission -> Vous voyez les détails du service -> BizPilot résume -> BizPilot prépare un brouillon de réponse -> Vous copiez et envoyez manuellement",
+        "Le client ouvre votre lien de soumission -> BizPilot organise la demande -> Les détails manquants restent visibles -> L'IA prépare un brouillon -> Vous validez, copiez et envoyez manuellement",
     },
     finalCta: {
       body:
@@ -2193,33 +2194,33 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     cards: [
       {
         body:
-          "Offrez aux clients un endroit simple pour demander une soumission.",
-        title: "Capter chaque demande de soumission dans un flux clair.",
+          "Partagez un seul lien depuis votre site, Google Business Profile, Instagram, vos réponses enregistrées ou votre signature courriel.",
+        title: "Capter les demandes là où les clients vous trouvent déjà.",
       },
       {
         body:
-          "Voyez les nouvelles demandes de nettoyage dans un espace de travail plutôt que dans des messages dispersés.",
-        title: "Savoir qui attend une réponse maintenant.",
+          "Transformez les messages dispersés en fiche avec service, secteur, moment, contact, source et détails manquants.",
+        title: "Organiser chaque demande avant qu'elle devienne du travail d'inbox.",
       },
       {
         body:
-          "Révisez le service, le moment, les détails de propriété, les notes et le canal de contact avant de répondre.",
-        title: "Voir le contexte du travail avant de répondre.",
+          "Voyez si la demande vient du site web, de Google, d'Instagram, de Facebook, d'un courriel ou d'un autre placement du lien.",
+        title: "Garder la source visible sur le prospect.",
       },
       {
         body:
-          "Utilisez une première réponse pratique qui demande les détails manquants au lieu de deviner.",
-        title: "Préparer un brouillon à valider.",
+          "Utilisez une première réponse pratique qui demande les détails manquants au lieu de deviner le prix, le moment ou la disponibilité.",
+        title: "Préparer la première réponse sans inventer de détails.",
       },
       {
         body:
-          "Gardez la communication finale entre vos mains tout en avançant plus vite.",
-        title: "Copier et envoyer depuis le canal que vous utilisez déjà.",
+          "Validez le brouillon, ajustez le texte, copiez-le et envoyez-le depuis le canal que vous utilisez déjà.",
+        title: "Valider, copier et envoyer manuellement.",
       },
       {
         body:
-          "Voyez clairement la prochaine action : répondre, demander des détails, faire un suivi ou marquer la demande comme traitée.",
-        title: "Garder la prochaine action manuelle claire.",
+          "Gardez la prochaine action visible : répondre, demander des détails, faire un suivi, marquer traité ou noter le résultat manuel.",
+        title: "Empêcher les suivis de disparaître.",
       },
     ],
     meta: {
@@ -2233,17 +2234,17 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       body:
         "Une demande réaliste de nettoyage passe par un chemin simple et contrôlé.",
       items: [
-        "Le client envoie une demande de soumission",
-        "BizPilot organise le service, le moment et les détails manquants",
-        "L'IA prépare un brouillon à valider",
-        "Vous copiez, ajustez au besoin et envoyez manuellement",
+        "Le client ouvre le lien et envoie sa demande",
+        "BizPilot organise le service, la source, le moment et les détails manquants",
+        "L'IA prépare un brouillon pratique à valider",
+        "Vous copiez, envoyez manuellement et gardez le suivi visible",
       ],
       title: "Du lien de soumission à la réponse à valider.",
     },
     roadmap: {
       badge: "Feuille de route",
       body:
-        "Brouillons de suivi, rapports, Content Studio, intégrations et modèles pour d'autres secteurs sont prévus après validation.",
+        "Rapports avancés, Content Studio, intégrations et modèles pour d'autres secteurs sont prévus après validation.",
     },
     secondaryCta: "Lire l'approche de confiance",
     title: "Un système simple pour mieux gérer les demandes de nettoyage.",
