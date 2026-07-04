@@ -2509,14 +2509,14 @@ const englishCopy: BizPilotCopy = {
   quoteSuccess: {
     backHome: "Back home",
     body:
-      "The business will review your request and follow up directly. Nothing is booked and no price is confirmed yet.",
+      "The business will review your request and follow up directly. Nothing is booked, no price is confirmed, and availability still needs business review.",
     footer: (businessName) =>
       businessName
         ? `BizPilot helps ${businessName} reply faster while keeping every message approved by the business.`
         : "BizPilot helps the business reply faster while keeping every message approved by the business.",
     meta: {
       description:
-        "Quote request received for business review. No booking or price is confirmed by this page.",
+        "Quote request received for business review. No booking, price, or availability is confirmed by this page.",
       title: "Quote request received | BizPilot AI",
     },
     nextTitle: "What happens next",
@@ -2525,7 +2525,7 @@ const englishCopy: BizPilotCopy = {
       businessName
         ? `${businessName} reviews your request and any missing details.`
         : "The business reviews your request and any missing details.",
-      "They prepare a reply for approval - no automatic messages.",
+      "They check pricing and availability before replying - no automatic messages.",
       "You hear back through the contact details you submitted.",
     ],
     submitAnother: "Submit another request",
@@ -4069,14 +4069,14 @@ const frenchCopy: BizPilotCopy = {
   quoteSuccess: {
     backHome: "Retour à l'accueil",
     body:
-      "L'entreprise examinera votre demande et vous contactera directement pour la suite. Aucune réservation ni aucun prix n'est confirmé pour le moment.",
+      "L'entreprise examinera votre demande et vous contactera directement pour la suite. Aucune réservation ni aucun prix n'est confirmé, et la disponibilité doit encore être validée par l'entreprise.",
     footer: (businessName) =>
       businessName
         ? `BizPilot aide ${businessName} à répondre plus vite tout en gardant chaque message validé avant envoi.`
         : "BizPilot aide l'entreprise à répondre plus vite tout en gardant chaque message validé avant envoi.",
     meta: {
       description:
-        "Demande de soumission reçue pour validation par l'entreprise. Aucune réservation ni aucun prix n'est confirmé par cette page.",
+        "Demande de soumission reçue pour validation par l'entreprise. Aucune réservation, aucun prix ni aucune disponibilité ne sont confirmés par cette page.",
       title: "Demande de soumission reçue | BizPilot AI",
     },
     nextTitle: "Prochaines étapes",
@@ -4085,7 +4085,7 @@ const frenchCopy: BizPilotCopy = {
       businessName
         ? `${businessName} examine votre demande et les détails manquants.`
         : "L'entreprise examine votre demande et les détails manquants.",
-      "Elle prépare une réponse à valider avant tout envoi manuel - aucun message automatique.",
+      "Elle vérifie le prix et la disponibilité avant de répondre - aucun message automatique.",
       "Vous recevrez une réponse avec les coordonnées que vous avez soumises.",
     ],
     submitAnother: "Envoyer une autre demande",

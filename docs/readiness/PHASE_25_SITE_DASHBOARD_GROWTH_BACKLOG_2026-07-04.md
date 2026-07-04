@@ -496,6 +496,55 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25P
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25P_PUBLIC_QUOTE_INTAKE_FINAL_RECHECK_2026-07-04.md`:
+
+- Tightened quote success copy so customers understand pricing and availability
+  still require business review after submission.
+- Preserved quote-form guardrails against pricing, availability, or booking
+  confirmation.
+- Removed a no-op rate-limit demo branch from the quote form.
+- Added source-level regression coverage for noindex quote routes, inactive
+  quote fallback, attribution hidden fields, submit-action source reads,
+  required/custom/date/number/choice validation, consent/honeypot/stale-form
+  gates, rate-limit logging, privacy-mode storage, source metadata persistence,
+  and manual-only success expectations.
+
+Backlog items advanced:
+
+```text
+68 reinforced
+69 reinforced
+70 done at source level
+71 done at source level
+72 reinforced
+73 done
+74 done
+75 done at source level
+89 preserved as paid-pilot blocker
+90 preserved; no local RLS/database writes were run
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:quote -- --base-url=http://127.0.0.1:3036 --inactive-slug=phase1-unavailable-synthetic PASS
+```
+
 ## Progress Addendum - Phase 25O
 
 Date: 2026-07-04

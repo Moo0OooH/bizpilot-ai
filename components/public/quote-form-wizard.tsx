@@ -415,8 +415,6 @@ export function QuoteFormWizard({
         );
       })}
 
-      {query?.source === "rate_limited_demo" ? null : null}
-
       <p
         className="quote-submit-guardrail rounded-[14px] border p-4 text-[13px] leading-6 sm:p-5"
         style={{

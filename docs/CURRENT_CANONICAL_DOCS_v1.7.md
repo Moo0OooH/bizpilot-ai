@@ -220,6 +220,10 @@ starting new work:
 - `readiness/PHASE_25O_SECURITY_RUNTIME_OPS_2026-07-04.md` - latest
   security/ops evidence: abuse-log retention migration, privacy/incident and
   credential registers, CSP hardening path, and runtime posture.
+- `readiness/PHASE_25P_PUBLIC_QUOTE_INTAKE_FINAL_RECHECK_2026-07-04.md` -
+  latest public quote/intake evidence: attribution, validation, consent,
+  abuse/rate-limit gates, privacy-mode storage, inactive quote fallback, and
+  manual-only success expectations.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

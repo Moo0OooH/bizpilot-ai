@@ -23,6 +23,7 @@
  * - 2026-06-25: Locked Cleaning copy to six service detail entries instead of repeated families.
  * - 2026-06-25: Updated Cleaning layout source guard to the shared detail selector component.
  * - 2026-06-26: Locked the compact homepage workflow preview copy and legacy wording cleanup guards.
+ * - 2026-07-04: Locked quote success manual-review expectation copy.
  * ============================================================
  */
 
@@ -845,7 +846,7 @@ describe("BizPilot language copy", () => {
     );
     assert.equal(
       frenchCopy.quoteSuccess.steps("BizPilot Test")[1],
-      "Elle prépare une réponse à valider avant tout envoi manuel - aucun message automatique.",
+      "Elle vérifie le prix et la disponibilité avant de répondre - aucun message automatique.",
     );
 
     for (const forbidden of [
@@ -945,7 +946,7 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.home.preview.copyButton, "Copy reply");
     assert.deepEqual(englishBizPilotCopy.quoteSuccess.steps(""), [
       "The business reviews your request and any missing details.",
-      "They prepare a reply for approval - no automatic messages.",
+      "They check pricing and availability before replying - no automatic messages.",
       "You hear back through the contact details you submitted.",
     ]);
 
@@ -1615,5 +1616,31 @@ describe("BizPilot language copy", () => {
       }),
       "Custom owner consent notice",
     );
+  });
+
+  it("keeps quote success copy from implying booking, pricing, or availability confirmation", () => {
+    const english = getBizPilotCopy("en").quoteSuccess;
+    const englishBody = [
+      english.body,
+      english.meta.description,
+      ...english.steps("Sparkle Cleaning"),
+    ].join(" ");
+
+    assert.equal(englishBody.includes("Nothing is booked"), true);
+    assert.equal(englishBody.includes("no price is confirmed"), true);
+    assert.equal(englishBody.includes("availability still needs business review"), true);
+    assert.equal(englishBody.includes("no automatic messages"), true);
+
+    const french = getBizPilotCopy("fr-CA").quoteSuccess;
+    const frenchBody = [
+      french.body,
+      french.meta.description,
+      ...french.steps("BizPilot Test"),
+    ].join(" ");
+
+    assert.equal(frenchBody.includes("Aucune réservation"), true);
+    assert.equal(frenchBody.includes("aucun prix n'est confirmé"), true);
+    assert.equal(frenchBody.includes("aucune disponibilité ne sont confirmés"), true);
+    assert.equal(frenchBody.includes("aucun message automatique"), true);
   });
 });
