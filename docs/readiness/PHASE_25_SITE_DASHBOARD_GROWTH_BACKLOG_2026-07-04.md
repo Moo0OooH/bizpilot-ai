@@ -496,6 +496,55 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25N
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25N_FAQ_AI_SEARCH_COMPLETION_2026-07-04.md`:
+
+- Expanded EN/fr-CA FAQ content for owner-intent questions around form builders,
+  SMS/WhatsApp/Instagram/email automation, paid-pilot prerequisites, source
+  attribution/privacy, and FAQ schema/AI-search expectations.
+- Kept the five-section FAQ structure and visible-answer JSON-LD path intact.
+- Recorded current Google caveats: FAQ rich results are no longer shown
+  regularly for most sites, structured data does not guarantee rich results,
+  and AI-search visibility still depends on helpful, crawlable, people-first
+  content.
+- Preserved product truth: no auto-send, no booking, no payment automation, no
+  full CRM, no real-data approval, and no paid-pilot approval.
+
+Backlog items advanced:
+
+```text
+17 verified from Phase 25A and documented with current Google FAQ caveat
+28 done
+30 preserved
+76 preserved
+77 preserved
+78 preserved
+79 preserved
+83 preserved as paid-pilot blocked
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3035 PASS
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3035 PASS
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3035 --timeout-ms=60000 PASS
+```
+
 ## Progress Addendum - Phase 25M
 
 Date: 2026-07-04

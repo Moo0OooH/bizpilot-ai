@@ -17,6 +17,7 @@
  * - 2026-07-04: Added comparison route, JSON-LD, OG image, and roadmap noindex guards.
  * - 2026-07-04: Added Search Console and Core Web Vitals baseline evidence guards.
  * - 2026-07-04: Added no-PII analytics taxonomy guards.
+ * - 2026-07-04: Added FAQ AI-search completion evidence guards.
  * ============================================================
  */
 
@@ -355,6 +356,47 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(comparison.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(quoteLinkGuide.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(ogImage.includes("ImageResponse"), true);
+  });
+
+  it("keeps FAQ AI-search content source-backed without ranking claims", () => {
+    const faqCopy = getPublicSiteCopy("en").faq;
+    const questions = faqCopy.sections.flatMap((section) =>
+      section.items.map((item) => item.question),
+    );
+    const faqRoute = source("app/faq/page.tsx");
+    const structured = source("lib/public-structured-data.ts");
+    const phase25n = source(
+      "docs/readiness/PHASE_25N_FAQ_AI_SEARCH_COMPLETION_2026-07-04.md",
+    );
+
+    for (const question of [
+      "What makes BizPilot different from a form builder?",
+      "Can BizPilot send SMS, WhatsApp, Instagram, or email replies for me?",
+      "What has to be confirmed before a paid pilot starts?",
+      "Does BizPilot track where quote requests came from?",
+      "Will FAQ schema or AI-search content guarantee rankings?",
+    ]) {
+      assert.equal(questions.includes(question), true);
+    }
+
+    assert.equal(faqRoute.includes("buildFaqPageJsonLd(faqItems"), true);
+    assert.equal(structured.includes('"FAQPage"'), true);
+    for (const required of [
+      "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data",
+      "https://developers.google.com/search/docs/appearance/structured-data/search-gallery",
+      "https://developers.google.com/search/blog/2023/08/howto-faq-changes",
+      "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+      "https://developers.google.com/search/docs/fundamentals/ai-optimization-guide",
+      "FAQPage JSON-LD does not guarantee indexing, rankings, rich results, AI",
+      "BizPilot does not auto-send messages.",
+      "Paid pilot collection remains blocked",
+    ]) {
+      assert.equal(
+        phase25n.includes(required),
+        true,
+        `Phase 25N evidence missing ${required}.`,
+      );
+    }
   });
 
   it("keeps Search Console and Core Web Vitals checklist source-backed", () => {

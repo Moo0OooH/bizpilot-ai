@@ -27,6 +27,7 @@
  * - 2026-06-26: Shortened homepage hero badge/body copy for premium mobile fit.
  * - 2026-07-04: Added honest comparison-route copy for Phase 25 SEO and buyer education.
  * - 2026-07-04: Added a quote-link placement guide for local-GTM onboarding.
+ * - 2026-07-04: Expanded FAQ with AI-search owner-intent questions.
  * ============================================================
  */
 
@@ -1118,6 +1119,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
               "Start with the places customers already check: your website, Google Business Profile, Instagram bio, saved replies, and email signature. BizPilot does not require a new integration to make the link useful.",
             question: "Where should a cleaning business place the quote link?",
           },
+          {
+            answer:
+              "Form builders collect answers and stop. BizPilot keeps the quote request connected to source context, missing details, owner-reviewed reply drafts, and follow-up state so the owner can respond without moving into a full CRM.",
+            question: "What makes BizPilot different from a form builder?",
+          },
         ],
         title: "Pilot basics",
       },
@@ -1143,6 +1149,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
               "No. BizPilot can help collect quote details before a responsible reply, but it does not confirm bookings, schedules, prices, deposits, or invoices.",
             question: "Is BizPilot a booking system?",
           },
+          {
+            answer:
+              "No. SMS, WhatsApp, Instagram, Facebook, and email replies stay manual in the pilot. BizPilot can prepare copy for you to review and paste into your own channel; it does not connect accounts or send messages.",
+            question: "Can BizPilot send SMS, WhatsApp, Instagram, or email replies for me?",
+          },
         ],
         title: "AI and business control",
       },
@@ -1162,6 +1173,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
             answer:
               "Setup is founder-guided during the controlled pilot so services, quote questions, and the reply flow can be checked before real use.",
             question: "What happens during setup?",
+          },
+          {
+            answer:
+              "Support expectations, refund terms, payment method, setup timing, rollback expectations, restored app/RLS proof, and real-data approval must be confirmed before any paid pilot starts.",
+            question: "What has to be confirmed before a paid pilot starts?",
           },
         ],
         title: "Pricing and billing",
@@ -1183,6 +1199,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
               "No. BizPilot provides product guardrails and plain-language references, but it does not replace legal, privacy, or security advice.",
             question: "Does BizPilot provide legal advice?",
           },
+          {
+            answer:
+              "BizPilot can keep safe source context such as website, Google Business Profile, Instagram, Facebook, referrer, or approved UTM fields so owners learn which placements bring quote requests. Customer details should not be sent to analytics.",
+            question: "Does BizPilot track where quote requests came from?",
+          },
         ],
         title: "Data, privacy, and readiness",
       },
@@ -1202,6 +1223,11 @@ const englishPublicSiteCopy: PublicSiteCopy = {
             answer:
               "Yes. The founder pilot is intentionally small so real cleaning-business feedback can shape the workflow before broader rollout.",
             question: "Can pilot businesses influence the product?",
+          },
+          {
+            answer:
+              "No. FAQPage JSON-LD and clear answers help search systems understand the page, but they do not guarantee indexing, rankings, rich results, AI Overviews, or AI Mode visibility.",
+            question: "Will FAQ schema or AI-search content guarantee rankings?",
           },
         ],
         title: "Roadmap",
@@ -2390,6 +2416,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
               "Commencez par les endroits que les clients consultent déjà: votre site web, votre profil Google Business, votre bio Instagram, vos réponses enregistrées et votre signature courriel. BizPilot n'exige pas une nouvelle intégration pour rendre le lien utile.",
             question: "Où placer le lien de soumission?",
           },
+          {
+            answer:
+              "Un formulaire recueille des réponses, puis s'arrête. BizPilot garde la demande liée à la source, aux détails manquants, aux brouillons à valider et à l'état du suivi afin que le propriétaire puisse répondre sans passer à un CRM complet.",
+            question: "Qu'est-ce qui différencie BizPilot d'un formulaire?",
+          },
         ],
         title: "Bases du projet pilote",
       },
@@ -2415,6 +2446,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
               "Non. BizPilot peut aider à recueillir les détails avant une réponse responsable, mais il ne confirme pas les réservations, les horaires, les prix, les dépôts ou les factures.",
             question: "BizPilot est-il un système de réservation?",
           },
+          {
+            answer:
+              "Non. Les réponses par SMS, WhatsApp, Instagram, Facebook et courriel restent manuelles pendant le projet pilote. BizPilot peut préparer un texte à valider et à coller dans votre propre canal; il ne connecte pas de comptes et n'envoie pas de messages.",
+            question: "BizPilot peut-il envoyer des réponses par SMS, WhatsApp, Instagram ou courriel?",
+          },
         ],
         title: "IA et contrôle par l'entreprise",
       },
@@ -2434,6 +2470,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
             answer:
               "La configuration est guidée par le fondateur pendant le projet pilote contrôlé afin de vérifier les services, les questions de soumission et le flux de validation avant l'utilisation réelle.",
             question: "Que se passe-t-il pendant la configuration?",
+          },
+          {
+            answer:
+              "Les attentes de soutien, les conditions de remboursement, le mode de paiement, le calendrier de configuration, le plan de retour arrière, la preuve app/RLS restaurée et l'approbation des données réelles doivent être confirmés avant tout projet pilote payant.",
+            question: "Qu'est-ce qui doit être confirmé avant un pilote payant?",
           },
         ],
         title: "Tarifs et facturation",
@@ -2455,6 +2496,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
               "Non. BizPilot fournit des garde-fous produit et des références en langage clair, mais ne remplace pas les conseils juridiques, de confidentialité ou de sécurité.",
             question: "BizPilot donne-t-il des conseils juridiques?",
           },
+          {
+            answer:
+              "BizPilot peut garder un contexte de source sécuritaire comme le site web, Google Business Profile, Instagram, Facebook, le référent ou des champs UTM approuvés afin d'aider le propriétaire à voir quels placements génèrent des demandes. Les détails client ne doivent pas être envoyés à l'analytique.",
+            question: "BizPilot suit-il d'où viennent les demandes?",
+          },
         ],
         title: "Données, confidentialité et approbation",
       },
@@ -2474,6 +2520,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
             answer:
               "Oui. Le projet pilote reste volontairement petit afin que les commentaires réels des entreprises de nettoyage façonnent le flux avant un lancement plus large.",
             question: "Les entreprises pilotes peuvent-elles influencer le produit?",
+          },
+          {
+            answer:
+              "Non. Le JSON-LD FAQPage et les réponses claires aident les systèmes de recherche à comprendre la page, mais ne garantissent pas l'indexation, le classement, les résultats enrichis, les AI Overviews ni la visibilité dans AI Mode.",
+            question: "Le schéma FAQ ou le contenu pour recherche IA garantit-il le classement?",
           },
         ],
         title: "Feuille de route",

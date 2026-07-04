@@ -214,6 +214,9 @@ starting new work:
   evidence: founder CRM, manual outreach, demo script, pilot support/payment
   packet, quote-link placement, and local review guidance without opening paid
   pilot or real-data gates.
+- `readiness/PHASE_25N_FAQ_AI_SEARCH_COMPLETION_2026-07-04.md` - latest
+  FAQ/AI-search evidence: expanded owner-intent FAQ content and current Google
+  FAQ/AI-search caveats without ranking, rich-result, or AI visibility claims.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

@@ -1055,6 +1055,23 @@ describe("BizPilot language copy", () => {
       ],
     );
     assert.equal(englishPublicCopy.faq.sections.length, 5);
+    const fullFaqQuestions = englishPublicCopy.faq.sections.flatMap((section) =>
+      section.items.map((item) => item.question),
+    );
+    assert.equal(fullFaqQuestions.length >= 23, true);
+    for (const question of [
+      "What makes BizPilot different from a form builder?",
+      "Can BizPilot send SMS, WhatsApp, Instagram, or email replies for me?",
+      "What has to be confirmed before a paid pilot starts?",
+      "Does BizPilot track where quote requests came from?",
+      "Will FAQ schema or AI-search content guarantee rankings?",
+    ]) {
+      assert.equal(
+        fullFaqQuestions.includes(question),
+        true,
+        `Full FAQ missing owner-intent question: ${question}`,
+      );
+    }
     assert.equal(
       englishPublicCopy.faq.sections.reduce(
         (total, section) => total + section.items.length,
