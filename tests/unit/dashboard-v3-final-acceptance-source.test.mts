@@ -13,6 +13,7 @@
  * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-07-04: Updated owner overview guards for the simplified action-first cockpit.
+ * - 2026-07-04: Added source guards for local dashboard display preferences.
  * ============================================================
  */
 
@@ -156,6 +157,14 @@ describe("Dashboard V3 final acceptance source guards", () => {
       "app/(dashboard)/dashboard/settings/page.tsx",
       "utf8",
     );
+    const displayPreferences = readFileSync(
+      "components/dashboard/dashboard-display-preferences.tsx",
+      "utf8",
+    );
+    const dashboardShell = readFileSync(
+      "components/dashboard/dashboard-shell.tsx",
+      "utf8",
+    );
     const dashboardLayout = readFileSync(
       "app/(dashboard)/layout.tsx",
       "utf8",
@@ -188,10 +197,28 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(leadDetail.includes("max-h-[26rem]"), true);
     assert.equal(leadDetail.includes("xl:grid-cols-[minmax(0,1fr)_24rem]"), true);
     assert.equal(settings.includes("countFeaturesByState"), true);
+    assert.equal(settings.includes("DashboardDisplayPreferencesControl"), true);
+    assert.equal(settings.includes("settingsCopy.displayPreferences"), true);
     assert.equal(settings.includes("<details className="), true);
     assert.equal(settings.includes("WorkspaceDeletionRequestForm"), true);
     assert.equal(settings.includes("rounded-[14px]"), false);
     assert.equal(settings.includes("rounded-[16px]"), false);
+    assert.equal(dashboardShell.includes("DashboardDisplayPreferencesFrame"), true);
+    assert.equal(
+      displayPreferences.includes("bizpilot-dashboard-display-preferences"),
+      true,
+    );
+    assert.equal(displayPreferences.includes("window.localStorage"), true);
+    assert.equal(
+      displayPreferences.includes("[data-dashboard-optional-guide]"),
+      true,
+    );
+    assert.equal(
+      displayPreferences.includes("insightMode"),
+      true,
+    );
+    assert.equal(globals.includes('[data-dashboard-guides="minimal"]'), true);
+    assert.equal(globals.includes('[data-dashboard-insights="hidden"]'), true);
     assert.equal(flashMessage.includes("rounded-[14px]"), false);
     assert.equal(flashMessage.includes("var(--dash-danger-border)"), true);
     assert.equal(flashMessage.includes("var(--dash-success-border)"), true);

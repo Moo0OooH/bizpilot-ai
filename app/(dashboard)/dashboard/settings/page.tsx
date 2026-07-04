@@ -13,6 +13,7 @@
  * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-07-04: Added collapsed feature guide details without enabling blocked feature states.
+ * - 2026-07-04: Added local display preferences for dashboard density, optional guides, and insight panels.
  * - 2026-05-18: Created Settings shell.
  * - 2026-05-19: Rebuilt as three-card row exactly matching the index — Account, Theme, Future — and added a sticky workspace-info side panel + scope guard.
  * - 2026-06-27: Collapsed long feature/history documentation behind compact settings summaries.
@@ -24,6 +25,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { DashboardDisplayPreferencesControl } from "@/components/dashboard/dashboard-display-preferences";
 import { DashboardThemeSelector } from "@/components/dashboard/dashboard-theme";
 import { FlashMessage } from "@/components/dashboard/flash-message";
 import { WorkspaceDeletionRequestForm } from "@/components/dashboard/workspace-deletion-request-form";
@@ -293,6 +295,12 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
               </div>
             </DashboardCard>
 
+            <DashboardCard className="p-4 lg:col-span-2 2xl:col-span-3">
+              <DashboardDisplayPreferencesControl
+                copy={settingsCopy.displayPreferences}
+              />
+            </DashboardCard>
+
             <DashboardCard className="p-4">
               <SectionHeader
                 description={settingsCopy.sessionPolicy.description}
@@ -341,7 +349,10 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                   </div>
                 ))}
               </div>
-              <details className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
+              <details
+                className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]"
+                data-dashboard-optional-guide
+              >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2.5 text-[13px] font-black text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
                   <span>{settingsCopy.featureRegistry.guidesLabel}</span>
                   <StatusBadge tone="blue">{featureRegistry.length}</StatusBadge>

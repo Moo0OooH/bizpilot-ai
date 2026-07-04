@@ -11,13 +11,14 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-05-19: Matched approved index.html topbar hierarchy: page title left, focused actions right, no global search clutter.
  * - 2026-05-23: Localized route context and actions through the central dashboard copy dictionary.
  * - 2026-05-26: Tightened responsive controls and made founder entry visible on desktop dashboards.
  * - 2026-06-27: Rendered topbar route context as display text so page content owns the H1.
  * - 2026-06-27: Kept the mobile action menu inside the viewport.
+ * - 2026-07-04: Added a direct route to local display settings from the action menu.
  * ============================================================
  */
 
@@ -141,6 +142,12 @@ export function DashboardTopbar({
               />
               <Link className={`${buttonClass} w-full justify-start`} href={quotePath}>
                 {copy.actions.previewQuotePage}
+              </Link>
+              <Link
+                className={`${buttonClass} w-full justify-start`}
+                href="/dashboard/settings#display-preferences"
+              >
+                {copy.actions.displaySettings}
               </Link>
               {showFounderAdmin ? (
                 <Link className={`${ghostButtonClass} w-full justify-start`} href="/admin">

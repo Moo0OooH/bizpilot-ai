@@ -376,7 +376,10 @@ export default async function BusinessProfilePage({
           </DashboardCard>
         </section>
 
-        <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-sm sm:p-5">
+        <details
+          className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-sm sm:p-5"
+          data-dashboard-optional-guide
+        >
           <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
             <span className="block text-[13px] font-black text-[var(--dash-text)]">
               {text.futureFields}

@@ -10,8 +10,9 @@
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-07-04
  * Change Log:
+ * - 2026-07-04: Localized default public quote fields from the active route language instead of workspace default only.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-06: Created Phase 4 public intake repository.
  * ============================================================
@@ -180,6 +181,7 @@ export async function upsertIntakeFormFromTemplate(input: {
 }
 
 export async function getPublicIntakePageBySlug(input: {
+  language?: unknown;
   slug: string;
   supabase: SupabaseClient<Database>;
 }): Promise<PublicIntakePageRecord | null> {
@@ -239,7 +241,7 @@ export async function getPublicIntakePageBySlug(input: {
       fieldKey: field.field_key,
       helpText: field.help_text,
       label: field.label,
-      language: publicLink.preferred_language,
+      language: input.language ?? publicLink.preferred_language,
     });
 
     return {

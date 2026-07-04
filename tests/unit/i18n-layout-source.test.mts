@@ -1,7 +1,19 @@
 /**
+ * ============================================================
  * File: tests/unit/i18n-layout-source.test.mts
  * Project: BizPilot AI
  * Description: Source-level guards for bilingual copy health and compact page layouts.
+ * Role: Protects localized copy shape and compact/collapsible page behavior.
+ * Related:
+ * - lib/i18n/bizpilot-copy.ts
+ * - app/(dashboard)/dashboard/settings/page.tsx
+ * - app/page.tsx
+ * Author: MoOoH
+ * Created: 2026-06-19
+ * Last Updated: 2026-07-04
+ * Change Log:
+ * - 2026-07-04: Updated Settings compact guide guard for display-preference data attributes.
+ * ============================================================
  */
 
 import assert from "node:assert/strict";
@@ -49,7 +61,7 @@ describe("bilingual copy and compact layout guards", () => {
     assert.equal(source.includes("countFeaturesByState"), true);
     assert.equal(source.includes("featureStateCounts"), true);
     assert.equal(source.includes("settingsCopy.featureRegistry.guidesLabel"), true);
-    assert.equal(source.includes("<details className=\"mt-3"), true);
+    assert.equal(source.includes("data-dashboard-optional-guide"), true);
     assert.equal(source.includes("settingsCopy.systemHistory.title"), true);
     assert.equal(source.includes("settingsCopy.lifecycle.title"), true);
     assert.equal(source.includes('DashboardCard className="p-[18px]'), false);

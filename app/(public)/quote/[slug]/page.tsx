@@ -22,6 +22,7 @@
  * - 2026-06-25: Polished quote shell spacing while preserving safe GET and submit behavior.
  * - 2026-06-27: Guarded route error copy against raw provider or database messages.
  * - 2026-07-04: Preserved safe quote-link attribution across source URL capture and language switches.
+ * - 2026-07-04: Loaded default quote-field labels from the active quote language to prevent EN/FR mixing.
  * ============================================================
  */
 
@@ -103,8 +104,8 @@ export default async function QuotePage({
 }: QuotePageProps) {
   const { slug } = await params;
   const query = await searchParams;
-  const page = await getPublicIntakePage({ slug });
   const activeLanguage = readQuoteLanguage(query);
+  const page = await getPublicIntakePage({ language: activeLanguage, slug });
   const attributionQuery = buildQuoteAttributionFormQuery({ query, slug });
   const copy = getPublicSiteCopy(activeLanguage).quoteShell;
   const intakeErrors = getBizPilotCopy(activeLanguage).intakeErrors;

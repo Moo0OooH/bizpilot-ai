@@ -956,7 +956,10 @@ export default async function DashboardOverviewPage() {
             </div>
           </RightRailPanel>
 
-          <details className="overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]">
+          <details
+            className="overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]"
+            data-dashboard-optional-guide
+          >
             <summary className="cursor-pointer list-none px-3.5 py-3 text-[13px] font-black text-[var(--dash-text)] transition hover:bg-[var(--dash-surface-muted)] [&::-webkit-details-marker]:hidden">
               {overviewCopy.guidesAndAiControls}
             </summary>
@@ -998,7 +1001,10 @@ export default async function DashboardOverviewPage() {
         </aside>
       </section>
 
-      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(300px,0.65fr)]">
+      <section
+        className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(300px,0.65fr)]"
+        data-dashboard-insight-panel
+      >
         <DashboardCard className="p-4">
           <SectionHeader
             action={

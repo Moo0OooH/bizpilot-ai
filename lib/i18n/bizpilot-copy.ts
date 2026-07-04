@@ -15,6 +15,7 @@
  * Change Log:
  * - 2026-07-04: Added Settings feature guide details and lead queue pagination copy.
  * - 2026-07-04: Tightened dashboard copy around manual draft review, copied replies, and unwired roadmap fields.
+ * - 2026-07-04: Added local dashboard display preference copy for density, guide, and insight controls.
  * - 2026-06-16: Aligned Settings copy with Phase 23/24 readiness and first-pilot manual-only decisions.
  * - 2026-06-19: Updated dashboard theme help copy for the Light-by-default public theme foundation.
  * - 2026-06-21: Added localized quote success noindex metadata.
@@ -833,6 +834,7 @@ type DashboardCopy = Readonly<{
     copyFailed: string;
     copyQuoteLink: string;
     copySuccess: string;
+    displaySettings: string;
     moreActions: string;
     openLeadQueue: string;
     previewPublicPage: string;
@@ -887,6 +889,18 @@ type DashboardCopy = Readonly<{
     account: string;
     billing: string;
     business: string;
+    displayPreferences: Readonly<{
+      densityLabel: string;
+      densityOptions: Readonly<Record<"compact" | "comfortable" | "spacious", string>>;
+      description: string;
+      guideLabel: string;
+      guideOptions: Readonly<Record<"expanded" | "minimal" | "standard", string>>;
+      insightLabel: string;
+      insightOptions: Readonly<Record<"hidden" | "standard", string>>;
+      localOnly: string;
+      reset: string;
+      title: string;
+    }>;
     featureRegistry: DashboardFeatureRegistryCopy;
     future: string;
     futureSections: string;
@@ -1145,6 +1159,7 @@ const englishCopy: BizPilotCopy = {
       copyFailed: "Copy failed",
       copyQuoteLink: "Copy quote link",
       copySuccess: "Copied",
+      displaySettings: "Display settings",
       moreActions: "Actions",
       openLeadQueue: "Open Lead Queue",
       previewPublicPage: "Preview public page",
@@ -1891,6 +1906,31 @@ const englishCopy: BizPilotCopy = {
       account: "Account",
       billing: "Billing",
       business: "Business",
+      displayPreferences: {
+        densityLabel: "Density",
+        densityOptions: {
+          compact: "Compact",
+          comfortable: "Comfortable",
+          spacious: "Wide",
+        },
+        description:
+          "Adjust how much dashboard help and insight detail is visible on this device. These controls do not change workspace data.",
+        guideLabel: "Guide panels",
+        guideOptions: {
+          expanded: "Expanded",
+          minimal: "Minimal",
+          standard: "Standard",
+        },
+        insightLabel: "Insight panels",
+        insightOptions: {
+          hidden: "Hide optional insights",
+          standard: "Show insights",
+        },
+        localOnly:
+          "Saved locally in this browser. Owner workflow, quote setup, and admin gates stay unchanged.",
+        reset: "Reset view",
+        title: "Display preferences",
+      },
       featureRegistry: {
         activationLabel: "Activation",
         categoryLabels: {
@@ -2692,6 +2732,7 @@ const frenchCopy: BizPilotCopy = {
       copyFailed: "Copie impossible",
       copyQuoteLink: "Copier le lien",
       copySuccess: "Copié",
+      displaySettings: "Reglages d'affichage",
       moreActions: "Actions",
       openLeadQueue: "Ouvrir les prospects",
       previewPublicPage: "Voir la page publique",
@@ -3454,6 +3495,31 @@ const frenchCopy: BizPilotCopy = {
       account: "Compte",
       billing: "Facturation",
       business: "Entreprise",
+      displayPreferences: {
+        densityLabel: "Densite",
+        densityOptions: {
+          compact: "Compact",
+          comfortable: "Confortable",
+          spacious: "Large",
+        },
+        description:
+          "Ajustez la quantite d'aide et de details visibles dans ce navigateur. Ces reglages ne changent pas les donnees de l'espace.",
+        guideLabel: "Guides",
+        guideOptions: {
+          expanded: "Developpe",
+          minimal: "Minimal",
+          standard: "Standard",
+        },
+        insightLabel: "Panneaux d'analyse",
+        insightOptions: {
+          hidden: "Masquer les analyses optionnelles",
+          standard: "Afficher les analyses",
+        },
+        localOnly:
+          "Enregistre localement dans ce navigateur. Le flux responsable, la configuration et les controles admin ne changent pas.",
+        reset: "Reinitialiser la vue",
+        title: "Reglages d'affichage",
+      },
       featureRegistry: {
         activationLabel: "Activation",
         categoryLabels: {

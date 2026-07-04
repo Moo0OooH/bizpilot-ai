@@ -9,7 +9,7 @@ Related:
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-06-27
+Last Updated: 2026-07-04
 Change Log:
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
@@ -26,6 +26,7 @@ Change Log:
 - 2026-06-21: Added public dark-theme mappings for teal callout panels and dark utility buttons.
 - 2026-06-21: Added localization-aware copy roles and cleaning service/detail grids.
 - 2026-06-21: Tightened homepage hero first-fold spacing and preview-card sizing.
+- 2026-07-04: Added protected dashboard display preference selectors for density, optional guides, and insights.
 - 2026-06-21: Added pricing-card container query behavior for compact multilingual CTAs.
 - 2026-06-21: Mapped public amber utility surfaces to semantic dark-theme tokens.
 - 2026-06-21: Added hydration-stable theme trigger icon switching.
@@ -547,6 +548,28 @@ select {
   max-width: var(--dashboard-max);
   margin-inline: auto;
   min-inline-size: 0;
+}
+
+.dashboard-frame[data-dashboard-density="compact"] .dashboard-container {
+  --dashboard-max: 84rem;
+}
+
+.dashboard-frame[data-dashboard-density="comfortable"] .dashboard-container {
+  --dashboard-max: 96rem;
+}
+
+.dashboard-frame[data-dashboard-density="spacious"] .dashboard-container {
+  --dashboard-max: 108rem;
+}
+
+.dashboard-frame[data-dashboard-guides="minimal"] [data-dashboard-optional-guide],
+.dashboard-frame[data-dashboard-insights="hidden"] [data-dashboard-insight-panel] {
+  display: none !important;
+}
+
+[data-dashboard-optional-guide],
+[data-dashboard-insight-panel] {
+  scroll-margin-top: 5rem;
 }
 
 .public-card-grid {
