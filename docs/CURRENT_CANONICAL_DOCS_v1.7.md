@@ -224,6 +224,9 @@ starting new work:
   latest public quote/intake evidence: attribution, validation, consent,
   abuse/rate-limit gates, privacy-mode storage, inactive quote fallback, and
   manual-only success expectations.
+- `readiness/PHASE_25Q_WHOLE_PROJECT_REAUDIT_AND_FINAL_CHECKLIST_2026-07-04.md` -
+  latest whole-project re-audit and updated 0-100 checklist after Phase 25P;
+  identifies homepage hero/visual polish as the next safe execution phase.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

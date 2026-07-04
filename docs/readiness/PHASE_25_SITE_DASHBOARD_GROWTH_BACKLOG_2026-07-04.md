@@ -496,6 +496,53 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25Q
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25Q_WHOLE_PROJECT_REAUDIT_AND_FINAL_CHECKLIST_2026-07-04.md`:
+
+- Re-audited the full project after Phase 25P against the original Phase 25
+  working scores, route audit, dashboard audit, and 100-point checklist.
+- Recorded the current repo snapshot at `51e9b29`, stack posture, verification
+  baseline, and untracked local output.
+- Added a refreshed 0-100 checklist with explicit `DONE`, `REINFORCED`,
+  `PARTIAL`, `PENDING`, `BLOCKED`, and `FUTURE-BLOCKED` statuses.
+- Identified the next safe execution phase as homepage hero, bilingual
+  first-impression, and public visual proof polish.
+- Kept real customer data, paid pilot, local RLS/restored-app proof, analytics
+  sink, messaging, booking, payments, team access, multi-vertical expansion, and
+  autonomous AI blocked.
+
+Backlog items advanced:
+
+```text
+0 done as current snapshot
+1 preserved as blocked
+2 preserved as blocked
+3 reinforced
+4 refreshed to 51e9b29
+5 reinforced
+6 reinforced
+7 reinforced
+11 reinforced
+12 reinforced
+21 selected as next safe public polish phase
+24 kept partial for future local scenario content
+27 kept pending for product-real demo visuals
+45 reinforced
+49-67 kept pending/blocked behind local dashboard QA gates
+77-78 kept blocked behind analytics approval
+89-90 kept blocked behind local/restored proof
+93-100 preserved as future-blocked
+```
+
+Verification:
+
+```text
+git diff --check PASS
+```
+
 ## Progress Addendum - Phase 25P
 
 Date: 2026-07-04
