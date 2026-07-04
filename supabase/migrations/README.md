@@ -3,7 +3,7 @@
 **Version:** v1.0
 **Status:** Active
 **Owner:** MoOoH
-**Last Updated:** 2026-06-17
+**Last Updated:** 2026-07-04
 **Related:**
 - `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`
 - `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
@@ -37,6 +37,7 @@
 | `0021_session_policy_and_owner_audit.sql` | Adds founder-controlled workspace sign-out policy fields and extends founder admin audit actions for session policy and password-support traceability. |
 | `0022_custom_quote_field_builder.sql` | Allows owner-defined quote form fields to use radio-button choice controls by extending the safe field-type constraints on template and intake fields. |
 | `0023_public_submission_abuse_log_retention.sql` | Adds a service-role-only cleanup helper for old hashed public submission abuse/rate-limit metadata. No anon/authenticated execution grant. |
+| `0024_supabase_status_and_rls_performance_hardening.sql` | Adds non-destructive RLS performance hardening: policy-supporting indexes plus initPlan-friendly `(select auth.uid())` helper/policy rewrites. No data deletion, restart, resize, or remote upgrade. |
 
 ---
 
@@ -52,7 +53,7 @@ The original `0003` migration was removed from the repository because keeping it
 
 ## Rules for new migrations
 
-1. **Preserve numbering.** New files must use the next available integer prefix (currently `0023`). Never rename or re-number an existing migration.
+1. **Preserve numbering.** New files must use the next available integer prefix (currently `0024`). Never rename or re-number an existing migration.
 2. **One concern per file.** A migration adds, alters, or removes a focused set of related tables, functions, policies, or grants. Cross-cutting changes go in separate files.
 3. **File header is mandatory.** Use the BizPilot SQL header format (path, project, description, role, related, author, created/updated, change log) as shown in the existing files.
 4. **Tables created here must include:**
@@ -64,6 +65,19 @@ The original `0003` migration was removed from the repository because keeping it
 5. **Do not rely on Supabase public-schema default grants.** Supabase's 2026 Data API default change means new public tables must opt in with explicit grants before client-library/Data API access works. Keep the grant contract in the same migration that creates or exposes the object.
 6. **No dashboard-driven schema changes.** Any production schema change made via the Supabase dashboard must be backfilled into a migration in the same working session.
 7. **Tests live separately.** Add an RLS test under `tests/rls/<feature>.test.sql` for every new tenant or public-facing table created by the migration.
+
+---
+
+## Supabase operational status gate
+
+On 2026-07-04 the Supabase status page reported degraded compute capacity affecting project creation, restarts, resizes, branch provisioning, restores, and database upgrades in multiple regions. Existing running projects were described as available unless restarted/resized/upgraded during the incident.
+
+Until status is fully healthy:
+
+1. Prefer source-only migration work and local validation.
+2. Do not restart, resize, restore, branch, or upgrade the managed project during degraded compute capacity unless the owner explicitly accepts the operational risk in that session.
+3. Check the managed project's Postgres version in Supabase Dashboard > Project Settings > Infrastructure. If it is older than `17.6.1.121`, plan an upgrade window after capacity is healthy.
+4. Keep destructive cleanup local or in a reviewed migration. Remote destructive execution still requires exact target confirmation, even when the project currently has no real users.
 
 ---
 

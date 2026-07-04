@@ -13,6 +13,7 @@
  * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-07-04: Added Phase 25O security/runtime operations guards.
+ * - 2026-07-04: Synced migration index guard after Supabase readiness hardening migration.
  * ============================================================
  */
 
@@ -70,7 +71,7 @@ describe("security and runtime operations source contracts", () => {
       migrationIndex.includes("0023_public_submission_abuse_log_retention.sql"),
       true,
     );
-    assert.equal(migrationIndex.includes("currently `0023`"), true);
+    assert.equal(migrationIndex.includes("currently `0024`"), true);
   });
 
   it("keeps RLS coverage for abuse retention cleanup without running production DB", () => {
