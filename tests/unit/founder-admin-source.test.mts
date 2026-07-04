@@ -1,7 +1,19 @@
 /**
+ * ============================================================
  * File: tests/unit/founder-admin-source.test.mts
  * Project: BizPilot AI
  * Description: Source-level guardrails for founder admin resilience.
+ * Role: Keeps founder-admin controls honest, gated, scannable, and safe from misleading automation or analytics claims.
+ * Related:
+ * - app/admin/page.tsx
+ * - server/services/founder-admin.service.ts
+ * - components/admin/founder-test-cleanup-form.tsx
+ * Author: MoOoH
+ * Created: 2026-05-26
+ * Last Updated: 2026-07-04
+ * Change Log:
+ * - 2026-07-04: Added founder-admin metric honesty guards against sent-reply and fake-conversion claims.
+ * ============================================================
  */
 
 import assert from "node:assert/strict";
@@ -189,6 +201,46 @@ describe("Founder admin source safety", () => {
     assert.equal(founderHandoffSource.includes("Safety gates"), true);
     assert.equal(founderHandoffSource.includes("Open Founder Admin"), true);
     assert.equal(founderHandoffSource.includes("Phase 18B shell"), false);
+  });
+
+  it("keeps founder admin overview metrics honest before real pilot analytics", () => {
+    const pageSource = readFileSync("app/admin/page.tsx", "utf8");
+
+    for (const forbidden of [
+      "AI Replies Sent",
+      "AI Replied",
+      "Average Reply Time",
+      "Quote Link Sent Rate",
+      "Setup Conversion Rate",
+      "Leads This Month",
+      "Last 7 days",
+      'value={aiReplySignal > 0 ? "28m" : "N/A"}',
+    ]) {
+      assert.equal(
+        pageSource.includes(forbidden),
+        false,
+        `Founder admin overview should not imply unsupported analytics: ${forbidden}`,
+      );
+    }
+
+    for (const required of [
+      "Reply Traces",
+      "Response Time Tracking",
+      "Not enabled",
+      "Ready Quote Links",
+      "Active Link Coverage",
+      "Payment-Ready Workspaces",
+      "Loaded Leads",
+      "Current snapshot",
+      "Activity log",
+      "Leads or admin actions with reply-related status; no send is implied.",
+    ]) {
+      assert.equal(
+        pageSource.includes(required),
+        true,
+        `Founder admin overview should keep honest metric label: ${required}`,
+      );
+    }
   });
 
   it("keeps founder business detail search-driven and cleanup secondary", () => {

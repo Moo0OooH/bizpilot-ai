@@ -9,6 +9,9 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-25
+ * Last Updated: 2026-07-04
+ * Change Log:
+ * - 2026-07-04: Added opt-in founder/admin route smoke support with explicit synthetic founder email gating.
  * ============================================================
  */
 
@@ -125,6 +128,16 @@ const dashboardTargets: readonly DashboardSmokeTarget[] = [
     status: 307,
   },
   { path: "/dashboard/settings" },
+];
+
+const founderAdminTargets: readonly DashboardSmokeTarget[] = [
+  { path: "/founder" },
+  { path: "/admin?adminPanel=overview" },
+  { path: "/admin?adminPanel=users" },
+  { path: "/admin?adminPanel=businesses" },
+  { path: "/admin?adminPanel=leads" },
+  { path: "/admin?adminPanel=health" },
+  { path: "/admin?adminPanel=activity" },
 ];
 
 const rawErrorMarkers = [
@@ -255,6 +268,49 @@ function resolveFixtureProfile(): DashboardFixtureProfile {
   );
 }
 
+function readOptionalCliEnv(name: string): string | undefined {
+  const envName =
+    name === "include-admin"
+      ? "BIZPILOT_DASHBOARD_SMOKE_INCLUDE_ADMIN"
+      : `BIZPILOT_${name.replaceAll("-", "_").toUpperCase()}`;
+  const value = readCliValue(name) ?? process.env[envName];
+  const trimmed = value?.trim();
+
+  return trimmed && trimmed.length > 0 ? trimmed : undefined;
+}
+
+function resolveBooleanCliEnv(name: string): boolean {
+  const raw = readOptionalCliEnv(name);
+  if (!raw) {
+    return false;
+  }
+
+  const normalized = raw.toLowerCase();
+  if (["1", "true", "yes", "y"].includes(normalized)) {
+    return true;
+  }
+  if (["0", "false", "no", "n"].includes(normalized)) {
+    return false;
+  }
+
+  throw new Error(`--${name} must be true or false when provided.`);
+}
+
+function resolveSyntheticSmokeEmail(): string | undefined {
+  const email = readOptionalCliEnv("dashboard-smoke-email")?.toLowerCase();
+  if (!email) {
+    return undefined;
+  }
+
+  if (!email.endsWith("@example.test")) {
+    throw new Error(
+      "Dashboard smoke founder email must use the synthetic @example.test domain.",
+    );
+  }
+
+  return email;
+}
+
 function readOptionalEnv(
   name: string,
   fileValues: Map<string, string>,
@@ -329,6 +385,32 @@ function assertDashboardSmokeSafeInput(input: {
         `Use founder-approved visual, read-only validation for production or managed Supabase.`,
     );
   }
+}
+
+function assertFounderSmokeConfigured(input: {
+  fileValues: Map<string, string>;
+  smokeEmail: string | undefined;
+}): string {
+  if (!input.smokeEmail) {
+    throw new Error(
+      "--include-admin requires --dashboard-smoke-email=<unique>@example.test so the app process can allowlist the same synthetic founder account.",
+    );
+  }
+
+  const configuredEmails = (
+    readOptionalEnv("BIZPILOT_FOUNDER_EMAILS", input.fileValues) ?? ""
+  )
+    .split(",")
+    .map((email) => email.trim().toLowerCase())
+    .filter(Boolean);
+
+  if (!configuredEmails.includes(input.smokeEmail)) {
+    throw new Error(
+      "Admin route smoke requires BIZPILOT_FOUNDER_EMAILS to include the exact synthetic smoke email in the app and smoke process.",
+    );
+  }
+
+  return input.smokeEmail;
 }
 
 function shortPgError(error: PgError): string {
@@ -830,6 +912,7 @@ async function createSyntheticWorkspace(input: {
   adminApiKey: string;
   fixtureProfile: DashboardFixtureProfile;
   publicApiKey: string;
+  smokeEmail?: string;
   supabaseUrl: string;
 }): Promise<{ cookieHeader: string; workspace: SyntheticWorkspace }> {
   const service = createClient<Database>(input.supabaseUrl, input.adminApiKey, {
@@ -842,7 +925,9 @@ async function createSyntheticWorkspace(input: {
   const stamp = Date.now();
   const slug = `codex-dashboard-${stamp}-${randomUUID().slice(0, 8)}`;
   const password = `${randomUUID()}Aa1!`;
-  const email = `codex-dashboard-${stamp}-${randomUUID().slice(0, 8)}@example.test`;
+  const email =
+    input.smokeEmail ??
+    `codex-dashboard-${stamp}-${randomUUID().slice(0, 8)}@example.test`;
 
   const createdUser = await service.auth.admin.createUser({
     email,
@@ -1267,6 +1352,8 @@ async function main(): Promise<void> {
   const fileValues = readEnvFiles();
   const baseUrl = resolveBaseUrl();
   const fixtureProfile = resolveFixtureProfile();
+  const includeAdmin = resolveBooleanCliEnv("include-admin");
+  const smokeEmail = resolveSyntheticSmokeEmail();
   const timeoutMs = resolveTimeoutMs();
   const supabaseUrl = readRequiredEnv("NEXT_PUBLIC_SUPABASE_URL", fileValues);
   const publicApiKey = readFirstRequiredEnv(
@@ -1287,21 +1374,26 @@ async function main(): Promise<void> {
     isVercelEnvProduction,
     supabaseUrl,
   });
+  const founderSmokeEmail = includeAdmin
+    ? assertFounderSmokeConfigured({ fileValues, smokeEmail })
+    : undefined;
 
   console.log(`BizPilot dashboard auth smoke target: ${baseUrl.origin}`);
   console.log(
-    `Synthetic data only. Fixture profile: ${fixtureProfile}. Secrets and cookies are not printed.`,
+    `Synthetic data only. Fixture profile: ${fixtureProfile}. Admin routes: ${includeAdmin ? "included" : "skipped"}. Secrets and cookies are not printed.`,
   );
 
   const { cookieHeader, workspace } = await createSyntheticWorkspace({
     adminApiKey,
     fixtureProfile,
     publicApiKey,
+    ...(founderSmokeEmail ? { smokeEmail: founderSmokeEmail } : {}),
     supabaseUrl,
   });
   const targets = [
     ...dashboardTargets,
     { path: `/dashboard/leads/${workspace.leadId}` },
+    ...(includeAdmin ? founderAdminTargets : []),
   ];
   const results: DashboardSmokeResult[] = [];
 

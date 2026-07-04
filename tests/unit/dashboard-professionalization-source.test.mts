@@ -13,6 +13,7 @@
  * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-07-04: Added lead queue pagination source guards.
+ * - 2026-07-04: Updated overview source guards for the simplified action-first cockpit.
  * ============================================================
  */
 
@@ -28,10 +29,14 @@ describe("P12 dashboard professionalization source guards", () => {
     );
     const copySource = readFileSync("lib/i18n/bizpilot-copy.ts", "utf8");
 
-    assert.equal(overviewSource.includes("overviewCopy.commandFlow"), true);
+    assert.equal(overviewSource.includes("overviewCopy.commandFlow"), false);
     assert.equal(overviewSource.includes("overviewCopy.startGuide"), true);
     assert.equal(overviewSource.includes("primaryActionHref"), true);
     assert.equal(overviewSource.includes("priorityTiles"), true);
+    assert.equal(overviewSource.includes("OwnerTodoTodayPanel"), true);
+    assert.equal(overviewSource.includes("OwnerTrendChart"), true);
+    assert.equal(overviewSource.includes("LeadSourcesDonut"), true);
+    assert.equal(overviewSource.includes("ownerOverviewKpiCards"), false);
     assert.equal(copySource.includes("Start here"), true);
     assert.equal(copySource.includes("Finish quote setup"), true);
     assert.equal(copySource.includes("Today's manual recovery lane"), true);

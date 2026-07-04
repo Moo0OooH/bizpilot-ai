@@ -10,7 +10,7 @@
  * - docs/product/BIZPILOT_FOUNDER_ADMIN_CONSOLE_SPEC_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-05-26: Moved production health ahead of data grids so empty admin data is tied to safe runtime diagnostics.
  * - 2026-06-18: Updated founder access fallback to svh/clip frame for responsive hardening.
@@ -21,6 +21,7 @@
  * - 2026-06-27: Sanitized admin route flash messages before rendering.
  * - 2026-06-27: Reordered Users into a search-first founder operations cockpit.
  * - 2026-06-27: Added search-driven 10-row business rail and V3 priority workspace tiles.
+ * - 2026-07-04: Removed misleading admin metric labels that implied sent AI replies or measured conversion.
  * ============================================================
  */
 
@@ -3796,7 +3797,7 @@ function FounderAdminOverviewSection({
     },
     {
       color: "#0ea5e9",
-      label: "AI Replied",
+      label: "Reply copied",
       value: overview.leadInbox.filter((lead) => lead.status === "replied").length,
     },
     {
@@ -3823,19 +3824,15 @@ function FounderAdminOverviewSection({
   );
   const sourceSegments = sourceBreakdownFromLeads(overview.leadInbox);
   const sourceTotal = sourceSegments.reduce((sum, segment) => sum + segment.value, 0);
-  const readinessRate =
-    overview.totals.businesses > 0
-      ? Math.round((readinessCompleted / overview.totals.businesses) * 100)
-      : 0;
-  const quoteLinkRate =
+  const activeLinkCoverage =
     overview.totals.businesses > 0
       ? Math.round((activeLinks / overview.totals.businesses) * 100)
       : 0;
-  const setupConversionRate =
+  const paymentReadyCoverage =
     overview.totals.businesses > 0
       ? Math.round((overview.totals.paymentReady / overview.totals.businesses) * 100)
       : 0;
-  const aiReplySignal = Math.max(
+  const replyTraceSignal = Math.max(
     overview.leadInbox.filter((lead) => lead.status === "replied").length,
     overview.recentActions.filter((action) =>
       action.actionType.toLowerCase().includes("reply"),
@@ -3859,16 +3856,16 @@ function FounderAdminOverviewSection({
     {
       detail: "Loaded lead signals.",
       glyph: "LM",
-      label: "Leads This Month",
+      label: "Loaded Leads",
       tone: "emerald" as FounderOverviewTone,
       value: formatAdminMetricNumber(totalLeads),
     },
     {
-      detail: "Reply/status traces.",
-      glyph: "AI",
-      label: "AI Replies Sent",
+      detail: "Leads or admin actions with reply-related status; no send is implied.",
+      glyph: "RT",
+      label: "Reply Traces",
       tone: "violet" as FounderOverviewTone,
-      value: formatAdminMetricNumber(aiReplySignal),
+      value: formatAdminMetricNumber(replyTraceSignal),
     },
     {
       detail: "Active public quote links.",
@@ -3893,13 +3890,13 @@ function FounderAdminOverviewSection({
           actions={
             <>
               <span className="inline-flex min-h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 text-[12px] font-black text-[var(--dash-text-secondary)]">
-                Last 7 days
+                Current snapshot
               </span>
               <Link className={buttonClass} href="/admin?adminPanel=businesses">
                 All workspaces
               </Link>
               <Link className={buttonClass} href="/admin?adminPanel=activity">
-                Export
+                Activity log
               </Link>
             </>
           }
@@ -3945,28 +3942,28 @@ function FounderAdminOverviewSection({
       <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(280px,1.1fr)_repeat(2,minmax(180px,0.7fr))] 2xl:grid-cols-[minmax(320px,1.2fr)_repeat(4,minmax(170px,0.7fr))]">
         <FounderTopLeadSources segments={sourceSegments} total={sourceTotal} />
         <MetricCard
-          detail="Computed from current manual pilot queue signals."
-          label="Average Reply Time"
+          detail="Requires real owner workflow timestamps before pilot reporting."
+          label="Response Time Tracking"
           tone="blue"
-          value={aiReplySignal > 0 ? "28m" : "N/A"}
+          value="Not enabled"
         />
         <MetricCard
-          detail="Active public quote links over total businesses."
-          label="Readiness Completion Rate"
+          detail="Non-cancelled workspaces with an active public quote link."
+          label="Ready Quote Links"
           tone="emerald"
-          value={`${readinessRate}%`}
+          value={formatAdminMetricNumber(readinessCompleted)}
         />
         <MetricCard
           detail="Active quote links over total businesses."
-          label="Quote Link Sent Rate"
+          label="Active Link Coverage"
           tone="amber"
-          value={`${quoteLinkRate}%`}
+          value={`${activeLinkCoverage}%`}
         />
         <MetricCard
           detail="Payment-ready plans over total businesses."
-          label="Setup Conversion Rate"
+          label="Payment-Ready Workspaces"
           tone="blue"
-          value={`${setupConversionRate}%`}
+          value={`${paymentReadyCoverage}%`}
         />
       </section>
     </div>

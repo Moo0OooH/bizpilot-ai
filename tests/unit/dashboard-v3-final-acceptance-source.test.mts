@@ -1,7 +1,19 @@
 /**
+ * ============================================================
  * File: tests/unit/dashboard-v3-final-acceptance-source.test.mts
  * Project: BizPilot AI
  * Description: Final source guards for the Dashboard V3 completion package.
+ * Role: Protects the Dashboard V3 owner/admin acceptance contracts with static source checks.
+ * Related:
+ * - app/(dashboard)/dashboard/page.tsx
+ * - app/(dashboard)/dashboard/leads/[leadId]/page.tsx
+ * - app/admin/page.tsx
+ * Author: MoOoH
+ * Created: 2026-06-27
+ * Last Updated: 2026-07-04
+ * Change Log:
+ * - 2026-07-04: Updated owner overview guards for the simplified action-first cockpit.
+ * ============================================================
  */
 
 import assert from "node:assert/strict";
@@ -113,7 +125,8 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(overview.includes("overviewCopy.startGuide"), true);
     assert.equal(overview.includes("priorityTiles"), true);
     assert.equal(overview.includes("<LeadWorkspaceQueue"), true);
-    assert.equal(overview.includes("ownerOverviewKpiCards"), true);
+    assert.equal(overview.includes("ownerOverviewKpiCards"), false);
+    assert.equal(overview.includes("OwnerOverviewKpiCard"), false);
     assert.equal(overview.includes("OwnerTrendChart"), true);
     assert.equal(overview.includes("LeadSourcesDonut"), true);
     assert.equal(overview.includes("OwnerTodoTodayPanel"), true);

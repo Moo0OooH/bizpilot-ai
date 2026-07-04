@@ -9,6 +9,9 @@
  * - docs/readiness/PHASE_25D_DASHBOARD_DATA_RICH_QA_FIXTURE_2026-07-04.md
  * Author: MoOoH
  * Created: 2026-07-04
+ * Last Updated: 2026-07-04
+ * Change Log:
+ * - 2026-07-04: Added source guards for opt-in founder/admin dashboard smoke coverage.
  * ============================================================
  */
 
@@ -74,6 +77,34 @@ test("dashboard smoke remains local-only and production-prohibited for synthetic
       smokeSource.includes(required),
       true,
       `dashboard smoke safety source should include ${required}`,
+    );
+  }
+});
+
+test("dashboard smoke can opt into founder admin routes only with synthetic founder email gating", () => {
+  for (const required of [
+    "founderAdminTargets",
+    'path: "/founder"',
+    'path: "/admin?adminPanel=overview"',
+    'path: "/admin?adminPanel=users"',
+    'path: "/admin?adminPanel=businesses"',
+    'path: "/admin?adminPanel=leads"',
+    'path: "/admin?adminPanel=health"',
+    'path: "/admin?adminPanel=activity"',
+    'resolveBooleanCliEnv("include-admin")',
+    "BIZPILOT_DASHBOARD_SMOKE_INCLUDE_ADMIN",
+    "resolveSyntheticSmokeEmail",
+    "dashboard-smoke-email",
+    "@example.test",
+    "assertFounderSmokeConfigured",
+    "BIZPILOT_FOUNDER_EMAILS",
+    "Admin route smoke requires BIZPILOT_FOUNDER_EMAILS",
+    "...(includeAdmin ? founderAdminTargets : [])",
+  ]) {
+    assert.equal(
+      smokeSource.includes(required),
+      true,
+      `dashboard admin smoke source should include ${required}`,
     );
   }
 });

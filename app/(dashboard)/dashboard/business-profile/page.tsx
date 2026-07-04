@@ -10,12 +10,13 @@
  * - docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-05-18: Split Business Profile from Quote Setup.
  * - 2026-05-23: Localized owner-facing business profile copy.
  * - 2026-06-27: Documented Dashboard V3 profile separation and final completion evidence.
  * - 2026-06-27: Normalized remaining profile cards to compact Dashboard V3 spacing.
+ * - 2026-07-04: Collapsed unwired roadmap fields so the profile page stays focused on saved owner data.
  * ============================================================
  */
 
@@ -375,11 +376,15 @@ export default async function BusinessProfilePage({
           </DashboardCard>
         </section>
 
-        <DashboardCard className="p-4 sm:p-5" variant="priority">
-          <SectionHeader
-            description={text.futureDescription}
-            title={text.futureFields}
-          />
+        <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-sm sm:p-5">
+          <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+            <span className="block text-[13px] font-black text-[var(--dash-text)]">
+              {text.futureFields}
+            </span>
+            <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+              {text.futureDescription}
+            </span>
+          </summary>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {text.roadmapFields.map(([title, badge]) => (
               <div
@@ -401,7 +406,7 @@ export default async function BusinessProfilePage({
               </div>
             ))}
           </div>
-        </DashboardCard>
+        </details>
 
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3">
           <p className="text-[12px] text-[var(--dash-text-secondary)]">

@@ -14,6 +14,7 @@
  * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-07-04: Added Settings feature guide details and lead queue pagination copy.
+ * - 2026-07-04: Tightened dashboard copy around manual draft review, copied replies, and unwired roadmap fields.
  * - 2026-06-16: Aligned Settings copy with Phase 23/24 readiness and first-pilot manual-only decisions.
  * - 2026-06-19: Updated dashboard theme help copy for the Light-by-default public theme foundation.
  * - 2026-06-21: Added localized quote success noindex metadata.
@@ -1178,8 +1179,8 @@ const englishCopy: BizPilotCopy = {
       description:
         "Business identity and operating context. This is separate from Quote Setup.",
       futureDescription:
-        "These fields are part of the approved index design but are not yet wired to a database column. They will land with their own migration after pilot validation.",
-      futureFields: "Roadmap fields",
+        "Later profile fields from the approved design. They are not saved yet and need their own migration after pilot validation.",
+      futureFields: "Later roadmap fields",
       languageHelp: "Used for the public quote page and AI draft language.",
       logoUrl: "Logo URL",
       notInMvp: "Not in MVP",
@@ -1529,7 +1530,7 @@ const englishCopy: BizPilotCopy = {
           "Start with the safest owner action: review the request, use the AI draft only as support, then copy and send through your normal customer channel.",
         outcomeNote:
           "Record won or lost only after you have contacted the customer outside BizPilot.",
-        primaryAction: "Mark reply copied after review",
+        primaryAction: "Mark copied after copy",
         secondaryAction: "Record outcome after contact",
         steps: [
           ["Review", "Check the request and missing details."],
@@ -1558,7 +1559,7 @@ const englishCopy: BizPilotCopy = {
           "Not saved yet: notes persistence is part of a later approved phase.",
         placeholder:
           "Add notes about this request, objections, pricing context, or follow-up outcome...",
-        title: "Workspace notes",
+        title: "Scratch notes (not saved)",
       },
       quoteIntakeFields: "Quote intake fields",
       sourceAttribution: {
@@ -1807,11 +1808,11 @@ const englishCopy: BizPilotCopy = {
         dateRange: "Last 7 days",
         filters: "Filters",
         kpis: {
-          aiRepliesSent: "AI Replies Sent",
+          aiRepliesSent: "Drafts Copied",
           awaitingReply: "Awaiting Your Reply",
-          dealsWon: "Deals Won (Setup)",
+          dealsWon: "Booked Outcomes",
           newLeads: "New Leads",
-          quoteLinkSent: "Quote Link Sent",
+          quoteLinkSent: "Active Quote Link",
           readinessCompleted: "Readiness Completed",
         },
         leadQueueTitle: "Lead Queue (Needs Your Action)",
@@ -2726,7 +2727,7 @@ const frenchCopy: BizPilotCopy = {
         "Identité de l'entreprise et contexte opérationnel. Cette section est séparée de Configuration.",
       futureDescription:
         "Ces champs font partie du design approuvé, mais ne sont pas encore reliés à la base de données. Ils arriveront avec leur propre migration après validation pilote.",
-      futureFields: "Champs de feuille de route",
+      futureFields: "Champs futurs non sauvegardes",
       languageHelp:
         "Utilisée pour la page publique et la langue des brouillons IA.",
       logoUrl: "URL du logo",
@@ -3084,7 +3085,7 @@ const frenchCopy: BizPilotCopy = {
           "Commencez par l'action propriétaire la plus sûre: révisez la demande, utilisez le brouillon IA seulement comme soutien, puis copiez et envoyez par votre canal client habituel.",
         outcomeNote:
           "Notez gagné ou perdu seulement après avoir contacté le client hors de BizPilot.",
-        primaryAction: "Marquer la réponse copiée après révision",
+        primaryAction: "Marquer copie apres copie",
         secondaryAction: "Noter le résultat après contact",
         steps: [
           ["Réviser", "Vérifier la demande et les détails manquants."],
@@ -3114,7 +3115,7 @@ const frenchCopy: BizPilotCopy = {
           "Pas encore sauvegardé: la persistance des notes fait partie d'une phase approuvée plus tard.",
         placeholder:
           "Ajoutez des notes sur la demande, les objections, le contexte de prix ou le résultat du suivi...",
-        title: "Notes privées",
+        title: "Notes temporaires (non sauvegardees)",
       },
       quoteIntakeFields: "Champs de soumission",
       sourceAttribution: {
@@ -3369,11 +3370,11 @@ const frenchCopy: BizPilotCopy = {
         dateRange: "7 derniers jours",
         filters: "Filtres",
         kpis: {
-          aiRepliesSent: "Reponses IA envoyees",
+          aiRepliesSent: "Brouillons copies",
           awaitingReply: "En attente de votre reponse",
-          dealsWon: "Mandats gagnes (configuration)",
+          dealsWon: "Resultats reserves",
           newLeads: "Nouveaux prospects",
-          quoteLinkSent: "Liens de soumission envoyes",
+          quoteLinkSent: "Lien de soumission actif",
           readinessCompleted: "Preparation terminee",
         },
         leadQueueTitle: "File de prospects (a traiter)",

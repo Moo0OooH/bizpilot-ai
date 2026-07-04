@@ -50,8 +50,16 @@ environment points at a confirmed local/synthetic Supabase target.
 2026-07-04 local-gate update: Phase 25Y added `pnpm check:targets`,
 `pnpm check:dashboard-local`, and `pnpm check:db-local`. `pnpm test:rls` now
 loads `DATABASE_URL` from local env files and passed against the confirmed
-local DB. Mutating dashboard smoke remains blocked while
-`NEXT_PUBLIC_SUPABASE_URL` points at a managed/non-local Supabase host.
+local DB.
+
+2026-07-04 finalization update: Phase 26 added opt-in founder/admin route
+coverage to `pnpm smoke:dashboard` through `--include-admin=true` and
+`--dashboard-smoke-email=<unique>@example.test`. With explicit local Supabase
+env overrides and matching `BIZPILOT_FOUNDER_EMAILS`, authenticated owner
+dashboard, founder handoff, and founder-admin route smoke passed 14/14 locally.
+Read
+`docs/readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md`
+before claiming dashboard/admin readiness.
 
 Real customer data, paid pilot launch, production mutations, automation,
 booking, invoices, SMS/WhatsApp, autonomous AI, and broad feature expansion

@@ -10,7 +10,7 @@
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-05-19: Rebuilt the overview from the approved index.html source of truth with workflow-first hierarchy.
  * - 2026-06-27: Promoted the overview hero title to the page H1 after topbar heading cleanup.
@@ -18,6 +18,7 @@
  * - 2026-06-27: Added a first-run Start Here path for owner setup, sharing, and lead review.
  * - 2026-06-27: Reworked the first viewport into a prioritized next-action cockpit.
  * - 2026-06-27: Hid synthetic/internal seed labels behind owner-safe display fallbacks.
+ * - 2026-07-04: Simplified the overview hierarchy around one action-first cockpit and moved charts below the manual queue.
  * ============================================================
  */
 
@@ -238,51 +239,6 @@ function conicGradientFor(segments: LeadSourceSegment[]): string {
       return `${segment.color} ${start.toFixed(1)}deg ${end.toFixed(1)}deg`;
     })
     .join(", ")})`;
-}
-
-function OwnerOverviewKpiCard({
-  detail,
-  glyph,
-  label,
-  tone,
-  value,
-}: Readonly<{
-  detail: string;
-  glyph: string;
-  label: string;
-  tone: DashboardTone;
-  value: number | string;
-}>) {
-  const toneStyle = dashboardToneStyles[tone];
-
-  return (
-    <DashboardCard className="p-3.5">
-      <div className="flex min-h-[86px] items-start justify-between gap-3">
-        <span className="min-w-0">
-          <span className="block text-[12px] font-black text-[var(--dash-text)]">
-            {label}
-          </span>
-          <span className="mt-2 block text-[26px] font-black leading-none text-[var(--dash-text)]">
-            {value}
-          </span>
-          <span className="mt-2 block text-[11px] font-bold leading-4 text-[var(--dash-text-secondary)]">
-            {detail}
-          </span>
-        </span>
-        <span
-          aria-hidden
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border text-[13px] font-black"
-          style={{
-            backgroundColor: toneStyle.soft,
-            borderColor: toneStyle.border,
-            color: toneStyle.strong,
-          }}
-        >
-          {glyph}
-        </span>
-      </div>
-    </DashboardCard>
-  );
 }
 
 function OwnerTrendChart({
@@ -585,34 +541,8 @@ export default async function DashboardOverviewPage() {
   const missingInfoCount = desk.leads.filter(
     (item) => item.score.quality_level === "needs_info",
   ).length;
-  const replyActions = desk.todaysActions.filter((action) => action.action_type === "reply").length;
   const askInfoActions = desk.todaysActions.filter((action) => action.action_type === "ask_info").length;
   const followUpActions = desk.todaysActions.filter((action) => action.action_type === "follow_up").length;
-  const manualFlowMetrics = [
-    {
-      href: quotePath,
-      tone: "emerald",
-      value: newQuoteCount,
-    },
-    {
-      href: "/dashboard/leads",
-      tone: needsReplyCount + atRiskCount > 0 ? "amber" : "neutral",
-      value: needsReplyCount + atRiskCount,
-    },
-    {
-      href: "/dashboard/leads",
-      tone: "blue",
-      value: aiDraftReadyCount,
-    },
-    {
-      href: "/dashboard/leads",
-      tone:
-        replyActions + askInfoActions + followUpActions > 0
-          ? "red"
-          : "neutral",
-      value: replyActions + askInfoActions + followUpActions,
-    },
-  ] as const;
   const readinessPercent = Math.round(
     (readiness.completed / Math.max(readiness.total, 1)) * 100,
   );
@@ -693,20 +623,6 @@ export default async function DashboardOverviewPage() {
       value: aiDraftReadyCount,
     },
   ];
-  const aiRepliesSentCount = desk.leads.filter(
-    (item) =>
-      item.lead.first_reply_copied_at ||
-      item.lead.status === "replied" ||
-      item.lead.status === "booked",
-  ).length;
-  const quoteLinkSentCount = Math.max(
-    desk.recoveryProof.leadsReviewed,
-    Math.min(newQuoteCount, Math.max(aiRepliesSentCount, desk.leads.length - needsReplyCount)),
-  );
-  const dealsWonCount = desk.leads.filter(
-    (item) =>
-      item.lead.status === "booked" || item.lead.manual_outcome === "booked",
-  ).length;
   const ownerLeadTrend = buildOwnerLeadTrend(desk.leads);
   const leadSourceSegments = buildLeadSourceSegments(desk.leads);
   const todayTodoItems = [
@@ -735,51 +651,6 @@ export default async function DashboardOverviewPage() {
       tone: (missingInfoCount + askInfoActions > 0 ? "amber" : "neutral") as DashboardTone,
     },
   ];
-  const ownerOverviewKpiCards = [
-    {
-      detail: overviewCopy.metrics.newQuoteRequests.detail,
-      glyph: "NL",
-      label: visualCopy.kpis.newLeads,
-      tone: "violet" as DashboardTone,
-      value: compactNumber(newQuoteCount),
-    },
-    {
-      detail: overviewCopy.metrics.aiDraftsReady.detail,
-      glyph: "AI",
-      label: visualCopy.kpis.aiRepliesSent,
-      tone: "blue" as DashboardTone,
-      value: compactNumber(aiRepliesSentCount),
-    },
-    {
-      detail: atRiskCount > 0 ? overviewCopy.atRiskSoon : overviewCopy.status.ready,
-      glyph: "AR",
-      label: visualCopy.kpis.awaitingReply,
-      tone: needsReplyCount + atRiskCount > 0 ? ("amber" as DashboardTone) : ("emerald" as DashboardTone),
-      value: compactNumber(needsReplyCount + atRiskCount),
-    },
-    {
-      detail: overviewCopy.readiness.liveAndShareable,
-      glyph: "QL",
-      label: visualCopy.kpis.quoteLinkSent,
-      tone: "emerald" as DashboardTone,
-      value: compactNumber(quoteLinkSentCount),
-    },
-    {
-      detail: `${readinessPercent}%`,
-      glyph: "RC",
-      label: visualCopy.kpis.readinessCompleted,
-      tone: readinessPercent >= 100 ? ("emerald" as DashboardTone) : ("blue" as DashboardTone),
-      value: compactNumber(readiness.completed),
-    },
-    {
-      detail: dealsWonCount > 0 ? visualCopy.dateRange : visualCopy.ownerReviewRequired,
-      glyph: "DW",
-      label: visualCopy.kpis.dealsWon,
-      tone: dealsWonCount > 0 ? ("amber" as DashboardTone) : ("neutral" as DashboardTone),
-      value: compactNumber(dealsWonCount),
-    },
-  ];
-
   return (
     <main className="space-y-3">
       <header className="flex flex-col gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-sm sm:p-5 lg:flex-row lg:items-center lg:justify-between">
@@ -807,114 +678,6 @@ export default async function DashboardOverviewPage() {
         </div>
       </header>
 
-      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        {ownerOverviewKpiCards.map((card) => (
-          <OwnerOverviewKpiCard
-            detail={card.detail}
-            glyph={card.glyph}
-            key={card.label}
-            label={card.label}
-            tone={card.tone}
-            value={card.value}
-          />
-        ))}
-      </section>
-
-      <section className="grid min-w-0 gap-3 xl:grid-cols-2 2xl:grid-cols-[minmax(300px,0.95fr)_minmax(320px,1.1fr)_minmax(260px,0.78fr)_minmax(260px,0.78fr)]">
-        <DashboardCard className="p-4">
-          <SectionHeader
-            action={
-              <Link className="text-[12px] font-black text-[var(--dash-primary-strong)]" href="/dashboard/leads">
-                {visualCopy.viewAll}
-              </Link>
-            }
-            title={visualCopy.leadQueueTitle}
-          />
-          <div className="mt-4 grid gap-2">
-            {recentLeads.length > 0 ? (
-              recentLeads.slice(0, 5).map((item) => {
-                const customerDisplayName = ownerSafeLeadText(
-                  item.lead.customer_name,
-                  queueCopy.fallbacks.unnamedLead,
-                );
-                const serviceDisplay = ownerSafeLeadText(
-                  item.lead.service_type,
-                  overviewCopy.featuredFallbackService,
-                );
-                const areaDisplay = ownerSafeLeadText(
-                  item.lead.city_or_service_area,
-                  overviewCopy.featuredFallbackArea,
-                );
-                const leadTone =
-                  item.lead.response_sla_state === "overdue"
-                    ? "red"
-                    : item.score.quality_level === "needs_info"
-                      ? "amber"
-                      : "emerald";
-
-                return (
-                  <Link
-                    className="grid min-h-[56px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
-                    href={`/dashboard/leads/${item.lead.id}`}
-                    key={item.lead.id}
-                  >
-                    <Avatar name={customerDisplayName} size={32} />
-                    <span className="min-w-0">
-                      <span className="block truncate text-[12.5px] font-black text-[var(--dash-text)]">
-                        {shortCustomerName(
-                          customerDisplayName,
-                          queueCopy.fallbacks.unnamedLead,
-                        )}
-                      </span>
-                      <span className="mt-0.5 block truncate text-[11px] text-[var(--dash-text-secondary)]">
-                        {serviceDisplay} / {areaDisplay}
-                      </span>
-                    </span>
-                    <span className="grid justify-items-end gap-1">
-                      <StatusBadge tone={leadTone}>{item.score.quality_level}</StatusBadge>
-                      <span className="text-[10.5px] font-bold text-[var(--dash-text-muted)]">
-                        {formatAge(item.lead.created_at, queueCopy)}
-                      </span>
-                    </span>
-                  </Link>
-                );
-              })
-            ) : (
-              <EmptyState title={overviewCopy.recentActivity.emptyTitle}>
-                {overviewCopy.recentActivity.emptyBody}
-              </EmptyState>
-            )}
-          </div>
-        </DashboardCard>
-
-        <DashboardCard className="p-4">
-          <SectionHeader
-            action={
-              <span className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2.5 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
-                {visualCopy.dateRange}
-              </span>
-            }
-            title={visualCopy.leadsTrend}
-          />
-          <OwnerTrendChart ariaLabel={visualCopy.leadsTrend} points={ownerLeadTrend} />
-        </DashboardCard>
-
-        <OwnerTodoTodayPanel
-          assistantBody={visualCopy.aiAssistantBody(todayTodoItems[0]?.count ?? 0)}
-          assistantTitle={visualCopy.aiAssistantTitle}
-          items={todayTodoItems}
-          title={visualCopy.todo.title}
-        />
-
-        <LeadSourcesDonut
-          centerLabel={visualCopy.newLeadsCenter}
-          segments={leadSourceSegments}
-          title={visualCopy.leadSources}
-          total={leadSourceSegments.reduce((sum, segment) => sum + segment.value, 0)}
-          viewFullReport={visualCopy.viewFullReport}
-        />
-      </section>
-
       <DashboardCard
         className="overflow-hidden p-0"
         variant="priority"
@@ -922,9 +685,9 @@ export default async function DashboardOverviewPage() {
         <div className="grid xl:grid-cols-[minmax(0,1.08fr)_minmax(330px,0.92fr)]">
           <section className="min-w-0 p-4 md:p-5">
             <StatusBadge tone="blue">{overviewCopy.heroBadge}</StatusBadge>
-            <h1 className="mt-3 max-w-3xl text-[24px] font-black leading-tight text-[var(--dash-text)] sm:text-[30px]">
+            <h2 className="mt-3 max-w-3xl text-[24px] font-black leading-tight text-[var(--dash-text)] sm:text-[30px]">
               {overviewCopy.heroTitle(attentionCount)}
-            </h1>
+            </h2>
             <p className="mt-3 max-w-2xl text-[13px] leading-6 text-[var(--dash-text-secondary)]">
               {overviewCopy.heroDescription}
             </p>
@@ -1025,41 +788,12 @@ export default async function DashboardOverviewPage() {
         </div>
       </DashboardCard>
 
-      <DashboardCard className="p-3.5 sm:p-4">
-        <SectionHeader
-          description={overviewCopy.commandFlow.description}
-          title={overviewCopy.commandFlow.title}
-        />
-        <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-          {overviewCopy.commandFlow.items.map(([label, detail], index) => {
-            const metric = manualFlowMetrics[index] ?? {
-              href: "/dashboard/leads",
-              tone: "neutral" as const,
-              value: 0,
-            };
-
-            return (
-              <Link
-                className="grid min-h-[104px] grid-rows-[auto_1fr] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
-                href={metric.href}
-                key={label}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-[13px] font-black text-[var(--dash-text)]">
-                    {index + 1}. {label}
-                  </span>
-                  <StatusBadge tone={metric.tone}>
-                    {String(metric.value)}
-                  </StatusBadge>
-                </div>
-                <span className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  {detail}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      </DashboardCard>
+      <OwnerTodoTodayPanel
+        assistantBody={visualCopy.aiAssistantBody(todayTodoItems[0]?.count ?? 0)}
+        assistantTitle={visualCopy.aiAssistantTitle}
+        items={todayTodoItems}
+        title={visualCopy.todo.title}
+      />
 
       <DashboardCard className="p-3.5 sm:p-4" variant="elevated">
         <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(260px,0.42fr)] lg:items-center">
@@ -1222,54 +956,6 @@ export default async function DashboardOverviewPage() {
             </div>
           </RightRailPanel>
 
-          <RightRailPanel>
-            <SectionHeader
-              description={overviewCopy.recoveryFocus.description(
-                replyActions + askInfoActions + followUpActions,
-              )}
-              title={overviewCopy.recoveryFocus.title}
-            />
-            <div className="mt-3 grid gap-2">
-              {[
-                [
-                  overviewCopy.recoveryFocus.replyTitle,
-                  overviewCopy.recoveryFocus.replyDetail(replyActions),
-                  replyActions,
-                  "blue",
-                ],
-                [
-                  overviewCopy.recoveryFocus.missingInfoTitle,
-                  overviewCopy.recoveryFocus.missingInfoDetail(askInfoActions),
-                  askInfoActions,
-                  "amber",
-                ],
-                [
-                  overviewCopy.recoveryFocus.followUpTitle,
-                  overviewCopy.recoveryFocus.followUpDetail(followUpActions),
-                  followUpActions,
-                  "red",
-                ],
-              ].map(([title, detail, value, tone]) => (
-                <Link
-                  className="grid min-h-[54px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[13px] transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
-                  href="/dashboard/leads"
-                  key={String(title)}
-                >
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--dash-primary-soft)] text-[13px] font-black text-[var(--dash-primary)]">
-                    {value}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block font-black text-[var(--dash-text)]">{title}</span>
-                    <span className="mt-0.5 block truncate text-[12px] text-[var(--dash-text-secondary)]">
-                      {detail}
-                    </span>
-                  </span>
-                  <StatusBadge tone={tone as "amber" | "blue" | "red"}>{String(value)}</StatusBadge>
-                </Link>
-              ))}
-            </div>
-          </RightRailPanel>
-
           <details className="overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]">
             <summary className="cursor-pointer list-none px-3.5 py-3 text-[13px] font-black text-[var(--dash-text)] transition hover:bg-[var(--dash-surface-muted)] [&::-webkit-details-marker]:hidden">
               {overviewCopy.guidesAndAiControls}
@@ -1310,6 +996,28 @@ export default async function DashboardOverviewPage() {
             </div>
           </details>
         </aside>
+      </section>
+
+      <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(300px,0.65fr)]">
+        <DashboardCard className="p-4">
+          <SectionHeader
+            action={
+              <span className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-2.5 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
+                {visualCopy.dateRange}
+              </span>
+            }
+            title={visualCopy.leadsTrend}
+          />
+          <OwnerTrendChart ariaLabel={visualCopy.leadsTrend} points={ownerLeadTrend} />
+        </DashboardCard>
+
+        <LeadSourcesDonut
+          centerLabel={visualCopy.newLeadsCenter}
+          segments={leadSourceSegments}
+          title={visualCopy.leadSources}
+          total={leadSourceSegments.reduce((sum, segment) => sum + segment.value, 0)}
+          viewFullReport={visualCopy.viewFullReport}
+        />
       </section>
     </main>
   );

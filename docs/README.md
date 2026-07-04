@@ -9,21 +9,22 @@ Before reading or implementing anything, start with:
 3. `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`
 4. `readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md`
 5. `readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md`
-6. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
-7. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
-8. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
-9. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
-10. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
-11. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
-12. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
-13. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
-14. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
-15. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
-16. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
-17. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
-18. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
-19. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
-20. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+6. `readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md`
+7. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
+8. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
+9. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
+10. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
+11. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
+12. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
+13. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+14. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+15. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
+16. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+17. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
+18. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
+19. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+20. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
+21. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
 
@@ -52,8 +53,14 @@ booking, invoices, SMS/WhatsApp, autonomous AI, or broad feature expansion.
 2026-07-04 Phase 25Y local-gate override: use
 `readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md` for the
 latest local target classification and RLS evidence. Local DB/RLS passed
-against the confirmed local `DATABASE_URL`; dashboard/admin smoke and browser
-QA remain blocked until `NEXT_PUBLIC_SUPABASE_URL` is local/synthetic.
+against the confirmed local `DATABASE_URL`.
+
+2026-07-04 Phase 26 finalization override: use
+`readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md`
+for the latest dashboard/admin gate evidence. Authenticated owner dashboard,
+founder handoff, and founder-admin route smoke passed 14/14 against local
+Supabase with explicit synthetic founder email gating. Real customer data and
+paid pilot remain blocked.
 
 2026-06-01 status override: BizPilot is synthetic-ready, not
 real-data-approved, and not paid-pilot-ready. The next gates are Phase 24F final
@@ -158,6 +165,8 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ## Latest Readiness Evidence
 
+- `docs/readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md`
+- `docs/readiness/DASHBOARD_EXTERNAL_BENCHMARK_AUDIT_2026-07-04.md`
 - `docs/readiness/PHASE_25X_DASHBOARD_LEAD_QUEUE_PAGINATION_2026-07-04.md`
 - `docs/readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md`
 - `docs/readiness/PHASE_25W_POST_25V_RECHECK_AND_REMAINING_MAP_2026-07-04.md`

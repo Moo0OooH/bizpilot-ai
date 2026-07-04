@@ -11,13 +11,14 @@
  * - docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-05-07: Created Phase 5 lead detail workflow page.
  * - 2026-05-10: Refactored detail view into SaaS workspace primitives.
  * - 2026-05-19: Rebuilt to match approved index.html dark navy command center: detail header, AI Summary, Suggested reply, Follow-up draft, missing-info badges, owner notes, controls, action items, timeline.
  * - 2026-06-27: Hid synthetic/internal seed labels behind owner-safe display fallbacks.
  * - 2026-06-27: Normalized Lead Detail cards to compact Dashboard V3 spacing.
+ * - 2026-07-04: Reordered lead-detail actions so draft generation/copy happens before status recording.
  * ============================================================
  */
 
@@ -261,6 +262,9 @@ export default async function LeadDetailPage({
       : detail.lead.response_sla_state.includes("follow")
         ? "amber"
         : "blue";
+  const manualPrimaryActionLabel = aiOutput
+    ? detailCopy.ai.copyReply
+    : detailCopy.ai.generate;
 
   return (
     <main className="space-y-3">
@@ -316,38 +320,52 @@ export default async function LeadDetailPage({
                 </span>{" "}
                 {detail.recommendedAction}
               </p>
-            <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
-              {detailCopy.manualWorkflow.outcomeNote}
-            </p>
-          </div>
-          <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-            {detailCopy.manualWorkflow.steps.map(([title, detailText], index) => (
-              <div
-                className="grid min-h-[64px] grid-cols-[1.5rem_minmax(0,1fr)] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5"
-                key={title}
-              >
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-[11px] font-black text-[var(--dash-primary)]">
-                  {index + 1}
-                </span>
-                <span className="min-w-0">
-                  <span className="block truncate text-[12px] font-black text-[var(--dash-text)]">
-                    {title}
+              <p className="text-[12px] leading-5 text-[var(--dash-text-muted)]">
+                {detailCopy.manualWorkflow.outcomeNote}
+              </p>
+            </div>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+              {detailCopy.manualWorkflow.steps.map(([title, detailText], index) => (
+                <div
+                  className="grid min-h-[64px] grid-cols-[1.5rem_minmax(0,1fr)] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5"
+                  key={title}
+                >
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-[11px] font-black text-[var(--dash-primary)]">
+                    {index + 1}
                   </span>
-                  <span className="mt-0.5 block text-[11px] leading-4 text-[var(--dash-text-secondary)]">
-                    {detailText}
+                  <span className="min-w-0">
+                    <span className="block truncate text-[12px] font-black text-[var(--dash-text)]">
+                      {title}
+                    </span>
+                    <span className="mt-0.5 block text-[11px] leading-4 text-[var(--dash-text-secondary)]">
+                      {detailText}
+                    </span>
                   </span>
-                </span>
-              </div>
-            ))}
-          </div>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="flex flex-wrap gap-2 lg:justify-end">
-            <form action={markReplyCopiedAction}>
-              <input name="leadId" type="hidden" value={detail.lead.id} />
-              <button className={primaryButtonClass} type="submit">
-                {detailCopy.manualWorkflow.primaryAction}
-              </button>
-            </form>
+            {aiOutput ? (
+              <a className={primaryButtonClass} href="#lead-ai-draft">
+                {manualPrimaryActionLabel}
+              </a>
+            ) : (
+              <form action={generateLeadAiBundleAction}>
+                <input name="leadId" type="hidden" value={detail.lead.id} />
+                <button className={primaryButtonClass} type="submit">
+                  {manualPrimaryActionLabel}
+                </button>
+              </form>
+            )}
+            {aiOutput ? (
+              <form action={markReplyCopiedAction}>
+                <input name="leadId" type="hidden" value={detail.lead.id} />
+                <button className={buttonClass} type="submit">
+                  {detailCopy.manualWorkflow.primaryAction}
+                </button>
+              </form>
+            ) : null}
             <a className={buttonClass} href="#lead-owner-controls">
               {detailCopy.manualWorkflow.secondaryAction}
             </a>
@@ -676,11 +694,15 @@ export default async function LeadDetailPage({
           </div>
 
           {/* Owner notes (private). Storage TBD — local-only textarea for now. */}
-          <DashboardCard className="p-3 sm:p-4">
-            <SectionHeader
-              description={detailCopy.ownerNotes.description}
-              title={detailCopy.ownerNotes.title}
-            />
+          <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 sm:p-4">
+            <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+              <span className="block text-[13px] font-black text-[var(--dash-text)]">
+                {detailCopy.ownerNotes.title}
+              </span>
+              <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                {detailCopy.ownerNotes.description}
+              </span>
+            </summary>
             <textarea
               className={`${textareaClass} mt-4 min-h-28`}
               defaultValue=""
@@ -689,13 +711,14 @@ export default async function LeadDetailPage({
             <p className="mt-2 text-[11px] text-[var(--dash-text-muted)]">
               {detailCopy.ownerNotes.persistenceNote}
             </p>
-          </DashboardCard>
+          </details>
           </div>
         </div>
 
         {/* Right column — AI Response Desk */}
         <aside className="min-w-0 space-y-3 xl:sticky xl:top-[76px] xl:self-start">
-          <DashboardCard className="biz-card-ai p-3 sm:p-4">
+          <div id="lead-ai-desk">
+            <DashboardCard className="biz-card-ai p-3 sm:p-4">
             <SectionHeader
               action={
                 <form action={generateLeadAiBundleAction}>
@@ -762,34 +785,37 @@ export default async function LeadDetailPage({
                 {detailCopy.ai.manualDraftDescription}
               </p>
             )}
-          </DashboardCard>
+            </DashboardCard>
+          </div>
 
           {aiOutput ? (
             <>
-              <DashboardCard className="biz-card-ai p-3 sm:p-4">
-                <SectionHeader title={detailCopy.ai.suggestedReply} />
-                <pre className="biz-draft-box mt-3 max-h-[18rem] overflow-y-auto whitespace-pre-wrap font-sans">
-                  {aiOutput.output.replyDraft}
-                </pre>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <CopyButton
-                    failedLabel={dashboardCopy.actions.copyFailed}
-                    label={detailCopy.ai.copyReply}
-                    successLabel={dashboardCopy.actions.copySuccess}
-                    value={aiOutput.output.replyDraft}
-                  />
-                  <button
-                    className={`${disabledButtonClass}`}
-                    title={detailCopy.ai.editManuallyTitle}
-                    type="button"
-                  >
-                    {detailCopy.ai.editManually}
-                  </button>
-                </div>
-                <p className="mt-3 text-[11px] text-[var(--dash-text-muted)]">
-                  {detailCopy.ai.noSend}
-                </p>
-              </DashboardCard>
+              <div id="lead-ai-draft">
+                <DashboardCard className="biz-card-ai p-3 sm:p-4">
+                  <SectionHeader title={detailCopy.ai.suggestedReply} />
+                  <pre className="biz-draft-box mt-3 max-h-[18rem] overflow-y-auto whitespace-pre-wrap font-sans">
+                    {aiOutput.output.replyDraft}
+                  </pre>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <CopyButton
+                      failedLabel={dashboardCopy.actions.copyFailed}
+                      label={detailCopy.ai.copyReply}
+                      successLabel={dashboardCopy.actions.copySuccess}
+                      value={aiOutput.output.replyDraft}
+                    />
+                    <button
+                      className={`${disabledButtonClass}`}
+                      title={detailCopy.ai.editManuallyTitle}
+                      type="button"
+                    >
+                      {detailCopy.ai.editManually}
+                    </button>
+                  </div>
+                  <p className="mt-3 text-[11px] text-[var(--dash-text-muted)]">
+                    {detailCopy.ai.noSend}
+                  </p>
+                </DashboardCard>
+              </div>
 
               <DashboardCard className="p-3 sm:p-4">
                 <SectionHeader title={detailCopy.ai.followUpDraft} />

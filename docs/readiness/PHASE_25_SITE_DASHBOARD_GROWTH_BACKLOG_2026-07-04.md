@@ -496,6 +496,59 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 26
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md`:
+
+- Confirmed local Supabase API availability and ran dashboard local target
+  classification with explicit env overrides.
+- Ran dense authenticated owner-dashboard smoke against local Supabase: 7/7
+  routes passed.
+- Extended `tests/smoke/dashboard-auth-smoke.mts` with opt-in founder/admin
+  route coverage through `--include-admin=true`.
+- Required `--dashboard-smoke-email=<unique>@example.test` and matching
+  `BIZPILOT_FOUNDER_EMAILS` before founder/admin routes can be smoked.
+- Ran owner plus founder-admin route smoke against local Supabase: 14/14 routes
+  passed.
+- Added source guards for synthetic founder/admin smoke coverage.
+- Added `docs/readiness/DASHBOARD_EXTERNAL_BENCHMARK_AUDIT_2026-07-04.md`
+  and closed its P0 founder-admin metric honesty finding by removing sent-reply,
+  fake response-time, and conversion-rate labels from the admin overview.
+
+Backlog movement:
+
+```text
+49 done at authenticated local route-smoke level
+50 advanced with dense owner route smoke
+51 advanced with dense lead queue smoke
+52 advanced with synthetic lead detail smoke
+55 advanced with owner route smoke
+59 done at route-smoke level
+60 done at route-smoke level
+61 remains manual/browser focus QA unless visual tooling is added
+62 done at founder-admin route-smoke level
+63 done at founder-admin activity route-smoke level
+admin metric honesty P0 done
+66 remains optional screenshot matrix without adding visual tooling
+67 done locally - dashboard/admin smoke 14/14
+89 preserved as paid-pilot blocker
+90 preserved from Phase 25Y local RLS pass
+1 preserved as real-data blocked
+2 preserved as paid-pilot blocked
+93-100 preserved as future-blocked
+```
+
+Verification:
+
+```text
+pnpm check:dashboard-local PASS with local Supabase env overrides
+pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3042 --fixture-profile=dense --timeout-ms=30000 PASS - 7/7
+pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3042 --fixture-profile=dense --include-admin=true --dashboard-smoke-email=codex-founder-admin-20260704-phase26c@example.test --timeout-ms=30000 PASS - 14/14
+pnpm test:unit PASS - 203/203
+```
+
 ## Progress Addendum - Phase 25Q
 
 Date: 2026-07-04
