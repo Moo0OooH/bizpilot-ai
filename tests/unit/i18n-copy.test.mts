@@ -613,9 +613,9 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.mockup.bizPilotTitle, "BizPilot");
     assert.deepEqual(frenchPublicCopy.home.mockup.bizPilotActions, [
       "Capter",
-      "Organiser",
       "Prioriser",
-      "Rédiger",
+      "Préparer",
+      "Prévisualiser",
     ]);
     assert.equal(frenchPublicCopy.home.mockup.clarityTitle, "LA CLARTÉ");
     assert.equal(frenchPublicCopy.home.mockup.claritySubtitle, "File de prospects intelligente");
@@ -914,9 +914,9 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.home.mockup.bizPilotTitle, "BizPilot");
     assert.deepEqual(englishPublicCopy.home.mockup.bizPilotActions, [
       "Capture",
-      "Organize",
       "Prioritize",
-      "Draft",
+      "Prepare",
+      "Preview",
     ]);
     assert.equal(englishPublicCopy.home.mockup.clarityTitle, "THE CLARITY");
     assert.equal(englishPublicCopy.home.mockup.claritySubtitle, "Smart lead queue");

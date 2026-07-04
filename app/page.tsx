@@ -196,9 +196,7 @@ function SourceChannelMark({ source }: Readonly<{ source: string }>) {
 
 function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
   const chaosMessages = copy.messages.slice(0, 4);
-  const chaosPeople = ["Maria", "Alex", "Nadia", "Chris"] as const;
-  const chaosTimes = ["2m", "9m", "22m", "1h"] as const;
-  const chaosInitials = ["M", "A", "N", "C"] as const;
+  const incomingSources = copy.sources.slice(0, 4);
 
   return (
     <div
@@ -245,45 +243,44 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
             </h3>
           </div>
 
-          <div className="homepage-chaos-overload mt-3">
-            <div className="homepage-chaos-overload-head">
-              <span className="homepage-chaos-count">{copy.chaosBadge}</span>
-              <span className="homepage-chaos-hint">{copy.chaosHint}</span>
-            </div>
-          </div>
-
-          <div className="homepage-chaos-source-grid homepage-chaos-inbox-stack mt-3">
-            {copy.sources.slice(0, 4).map((source, index) => (
-              <article
-                className={`homepage-source-chip homepage-chaos-inbox-card homepage-source-chip--${sourceChannelKey(source)} min-w-0 border px-2.5 py-2`}
+          <div className="homepage-chaos-source-grid mt-3">
+            {incomingSources.map((source) => (
+              <span
+                className={`homepage-source-chip homepage-source-chip--${sourceChannelKey(source)} min-w-0 rounded-full border px-2 py-1.5`}
                 key={source}
-                style={{
-                  backgroundColor:
-                    "color-mix(in srgb, var(--surface-interactive) 86%, var(--canvas))",
-                  borderColor:
-                    "color-mix(in srgb, var(--border-default) 78%, transparent)",
-                }}
               >
                 <SourceChannelMark source={source} />
-                <span className="homepage-chaos-person" aria-hidden>
-                  {chaosInitials[index] ?? "L"}
-                </span>
-                <span className="homepage-chaos-message-copy min-w-0">
-                  <span className="homepage-chaos-message-meta">
-                    <strong>{chaosPeople[index] ?? "Lead"}</strong>
-                    <span>{source}</span>
-                    <span>{chaosTimes[index] ?? "1h"}</span>
-                  </span>
-                  <span className="homepage-source-label homepage-chaos-message-text">
-                    {chaosMessages[index] ?? chaosMessages[0]}
-                  </span>
-                </span>
-              </article>
+                <span className="homepage-source-label">{source}</span>
+              </span>
             ))}
           </div>
 
-          <p className="homepage-chaos-messages homepage-chaos-buried mt-3">
-            +6
+          <div className="homepage-chaos-messages mt-3 grid gap-2">
+            {chaosMessages.map((message, index) => (
+              <p
+                className="homepage-signal-message bp-copy-card-body min-w-0 rounded-[12px] border px-3 py-2 text-[11px] font-bold leading-4"
+                key={message}
+                style={{
+                  backgroundColor:
+                    index < 3
+                      ? "color-mix(in srgb, var(--warning) 9%, var(--surface))"
+                      : "var(--surface)",
+                  borderColor:
+                    index < 3
+                      ? "color-mix(in srgb, var(--warning) 28%, var(--border-default))"
+                      : "var(--border-default)",
+                  color: "var(--text-default)",
+                }}
+              >
+                <span aria-hidden className="homepage-message-mark" />
+                <span>{message}</span>
+              </p>
+            ))}
+          </div>
+
+          <p className="homepage-chaos-overload mt-3">
+            <span className="homepage-chaos-count">{copy.chaosBadge}</span>
+            <span className="homepage-chaos-hint">{copy.chaosHint}</span>
           </p>
         </section>
 

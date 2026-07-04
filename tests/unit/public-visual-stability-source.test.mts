@@ -375,7 +375,7 @@ describe("public visual stability source contracts", () => {
       "Homepage hero visual should cap chaos sources, messages, BizPilot actions, and clarity leads.",
     );
     assert.equal(
-      globals.includes(".homepage-chaos-messages,\n  .homepage-chaos-messages > * {\n    display: none;") &&
+      globals.includes(".homepage-chaos-messages > *:nth-child(n + 3) {\n    display: none;") &&
         globals.includes(".homepage-clarity-lead:nth-child(n + 2)"),
       true,
       "Mobile homepage hero should simplify chaos-to-clarity density.",
