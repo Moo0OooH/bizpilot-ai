@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-07-04: Updated owner overview guards for the simplified action-first cockpit.
  * - 2026-07-04: Added source guards for local dashboard display preferences.
+ * - 2026-07-04: Guarded display preferences route reapply, storage fallback, and visible focus states.
  * ============================================================
  */
 
@@ -209,6 +210,14 @@ describe("Dashboard V3 final acceptance source guards", () => {
       true,
     );
     assert.equal(displayPreferences.includes("window.localStorage"), true);
+    assert.equal(displayPreferences.includes("usePathname"), true);
+    assert.equal(displayPreferences.includes("}, [pathname, preferences]);"), true);
+    assert.equal(displayPreferences.includes("try {"), true);
+    assert.equal(
+      displayPreferences.includes("storage failures must not break the dashboard"),
+      true,
+    );
+    assert.equal(displayPreferences.includes("focus-visible:ring-2"), true);
     assert.equal(
       displayPreferences.includes("[data-dashboard-optional-guide]"),
       true,

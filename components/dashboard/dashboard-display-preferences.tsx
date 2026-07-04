@@ -27,6 +27,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { usePathname } from "next/navigation";
 
 import { buttonClass } from "./dashboard-ui";
 import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
@@ -140,10 +141,14 @@ function applyDisplayPreferences(preferences: DashboardDisplayPreferences) {
 }
 
 function persistDisplayPreferences(preferences: DashboardDisplayPreferences) {
-  window.localStorage.setItem(
-    DASHBOARD_DISPLAY_PREFERENCES_STORAGE_KEY,
-    JSON.stringify(preferences),
-  );
+  try {
+    window.localStorage.setItem(
+      DASHBOARD_DISPLAY_PREFERENCES_STORAGE_KEY,
+      JSON.stringify(preferences),
+    );
+  } catch {
+    // Local-only visual preferences are optional; storage failures must not break the dashboard.
+  }
 }
 
 function useDashboardDisplayPreferences() {
@@ -161,6 +166,7 @@ function useDashboardDisplayPreferences() {
 export function DashboardDisplayPreferencesFrame({
   children,
 }: Readonly<{ children: ReactNode }>) {
+  const pathname = usePathname();
   const [preferences, setPreferences] = useState<DashboardDisplayPreferences>(() =>
     typeof window === "undefined"
       ? defaultDisplayPreferences
@@ -172,7 +178,7 @@ export function DashboardDisplayPreferencesFrame({
     if (typeof window !== "undefined") {
       persistDisplayPreferences(preferences);
     }
-  }, [preferences]);
+  }, [pathname, preferences]);
 
   const value = useMemo<DashboardDisplayPreferencesContextValue>(
     () => ({
@@ -196,8 +202,8 @@ export function DashboardDisplayPreferencesFrame({
 
 function optionButtonClass(active: boolean): string {
   return active
-    ? "min-h-10 rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-3 py-2 text-left text-[12px] font-black text-[var(--dash-text)] shadow-sm"
-    : "min-h-10 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-left text-[12px] font-bold text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)]";
+    ? "min-h-10 rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-3 py-2 text-left text-[12px] font-black text-[var(--dash-text)] shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]"
+    : "min-h-10 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-left text-[12px] font-bold text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] hover:text-[var(--dash-text)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-bg)]";
 }
 
 function PreferenceButton({
