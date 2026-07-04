@@ -798,7 +798,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       },
     ],
     secondaryCta: "See workflow demo",
-    title: "BizPilot compared with CRMs, forms, booking tools, and manual inboxes.",
+    title: "BizPilot vs CRMs, forms, and booking tools.",
   },
   quoteLinkGuide: {
     badge: "Quote-link placement",
@@ -2152,7 +2152,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
     ],
     secondaryCta: "Voir la démo",
-    title: "BizPilot comparé aux CRM, formulaires, outils de réservation et boîtes de réception.",
+    title: "BizPilot vs CRM, formulaires et réservations.",
   },
   quoteLinkGuide: {
     badge: "Placement du lien",

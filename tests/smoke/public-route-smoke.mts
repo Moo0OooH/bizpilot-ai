@@ -58,7 +58,7 @@ const smokeTargets: readonly SmokeTarget[] = [
   },
   {
     expectedText: [
-      "BizPilot compared with CRMs, forms, booking tools, and manual inboxes.",
+      "BizPilot vs CRMs, forms, and booking tools.",
       "Full CRM",
       "Form builder",
       "The boundary matters.",

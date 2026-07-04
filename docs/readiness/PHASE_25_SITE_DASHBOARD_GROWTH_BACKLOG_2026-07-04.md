@@ -645,6 +645,60 @@ pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3038 --timeout-ms=60000 PASS
 Playwright Chrome /demo geometry QA PASS
 ```
 
+## Progress Addendum - Phase 25T
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25T_FINAL_PUBLIC_VISUAL_MATRIX_2026-07-04.md`:
+
+- Ran the final public visual geometry matrix after the homepage and demo
+  polish phases.
+- Checked 13 public routes across EN/fr-CA, light/dark theme, mobile, and
+  desktop states: 104 public states total, 0 failures.
+- Shortened the `/comparison` EN/fr-CA H1 after the matrix showed the previous
+  fr-CA mobile headline was close to the visual risk threshold.
+- Updated public route and responsive smoke contracts for the new comparison
+  headline.
+- Preserved the manual-first product truth: no booking, price confirmation,
+  payment, auto-send, SMS/WhatsApp automation, or full-CRM replacement claim.
+
+Backlog items advanced:
+
+```text
+21 reinforced
+27 reinforced
+37 reinforced
+45 reinforced with 104-state public visual matrix
+47 reinforced
+66 done for public marketing routes
+74 preserved
+82 reinforced
+89 preserved as paid-pilot blocker
+90 preserved; no local RLS/database proof was claimed
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+98 preserved
+99 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS - 198 tests
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3039 PASS on retry
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3039 PASS
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3039 --timeout-ms=60000 PASS
+Playwright Chrome final public geometry matrix PASS - 104 states, 0 failures
+```
+
 ## Progress Addendum - Phase 25P
 
 Date: 2026-07-04

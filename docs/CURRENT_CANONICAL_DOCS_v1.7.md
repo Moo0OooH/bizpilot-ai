@@ -235,6 +235,10 @@ starting new work:
   latest public demo evidence: static product-real owner-view preview,
   quote-link-to-draft workflow, EN/fr-CA geometry QA, and smoke coverage for
   `/demo` without enabling real data, auto-send, booking, payment, or CRM scope.
+- `readiness/PHASE_25T_FINAL_PUBLIC_VISUAL_MATRIX_2026-07-04.md` -
+  latest public visual evidence: 104-state EN/fr-CA light/dark mobile/desktop
+  matrix across 13 public routes, comparison headline fit fix, public smoke
+  retry evidence, and preserved manual-first product gates.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

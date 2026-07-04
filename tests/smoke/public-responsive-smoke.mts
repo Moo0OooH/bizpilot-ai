@@ -123,7 +123,7 @@ const routes: readonly RouteContract[] = [
     path: "/faq?language=fr-CA",
   },
   {
-    h1: "BizPilot compared with CRMs, forms, booking tools, and manual inboxes.",
+    h1: "BizPilot vs CRMs, forms, and booking tools.",
     mustContain: [
       "comparison-grid",
       "Full CRM",
@@ -135,7 +135,7 @@ const routes: readonly RouteContract[] = [
     path: "/comparison",
   },
   {
-    h1: "BizPilot comparé aux CRM, formulaires, outils de réservation et boîtes de réception.",
+    h1: "BizPilot vs CRM, formulaires et réservations.",
     mustContain: [
       "comparison-grid",
       "CRM complet",
