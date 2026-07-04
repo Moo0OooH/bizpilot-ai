@@ -434,6 +434,17 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
             >
               {copy.hero.body}
             </p>
+            <ul
+              aria-label={copy.hero.proofLabel}
+              className="homepage-hero-proof-rail mt-4 grid min-w-0 gap-2"
+            >
+              {copy.hero.signals.map((item) => (
+                <li className="homepage-hero-proof-item min-w-0" key={item.label}>
+                  <span className="homepage-hero-proof-label">{item.label}</span>
+                  <span className="homepage-hero-proof-value">{item.value}</span>
+                </li>
+              ))}
+            </ul>
             <ul className="homepage-hero-bullets mt-4 flex flex-wrap gap-2">
               {copy.hero.bullets.map((item) => (
                 <li

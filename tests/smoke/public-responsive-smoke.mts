@@ -39,7 +39,7 @@ const TIMEOUT_MS = 15_000;
 
 const routes: readonly RouteContract[] = [
   {
-    h1: "Never lose a quote request in the chaos.",
+    h1: "Cleaning quote recovery.",
     maxOccurrences: [
       {
         max: 5,
@@ -51,6 +51,8 @@ const routes: readonly RouteContract[] = [
       "href=\"/faq\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
+      "homepage-hero-proof-rail",
+      "Website to text",
       "THE CHAOS",
       "THE CLARITY",
       "Smart lead queue",
@@ -62,7 +64,7 @@ const routes: readonly RouteContract[] = [
     path: "/",
   },
   {
-    h1: "Ne perdez jamais une demande dans le chaos.",
+    h1: "Récupération de soumissions.",
     maxOccurrences: [
       {
         max: 5,
@@ -74,6 +76,8 @@ const routes: readonly RouteContract[] = [
       "href=\"/faq\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
+      "homepage-hero-proof-rail",
+      "Site à texto",
       "LE CHAOS",
       "LA CLARTÉ",
       "File de prospects intelligente",

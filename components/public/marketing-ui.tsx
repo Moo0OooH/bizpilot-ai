@@ -407,7 +407,7 @@ export function MarketingBrand({
   subtitle = defaultMarketingNavCopy.brandSubtitle,
 }: Readonly<{ subtitle?: string }>) {
   return (
-    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1240px]:min-w-[20rem]" href="/">
+    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1240px]:min-w-[16rem]" href="/">
       <span
         aria-hidden
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[16px] font-black"
@@ -512,7 +512,7 @@ export function MarketingHeader({
             {copy.signIn}
           </Link>
           <MarketingButton className="min-h-11 px-4 text-[13px]" href="/pilot">
-            {copy.startFull}
+            {copy.startShort}
           </MarketingButton>
         </div>
         <div className="flex shrink-0 items-center gap-2 min-[1240px]:hidden">

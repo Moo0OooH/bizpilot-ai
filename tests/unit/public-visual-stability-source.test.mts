@@ -198,6 +198,7 @@ describe("public visual stability source contracts", () => {
       "homepage-hero-section",
       "homepage-hero-grid",
       "homepage-hero-actions",
+      "homepage-hero-proof-rail",
       "homepage-hero-mockup",
       "homepage-problem-section",
       "homepage-demo-grid",
@@ -327,6 +328,8 @@ describe("public visual stability source contracts", () => {
     assert.equal(homepage.includes("homepage-hero-section"), true);
     assert.equal(homepage.includes("homepage-hero-title"), true);
     assert.equal(homepage.includes("homepage-hero-actions"), true);
+    assert.equal(homepage.includes("homepage-hero-proof-rail"), true);
+    assert.equal(homepage.includes("copy.hero.signals.map"), true);
     assert.equal(
       homepage.includes("min-[1100px]:text-[4.25rem]"),
       false,
@@ -336,6 +339,11 @@ describe("public visual stability source contracts", () => {
       globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 43rem);\n  font-size: 2.25rem;"),
       true,
       "Homepage hero should keep a compact mobile/base title size in CSS.",
+    );
+    assert.equal(
+      globals.includes(".homepage-hero-proof-rail {\n  max-inline-size: min(100%, 42rem);"),
+      true,
+      "Homepage hero should keep a compact proof rail before the mockup.",
     );
     assert.equal(
       globals.includes("@media (min-width: 1100px) {\n  .homepage-hero-title {\n    font-size: 3.45rem;"),
@@ -348,7 +356,7 @@ describe("public visual stability source contracts", () => {
       "Homepage hero should no longer use the previous taller desktop title size.",
     );
     assert.equal(
-      globals.includes(".homepage-hero-title {\n    font-size: 3.18rem;"),
+      globals.includes(".homepage-hero-title {\n    font-size: 2.9rem;"),
       true,
       "Homepage hero should keep a tighter desktop title size in CSS.",
     );
@@ -391,6 +399,11 @@ describe("public visual stability source contracts", () => {
     );
     assert.equal(homepage.includes("bp-button-row homepage-hero-actions"), true);
     assert.equal(homepage.includes("min-[360px]:flex-row"), true);
+    assert.equal(
+      globals.includes(".homepage-hero-proof-rail {\n    grid-template-columns: 1fr;"),
+      true,
+      "Mobile homepage hero proof rail should stack to avoid text squeeze.",
+    );
     assert.equal(
       globals.includes(".homepage-problem-section"),
       true,

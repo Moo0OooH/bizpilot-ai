@@ -38,8 +38,9 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 const smokeTargets: readonly SmokeTarget[] = [
   {
     expectedText: [
-      "Never lose a quote request in the chaos.",
+      "Cleaning quote recovery.",
       "Join the pilot",
+      "Website to text",
       "THE CHAOS",
       "Review draft",
     ],

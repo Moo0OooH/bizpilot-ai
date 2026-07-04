@@ -78,8 +78,8 @@ describe("public marketing header source contract", () => {
     );
     assert.match(
       marketingUiSource,
-      /\{copy\.startFull\}\r?\n\s+<\/MarketingButton>/,
-      "Desktop header should keep one full pilot CTA.",
+      /\{copy\.startShort\}\r?\n\s+<\/MarketingButton>/,
+      "Desktop header should keep one compact pilot CTA.",
     );
     assert.match(
       marketingUiSource,

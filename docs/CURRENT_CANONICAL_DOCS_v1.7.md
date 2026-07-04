@@ -227,6 +227,10 @@ starting new work:
 - `readiness/PHASE_25Q_WHOLE_PROJECT_REAUDIT_AND_FINAL_CHECKLIST_2026-07-04.md` -
   latest whole-project re-audit and updated 0-100 checklist after Phase 25P;
   identifies homepage hero/visual polish as the next safe execution phase.
+- `readiness/PHASE_25R_HOMEPAGE_HERO_BILINGUAL_VISUAL_POLISH_2026-07-04.md` -
+  latest public homepage evidence: EN/fr-CA hero headline, proof rail, desktop
+  header fit, mobile stacking, visual geometry QA, and public smoke/UI-matrix
+  verification without opening blocked product or data gates.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

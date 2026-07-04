@@ -82,7 +82,12 @@ type HomeCopy = Readonly<{
     bullets: readonly string[];
     note: string;
     primaryCta: string;
+    proofLabel: string;
     secondaryCta: string;
+    signals: ReadonlyArray<Readonly<{
+      label: string;
+      value: string;
+    }>>;
     title: string;
   }>;
   meta: MetaCopy;
@@ -1290,16 +1295,31 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "Local services - cleaning first",
       body:
-        "Quotes scatter across website, Google, Facebook, Instagram, texts, and missed calls. BizPilot turns them into one owner-reviewed queue with a draft ready to copy.",
+        "For busy cleaning owners, website, Google, Facebook, Instagram, texts, and missed calls become one clear queue with a reply draft you review before sending.",
       bullets: [
-        "One queue for every channel",
-        "Reply to hot requests first",
-        "Review the draft before sending",
+        "Catch every quote channel",
+        "See the hottest request first",
+        "Approve the reply yourself",
       ],
       note: "Founder-led pilot. Approval required. No auto-send.",
       primaryCta: "Join the pilot",
+      proofLabel: "Quote recovery flow",
       secondaryCta: "See how it works",
-      title: "Never lose a quote request in the chaos.",
+      signals: [
+        {
+          label: "Capture",
+          value: "Website to text",
+        },
+        {
+          label: "Triage",
+          value: "Hot requests first",
+        },
+        {
+          label: "Reply",
+          value: "Owner reviews",
+        },
+      ],
+      title: "Cleaning quote recovery.",
     },
     meta: {
       description:
@@ -2587,17 +2607,32 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "Services locaux - nettoyage d'abord",
       body:
-        "Les demandes arrivent du site web, Google, Facebook, Instagram, textos et appels manqués. BizPilot les transforme en file claire avec un brouillon à valider.",
+        "Pour les entreprises de nettoyage, site web, Google, Facebook, Instagram, textos et appels manqués deviennent une file claire avec un brouillon à valider avant l'envoi.",
       bullets: [
-        "Une file pour chaque canal",
-        "Répondre d'abord aux demandes chaudes",
-        "Valider le brouillon avant l'envoi",
+        "Capter chaque canal",
+        "Voir la demande chaude d'abord",
+        "Valider la réponse vous-même",
       ],
       note: "Projet pilote guidé. Approbation requise. Aucun envoi automatique.",
       primaryCta: "Rejoindre le pilote",
+      proofLabel: "Flux de récupération",
       secondaryCta: "Voir le flux",
+      signals: [
+        {
+          label: "Capter",
+          value: "Site à texto",
+        },
+        {
+          label: "Trier",
+          value: "Demandes chaudes",
+        },
+        {
+          label: "Répondre",
+          value: "Vous validez",
+        },
+      ],
       title:
-        "Ne perdez jamais une demande dans le chaos.",
+        "Récupération de soumissions.",
     },
     meta: {
       description:

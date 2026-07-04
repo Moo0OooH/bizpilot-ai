@@ -614,6 +614,40 @@ select {
   max-inline-size: min(100%, 43rem);
 }
 
+.homepage-hero-proof-rail {
+  max-inline-size: min(100%, 42rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.homepage-hero-proof-item {
+  display: grid;
+  gap: 0.25rem;
+  min-block-size: 4.15rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border-default));
+  border-radius: 0.95rem;
+  padding: 0.78rem 0.85rem;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 8%, var(--surface-elevated)), var(--surface));
+  box-shadow: var(--shadow-sm);
+}
+
+.homepage-hero-proof-label {
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.homepage-hero-proof-value {
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
 .homepage-hero-title {
   max-inline-size: min(100%, 43rem);
   font-size: 2.25rem;
@@ -1409,7 +1443,7 @@ select {
   }
 
   .homepage-hero-title {
-    font-size: 3.18rem;
+    font-size: 2.9rem;
   }
 
   .homepage-problem-section {
@@ -1419,7 +1453,7 @@ select {
 
 @media (min-width: 1500px) {
   .homepage-hero-title {
-    font-size: 3.45rem;
+    font-size: 3.25rem;
   }
 }
 
@@ -1477,6 +1511,28 @@ select {
 
   .homepage-hero-bullets {
     gap: 0.45rem;
+  }
+
+  .homepage-hero-proof-rail {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+    margin-block-start: 0.6rem;
+  }
+
+  .homepage-hero-proof-item {
+    min-block-size: 0;
+    grid-template-columns: minmax(4.8rem, 0.38fr) minmax(0, 1fr);
+    align-items: center;
+    padding: 0.5rem 0.65rem;
+    border-radius: 0.75rem;
+  }
+
+  .homepage-hero-proof-label {
+    font-size: 0.58rem;
+  }
+
+  .homepage-hero-proof-value {
+    font-size: 0.74rem;
   }
 
   .homepage-hero-bullet {

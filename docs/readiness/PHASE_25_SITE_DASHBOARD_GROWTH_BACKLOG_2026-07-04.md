@@ -543,6 +543,58 @@ Verification:
 git diff --check PASS
 ```
 
+## Progress Addendum - Phase 25R
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25R_HOMEPAGE_HERO_BILINGUAL_VISUAL_POLISH_2026-07-04.md`:
+
+- Reframed the homepage hero headline as a short EN/fr-CA category promise:
+  "Cleaning quote recovery." and "Récupération de soumissions."
+- Rewrote hero body and bullets around cleaning-owner quote recovery,
+  source capture, triage, and owner-reviewed replies.
+- Added a three-part hero proof rail for capture, triage, and owner review.
+- Tightened desktop hero title sizing and stacked the proof rail on mobile.
+- Shortened the desktop header pilot CTA and reduced the brand minimum width so
+  fr-CA public navigation stays stable at the 1240px breakpoint.
+- Added source/smoke coverage for the updated hero copy, proof rail, and header
+  CTA behavior.
+
+Backlog items advanced:
+
+```text
+21 done
+37 done
+45 reinforced
+47 reinforced
+66 prepared with local public hero geometry/screenshot QA
+74 preserved
+89 preserved as paid-pilot blocker
+90 preserved; no local RLS/database proof was claimed
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+98 preserved
+99 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3037 PASS
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3037 PASS
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3037 --timeout-ms=60000 PASS
+Playwright Chrome hero geometry QA PASS
+```
+
 ## Progress Addendum - Phase 25P
 
 Date: 2026-07-04
