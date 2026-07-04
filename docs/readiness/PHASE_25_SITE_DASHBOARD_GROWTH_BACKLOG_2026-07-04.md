@@ -496,6 +496,45 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25G
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25G_DASHBOARD_SMOKE_LOCAL_ONLY_GUARD_2026-07-04.md`:
+
+- Hardened `tests/smoke/dashboard-auth-smoke.mts` so mutating dashboard smoke
+  requires a local Supabase URL.
+- Added a local Supabase host allowlist for `localhost`, `127.0.0.1`, `::1`,
+  `host.docker.internal`, and `*.localhost`.
+- Added fail-fast blocking for managed/non-local Supabase hosts, not only the
+  canonical production project.
+- Updated source guards and the change evidence protocol so future handoffs
+  describe dashboard smoke as local-only.
+
+Backlog items advanced:
+
+```text
+8 done
+9 reinforced
+48 safer
+66 safer
+67 safer
+74 preserved
+89 preserved
+90 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense EXPECTED BLOCK PASS - local-only guard blocked canonical production/non-local Supabase before synthetic writes
+```
+
 ## Progress Addendum - Phase 25F
 
 Date: 2026-07-04

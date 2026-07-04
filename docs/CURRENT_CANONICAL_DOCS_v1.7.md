@@ -189,6 +189,9 @@ starting new work:
   growth copy evidence: feature and cleaning pages now frame capture,
   organization, source context, owner-reviewed drafts, manual send, and
   follow-up visibility as one workflow.
+- `readiness/PHASE_25G_DASHBOARD_SMOKE_LOCAL_ONLY_GUARD_2026-07-04.md` -
+  latest command-safety evidence: mutating dashboard smoke now fails fast unless
+  `NEXT_PUBLIC_SUPABASE_URL` points at a local Supabase host.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

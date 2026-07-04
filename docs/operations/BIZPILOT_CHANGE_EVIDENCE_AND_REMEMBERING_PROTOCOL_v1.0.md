@@ -34,9 +34,10 @@ For every requested or completed work item, the team must:
 - No cleanup execution.
 - RLS must not be weakened.
 - `leads.source` must not be introduced.
-- Dashboard mutating smoke (`smoke:dashboard`) is local/preview-only and must not run against:
+- Dashboard mutating smoke (`smoke:dashboard`) is local-only and must not run against:
   - `bizpilo.com`
   - canonical production Supabase `qfqendrqimqvkoojpjao`
+  - any managed/non-local Supabase host
 - Synthetic production smoke must only use owner-approved synthetic payloads and retain/cleanup decisions in this protocol.
 - Production readiness smoke must not create dashboard test artifacts (businesses, links, users, forms, leads, auth artifacts).
 - Synthetic production smoke and synthetic login/setup paths require explicit owner approval plus a documented keep/cleanup decision.
@@ -85,12 +86,13 @@ For every requested or completed work item, the team must:
 - Exact next approval needed
 
 ### 8) Command safety exception
-- `smoke:dashboard` and synthetic dashboard-auth smoke helpers must fail fast when any production signal is detected:
+- `smoke:dashboard` and synthetic dashboard-auth smoke helpers must fail fast when any production or managed/non-local signal is detected:
   - `VERCEL_ENV=production`
   - `NEXT_PUBLIC_APP_URL` contains `bizpilo.com`
   - `NEXT_PUBLIC_SUPABASE_URL` contains `qfqendrqimqvkoojpjao`
+  - `NEXT_PUBLIC_SUPABASE_URL` is not local (`localhost`, `127.0.0.1`, `::1`, `host.docker.internal`, or `*.localhost`)
   - smoke base URL host is `bizpilo.com`
-- Dashboard mutating smoke remains prohibited in production regardless of guard behavior.
+- Dashboard mutating smoke remains prohibited in production and managed/non-local Supabase regardless of guard behavior.
 
 ## Canonical files to attach to every handoff
 - `docs/readiness/PHASE_21V_SYNTHESIS_STATUS_AND_ACTION_REPORT_2026-05-26.md`

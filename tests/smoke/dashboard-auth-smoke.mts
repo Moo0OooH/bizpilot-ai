@@ -265,40 +265,68 @@ function readOptionalEnv(
   return trimmed && trimmed.length > 0 ? trimmed : undefined;
 }
 
+function localSupabaseHost(input: string): string {
+  try {
+    return new URL(input).hostname.toLowerCase();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Invalid NEXT_PUBLIC_SUPABASE_URL for dashboard smoke: ${message}`);
+  }
+}
+
+function isLocalSupabaseHost(host: string): boolean {
+  return (
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host === "[::1]" ||
+    host === "::1" ||
+    host === "host.docker.internal" ||
+    host.endsWith(".localhost")
+  );
+}
+
 function assertDashboardSmokeSafeInput(input: {
   appUrl: string | undefined;
   baseUrl: URL;
   isVercelEnvProduction: boolean;
   supabaseUrl: string;
 }): void {
-  const productionSignals: string[] = [];
+  const blockedSignals: string[] = [];
   const appUrlHost = input.appUrl?.toLowerCase() ?? "";
   const supabaseHost = input.supabaseUrl.toLowerCase();
+  const supabaseHostname = localSupabaseHost(input.supabaseUrl);
   const baseHost = input.baseUrl.host.toLowerCase();
 
   if (input.isVercelEnvProduction) {
-    productionSignals.push("VERCEL_ENV=production");
+    blockedSignals.push("VERCEL_ENV=production");
   }
 
   if (appUrlHost.includes("bizpilo.com")) {
-    productionSignals.push("NEXT_PUBLIC_APP_URL includes bizpilo.com");
+    blockedSignals.push("NEXT_PUBLIC_APP_URL includes bizpilo.com");
   }
 
   if (supabaseHost.includes("qfqendrqimqvkoojpjao")) {
-    productionSignals.push(
+    blockedSignals.push(
       "NEXT_PUBLIC_SUPABASE_URL contains qfqendrqimqvkoojpjao",
     );
   }
 
-  if (baseHost.includes("bizpilo.com")) {
-    productionSignals.push("target smoke base URL is bizpilo.com");
+  if (!isLocalSupabaseHost(supabaseHostname)) {
+    blockedSignals.push(
+      `NEXT_PUBLIC_SUPABASE_URL is managed/non-local (${supabaseHostname})`,
+    );
   }
 
-  if (productionSignals.length > 0) {
+  if (baseHost.includes("bizpilo.com")) {
+    blockedSignals.push("target smoke base URL is bizpilo.com");
+  }
+
+  if (blockedSignals.length > 0) {
     throw new Error(
-      `dashboard-auth-smoke is production-prohibited for synthetic data creation. ` +
-        `Detected production signals: ${productionSignals.join(", ")}. ` +
-        `This script is local/preview-only. Use founder-approved visual, read-only production validation.`,
+      `dashboard-auth-smoke is local-only for synthetic data creation. ` +
+        `Detected blocked signals: ${blockedSignals.join(", ")}. ` +
+        `Point NEXT_PUBLIC_SUPABASE_URL at a local Supabase target before running this mutating smoke. ` +
+        `Use founder-approved visual, read-only validation for production or managed Supabase.`,
     );
   }
 }

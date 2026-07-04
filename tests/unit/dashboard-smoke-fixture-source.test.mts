@@ -52,13 +52,22 @@ test("dense dashboard smoke covers realistic source and workflow variety", () =>
   }
 });
 
-test("dashboard smoke remains production-prohibited for synthetic writes", () => {
+test("dashboard smoke remains local-only and production-prohibited for synthetic writes", () => {
   for (const required of [
     "assertDashboardSmokeSafeInput",
+    "localSupabaseHost",
+    "isLocalSupabaseHost",
+    'host === "localhost"',
+    'host === "127.0.0.1"',
+    'host === "[::1]"',
+    'host === "host.docker.internal"',
     "VERCEL_ENV=production",
     "NEXT_PUBLIC_APP_URL includes bizpilo.com",
+    "NEXT_PUBLIC_SUPABASE_URL is managed/non-local",
     "qfqendrqimqvkoojpjao",
     "target smoke base URL is bizpilo.com",
+    "dashboard-auth-smoke is local-only for synthetic data creation",
+    "Point NEXT_PUBLIC_SUPABASE_URL at a local Supabase target",
     "Synthetic data only.",
   ]) {
     assert.equal(
