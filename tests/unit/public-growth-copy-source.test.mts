@@ -57,3 +57,44 @@ test("cleaning page copy stays service-specific without booking claims", () => {
     );
   }
 });
+
+test("pilot proof metrics stay honest before real testimonials exist", () => {
+  const pilotSource = readFileSync("app/pilot/page.tsx", "utf8");
+
+  for (const required of [
+    "What the pilot will measure",
+    "Response speed",
+    "Missing-detail clarity",
+    "Follow-up visibility",
+    "Source context",
+    "These are pilot learning metrics, not testimonials, conversion-rate claims, or a performance guarantee.",
+  ]) {
+    assert.equal(publicCopy.includes(required), true, `missing ${required}`);
+  }
+
+  assert.equal(
+    pilotSource.includes("copy.proof.metrics"),
+    true,
+    "Pilot page should render measured pilot proof architecture.",
+  );
+  assert.equal(
+    pilotSource.includes("<form"),
+    false,
+    "Pilot proof section should not introduce a submitting form.",
+  );
+
+  for (const forbidden of [
+    "guaranteed revenue",
+    "guaranteed leads",
+    "guaranteed conversion",
+    "books jobs automatically",
+    "auto-send replies",
+    "real customer testimonials",
+  ]) {
+    assert.equal(
+      publicCopy.toLowerCase().includes(forbidden),
+      false,
+      `pilot proof copy should not include ${forbidden}`,
+    );
+  }
+});

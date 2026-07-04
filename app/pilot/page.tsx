@@ -17,6 +17,7 @@
  * - 2026-06-19: Moved visible pilot-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Replaced the inactive request UI with a concise copy-template conversion card.
  * - 2026-06-25: Normalized pilot page rhythm while keeping the non-submitting template flow.
+ * - 2026-07-04: Added honest pilot proof metrics without fake claims or data submission.
  * ============================================================
  */
 
@@ -141,6 +142,69 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
               <PilotRequestTemplateCard copy={copy.conversion} />
             </MarketingCard>
           </div>
+
+          <MarketingCard className="mt-8 p-5 sm:p-6">
+            <div className="grid gap-5 lg:grid-cols-[minmax(220px,0.36fr)_minmax(0,1fr)] lg:items-start">
+              <div>
+                <h2
+                  className="bp-card-title font-black leading-tight"
+                  style={{ color: marketingTone.text }}
+                >
+                  {copy.proof.title}
+                </h2>
+                <p
+                  className="mt-3 text-[15px] font-bold leading-7"
+                  style={{ color: marketingTone.soft }}
+                >
+                  {copy.proof.body}
+                </p>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {copy.proof.metrics.map((metric) => (
+                  <div
+                    className="min-w-0 rounded-[14px] border px-4 py-3"
+                    key={metric.label}
+                    style={{
+                      backgroundColor: "var(--surface-interactive)",
+                      borderColor: marketingTone.border,
+                    }}
+                  >
+                    <p
+                      className="text-[12px] font-black uppercase tracking-[0.14em]"
+                      style={{ color: marketingTone.teal }}
+                    >
+                      {metric.label}
+                    </p>
+                    <h3
+                      className="mt-2 text-[15px] font-black leading-6"
+                      style={{ color: marketingTone.text }}
+                    >
+                      {metric.value}
+                    </h3>
+                    <p
+                      className="mt-2 text-[13px] font-bold leading-6"
+                      style={{ color: marketingTone.muted }}
+                    >
+                      {metric.note}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div
+              className="mt-5 flex min-w-0 items-start gap-3 rounded-[14px] border px-4 py-3 text-[14px] font-bold leading-6"
+              style={{
+                backgroundColor: "var(--surface)",
+                borderColor: "rgba(245,158,11,0.32)",
+                color: marketingTone.soft,
+              }}
+            >
+              <span className="mt-0.5 shrink-0 text-amber-600">
+                <MarketingIcon name="warning" />
+              </span>
+              <span className="min-w-0">{copy.proof.guardrail}</span>
+            </div>
+          </MarketingCard>
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />

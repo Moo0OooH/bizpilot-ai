@@ -1298,6 +1298,19 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPilotCopy.conversion.previewQuestions.length, 6);
     assert.equal(frenchPilotCopy.conversion.previewQuestions.length, 6);
     assert.equal(
+      englishPilotCopy.proof.title,
+      "What the pilot will measure",
+    );
+    assert.equal(englishPilotCopy.proof.metrics.length, 4);
+    assert.equal(
+      englishPilotCopy.proof.guardrail,
+      "These are pilot learning metrics, not testimonials, conversion-rate claims, or a performance guarantee.",
+    );
+    assert.equal(
+      frenchPilotCopy.proof.title,
+      "Ce que le projet pilote mesurera",
+    );
+    assert.equal(
       JSON.stringify(frenchPilotCopy).includes("Copy pilot request template"),
       false,
       "fr-CA pilot copy should not fall back to English CTA text.",
@@ -1320,6 +1333,11 @@ describe("BizPilot language copy", () => {
       pilotSource.includes("PilotRequestTemplateCard"),
       true,
       "Pilot page should use the clipboard conversion component.",
+    );
+    assert.equal(
+      pilotSource.includes("copy.proof.metrics"),
+      true,
+      "Pilot page should render the pilot proof metrics from localized copy.",
     );
 
     const conversionSource = readFileSync(

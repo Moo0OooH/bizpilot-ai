@@ -496,6 +496,45 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25H
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25H_PILOT_PROOF_METRICS_2026-07-04.md`:
+
+- Added localized pilot proof metrics for response speed, missing-detail
+  clarity, follow-up visibility, and source context.
+- Rendered the metrics on `/pilot` as pilot learning targets, not proof claims.
+- Added an explicit public guardrail against testimonials, conversion-rate
+  claims, or a performance guarantee.
+- Added source/unit guards to keep the pilot page non-submitting and
+  localization-driven.
+
+Backlog items advanced:
+
+```text
+22 done
+43 reinforced
+44 done
+79 prepared
+80 prepared
+90 preserved
+93 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3031 PASS
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3031 PASS
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3031 PASS
+```
+
 ## Progress Addendum - Phase 25G
 
 Date: 2026-07-04

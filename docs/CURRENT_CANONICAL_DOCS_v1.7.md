@@ -192,6 +192,10 @@ starting new work:
 - `readiness/PHASE_25G_DASHBOARD_SMOKE_LOCAL_ONLY_GUARD_2026-07-04.md` -
   latest command-safety evidence: mutating dashboard smoke now fails fast unless
   `NEXT_PUBLIC_SUPABASE_URL` points at a local Supabase host.
+- `readiness/PHASE_25H_PILOT_PROOF_METRICS_2026-07-04.md` - latest pilot
+  conversion evidence: `/pilot` now explains honest learning metrics for
+  response speed, missing-detail clarity, follow-up visibility, and source
+  context without fake testimonials or performance guarantees.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

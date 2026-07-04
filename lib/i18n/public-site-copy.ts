@@ -394,6 +394,19 @@ export type PilotConversionCopy = Readonly<{
   title: string;
 }>;
 
+type PilotProofMetricCopy = Readonly<{
+  label: string;
+  note: string;
+  value: string;
+}>;
+
+type PilotProofCopy = Readonly<{
+  body: string;
+  guardrail: string;
+  metrics: ReadonlyArray<PilotProofMetricCopy>;
+  title: string;
+}>;
+
 type PilotCopy = Readonly<{
   body: string;
   conversion: PilotConversionCopy;
@@ -404,6 +417,7 @@ type PilotCopy = Readonly<{
   meta: MetaCopy;
   nextSteps: readonly string[];
   nextStepsTitle: string;
+  proof: PilotProofCopy;
   title: string;
   badge: string;
 }>;
@@ -1479,6 +1493,39 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Selected businesses receive setup and a sample workflow",
     ],
     nextStepsTitle: "What happens next",
+    proof: {
+      body:
+        "The pilot is designed to create usable proof before any bigger promise: response speed, missing-detail clarity, follow-up visibility, and safe source attribution.",
+      guardrail:
+        "These are pilot learning metrics, not testimonials, conversion-rate claims, or a performance guarantee.",
+      metrics: [
+        {
+          label: "Response speed",
+          note: "Measured as a manual workflow, not auto-send.",
+          value: "Time from quote request to owner-reviewed reply",
+        },
+        {
+          label: "Missing-detail clarity",
+          note: "The AI must ask for missing details instead of inventing them.",
+          value:
+            "How often the draft flags service, timing, area, or contact gaps",
+        },
+        {
+          label: "Follow-up visibility",
+          note:
+            "The dashboard should make the next manual step easy to find.",
+          value:
+            "Whether unanswered leads stay visible after the first reply",
+        },
+        {
+          label: "Source context",
+          note:
+            "Website, Google Business Profile, Instagram, or email context stays attached when safely captured.",
+          value: "Which quote link placement created the lead",
+        },
+      ],
+      title: "What the pilot will measure",
+    },
     title: "Help shape BizPilot around real cleaning work.",
   },
   pricing: {
@@ -2680,6 +2727,41 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       "Les entreprises sélectionnées reçoivent une configuration et un flux exemple",
     ],
     nextStepsTitle: "Ce qui se passe ensuite",
+    proof: {
+      body:
+        "Le projet pilote est conçu pour créer une preuve utile avant toute promesse plus large : vitesse de réponse, clarté des détails manquants, visibilité des suivis et attribution sécuritaire de la source.",
+      guardrail:
+        "Ce sont des métriques d'apprentissage du projet pilote, pas des témoignages, des promesses de taux de conversion ni une garantie de performance.",
+      metrics: [
+        {
+          label: "Vitesse de réponse",
+          note: "Mesuré comme flux manuel, sans envoi automatique.",
+          value:
+            "Temps entre la demande de soumission et la réponse validée par le propriétaire",
+        },
+        {
+          label: "Clarté des détails manquants",
+          note:
+            "L'IA doit demander les détails manquants au lieu de les inventer.",
+          value:
+            "Fréquence à laquelle le brouillon signale les lacunes de service, délai, zone ou contact",
+        },
+        {
+          label: "Visibilité des suivis",
+          note:
+            "Le tableau de bord doit rendre la prochaine étape manuelle facile à trouver.",
+          value:
+            "Capacité à garder les prospects sans réponse visibles après la première réponse",
+        },
+        {
+          label: "Contexte de source",
+          note:
+            "Site web, Profil d'entreprise Google, Instagram ou courriel restent attachés quand ils sont captés de façon sécuritaire.",
+          value: "Emplacement du lien de soumission qui a créé le prospect",
+        },
+      ],
+      title: "Ce que le projet pilote mesurera",
+    },
     title: "Aidez à façonner BizPilot autour du vrai travail de nettoyage.",
   },
   pricing: {
