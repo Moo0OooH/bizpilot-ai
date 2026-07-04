@@ -801,6 +801,32 @@ pnpm typecheck PASS
 pnpm build PASS
 ```
 
+## Progress Addendum - Phase 25W
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25W_POST_25V_RECHECK_AND_REMAINING_MAP_2026-07-04.md`:
+
+- Rechecked the Phase 25Q 0-100 checklist after Phases 25R, 25S, 25T, 25U,
+  and 25V.
+- Recorded completed deltas for homepage hero, product-real demo, final public
+  matrix, reply-speed content guide, lean content calendar, and Settings
+  feature guide details.
+- Recorded remaining open/blocked items, with dashboard/admin browser QA,
+  protected-route a11y QA, dashboard screenshot matrix, and local DB/RLS proof
+  still waiting for confirmed local Supabase.
+- Confirmed the current priority order: protect real-data, paid-pilot, and
+  mutating-dashboard-smoke gates before any next acceptance step.
+
+Current decision:
+
+```text
+Public website finalization is substantially complete for the current
+manual-first, cleaning-first, founder-led validation stage. Next required
+acceptance gate is confirmed local Supabase plus authenticated dashboard/admin
+browser QA.
+```
+
 ## Progress Addendum - Phase 25P
 
 Date: 2026-07-04

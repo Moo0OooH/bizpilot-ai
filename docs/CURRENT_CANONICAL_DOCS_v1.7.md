@@ -249,6 +249,11 @@ starting new work:
   collapsed activation/setup/visual/text/owner guide details with EN/fr-CA
   labels and source guards, without enabling blocked features or running
   mutating dashboard smoke against a non-local Supabase target.
+- `readiness/PHASE_25W_POST_25V_RECHECK_AND_REMAINING_MAP_2026-07-04.md` -
+  latest post-25V checklist evidence: updated done/open/blocked map after
+  homepage, demo, public matrix, reply-speed guide, and Settings guide-detail
+  phases; identifies local Supabase dashboard/admin QA as the next required
+  acceptance gate.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest
