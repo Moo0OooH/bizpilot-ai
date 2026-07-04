@@ -414,12 +414,52 @@ type QuoteLinkGuideCopy = Readonly<{
     }>
   >;
   referencesTitle: string;
+  replySpeedCta: string;
   secondaryCta: string;
   sourceLabel: string;
   templateBody: string;
   templateTitle: string;
   templateUrlLabel: string;
   title: string;
+}>;
+
+type ReplySpeedGuideCopy = Readonly<{
+  badge: string;
+  board: Readonly<{
+    eyebrow: string;
+    items: ReadonlyArray<LabelValue>;
+    title: string;
+  }>;
+  body: string;
+  calendar: ReadonlyArray<
+    Readonly<{
+      actions: readonly string[];
+      body: string;
+      period: string;
+      title: string;
+    }>
+  >;
+  calendarBody: string;
+  calendarTitle: string;
+  checklist: readonly string[];
+  checklistTitle: string;
+  guardrail: Readonly<{
+    body: string;
+    items: readonly string[];
+    title: string;
+  }>;
+  meta: MetaCopy;
+  primaryCta: string;
+  secondaryCta: string;
+  title: string;
+  workflow: ReadonlyArray<
+    Readonly<{
+      body: string;
+      signal: string;
+      title: string;
+    }>
+  >;
+  workflowTitle: string;
 }>;
 
 export type PilotConversionCopy = Readonly<{
@@ -504,6 +544,7 @@ export type PublicSiteCopy = Readonly<{
   pilot: PilotCopy;
   pricing: PricingCopy;
   quoteLinkGuide: QuoteLinkGuideCopy;
+  replySpeedGuide: ReplySpeedGuideCopy;
   quoteShell: QuoteShellCopy;
   trust: TrustCopy;
 }>;
@@ -515,6 +556,7 @@ export const publicSiteCopyNamespaces = [
   "faq",
   "comparison",
   "quoteLinkGuide",
+  "replySpeedGuide",
   "cleaning",
   "trust",
   "demo",
@@ -930,6 +972,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       },
     ],
     referencesTitle: "Source-backed placement rules",
+    replySpeedCta: "Build faster reply habits",
     secondaryCta: "Compare BizPilot",
     sourceLabel: "Source tag",
     templateBody:
@@ -937,6 +980,124 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     templateTitle: "Tracked link patterns",
     templateUrlLabel: "Example link",
     title: "Where to put your cleaning quote link.",
+  },
+  replySpeedGuide: {
+    badge: "Reply-speed guide",
+    board: {
+      eyebrow: "Owner review board",
+      items: [
+        ["Warm request", "Move-out cleaning, next week"],
+        ["Missing details", "Rooms, access, photos, timing"],
+        ["Draft status", "Ready for owner review"],
+        ["Follow-up", "Visible if customer has not replied"],
+      ],
+      title: "Turn a vague request into a safer manual reply.",
+    },
+    body:
+      "Cleaning quote speed is not about sending anything automatically. It is about capturing the request cleanly, seeing what is missing, preparing a careful draft, and making the owner's next manual action obvious.",
+    calendar: [
+      {
+        actions: [
+          "Audit every place customers ask for a quote.",
+          "Move the direct quote link above generic contact text.",
+          "Use one source tag per placement.",
+        ],
+        body:
+          "Make the quote path easier to find before adding more campaigns.",
+        period: "Week 1",
+        title: "Fix the quote path first",
+      },
+      {
+        actions: [
+          "Write saved replies for price, move-out, deep clean, and recurring requests.",
+          "Keep each reply clear that a person will review the request.",
+          "Remove any wording that sounds like a confirmed booking.",
+        ],
+        body:
+          "Give the owner a consistent starting point without promising auto-send.",
+        period: "Week 2",
+        title: "Prepare replies for owner review",
+      },
+      {
+        actions: [
+          "Add service-specific context for move-out, office, and deep cleaning.",
+          "Ask for photos only when they help quote safely.",
+          "Keep forms short enough for mobile customers.",
+        ],
+        body:
+          "Better intake reduces risky guessing and repeated back-and-forth.",
+        period: "Week 3",
+        title: "Reduce missing details",
+      },
+      {
+        actions: [
+          "Review which sources created useful requests.",
+          "Track which drafts saved owner time.",
+          "Use real pilot notes before publishing proof claims.",
+        ],
+        body:
+          "Measure process quality before claiming customer or revenue results.",
+        period: "Week 4",
+        title: "Learn from the first replies",
+      },
+    ],
+    calendarBody:
+      "This is a lean content and operations calendar for a cleaning owner, not a promise that BizPilot sends messages or guarantees more bookings.",
+    calendarTitle: "A four-week reply-speed content plan.",
+    checklist: [
+      "Know the service type before quoting.",
+      "Confirm city or service area before promising availability.",
+      "Ask for rooms, approximate size, timing, access, and photos when useful.",
+      "Separate urgent jobs from requests that can wait.",
+      "Send the final message manually after owner review.",
+      "Follow up without pretending the customer already booked.",
+    ],
+    checklistTitle: "What a safer fast reply should check",
+    guardrail: {
+      body:
+        "Fast reply work is a process improvement. It is not a booking engine, a price guarantee, a revenue promise, or an automatic messaging system.",
+      items: [
+        "No automatic customer email, SMS, WhatsApp, or Instagram sending is promised.",
+        "No price, availability, or appointment is confirmed by the quote form.",
+        "No public proof claim should be published until real pilot evidence exists.",
+      ],
+      title: "Speed still needs business control.",
+    },
+    meta: {
+      description:
+        "A practical guide for cleaning businesses to reply to quote requests faster with safer intake, drafts for owner review, and no automatic sending.",
+      title: "Faster Cleaning Quote Replies Guide | BizPilot AI",
+    },
+    primaryCta: "See quote link guide",
+    secondaryCta: "Join founder pilot",
+    title: "Faster cleaning quote replies without auto-send.",
+    workflow: [
+      {
+        body:
+          "Use one direct quote link where customers already ask for price, scope, or availability.",
+        signal: "Capture",
+        title: "Start with a clean request path.",
+      },
+      {
+        body:
+          "Highlight service type, source, timing, service area, and the details still needed before a responsible quote.",
+        signal: "Triage",
+        title: "Find the missing details quickly.",
+      },
+      {
+        body:
+          "Prepare a practical reply draft that asks the right follow-up without inventing price or availability.",
+        signal: "Draft",
+        title: "Give the owner a safe starting point.",
+      },
+      {
+        body:
+          "The owner reviews, edits, copies, and sends the final message through their normal channel.",
+        signal: "Review",
+        title: "Keep final communication manual.",
+      },
+    ],
+    workflowTitle: "Owner-reviewed reply workflow.",
   },
   contentStudio: {
     badge: "Roadmap",
@@ -1199,7 +1360,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           },
           {
             answer:
-              "Form builders collect answers and stop. BizPilot keeps the quote request connected to source context, missing details, owner-reviewed reply drafts, and follow-up state so the owner can respond without moving into a full CRM.",
+              "Form builders collect answers and stop. BizPilot keeps the quote request connected to source context, missing details, reply drafts for owner review, and follow-up state so the owner can respond without moving into a full CRM.",
             question: "What makes BizPilot different from a form builder?",
           },
         ],
@@ -2284,6 +2445,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
     ],
     referencesTitle: "Règles de placement vérifiées",
+    replySpeedCta: "Améliorer la vitesse de réponse",
     secondaryCta: "Comparer BizPilot",
     sourceLabel: "Balise source",
     templateBody:
@@ -2291,6 +2453,124 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     templateTitle: "Modèles de liens suivis",
     templateUrlLabel: "Lien exemple",
     title: "Où placer votre lien de soumission de nettoyage.",
+  },
+  replySpeedGuide: {
+    badge: "Guide de réponse rapide",
+    board: {
+      eyebrow: "Tableau de révision",
+      items: [
+        ["Demande chaude", "Nettoyage avant déménagement, semaine prochaine"],
+        ["Détails manquants", "Pièces, accès, photos, moment souhaité"],
+        ["Brouillon", "Prêt pour validation"],
+        ["Suivi", "Visible si le client ne répond pas"],
+      ],
+      title: "Transformer une demande vague en réponse manuelle plus sûre.",
+    },
+    body:
+      "Répondre plus vite à une soumission de nettoyage ne veut pas dire envoyer automatiquement. Il faut capter la demande clairement, voir ce qui manque, préparer un brouillon prudent et rendre la prochaine action manuelle évidente.",
+    calendar: [
+      {
+        actions: [
+          "Auditer chaque endroit où les clients demandent une soumission.",
+          "Mettre le lien de soumission direct avant le texte de contact générique.",
+          "Utiliser une seule balise source par emplacement.",
+        ],
+        body:
+          "Rendre le chemin de soumission plus facile avant d'ajouter d'autres campagnes.",
+        period: "Semaine 1",
+        title: "Corriger le chemin de soumission",
+      },
+      {
+        actions: [
+          "Préparer des réponses enregistrées pour prix, déménagement, grand ménage et récurrent.",
+          "Dire clairement qu'une personne révise chaque demande.",
+          "Retirer tout texte qui ressemble à une réservation confirmée.",
+        ],
+        body:
+          "Donner un point de départ constant au propriétaire sans promettre l'envoi automatique.",
+        period: "Semaine 2",
+        title: "Préparer les réponses à valider",
+      },
+      {
+        actions: [
+          "Ajouter du contexte pour déménagement, bureaux et grand ménage.",
+          "Demander des photos seulement quand elles aident à soumissionner prudemment.",
+          "Garder les formulaires assez courts pour les clients sur mobile.",
+        ],
+        body:
+          "Une meilleure collecte réduit les devinettes risquées et les allers-retours.",
+        period: "Semaine 3",
+        title: "Réduire les détails manquants",
+      },
+      {
+        actions: [
+          "Réviser quelles sources ont créé des demandes utiles.",
+          "Noter quels brouillons ont sauvé du temps au propriétaire.",
+          "Attendre de vraies notes de pilote avant de publier des preuves.",
+        ],
+        body:
+          "Mesurer la qualité du processus avant de promettre des résultats clients ou revenus.",
+        period: "Semaine 4",
+        title: "Apprendre des premières réponses",
+      },
+    ],
+    calendarBody:
+      "C'est un calendrier léger de contenu et d'opérations pour une entreprise de nettoyage, pas une promesse que BizPilot envoie des messages ou garantit plus de réservations.",
+    calendarTitle: "Un plan de contenu sur quatre semaines.",
+    checklist: [
+      "Connaître le type de service avant de soumissionner.",
+      "Confirmer la ville ou la zone avant de promettre une disponibilité.",
+      "Demander pièces, taille approximative, moment, accès et photos au besoin.",
+      "Séparer les travaux urgents des demandes qui peuvent attendre.",
+      "Envoyer le message final manuellement après validation.",
+      "Faire un suivi sans prétendre que le client a déjà réservé.",
+    ],
+    checklistTitle: "Ce qu'une réponse rapide plus sûre doit vérifier",
+    guardrail: {
+      body:
+        "La vitesse de réponse est une amélioration de processus. Ce n'est pas un moteur de réservation, une garantie de prix, une promesse de revenus ou un système d'envoi automatique.",
+      items: [
+        "Aucun envoi automatique par courriel, SMS, WhatsApp ou Instagram n'est promis.",
+        "Aucun prix, disponibilité ou rendez-vous n'est confirmé par le formulaire.",
+        "Aucune preuve publique ne doit être publiée avant des données réelles de pilote.",
+      ],
+      title: "La vitesse doit rester sous contrôle.",
+    },
+    meta: {
+      description:
+        "Guide pratique pour aider les entreprises de nettoyage à répondre plus vite aux demandes de soumission avec une collecte plus sûre, des brouillons à valider et aucun envoi automatique.",
+      title: "Guide de réponse rapide aux soumissions | BizPilot AI",
+    },
+    primaryCta: "Voir le guide du lien",
+    secondaryCta: "Rejoindre le pilote",
+    title: "Réponses plus rapides, sans envoi automatique.",
+    workflow: [
+      {
+        body:
+          "Utiliser un lien direct là où les clients demandent déjà un prix, une portée ou une disponibilité.",
+        signal: "Capter",
+        title: "Commencer par un chemin clair.",
+      },
+      {
+        body:
+          "Mettre en évidence le service, la source, le moment, la zone et les détails encore nécessaires.",
+        signal: "Trier",
+        title: "Trouver vite les détails manquants.",
+      },
+      {
+        body:
+          "Préparer un brouillon pratique qui pose la bonne question sans inventer prix ou disponibilité.",
+        signal: "Rédiger",
+        title: "Donner un départ sûr au propriétaire.",
+      },
+      {
+        body:
+          "Le propriétaire révise, modifie, copie et envoie le message final dans son canal habituel.",
+        signal: "Valider",
+        title: "Garder la communication finale manuelle.",
+      },
+    ],
+    workflowTitle: "Le flux de réponse validé par le propriétaire.",
   },
   contentStudio: {
     badge: "Feuille de route",

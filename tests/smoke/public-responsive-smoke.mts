@@ -151,6 +151,7 @@ const routes: readonly RouteContract[] = [
     mustContain: [
       "Google Business Profile",
       "Tracked link patterns",
+      "href=\"/faster-quote-replies\"",
       "source=website",
       "Do not turn a quote request into a fake booking.",
     ],
@@ -165,6 +166,28 @@ const routes: readonly RouteContract[] = [
       "Ne transformez pas une soumission en fausse réservation.",
     ],
     path: "/quote-link-guide?language=fr-CA",
+  },
+  {
+    h1: "Faster cleaning quote replies without auto-send.",
+    mustContain: [
+      "reply-speed-board",
+      "Owner-reviewed reply workflow",
+      "A four-week reply-speed content plan.",
+      "No automatic customer email",
+      "No price, availability, or appointment",
+    ],
+    path: "/faster-quote-replies",
+  },
+  {
+    h1: "Réponses plus rapides, sans envoi automatique.",
+    mustContain: [
+      "reply-speed-board",
+      "Le flux de réponse validé par le propriétaire.",
+      "Un plan de contenu sur quatre semaines.",
+      "Aucun envoi automatique",
+      "Aucun prix, disponibilité ou rendez-vous",
+    ],
+    path: "/faster-quote-replies?language=fr-CA",
   },
   {
     h1: "A simple system to manage cleaning quote requests faster.",

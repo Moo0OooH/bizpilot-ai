@@ -78,6 +78,17 @@ const smokeTargets: readonly SmokeTarget[] = [
   },
   {
     expectedText: [
+      "Faster cleaning quote replies without auto-send.",
+      "reply-speed-board",
+      "A four-week reply-speed content plan.",
+      "No automatic customer email",
+      "No price, availability, or appointment",
+    ],
+    path: "/faster-quote-replies",
+    status: 200,
+  },
+  {
+    expectedText: [
       "Cleaning quote recovery demo.",
       "demo-owner-workspace",
       "Static owner-view demo",

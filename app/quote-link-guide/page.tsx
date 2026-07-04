@@ -106,6 +106,9 @@ export default async function QuoteLinkGuidePage({
               <MarketingButton href="/comparison" variant="secondary">
                 {copy.secondaryCta}
               </MarketingButton>
+              <MarketingButton href="/faster-quote-replies" variant="secondary">
+                {copy.replySpeedCta}
+              </MarketingButton>
             </div>
           </div>
         </MarketingShell>

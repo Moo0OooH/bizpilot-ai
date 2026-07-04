@@ -101,6 +101,12 @@ const routeContracts: readonly PublicRouteContract[] = [
     rejectFrText: getPublicSiteCopy("en").quoteLinkGuide.title,
   },
   {
+    h1: (locale) => getPublicSiteCopy(locale).replySpeedGuide.title,
+    meta: (locale) => getPublicSiteCopy(locale).replySpeedGuide.meta,
+    path: "/faster-quote-replies",
+    rejectFrText: getPublicSiteCopy("en").replySpeedGuide.title,
+  },
+  {
     h1: (locale) => getPublicSiteCopy(locale).cleaning.title,
     meta: (locale) => getPublicSiteCopy(locale).cleaning.meta,
     path: "/industries/cleaning",

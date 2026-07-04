@@ -47,6 +47,7 @@ export const publicCanonicalRoutes = [
   "/faq",
   "/comparison",
   "/quote-link-guide",
+  "/faster-quote-replies",
   "/features",
   "/industries/cleaning",
   "/trust",

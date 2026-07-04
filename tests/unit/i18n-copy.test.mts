@@ -1128,12 +1128,21 @@ describe("BizPilot language copy", () => {
     const homepageSource = readFileSync("app/page.tsx", "utf8");
     const faqSource = readFileSync("app/faq/page.tsx", "utf8");
     const comparisonSource = readFileSync("app/comparison/page.tsx", "utf8");
+    const replySpeedGuideSource = readFileSync(
+      "app/faster-quote-replies/page.tsx",
+      "utf8",
+    );
     const featuresSource = readFileSync("app/features/page.tsx", "utf8");
     const proxySource = readFileSync("proxy.ts", "utf8");
     assert.equal(homepageSource.includes('href="/faq"'), true);
     assert.equal(comparisonSource.includes('"/comparison"'), true);
     assert.equal(
       comparisonSource.includes("getPublicSiteCopy(language).comparison"),
+      true,
+    );
+    assert.equal(replySpeedGuideSource.includes('"/faster-quote-replies"'), true);
+    assert.equal(
+      replySpeedGuideSource.includes("getPublicSiteCopy(language).replySpeedGuide"),
       true,
     );
     assert.equal(
@@ -1149,6 +1158,7 @@ describe("BizPilot language copy", () => {
     assert.equal(faqSource.includes('"/faq"'), true);
     assert.equal(faqSource.includes("getPublicSiteCopy(language).faq"), true);
     assert.equal(proxySource.includes('"/comparison"'), true);
+    assert.equal(proxySource.includes('"/faster-quote-replies"'), true);
     assert.equal(proxySource.includes('"/faq"'), true);
   });
 
@@ -1337,6 +1347,26 @@ describe("BizPilot language copy", () => {
       ),
       true,
     );
+    assert.equal(englishPublicCopy.replySpeedGuide.workflow.length, 4);
+    assert.equal(englishPublicCopy.replySpeedGuide.calendar.length, 4);
+    assert.equal(
+      englishPublicCopy.replySpeedGuide.body.includes(
+        "not about sending anything automatically",
+      ),
+      true,
+    );
+    assert.equal(
+      englishPublicCopy.replySpeedGuide.guardrail.items.some((item) =>
+        item.includes("No automatic customer email"),
+      ),
+      true,
+    );
+    assert.equal(
+      englishPublicCopy.replySpeedGuide.guardrail.items.some((item) =>
+        item.includes("No price, availability, or appointment"),
+      ),
+      true,
+    );
 
     const routeExpectations: ReadonlyArray<
       readonly [file: string, required: string, forbidden?: string]
@@ -1345,6 +1375,8 @@ describe("BizPilot language copy", () => {
       ["app/features/page.tsx", "supporting-four-grid"],
       ["app/comparison/page.tsx", "comparison-grid"],
       ["app/comparison/page.tsx", "supporting-four-grid"],
+      ["app/faster-quote-replies/page.tsx", "reply-speed-board"],
+      ["app/faster-quote-replies/page.tsx", "supporting-four-grid"],
       ["app/industries/cleaning/page.tsx", "cleaning-service-grid"],
       ["app/industries/cleaning/page.tsx", "CleaningServiceDetails"],
       ["components/public/cleaning-service-details.tsx", "cleaning-detail-tabs"],
@@ -1536,6 +1568,7 @@ describe("BizPilot language copy", () => {
         "faq",
         "comparison",
         "quoteLinkGuide",
+        "replySpeedGuide",
         "cleaning",
         "trust",
         "demo",

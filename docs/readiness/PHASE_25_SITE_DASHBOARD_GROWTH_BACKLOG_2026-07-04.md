@@ -699,6 +699,62 @@ pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3039 --timeout-ms=60000 PASS
 Playwright Chrome final public geometry matrix PASS - 104 states, 0 failures
 ```
 
+## Progress Addendum - Phase 25U
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25U_REPLY_SPEED_CONTENT_GUIDE_2026-07-04.md`:
+
+- Added `/faster-quote-replies` as a canonical public EN/fr-CA route.
+- Added a practical reply-speed education page with owner review board,
+  manual workflow, safer fast-reply checklist, and four-week content calendar.
+- Linked `/quote-link-guide` to the new reply-speed guide.
+- Added canonical route, sitemap/hreflang metadata, proxy language handling,
+  public smoke, responsive smoke, and final UI matrix coverage.
+- Preserved no-auto-send, no-booking, no-price-confirmation, no-payment,
+  no-analytics-sink, no-real-data, and no-paid-pilot gates.
+
+Backlog items advanced:
+
+```text
+38 done
+39 done
+40 done
+45 reinforced
+46 done
+47 reinforced
+66 reinforced with route geometry and screenshot QA
+74 preserved
+77 preserved
+78 preserved
+82 reinforced
+89 preserved as paid-pilot blocker
+90 preserved; no local RLS/database proof was claimed
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+98 preserved
+99 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS - 198 tests
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3040 PASS - 14/14
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3040 PASS - 25/25
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3040 --timeout-ms=60000 PASS - final failures 0
+Playwright Chrome /faster-quote-replies geometry QA PASS
+Playwright screenshot review PASS - EN desktop and fr-CA mobile
+```
+
 ## Progress Addendum - Phase 25P
 
 Date: 2026-07-04

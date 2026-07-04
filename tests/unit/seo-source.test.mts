@@ -131,6 +131,7 @@ describe("final public SEO and legal source contracts", () => {
       "/faq",
       "/comparison",
       "/quote-link-guide",
+      "/faster-quote-replies",
       "/features",
       "/industries/cleaning",
       "/trust",
@@ -202,6 +203,7 @@ describe("final public SEO and legal source contracts", () => {
       "app/faq/page.tsx",
       "app/comparison/page.tsx",
       "app/quote-link-guide/page.tsx",
+      "app/faster-quote-replies/page.tsx",
       "app/features/page.tsx",
       "app/industries/cleaning/page.tsx",
       "app/trust/page.tsx",
@@ -343,6 +345,7 @@ describe("final public SEO and legal source contracts", () => {
     const faq = source("app/faq/page.tsx");
     const comparison = source("app/comparison/page.tsx");
     const quoteLinkGuide = source("app/quote-link-guide/page.tsx");
+    const replySpeedGuide = source("app/faster-quote-replies/page.tsx");
     const ogImage = source("app/opengraph-image.tsx");
 
     assert.equal(jsonLd.includes('type="application/ld+json"'), true);
@@ -355,6 +358,7 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(faq.includes("buildFaqPageJsonLd"), true);
     assert.equal(comparison.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(quoteLinkGuide.includes("buildBreadcrumbJsonLd"), true);
+    assert.equal(replySpeedGuide.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(ogImage.includes("ImageResponse"), true);
   });
 

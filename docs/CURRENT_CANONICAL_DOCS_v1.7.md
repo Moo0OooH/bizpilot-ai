@@ -239,6 +239,11 @@ starting new work:
   latest public visual evidence: 104-state EN/fr-CA light/dark mobile/desktop
   matrix across 13 public routes, comparison headline fit fix, public smoke
   retry evidence, and preserved manual-first product gates.
+- `readiness/PHASE_25U_REPLY_SPEED_CONTENT_GUIDE_2026-07-04.md` -
+  latest public growth evidence: canonical EN/fr-CA reply-speed guide,
+  four-week content calendar, quote-link-guide internal link, sitemap/hreflang
+  coverage, public smoke/UI-matrix coverage, and visual geometry QA without
+  automation, analytics, booking, payment, real-data, or paid-pilot expansion.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest
