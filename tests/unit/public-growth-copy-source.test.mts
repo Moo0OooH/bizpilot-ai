@@ -98,3 +98,37 @@ test("pilot proof metrics stay honest before real testimonials exist", () => {
     );
   }
 });
+
+test("pricing trust boundaries stay manual before paid pilot", () => {
+  const pricingSource = readFileSync("app/pricing/page.tsx", "utf8");
+
+  for (const required of [
+    "Before any paid pilot starts",
+    "No self-serve checkout is enabled.",
+    "refund handling",
+    "It is not booking, invoicing, SMS/WhatsApp, or full CRM software.",
+    "Support, refund, and payment expectations are confirmed before any paid pilot",
+  ]) {
+    assert.equal(publicCopy.includes(required), true, `missing ${required}`);
+  }
+
+  assert.equal(
+    pricingSource.includes("copy.trustBoundary"),
+    true,
+    "Pricing page should render paid-pilot trust boundaries from localized copy.",
+  );
+
+  for (const forbidden of [
+    "self-serve checkout is live",
+    "payment automation is enabled",
+    "automatic refund",
+    "bookings included",
+    "SMS campaigns included",
+  ]) {
+    assert.equal(
+      publicCopy.toLowerCase().includes(forbidden),
+      false,
+      `pricing trust copy should not include ${forbidden}`,
+    );
+  }
+});

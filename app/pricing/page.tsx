@@ -20,6 +20,7 @@
  * - 2026-06-21: Applied localization-aware copy roles to plan cards and supporting panels.
  * - 2026-06-21: Added a first-fold pricing CTA before the long plan-card grid.
  * - 2026-06-25: Normalized pricing rhythm to bp primitives without changing price values.
+ * - 2026-07-04: Added paid-pilot trust boundaries for payment, support, refund, and scope.
  * ============================================================
  */
 
@@ -157,6 +158,41 @@ export default async function PricingPage({
                       {index + 1}
                     </span>
                     <span className="min-w-0 break-words">{step}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </MarketingCard>
+
+          <MarketingCard className="mt-8 p-5 sm:p-6">
+            <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.34fr)_minmax(0,1fr)] lg:items-start">
+              <h2 className="bp-card-title bp-copy-section-title font-black leading-tight" style={{ color: marketingTone.text }}>
+                {copy.trustBoundary.title}
+              </h2>
+              <div className="grid gap-3 min-[900px]:grid-cols-3">
+                {copy.trustBoundary.items.map((item) => (
+                  <div
+                    className="bp-copy-card-body min-w-0 rounded-[14px] border px-4 py-3"
+                    key={item.title}
+                    style={{
+                      backgroundColor: "var(--surface-interactive)",
+                      borderColor: marketingTone.border,
+                      color: marketingTone.soft,
+                    }}
+                  >
+                    <div className="flex min-w-0 items-start gap-3">
+                      <span className="mt-1 shrink-0" style={{ color: marketingTone.teal }}>
+                        <MarketingIcon name="check" />
+                      </span>
+                      <div className="min-w-0">
+                        <h3 className="text-[14px] font-black leading-6" style={{ color: marketingTone.text }}>
+                          {item.title}
+                        </h3>
+                        <p className="mt-1 text-[13px] font-bold leading-6">
+                          {item.body}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

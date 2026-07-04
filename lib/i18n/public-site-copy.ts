@@ -309,6 +309,10 @@ type PricingCopy = Readonly<{
     title: string;
   }>;
   meta: MetaCopy;
+  trustBoundary: Readonly<{
+    items: ReadonlyArray<TextPair>;
+    title: string;
+  }>;
   title: string;
   badge: string;
 }>;
@@ -1491,6 +1495,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Send a short pilot request",
       "Founder reviews the workflow",
       "Selected businesses receive setup and a sample workflow",
+      "Support, refund, and payment expectations are confirmed before any paid pilot",
     ],
     nextStepsTitle: "What happens next",
     proof: {
@@ -1598,6 +1603,26 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       description:
         "Approved staged pilot pricing for cleaning businesses exploring BizPilot AI lead recovery, with manual setup and payment guardrails.",
       title: "Founder Pilot Pricing | BizPilot AI",
+    },
+    trustBoundary: {
+      items: [
+        {
+          body:
+            "No self-serve checkout is enabled. Payment happens only after approval through a prepared invoice or Stripe Payment Link.",
+          title: "Manual payment only",
+        },
+        {
+          body:
+            "Response expectations, cancellation, and refund handling are confirmed during onboarding before payment is requested.",
+          title: "Support and refund terms first",
+        },
+        {
+          body:
+            "The pilot covers quote capture, a lead inbox, AI-assisted drafts, and manual follow-up visibility. It is not booking, invoicing, SMS/WhatsApp, or full CRM software.",
+          title: "Narrow product scope",
+        },
+      ],
+      title: "Before any paid pilot starts",
     },
     title: "Simple pilot pricing for cleaning businesses.",
   },
@@ -2725,6 +2750,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       "Envoyez une courte demande pilote",
       "Le fondateur valide le flux",
       "Les entreprises sélectionnées reçoivent une configuration et un flux exemple",
+      "Les attentes de soutien, de remboursement et de paiement sont confirmées avant tout projet pilote payant",
     ],
     nextStepsTitle: "Ce qui se passe ensuite",
     proof: {
@@ -2834,6 +2860,26 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       description:
         "Tarification pilote approuvée pour les entreprises de nettoyage qui explorent BizPilot AI, avec configuration manuelle et garde-fous de paiement.",
       title: "Tarification du projet pilote | BizPilot AI",
+    },
+    trustBoundary: {
+      items: [
+        {
+          body:
+            "Aucun paiement libre-service n'est activé. Le paiement arrive seulement après approbation, avec une facture préparée ou un Stripe Payment Link.",
+          title: "Paiement manuel seulement",
+        },
+        {
+          body:
+            "Les attentes de réponse, l'annulation et le traitement des remboursements sont confirmés pendant l'accueil avant toute demande de paiement.",
+          title: "Soutien et remboursement d'abord",
+        },
+        {
+          body:
+            "Le pilote couvre la capture des demandes, une boîte de prospects, des brouillons assistés par IA et une visibilité de suivi manuel. Ce n'est pas un outil de réservation, de facturation, de SMS/WhatsApp ni un CRM complet.",
+          title: "Portée produit limitée",
+        },
+      ],
+      title: "Avant tout projet pilote payant",
     },
     title: "Tarifs pilotes simples pour le nettoyage.",
   },

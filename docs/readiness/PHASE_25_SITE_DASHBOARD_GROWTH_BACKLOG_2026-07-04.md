@@ -496,6 +496,46 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25I
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25I_PRICING_TRUST_BOUNDARIES_2026-07-04.md`:
+
+- Added localized pricing trust boundaries for manual payment, support/refund
+  expectations, and narrow quote-recovery scope.
+- Rendered the boundaries on `/pricing` without changing price values or
+  enabling checkout/payment collection.
+- Added a pilot next-step that support, refund, and payment expectations are
+  confirmed before any paid pilot.
+- Added source/unit guards against self-serve checkout, payment automation, and
+  booking/invoicing/SMS/CRM overclaims.
+
+Backlog items advanced:
+
+```text
+25 done
+26 advanced
+43 reinforced
+83 prepared
+84 prepared
+90 preserved
+93 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3032 PASS
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3032 PASS
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3032 PASS
+```
+
 ## Progress Addendum - Phase 25H
 
 Date: 2026-07-04

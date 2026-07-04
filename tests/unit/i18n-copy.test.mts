@@ -1204,6 +1204,25 @@ describe("BizPilot language copy", () => {
       ["$0 setup", "$149 setup", "$49/month", "$199 setup", "$79/month"],
     );
     assert.equal(englishPublicCopy.pricing.afterApply.steps.length, 3);
+    assert.equal(
+      englishPublicCopy.pricing.trustBoundary.title,
+      "Before any paid pilot starts",
+    );
+    assert.equal(englishPublicCopy.pricing.trustBoundary.items.length, 3);
+    assert.equal(
+      englishPublicCopy.pricing.trustBoundary.items.some((item) =>
+        item.body.includes("refund handling"),
+      ),
+      true,
+      "Pricing trust boundaries should mention refund handling before payment.",
+    );
+    assert.equal(
+      englishPublicCopy.pilot.nextSteps.some((step) =>
+        step.includes("Support, refund, and payment expectations"),
+      ),
+      true,
+      "Pilot application flow should confirm support/refund/payment expectations before paid pilot.",
+    );
     assert.equal(englishPublicCopy.contentStudio.cards.length, 6);
     assert.equal(
       englishPublicCopy.contentStudio.cards.every(
@@ -1232,6 +1251,7 @@ describe("BizPilot language copy", () => {
       ["app/trust/page.tsx", "copy.pillars", "copy.items"],
       ["app/trust/page.tsx", "supporting-three-grid"],
       ["app/pricing/page.tsx", "copy.afterApply"],
+      ["app/pricing/page.tsx", "copy.trustBoundary"],
       ["app/pricing/page.tsx", "supporting-three-grid"],
       ["app/content-studio/page.tsx", "supporting-six-grid"],
     ];
