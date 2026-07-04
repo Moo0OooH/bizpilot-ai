@@ -496,6 +496,45 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25J
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25J_TRUST_SECURITY_EVIDENCE_ALIGNMENT_2026-07-04.md`:
+
+- Added a `/trust` evidence section for recorded readiness proof, local-only
+  authenticated dashboard QA, blocked real data, and gated paid pilot use.
+- Updated public security copy to state that authenticated dashboard smoke is
+  local-only because it creates synthetic users, businesses, leads, and source
+  metadata.
+- Added source/unit guards against implying real-data approval, paid-pilot
+  approval, or production dashboard smoke.
+
+Backlog items advanced:
+
+```text
+29 done
+43 reinforced
+48 reinforced
+74 preserved
+89 reinforced
+90 preserved
+93 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3033 PASS
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3033 PASS
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3033 PASS
+```
+
 ## Progress Addendum - Phase 25I
 
 Date: 2026-07-04

@@ -18,6 +18,7 @@
  * - 2026-06-21: Restored fr-CA accents and cleaner localized wording for public legal pages.
  * - 2026-06-21: Polished final public privacy, security, and terms wording.
  * - 2026-06-25: Polished fr-CA terms wording around project-pilot terminology.
+ * - 2026-07-04: Added local-only authenticated dashboard QA boundary to security copy.
  * ============================================================
  */
 
@@ -164,6 +165,11 @@ const englishPolicyCopy: PolicyCopy = {
         body:
           "Public quote pages validate active links, expected forms, consent, hidden fields, submit timing, and abuse signals before accepting synthetic or pilot submissions.",
         title: "Public quote hardening",
+      },
+      {
+        body:
+          "Authenticated dashboard smoke is local-only because it creates synthetic users, businesses, leads, and source metadata. It must fail fast against managed/non-local Supabase projects and production URLs.",
+        title: "Local-only dashboard QA",
       },
       {
         body:
@@ -337,6 +343,11 @@ const frenchPolicyCopy: PolicyCopy = {
         body:
           "Les pages de soumission publiques valident le lien actif, le formulaire attendu, le consentement, les champs cachés, le temps de soumission et les signaux d'abus avant d'accepter une soumission synthétique ou pilote.",
         title: "Durcissement des soumissions publiques",
+      },
+      {
+        body:
+          "Le smoke authentifié du tableau de bord reste local seulement parce qu'il crée des utilisateurs, entreprises, prospects et métadonnées de source synthétiques. Il doit bloquer les projets Supabase gérés/non locaux et les URLs de production.",
+        title: "QA tableau de bord locale seulement",
       },
       {
         body:

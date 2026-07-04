@@ -18,6 +18,7 @@
  * - 2026-06-19: Replaced trust cards with three full-width owner-control pillars.
  * - 2026-06-20: Balanced trust as three grouped pillar columns on desktop.
  * - 2026-06-25: Normalized trust page spacing and type to canonical bp primitives.
+ * - 2026-07-04: Added current evidence and open-gate trust boundaries.
  * ============================================================
  */
 
@@ -107,6 +108,45 @@ export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
               </MarketingCard>
             ))}
           </div>
+          <MarketingCard className="mt-8 p-5 sm:p-6">
+            <div className="grid gap-5 lg:grid-cols-[minmax(220px,0.34fr)_minmax(0,1fr)] lg:items-start">
+              <div>
+                <h2 className="bp-card-title bp-copy-section-title font-black leading-tight" style={{ color: marketingTone.text }}>
+                  {copy.evidence.title}
+                </h2>
+                <p className="bp-copy-card-body mt-3 text-[15px] leading-7" style={{ color: marketingTone.soft }}>
+                  {copy.evidence.body}
+                </p>
+              </div>
+              <div className="grid gap-3 min-[900px]:grid-cols-2">
+                {copy.evidence.items.map((item) => (
+                  <div
+                    className="bp-copy-card-body min-w-0 rounded-[14px] border px-4 py-3"
+                    key={item.title}
+                    style={{
+                      backgroundColor: "var(--surface-interactive)",
+                      borderColor: marketingTone.border,
+                      color: marketingTone.soft,
+                    }}
+                  >
+                    <div className="flex min-w-0 items-start gap-3">
+                      <span className="mt-1 shrink-0" style={{ color: marketingTone.teal }}>
+                        <MarketingIcon name="lock" />
+                      </span>
+                      <div className="min-w-0">
+                        <h3 className="text-[14px] font-black leading-6" style={{ color: marketingTone.text }}>
+                          {item.title}
+                        </h3>
+                        <p className="mt-1 text-[13px] font-bold leading-6">
+                          {item.body}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </MarketingCard>
           <MarketingCard className="mt-8 p-6" style={{ borderColor: "rgba(245,158,11,0.28)" }}>
             <MarketingBadge toneName="gold">{copy.notes.badge}</MarketingBadge>
             <p className="bp-copy-card-body mt-4 text-[15px] leading-7" style={{ color: marketingTone.soft }}>

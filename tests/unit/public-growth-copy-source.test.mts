@@ -18,6 +18,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const publicCopy = readFileSync("lib/i18n/public-site-copy.ts", "utf8");
+const policyCopy = readFileSync("lib/i18n/policy-copy.ts", "utf8");
 
 test("features copy follows the manual quote recovery workflow", () => {
   for (const required of [
@@ -129,6 +130,51 @@ test("pricing trust boundaries stay manual before paid pilot", () => {
       publicCopy.toLowerCase().includes(forbidden),
       false,
       `pricing trust copy should not include ${forbidden}`,
+    );
+  }
+});
+
+test("trust and security copy match current evidence gates", () => {
+  const trustSource = readFileSync("app/trust/page.tsx", "utf8");
+
+  for (const required of [
+    "Current evidence and open gates",
+    "Dashboard QA remains local-only",
+    "Real data remains blocked",
+    "Paid pilot remains gated",
+    "strict restored app/dashboard/RLS proof",
+  ]) {
+    assert.equal(publicCopy.includes(required), true, `missing ${required}`);
+  }
+
+  for (const required of [
+    "Local-only dashboard QA",
+    "managed/non-local Supabase projects",
+    "production URLs",
+    "Strict restored app/dashboard/RLS proof remains deferred",
+  ]) {
+    assert.equal(policyCopy.includes(required), true, `missing ${required}`);
+  }
+
+  assert.equal(
+    trustSource.includes("copy.evidence"),
+    true,
+    "Trust page should render current evidence and open gates.",
+  );
+
+  for (const forbidden of [
+    "real customer data is approved",
+    "paid pilot is approved",
+    "dashboard smoke can run against production",
+    "restored app proof passed",
+  ]) {
+    const normalizedForbidden = forbidden.toLowerCase();
+    assert.equal(
+      `${publicCopy}\n${policyCopy}`.toLowerCase().includes(
+        normalizedForbidden,
+      ),
+      false,
+      `trust/security copy should not include ${forbidden}`,
     );
   }
 });

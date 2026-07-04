@@ -247,6 +247,11 @@ type CleaningCopy = Readonly<{
 
 type TrustCopy = Readonly<{
   body: string;
+  evidence: Readonly<{
+    body: string;
+    items: ReadonlyArray<TextPair>;
+    title: string;
+  }>;
   items: ReadonlyArray<TextPair>;
   meta: MetaCopy;
   notes: Readonly<{
@@ -1641,6 +1646,33 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     badge: "Trust-first workflow",
     body:
       "BizPilot keeps customer communication in your hands. AI can help prepare text, but you decide what the customer receives.",
+    evidence: {
+      body:
+        "BizPilot trust claims stay limited to recorded readiness proof and explicit blockers.",
+      items: [
+        {
+          body:
+            "Synthetic production smoke, OpenAI provider proof, Auth email/custom SMTP proof, and DB backup/export/restore proof are recorded.",
+          title: "Recorded readiness proof",
+        },
+        {
+          body:
+            "Authenticated dashboard smoke may create synthetic users, leads, and source metadata only against local Supabase, never managed/non-local production projects.",
+          title: "Dashboard QA remains local-only",
+        },
+        {
+          body:
+            "Real customer data still requires explicit owner approval before any pilot workspace uses live customer requests.",
+          title: "Real data remains blocked",
+        },
+        {
+          body:
+            "Paid use still requires support/payment/refund/rollback readiness and strict restored app/dashboard/RLS proof.",
+          title: "Paid pilot remains gated",
+        },
+      ],
+      title: "Current evidence and open gates",
+    },
     items: [
       {
         body:
@@ -2898,6 +2930,33 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     badge: "Confiance et contrôle",
     body:
       "BizPilot garde la communication entre vos mains. L'IA peut aider à préparer le texte, mais vous décidez ce que le client reçoit.",
+    evidence: {
+      body:
+        "Les affirmations de confiance de BizPilot restent limitées aux preuves de préparation enregistrées et aux blocages explicites.",
+      items: [
+        {
+          body:
+            "Les preuves synthétiques de production, du fournisseur OpenAI, du courriel d'authentification/custom SMTP et de la sauvegarde/restauration DB sont enregistrées.",
+          title: "Preuves de préparation enregistrées",
+        },
+        {
+          body:
+            "Le smoke authentifié du tableau de bord peut créer des utilisateurs, prospects et métadonnées de source synthétiques seulement avec Supabase local, jamais avec des projets gérés/non locaux ou de production.",
+          title: "QA tableau de bord locale seulement",
+        },
+        {
+          body:
+            "Les données réelles de clients exigent encore une approbation explicite du propriétaire avant qu'un espace pilote utilise des demandes réelles.",
+          title: "Données réelles encore bloquées",
+        },
+        {
+          body:
+            "L'utilisation payante exige encore la préparation soutien/paiement/remboursement/retour arrière et une preuve stricte d'application restaurée, de tableau de bord et de RLS.",
+          title: "Pilote payant encore soumis aux gates",
+        },
+      ],
+      title: "Preuves actuelles et gates ouverts",
+    },
     items: [
       {
         body:

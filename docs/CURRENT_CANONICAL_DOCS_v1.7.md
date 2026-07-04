@@ -199,6 +199,10 @@ starting new work:
 - `readiness/PHASE_25I_PRICING_TRUST_BOUNDARIES_2026-07-04.md` - latest pricing
   trust evidence: `/pricing` now clarifies manual payment, support/refund
   expectations, and narrow quote-recovery scope before any paid pilot starts.
+- `readiness/PHASE_25J_TRUST_SECURITY_EVIDENCE_ALIGNMENT_2026-07-04.md` -
+  latest trust/security evidence: `/trust` and `/security` now align recorded
+  readiness proof with local-only dashboard QA, blocked real data, paid-pilot
+  gates, and strict restored app/RLS proof.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

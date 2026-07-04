@@ -1186,6 +1186,34 @@ describe("BizPilot language copy", () => {
     for (const pillar of englishPublicCopy.trust.pillars) {
       assert.equal(pillar.points.length, 3);
     }
+    assert.equal(
+      englishPublicCopy.trust.evidence.title,
+      "Current evidence and open gates",
+    );
+    assert.equal(englishPublicCopy.trust.evidence.items.length, 4);
+    assert.equal(
+      englishPublicCopy.trust.evidence.items.some((item) =>
+        item.title.includes("Dashboard QA remains local-only"),
+      ),
+      true,
+      "Trust evidence should mention local-only dashboard QA.",
+    );
+    assert.equal(
+      englishPublicCopy.trust.evidence.items.some((item) =>
+        item.body.includes("strict restored app/dashboard/RLS proof"),
+      ),
+      true,
+      "Trust evidence should keep strict restored app/dashboard/RLS proof gated.",
+    );
+
+    const englishSecurityCopy = getPolicyCopy("en").security;
+    assert.equal(
+      englishSecurityCopy.sections.some(
+        (section) => section.title === "Local-only dashboard QA",
+      ),
+      true,
+      "Security copy should include the local-only dashboard QA boundary.",
+    );
 
     assert.equal(englishPublicCopy.demo.chapters.length, 4);
     assert.deepEqual(
@@ -1249,6 +1277,7 @@ describe("BizPilot language copy", () => {
       ["app/industries/cleaning/page.tsx", "CleaningServiceDetails"],
       ["components/public/cleaning-service-details.tsx", "cleaning-detail-tabs"],
       ["app/trust/page.tsx", "copy.pillars", "copy.items"],
+      ["app/trust/page.tsx", "copy.evidence"],
       ["app/trust/page.tsx", "supporting-three-grid"],
       ["app/pricing/page.tsx", "copy.afterApply"],
       ["app/pricing/page.tsx", "copy.trustBoundary"],
