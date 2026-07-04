@@ -219,8 +219,11 @@ const routes: readonly RouteContract[] = [
     path: "/trust",
   },
   {
-    h1: "See how BizPilot handles a cleaning quote request.",
+    h1: "Cleaning quote recovery demo.",
     mustContain: [
+      "demo-owner-workspace",
+      "Static owner-view demo",
+      "Reply draft for owner review",
       "Request arrives.",
       "You review, copy, and send manually.",
       "No invented price",

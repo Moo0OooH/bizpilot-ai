@@ -1264,6 +1264,30 @@ describe("BizPilot language copy", () => {
     );
 
     assert.equal(englishPublicCopy.demo.chapters.length, 4);
+    assert.equal(
+      englishPublicCopy.demo.workspace.title,
+      "What the owner sees in BizPilot",
+    );
+    assert.deepEqual(englishPublicCopy.demo.workspace.actions, [
+      "Review draft",
+      "Copy reply",
+      "Mark contacted",
+    ]);
+    assert.deepEqual(englishPublicCopy.demo.workspace.guardrails, [
+      "Sample demo state",
+      "No auto-send",
+      "No price invented",
+      "No booking confirmed",
+    ]);
+    assert.equal(
+      englishPublicCopy.demo.workspace.draft.title,
+      "Reply draft for owner review",
+    );
+    assert.equal(
+      englishPublicCopy.demo.workspace.missing.length,
+      3,
+      "Demo owner-view preview should show the exact missing-info moment.",
+    );
     assert.deepEqual(
       englishPublicCopy.demo.chapters.at(-1)?.panelItems.slice(-5),
       [

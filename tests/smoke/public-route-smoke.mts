@@ -14,6 +14,7 @@
  * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
  * - 2026-07-04: Added comparison route smoke coverage.
  * - 2026-07-04: Added quote-link guide smoke coverage.
+ * - 2026-07-04: Added product-real demo route smoke coverage.
  * ============================================================
  */
 
@@ -73,6 +74,17 @@ const smokeTargets: readonly SmokeTarget[] = [
       "Do not turn a quote request into a fake booking.",
     ],
     path: "/quote-link-guide",
+    status: 200,
+  },
+  {
+    expectedText: [
+      "Cleaning quote recovery demo.",
+      "demo-owner-workspace",
+      "Static owner-view demo",
+      "Reply draft for owner review",
+      "No booking confirmed",
+    ],
+    path: "/demo",
     status: 200,
   },
   {

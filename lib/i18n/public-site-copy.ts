@@ -294,6 +294,34 @@ type DemoCopy = Readonly<{
     button: string;
     title: string;
   }>;
+  workspace: Readonly<{
+    actions: readonly string[];
+    draft: Readonly<{
+      body: string;
+      title: string;
+    }>;
+    fields: ReadonlyArray<LabelValue>;
+    guardrails: readonly string[];
+    lead: Readonly<{
+      meta: string;
+      source: string;
+      status: string;
+      title: string;
+    }>;
+    missing: readonly string[];
+    missingTitle: string;
+    quoteLink: Readonly<{
+      body: string;
+      label: string;
+      value: string;
+    }>;
+    sampleLabel: string;
+    summary: Readonly<{
+      body: string;
+      title: string;
+    }>;
+    title: string;
+  }>;
   meta: MetaCopy;
   title: string;
   badge: string;
@@ -953,7 +981,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   demo: {
     badge: "60-second workflow demo",
     body:
-      "Follow one realistic move-out cleaning quote request from customer message to reply ready for approval.",
+      "Follow one realistic move-out cleaning quote request through the owner view: quote link, organized lead, missing details, AI summary, and a reply draft you approve before sending.",
     chapters: [
       {
         body:
@@ -1013,12 +1041,57 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       button: "Apply for founder pilot",
       title: "Try the founder pilot workflow with real cleaning leads.",
     },
+    workspace: {
+      actions: ["Review draft", "Copy reply", "Mark contacted"],
+      draft: {
+        body:
+          "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
+        title: "Reply draft for owner review",
+      },
+      fields: [
+        ["Service", "Move-out cleaning"],
+        ["Timing", "Before Friday"],
+        ["Area", "Downtown"],
+        ["Source", "Website quote link"],
+      ],
+      guardrails: [
+        "Sample demo state",
+        "No auto-send",
+        "No price invented",
+        "No booking confirmed",
+      ],
+      lead: {
+        meta: "Sarah M. - 2-bedroom apartment",
+        source: "Website quote link",
+        status: "Hot - missing details",
+        title: "Move-out cleaning before Friday",
+      },
+      missing: [
+        "Approximate square footage",
+        "Appliance interior cleaning",
+        "Access notes and preferred arrival window",
+      ],
+      missingTitle: "Missing before a responsible quote",
+      quoteLink: {
+        body:
+          "The customer starts from a public quote link instead of a scattered inbox thread.",
+        label: "Public quote link",
+        value: "/quote/spark-shine-cleaning",
+      },
+      sampleLabel: "Static owner-view demo",
+      summary: {
+        body:
+          "Warm move-out request. Good fit for the service area, but the owner should ask for missing details before quoting.",
+        title: "AI summary",
+      },
+      title: "What the owner sees in BizPilot",
+    },
     meta: {
       description:
         "See how BizPilot AI captures a cleaning quote request, organizes the lead, highlights missing details, and prepares a reply for owner review.",
       title: "Cleaning Quote Workflow Demo | BizPilot AI",
     },
-    title: "See how BizPilot handles a cleaning quote request.",
+    title: "Cleaning quote recovery demo.",
   },
   features: {
     badge: "Features",
@@ -2262,7 +2335,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   demo: {
     badge: "Démo de 60 secondes",
     body:
-      "Suivez une demande réaliste de nettoyage après déménagement, du message client à la réponse à valider.",
+      "Suivez une demande réaliste de nettoyage après déménagement dans la vue propriétaire : lien de soumission, prospect organisé, détails manquants, résumé IA et brouillon à valider avant l'envoi.",
     chapters: [
       {
         body:
@@ -2325,12 +2398,57 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title:
         "Essayez le flux du projet pilote avec de vraies demandes de nettoyage.",
     },
+    workspace: {
+      actions: ["Réviser le brouillon", "Copier la réponse", "Marquer contacté"],
+      draft: {
+        body:
+          "Bonjour Sarah, merci pour votre message. Pouvez-vous confirmer la superficie approximative, les électroménagers à nettoyer et les notes d'accès afin que je prépare une soumission exacte?",
+        title: "Brouillon à valider",
+      },
+      fields: [
+        ["Service", "Nettoyage après déménagement"],
+        ["Moment", "Avant vendredi"],
+        ["Secteur", "Centre-ville"],
+        ["Source", "Lien de soumission du site"],
+      ],
+      guardrails: [
+        "État démo statique",
+        "Aucun envoi automatique",
+        "Aucun prix inventé",
+        "Aucune réservation confirmée",
+      ],
+      lead: {
+        meta: "Sarah M. - appartement 2 chambres",
+        source: "Lien de soumission du site",
+        status: "Chaud - détails manquants",
+        title: "Nettoyage après déménagement avant vendredi",
+      },
+      missing: [
+        "Superficie approximative",
+        "Nettoyage intérieur des électroménagers",
+        "Notes d'accès et fenêtre d'arrivée préférée",
+      ],
+      missingTitle: "Manquant avant une soumission responsable",
+      quoteLink: {
+        body:
+          "Le client commence par un lien de soumission public au lieu d'un fil dispersé.",
+        label: "Lien de soumission public",
+        value: "/quote/spark-shine-cleaning",
+      },
+      sampleLabel: "Démo statique de la vue propriétaire",
+      summary: {
+        body:
+          "Demande chaude de nettoyage après déménagement. Bonne zone de service, mais le propriétaire doit demander les détails manquants avant de chiffrer.",
+        title: "Résumé IA",
+      },
+      title: "Ce que le propriétaire voit dans BizPilot",
+    },
     meta: {
       description:
         "Voyez comment BizPilot AI capte une demande de soumission de nettoyage, organise le prospect, signale les détails manquants et prépare une réponse à valider.",
       title: "Démo du flux de soumission de nettoyage | BizPilot AI",
     },
-    title: "Voyez comment BizPilot traite une demande de soumission de nettoyage.",
+    title: "Démo de récupération de soumission.",
   },
   features: {
     badge: "Fonctions",

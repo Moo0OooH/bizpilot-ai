@@ -231,6 +231,10 @@ starting new work:
   latest public homepage evidence: EN/fr-CA hero headline, proof rail, desktop
   header fit, mobile stacking, visual geometry QA, and public smoke/UI-matrix
   verification without opening blocked product or data gates.
+- `readiness/PHASE_25S_PRODUCT_REAL_DEMO_VISUAL_POLISH_2026-07-04.md` -
+  latest public demo evidence: static product-real owner-view preview,
+  quote-link-to-draft workflow, EN/fr-CA geometry QA, and smoke coverage for
+  `/demo` without enabling real data, auto-send, booking, payment, or CRM scope.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

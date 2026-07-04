@@ -595,6 +595,56 @@ pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3037 --timeout-ms=60000 PASS
 Playwright Chrome hero geometry QA PASS
 ```
 
+## Progress Addendum - Phase 25S
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25S_PRODUCT_REAL_DEMO_VISUAL_POLISH_2026-07-04.md`:
+
+- Added a static product-real owner-view workspace to `/demo`.
+- Showed quote link, organized move-out cleaning lead, missing details,
+  AI summary, owner-reviewed reply draft, review/copy/mark-contacted actions,
+  and visible no-auto-send/no-price/no-booking guardrails.
+- Shortened `/demo` EN/fr-CA H1 copy for mobile fit and clearer category-led
+  positioning.
+- Added `/demo` to public route smoke coverage and reinforced responsive/unit
+  source guards for the new demo workspace.
+
+Backlog items advanced:
+
+```text
+27 done
+45 reinforced
+47 reinforced
+66 prepared with local /demo geometry/screenshot QA
+74 preserved
+82 reinforced
+89 preserved as paid-pilot blocker
+90 preserved; no local RLS/database proof was claimed
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+98 preserved
+99 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm smoke:public -- --base-url=http://127.0.0.1:3038 PASS
+pnpm smoke:responsive -- --base-url=http://127.0.0.1:3038 PASS
+pnpm smoke:ui-matrix -- --base-url=http://127.0.0.1:3038 --timeout-ms=60000 PASS
+Playwright Chrome /demo geometry QA PASS
+```
+
 ## Progress Addendum - Phase 25P
 
 Date: 2026-07-04
