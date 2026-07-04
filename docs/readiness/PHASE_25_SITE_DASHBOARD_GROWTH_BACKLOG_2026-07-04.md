@@ -496,6 +496,54 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25O
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25O_SECURITY_RUNTIME_OPS_2026-07-04.md`:
+
+- Added migration-ready abuse-log retention helper:
+  `public.delete_old_public_submission_abuse_logs(integer)`.
+- Kept retention cleanup service-role-only and denied anon/authenticated
+  execution by grant.
+- Added RLS test coverage for anon denial and service-role cleanup.
+- Added `docs/security/BIZPILOT_SECURITY_OPERATIONS_REGISTER_2026-07-04.md`
+  for privacy requests, privacy incidents, credential rotation, CSP hardening,
+  and runtime posture.
+- Recorded current enforced security headers in `next.config.ts` and the future
+  CSP report-only path for stricter candidate policies.
+
+Backlog items advanced:
+
+```text
+72 rechecked at source level for abuse/rate-limit posture
+85 done
+86 done with migration-ready cleanup helper
+87 done as header-only privacy request and incident registers
+88 done as CSP/report-only hardening plan on top of current enforced headers
+89 preserved as paid-pilot blocker
+90 preserved; RLS test not run without local DB target
+91 done
+92 done as credential rotation register and owner-action flow
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+pnpm test:rls NOT RUN - requires local DATABASE_URL target; production/non-local targets remain blocked
+```
+
 ## Progress Addendum - Phase 25N
 
 Date: 2026-07-04

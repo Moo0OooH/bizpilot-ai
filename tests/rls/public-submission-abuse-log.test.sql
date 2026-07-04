@@ -5,9 +5,10 @@ Phase 13 RLS tests for public_submission_abuse_log.
 Verifies anon cannot read/write the table directly; the two helpers
 (record_public_submission_attempt + count_recent_public_submission_attempts)
 do work; authenticated members only see their own rows.
-Last Updated: 2026-05-16
+Last Updated: 2026-07-04
 Change Log:
 - 2026-05-22: Added submitted_too_fast helper coverage for minimum submit-age heuristic.
+- 2026-07-04: Added service-role-only retention cleanup coverage.
 */
 
 begin;
@@ -229,6 +230,68 @@ begin
   where business_id = 'c4000000-0000-0000-0000-00000000000b';
   if other_visible <> 0 then
     raise exception 'T6 FAIL: owner A must not see business B abuse_log rows, got %.', other_visible;
+  end if;
+end;
+$$;
+
+-- T7: abuse-log retention cleanup is service-role-only.
+reset role;
+
+insert into public.public_submission_abuse_log
+  (business_id, ip_hash, reason, created_at)
+values
+  ('c4000000-0000-0000-0000-00000000000a',
+   'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+   'rate_limit_exceeded',
+   now() - interval '120 days');
+
+set local role anon;
+select set_config('request.jwt.claim.sub', '', true);
+select set_config('request.jwt.claim.role', 'anon', true);
+
+do $$
+declare
+  blocked boolean := false;
+begin
+  begin
+    perform public.delete_old_public_submission_abuse_logs(90);
+  exception when others then
+    blocked := true;
+  end;
+
+  if not blocked then
+    raise exception 'T7 FAIL: anon must not execute delete_old_public_submission_abuse_logs.';
+  end if;
+end;
+$$;
+
+reset role;
+set local role service_role;
+
+do $$
+declare
+  deleted_count integer;
+begin
+  deleted_count := public.delete_old_public_submission_abuse_logs(90);
+  if deleted_count <> 1 then
+    raise exception 'T7 FAIL: service_role cleanup should delete exactly 1 old abuse row, got %.',
+      deleted_count;
+  end if;
+end;
+$$;
+
+reset role;
+
+do $$
+declare
+  old_rows integer;
+begin
+  select count(*) into old_rows
+  from public.public_submission_abuse_log
+  where ip_hash = 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
+
+  if old_rows <> 0 then
+    raise exception 'T7 FAIL: old abuse row should be removed, got %.', old_rows;
   end if;
 end;
 $$;

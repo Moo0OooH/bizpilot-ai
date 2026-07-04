@@ -36,6 +36,7 @@
 | `0020_founder_test_auth_user_cleanup.sql` | Extends the service-role-only founder admin audit log action-type constraint to permit safe fake/test auth user cleanup auditing. Constraint-only; no data or policy changes. |
 | `0021_session_policy_and_owner_audit.sql` | Adds founder-controlled workspace sign-out policy fields and extends founder admin audit actions for session policy and password-support traceability. |
 | `0022_custom_quote_field_builder.sql` | Allows owner-defined quote form fields to use radio-button choice controls by extending the safe field-type constraints on template and intake fields. |
+| `0023_public_submission_abuse_log_retention.sql` | Adds a service-role-only cleanup helper for old hashed public submission abuse/rate-limit metadata. No anon/authenticated execution grant. |
 
 ---
 
@@ -51,7 +52,7 @@ The original `0003` migration was removed from the repository because keeping it
 
 ## Rules for new migrations
 
-1. **Preserve numbering.** New files must use the next available integer prefix (currently `0022`). Never rename or re-number an existing migration.
+1. **Preserve numbering.** New files must use the next available integer prefix (currently `0023`). Never rename or re-number an existing migration.
 2. **One concern per file.** A migration adds, alters, or removes a focused set of related tables, functions, policies, or grants. Cross-cutting changes go in separate files.
 3. **File header is mandatory.** Use the BizPilot SQL header format (path, project, description, role, related, author, created/updated, change log) as shown in the existing files.
 4. **Tables created here must include:**
