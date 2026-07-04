@@ -210,6 +210,10 @@ starting new work:
 - `readiness/PHASE_25L_NO_PII_ANALYTICS_FOUNDER_FUNNEL_2026-07-04.md` -
   latest analytics evidence: typed public event catalog and no-PII founder
   funnel spec without enabling any analytics sink.
+- `readiness/PHASE_25M_GTM_AND_PILOT_OPS_PACKET_2026-07-04.md` - latest GTM
+  evidence: founder CRM, manual outreach, demo script, pilot support/payment
+  packet, quote-link placement, and local review guidance without opening paid
+  pilot or real-data gates.
 - `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md` - current post-P8/D1 status,
   cleanup record, warning triage, gate map, and final recommendation.
 - `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest

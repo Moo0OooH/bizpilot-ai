@@ -496,6 +496,52 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25M
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25M_GTM_AND_PILOT_OPS_PACKET_2026-07-04.md`:
+
+- Updated the Founder CRM template with source permission, quote-link placement,
+  outreach/demo dates, objection category, support expectation,
+  refund/payment confirmation, and proof-metric fields.
+- Expanded the founder outreach playbook with channel-specific manual outreach,
+  referral, post-demo, and payment-ready scripts.
+- Added a five-minute demo run-of-show and synthetic-data video plan.
+- Added a manual pilot-ops packet for support, payment/refund, rollback, proof
+  metrics, and owner approval gates before paid pilot collection.
+- Added Google Business Profile quote-link placement and review guidance that
+  avoids fake reviews, incentives, selective positive-review solicitation, and
+  link-placement overclaims.
+
+Backlog items advanced:
+
+```text
+80 done
+81 done
+82 done
+83 done as a manual pilot-ops packet; paid pilot remains blocked
+84 done
+89 preserved as a required paid-pilot blocker
+90 preserved
+93 preserved
+94 preserved
+95 preserved
+96 preserved
+97 preserved
+100 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+```
+
 ## Progress Addendum - Phase 25L
 
 Date: 2026-07-04

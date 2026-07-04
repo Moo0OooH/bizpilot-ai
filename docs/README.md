@@ -152,6 +152,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ## Latest Readiness Evidence
 
+- `docs/readiness/PHASE_25M_GTM_AND_PILOT_OPS_PACKET_2026-07-04.md`
 - `docs/readiness/PHASE_25L_NO_PII_ANALYTICS_FOUNDER_FUNNEL_2026-07-04.md`
 - `docs/readiness/PHASE_25K_SEARCH_CONSOLE_CWV_BASELINE_2026-07-04.md`
 - `docs/readiness/PHASE_25J_TRUST_SECURITY_EVIDENCE_ALIGNMENT_2026-07-04.md`
