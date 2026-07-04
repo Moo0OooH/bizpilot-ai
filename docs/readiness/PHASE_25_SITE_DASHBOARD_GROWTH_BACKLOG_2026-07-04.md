@@ -496,6 +496,43 @@ pnpm build PASS
 pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3030 --fixture-profile=dense SKIPPED - NEXT_PUBLIC_SUPABASE_URL classified canonical production blocked
 ```
 
+## Progress Addendum - Phase 25L
+
+Date: 2026-07-04
+
+Implemented in `docs/readiness/PHASE_25L_NO_PII_ANALYTICS_FOUNDER_FUNNEL_2026-07-04.md`:
+
+- Added `publicEventCatalog` with approved event names, categories, and safe
+  payload keys.
+- Added forbidden public event payload keys for PII, customer content, prompts,
+  AI output, customer IDs, and lead IDs.
+- Kept `trackPublicEvent` as an intentional no-op until an owner-approved
+  first-party analytics sink exists.
+- Defined a future no-PII founder funnel dashboard covering discovery,
+  education, intent, placement, intake, response, follow-up, and pilot ops.
+
+Backlog items advanced:
+
+```text
+76 done
+77 prepared
+78 prepared
+79 done as a no-PII founder funnel spec
+80 prepared
+90 preserved
+93 preserved
+```
+
+Verification:
+
+```text
+git diff --check PASS
+pnpm test:unit PASS
+pnpm lint PASS
+pnpm typecheck PASS
+pnpm build PASS
+```
+
 ## Progress Addendum - Phase 25K
 
 Date: 2026-07-04

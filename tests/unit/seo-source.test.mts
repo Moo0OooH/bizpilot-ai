@@ -16,6 +16,7 @@
  * - 2026-06-21: Added public FAQ route SEO coverage.
  * - 2026-07-04: Added comparison route, JSON-LD, OG image, and roadmap noindex guards.
  * - 2026-07-04: Added Search Console and Core Web Vitals baseline evidence guards.
+ * - 2026-07-04: Added no-PII analytics taxonomy guards.
  * ============================================================
  */
 
@@ -25,6 +26,10 @@ import { describe, it } from "node:test";
 
 import { getPolicyCopy } from "../../lib/i18n/policy-copy.ts";
 import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
+import {
+  forbiddenPublicEventPayloadKeys,
+  publicEventCatalog,
+} from "../../lib/public-events.ts";
 import {
   publicCanonicalRoutes,
   publicLanguageAlternates,
@@ -232,12 +237,18 @@ describe("final public SEO and legal source contracts", () => {
 
   it("documents approved public events through a typed no-op helper only", () => {
     const events = source("lib/public-events.ts");
+    const analyticsSpec = source(
+      "docs/readiness/PHASE_25L_NO_PII_ANALYTICS_FOUNDER_FUNNEL_2026-07-04.md",
+    );
 
     for (const eventName of [
+      "comparison_cta_click",
       "founder_pilot_cta_click",
       "demo_cta_click",
       "pricing_cta_click",
+      "quote_link_guide_cta_click",
       "pilot_template_copy",
+      "faq_item_open",
       "service_use_case_click",
       "locale_change",
       "theme_preference_change",
@@ -247,6 +258,63 @@ describe("final public SEO and legal source contracts", () => {
     }
 
     assert.equal(events.includes("Intentional no-op"), true);
+    assert.equal(events.includes("publicEventCatalog"), true);
+    assert.deepEqual(
+      Object.keys(publicEventCatalog).sort(),
+      [
+        "comparison_cta_click",
+        "demo_cta_click",
+        "external_reference_click",
+        "faq_item_open",
+        "founder_pilot_cta_click",
+        "locale_change",
+        "pilot_template_copy",
+        "pricing_cta_click",
+        "quote_link_guide_cta_click",
+        "service_use_case_click",
+        "theme_preference_change",
+      ].sort(),
+    );
+    assert.deepEqual(
+      [...forbiddenPublicEventPayloadKeys],
+      [
+        "email",
+        "phone",
+        "name",
+        "address",
+        "message",
+        "quoteDetails",
+        "prompt",
+        "aiOutput",
+        "customerId",
+        "leadId",
+      ],
+    );
+    for (const definition of Object.values(publicEventCatalog)) {
+      const safePayloadKeys: readonly string[] = definition.safePayloadKeys;
+      for (const forbidden of forbiddenPublicEventPayloadKeys) {
+        assert.equal(
+          safePayloadKeys.includes(forbidden),
+          false,
+          `${definition.description} should not allow ${forbidden}.`,
+        );
+      }
+    }
+    for (const required of [
+      "No analytics sink is approved yet.",
+      "Future Founder Funnel Dashboard",
+      "Pilot template copy/select events",
+      "lead_source_metadata",
+      "leads.first_reply_copied_at",
+      "No customer free text",
+      "first-party analytics sink",
+    ]) {
+      assert.equal(
+        analyticsSpec.includes(required),
+        true,
+        `Analytics spec missing ${required}.`,
+      );
+    }
     assert.equal(
       source("components/public/marketing-language-menu.tsx").includes(
         "locale_change",
