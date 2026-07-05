@@ -11,7 +11,8 @@
  * Created: 2026-05-18
  * Last Updated: 2026-07-05
  * Change Log:
- * - 2026-05-18: Created original founder placeholder.
+ * - 2026-07-05: Removed stale placeholder wording from founder handoff history.
+ * - 2026-05-18: Created original founder handoff shell.
  * - 2026-05-19: Matched approved index.html Founder Admin layout.
  * - 2026-06-27: Rebuilt as a clean handoff to the primary Founder Admin console.
  * - 2026-07-05: Aligned blocked-gate language with customer account safety copy.

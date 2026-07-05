@@ -2,15 +2,16 @@
  * ============================================================
  * File: app/(public)/layout.tsx
  * Project: BizPilot AI
- * Description: Defines the route-group layout placeholder for future public pages.
- * Role: Reserves the public route boundary without quote submission functionality.
+ * Description: Defines the public quote route-group layout boundary.
+ * Role: Keeps public quote pages grouped while delegating intake and success behavior to child routes.
  * Related:
  * - app/layout.tsx
  * - docs/product/BIZPILOT_BUILD_PLAN_v1.4.md
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Removed stale placeholder wording from the public route-group layout header.
  * - 2026-05-04: Added standard project file header.
  * ============================================================
  */
