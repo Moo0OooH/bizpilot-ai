@@ -10,8 +10,9 @@
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added explicit accessible labels to owner guide route-map cards.
  * - 2026-07-04: Created the protected owner operating guide route for dashboard finalization.
  * ============================================================
  */
@@ -128,6 +129,7 @@ export default async function DashboardGuidePage() {
             <div className="mt-4 grid gap-2">
               {guideCopy.routeMap.items.map(([title, detail, href, cta]) => (
                 <Link
+                  aria-label={`${title} - ${detail} - ${cta}`}
                   className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] sm:grid-cols-[minmax(0,0.36fr)_minmax(0,1fr)_auto] sm:items-center"
                   href={href}
                   key={href}
