@@ -12,6 +12,7 @@
  * Created: 2026-06-27
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Mapped Google login setup failures to safe owner-facing auth copy.
  * - 2026-07-05: Allowed the softened auth confirmation success notice through safe routing.
  * - 2026-06-27: Created safe route flash-message readers for user-facing pages.
  * ============================================================
@@ -34,6 +35,7 @@ const authErrorMessageKeys = new Map<RegExp, keyof AuthRouteMessages>([
   [/^Enter your name\.$/, "nameRequired"],
   [/^Enter your new password\.$/, "newPasswordRequired"],
   [/^Enter your password\.$/, "passwordRequired"],
+  [/^Google sign-in is not ready yet\. Use email and password or ask the founder to enable it\.$/, "googleUnavailable"],
   [/^Passwords do not match\.$/, "passwordMismatch"],
   [/^Reload the (reset|sign-up) page and try again\.$/, "reload"],
   [/^This confirmation link is invalid or expired\. Sign in or create a new account\.$/, "resetInvalid"],

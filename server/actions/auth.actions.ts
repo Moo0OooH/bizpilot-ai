@@ -11,8 +11,9 @@
  * - server/services/business.service.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-12
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added safe Google OAuth login action without workspace bootstrap.
  * - 2026-05-04: Created Phase 2 auth server actions.
  * - 2026-05-04: Kept Next.js redirects outside sign-up error handling.
  * - 2026-05-04: Added service-role tenant setup fallback for confirmed-email flows.
@@ -30,9 +31,11 @@
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
+import { getSafeAuthCallbackNextPath } from "@/lib/auth/auth-callback-routing";
 import {
   getPasswordResetFlowErrorContext,
   sendPasswordResetEmail,
+  signInWithGoogleOAuth,
   signInWithPassword,
   signOut,
   signUpWithPassword,
@@ -51,6 +54,8 @@ const SIGN_UP_EMAIL_RATE_LIMIT_MESSAGE =
   "Too many account creation attempts. Please wait a few minutes and try again.";
 const SIGN_UP_EMAIL_DELIVERY_MESSAGE =
   "We couldn't send the confirmation email. Please wait a few minutes and try again.";
+const GOOGLE_AUTH_UNAVAILABLE_MESSAGE =
+  "Google sign-in is not ready yet. Use email and password or ask the founder to enable it.";
 const AUTH_INTENT_SIGN_UP = "sign-up";
 const AUTH_INTENT_PASSWORD_RESET = "password-reset";
 
@@ -203,8 +208,17 @@ async function getConfiguredPasswordResetRedirectTo(): Promise<string> {
   return new URL("/auth/reset-password", await getAuthRedirectOrigin()).toString();
 }
 
-async function getConfiguredAuthCallbackRedirectTo(): Promise<string> {
-  return new URL("/auth/callback", await getAuthRedirectOrigin()).toString();
+async function getConfiguredAuthCallbackRedirectTo(
+  nextPath?: string,
+): Promise<string> {
+  const callbackUrl = new URL("/auth/callback", await getAuthRedirectOrigin());
+  const safeNextPath = getSafeAuthCallbackNextPath(nextPath ?? null);
+
+  if (safeNextPath !== "/dashboard") {
+    callbackUrl.searchParams.set("next", safeNextPath);
+  }
+
+  return callbackUrl.toString();
 }
 
 function getEmailDomain(email: string): string {
@@ -546,6 +560,34 @@ export async function signInAction(formData: FormData): Promise<never> {
   }
 
   redirect(redirectTo);
+}
+
+export async function signInWithGoogleAction(
+  formData: FormData,
+): Promise<never> {
+  const redirectTo = readPostAuthRedirect(formData);
+  const callbackRedirectTo = await getConfiguredAuthCallbackRedirectTo(redirectTo);
+  const safeNextPath = getSafeAuthCallbackNextPath(redirectTo);
+  let googleAuthUrl: string;
+
+  safeLogger.info("auth.google_login.request_received", {
+    callbackRedirectTo,
+    safeNextPath,
+  });
+
+  try {
+    googleAuthUrl = await signInWithGoogleOAuth({
+      redirectTo: callbackRedirectTo,
+    });
+  } catch (error) {
+    safeLogger.warn("auth.google_login.start_failed", {
+      safeNextPath,
+      ...getAuthErrorLogMetadata(error),
+    });
+    redirectWithSignInError(GOOGLE_AUTH_UNAVAILABLE_MESSAGE, redirectTo);
+  }
+
+  redirect(googleAuthUrl);
 }
 
 export async function requestPasswordResetAction(

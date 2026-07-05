@@ -11,6 +11,7 @@
  * Created: 2026-05-19
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added existing-workspace Google login guidance without OAuth signup bootstrap.
  * - 2026-07-05: Completed source header metadata for the pilot-stage signup route.
  * - 2026-07-05: Associated password guidance with the signup password field.
  * - 2026-05-19: Migrated to the single-centered-card AuthShell.
@@ -39,7 +40,10 @@ import {
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 import { readSafeAuthRouteError } from "@/lib/i18n/route-messages";
 import { buildNoIndexMetadata } from "@/lib/seo";
-import { signUpAction } from "@/server/actions/auth.actions";
+import {
+  signInWithGoogleAction,
+  signUpAction,
+} from "@/server/actions/auth.actions";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -88,7 +92,48 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
           </p>
         ) : null}
 
-        <form action={signUpAction} className="mt-5 grid gap-3 sm:grid-cols-2">
+        <form action={signInWithGoogleAction} className="mt-5">
+          <input name="redirectTo" type="hidden" value="/dashboard" />
+          <button
+            className="inline-flex h-11 w-full items-center justify-center gap-2.5 rounded-[12px] border px-5 text-sm font-black transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--surface-interactive)] focus:outline-none focus:ring-4 focus:ring-[var(--focus-ring)]"
+            style={{
+              backgroundColor: "var(--surface)",
+              borderColor: "var(--biz-border-medium)",
+              color: "var(--biz-page-text)",
+            }}
+            type="submit"
+          >
+            <span
+              aria-hidden
+              className="flex h-5 w-5 items-center justify-center rounded-full text-[12px] font-black"
+              style={{
+                backgroundColor: "var(--biz-page-text)",
+                color: "var(--surface)",
+              }}
+            >
+              G
+            </span>
+            {copy.googleSignIn}
+          </button>
+          <p
+            className="mt-2 rounded-[10px] border px-2.5 py-1.5 text-center text-[11px] leading-5"
+            style={authInfoStyle}
+          >
+            {copy.googleExistingWorkspaceOnly}
+          </p>
+        </form>
+
+        <div
+          aria-hidden
+          className="my-4 flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.16em]"
+          style={{ color: "var(--biz-page-text-muted)" }}
+        >
+          <span className="h-px flex-1 bg-[var(--biz-page-border)]" />
+          <span>{copy.emailPasswordDivider}</span>
+          <span className="h-px flex-1 bg-[var(--biz-page-border)]" />
+        </div>
+
+        <form action={signUpAction} className="grid gap-3 sm:grid-cols-2">
           <input name="authIntent" type="hidden" value="sign-up" />
           {[
             ["displayName", copy.name, copy.yourName, "name", "text", "name"],

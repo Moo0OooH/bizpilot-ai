@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added safe Google login copy for existing owner accounts.
  * - 2026-07-05: Added Quote Setup readiness command copy for first open setup actions.
  * - 2026-07-05: Reframed lead-detail owner notes as a private scratchpad with gated persistence.
  * - 2026-07-05: Reframed Business Profile future fields as gated storage decisions.
@@ -879,11 +880,15 @@ type AuthCopy = Readonly<{
   createWorkspaceSubtitle: string;
   createWorkspaceTitle: string;
   email: string;
+  emailPasswordDivider: string;
   forgotPassword: string;
   forgotPasswordFooter: string;
   forgotPasswordQuestion: string;
   forgotPasswordSubtitle: string;
   forgotPasswordTitle: string;
+  googleExistingWorkspaceOnly: string;
+  googleSignIn: string;
+  googleSignInHelp: string;
   hidePassword: string;
   hidePasswordShort: string;
   name: string;
@@ -906,6 +911,7 @@ type AuthCopy = Readonly<{
     emailRequired: string;
     genericError: string;
     genericNotice: string;
+    googleUnavailable: string;
     nameRequired: string;
     newPasswordRequired: string;
     passwordIncorrect: string;
@@ -1199,6 +1205,7 @@ const englishCopy: BizPilotCopy = {
       "Create your BizPilot workspace only if you've been invited or approved for pilot access.",
     createWorkspaceTitle: "Create owner access",
     email: "Email",
+    emailPasswordDivider: "or use email",
     forgotPassword: "Forgot password?",
     forgotPasswordFooter:
       "Password reset is handled through Supabase Auth email recovery.",
@@ -1206,6 +1213,11 @@ const englishCopy: BizPilotCopy = {
     forgotPasswordSubtitle:
       "Enter your owner email and we'll send reset instructions if an account exists.",
     forgotPasswordTitle: "Reset password",
+    googleExistingWorkspaceOnly:
+      "Google is for already approved owner accounts with an existing workspace. To create a new workspace, use the email form below.",
+    googleSignIn: "Continue with Google",
+    googleSignInHelp:
+      "Login only. BizPilot does not request Gmail access and does not create a workspace from Google.",
     hidePassword: "Hide password",
     hidePasswordShort: "Hide",
     name: "Name",
@@ -1229,6 +1241,8 @@ const englishCopy: BizPilotCopy = {
       emailRequired: "Enter your email address.",
       genericError: "We couldn't complete that request. Check the form and try again.",
       genericNotice: "Your account update was received.",
+      googleUnavailable:
+        "Google sign-in is not ready yet. Use email and password or ask the founder to enable it.",
       nameRequired: "Enter your name.",
       newPasswordRequired: "Enter your new password.",
       passwordIncorrect: "Email or password is incorrect.",
@@ -3012,6 +3026,7 @@ const frenchCopy: BizPilotCopy = {
       "Créez votre espace BizPilot seulement si vous avez été invité ou approuvé pour le pilote.",
     createWorkspaceTitle: "Créer l'accès à l'espace",
     email: "Courriel",
+    emailPasswordDivider: "ou utiliser le courriel",
     forgotPassword: "Mot de passe oublié?",
     forgotPasswordFooter:
       "La réinitialisation passe par le courriel de récupération Supabase Auth.",
@@ -3019,6 +3034,11 @@ const frenchCopy: BizPilotCopy = {
     forgotPasswordSubtitle:
       "Entrez le courriel du responsable. Nous enverrons les instructions si un compte existe.",
     forgotPasswordTitle: "Réinitialiser le mot de passe",
+    googleExistingWorkspaceOnly:
+      "Google est reserve aux responsables deja approuves avec un espace existant. Pour creer un nouvel espace, utilisez le formulaire courriel ci-dessous.",
+    googleSignIn: "Continuer avec Google",
+    googleSignInHelp:
+      "Connexion seulement. BizPilot ne demande pas l'acces Gmail et ne cree pas d'espace depuis Google.",
     hidePassword: "Masquer le mot de passe",
     hidePasswordShort: "Masquer",
     name: "Nom",
@@ -3044,6 +3064,8 @@ const frenchCopy: BizPilotCopy = {
       genericError:
         "Nous n'avons pas pu compléter cette demande. Vérifiez le formulaire et réessayez.",
       genericNotice: "La mise à jour du compte a été reçue.",
+      googleUnavailable:
+        "La connexion Google n'est pas encore prete. Utilisez le courriel et le mot de passe ou demandez au fondateur de l'activer.",
       nameRequired: "Entrez votre nom.",
       newPasswordRequired: "Entrez votre nouveau mot de passe.",
       passwordIncorrect: "Le courriel ou le mot de passe est incorrect.",

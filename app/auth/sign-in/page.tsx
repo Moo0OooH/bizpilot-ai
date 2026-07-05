@@ -11,6 +11,7 @@
  * Created: 2026-05-19
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added the safe Google login entry for existing owner workspaces.
  * - 2026-07-05: Added a pilot-approval prompt before account creation from sign-in.
  * - 2026-07-05: Added explicit live-region roles for sign-in route feedback.
  * - 2026-05-19: Migrated to the single-centered-card AuthShell.
@@ -42,7 +43,10 @@ import {
   readSafeAuthRouteNotice,
 } from "@/lib/i18n/route-messages";
 import { buildNoIndexMetadata } from "@/lib/seo";
-import { signInAction } from "@/server/actions/auth.actions";
+import {
+  signInAction,
+  signInWithGoogleAction,
+} from "@/server/actions/auth.actions";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -121,7 +125,48 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           </p>
         ) : null}
 
-        <form action={signInAction} className="mt-5 space-y-3.5">
+        <form action={signInWithGoogleAction} className="mt-5">
+          <input name="redirectTo" type="hidden" value={redirectTo} />
+          <button
+            className="inline-flex h-11 w-full items-center justify-center gap-2.5 rounded-[12px] border px-5 text-sm font-black transition duration-200 hover:-translate-y-0.5 hover:bg-[var(--surface-interactive)] focus:outline-none focus:ring-4 focus:ring-[var(--focus-ring)]"
+            style={{
+              backgroundColor: "var(--surface)",
+              borderColor: "var(--biz-border-medium)",
+              color: "var(--biz-page-text)",
+            }}
+            type="submit"
+          >
+            <span
+              aria-hidden
+              className="flex h-5 w-5 items-center justify-center rounded-full text-[12px] font-black"
+              style={{
+                backgroundColor: "var(--biz-page-text)",
+                color: "var(--surface)",
+              }}
+            >
+              G
+            </span>
+            {copy.googleSignIn}
+          </button>
+          <p
+            className="mt-2 text-center text-[11px] leading-5"
+            style={{ color: "var(--biz-page-text-muted)" }}
+          >
+            {copy.googleSignInHelp}
+          </p>
+        </form>
+
+        <div
+          aria-hidden
+          className="my-4 flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.16em]"
+          style={{ color: "var(--biz-page-text-muted)" }}
+        >
+          <span className="h-px flex-1 bg-[var(--biz-page-border)]" />
+          <span>{copy.emailPasswordDivider}</span>
+          <span className="h-px flex-1 bg-[var(--biz-page-border)]" />
+        </div>
+
+        <form action={signInAction} className="space-y-3.5">
           <input name="redirectTo" type="hidden" value={redirectTo} />
           <label className={authLabelClassName}>
             <span style={{ color: "var(--biz-page-text-soft)" }}>{copy.email}</span>

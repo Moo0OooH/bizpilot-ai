@@ -9,8 +9,9 @@
  * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added login-only Google OAuth redirect support without tenant bootstrap.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created Phase 2 Supabase Auth service.
  * - 2026-05-04: Aligned auth DTOs with exact optional property types.
@@ -30,6 +31,8 @@ export type AuthUser = Readonly<{
 }>;
 
 export type PasswordResetFailureStage = "exchange" | "update";
+
+export const GOOGLE_AUTH_LOGIN_SCOPES = "openid email profile";
 
 export class PasswordResetFlowError extends Error {
   readonly recoveryCodeExchanged: boolean;
@@ -114,6 +117,29 @@ export async function signInWithPassword(input: {
   }
 
   return toAuthUser(data.user);
+}
+
+export async function signInWithGoogleOAuth(input: {
+  redirectTo: string;
+}): Promise<string> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: input.redirectTo,
+      scopes: GOOGLE_AUTH_LOGIN_SCOPES,
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data.url) {
+    throw new Error("Supabase did not return a Google OAuth redirect URL.");
+  }
+
+  return data.url;
 }
 
 export async function signUpWithPassword(input: {
