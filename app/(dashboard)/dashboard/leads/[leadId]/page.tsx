@@ -11,8 +11,9 @@
  * - docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Reframed local owner notes as a private scratchpad with gated persistence.
  * - 2026-05-07: Created Phase 5 lead detail workflow page.
  * - 2026-05-10: Refactored detail view into SaaS workspace primitives.
  * - 2026-05-19: Rebuilt to match approved index.html dark navy command center: detail header, AI Summary, Suggested reply, Follow-up draft, missing-info badges, owner notes, controls, action items, timeline.
@@ -693,7 +694,7 @@ export default async function LeadDetailPage({
             </DashboardCard>
           </div>
 
-          {/* Owner notes (private). Storage TBD — local-only textarea for now. */}
+          {/* Owner scratchpad: local-only until approved notes persistence exists. */}
           <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 sm:p-4">
             <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden">
               <span className="block text-[13px] font-black text-[var(--dash-text)]">

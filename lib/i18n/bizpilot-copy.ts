@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Reframed lead-detail owner notes as a private scratchpad with gated persistence.
  * - 2026-07-05: Reframed Business Profile future fields as gated storage decisions.
  * - 2026-07-05: Reworded settings roadmap copy from placeholders to gated references.
  * - 2026-07-05: Softened auth confirmation success copy to avoid overpromising workspace readiness.
@@ -1681,12 +1682,12 @@ const englishCopy: BizPilotCopy = {
       notYet: "Not yet",
       ownerNotes: {
         description:
-          "Private notes for pilot learning and follow-up quality. This field is a local reminder only until notes storage is approved.",
+          "Private scratchpad for pilot learning and follow-up quality. Keep anything important in your operating system until saved notes are approved.",
         persistenceNote:
-          "Not saved yet: notes persistence is part of a later approved phase.",
+          "Not saved: persistent owner notes are a gated storage decision for a later approved phase.",
         placeholder:
           "Add notes about this request, objections, pricing context, or follow-up outcome...",
-        title: "Scratch notes (not saved)",
+        title: "Private scratchpad",
       },
       quoteIntakeFields: "Quote intake fields",
       sourceAttribution: {
@@ -3501,12 +3502,12 @@ const frenchCopy: BizPilotCopy = {
       notYet: "Pas encore",
       ownerNotes: {
         description:
-          "Notes privées pour apprendre pendant le pilote et améliorer les suivis. Ce champ est seulement un rappel local jusqu'à l'approbation du stockage.",
+          "Bloc-notes privé pour apprendre pendant le pilote et améliorer les suivis. Gardez toute information importante dans votre système opérationnel jusqu'à l'approbation des notes sauvegardées.",
         persistenceNote:
-          "Pas encore sauvegardé: la persistance des notes fait partie d'une phase approuvée plus tard.",
+          "Non sauvegardé: les notes persistantes restent une décision de stockage verrouillée pour une phase approuvée plus tard.",
         placeholder:
           "Ajoutez des notes sur la demande, les objections, le contexte de prix ou le résultat du suivi...",
-        title: "Notes temporaires (non sauvegardees)",
+        title: "Bloc-notes privé",
       },
       quoteIntakeFields: "Champs de soumission",
       sourceAttribution: {
