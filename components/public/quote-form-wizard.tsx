@@ -10,7 +10,7 @@
  * - docs/product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-19
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-05-19: Created 3-step grouped public quote form.
  * - 2026-05-22: Removed client-side step navigation dependency so public submissions cannot get stuck before submit.
@@ -20,6 +20,7 @@
  * - 2026-06-25: Polished quote field/helper spacing for final public rhythm.
  * - 2026-06-25: Improved final quote form field groups, helper spacing, consent rhythm, and submit spacing.
  * - 2026-07-04: Submitted safe quote-link source URL attribution instead of an empty hidden value.
+ * - 2026-07-05: Improved public field semantics, helper associations, and required boolean enforcement.
  * ============================================================
  */
 
@@ -117,6 +118,10 @@ function toOptionLabel(value: string): string {
     .join(" ");
 }
 
+function toSafeDomIdPart(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/^-+|-+$/g, "") || "option";
+}
+
 function getInputMinimum(input: {
   field: FieldRecord;
   todayDate: string;
@@ -141,12 +146,16 @@ function isWideField(field: FieldRecord): boolean {
 }
 
 function FieldInput({
+  ariaDescribedBy,
   copy,
+  controlId,
   field,
   required,
   todayDate,
 }: Readonly<{
+  ariaDescribedBy?: string | undefined;
   copy: BizPilotCopy;
+  controlId: string;
   field: FieldRecord;
   required: boolean;
   todayDate: string;
@@ -154,7 +163,9 @@ function FieldInput({
   if (field.field_type === "textarea") {
     return (
       <textarea
+        aria-describedby={ariaDescribedBy}
         className={`${FIELD_INPUT} h-auto min-h-[96px] py-2.5 leading-6`}
+        id={controlId}
         name={`field:${field.field_key}`}
         required={required}
       />
@@ -164,8 +175,11 @@ function FieldInput({
   if (field.field_type === "boolean") {
     return (
       <input
+        aria-describedby={ariaDescribedBy}
         className="h-4 w-4 shrink-0 accent-[var(--accent)]"
+        id={controlId}
         name={`field:${field.field_key}`}
+        required={required}
         type="checkbox"
       />
     );
@@ -174,13 +188,18 @@ function FieldInput({
   if (field.field_type === "radio") {
     return (
       <div className="grid gap-2.5">
-        {getOptions(field.options).map((option) => (
+        {getOptions(field.options).map((option, index) => {
+          const optionId = `${controlId}-${index}-${toSafeDomIdPart(option)}`;
+
+          return (
           <label
             className="quote-radio-option flex min-h-12 items-center gap-2.5 rounded-[12px] border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-[14px] font-semibold text-[var(--text-strong)]"
+            htmlFor={optionId}
             key={option}
           >
             <input
               className="h-4 w-4 shrink-0 accent-[var(--accent)]"
+              id={optionId}
               name={`field:${field.field_key}`}
               required={required}
               type="radio"
@@ -188,7 +207,8 @@ function FieldInput({
             />
             {copy.optionLabels[option] ?? toOptionLabel(option)}
           </label>
-        ))}
+          );
+        })}
       </div>
     );
   }
@@ -196,8 +216,10 @@ function FieldInput({
   if (field.field_type === "select" || field.field_type === "time_window") {
     return (
       <select
+        aria-describedby={ariaDescribedBy}
         className={`${FIELD_INPUT} pr-8`}
         defaultValue=""
+        id={controlId}
         name={`field:${field.field_key}`}
         required={required}
       >
@@ -218,7 +240,9 @@ function FieldInput({
 
   return (
     <input
+      aria-describedby={ariaDescribedBy}
       className={FIELD_INPUT}
+      id={controlId}
       min={getInputMinimum({ field, todayDate })}
       name={`field:${field.field_key}`}
       required={required}
@@ -237,14 +261,19 @@ function FieldRow({
   todayDate: string;
 }>) {
   const colSpan = isWideField(field) ? "md:col-span-2" : "";
+  const controlId = `quote-field-${field.id}`;
+  const helperId = field.help_text ? `${controlId}-helper` : undefined;
 
   if (field.field_type === "boolean") {
     return (
       <label
         className={`quote-boolean-field flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] px-3 py-3 ${colSpan}`}
+        htmlFor={controlId}
       >
         <FieldInput
+          ariaDescribedBy={helperId}
           copy={copy}
+          controlId={controlId}
           field={field}
           required={field.is_required}
           todayDate={todayDate}
@@ -257,7 +286,10 @@ function FieldRow({
             ) : null}
           </span>
           {field.help_text ? (
-            <span className="quote-field-helper mt-1 block text-[12px] leading-5 text-[var(--text-muted)]">
+            <span
+              className="quote-field-helper mt-1 block text-[12px] leading-5 text-[var(--text-muted)]"
+              id={helperId}
+            >
               {field.help_text}
             </span>
           ) : null}
@@ -266,26 +298,65 @@ function FieldRow({
     );
   }
 
+  if (field.field_type === "radio") {
+    return (
+      <fieldset
+        aria-describedby={helperId}
+        className={`quote-field-row flex min-w-0 flex-col gap-2.5 ${colSpan}`}
+      >
+        <legend className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[var(--text-default)]">
+          {field.label}
+          {field.is_required ? (
+            <span className="text-[var(--danger)]"> *</span>
+          ) : null}
+        </legend>
+        <FieldInput
+          copy={copy}
+          controlId={controlId}
+          field={field}
+          required={field.is_required}
+          todayDate={todayDate}
+        />
+        {field.help_text ? (
+          <span
+            className="quote-field-helper mt-1 text-[12px] leading-5 text-[var(--text-muted)]"
+            id={helperId}
+          >
+            {field.help_text}
+          </span>
+        ) : null}
+      </fieldset>
+    );
+  }
+
   return (
-    <label className={`quote-field-row flex min-w-0 flex-col gap-2.5 ${colSpan}`}>
-      <span className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[var(--text-default)]">
+    <div className={`quote-field-row flex min-w-0 flex-col gap-2.5 ${colSpan}`}>
+      <label
+        className="text-[12px] font-extrabold uppercase tracking-[0.08em] text-[var(--text-default)]"
+        htmlFor={controlId}
+      >
         {field.label}
         {field.is_required ? (
           <span className="text-[var(--danger)]"> *</span>
         ) : null}
-      </span>
+      </label>
       <FieldInput
+        ariaDescribedBy={helperId}
         copy={copy}
+        controlId={controlId}
         field={field}
         required={field.is_required}
         todayDate={todayDate}
       />
       {field.help_text ? (
-        <span className="quote-field-helper mt-1 text-[12px] leading-5 text-[var(--text-muted)]">
+        <span
+          className="quote-field-helper mt-1 text-[12px] leading-5 text-[var(--text-muted)]"
+          id={helperId}
+        >
           {field.help_text}
         </span>
       ) : null}
-    </label>
+    </div>
   );
 }
 
