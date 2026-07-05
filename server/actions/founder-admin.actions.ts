@@ -9,7 +9,10 @@
  * - server/services/founder-admin.service.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-05-22
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete source header changelog for founder admin actions.
+ * - 2026-05-22: Created founder-only admin server actions.
  * ============================================================
  */
 

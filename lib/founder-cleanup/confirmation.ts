@@ -4,9 +4,16 @@
  * Project: BizPilot AI
  * Description: Pure confirmation helpers for founder test workspace cleanup.
  * Role: Keeps hard-purge confirmations exact and test/demo/seed scoped.
+ * Related:
+ * - server/services/founder-admin.service.ts
+ * - server/actions/founder-admin.actions.ts
+ * - tests/unit/founder-cleanup-confirmation.test.mts
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-05-24
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete source header metadata for founder cleanup confirmation helpers.
+ * - 2026-05-24: Created founder test workspace cleanup confirmation helpers.
  * ============================================================
  */
 

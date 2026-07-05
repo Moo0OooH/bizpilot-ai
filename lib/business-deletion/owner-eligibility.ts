@@ -4,9 +4,16 @@
  * Project: BizPilot AI
  * Description: Pure owner eligibility helper for workspace deletion requests.
  * Role: Keeps the settings UI and tests aligned with owner-only lifecycle rules.
+ * Related:
+ * - app/(dashboard)/dashboard/settings/page.tsx
+ * - server/services/business-deletion.service.ts
+ * - tests/unit/business-deletion-confirmation.test.mts
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-05-24
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete source header metadata for deletion eligibility helper.
+ * - 2026-05-24: Created owner eligibility helper for workspace deletion requests.
  * ============================================================
  */
 

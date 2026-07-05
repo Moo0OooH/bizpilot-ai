@@ -9,7 +9,10 @@
  * - supabase/migrations/0015_business_access_plan_and_admin_log.sql
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-05-22
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete source header changelog for founder admin repository.
+ * - 2026-05-22: Created service-role founder admin repository.
  * ============================================================
  */
 

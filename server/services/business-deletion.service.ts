@@ -10,7 +10,10 @@
  * - supabase/migrations/0018_business_lifecycle_deletion_foundation.sql
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-05-24
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete source header changelog for deletion request orchestration.
+ * - 2026-05-24: Created owner-controlled workspace deletion request service.
  * ============================================================
  */
 

@@ -9,7 +9,10 @@
  * - server/services/business-deletion.service.ts
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-05-24
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete source header changelog for owner deletion request action.
+ * - 2026-05-24: Created owner-only workspace deletion request action.
  * ============================================================
  */
 

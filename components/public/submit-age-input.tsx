@@ -11,7 +11,10 @@
  * - server/services/public-intake.service.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-05-22
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete source header changelog for abuse-protection marker.
+ * - 2026-05-22: Created submit-age hidden input for public quote abuse protection.
  * ============================================================
  */
 
