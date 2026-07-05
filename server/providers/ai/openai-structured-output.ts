@@ -9,6 +9,10 @@
  * - tests/unit/openai-structured-output.test.mts
  * Author: MoOoH
  * Created: 2026-05-29
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete BizPilot source header metadata for structured-output helpers.
+ * - 2026-05-29: Created OpenAI structured output payload helpers.
  * ============================================================
  */
 

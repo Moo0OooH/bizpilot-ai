@@ -11,6 +11,10 @@
  * - server/actions/public-intake.actions.ts
  * Author: MoOoH
  * Created: 2026-07-04
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete BizPilot source header metadata for quote attribution helpers.
+ * - 2026-07-04: Created safe public quote attribution helpers.
  * ============================================================
  */
 

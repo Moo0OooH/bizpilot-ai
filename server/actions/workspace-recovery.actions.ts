@@ -1,8 +1,19 @@
 /**
+ * ============================================================
  * File: server/actions/workspace-recovery.actions.ts
  * Project: BizPilot AI
  * Description: Repairs signup/bootstrap gaps for signed-in owners with no workspace.
  * Role: Lets a blocked owner recover a missing workspace without weakening RLS.
+ * Related:
+ * - lib/workspace-recovery/constants.ts
+ * - server/services/business.service.ts
+ * - server/services/auth.service.ts
+ * Author: MoOoH
+ * Created: 2026-07-05
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Completed BizPilot source header metadata for workspace recovery action.
+ * ============================================================
  */
 
 "use server";

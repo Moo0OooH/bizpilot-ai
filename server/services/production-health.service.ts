@@ -1,8 +1,19 @@
 /**
+ * ============================================================
  * File: server/services/production-health.service.ts
  * Project: BizPilot AI
  * Description: Founder-only safe runtime diagnostics for production wiring.
  * Role: Verifies Supabase target and privileged read health without exposing secrets.
+ * Related:
+ * - app/admin/page.tsx
+ * - server/services/founder-admin.service.ts
+ * - lib/supabase/server.ts
+ * Author: MoOoH
+ * Created: 2026-06-26
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Completed BizPilot source header metadata for production health diagnostics.
+ * ============================================================
  */
 
 import "server-only";

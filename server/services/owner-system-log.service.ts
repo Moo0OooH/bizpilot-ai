@@ -10,6 +10,10 @@
  * - supabase/migrations/0021_session_policy_and_owner_audit.sql
  * Author: MoOoH
  * Created: 2026-05-25
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete BizPilot source header metadata for owner system history service.
+ * - 2026-05-25: Created owner-visible system change history service.
  * ============================================================
  */
 
