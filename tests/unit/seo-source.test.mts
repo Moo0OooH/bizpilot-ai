@@ -20,6 +20,7 @@
  * - 2026-07-04: Added FAQ AI-search completion evidence guards.
  * - 2026-07-05: Guarded BreadcrumbList JSON-LD on deeper canonical public routes.
  * - 2026-07-05: Guarded refreshed sitemap freshness after local public-site smoke.
+ * - 2026-07-05: Updated robots source guard for exact quote-intake blocking while preserving the quote-link guide.
  * ============================================================
  */
 
@@ -188,7 +189,8 @@ describe("final public SEO and legal source contracts", () => {
       '"/auth"',
       '"/dashboard"',
       '"/founder"',
-      '"/quote"',
+      '"/quote$"',
+      '"/quote/"',
     ]) {
       assert.equal(robots.includes(blocked), true);
     }

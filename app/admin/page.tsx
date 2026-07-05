@@ -12,6 +12,7 @@
  * Created: 2026-05-22
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Restored explicit first-10 matched workspace helper copy in the founder business rail.
  * - 2026-07-05: Clarified hidden admin workspace match counts with direct matched-id lookup.
  * - 2026-05-26: Moved production health ahead of data grids so empty admin data is tied to safe runtime diagnostics.
  * - 2026-06-18: Updated founder access fallback to svh/clip frame for responsive hardening.
@@ -1600,6 +1601,7 @@ function FounderBusinessMasterRail({
       </div>
       {hiddenMatchCount > 0 ? (
         <p className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
+          Showing the first 10 matched workspaces.{" "}
           {hiddenMatchCount} more matched{" "}
           {hiddenMatchCount === 1 ? "workspace is" : "workspaces are"} hidden.
           Search by owner, business, or slug to narrow the list.
