@@ -12,6 +12,7 @@
  * Created: 2026-05-04
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added a compact Quote Setup readiness command strip for first open setup action scanability.
  * - 2026-07-05: Clamped Quote Setup readiness progress to a safe 0-100 display range.
  * - 2026-05-04: Created protected Phase 2 dashboard shell.
  * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
@@ -227,6 +228,13 @@ export default async function DashboardPage({
       Math.round((readiness.completed / Math.max(readiness.total, 1)) * 100),
     ),
   );
+  const firstOpenReadinessItem = readiness.items.find((item) => !item.complete);
+  const readinessCommandTitle = firstOpenReadinessItem
+    ? configCopy.readiness.nextAction
+    : configCopy.readiness.readyState;
+  const readinessCommandBody = firstOpenReadinessItem
+    ? configCopy.readiness.fixFirst(readinessLabel(firstOpenReadinessItem))
+    : configCopy.readiness.shareWhenReady;
 
   return (
     <>
@@ -248,6 +256,39 @@ export default async function DashboardPage({
             {routeError}
           </FlashMessage>
         ) : null}
+
+        <section
+          className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
+          data-dashboard-quote-readiness-command
+        >
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-text-muted)]">
+              {configCopy.readiness.manualOnly}
+            </p>
+            <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h2 className="text-[20px] font-extrabold text-[var(--dash-text)]">
+                {readinessCommandTitle}
+              </h2>
+              <span className="text-sm font-semibold text-[var(--dash-text-secondary)]">
+                {configCopy.overview.complete(readiness.completed, readiness.total)}
+              </span>
+            </div>
+            <p className="mt-1 text-sm text-[var(--dash-text-secondary)]">
+              {readinessCommandBody}
+            </p>
+          </div>
+          <div className="flex flex-col gap-2 sm:flex-row md:justify-end">
+            <Link className={buttonClass} href="#setup-checklist">
+              {configCopy.readiness.reviewChecklist}
+            </Link>
+            <Link
+              className={buttonClass}
+              href={`/quote/${activeBusiness.slug}`}
+            >
+              {configCopy.overview.previewPublicQuote}
+            </Link>
+          </div>
+        </section>
 
         <form
           action={saveBusinessConfigurationAction}

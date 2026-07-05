@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added Quote Setup readiness command copy for first open setup actions.
  * - 2026-07-05: Reframed lead-detail owner notes as a private scratchpad with gated persistence.
  * - 2026-07-05: Reframed Business Profile future fields as gated storage decisions.
  * - 2026-07-05: Reworded settings roadmap copy from placeholders to gated references.
@@ -354,7 +355,13 @@ type DashboardConfigurationCopy = Readonly<{
   }>;
   readiness: Readonly<{
     description: (completed: number, total: number) => string;
+    fixFirst: (task: string) => string;
+    manualOnly: string;
+    nextAction: string;
     readyToShare: string;
+    readyState: string;
+    reviewChecklist: string;
+    shareWhenReady: string;
     setupInProgress: string;
     title: string;
   }>;
@@ -1484,7 +1491,14 @@ const englishCopy: BizPilotCopy = {
       },
       readiness: {
         description: (completed, total) => `${completed}/${total} setup tasks complete.`,
+        fixFirst: (task) => `Finish "${task}" before sharing the quote link.`,
+        manualOnly: "Manual owner-controlled setup",
+        nextAction: "Next setup action",
         readyToShare: "Ready to share",
+        readyState: "Ready for manual sharing",
+        reviewChecklist: "Review checklist",
+        shareWhenReady:
+          "All setup items are complete. Save changes, preview the public link, then share manually through your existing channels.",
         setupInProgress: "Setup in progress",
         title: "Quote link readiness",
       },
@@ -3300,7 +3314,15 @@ const frenchCopy: BizPilotCopy = {
       },
       readiness: {
         description: (completed, total) => `${completed}/${total} tâches complétées.`,
+        fixFirst: (task) =>
+          `Terminez "${task}" avant de partager le lien de soumission.`,
+        manualOnly: "Configuration controlee par le responsable",
+        nextAction: "Prochaine action de configuration",
         readyToShare: "Prêt à partager",
+        readyState: "Pret au partage manuel",
+        reviewChecklist: "Revoir la liste",
+        shareWhenReady:
+          "Tous les elements de configuration sont termines. Enregistrez, previsualisez le lien public, puis partagez-le manuellement dans vos canaux existants.",
         setupInProgress: "Configuration en cours",
         title: "Préparation du lien public",
       },

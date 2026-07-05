@@ -12,6 +12,7 @@
  * Created: 2026-06-27
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Guarded the Quote Setup readiness command strip for first open setup actions.
  * - 2026-07-05: Guarded the lead queue focus command strip as the route-level recovery action.
  * - 2026-07-05: Guarded owner overview priority standardization and tokenized secondary insights.
  * - 2026-07-04: Updated owner overview guards for the simplified action-first cockpit.
@@ -259,6 +260,14 @@ describe("Dashboard V3 final acceptance source guards", () => {
 
     assert.equal(configuration.includes("ConfigurationTabs"), true);
     assert.equal(configuration.includes("ConfigurationPanel"), true);
+    assert.equal(configuration.includes("data-dashboard-quote-readiness-command"), true);
+    assert.equal(configuration.includes("firstOpenReadinessItem"), true);
+    assert.equal(configuration.includes("configCopy.readiness.fixFirst"), true);
+    assert.equal(configuration.includes("configCopy.readiness.manualOnly"), true);
+    assert.equal(configuration.includes("configCopy.readiness.shareWhenReady"), true);
+    assert.equal(configuration.includes('href="#setup-checklist"'), true);
+    assert.equal(configuration.includes("production-ready"), false);
+    assert.equal(configuration.includes("paid-pilot-ready"), false);
     assert.equal(configuration.includes("rgba(23,212,146"), false);
     assert.equal(configuration.includes("bg-[#071018]"), false);
     assert.equal(configuration.includes("text-emerald-700"), false);
