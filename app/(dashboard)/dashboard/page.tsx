@@ -12,6 +12,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Preserved zero quote-request totals instead of falling back to lead count.
  * - 2026-05-19: Rebuilt the overview from the approved index.html source of truth with workflow-first hierarchy.
  * - 2026-06-27: Promoted the overview hero title to the page H1 after topbar heading cleanup.
  * - 2026-06-27: Consolidated the owner command lane and KPI strip into one calmer action board.
@@ -540,7 +541,7 @@ export default async function DashboardOverviewPage() {
     ).length,
     1,
   );
-  const newQuoteCount = desk.recoveryProof.quoteRequestsCaptured || desk.leads.length;
+  const newQuoteCount = desk.recoveryProof.quoteRequestsCaptured ?? desk.leads.length;
   const needsReplyCount = desk.leads.filter(
     (item) => item.lead.status === "new" || item.lead.status === "follow_up_needed",
   ).length;
