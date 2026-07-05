@@ -9,7 +9,8 @@
  * - lib/i18n/home-copy.ts
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
- * Last Updated: 2026-06-26
+ * Created: 2026-05-02
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-18: Applied responsive hero, section density, and no-inner-scroll demo hardening.
  * - 2026-06-19: Mapped the hero product preview to semantic theme surfaces for dark contrast.
@@ -29,6 +30,7 @@
  * - 2026-06-26: Replaced the four-card workflow preview with one compact owner-review panel.
  * - 2026-06-26: Upgraded the hero mockup into a premium signal-flow board.
  * - 2026-07-04: Added public JSON-LD for WebSite, Organization, SoftwareApplication, and Service.
+ * - 2026-07-05: Rebuilt the homepage hero as a full-stage product scene with overlay copy.
  * ============================================================
  */
 
@@ -198,218 +200,99 @@ function SourceChannelMark({ source }: Readonly<{ source: string }>) {
 }
 
 function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
-  const chaosMessages = copy.messages.slice(0, 4);
+  const visibleMessages = copy.messages.slice(0, 3);
   const incomingSources = copy.sources.slice(0, 5);
+  const priorityLeads = copy.leads.slice(0, 2);
+  const ownerActions = copy.bizPilotActions.slice(0, 4);
 
   return (
     <div
-      className="homepage-hero-mockup homepage-signal-board w-full rounded-[20px] border p-3 sm:p-4"
-      style={{
-        background:
-          "linear-gradient(135deg, color-mix(in srgb, var(--surface-elevated) 94%, var(--primary) 6%), color-mix(in srgb, var(--surface) 94%, var(--accent) 6%))",
-        borderColor: "var(--border-strong)",
-        boxShadow: "var(--shadow-lg)",
-      }}
+      aria-label={copy.boardLabel}
+      className="homepage-hero-mockup homepage-product-scene"
     >
-      <div className="homepage-signal-rail" aria-hidden="true" />
-      <div className="homepage-chaos-clarity-flow homepage-signal-flow grid min-w-0 items-stretch gap-3">
-        <section className="homepage-chaos-panel homepage-signal-panel min-w-0">
-          <div className="homepage-step-heading homepage-step-heading--chaos">
-            <span className="homepage-step-index" aria-hidden>
-              1
-            </span>
-            <span className="sr-only">{copy.chaosTitle}</span>
-            <h3 className="bp-copy-card-title mt-1 min-h-0 text-[15px] font-black leading-tight" style={{ color: "var(--text-strong)" }}>
-              {copy.chaosSubtitle}
-            </h3>
-          </div>
+      <div className="homepage-product-window">
+        <div className="homepage-product-topbar">
+          <span className="homepage-product-brand">BizPilot AI</span>
+          <span className="homepage-product-safety">
+            <MarketingIcon name="shield" />
+            {copy.boardSafety}
+          </span>
+        </div>
 
-          <div className="homepage-chaos-stream mt-3">
-            <div className="homepage-chaos-channel-rail" aria-label={copy.chaosTitle}>
+        <div className="homepage-product-grid">
+          <section className="homepage-intake-stack" aria-label={copy.chaosTitle}>
+            <div className="homepage-panel-heading">
+              <span>{copy.chaosTitle}</span>
+              <p>{copy.chaosSubtitle}</p>
+            </div>
+            <div className="homepage-channel-strip">
               {incomingSources.map((source) => (
-                <span className="homepage-chaos-channel" key={source}>
+                <span className="homepage-channel-pill" key={source}>
                   <SourceChannelMark source={source} />
-                  <span className="sr-only">{source}</span>
+                  <span>{source}</span>
                 </span>
               ))}
             </div>
-
-            <div className="homepage-chaos-messages grid gap-2">
-              {chaosMessages.map((message, index) => (
-                <p
-                  className="homepage-signal-message bp-copy-card-body min-w-0 rounded-[12px] border px-3 py-2 text-[11px] font-bold leading-4"
-                  key={message}
-                  style={{
-                    backgroundColor:
-                      index < 3
-                        ? "color-mix(in srgb, var(--warning) 9%, var(--surface))"
-                        : "var(--surface)",
-                    borderColor:
-                      index < 3
-                        ? "color-mix(in srgb, var(--warning) 28%, var(--border-default))"
-                        : "var(--border-default)",
-                    color: "var(--text-default)",
-                  }}
-                >
-                  <span aria-hidden className="homepage-message-mark" />
+            <div className="homepage-message-stack">
+              {visibleMessages.map((message, index) => (
+                <p className="homepage-message-card" key={message}>
+                  <span aria-hidden className={index === 0 ? "homepage-message-dot homepage-message-dot--urgent" : "homepage-message-dot"} />
                   <span>{message}</span>
                 </p>
               ))}
             </div>
-          </div>
-
-          <p className="homepage-chaos-overload mt-3">
-            <span className="homepage-chaos-count">{copy.chaosBadge}</span>
-            <span className="homepage-chaos-hint">{copy.chaosHint}</span>
-          </p>
-        </section>
-
-        <div className="homepage-flow-connector homepage-flow-connector--desktop" aria-hidden="true">
-          <MarketingIcon name="arrow" />
-        </div>
-
-        <section
-          className="homepage-bizpilot-node min-w-0 rounded-[16px] border p-3"
-          style={{
-            backgroundColor:
-              "color-mix(in srgb, var(--accent) 12%, var(--surface-elevated))",
-            borderColor:
-              "color-mix(in srgb, var(--accent) 42%, var(--border-default))",
-          }}
-        >
-          <div className="homepage-step-heading homepage-step-heading--bizpilot">
-            <span className="homepage-step-index" aria-hidden>
-              2
-            </span>
-            <p className="bp-copy-card-title min-h-0 text-[16px] font-black" style={{ color: "var(--text-strong)" }}>
-              {copy.bizPilotTitle}
+            <p className="homepage-intake-note">
+              <span>{copy.chaosBadge}</span>
+              {copy.chaosHint}
             </p>
-          </div>
-          <p className="bp-copy-meta mt-1 text-[11px] font-bold leading-4" style={{ color: "var(--text-default)" }}>
-            {copy.bizPilotBody}
-          </p>
-          <div className="homepage-bizpilot-pulse" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </div>
-          <div className="homepage-bizpilot-action-grid mt-3 grid gap-2">
-            {copy.bizPilotActions.slice(0, 4).map((action) => (
-              <span
-                className="bp-copy-status inline-flex min-w-0 items-center gap-2 rounded-[10px] px-2.5 py-1.5 text-[11px] font-black"
-                key={action}
-                style={{
-                  backgroundColor:
-                    "color-mix(in srgb, var(--surface) 92%, var(--accent) 8%)",
-                  color: "var(--text-strong)",
-                }}
-              >
-                <MarketingIcon name="check" />
-                {action}
+          </section>
+
+          <section className="homepage-recovery-focus" aria-label={copy.bizPilotTitle}>
+            <div className="homepage-focus-core">
+              <span className="homepage-focus-icon" aria-hidden>
+                <MarketingIcon name="radar" />
               </span>
-            ))}
-          </div>
-          <p className="homepage-owner-review-badge">
-            <MarketingIcon name="shield" />
-            <span>{copy.boardSafety}</span>
-          </p>
-        </section>
-
-        <div className="homepage-flow-connector homepage-flow-connector--desktop" aria-hidden="true">
-          <MarketingIcon name="arrow" />
-        </div>
-
-        <section className="homepage-clarity-panel homepage-signal-panel min-w-0">
-          <div className="homepage-visual-heading homepage-clarity-heading">
-            <div className="min-w-0">
-              <div className="homepage-step-heading homepage-step-heading--clarity">
-                <span className="homepage-step-index" aria-hidden>
-                  3
-                </span>
-                <span className="sr-only">{copy.clarityTitle}</span>
-                <h3 className="bp-copy-card-title mt-1 min-h-0 text-[15px] font-black leading-tight" style={{ color: "var(--text-strong)" }}>
-                  {copy.claritySubtitle}
-                </h3>
+              <div>
+                <p className="homepage-focus-title">{copy.bizPilotTitle}</p>
+                <p className="homepage-focus-body">{copy.bizPilotBody}</p>
               </div>
             </div>
-          </div>
-          <p className="homepage-clarity-badge">{copy.clarityBadge}</p>
-
-          <div className="homepage-clarity-leads mt-3 grid gap-2">
-            {copy.leads.slice(0, 2).map((lead, index) => (
-              <div
-                className="homepage-clarity-lead homepage-signal-lead min-w-0 rounded-[12px] border p-3"
-                key={lead.title}
-                style={{
-                  backgroundColor:
-                    index === 0
-                      ? "color-mix(in srgb, var(--warning) 10%, var(--surface))"
-                      : "var(--surface-interactive)",
-                  borderColor:
-                    index === 0
-                      ? "color-mix(in srgb, var(--warning) 32%, var(--border-default))"
-                      : "var(--border-default)",
-                }}
-              >
-                <span className="homepage-lead-rank" aria-hidden>
-                  {index + 1}
+            <div className="homepage-action-chip-grid">
+              {ownerActions.map((action) => (
+                <span className="homepage-action-chip" key={action}>
+                  <MarketingIcon name="check" />
+                  {action}
                 </span>
-                <div className="flex min-w-0 items-start justify-between gap-2">
-                  <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
-                    {lead.title}
-                  </p>
-                  <span
-                    className="homepage-priority-dot"
-                    aria-hidden
-                    style={{
-                      backgroundColor: index === 0 ? "var(--warning)" : "var(--accent)",
-                    }}
-                  />
-                </div>
-                <p className="bp-copy-card-body mt-1 text-[11px] font-bold leading-4" style={{ color: "var(--text-default)" }}>
-                  {lead.body}
-                </p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+            <div className="homepage-priority-list">
+              {priorityLeads.map((lead, index) => (
+                <article className="homepage-priority-card" key={lead.title}>
+                  <span className="homepage-priority-index">{index + 1}</span>
+                  <div>
+                    <p>{lead.title}</p>
+                    <span>{lead.body}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
 
-          <div
-            className="homepage-hero-draft-card homepage-signal-draft mt-3 rounded-[14px] border p-3"
-            style={{
-              backgroundColor:
-                "color-mix(in srgb, var(--accent-decorative) 12%, var(--surface-elevated))",
-              borderColor:
-                "color-mix(in srgb, var(--accent-decorative) 34%, var(--border-default))",
-            }}
-          >
-            <div className="homepage-draft-header flex min-w-0 items-start justify-between gap-3">
-              <p className="bp-copy-card-title min-h-0 text-[12px] font-black leading-4" style={{ color: "var(--text-strong)" }}>
-                {copy.draftTitle}
-              </p>
-              <span className="homepage-review-ready" aria-hidden>
-                <MarketingIcon name="check" />
-              </span>
-            </div>
-            <div className="homepage-draft-lines mt-2" aria-hidden="true">
+          <section className="homepage-owner-draft" aria-label={copy.clarityTitle}>
+            <p className="homepage-clarity-badge">{copy.clarityBadge}</p>
+            <p className="homepage-draft-title">{copy.draftTitle}</p>
+            <div className="homepage-draft-lines" aria-hidden="true">
               <span />
               <span />
               <span />
             </div>
-            <p className="bp-copy-card-body homepage-mockup-draft-body mt-1.5 text-[11px] leading-4" style={{ color: "var(--text-default)" }}>
-              {copy.draftBody}
-            </p>
-            <button
-              className="bp-copy-button mt-3 inline-flex min-h-8 items-center justify-center rounded-[10px] px-3 text-[11px] font-black transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-              style={{
-                backgroundColor: "var(--primary)",
-                color: "var(--primary-contrast)",
-              }}
-              type="button"
-            >
+            <p className="homepage-draft-body">{copy.draftBody}</p>
+            <span className="homepage-draft-action">
+              <MarketingIcon name="pen" />
               {copy.copyButton}
-            </button>
-          </div>
-        </section>
+            </span>
+          </section>
+        </div>
       </div>
     </div>
   );
@@ -418,25 +301,25 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
 function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
   return (
     <section className="bp-section-hero homepage-hero-section">
-      <MarketingShell>
-        <div className="bp-hero-grid homepage-hero-grid grid min-w-0 items-center gap-5 min-[1100px]:grid-cols-[minmax(0,0.88fr)_minmax(32rem,0.98fr)] min-[1100px]:gap-8">
+      <MarketingShell className="homepage-hero-shell">
+        <div className="homepage-hero-stage">
           <div className="homepage-hero-copy min-w-0">
             <MarketingBadge>{copy.hero.badge}</MarketingBadge>
             <h1
-              className="bp-copy-hero homepage-hero-title mt-3 font-black"
+              className="bp-copy-hero homepage-hero-title mt-4 font-black"
               style={{ color: marketingTone.text }}
             >
               {copy.hero.title}
             </h1>
             <p
-              className="bp-copy-hero-body homepage-hero-body mt-3 text-[16px] leading-7 sm:text-[17px]"
+              className="bp-copy-hero-body homepage-hero-body mt-4 text-[16px] leading-7 sm:text-[17px]"
               style={{ color: marketingTone.soft }}
             >
               {copy.hero.body}
             </p>
             <ul
               aria-label={copy.hero.proofLabel}
-              className="homepage-hero-proof-rail mt-4 grid min-w-0 gap-2"
+              className="homepage-hero-proof-rail mt-5 grid min-w-0 gap-2"
             >
               {copy.hero.signals.map((item) => (
                 <li className="homepage-hero-proof-item min-w-0" key={item.label}>
@@ -445,7 +328,7 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
                 </li>
               ))}
             </ul>
-            <ul className="homepage-hero-bullets mt-4 flex flex-wrap gap-2">
+            <ul className="homepage-hero-bullets mt-5 flex flex-wrap gap-2">
               {copy.hero.bullets.map((item) => (
                 <li
                   className="homepage-hero-bullet flex min-w-0 items-start gap-2 text-[13px] font-black leading-5"
@@ -459,20 +342,18 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
                 </li>
               ))}
             </ul>
-            <div className="bp-button-row homepage-hero-actions mt-4 flex flex-col gap-3 min-[360px]:flex-row">
+            <div className="bp-button-row homepage-hero-actions mt-5 flex flex-col gap-3 min-[390px]:flex-row">
               <MarketingButton href="/pilot">{copy.hero.primaryCta}</MarketingButton>
               <MarketingButton href="/demo" variant="secondary">
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
-            <p className="bp-copy-meta homepage-hero-note mt-3 inline-flex min-w-0 items-center gap-2 text-[12px] font-black leading-5" style={{ color: marketingTone.teal }}>
+            <p className="bp-copy-meta homepage-hero-note mt-4 inline-flex min-w-0 items-center gap-2 text-[12px] font-black leading-5" style={{ color: marketingTone.teal }}>
               <MarketingIcon name="shield" />
               {copy.hero.note}
             </p>
           </div>
-          <div className="homepage-hero-visual flex min-w-0 justify-center min-[1100px]:justify-end">
-            <MiniProductMockup copy={copy.mockup} />
-          </div>
+          <MiniProductMockup copy={copy.mockup} />
         </div>
       </MarketingShell>
     </section>

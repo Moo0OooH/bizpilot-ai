@@ -9,7 +9,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-26
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
@@ -25,6 +25,7 @@
  * - 2026-06-26: Locked the compact homepage workflow preview copy and legacy wording cleanup guards.
  * - 2026-07-04: Locked quote success manual-review expectation copy.
  * - 2026-07-04: Added the protected owner guide route to dashboard i18n source coverage.
+ * - 2026-07-05: Locked bilingual homepage product-scene hero copy.
  * ============================================================
  */
 
@@ -588,10 +589,10 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       frenchPublicCopy.home.hero.title,
-      "Récupération de soumissions.",
+      "Récupération de soumissions pour prospects chauds.",
     );
     assert.ok(
-      frenchPublicCopy.home.hero.title.length <= 58,
+      frenchPublicCopy.home.hero.title.length <= 70,
       "fr-CA homepage hero title should stay inside the first-fold parity budget.",
     );
     assert.equal(
@@ -601,43 +602,43 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.hero.secondaryCta, "Voir le flux");
     assert.equal(
       frenchPublicCopy.home.hero.body,
-      "Pour les entreprises de nettoyage, site web, Google, Facebook, Instagram, textos et appels manqués deviennent une file claire avec un brouillon à valider avant l'envoi.",
+      "Une façon plus calme de transformer les demandes du site, de Google, des réseaux sociaux, des textos et des appels manqués en une file claire avec brouillon à valider avant l'envoi.",
     );
     assert.deepEqual(frenchPublicCopy.home.hero.bullets, [
-      "Capter chaque canal",
-      "Voir la demande chaude d'abord",
-      "Valider la réponse vous-même",
+      "Demandes captées sur plusieurs canaux",
+      "Priorité et détails manquants visibles",
+      "Brouillons validés par vous",
     ]);
     assert.equal(
       frenchPublicCopy.home.hero.note,
-      "Projet pilote guidé. Approbation requise. Aucun envoi automatique.",
+      "Projet pilote guidé. Aucun envoi automatique. Aucun prix inventé.",
     );
-    assert.equal(frenchPublicCopy.home.mockup.chaosTitle, "LE CHAOS");
-    assert.equal(frenchPublicCopy.home.mockup.chaosSubtitle, "Messages de partout");
+    assert.equal(frenchPublicCopy.home.mockup.chaosTitle, "Entrées en direct");
+    assert.equal(frenchPublicCopy.home.mockup.chaosSubtitle, "Signaux de soumission en direct");
     assert.equal(frenchPublicCopy.home.mockup.bizPilotTitle, "BizPilot");
     assert.deepEqual(frenchPublicCopy.home.mockup.bizPilotActions, [
       "Capter",
       "Prioriser",
       "Préparer",
-      "Prévisualiser",
+      "Réviser",
     ]);
-    assert.equal(frenchPublicCopy.home.mockup.clarityTitle, "LA CLARTÉ");
-    assert.equal(frenchPublicCopy.home.mockup.claritySubtitle, "File de prospects intelligente");
+    assert.equal(frenchPublicCopy.home.mockup.clarityTitle, "File de validation");
+    assert.equal(frenchPublicCopy.home.mockup.claritySubtitle, "File priorisée");
     assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon prêt pour validation");
     assert.equal(frenchPublicCopy.home.mockup.copyButton, "Réviser le brouillon");
     assert.equal(frenchPublicCopy.home.hero.proofLabel, "Flux de récupération");
     assert.deepEqual(frenchPublicCopy.home.hero.signals, [
       {
-        label: "Capter",
-        value: "Site à texto",
+        label: "Canaux",
+        value: "Site, Google, social",
       },
       {
-        label: "Trier",
-        value: "Demandes chaudes",
+        label: "Priorité",
+        value: "Urgences d'abord",
       },
       {
-        label: "Répondre",
-        value: "Vous validez",
+        label: "Contrôle",
+        value: "Réponses validées",
       },
     ]);
     assert.equal(frenchPublicCopy.home.mockup.sources.length, 5);
@@ -913,47 +914,47 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       englishPublicCopy.home.hero.title,
-      "Cleaning quote recovery.",
+      "Cleaning quote recovery that keeps hot leads moving.",
     );
     assert.equal(
       englishPublicCopy.home.hero.body,
-      "For busy cleaning owners, website, Google, Facebook, Instagram, texts, and missed calls become one clear queue with a reply draft you review before sending.",
+      "A calmer way to turn website, Google, social, text, and missed-call quote requests into one owner-reviewed queue. See the hottest request, the missing details, and a reply draft you approve before sending.",
     );
     assert.deepEqual(englishPublicCopy.home.hero.bullets, [
-      "Catch every quote channel",
-      "See the hottest request first",
-      "Approve the reply yourself",
+      "Multi-channel quote intake",
+      "Priority and missing-detail visibility",
+      "Owner-approved draft replies",
     ]);
     assert.equal(
       englishPublicCopy.home.hero.note,
-      "Founder-led pilot. Approval required. No auto-send.",
+      "Founder-led pilot. No auto-send. No invented pricing.",
     );
-    assert.equal(englishPublicCopy.home.mockup.chaosTitle, "THE CHAOS");
-    assert.equal(englishPublicCopy.home.mockup.chaosSubtitle, "Messages from everywhere");
+    assert.equal(englishPublicCopy.home.mockup.chaosTitle, "Live intake");
+    assert.equal(englishPublicCopy.home.mockup.chaosSubtitle, "Quote signals arriving now");
     assert.equal(englishPublicCopy.home.mockup.bizPilotTitle, "BizPilot");
     assert.deepEqual(englishPublicCopy.home.mockup.bizPilotActions, [
       "Capture",
       "Prioritize",
       "Prepare",
-      "Preview",
+      "Review",
     ]);
-    assert.equal(englishPublicCopy.home.mockup.clarityTitle, "THE CLARITY");
-    assert.equal(englishPublicCopy.home.mockup.claritySubtitle, "Smart lead queue");
+    assert.equal(englishPublicCopy.home.mockup.clarityTitle, "Owner review queue");
+    assert.equal(englishPublicCopy.home.mockup.claritySubtitle, "Priority queue");
     assert.equal(englishPublicCopy.home.mockup.draftTitle, "Draft ready for owner review");
     assert.equal(englishPublicCopy.home.mockup.copyButton, "Review draft");
     assert.equal(englishPublicCopy.home.hero.proofLabel, "Quote recovery flow");
     assert.deepEqual(englishPublicCopy.home.hero.signals, [
       {
-        label: "Capture",
-        value: "Website to text",
+        label: "Channels",
+        value: "Website, Google, social",
       },
       {
-        label: "Triage",
-        value: "Hot requests first",
+        label: "Priority",
+        value: "Urgent requests first",
       },
       {
-        label: "Reply",
-        value: "Owner reviews",
+        label: "Control",
+        value: "Owner-approved replies",
       },
     ]);
     assert.equal(englishPublicCopy.home.mockup.sources.length, 5);

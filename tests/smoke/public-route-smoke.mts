@@ -9,12 +9,13 @@
  * - docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
  * - 2026-07-04: Added comparison route smoke coverage.
  * - 2026-07-04: Added quote-link guide smoke coverage.
  * - 2026-07-04: Added product-real demo route smoke coverage.
+ * - 2026-07-05: Updated homepage smoke markers for the product-scene hero.
  * ============================================================
  */
 
@@ -39,10 +40,10 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 const smokeTargets: readonly SmokeTarget[] = [
   {
     expectedText: [
-      "Cleaning quote recovery.",
+      "Cleaning quote recovery that keeps hot leads moving.",
       "Join the pilot",
-      "Website to text",
-      "THE CHAOS",
+      "Website, Google, social",
+      "Live intake",
       "Review draft",
     ],
     path: "/",

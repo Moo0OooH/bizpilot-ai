@@ -11,7 +11,7 @@
  * - components/ui/theme-preference-control.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-06-26
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-21: Added homepage demo numbering regression coverage.
  * - 2026-06-21: Added canonical public responsive-grid regression coverage.
@@ -32,6 +32,7 @@
  * - 2026-06-25: Locked Cleaning details to one active selector panel without responsive duplicate blocks.
  * - 2026-06-25: Updated homepage hero rhythm guards for the final tighter first fold.
  * - 2026-06-26: Locked the homepage workflow preview to one compact panel instead of four cards.
+ * - 2026-07-05: Locked the homepage product-scene hero redesign.
  * ============================================================
  */
 
@@ -196,10 +197,11 @@ describe("public visual stability source contracts", () => {
 
     for (const required of [
       "homepage-hero-section",
-      "homepage-hero-grid",
+      "homepage-hero-stage",
       "homepage-hero-actions",
       "homepage-hero-proof-rail",
       "homepage-hero-mockup",
+      "homepage-product-scene",
       "homepage-problem-section",
       "homepage-demo-grid",
     ]) {
@@ -209,6 +211,7 @@ describe("public visual stability source contracts", () => {
     for (const required of [
       ".homepage-hero-title",
       ".homepage-hero-mockup",
+      ".homepage-product-window",
       ".homepage-problem-section",
       "@media (min-width: 1100px) and (max-height: 780px)",
       "@media (min-width: 1180px)",
@@ -336,12 +339,12 @@ describe("public visual stability source contracts", () => {
       "Homepage hero title size should be owned by the rhythm CSS contract.",
     );
     assert.equal(
-      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 43rem);\n  font-size: 2.25rem;"),
+      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 41rem);\n  font-size: 2.28rem;"),
       true,
       "Homepage hero should keep a compact mobile/base title size in CSS.",
     );
     assert.equal(
-      globals.includes(".homepage-hero-proof-rail {\n  max-inline-size: min(100%, 42rem);"),
+      globals.includes(".homepage-hero-proof-rail {\n  max-inline-size: min(100%, 39rem);"),
       true,
       "Homepage hero should keep a compact proof rail before the mockup.",
     );
@@ -356,53 +359,59 @@ describe("public visual stability source contracts", () => {
       "Homepage hero should no longer use the previous taller desktop title size.",
     );
     assert.equal(
-      globals.includes(".homepage-hero-title {\n    font-size: 2.9rem;"),
+      globals.includes(".homepage-hero-title {\n    font-size: 3.55rem;"),
       true,
-      "Homepage hero should keep a tighter desktop title size in CSS.",
+      "Homepage hero should keep a confident desktop title size in CSS.",
     );
     assert.equal(
-      globals.includes(".homepage-hero-grid {\n    grid-template-columns: minmax(0, 0.76fr) minmax(39rem, 0.96fr);"),
+      globals.includes(".homepage-product-scene {\n  position: absolute;") &&
+        globals.includes("inset-inline: min(53%, 40rem) -3rem;"),
       true,
-      "Homepage hero should override the shared public grid with enough room for the chaos-to-clarity visual.",
+      "Homepage hero should render the product visual as an integrated background scene.",
     );
-    assert.equal(globals.includes("max-inline-size: min(100%, 43rem);"), true);
+    assert.equal(globals.includes("max-inline-size: min(100%, 41rem);"), true);
     assert.equal(
       globals.includes("@media (min-width: 1100px) and (max-height: 780px)"),
       true,
       "Short desktop viewports need reduced hero padding instead of smaller body text.",
     );
     assert.equal(
-      globals.includes("max-inline-size: min(100%, 41rem);"),
+      globals.includes(".homepage-hero-stage {\n    min-block-size: 34rem;"),
       true,
-      "Short desktop viewports need a compact chaos-to-clarity hero visual to stay inside the first fold.",
+      "Short desktop viewports need a compact product-scene hero to stay inside the first fold.",
     );
     assert.equal(
       homepage.includes("copy.sources.slice(0, 5)") &&
-        homepage.includes("copy.messages.slice(0, 4)") &&
+        homepage.includes("copy.messages.slice(0, 3)") &&
         homepage.includes("copy.bizPilotActions.slice(0, 4)") &&
         homepage.includes("copy.leads.slice(0, 2)"),
       true,
-      "Homepage hero visual should cap chaos sources, messages, BizPilot actions, and clarity leads.",
+      "Homepage hero visual should cap sources, messages, BizPilot actions, and priority leads.",
     );
     assert.equal(
-      homepage.includes("homepage-chaos-channel-rail") &&
-        globals.includes(".homepage-chaos-stream {\n  display: grid;\n  grid-template-columns: 2.35rem minmax(0, 1fr);") &&
-        globals.includes(".homepage-chaos-channel .homepage-source-mark {\n  block-size: 1.82rem;\n  inline-size: 1.82rem;"),
+      homepage.includes("homepage-channel-strip") &&
+        globals.includes(".homepage-channel-pill .homepage-source-mark {\n  block-size: 1.25rem;\n  inline-size: 1.25rem;"),
       true,
-      "Homepage source channels should render as a compact icon rail beside message cards.",
+      "Homepage source channels should render as compact branded channel pills.",
     );
     assert.equal(
-      globals.includes(".homepage-chaos-messages > *:nth-child(n + 3) {\n    display: none;") &&
-        globals.includes(".homepage-clarity-lead:nth-child(n + 2)"),
+      globals.includes(".homepage-channel-pill:nth-child(n + 4),") &&
+        globals.includes(".homepage-owner-draft {\n    display: none;"),
       true,
-      "Mobile homepage hero should simplify chaos-to-clarity density.",
+      "Mobile homepage hero should simplify product-scene density.",
     );
     assert.equal(homepage.includes("bp-button-row homepage-hero-actions"), true);
-    assert.equal(homepage.includes("min-[360px]:flex-row"), true);
+    assert.equal(homepage.includes("min-[390px]:flex-row"), true);
     assert.equal(
-      globals.includes(".homepage-hero-proof-rail {\n    grid-template-columns: 1fr;"),
+      globals.includes(".homepage-hero-proof-rail {\n    grid-template-columns: repeat(3, minmax(0, 1fr));"),
       true,
-      "Mobile homepage hero proof rail should stack to avoid text squeeze.",
+      "Mobile homepage hero proof rail should stay compact without vertical crowding.",
+    );
+    assert.equal(
+      globals.includes("@media (max-width: 359px)") &&
+        globals.includes(".homepage-hero-proof-rail,\n  .homepage-product-scene {\n    display: none;"),
+      true,
+      "Tiny mobile homepage hero should remove secondary proof/scene density before CTA visibility suffers.",
     );
     assert.equal(
       globals.includes(".homepage-problem-section"),

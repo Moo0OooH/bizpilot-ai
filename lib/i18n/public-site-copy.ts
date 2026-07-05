@@ -10,7 +10,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
  * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
@@ -28,6 +28,7 @@
  * - 2026-07-04: Added honest comparison-route copy for Phase 25 SEO and buyer education.
  * - 2026-07-04: Added a quote-link placement guide for local-GTM onboarding.
  * - 2026-07-04: Expanded FAQ with AI-search owner-intent questions.
+ * - 2026-07-05: Rewrote the homepage hero copy for the integrated product-scene redesign.
  * ============================================================
  */
 
@@ -1527,33 +1528,33 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "Join the founder pilot for cleaning businesses.",
     },
     hero: {
-      badge: "Local services - cleaning first",
+      badge: "BizPilot AI - cleaning quote recovery",
       body:
-        "For busy cleaning owners, website, Google, Facebook, Instagram, texts, and missed calls become one clear queue with a reply draft you review before sending.",
+        "A calmer way to turn website, Google, social, text, and missed-call quote requests into one owner-reviewed queue. See the hottest request, the missing details, and a reply draft you approve before sending.",
       bullets: [
-        "Catch every quote channel",
-        "See the hottest request first",
-        "Approve the reply yourself",
+        "Multi-channel quote intake",
+        "Priority and missing-detail visibility",
+        "Owner-approved draft replies",
       ],
-      note: "Founder-led pilot. Approval required. No auto-send.",
+      note: "Founder-led pilot. No auto-send. No invented pricing.",
       primaryCta: "Join the pilot",
       proofLabel: "Quote recovery flow",
       secondaryCta: "See how it works",
       signals: [
         {
-          label: "Capture",
-          value: "Website to text",
+          label: "Channels",
+          value: "Website, Google, social",
         },
         {
-          label: "Triage",
-          value: "Hot requests first",
+          label: "Priority",
+          value: "Urgent requests first",
         },
         {
-          label: "Reply",
-          value: "Owner reviews",
+          label: "Control",
+          value: "Owner-approved replies",
         },
       ],
-      title: "Cleaning quote recovery.",
+      title: "Cleaning quote recovery that keeps hot leads moving.",
     },
     meta: {
       description:
@@ -1561,18 +1562,18 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
     },
     mockup: {
-      boardLabel: "Lead signal board",
-      boardSafety: "Owner reviews first",
-      bizPilotActions: ["Capture", "Prioritize", "Prepare", "Preview"],
-      bizPilotBody: "Messages become next steps",
+      boardLabel: "BizPilot quote recovery product scene",
+      boardSafety: "Owner review first",
+      bizPilotActions: ["Capture", "Prioritize", "Prepare", "Review"],
+      bizPilotBody: "Every request becomes a visible next step",
       bizPilotTitle: "BizPilot",
-      chaosBadge: "No clear priority",
-      chaosHint: "One request arrives in pieces across channels.",
-      chaosSubtitle: "Messages from everywhere",
-      chaosTitle: "THE CHAOS",
-      clarityBadge: "Priority sorted",
-      claritySubtitle: "Smart lead queue",
-      clarityTitle: "THE CLARITY",
+      chaosBadge: "Signal recovered",
+      chaosHint: "One request can arrive in pieces across channels.",
+      chaosSubtitle: "Quote signals arriving now",
+      chaosTitle: "Live intake",
+      clarityBadge: "Owner-ready",
+      claritySubtitle: "Priority queue",
+      clarityTitle: "Owner review queue",
       copyButton: "Review draft",
       draftBody:
         "Hi Maria, thanks for reaching out. Could you confirm the square footage and access notes so I can prepare an accurate quote?",
@@ -3003,34 +3004,34 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "Rejoignez le projet pilote pour entreprises de nettoyage.",
     },
     hero: {
-      badge: "Services locaux - nettoyage d'abord",
+      badge: "BizPilot AI - soumissions de nettoyage",
       body:
-        "Pour les entreprises de nettoyage, site web, Google, Facebook, Instagram, textos et appels manqués deviennent une file claire avec un brouillon à valider avant l'envoi.",
+        "Une façon plus calme de transformer les demandes du site, de Google, des réseaux sociaux, des textos et des appels manqués en une file claire avec brouillon à valider avant l'envoi.",
       bullets: [
-        "Capter chaque canal",
-        "Voir la demande chaude d'abord",
-        "Valider la réponse vous-même",
+        "Demandes captées sur plusieurs canaux",
+        "Priorité et détails manquants visibles",
+        "Brouillons validés par vous",
       ],
-      note: "Projet pilote guidé. Approbation requise. Aucun envoi automatique.",
+      note: "Projet pilote guidé. Aucun envoi automatique. Aucun prix inventé.",
       primaryCta: "Rejoindre le pilote",
       proofLabel: "Flux de récupération",
       secondaryCta: "Voir le flux",
       signals: [
         {
-          label: "Capter",
-          value: "Site à texto",
+          label: "Canaux",
+          value: "Site, Google, social",
         },
         {
-          label: "Trier",
-          value: "Demandes chaudes",
+          label: "Priorité",
+          value: "Urgences d'abord",
         },
         {
-          label: "Répondre",
-          value: "Vous validez",
+          label: "Contrôle",
+          value: "Réponses validées",
         },
       ],
       title:
-        "Récupération de soumissions.",
+        "Récupération de soumissions pour prospects chauds.",
     },
     meta: {
       description:
@@ -3038,18 +3039,18 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "BizPilot AI | Récupération des demandes",
     },
     mockup: {
-      boardLabel: "Tableau des signaux",
-      boardSafety: "Validation par le propriétaire",
-      bizPilotActions: ["Capter", "Prioriser", "Préparer", "Prévisualiser"],
-      bizPilotBody: "Les messages deviennent des prochaines actions",
+      boardLabel: "Scène produit de récupération BizPilot",
+      boardSafety: "Validation propriétaire",
+      bizPilotActions: ["Capter", "Prioriser", "Préparer", "Réviser"],
+      bizPilotBody: "Chaque demande devient une prochaine action visible",
       bizPilotTitle: "BizPilot",
-      chaosBadge: "Aucune priorité claire",
-      chaosHint: "Une demande arrive en morceaux sur plusieurs canaux.",
-      chaosSubtitle: "Messages de partout",
-      chaosTitle: "LE CHAOS",
-      clarityBadge: "Priorités triées",
-      claritySubtitle: "File de prospects intelligente",
-      clarityTitle: "LA CLARTÉ",
+      chaosBadge: "Signal récupéré",
+      chaosHint: "Une demande peut arriver en morceaux sur plusieurs canaux.",
+      chaosSubtitle: "Signaux de soumission en direct",
+      chaosTitle: "Entrées en direct",
+      clarityBadge: "Prêt à réviser",
+      claritySubtitle: "File priorisée",
+      clarityTitle: "File de validation",
       copyButton: "Réviser le brouillon",
       draftBody:
         "Bonjour Maria, merci pour votre message. Pouvez-vous confirmer la superficie et les notes d'accès afin que je prépare une soumission exacte?",

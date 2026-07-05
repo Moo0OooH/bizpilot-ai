@@ -9,7 +9,7 @@
  * - docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
  * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
@@ -23,6 +23,7 @@
  * - 2026-06-25: Locked Cleaning to one active detail panel instead of duplicated desktop/mobile details.
  * - 2026-07-04: Added comparison route responsive contract coverage.
  * - 2026-07-04: Added quote-link guide responsive contract coverage.
+ * - 2026-07-05: Updated bilingual homepage checks for the product-scene hero.
  * ============================================================
  */
 
@@ -39,7 +40,7 @@ const TIMEOUT_MS = 15_000;
 
 const routes: readonly RouteContract[] = [
   {
-    h1: "Cleaning quote recovery.",
+    h1: "Cleaning quote recovery that keeps hot leads moving.",
     maxOccurrences: [
       {
         max: 5,
@@ -52,19 +53,20 @@ const routes: readonly RouteContract[] = [
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "homepage-hero-proof-rail",
-      "Website to text",
-      "THE CHAOS",
-      "THE CLARITY",
-      "Smart lead queue",
+      "homepage-product-scene",
+      "Website, Google, social",
+      "Live intake",
+      "Owner review queue",
+      "Owner-approved replies",
       "Review draft",
-      "Founder-led pilot. Approval required. No auto-send.",
+      "Founder-led pilot. No auto-send. No invented pricing.",
       "No auto-send",
     ],
     mustNotContain: ["homepage-workflow-grid"],
     path: "/",
   },
   {
-    h1: "Récupération de soumissions.",
+    h1: "Récupération de soumissions pour prospects chauds.",
     maxOccurrences: [
       {
         max: 5,
@@ -77,12 +79,13 @@ const routes: readonly RouteContract[] = [
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "homepage-hero-proof-rail",
-      "Site à texto",
-      "LE CHAOS",
-      "LA CLARTÉ",
-      "File de prospects intelligente",
+      "homepage-product-scene",
+      "Site, Google, social",
+      "Entrées en direct",
+      "File de validation",
+      "Réponses validées",
       "Réviser le brouillon",
-      "Projet pilote guidé. Approbation requise. Aucun envoi automatique.",
+      "Projet pilote guidé. Aucun envoi automatique. Aucun prix inventé.",
       "Aucun envoi automatique",
     ],
     mustNotContain: [
