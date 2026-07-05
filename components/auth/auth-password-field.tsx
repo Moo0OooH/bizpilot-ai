@@ -13,10 +13,11 @@
  * - app/auth/reset-password/reset-password-form.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-19: Added conventional password visibility toggle for auth forms.
  * - 2026-06-27: Split the visible label from the reveal button so password fields keep a clean accessible name.
+ * - 2026-07-05: Added optional password guidance association and pressed state on reveal controls.
  * ============================================================
  */
 
@@ -31,6 +32,7 @@ type AuthPasswordFieldProps = Readonly<{
   action?: ReactNode;
   autoComplete: "current-password" | "new-password";
   copy: BizPilotCopy["auth"];
+  describedBy?: string | undefined;
   label: string;
   minLength: number;
   name: string;
@@ -40,6 +42,7 @@ export function AuthPasswordField({
   action,
   autoComplete,
   copy,
+  describedBy,
   label,
   minLength,
   name,
@@ -57,6 +60,7 @@ export function AuthPasswordField({
       </span>
       <span className="relative block">
         <input
+          aria-describedby={describedBy}
           autoComplete={autoComplete}
           className="h-11 w-full rounded-[12px] border px-3 pr-20 text-[14px] outline-none transition placeholder:opacity-50 focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]"
           id={inputId}
@@ -73,6 +77,7 @@ export function AuthPasswordField({
         />
         <button
           aria-label={visible ? copy.hidePassword : copy.showPassword}
+          aria-pressed={visible}
           className="absolute right-1.5 top-1/2 inline-flex h-8 min-w-14 -translate-y-1/2 items-center justify-center rounded-[10px] px-2 text-[11px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
           onClick={() => setVisible((current) => !current)}
           style={{ color: "var(--primary)" }}

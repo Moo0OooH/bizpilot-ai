@@ -12,6 +12,7 @@
  * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-07-05: Completed source header metadata for the pilot-stage signup route.
+ * - 2026-07-05: Associated password guidance with the signup password field.
  * - 2026-05-19: Migrated to the single-centered-card AuthShell.
  * - 2026-05-23: Localized auth copy from the central language dictionary.
  * - 2026-06-27: Added explicit input ids so signup labels stay accessible in browser QA.
@@ -80,6 +81,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
           <p
             aria-live="assertive"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
+            role="alert"
             style={authErrorStyle}
           >
             {routeError}
@@ -130,6 +132,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
             <AuthPasswordField
               autoComplete="new-password"
               copy={copy}
+              describedBy="sign-up-password-help"
               label={copy.password}
               minLength={8}
               name="password"
@@ -138,6 +141,7 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
 
           <p
             className="rounded-[10px] border px-2.5 py-1.5 text-[11px] leading-5 sm:col-span-2"
+            id="sign-up-password-help"
             style={authInfoStyle}
           >
             {copy.passwordHelp}

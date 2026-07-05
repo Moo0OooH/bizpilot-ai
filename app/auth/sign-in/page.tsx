@@ -12,6 +12,7 @@
  * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-07-05: Added a pilot-approval prompt before account creation from sign-in.
+ * - 2026-07-05: Added explicit live-region roles for sign-in route feedback.
  * - 2026-05-19: Migrated to the single-centered-card AuthShell.
  * - 2026-05-23: Localized auth copy from the central language dictionary.
  * - 2026-06-27: Sanitized route flash messages before rendering.
@@ -102,6 +103,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           <p
             aria-live="polite"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
+            role="status"
             style={authSuccessStyle}
           >
             {routeNotice}
@@ -112,6 +114,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
           <p
             aria-live="assertive"
             className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
+            role="alert"
             style={authErrorStyle}
           >
             {routeError}
