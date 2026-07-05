@@ -1,5 +1,22 @@
 "use client";
 
+/**
+ * ============================================================
+ * File: app/error.tsx
+ * Project: BizPilot AI
+ * Description: Global application error boundary UI.
+ * Role: Shows a safe refresh action when an unexpected runtime error reaches the root app boundary.
+ * Related:
+ * - app/layout.tsx
+ * - app/(dashboard)/dashboard/error.tsx
+ * Author: MoOoH
+ * Created: 2026-07-05
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete BizPilot source header metadata and alert semantics.
+ * ============================================================
+ */
+
 import { useEffect } from "react";
 
 type GlobalErrorProps = Readonly<{
@@ -17,7 +34,10 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#071018] px-4 py-8 text-white">
-      <section className="w-full max-w-lg rounded-lg border border-white/10 bg-[#0d1721] p-6 shadow-2xl">
+      <section
+        className="w-full max-w-lg rounded-lg border border-white/10 bg-[#0d1721] p-6 shadow-2xl"
+        role="alert"
+      >
         <p className="text-xs font-black uppercase tracking-[0.14em] text-white/45">
           BizPilot
         </p>
