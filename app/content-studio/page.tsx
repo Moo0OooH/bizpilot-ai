@@ -10,8 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Reused the roadmap explanation in the next-step panel for clearer visitor guidance.
  * - 2026-06-18: Applied responsive section spacing and intrinsic card grid.
  * - 2026-06-19: Moved visible Content Studio roadmap copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Rebuilt the page as a clear owner-reviewed roadmap surface.
@@ -114,7 +115,7 @@ export default async function ContentStudioPage({
             </div>
           </MarketingCard>
           <MarketingNextStepPanel
-            body={copy.badge}
+            body={copy.body}
             className="mt-8"
             items={[
               {
