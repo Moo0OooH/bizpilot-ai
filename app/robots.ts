@@ -9,6 +9,10 @@
  * - lib/seo.ts
  * Author: MoOoH
  * Created: 2026-06-20
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Narrowed quote-intake robots rules so quote-link guide remains crawlable.
+ * - 2026-06-20: Created the public robots boundary file.
  * ============================================================
  */
 
@@ -32,7 +36,7 @@ export default function robots(): MetadataRoute.Robots {
         "/dashboard/",
         "/founder",
         "/founder/",
-        "/quote",
+        "/quote$",
         "/quote/",
       ],
       userAgent: "*",
