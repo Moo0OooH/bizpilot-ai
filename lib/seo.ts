@@ -10,8 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added richer public metadata identity, bilingual OG alternates, and crawler preview policy.
  * - 2026-06-21: Added the dedicated public FAQ route to canonical metadata helpers.
  * - 2026-07-04: Added comparison as a canonical route, removed roadmap-only Content Studio from canonical indexing, and wired social preview assets.
  * - 2026-07-04: Added the quote-link placement guide as a canonical local-GTM route.
@@ -113,15 +114,22 @@ export function buildPublicMetadata(
 ): Metadata {
   const canonical = publicUrl(path, language);
   const locale = language === "fr-CA" ? "fr_CA" : "en_CA";
+  const alternateLocale = language === "fr-CA" ? "en_CA" : "fr_CA";
+  const siteOrigin = getPublicSiteOrigin();
 
   return {
     alternates: {
       canonical,
       languages: publicLanguageAlternates(path),
     },
+    applicationName: PUBLIC_SITE_NAME,
+    authors: [{ name: PUBLIC_SITE_NAME, url: siteOrigin }],
+    category: "business software",
+    creator: PUBLIC_SITE_NAME,
     description: copy.description,
-    metadataBase: new URL(getPublicSiteOrigin()),
+    metadataBase: new URL(siteOrigin),
     openGraph: {
+      alternateLocale,
       description: copy.description,
       images: [
         {
@@ -136,6 +144,18 @@ export function buildPublicMetadata(
       title: copy.title,
       type: "website",
       url: canonical,
+    },
+    publisher: PUBLIC_SITE_NAME,
+    robots: {
+      follow: true,
+      googleBot: {
+        follow: true,
+        index: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+      index: true,
     },
     title: copy.title,
     twitter: {
