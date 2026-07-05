@@ -50,17 +50,67 @@ instead of implying unsupported automation.
 | Notification automation | Blocked | Requires consent, provider, cost, logging, smoke, and rollback gates. |
 | Paid pilot | Blocked | Requires support, payment, refund, rollback, and restored-app proof. |
 
-## Validation Plan
+## Validation Evidence
 
-Run:
+Supabase/static gate audit:
 
 ```text
-pnpm lint
-pnpm typecheck
-pnpm test:unit
-pnpm build
-pnpm smoke:dashboard
-git diff --check
+pnpm audit:supabase
+PASS - local target classifier plus explicit grant/RLS posture audit
 ```
 
-Use local Supabase overrides for mutating dashboard smoke. Do not run synthetic dashboard smoke against managed Supabase or production.
+RLS/local DB:
+
+```text
+pnpm test:rls
+PASS - 13/13 RLS files
+```
+
+Full app verification:
+
+```text
+pnpm verify
+PASS - lint, typecheck, unit 210/210, and Next build
+```
+
+Authenticated local dashboard/admin smoke:
+
+```text
+pnpm check:dashboard-local
+PASS - app, Supabase, and DATABASE_URL targets classified local
+
+pnpm smoke:dashboard -- --base-url=http://127.0.0.1:3043 --fixture-profile=dense --include-admin=true --dashboard-smoke-email=codex-founder-admin-20260704-phase27b@example.test --timeout-ms=30000
+PASS - 15/15 routes
+```
+
+Routes covered:
+
+```text
+/dashboard
+/dashboard/leads
+/dashboard/configuration
+/dashboard/business-profile
+/dashboard/quote-setup
+/dashboard/settings
+/dashboard/guide
+/dashboard/leads/[syntheticLeadId]
+/founder
+/admin?adminPanel=overview
+/admin?adminPanel=users
+/admin?adminPanel=businesses
+/admin?adminPanel=leads
+/admin?adminPanel=health
+/admin?adminPanel=activity
+```
+
+Source hygiene:
+
+```text
+git diff --check
+PASS
+```
+
+Use local Supabase overrides for mutating dashboard smoke. Do not run synthetic
+dashboard smoke against managed Supabase or production.
+
+Do not run synthetic dashboard smoke against managed Supabase or production.

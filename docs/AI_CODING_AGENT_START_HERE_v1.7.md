@@ -61,6 +61,14 @@ Read
 `docs/readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md`
 before claiming dashboard/admin readiness.
 
+2026-07-04 owner-guide update: Phase 26A added the protected
+`/dashboard/guide` owner operating guide route, a richer manual recovery queue
+on the overview, source guards, and authenticated local owner plus
+founder-admin smoke coverage for 15/15 routes. Read
+`docs/readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md`
+before changing protected dashboard navigation or claiming owner-dashboard
+completion.
+
 Real customer data, paid pilot launch, production mutations, automation,
 booking, invoices, SMS/WhatsApp, autonomous AI, and broad feature expansion
 remain blocked unless a separate explicit gate closes.

@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Owner:** MoOoH
-**Current Phase:** Phase 26 guarded finalization and local dashboard/admin gate closure
+**Current Phase:** Phase 26A owner dashboard guide and local dashboard/admin gate closure
 **Standards Layer:** v1.7 canonical docs map active
 **Product:** AI Quote Recovery & Lead Conversion Desk
 **GTM:** Cleaning-first
@@ -49,6 +49,11 @@ Latest finalization slice:
 records local Supabase target classification, dense owner-dashboard smoke
 passing 7/7, and owner plus founder-admin route smoke passing 14/14 with
 explicit synthetic founder email gating.
+
+Latest owner-dashboard completion slice:
+`docs/readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md`
+adds the protected `/dashboard/guide` route, richer manual recovery queue rows,
+and 15/15 owner plus founder-admin local smoke coverage.
 
 Phase 25/26 finalization does not approve real customer data, paid pilot
 launch, production mutations, automation, booking, invoices, SMS/WhatsApp,
