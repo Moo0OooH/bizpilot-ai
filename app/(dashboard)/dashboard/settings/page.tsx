@@ -2,15 +2,15 @@
  * ============================================================
  * File: app/(dashboard)/dashboard/settings/page.tsx
  * Project: BizPilot AI
- * Description: Owner workspace settings — account, theme, future sections.
- * Role: Three-card layout matching the approved index.html. Account exposes sign-out; theme uses the hydration-safe DashboardThemeSelector; future sections are visible as disabled roadmap placeholders per the v1.6 Not-Now list.
+ * Description: Owner workspace settings for account, language, display, feature visibility, history, and lifecycle controls.
+ * Role: Keeps owner-facing workspace controls honest, compact, bilingual, and gated to implemented or explicitly managed capabilities.
  * Related:
  * - components/dashboard/dashboard-theme.tsx
  * - server/actions/auth.actions.ts
  * - docs/BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-07-04: Added collapsed feature guide details without enabling blocked feature states.
  * - 2026-07-04: Added local display preferences for dashboard density, optional guides, and insight panels.
@@ -70,8 +70,8 @@ type SettingsPageProps = Readonly<{
   }>;
 }>;
 
-function formatSettingsDate(value: string): string {
-  return new Intl.DateTimeFormat("en-US", {
+function formatSettingsDate(value: string, locale: string): string {
+  return new Intl.DateTimeFormat(locale, {
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
@@ -481,7 +481,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                           settingsCopy.systemHistory.changeFallback}
                       </p>
                       <p className="mt-1 font-semibold text-[var(--dash-text-muted)]">
-                        {formatSettingsDate(action.createdAt)}
+                        {formatSettingsDate(action.createdAt, activeLanguage)}
                       </p>
                     </div>
                     <div className="min-w-0">
