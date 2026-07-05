@@ -16,6 +16,7 @@
  * - 2026-05-19: Matched approved index.html Founder Admin layout.
  * - 2026-06-27: Rebuilt as a clean handoff to the primary Founder Admin console.
  * - 2026-07-05: Aligned blocked-gate language with customer account safety copy.
+ * - 2026-07-05: Gated founder handoff access behind the founder allowlist.
  * ============================================================
  */
 
@@ -33,6 +34,7 @@ import {
 } from "@/components/dashboard/dashboard-ui";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
+import { isFounderUser } from "@/server/services/founder-admin.service";
 
 export const dynamic = "force-dynamic";
 
@@ -75,6 +77,10 @@ export default async function FounderConsolePage() {
 
   if (!user) {
     redirect("/auth/sign-in");
+  }
+
+  if (!isFounderUser(user)) {
+    redirect("/dashboard");
   }
 
   const workspace = await getBusinessWorkspace({ userId: user.id });
