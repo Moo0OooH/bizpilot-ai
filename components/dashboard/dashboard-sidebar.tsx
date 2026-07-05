@@ -11,8 +11,9 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-06-18
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added aria-current states for desktop and mobile dashboard navigation links.
  * - 2026-05-19: Matched approved index.html sidebar rhythm, brand block, active states, mobile nav, and quote-link readiness footer.
  * - 2026-05-23: Localized sidebar labels from the central BizPilot copy dictionary.
  * - 2026-05-26: Replaced letter-only navigation markers with consistent inline dashboard icons.
@@ -199,6 +200,7 @@ function MobileNavLink({
 
   return (
     <Link
+      aria-current={isActive ? "page" : undefined}
       className={
         isActive
           ? "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg bg-[var(--dash-primary-soft)] px-1.5 py-1.5 text-[var(--dash-primary)]"
@@ -258,6 +260,7 @@ export function DashboardSidebar({
 
                   return (
                     <Link
+                      aria-current={isActive ? "page" : undefined}
                       className={navClass(isActive)}
                       href={item.href}
                       key={item.href}

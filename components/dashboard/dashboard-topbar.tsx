@@ -11,8 +11,9 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Corrected the More actions control title and accessible label.
  * - 2026-05-19: Matched approved index.html topbar hierarchy: page title left, focused actions right, no global search clutter.
  * - 2026-05-23: Localized route context and actions through the central dashboard copy dictionary.
  * - 2026-05-26: Tightened responsive controls and made founder entry visible on desktop dashboards.
@@ -132,8 +133,9 @@ export function DashboardTopbar({
         <div className="flex min-w-0 basis-full flex-wrap items-center justify-start gap-2 sm:basis-auto sm:flex-nowrap sm:justify-end">
           <details className="group relative">
             <summary
+              aria-label={copy.actions.moreActions}
               className={`${buttonClass} list-none cursor-pointer [&::-webkit-details-marker]:hidden`}
-              title={copy.actions.copyQuoteLink}
+              title={copy.actions.moreActions}
             >
               <MoreIcon />
               <span className="hidden md:inline">{copy.actions.moreActions}</span>
