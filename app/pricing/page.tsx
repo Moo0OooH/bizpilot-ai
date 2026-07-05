@@ -10,7 +10,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-18: Removed duplicate monthly price highlights and aligned card reflow.
  * - 2026-06-19: Moved visible pricing-page copy and metadata into the public-site i18n dictionary.
@@ -21,11 +21,13 @@
  * - 2026-06-21: Added a first-fold pricing CTA before the long plan-card grid.
  * - 2026-06-25: Normalized pricing rhythm to bp primitives without changing price values.
  * - 2026-07-04: Added paid-pilot trust boundaries for payment, support, refund, and scope.
+ * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import { JsonLdScript } from "@/components/public/json-ld";
 import {
   MarketingBadge,
   MarketingButton,
@@ -42,6 +44,7 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -79,6 +82,16 @@ export default async function PricingPage({
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+      <JsonLdScript
+        data={buildBreadcrumbJsonLd(
+          [
+            { name: "BizPilot AI", path: "/" },
+            { name: copy.title, path: "/pricing" },
+          ],
+          language,
+        )}
+        id="bizpilot-pricing-breadcrumb-jsonld"
+      />
       <MarketingHeader active="pricing" copy={navCopy} language={language} redirectPath="/pricing" />
       <section className="bp-section-tight">
         <MarketingShell>

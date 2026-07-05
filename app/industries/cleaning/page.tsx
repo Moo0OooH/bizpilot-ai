@@ -11,7 +11,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-18: Added quote example, organized lead details, and top/end pilot CTAs.
  * - 2026-06-19: Moved visible cleaning-page copy and metadata into the public-site i18n dictionary.
@@ -22,12 +22,14 @@
  * - 2026-06-25: Rebuilt the page around six compact services, one shared detail selector, and a shorter workflow.
  * - 2026-06-25: Replaced duplicated desktop/mobile detail blocks with one active service detail panel.
  * - 2026-06-27: Collapsed secondary service detail/workflow panels to reduce mobile scroll.
+ * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { JsonLdScript } from "@/components/public/json-ld";
 import { CleaningServiceDetails } from "@/components/public/cleaning-service-details";
 import {
   MarketingBadge,
@@ -45,6 +47,7 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -84,6 +87,16 @@ export default async function CleaningPage({
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+      <JsonLdScript
+        data={buildBreadcrumbJsonLd(
+          [
+            { name: "BizPilot AI", path: "/" },
+            { name: copy.title, path: "/industries/cleaning" },
+          ],
+          language,
+        )}
+        id="bizpilot-cleaning-breadcrumb-jsonld"
+      />
       <MarketingHeader copy={navCopy} language={language} redirectPath="/industries/cleaning" />
       <section className="bp-section-hero cleaning-page-section">
         <MarketingShell>

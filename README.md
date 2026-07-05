@@ -2,11 +2,11 @@
 
 **Project:** BizPilot AI
 **Owner:** MoOoH
-**Current Phase:** Phase 26A owner dashboard guide and local dashboard/admin gate closure
+**Current Phase:** Phase 26C public page content breadcrumb sweep
 **Standards Layer:** v1.7 canonical docs map active
 **Product:** AI Quote Recovery & Lead Conversion Desk
 **GTM:** Cleaning-first
-**Last Updated:** 2026-07-04
+**Last Updated:** 2026-07-05
 
 ---
 
@@ -54,6 +54,16 @@ Latest owner-dashboard completion slice:
 `docs/readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md`
 adds the protected `/dashboard/guide` route, richer manual recovery queue rows,
 and 15/15 owner plus founder-admin local smoke coverage.
+
+Latest owner-only cleanup slice:
+`docs/readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md`
+records the owner-approved managed Supabase cleanup, off-repo backup, and
+remaining owner-only workspace state.
+
+Latest public page-content slice:
+`docs/readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md`
+adds BreadcrumbList JSON-LD to deeper canonical public pages and shared policy
+pages without changing product scope or opening real-data/paid-pilot gates.
 
 Phase 25/26 finalization does not approve real customer data, paid pilot
 launch, production mutations, automation, booking, invoices, SMS/WhatsApp,

@@ -11,13 +11,14 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-21: Added public FAQ route SEO coverage.
  * - 2026-07-04: Added comparison route, JSON-LD, OG image, and roadmap noindex guards.
  * - 2026-07-04: Added Search Console and Core Web Vitals baseline evidence guards.
  * - 2026-07-04: Added no-PII analytics taxonomy guards.
  * - 2026-07-04: Added FAQ AI-search completion evidence guards.
+ * - 2026-07-05: Guarded BreadcrumbList JSON-LD on deeper canonical public routes.
  * ============================================================
  */
 
@@ -346,7 +347,16 @@ describe("final public SEO and legal source contracts", () => {
     const comparison = source("app/comparison/page.tsx");
     const quoteLinkGuide = source("app/quote-link-guide/page.tsx");
     const replySpeedGuide = source("app/faster-quote-replies/page.tsx");
+    const policyPage = source("components/public/policy-page.tsx");
     const ogImage = source("app/opengraph-image.tsx");
+    const breadcrumbRoutes = [
+      ["app/features/page.tsx", "bizpilot-features-breadcrumb-jsonld"],
+      ["app/industries/cleaning/page.tsx", "bizpilot-cleaning-breadcrumb-jsonld"],
+      ["app/trust/page.tsx", "bizpilot-trust-breadcrumb-jsonld"],
+      ["app/demo/page.tsx", "bizpilot-demo-breadcrumb-jsonld"],
+      ["app/pricing/page.tsx", "bizpilot-pricing-breadcrumb-jsonld"],
+      ["app/pilot/page.tsx", "bizpilot-pilot-breadcrumb-jsonld"],
+    ] as const;
 
     assert.equal(jsonLd.includes('type="application/ld+json"'), true);
     assert.equal(jsonLd.includes("replaceAll(\"<\", \"\\\\u003c\")"), true);
@@ -359,6 +369,14 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(comparison.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(quoteLinkGuide.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(replySpeedGuide.includes("buildBreadcrumbJsonLd"), true);
+    for (const [route, jsonLdId] of breadcrumbRoutes) {
+      const routeSource = source(route);
+      assert.equal(routeSource.includes("buildBreadcrumbJsonLd"), true, route);
+      assert.equal(routeSource.includes(jsonLdId), true, route);
+    }
+    assert.equal(policyPage.includes("buildBreadcrumbJsonLd"), true);
+    assert.equal(policyPage.includes("JsonLdScript"), true);
+    assert.equal(policyPage.includes("breadcrumbId"), true);
     assert.equal(ogImage.includes("ImageResponse"), true);
   });
 

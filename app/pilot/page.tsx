@@ -11,19 +11,21 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-18: Made the request UI unmistakably preview-only with non-submitting controls.
  * - 2026-06-19: Moved visible pilot-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Replaced the inactive request UI with a concise copy-template conversion card.
  * - 2026-06-25: Normalized pilot page rhythm while keeping the non-submitting template flow.
  * - 2026-07-04: Added honest pilot proof metrics without fake claims or data submission.
+ * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { JsonLdScript } from "@/components/public/json-ld";
 import {
   MarketingBadge,
   MarketingCard,
@@ -40,6 +42,7 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -83,6 +86,16 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
       className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
+      <JsonLdScript
+        data={buildBreadcrumbJsonLd(
+          [
+            { name: "BizPilot AI", path: "/" },
+            { name: copy.title, path: "/pilot" },
+          ],
+          language,
+        )}
+        id="bizpilot-pilot-breadcrumb-jsonld"
+      />
       <MarketingHeader
         active="pilot"
         copy={navCopy}

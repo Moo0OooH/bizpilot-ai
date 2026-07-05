@@ -118,6 +118,21 @@ including `/dashboard/guide`. This keeps real customer data, paid pilot,
 automation, booking, invoices, SMS/WhatsApp, autonomous AI, and broad feature
 expansion blocked.
 
+2026-07-05 Phase 26B owner-only cleanup override: treat
+`readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md` as the latest
+managed Supabase cleanup evidence. It records the owner-approved preservation
+of exactly the owner workspace, the off-repo backup path, and the local
+secret-rotation caveat. It does not approve real-customer intake, paid pilot,
+production migrations, automation, booking, invoices, messaging, or autonomous
+AI.
+
+2026-07-05 Phase 26C public page-content override: treat
+`readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md` as
+the latest public website page-content sweep. Deeper canonical public pages now
+emit BreadcrumbList JSON-LD while `/content-studio`, auth, and quote intake
+stay outside canonical indexing. This does not open real-data, paid-pilot,
+automation, booking, invoices, SMS/WhatsApp, or autonomous AI gates.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
@@ -133,18 +148,20 @@ Read these first, in this exact order:
 5. `readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md` - current source-backed 100-point backlog for final site, dashboard, SEO, AI-search, GTM, analytics, demo, and pilot-ops work.
 6. `readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md` - latest local dashboard/admin smoke closure and remaining gated-item map.
 7. `readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md` - latest protected owner guide, manual queue, and 15/15 dashboard/admin smoke evidence.
-8. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest hygiene, verification, warning triage, and next gates.
-9. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md` - P0-P4 execution map.
-10. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md` - dashboard language-isolation fix report.
-11. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md` - admin/owner user access audit/spec.
-12. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - latest P8 public homepage evidence.
-13. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - latest D1 dashboard evidence.
-14. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - post-D0 project status and historical phase map, superseded by the 2026-06-26 status where different.
-15. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - EN/fr-CA public copy, sizing, theme, production evidence, and D1 GO/NO-GO record.
-16. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - public-site acceptance and production GO evidence before P8.
-17. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
-18. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
-19. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
+8. `readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md` - latest owner-approved cleanup, backup, preserved workspace, and local secret caveat.
+9. `readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md` - latest public page-content and BreadcrumbList JSON-LD sweep.
+10. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest hygiene, verification, warning triage, and next gates.
+11. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md` - P0-P4 execution map.
+12. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md` - dashboard language-isolation fix report.
+13. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md` - admin/owner user access audit/spec.
+14. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md` - latest P8 public homepage evidence.
+15. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md` - latest D1 dashboard evidence.
+16. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` - post-D0 project status and historical phase map, superseded by the 2026-06-26 status where different.
+17. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` - EN/fr-CA public copy, sizing, theme, production evidence, and D1 GO/NO-GO record.
+18. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` - public-site acceptance and production GO evidence before P8.
+19. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` - EN/fr-CA sizing, card alignment, and multi-viewport parity standard.
+20. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` - dashboard route/component/data-flow/UX/risk baseline.
+21. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md` - execution priority standard.
 
 2026-06-18 public responsive authorities:
 
@@ -208,6 +225,14 @@ starting new work:
   richer manual recovery queue rows, source guards, and 15/15 local owner plus
   founder-admin route smoke while future automation and paid-pilot gates stay
   blocked.
+- `readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md` -
+  latest owner-only cleanup evidence: managed Supabase cleanup preserved exactly
+  the owner workspace, stored backup output outside the repo, and left a local
+  runtime-secret rotation caveat visible.
+- `readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md` -
+  latest public page-content evidence: deeper canonical public pages and shared
+  policy pages emit BreadcrumbList JSON-LD while noindex/private route
+  boundaries remain unchanged.
 - `readiness/DASHBOARD_EXTERNAL_BENCHMARK_AUDIT_2026-07-04.md` - current
   dashboard benchmark/source audit against operational dashboard patterns; its
   P0 founder-admin metric honesty issue is fixed in Phase 26, while P1/P2

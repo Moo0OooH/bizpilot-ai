@@ -10,19 +10,21 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-18: Grouped the demo into concise responsive chapters with visible guardrails.
  * - 2026-06-19: Moved visible demo-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-20: Tightened demo chapter spacing for a shorter normal-flow page.
  * - 2026-06-25: Normalized demo page rhythm to canonical bp primitives.
  * - 2026-07-04: Added a product-real owner-view preview before the narrative chapters.
+ * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
+import { JsonLdScript } from "@/components/public/json-ld";
 import {
   MarketingBadge,
   MarketingButton,
@@ -39,6 +41,7 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
+import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -214,6 +217,16 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
       className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
+      <JsonLdScript
+        data={buildBreadcrumbJsonLd(
+          [
+            { name: "BizPilot AI", path: "/" },
+            { name: copy.title, path: "/demo" },
+          ],
+          language,
+        )}
+        id="bizpilot-demo-breadcrumb-jsonld"
+      />
       <MarketingHeader copy={navCopy} language={language} redirectPath="/demo" />
 
       <section className="bp-section-tight">

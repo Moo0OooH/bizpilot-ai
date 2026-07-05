@@ -11,13 +11,15 @@
  * - app/terms/page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-06-18
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-18: Switched policy pages to narrow readable containers and owner-first summaries.
  * - 2026-06-25: Normalized policy page rhythm to canonical bp sizing primitives.
+ * - 2026-07-05: Added shared BreadcrumbList JSON-LD for public policy pages.
  * ============================================================
  */
 
+import { JsonLdScript } from "@/components/public/json-ld";
 import {
   MarketingBadge,
   MarketingButton,
@@ -33,6 +35,8 @@ import { TrackedExternalReferenceLink } from "@/components/public/tracked-extern
 import type { HomeNavCopy } from "@/lib/i18n/home-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
 import type { PolicyPageCopy } from "@/lib/i18n/policy-copy";
+import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
+import type { PublicCanonicalRoute } from "@/lib/seo";
 
 export function PolicyPage({
   copy,
@@ -43,13 +47,25 @@ export function PolicyPage({
   copy: PolicyPageCopy;
   language: SupportedLanguage;
   navCopy: HomeNavCopy;
-  pagePath: string;
+  pagePath: PublicCanonicalRoute;
 }>) {
+  const breadcrumbId = `bizpilot-${pagePath.slice(1).replaceAll("/", "-")}-breadcrumb-jsonld`;
+
   return (
     <main
       className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
+      <JsonLdScript
+        data={buildBreadcrumbJsonLd(
+          [
+            { name: "BizPilot AI", path: "/" },
+            { name: copy.title, path: pagePath },
+          ],
+          language,
+        )}
+        id={breadcrumbId}
+      />
       <MarketingHeader
         copy={navCopy}
         language={language}
