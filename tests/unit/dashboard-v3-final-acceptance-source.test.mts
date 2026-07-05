@@ -16,6 +16,7 @@
  * - 2026-07-04: Added source guards for local dashboard display preferences.
  * - 2026-07-04: Guarded display preferences route reapply, storage fallback, and visible focus states.
  * - 2026-07-04: Guarded focused owner queue links and complete topbar action routes.
+ * - 2026-07-04: Guarded the protected owner operating guide route and navigation.
  * ============================================================
  */
 
@@ -65,6 +66,7 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(sidebar.includes('href: "/dashboard/leads"'), true);
     assert.equal(sidebar.includes('href: "/dashboard/configuration"'), true);
     assert.equal(sidebar.includes('href: "/dashboard/business-profile"'), true);
+    assert.equal(sidebar.includes('href: "/dashboard/guide"'), true);
     assert.equal(sidebar.includes('href: "/dashboard/settings"'), true);
     assert.equal(sidebar.includes('pathname.startsWith("/dashboard/leads")'), true);
     assert.equal(sidebar.includes(".slice(0, 5)"), true);
@@ -107,6 +109,7 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(topbar.includes('href="/dashboard/leads"'), true);
     assert.equal(topbar.includes('href="/dashboard/configuration"'), true);
     assert.equal(topbar.includes('href="/dashboard/business-profile"'), true);
+    assert.equal(topbar.includes('href="/dashboard/guide"'), true);
     assert.equal(topbar.includes('href="/admin"'), true);
     assert.equal(adminFrame.includes("h-svh overflow-hidden"), true);
     assert.equal(admin.includes("flex h-dvh min-h-0 w-full flex-col overflow-hidden lg:flex-row"), true);
@@ -128,6 +131,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
     );
     const detail = readFileSync(
       "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
+      "utf8",
+    );
+    const guide = readFileSync(
+      "app/(dashboard)/dashboard/guide/page.tsx",
       "utf8",
     );
 
@@ -168,6 +175,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(detail.includes("generateLeadAiBundleAction"), true);
     assert.equal(detail.includes("ownerSafeLeadText"), true);
     assert.equal(detail.includes("markReplyCopiedAction"), true);
+    assert.equal(guide.includes("guideCopy.operatingSystem"), true);
+    assert.equal(guide.includes("guideCopy.routeMap"), true);
+    assert.equal(guide.includes("guideCopy.gaps"), true);
+    assert.equal(guide.includes("No automatic"), false);
   });
 
   it("keeps setup/profile/settings cleanup secondary and compact", () => {

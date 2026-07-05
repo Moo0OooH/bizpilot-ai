@@ -17,6 +17,7 @@
  * - 2026-07-04: Tightened dashboard copy around manual draft review, copied replies, and unwired roadmap fields.
  * - 2026-07-04: Added local dashboard display preference copy for density, guide, and insight controls.
  * - 2026-07-04: Clarified overview queue-filter and public quote-form action labels.
+ * - 2026-07-04: Added protected owner operating guide copy and navigation labels.
  * - 2026-06-16: Aligned Settings copy with Phase 23/24 readiness and first-pilot manual-only decisions.
  * - 2026-06-19: Updated dashboard theme help copy for the Light-by-default public theme foundation.
  * - 2026-06-21: Added localized quote success noindex metadata.
@@ -588,6 +589,44 @@ type DashboardLeadsPageCopy = Readonly<{
   statusRulesTitle: string;
 }>;
 
+type DashboardGuideCopy = Readonly<{
+  actions: Readonly<{
+    openQueue: string;
+    openSetup: string;
+    viewSettings: string;
+  }>;
+  boundaries: Readonly<{
+    description: string;
+    items: readonly string[];
+    title: string;
+  }>;
+  gaps: Readonly<{
+    description: string;
+    items: ReadonlyArray<readonly [string, string]>;
+    title: string;
+  }>;
+  header: Readonly<{
+    description: string;
+    eyebrow: string;
+    title: string;
+  }>;
+  launchChecklist: Readonly<{
+    description: string;
+    items: ReadonlyArray<readonly [string, string, string]>;
+    title: string;
+  }>;
+  operatingSystem: Readonly<{
+    description: string;
+    lanes: ReadonlyArray<readonly [string, string, string]>;
+    title: string;
+  }>;
+  routeMap: Readonly<{
+    description: string;
+    items: ReadonlyArray<readonly [string, string, string, string]>;
+    title: string;
+  }>;
+}>;
+
 type DashboardOverviewCopy = Readonly<{
   aiControlBody: string;
   aiControlBadges: readonly string[];
@@ -846,6 +885,7 @@ type DashboardCopy = Readonly<{
   businessProfile: DashboardBusinessProfileCopy;
   configuration: DashboardConfigurationCopy;
   errorBoundary: DashboardErrorBoundaryCopy;
+  guide: DashboardGuideCopy;
   leadDetail: DashboardLeadDetailCopy;
   leadQueue: DashboardLeadQueueCopy;
   leadsPage: DashboardLeadsPageCopy;
@@ -859,6 +899,7 @@ type DashboardCopy = Readonly<{
     groupCommand: string;
     groupControl: string;
     groupSetup: string;
+    guide: string;
     leads: string;
     overview: string;
     ownerWorkspace: string;
@@ -871,6 +912,7 @@ type DashboardCopy = Readonly<{
     configuration: PageContextCopy;
     dashboard: PageContextCopy;
     founder: PageContextCopy;
+    guide: PageContextCopy;
     leadDetail: PageContextCopy;
     leads: PageContextCopy;
     settings: PageContextCopy;
@@ -1702,6 +1744,76 @@ const englishCopy: BizPilotCopy = {
         "New -> Needs reply -> Reviewed / Won / Lost. AI drafts are reviewed by you only; no automatic sending.",
       statusRulesTitle: "Status rules",
     },
+    guide: {
+      actions: {
+        openQueue: "Open lead queue",
+        openSetup: "Open Quote Setup",
+        viewSettings: "View display settings",
+      },
+      boundaries: {
+        description:
+          "These limits keep the owner dashboard honest for the current pilot.",
+        items: [
+          "No automatic sending, booking, invoicing, or payment collection.",
+          "No invented pricing, availability, or customer promises.",
+          "No production cleanup, real-customer-data opening, or paid-pilot gate without explicit approval.",
+        ],
+        title: "Manual-first boundaries",
+      },
+      gaps: {
+        description:
+          "Known gaps are named here so they stay visible without pretending they are already enabled.",
+        items: [
+          ["Visual focus QA", "Dedicated keyboard/focus and screenshot review still needs a browser QA pass before paid pilot."],
+          ["Saved queue views", "Useful after real owner behavior proves which lead lanes matter most."],
+          ["Team assignment", "Blocked until the owner/team access and RLS gate is approved."],
+          ["Notification automation", "Email, SMS, and WhatsApp automation remain future-gated behind consent, provider, cost, and rollback checks."],
+        ],
+        title: "Visible gaps and gates",
+      },
+      header: {
+        description:
+          "A compact operating guide for the manual quote-recovery dashboard: what to open, what to do first, and what stays intentionally blocked.",
+        eyebrow: "BizPilotOwner",
+        title: "Owner Operating Guide",
+      },
+      launchChecklist: {
+        description:
+          "The shortest path from setup to repeatable owner review.",
+        items: [
+          ["1", "Finish quote setup", "Confirm services, areas, intake questions, privacy, and branding."],
+          ["2", "Share one public link", "Use the quote link on the website, Google profile, or manual outreach."],
+          ["3", "Review the queue daily", "Start with overdue, missing-info, and new quote requests."],
+          ["4", "Copy only after review", "Edit AI-supported drafts before sending outside BizPilot."],
+          ["5", "Record the result", "Update status or manual outcome after contact happens."],
+        ],
+        title: "Owner launch checklist",
+      },
+      operatingSystem: {
+        description:
+          "The dashboard is organized around one manual recovery loop, not a full CRM.",
+        lanes: [
+          ["Capture", "Quote requests arrive from the public link.", "Keep the link active and shareable."],
+          ["Triage", "At-risk, missing-info, and new leads rise first.", "Open the focused queue filters."],
+          ["Draft", "BizPilot prepares review-only reply and follow-up drafts.", "Generate or inspect the draft."],
+          ["Manual send", "The owner copies, edits, and sends outside BizPilot.", "No message is sent by the app."],
+          ["Record", "Status, action items, and outcomes keep the workspace current.", "Update only after real contact."],
+        ],
+        title: "Manual recovery operating system",
+      },
+      routeMap: {
+        description:
+          "Each route has one owner job so the dashboard stays compact.",
+        items: [
+          ["Overview", "One next action, setup readiness, and the most urgent queue preview.", "/dashboard", "Open overview"],
+          ["Leads", "Search, filter, sort, and review every quote request.", "/dashboard/leads", "Open queue"],
+          ["Quote Setup", "Services, areas, questions, consent, branding, and public link readiness.", "/dashboard/configuration", "Open setup"],
+          ["Business Profile", "Business identity and reply context that supports better manual responses.", "/dashboard/business-profile", "Open profile"],
+          ["Settings", "Language, theme, display preferences, feature state, and guarded lifecycle actions.", "/dashboard/settings", "Open settings"],
+        ],
+        title: "Dashboard route map",
+      },
+    },
     overview: {
       aiControlBody:
         "BizPilot drafts replies, summaries, and follow-ups. Nothing is sent automatically.",
@@ -1855,6 +1967,7 @@ const englishCopy: BizPilotCopy = {
       groupCommand: "Command",
       groupControl: "Control",
       groupSetup: "Setup",
+      guide: "Guide",
       leads: "Leads",
       overview: "Overview",
       ownerWorkspace: "Workspace",
@@ -1879,6 +1992,10 @@ const englishCopy: BizPilotCopy = {
       founder: {
         subtitle: "Phase 18B pilot tracking shell",
         title: "Founder Admin Console",
+      },
+      guide: {
+        subtitle: "Manual quote-recovery routine, route map, and gated gaps",
+        title: "Owner Operating Guide",
       },
       leadDetail: {
         subtitle: "Lead details, missing info, and AI-assisted drafts reviewed by you",
@@ -3287,6 +3404,76 @@ const frenchCopy: BizPilotCopy = {
         "Nouveau -> Réponse requise -> Validé / Gagné / Perdu. Les brouillons IA restent à valider par vous; aucun envoi automatique.",
       statusRulesTitle: "Règles de statut",
     },
+    guide: {
+      actions: {
+        openQueue: "Ouvrir la file",
+        openSetup: "Ouvrir Configuration",
+        viewSettings: "Voir les reglages d'affichage",
+      },
+      boundaries: {
+        description:
+          "Ces limites gardent le tableau de bord honnete pour le pilote actuel.",
+        items: [
+          "Aucun envoi automatique, aucune reservation, aucune facture et aucun paiement.",
+          "Aucun prix, disponibilite ou engagement client invente.",
+          "Aucune purge production, aucune ouverture de donnees reelles et aucune porte de pilote payant sans approbation explicite.",
+        ],
+        title: "Limites manuelles",
+      },
+      gaps: {
+        description:
+          "Les ecarts connus restent visibles sans pretendre qu'ils sont deja actives.",
+        items: [
+          ["QA visuelle et focus", "La verification clavier/focus et captures d'ecran reste a faire avant un pilote payant."],
+          ["Vues sauvegardees de file", "Utile apres avoir observe les vrais comportements du responsable."],
+          ["Assignation d'equipe", "Bloque jusqu'a l'approbation de la porte acces equipe et RLS."],
+          ["Notifications automatisees", "Courriel, SMS et WhatsApp restent bloques par consentement, fournisseur, couts et retour arriere."],
+        ],
+        title: "Ecarts visibles et portes",
+      },
+      header: {
+        description:
+          "Guide compact du tableau de bord manuel: quoi ouvrir, quoi traiter en premier et ce qui reste volontairement bloque.",
+        eyebrow: "BizPilotOwner",
+        title: "Guide d'operation responsable",
+      },
+      launchChecklist: {
+        description:
+          "Le chemin le plus court entre la configuration et la revision quotidienne.",
+        items: [
+          ["1", "Terminer la configuration", "Confirmer services, zones, questions, confidentialite et marque."],
+          ["2", "Partager un lien public", "Utiliser le lien sur le site, le profil Google ou la prospection manuelle."],
+          ["3", "Reviser la file chaque jour", "Commencer par les demandes en retard, incompletes et nouvelles."],
+          ["4", "Copier seulement apres revision", "Modifier les brouillons IA avant d'envoyer hors BizPilot."],
+          ["5", "Noter le resultat", "Mettre a jour le statut ou le resultat apres le contact."],
+        ],
+        title: "Checklist de lancement",
+      },
+      operatingSystem: {
+        description:
+          "Le tableau de bord suit une boucle de recuperation manuelle, pas un CRM complet.",
+        lanes: [
+          ["Capture", "Les demandes arrivent depuis le lien public.", "Garder le lien actif et partageable."],
+          ["Triage", "Demandes a risque, incompletes et nouvelles montent d'abord.", "Ouvrir les filtres de file."],
+          ["Brouillon", "BizPilot prepare des brouillons a reviser.", "Generer ou inspecter le brouillon."],
+          ["Envoi manuel", "Le responsable copie, modifie et envoie hors BizPilot.", "Aucun message n'est envoye par l'app."],
+          ["Noter", "Statut, actions et resultats gardent l'espace a jour.", "Mettre a jour apres un vrai contact."],
+        ],
+        title: "Systeme de recuperation manuelle",
+      },
+      routeMap: {
+        description:
+          "Chaque route a un travail clair pour garder l'espace compact.",
+        items: [
+          ["Vue d'ensemble", "Une prochaine action, la preparation et les demandes urgentes.", "/dashboard", "Ouvrir"],
+          ["Prospects", "Chercher, filtrer, trier et reviser chaque demande.", "/dashboard/leads", "Ouvrir la file"],
+          ["Configuration", "Services, zones, questions, consentement, marque et lien public.", "/dashboard/configuration", "Ouvrir"],
+          ["Profil d'entreprise", "Identite et contexte utiles aux reponses manuelles.", "/dashboard/business-profile", "Ouvrir le profil"],
+          ["Reglages", "Langue, theme, affichage, etat des fonctions et actions protegees.", "/dashboard/settings", "Ouvrir"],
+        ],
+        title: "Carte des routes",
+      },
+    },
     overview: {
       aiControlBody:
         "BizPilot prépare des réponses, résumés et suivis. Rien n'est envoyé automatiquement.",
@@ -3443,6 +3630,7 @@ const frenchCopy: BizPilotCopy = {
       groupCommand: "Commandes",
       groupControl: "Contrôle",
       groupSetup: "Configuration",
+      guide: "Guide",
       leads: "Prospects",
       overview: "Vue d'ensemble",
       ownerWorkspace: "Espace de travail",
@@ -3467,6 +3655,10 @@ const frenchCopy: BizPilotCopy = {
       founder: {
         subtitle: "Console de suivi pilote Phase 18B",
         title: "Console fondateur",
+      },
+      guide: {
+        subtitle: "Routine manuelle, carte des routes et ecarts gates",
+        title: "Guide d'operation responsable",
       },
       leadDetail: {
         subtitle: "Détails du prospect, infos manquantes et brouillons IA à valider",

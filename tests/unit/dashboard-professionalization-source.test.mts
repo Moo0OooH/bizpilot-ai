@@ -8,12 +8,14 @@
  * - components/dashboard/lead-workspace-queue.tsx
  * - app/(dashboard)/dashboard/leads/[leadId]/page.tsx
  * - lib/i18n/bizpilot-copy.ts
+ * - docs/readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md
  * Author: MoOoH
  * Created: 2026-06-26
  * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-07-04: Added lead queue pagination source guards.
  * - 2026-07-04: Updated overview source guards for the simplified action-first cockpit.
+ * - 2026-07-04: Guarded the richer owner manual queue and protected operating guide.
  * ============================================================
  */
 
@@ -34,6 +36,9 @@ describe("P12 dashboard professionalization source guards", () => {
     assert.equal(overviewSource.includes("primaryActionHref"), true);
     assert.equal(overviewSource.includes("priorityTiles"), true);
     assert.equal(overviewSource.includes("OwnerTodoTodayPanel"), true);
+    assert.equal(overviewSource.includes("overviewCopy.recoveryFocus.replyDetail"), true);
+    assert.equal(overviewSource.includes("overviewCopy.metrics.aiDraftsReady.detail"), true);
+    assert.equal(overviewSource.includes("actionLabel"), true);
     assert.equal(overviewSource.includes("OwnerTrendChart"), true);
     assert.equal(overviewSource.includes("LeadSourcesDonut"), true);
     assert.equal(overviewSource.includes("ownerOverviewKpiCards"), false);
@@ -44,6 +49,9 @@ describe("P12 dashboard professionalization source guards", () => {
     assert.equal(copySource.includes("Owner copies, edits, and sends."), true);
     assert.equal(copySource.includes("No auto-send"), true);
     assert.equal(copySource.includes("No invented pricing"), true);
+    assert.equal(copySource.includes("Owner Operating Guide"), true);
+    assert.equal(copySource.includes("Manual recovery operating system"), true);
+    assert.equal(copySource.includes("Visible gaps and gates"), true);
   });
 
   it("keeps lead queue scanning accessible and priority-based", () => {
@@ -120,5 +128,26 @@ describe("P12 dashboard professionalization source guards", () => {
     assert.equal(copySource.includes("Generate or inspect the AI-supported reply."), true);
     assert.equal(copySource.includes("Update status after the manual contact."), true);
     assert.equal(copySource.includes("Mettre à jour le statut après le contact manuel."), true);
+  });
+
+  it("keeps the owner guide finalization report explicit about gaps", () => {
+    const report = readFileSync(
+      "docs/readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md",
+      "utf8",
+    );
+
+    for (const required of [
+      "Added `/dashboard/guide` as a protected owner route.",
+      "manual recovery queue",
+      "reply needed",
+      "AI draft ready",
+      "Dedicated keyboard/focus and screenshot QA",
+      "Team assignment",
+      "Notification automation",
+      "Paid pilot",
+      "Do not run synthetic dashboard smoke against managed Supabase or production.",
+    ]) {
+      assert.equal(report.includes(required), true, `Missing ${required}.`);
+    }
   });
 });

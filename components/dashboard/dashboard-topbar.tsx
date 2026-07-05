@@ -20,6 +20,7 @@
  * - 2026-06-27: Kept the mobile action menu inside the viewport.
  * - 2026-07-04: Added a direct route to local display settings from the action menu.
  * - 2026-07-04: Added the core owner route map to Actions so every dashboard function is reachable from the topbar.
+ * - 2026-07-04: Added the owner operating guide route to page context and Actions.
  * ============================================================
  */
 
@@ -72,6 +73,10 @@ function getPageContext(
 
   if (pathname === "/dashboard/settings") {
     return copy.pages.settings;
+  }
+
+  if (pathname === "/dashboard/guide") {
+    return copy.pages.guide;
   }
 
   if (pathname === "/founder" || pathname === "/admin") {
@@ -152,6 +157,9 @@ export function DashboardTopbar({
               </Link>
               <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/business-profile">
                 {copy.nav.businessProfile}
+              </Link>
+              <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/guide">
+                {copy.nav.guide}
               </Link>
               <Link
                 className={`${buttonClass} w-full justify-start`}

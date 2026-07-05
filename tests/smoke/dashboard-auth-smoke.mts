@@ -12,6 +12,7 @@
  * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-07-04: Added opt-in founder/admin route smoke support with explicit synthetic founder email gating.
+ * - 2026-07-04: Added the owner operating guide route to authenticated dashboard smoke coverage.
  * ============================================================
  */
 
@@ -128,6 +129,7 @@ const dashboardTargets: readonly DashboardSmokeTarget[] = [
     status: 307,
   },
   { path: "/dashboard/settings" },
+  { path: "/dashboard/guide" },
 ];
 
 const founderAdminTargets: readonly DashboardSmokeTarget[] = [

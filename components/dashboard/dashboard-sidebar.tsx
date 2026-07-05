@@ -17,6 +17,7 @@
  * - 2026-05-23: Localized sidebar labels from the central BizPilot copy dictionary.
  * - 2026-05-26: Replaced letter-only navigation markers with consistent inline dashboard icons.
  * - 2026-06-18: Updated desktop sidebar height to svh for responsive shell readiness.
+ * - 2026-07-04: Added the owner operating guide route to protected dashboard navigation.
  * ============================================================
  */
 
@@ -45,6 +46,7 @@ type NavigationGroup = Readonly<{
 
 type DashboardNavIconName =
   | "business"
+  | "guide"
   | "leads"
   | "overview"
   | "quote"
@@ -92,6 +94,12 @@ function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
       label: copy.nav.groupControl,
       items: [
         {
+          href: "/dashboard/guide",
+          icon: "guide",
+          label: copy.nav.guide,
+          match: (pathname) => pathname === "/dashboard/guide",
+        },
+        {
           href: "/dashboard/settings",
           icon: "settings",
           label: copy.nav.settings,
@@ -116,6 +124,12 @@ function DashboardNavIcon({ name }: Readonly<{ name: DashboardNavIconName }>) {
       <>
         <path d="M5 20V7h14v13" />
         <path d="M8 20v-5h8v5M8 10h.01M12 10h.01M16 10h.01" />
+      </>
+    ),
+    guide: (
+      <>
+        <path d="M6 4h10a2 2 0 0 1 2 2v14H8a2 2 0 0 1-2-2z" />
+        <path d="M10 8h4M10 12h5M10 16h3" />
       </>
     ),
     leads: (

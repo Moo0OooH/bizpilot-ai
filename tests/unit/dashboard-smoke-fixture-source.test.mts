@@ -12,6 +12,7 @@
  * Last Updated: 2026-07-04
  * Change Log:
  * - 2026-07-04: Added source guards for opt-in founder/admin dashboard smoke coverage.
+ * - 2026-07-04: Guarded owner operating guide route smoke coverage.
  * ============================================================
  */
 
@@ -107,4 +108,8 @@ test("dashboard smoke can opt into founder admin routes only with synthetic foun
       `dashboard admin smoke source should include ${required}`,
     );
   }
+});
+
+test("dashboard smoke includes the protected owner operating guide route", () => {
+  assert.equal(smokeSource.includes('path: "/dashboard/guide"'), true);
 });

@@ -24,6 +24,7 @@
  * - 2026-06-25: Updated Cleaning layout source guard to the shared detail selector component.
  * - 2026-06-26: Locked the compact homepage workflow preview copy and legacy wording cleanup guards.
  * - 2026-07-04: Locked quote success manual-review expectation copy.
+ * - 2026-07-04: Added the protected owner guide route to dashboard i18n source coverage.
  * ============================================================
  */
 
@@ -111,6 +112,7 @@ const userFacingSourceFiles = [
   "app/(dashboard)/dashboard/leads/[leadId]/page.tsx",
   "app/(dashboard)/dashboard/leads/page.tsx",
   "app/(dashboard)/dashboard/error.tsx",
+  "app/(dashboard)/dashboard/guide/page.tsx",
   "app/(dashboard)/dashboard/settings/page.tsx",
   "app/(dashboard)/dashboard/business-profile/page.tsx",
   "app/(dashboard)/dashboard/configuration/page.tsx",

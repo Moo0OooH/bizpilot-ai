@@ -20,6 +20,7 @@
  * - 2026-06-27: Hid synthetic/internal seed labels behind owner-safe display fallbacks.
  * - 2026-07-04: Simplified the overview hierarchy around one action-first cockpit and moved charts below the manual queue.
  * - 2026-07-04: Routed overview metrics into focused lead queue states instead of ambiguous public-form destinations.
+ * - 2026-07-04: Upgraded the Today panel into a richer manual queue with reasons and route-level CTAs.
  * ============================================================
  */
 
@@ -417,7 +418,9 @@ function OwnerTodoTodayPanel({
   assistantBody: string;
   assistantTitle: string;
   items: ReadonlyArray<{
+    actionLabel: string;
     count: number;
+    detail: string;
     href: string;
     label: string;
     tone: DashboardTone;
@@ -433,7 +436,7 @@ function OwnerTodoTodayPanel({
 
           return (
             <Link
-              className="grid min-h-[44px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+              className="grid min-h-[64px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
               href={item.href}
               key={item.label}
             >
@@ -448,11 +451,16 @@ function OwnerTodoTodayPanel({
               >
                 {compactNumber(item.count)}
               </span>
-              <span className="truncate text-[12px] font-black text-[var(--dash-text)]">
-                {item.label}
+              <span className="min-w-0">
+                <span className="block truncate text-[12px] font-black text-[var(--dash-text)]">
+                  {item.label}
+                </span>
+                <span className="mt-0.5 block text-[11px] leading-4 text-[var(--dash-text-secondary)]">
+                  {item.detail}
+                </span>
               </span>
-              <span className="text-[12px] font-black text-[var(--dash-primary-strong)]">
-                {compactNumber(item.count)}
+              <span className="whitespace-nowrap text-[11px] font-black text-[var(--dash-primary-strong)]">
+                {item.actionLabel}
               </span>
             </Link>
           );
@@ -633,28 +641,44 @@ export default async function DashboardOverviewPage() {
   const leadSourceSegments = buildLeadSourceSegments(desk.leads);
   const todayTodoItems = [
     {
+      actionLabel: overviewCopy.openQueue,
       count: needsReplyCount + atRiskCount,
+      detail: overviewCopy.recoveryFocus.replyDetail(needsReplyCount + atRiskCount),
       href: leadQueueNeedsReplyHref,
-      label: visualCopy.todo.replyToLeads,
+      label: overviewCopy.recoveryFocus.replyTitle,
       tone: (needsReplyCount + atRiskCount > 0 ? "violet" : "neutral") as DashboardTone,
     },
     {
+      actionLabel: overviewCopy.openQueue,
       count: followUpActions,
+      detail: overviewCopy.recoveryFocus.followUpDetail(followUpActions),
       href: leadQueueNeedsReplyHref,
-      label: visualCopy.todo.sendFollowUp,
+      label: overviewCopy.recoveryFocus.followUpTitle,
       tone: (followUpActions > 0 ? "blue" : "neutral") as DashboardTone,
     },
     {
+      actionLabel: overviewCopy.finishSetup,
       count: missingReadinessItems.length,
+      detail: firstMissingReadinessLabel ?? overviewCopy.readiness.activeAndReady,
       href: "/dashboard/configuration",
       label: visualCopy.todo.completeReadiness,
       tone: (missingReadinessItems.length > 0 ? "emerald" : "neutral") as DashboardTone,
     },
     {
+      actionLabel: overviewCopy.openQueue,
       count: missingInfoCount + askInfoActions,
+      detail: overviewCopy.recoveryFocus.missingInfoDetail(missingInfoCount + askInfoActions),
       href: leadQueueMissingInfoHref,
-      label: visualCopy.todo.prepareQuotes,
+      label: overviewCopy.recoveryFocus.missingInfoTitle,
       tone: (missingInfoCount + askInfoActions > 0 ? "amber" : "neutral") as DashboardTone,
+    },
+    {
+      actionLabel: overviewCopy.openQueue,
+      count: aiDraftReadyCount,
+      detail: overviewCopy.metrics.aiDraftsReady.detail,
+      href: leadQueueAiReadyHref,
+      label: overviewCopy.metrics.aiDraftsReady.label,
+      tone: (aiDraftReadyCount > 0 ? "blue" : "neutral") as DashboardTone,
     },
   ];
   return (
@@ -795,10 +819,10 @@ export default async function DashboardOverviewPage() {
       </DashboardCard>
 
       <OwnerTodoTodayPanel
-        assistantBody={visualCopy.aiAssistantBody(todayTodoItems[0]?.count ?? 0)}
+        assistantBody={visualCopy.aiAssistantBody(needsReplyCount + atRiskCount)}
         assistantTitle={visualCopy.aiAssistantTitle}
         items={todayTodoItems}
-        title={visualCopy.todo.title}
+        title={overviewCopy.recoveryFocus.title}
       />
 
       <DashboardCard className="p-3.5 sm:p-4" variant="elevated">
