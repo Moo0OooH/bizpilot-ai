@@ -9,10 +9,11 @@
  * - app/robots.ts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-21: Included the dedicated public FAQ route in the sitemap.
  * - 2026-07-04: Refreshed public polish date after Phase 25 SEO assessment and canonical comparison route.
+ * - 2026-07-05: Refreshed public polish date after the dashboard-local and public-site smoke pass.
  * ============================================================
  */
 
@@ -24,7 +25,7 @@ import {
   publicUrl,
 } from "@/lib/seo";
 
-const lastPublicPolishDate = new Date("2026-07-04T00:00:00.000Z");
+const lastPublicPolishDate = new Date("2026-07-05T00:00:00.000Z");
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return publicCanonicalRoutes.map((path) => ({

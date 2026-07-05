@@ -15,21 +15,23 @@ Before reading or implementing anything, start with:
 9. `readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md`
 10. `readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md`
 11. `readiness/PHASE_26E_OWNER_ACCESS_AND_SECRET_HYGIENE_GATE_2026-07-05.md`
-12. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
-12. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
-13. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
-14. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
-15. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
-16. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
-17. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
-18. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
-19. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
-20. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
-21. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
-22. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
-23. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
-24. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
-25. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+12. `readiness/PHASE_26F_DASHBOARD_CURRENT_STATE_AND_FINAL_POSITION_2026-07-05.md`
+13. `readiness/PHASE_26G_DASHBOARD_LOCAL_SMOKE_AND_PUBLIC_SITE_PAGE_AUDIT_2026-07-05.md`
+14. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
+15. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
+16. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
+17. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
+18. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
+19. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
+20. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+21. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+22. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
+23. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+24. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
+25. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
+26. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+27. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
+28. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
 
@@ -96,6 +98,15 @@ for the latest environment and owner-access verification. This phase confirms
 direct Auth Admin access with the tracked owner credentials, one active owner
 workspace continuity, and that dashboard local smoke remains blocked by design
 until local-only targets are configured.
+
+2026-07-05 Phase 26F/26G dashboard and public-site verification override: use
+`readiness/PHASE_26F_DASHBOARD_CURRENT_STATE_AND_FINAL_POSITION_2026-07-05.md`
+for the current dashboard state/target-position map and
+`readiness/PHASE_26G_DASHBOARD_LOCAL_SMOKE_AND_PUBLIC_SITE_PAGE_AUDIT_2026-07-05.md`
+for the latest local dashboard/public page verification. Local authenticated
+dashboard smoke passed with local Supabase overrides, and public route,
+responsive, quote, and UI matrix smoke passed. Production-final dashboard
+acceptance still requires owner-approved authenticated managed-session proof.
 
 2026-06-01 status override: BizPilot is synthetic-ready, not
 real-data-approved, and not paid-pilot-ready. The next gates are Phase 24F final
@@ -200,6 +211,8 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ## Latest Readiness Evidence
 
+- `docs/readiness/PHASE_26G_DASHBOARD_LOCAL_SMOKE_AND_PUBLIC_SITE_PAGE_AUDIT_2026-07-05.md`
+- `docs/readiness/PHASE_26F_DASHBOARD_CURRENT_STATE_AND_FINAL_POSITION_2026-07-05.md`
 - `docs/readiness/PHASE_26E_OWNER_ACCESS_AND_SECRET_HYGIENE_GATE_2026-07-05.md`
 - `docs/readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md`
 - `docs/readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md`

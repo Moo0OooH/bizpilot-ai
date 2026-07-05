@@ -19,6 +19,7 @@
  * - 2026-07-04: Added no-PII analytics taxonomy guards.
  * - 2026-07-04: Added FAQ AI-search completion evidence guards.
  * - 2026-07-05: Guarded BreadcrumbList JSON-LD on deeper canonical public routes.
+ * - 2026-07-05: Guarded refreshed sitemap freshness after local public-site smoke.
  * ============================================================
  */
 
@@ -197,7 +198,7 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(seo.includes('"x-default"'), true);
     assert.equal(seo.includes("summary_large_image"), true);
     assert.equal(seo.includes("/opengraph-image"), true);
-    assert.equal(sitemap.includes("2026-07-04T00:00:00.000Z"), true);
+    assert.equal(sitemap.includes("2026-07-05T00:00:00.000Z"), true);
 
     for (const route of [
       "app/page.tsx",
