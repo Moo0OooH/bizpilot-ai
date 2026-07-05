@@ -23,6 +23,7 @@
  * - 2026-07-04: Routed overview metrics into focused lead queue states instead of ambiguous public-form destinations.
  * - 2026-07-04: Upgraded the Today panel into a richer manual queue with reasons and route-level CTAs.
  * - 2026-07-05: Standardized owner overview priority, tokenized insight visuals, and demoted utility quote-page actions.
+ * - 2026-07-05: Preserved zero attention counts and softened compact dashboard grids on mobile.
  * ============================================================
  */
 
@@ -435,7 +436,7 @@ function OwnerTodoTodayPanel({
 
           return (
             <Link
-              className="grid min-h-[64px] grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+              className="grid min-h-[64px] grid-cols-[2rem_minmax(0,1fr)] items-center gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] sm:grid-cols-[2rem_minmax(0,1fr)_auto]"
               href={item.href}
               key={item.label}
             >
@@ -458,7 +459,7 @@ function OwnerTodoTodayPanel({
                   {item.detail}
                 </span>
               </span>
-              <span className="whitespace-nowrap text-[11px] font-black text-[var(--dash-primary-strong)]">
+              <span className="col-start-2 text-[11px] font-black text-[var(--dash-primary-strong)] sm:col-start-auto sm:whitespace-nowrap">
                 {item.actionLabel}
               </span>
             </Link>
@@ -532,15 +533,12 @@ export default async function DashboardOverviewPage() {
   const leadQueueAiReadyHref = "/dashboard/leads?focus=ai_ready";
   const recentLeads = desk.leads.slice(0, 4);
   const featuredLead = featuredLeadFrom(desk.leads);
-  const attentionCount = Math.max(
-    desk.leads.filter(
-      (item) =>
-        item.lead.status === "new" ||
-        item.lead.status === "follow_up_needed" ||
-        item.lead.response_sla_state === "overdue",
-    ).length,
-    1,
-  );
+  const attentionCount = desk.leads.filter(
+    (item) =>
+      item.lead.status === "new" ||
+      item.lead.status === "follow_up_needed" ||
+      item.lead.response_sla_state === "overdue",
+  ).length;
   const newQuoteCount = desk.recoveryProof.quoteRequestsCaptured ?? desk.leads.length;
   const needsReplyCount = desk.leads.filter(
     (item) => item.lead.status === "new" || item.lead.status === "follow_up_needed",
@@ -556,8 +554,12 @@ export default async function DashboardOverviewPage() {
   ).length;
   const askInfoActions = desk.todaysActions.filter((action) => action.action_type === "ask_info").length;
   const followUpActions = desk.todaysActions.filter((action) => action.action_type === "follow_up").length;
-  const readinessPercent = Math.round(
-    (readiness.completed / Math.max(readiness.total, 1)) * 100,
+  const readinessPercent = Math.min(
+    100,
+    Math.max(
+      0,
+      Math.round((readiness.completed / Math.max(readiness.total, 1)) * 100),
+    ),
   );
   const missingReadinessItems = readiness.items.filter((item) => !item.complete);
   const firstMissingReadinessLabel = missingReadinessItems[0]
@@ -770,7 +772,7 @@ export default async function DashboardOverviewPage() {
                 return (
                   <Link
                     className={[
-                      "grid min-h-[72px] grid-cols-[2rem_minmax(0,1fr)_auto] items-start gap-3 rounded-lg border p-3 transition",
+                      "grid min-h-[72px] grid-cols-[2rem_minmax(0,1fr)] items-start gap-3 rounded-lg border p-3 transition sm:grid-cols-[2rem_minmax(0,1fr)_auto]",
                       done
                         ? "border-[var(--dash-success-border)] bg-[var(--dash-success-soft)]"
                         : "border-[var(--dash-border)] bg-[var(--dash-surface)] hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]",
@@ -789,9 +791,11 @@ export default async function DashboardOverviewPage() {
                         {detail}
                       </span>
                     </span>
-                    <StatusBadge tone={done ? "emerald" : "blue"}>
-                      {done ? overviewCopy.startGuide.done : overviewCopy.startGuide.next}
-                    </StatusBadge>
+                    <span className="col-start-2 sm:col-start-auto">
+                      <StatusBadge tone={done ? "emerald" : "blue"}>
+                        {done ? overviewCopy.startGuide.done : overviewCopy.startGuide.next}
+                      </StatusBadge>
+                    </span>
                   </Link>
                 );
               })}
@@ -892,7 +896,7 @@ export default async function DashboardOverviewPage() {
 
                   return (
                     <Link
-                      className="grid grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                      className="grid grid-cols-[32px_minmax(0,1fr)] items-center gap-2.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] sm:grid-cols-[32px_minmax(0,1fr)_auto]"
                       href={`/dashboard/leads/${item.lead.id}`}
                       key={item.lead.id}
                     >
@@ -908,7 +912,7 @@ export default async function DashboardOverviewPage() {
                           {item.primaryIssue || item.recommendedAction}
                         </span>
                       </span>
-                      <span className="whitespace-nowrap text-[11px] text-[var(--dash-text-muted)]">
+                      <span className="col-start-2 text-[11px] text-[var(--dash-text-muted)] sm:col-start-auto sm:whitespace-nowrap">
                         {formatAge(item.lead.created_at, queueCopy)}
                       </span>
                     </Link>
