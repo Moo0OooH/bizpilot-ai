@@ -141,6 +141,12 @@ secondary utility chrome, and tokenized secondary insight visuals. This does not
 open real-data, paid-pilot, automation, booking, invoices, SMS/WhatsApp, full
 CRM, or autonomous AI gates.
 
+2026-07-05 Phase 26E owner access and secret hygiene override: treat
+`readiness/PHASE_26E_OWNER_ACCESS_AND_SECRET_HYGIENE_GATE_2026-07-05.md` as
+the latest post-cleanup verification on owner auth continuity, direct Auth Admin
+endpoint success, and environment-key hygiene. This phase keeps dashboard local
+smoke blocked by design while `NEXT_PUBLIC_SUPABASE_URL` remains managed.
+
 2026-05-26 owner update: the product may expand beyond the early cleaning-first quote recovery MVP. Expansion must happen through explicit feature entitlement, owner-controlled activation, Settings visibility, customer/owner guides, and validation evidence. Do not default-enable or overpromise broad capabilities before the implementation, provider/payment/API posture, and smoke evidence are real.
 
 ## Highest Authority Files
@@ -159,7 +165,8 @@ Read these first, in this exact order:
 8. `readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md` - latest owner-approved cleanup, backup, preserved workspace, and local secret caveat.
 9. `readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md` - latest public page-content and BreadcrumbList JSON-LD sweep.
 10. `readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md` - latest owner overview hierarchy, tokenized insight, and source-guard sweep.
-11. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest hygiene, verification, warning triage, and next gates.
+11. `readiness/PHASE_26E_OWNER_ACCESS_AND_SECRET_HYGIENE_GATE_2026-07-05.md` - latest owner-access continuity check and direct secret-admin hygiene verification.
+12. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md` - latest hygiene, verification, warning triage, and next gates.
 12. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md` - P0-P4 execution map.
 13. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md` - dashboard language-isolation fix report.
 14. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md` - admin/owner user access audit/spec.
@@ -242,6 +249,10 @@ starting new work:
   latest public page-content evidence: deeper canonical public pages and shared
   policy pages emit BreadcrumbList JSON-LD while noindex/private route
   boundaries remain unchanged.
+- `readiness/PHASE_26E_OWNER_ACCESS_AND_SECRET_HYGIENE_GATE_2026-07-05.md` -
+  latest owner access verification with direct Auth Admin success, one owner
+  membership and one owner business confirmation, and explicit report that local
+  dashboard smoke is blocked by managed host target by design.
 - `readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md` -
   latest owner dashboard evidence: the protected owner overview keeps one
   primary manual next-action region, quote-page preview utility chrome, tokenized
