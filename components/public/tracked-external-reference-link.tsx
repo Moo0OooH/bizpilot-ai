@@ -11,6 +11,10 @@
  * - lib/public-events.ts
  * Author: MoOoH
  * Created: 2026-06-20
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete source header metadata and explicit external-link label.
+ * - 2026-06-20: Created tracked external reference link card.
  * ============================================================
  */
 
@@ -55,6 +59,7 @@ export function TrackedExternalReferenceLink({
 }>) {
   return (
     <a
+      aria-label={`${title} - ${newTabLabel}`}
       className="grid min-w-0 gap-2 rounded-[14px] border p-4 text-left transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
       href={href}
       onClick={() => trackPublicEvent("external_reference_click")}
