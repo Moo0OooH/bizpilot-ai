@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Reworded settings roadmap copy from placeholders to gated references.
  * - 2026-07-05: Softened auth confirmation success copy to avoid overpromising workspace readiness.
  * - 2026-07-05: Added focus-aware lead queue command copy for manual recovery lanes.
  * - 2026-07-05: Added bilingual route-aware dashboard guide copy for every protected owner page.
@@ -2539,7 +2540,7 @@ const englishCopy: BizPilotCopy = {
       future: "Future",
       futureSections: "Future sections",
       futureSectionsDescription:
-        "Roadmap placeholders stay visible but locked before validation.",
+        "Future capabilities stay listed as gated reference only until validation clears.",
       futureSectionHints: {
         billing: "Stripe Payment Links first",
         integrations: "Webhooks deferred",
@@ -4366,7 +4367,7 @@ const frenchCopy: BizPilotCopy = {
       future: "Futur",
       futureSections: "Sections futures",
       futureSectionsDescription:
-        "Les éléments de feuille de route restent visibles mais verrouillés avant validation.",
+        "Les capacités futures restent indiquées comme référence verrouillée jusqu'à validation.",
       futureSectionHints: {
         billing: "Liens de paiement Stripe en premier",
         integrations: "Webhooks reportés",
