@@ -12,6 +12,7 @@
  * Created: 2026-07-04
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Collapsed the optional gaps panel by default to keep the owner guide lower-scroll for final polish.
  * - 2026-07-05: Added explicit accessible labels to owner guide route-map cards.
  * - 2026-07-04: Created the protected owner operating guide route for dashboard finalization.
  * ============================================================
@@ -203,7 +204,6 @@ export default async function DashboardGuidePage() {
           <details
             className="overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]"
             data-dashboard-optional-guide
-            open
           >
             <summary className="cursor-pointer list-none px-4 py-3 text-[13px] font-black text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
               {guideCopy.gaps.title}

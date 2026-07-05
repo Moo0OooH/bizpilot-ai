@@ -14,6 +14,7 @@
  * Created: 2026-07-04
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added scroll-safe anchor spacing for direct Settings display-preference links.
  * - 2026-07-04: Created local-only display controls for dashboard density, guide panels, and insight panels.
  * - 2026-07-04: Reapplied preferences after protected-route navigation and made localStorage persistence fail-safe.
  * - 2026-07-05: Limited automatic disclosure toggling to optional guide details panels.
@@ -237,7 +238,7 @@ export function DashboardDisplayPreferencesControl({
     useDashboardDisplayPreferences();
 
   return (
-    <div className="grid gap-4" id="display-preferences">
+    <div className="grid scroll-mt-24 gap-4" id="display-preferences">
       <div>
         <h2 className="text-[15px] font-black text-[var(--dash-text)]">
           {copy.title}
