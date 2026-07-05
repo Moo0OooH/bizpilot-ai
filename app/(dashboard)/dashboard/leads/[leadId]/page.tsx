@@ -20,6 +20,7 @@
  * - 2026-06-27: Hid synthetic/internal seed labels behind owner-safe display fallbacks.
  * - 2026-06-27: Normalized Lead Detail cards to compact Dashboard V3 spacing.
  * - 2026-07-04: Reordered lead-detail actions so draft generation/copy happens before status recording.
+ * - 2026-07-05: Associated owner controls with labels and softened mobile timeline layout.
  * ============================================================
  */
 
@@ -266,6 +267,8 @@ export default async function LeadDetailPage({
   const manualPrimaryActionLabel = aiOutput
     ? detailCopy.ai.copyReply
     : detailCopy.ai.generate;
+  const statusSelectId = "lead-status-select";
+  const manualOutcomeSelectId = "lead-manual-outcome-select";
 
   return (
     <main className="space-y-3">
@@ -624,14 +627,18 @@ export default async function LeadDetailPage({
               />
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <form action={updateLeadStatusAction} className="grid gap-2">
-                  <span className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                  <label
+                    className="text-[12px] font-bold text-[var(--dash-text-secondary)]"
+                    htmlFor={statusSelectId}
+                  >
                     {detailCopy.labels.status}
-                  </span>
+                  </label>
                   <input name="leadId" type="hidden" value={detail.lead.id} />
                   <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                     <select
                       className={inputClass}
                       defaultValue={detail.lead.status}
+                      id={statusSelectId}
                       name="status"
                     >
                       <option value="new">{detailCopy.statusLabels.new}</option>
@@ -658,14 +665,18 @@ export default async function LeadDetailPage({
                   </div>
                 </form>
                 <form action={markLeadOutcomeAction} className="grid gap-2">
-                  <span className="text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                  <label
+                    className="text-[12px] font-bold text-[var(--dash-text-secondary)]"
+                    htmlFor={manualOutcomeSelectId}
+                  >
                     {detailCopy.labels.manualOutcome}
-                  </span>
+                  </label>
                   <input name="leadId" type="hidden" value={detail.lead.id} />
                   <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                     <select
                       className={inputClass}
                       defaultValue={detail.lead.manual_outcome ?? "booked"}
+                      id={manualOutcomeSelectId}
                       name="manualOutcome"
                     >
                       <option value="booked">
@@ -705,6 +716,7 @@ export default async function LeadDetailPage({
               </span>
             </summary>
             <textarea
+              aria-label={detailCopy.ownerNotes.title}
               className={`${textareaClass} mt-4 min-h-28`}
               defaultValue=""
               placeholder={detailCopy.ownerNotes.placeholder}
@@ -911,7 +923,7 @@ export default async function LeadDetailPage({
             {detail.events.length > 0 ? (
               detail.events.map((event) => (
                 <div
-                  className="grid grid-cols-[28px_minmax(0,1fr)_auto] gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+                  className="grid grid-cols-[28px_minmax(0,1fr)] gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:grid-cols-[28px_minmax(0,1fr)_auto]"
                   key={event.id}
                 >
                   <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-[12px] font-bold text-[var(--dash-primary)]">
@@ -925,7 +937,7 @@ export default async function LeadDetailPage({
                       {label(event.event_type, detailCopy.statusLabels)}
                     </span>
                   </span>
-                  <span className="whitespace-nowrap text-[12px] text-[var(--dash-text-muted)]">
+                  <span className="col-start-2 text-[12px] text-[var(--dash-text-muted)] sm:col-start-auto sm:whitespace-nowrap">
                     {formatAge(event.created_at, detailCopy, queueCopy)}
                   </span>
                 </div>
