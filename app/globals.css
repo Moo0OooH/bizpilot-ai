@@ -9,8 +9,9 @@ Related:
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-07-04
+Last Updated: 2026-07-05
 Change Log:
+- 2026-07-05: Refined dashboard light-theme tokens and added the route-guide rail surface.
 - 2026-05-04: Added standard project file header.
 - 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
 - 2026-05-18: Updated dashboard dark theme to the approved emerald/navy command-center direction.
@@ -1830,21 +1831,24 @@ select {
 }
 
 .biz-dashboard-light {
-  --dash-bg: #f6f8fb;
-  --dash-bg-soft: #eef4f6;
+  --dash-bg: #f3f7fa;
+  --dash-bg-soft: #e8f2f4;
   --dash-surface: #ffffff;
-  --dash-surface-muted: #f6f8fb;
+  --dash-surface-muted: #f3f7f9;
   --dash-surface-elevated: #ffffff;
-  --dash-border: rgba(15, 23, 42, 0.1);
-  --dash-border-strong: rgba(15, 23, 42, 0.16);
+  --dash-border: rgba(15, 23, 42, 0.11);
+  --dash-border-strong: rgba(15, 23, 42, 0.18);
   --dash-text: #0f172a;
-  --dash-text-secondary: #475569;
+  --dash-text-secondary: #405066;
   --dash-text-muted: #64748b;
-  --dash-primary: #0f766e;
+  --dash-primary: #0d9488;
   --dash-primary-strong: #0f766e;
   --dash-primary-hover: #0d5f5a;
-  --dash-primary-soft: rgba(15, 118, 110, 0.1);
-  --dash-primary-border: rgba(15, 118, 110, 0.22);
+  --dash-primary-soft: rgba(13, 148, 136, 0.11);
+  --dash-primary-border: rgba(13, 148, 136, 0.26);
+  --dash-info-soft: rgba(37, 99, 235, 0.08);
+  --dash-info-border: rgba(37, 99, 235, 0.2);
+  --dash-info-strong: #1d4ed8;
   --dash-warning-soft: rgba(245, 158, 11, 0.12);
   --dash-warning-border: rgba(245, 158, 11, 0.24);
   --dash-warning-strong: #b45309;
@@ -1855,13 +1859,13 @@ select {
   --dash-success-border: rgba(16, 185, 129, 0.22);
   --dash-success-strong: #047857;
   --dash-ai-soft: rgba(20, 184, 166, 0.09);
-  background: linear-gradient(180deg, #f8fbfc 0%, #eef5f6 100%);
+  background: linear-gradient(180deg, #f8fbff 0%, #edf7f4 48%, #eef4fb 100%);
   color: #0f172a;
 }
 
 .biz-dashboard-light .dashboard-topbar {
-  border-color: rgba(203, 213, 225, 0.85);
-  background-color: rgba(255, 255, 255, 0.92);
+  border-color: rgba(203, 213, 225, 0.9);
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .biz-dashboard-light .dashboard-business-switcher,
@@ -1877,7 +1881,7 @@ select {
 
 .biz-dashboard-light .dashboard-sidebar {
   border-color: rgba(15, 23, 42, 0.08);
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbfc 100%);
 }
 
 .biz-dashboard-dark {
@@ -2119,6 +2123,23 @@ select {
 .dashboard-frame {
   background: var(--dash-bg);
   color: var(--dash-text);
+}
+
+.dashboard-route-guide {
+  border-color: var(--dash-border);
+  background: color-mix(in srgb, var(--dash-surface) 84%, var(--dash-bg-soft));
+}
+
+.biz-dashboard-light .dashboard-route-guide {
+  background:
+    linear-gradient(90deg, rgba(13, 148, 136, 0.08), rgba(37, 99, 235, 0.06) 48%, rgba(245, 158, 11, 0.05)),
+    rgba(255, 255, 255, 0.9);
+}
+
+.biz-dashboard-dark .dashboard-route-guide {
+  background:
+    linear-gradient(90deg, rgba(20, 184, 166, 0.11), rgba(37, 99, 235, 0.08) 48%, rgba(245, 158, 11, 0.05)),
+    rgba(13, 24, 32, 0.92);
 }
 
 .biz-card,

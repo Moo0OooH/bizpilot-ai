@@ -13,6 +13,7 @@
  * Created: 2026-06-26
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Guarded the bilingual route-aware guide rail and refreshed dashboard color tokens.
  * - 2026-07-05: Guarded owner overview priority hierarchy, tokenized insight visuals, and demoted utility quote-page actions.
  * - 2026-07-05: Guarded accessible lead queue pagination controls.
  * - 2026-07-04: Added lead queue pagination source guards.
@@ -97,6 +98,51 @@ describe("P12 dashboard professionalization source guards", () => {
     assert.equal(copySource.includes("Choisir le nombre de lignes par page"), true);
     assert.equal(copySource.includes("Lead queue pagination"), true);
     assert.equal(copySource.includes("Pagination de la file de prospects"), true);
+  });
+
+  it("keeps the route-aware dashboard guide visible, bilingual, and local-only", () => {
+    const dashboardShell = readFileSync(
+      "components/dashboard/dashboard-shell.tsx",
+      "utf8",
+    );
+    const dashboardLayout = readFileSync(
+      "app/(dashboard)/layout.tsx",
+      "utf8",
+    );
+    const routeGuide = readFileSync(
+      "components/dashboard/dashboard-route-guide.tsx",
+      "utf8",
+    );
+    const displayPreferences = readFileSync(
+      "components/dashboard/dashboard-display-preferences.tsx",
+      "utf8",
+    );
+    const copySource = readFileSync("lib/i18n/bizpilot-copy.ts", "utf8");
+    const globals = readFileSync("app/globals.css", "utf8");
+
+    assert.equal(dashboardShell.includes("DashboardRouteGuideRail"), true);
+    assert.equal(dashboardShell.includes("routeGuide"), true);
+    assert.equal(dashboardLayout.includes("routeGuide: copy.routeGuide"), true);
+    assert.equal(routeGuide.includes("data-dashboard-route-guide"), true);
+    assert.equal(routeGuide.includes("data-dashboard-optional-guide"), true);
+    assert.equal(routeGuide.includes("usePathname"), true);
+    assert.equal(routeGuide.includes("copy.routes[routeKey]"), true);
+    assert.equal(routeGuide.includes('href="/dashboard/guide"'), true);
+    assert.equal(routeGuide.includes('"/dashboard/leads?focus=at_risk"'), false);
+    assert.equal(copySource.includes("routeGuide: DashboardRouteGuideCopy"), true);
+    assert.equal(copySource.includes("Page guide"), true);
+    assert.equal(copySource.includes("Guide de page"), true);
+    assert.equal(copySource.includes("Review at-risk leads"), true);
+    assert.equal(copySource.includes("Reviser les prospects a risque"), true);
+    assert.equal(copySource.includes("No auto-send"), true);
+    assert.equal(copySource.includes("billing, automations, and team features gated"), true);
+    assert.equal(
+      displayPreferences.includes('details[data-dashboard-optional-guide]'),
+      true,
+    );
+    assert.equal(globals.includes(".dashboard-route-guide"), true);
+    assert.equal(globals.includes("--dash-info-soft"), true);
+    assert.equal(globals.includes("rgba(37, 99, 235, 0.06)"), true);
   });
 
   it("keeps internal seed lead labels out of owner-facing lead surfaces", () => {

@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added bilingual route-aware dashboard guide copy for every protected owner page.
  * - 2026-07-05: Standardized owner overview utility CTA copy for action-first dashboard hierarchy.
  * - 2026-07-05: Added accessible lead queue pagination labels and page-button copy.
  * - 2026-07-04: Added Settings feature guide details and lead queue pagination copy.
@@ -631,6 +632,32 @@ type DashboardGuideCopy = Readonly<{
   }>;
 }>;
 
+type DashboardRouteGuideKey =
+  | "businessProfile"
+  | "configuration"
+  | "guide"
+  | "leadDetail"
+  | "leads"
+  | "overview"
+  | "settings";
+
+type DashboardRouteGuideCopy = Readonly<{
+  ariaLabel: string;
+  fullGuide: string;
+  label: string;
+  routes: Readonly<Record<
+    DashboardRouteGuideKey,
+    Readonly<{
+      focus: string;
+      next: string;
+      primaryHref: string;
+      primaryLabel: string;
+      secondaryHref: string;
+      secondaryLabel: string;
+    }>
+  >>;
+}>;
+
 type DashboardOverviewCopy = Readonly<{
   aiControlBody: string;
   aiControlBadges: readonly string[];
@@ -894,6 +921,7 @@ type DashboardCopy = Readonly<{
   leadQueue: DashboardLeadQueueCopy;
   leadsPage: DashboardLeadsPageCopy;
   overview: DashboardOverviewCopy;
+  routeGuide: DashboardRouteGuideCopy;
   routeMessages: Readonly<{
     genericError: string;
     genericNotice: string;
@@ -1966,6 +1994,76 @@ const englishCopy: BizPilotCopy = {
         title: "Overview",
         viewAll: "View all",
         viewFullReport: "View full report",
+      },
+    },
+    routeGuide: {
+      ariaLabel: "Page guide and priority actions",
+      fullGuide: "Open full guide",
+      label: "Page guide",
+      routes: {
+        businessProfile: {
+          focus: "Business profile explains how the owner wants quotes framed.",
+          next:
+            "Keep identity, service notes, and FAQ context current before relying on AI-supported drafts.",
+          primaryHref: "/dashboard/business-profile",
+          primaryLabel: "Review profile",
+          secondaryHref: "/dashboard/configuration",
+          secondaryLabel: "Open quote setup",
+        },
+        configuration: {
+          focus: "Quote setup controls what customers see before they submit.",
+          next:
+            "Confirm services, areas, consent, questions, and AI rules before sharing the quote link.",
+          primaryHref: "/dashboard/configuration",
+          primaryLabel: "Check setup",
+          secondaryHref: "/dashboard/business-profile",
+          secondaryLabel: "Review profile",
+        },
+        guide: {
+          focus: "Operating guide keeps the manual recovery routine visible.",
+          next:
+            "Use it to confirm route priorities, MVP boundaries, and the remaining gates before production sign-off.",
+          primaryHref: "/dashboard/leads",
+          primaryLabel: "Open queue",
+          secondaryHref: "/dashboard/settings",
+          secondaryLabel: "Review boundaries",
+        },
+        leadDetail: {
+          focus: "Lead response desk is for one owner-reviewed customer reply.",
+          next:
+            "Verify missing info, inspect AI-supported text, copy the draft, and record manual contact status only.",
+          primaryHref: "/dashboard/leads",
+          primaryLabel: "Back to queue",
+          secondaryHref: "/dashboard/guide",
+          secondaryLabel: "Review routine",
+        },
+        leads: {
+          focus: "Lead queue is the main manual recovery workbench.",
+          next:
+            "Prioritize overdue requests, AI-ready drafts, and missing-info leads before lower-risk rows.",
+          primaryHref: "/dashboard/leads?focus=at_risk",
+          primaryLabel: "Review at-risk leads",
+          secondaryHref: "/dashboard/leads?focus=ai_ready",
+          secondaryLabel: "AI-ready drafts",
+        },
+        overview: {
+          focus: "Dashboard overview shows today's safest owner action first.",
+          next:
+            "Start with the highest-risk queue item, then finish setup blockers that prevent sharing the quote link.",
+          primaryHref: "/dashboard/leads?focus=at_risk",
+          primaryLabel: "Review at-risk leads",
+          secondaryHref: "/dashboard/configuration",
+          secondaryLabel: "Finish setup",
+        },
+        settings: {
+          focus: "Settings keeps account, display, and MVP boundaries explicit.",
+          next:
+            "Adjust local display preferences here, but keep billing, automations, and team features gated.",
+          primaryHref: "/dashboard/settings",
+          primaryLabel: "Review settings",
+          secondaryHref: "/dashboard/guide",
+          secondaryLabel: "Open guide",
+        },
       },
     },
     nav: {
@@ -3631,6 +3729,76 @@ const frenchCopy: BizPilotCopy = {
         title: "Vue d'ensemble",
         viewAll: "Tout voir",
         viewFullReport: "Voir le rapport complet",
+      },
+    },
+    routeGuide: {
+      ariaLabel: "Guide de page et actions prioritaires",
+      fullGuide: "Guide complet",
+      label: "Guide de page",
+      routes: {
+        businessProfile: {
+          focus: "Le profil explique comment le responsable veut cadrer les soumissions.",
+          next:
+            "Gardez l'identite, les notes de service et les FAQ a jour avant d'utiliser les brouillons IA.",
+          primaryHref: "/dashboard/business-profile",
+          primaryLabel: "Reviser le profil",
+          secondaryHref: "/dashboard/configuration",
+          secondaryLabel: "Ouvrir la configuration",
+        },
+        configuration: {
+          focus: "La configuration controle ce que le client voit avant l'envoi.",
+          next:
+            "Confirmez services, zones, consentement, questions et regles IA avant de partager le lien.",
+          primaryHref: "/dashboard/configuration",
+          primaryLabel: "Verifier la configuration",
+          secondaryHref: "/dashboard/business-profile",
+          secondaryLabel: "Reviser le profil",
+        },
+        guide: {
+          focus: "Le guide garde la routine manuelle visible.",
+          next:
+            "Utilisez-le pour confirmer les priorites, les limites MVP et les gates restants avant la production.",
+          primaryHref: "/dashboard/leads",
+          primaryLabel: "Ouvrir la file",
+          secondaryHref: "/dashboard/settings",
+          secondaryLabel: "Voir les limites",
+        },
+        leadDetail: {
+          focus: "Le bureau de reponse sert a traiter une reponse client validee par le responsable.",
+          next:
+            "Verifiez les infos manquantes, inspectez le texte IA, copiez le brouillon et notez seulement le contact manuel.",
+          primaryHref: "/dashboard/leads",
+          primaryLabel: "Retour a la file",
+          secondaryHref: "/dashboard/guide",
+          secondaryLabel: "Reviser la routine",
+        },
+        leads: {
+          focus: "La file de prospects est le poste principal de recuperation manuelle.",
+          next:
+            "Priorisez les demandes en retard, les brouillons prets et les infos manquantes avant les lignes moins urgentes.",
+          primaryHref: "/dashboard/leads?focus=at_risk",
+          primaryLabel: "Reviser les prospects a risque",
+          secondaryHref: "/dashboard/leads?focus=ai_ready",
+          secondaryLabel: "Brouillons IA prets",
+        },
+        overview: {
+          focus: "Le tableau de bord affiche d'abord l'action responsable la plus sure.",
+          next:
+            "Commencez par le prospect le plus risque, puis terminez les blocages qui empechent le partage du lien.",
+          primaryHref: "/dashboard/leads?focus=at_risk",
+          primaryLabel: "Reviser les prospects a risque",
+          secondaryHref: "/dashboard/configuration",
+          secondaryLabel: "Terminer la configuration",
+        },
+        settings: {
+          focus: "Les reglages gardent compte, affichage et limites MVP explicites.",
+          next:
+            "Ajustez les preferences locales ici, mais gardez facturation, automatisations et equipe gates.",
+          primaryHref: "/dashboard/settings",
+          primaryLabel: "Reviser les reglages",
+          secondaryHref: "/dashboard/guide",
+          secondaryLabel: "Ouvrir le guide",
+        },
       },
     },
     nav: {

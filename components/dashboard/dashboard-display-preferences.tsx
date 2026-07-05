@@ -12,10 +12,11 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-07-04: Created local-only display controls for dashboard density, guide panels, and insight panels.
  * - 2026-07-04: Reapplied preferences after protected-route navigation and made localStorage persistence fail-safe.
+ * - 2026-07-05: Limited automatic disclosure toggling to optional guide details panels.
  * ============================================================
  */
 
@@ -128,7 +129,7 @@ function applyDisplayPreferences(preferences: DashboardDisplayPreferences) {
   });
 
   document
-    .querySelectorAll<HTMLDetailsElement>("[data-dashboard-optional-guide]")
+    .querySelectorAll<HTMLDetailsElement>("details[data-dashboard-optional-guide]")
     .forEach((details) => {
       if (preferences.guideMode === "expanded") {
         details.open = true;
