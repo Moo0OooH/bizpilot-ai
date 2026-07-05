@@ -1,5 +1,23 @@
 "use client";
 
+/**
+ * ============================================================
+ * File: components/dashboard/quote-field-type-control.tsx
+ * Project: BizPilot AI
+ * Description: Client-side field type and option editor for Quote Setup questions.
+ * Role: Keeps custom field type changes and choice options explicit before owner-reviewed configuration saves.
+ * Related:
+ * - app/(dashboard)/dashboard/configuration/page.tsx
+ * - components/dashboard/custom-quote-field-builder.tsx
+ * - server/actions/business-configuration.actions.ts
+ * Author: MoOoH
+ * Created: 2026-06-27
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete BizPilot source header metadata for field type controls.
+ * ============================================================
+ */
+
 import { useState } from "react";
 
 import type { Json } from "@/types/database";

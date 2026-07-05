@@ -1,5 +1,23 @@
 "use client";
 
+/**
+ * ============================================================
+ * File: components/dashboard/custom-quote-field-builder.tsx
+ * Project: BizPilot AI
+ * Description: Client-side builder for adding custom public quote fields.
+ * Role: Lets owners draft additional intake questions while preserving manual-first Quote Setup form submission.
+ * Related:
+ * - app/(dashboard)/dashboard/configuration/page.tsx
+ * - components/dashboard/quote-field-type-control.tsx
+ * - server/actions/business-configuration.actions.ts
+ * Author: MoOoH
+ * Created: 2026-06-27
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete BizPilot source header metadata for the custom quote field builder.
+ * ============================================================
+ */
+
 import { useMemo, useRef, useState } from "react";
 
 import type {

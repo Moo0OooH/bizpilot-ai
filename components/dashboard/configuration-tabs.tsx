@@ -11,8 +11,9 @@
  * - server/actions/business-configuration.actions.ts
  * Author: MoOoH
  * Created: 2026-05-16
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added pressed state and panel controls to Quote Setup section tabs.
  * - 2026-05-16: Created mounted tab panels so the parent form receives every required input on submit.
  * - 2026-05-18: Finalized sticky anchor tabs with theme-safe styling and mobile overflow.
  * - 2026-05-19: Switched to single-visible-panel tabs matching the approved index.html. Hidden panels remain mounted via Tailwind `hidden` (display:none) so their inputs continue to participate in FormData on submit — required by the consentNotice P0 fix.
@@ -43,6 +44,8 @@ export function ConfigurationTabs({ children, sections }: Props) {
         <div className="flex min-w-0 gap-1 overflow-x-auto pb-0.5 xl:grid xl:overflow-visible xl:pb-0">
           {sections.map((section) => (
             <button
+              aria-controls={section.id}
+              aria-pressed={activeSection === section.id}
               className={
                 activeSection === section.id
                   ? "inline-flex h-9 shrink-0 items-center justify-start rounded-md border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-3 text-left text-xs font-semibold text-[var(--dash-text)]"
