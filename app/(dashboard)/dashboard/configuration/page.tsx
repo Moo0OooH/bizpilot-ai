@@ -10,8 +10,9 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Clamped Quote Setup readiness progress to a safe 0-100 display range.
  * - 2026-05-04: Created protected Phase 2 dashboard shell.
  * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
  * - 2026-05-04: Marked dashboard shell as request-time only.
@@ -219,8 +220,12 @@ export default async function DashboardPage({
   const visibleTemplateFieldCount = cleaningTemplate.fields.filter(
     (field) => !field.is_hidden,
   ).length;
-  const readinessPercent = Math.round(
-    (readiness.completed / Math.max(readiness.total, 1)) * 100,
+  const readinessPercent = Math.min(
+    100,
+    Math.max(
+      0,
+      Math.round((readiness.completed / Math.max(readiness.total, 1)) * 100),
+    ),
   );
 
   return (
