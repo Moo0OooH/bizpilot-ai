@@ -18,6 +18,7 @@
  * - 2026-06-27: Documented Dashboard V3 profile separation and final completion evidence.
  * - 2026-06-27: Normalized remaining profile cards to compact Dashboard V3 spacing.
  * - 2026-07-04: Collapsed unwired roadmap fields so the profile page stays focused on saved owner data.
+ * - 2026-07-05: Made read-only profile reference fields selectable and added mobile-safe slug hints.
  * ============================================================
  */
 
@@ -262,6 +263,7 @@ export default async function BusinessProfilePage({
               <label className={labelClass}>
                 {text.businessName}
                 <input
+                  autoComplete="organization"
                   className={inputClass}
                   defaultValue={activeBusiness.name}
                   name="businessName"
@@ -272,11 +274,16 @@ export default async function BusinessProfilePage({
               <label className={labelClass}>
                 {text.publicSlug}
                 <input
+                  autoCapitalize="none"
+                  autoComplete="off"
+                  autoCorrect="off"
                   className={inputClass}
                   defaultValue={activeBusiness.slug}
+                  inputMode="url"
                   name="businessSlug"
                   pattern="[a-z0-9]+(-[a-z0-9]+)*"
                   required
+                  spellCheck={false}
                   type="text"
                 />
               </label>
@@ -315,7 +322,7 @@ export default async function BusinessProfilePage({
                 <input
                   className={inputClass}
                   defaultValue={user.email ?? user.id}
-                  disabled
+                  readOnly
                   type="email"
                 />
                 <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
@@ -327,7 +334,7 @@ export default async function BusinessProfilePage({
                 <input
                   className={inputClass}
                   defaultValue={text.cleaning}
-                  disabled
+                  readOnly
                   type="text"
                 />
                 <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
@@ -346,6 +353,7 @@ export default async function BusinessProfilePage({
               <label className={labelClass}>
                 {text.logoUrl}
                 <input
+                  autoComplete="url"
                   className={inputClass}
                   defaultValue={configuration.branding?.logo_url ?? ""}
                   name="logoUrl"
@@ -357,7 +365,7 @@ export default async function BusinessProfilePage({
                 <input
                   className={inputClass}
                   defaultValue={quotePath}
-                  disabled
+                  readOnly
                   type="text"
                 />
               </label>
