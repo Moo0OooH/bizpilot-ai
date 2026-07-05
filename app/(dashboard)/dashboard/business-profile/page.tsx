@@ -19,6 +19,7 @@
  * - 2026-06-27: Normalized remaining profile cards to compact Dashboard V3 spacing.
  * - 2026-07-04: Collapsed unwired roadmap fields so the profile page stays focused on saved owner data.
  * - 2026-07-05: Made read-only profile reference fields selectable and added mobile-safe slug hints.
+ * - 2026-07-05: Added a compact read-only profile summary for final owner acceptance polish.
  * ============================================================
  */
 
@@ -172,6 +173,29 @@ export default async function BusinessProfilePage({
           {routeError}
         </FlashMessage>
       ) : null}
+
+      <section
+        aria-label={text.businessIdentity}
+        className="grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm sm:grid-cols-3"
+      >
+        {[
+          [text.publicQuoteLink, quotePath],
+          [text.preferredLanguage, languageLabels[activeLanguage]],
+          [text.businessType, text.cleaning],
+        ].map(([title, value]) => (
+          <div
+            className="min-w-0 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2"
+            key={title}
+          >
+            <p className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--dash-text-muted)]">
+              {title}
+            </p>
+            <p className="mt-1 truncate text-[13px] font-bold text-[var(--dash-text)]">
+              {value}
+            </p>
+          </div>
+        ))}
+      </section>
 
       <form
         action={saveBusinessConfigurationAction}

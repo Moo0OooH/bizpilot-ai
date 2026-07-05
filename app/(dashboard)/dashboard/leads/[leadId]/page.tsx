@@ -21,6 +21,7 @@
  * - 2026-06-27: Normalized Lead Detail cards to compact Dashboard V3 spacing.
  * - 2026-07-04: Reordered lead-detail actions so draft generation/copy happens before status recording.
  * - 2026-07-05: Associated owner controls with labels and softened mobile timeline layout.
+ * - 2026-07-05: Tightened the manual workflow command card for final owner acceptance polish.
  * ============================================================
  */
 
@@ -304,14 +305,14 @@ export default async function LeadDetailPage({
         </FlashMessage>
       ) : null}
 
-      <DashboardCard className="p-3 sm:p-4" variant="priority">
+      <DashboardCard className="p-3 sm:p-3.5" variant="priority">
         <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
           <div className="min-w-0">
             <SectionHeader
               description={detailCopy.manualWorkflow.description}
               title={detailCopy.manualWorkflow.title}
             />
-            <div className="mt-3 grid gap-2 text-[13px] leading-6 text-[var(--dash-text-secondary)]">
+            <div className="mt-2 grid gap-1.5 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
               <p>
                 <span className="font-bold text-[var(--dash-text)]">
                   {detailCopy.labels.primaryIssue}:
@@ -328,10 +329,10 @@ export default async function LeadDetailPage({
                 {detailCopy.manualWorkflow.outcomeNote}
               </p>
             </div>
-            <div className="mt-3 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-2 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
               {detailCopy.manualWorkflow.steps.map(([title, detailText], index) => (
                 <div
-                  className="grid min-h-[64px] grid-cols-[1.5rem_minmax(0,1fr)] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2.5"
+                  className="grid min-h-[58px] grid-cols-[1.5rem_minmax(0,1fr)] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2"
                   key={title}
                 >
                   <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-[var(--dash-primary-soft)] text-[11px] font-black text-[var(--dash-primary)]">
@@ -349,7 +350,7 @@ export default async function LeadDetailPage({
               ))}
             </div>
           </div>
-          <div className="flex flex-wrap gap-2 lg:justify-end">
+          <div className="grid gap-2 sm:grid-cols-3 lg:w-56 lg:grid-cols-1 lg:justify-self-end">
             {aiOutput ? (
               <a className={primaryButtonClass} href="#lead-ai-draft">
                 {manualPrimaryActionLabel}

@@ -34,11 +34,13 @@ Project: BizPilot AI
 
 ## Owner authenticated visual QA result
 
-Result: BLOCKED / NOT COMPLETED.
+Result: OWNER-PROVIDED PASS WITH RISKS.
 
-Reason: The local sign-in page was opened for manual owner login, but the browser remained on the sign-in page after the waiting window. Credentials were not entered through automation, shell commands, source files, docs, logs, or commits.
+Evidence type: owner-provided manual visual QA. The owner reported that manual owner login and visual review are OK from his side. This is not automated production authenticated smoke, not production-safe synthetic dashboard smoke, and not a production data mutation test.
 
-Routes that still require authenticated read-only owner visual QA after manual login:
+Credentials were not entered through automation, shell commands, source files, docs, logs, or commits.
+
+Routes included in the owner-provided manual review scope:
 
 - `/dashboard`
 - `/dashboard/leads`
@@ -51,7 +53,7 @@ Routes that still require authenticated read-only owner visual QA after manual l
 - `/admin`
 - `/founder`
 
-Required checks for the remaining owner pass:
+Checks expected for the owner-provided manual pass:
 
 - Page loads without crash.
 - No blank screen.
@@ -73,7 +75,7 @@ Required checks for the remaining owner pass:
 ## Skipped checks and why
 
 - `pnpm smoke:dashboard`: skipped because `NEXT_PUBLIC_SUPABASE_URL` points to managed Supabase, not confirmed local/synthetic-safe.
-- Production authenticated owner QA: skipped because it requires manual owner login in the browser and must remain read-only. Credentials were not automated or stored.
+- Automated production authenticated owner smoke: skipped because credentials must not be automated or stored and production data must remain read-only.
 - Production dashboard synthetic smoke: skipped because production/non-local customer data mutation is not allowed.
 - Payment, invoice, booking, SMS/WhatsApp, autonomous AI, Supabase production DB/RLS/migration checks: skipped by project safety restrictions.
 
@@ -106,13 +108,14 @@ The `git clean -ndX` dry run listed ignored files that must not be removed by br
 
 ## Remaining blockers
 
-- Owner authenticated visual QA is still blocked until manual login is completed safely.
+- Automated production authenticated smoke is still not run.
+- Production-safe synthetic dashboard smoke remains blocked unless the environment is proven synthetic-safe.
+- Owner-provided manual visual QA should be kept as evidence, not as automated proof.
 - Real customer data remains blocked.
 - Paid pilot remains blocked.
 - User deletion remains blocked.
 - Google auth remains blocked.
 - Phone auth remains blocked.
-- Production dashboard synthetic smoke remains blocked unless the environment is proven synthetic-safe.
 
 ## Safety confirmations
 

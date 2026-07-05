@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-07-05: Added a compact Quote Setup readiness command strip for first open setup action scanability.
  * - 2026-07-05: Clamped Quote Setup readiness progress to a safe 0-100 display range.
+ * - 2026-07-05: Highlighted the first open Quote Setup readiness item for final owner acceptance polish.
  * - 2026-05-04: Created protected Phase 2 dashboard shell.
  * - 2026-05-04: Removed manual token plumbing after Supabase SDK migration.
  * - 2026-05-04: Marked dashboard shell as request-time only.
@@ -435,9 +436,18 @@ export default async function DashboardPage({
                     {configCopy.overview.setupReport}
                   </p>
                   <div className="mt-3 grid gap-2">
-                    {readiness.items.map((item) => (
+                    {readiness.items.map((item) => {
+                      const isFirstOpenItem =
+                        firstOpenReadinessItem?.taskKey === item.taskKey;
+
+                      return (
                       <div
-                        className="flex items-center justify-between gap-3 rounded-md bg-[var(--dash-surface)] px-3 py-2 text-xs"
+                        aria-current={isFirstOpenItem ? "step" : undefined}
+                        className={`flex items-center justify-between gap-3 rounded-md px-3 py-2 text-xs ${
+                          isFirstOpenItem
+                            ? "border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)]"
+                            : "bg-[var(--dash-surface)]"
+                        }`}
                         key={item.label}
                       >
                         <span className="truncate text-[var(--dash-text-secondary)]">
@@ -453,7 +463,8 @@ export default async function DashboardPage({
                           {item.complete ? configCopy.overview.done : configCopy.overview.open}
                         </span>
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                   <Link
                     className={`${buttonClass} mt-4 w-full`}
