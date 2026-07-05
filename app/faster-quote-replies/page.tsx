@@ -10,9 +10,10 @@
  * - lib/public-structured-data.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-07-04: Created the public reply-speed content guide for Phase 25U.
+ * - 2026-07-05: Added a route-aware next-step panel for reply-speed education.
  * ============================================================
  */
 
@@ -27,6 +28,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -76,7 +78,8 @@ export default async function FasterQuoteRepliesPage({
 }: FasterQuoteRepliesPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).replySpeedGuide;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.replySpeedGuide;
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
@@ -236,6 +239,33 @@ export default async function FasterQuoteRepliesPage({
               ))}
             </ul>
           </MarketingCard>
+          <MarketingNextStepPanel
+            body={copy.workflowTitle}
+            className="mt-8"
+            items={[
+              {
+                description: siteCopy.quoteLinkGuide.badge,
+                href: "/quote-link-guide",
+                icon: "link",
+                label: navCopy.guide,
+              },
+              {
+                description: siteCopy.demo.badge,
+                href: "/demo",
+                icon: "radar",
+                label: navCopy.demo,
+                toneName: "blue",
+              },
+              {
+                description: siteCopy.pilot.badge,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+            ]}
+            title={navCopy.flow}
+          />
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />

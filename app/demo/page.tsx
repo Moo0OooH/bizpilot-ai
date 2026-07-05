@@ -18,6 +18,7 @@
  * - 2026-06-25: Normalized demo page rhythm to canonical bp primitives.
  * - 2026-07-04: Added a product-real owner-view preview before the narrative chapters.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
+ * - 2026-07-05: Added a route-aware next-step panel after the product walkthrough.
  * ============================================================
  */
 
@@ -32,6 +33,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -210,7 +212,8 @@ function DemoWorkspace({ copy }: Readonly<{ copy: DemoWorkspaceCopy }>) {
 export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).demo;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.demo;
 
   return (
     <main
@@ -297,6 +300,33 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
                 </MarketingButton>
               </div>
             </MarketingCard>
+
+            <MarketingNextStepPanel
+              body={copy.workspace.sampleLabel}
+              items={[
+                {
+                  description: siteCopy.pilot.badge,
+                  href: "/pilot",
+                  icon: "arrow",
+                  label: navCopy.pilot,
+                  toneName: "gold",
+                },
+                {
+                  description: siteCopy.pricing.badge,
+                  href: "/pricing",
+                  icon: "briefcase",
+                  label: navCopy.pricing,
+                  toneName: "blue",
+                },
+                {
+                  description: siteCopy.quoteLinkGuide.badge,
+                  href: "/quote-link-guide",
+                  icon: "link",
+                  label: navCopy.guide,
+                },
+              ]}
+              title={navCopy.flow}
+            />
           </div>
         </MarketingShell>
       </section>

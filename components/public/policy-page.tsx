@@ -16,6 +16,7 @@
  * - 2026-06-18: Switched policy pages to narrow readable containers and owner-first summaries.
  * - 2026-06-25: Normalized policy page rhythm to canonical bp sizing primitives.
  * - 2026-07-05: Added shared BreadcrumbList JSON-LD for public policy pages.
+ * - 2026-07-05: Added a shared next-step panel for policy-to-conversion flow.
  * ============================================================
  */
 
@@ -27,6 +28,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingSectionTitle,
   marketingBackground,
   marketingTone,
@@ -210,6 +212,33 @@ export function PolicyPage({
               {navCopy.pricing}
             </MarketingButton>
           </MarketingCard>
+          <MarketingNextStepPanel
+            body={copy.footerNote}
+            className="mt-5"
+            items={[
+              {
+                description: copy.badge,
+                href: "/trust",
+                icon: "shield",
+                label: navCopy.trust,
+              },
+              {
+                description: copy.boundaryTitle,
+                href: "/pricing",
+                icon: "briefcase",
+                label: navCopy.pricing,
+                toneName: "blue",
+              },
+              {
+                description: navCopy.startFull,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+            ]}
+            title={navCopy.why}
+          />
         </div>
       </section>
 

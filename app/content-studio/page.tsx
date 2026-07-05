@@ -18,6 +18,7 @@
  * - 2026-06-20: Removed fixed roadmap-card height and tightened six-card rhythm.
  * - 2026-06-25: Normalized roadmap page rhythm to canonical bp primitives.
  * - 2026-07-04: Marked roadmap-only Content Studio as noindex while keeping the route available for visitors.
+ * - 2026-07-05: Added a route-aware next-step panel that keeps roadmap traffic in the current product scope.
  * ============================================================
  */
 
@@ -30,6 +31,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -68,7 +70,8 @@ export default async function ContentStudioPage({
 }: ContentStudioPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).contentStudio;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.contentStudio;
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
@@ -110,6 +113,33 @@ export default async function ContentStudioPage({
               </div>
             </div>
           </MarketingCard>
+          <MarketingNextStepPanel
+            body={copy.badge}
+            className="mt-8"
+            items={[
+              {
+                description: siteCopy.features.badge,
+                href: "/features",
+                icon: "spark",
+                label: navCopy.features,
+              },
+              {
+                description: siteCopy.comparison.badge,
+                href: "/comparison",
+                icon: "search",
+                label: navCopy.comparison,
+                toneName: "blue",
+              },
+              {
+                description: siteCopy.pilot.badge,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+            ]}
+            title={navCopy.why}
+          />
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />

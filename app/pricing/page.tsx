@@ -22,6 +22,7 @@
  * - 2026-06-25: Normalized pricing rhythm to bp primitives without changing price values.
  * - 2026-07-04: Added paid-pilot trust boundaries for payment, support, refund, and scope.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
+ * - 2026-07-05: Added a route-aware next-step panel for pricing decisions.
  * ============================================================
  */
 
@@ -35,6 +36,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -78,7 +80,8 @@ export default async function PricingPage({
 }: PricingPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).pricing;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.pricing;
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
@@ -227,6 +230,33 @@ export default async function PricingPage({
               </div>
             </div>
           </MarketingCard>
+          <MarketingNextStepPanel
+            body={copy.trustBoundary.title}
+            className="mt-8"
+            items={[
+              {
+                description: siteCopy.pilot.badge,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+              {
+                description: siteCopy.trust.badge,
+                href: "/trust",
+                icon: "shield",
+                label: navCopy.trust,
+              },
+              {
+                description: siteCopy.faq.badge,
+                href: "/faq",
+                icon: "message",
+                label: navCopy.faq,
+                toneName: "blue",
+              },
+            ]}
+            title={navCopy.why}
+          />
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />

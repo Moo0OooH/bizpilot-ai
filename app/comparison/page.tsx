@@ -10,6 +10,10 @@
  * - lib/public-structured-data.ts
  * Author: MoOoH
  * Created: 2026-07-04
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-04: Created the public comparison page.
+ * - 2026-07-05: Added a route-aware next-step panel for buyer education.
  * ============================================================
  */
 
@@ -24,6 +28,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -65,7 +70,8 @@ export default async function ComparisonPage({
 }: ComparisonPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).comparison;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.comparison;
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
@@ -177,6 +183,33 @@ export default async function ComparisonPage({
               </div>
             </div>
           </MarketingCard>
+          <MarketingNextStepPanel
+            body={copy.proof.title}
+            className="mt-8"
+            items={[
+              {
+                description: siteCopy.features.badge,
+                href: "/features",
+                icon: "spark",
+                label: navCopy.features,
+              },
+              {
+                description: siteCopy.demo.badge,
+                href: "/demo",
+                icon: "radar",
+                label: navCopy.demo,
+                toneName: "blue",
+              },
+              {
+                description: siteCopy.pilot.badge,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+            ]}
+            title={navCopy.why}
+          />
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />

@@ -20,6 +20,7 @@
  * - 2026-06-25: Normalized trust page spacing and type to canonical bp primitives.
  * - 2026-07-04: Added current evidence and open-gate trust boundaries.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
+ * - 2026-07-05: Added a route-aware next-step panel for trust and policy flow.
  * ============================================================
  */
 
@@ -33,6 +34,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -74,7 +76,8 @@ export async function generateMetadata({
 export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).trust;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.trust;
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
@@ -171,6 +174,33 @@ export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
             <MarketingButton href="/security" variant="secondary">{copy.securityCta}</MarketingButton>
             <MarketingButton href="/pilot">{copy.primaryCta}</MarketingButton>
           </div>
+          <MarketingNextStepPanel
+            body={copy.evidence.title}
+            className="mt-8"
+            items={[
+              {
+                description: copy.securityCta,
+                href: "/security",
+                icon: "lock",
+                label: navCopy.security,
+                toneName: "blue",
+              },
+              {
+                description: copy.privacyCta,
+                href: "/privacy",
+                icon: "shield",
+                label: navCopy.privacy,
+              },
+              {
+                description: siteCopy.pilot.badge,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+            ]}
+            title={navCopy.why}
+          />
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />

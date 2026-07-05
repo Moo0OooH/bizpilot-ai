@@ -20,6 +20,7 @@
  * - 2026-06-21: Applied localization-aware copy roles to feature and proof cards.
  * - 2026-06-25: Normalized page rhythm to canonical bp sizing primitives.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
+ * - 2026-07-05: Added a route-aware next-step panel for public conversion flow.
  * ============================================================
  */
 
@@ -34,6 +35,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -77,7 +79,8 @@ export default async function FeaturesPage({
 }: FeaturesPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).features;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.features;
   const featureIcons = ["link", "inbox", "briefcase", "spark", "copy", "target"] as const;
 
   return (
@@ -158,6 +161,33 @@ export default async function FeaturesPage({
             <MarketingButton href="/pilot">{copy.primaryCta} <MarketingIcon name="arrow" /></MarketingButton>
             <MarketingButton href="/trust" variant="secondary">{copy.secondaryCta}</MarketingButton>
           </div>
+          <MarketingNextStepPanel
+            body={copy.proof.badge}
+            className="mt-8"
+            items={[
+              {
+                description: siteCopy.demo.badge,
+                href: "/demo",
+                icon: "radar",
+                label: navCopy.demo,
+                toneName: "blue",
+              },
+              {
+                description: siteCopy.cleaning.badge,
+                href: "/industries/cleaning",
+                icon: "briefcase",
+                label: navCopy.cleaning,
+              },
+              {
+                description: siteCopy.pilot.badge,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+            ]}
+            title={navCopy.flow}
+          />
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />

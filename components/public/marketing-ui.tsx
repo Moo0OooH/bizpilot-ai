@@ -23,6 +23,7 @@
  * - 2026-06-26: Allowed marketing badges to wrap inside narrow mobile viewports.
  * - 2026-07-04: Added the public comparison route to desktop and compact navigation.
  * - 2026-07-04: Added the quote-link guide to the public footer.
+ * - 2026-07-05: Added a reusable next-step panel for public conversion paths.
  * ============================================================
  */
 
@@ -57,6 +58,14 @@ export const marketingBackground = "var(--marketing-background)";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 type BadgeTone = "teal" | "gold" | "blue" | "red" | "neutral";
+
+type MarketingNextStepItem = Readonly<{
+  description?: ReactNode;
+  href: string;
+  icon?: MarketingIconName;
+  label: ReactNode;
+  toneName?: BadgeTone;
+}>;
 
 const defaultMarketingNavCopy: HomeNavCopy = {
   brandSubtitle: "Lead recovery for cleaning businesses",
@@ -400,6 +409,102 @@ export function MarketingButton({
     >
       {children}
     </Link>
+  );
+}
+
+export function MarketingNextStepPanel({
+  body,
+  className = "",
+  items,
+  title,
+}: Readonly<{
+  body?: ReactNode;
+  className?: string;
+  items: ReadonlyArray<MarketingNextStepItem>;
+  title: ReactNode;
+}>) {
+  const toneByName: Record<BadgeTone, { bg: string; color: string }> = {
+    blue: {
+      bg: "color-mix(in srgb, var(--primary) 12%, var(--surface))",
+      color: marketingTone.blue,
+    },
+    gold: {
+      bg: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
+      color: marketingTone.gold,
+    },
+    neutral: {
+      bg: "var(--surface-interactive)",
+      color: marketingTone.soft,
+    },
+    red: {
+      bg: "color-mix(in srgb, var(--danger) 12%, var(--surface))",
+      color: marketingTone.red,
+    },
+    teal: {
+      bg: "color-mix(in srgb, var(--accent) 12%, var(--surface))",
+      color: marketingTone.teal,
+    },
+  };
+
+  return (
+    <MarketingCard className={`p-4 sm:p-5 ${className}`}>
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,0.32fr)_minmax(0,1fr)] lg:items-center">
+        <div className="min-w-0">
+          <h2
+            className="bp-card-title bp-copy-section-title font-black leading-tight"
+            style={{ color: marketingTone.text }}
+          >
+            {title}
+          </h2>
+          {body ? (
+            <p
+              className="bp-copy-card-body mt-2 text-[14px] font-bold leading-6"
+              style={{ color: marketingTone.soft }}
+            >
+              {body}
+            </p>
+          ) : null}
+        </div>
+        <div className="grid min-w-0 gap-3 md:grid-cols-3">
+          {items.map((item) => {
+            const tone = toneByName[item.toneName ?? "teal"];
+
+            return (
+              <Link
+                className="group grid min-w-0 gap-2 rounded-[10px] border px-4 py-3 transition hover:-translate-y-0.5 hover:bg-[var(--surface-elevated)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                href={item.href}
+                key={item.href}
+                style={{
+                  backgroundColor: "var(--surface-interactive)",
+                  borderColor: marketingTone.border,
+                  color: marketingTone.text,
+                }}
+              >
+                <span className="flex min-w-0 items-center gap-3">
+                  <span
+                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px]"
+                    style={{ backgroundColor: tone.bg, color: tone.color }}
+                  >
+                    <MarketingIcon name={item.icon ?? "arrow"} />
+                  </span>
+                  <span className="min-w-0 text-[14px] font-black leading-5">
+                    {item.label}
+                  </span>
+                </span>
+                {item.description ? (
+                  <span
+                    className="bp-copy-card-body text-[12px] font-bold leading-5"
+                    style={{ color: marketingTone.soft }}
+                  >
+                    {item.description}
+                  </span>
+                ) : null}
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </MarketingCard>
   );
 }
 

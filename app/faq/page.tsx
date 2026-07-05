@@ -15,6 +15,7 @@
  * - 2026-06-21: Created the dedicated full FAQ route moved out of the homepage.
  * - 2026-06-25: Normalized FAQ rhythm and compact section headings to bp primitives.
  * - 2026-07-04: Added FAQPage and breadcrumb JSON-LD for AI-search/SEO clarity.
+ * - 2026-07-05: Added a route-aware next-step panel after FAQ answers.
  * ============================================================
  */
 
@@ -29,6 +30,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -73,7 +75,8 @@ export async function generateMetadata({
 export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).faq;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.faq;
   const faqItems = copy.sections.flatMap((section) => section.items);
 
   return (
@@ -146,6 +149,33 @@ export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
               {navCopy.pricing}
             </MarketingButton>
           </div>
+          <MarketingNextStepPanel
+            body={copy.badge}
+            className="mt-8"
+            items={[
+              {
+                description: siteCopy.demo.badge,
+                href: "/demo",
+                icon: "radar",
+                label: navCopy.demo,
+                toneName: "blue",
+              },
+              {
+                description: siteCopy.pricing.badge,
+                href: "/pricing",
+                icon: "briefcase",
+                label: navCopy.pricing,
+              },
+              {
+                description: siteCopy.pilot.badge,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+            ]}
+            title={navCopy.flow}
+          />
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />

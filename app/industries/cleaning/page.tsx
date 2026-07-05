@@ -23,6 +23,7 @@
  * - 2026-06-25: Replaced duplicated desktop/mobile detail blocks with one active service detail panel.
  * - 2026-06-27: Collapsed secondary service detail/workflow panels to reduce mobile scroll.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
+ * - 2026-07-05: Added a route-aware next-step panel for cleaning-owner education.
  * ============================================================
  */
 
@@ -38,6 +39,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -81,7 +83,8 @@ export default async function CleaningPage({
 }: CleaningPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).cleaning;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.cleaning;
   const services = copy.serviceCards;
   const workflowSteps = copy.example.workflow.split(" -> ");
 
@@ -252,6 +255,33 @@ export default async function CleaningPage({
               </div>
             </div>
           </MarketingCard>
+          <MarketingNextStepPanel
+            body={copy.detailHelp.title}
+            className="mt-8"
+            items={[
+              {
+                description: siteCopy.quoteLinkGuide.badge,
+                href: "/quote-link-guide",
+                icon: "link",
+                label: navCopy.guide,
+              },
+              {
+                description: siteCopy.replySpeedGuide.badge,
+                href: "/faster-quote-replies",
+                icon: "clock",
+                label: siteCopy.replySpeedGuide.badge,
+                toneName: "blue",
+              },
+              {
+                description: siteCopy.pilot.badge,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+            ]}
+            title={navCopy.flow}
+          />
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />

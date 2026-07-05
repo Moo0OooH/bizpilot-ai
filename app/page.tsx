@@ -31,6 +31,7 @@
  * - 2026-06-26: Upgraded the hero mockup into a premium signal-flow board.
  * - 2026-07-04: Added public JSON-LD for WebSite, Organization, SoftwareApplication, and Service.
  * - 2026-07-05: Rebuilt the homepage hero as a full-stage product scene with overlay copy.
+ * - 2026-07-05: Added a route-aware next-step panel below the founder-pilot CTA.
  * ============================================================
  */
 
@@ -46,6 +47,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -583,7 +585,8 @@ function GuardrailStrip({ items }: Readonly<{ items: readonly string[] }>) {
 export default async function HomePage({ searchParams }: HomePageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).home;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.home;
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
@@ -666,6 +669,33 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
               </MarketingButton>
             </div>
           </MarketingCard>
+          <MarketingNextStepPanel
+            body={copy.preview.title}
+            className="mt-8"
+            items={[
+              {
+                description: siteCopy.features.badge,
+                href: "/features",
+                icon: "spark",
+                label: navCopy.features,
+              },
+              {
+                description: siteCopy.demo.badge,
+                href: "/demo",
+                icon: "radar",
+                label: navCopy.demo,
+                toneName: "blue",
+              },
+              {
+                description: siteCopy.pilot.badge,
+                href: "/pilot",
+                icon: "arrow",
+                label: navCopy.pilot,
+                toneName: "gold",
+              },
+            ]}
+            title={navCopy.flow}
+          />
         </MarketingShell>
       </section>
 

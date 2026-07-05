@@ -19,6 +19,7 @@
  * - 2026-06-25: Normalized pilot page rhythm while keeping the non-submitting template flow.
  * - 2026-07-04: Added honest pilot proof metrics without fake claims or data submission.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
+ * - 2026-07-05: Added a route-aware next-step panel for pilot applicants.
  * ============================================================
  */
 
@@ -32,6 +33,7 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
+  MarketingNextStepPanel,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -74,7 +76,8 @@ export async function generateMetadata({
 export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
   const navCopy = getHomeCopy(language).nav;
-  const copy = getPublicSiteCopy(language).pilot;
+  const siteCopy = getPublicSiteCopy(language);
+  const copy = siteCopy.pilot;
   const valueSections = [
     { items: copy.getItems, title: copy.getTitle },
     { items: copy.fitItems, title: copy.fitTitle },
@@ -218,6 +221,33 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
               <span className="min-w-0">{copy.proof.guardrail}</span>
             </div>
           </MarketingCard>
+          <MarketingNextStepPanel
+            body={copy.proof.title}
+            className="mt-8"
+            items={[
+              {
+                description: siteCopy.demo.badge,
+                href: "/demo",
+                icon: "radar",
+                label: navCopy.demo,
+                toneName: "blue",
+              },
+              {
+                description: siteCopy.pricing.badge,
+                href: "/pricing",
+                icon: "briefcase",
+                label: navCopy.pricing,
+                toneName: "gold",
+              },
+              {
+                description: siteCopy.trust.badge,
+                href: "/trust",
+                icon: "shield",
+                label: navCopy.trust,
+              },
+            ]}
+            title={navCopy.flow}
+          />
         </MarketingShell>
       </section>
       <MarketingFooter copy={navCopy} />
