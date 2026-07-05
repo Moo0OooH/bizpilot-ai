@@ -9,6 +9,10 @@
  * - app/page.tsx
  * Author: MoOoH
  * Created: 2026-07-04
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added complete BizPilot source header metadata for the social preview image route.
+ * - 2026-07-04: Created generated Open Graph image for public marketing routes.
  * ============================================================
  */
 
