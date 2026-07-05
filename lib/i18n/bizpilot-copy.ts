@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Standardized owner overview utility CTA copy for action-first dashboard hierarchy.
  * - 2026-07-05: Added accessible lead queue pagination labels and page-button copy.
  * - 2026-07-04: Added Settings feature guide details and lead queue pagination copy.
  * - 2026-07-04: Tightened dashboard copy around manual draft review, copied replies, and unwired roadmap fields.
@@ -1951,7 +1952,7 @@ const englishCopy: BizPilotCopy = {
         leadQueueTitle: "Lead Queue (Needs Your Action)",
         leadSources: "Lead Sources",
         leadsTrend: "Leads Trend",
-        newLead: "Open quote form",
+        newLead: "Preview quote page",
         newLeadsCenter: "New Leads",
         ownerReviewRequired:
           "Owner review remains required before anything is sent.",
@@ -3616,7 +3617,7 @@ const frenchCopy: BizPilotCopy = {
         leadQueueTitle: "File de prospects (a traiter)",
         leadSources: "Sources des prospects",
         leadsTrend: "Tendance des prospects",
-        newLead: "Ouvrir le formulaire",
+        newLead: "Prévisualiser la page de soumission",
         newLeadsCenter: "Nouveaux prospects",
         ownerReviewRequired:
           "La validation du responsable reste requise avant tout envoi.",

@@ -10,7 +10,7 @@
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-05-19: Rebuilt the overview from the approved index.html source of truth with workflow-first hierarchy.
  * - 2026-06-27: Promoted the overview hero title to the page H1 after topbar heading cleanup.
@@ -21,6 +21,7 @@
  * - 2026-07-04: Simplified the overview hierarchy around one action-first cockpit and moved charts below the manual queue.
  * - 2026-07-04: Routed overview metrics into focused lead queue states instead of ambiguous public-form destinations.
  * - 2026-07-04: Upgraded the Today panel into a richer manual queue with reasons and route-level CTAs.
+ * - 2026-07-05: Standardized owner overview priority, tokenized insight visuals, and demoted utility quote-page actions.
  * ============================================================
  */
 
@@ -98,7 +99,7 @@ function featuredLeadFrom(leads: LeadDeskItem[]): LeadDeskItem | undefined {
   );
 }
 
-type DashboardTone = "amber" | "blue" | "emerald" | "neutral" | "red" | "violet";
+type DashboardTone = "amber" | "blue" | "emerald" | "neutral" | "red";
 
 type LeadSourceSegment = Readonly<{
   color: string;
@@ -121,9 +122,9 @@ const dashboardToneStyles: Record<
     strong: "var(--dash-warning-strong)",
   },
   blue: {
-    border: "rgba(14, 165, 233, 0.28)",
-    soft: "rgba(14, 165, 233, 0.12)",
-    strong: "#0284c7",
+    border: "var(--dash-primary-border)",
+    soft: "var(--dash-primary-soft)",
+    strong: "var(--dash-primary-strong)",
   },
   emerald: {
     border: "var(--dash-success-border)",
@@ -139,11 +140,6 @@ const dashboardToneStyles: Record<
     border: "var(--dash-danger-border)",
     soft: "var(--dash-danger-soft)",
     strong: "var(--dash-danger-strong)",
-  },
-  violet: {
-    border: "rgba(124, 58, 237, 0.26)",
-    soft: "rgba(124, 58, 237, 0.12)",
-    strong: "#6d28d9",
   },
 };
 
@@ -178,11 +174,11 @@ function normalizeLeadSource(value: string | null): string {
 function buildLeadSourceSegments(leads: LeadDeskItem[]): LeadSourceSegment[] {
   const sourceOrder = ["Website", "Google", "Facebook", "Instagram", "Other"];
   const sourceColors: Record<string, string> = {
-    Facebook: "#f59e0b",
-    Google: "#0ea5e9",
-    Instagram: "#ef4444",
-    Other: "#14b8a6",
-    Website: "#6d5dfc",
+    Facebook: "var(--dash-warning-strong)",
+    Google: "var(--dash-primary-strong)",
+    Instagram: "var(--dash-danger-strong)",
+    Other: "var(--dash-success-strong)",
+    Website: "var(--dash-primary)",
   };
   const counts = new Map(sourceOrder.map((label) => [label, 0]));
 
@@ -192,7 +188,7 @@ function buildLeadSourceSegments(leads: LeadDeskItem[]): LeadSourceSegment[] {
   }
 
   return sourceOrder.map((label) => ({
-    color: sourceColors[label] ?? "#64748b",
+    color: sourceColors[label] ?? "var(--dash-text-muted)",
     label,
     value: counts.get(label) ?? 0,
   }));
@@ -283,8 +279,8 @@ function OwnerTrendChart({
       >
         <defs>
           <linearGradient id="owner-trend-fill" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#6d5dfc" stopOpacity="0.25" />
-            <stop offset="100%" stopColor="#6d5dfc" stopOpacity="0.02" />
+            <stop offset="0%" stopColor="var(--dash-primary)" stopOpacity="0.25" />
+            <stop offset="100%" stopColor="var(--dash-primary)" stopOpacity="0.02" />
           </linearGradient>
         </defs>
         {[0, 1, 2, 3].map((index) => {
@@ -306,7 +302,7 @@ function OwnerTrendChart({
         <polyline
           fill="none"
           points={line}
-          stroke="#4f46e5"
+          stroke="var(--dash-primary)"
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="3"
@@ -315,10 +311,10 @@ function OwnerTrendChart({
           <circle
             cx={point.x}
             cy={point.y}
-            fill="#ffffff"
+            fill="var(--dash-surface)"
             key={`${point.label}-${point.count}`}
             r="3.8"
-            stroke="#4f46e5"
+            stroke="var(--dash-primary)"
             strokeWidth="2"
           />
         ))}
@@ -335,12 +331,14 @@ function OwnerTrendChart({
 }
 
 function LeadSourcesDonut({
+  ariaLabel,
   centerLabel,
   segments,
   title,
   total,
   viewFullReport,
 }: Readonly<{
+  ariaLabel: string;
   centerLabel: string;
   segments: readonly LeadSourceSegment[];
   title: string;
@@ -357,7 +355,7 @@ function LeadSourcesDonut({
       />
       <div className="mt-5 grid gap-4 sm:grid-cols-[minmax(150px,0.7fr)_minmax(0,1fr)] sm:items-center xl:grid-cols-1 2xl:grid-cols-[minmax(150px,0.7fr)_minmax(0,1fr)]">
         <div
-          aria-label="New leads by source"
+          aria-label={ariaLabel}
           className="mx-auto grid h-36 w-36 place-items-center rounded-full"
           role="img"
           style={{ background: conicGradientFor([...segments]) }}
@@ -430,7 +428,7 @@ function OwnerTodoTodayPanel({
   return (
     <DashboardCard className="p-4">
       <SectionHeader title={title} />
-      <div className="mt-4 grid gap-2">
+      <div className="mt-4 grid gap-2" data-dashboard-priority-order>
         {items.map((item) => {
           const toneStyle = dashboardToneStyles[item.tone];
 
@@ -646,7 +644,7 @@ export default async function DashboardOverviewPage() {
       detail: overviewCopy.recoveryFocus.replyDetail(needsReplyCount + atRiskCount),
       href: leadQueueNeedsReplyHref,
       label: overviewCopy.recoveryFocus.replyTitle,
-      tone: (needsReplyCount + atRiskCount > 0 ? "violet" : "neutral") as DashboardTone,
+      tone: (atRiskCount > 0 ? "red" : needsReplyCount > 0 ? "amber" : "neutral") as DashboardTone,
     },
     {
       actionLabel: overviewCopy.openQueue,
@@ -695,14 +693,14 @@ export default async function DashboardOverviewPage() {
             {overviewCopy.heroDescription}
           </p>
         </div>
-        <div className="flex shrink-0 flex-wrap gap-2">
+        <div className="flex shrink-0 flex-wrap gap-2" data-dashboard-utility-actions>
           <span className="inline-flex min-h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 text-[12px] font-black text-[var(--dash-text-secondary)]">
             {visualCopy.dateRange}
           </span>
           <Link className={buttonClass} href={leadQueueNeedsReplyHref}>
             {visualCopy.filters}
           </Link>
-          <Link className={primaryButtonClass} href={quotePath}>
+          <Link className={buttonClass} href={quotePath}>
             {visualCopy.newLead}
           </Link>
         </div>
@@ -722,7 +720,10 @@ export default async function DashboardOverviewPage() {
               {overviewCopy.heroDescription}
             </p>
 
-            <div className="mt-5 grid gap-3 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <div
+              className="mt-5 grid gap-3 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center"
+              data-dashboard-primary-action
+            >
               <div className="min-w-0">
                 <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-primary-strong)]">
                   {overviewCopy.suggestedNextAction}
@@ -1034,6 +1035,7 @@ export default async function DashboardOverviewPage() {
       <section
         className="grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(300px,0.65fr)]"
         data-dashboard-insight-panel
+        data-dashboard-secondary-insights
       >
         <DashboardCard className="p-4">
           <SectionHeader
@@ -1048,6 +1050,7 @@ export default async function DashboardOverviewPage() {
         </DashboardCard>
 
         <LeadSourcesDonut
+          ariaLabel={visualCopy.leadSources}
           centerLabel={visualCopy.newLeadsCenter}
           segments={leadSourceSegments}
           title={visualCopy.leadSources}

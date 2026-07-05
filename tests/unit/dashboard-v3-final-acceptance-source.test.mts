@@ -12,6 +12,7 @@
  * Created: 2026-06-27
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Guarded owner overview priority standardization and tokenized secondary insights.
  * - 2026-07-04: Updated owner overview guards for the simplified action-first cockpit.
  * - 2026-07-04: Added source guards for local dashboard display preferences.
  * - 2026-07-04: Guarded display preferences route reapply, storage fallback, and visible focus states.
@@ -163,6 +164,11 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(overview.includes("overviewCopy.suggestedNextAction"), true);
     assert.equal(overview.includes("overviewCopy.startGuide"), true);
     assert.equal(overview.includes("priorityTiles"), true);
+    assert.equal(overview.includes("data-dashboard-primary-action"), true);
+    assert.equal(overview.includes("data-dashboard-priority-order"), true);
+    assert.equal(overview.includes("data-dashboard-secondary-insights"), true);
+    assert.equal(overview.includes("className={primaryButtonClass} href={quotePath}"), false);
+    assert.equal(overview.includes("className={buttonClass} href={quotePath}"), true);
     assert.equal(
       overview.includes('const leadQueueNeedsReplyHref = "/dashboard/leads?focus=needs_reply";'),
       true,
@@ -185,6 +191,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(overview.includes("OwnerOverviewKpiCard"), false);
     assert.equal(overview.includes("OwnerTrendChart"), true);
     assert.equal(overview.includes("LeadSourcesDonut"), true);
+    assert.equal(overview.includes("\"violet\""), false);
+    assert.equal(overview.includes("#6d5dfc"), false);
+    assert.equal(overview.includes("#4f46e5"), false);
+    assert.equal(overview.includes("var(--dash-primary)"), true);
     assert.equal(overview.includes("OwnerTodoTodayPanel"), true);
     assert.equal(queue.includes("QueueInsightStrip"), true);
     assert.equal(queue.includes("initialFilter?: LeadQueueInitialFilter"), true);

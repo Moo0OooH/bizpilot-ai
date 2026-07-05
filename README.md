@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Owner:** MoOoH
-**Current Phase:** Phase 26C public page content breadcrumb sweep
+**Current Phase:** Phase 26D owner dashboard priority standardization
 **Standards Layer:** v1.7 canonical docs map active
 **Product:** AI Quote Recovery & Lead Conversion Desk
 **GTM:** Cleaning-first
@@ -64,6 +64,12 @@ Latest public page-content slice:
 `docs/readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md`
 adds BreadcrumbList JSON-LD to deeper canonical public pages and shared policy
 pages without changing product scope or opening real-data/paid-pilot gates.
+
+Latest owner dashboard standardization slice:
+`docs/readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md`
+keeps the owner overview action-first, demotes quote-page preview to a utility
+action, tokenizes secondary insight visuals, and preserves all real-data,
+paid-pilot, automation, booking, invoice, SMS/WhatsApp, and CRM gates.
 
 Phase 25/26 finalization does not approve real customer data, paid pilot
 launch, production mutations, automation, booking, invoices, SMS/WhatsApp,

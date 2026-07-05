@@ -13,21 +13,22 @@ Before reading or implementing anything, start with:
 7. `readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md`
 8. `readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md`
 9. `readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md`
-10. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
-11. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
-12. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
-13. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
-14. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
-15. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
-16. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
-17. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
-18. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
-19. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
-20. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
-21. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
-22. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
-23. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
-24. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+10. `readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md`
+11. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
+12. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
+13. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
+14. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
+15. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
+16. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
+17. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
+18. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
+19. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
+20. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
+21. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
+22. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
+23. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
+24. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
+25. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
 
 These files define the active feature-entitlement interpretation of the full documentation package.
 
@@ -80,6 +81,13 @@ owner workspace state, and local secret-rotation caveat.
 the latest public website page-content sweep. Deeper canonical public pages now
 emit BreadcrumbList JSON-LD; no real-data, paid-pilot, automation, booking,
 invoice, payment, SMS/WhatsApp, or autonomous AI gate is opened.
+
+2026-07-05 Phase 26D owner dashboard override: use
+`readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md`
+for the latest protected owner overview hierarchy pass. The owner overview now
+keeps one primary manual next-action region, quote-page preview as utility
+chrome, and tokenized secondary insight visuals without opening real-data,
+paid-pilot, automation, booking, invoice, payment, SMS/WhatsApp, or CRM gates.
 
 2026-06-01 status override: BizPilot is synthetic-ready, not
 real-data-approved, and not paid-pilot-ready. The next gates are Phase 24F final
@@ -184,6 +192,7 @@ Use the v1.4 product documents for strategy and phase context. Use the v1.5 docu
 
 ## Latest Readiness Evidence
 
+- `docs/readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md`
 - `docs/readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md`
 - `docs/readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md`
 - `docs/readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md`

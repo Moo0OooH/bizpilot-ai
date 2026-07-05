@@ -13,6 +13,7 @@
  * Created: 2026-06-26
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Guarded owner overview priority hierarchy, tokenized insight visuals, and demoted utility quote-page actions.
  * - 2026-07-05: Guarded accessible lead queue pagination controls.
  * - 2026-07-04: Added lead queue pagination source guards.
  * - 2026-07-04: Updated overview source guards for the simplified action-first cockpit.
@@ -40,11 +41,26 @@ describe("P12 dashboard professionalization source guards", () => {
     assert.equal(overviewSource.includes("overviewCopy.recoveryFocus.replyDetail"), true);
     assert.equal(overviewSource.includes("overviewCopy.metrics.aiDraftsReady.detail"), true);
     assert.equal(overviewSource.includes("actionLabel"), true);
+    assert.equal(overviewSource.includes("data-dashboard-primary-action"), true);
+    assert.equal(overviewSource.includes("data-dashboard-priority-order"), true);
+    assert.equal(overviewSource.includes("data-dashboard-utility-actions"), true);
+    assert.equal(overviewSource.includes("data-dashboard-secondary-insights"), true);
+    assert.equal(overviewSource.includes("className={buttonClass} href={quotePath}"), true);
+    assert.equal(overviewSource.includes("className={primaryButtonClass} href={quotePath}"), false);
     assert.equal(overviewSource.includes("OwnerTrendChart"), true);
     assert.equal(overviewSource.includes("LeadSourcesDonut"), true);
     assert.equal(overviewSource.includes("ownerOverviewKpiCards"), false);
+    assert.equal(overviewSource.includes("\"violet\""), false);
+    assert.equal(overviewSource.includes("#6d5dfc"), false);
+    assert.equal(overviewSource.includes("#4f46e5"), false);
+    assert.equal(overviewSource.includes("stopColor=\"var(--dash-primary)\""), true);
+    assert.equal(overviewSource.includes("stroke=\"var(--dash-primary)\""), true);
+    assert.equal(overviewSource.includes("fill=\"var(--dash-surface)\""), true);
+    assert.equal(overviewSource.includes("var(--dash-warning-strong)"), true);
+    assert.equal(overviewSource.includes("var(--dash-danger-strong)"), true);
     assert.equal(copySource.includes("Start here"), true);
     assert.equal(copySource.includes("Finish quote setup"), true);
+    assert.equal(copySource.includes("Preview quote page"), true);
     assert.equal(copySource.includes("Today's manual recovery lane"), true);
     assert.equal(copySource.includes("Manual send"), true);
     assert.equal(copySource.includes("Owner copies, edits, and sends."), true);
