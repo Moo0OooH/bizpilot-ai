@@ -16,6 +16,8 @@
  * - 2026-07-04: Added quote-link guide smoke coverage.
  * - 2026-07-04: Added product-real demo route smoke coverage.
  * - 2026-07-05: Updated homepage smoke markers for the product-scene hero.
+ * - 2026-07-05: Updated homepage smoke markers for the hot quote rescue hero.
+ * - 2026-07-05: Aligned homepage smoke markers with escaped production HTML.
  * ============================================================
  */
 
@@ -40,11 +42,11 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 const smokeTargets: readonly SmokeTarget[] = [
   {
     expectedText: [
-      "Cleaning quote recovery that keeps hot leads moving.",
+      "Stop losing hot cleaning quotes to slow replies.",
       "Join the pilot",
-      "Website, Google, social",
-      "Live intake",
-      "Review draft",
+      "Waiting 47 minutes",
+      "Hot quote at risk",
+      "Review &amp; copy",
     ],
     path: "/",
     status: 200,

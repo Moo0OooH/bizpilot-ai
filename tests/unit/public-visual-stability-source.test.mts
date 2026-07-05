@@ -33,6 +33,7 @@
  * - 2026-06-25: Updated homepage hero rhythm guards for the final tighter first fold.
  * - 2026-06-26: Locked the homepage workflow preview to one compact panel instead of four cards.
  * - 2026-07-05: Locked the homepage product-scene hero redesign.
+ * - 2026-07-05: Locked the foreground hot quote rescue board and snapshot section.
  * ============================================================
  */
 
@@ -359,46 +360,48 @@ describe("public visual stability source contracts", () => {
       "Homepage hero should no longer use the previous taller desktop title size.",
     );
     assert.equal(
-      globals.includes(".homepage-hero-title {\n    font-size: 3.55rem;"),
+      globals.includes("font-size: clamp(2.2rem, 3.85vw, 3.45rem);"),
       true,
-      "Homepage hero should keep a confident desktop title size in CSS.",
+      "Homepage hero should keep a confident fluid title size in CSS.",
     );
     assert.equal(
-      globals.includes(".homepage-product-scene {\n  position: absolute;") &&
-        globals.includes("inset-inline: min(53%, 40rem) -3rem;"),
+      globals.lastIndexOf(".homepage-product-scene {\n  position: relative;") >
+        globals.lastIndexOf(".homepage-product-scene {\n  position: absolute;"),
       true,
-      "Homepage hero should render the product visual as an integrated background scene.",
+      "Homepage hero should render the product visual as a readable foreground board.",
     );
-    assert.equal(globals.includes("max-inline-size: min(100%, 41rem);"), true);
+    assert.equal(globals.includes(".homepage-rescue-board"), true);
+    assert.equal(globals.includes(".homepage-risk-heading"), true);
+    assert.equal(globals.includes(".homepage-cleaning-visual"), true);
     assert.equal(
       globals.includes("@media (min-width: 1100px) and (max-height: 780px)"),
       true,
       "Short desktop viewports need reduced hero padding instead of smaller body text.",
     );
     assert.equal(
-      globals.includes(".homepage-hero-stage {\n    min-block-size: 34rem;"),
+      globals.includes(".homepage-cleaning-visual {\n    min-block-size: 6.5rem;"),
       true,
-      "Short desktop viewports need a compact product-scene hero to stay inside the first fold.",
+      "Short desktop viewports need compact rescue-board illustration height.",
     );
     assert.equal(
-      homepage.includes("copy.sources.slice(0, 5)") &&
-        homepage.includes("copy.messages.slice(0, 3)") &&
+      homepage.includes("copy.sources.slice(0, 3)") &&
+        homepage.includes("copy.messages[0]") &&
         homepage.includes("copy.bizPilotActions.slice(0, 4)") &&
-        homepage.includes("copy.leads.slice(0, 2)"),
+        homepage.includes("const activeLead = copy.leads[0]"),
       true,
-      "Homepage hero visual should cap sources, messages, BizPilot actions, and priority leads.",
+      "Homepage hero visual should cap sources, messages, missing details, and the active lead.",
     );
     assert.equal(
       homepage.includes("homepage-channel-strip") &&
-        globals.includes(".homepage-channel-pill .homepage-source-mark {\n  block-size: 1.25rem;\n  inline-size: 1.25rem;"),
+        globals.includes(".homepage-channel-pill .homepage-source-mark {\n  block-size: 1.7rem;\n  inline-size: 1.7rem;"),
       true,
       "Homepage source channels should render as compact branded channel pills.",
     );
     assert.equal(
-      globals.includes(".homepage-channel-pill:nth-child(n + 4),") &&
-        globals.includes(".homepage-owner-draft {\n    display: none;"),
+      globals.includes(".homepage-cleaning-visual,\n  .homepage-risk-heading .homepage-product-safety {\n    display: none;") &&
+        globals.includes(".homepage-product-scene {\n    display: block;"),
       true,
-      "Mobile homepage hero should simplify product-scene density.",
+      "Tiny mobile homepage hero should simplify secondary board details without hiding the board.",
     );
     assert.equal(homepage.includes("bp-button-row homepage-hero-actions"), true);
     assert.equal(homepage.includes("min-[390px]:flex-row"), true);
@@ -409,9 +412,9 @@ describe("public visual stability source contracts", () => {
     );
     assert.equal(
       globals.includes("@media (max-width: 359px)") &&
-        globals.includes(".homepage-hero-proof-rail,\n  .homepage-product-scene {\n    display: none;"),
+        globals.includes(".homepage-hero-proof-rail {\n    display: none;"),
       true,
-      "Tiny mobile homepage hero should remove secondary proof/scene density before CTA visibility suffers.",
+      "Tiny mobile homepage hero should remove secondary proof density before CTA visibility suffers.",
     );
     assert.equal(
       globals.includes(".homepage-problem-section"),
@@ -420,7 +423,7 @@ describe("public visual stability source contracts", () => {
     );
   });
 
-  it("keeps the homepage workflow preview as one compact panel", () => {
+  it("keeps the homepage workflow preview as one clear rescue snapshot", () => {
     const homepage = source("app/page.tsx");
     const globals = source("app/globals.css");
     const previewStart = homepage.indexOf("function ProductPreview");
@@ -463,7 +466,7 @@ describe("public visual stability source contracts", () => {
         `ProductPreview should not keep the old four-card preview marker ${oldCardMarker}.`,
       );
     }
-    assert.equal(globals.includes(".homepage-demo-grid {\n  display: block;"), true);
+    assert.equal(globals.includes(".homepage-recovery-snapshot {\n  display: grid;"), true);
     assert.equal(
       globals.includes(".homepage-demo-grid,\n  .homepage-use-case-grid"),
       false,

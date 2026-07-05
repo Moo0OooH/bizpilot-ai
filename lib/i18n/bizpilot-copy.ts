@@ -23,6 +23,7 @@
  * - 2026-07-05: Added bilingual route-aware dashboard guide copy for every protected owner page.
  * - 2026-07-05: Standardized owner overview utility CTA copy for action-first dashboard hierarchy.
  * - 2026-07-05: Added accessible lead queue pagination labels and page-button copy.
+ * - 2026-07-05: Expanded quote-field legacy default localization and dashboard form placeholders.
  * - 2026-07-04: Added Settings feature guide details and lead queue pagination copy.
  * - 2026-07-04: Tightened dashboard copy around manual draft review, copied replies, and unwired roadmap fields.
  * - 2026-07-04: Added local dashboard display preference copy for density, guide, and insight controls.
@@ -215,6 +216,7 @@ type DashboardBusinessProfileCopy = Readonly<{
   save: string;
   saveNote: string;
   serviceAreas: string;
+  serviceAreasPlaceholder: string;
   templateName: string;
   verticalHelp: string;
 }>;
@@ -1351,6 +1353,7 @@ const englishCopy: BizPilotCopy = {
       saveNote:
         "Save persists identity changes. Quote-form questions are managed in Quote Setup.",
       serviceAreas: "Service areas",
+      serviceAreasPlaceholder: "Montreal\nLaval\nLongueuil",
       templateName: "Custom quote template name",
       verticalHelp:
         "Current scope is cleaning-first. Other verticals stay locked until the validation gate clears.",
@@ -1410,6 +1413,78 @@ const englishCopy: BizPilotCopy = {
         options: "Options",
         optionsHelp:
           "For select, radio, or time-window fields. One option per line or comma.",
+        placeholders: {
+          boolean: {
+            fieldKey: "yes_no_question",
+            helper: "Use for a simple yes/no detail.",
+            label: "Yes/no question",
+            options: "",
+            preview: "Customer checks one box.",
+          },
+          date: {
+            fieldKey: "preferred_date",
+            helper: "Use when a calendar date matters.",
+            label: "Preferred date",
+            options: "",
+            preview: "Customer chooses a date.",
+          },
+          email: {
+            fieldKey: "alternate_email",
+            helper: "Use only when a second email is useful.",
+            label: "Alternate email",
+            options: "",
+            preview: "name@example.com",
+          },
+          number: {
+            fieldKey: "room_count",
+            helper: "Use when the answer should be numeric.",
+            label: "How many rooms?",
+            options: "",
+            preview: "Example answer: 3",
+          },
+          phone: {
+            fieldKey: "callback_phone",
+            helper: "Use when a phone number is required.",
+            label: "Callback phone",
+            options: "",
+            preview: "(555) 123-4567",
+          },
+          radio: {
+            fieldKey: "home_furnished",
+            helper: "Radio is best when the customer must choose one answer.",
+            label: "Is the home furnished?",
+            options: "Yes\nNo\nPartially",
+            preview: "One visible choice is selected.",
+          },
+          select: {
+            fieldKey: "property_type",
+            helper: "Select keeps a longer list compact on the public form.",
+            label: "Property type",
+            options: "Apartment\nCondo\nHouse\nOffice",
+            preview: "Customer opens a dropdown.",
+          },
+          text: {
+            fieldKey: "parking_instructions",
+            helper: "Short answer shown beside the quote request.",
+            label: "Parking or access instructions",
+            options: "",
+            preview: "Example: Use visitor parking behind the building.",
+          },
+          textarea: {
+            fieldKey: "long_answer",
+            helper: "Use when the customer may explain details.",
+            label: "Long answer question",
+            options: "",
+            preview: "Customer writes a longer note.",
+          },
+          time_window: {
+            fieldKey: "arrival_window",
+            helper: "Use when scheduling windows matter.",
+            label: "Preferred arrival window",
+            options: "Morning, 8-11\nAfternoon, 12-3\nEvening, 4-7",
+            preview: "Customer chooses a time window.",
+          },
+        },
         position: "Position",
         priority: "Priority",
         removeField: "Remove field",
@@ -3178,6 +3253,7 @@ const frenchCopy: BizPilotCopy = {
       saveNote:
         "L'enregistrement conserve les changements d'identité. Les questions du formulaire se gèrent dans Configuration.",
       serviceAreas: "Zones desservies",
+      serviceAreasPlaceholder: "Montréal\nLaval\nLongueuil",
       templateName: "Nom du modèle de soumission",
       verticalHelp:
         "Le périmètre actuel reste concentré sur le nettoyage. Les autres verticales restent verrouillées jusqu'à validation.",
@@ -3238,6 +3314,82 @@ const frenchCopy: BizPilotCopy = {
         options: "Options",
         optionsHelp:
           "Pour les champs de liste, radio ou plage horaire. Une option par ligne ou séparée par une virgule.",
+        placeholders: {
+          boolean: {
+            fieldKey: "animaux_maison",
+            helper: "Utile si l'équipe doit se préparer pour des animaux.",
+            label: "Avez-vous des animaux à la maison?",
+            options: "",
+            preview: "Le client coche une case.",
+          },
+          date: {
+            fieldKey: "date_menage_souhaitee",
+            helper: "Demandez la date idéale du service.",
+            label: "Date de ménage souhaitée",
+            options: "",
+            preview: "Le client choisit une date.",
+          },
+          email: {
+            fieldKey: "courriel_facturation",
+            helper:
+              "À utiliser seulement si ce courriel diffère du contact principal.",
+            label: "Courriel de facturation",
+            options: "",
+            preview: "nom@exemple.com",
+          },
+          number: {
+            fieldKey: "nombre_chambres",
+            helper: "Les nombres aident à estimer le temps et l'équipe.",
+            label: "Combien de chambres?",
+            options: "",
+            preview: "Exemple de réponse : 3",
+          },
+          phone: {
+            fieldKey: "telephone_rappel",
+            helper:
+              "Meilleur numéro si le responsable doit confirmer les détails.",
+            label: "Téléphone de rappel",
+            options: "",
+            preview: "(555) 123-4567",
+          },
+          radio: {
+            fieldKey: "logement_meuble",
+            helper:
+              "Radio convient quand le client doit choisir une seule réponse.",
+            label: "Le logement est-il meublé?",
+            options: "Oui\nNon\nPartiellement",
+            preview: "Une seule option visible est choisie.",
+          },
+          select: {
+            fieldKey: "type_propriete",
+            helper:
+              "La liste déroulante garde les longues listes compactes.",
+            label: "Type de propriété",
+            options: "Appartement\nCondo\nMaison\nBureau",
+            preview: "Le client ouvre une liste.",
+          },
+          text: {
+            fieldKey: "instructions_stationnement",
+            helper: "Réponse courte affichée avec la demande.",
+            label: "Instructions de stationnement ou d'accès",
+            options: "",
+            preview: "Exemple : utilisez le stationnement visiteur.",
+          },
+          textarea: {
+            fieldKey: "demandes_speciales",
+            helper: "Utilisez un texte long pour les détails à expliquer.",
+            label: "Autre chose à savoir?",
+            options: "",
+            preview: "Le client écrit une note plus longue.",
+          },
+          time_window: {
+            fieldKey: "plage_arrivee_souhaitee",
+            helper: "Les plages horaires facilitent la planification.",
+            label: "Plage d'arrivée souhaitée",
+            options: "Matin, 8-11\nAprès-midi, 12-3\nSoir, 4-7",
+            preview: "Le client choisit une plage horaire.",
+          },
+        },
         position: "Position",
         priority: "Priorité",
         removeField: "Retirer le champ",
@@ -4850,10 +5002,73 @@ export function getDefaultBizPilotCopy(): BizPilotCopy {
   return copyByLanguage[DEFAULT_LANGUAGE];
 }
 
+const legacyDefaultQuoteFieldCopies: Record<string, readonly QuoteFieldCopy[]> = {
+  customer_contact: [
+    {
+      helpText: "Email or phone for owner follow-up.",
+      label: "Customer contact",
+    },
+    {
+      helpText: "Courriel ou téléphone pour le suivi du propriétaire.",
+      label: "Coordonnées",
+    },
+  ],
+  customer_email: [
+    {
+      helpText: "Best email address for owner follow-up.",
+      label: "Email address",
+    },
+    {
+      helpText: "Meilleur courriel pour le suivi du propriétaire.",
+      label: "Adresse courriel",
+    },
+  ],
+  customer_phone: [
+    {
+      helpText: "Best phone number for owner follow-up.",
+      label: "Phone number",
+    },
+    {
+      helpText: "Meilleur numéro de téléphone pour le suivi du propriétaire.",
+      label: "Numéro de téléphone",
+    },
+  ],
+  notes: [
+    {
+      helpText: "Extra context for the owner.",
+      label: "Notes",
+    },
+    {
+      helpText: "Contexte supplémentaire pour le propriétaire.",
+      label: "Notes",
+    },
+  ],
+};
+
+function normalizeQuoteFieldDefaultText(value: string): string {
+  return value
+    .trim()
+    .toLocaleLowerCase("en")
+    .replace(/[’']/g, "'")
+    .replace(/\s+/g, " ");
+}
+
+function defaultQuoteFieldTextMatches(left: string, right: string): boolean {
+  return (
+    left === right ||
+    normalizeQuoteFieldDefaultText(left) === normalizeQuoteFieldDefaultText(right)
+  );
+}
+
 function defaultQuoteFieldCopies(fieldKey: string): QuoteFieldCopy[] {
-  return Object.values(copyByLanguage)
+  const activeDefaults = Object.values(copyByLanguage)
     .map((copy) => copy.quoteFields[fieldKey])
     .filter((copy): copy is QuoteFieldCopy => Boolean(copy));
+
+  return [
+    ...activeDefaults,
+    ...(legacyDefaultQuoteFieldCopies[fieldKey] ?? []),
+  ];
 }
 
 export function isDefaultQuoteFieldHelpText(input: {
@@ -4861,7 +5076,10 @@ export function isDefaultQuoteFieldHelpText(input: {
   helpText: string;
 }): boolean {
   return defaultQuoteFieldCopies(input.fieldKey).some(
-    (field) => field.helpText === input.helpText,
+    (field) =>
+      field.helpText
+        ? defaultQuoteFieldTextMatches(field.helpText, input.helpText)
+        : false,
   );
 }
 
@@ -4870,7 +5088,7 @@ export function isDefaultQuoteFieldLabel(input: {
   label: string;
 }): boolean {
   return defaultQuoteFieldCopies(input.fieldKey).some(
-    (field) => field.label === input.label,
+    (field) => defaultQuoteFieldTextMatches(field.label, input.label),
   );
 }
 

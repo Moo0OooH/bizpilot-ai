@@ -32,6 +32,7 @@
  * - 2026-07-04: Added public JSON-LD for WebSite, Organization, SoftwareApplication, and Service.
  * - 2026-07-05: Rebuilt the homepage hero as a full-stage product scene with overlay copy.
  * - 2026-07-05: Added a route-aware next-step panel below the founder-pilot CTA.
+ * - 2026-07-05: Refocused the hero and second section around a hot-lead risk-to-remedy story.
  * ============================================================
  */
 
@@ -127,6 +128,10 @@ function sourceChannelKey(source: string) {
     return "text";
   }
 
+  if (normalized.includes("phone") || normalized.includes("call") || normalized.includes("appel")) {
+    return "phone";
+  }
+
   if (normalized.includes("google")) {
     return "google";
   }
@@ -194,6 +199,14 @@ function SourceChannelMark({ source }: Readonly<{ source: string }>) {
     );
   }
 
+  if (channel === "phone") {
+    return (
+      <span aria-hidden className="homepage-source-mark homepage-source-mark--phone">
+        <MarketingIcon name="phone" />
+      </span>
+    );
+  }
+
   return (
     <span aria-hidden className="homepage-source-mark homepage-source-mark--website">
       <MarketingIcon name="globe" />
@@ -202,99 +215,99 @@ function SourceChannelMark({ source }: Readonly<{ source: string }>) {
 }
 
 function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
-  const visibleMessages = copy.messages.slice(0, 3);
-  const incomingSources = copy.sources.slice(0, 5);
-  const priorityLeads = copy.leads.slice(0, 2);
-  const ownerActions = copy.bizPilotActions.slice(0, 4);
+  const activeLead = copy.leads[0];
+  const missingDetails = copy.bizPilotActions.slice(0, 4);
+  const visibleSources = copy.sources.slice(0, 3);
 
   return (
     <div
       aria-label={copy.boardLabel}
       className="homepage-hero-mockup homepage-product-scene"
     >
-      <div className="homepage-product-window">
+      <div className="homepage-product-window homepage-rescue-board">
         <div className="homepage-product-topbar">
           <span className="homepage-product-brand">BizPilot AI</span>
+          <span className="homepage-product-safety homepage-wait-pill">
+            <MarketingIcon name="clock" />
+            {copy.chaosSubtitle}
+          </span>
+        </div>
+
+        <div className="homepage-risk-heading">
+          <span className="homepage-risk-icon" aria-hidden>
+            <MarketingIcon name="warning" />
+          </span>
+          <div className="min-w-0">
+            <p className="homepage-panel-heading-text">{copy.chaosTitle}</p>
+            <p className="homepage-panel-subtitle">{copy.chaosHint}</p>
+          </div>
           <span className="homepage-product-safety">
             <MarketingIcon name="shield" />
             {copy.boardSafety}
           </span>
         </div>
 
-        <div className="homepage-product-grid">
-          <section className="homepage-intake-stack" aria-label={copy.chaosTitle}>
-            <div className="homepage-panel-heading">
-              <span>{copy.chaosTitle}</span>
-              <p>{copy.chaosSubtitle}</p>
+        <article className="homepage-lead-card" aria-label={activeLead?.title ?? copy.chaosTitle}>
+          <span className="homepage-lead-avatar" aria-hidden>
+            MA
+          </span>
+          <div className="min-w-0">
+            <div className="homepage-lead-title-row">
+              <p>{activeLead?.title}</p>
+              <span>{copy.messages[0]}</span>
             </div>
-            <div className="homepage-channel-strip">
-              {incomingSources.map((source) => (
+            <p className="homepage-lead-meta">{activeLead?.body}</p>
+            <div className="homepage-channel-strip" aria-label={copy.chaosHint}>
+              {visibleSources.map((source) => (
                 <span className="homepage-channel-pill" key={source}>
                   <SourceChannelMark source={source} />
-                  <span>{source}</span>
                 </span>
               ))}
+              <span className="homepage-source-summary">{copy.messages[1]}</span>
             </div>
-            <div className="homepage-message-stack">
-              {visibleMessages.map((message, index) => (
-                <p className="homepage-message-card" key={message}>
-                  <span aria-hidden className={index === 0 ? "homepage-message-dot homepage-message-dot--urgent" : "homepage-message-dot"} />
-                  <span>{message}</span>
+            <p className="homepage-risk-alert">
+              <MarketingIcon name="warning" />
+              {copy.chaosBadge}
+            </p>
+          </div>
+        </article>
+
+        <div className="homepage-remedy-grid">
+          <section className="homepage-missing-card" aria-label={copy.bizPilotTitle}>
+            <p className="homepage-clarity-badge">{copy.bizPilotTitle}</p>
+            <p className="homepage-draft-title">{copy.bizPilotBody}</p>
+            <div className="homepage-missing-list">
+              {missingDetails.map((detail) => (
+                <p key={detail}>
+                  <MarketingIcon name="search" />
+                  {detail}
                 </p>
               ))}
             </div>
-            <p className="homepage-intake-note">
-              <span>{copy.chaosBadge}</span>
-              {copy.chaosHint}
-            </p>
           </section>
 
-          <section className="homepage-recovery-focus" aria-label={copy.bizPilotTitle}>
-            <div className="homepage-focus-core">
-              <span className="homepage-focus-icon" aria-hidden>
-                <MarketingIcon name="radar" />
-              </span>
-              <div>
-                <p className="homepage-focus-title">{copy.bizPilotTitle}</p>
-                <p className="homepage-focus-body">{copy.bizPilotBody}</p>
-              </div>
-            </div>
-            <div className="homepage-action-chip-grid">
-              {ownerActions.map((action) => (
-                <span className="homepage-action-chip" key={action}>
-                  <MarketingIcon name="check" />
-                  {action}
-                </span>
-              ))}
-            </div>
-            <div className="homepage-priority-list">
-              {priorityLeads.map((lead, index) => (
-                <article className="homepage-priority-card" key={lead.title}>
-                  <span className="homepage-priority-index">{index + 1}</span>
-                  <div>
-                    <p>{lead.title}</p>
-                    <span>{lead.body}</span>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
+          <div className="homepage-cleaning-visual" aria-hidden="true">
+            <span className="homepage-bottle homepage-bottle--spray" />
+            <span className="homepage-bottle homepage-bottle--soap" />
+            <span className="homepage-towel" />
+            <span className="homepage-brush" />
+          </div>
+        </div>
 
-          <section className="homepage-owner-draft" aria-label={copy.clarityTitle}>
+        <section className="homepage-owner-draft" aria-label={copy.clarityTitle}>
+          <div className="homepage-draft-icon" aria-hidden>
+            <MarketingIcon name="message" />
+          </div>
+          <div className="min-w-0">
             <p className="homepage-clarity-badge">{copy.clarityBadge}</p>
             <p className="homepage-draft-title">{copy.draftTitle}</p>
-            <div className="homepage-draft-lines" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </div>
             <p className="homepage-draft-body">{copy.draftBody}</p>
-            <span className="homepage-draft-action">
-              <MarketingIcon name="pen" />
-              {copy.copyButton}
-            </span>
-          </section>
-        </div>
+          </div>
+          <span className="homepage-draft-action">
+            <MarketingIcon name="copy" />
+            {copy.copyButton}
+          </span>
+        </section>
       </div>
     </div>
   );
@@ -383,53 +396,26 @@ function CardGrid({
 
 function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
   return (
-    <section className="py-[var(--section-space-compact)]" id="demo">
+    <section className="homepage-snapshot-section py-[var(--section-space-compact)]" id="demo">
       <MarketingShell>
         <SectionTitle body={copy.body} title={copy.title} />
-        <MarketingCard className="homepage-demo-grid mt-7 p-4 sm:p-5 lg:p-6">
-          <div className="grid gap-4">
-            <div className="grid gap-2 sm:grid-cols-3">
+        <MarketingCard className="homepage-demo-grid homepage-recovery-snapshot mt-7 p-4 sm:p-5 lg:p-6">
+          <div className="homepage-snapshot-steps">
               {copy.steps.map((step, index) => (
                 <div
-                  className="flex min-w-0 items-center gap-2 rounded-[12px] border px-3 py-2"
+                  className="homepage-snapshot-step"
                   key={step}
-                  style={{
-                    backgroundColor: "var(--surface-interactive)",
-                    borderColor: "var(--border-default)",
-                  }}
                 >
-                  <span
-                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-[8px] text-[11px] font-black"
-                    style={{
-                      backgroundColor:
-                        index === 0
-                          ? marketingTone.text
-                          : index === 1
-                            ? marketingTone.blue
-                            : marketingTone.teal,
-                      color: "var(--primary-contrast)",
-                    }}
-                  >
+                  <span aria-hidden>
                     {index + 1}
                   </span>
-                  <span
-                    className="bp-copy-status min-w-0 text-[12px] font-black leading-4"
-                    style={{ color: "var(--text-strong)" }}
-                  >
-                    {step}
-                  </span>
+                  <p>{step}</p>
                 </div>
               ))}
-            </div>
+          </div>
 
-            <div className="grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-              <div
-                className="rounded-[18px] border p-4"
-                style={{
-                  backgroundColor: "var(--surface-elevated)",
-                  borderColor: "var(--border-default)",
-                }}
-              >
+          <div className="homepage-snapshot-grid">
+            <article className="homepage-snapshot-risk">
                 <p
                   className="bp-copy-eyebrow text-[11px] font-black uppercase tracking-[0.14em]"
                   style={{ color: marketingTone.gold }}
@@ -437,25 +423,19 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                   {copy.request.title}
                 </p>
                 <p
-                  className="mt-3 rounded-[14px] border p-4 text-[16px] font-black leading-7"
-                  style={{
-                    backgroundColor: "var(--surface)",
-                    borderColor: "var(--border-default)",
-                    color: "var(--text-strong)",
-                  }}
+                  className="mt-3 text-[20px] font-black leading-7 sm:text-[24px]"
+                  style={{ color: "var(--text-strong)" }}
                 >
                   {copy.request.quote}
                 </p>
-              </div>
+                <p className="homepage-snapshot-warning">
+                  <MarketingIcon name="warning" />
+                  {copy.badges[0]}
+                </p>
+            </article>
 
-              <div className="grid gap-3">
-                <div
-                  className="rounded-[18px] border p-4"
-                  style={{
-                    backgroundColor: "var(--surface-elevated)",
-                    borderColor: "var(--border-default)",
-                  }}
-                >
+            <div className="homepage-snapshot-right">
+              <section className="homepage-snapshot-lead" aria-label={copy.organizedLead.title}>
                   <p
                     className="bp-copy-eyebrow text-[11px] font-black uppercase tracking-[0.14em]"
                     style={{ color: marketingTone.teal }}
@@ -465,12 +445,8 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                   <div className="mt-3 grid gap-2">
                     {copy.organizedLead.fields.map(([label, value]) => (
                       <div
-                        className="grid min-w-0 gap-1 rounded-[12px] border px-3 py-2 sm:grid-cols-[92px_minmax(0,1fr)]"
+                        className="homepage-snapshot-field"
                         key={label}
-                        style={{
-                          backgroundColor: "var(--surface)",
-                          borderColor: "var(--border-default)",
-                        }}
                       >
                         <span
                           className="bp-copy-meta text-[11px] font-black uppercase tracking-[0.08em]"
@@ -487,17 +463,9 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                       </div>
                     ))}
                   </div>
-                </div>
+              </section>
 
-                <div
-                  className="rounded-[18px] border p-4"
-                  style={{
-                    backgroundColor:
-                      "color-mix(in srgb, var(--accent-decorative) 10%, var(--surface-elevated))",
-                    borderColor:
-                      "color-mix(in srgb, var(--accent-decorative) 34%, var(--border-default))",
-                  }}
-                >
+              <section className="homepage-snapshot-draft" aria-label={copy.draft.title}>
                   <p
                     className="bp-copy-card-title text-[16px] font-black"
                     style={{ color: "var(--text-strong)" }}
@@ -521,33 +489,29 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                     <MarketingIcon name="copy" />
                     {copy.copyButton}
                   </button>
-                </div>
-              </div>
+              </section>
             </div>
+          </div>
 
-            <div
-              className="flex flex-col items-center justify-between gap-4 border-t pt-4 sm:flex-row"
-              style={{ borderColor: "var(--border-default)" }}
-            >
-              <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-                {copy.badges.map((item) => (
-                  <span
-                    className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] font-black"
-                    key={item}
-                    style={{
-                      borderColor: marketingTone.border,
-                      color: marketingTone.teal,
-                    }}
-                  >
-                    <MarketingIcon name="check" />
-                    {item}
-                  </span>
-                ))}
-              </div>
+          <div className="homepage-snapshot-footer">
+            <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
+              {copy.badges.map((item) => (
+                <span
+                  className="inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-[12px] font-black"
+                  key={item}
+                  style={{
+                    borderColor: marketingTone.border,
+                    color: marketingTone.teal,
+                  }}
+                >
+                  <MarketingIcon name="check" />
+                  {item}
+                </span>
+              ))}
+            </div>
               <MarketingButton href="/demo" variant="secondary">
                 {copy.cta}
               </MarketingButton>
-            </div>
           </div>
         </MarketingCard>
       </MarketingShell>
@@ -593,6 +557,7 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
       <JsonLdScript data={buildHomeJsonLd(language)} id="bizpilot-home-jsonld" />
       <MarketingHeader copy={navCopy} language={language} redirectPath="/" />
       <HeroSection copy={copy} />
+      <ProductPreview copy={copy.preview} />
 
       <section className="homepage-problem-section" id="features">
         <MarketingShell>
@@ -604,8 +569,6 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
           <CardGrid items={copy.problem.cards} />
         </MarketingShell>
       </section>
-
-      <ProductPreview copy={copy.preview} />
 
       <GuardrailStrip items={copy.preview.badges} />
 

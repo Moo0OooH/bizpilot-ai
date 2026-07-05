@@ -29,6 +29,7 @@
  * - 2026-07-04: Added a quote-link placement guide for local-GTM onboarding.
  * - 2026-07-04: Expanded FAQ with AI-search owner-intent questions.
  * - 2026-07-05: Rewrote the homepage hero copy for the integrated product-scene redesign.
+ * - 2026-07-05: Refocused homepage hero and preview copy on hot quote risk and owner-reviewed remedy.
  * ============================================================
  */
 
@@ -1528,33 +1529,33 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "Join the founder pilot for cleaning businesses.",
     },
     hero: {
-      badge: "BizPilot AI - cleaning quote recovery",
+      badge: "BizPilot AI - hot quote rescue",
       body:
-        "A calmer way to turn website, Google, social, text, and missed-call quote requests into one owner-reviewed queue. See the hottest request, the missing details, and a reply draft you approve before sending.",
+        "BizPilot shows the urgent request, the missing details, and a reply draft you can review and copy before the customer moves on.",
       bullets: [
-        "Multi-channel quote intake",
-        "Priority and missing-detail visibility",
-        "Owner-approved draft replies",
+        "Spot hot quote requests",
+        "See what is missing",
+        "Review and copy the reply",
       ],
       note: "Founder-led pilot. No auto-send. No invented pricing.",
       primaryCta: "Join the pilot",
-      proofLabel: "Quote recovery flow",
+      proofLabel: "Hot quote rescue flow",
       secondaryCta: "See how it works",
       signals: [
         {
-          label: "Channels",
-          value: "Website, Google, social",
+          label: "Risk",
+          value: "Waiting 47 minutes",
         },
         {
-          label: "Priority",
-          value: "Urgent requests first",
+          label: "Missing",
+          value: "Square footage, access",
         },
         {
-          label: "Control",
-          value: "Owner-approved replies",
+          label: "Ready",
+          value: "Draft for review",
         },
       ],
-      title: "Cleaning quote recovery that keeps hot leads moving.",
+      title: "Stop losing hot cleaning quotes to slow replies.",
     },
     meta: {
       description:
@@ -1562,26 +1563,26 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
     },
     mockup: {
-      boardLabel: "BizPilot quote recovery product scene",
+      boardLabel: "BizPilot hot quote rescue board",
       boardSafety: "Owner review first",
-      bizPilotActions: ["Capture", "Prioritize", "Prepare", "Review"],
-      bizPilotBody: "Every request becomes a visible next step",
-      bizPilotTitle: "BizPilot",
-      chaosBadge: "Signal recovered",
-      chaosHint: "One request can arrive in pieces across channels.",
-      chaosSubtitle: "Quote signals arriving now",
-      chaosTitle: "Live intake",
-      clarityBadge: "Owner-ready",
-      claritySubtitle: "Priority queue",
-      clarityTitle: "Owner review queue",
-      copyButton: "Review draft",
+      bizPilotActions: ["Square footage", "Appliances", "Access notes", "Preferred time"],
+      bizPilotBody: "BizPilot turns vague asks into the details you need.",
+      bizPilotTitle: "BizPilot found what's missing",
+      chaosBadge: "Likely to book with whoever replies first",
+      chaosHint: "Google, missed call, and Instagram context in one lead.",
+      chaosSubtitle: "Waiting 47 minutes",
+      chaosTitle: "Hot quote at risk",
+      clarityBadge: "Reply ready",
+      claritySubtitle: "Owner review",
+      clarityTitle: "Reply ready for owner review",
+      copyButton: "Review & copy",
       draftBody:
-        "Hi Maria, thanks for reaching out. Could you confirm the square footage and access notes so I can prepare an accurate quote?",
-      draftTitle: "Draft ready for owner review",
+        "Hi Maria, thanks for reaching out. Could you confirm the square footage, appliances, access notes, and preferred time so I can prepare an accurate quote?",
+      draftTitle: "Draft ready to review",
       leads: [
         {
-          body: "Move-out cleaning - missing square footage",
-          title: "Needs reply first",
+          body: "Needs it before Friday",
+          title: "Maria - Move-out cleaning",
         },
         {
           body: "Office cleaning - follow-up due",
@@ -1589,39 +1590,39 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         },
       ],
       messages: [
-        "Move-out cleaning?",
-        "Friday?",
-        "How much?",
-        "Office cleaning quote?",
+        "New",
+        "Google + missed call + Instagram",
+        "Needs it before Friday",
+        "Move-out cleaning",
       ],
-      sources: ["Website", "Google", "Facebook", "Instagram", "Text"],
+      sources: ["Google", "Missed call", "Instagram", "Website", "Text"],
     },
     preview: {
-      badges: ["No auto-send", "No invented price", "No booking confirmation"],
+      badges: ["No auto-send", "No made-up prices", "Owner copies and sends"],
       body:
-        "A simple three-step flow keeps the next owner action obvious.",
-      copyButton: "Copy reply",
+        "One clear snapshot shows what is at risk, what is missing, and what the owner can review next.",
+      copyButton: "Review & copy",
       cta: "Watch full demo",
       draft: {
         body:
           "Hi Sarah, thanks for reaching out. Could you confirm the approximate square footage, whether appliances need interior cleaning, and any access notes so I can prepare an accurate quote?",
-        title: "Draft for owner review",
+        title: "Reply ready to review",
       },
       organizedLead: {
         fields: [
           ["Service", "Move-out cleaning"],
-          ["Timing", "Before Friday"],
+          ["Deadline", "Before Friday"],
           ["Missing", "square footage, appliances, access notes"],
-          ["Status", "Needs reply"],
+          ["Next action", "Ask once, then quote responsibly"],
         ],
-        title: "Organized lead",
+        title: "Missing details BizPilot surfaces",
       },
       request: {
-        quote: '"Hi, how much for move-out cleaning before Friday?"',
-        title: "Messy request",
+        quote: '"Maria needs move-out cleaning before Friday."',
+        title: "At-risk quote",
       },
-      steps: ["Capture quote request", "Organize and draft", "Owner reviews and sends"],
-      title: "From request to reviewed reply in three steps.",
+      steps: ["Spot the hot request", "Find missing details", "Review the reply"],
+      title: "See the quote risk and the next reply in one view.",
     },
     problem: {
       body:
@@ -3004,34 +3005,34 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "Rejoignez le projet pilote pour entreprises de nettoyage.",
     },
     hero: {
-      badge: "BizPilot AI - soumissions de nettoyage",
+      badge: "BizPilot AI - sauvetage de soumissions",
       body:
-        "Une façon plus calme de transformer les demandes du site, de Google, des réseaux sociaux, des textos et des appels manqués en une file claire avec brouillon à valider avant l'envoi.",
+        "BizPilot montre la demande urgente, les détails manquants et un brouillon que vous pouvez valider et copier avant que le client passe à autre chose.",
       bullets: [
-        "Demandes captées sur plusieurs canaux",
-        "Priorité et détails manquants visibles",
-        "Brouillons validés par vous",
+        "Repérer les demandes chaudes",
+        "Voir ce qui manque",
+        "Valider et copier la réponse",
       ],
       note: "Projet pilote guidé. Aucun envoi automatique. Aucun prix inventé.",
       primaryCta: "Rejoindre le pilote",
-      proofLabel: "Flux de récupération",
+      proofLabel: "Flux de sauvetage",
       secondaryCta: "Voir le flux",
       signals: [
         {
-          label: "Canaux",
-          value: "Site, Google, social",
+          label: "Risque",
+          value: "47 minutes d'attente",
         },
         {
-          label: "Priorité",
-          value: "Urgences d'abord",
+          label: "Manquant",
+          value: "Superficie, accès",
         },
         {
-          label: "Contrôle",
-          value: "Réponses validées",
+          label: "Prêt",
+          value: "Brouillon à valider",
         },
       ],
       title:
-        "Récupération de soumissions pour prospects chauds.",
+        "Ne laissez pas une soumission urgente attendre.",
     },
     meta: {
       description:
@@ -3039,26 +3040,26 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "BizPilot AI | Récupération des demandes",
     },
     mockup: {
-      boardLabel: "Scène produit de récupération BizPilot",
+      boardLabel: "Tableau BizPilot de sauvetage de soumission urgente",
       boardSafety: "Validation propriétaire",
-      bizPilotActions: ["Capter", "Prioriser", "Préparer", "Réviser"],
-      bizPilotBody: "Chaque demande devient une prochaine action visible",
-      bizPilotTitle: "BizPilot",
-      chaosBadge: "Signal récupéré",
-      chaosHint: "Une demande peut arriver en morceaux sur plusieurs canaux.",
-      chaosSubtitle: "Signaux de soumission en direct",
-      chaosTitle: "Entrées en direct",
-      clarityBadge: "Prêt à réviser",
-      claritySubtitle: "File priorisée",
-      clarityTitle: "File de validation",
-      copyButton: "Réviser le brouillon",
+      bizPilotActions: ["Superficie", "Électroménagers", "Notes d'accès", "Moment souhaité"],
+      bizPilotBody: "La demande vague devient une prochaine réponse claire.",
+      bizPilotTitle: "BizPilot repère les détails manquants",
+      chaosBadge: "Le client peut réserver avec la première entreprise qui répond",
+      chaosHint: "Google, appel manqué et Instagram regroupés dans un prospect.",
+      chaosSubtitle: "47 minutes d'attente",
+      chaosTitle: "Soumission à risque",
+      clarityBadge: "Réponse prête",
+      claritySubtitle: "Validation",
+      clarityTitle: "Réponse prête pour validation",
+      copyButton: "Réviser et copier",
       draftBody:
-        "Bonjour Maria, merci pour votre message. Pouvez-vous confirmer la superficie et les notes d'accès afin que je prépare une soumission exacte?",
-      draftTitle: "Brouillon prêt pour validation",
+        "Bonjour Maria, merci pour votre message. Pouvez-vous confirmer la superficie, les électroménagers, les notes d'accès et le moment souhaité afin que je prépare une soumission exacte?",
+      draftTitle: "Brouillon prêt à valider",
       leads: [
         {
-          body: "Nettoyage après déménagement - superficie manquante",
-          title: "À répondre d'abord",
+          body: "Besoin avant vendredi",
+          title: "Maria - Nettoyage après déménagement",
         },
         {
           body: "Bureaux - suivi dû",
@@ -3066,44 +3067,44 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         },
       ],
       messages: [
-        "Nettoyage après départ?",
-        "Vendredi?",
-        "Combien?",
-        "Soumission pour bureaux?",
+        "Nouveau",
+        "Google + appel manqué + Instagram",
+        "Besoin avant vendredi",
+        "Nettoyage après déménagement",
       ],
-      sources: ["Site web", "Google", "Facebook", "Instagram", "Texto"],
+      sources: ["Google", "Appel manqué", "Instagram", "Site web", "Texto"],
     },
     preview: {
       badges: [
         "Aucun envoi automatique",
         "Aucun prix inventé",
-        "Aucune réservation confirmée",
+        "Vous copiez et envoyez",
       ],
       body:
-        "Un flux simple en trois étapes garde la prochaine action du propriétaire visible.",
-      copyButton: "Copier la réponse",
+        "Une vue claire montre ce qui est à risque, ce qui manque et ce que vous pouvez valider ensuite.",
+      copyButton: "Réviser et copier",
       cta: "Voir la démo complète",
       draft: {
         body:
           "Bonjour Sarah, merci pour votre message. Pouvez-vous confirmer la superficie, les électroménagers à nettoyer et les notes d'accès afin que je prépare une soumission exacte?",
-        title: "Brouillon à valider",
+        title: "Réponse prête à valider",
       },
       organizedLead: {
         fields: [
           ["Service", "nettoyage après déménagement"],
-          ["Moment", "avant vendredi"],
+          ["Échéance", "avant vendredi"],
           ["Manquant", "superficie, électroménagers, notes d'accès"],
-          ["Statut", "à répondre"],
+          ["Prochaine action", "demander une fois, puis soumissionner prudemment"],
         ],
-        title: "Prospect organisé",
+        title: "Détails manquants repérés par BizPilot",
       },
       request: {
         quote:
-          "\"Bonjour, combien pour un nettoyage après déménagement d'ici vendredi?\"",
-        title: "Demande vague",
+          "\"Maria a besoin d'un nettoyage après déménagement avant vendredi.\"",
+        title: "Soumission à risque",
       },
-      steps: ["Capter la demande", "Organiser et rédiger", "Valider puis envoyer"],
-      title: "De la demande à la réponse validée en trois étapes.",
+      steps: ["Repérer l'urgence", "Trouver les détails manquants", "Valider la réponse"],
+      title: "Voyez le risque et la prochaine réponse au même endroit.",
     },
     problem: {
       body:

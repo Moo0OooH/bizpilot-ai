@@ -26,6 +26,8 @@
  * - 2026-07-04: Locked quote success manual-review expectation copy.
  * - 2026-07-04: Added the protected owner guide route to dashboard i18n source coverage.
  * - 2026-07-05: Locked bilingual homepage product-scene hero copy.
+ * - 2026-07-05: Locked the hot quote rescue hero and preview copy.
+ * - 2026-07-05: Added regression coverage for legacy quote-field localization and dashboard form placeholders.
  * ============================================================
  */
 
@@ -432,6 +434,22 @@ describe("BizPilot language copy", () => {
       "Configuration requise",
     );
     assert.equal(
+      englishDashboardCopy.businessProfile.serviceAreasPlaceholder,
+      "Montreal\nLaval\nLongueuil",
+    );
+    assert.equal(
+      frenchDashboardCopy.businessProfile.serviceAreasPlaceholder,
+      "Montréal\nLaval\nLongueuil",
+    );
+    assert.equal(
+      englishDashboardCopy.configuration.fields.placeholders?.phone.label,
+      "Callback phone",
+    );
+    assert.equal(
+      frenchDashboardCopy.configuration.fields.placeholders?.phone.label,
+      "Téléphone de rappel",
+    );
+    assert.equal(
       englishDashboardCopy.errorBoundary.reload,
       "Reload dashboard",
     );
@@ -442,6 +460,10 @@ describe("BizPilot language copy", () => {
 
     const dashboardErrorSource = readFileSync(
       "app/(dashboard)/dashboard/error.tsx",
+      "utf8",
+    );
+    const businessProfileSource = readFileSync(
+      "app/(dashboard)/dashboard/business-profile/page.tsx",
       "utf8",
     );
     assert.equal(
@@ -459,6 +481,16 @@ describe("BizPilot language copy", () => {
         `Dashboard error boundary should not hardcode visible copy: ${hardcodedErrorCopy}`,
       );
     }
+    assert.equal(
+      businessProfileSource.includes("placeholder={text.serviceAreasPlaceholder}"),
+      true,
+      "Business Profile service-area placeholder should follow the active dashboard language.",
+    );
+    assert.equal(
+      businessProfileSource.includes('placeholder={"Montreal\\nLaval\\nLongueuil"}'),
+      false,
+      "Business Profile should not hardcode English service-area placeholder text.",
+    );
 
     const visibleFrenchDashboardText = JSON.stringify({
       demo: getBizPilotCopy("fr-CA").demo,
@@ -589,7 +621,7 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       frenchPublicCopy.home.hero.title,
-      "Récupération de soumissions pour prospects chauds.",
+      "Ne laissez pas une soumission urgente attendre.",
     );
     assert.ok(
       frenchPublicCopy.home.hero.title.length <= 70,
@@ -602,43 +634,43 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.hero.secondaryCta, "Voir le flux");
     assert.equal(
       frenchPublicCopy.home.hero.body,
-      "Une façon plus calme de transformer les demandes du site, de Google, des réseaux sociaux, des textos et des appels manqués en une file claire avec brouillon à valider avant l'envoi.",
+      "BizPilot montre la demande urgente, les détails manquants et un brouillon que vous pouvez valider et copier avant que le client passe à autre chose.",
     );
     assert.deepEqual(frenchPublicCopy.home.hero.bullets, [
-      "Demandes captées sur plusieurs canaux",
-      "Priorité et détails manquants visibles",
-      "Brouillons validés par vous",
+      "Repérer les demandes chaudes",
+      "Voir ce qui manque",
+      "Valider et copier la réponse",
     ]);
     assert.equal(
       frenchPublicCopy.home.hero.note,
       "Projet pilote guidé. Aucun envoi automatique. Aucun prix inventé.",
     );
-    assert.equal(frenchPublicCopy.home.mockup.chaosTitle, "Entrées en direct");
-    assert.equal(frenchPublicCopy.home.mockup.chaosSubtitle, "Signaux de soumission en direct");
-    assert.equal(frenchPublicCopy.home.mockup.bizPilotTitle, "BizPilot");
+    assert.equal(frenchPublicCopy.home.mockup.chaosTitle, "Soumission à risque");
+    assert.equal(frenchPublicCopy.home.mockup.chaosSubtitle, "47 minutes d'attente");
+    assert.equal(frenchPublicCopy.home.mockup.bizPilotTitle, "BizPilot repère les détails manquants");
     assert.deepEqual(frenchPublicCopy.home.mockup.bizPilotActions, [
-      "Capter",
-      "Prioriser",
-      "Préparer",
-      "Réviser",
+      "Superficie",
+      "Électroménagers",
+      "Notes d'accès",
+      "Moment souhaité",
     ]);
-    assert.equal(frenchPublicCopy.home.mockup.clarityTitle, "File de validation");
-    assert.equal(frenchPublicCopy.home.mockup.claritySubtitle, "File priorisée");
-    assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon prêt pour validation");
-    assert.equal(frenchPublicCopy.home.mockup.copyButton, "Réviser le brouillon");
-    assert.equal(frenchPublicCopy.home.hero.proofLabel, "Flux de récupération");
+    assert.equal(frenchPublicCopy.home.mockup.clarityTitle, "Réponse prête pour validation");
+    assert.equal(frenchPublicCopy.home.mockup.claritySubtitle, "Validation");
+    assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon prêt à valider");
+    assert.equal(frenchPublicCopy.home.mockup.copyButton, "Réviser et copier");
+    assert.equal(frenchPublicCopy.home.hero.proofLabel, "Flux de sauvetage");
     assert.deepEqual(frenchPublicCopy.home.hero.signals, [
       {
-        label: "Canaux",
-        value: "Site, Google, social",
+        label: "Risque",
+        value: "47 minutes d'attente",
       },
       {
-        label: "Priorité",
-        value: "Urgences d'abord",
+        label: "Manquant",
+        value: "Superficie, accès",
       },
       {
-        label: "Contrôle",
-        value: "Réponses validées",
+        label: "Prêt",
+        value: "Brouillon à valider",
       },
     ]);
     assert.equal(frenchPublicCopy.home.mockup.sources.length, 5);
@@ -646,21 +678,21 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.mockup.leads.length, 2);
     assert.equal(
       frenchPublicCopy.home.preview.title,
-      "De la demande à la réponse validée en trois étapes.",
+      "Voyez le risque et la prochaine réponse au même endroit.",
     );
     assert.equal(
       frenchPublicCopy.home.preview.body,
-      "Un flux simple en trois étapes garde la prochaine action du propriétaire visible.",
+      "Une vue claire montre ce qui est à risque, ce qui manque et ce que vous pouvez valider ensuite.",
     );
     assert.deepEqual(frenchPublicCopy.home.preview.steps, [
-      "Capter la demande",
-      "Organiser et rédiger",
-      "Valider puis envoyer",
+      "Repérer l'urgence",
+      "Trouver les détails manquants",
+      "Valider la réponse",
     ]);
-    assert.equal(frenchPublicCopy.home.preview.request.title, "Demande vague");
-    assert.equal(frenchPublicCopy.home.preview.organizedLead.title, "Prospect organisé");
-    assert.equal(frenchPublicCopy.home.preview.draft.title, "Brouillon à valider");
-    assert.equal(frenchPublicCopy.home.preview.copyButton, "Copier la réponse");
+    assert.equal(frenchPublicCopy.home.preview.request.title, "Soumission à risque");
+    assert.equal(frenchPublicCopy.home.preview.organizedLead.title, "Détails manquants repérés par BizPilot");
+    assert.equal(frenchPublicCopy.home.preview.draft.title, "Réponse prête à valider");
+    assert.equal(frenchPublicCopy.home.preview.copyButton, "Réviser et copier");
 
     for (const englishPhrase of [
       "Stop losing cleaning quote requests to slow replies.",
@@ -914,47 +946,47 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       englishPublicCopy.home.hero.title,
-      "Cleaning quote recovery that keeps hot leads moving.",
+      "Stop losing hot cleaning quotes to slow replies.",
     );
     assert.equal(
       englishPublicCopy.home.hero.body,
-      "A calmer way to turn website, Google, social, text, and missed-call quote requests into one owner-reviewed queue. See the hottest request, the missing details, and a reply draft you approve before sending.",
+      "BizPilot shows the urgent request, the missing details, and a reply draft you can review and copy before the customer moves on.",
     );
     assert.deepEqual(englishPublicCopy.home.hero.bullets, [
-      "Multi-channel quote intake",
-      "Priority and missing-detail visibility",
-      "Owner-approved draft replies",
+      "Spot hot quote requests",
+      "See what is missing",
+      "Review and copy the reply",
     ]);
     assert.equal(
       englishPublicCopy.home.hero.note,
       "Founder-led pilot. No auto-send. No invented pricing.",
     );
-    assert.equal(englishPublicCopy.home.mockup.chaosTitle, "Live intake");
-    assert.equal(englishPublicCopy.home.mockup.chaosSubtitle, "Quote signals arriving now");
-    assert.equal(englishPublicCopy.home.mockup.bizPilotTitle, "BizPilot");
+    assert.equal(englishPublicCopy.home.mockup.chaosTitle, "Hot quote at risk");
+    assert.equal(englishPublicCopy.home.mockup.chaosSubtitle, "Waiting 47 minutes");
+    assert.equal(englishPublicCopy.home.mockup.bizPilotTitle, "BizPilot found what's missing");
     assert.deepEqual(englishPublicCopy.home.mockup.bizPilotActions, [
-      "Capture",
-      "Prioritize",
-      "Prepare",
-      "Review",
+      "Square footage",
+      "Appliances",
+      "Access notes",
+      "Preferred time",
     ]);
-    assert.equal(englishPublicCopy.home.mockup.clarityTitle, "Owner review queue");
-    assert.equal(englishPublicCopy.home.mockup.claritySubtitle, "Priority queue");
-    assert.equal(englishPublicCopy.home.mockup.draftTitle, "Draft ready for owner review");
-    assert.equal(englishPublicCopy.home.mockup.copyButton, "Review draft");
-    assert.equal(englishPublicCopy.home.hero.proofLabel, "Quote recovery flow");
+    assert.equal(englishPublicCopy.home.mockup.clarityTitle, "Reply ready for owner review");
+    assert.equal(englishPublicCopy.home.mockup.claritySubtitle, "Owner review");
+    assert.equal(englishPublicCopy.home.mockup.draftTitle, "Draft ready to review");
+    assert.equal(englishPublicCopy.home.mockup.copyButton, "Review & copy");
+    assert.equal(englishPublicCopy.home.hero.proofLabel, "Hot quote rescue flow");
     assert.deepEqual(englishPublicCopy.home.hero.signals, [
       {
-        label: "Channels",
-        value: "Website, Google, social",
+        label: "Risk",
+        value: "Waiting 47 minutes",
       },
       {
-        label: "Priority",
-        value: "Urgent requests first",
+        label: "Missing",
+        value: "Square footage, access",
       },
       {
-        label: "Control",
-        value: "Owner-approved replies",
+        label: "Ready",
+        value: "Draft for review",
       },
     ]);
     assert.equal(englishPublicCopy.home.mockup.sources.length, 5);
@@ -962,21 +994,21 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.home.mockup.leads.length, 2);
     assert.equal(
       englishPublicCopy.home.preview.title,
-      "From request to reviewed reply in three steps.",
+      "See the quote risk and the next reply in one view.",
     );
     assert.equal(
       englishPublicCopy.home.preview.body,
-      "A simple three-step flow keeps the next owner action obvious.",
+      "One clear snapshot shows what is at risk, what is missing, and what the owner can review next.",
     );
     assert.deepEqual(englishPublicCopy.home.preview.steps, [
-      "Capture quote request",
-      "Organize and draft",
-      "Owner reviews and sends",
+      "Spot the hot request",
+      "Find missing details",
+      "Review the reply",
     ]);
-    assert.equal(englishPublicCopy.home.preview.request.title, "Messy request");
-    assert.equal(englishPublicCopy.home.preview.organizedLead.title, "Organized lead");
-    assert.equal(englishPublicCopy.home.preview.draft.title, "Draft for owner review");
-    assert.equal(englishPublicCopy.home.preview.copyButton, "Copy reply");
+    assert.equal(englishPublicCopy.home.preview.request.title, "At-risk quote");
+    assert.equal(englishPublicCopy.home.preview.organizedLead.title, "Missing details BizPilot surfaces");
+    assert.equal(englishPublicCopy.home.preview.draft.title, "Reply ready to review");
+    assert.equal(englishPublicCopy.home.preview.copyButton, "Review & copy");
     assert.deepEqual(englishBizPilotCopy.quoteSuccess.steps(""), [
       "The business reviews your request and any missing details.",
       "They check pricing and availability before replying - no automatic messages.",
@@ -1585,6 +1617,16 @@ describe("BizPilot language copy", () => {
   });
 
   it("localizes default quote fields without overwriting custom owner labels", () => {
+    const englishQuoteFields = getBizPilotCopy("en").quoteFields;
+    const frenchQuoteFields = getBizPilotCopy("fr-CA").quoteFields;
+    const englishCustomerContact = englishQuoteFields.customer_contact;
+    const frenchCustomerPhone = frenchQuoteFields.customer_phone;
+    const englishCustomerEmail = englishQuoteFields.customer_email;
+
+    assert.ok(englishCustomerContact);
+    assert.ok(frenchCustomerPhone);
+    assert.ok(englishCustomerEmail);
+
     assert.deepEqual(
       localizeDefaultQuoteField({
         fieldKey: "bathrooms",
@@ -1595,6 +1637,45 @@ describe("BizPilot language copy", () => {
       {
         helpText: "Nombre de salles de bain pour les logements résidentiels.",
         label: "Salles de bain",
+      },
+    );
+
+    assert.deepEqual(
+      localizeDefaultQuoteField({
+        fieldKey: "customer_contact",
+        helpText: "Courriel ou téléphone pour le suivi du propriétaire.",
+        label: "Customer contact",
+        language: "en",
+      }),
+      {
+        helpText: englishCustomerContact.helpText,
+        label: englishCustomerContact.label,
+      },
+    );
+
+    assert.deepEqual(
+      localizeDefaultQuoteField({
+        fieldKey: "customer_phone",
+        helpText: "Best phone number for owner follow-up.",
+        label: "Phone number",
+        language: "fr-CA",
+      }),
+      {
+        helpText: frenchCustomerPhone.helpText,
+        label: frenchCustomerPhone.label,
+      },
+    );
+
+    assert.deepEqual(
+      localizeDefaultQuoteField({
+        fieldKey: "customer_email",
+        helpText: "Meilleur courriel pour le suivi du propriétaire.",
+        label: "Email address",
+        language: "en",
+      }),
+      {
+        helpText: englishCustomerEmail.helpText,
+        label: englishCustomerEmail.label,
       },
     );
 

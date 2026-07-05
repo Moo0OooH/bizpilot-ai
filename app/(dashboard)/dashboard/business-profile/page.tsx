@@ -20,6 +20,7 @@
  * - 2026-07-04: Collapsed unwired roadmap fields so the profile page stays focused on saved owner data.
  * - 2026-07-05: Made read-only profile reference fields selectable and added mobile-safe slug hints.
  * - 2026-07-05: Added a compact read-only profile summary for final owner acceptance polish.
+ * - 2026-07-05: Localized the service-area placeholder through dashboard copy.
  * ============================================================
  */
 
@@ -399,7 +400,7 @@ export default async function BusinessProfilePage({
                   className={`${textareaClass} min-h-28`}
                   defaultValue={serviceAreasToText(configuration.serviceAreas)}
                   name="serviceAreas"
-                  placeholder={"Montreal\nLaval\nLongueuil"}
+                  placeholder={text.serviceAreasPlaceholder}
                 />
                 <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
                   {text.oneAreaPerLine}

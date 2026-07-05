@@ -24,6 +24,8 @@
  * - 2026-07-04: Added comparison route responsive contract coverage.
  * - 2026-07-04: Added quote-link guide responsive contract coverage.
  * - 2026-07-05: Updated bilingual homepage checks for the product-scene hero.
+ * - 2026-07-05: Updated bilingual homepage checks for the hot quote rescue hero.
+ * - 2026-07-05: Aligned homepage smoke markers with escaped production HTML.
  * ============================================================
  */
 
@@ -40,7 +42,7 @@ const TIMEOUT_MS = 15_000;
 
 const routes: readonly RouteContract[] = [
   {
-    h1: "Cleaning quote recovery that keeps hot leads moving.",
+    h1: "Stop losing hot cleaning quotes to slow replies.",
     maxOccurrences: [
       {
         max: 5,
@@ -54,11 +56,11 @@ const routes: readonly RouteContract[] = [
       "homepage-use-case-grid",
       "homepage-hero-proof-rail",
       "homepage-product-scene",
-      "Website, Google, social",
-      "Live intake",
-      "Owner review queue",
-      "Owner-approved replies",
-      "Review draft",
+      "Waiting 47 minutes",
+      "Hot quote at risk",
+      "Reply ready for owner review",
+      "Draft for review",
+      "Review &amp; copy",
       "Founder-led pilot. No auto-send. No invented pricing.",
       "No auto-send",
     ],
@@ -66,7 +68,7 @@ const routes: readonly RouteContract[] = [
     path: "/",
   },
   {
-    h1: "Récupération de soumissions pour prospects chauds.",
+    h1: "Ne laissez pas une soumission urgente attendre.",
     maxOccurrences: [
       {
         max: 5,
@@ -80,11 +82,11 @@ const routes: readonly RouteContract[] = [
       "homepage-use-case-grid",
       "homepage-hero-proof-rail",
       "homepage-product-scene",
-      "Site, Google, social",
-      "Entrées en direct",
-      "File de validation",
-      "Réponses validées",
-      "Réviser le brouillon",
+      "47 minutes d&#x27;attente",
+      "Soumission à risque",
+      "Réponse prête pour validation",
+      "Brouillon à valider",
+      "Réviser et copier",
       "Projet pilote guidé. Aucun envoi automatique. Aucun prix inventé.",
       "Aucun envoi automatique",
     ],
