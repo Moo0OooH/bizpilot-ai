@@ -12,6 +12,7 @@
  * Created: 2026-07-04
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Localized service-output JSON-LD for Canadian French visitors.
  * - 2026-07-05: Added honest audience and feature context to public JSON-LD.
  * - 2026-07-04: Created structured-data builders for public marketing routes.
  * ============================================================
@@ -110,6 +111,10 @@ function serviceJsonLd(language: SupportedLanguage) {
     language === "fr-CA"
       ? "Recuperation de demandes de soumission pour entreprises de nettoyage avec brouillons IA a valider et envoi manuel."
       : "Lead recovery for cleaning businesses with owner-reviewed AI drafts and manual sending.";
+  const serviceOutput =
+    language === "fr-CA"
+      ? "Brouillons de reponse a valider et file organisee de demandes de soumission."
+      : "Owner-reviewed response drafts and an organized quote request queue.";
 
   return {
     "@id": publicAssetUrl("/#service"),
@@ -125,7 +130,7 @@ function serviceJsonLd(language: SupportedLanguage) {
     provider: {
       "@id": publicAssetUrl("/#organization"),
     },
-    serviceOutput: "Owner-reviewed response drafts and an organized quote request queue.",
+    serviceOutput,
     serviceType: "Cleaning business lead recovery workflow",
     url: publicUrl("/", language),
   } as const;
