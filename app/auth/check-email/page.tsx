@@ -10,8 +10,9 @@
  * - app/auth/callback/route.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added status semantics for the post-signup confirmation notice.
  * - 2026-06-20: Aligned check-email actions with the shared auth shell button and focus treatment.
  * ============================================================
  */
@@ -57,6 +58,7 @@ export default async function CheckEmailPage() {
         <p
           aria-live="polite"
           className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
+          role="status"
           style={authSuccessStyle}
         >
           {notice}

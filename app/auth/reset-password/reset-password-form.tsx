@@ -14,6 +14,10 @@
  * - lib/supabase/client.ts
  * Author: MoOoH
  * Created: 2026-05-23
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added status and alert semantics for reset-password recovery states.
+ * - 2026-05-23: Created reset form support for PKCE and legacy hash callbacks.
  * ============================================================
  */
 
@@ -120,6 +124,7 @@ export function ResetPasswordForm({
       <p
         aria-live="polite"
         className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
+        role="status"
         style={authInfoStyle}
       >
         {copy.resetPreparing}
@@ -133,6 +138,7 @@ export function ResetPasswordForm({
         <p
           aria-live="assertive"
           className="mt-5 rounded-[12px] border px-3 py-2 text-[13px] leading-5"
+          role="alert"
           style={authErrorStyle}
         >
           {errorMessage}

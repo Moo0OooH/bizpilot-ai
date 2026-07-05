@@ -9,8 +9,9 @@
  * - app/auth/forgot-password/page.tsx
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-05-23
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Updated reset password source header after auth recovery review.
  * - 2026-05-23: Localized auth copy from the central language dictionary.
  * ============================================================
  */
