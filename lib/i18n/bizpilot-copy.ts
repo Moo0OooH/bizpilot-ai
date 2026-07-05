@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Reframed Business Profile future fields as gated storage decisions.
  * - 2026-07-05: Reworded settings roadmap copy from placeholders to gated references.
  * - 2026-07-05: Softened auth confirmation success copy to avoid overpromising workspace readiness.
  * - 2026-07-05: Added focus-aware lead queue command copy for manual recovery lanes.
@@ -1303,8 +1304,8 @@ const englishCopy: BizPilotCopy = {
       description:
         "Business identity and operating context. This is separate from Quote Setup.",
       futureDescription:
-        "Later profile fields from the approved design. They are not saved yet and need their own migration after pilot validation.",
-      futureFields: "Later roadmap fields",
+        "Additional profile fields stay gated until the pilot proves they need saved storage and an approved migration.",
+      futureFields: "Gated profile fields",
       languageHelp: "Used for the public quote page and AI draft language.",
       logoUrl: "Logo URL",
       notInMvp: "Not in MVP",
@@ -3114,8 +3115,8 @@ const frenchCopy: BizPilotCopy = {
       description:
         "Identité de l'entreprise et contexte opérationnel. Cette section est séparée de Configuration.",
       futureDescription:
-        "Ces champs font partie du design approuvé, mais ne sont pas encore reliés à la base de données. Ils arriveront avec leur propre migration après validation pilote.",
-      futureFields: "Champs futurs non sauvegardes",
+        "Ces champs restent verrouillés jusqu'à ce que le pilote confirme le besoin de stockage et d'une migration approuvée.",
+      futureFields: "Champs de profil verrouillés",
       languageHelp:
         "Utilisée pour la page publique et la langue des brouillons IA.",
       logoUrl: "URL du logo",

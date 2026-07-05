@@ -10,8 +10,9 @@
  * - docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Reframed collapsed future profile fields as gated storage decisions.
  * - 2026-05-18: Split Business Profile from Quote Setup.
  * - 2026-05-23: Localized owner-facing business profile copy.
  * - 2026-06-27: Documented Dashboard V3 profile separation and final completion evidence.
