@@ -10,7 +10,7 @@
  * - docs/product/BIZPILOT_FOUNDER_ADMIN_CONSOLE_SPEC_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-05-26: Moved production health ahead of data grids so empty admin data is tied to safe runtime diagnostics.
  * - 2026-06-18: Updated founder access fallback to svh/clip frame for responsive hardening.
@@ -22,6 +22,7 @@
  * - 2026-06-27: Reordered Users into a search-first founder operations cockpit.
  * - 2026-06-27: Added search-driven 10-row business rail and V3 priority workspace tiles.
  * - 2026-07-04: Removed misleading admin metric labels that implied sent AI replies or measured conversion.
+ * - 2026-07-05: Reframed account deletion surfaces as protected cleanup and safety policy.
  * ============================================================
  */
 
@@ -918,11 +919,11 @@ function FounderAdminSafetyRail() {
       <div className="mt-3 grid gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
         <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2.5">
           <p className="font-black text-[var(--dash-text)]">
-            Production customer is locked
+            Customer workspace is protected
           </p>
           <p className="mt-1">
-            Hard cleanup and fake/test login deletion are blocked for production
-            customer workspaces and owner accounts.
+            Hard cleanup and synthetic/test login cleanup are blocked for
+            production-customer workspaces and owner accounts.
           </p>
         </div>
         <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2.5">
@@ -1960,7 +1961,8 @@ function BusinessControlCard({
               </select>
             </label>
             <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-              Mark fake data as Founder test, Demo, or Seed before cleanup.
+              Mark only confirmed synthetic/internal workspaces as Founder test,
+              Demo, or Seed before cleanup.
             </p>
             <input
               className={inputClass}
@@ -2244,7 +2246,7 @@ function FounderUsersOverviewPanel({
             <StatusBadge tone="amber">Gated operations</StatusBadge>
           </>
         }
-        description="Founder-only user search, account support, fake/test cleanup, and detail review. Role and production access changes stay blocked until the owner-approved security/RLS gate is closed."
+        description="Founder-only user search, account support, synthetic/test cleanup, and detail review. Role and production access changes stay blocked until the owner-approved security/RLS gate is closed."
         eyebrow="Founder Admin"
         title="Users"
       />
@@ -2281,10 +2283,10 @@ function FounderUsersOverviewPanel({
           </p>
           <p className="mt-2 text-[12px] font-bold leading-5 text-[var(--dash-text)]">
             Search mode: {usersSearchMode === "auth_filter" ? "indexed auth filter" : "paged auth list"}.
-            Password reset and fake/test auth cleanup are guarded.
+            Password reset and synthetic/test login cleanup are guarded.
           </p>
           <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Invite, role change, suspend, remove, and production user deletion require the owner-approved security/RLS gate.
+            Invite, role change, suspend, remove, and customer account deletion require the owner-approved security/RLS gate.
           </p>
         </div>
       </section>
@@ -2373,8 +2375,8 @@ function FounderAdminCapabilityMatrix() {
       value: "Available",
     },
     {
-      detail: "Exact email/ID confirmation; production-linked users are blocked.",
-      label: "Fake/test auth delete",
+      detail: "Exact email/ID confirmation; customer-protected users are blocked.",
+      label: "Synthetic login cleanup",
       tone: "amber",
       value: "Guarded",
     },
@@ -2386,7 +2388,7 @@ function FounderAdminCapabilityMatrix() {
     },
     {
       detail: "Real customer account deletion needs backup, proof, and approval.",
-      label: "Production user delete",
+      label: "Customer account deletion",
       tone: "red",
       value: "Blocked",
     },
@@ -2469,19 +2471,19 @@ function UserAccountSupportPanel({
 
       <div className={controlPanelClass}>
         <p className="text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
-          Temporary password setting remains emergency-only and is intentionally
-          not exposed in the console. Use reset email unless a separate support
-          incident gate approves otherwise.
+          Temporary password setting is emergency-only and is intentionally not
+          exposed in the console. Use reset email unless a separate support
+          incident is approved.
         </p>
         <button className={`${disabledButtonClass} w-full`} disabled type="button">
-          Temporary password gated
+          Emergency password locked
         </button>
       </div>
     </section>
   );
 }
 
-function UserDestructiveZone({
+function UserAccountSafetyPanel({
   user,
 }: Readonly<{ user: FounderAdminUser }>) {
   return (
@@ -2489,14 +2491,14 @@ function UserDestructiveZone({
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
-            Destructive account zone
+            Account safety and cleanup
           </p>
           <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Fake/test auth deletion only. Real production users stay blocked.
+            Synthetic/test login cleanup only. Customer-protected accounts remain locked.
           </p>
         </div>
-        <StatusBadge tone={user.authDeletionBlockedReason ? "red" : "amber"}>
-          {user.authDeletionBlockedReason ? "Blocked" : "Guarded"}
+        <StatusBadge tone={user.authDeletionBlockedReason ? "amber" : "red"}>
+          {user.authDeletionBlockedReason ? "Protected" : "Double confirm"}
         </StatusBadge>
       </div>
       <FounderAuthUserDeleteForm
@@ -2859,7 +2861,7 @@ function FounderUsersSection({
                   </div>
                   <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
                     <LockedAccessManagementPanel />
-                    <UserDestructiveZone user={user} />
+                    <UserAccountSafetyPanel user={user} />
                   </div>
                 </div>
               </div>

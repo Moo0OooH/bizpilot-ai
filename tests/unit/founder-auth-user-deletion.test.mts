@@ -2,12 +2,15 @@
  * ============================================================
  * File: tests/unit/founder-auth-user-deletion.test.mts
  * Project: BizPilot AI
- * Description: Tests founder fake/test auth user deletion guards.
+ * Description: Tests founder synthetic/test auth user deletion guards.
  * Role: Ensures auth identity deletion cannot target founders or production users.
  * Related:
  * - lib/founder-cleanup/auth-user-deletion.ts
  * Author: MoOoH
  * Created: 2026-05-24
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Aligned test header with synthetic/test cleanup language.
  * ============================================================
  */
 

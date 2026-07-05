@@ -10,9 +10,10 @@
  * - components/admin/founder-test-cleanup-form.tsx
  * Author: MoOoH
  * Created: 2026-05-26
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-07-04: Added founder-admin metric honesty guards against sent-reply and fake-conversion claims.
+ * - 2026-07-05: Guarded professional account-safety copy for protected auth cleanup.
  * ============================================================
  */
 
@@ -108,12 +109,12 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("Operating rule"), true);
     assert.equal(pageSource.indexOf("Search users") < pageSource.indexOf("Work queues"), true);
     assert.equal(pageSource.includes("UserAccountSupportPanel"), true);
-    assert.equal(pageSource.includes("UserDestructiveZone"), true);
+    assert.equal(pageSource.includes("UserAccountSafetyPanel"), true);
     assert.equal(pageSource.includes("FounderAuthUserDeleteForm"), true);
     assert.equal(pageSource.includes("founderPasswordResetAction"), true);
     assert.equal(pageSource.includes("founderTemporaryPasswordAction"), false);
-    assert.equal(pageSource.includes("Temporary password gated"), true);
-    assert.equal(pageSource.includes("Production user delete"), true);
+    assert.equal(pageSource.includes("Emergency password locked"), true);
+    assert.equal(pageSource.includes("Customer account deletion"), true);
     assert.equal(pageSource.includes("Blocked"), true);
     assert.equal(pageSource.includes("Needs owner-approved role policy"), true);
     assert.equal(
@@ -126,13 +127,14 @@ describe("Founder admin source safety", () => {
     );
     assert.equal(authDeleteSource.includes("if (deletionBlockedReason)"), true);
     assert.equal(
-      authDeleteSource.includes("Delete fake/test login remains locked."),
+      authDeleteSource.includes("Production-linked login cannot be removed here."),
       true,
     );
     assert.equal(
-      authDeleteSource.includes("Production-linked users cannot be deleted from this UI."),
+      authDeleteSource.includes("Keep this account protected until the workspace is confirmed"),
       true,
     );
+    assert.equal(authDeleteSource.includes("Login cleanup protection"), true);
     assert.equal(authDeleteSource.includes("dark:text-red-200"), false);
 
     const serviceSource = readFileSync(
@@ -315,7 +317,7 @@ describe("Founder admin source safety", () => {
       true,
     );
     assert.equal(
-      cleanupSource.includes("Dry run blocked for production"),
+      cleanupSource.includes("Dry run blocked for customer workspace"),
       true,
     );
   });

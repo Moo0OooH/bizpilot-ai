@@ -2,11 +2,17 @@
  * ============================================================
  * File: server/services/founder-auth-user-cleanup.service.ts
  * Project: BizPilot AI
- * Description: Founder-only deletion for fake/test auth users.
+ * Description: Founder-only deletion for synthetic/test auth users.
  * Role: Deletes safe test auth identities after founder authorization and strict guards.
+ * Related:
+ * - components/admin/founder-auth-user-delete-form.tsx
+ * - lib/founder-cleanup/auth-user-deletion.ts
+ * - server/actions/founder-admin.actions.ts
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-05-24
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Aligned service wording with protected synthetic/test cleanup UI.
  * ============================================================
  */
 
@@ -173,7 +179,7 @@ async function insertFounderAuthUserDeletionAction(input: {
         ...newValues,
         fallback_action_type: "test_auth_user_deleted",
       },
-      note: "Fallback audit for fake/test auth user deletion.",
+      note: "Fallback audit for synthetic/test auth user deletion.",
       previousValues,
       supabase: input.supabase,
     });

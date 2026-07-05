@@ -9,11 +9,12 @@
  * - docs/readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-05-18: Created original founder placeholder.
  * - 2026-05-19: Matched approved index.html Founder Admin layout.
  * - 2026-06-27: Rebuilt as a clean handoff to the primary Founder Admin console.
+ * - 2026-07-05: Aligned blocked-gate language with customer account safety copy.
  * ============================================================
  */
 
@@ -62,7 +63,7 @@ const adminSurfaces = [
 ] as const;
 
 const blockedGates = [
-  "Production user deletion",
+  "Customer account deletion",
   "Invite, role, suspend, or remove member access",
   "Real customer data approval",
   "Paid pilot, billing, payment, and refund automation",

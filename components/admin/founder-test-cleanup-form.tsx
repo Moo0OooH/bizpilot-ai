@@ -2,14 +2,19 @@
  * ============================================================
  * File: components/admin/founder-test-cleanup-form.tsx
  * Project: BizPilot AI
- * Description: Founder-only test workspace cleanup controls.
+ * Description: Founder-only synthetic workspace cleanup controls.
  * Role: Provides dry-run and double-confirmed hard purge forms for non-production workspaces.
+ * Related:
+ * - app/admin/page.tsx
+ * - lib/founder-cleanup/confirmation.ts
+ * - server/actions/founder-admin.actions.ts
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-27: Reworked cleanup warning styles to use founder admin semantic tokens.
  * - 2026-06-27: Tightened cleanup panel contrast and compact default layout.
+ * - 2026-07-05: Reworded cleanup copy around customer-protected versus synthetic data.
  * ============================================================
  */
 
@@ -100,11 +105,11 @@ export function FounderTestCleanupForm({
           <p className="mt-1 font-bold">
             {eligible
               ? "Cleanup is still blocked until a dry-run is complete and the exact business name or slug is typed."
-              : "Hard purge is blocked for production_customer workspaces. Mark a workspace as Founder test, Demo, or Seed only after confirming it contains fake data."}
+              : "Hard purge is blocked for customer-protected workspaces. Reclassify only after confirming the workspace is synthetic or internal test data."}
           </p>
           <p className="mt-1 text-[var(--dash-text-secondary)]">
-            Workspace cleanup never deletes Supabase Auth users; fake/test login
-            deletion is a separate control and requires its own confirmation.
+            Workspace cleanup never deletes Supabase Auth users; synthetic/test
+            login cleanup is a separate control and requires its own confirmation.
           </p>
         </div>
         <form action={founderCleanupDryRunAction}>
@@ -118,7 +123,7 @@ export function FounderTestCleanupForm({
             disabled={!eligible}
             type="submit"
           >
-            {eligible ? "Dry run cleanup" : "Dry run blocked for production"}
+            {eligible ? "Dry run cleanup" : "Dry run blocked for customer workspace"}
           </button>
         </form>
         <form action={founderTestWorkspaceCleanupAction} className="grid gap-3">

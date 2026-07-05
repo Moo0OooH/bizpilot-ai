@@ -2,11 +2,17 @@
  * ============================================================
  * File: server/services/founder-test-cleanup.service.ts
  * Project: BizPilot AI
- * Description: Founder-only cleanup for fake/test/demo workspaces.
+ * Description: Founder-only cleanup for synthetic/test/demo workspaces.
  * Role: Dry-runs and hard-purges non-production workspaces without touching auth.users.
+ * Related:
+ * - components/admin/founder-test-cleanup-form.tsx
+ * - lib/founder-cleanup/confirmation.ts
+ * - server/actions/founder-admin.actions.ts
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-05-24
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Aligned service description with synthetic/test cleanup language.
  * ============================================================
  */
 

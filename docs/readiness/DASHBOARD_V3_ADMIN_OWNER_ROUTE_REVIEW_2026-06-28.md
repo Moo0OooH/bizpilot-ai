@@ -28,12 +28,12 @@ Owner dashboard:
 
 ### Admin Users Detail
 
-- Blocked fake/test auth deletion now renders as a compact read-only safety panel.
+- Blocked synthetic/test auth cleanup now renders as a compact read-only safety panel.
 - The blocked state no longer shows confirmation checkboxes, text inputs, or a disabled destructive button that the founder cannot use.
 - The blocked message now uses dashboard danger tokens instead of weak red text that can become low-contrast.
 - The expanded user-detail area is reorganized into two practical zones:
   - account/workspace context and account support
-  - access gate map and destructive safety rail
+  - access gate map and account safety rail
 
 ### Access Gate Map
 

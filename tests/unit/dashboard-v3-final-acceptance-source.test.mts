@@ -10,13 +10,14 @@
  * - app/admin/page.tsx
  * Author: MoOoH
  * Created: 2026-06-27
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-07-04: Updated owner overview guards for the simplified action-first cockpit.
  * - 2026-07-04: Added source guards for local dashboard display preferences.
  * - 2026-07-04: Guarded display preferences route reapply, storage fallback, and visible focus states.
  * - 2026-07-04: Guarded focused owner queue links and complete topbar action routes.
  * - 2026-07-04: Guarded the protected owner operating guide route and navigation.
+ * - 2026-07-05: Guarded the final dashboard route map and account-safety cleanup language.
  * ============================================================
  */
 
@@ -32,6 +33,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
     );
     const figmaHandoff = readFileSync(
       "docs/readiness/DASHBOARD_V3_FIGMA_HANDOFF_AND_VISUAL_QA_2026-06-27.md",
+      "utf8",
+    );
+    const routeMap = readFileSync(
+      "docs/readiness/DASHBOARD_V3_FINAL_ROUTE_MAP_AND_ACCOUNT_SAFETY_2026-07-05.md",
       "utf8",
     );
 
@@ -54,6 +59,14 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(figmaHandoff.includes("Desktop / Owner Overview / 1440"), true);
     assert.equal(figmaHandoff.includes("Mobile / Lead Detail / 390"), true);
     assert.equal(figmaHandoff.includes("pnpm verify"), true);
+    assert.equal(routeMap.includes("/auth/sign-in"), true);
+    assert.equal(routeMap.includes("/quote/[slug]"), true);
+    assert.equal(routeMap.includes("/quote/[slug]/success"), true);
+    assert.equal(routeMap.includes("/dashboard/guide"), true);
+    assert.equal(routeMap.includes("/admin?adminPanel=users"), true);
+    assert.equal(routeMap.includes("Account safety and cleanup"), true);
+    assert.equal(routeMap.includes("synthetic/test login cleanup"), true);
+    assert.equal(routeMap.includes("production-customer workspace"), true);
   });
 
   it("keeps owner navigation compact and route-owned", () => {
@@ -302,6 +315,6 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(cleanup.includes("<details className="), true);
     assert.equal(cleanup.includes("<details open"), false);
     assert.equal(cleanup.includes("Dry run cleanup"), true);
-    assert.equal(cleanup.includes("Hard purge is blocked for production_customer"), true);
+    assert.equal(cleanup.includes("Hard purge is blocked for customer-protected workspaces"), true);
   });
 });

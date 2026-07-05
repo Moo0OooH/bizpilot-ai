@@ -9,6 +9,9 @@
  * - components/admin/founder-test-cleanup-form.tsx
  * Author: MoOoH
  * Created: 2026-05-24
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Updated cleanup safety guards for customer-protected copy.
  * ============================================================
  */
 
@@ -94,7 +97,7 @@ describe("Founder cleanup source safety", () => {
     const adminPage = readFileSync("app/admin/page.tsx", "utf8");
 
     assert.equal(
-      cleanupForm.includes("Hard purge is blocked for production_customer"),
+      cleanupForm.includes("Hard purge is blocked for customer-protected workspaces"),
       true,
     );
     assert.equal(
@@ -102,11 +105,11 @@ describe("Founder cleanup source safety", () => {
       true,
     );
     assert.equal(
-      authDeleteForm.includes("keeps founder and production-customer accounts blocked"),
+      authDeleteForm.includes("keeps founder and customer-protected accounts blocked"),
       true,
     );
     assert.equal(adminPage.includes("FounderAdminSafetyRail"), true);
-    assert.equal(adminPage.includes("Production customer is locked"), true);
+    assert.equal(adminPage.includes("Customer workspace is protected"), true);
   });
 
   it("dry-run counts rows without selecting customer content columns", () => {

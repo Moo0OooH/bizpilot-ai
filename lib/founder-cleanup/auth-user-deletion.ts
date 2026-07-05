@@ -2,11 +2,16 @@
  * ============================================================
  * File: lib/founder-cleanup/auth-user-deletion.ts
  * Project: BizPilot AI
- * Description: Pure safety helpers for founder-only fake/test auth user deletion.
+ * Description: Pure safety helpers for founder-only synthetic/test auth user deletion.
  * Role: Keeps auth identity deletion tightly scoped to non-production test users.
+ * Related:
+ * - components/admin/founder-auth-user-delete-form.tsx
+ * - server/services/founder-auth-user-cleanup.service.ts
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-05-24
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Reworded visible acknowledgement copy to synthetic/test cleanup language.
  * ============================================================
  */
 
@@ -17,7 +22,7 @@ import {
 } from "./confirmation.ts";
 
 export const FOUNDER_TEST_AUTH_USER_DELETE_ACKNOWLEDGEMENT =
-  "I understand this deletes only a fake/test auth login and cannot be undone.";
+  "I understand this deletes only a synthetic/test auth login and cannot be undone.";
 
 export type FounderAuthUserDeletionMode = "test_auth_user_delete";
 
