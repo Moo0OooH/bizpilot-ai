@@ -14,6 +14,7 @@
  * Created: 2026-05-11
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added explicit accessible labels for lead queue row links.
  * - 2026-07-04: Added URL-driven initial filters so overview links open the queue in the requested focus state.
  * - 2026-07-04: Added full lead queue pagination with page-size controls and reset behavior.
  * - 2026-07-05: Standardized queue pagination with a named nav, page buttons, and stable controls.
@@ -227,6 +228,24 @@ function summarizeArea(item: LeadDeskItem, copy: LeadQueueCopy): string {
   return ownerSafeLeadText(item.lead.city_or_service_area, copy.fallbacks.area);
 }
 
+function leadQueueItemAriaLabel(item: LeadDeskItem, copy: LeadQueueCopy): string {
+  const status = displayStatus(item, copy);
+  const customerDisplayName = shortCustomerName(
+    ownerSafeLeadText(item.lead.customer_name, copy.fallbacks.unnamedLead),
+    copy.fallbacks.unnamedLead,
+  );
+
+  return [
+    customerDisplayName,
+    summarizeService(item, copy),
+    summarizeArea(item, copy),
+    status.label,
+    item.recommendedAction,
+  ]
+    .filter(Boolean)
+    .join(" - ");
+}
+
 function CustomerCell({
   copy,
   item,
@@ -275,6 +294,7 @@ function LeadMobileCard({
   const status = displayStatus(item, copy);
   return (
     <Link
+      aria-label={leadQueueItemAriaLabel(item, copy)}
       className="grid min-w-0 gap-3 overflow-hidden border-b border-[var(--dash-border)] p-3.5 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:hidden"
       href={`/dashboard/leads/${item.lead.id}`}
     >
@@ -322,6 +342,7 @@ function LeadDesktopRow({
   const status = displayStatus(item, copy);
   return (
     <Link
+      aria-label={leadQueueItemAriaLabel(item, copy)}
       className={`hidden ${COL_TEMPLATE} items-center gap-3 border-b border-[var(--dash-border)] px-3 py-2.5 text-[13px] transition last:border-b-0 hover:bg-[var(--dash-primary-soft)] xl:grid`}
       href={`/dashboard/leads/${item.lead.id}`}
     >
