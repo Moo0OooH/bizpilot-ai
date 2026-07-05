@@ -15,6 +15,7 @@
  * - 2026-06-27: Reworked cleanup warning styles to use founder admin semantic tokens.
  * - 2026-06-27: Tightened cleanup panel contrast and compact default layout.
  * - 2026-07-05: Reworded cleanup copy around customer-protected versus synthetic data.
+ * - 2026-07-05: Hardened exact cleanup confirmation input against mobile text correction.
  * ============================================================
  */
 
@@ -157,9 +158,13 @@ export function FounderTestCleanupForm({
               {businessName} or {businessSlug}
             </span>
             <input
+              autoCapitalize="none"
+              autoComplete="off"
+              autoCorrect="off"
               className={inputClass}
               name="cleanupConfirmation"
               onChange={(event) => setTypedConfirmation(event.currentTarget.value)}
+              spellCheck={false}
               value={typedConfirmation}
             />
           </label>

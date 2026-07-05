@@ -6,10 +6,11 @@
  * Role: Keeps the internal console visually aligned with the shared owner dashboard theme system.
  * Author: MoOoH
  * Created: 2026-05-27
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-18: Switched the admin frame to svh for safer short-height scrolling.
  * - 2026-06-19: Added System theme preference support using the shared theme cookie.
+ * - 2026-07-05: Kept admin DOM theme state synchronized when System theme changes.
  * ============================================================
  */
 
@@ -39,6 +40,11 @@ function resolveSystemTheme(): ResolvedTheme {
     : "light";
 }
 
+function applyEffectiveTheme(effectiveTheme: ResolvedTheme) {
+  document.documentElement.dataset.theme = effectiveTheme;
+  document.documentElement.style.colorScheme = effectiveTheme;
+}
+
 function persistTheme(theme: FounderAdminTheme): ResolvedTheme {
   const effectiveTheme = theme === "system" ? resolveSystemTheme() : theme;
 
@@ -46,8 +52,7 @@ function persistTheme(theme: FounderAdminTheme): ResolvedTheme {
   document.cookie = `${LEGACY_DASHBOARD_THEME_COOKIE}=${theme}; path=/; max-age=${THEME_COOKIE_MAX_AGE}; samesite=lax`;
   window.localStorage.setItem(THEME_PREFERENCE_STORAGE_KEY, theme);
   document.documentElement.dataset.themePreference = theme;
-  document.documentElement.dataset.theme = effectiveTheme;
-  document.documentElement.style.colorScheme = effectiveTheme;
+  applyEffectiveTheme(effectiveTheme);
 
   return effectiveTheme;
 }
@@ -83,7 +88,9 @@ export function FounderAdminThemeFrame({
 
     function updateSystemTheme() {
       if (theme === "system") {
-        setEffectiveTheme(media.matches ? "dark" : "light");
+        const nextEffectiveTheme = media.matches ? "dark" : "light";
+        setEffectiveTheme(nextEffectiveTheme);
+        applyEffectiveTheme(nextEffectiveTheme);
       }
     }
 

@@ -13,6 +13,7 @@
  * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-07-05: Reframed blocked auth deletion as professional account-safety copy.
+ * - 2026-07-05: Hardened exact auth-delete confirmation input against mobile text correction.
  * ============================================================
  */
 
@@ -143,9 +144,13 @@ export function FounderAuthUserDeleteForm({
             {confirmationLabel}
           </span>
           <input
+            autoCapitalize="none"
+            autoComplete="off"
+            autoCorrect="off"
             className={inputClass}
             name="authUserDeleteConfirmation"
             onChange={(event) => setTypedConfirmation(event.currentTarget.value)}
+            spellCheck={false}
             value={typedConfirmation}
           />
         </label>
