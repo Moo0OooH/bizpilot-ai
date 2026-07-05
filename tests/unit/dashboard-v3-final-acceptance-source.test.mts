@@ -12,6 +12,7 @@
  * Created: 2026-06-27
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Guarded the lead queue focus command strip as the route-level recovery action.
  * - 2026-07-05: Guarded owner overview priority standardization and tokenized secondary insights.
  * - 2026-07-04: Updated owner overview guards for the simplified action-first cockpit.
  * - 2026-07-04: Added source guards for local dashboard display preferences.
@@ -201,8 +202,12 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(queue.includes("ownerSafeLeadText"), true);
     assert.equal(queue.includes("limit?: number"), true);
     assert.equal(leads.includes("readLeadQueueFocus"), true);
+    assert.equal(leads.includes("data-dashboard-lead-focus-command"), true);
+    assert.equal(leads.includes("leadMatchesQueueFocus"), true);
+    assert.equal(leads.includes("pickFocusLead"), true);
     assert.equal(leads.includes("initialFilter={initialFilter}"), true);
     assert.equal(leads.includes("key={initialFilter}"), true);
+    assert.equal(leads.includes("className={primaryButtonClass} href={quotePath}"), false);
     assert.equal(detail.includes("detailCopy.manualWorkflow.steps.map"), true);
     assert.equal(detail.includes("generateLeadAiBundleAction"), true);
     assert.equal(detail.includes("ownerSafeLeadText"), true);

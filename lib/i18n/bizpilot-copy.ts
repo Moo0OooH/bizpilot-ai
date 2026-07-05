@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added focus-aware lead queue command copy for manual recovery lanes.
  * - 2026-07-05: Added bilingual route-aware dashboard guide copy for every protected owner page.
  * - 2026-07-05: Standardized owner overview utility CTA copy for action-first dashboard hierarchy.
  * - 2026-07-05: Added accessible lead queue pagination labels and page-button copy.
@@ -579,9 +580,40 @@ type DashboardLeadDetailCopy = Readonly<{
   }>;
 }>;
 
+type DashboardLeadQueueFocusKey =
+  | "ai_ready"
+  | "all"
+  | "at_risk"
+  | "lost"
+  | "missing_info"
+  | "needs_reply"
+  | "reviewed"
+  | "won";
+
 type DashboardLeadsPageCopy = Readonly<{
   active: string;
   atRiskBadge: (count: number) => string;
+  command: Readonly<{
+    countLabel: (count: number, total: number) => string;
+    manualOnly: string;
+    noMatchingLead: string;
+    routeLabel: string;
+    safeAction: string;
+    secondaryLabel: string;
+    states: Readonly<
+      Record<
+        DashboardLeadQueueFocusKey,
+        Readonly<{
+          description: string;
+          emptyDescription: string;
+          emptyPrimaryLabel: string;
+          emptyTitle: string;
+          primaryLabel: string;
+          title: string;
+        }>
+      >
+    >;
+  }>;
   focusAtRiskDescription: (count: number) => string;
   focusHealthyDescription: string;
   focusTitle: string;
@@ -1764,6 +1796,97 @@ const englishCopy: BizPilotCopy = {
     leadsPage: {
       active: "Active",
       atRiskBadge: (count) => `${count} at risk`,
+      command: {
+        countLabel: (count, total) => `${count} of ${total} in this lane`,
+        manualOnly: "Manual review only",
+        noMatchingLead:
+          "Nothing is waiting in this lane right now. Keep the quote setup ready and return to the full queue when new requests arrive.",
+        routeLabel: "Current queue lane",
+        safeAction: "Safest next manual action",
+        secondaryLabel: "Open operating guide",
+        states: {
+          ai_ready: {
+            description:
+              "Start with the first lead that can use an owner-reviewed draft. Copy, edit, and send outside BizPilot only after checking the request.",
+            emptyDescription:
+              "No draft-ready lead is waiting. Use the full queue to review newer requests or setup gaps.",
+            emptyPrimaryLabel: "Back to all leads",
+            emptyTitle: "No draft-ready leads in this lane.",
+            primaryLabel: "Review draft-ready lead",
+            title: "Review the next draft-ready lead.",
+          },
+          all: {
+            description:
+              "Work the queue in recovery order: overdue requests, missing information, new quote requests, then reviewed outcomes.",
+            emptyDescription:
+              "No quote requests are captured yet. Keep setup complete and share the quote link from the channels you already use.",
+            emptyPrimaryLabel: "Check quote setup",
+            emptyTitle: "No quote requests captured yet.",
+            primaryLabel: "Review first lead",
+            title: "Work the highest-priority quote request first.",
+          },
+          at_risk: {
+            description:
+              "Open the oldest at-risk request before reviewed or archived work. The owner still decides what to send.",
+            emptyDescription:
+              "No at-risk lead is waiting. Keep scanning new requests before they age into follow-up risk.",
+            emptyPrimaryLabel: "Back to all leads",
+            emptyTitle: "No at-risk leads right now.",
+            primaryLabel: "Review at-risk lead",
+            title: "Recover the at-risk lead first.",
+          },
+          lost: {
+            description:
+              "Use this lane to inspect manually closed losses and avoid mixing them with today's reply work.",
+            emptyDescription:
+              "No lost outcomes are recorded. Return to the active queue for current manual recovery work.",
+            emptyPrimaryLabel: "Back to all leads",
+            emptyTitle: "No lost outcomes in this lane.",
+            primaryLabel: "Review lost detail",
+            title: "Inspect the closed lost outcome.",
+          },
+          missing_info: {
+            description:
+              "Open the first request with missing details and ask only for the information needed to prepare a useful quote.",
+            emptyDescription:
+              "No missing-information lead is waiting. Continue with reply-ready or at-risk requests.",
+            emptyPrimaryLabel: "Back to all leads",
+            emptyTitle: "No missing-information leads right now.",
+            primaryLabel: "Ask for missing info",
+            title: "Ask for the missing details first.",
+          },
+          needs_reply: {
+            description:
+              "Open the first request that needs an owner reply. Review the draft, edit if needed, then copy and send manually.",
+            emptyDescription:
+              "No reply-needed lead is waiting. Check the full queue or keep setup ready for the next request.",
+            emptyPrimaryLabel: "Back to all leads",
+            emptyTitle: "No reply-needed leads right now.",
+            primaryLabel: "Review reply-needed lead",
+            title: "Reply to the next waiting request.",
+          },
+          reviewed: {
+            description:
+              "Use this lane to audit requests that were already reviewed without pulling focus from open reply work.",
+            emptyDescription:
+              "No reviewed leads are recorded yet. Start from the active queue when new requests arrive.",
+            emptyPrimaryLabel: "Back to all leads",
+            emptyTitle: "No reviewed leads in this lane.",
+            primaryLabel: "Review completed detail",
+            title: "Inspect the reviewed lead detail.",
+          },
+          won: {
+            description:
+              "Use won outcomes as manual proof of completed owner work, not as an automated revenue claim.",
+            emptyDescription:
+              "No won outcomes are recorded. Keep today's recovery queue focused on current requests.",
+            emptyPrimaryLabel: "Back to all leads",
+            emptyTitle: "No won outcomes in this lane.",
+            primaryLabel: "Review won detail",
+            title: "Inspect the closed won outcome.",
+          },
+        },
+      },
       focusAtRiskDescription: (count) =>
         `${count} lead${count === 1 ? "" : "s"} are at risk. Review them before reviewed or archived requests.`,
       focusHealthyDescription:
@@ -3495,6 +3618,97 @@ const frenchCopy: BizPilotCopy = {
     },
     leadsPage: {
       active: "Actif",
+      command: {
+        countLabel: (count, total) => `${count} sur ${total} dans cette file`,
+        manualOnly: "Révision manuelle seulement",
+        noMatchingLead:
+          "Rien n'attend dans cette file pour l'instant. Gardez la configuration prête et revenez à la file complète quand de nouvelles demandes arrivent.",
+        routeLabel: "File actuelle",
+        safeAction: "Prochaine action manuelle la plus sûre",
+        secondaryLabel: "Ouvrir le guide",
+        states: {
+          ai_ready: {
+            description:
+              "Commencez par le premier prospect qui peut utiliser un brouillon à réviser. Copiez, modifiez et envoyez hors BizPilot seulement après vérification.",
+            emptyDescription:
+              "Aucun prospect avec brouillon prêt n'attend. Utilisez la file complète pour revoir les nouvelles demandes ou les écarts de configuration.",
+            emptyPrimaryLabel: "Retour à tous les prospects",
+            emptyTitle: "Aucun brouillon prêt dans cette file.",
+            primaryLabel: "Réviser le brouillon",
+            title: "Réviser le prochain prospect avec brouillon prêt.",
+          },
+          all: {
+            description:
+              "Travaillez la file dans l'ordre de récupération: demandes en retard, infos manquantes, nouvelles demandes, puis résultats déjà revus.",
+            emptyDescription:
+              "Aucune demande de soumission n'est capturée. Gardez la configuration complète et partagez le lien depuis vos canaux existants.",
+            emptyPrimaryLabel: "Vérifier la configuration",
+            emptyTitle: "Aucune demande de soumission capturée.",
+            primaryLabel: "Réviser le premier prospect",
+            title: "Traiter d'abord la demande la plus prioritaire.",
+          },
+          at_risk: {
+            description:
+              "Ouvrez la plus ancienne demande à risque avant les demandes déjà revues ou archivées. Le responsable décide toujours quoi envoyer.",
+            emptyDescription:
+              "Aucun prospect à risque n'attend. Continuez à vérifier les nouvelles demandes avant qu'elles deviennent à risque.",
+            emptyPrimaryLabel: "Retour à tous les prospects",
+            emptyTitle: "Aucun prospect à risque pour l'instant.",
+            primaryLabel: "Réviser le prospect à risque",
+            title: "Récupérer le prospect à risque d'abord.",
+          },
+          lost: {
+            description:
+              "Utilisez cette file pour inspecter les pertes fermées manuellement sans les mélanger au travail de réponse du jour.",
+            emptyDescription:
+              "Aucun résultat perdu n'est enregistré. Retournez à la file active pour le travail manuel en cours.",
+            emptyPrimaryLabel: "Retour à tous les prospects",
+            emptyTitle: "Aucun résultat perdu dans cette file.",
+            primaryLabel: "Réviser le détail perdu",
+            title: "Inspecter le résultat perdu fermé.",
+          },
+          missing_info: {
+            description:
+              "Ouvrez la première demande avec détails manquants et demandez seulement l'information nécessaire pour préparer une soumission utile.",
+            emptyDescription:
+              "Aucun prospect avec infos manquantes n'attend. Continuez avec les demandes prêtes à réponse ou à risque.",
+            emptyPrimaryLabel: "Retour à tous les prospects",
+            emptyTitle: "Aucune info manquante pour l'instant.",
+            primaryLabel: "Demander les infos",
+            title: "Demander les détails manquants d'abord.",
+          },
+          needs_reply: {
+            description:
+              "Ouvrez la première demande qui attend une réponse. Révisez le brouillon, modifiez au besoin, puis copiez et envoyez manuellement.",
+            emptyDescription:
+              "Aucun prospect n'attend une réponse. Vérifiez la file complète ou gardez la configuration prête.",
+            emptyPrimaryLabel: "Retour à tous les prospects",
+            emptyTitle: "Aucune réponse requise pour l'instant.",
+            primaryLabel: "Réviser la réponse",
+            title: "Répondre à la prochaine demande en attente.",
+          },
+          reviewed: {
+            description:
+              "Utilisez cette file pour auditer les demandes déjà revues sans retirer l'attention du travail ouvert.",
+            emptyDescription:
+              "Aucun prospect révisé n'est enregistré. Commencez par la file active quand de nouvelles demandes arrivent.",
+            emptyPrimaryLabel: "Retour à tous les prospects",
+            emptyTitle: "Aucun prospect révisé dans cette file.",
+            primaryLabel: "Réviser le détail complété",
+            title: "Inspecter le détail du prospect révisé.",
+          },
+          won: {
+            description:
+              "Utilisez les résultats gagnés comme preuve manuelle du travail réalisé, pas comme une promesse de revenu automatisée.",
+            emptyDescription:
+              "Aucun résultat gagné n'est enregistré. Gardez la file du jour concentrée sur les demandes actuelles.",
+            emptyPrimaryLabel: "Retour à tous les prospects",
+            emptyTitle: "Aucun résultat gagné dans cette file.",
+            primaryLabel: "Réviser le détail gagné",
+            title: "Inspecter le résultat gagné fermé.",
+          },
+        },
+      },
       atRiskBadge: (count) => `${count} à risque`,
       focusAtRiskDescription: (count) =>
         `${count} prospect${count === 1 ? "" : "s"} à risque. Révisez-les avant les demandes déjà validées ou archivées.`,

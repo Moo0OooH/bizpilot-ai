@@ -13,6 +13,7 @@
  * Created: 2026-06-26
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Guarded the focus-aware lead queue command strip and secondary quote-page CTA.
  * - 2026-07-05: Guarded the bilingual route-aware guide rail and refreshed dashboard color tokens.
  * - 2026-07-05: Guarded owner overview priority hierarchy, tokenized insight visuals, and demoted utility quote-page actions.
  * - 2026-07-05: Guarded accessible lead queue pagination controls.
@@ -73,6 +74,10 @@ describe("P12 dashboard professionalization source guards", () => {
   });
 
   it("keeps lead queue scanning accessible and priority-based", () => {
+    const leadsPageSource = readFileSync(
+      "app/(dashboard)/dashboard/leads/page.tsx",
+      "utf8",
+    );
     const queueSource = readFileSync(
       "components/dashboard/lead-workspace-queue.tsx",
       "utf8",
@@ -80,6 +85,14 @@ describe("P12 dashboard professionalization source guards", () => {
     const copySource = readFileSync("lib/i18n/bizpilot-copy.ts", "utf8");
 
     assert.equal(queueSource.includes("QueueInsightStrip"), true);
+    assert.equal(leadsPageSource.includes("data-dashboard-lead-focus-command"), true);
+    assert.equal(leadsPageSource.includes("data-dashboard-lead-command-action"), true);
+    assert.equal(leadsPageSource.includes("leadMatchesQueueFocus"), true);
+    assert.equal(leadsPageSource.includes("pickFocusLead"), true);
+    assert.equal(leadsPageSource.includes("queueFocusTone"), true);
+    assert.equal(leadsPageSource.includes("leadsCopy.command.states[initialFilter]"), true);
+    assert.equal(leadsPageSource.includes("className={buttonClass} href={quotePath}"), true);
+    assert.equal(leadsPageSource.includes("className={primaryButtonClass} href={quotePath}"), false);
     assert.equal(queueSource.includes("aria-label={queueCopy.searchAriaLabel}"), true);
     assert.equal(queueSource.includes("aria-label={queueCopy.filterAriaLabel}"), true);
     assert.equal(queueSource.includes("aria-label={queueCopy.sortAriaLabel}"), true);
@@ -98,6 +111,11 @@ describe("P12 dashboard professionalization source guards", () => {
     assert.equal(copySource.includes("Choisir le nombre de lignes par page"), true);
     assert.equal(copySource.includes("Lead queue pagination"), true);
     assert.equal(copySource.includes("Pagination de la file de prospects"), true);
+    assert.equal(copySource.includes("Safest next manual action"), true);
+    assert.equal(copySource.includes("Prochaine action manuelle la plus sûre"), true);
+    assert.equal(copySource.includes("Review at-risk lead"), true);
+    assert.equal(copySource.includes("Réviser le prospect à risque"), true);
+    assert.equal(copySource.includes("No auto-send"), true);
   });
 
   it("keeps the route-aware dashboard guide visible, bilingual, and local-only", () => {
