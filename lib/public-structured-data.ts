@@ -10,6 +10,10 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-07-04
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Added honest audience and feature context to public JSON-LD.
+ * - 2026-07-04: Created structured-data builders for public marketing routes.
  * ============================================================
  */
 
@@ -33,6 +37,18 @@ type BreadcrumbItem = Readonly<{
 }>;
 
 const context = "https://schema.org";
+const availableLanguages = ["en-CA", "fr-CA"] as const;
+const cleaningOwnerAudience = {
+  "@type": "BusinessAudience",
+  audienceType: "Cleaning business owners",
+} as const;
+const coreWorkflowTopics = [
+  "cleaning quote requests",
+  "manual lead recovery",
+  "owner-reviewed AI drafts",
+  "quote link intake",
+  "service business follow-up",
+] as const;
 
 function inLanguage(language: SupportedLanguage): "en-CA" | "fr-CA" {
   return language === "fr-CA" ? "fr-CA" : "en-CA";
@@ -42,6 +58,8 @@ function organizationJsonLd() {
   return {
     "@id": publicAssetUrl("/#organization"),
     "@type": "Organization",
+    availableLanguage: availableLanguages,
+    knowsAbout: coreWorkflowTopics,
     name: PUBLIC_SITE_NAME,
     url: publicUrl("/"),
   } as const;
@@ -51,6 +69,10 @@ function websiteJsonLd(language: SupportedLanguage) {
   return {
     "@id": publicAssetUrl("/#website"),
     "@type": "WebSite",
+    about: {
+      "@id": publicAssetUrl("/#service"),
+    },
+    availableLanguage: availableLanguages,
     inLanguage: inLanguage(language),
     name: PUBLIC_SITE_NAME,
     publisher: {
@@ -70,7 +92,9 @@ function softwareApplicationJsonLd(language: SupportedLanguage) {
     "@id": publicAssetUrl("/#software"),
     "@type": "SoftwareApplication",
     applicationCategory: "BusinessApplication",
+    audience: cleaningOwnerAudience,
     description,
+    featureList: coreWorkflowTopics,
     inLanguage: inLanguage(language),
     name: PUBLIC_SITE_NAME,
     operatingSystem: "Web",
@@ -91,6 +115,7 @@ function serviceJsonLd(language: SupportedLanguage) {
     "@id": publicAssetUrl("/#service"),
     "@type": "Service",
     areaServed: "Canada",
+    audience: cleaningOwnerAudience,
     description,
     inLanguage: inLanguage(language),
     name:
@@ -100,6 +125,7 @@ function serviceJsonLd(language: SupportedLanguage) {
     provider: {
       "@id": publicAssetUrl("/#organization"),
     },
+    serviceOutput: "Owner-reviewed response drafts and an organized quote request queue.",
     serviceType: "Cleaning business lead recovery workflow",
     url: publicUrl("/", language),
   } as const;
