@@ -19,6 +19,7 @@
  * - 2026-07-04: Added a product-real owner-view preview before the narrative chapters.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel after the product walkthrough.
+ * - 2026-07-05: Tokenized demo workspace panels for launch-ready light/dark consistency.
  * ============================================================
  */
 
@@ -79,15 +80,29 @@ function DemoPanel({
   title,
 }: Readonly<{ items: readonly string[]; title: string }>) {
   return (
-    <div className="min-w-0 rounded-[8px] border border-slate-200 bg-white p-5 shadow-[0_18px_42px_rgba(15,23,42,0.06)]">
-      <p className="text-[12px] font-black uppercase text-slate-500">
+    <div
+      className="min-w-0 rounded-[8px] border p-5 shadow-[var(--shadow-sm)]"
+      style={{
+        backgroundColor: "var(--surface)",
+        borderColor: marketingTone.border,
+      }}
+    >
+      <p
+        className="text-[12px] font-black uppercase"
+        style={{ color: marketingTone.muted }}
+      >
         {title}
       </p>
       <div className="mt-3 grid gap-2">
         {items.map((item) => (
           <p
-            className="rounded-[12px] border border-slate-200 bg-slate-50 px-3 py-2 text-[14px] font-bold leading-6 text-slate-950"
+            className="rounded-[12px] border px-3 py-2 text-[14px] font-bold leading-6"
             key={item}
+            style={{
+              backgroundColor: "var(--surface-interactive)",
+              borderColor: marketingTone.border,
+              color: marketingTone.text,
+            }}
           >
             {item}
           </p>
@@ -133,43 +148,78 @@ function DemoWorkspace({ copy }: Readonly<{ copy: DemoWorkspaceCopy }>) {
       </div>
 
       <div className="mt-5 grid min-w-0 gap-3 min-[1060px]:grid-cols-[minmax(0,0.78fr)_minmax(0,0.86fr)_minmax(0,1.08fr)]">
-        <section className="min-w-0 rounded-[10px] border border-slate-200 bg-slate-50 p-4">
-          <p className="text-[12px] font-black uppercase text-slate-500">{copy.quoteLink.label}</p>
-          <p className="mt-2 break-words rounded-[8px] border border-slate-200 bg-white px-3 py-2 text-[13px] font-black text-slate-950">
+        <section
+          className="min-w-0 rounded-[10px] border p-4"
+          style={{
+            backgroundColor: "var(--surface-interactive)",
+            borderColor: marketingTone.border,
+          }}
+        >
+          <p className="text-[12px] font-black uppercase" style={{ color: marketingTone.muted }}>{copy.quoteLink.label}</p>
+          <p
+            className="mt-2 break-words rounded-[8px] border px-3 py-2 text-[13px] font-black"
+            style={{
+              backgroundColor: "var(--surface)",
+              borderColor: marketingTone.border,
+              color: marketingTone.text,
+            }}
+          >
             {copy.quoteLink.value}
           </p>
-          <p className="mt-3 text-[14px] font-semibold leading-6 text-slate-700">
+          <p className="mt-3 text-[14px] font-semibold leading-6" style={{ color: marketingTone.soft }}>
             {copy.quoteLink.body}
           </p>
           <div className="mt-4 grid gap-2">
             {copy.fields.map((item) => (
               <div
-                className="grid gap-1 rounded-[8px] border border-slate-200 bg-white px-3 py-2"
+                className="grid gap-1 rounded-[8px] border px-3 py-2"
                 key={item[0]}
+                style={{
+                  backgroundColor: "var(--surface)",
+                  borderColor: marketingTone.border,
+                }}
               >
-                <span className="text-[11px] font-black uppercase text-slate-500">{item[0]}</span>
-                <span className="text-[13px] font-black leading-5 text-slate-950">{item[1]}</span>
+                <span className="text-[11px] font-black uppercase" style={{ color: marketingTone.muted }}>{item[0]}</span>
+                <span className="text-[13px] font-black leading-5" style={{ color: marketingTone.text }}>{item[1]}</span>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="min-w-0 rounded-[10px] border border-amber-200 bg-amber-50 p-4">
+        <section
+          className="min-w-0 rounded-[10px] border p-4"
+          style={{
+            backgroundColor: "color-mix(in srgb, var(--warning) 10%, var(--surface))",
+            borderColor: "color-mix(in srgb, var(--warning) 30%, var(--border-default))",
+          }}
+        >
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <span className="rounded-full bg-white px-3 py-1 text-[11px] font-black text-amber-800">
+            <span
+              className="rounded-full px-3 py-1 text-[11px] font-black"
+              style={{
+                backgroundColor: "var(--surface)",
+                color: marketingTone.gold,
+              }}
+            >
               {copy.lead.status}
             </span>
-            <span className="text-[12px] font-black text-slate-600">{copy.lead.source}</span>
+            <span className="text-[12px] font-black" style={{ color: marketingTone.muted }}>{copy.lead.source}</span>
           </div>
-          <h3 className="mt-4 text-[1.1rem] font-black leading-tight text-slate-950">
+          <h3 className="mt-4 text-[1.1rem] font-black leading-tight" style={{ color: marketingTone.text }}>
             {copy.lead.title}
           </h3>
-          <p className="mt-2 text-[13px] font-bold text-slate-700">{copy.lead.meta}</p>
-          <div className="mt-4 rounded-[8px] border border-amber-200 bg-white p-3">
-            <p className="text-[12px] font-black uppercase text-amber-800">{copy.missingTitle}</p>
+          <p className="mt-2 text-[13px] font-bold" style={{ color: marketingTone.soft }}>{copy.lead.meta}</p>
+          <div
+            className="mt-4 rounded-[8px] border p-3"
+            style={{
+              backgroundColor: "var(--surface)",
+              borderColor: "color-mix(in srgb, var(--warning) 30%, var(--border-default))",
+            }}
+          >
+            <p className="text-[12px] font-black uppercase" style={{ color: marketingTone.gold }}>{copy.missingTitle}</p>
             <ul className="mt-3 grid gap-2">
               {copy.missing.map((item) => (
-                <li className="flex gap-2 text-[13px] font-bold leading-5 text-slate-800" key={item}>
+                <li className="flex gap-2 text-[13px] font-bold leading-5" key={item} style={{ color: marketingTone.soft }}>
                   <MarketingIcon name="warning" />
                   <span>{item}</span>
                 </li>
@@ -178,14 +228,32 @@ function DemoWorkspace({ copy }: Readonly<{ copy: DemoWorkspaceCopy }>) {
           </div>
         </section>
 
-        <section className="min-w-0 rounded-[10px] border border-teal-200 bg-teal-50 p-4">
-          <div className="rounded-[8px] border border-teal-200 bg-white p-3">
-            <p className="text-[12px] font-black uppercase text-teal-700">{copy.summary.title}</p>
-            <p className="mt-2 text-[13px] font-bold leading-6 text-slate-800">{copy.summary.body}</p>
+        <section
+          className="min-w-0 rounded-[10px] border p-4"
+          style={{
+            backgroundColor: "color-mix(in srgb, var(--accent) 10%, var(--surface))",
+            borderColor: "color-mix(in srgb, var(--accent) 30%, var(--border-default))",
+          }}
+        >
+          <div
+            className="rounded-[8px] border p-3"
+            style={{
+              backgroundColor: "var(--surface)",
+              borderColor: "color-mix(in srgb, var(--accent) 30%, var(--border-default))",
+            }}
+          >
+            <p className="text-[12px] font-black uppercase" style={{ color: marketingTone.teal }}>{copy.summary.title}</p>
+            <p className="mt-2 text-[13px] font-bold leading-6" style={{ color: marketingTone.soft }}>{copy.summary.body}</p>
           </div>
-          <div className="mt-3 rounded-[8px] border border-teal-200 bg-white p-3">
-            <p className="text-[12px] font-black uppercase text-teal-700">{copy.draft.title}</p>
-            <p className="mt-2 text-[13px] font-semibold leading-6 text-slate-800">{copy.draft.body}</p>
+          <div
+            className="mt-3 rounded-[8px] border p-3"
+            style={{
+              backgroundColor: "var(--surface)",
+              borderColor: "color-mix(in srgb, var(--accent) 30%, var(--border-default))",
+            }}
+          >
+            <p className="text-[12px] font-black uppercase" style={{ color: marketingTone.teal }}>{copy.draft.title}</p>
+            <p className="mt-2 text-[13px] font-semibold leading-6" style={{ color: marketingTone.soft }}>{copy.draft.body}</p>
           </div>
           <div className="mt-3 flex flex-wrap gap-2">
             {copy.actions.map((item, index) => (
@@ -267,7 +335,7 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
                     >
                       {item.eyebrow}
                     </span>
-                    <h2 className="bp-card-title mt-4 font-black leading-tight text-slate-950">
+                    <h2 className="bp-card-title mt-4 font-black leading-tight" style={{ color: marketingTone.text }}>
                       {item.title}
                     </h2>
                     <p
@@ -285,7 +353,7 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
             <MarketingCard className="p-6 sm:p-8">
               <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
                 <div>
-                  <h2 className="bp-section-title font-black leading-tight text-slate-950">
+                  <h2 className="bp-section-title font-black leading-tight" style={{ color: marketingTone.text }}>
                     {copy.cta.title}
                   </h2>
                   <p

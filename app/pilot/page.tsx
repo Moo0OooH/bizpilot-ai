@@ -20,6 +20,7 @@
  * - 2026-07-04: Added honest pilot proof metrics without fake claims or data submission.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel for pilot applicants.
+ * - 2026-07-05: Tokenized pilot guardrail warning treatment while keeping the non-submitting path.
  * ============================================================
  */
 
@@ -215,7 +216,7 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
                 color: marketingTone.soft,
               }}
             >
-              <span className="mt-0.5 shrink-0 text-amber-600">
+              <span className="mt-0.5 shrink-0" style={{ color: marketingTone.gold }}>
                 <MarketingIcon name="warning" />
               </span>
               <span className="min-w-0">{copy.proof.guardrail}</span>

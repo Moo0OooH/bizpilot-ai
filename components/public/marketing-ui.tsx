@@ -10,7 +10,7 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-26
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
@@ -24,6 +24,8 @@
  * - 2026-07-04: Added the public comparison route to desktop and compact navigation.
  * - 2026-07-04: Added the quote-link guide to the public footer.
  * - 2026-07-05: Added a reusable next-step panel for public conversion paths.
+ * - 2026-07-05: Tokenized neutral badges and next-step labels for launch-ready light/dark consistency.
+ * - 2026-07-05: Allowed the desktop brand subtitle to wrap for longer localized copy.
  * ============================================================
  */
 
@@ -317,7 +319,7 @@ export function MarketingBadge({
       color: marketingTone.gold,
     },
     neutral: {
-      bg: "#F8FAFC",
+      bg: "var(--surface-interactive)",
       border: marketingTone.borderStrong,
       color: marketingTone.soft,
     },
@@ -487,7 +489,7 @@ export function MarketingNextStepPanel({
                   >
                     <MarketingIcon name={item.icon ?? "arrow"} />
                   </span>
-                  <span className="min-w-0 text-[14px] font-black leading-5">
+                  <span className="min-w-0 break-words text-[14px] font-black leading-5">
                     {item.label}
                   </span>
                 </span>
@@ -529,8 +531,8 @@ export function MarketingBrand({
           BizPilot AI
         </span>
         <span
-          className="bp-copy-nav hidden text-[8px] font-black uppercase min-[1240px]:block"
-          style={{ color: marketingTone.muted }}
+          className="bp-copy-nav hidden max-w-[14rem] whitespace-normal break-words text-[8px] font-black uppercase leading-[1.15] min-[1240px]:block"
+          style={{ color: marketingTone.muted, maxWidth: "14rem", whiteSpace: "normal" }}
         >
           {subtitle}
         </span>

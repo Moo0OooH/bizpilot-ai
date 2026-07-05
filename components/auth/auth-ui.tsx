@@ -10,7 +10,7 @@
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-05-12
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-05-19: Rebuilt as single centered card. Removed the split layout that caused scroll/scale issues.
  * - 2026-05-23: Added shared language switcher and localized auth chrome.
@@ -18,6 +18,7 @@
  * - 2026-06-19: Added the shared System/Light/Dark preference control to auth chrome.
  * - 2026-06-19: Removed auth utility controls and aligned auth actions to the public blue primary.
  * - 2026-06-25: Tightened auth card spacing for final public rhythm polish.
+ * - 2026-07-05: Hardened auth chrome text wrapping and mobile fit without changing auth behavior.
  * ============================================================
  */
 
@@ -45,7 +46,7 @@ type AuthFieldIconProps = Readonly<{
 function BrandMark({ copy }: Readonly<{ copy: BizPilotCopy["auth"] }>) {
   return (
     <Link
-      className="inline-flex min-h-11 items-center gap-2.5"
+      className="inline-flex min-h-11 min-w-0 items-center gap-2.5"
       href="/"
       style={{ color: "var(--biz-page-text)" }}
     >
@@ -60,12 +61,12 @@ function BrandMark({ copy }: Readonly<{ copy: BizPilotCopy["auth"] }>) {
       >
         B
       </span>
-      <span className="leading-tight">
+      <span className="min-w-0 leading-tight">
         <span className="block text-[15px] font-black tracking-[-0.02em]">
           BizPilot AI
         </span>
         <span
-          className="block text-[11px] uppercase tracking-[0.14em]"
+          className="block break-words text-[11px] uppercase tracking-[0.14em]"
           style={{ color: "var(--biz-page-text-soft)" }}
         >
           {copy.ownerAccess}
@@ -90,10 +91,10 @@ export function AuthShell({
         color: "var(--biz-page-text)",
       }}
     >
-      <div className={`mb-4 flex w-full ${maxWidthClassName} items-center justify-between gap-3`}>
+      <div className={`mb-4 flex w-full ${maxWidthClassName} flex-wrap items-center justify-between gap-3`}>
         <BrandMark copy={copy} />
         <Link
-          className="inline-flex min-h-11 items-center rounded-[12px] border px-3 text-[12px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+          className="inline-flex min-h-11 shrink-0 items-center rounded-[12px] border px-3 text-[12px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
           href="/"
           style={{
             borderColor: "var(--biz-page-border)",
@@ -205,7 +206,7 @@ export const authErrorStyle: CSSProperties = {
 };
 
 export const authInputClassName =
-  "h-11 w-full rounded-[12px] border pl-9 pr-3 text-[14px] outline-none transition placeholder:opacity-50 focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]";
+  "h-11 min-w-0 w-full rounded-[12px] border pl-9 pr-3 text-[14px] outline-none transition placeholder:opacity-50 focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]";
 
 export const authLabelClassName =
   "grid gap-1.5 text-[12px] font-bold uppercase tracking-[0.08em]";

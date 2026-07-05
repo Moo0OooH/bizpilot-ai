@@ -24,6 +24,7 @@
  * - 2026-06-27: Collapsed secondary service detail/workflow panels to reduce mobile scroll.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel for cleaning-owner education.
+ * - 2026-07-05: Tokenized cleaning proof cards for launch-ready light/dark consistency.
  * ============================================================
  */
 
@@ -123,7 +124,14 @@ export default async function CleaningPage({
 
             <MarketingCard className="cleaning-before-after-card p-5 sm:p-6">
               <MarketingBadge toneName="blue">{copy.beforeAfter.beforeLabel}</MarketingBadge>
-              <p className="mt-4 rounded-[14px] border border-slate-200 bg-slate-50 p-4 text-[15px] font-black leading-7 text-slate-950">
+              <p
+                className="mt-4 rounded-[14px] border p-4 text-[15px] font-black leading-7"
+                style={{
+                  backgroundColor: "var(--surface-interactive)",
+                  borderColor: marketingTone.border,
+                  color: marketingTone.text,
+                }}
+              >
                 {copy.beforeAfter.before}
               </p>
               <h2 className="bp-card-title bp-copy-card-title mt-5 font-black leading-tight" style={{ color: marketingTone.text }}>
@@ -132,11 +140,17 @@ export default async function CleaningPage({
               <p className="bp-copy-card-body mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
                 {copy.beforeAfter.body}
               </p>
-              <div className="mt-5 rounded-[14px] border border-teal-200 bg-teal-50 p-4">
-                <p className="text-[12px] font-black uppercase tracking-[0.12em] text-teal-700">
+              <div
+                className="mt-5 rounded-[14px] border p-4"
+                style={{
+                  backgroundColor: "color-mix(in srgb, var(--accent) 10%, var(--surface))",
+                  borderColor: "color-mix(in srgb, var(--accent) 30%, var(--border-default))",
+                }}
+              >
+                <p className="text-[12px] font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.teal }}>
                   {copy.beforeAfter.afterLabel}
                 </p>
-                <p className="mt-2 text-[14px] font-bold leading-7 text-slate-950">
+                <p className="mt-2 text-[14px] font-bold leading-7" style={{ color: marketingTone.text }}>
                   {copy.beforeAfter.after}
                 </p>
               </div>

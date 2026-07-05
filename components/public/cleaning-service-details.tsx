@@ -10,9 +10,10 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-25
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-06-25: Created the shared Cleaning service detail selector to remove duplicated responsive content.
+ * - 2026-07-05: Tokenized active detail panels for launch-ready light/dark consistency.
  * ============================================================
  */
 
@@ -120,11 +121,23 @@ export function CleaningServiceDetails({
             >
               {activeService.body}
             </p>
-            <div className="mt-4 rounded-[14px] border border-slate-200 bg-white p-4">
-              <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.12em] text-slate-500">
+            <div
+              className="mt-4 rounded-[14px] border p-4"
+              style={{
+                backgroundColor: "var(--surface)",
+                borderColor: "var(--border-default)",
+              }}
+            >
+              <p
+                className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.12em]"
+                style={{ color: "var(--text-muted)" }}
+              >
                 {requestLabel}
               </p>
-              <p className="bp-copy-card-body mt-2 text-[14px] font-black leading-7 text-slate-950">
+              <p
+                className="bp-copy-card-body mt-2 text-[14px] font-black leading-7"
+                style={{ color: "var(--text-strong)" }}
+              >
                 {activeService.request}
               </p>
             </div>
@@ -147,8 +160,17 @@ export function CleaningServiceDetails({
               <DetailList items={activeService.clearDetails} />
             </div>
 
-            <div className="grid gap-2 rounded-[14px] border border-teal-200 bg-teal-50 p-4">
-              <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.12em] text-teal-700">
+            <div
+              className="grid gap-2 rounded-[14px] border p-4"
+              style={{
+                backgroundColor: "color-mix(in srgb, var(--accent) 10%, var(--surface))",
+                borderColor: "color-mix(in srgb, var(--accent) 30%, var(--border-default))",
+              }}
+            >
+              <p
+                className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.12em]"
+                style={{ color: "var(--accent)" }}
+              >
                 {helpTitle}
               </p>
               <DetailList items={activeService.missingDetails} tone="teal" />

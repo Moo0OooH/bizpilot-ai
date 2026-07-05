@@ -23,6 +23,7 @@
  * - 2026-07-04: Added paid-pilot trust boundaries for payment, support, refund, and scope.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel for pricing decisions.
+ * - 2026-07-05: Tokenized pricing guardrail icon treatment without changing payment gates.
  * ============================================================
  */
 
@@ -217,7 +218,13 @@ export default async function PricingPage({
 
           <MarketingCard className="mt-8 p-6 sm:p-7" style={{ borderColor: "rgba(245,158,11,0.32)" }}>
             <div className="grid gap-5 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-[14px] bg-amber-50 text-amber-600">
+              <span
+                className="inline-flex h-12 w-12 items-center justify-center rounded-[14px]"
+                style={{
+                  backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
+                  color: marketingTone.gold,
+                }}
+              >
                 <MarketingIcon name="lock" />
               </span>
               <div>

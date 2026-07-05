@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-07-04: Created the public quote-link placement guide for Phase 25C.
  * - 2026-07-05: Added a route-aware next-step panel for local-GTM education.
+ * - 2026-07-05: Tokenized guide guardrail icon treatment for light/dark launch polish.
  * ============================================================
  */
 
@@ -200,7 +201,13 @@ export default async function QuoteLinkGuidePage({
           <div className="mt-8 grid gap-5 lg:grid-cols-[minmax(0,0.5fr)_minmax(0,0.5fr)]">
             <MarketingCard className="p-5 sm:p-6" style={{ borderColor: "rgba(245,158,11,0.32)" }}>
               <div className="flex min-w-0 items-start gap-4">
-                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-amber-50 text-amber-600">
+                <span
+                  className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px]"
+                  style={{
+                    backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
+                    color: marketingTone.gold,
+                  }}
+                >
                   <MarketingIcon name="warning" />
                 </span>
                 <div className="min-w-0">

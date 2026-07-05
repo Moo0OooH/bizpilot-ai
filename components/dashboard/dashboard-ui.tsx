@@ -9,10 +9,11 @@
  * - app/(dashboard)/dashboard/page.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-05-19: Rebuilt primitives to follow the approved index.html Quote Recovery Command Center visual system.
  * - 2026-06-27: Added owner-safe lead text fallback for synthetic/internal seed labels.
+ * - 2026-07-05: Improved header action wrapping and status badge fit for launch-readiness responsive polish.
  * ============================================================
  */
 
@@ -106,11 +107,11 @@ const toneClasses: Record<Tone, string> = {
 };
 
 const toneDotClasses: Record<Tone, string> = {
-  amber: "bg-amber-500",
-  blue: "bg-blue-600",
-  emerald: "bg-emerald-500",
+  amber: "bg-[var(--dash-warning-strong)]",
+  blue: "bg-[var(--dash-primary-strong)]",
+  emerald: "bg-[var(--dash-success-strong)]",
   neutral: "bg-[var(--dash-text-muted)]",
-  red: "bg-red-500",
+  red: "bg-[var(--dash-danger-strong)]",
 };
 
 function humanize(value: string): string {
@@ -243,7 +244,7 @@ export function PageHeader({
         </p>
       </div>
       {actions ? (
-        <div className="flex shrink-0 flex-wrap gap-2 md:justify-end">{actions}</div>
+        <div className="flex max-w-full flex-wrap gap-2 md:justify-end">{actions}</div>
       ) : null}
     </header>
   );
@@ -255,7 +256,7 @@ export function SectionHeader({
   title,
 }: SectionHeaderProps) {
   return (
-    <div className="flex items-start justify-between gap-3">
+    <div className="flex flex-wrap items-start justify-between gap-3">
       <div className="min-w-0">
         <h2 className="text-[15px] font-extrabold leading-5 text-[var(--dash-text)]">
           {title}
@@ -266,7 +267,9 @@ export function SectionHeader({
           </p>
         ) : null}
       </div>
-      {action ? <div className="shrink-0">{action}</div> : null}
+      {action ? (
+        <div className="flex max-w-full flex-wrap justify-end gap-2">{action}</div>
+      ) : null}
     </div>
   );
 }
@@ -279,11 +282,11 @@ export function MetricCard({
   value,
 }: MetricCardProps) {
   const accentClass: Record<Tone, string> = {
-    amber: "text-amber-600 dark:text-amber-300",
-    blue: "text-sky-600 dark:text-sky-300",
-    emerald: "text-emerald-600 dark:text-emerald-300",
+    amber: "text-[var(--dash-warning-strong)]",
+    blue: "text-[var(--dash-primary-strong)]",
+    emerald: "text-[var(--dash-success-strong)]",
     neutral: "text-[var(--dash-text)]",
-    red: "text-red-600 dark:text-red-300",
+    red: "text-[var(--dash-danger-strong)]",
   };
 
   return (
@@ -320,10 +323,10 @@ export function KpiCard({ detail, label, value }: KpiCardProps) {
 export function StatusBadge({ children, tone = "neutral" }: StatusBadgeProps) {
   return (
     <span
-      className={`inline-flex min-h-6 max-w-full items-center justify-center gap-1.5 rounded-md border px-2 py-1 text-[11px] font-extrabold leading-none ${toneClasses[tone]}`}
+      className={`inline-flex min-h-6 max-w-full items-center justify-center gap-1.5 rounded-md border px-2 py-1 text-[11px] font-extrabold leading-tight ${toneClasses[tone]}`}
     >
       <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${toneDotClasses[tone]}`} />
-      <span className="whitespace-nowrap">{children}</span>
+      <span className="min-w-0 break-words text-center">{children}</span>
     </span>
   );
 }
@@ -488,7 +491,11 @@ export function EmptyState({ action, children, title }: EmptyStateProps) {
       <p className="mx-auto mt-1 max-w-xl text-[13px] leading-5 text-[var(--dash-text-secondary)]">
         {children}
       </p>
-      {action ? <div className="mt-4 flex justify-center">{action}</div> : null}
+      {action ? (
+        <div className="mt-4 flex max-w-full flex-wrap justify-center gap-2">
+          {action}
+        </div>
+      ) : null}
     </div>
   );
 }

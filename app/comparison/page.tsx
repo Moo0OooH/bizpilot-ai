@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-07-04: Created the public comparison page.
  * - 2026-07-05: Added a route-aware next-step panel for buyer education.
+ * - 2026-07-05: Tokenized guardrail warning treatment for light/dark launch polish.
  * ============================================================
  */
 
@@ -170,7 +171,13 @@ export default async function ComparisonPage({
 
           <MarketingCard className="mt-8 p-6 sm:p-7" style={{ borderColor: "rgba(245,158,11,0.32)" }}>
             <div className="flex min-w-0 items-start gap-4">
-              <span className="mt-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-amber-50 text-amber-600">
+              <span
+                className="mt-1 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px]"
+                style={{
+                  backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
+                  color: marketingTone.gold,
+                }}
+              >
                 <MarketingIcon name="shield" />
               </span>
               <div className="min-w-0">

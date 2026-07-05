@@ -21,6 +21,7 @@
  * - 2026-06-25: Normalized page rhythm to canonical bp sizing primitives.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel for public conversion flow.
+ * - 2026-07-05: Tokenized proof and badge strips for launch-ready theme consistency.
  * ============================================================
  */
 
@@ -134,8 +135,22 @@ export default async function FeaturesPage({
               </div>
               <div className="supporting-four-grid">
                 {copy.proof.items.map((item, index) => (
-                  <div className="min-w-0 rounded-[14px] border border-slate-200 bg-slate-50 p-4 text-slate-950" key={item}>
-                    <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-slate-950 text-[12px] font-black text-white">
+                  <div
+                    className="min-w-0 rounded-[14px] border p-4"
+                    key={item}
+                    style={{
+                      backgroundColor: "var(--surface-interactive)",
+                      borderColor: marketingTone.border,
+                      color: marketingTone.text,
+                    }}
+                  >
+                    <span
+                      className="flex h-8 w-8 items-center justify-center rounded-[10px] text-[12px] font-black"
+                      style={{
+                        backgroundColor: marketingTone.text,
+                        color: "var(--surface)",
+                      }}
+                    >
                       {index + 1}
                     </span>
                     <span className="bp-copy-card-body mt-3 block text-[14px] font-black leading-6">
@@ -152,9 +167,22 @@ export default async function FeaturesPage({
               {copy.roadmap.body}
             </p>
           </MarketingCard>
-          <div className="bp-button-row mt-8 flex flex-wrap gap-2 rounded-[16px] border border-slate-200 bg-white p-4 text-[13px] font-black" style={{ color: marketingTone.soft }}>
+          <div
+            className="bp-button-row mt-8 flex flex-wrap gap-2 rounded-[16px] border p-4 text-[13px] font-black"
+            style={{
+              backgroundColor: "var(--surface)",
+              borderColor: marketingTone.border,
+              color: marketingTone.soft,
+            }}
+          >
             {copy.badges.map((item) => (
-              <span className="bp-copy-status inline-flex min-h-10 items-center rounded-full border border-slate-200 px-3" key={item}>{item}</span>
+              <span
+                className="bp-copy-status inline-flex min-h-10 items-center rounded-full border px-3"
+                key={item}
+                style={{ borderColor: marketingTone.border }}
+              >
+                {item}
+              </span>
             ))}
           </div>
           <div className="bp-button-row mt-8 flex flex-col gap-3 sm:flex-row">
