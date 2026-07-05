@@ -2,7 +2,7 @@
 
 **Project:** BizPilot AI
 **Owner:** MoOoH
-**Current Phase:** Phase 26D owner dashboard priority standardization
+**Current Phase:** Phase 26H dashboard lead queue focus command
 **Standards Layer:** v1.7 canonical docs map active
 **Product:** AI Quote Recovery & Lead Conversion Desk
 **GTM:** Cleaning-first
@@ -28,7 +28,7 @@ BizPilot is not an AI operator.
 
 BizPilot helps small cleaning businesses capture quote requests, organize leads, identify missing information, prioritize replies and follow-ups, and show lightweight recovery proof.
 
-## Current Phase 25 Status
+## Current Phase 26 Status
 
 Use `docs/readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md` as
 the current source-backed backlog for final public-site, dashboard, SEO,
@@ -71,6 +71,18 @@ keeps the owner overview action-first, demotes quote-page preview to a utility
 action, tokenizes secondary insight visuals, and preserves all real-data,
 paid-pilot, automation, booking, invoice, SMS/WhatsApp, and CRM gates.
 
+Latest owner access and dashboard evidence:
+
+- `docs/readiness/PHASE_26E_OWNER_ACCESS_AND_SECRET_HYGIENE_GATE_2026-07-05.md`
+  records the post-cleanup owner access and secret-hygiene gate.
+- `docs/readiness/PHASE_26F_DASHBOARD_CURRENT_STATE_AND_FINAL_POSITION_2026-07-05.md`
+  records the current dashboard route-guide, source, and validation posture.
+- `docs/readiness/PHASE_26G_DASHBOARD_LOCAL_SMOKE_AND_PUBLIC_SITE_PAGE_AUDIT_2026-07-05.md`
+  records green local/synthetic dashboard smoke and green public route,
+  responsive, quote, and UI-matrix smoke.
+- `docs/readiness/PHASE_26H_DASHBOARD_LEAD_QUEUE_FOCUS_COMMAND_2026-07-05.md`
+  is the latest evidence slice and records the lead queue focus command strip.
+
 Phase 25/26 finalization does not approve real customer data, paid pilot
 launch, production mutations, automation, booking, invoices, SMS/WhatsApp,
 autonomous AI, or broad feature expansion. Those remain gated by the canonical
@@ -90,10 +102,14 @@ Phase 23 production functional smoke has completed on synthetic data:
   configured, domain DNS is verified, signup confirmation passed, password
   reset email/link/completion passed, and login after reset passed.
 
-Real customer data is still not approved. The current remaining blockers are:
+Current Phase 26 evidence status:
 
-- final no-secret production smoke.
-- final owner real-data approval.
+- public site smoke is green for the current repo evidence.
+- local/synthetic dashboard smoke is green when explicit local Supabase
+  environment overrides are used.
+- production owner-authenticated dashboard visual proof is still pending.
+- real customer data is still blocked.
+- paid pilot is still blocked.
 
 Phase 24E OpenAI operating posture documentation is accepted for first limited
 pilot. This is not a new runtime AI proof; Phase 23E remains the runtime
