@@ -23,6 +23,7 @@
  * - 2026-06-27: Added search-driven 10-row business rail and V3 priority workspace tiles.
  * - 2026-07-04: Removed misleading admin metric labels that implied sent AI replies or measured conversion.
  * - 2026-07-05: Reframed account deletion surfaces as protected cleanup and safety policy.
+ * - 2026-07-05: Standardized founder user pagination, page-size controls, and panel-preserving search.
  * ============================================================
  */
 
@@ -147,6 +148,8 @@ const workspaceKindOptions: ReadonlyArray<{ label: string; value: WorkspaceKind 
   { label: "Demo", value: "demo" },
   { label: "Seed", value: "seed" },
 ];
+
+const adminUserPageSizeOptions = [10, 25, 50] as const;
 
 const sessionTimeoutModeOptions: ReadonlyArray<{
   label: string;
@@ -542,6 +545,22 @@ function limitedBusinessRows(
       (business) => business.businessId !== selectedBusiness?.businessId,
     ),
   ].slice(0, 10);
+}
+
+function paginationWindow(currentPage: number, pageCount: number): number[] {
+  const windowSize = 5;
+  const safePageCount = Math.max(1, pageCount);
+  const safeCurrentPage = Math.min(Math.max(currentPage, 1), safePageCount);
+  const start = Math.max(
+    1,
+    Math.min(
+      safeCurrentPage - Math.floor(windowSize / 2),
+      safePageCount - windowSize + 1,
+    ),
+  );
+  const end = Math.min(safePageCount, start + windowSize - 1);
+
+  return Array.from({ length: end - start + 1 }, (_, index) => start + index);
 }
 
 function matchesUserFilters(user: FounderAdminUser, params: AdminSearchParams): boolean {
@@ -2597,6 +2616,12 @@ function FounderUsersSection({
   const hasPreviousPage = usersPage > 1;
   const hasNextPage = usersPage < usersLastPage;
   const selectedPriority = safeParam(params.userPriority);
+  const userPageStart = usersTotal === 0 ? 0 : (usersPage - 1) * usersPageSize + 1;
+  const userPageEnd =
+    usersTotal === 0
+      ? 0
+      : Math.min(userPageStart + Math.max(users.length, shownUsers.length) - 1, usersTotal);
+  const userPaginationPages = paginationWindow(usersPage, usersLastPage);
 
   return (
     <div className="grid gap-3">
@@ -2623,10 +2648,10 @@ function FounderUsersSection({
             <div className="flex flex-wrap gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
               <StatusBadge tone="blue">{shownUsers.length} shown</StatusBadge>
               <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
-                Page {usersPage} / {usersLastPage}
+                Showing {userPageStart}-{userPageEnd} of {usersTotal}
               </span>
               <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
-                {usersTotal} auth users
+                Page {usersPage} / {usersLastPage}
               </span>
               <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
                 {usersSearchMode === "auth_filter" ? "Search indexed" : "Paged"}
@@ -2636,9 +2661,10 @@ function FounderUsersSection({
 
           <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
             <form
-              className="grid w-full max-w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-2 overflow-hidden rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-2 max-[279px]:w-[calc(100vw-46px)] max-[279px]:max-w-[calc(100vw-46px)] sm:grid-cols-2 sm:gap-3 sm:p-3 xl:grid-cols-[minmax(220px,1fr)_120px_minmax(140px,0.72fr)_minmax(140px,0.72fr)_auto] xl:items-end 2xl:grid-cols-[minmax(260px,1fr)_120px_168px_168px_auto]"
+              className="grid w-full max-w-full min-w-0 grid-cols-[minmax(0,1fr)] gap-2 overflow-hidden rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-2 max-[279px]:w-[calc(100vw-46px)] max-[279px]:max-w-[calc(100vw-46px)] sm:grid-cols-2 sm:gap-3 sm:p-3 xl:grid-cols-[minmax(220px,1fr)_136px_minmax(140px,0.72fr)_minmax(140px,0.72fr)_auto] xl:items-end 2xl:grid-cols-[minmax(260px,1fr)_144px_168px_168px_auto]"
               method="get"
             >
+              <input name="adminPanel" type="hidden" value="users" />
               <input name="userPage" type="hidden" value="1" />
               <input name="userPriority" type="hidden" value={selectedPriority} />
               <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
@@ -2657,8 +2683,11 @@ function FounderUsersSection({
                   defaultValue={String(usersPageSize)}
                   name="userPageSize"
                 >
-                  <option value="10">10 users</option>
-                  <option value="5">5 users</option>
+                  {adminUserPageSizeOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option} users
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
@@ -2696,9 +2725,11 @@ function FounderUsersSection({
                 <Link
                   className={`${buttonClass} min-w-0 flex-1`}
                   href={adminUsersHref(params, {
+                    adminPanel: "users",
                     userAccess: undefined,
                     userConfirmed: undefined,
                     userPage: "1",
+                    userPageSize: String(usersPageSize),
                     userPriority: undefined,
                     userQuery: undefined,
                   })}
@@ -2734,6 +2765,7 @@ function FounderUsersSection({
                   <Link
                     className={priorityFilterClass(selectedPriority === option.value)}
                     href={adminUsersHref(params, {
+                      adminPanel: "users",
                       userPage: "1",
                       userPriority: option.value,
                     })}
@@ -2875,28 +2907,61 @@ function FounderUsersSection({
         )}
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+      <nav
+        aria-label="User directory pagination"
+        className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+      >
         <div className="text-[12px] font-bold text-[var(--dash-text-muted)]">
           {users.length > shownUsers.length
             ? "Some loaded users are hidden by access/auth filters."
-            : `Showing ${shownUsers.length} user(s) on this page. Use search or Next for more.`}
+            : `Showing ${userPageStart}-${userPageEnd} of ${usersTotal} auth user(s).`}
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {hasPreviousPage ? (
             <Link
               className={buttonClass}
               href={adminUsersHref(params, {
+                adminPanel: "users",
                 userPage: String(usersPage - 1),
                 userPageSize: String(usersPageSize),
               })}
             >
               Previous
             </Link>
-          ) : null}
+          ) : (
+            <button className={disabledButtonClass} disabled type="button">
+              Previous
+            </button>
+          )}
+          <div className="flex flex-wrap items-center gap-1">
+            {userPaginationPages.map((page) => {
+              const active = page === usersPage;
+              return (
+                <Link
+                  aria-current={active ? "page" : undefined}
+                  aria-label={`Page ${page}`}
+                  className={
+                    active
+                      ? "inline-flex min-h-9 min-w-9 items-center justify-center rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-2 text-[12px] font-black text-[var(--dash-text)]"
+                      : `${buttonClass} min-w-9 px-2`
+                  }
+                  href={adminUsersHref(params, {
+                    adminPanel: "users",
+                    userPage: String(page),
+                    userPageSize: String(usersPageSize),
+                  })}
+                  key={page}
+                >
+                  {page}
+                </Link>
+              );
+            })}
+          </div>
           {hasNextPage ? (
             <Link
               className={buttonClass}
               href={adminUsersHref(params, {
+                adminPanel: "users",
                 userPage: String(usersPage + 1),
                 userPageSize: String(usersPageSize),
               })}
@@ -2904,8 +2969,13 @@ function FounderUsersSection({
               Next
             </Link>
           ) : null}
+          {!hasNextPage ? (
+            <button className={disabledButtonClass} disabled type="button">
+              Next
+            </button>
+          ) : null}
         </div>
-      </div>
+      </nav>
           </div>
         </section>
       </DashboardCard>

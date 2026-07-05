@@ -11,8 +11,9 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added accessible lead queue pagination labels and page-button copy.
  * - 2026-07-04: Added Settings feature guide details and lead queue pagination copy.
  * - 2026-07-04: Tightened dashboard copy around manual draft review, copied replies, and unwired roadmap fields.
  * - 2026-07-04: Added local dashboard display preference copy for density, guide, and insight controls.
@@ -420,7 +421,9 @@ type DashboardLeadQueueCopy = Readonly<{
     status: string;
   }>;
   pagination: Readonly<{
+    navigationLabel: string;
     next: string;
+    pageButtonAriaLabel: (page: number) => string;
     pageRange: (start: number, end: number, total: number) => string;
     pageSizeAriaLabel: string;
     pageSizeLabel: string;
@@ -1493,7 +1496,9 @@ const englishCopy: BizPilotCopy = {
         status: "Status",
       },
       pagination: {
+        navigationLabel: "Lead queue pagination",
         next: "Next",
+        pageButtonAriaLabel: (page) => `Page ${page}`,
         pageRange: (start, end, total) => `Showing ${start}-${end} of ${total}`,
         pageSizeAriaLabel: "Choose rows per page",
         pageSizeLabel: "Rows",
@@ -3147,7 +3152,9 @@ const frenchCopy: BizPilotCopy = {
         status: "Statut",
       },
       pagination: {
+        navigationLabel: "Pagination de la file de prospects",
         next: "Suivant",
+        pageButtonAriaLabel: (page) => `Page ${page}`,
         pageRange: (start, end, total) => `Affichage ${start}-${end} sur ${total}`,
         pageSizeAriaLabel: "Choisir le nombre de lignes par page",
         pageSizeLabel: "Lignes",

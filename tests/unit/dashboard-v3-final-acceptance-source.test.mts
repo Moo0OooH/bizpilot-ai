@@ -18,6 +18,7 @@
  * - 2026-07-04: Guarded focused owner queue links and complete topbar action routes.
  * - 2026-07-04: Guarded the protected owner operating guide route and navigation.
  * - 2026-07-05: Guarded the final dashboard route map and account-safety cleanup language.
+ * - 2026-07-05: Guarded final admin/owner pagination standards.
  * ============================================================
  */
 
@@ -37,6 +38,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
     );
     const routeMap = readFileSync(
       "docs/readiness/DASHBOARD_V3_FINAL_ROUTE_MAP_AND_ACCOUNT_SAFETY_2026-07-05.md",
+      "utf8",
+    );
+    const paginationStandard = readFileSync(
+      "docs/readiness/DASHBOARD_V3_ROUTE_PAGINATION_STANDARDIZATION_2026-07-05.md",
       "utf8",
     );
 
@@ -67,6 +72,10 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(routeMap.includes("Account safety and cleanup"), true);
     assert.equal(routeMap.includes("synthetic/test login cleanup"), true);
     assert.equal(routeMap.includes("production-customer workspace"), true);
+    assert.equal(paginationStandard.includes("/dashboard/leads"), true);
+    assert.equal(paginationStandard.includes("/admin?adminPanel=users"), true);
+    assert.equal(paginationStandard.includes("10/25/50"), true);
+    assert.equal(paginationStandard.includes("aria-current=\"page\""), true);
   });
 
   it("keeps owner navigation compact and route-owned", () => {
@@ -309,9 +318,12 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(admin.indexOf("Search users") < admin.indexOf("Work queues"), true);
     assert.equal(admin.includes("businessQuery?: string"), true);
     assert.equal(admin.includes("function limitedBusinessRows"), true);
+    assert.equal(admin.includes("function paginationWindow"), true);
     assert.equal(admin.includes("].slice(0, 10);"), true);
     assert.equal(admin.includes("Search businesses"), true);
     assert.equal(admin.indexOf("Search businesses") < admin.indexOf("visibleBusinesses.map"), true);
+    assert.equal(admin.includes("User directory pagination"), true);
+    assert.equal(admin.includes('adminPanel: "users"'), true);
     assert.equal(cleanup.includes("<details className="), true);
     assert.equal(cleanup.includes("<details open"), false);
     assert.equal(cleanup.includes("Dry run cleanup"), true);

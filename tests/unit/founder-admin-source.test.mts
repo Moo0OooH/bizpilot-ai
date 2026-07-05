@@ -14,6 +14,7 @@
  * Change Log:
  * - 2026-07-04: Added founder-admin metric honesty guards against sent-reply and fake-conversion claims.
  * - 2026-07-05: Guarded professional account-safety copy for protected auth cleanup.
+ * - 2026-07-05: Guarded founder user pagination panel persistence and page sizes.
  * ============================================================
  */
 
@@ -117,6 +118,10 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("Customer account deletion"), true);
     assert.equal(pageSource.includes("Blocked"), true);
     assert.equal(pageSource.includes("Needs owner-approved role policy"), true);
+    assert.equal(pageSource.includes('name="adminPanel" type="hidden" value="users"'), true);
+    assert.equal(pageSource.includes("adminUserPageSizeOptions"), true);
+    assert.equal(pageSource.includes("User directory pagination"), true);
+    assert.equal(pageSource.includes('aria-current={active ? "page" : undefined}'), true);
     assert.equal(
       pageSource.includes("aria-disabled=\"true\""),
       false,
@@ -142,6 +147,7 @@ describe("Founder admin source safety", () => {
       "utf8",
     );
     assert.equal(serviceSource.includes("return founderUserPageSizes.has(pageSize) ? pageSize : 10;"), true);
+    assert.equal(serviceSource.includes("const founderUserPageSizes = new Set([10, 25, 50]);"), true);
   });
 
   it("keeps founder admin panels scannable and cleanup controls readable", () => {

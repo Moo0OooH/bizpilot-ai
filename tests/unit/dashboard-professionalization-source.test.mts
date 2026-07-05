@@ -11,8 +11,9 @@
  * - docs/readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md
  * Author: MoOoH
  * Created: 2026-06-26
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Guarded accessible lead queue pagination controls.
  * - 2026-07-04: Added lead queue pagination source guards.
  * - 2026-07-04: Updated overview source guards for the simplified action-first cockpit.
  * - 2026-07-04: Guarded the richer owner manual queue and protected operating guide.
@@ -68,11 +69,18 @@ describe("P12 dashboard professionalization source guards", () => {
     assert.equal(queueSource.includes("type LeadPageSize = 10 | 25 | 50;"), true);
     assert.equal(queueSource.includes("const shouldPaginate = !compact && typeof limit !== \"number\";"), true);
     assert.equal(queueSource.includes("QueuePagination"), true);
+    assert.equal(queueSource.includes("paginationWindow"), true);
+    assert.equal(queueSource.includes("aria-label={copy.pagination.navigationLabel}"), true);
+    assert.equal(queueSource.includes('aria-current={active ? "page" : undefined}'), true);
+    assert.equal(queueSource.includes("copy.pagination.pageButtonAriaLabel(page)"), true);
+    assert.equal(queueSource.includes("const showPaginationControls = shouldPaginate && renderedLeads.length > 0;"), true);
     assert.equal(queueSource.includes("visibleLeads.map"), true);
     assert.equal(queueSource.includes("setCurrentPage(1);"), true);
     assert.equal(copySource.includes("Priority order favors overdue requests"), true);
     assert.equal(copySource.includes("Choose rows per page"), true);
     assert.equal(copySource.includes("Choisir le nombre de lignes par page"), true);
+    assert.equal(copySource.includes("Lead queue pagination"), true);
+    assert.equal(copySource.includes("Pagination de la file de prospects"), true);
   });
 
   it("keeps internal seed lead labels out of owner-facing lead surfaces", () => {

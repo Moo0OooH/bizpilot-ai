@@ -12,10 +12,11 @@
  * - components/dashboard/dashboard-ui.tsx
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-07-04: Added URL-driven initial filters so overview links open the queue in the requested focus state.
  * - 2026-07-04: Added full lead queue pagination with page-size controls and reset behavior.
+ * - 2026-07-05: Standardized queue pagination with a named nav, page buttons, and stable controls.
  * - 2026-06-27: Hid synthetic/internal seed labels from owner-facing lead queue cells.
  * - 2026-05-19: Rebuilt to match the approved index.html exactly — initials avatar, short customer name, no min-width horizontal scroll, single SectionHeader (page-level header lives on the route), and a `limit` prop for dashboard previews.
  * ============================================================
@@ -87,6 +88,22 @@ const filters: ReadonlyArray<{
 
 const pageSizeOptions: readonly LeadPageSize[] = [10, 25, 50];
 const defaultPageSize: LeadPageSize = 10;
+
+function paginationWindow(currentPage: number, pageCount: number): number[] {
+  const windowSize = 5;
+  const safePageCount = Math.max(1, pageCount);
+  const safeCurrentPage = Math.min(Math.max(currentPage, 1), safePageCount);
+  const start = Math.max(
+    1,
+    Math.min(
+      safeCurrentPage - Math.floor(windowSize / 2),
+      safePageCount - windowSize + 1,
+    ),
+  );
+  const end = Math.min(safePageCount, start + windowSize - 1);
+
+  return Array.from({ length: end - start + 1 }, (_, index) => start + index);
+}
 
 function formatAge(value: string | null, copy: LeadQueueCopy): string {
   if (!value) return copy.age.notAvailable;
@@ -402,9 +419,13 @@ function QueuePagination({
 }>) {
   const isFirstPage = currentPage <= 1;
   const isLastPage = currentPage >= pageCount;
+  const pages = paginationWindow(currentPage, pageCount);
 
   return (
-    <div className="border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+    <nav
+      aria-label={copy.pagination.navigationLabel}
+      className="border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+    >
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p
           aria-live="polite"
@@ -439,6 +460,27 @@ function QueuePagination({
           >
             {copy.pagination.previous}
           </button>
+          <div className="flex min-w-0 flex-wrap items-center gap-1">
+            {pages.map((page) => {
+              const active = page === currentPage;
+              return (
+                <button
+                  aria-current={active ? "page" : undefined}
+                  aria-label={copy.pagination.pageButtonAriaLabel(page)}
+                  className={
+                    active
+                      ? "inline-flex min-h-9 min-w-9 items-center justify-center rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-2 text-[12px] font-black text-[var(--dash-text)]"
+                      : `${buttonClass} min-w-9 px-2`
+                  }
+                  key={page}
+                  onClick={() => onPageChange(page)}
+                  type="button"
+                >
+                  {page}
+                </button>
+              );
+            })}
+          </div>
           <button
             className={`${isLastPage ? disabledButtonClass : buttonClass} min-w-[6.25rem]`}
             disabled={isLastPage}
@@ -449,7 +491,7 @@ function QueuePagination({
           </button>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
 
@@ -669,7 +711,7 @@ export function LeadWorkspaceQueue({
   const visibleLeads = shouldPaginate
     ? renderedLeads.slice(pageOffset, pageOffset + pageSize)
     : renderedLeads;
-  const showPaginationControls = shouldPaginate && renderedLeads.length > defaultPageSize;
+  const showPaginationControls = shouldPaginate && renderedLeads.length > 0;
   const pageStart = renderedLeads.length === 0 ? 0 : pageOffset + 1;
   const pageEnd = shouldPaginate
     ? Math.min(pageOffset + pageSize, renderedLeads.length)

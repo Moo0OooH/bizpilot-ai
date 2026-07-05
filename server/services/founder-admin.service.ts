@@ -9,11 +9,12 @@
  * - server/repositories/founder-admin.repository.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-05
  * Change Log:
  * - 2026-05-26: Sent a server user agent on Auth Admin REST fallback to avoid browser-agent secret-key rejection.
  * - 2026-06-17: Read Supabase admin credentials through the shared secret-key-compatible config.
  * - 2026-06-27: Defaulted founder user review to a stable 10-row page for the admin console.
+ * - 2026-07-05: Standardized founder user pagination sizes for dashboard QA.
  * ============================================================
  */
 
@@ -180,7 +181,7 @@ const sessionTimeoutModes = new Set<FounderSessionTimeoutMode>([
   "after_duration",
   "always_on",
 ]);
-const founderUserPageSizes = new Set([5, 10]);
+const founderUserPageSizes = new Set([10, 25, 50]);
 const minimumTemporaryPasswordLength = 12;
 const sessionTimeoutMinuteOptions = new Set([15, 30, 60, 240, 480, 720, 1440, 10080]);
 
