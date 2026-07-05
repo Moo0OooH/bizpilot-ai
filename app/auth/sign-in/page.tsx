@@ -8,8 +8,10 @@
  * - server/actions/auth.actions.ts
  * - components/auth/auth-ui.tsx
  * Author: MoOoH
- * Last Updated: 2026-05-23
+ * Created: 2026-05-19
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Added a pilot-approval prompt before account creation from sign-in.
  * - 2026-05-19: Migrated to the single-centered-card AuthShell.
  * - 2026-05-23: Localized auth copy from the central language dictionary.
  * - 2026-06-27: Sanitized route flash messages before rendering.
@@ -23,6 +25,7 @@ import {
   AuthFieldIcon,
   AuthShell,
   authErrorStyle,
+  authInfoStyle,
   authInputClassName,
   authLabelClassName,
   authSuccessStyle,
@@ -82,6 +85,7 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
   const redirectTo = readSafeSignInRedirect(requestedRedirect);
   const language = await readAuthLanguage();
   const copy = getBizPilotCopy(language).auth;
+  const publicCopy = getPublicSiteCopy(language).authMeta;
   const routeNotice = readSafeAuthRouteNotice(
     params?.notice,
     copy.routeMessages,
@@ -157,6 +161,20 @@ export default async function SignInPage({ searchParams }: SignInPageProps) {
             {copy.signIn}
           </AuthSubmitButton>
         </form>
+
+        <p
+          className="mt-4 rounded-[12px] border px-3 py-2 text-center text-[12px] leading-5"
+          style={authInfoStyle}
+        >
+          {publicCopy.signUpPilotPrompt}{" "}
+          <Link
+            className="font-bold underline-offset-4 hover:underline"
+            href="/pilot"
+            style={{ color: "var(--primary)" }}
+          >
+            {publicCopy.signUpPilotCta}
+          </Link>
+        </p>
 
         <p
           className="mt-4 text-center text-[13px]"

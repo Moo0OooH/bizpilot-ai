@@ -8,8 +8,10 @@
  * - server/actions/auth.actions.ts
  * - components/auth/auth-ui.tsx
  * Author: MoOoH
- * Last Updated: 2026-06-27
+ * Created: 2026-05-19
+ * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Completed source header metadata for the pilot-stage signup route.
  * - 2026-05-19: Migrated to the single-centered-card AuthShell.
  * - 2026-05-23: Localized auth copy from the central language dictionary.
  * - 2026-06-27: Added explicit input ids so signup labels stay accessible in browser QA.
