@@ -10,6 +10,10 @@
  * - app/auth/callback/route.ts
  * Author: MoOoH
  * Created: 2026-05-23
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Completed source header metadata for auth callback routing helpers.
+ * - 2026-05-23: Created pure Supabase auth callback routing helpers.
  * ============================================================
  */
 

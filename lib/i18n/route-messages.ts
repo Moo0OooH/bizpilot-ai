@@ -10,6 +10,10 @@
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-06-27
+ * Last Updated: 2026-07-05
+ * Change Log:
+ * - 2026-07-05: Allowed the softened auth confirmation success notice through safe routing.
+ * - 2026-06-27: Created safe route flash-message readers for user-facing pages.
  * ============================================================
  */
 
@@ -45,7 +49,7 @@ const authErrorMessageKeys = new Map<RegExp, keyof AuthRouteMessages>([
 
 const authNoticeMessageKeys = new Map<RegExp, keyof AuthRouteMessages>([
   [/^Email confirmed\. Please sign in to continue\.$/, "checkEmail"],
-  [/^Email confirmed\. Your workspace is ready\.$/, "emailConfirmed"],
+  [/^Email confirmed\. Continue to your workspace\.$/, "emailConfirmed"],
   [/^If an account exists, we'll send reset instructions\.$/, "resetInstructions"],
   [/^Password updated\. Sign in with your new password\.$/, "passwordUpdated"],
 ]);

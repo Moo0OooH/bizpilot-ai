@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-05
  * Change Log:
+ * - 2026-07-05: Softened auth confirmation success copy to avoid overpromising workspace readiness.
  * - 2026-07-05: Added focus-aware lead queue command copy for manual recovery lanes.
  * - 2026-07-05: Added bilingual route-aware dashboard guide copy for every protected owner page.
  * - 2026-07-05: Standardized owner overview utility CTA copy for action-first dashboard hierarchy.
@@ -1211,7 +1212,7 @@ const englishCopy: BizPilotCopy = {
       businessRequired: "Enter your business name.",
       checkEmail: "Email confirmed. Please sign in to continue.",
       confirmEmail: "Confirm your email before signing in.",
-      emailConfirmed: "Email confirmed. Your workspace is ready.",
+      emailConfirmed: "Email confirmed. Continue to your workspace.",
       emailDelivery:
         "We couldn't send the confirmation email. Please wait a few minutes and try again.",
       emailInvalid: "Enter a valid email address.",
@@ -3018,7 +3019,7 @@ const frenchCopy: BizPilotCopy = {
       businessRequired: "Entrez le nom de votre entreprise.",
       checkEmail: "Courriel confirmé. Connectez-vous pour continuer.",
       confirmEmail: "Confirmez votre courriel avant de vous connecter.",
-      emailConfirmed: "Courriel confirmé. Votre espace est prêt.",
+      emailConfirmed: "Courriel confirmé. Continuez vers votre espace.",
       emailDelivery:
         "Nous n'avons pas pu envoyer le courriel de confirmation. Attendez quelques minutes, puis réessayez.",
       emailInvalid: "Entrez une adresse courriel valide.",
