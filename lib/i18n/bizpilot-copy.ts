@@ -1027,6 +1027,110 @@ type DashboardAdminCopy = Readonly<{
     productionCheck: string;
     productionHealthy: string;
   }>;
+  overview: Readonly<{
+    activitySummary: Readonly<{
+      byLabel: string;
+      emptyState: string;
+      latestBadge: string;
+      targetLabel: string;
+      title: string;
+      viewAll: string;
+    }>;
+    activityZeroState: string;
+    leadStatusLabels: Readonly<{
+      awaitingReply: string;
+      completed: string;
+      new: string;
+      quoteSent: string;
+      replyCopied: string;
+    }>;
+    metricCards: Readonly<{
+      activeBusinesses: Readonly<{ detail: string; label: string }>;
+      loadedLeads: Readonly<{ detail: string; label: string }>;
+      readinessCompleted: Readonly<{ detail: string; label: string }>;
+      replyTraces: Readonly<{ detail: string; label: string }>;
+      totalUsers: Readonly<{ detail: string; label: string }>;
+      usersNeedingAttention: Readonly<{ detail: string; label: string }>;
+    }>;
+    metricsPanel: Readonly<{
+      activePilots: Readonly<{ detail: string; label: string }>;
+      authUsers: Readonly<{ detail: string; label: string }>;
+      description: string;
+      paymentReady: Readonly<{ detail: string; label: string }>;
+      pausedAccess: Readonly<{ detail: string; label: string }>;
+      title: string;
+    }>;
+    newUsersNotice: Readonly<{
+      confirmed: string;
+      daysAgo: (days: number) => string;
+      emailPending: string;
+      latestBadge: string;
+      latestTitle: string;
+      newBadge: (count: number) => string;
+      newTitle: string;
+      noWorkspace: string;
+      reviewUsers: string;
+      today: string;
+    }>;
+    newsroom: Readonly<{
+      byLabel: string;
+      defaultFilterLabel: string;
+      description: string;
+      emptyState: string;
+      noNoteRecorded: string;
+      shownBadge: (count: number) => string;
+      targetLabel: string;
+      viewFullLog: string;
+    }>;
+    page: Readonly<{
+      actions: Readonly<{
+        activityLog: string;
+        allWorkspaces: string;
+        currentSnapshot: string;
+      }>;
+      description: string;
+      eyebrow: string;
+      title: string;
+    }>;
+    recentActionsPanel: Readonly<{
+      description: string;
+      emptyState: string;
+      noNote: string;
+      title: string;
+    }>;
+    systemHealthSummary: Readonly<{
+      actionNeeded: string;
+      checks: Readonly<{
+        adminLog: string;
+        authService: string;
+        database: string;
+        deletionRequests: string;
+        profiles: string;
+        quoteLinks: string;
+      }>;
+      needsCheck: string;
+      operational: string;
+      title: string;
+      viewSystemHealth: string;
+    }>;
+    topLeadSourcesTitle: string;
+    trackingCards: Readonly<{
+      activeLinkCoverage: Readonly<{ detail: string; label: string }>;
+      paymentReadyWorkspaces: Readonly<{ detail: string; label: string }>;
+      readyQuoteLinks: Readonly<{ detail: string; label: string }>;
+      responseTimeTracking: Readonly<{
+        detail: string;
+        label: string;
+        value: string;
+      }>;
+    }>;
+    usersMiniList: Readonly<{
+      allUsers: string;
+      emptyState: string;
+      leadsSuffix: string;
+      title: string;
+    }>;
+  }>;
   users: Readonly<{
     accountSafety: Readonly<{
       description: string;
@@ -1922,6 +2026,154 @@ const englishCopy: BizPilotCopy = {
         },
         productionCheck: "Production: check",
         productionHealthy: "Production: healthy",
+      },
+      overview: {
+        activitySummary: {
+          byLabel: "By",
+          emptyState: "No admin actions logged yet.",
+          latestBadge: "Latest",
+          targetLabel: "on",
+          title: "Recent Activities",
+          viewAll: "View all activities",
+        },
+        activityZeroState: "No admin actions logged yet.",
+        leadStatusLabels: {
+          awaitingReply: "Awaiting Reply",
+          completed: "Completed",
+          new: "New",
+          quoteSent: "Quote Sent",
+          replyCopied: "Reply copied",
+        },
+        metricCards: {
+          activeBusinesses: {
+            detail: "Active or onboarding workspaces.",
+            label: "Active Businesses",
+          },
+          loadedLeads: {
+            detail: "Loaded lead signals.",
+            label: "Loaded Leads",
+          },
+          readinessCompleted: {
+            detail: "Active public quote links.",
+            label: "Readiness Completed",
+          },
+          replyTraces: {
+            detail:
+              "Leads or admin actions with reply-related status; no send is implied.",
+            label: "Reply Traces",
+          },
+          totalUsers: {
+            detail: "Auth users in founder search.",
+            label: "Total Users",
+          },
+          usersNeedingAttention: {
+            detail: "Support-priority users.",
+            label: "Users Needing Attention",
+          },
+        },
+        metricsPanel: {
+          activePilots: {
+            detail: "Onboarding or active businesses.",
+            label: "Active pilots",
+          },
+          authUsers: {
+            detail: "Auth users available through paged founder search.",
+            label: "Auth users",
+          },
+          description:
+            "High-level counts stay here as a compact snapshot instead of occupying the workspace.",
+          paymentReady: {
+            detail: "Starter or Pro manual plans.",
+            label: "Payment-ready",
+          },
+          pausedAccess: {
+            detail: "Suspended or cancelled access.",
+            label: "Paused access",
+          },
+          title: "Workspace snapshot",
+        },
+        newUsersNotice: {
+          confirmed: "Confirmed",
+          daysAgo: (days) => `${days}d ago`,
+          emailPending: "Email pending",
+          latestBadge: "Latest",
+          latestTitle: "Latest user activity",
+          newBadge: (count) => `${count} new`,
+          newTitle: "New users detected",
+          noWorkspace: "No workspace",
+          reviewUsers: "Review users",
+          today: "Today",
+        },
+        newsroom: {
+          byLabel: "By:",
+          defaultFilterLabel: "System",
+          description:
+            "Latest founder/admin changes with actor, target, category, timestamp, and direct review links.",
+          emptyState: "No matching admin actions yet.",
+          noNoteRecorded: "No note recorded",
+          shownBadge: (count) => `${count} shown`,
+          targetLabel: "Target:",
+          viewFullLog: "View full log",
+        },
+        page: {
+          actions: {
+            activityLog: "Activity log",
+            allWorkspaces: "All workspaces",
+            currentSnapshot: "Current snapshot",
+          },
+          description:
+            "Monitor users, workspaces, lead flow, readiness, health, and recent founder actions from one read-only command view.",
+          eyebrow: "Founder Admin",
+          title: "Admin Overview",
+        },
+        recentActionsPanel: {
+          description: "Service-role writes after founder authorization.",
+          emptyState: "No admin actions logged yet.",
+          noNote: "No note",
+          title: "Recent admin actions",
+        },
+        systemHealthSummary: {
+          actionNeeded: "Check",
+          checks: {
+            adminLog: "Admin log",
+            authService: "Auth service",
+            database: "Database",
+            deletionRequests: "Deletion requests",
+            profiles: "Profiles",
+            quoteLinks: "Quote links",
+          },
+          needsCheck: "Needs check",
+          operational: "Operational",
+          title: "System Health",
+          viewSystemHealth: "View system health",
+        },
+        topLeadSourcesTitle: "Top Lead Sources",
+        trackingCards: {
+          activeLinkCoverage: {
+            detail: "Active quote links over total businesses.",
+            label: "Active Link Coverage",
+          },
+          paymentReadyWorkspaces: {
+            detail: "Payment-ready plans over total businesses.",
+            label: "Payment-Ready Workspaces",
+          },
+          readyQuoteLinks: {
+            detail: "Non-cancelled workspaces with an active public quote link.",
+            label: "Ready Quote Links",
+          },
+          responseTimeTracking: {
+            detail:
+              "Requires real owner workflow timestamps before pilot reporting.",
+            label: "Response Time Tracking",
+            value: "Not enabled",
+          },
+        },
+        usersMiniList: {
+          allUsers: "All users",
+          emptyState: "No users loaded yet.",
+          leadsSuffix: "leads",
+          title: "Users",
+        },
       },
       users: {
         accountSafety: {
@@ -4332,6 +4584,155 @@ const frenchCopy: BizPilotCopy = {
         },
         productionCheck: "Production: vérifier",
         productionHealthy: "Production: saine",
+      },
+      overview: {
+        activitySummary: {
+          byLabel: "Par",
+          emptyState: "Aucune action admin consignée.",
+          latestBadge: "Derniere",
+          targetLabel: "sur",
+          title: "Activites recentes",
+          viewAll: "Voir toutes les activites",
+        },
+        activityZeroState: "Aucune action admin consignée.",
+        leadStatusLabels: {
+          awaitingReply: "En attente de reponse",
+          completed: "Complete",
+          new: "Nouveau",
+          quoteSent: "Devis envoye",
+          replyCopied: "Reponse copiee",
+        },
+        metricCards: {
+          activeBusinesses: {
+            detail: "Espaces actifs ou en onboarding.",
+            label: "Entreprises actives",
+          },
+          loadedLeads: {
+            detail: "Signaux de prospects charges.",
+            label: "Prospects charges",
+          },
+          readinessCompleted: {
+            detail: "Liens publics actifs.",
+            label: "Preparation completee",
+          },
+          replyTraces: {
+            detail:
+              "Prospects ou actions admin avec un etat lie a la reponse; aucun envoi n'est sous-entendu.",
+            label: "Traces de reponse",
+          },
+          totalUsers: {
+            detail: "Utilisateurs auth dans la recherche fondateur.",
+            label: "Total utilisateurs",
+          },
+          usersNeedingAttention: {
+            detail: "Utilisateurs prioritaires pour le support.",
+            label: "Utilisateurs a surveiller",
+          },
+        },
+        metricsPanel: {
+          activePilots: {
+            detail: "Entreprises en onboarding ou actives.",
+            label: "Pilotes actifs",
+          },
+          authUsers: {
+            detail: "Utilisateurs auth disponibles via recherche paginee fondateur.",
+            label: "Utilisateurs auth",
+          },
+          description:
+            "Les comptes de haut niveau restent ici comme apercu compact au lieu d'occuper l'espace de travail.",
+          paymentReady: {
+            detail: "Forfaits manuels Starter ou Pro.",
+            label: "Pret paiement",
+          },
+          pausedAccess: {
+            detail: "Acces suspendu ou annule.",
+            label: "Acces en pause",
+          },
+          title: "Apercu de l'espace",
+        },
+        newUsersNotice: {
+          confirmed: "Confirme",
+          daysAgo: (days) => `il y a ${days} j`,
+          emailPending: "Courriel en attente",
+          latestBadge: "Dernier",
+          latestTitle: "Derniere activite utilisateur",
+          newBadge: (count) => `${count} nouveau${count === 1 ? "" : "x"}`,
+          newTitle: "Nouveaux utilisateurs detectes",
+          noWorkspace: "Aucun espace",
+          reviewUsers: "Voir les utilisateurs",
+          today: "Aujourd'hui",
+        },
+        newsroom: {
+          byLabel: "Par :",
+          defaultFilterLabel: "Systeme",
+          description:
+            "Derniers changements fondateur/admin avec acteur, cible, categorie, horodatage et liens directs de revision.",
+          emptyState: "Aucune action admin correspondante pour l'instant.",
+          noNoteRecorded: "Aucune note enregistree",
+          shownBadge: (count) => `${count} affiches`,
+          targetLabel: "Cible :",
+          viewFullLog: "Voir le journal complet",
+        },
+        page: {
+          actions: {
+            activityLog: "Journal d'activite",
+            allWorkspaces: "Tous les espaces",
+            currentSnapshot: "Instantane actuel",
+          },
+          description:
+            "Surveillez utilisateurs, espaces, flux de prospects, preparation, sante et actions recentes du fondateur depuis une vue de commande en lecture seule.",
+          eyebrow: "Admin fondateur",
+          title: "Apercu admin",
+        },
+        recentActionsPanel: {
+          description: "Ecritures service-role apres autorisation fondateur.",
+          emptyState: "Aucune action admin consignée.",
+          noNote: "Aucune note",
+          title: "Actions admin recentes",
+        },
+        systemHealthSummary: {
+          actionNeeded: "Verifier",
+          checks: {
+            adminLog: "Journal admin",
+            authService: "Service auth",
+            database: "Base de donnees",
+            deletionRequests: "Demandes de suppression",
+            profiles: "Profils",
+            quoteLinks: "Liens publics",
+          },
+          needsCheck: "A verifier",
+          operational: "Operationnel",
+          title: "Sante systeme",
+          viewSystemHealth: "Voir la sante systeme",
+        },
+        topLeadSourcesTitle: "Principales sources de prospects",
+        trackingCards: {
+          activeLinkCoverage: {
+            detail: "Liens publics actifs sur le total des entreprises.",
+            label: "Couverture des liens actifs",
+          },
+          paymentReadyWorkspaces: {
+            detail: "Forfaits prets paiement sur le total des entreprises.",
+            label: "Espaces prets paiement",
+          },
+          readyQuoteLinks: {
+            detail:
+              "Espaces non annules avec un lien public actif.",
+            label: "Liens de devis prets",
+          },
+          responseTimeTracking: {
+            detail:
+              "Exige de vrais horodatages du flux responsable avant tout reporting pilote.",
+            label: "Suivi du temps de reponse",
+            value: "Non active",
+          },
+        },
+        usersMiniList: {
+          allUsers: "Tous les utilisateurs",
+          emptyState: "Aucun utilisateur charge.",
+          leadsSuffix: "prospects",
+          title: "Utilisateurs",
+        },
       },
       users: {
         accountSafety: {

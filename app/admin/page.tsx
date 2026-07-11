@@ -12,6 +12,7 @@
  * Created: 2026-05-22
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Wired founder activity newsroom copy through the localized admin dictionary.
  * - 2026-07-11: Localized founder user-operations overview, gated access panels, and account-support copy.
  * - 2026-07-11: Localized founder business control-card warnings, audit helpers, and session-policy option labels.
  * - 2026-07-11: Centralized founder-admin shell, handoff, and repeated placeholder copy into the bilingual dashboard dictionary.
@@ -2283,7 +2284,7 @@ function FounderBusinessesSection({
         </DashboardCard>
       </div>
 
-      <FounderRecentActionsPanel actions={recentActions} />
+      <FounderRecentActionsPanel actions={recentActions} copy={copy} />
     </div>
   );
 }
@@ -3185,11 +3186,13 @@ function FounderInboxSection({
 }
 
 function FounderHealthSection({
+  copy,
   health,
   healthNeedsAttention,
   totals,
   usersTotal,
 }: Readonly<{
+  copy: AdminCopy;
   health: FounderProductionHealth | null;
   healthNeedsAttention: boolean;
   totals: FounderAdminOverview["totals"];
@@ -3216,7 +3219,7 @@ function FounderHealthSection({
           this panel is clean.
         </AdminNotice>
       ) : null}
-      <FounderAdminMetricsPanel totals={totals} usersTotal={usersTotal} />
+      <FounderAdminMetricsPanel copy={copy} totals={totals} usersTotal={usersTotal} />
       <FounderProductionHealthPanel health={health} />
     </div>
   );
@@ -3225,11 +3228,13 @@ function FounderHealthSection({
 function FounderActivitySection({
   actions,
   businesses,
+  copy,
   params,
   users,
 }: Readonly<{
   actions: FounderAdminOverview["recentActions"];
   businesses: FounderAdminBusiness[];
+  copy: AdminCopy;
   params: AdminSearchParams;
   users: FounderAdminUser[];
 }>) {
@@ -3246,6 +3251,7 @@ function FounderActivitySection({
       <FounderAdminNewsroom
         actions={actions}
         businesses={businesses}
+        copy={copy}
         limit={20}
         params={params}
         title="Activity command feed"
@@ -3472,25 +3478,31 @@ function FounderLeadsStatusDonut({
 }
 
 function FounderSystemHealthSummary({
+  copy,
   health,
   healthNeedsAttention,
 }: Readonly<{
+  copy: AdminCopy;
   health: FounderProductionHealth | null;
   healthNeedsAttention: boolean;
 }>) {
+  const overviewCopy = copy.overview;
   const checks = [
     {
-      label: "Auth service",
+      label: overviewCopy.systemHealthSummary.checks.authService,
       ok: Boolean(health && (health.authAdmin.ok || health.authRest.ok)),
     },
     {
-      label: "Database",
+      label: overviewCopy.systemHealthSummary.checks.database,
       ok: Boolean(health && health.businesses.ok && health.businessMembers.ok),
     },
-    { label: "Profiles", ok: Boolean(health?.profiles.ok) },
-    { label: "Quote links", ok: Boolean(health?.publicLinks.ok) },
-    { label: "Admin log", ok: Boolean(health?.recentActions.ok) },
-    { label: "Deletion requests", ok: Boolean(health?.deletionRequests.ok) },
+    { label: overviewCopy.systemHealthSummary.checks.profiles, ok: Boolean(health?.profiles.ok) },
+    { label: overviewCopy.systemHealthSummary.checks.quoteLinks, ok: Boolean(health?.publicLinks.ok) },
+    { label: overviewCopy.systemHealthSummary.checks.adminLog, ok: Boolean(health?.recentActions.ok) },
+    {
+      label: overviewCopy.systemHealthSummary.checks.deletionRequests,
+      ok: Boolean(health?.deletionRequests.ok),
+    },
   ];
 
   return (
@@ -3498,10 +3510,12 @@ function FounderSystemHealthSummary({
       <SectionHeader
         action={
           <StatusBadge tone={healthNeedsAttention ? "red" : "emerald"}>
-            {healthNeedsAttention ? "Check" : "Operational"}
+            {healthNeedsAttention
+              ? overviewCopy.systemHealthSummary.actionNeeded
+              : overviewCopy.systemHealthSummary.operational}
           </StatusBadge>
         }
-        title="System Health"
+        title={overviewCopy.systemHealthSummary.title}
       />
       <div className="mt-4 grid gap-2">
         {checks.map((check) => (
@@ -3529,7 +3543,9 @@ function FounderSystemHealthSummary({
                   : "var(--dash-danger-strong)",
               }}
             >
-              {check.ok ? "Operational" : "Needs check"}
+              {check.ok
+                ? overviewCopy.systemHealthSummary.operational
+                : overviewCopy.systemHealthSummary.needsCheck}
             </span>
           </div>
         ))}
@@ -3538,7 +3554,7 @@ function FounderSystemHealthSummary({
         className="mt-4 inline-flex text-[12px] font-black text-[var(--dash-primary-strong)]"
         href="/admin?adminPanel=health"
       >
-        View system health
+        {overviewCopy.systemHealthSummary.viewSystemHealth}
       </Link>
     </DashboardCard>
   );
@@ -3547,14 +3563,17 @@ function FounderSystemHealthSummary({
 function FounderRecentActivitiesSummary({
   actions,
   businesses,
+  copy,
   params,
   users,
 }: Readonly<{
   actions: FounderAdminOverview["recentActions"];
   businesses: FounderAdminBusiness[];
+  copy: AdminCopy;
   params: AdminSearchParams;
   users: FounderAdminUser[];
 }>) {
+  const overviewCopy = copy.overview;
   const latestAction = actions[0] ?? null;
   const remainingActions = actions.slice(1, 5);
   const businessById = new Map(
@@ -3566,7 +3585,7 @@ function FounderRecentActivitiesSummary({
     <DashboardCard className="p-4">
       <SectionHeader
         action={<StatusBadge tone="blue">{actions.length}</StatusBadge>}
-        title="Recent Activities"
+        title={overviewCopy.activitySummary.title}
       />
       <div className="mt-4 grid min-w-0 gap-2">
         {latestAction ? (
@@ -3577,7 +3596,7 @@ function FounderRecentActivitiesSummary({
             >
               <div className="flex flex-wrap items-center gap-1.5">
                 <StatusBadge tone={activityFilterTone(actionActivityFilter(latestAction.actionType))}>
-                  Latest
+                  {overviewCopy.activitySummary.latestBadge}
                 </StatusBadge>
                 <span className="font-black text-[var(--dash-text)]">
                   {adminActionLabels[latestAction.actionType] ??
@@ -3585,7 +3604,8 @@ function FounderRecentActivitiesSummary({
                 </span>
               </div>
               <p className="break-words font-bold leading-5 text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
-                By {actionActorLabel(latestAction, usersById)} on{" "}
+                {overviewCopy.activitySummary.byLabel} {actionActorLabel(latestAction, usersById)}{" "}
+                {overviewCopy.activitySummary.targetLabel}{" "}
                 {actionTargetLabel(latestAction, businessById)}
               </p>
               <p className="text-[11px] font-bold text-[var(--dash-text-muted)]">
@@ -3610,7 +3630,7 @@ function FounderRecentActivitiesSummary({
           </>
         ) : (
           <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
-            No admin actions logged yet.
+            {overviewCopy.activitySummary.emptyState}
           </p>
         )}
       </div>
@@ -3618,7 +3638,7 @@ function FounderRecentActivitiesSummary({
         className="mt-4 inline-flex text-[12px] font-black text-[var(--dash-primary-strong)]"
         href="/admin?adminPanel=activity"
       >
-        View all activities
+        {overviewCopy.activitySummary.viewAll}
       </Link>
     </DashboardCard>
   );
@@ -3627,6 +3647,7 @@ function FounderRecentActivitiesSummary({
 function FounderAdminNewsroom({
   actions,
   businesses,
+  copy,
   limit = 5,
   params,
   title = "Admin newsroom",
@@ -3634,11 +3655,13 @@ function FounderAdminNewsroom({
 }: Readonly<{
   actions: FounderAdminOverview["recentActions"];
   businesses: FounderAdminBusiness[];
+  copy: AdminCopy;
   limit?: number;
   params: AdminSearchParams;
   title?: string;
   users: FounderAdminUser[];
 }>) {
+  const overviewCopy = copy.overview;
   const selectedFilter = readActivityFilter(params.activityFilter);
   const businessById = new Map(
     businesses.map((business) => [business.businessId, business]),
@@ -3657,14 +3680,15 @@ function FounderAdminNewsroom({
       <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <StatusBadge tone="blue">{visibleActions.length} shown</StatusBadge>
+            <StatusBadge tone="blue">
+              {overviewCopy.newsroom.shownBadge(visibleActions.length)}
+            </StatusBadge>
             <p className="text-sm font-black text-[var(--dash-text)]">
               {title}
             </p>
           </div>
           <p className="mt-1 max-w-[780px] text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Latest founder/admin changes with actor, target, category, timestamp,
-            and direct review links.
+            {overviewCopy.newsroom.description}
           </p>
         </div>
         <Link
@@ -3674,7 +3698,7 @@ function FounderAdminNewsroom({
             adminPanel: "activity",
           })}
         >
-          View full log
+          {overviewCopy.newsroom.viewFullLog}
         </Link>
       </div>
 
@@ -3718,23 +3742,27 @@ function FounderAdminNewsroom({
                       humanizeAdminKey(action.actionType)}
                   </p>
                   <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
-                    {action.note ?? "No note recorded"}
+                    {action.note ?? overviewCopy.newsroom.noNoteRecorded}
                   </p>
                 </div>
                 <div className="min-w-0 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
                   <p className="truncate">
-                    <span className="font-black text-[var(--dash-text)]">By:</span>{" "}
+                    <span className="font-black text-[var(--dash-text)]">
+                      {overviewCopy.newsroom.byLabel}
+                    </span>{" "}
                     {actionActorLabel(action, usersById)}
                   </p>
                   <p className="truncate">
-                    <span className="font-black text-[var(--dash-text)]">Target:</span>{" "}
+                    <span className="font-black text-[var(--dash-text)]">
+                      {overviewCopy.newsroom.targetLabel}
+                    </span>{" "}
                     {actionTargetLabel(action, businessById)}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-1.5 md:justify-end">
                   <StatusBadge tone={activityFilterTone(filter)}>
                     {activityFilters.find((item) => item.value === filter)?.label ??
-                      "System"}
+                      overviewCopy.newsroom.defaultFilterLabel}
                   </StatusBadge>
                   <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2.5 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
                     {formatDateTime(action.createdAt)}
@@ -3745,7 +3773,7 @@ function FounderAdminNewsroom({
           })
         ) : (
           <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
-            No matching admin actions yet.
+            {overviewCopy.newsroom.emptyState}
           </p>
         )}
       </div>
@@ -3754,22 +3782,25 @@ function FounderAdminNewsroom({
 }
 
 function FounderUsersMiniList({
+  copy,
   params,
   users,
-}: Readonly<{ params: AdminSearchParams; users: FounderAdminUser[] }>) {
+}: Readonly<{ copy: AdminCopy; params: AdminSearchParams; users: FounderAdminUser[] }>) {
+  const overviewCopy = copy.overview;
+  const detailCopy = copy.businesses.detail;
   const previewUsers = users.slice(0, 4);
 
   return (
     <DashboardCard className="p-4">
       <div className="flex items-start justify-between gap-2">
         <h2 className="min-w-0 text-[15px] font-extrabold leading-5 text-[var(--dash-text)]">
-          Users
+          {overviewCopy.usersMiniList.title}
         </h2>
         <Link
           className="shrink-0 text-[12px] font-black text-[var(--dash-primary-strong)]"
           href={adminUsersHref(params, { adminPanel: "users" })}
         >
-          All users
+          {overviewCopy.usersMiniList.allUsers}
         </Link>
       </div>
 
@@ -3786,7 +3817,7 @@ function FounderUsersMiniList({
                     {user.displayName ?? user.email}
                   </p>
                   <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
-                    {user.businessName ?? "No business"}
+                    {user.businessName ?? copy.users.noBusinessLinked}
                   </p>
                 </div>
                 <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
@@ -3795,17 +3826,17 @@ function FounderUsersMiniList({
               </div>
               <div className="flex flex-wrap items-center gap-1.5">
                 <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
-                  {user.planSlug ? planLabels[user.planSlug] : "No plan"}
+                  {user.planSlug ? detailCopy.planLabels[user.planSlug] : copy.users.noPlan}
                 </span>
                 <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
-                  {user.leadCount ?? "-"} leads
+                  {user.leadCount ?? "-"} {overviewCopy.usersMiniList.leadsSuffix}
                 </span>
               </div>
             </div>
           ))
         ) : (
           <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
-            No users loaded yet.
+            {overviewCopy.usersMiniList.emptyState}
           </p>
         )}
       </div>
@@ -3814,9 +3845,11 @@ function FounderUsersMiniList({
 }
 
 function FounderNewUsersNotice({
+  copy,
   params,
   users,
-}: Readonly<{ params: AdminSearchParams; users: FounderAdminUser[] }>) {
+}: Readonly<{ copy: AdminCopy; params: AdminSearchParams; users: FounderAdminUser[] }>) {
+  const overviewCopy = copy.overview;
   const newestUsers = [...users]
     .sort((left, right) => right.createdAt.localeCompare(left.createdAt))
     .slice(0, 3);
@@ -3841,8 +3874,8 @@ function FounderNewUsersNotice({
     age === null
       ? formatDateTime(visibleUser.createdAt)
       : age === 0
-        ? "Today"
-        : `${age}d ago`;
+        ? overviewCopy.newUsersNotice.today
+        : overviewCopy.newUsersNotice.daysAgo(age);
 
   return (
     <section
@@ -3856,10 +3889,14 @@ function FounderNewUsersNotice({
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge tone={hasRecentUsers ? "blue" : "neutral"}>
-            {hasRecentUsers ? `${recentUsers.length} new` : "Latest"}
+            {hasRecentUsers
+              ? overviewCopy.newUsersNotice.newBadge(recentUsers.length)
+              : overviewCopy.newUsersNotice.latestBadge}
           </StatusBadge>
           <p className="text-sm font-black text-[var(--dash-text)]">
-            {hasRecentUsers ? "New users detected" : "Latest user activity"}
+            {hasRecentUsers
+              ? overviewCopy.newUsersNotice.newTitle
+              : overviewCopy.newUsersNotice.latestTitle}
           </p>
         </div>
         <div className="mt-2 flex min-w-0 flex-wrap items-center gap-1.5 text-[12px] font-bold text-[var(--dash-text-secondary)]">
@@ -3867,10 +3904,12 @@ function FounderNewUsersNotice({
             {visibleUser.displayName ?? visibleUser.email}
           </span>
           <StatusBadge tone={visibleUser.emailConfirmed ? "emerald" : "amber"}>
-            {visibleUser.emailConfirmed ? "Confirmed" : "Email pending"}
+            {visibleUser.emailConfirmed
+              ? overviewCopy.newUsersNotice.confirmed
+              : overviewCopy.newUsersNotice.emailPending}
           </StatusBadge>
           <StatusBadge tone={visibleUser.businessName ? "blue" : "amber"}>
-            {visibleUser.businessName ?? "No workspace"}
+            {visibleUser.businessName ?? overviewCopy.newUsersNotice.noWorkspace}
           </StatusBadge>
           <StatusBadge tone="neutral">{joinedLabel}</StatusBadge>
         </div>
@@ -3879,19 +3918,20 @@ function FounderNewUsersNotice({
         className={`${hasRecentUsers ? primaryButtonClass : buttonClass} w-full sm:w-auto`}
         href={adminUsersHref(params, { adminPanel: "users" })}
       >
-        Review users
+        {overviewCopy.newUsersNotice.reviewUsers}
       </Link>
     </section>
   );
 }
 
 function FounderTopLeadSources({
+  copy,
   segments,
   total,
-}: Readonly<{ segments: readonly FounderChartSegment[]; total: number }>) {
+}: Readonly<{ copy: AdminCopy; segments: readonly FounderChartSegment[]; total: number }>) {
   return (
     <DashboardCard className="p-4">
-      <SectionHeader title="Top Lead Sources" />
+      <SectionHeader title={copy.overview.topLeadSourcesTitle} />
       <div className="mt-4 grid gap-2 sm:grid-cols-5">
         {segments.map((segment) => {
           const percent =
@@ -3921,16 +3961,19 @@ function FounderTopLeadSources({
   );
 }
 function FounderAdminOverviewSection({
+  copy,
   health,
   healthNeedsAttention,
   overview,
   params,
 }: Readonly<{
+  copy: AdminCopy;
   health: FounderProductionHealth | null;
   healthNeedsAttention: boolean;
   overview: FounderAdminOverview;
   params: AdminSearchParams;
 }>) {
+  const overviewCopy = copy.overview;
   const totalLeads = overview.businesses.reduce(
     (sum, business) => sum + business.leadCount,
     0,
@@ -3947,27 +3990,27 @@ function FounderAdminOverviewSection({
   const leadStatusSegments: FounderChartSegment[] = [
     {
       color: "#6d5dfc",
-      label: "New",
+      label: overviewCopy.leadStatusLabels.new,
       value: overview.leadInbox.filter((lead) => lead.status === "new").length,
     },
     {
       color: "#0ea5e9",
-      label: "Reply copied",
+      label: overviewCopy.leadStatusLabels.replyCopied,
       value: overview.leadInbox.filter((lead) => lead.status === "replied").length,
     },
     {
       color: "#f59e0b",
-      label: "Awaiting Reply",
+      label: overviewCopy.leadStatusLabels.awaitingReply,
       value: overview.leadInbox.filter((lead) => lead.status === "follow_up_needed").length,
     },
     {
       color: "#14b8a6",
-      label: "Quote Sent",
+      label: overviewCopy.leadStatusLabels.quoteSent,
       value: overview.leadInbox.filter((lead) => lead.status === "reviewed").length,
     },
     {
       color: "#8ddfd5",
-      label: "Completed",
+      label: overviewCopy.leadStatusLabels.completed,
       value: overview.leadInbox.filter(
         (lead) => lead.status === "booked" || lead.status === "archived",
       ).length,
@@ -3995,44 +4038,44 @@ function FounderAdminOverviewSection({
   );
   const founderOverviewMetricCards = [
     {
-      detail: "Auth users in founder search.",
+      detail: overviewCopy.metricCards.totalUsers.detail,
       glyph: "TU",
-      label: "Total Users",
+      label: overviewCopy.metricCards.totalUsers.label,
       tone: "blue" as FounderOverviewTone,
       value: formatAdminMetricNumber(overview.usersTotal),
     },
     {
-      detail: "Active or onboarding workspaces.",
+      detail: overviewCopy.metricCards.activeBusinesses.detail,
       glyph: "AB",
-      label: "Active Businesses",
+      label: overviewCopy.metricCards.activeBusinesses.label,
       tone: "violet" as FounderOverviewTone,
       value: formatAdminMetricNumber(overview.totals.activePilots),
     },
     {
-      detail: "Loaded lead signals.",
+      detail: overviewCopy.metricCards.loadedLeads.detail,
       glyph: "LM",
-      label: "Loaded Leads",
+      label: overviewCopy.metricCards.loadedLeads.label,
       tone: "emerald" as FounderOverviewTone,
       value: formatAdminMetricNumber(totalLeads),
     },
     {
-      detail: "Leads or admin actions with reply-related status; no send is implied.",
+      detail: overviewCopy.metricCards.replyTraces.detail,
       glyph: "RT",
-      label: "Reply Traces",
+      label: overviewCopy.metricCards.replyTraces.label,
       tone: "violet" as FounderOverviewTone,
       value: formatAdminMetricNumber(replyTraceSignal),
     },
     {
-      detail: "Active public quote links.",
+      detail: overviewCopy.metricCards.readinessCompleted.detail,
       glyph: "RC",
-      label: "Readiness Completed",
+      label: overviewCopy.metricCards.readinessCompleted.label,
       tone: "blue" as FounderOverviewTone,
       value: formatAdminMetricNumber(readinessCompleted),
     },
     {
-      detail: "Support-priority users.",
+      detail: overviewCopy.metricCards.usersNeedingAttention.detail,
       glyph: "UA",
-      label: "Users Needing Attention",
+      label: overviewCopy.metricCards.usersNeedingAttention.label,
       tone: usersNeedingAttention > 0 ? ("red" as FounderOverviewTone) : ("emerald" as FounderOverviewTone),
       value: formatAdminMetricNumber(usersNeedingAttention),
     },
@@ -4045,23 +4088,23 @@ function FounderAdminOverviewSection({
           actions={
             <>
               <span className="inline-flex min-h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 text-[12px] font-black text-[var(--dash-text-secondary)]">
-                Current snapshot
+                {overviewCopy.page.actions.currentSnapshot}
               </span>
               <Link className={buttonClass} href="/admin?adminPanel=businesses">
-                All workspaces
+                {overviewCopy.page.actions.allWorkspaces}
               </Link>
               <Link className={buttonClass} href="/admin?adminPanel=activity">
-                Activity log
+                {overviewCopy.page.actions.activityLog}
               </Link>
             </>
           }
-          description="Monitor users, workspaces, lead flow, readiness, health, and recent founder actions from one read-only command view."
-          eyebrow="Founder Admin"
-          title="Admin Overview"
+          description={overviewCopy.page.description}
+          eyebrow={overviewCopy.page.eyebrow}
+          title={overviewCopy.page.title}
         />
       </DashboardCard>
 
-      <FounderNewUsersNotice params={params} users={overview.users} />
+      <FounderNewUsersNotice copy={copy} params={params} users={overview.users} />
 
       <section className="grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
         {founderOverviewMetricCards.map((card) => (
@@ -4077,46 +4120,48 @@ function FounderAdminOverviewSection({
       </section>
 
       <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(300px,0.9fr)_minmax(320px,1fr)_minmax(320px,1fr)] 2xl:grid-cols-[minmax(320px,0.95fr)_minmax(340px,1fr)_minmax(340px,1fr)_minmax(340px,1fr)]">
-        <FounderUsersMiniList params={params} users={overview.users} />
+        <FounderUsersMiniList copy={copy} params={params} users={overview.users} />
         <FounderLeadsStatusDonut
           segments={leadStatusSegments}
           total={leadStatusTotal}
         />
         <FounderSystemHealthSummary
+          copy={copy}
           health={health}
           healthNeedsAttention={healthNeedsAttention}
         />
         <FounderRecentActivitiesSummary
           actions={overview.recentActions}
           businesses={overview.businesses}
+          copy={copy}
           params={params}
           users={overview.users}
         />
       </section>
 
       <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(280px,1.1fr)_repeat(2,minmax(180px,0.7fr))] 2xl:grid-cols-[minmax(320px,1.2fr)_repeat(4,minmax(170px,0.7fr))]">
-        <FounderTopLeadSources segments={sourceSegments} total={sourceTotal} />
+        <FounderTopLeadSources copy={copy} segments={sourceSegments} total={sourceTotal} />
         <MetricCard
-          detail="Requires real owner workflow timestamps before pilot reporting."
-          label="Response Time Tracking"
+          detail={overviewCopy.trackingCards.responseTimeTracking.detail}
+          label={overviewCopy.trackingCards.responseTimeTracking.label}
           tone="blue"
-          value="Not enabled"
+          value={overviewCopy.trackingCards.responseTimeTracking.value}
         />
         <MetricCard
-          detail="Non-cancelled workspaces with an active public quote link."
-          label="Ready Quote Links"
+          detail={overviewCopy.trackingCards.readyQuoteLinks.detail}
+          label={overviewCopy.trackingCards.readyQuoteLinks.label}
           tone="emerald"
           value={formatAdminMetricNumber(readinessCompleted)}
         />
         <MetricCard
-          detail="Active quote links over total businesses."
-          label="Active Link Coverage"
+          detail={overviewCopy.trackingCards.activeLinkCoverage.detail}
+          label={overviewCopy.trackingCards.activeLinkCoverage.label}
           tone="amber"
           value={`${activeLinkCoverage}%`}
         />
         <MetricCard
-          detail="Payment-ready plans over total businesses."
-          label="Payment-Ready Workspaces"
+          detail={overviewCopy.trackingCards.paymentReadyWorkspaces.detail}
+          label={overviewCopy.trackingCards.paymentReadyWorkspaces.label}
           tone="blue"
           value={`${paymentReadyCoverage}%`}
         />
@@ -4127,6 +4172,7 @@ function FounderAdminOverviewSection({
 
 function FounderRecentActionsPanel({
   actions,
+  copy,
 }: Readonly<{
   actions: ReadonlyArray<{
     actionType: string;
@@ -4134,17 +4180,19 @@ function FounderRecentActionsPanel({
     createdAt: string;
     note: string | null;
   }>;
+  copy: AdminCopy;
 }>) {
+  const overviewCopy = copy.overview;
   return (
     <DashboardCard className="p-3" variant="priority">
       <details>
         <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
           <div className="min-w-0">
             <p className="text-sm font-black text-[var(--dash-text)]">
-              Recent admin actions
+              {overviewCopy.recentActionsPanel.title}
             </p>
             <p className="mt-0.5 text-[11px] leading-4 text-[var(--dash-text-secondary)]">
-              Service-role writes after founder authorization.
+              {overviewCopy.recentActionsPanel.description}
             </p>
           </div>
           <StatusBadge tone="blue">{actions.length}</StatusBadge>
@@ -4161,7 +4209,7 @@ function FounderRecentActionsPanel({
                     humanizeAdminKey(action.actionType)}
                 </span>
                 <span className="truncate text-[var(--dash-text-secondary)]">
-                  {action.note ?? action.businessId ?? "No note"}
+                  {action.note ?? action.businessId ?? overviewCopy.recentActionsPanel.noNote}
                 </span>
                 <span className="font-bold text-[var(--dash-text-muted)]">
                   {formatDateTime(action.createdAt)}
@@ -4170,7 +4218,7 @@ function FounderRecentActionsPanel({
             ))
           ) : (
             <p className="bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
-              No admin actions logged yet.
+              {overviewCopy.recentActionsPanel.emptyState}
             </p>
           )}
         </div>
@@ -4180,9 +4228,11 @@ function FounderRecentActionsPanel({
 }
 
 function FounderAdminMetricsPanel({
+  copy,
   totals,
   usersTotal,
 }: Readonly<{
+  copy: AdminCopy;
   totals: {
     activePilots: number;
     paymentReady: number;
@@ -4190,34 +4240,35 @@ function FounderAdminMetricsPanel({
   };
   usersTotal: number;
 }>) {
+  const overviewCopy = copy.overview;
   return (
     <DashboardCard className="p-4 sm:p-5" variant="elevated">
       <SectionHeader
-        description="High-level counts stay here as a compact snapshot instead of occupying the workspace."
-        title="Workspace snapshot"
+        description={overviewCopy.metricsPanel.description}
+        title={overviewCopy.metricsPanel.title}
       />
       <section className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
-          detail="Auth users available through paged founder search."
-          label="Auth users"
+          detail={overviewCopy.metricsPanel.authUsers.detail}
+          label={overviewCopy.metricsPanel.authUsers.label}
           tone="blue"
           value={usersTotal}
         />
         <MetricCard
-          detail="Onboarding or active businesses."
-          label="Active pilots"
+          detail={overviewCopy.metricsPanel.activePilots.detail}
+          label={overviewCopy.metricsPanel.activePilots.label}
           tone="emerald"
           value={totals.activePilots}
         />
         <MetricCard
-          detail="Starter or Pro manual plans."
-          label="Payment-ready"
+          detail={overviewCopy.metricsPanel.paymentReady.detail}
+          label={overviewCopy.metricsPanel.paymentReady.label}
           tone="amber"
           value={totals.paymentReady}
         />
         <MetricCard
-          detail="Suspended or cancelled access."
-          label="Paused access"
+          detail={overviewCopy.metricsPanel.pausedAccess.detail}
+          label={overviewCopy.metricsPanel.pausedAccess.label}
           tone="red"
           value={totals.suspended}
         />
@@ -4621,6 +4672,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <main className="min-h-0 min-w-0 flex-1 overflow-y-auto px-3 py-3 sm:px-4 lg:px-5">
             {activePanel === "overview" ? (
               <FounderAdminOverviewSection
+                copy={adminCopy}
                 health={productionHealth}
                 healthNeedsAttention={productionHealthNeedsAttention}
                 overview={overview}
@@ -4657,6 +4709,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
             {activePanel === "health" ? (
               <FounderHealthSection
+                copy={adminCopy}
                 health={productionHealth}
                 healthNeedsAttention={productionHealthNeedsAttention}
                 totals={overview.totals}
@@ -4672,6 +4725,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               <FounderActivitySection
                 actions={overview.recentActions}
                 businesses={overview.businesses}
+                copy={adminCopy}
                 params={params}
                 users={overview.users}
               />

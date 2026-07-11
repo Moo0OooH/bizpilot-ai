@@ -203,15 +203,15 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("function FounderUsersMiniList"), true);
     assert.equal(pageSource.includes("function FounderNewUsersNotice"), true);
     assert.equal(pageSource.includes("function FounderAdminNewsroom"), true);
-    assert.equal(pageSource.includes("Latest founder/admin changes with actor"), true);
+    assert.equal(pageSource.includes("overviewCopy.newsroom.description"), true);
     assert.equal(pageSource.match(/<FounderAdminNewsroom/g)?.length, 1);
-    assert.equal(pageSource.includes("By {actionActorLabel(latestAction, usersById)}"), true);
+    assert.equal(pageSource.includes("overviewCopy.activitySummary.byLabel"), true);
     assert.equal(pageSource.includes("xl:grid-cols-[minmax(300px,0.9fr)_minmax(320px,1fr)_minmax(320px,1fr)]"), true);
     assert.equal(pageSource.includes("const previewUsers = users.slice(0, 4);"), true);
     assert.equal(pageSource.includes("function actionActorLabel"), true);
     assert.equal(pageSource.includes("activityFilter?: string"), true);
-    assert.equal(pageSource.includes("New users detected"), true);
-    assert.equal(pageSource.includes("Review users"), true);
+    assert.equal(pageSource.includes("overviewCopy.newUsersNotice.newTitle"), true);
+    assert.equal(pageSource.includes("overviewCopy.newUsersNotice.reviewUsers"), true);
     assert.equal(pageSource.includes("FounderUsersMiniTable"), false);
     assert.equal(pageSource.includes("hidden overflow-x-auto sm:block"), false);
     assert.equal(pageSource.includes('className="mt-4 grid gap-2"'), true);
@@ -245,16 +245,16 @@ describe("Founder admin source safety", () => {
     }
 
     for (const required of [
-      "Reply Traces",
-      "Response Time Tracking",
-      "Not enabled",
-      "Ready Quote Links",
-      "Active Link Coverage",
-      "Payment-Ready Workspaces",
-      "Loaded Leads",
-      "Current snapshot",
-      "Activity log",
-      "Leads or admin actions with reply-related status; no send is implied.",
+      "overviewCopy.metricCards.replyTraces.label",
+      "overviewCopy.trackingCards.responseTimeTracking.label",
+      "overviewCopy.trackingCards.responseTimeTracking.value",
+      "overviewCopy.trackingCards.readyQuoteLinks.label",
+      "overviewCopy.trackingCards.activeLinkCoverage.label",
+      "overviewCopy.trackingCards.paymentReadyWorkspaces.label",
+      "overviewCopy.metricCards.loadedLeads.label",
+      "overviewCopy.page.actions.currentSnapshot",
+      "overviewCopy.page.actions.activityLog",
+      "overviewCopy.metricCards.replyTraces.detail",
     ]) {
       assert.equal(
         pageSource.includes(required),
