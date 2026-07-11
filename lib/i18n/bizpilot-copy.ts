@@ -1181,6 +1181,7 @@ type DashboardAdminCopy = Readonly<{
       noNoteRecorded: string;
       shownBadge: (count: number) => string;
       targetLabel: string;
+      title: string;
       viewFullLog: string;
     }>;
     page: Readonly<{
@@ -1254,6 +1255,13 @@ type DashboardAdminCopy = Readonly<{
       operational: string;
       title: string;
       viewSystemHealth: string;
+    }>;
+    leadSourceLabels: Readonly<{
+      facebook: string;
+      google: string;
+      instagram: string;
+      other: string;
+      website: string;
     }>;
     topLeadSourcesTitle: string;
     trackingCards: Readonly<{
@@ -2384,6 +2392,7 @@ const englishCopy: BizPilotCopy = {
           noNoteRecorded: "No note recorded",
           shownBadge: (count) => `${count} shown`,
           targetLabel: "Target:",
+          title: "Admin newsroom",
           viewFullLog: "View full log",
         },
         page: {
@@ -2462,6 +2471,13 @@ const englishCopy: BizPilotCopy = {
           operational: "Operational",
           title: "System Health",
           viewSystemHealth: "View system health",
+        },
+        leadSourceLabels: {
+          facebook: "Facebook",
+          google: "Google",
+          instagram: "Instagram",
+          other: "Other",
+          website: "Website",
         },
         topLeadSourcesTitle: "Top Lead Sources",
         trackingCards: {
@@ -5117,6 +5133,7 @@ const frenchCopy: BizPilotCopy = {
           noNoteRecorded: "Aucune note enregistree",
           shownBadge: (count) => `${count} affiches`,
           targetLabel: "Cible :",
+          title: "Salle d'actualites admin",
           viewFullLog: "Voir le journal complet",
         },
         page: {
@@ -5195,6 +5212,13 @@ const frenchCopy: BizPilotCopy = {
           operational: "Operationnel",
           title: "Sante systeme",
           viewSystemHealth: "Voir la sante systeme",
+        },
+        leadSourceLabels: {
+          facebook: "Facebook",
+          google: "Google",
+          instagram: "Instagram",
+          other: "Autre",
+          website: "Site web",
         },
         topLeadSourcesTitle: "Principales sources de prospects",
         trackingCards: {

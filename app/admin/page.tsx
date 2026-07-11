@@ -3127,7 +3127,7 @@ function FounderInboxSection({
       <PageHeader
         actions={<StatusBadge tone="blue">{inboxCopy.badgeCount(items.length)}</StatusBadge>}
         description={inboxCopy.description}
-        eyebrow="Founder Admin"
+        eyebrow={copy.topbar.badge}
         title={copy.topbar.panelTitles.leads}
       />
       <div className="space-y-3">
@@ -3362,26 +3362,27 @@ function formatAdminMetricNumber(value: number): string {
   );
 }
 
-function normalizeFounderLeadSource(value: string | null): string {
+function normalizeFounderLeadSource(copy: AdminCopy, value: string | null): string {
   const normalized = (value ?? "").trim().toLowerCase();
+  const labels = copy.overview.leadSourceLabels;
 
   if (!normalized || normalized.includes("web") || normalized.includes("site")) {
-    return "Website";
+    return labels.website;
   }
 
   if (normalized.includes("google") || normalized.includes("search")) {
-    return "Google";
+    return labels.google;
   }
 
   if (normalized.includes("facebook") || normalized === "fb") {
-    return "Facebook";
+    return labels.facebook;
   }
 
   if (normalized.includes("instagram") || normalized === "ig") {
-    return "Instagram";
+    return labels.instagram;
   }
 
-  return "Other";
+  return labels.other;
 }
 
 function founderConicGradient(segments: readonly FounderChartSegment[]): string {
@@ -3404,20 +3405,28 @@ function founderConicGradient(segments: readonly FounderChartSegment[]): string 
 }
 
 function sourceBreakdownFromLeads(
+  copy: AdminCopy,
   leads: FounderAdminOverview["leadInbox"],
 ): FounderChartSegment[] {
-  const labels = ["Website", "Google", "Facebook", "Instagram", "Other"];
+  const sourceLabels = copy.overview.leadSourceLabels;
+  const labels = [
+    sourceLabels.website,
+    sourceLabels.google,
+    sourceLabels.facebook,
+    sourceLabels.instagram,
+    sourceLabels.other,
+  ];
   const colors: Record<string, string> = {
-    Facebook: "#f59e0b",
-    Google: "#0ea5e9",
-    Instagram: "#ef4444",
-    Other: "#14b8a6",
-    Website: "#6d5dfc",
+    [sourceLabels.facebook]: "#f59e0b",
+    [sourceLabels.google]: "#0ea5e9",
+    [sourceLabels.instagram]: "#ef4444",
+    [sourceLabels.other]: "#14b8a6",
+    [sourceLabels.website]: "#6d5dfc",
   };
   const counts = new Map(labels.map((label) => [label, 0]));
 
   for (const lead of leads) {
-    const label = normalizeFounderLeadSource(lead.sourceChannel);
+    const label = normalizeFounderLeadSource(copy, lead.sourceChannel);
     counts.set(label, (counts.get(label) ?? 0) + 1);
   }
 
@@ -3700,7 +3709,7 @@ function FounderAdminNewsroom({
   copy,
   limit = 5,
   params,
-  title = "Admin newsroom",
+  title,
   users,
 }: Readonly<{
   actions: FounderAdminOverview["recentActions"];
@@ -3713,6 +3722,7 @@ function FounderAdminNewsroom({
 }>) {
   const overviewCopy = copy.overview;
   const activityFilters = buildActivityFilters(copy);
+  const resolvedTitle = title ?? overviewCopy.newsroom.title;
   const selectedFilter = readActivityFilter(params.activityFilter);
   const businessById = new Map(
     businesses.map((business) => [business.businessId, business]),
@@ -3735,7 +3745,7 @@ function FounderAdminNewsroom({
               {overviewCopy.newsroom.shownBadge(visibleActions.length)}
             </StatusBadge>
             <p className="text-sm font-black text-[var(--dash-text)]">
-              {title}
+              {resolvedTitle}
             </p>
           </div>
           <p className="mt-1 max-w-[780px] text-[12px] leading-5 text-[var(--dash-text-secondary)]">
@@ -4070,7 +4080,7 @@ function FounderAdminOverviewSection({
     (sum, segment) => sum + segment.value,
     0,
   );
-  const sourceSegments = sourceBreakdownFromLeads(overview.leadInbox);
+  const sourceSegments = sourceBreakdownFromLeads(copy, overview.leadInbox);
   const sourceTotal = sourceSegments.reduce((sum, segment) => sum + segment.value, 0);
   const activeLinkCoverage =
     overview.totals.businesses > 0
