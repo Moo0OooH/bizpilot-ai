@@ -12,6 +12,7 @@
  * Created: 2026-05-22
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Localized founder user-operations overview, gated access panels, and account-support copy.
  * - 2026-07-11: Localized founder business control-card warnings, audit helpers, and session-policy option labels.
  * - 2026-07-11: Centralized founder-admin shell, handoff, and repeated placeholder copy into the bilingual dashboard dictionary.
  * - 2026-07-05: Restored explicit first-10 matched workspace helper copy in the founder business rail.
@@ -138,7 +139,6 @@ type ActivityFilter =
 type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
 type SessionTimeoutMode = FounderAdminBusiness["sessionTimeoutMode"];
-type WorkspaceKind = FounderAdminBusiness["workspaceKind"];
 
 const planOptions: ReadonlyArray<{ label: string; value: PlanSlug }> = [
   { label: "Founder Pilot", value: "founder_pilot" },
@@ -168,13 +168,6 @@ const statusLabels: Record<BusinessStatus, string> = {
   cancelled: "Cancelled",
   onboarding: "Onboarding",
   suspended: "Suspended",
-};
-
-const workspaceKindLabels: Record<WorkspaceKind, string> = {
-  demo: "Demo",
-  founder_test: "Founder test",
-  production_customer: "Production customer",
-  seed: "Seed",
 };
 
 const adminActionLabels: Readonly<Record<string, string>> = {
@@ -2296,14 +2289,17 @@ function FounderBusinessesSection({
 }
 
 function FounderUsersOverviewPanel({
+  copy,
   shownUsers,
   usersSearchMode,
   usersTotal,
 }: Readonly<{
+  copy: AdminCopy;
   shownUsers: FounderAdminUser[];
   usersSearchMode: "auth_filter" | "paged";
   usersTotal: number;
 }>) {
+  const overviewCopy = copy.users.overview;
   const unconfirmed = shownUsers.filter((user) => !user.emailConfirmed).length;
   const unlinked = shownUsers.filter((user) => !user.businessName).length;
   const pausedAccess = shownUsers.filter(
@@ -2318,55 +2314,58 @@ function FounderUsersOverviewPanel({
         actions={
           <>
             <Link className={buttonClass} href="/admin?adminPanel=businesses">
-              Businesses
+              {overviewCopy.actions.businesses}
             </Link>
             <Link className={buttonClass} href="/admin?adminPanel=health">
-              Health
+              {overviewCopy.actions.health}
             </Link>
-            <StatusBadge tone="amber">Gated operations</StatusBadge>
+            <StatusBadge tone="amber">{overviewCopy.gatedOperations}</StatusBadge>
           </>
         }
-        description="Founder-only user search, account support, synthetic/test cleanup, and detail review. Role and production access changes stay blocked until the owner-approved security/RLS gate is closed."
-        eyebrow="Founder Admin"
-        title="Users"
+        description={overviewCopy.description}
+        eyebrow={overviewCopy.eyebrow}
+        title={overviewCopy.title}
       />
       <section className="mt-4 grid min-w-0 gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(320px,0.42fr)]">
         <div className="grid min-w-0 gap-2 sm:grid-cols-2 2xl:grid-cols-4">
           <MetricCard
-            detail="Auth users available through founder-only paging/search."
-            label="Auth users"
+            detail={overviewCopy.metrics.authUsersDescription}
+            label={overviewCopy.metrics.authUsersLabel}
             tone="blue"
             value={usersTotal}
           />
           <MetricCard
-            detail="Loaded users with email confirmation still pending."
-            label="Unconfirmed"
+            detail={overviewCopy.metrics.unconfirmedDescription}
+            label={overviewCopy.metrics.unconfirmedLabel}
             tone={unconfirmed > 0 ? "amber" : "emerald"}
             value={unconfirmed}
           />
           <MetricCard
-            detail="Loaded users without a linked workspace."
-            label="No business"
+            detail={overviewCopy.metrics.noBusinessDescription}
+            label={overviewCopy.metrics.noBusinessLabel}
             tone={unlinked > 0 ? "amber" : "neutral"}
             value={unlinked}
           />
           <MetricCard
-            detail="Loaded users attached to suspended or cancelled access."
-            label="Paused access"
+            detail={overviewCopy.metrics.pausedAccessDescription}
+            label={overviewCopy.metrics.pausedAccessLabel}
             tone={pausedAccess > 0 ? "red" : "emerald"}
             value={pausedAccess}
           />
         </div>
         <div className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] p-3">
           <p className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--dash-warning-strong)]">
-            Operating rule
+            {overviewCopy.operatingRule.title}
           </p>
           <p className="mt-2 text-[12px] font-bold leading-5 text-[var(--dash-text)]">
-            Search mode: {usersSearchMode === "auth_filter" ? "indexed auth filter" : "paged auth list"}.
-            Password reset and synthetic/test login cleanup are guarded.
+            {overviewCopy.operatingRule.searchModeLabel}:{" "}
+            {usersSearchMode === "auth_filter"
+              ? overviewCopy.operatingRule.searchModeIndexed
+              : overviewCopy.operatingRule.searchModePaged}
+            . {overviewCopy.operatingRule.supportGuard}
           </p>
           <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Invite, role change, suspend, remove, and customer account deletion require the owner-approved security/RLS gate.
+            {overviewCopy.operatingRule.description}
           </p>
         </div>
       </section>
@@ -2374,24 +2373,15 @@ function FounderUsersOverviewPanel({
   );
 }
 
-function LockedAccessManagementPanel() {
+function LockedAccessManagementPanel({
+  copy,
+}: Readonly<{ copy: AdminCopy }>) {
+  const lockedAccessCopy = copy.users.lockedAccess;
   const actions = [
-    {
-      label: "Invite member",
-      reason: "Needs team-member schema and invite audit flow.",
-    },
-    {
-      label: "Change role",
-      reason: "Needs owner-approved role policy and last-owner protection.",
-    },
-    {
-      label: "Suspend access",
-      reason: "Needs reversible access state and customer-facing notice.",
-    },
-    {
-      label: "Remove from workspace",
-      reason: "Needs membership audit, ownership checks, and recovery path.",
-    },
+    lockedAccessCopy.items.inviteMember,
+    lockedAccessCopy.items.changeRole,
+    lockedAccessCopy.items.suspendAccess,
+    lockedAccessCopy.items.removeFromWorkspace,
   ] as const;
 
   return (
@@ -2399,13 +2389,13 @@ function LockedAccessManagementPanel() {
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
-            Access management
+            {lockedAccessCopy.title}
           </p>
           <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Requires owner-approved security gate.
+            {lockedAccessCopy.description}
           </p>
         </div>
-        <StatusBadge tone="amber">Blocked</StatusBadge>
+        <StatusBadge tone="amber">{lockedAccessCopy.blocked}</StatusBadge>
       </div>
       <div className="grid gap-2">
         {actions.map((action) => (
@@ -2417,7 +2407,7 @@ function LockedAccessManagementPanel() {
               <span className="font-black text-[var(--dash-text)]">
                 {action.label}
               </span>
-              <StatusBadge tone="red">Blocked</StatusBadge>
+              <StatusBadge tone="red">{lockedAccessCopy.blocked}</StatusBadge>
             </div>
             <p className="leading-5 text-[var(--dash-text-secondary)]">
               {action.reason}
@@ -2429,7 +2419,10 @@ function LockedAccessManagementPanel() {
   );
 }
 
-function FounderAdminCapabilityMatrix() {
+function FounderAdminCapabilityMatrix({
+  copy,
+}: Readonly<{ copy: AdminCopy }>) {
+  const capabilityCopy = copy.users.capabilityMatrix;
   const capabilities: ReadonlyArray<{
     detail: string;
     label: string;
@@ -2437,49 +2430,49 @@ function FounderAdminCapabilityMatrix() {
     value: string;
   }> = [
     {
-      detail: "Founder-only, audited business controls.",
-      label: "Plan, status, quote link",
+      detail: capabilityCopy.items.planStatusQuoteLink.detail,
+      label: capabilityCopy.items.planStatusQuoteLink.label,
       tone: "emerald",
-      value: "Active",
+      value: capabilityCopy.items.planStatusQuoteLink.value,
     },
     {
-      detail: "Review/archive and exact-ID hard delete for spam/test leads.",
-      label: "Lead inbox cleanup",
+      detail: capabilityCopy.items.leadInboxCleanup.detail,
+      label: capabilityCopy.items.leadInboxCleanup.label,
       tone: "amber",
-      value: "Guarded",
+      value: capabilityCopy.items.leadInboxCleanup.value,
     },
     {
-      detail: "Sends a reset email; founder accounts stay protected in the UI.",
-      label: "Password reset",
+      detail: capabilityCopy.items.passwordReset.detail,
+      label: capabilityCopy.items.passwordReset.label,
       tone: "blue",
-      value: "Available",
+      value: capabilityCopy.items.passwordReset.value,
     },
     {
-      detail: "Exact email/ID confirmation; customer-protected users are blocked.",
-      label: "Synthetic login cleanup",
+      detail: capabilityCopy.items.syntheticLoginCleanup.detail,
+      label: capabilityCopy.items.syntheticLoginCleanup.label,
       tone: "amber",
-      value: "Guarded",
+      value: capabilityCopy.items.syntheticLoginCleanup.value,
     },
     {
-      detail: "Requires owner-approved schema/RLS and last-owner protection.",
-      label: "Invite / role / suspend",
+      detail: capabilityCopy.items.inviteRoleSuspend.detail,
+      label: capabilityCopy.items.inviteRoleSuspend.label,
       tone: "red",
-      value: "Blocked",
+      value: capabilityCopy.items.inviteRoleSuspend.value,
     },
     {
-      detail: "Real customer account deletion needs backup, proof, and approval.",
-      label: "Customer account deletion",
+      detail: capabilityCopy.items.customerAccountDeletion.detail,
+      label: capabilityCopy.items.customerAccountDeletion.label,
       tone: "red",
-      value: "Blocked",
+      value: capabilityCopy.items.customerAccountDeletion.value,
     },
   ];
 
   return (
     <DashboardCard className="p-4 sm:p-5">
       <SectionHeader
-        action={<StatusBadge tone="amber">Gate-aware</StatusBadge>}
-        description="Operational capability map for founder/admin work. Destructive and access-changing actions stay explicit."
-        title="Admin capability matrix"
+        action={<StatusBadge tone="amber">{capabilityCopy.gateAware}</StatusBadge>}
+        description={capabilityCopy.description}
+        title={capabilityCopy.title}
       />
       <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
         {capabilities.map((capability) => (
@@ -2506,8 +2499,10 @@ function FounderAdminCapabilityMatrix() {
 }
 
 function UserAccountSupportPanel({
+  copy,
   user,
-}: Readonly<{ user: FounderAdminUser }>) {
+}: Readonly<{ copy: AdminCopy; user: FounderAdminUser }>) {
+  const accountSupportCopy = copy.users.accountSupport;
   const canRequestReset = Boolean(user.authEmail) && !user.isFounder;
 
   return (
@@ -2515,14 +2510,16 @@ function UserAccountSupportPanel({
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
-            Account support
+            {accountSupportCopy.title}
           </p>
           <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Founder-only auth support. Prefer reset email over temporary passwords.
+            {accountSupportCopy.description}
           </p>
         </div>
         <StatusBadge tone={canRequestReset ? "blue" : "amber"}>
-          {canRequestReset ? "Available" : "Restricted"}
+          {canRequestReset
+            ? accountSupportCopy.available
+            : accountSupportCopy.restricted}
         </StatusBadge>
       </div>
 
@@ -2530,33 +2527,29 @@ function UserAccountSupportPanel({
         <form action={founderPasswordResetAction} className={controlPanelClass}>
           <input name="targetUserId" type="hidden" value={user.userId} />
           <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Sends a Supabase reset email to the target account and logs a trace.
-            No password is printed or stored here.
+            {accountSupportCopy.resetDescription}
           </p>
           <button className={`${primaryButtonClass} w-full`} type="submit">
-            Send password reset
+            {accountSupportCopy.sendPasswordReset}
           </button>
         </form>
       ) : (
         <div className={controlPanelClass}>
           <p className="text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
-            Password reset is disabled for founder accounts or accounts without
-            an email address.
+            {accountSupportCopy.resetUnavailableDescription}
           </p>
           <button className={`${disabledButtonClass} w-full`} disabled type="button">
-            Password reset unavailable
+            {accountSupportCopy.passwordResetUnavailable}
           </button>
         </div>
       )}
 
       <div className={controlPanelClass}>
         <p className="text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
-          Temporary password setting is emergency-only and is intentionally not
-          exposed in the console. Use reset email unless a separate support
-          incident is approved.
+          {accountSupportCopy.emergencyDescription}
         </p>
         <button className={`${disabledButtonClass} w-full`} disabled type="button">
-          Emergency password locked
+          {accountSupportCopy.emergencyLocked}
         </button>
       </div>
     </section>
@@ -2564,21 +2557,25 @@ function UserAccountSupportPanel({
 }
 
 function UserAccountSafetyPanel({
+  copy,
   user,
-}: Readonly<{ user: FounderAdminUser }>) {
+}: Readonly<{ copy: AdminCopy; user: FounderAdminUser }>) {
+  const accountSafetyCopy = copy.users.accountSafety;
   return (
     <section className={`${toolboxSectionClass} content-start`}>
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
-            Account safety and cleanup
+            {accountSafetyCopy.title}
           </p>
           <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Synthetic/test login cleanup only. Customer-protected accounts remain locked.
+            {accountSafetyCopy.description}
           </p>
         </div>
         <StatusBadge tone={user.authDeletionBlockedReason ? "amber" : "red"}>
-          {user.authDeletionBlockedReason ? "Protected" : "Double confirm"}
+          {user.authDeletionBlockedReason
+            ? accountSafetyCopy.protected
+            : accountSafetyCopy.doubleConfirm}
         </StatusBadge>
       </div>
       <FounderAuthUserDeleteForm
@@ -2591,23 +2588,30 @@ function UserAccountSafetyPanel({
 }
 
 function UserWorkspaceReadOnlyPanel({
+  copy,
   linkedBusiness,
   params,
   user,
 }: Readonly<{
+  copy: AdminCopy;
   linkedBusiness: FounderAdminBusiness | null;
   params: AdminSearchParams;
   user: FounderAdminUser;
 }>) {
+  const workspaceDetailCopy = copy.users.workspaceDetail;
+  const detailCopy = copy.businesses.detail;
+  const planLabels = detailCopy.planLabels;
+  const workspaceKindLabels = detailCopy.workspaceKindLabels;
+
   return (
     <section className={`${toolboxSectionClass} content-start`}>
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
-            User detail
+            {workspaceDetailCopy.title}
           </p>
           <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Read-only account and workspace context for founder review.
+            {workspaceDetailCopy.description}
           </p>
         </div>
         <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
@@ -2616,12 +2620,26 @@ function UserWorkspaceReadOnlyPanel({
       </div>
       <dl className="grid gap-2 text-[12px] sm:grid-cols-2">
         {[
-          ["Business", user.businessName ?? "No business linked"],
-          ["Role", formatUserValue(user.membershipRole)],
-          ["Membership", formatUserValue(user.membershipStatus)],
-          ["Plan", user.planSlug ? planLabels[user.planSlug] : "No plan"],
-          ["Quote link", user.publicLinkActive ? "Active" : "Inactive or missing"],
-          ["Workspace kind", linkedBusiness ? workspaceKindLabels[linkedBusiness.workspaceKind] : "None"],
+          [
+            workspaceDetailCopy.fields.business,
+            user.businessName ?? copy.users.noBusinessLinked,
+          ],
+          [workspaceDetailCopy.fields.role, formatUserValue(user.membershipRole)],
+          [workspaceDetailCopy.fields.membership, formatUserValue(user.membershipStatus)],
+          [
+            workspaceDetailCopy.fields.plan,
+            user.planSlug ? planLabels[user.planSlug] : copy.users.noPlan,
+          ],
+          [
+            workspaceDetailCopy.fields.quoteLink,
+            user.publicLinkActive ? copy.users.quoteActive : copy.users.quoteInactive,
+          ],
+          [
+            workspaceDetailCopy.fields.workspaceKind,
+            linkedBusiness
+              ? workspaceKindLabels[linkedBusiness.workspaceKind]
+              : copy.users.none,
+          ],
         ].map(([label, value]) => (
           <div
             className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2"
@@ -2641,12 +2659,11 @@ function UserWorkspaceReadOnlyPanel({
             businessId: linkedBusiness.businessId,
           })}
         >
-          Open business controls
+          {workspaceDetailCopy.openBusinessControls}
         </Link>
       ) : (
         <p className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
-          Workspace repair remains a founder-admin action outside this read-only
-          Users foundation.
+          {workspaceDetailCopy.repairNotice}
         </p>
       )}
     </section>
@@ -2690,6 +2707,7 @@ function FounderUsersSection({
   return (
     <div className="grid gap-3">
       <FounderUsersOverviewPanel
+        copy={copy}
         shownUsers={shownUsers}
         usersSearchMode={usersSearchMode}
         usersTotal={usersTotal}
@@ -2949,15 +2967,16 @@ function FounderUsersSection({
                 <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 xl:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
                   <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 lg:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
                     <UserWorkspaceReadOnlyPanel
+                      copy={copy}
                       linkedBusiness={linkedBusiness}
                       params={params}
                       user={user}
                     />
-                    <UserAccountSupportPanel user={user} />
+                    <UserAccountSupportPanel copy={copy} user={user} />
                   </div>
                   <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3">
-                    <LockedAccessManagementPanel />
-                    <UserAccountSafetyPanel user={user} />
+                    <LockedAccessManagementPanel copy={copy} />
+                    <UserAccountSafetyPanel copy={copy} user={user} />
                   </div>
                 </div>
               </div>
@@ -3044,7 +3063,7 @@ function FounderUsersSection({
         </section>
       </DashboardCard>
 
-      <FounderAdminCapabilityMatrix />
+      <FounderAdminCapabilityMatrix copy={copy} />
     </div>
   );
 }

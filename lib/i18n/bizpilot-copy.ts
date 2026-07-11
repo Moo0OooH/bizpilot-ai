@@ -1028,6 +1028,24 @@ type DashboardAdminCopy = Readonly<{
     productionHealthy: string;
   }>;
   users: Readonly<{
+    accountSafety: Readonly<{
+      description: string;
+      doubleConfirm: string;
+      protected: string;
+      title: string;
+    }>;
+    accountSupport: Readonly<{
+      available: string;
+      description: string;
+      emergencyDescription: string;
+      emergencyLocked: string;
+      passwordResetUnavailable: string;
+      resetDescription: string;
+      resetUnavailableDescription: string;
+      restricted: string;
+      sendPasswordReset: string;
+      title: string;
+    }>;
     accessStatusLabel: string;
     accessStatusOptions: Readonly<{
       active: string;
@@ -1044,12 +1062,66 @@ type DashboardAdminCopy = Readonly<{
       founder: string;
       unconfirmed: string;
     }>;
+    capabilityMatrix: Readonly<{
+      description: string;
+      gateAware: string;
+      items: Readonly<{
+        customerAccountDeletion: Readonly<{ detail: string; label: string; value: string }>;
+        inviteRoleSuspend: Readonly<{ detail: string; label: string; value: string }>;
+        leadInboxCleanup: Readonly<{ detail: string; label: string; value: string }>;
+        passwordReset: Readonly<{ detail: string; label: string; value: string }>;
+        planStatusQuoteLink: Readonly<{ detail: string; label: string; value: string }>;
+        syntheticLoginCleanup: Readonly<{ detail: string; label: string; value: string }>;
+      }>;
+      title: string;
+    }>;
     details: string;
     hiddenByFilters: string;
+    lockedAccess: Readonly<{
+      blocked: string;
+      description: string;
+      items: Readonly<{
+        changeRole: Readonly<{ label: string; reason: string }>;
+        inviteMember: Readonly<{ label: string; reason: string }>;
+        removeFromWorkspace: Readonly<{ label: string; reason: string }>;
+        suspendAccess: Readonly<{ label: string; reason: string }>;
+      }>;
+      title: string;
+    }>;
     next: string;
     noBusinessLinked: string;
     noQuoteLink: string;
+    noPlan: string;
+    none: string;
     noUsers: string;
+    overview: Readonly<{
+      actions: Readonly<{
+        businesses: string;
+        health: string;
+      }>;
+      description: string;
+      eyebrow: string;
+      gatedOperations: string;
+      metrics: Readonly<{
+        authUsersDescription: string;
+        authUsersLabel: string;
+        noBusinessDescription: string;
+        noBusinessLabel: string;
+        pausedAccessDescription: string;
+        pausedAccessLabel: string;
+        unconfirmedDescription: string;
+        unconfirmedLabel: string;
+      }>;
+      operatingRule: Readonly<{
+        description: string;
+        searchModeIndexed: string;
+        searchModeLabel: string;
+        searchModePaged: string;
+        supportGuard: string;
+        title: string;
+      }>;
+      title: string;
+    }>;
     pageAriaLabel: (page: number) => string;
     paginationLabel: string;
     previous: string;
@@ -1061,6 +1133,20 @@ type DashboardAdminCopy = Readonly<{
     searchSubmit: string;
     showLabel: string;
     showingRange: (start: number, end: number, total: number) => string;
+    workspaceDetail: Readonly<{
+      description: string;
+      fields: Readonly<{
+        business: string;
+        membership: string;
+        plan: string;
+        quoteLink: string;
+        role: string;
+        workspaceKind: string;
+      }>;
+      openBusinessControls: string;
+      repairNotice: string;
+      title: string;
+    }>;
     workQueuesDescription: string;
     workQueuesTitle: string;
     showingPerPage: (count: number) => string;
@@ -1838,6 +1924,29 @@ const englishCopy: BizPilotCopy = {
         productionHealthy: "Production: healthy",
       },
       users: {
+        accountSafety: {
+          description:
+            "Synthetic/test login cleanup only. Customer-protected accounts remain locked.",
+          doubleConfirm: "Double confirm",
+          protected: "Protected",
+          title: "Account safety and cleanup",
+        },
+        accountSupport: {
+          available: "Available",
+          description:
+            "Founder-only auth support. Prefer reset email over temporary passwords.",
+          emergencyDescription:
+            "Temporary password setting is emergency-only and is intentionally not exposed in the console. Use reset email unless a separate support incident is approved.",
+          emergencyLocked: "Emergency password locked",
+          passwordResetUnavailable: "Password reset unavailable",
+          resetDescription:
+            "Sends a Supabase reset email to the target account and logs a trace. No password is printed or stored here.",
+          resetUnavailableDescription:
+            "Password reset is disabled for founder accounts or accounts without an email address.",
+          restricted: "Restricted",
+          sendPasswordReset: "Send password reset",
+          title: "Account support",
+        },
         accessStatusLabel: "Access status",
         accessStatusOptions: {
           active: "Active access",
@@ -1854,12 +1963,117 @@ const englishCopy: BizPilotCopy = {
           founder: "Founder accounts",
           unconfirmed: "Unconfirmed email",
         },
+        capabilityMatrix: {
+          description:
+            "Operational capability map for founder/admin work. Destructive and access-changing actions stay explicit.",
+          gateAware: "Gate-aware",
+          items: {
+            customerAccountDeletion: {
+              detail:
+                "Real customer account deletion needs backup, proof, and approval.",
+              label: "Customer account deletion",
+              value: "Blocked",
+            },
+            inviteRoleSuspend: {
+              detail:
+                "Requires owner-approved schema/RLS and last-owner protection.",
+              label: "Invite / role / suspend",
+              value: "Blocked",
+            },
+            leadInboxCleanup: {
+              detail: "Review/archive and exact-ID hard delete for spam/test leads.",
+              label: "Lead inbox cleanup",
+              value: "Guarded",
+            },
+            passwordReset: {
+              detail:
+                "Sends a reset email; founder accounts stay protected in the UI.",
+              label: "Password reset",
+              value: "Available",
+            },
+            planStatusQuoteLink: {
+              detail: "Founder-only, audited business controls.",
+              label: "Plan, status, quote link",
+              value: "Active",
+            },
+            syntheticLoginCleanup: {
+              detail:
+                "Exact email/ID confirmation; customer-protected users are blocked.",
+              label: "Synthetic login cleanup",
+              value: "Guarded",
+            },
+          },
+          title: "Admin capability matrix",
+        },
         details: "Details",
         hiddenByFilters: "Some loaded users are hidden by access/auth filters.",
+        lockedAccess: {
+          blocked: "Blocked",
+          description: "Requires owner-approved security gate.",
+          items: {
+            changeRole: {
+              label: "Change role",
+              reason:
+                "Needs owner-approved role policy and last-owner protection.",
+            },
+            inviteMember: {
+              label: "Invite member",
+              reason: "Needs team-member schema and invite audit flow.",
+            },
+            removeFromWorkspace: {
+              label: "Remove from workspace",
+              reason:
+                "Needs membership audit, ownership checks, and recovery path.",
+            },
+            suspendAccess: {
+              label: "Suspend access",
+              reason:
+                "Needs reversible access state and customer-facing notice.",
+            },
+          },
+          title: "Access management",
+        },
         next: "Next",
         noBusinessLinked: "No business linked",
         noQuoteLink: "No quote link",
+        noPlan: "No plan",
+        none: "None",
         noUsers: "No users found.",
+        overview: {
+          actions: {
+            businesses: "Businesses",
+            health: "Health",
+          },
+          description:
+            "Founder-only user search, account support, synthetic/test cleanup, and detail review. Role and production access changes stay blocked until the owner-approved security/RLS gate is closed.",
+          eyebrow: "Founder Admin",
+          gatedOperations: "Gated operations",
+          metrics: {
+            authUsersDescription:
+              "Auth users available through founder-only paging/search.",
+            authUsersLabel: "Auth users",
+            noBusinessDescription:
+              "Loaded users without a linked workspace.",
+            noBusinessLabel: "No business",
+            pausedAccessDescription:
+              "Loaded users attached to suspended or cancelled access.",
+            pausedAccessLabel: "Paused access",
+            unconfirmedDescription:
+              "Loaded users with email confirmation still pending.",
+            unconfirmedLabel: "Unconfirmed",
+          },
+          operatingRule: {
+            description:
+              "Invite, role change, suspend, remove, and customer account deletion require the owner-approved security/RLS gate.",
+            searchModeIndexed: "indexed auth filter",
+            searchModeLabel: "Search mode",
+            searchModePaged: "paged auth list",
+            supportGuard:
+              "Password reset and synthetic/test login cleanup are guarded.",
+            title: "Operating rule",
+          },
+          title: "Users",
+        },
         pageAriaLabel: (page) => `Page ${page}`,
         paginationLabel: "User directory pagination",
         previous: "Previous",
@@ -1872,6 +2086,22 @@ const englishCopy: BizPilotCopy = {
         showLabel: "Show",
         showingRange: (start, end, total) =>
           `Showing ${start}-${end} of ${total} auth user(s).`,
+        workspaceDetail: {
+          description:
+            "Read-only account and workspace context for founder review.",
+          fields: {
+            business: "Business",
+            membership: "Membership",
+            plan: "Plan",
+            quoteLink: "Quote link",
+            role: "Role",
+            workspaceKind: "Workspace kind",
+          },
+          openBusinessControls: "Open business controls",
+          repairNotice:
+            "Workspace repair remains a founder-admin action outside this read-only Users foundation.",
+          title: "User detail",
+        },
         workQueuesDescription:
           "Start with risk and recovery queues, then search inside the result.",
         workQueuesTitle: "Work queues",
@@ -4104,6 +4334,29 @@ const frenchCopy: BizPilotCopy = {
         productionHealthy: "Production: saine",
       },
       users: {
+        accountSafety: {
+          description:
+            "Nettoyage des connexions synthetiques/test seulement. Les comptes clients proteges restent verrouilles.",
+          doubleConfirm: "Double confirmation",
+          protected: "Protege",
+          title: "Securite et nettoyage du compte",
+        },
+        accountSupport: {
+          available: "Disponible",
+          description:
+            "Support auth reserve au fondateur. Preferez le courriel de reinitialisation aux mots de passe temporaires.",
+          emergencyDescription:
+            "Le mot de passe temporaire est reserve aux urgences et reste volontairement absent de la console. Utilisez le courriel de reinitialisation sauf si un incident de support distinct est approuve.",
+          emergencyLocked: "Mot de passe d'urgence verrouille",
+          passwordResetUnavailable: "Reinitialisation indisponible",
+          resetDescription:
+            "Envoie un courriel de reinitialisation Supabase au compte cible et consigne une trace. Aucun mot de passe n'est affiche ni stocke ici.",
+          resetUnavailableDescription:
+            "La reinitialisation est desactivee pour les comptes fondateur ou sans adresse courriel.",
+          restricted: "Restreint",
+          sendPasswordReset: "Envoyer la reinitialisation",
+          title: "Support du compte",
+        },
         accessStatusLabel: "État d'accès",
         accessStatusOptions: {
           active: "Accès actif",
@@ -4120,13 +4373,120 @@ const frenchCopy: BizPilotCopy = {
           founder: "Comptes fondateur",
           unconfirmed: "Courriel non confirmé",
         },
+        capabilityMatrix: {
+          description:
+            "Carte des capacites operationnelles pour le travail fondateur/admin. Les actions destructrices ou qui changent l'acces restent explicites.",
+          gateAware: "Sous garde",
+          items: {
+            customerAccountDeletion: {
+              detail:
+                "La suppression d'un vrai compte client exige sauvegarde, preuve et approbation.",
+              label: "Suppression de compte client",
+              value: "Bloque",
+            },
+            inviteRoleSuspend: {
+              detail:
+                "Necessite schema/RLS approuve par le responsable et protection du dernier proprietaire.",
+              label: "Invitation / role / suspension",
+              value: "Bloque",
+            },
+            leadInboxCleanup: {
+              detail:
+                "Revision/archivage et suppression dure par ID exact pour prospects spam/test.",
+              label: "Nettoyage de la boite prospects",
+              value: "Garde",
+            },
+            passwordReset: {
+              detail:
+                "Envoie un courriel de reinitialisation; les comptes fondateur restent proteges dans l'UI.",
+              label: "Reinitialisation du mot de passe",
+              value: "Disponible",
+            },
+            planStatusQuoteLink: {
+              detail: "Controles entreprise reserves au fondateur et audites.",
+              label: "Forfait, statut, lien public",
+              value: "Actif",
+            },
+            syntheticLoginCleanup: {
+              detail:
+                "Confirmation exacte par courriel/ID; les utilisateurs client proteges restent bloques.",
+              label: "Nettoyage des connexions synthetiques",
+              value: "Garde",
+            },
+          },
+          title: "Matrice des capacites admin",
+        },
         details: "Détails",
         hiddenByFilters:
           "Certains utilisateurs chargés sont masqués par les filtres d'accès/auth.",
+        lockedAccess: {
+          blocked: "Bloque",
+          description: "Necessite une garde de securite approuvee par le responsable.",
+          items: {
+            changeRole: {
+              label: "Changer le role",
+              reason:
+                "Necessite une politique de role approuvee et une protection du dernier proprietaire.",
+            },
+            inviteMember: {
+              label: "Inviter un membre",
+              reason:
+                "Necessite le schema de membre d'equipe et un flux d'audit d'invitation.",
+            },
+            removeFromWorkspace: {
+              label: "Retirer de l'espace",
+              reason:
+                "Necessite audit d'appartenance, verifications de propriete et chemin de reprise.",
+            },
+            suspendAccess: {
+              label: "Suspendre l'acces",
+              reason:
+                "Necessite un etat d'acces reversible et un avis visible cote client.",
+            },
+          },
+          title: "Gestion des acces",
+        },
         next: "Suivant",
         noBusinessLinked: "Aucune entreprise liée",
+        noPlan: "Aucun forfait",
         noQuoteLink: "Aucun lien de soumission",
+        none: "Aucun",
         noUsers: "Aucun utilisateur trouvé.",
+        overview: {
+          actions: {
+            businesses: "Entreprises",
+            health: "Sante",
+          },
+          description:
+            "Recherche utilisateur reservee au fondateur, support de compte, nettoyage synthetique/test et revision detaillee. Les changements de role et d'acces production restent bloques jusqu'a la garde securite/RLS approuvee.",
+          eyebrow: "Admin fondateur",
+          gatedOperations: "Operations gardees",
+          metrics: {
+            authUsersDescription:
+              "Utilisateurs auth disponibles via pagination/recherche reservee au fondateur.",
+            authUsersLabel: "Utilisateurs auth",
+            noBusinessDescription:
+              "Utilisateurs charges sans espace lie.",
+            noBusinessLabel: "Aucune entreprise",
+            pausedAccessDescription:
+              "Utilisateurs charges rattaches a un acces suspendu ou annule.",
+            pausedAccessLabel: "Acces en pause",
+            unconfirmedDescription:
+              "Utilisateurs charges dont la confirmation courriel reste en attente.",
+            unconfirmedLabel: "Non confirmes",
+          },
+          operatingRule: {
+            description:
+              "Invitation, changement de role, suspension, retrait et suppression de compte client exigent la garde securite/RLS approuvee par le responsable.",
+            searchModeIndexed: "filtre auth indexe",
+            searchModeLabel: "Mode de recherche",
+            searchModePaged: "liste auth paginee",
+            supportGuard:
+              "La reinitialisation du mot de passe et le nettoyage des connexions synthetiques restent gardes.",
+            title: "Regle d'exploitation",
+          },
+          title: "Utilisateurs",
+        },
         pageAriaLabel: (page) => `Page ${page}`,
         paginationLabel: "Pagination du répertoire utilisateurs",
         previous: "Précédent",
@@ -4139,6 +4499,22 @@ const frenchCopy: BizPilotCopy = {
         showLabel: "Afficher",
         showingRange: (start, end, total) =>
           `Affichage ${start}-${end} de ${total} utilisateur${total === 1 ? "" : "s"} auth.`,
+        workspaceDetail: {
+          description:
+            "Contexte du compte et de l'espace en lecture seule pour la revision du fondateur.",
+          fields: {
+            business: "Entreprise",
+            membership: "Appartenance",
+            plan: "Forfait",
+            quoteLink: "Lien public",
+            role: "Role",
+            workspaceKind: "Type d'espace",
+          },
+          openBusinessControls: "Ouvrir les controles entreprise",
+          repairNotice:
+            "La reparation d'espace reste une action fondateur-admin hors de cette base Utilisateurs en lecture seule.",
+          title: "Detail utilisateur",
+        },
         workQueuesDescription:
           "Commencez par les files de risque et de reprise, puis cherchez dans le résultat.",
         workQueuesTitle: "Files de travail",

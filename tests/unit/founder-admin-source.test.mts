@@ -12,6 +12,7 @@
  * Created: 2026-05-26
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Updated founder user-operations guards for localized overview and support panels.
  * - 2026-07-11: Updated business-detail guards for localized admin tile labels.
  * - 2026-07-11: Updated founder-admin guards for centralized bilingual shell and handoff copy.
  * - 2026-07-04: Added founder-admin metric honesty guards against sent-reply and fake-conversion claims.
@@ -73,12 +74,12 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("Recover owner workspace"), false);
     assert.equal(
       pageSource.includes(
-        "Workspace repair remains a founder-admin action outside this read-only",
+        "workspaceDetailCopy.repairNotice",
       ),
       true,
     );
     assert.equal(
-      pageSource.includes("Requires owner-approved security gate."),
+      pageSource.includes("lockedAccessCopy.description"),
       true,
     );
   });
@@ -109,7 +110,7 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("copy.tabs.items.businesses.label"), true);
     assert.equal(pageSource.indexOf("copy.tabs.items.users.label") < pageSource.indexOf("copy.tabs.items.businesses.label"), true);
     assert.equal(pageSource.includes('User directory'), true);
-    assert.equal(pageSource.includes("Operating rule"), true);
+    assert.equal(pageSource.includes("overviewCopy.operatingRule.title"), true);
     assert.equal(
       pageSource.indexOf("copy.users.searchLabel") <
         pageSource.indexOf("copy.users.workQueuesTitle"),
@@ -120,10 +121,16 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("FounderAuthUserDeleteForm"), true);
     assert.equal(pageSource.includes("founderPasswordResetAction"), true);
     assert.equal(pageSource.includes("founderTemporaryPasswordAction"), false);
-    assert.equal(pageSource.includes("Emergency password locked"), true);
-    assert.equal(pageSource.includes("Customer account deletion"), true);
-    assert.equal(pageSource.includes("Blocked"), true);
-    assert.equal(pageSource.includes("Needs owner-approved role policy"), true);
+    assert.equal(pageSource.includes("accountSupportCopy.emergencyLocked"), true);
+    assert.equal(
+      pageSource.includes("capabilityCopy.items.customerAccountDeletion.label"),
+      true,
+    );
+    assert.equal(pageSource.includes("lockedAccessCopy.blocked"), true);
+    assert.equal(
+      pageSource.includes("lockedAccessCopy.items.changeRole"),
+      true,
+    );
     assert.equal(pageSource.includes('name="adminPanel" type="hidden" value="users"'), true);
     assert.equal(pageSource.includes("adminUserPageSizeOptions"), true);
     assert.equal(pageSource.includes("copy.users.paginationLabel"), true);
