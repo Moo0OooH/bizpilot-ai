@@ -10,8 +10,9 @@
  * - server/policies/business-membership.policy.ts
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Preserved bilingual custom quote-field translations while syncing template and public intake updates.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-05: Created Phase 3 business configuration service and readiness scoring.
  * - 2026-05-05: Added business profile updates and onboarding task synchronization.
@@ -26,7 +27,9 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { canManageBusiness } from "@/server/policies/business-membership.policy";
 import {
   getBusinessConfiguration,
+  getBusinessTemplateFieldOverrides,
   getCleaningTemplate,
+  mergeTemplateFieldOverridesForLanguage,
   replaceBusinessOnboardingTasks,
   replaceBusinessFaqs,
   replaceBusinessServiceAreas,
@@ -329,6 +332,16 @@ export async function saveBusinessConfiguration(
   const logoUrl = cleanOptionalText(input.logoUrl);
   const privacyContactEmail = cleanOptionalText(input.privacyContactEmail);
   const customTemplateName = cleanOptionalText(input.customTemplateName);
+  const existingFieldOverrides = await getBusinessTemplateFieldOverrides({
+    businessId: input.businessId,
+    supabase,
+    templateId: input.templateId,
+  });
+  const mergedFieldOverrides = mergeTemplateFieldOverridesForLanguage({
+    currentLanguage: input.preferredLanguage,
+    existing: existingFieldOverrides,
+    incoming: input.fieldOverrides,
+  });
 
   const updatedBusiness = await updateBusinessProfile({
     businessId: input.businessId,
@@ -376,7 +389,7 @@ export async function saveBusinessConfiguration(
     }),
     upsertTemplateSettings({
       businessId: input.businessId,
-      fieldOverrides: input.fieldOverrides,
+      fieldOverrides: mergedFieldOverrides,
       supabase,
       templateId: input.templateId,
       ...(customTemplateName ? { customName: customTemplateName } : {}),

@@ -14,8 +14,9 @@
  * - server/services/public-intake.service.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Added guards for bilingual custom-field override resolution on public quote reads.
  * - 2026-07-04: Added active-language default field localization guards.
  * ============================================================
  */
@@ -47,7 +48,7 @@ describe("public quote intake source contracts", () => {
     assert.equal(quoteUnavailable.includes("pathname"), true);
   });
 
-  it("localizes default quote fields from the active quote language", () => {
+  it("localizes default and saved custom quote fields from the active quote language", () => {
     const quotePage = source("app/(public)/quote/[slug]/page.tsx");
     const quoteSuccessPage = source("app/(public)/quote/[slug]/success/page.tsx");
     const service = source("server/services/public-intake.service.ts");
@@ -66,6 +67,14 @@ describe("public quote intake source contracts", () => {
     assert.equal(service.includes("language: input.language"), true);
     assert.equal(
       repository.includes("language: input.language ?? publicLink.preferred_language"),
+      true,
+    );
+    assert.equal(
+      repository.includes("resolveLocalizedTemplateFieldCopy"),
+      true,
+    );
+    assert.equal(
+      repository.includes("createSupabaseServiceRoleClient"),
       true,
     );
   });

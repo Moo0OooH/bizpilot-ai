@@ -1,18 +1,23 @@
 /**
+ * ============================================================
  * File: server/actions/business-configuration.actions.ts
  * Project: BizPilot AI
- * Role: Connects protected dashboard forms to tenant-safe configuration services.
+ * Description: Server actions for saving owner-facing business and quote-setup configuration.
+ * Role: Reads protected dashboard form payloads, normalizes quote-field overrides, and redirects with safe save outcomes.
  * Related:
  * - app/(dashboard)/dashboard/configuration/page.tsx
  * - server/errors/safe-error.ts
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
- * Last Updated: 2026-05-16
+ * Created: 2026-05-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Added per-language custom quote-field translation payloads for bilingual workspace saves.
+ * - 2026-06-16: Rejected forward-only privacy mode until the full intake/storage behavior exists.
+ * - 2026-05-16: Restored truncated file tail; kept [CONFIG_SAVE_ERROR] dev log.
  * - 2026-05-13: Mapped configuration action failures to safe user-facing messages.
  * - 2026-05-05: Created Phase 3 business configuration save action.
- * - 2026-05-16: Restored truncated file tail; kept [CONFIG_SAVE_ERROR] dev log.
- * - 2026-06-16: Rejected forward-only privacy mode until the full intake/storage behavior exists.
+ * ============================================================
  */
 
 "use server";
@@ -29,6 +34,7 @@ import {
 import {
   INTERFACE_LANGUAGE_COOKIE,
   readSupportedLanguageOrThrow,
+  type SupportedLanguage,
 } from "@/lib/i18n/language";
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { safeLogger } from "@/server/logging/safe-logger";
@@ -59,6 +65,15 @@ type TemplateFieldSettings = {
   label?: string;
   options?: string[];
   sortOrder?: number;
+  translations?: Partial<
+    Record<
+      SupportedLanguage,
+      {
+        helpText?: string;
+        label?: string;
+      }
+    >
+  >;
 };
 const choiceFieldTypes = new Set<QuoteFieldType>([
   "radio",
@@ -297,7 +312,27 @@ function isMissingPreferredLanguageColumn(error: unknown): boolean {
   );
 }
 
-function readTemplateFieldOverrides(formData: FormData): Json {
+function buildFieldTranslations(input: {
+  helpText: string | undefined;
+  label: string | undefined;
+  language: SupportedLanguage;
+}): TemplateFieldSettings["translations"] | undefined {
+  if (!input.helpText && !input.label) {
+    return undefined;
+  }
+
+  return {
+    [input.language]: {
+      ...(input.helpText ? { helpText: input.helpText } : {}),
+      ...(input.label ? { label: input.label } : {}),
+    },
+  };
+}
+
+function readTemplateFieldOverrides(
+  formData: FormData,
+  language: SupportedLanguage,
+): Json {
   const templateFieldKeys = formData
     .getAll("templateFieldKeys")
     .filter((value): value is string => typeof value === "string");
@@ -332,16 +367,23 @@ function readTemplateFieldOverrides(formData: FormData): Json {
       const sortOrder = readFieldSortOrder(
         readOptionalFormValue(formData, `fieldSort:${fieldKey}`),
       );
+      const customLabel = isCustomLabel || isCustomField ? label : undefined;
+      const customHelpText =
+        isCustomHelpText || (isCustomField && helpText) ? helpText : undefined;
+      const translations = buildFieldTranslations({
+        helpText: customHelpText,
+        label: customLabel,
+        language,
+      });
       const fieldSettings = {
         ...(isCustomField ? { fieldType } : {}),
         isHidden: formData.get(`fieldHidden:${fieldKey}`) === "on",
         isRequired: formData.get(`fieldRequired:${fieldKey}`) === "on",
-        ...(isCustomLabel || isCustomField ? { label } : {}),
-        ...(isCustomHelpText || (isCustomField && helpText)
-          ? { helpText }
-          : {}),
+        ...(customLabel ? { label: customLabel } : {}),
+        ...(customHelpText ? { helpText: customHelpText } : {}),
         ...(options ? { options } : {}),
         ...(sortOrder !== undefined ? { sortOrder } : {}),
+        ...(translations ? { translations } : {}),
       };
 
       return [fieldKey, fieldSettings];
@@ -389,6 +431,11 @@ function readTemplateFieldOverrides(formData: FormData): Json {
     );
 
     const helpText = readOptionalFormValue(formData, `newFieldHelp:${slot}`);
+    const translations = buildFieldTranslations({
+      helpText,
+      label,
+      language,
+    });
     customFields[fieldKey] = {
       fieldType,
       isHidden: formData.get(`newFieldVisible:${slot}`) !== "on",
@@ -397,6 +444,7 @@ function readTemplateFieldOverrides(formData: FormData): Json {
       ...(helpText ? { helpText } : {}),
       ...(options ? { options } : {}),
       ...(sortOrder !== undefined ? { sortOrder } : {}),
+      ...(translations ? { translations } : {}),
     };
     usedKeys.add(fieldKey);
   }
@@ -444,7 +492,7 @@ export async function saveBusinessConfigurationAction(
         value: readOptionalFormValue(formData, "consentNotice"),
       }),
       faqs,
-      fieldOverrides: readTemplateFieldOverrides(formData),
+      fieldOverrides: readTemplateFieldOverrides(formData, preferredLanguage),
       primaryColor: readRequiredFormValue(formData, "primaryColor"),
       privacyMode: readPrivacyMode(
         readRequiredFormValue(formData, "privacyMode"),

@@ -9,8 +9,9 @@
  * - supabase/migrations/0002_business_template_configuration.sql
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-05-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Added bilingual custom quote-field override parsing, merge helpers, and localized field resolution.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-05: Created Phase 3 business configuration repository.
  * - 2026-05-05: Added onboarding task reads and sync support.
@@ -23,6 +24,11 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { localizeDefaultQuoteField } from "@/lib/i18n/bizpilot-copy";
+import {
+  readSupportedLanguage,
+  supportedLanguages,
+  type SupportedLanguage,
+} from "@/lib/i18n/language";
 import type { Database, Json } from "@/types/database";
 
 export type BusinessBrandingRecord =
@@ -69,7 +75,16 @@ export type BusinessConfigurationRecord = Readonly<{
   templateSettings: BusinessTemplateSettingsRecord | null;
 }>;
 
-type TemplateFieldOverride = Readonly<{
+export type TemplateFieldTranslation = Readonly<{
+  helpText?: string;
+  label?: string;
+}>;
+
+export type TemplateFieldTranslations = Readonly<
+  Partial<Record<SupportedLanguage, TemplateFieldTranslation>>
+>;
+
+export type TemplateFieldOverride = Readonly<{
   fieldType?: QuoteFieldType;
   helpText?: string;
   isHidden?: boolean;
@@ -77,14 +92,15 @@ type TemplateFieldOverride = Readonly<{
   label?: string;
   options?: Json;
   sortOrder?: number;
+  translations?: TemplateFieldTranslations;
 }>;
 
-type CustomTemplateFieldOverride = TemplateFieldOverride & Readonly<{
+export type CustomTemplateFieldOverride = TemplateFieldOverride & Readonly<{
   fieldType: QuoteFieldType;
   label: string;
 }>;
 
-type TemplateFieldOverrides = Readonly<{
+export type TemplateFieldOverrides = Readonly<{
   customFields?: Record<string, CustomTemplateFieldOverride>;
   disabledFields?: string[];
   fields?: Record<string, TemplateFieldOverride>;
@@ -141,10 +157,54 @@ function readFieldType(value: Json | undefined): QuoteFieldType | undefined {
     : undefined;
 }
 
+function cleanTranslationText(value: string | undefined): string | undefined {
+  const trimmed = value?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed : undefined;
+}
+
+function readTemplateFieldTranslation(
+  value: Json | undefined,
+): TemplateFieldTranslation | undefined {
+  if (!isRecord(value)) {
+    return undefined;
+  }
+
+  const helpText = cleanTranslationText(
+    typeof value.helpText === "string" ? value.helpText : undefined,
+  );
+  const label = cleanTranslationText(
+    typeof value.label === "string" ? value.label : undefined,
+  );
+
+  return helpText || label ? { ...(helpText ? { helpText } : {}), ...(label ? { label } : {}) } : undefined;
+}
+
+function readTemplateFieldTranslations(
+  value: Json | undefined,
+): TemplateFieldTranslations | undefined {
+  if (!isRecord(value)) {
+    return undefined;
+  }
+
+  const translations: Partial<Record<SupportedLanguage, TemplateFieldTranslation>> =
+    {};
+
+  for (const language of supportedLanguages) {
+    const translation = readTemplateFieldTranslation(value[language]);
+
+    if (translation) {
+      translations[language] = translation;
+    }
+  }
+
+  return Object.keys(translations).length > 0 ? translations : undefined;
+}
+
 function readTemplateFieldOverride(
   value: Record<string, Json>,
 ): TemplateFieldOverride {
   const fieldType = readFieldType(value.fieldType);
+  const translations = readTemplateFieldTranslations(value.translations);
 
   return {
     ...(fieldType ? { fieldType } : {}),
@@ -162,10 +222,11 @@ function readTemplateFieldOverride(
     ...(typeof value.sortOrder === "number"
       ? { sortOrder: value.sortOrder }
       : {}),
+    ...(translations ? { translations } : {}),
   };
 }
 
-function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides {
+export function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides {
   if (!isRecord(value)) {
     return {};
   }
@@ -223,6 +284,213 @@ function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides {
   };
 }
 
+function serializeTemplateFieldTranslation(
+  translation: TemplateFieldTranslation,
+): Record<string, Json> {
+  return {
+    ...(translation.helpText ? { helpText: translation.helpText } : {}),
+    ...(translation.label ? { label: translation.label } : {}),
+  };
+}
+
+function serializeTemplateFieldTranslations(
+  translations: TemplateFieldTranslations | undefined,
+): Record<string, Json> | undefined {
+  if (!translations) {
+    return undefined;
+  }
+
+  const serializedTranslations: Record<string, Json> = {};
+
+  for (const language of supportedLanguages) {
+    const translation = translations[language];
+
+    if (!translation) {
+      continue;
+    }
+
+    const serialized = serializeTemplateFieldTranslation(translation);
+
+    if (Object.keys(serialized).length > 0) {
+      serializedTranslations[language] = serialized;
+    }
+  }
+
+  return Object.keys(serializedTranslations).length > 0
+    ? serializedTranslations
+    : undefined;
+}
+
+function serializeTemplateFieldOverride(
+  override: TemplateFieldOverride,
+): Record<string, Json> {
+  const translations = serializeTemplateFieldTranslations(override.translations);
+
+  return {
+    ...(override.fieldType ? { fieldType: override.fieldType } : {}),
+    ...(override.helpText !== undefined ? { helpText: override.helpText } : {}),
+    ...(override.isHidden !== undefined ? { isHidden: override.isHidden } : {}),
+    ...(override.isRequired !== undefined
+      ? { isRequired: override.isRequired }
+      : {}),
+    ...(override.label !== undefined ? { label: override.label } : {}),
+    ...(override.options !== undefined ? { options: override.options } : {}),
+    ...(override.sortOrder !== undefined
+      ? { sortOrder: override.sortOrder }
+      : {}),
+    ...(translations ? { translations } : {}),
+  };
+}
+
+export function serializeTemplateFieldOverrides(
+  overrides: TemplateFieldOverrides,
+): Json {
+  return {
+    ...(overrides.customFields
+      ? {
+          customFields: Object.fromEntries(
+            Object.entries(overrides.customFields).map(([fieldKey, override]) => [
+              fieldKey,
+              serializeTemplateFieldOverride(override),
+            ]),
+          ),
+        }
+      : {}),
+    ...(overrides.disabledFields ? { disabledFields: overrides.disabledFields } : {}),
+    ...(overrides.fields
+      ? {
+          fields: Object.fromEntries(
+            Object.entries(overrides.fields).map(([fieldKey, override]) => [
+              fieldKey,
+              serializeTemplateFieldOverride(override),
+            ]),
+          ),
+        }
+      : {}),
+    ...(overrides.labels ? { labels: overrides.labels } : {}),
+    ...(overrides.optionalFields ? { optionalFields: overrides.optionalFields } : {}),
+    ...(overrides.requiredFields ? { requiredFields: overrides.requiredFields } : {}),
+  };
+}
+
+function mergeTemplateFieldTranslations(input: {
+  currentLanguage: SupportedLanguage;
+  existing: TemplateFieldTranslations | undefined;
+  incoming: TemplateFieldTranslations | undefined;
+}): TemplateFieldTranslations | undefined {
+  const merged: Partial<Record<SupportedLanguage, TemplateFieldTranslation>> = {};
+
+  for (const language of supportedLanguages) {
+    if (language === input.currentLanguage) {
+      const currentTranslation = input.incoming?.[language];
+      if (currentTranslation) {
+        merged[language] = currentTranslation;
+      }
+      continue;
+    }
+
+    const preservedTranslation =
+      input.incoming?.[language] ?? input.existing?.[language];
+
+    if (preservedTranslation) {
+      merged[language] = preservedTranslation;
+    }
+  }
+
+  return Object.keys(merged).length > 0 ? merged : undefined;
+}
+
+function mergeTemplateFieldOverride<T extends TemplateFieldOverride>(input: {
+  currentLanguage: SupportedLanguage;
+  existing: T | undefined;
+  incoming: T;
+}): T {
+  const translations = mergeTemplateFieldTranslations({
+    currentLanguage: input.currentLanguage,
+    existing: input.existing?.translations,
+    incoming: input.incoming.translations,
+  });
+
+  return {
+    ...input.incoming,
+    ...(translations ? { translations } : {}),
+  } as T;
+}
+
+export function mergeTemplateFieldOverridesForLanguage(input: {
+  currentLanguage: SupportedLanguage;
+  existing: Json | TemplateFieldOverrides;
+  incoming: Json | TemplateFieldOverrides;
+}): Json {
+  const existing = readTemplateFieldOverrides(input.existing as Json);
+  const incoming = readTemplateFieldOverrides(input.incoming as Json);
+
+  const fields = Object.fromEntries(
+    Object.entries(incoming.fields ?? {}).map(([fieldKey, override]) => [
+      fieldKey,
+      mergeTemplateFieldOverride({
+        currentLanguage: input.currentLanguage,
+        existing: existing.fields?.[fieldKey],
+        incoming: override,
+      }),
+    ]),
+  );
+  const customFields = Object.fromEntries(
+    Object.entries(incoming.customFields ?? {}).map(([fieldKey, override]) => [
+      fieldKey,
+      mergeTemplateFieldOverride({
+        currentLanguage: input.currentLanguage,
+        existing: existing.customFields?.[fieldKey],
+        incoming: override,
+      }),
+    ]),
+  );
+
+  return serializeTemplateFieldOverrides({
+    ...incoming,
+    customFields,
+    fields,
+  });
+}
+
+export function resolveLocalizedTemplateFieldCopy(input: {
+  fieldKey: string;
+  helpText: string | null;
+  label: string;
+  language: unknown;
+  translations: TemplateFieldTranslations | undefined;
+}): { helpText: string | null; label: string } {
+  const language = readSupportedLanguage(input.language);
+  const localizedTranslation = input.translations?.[language];
+  const label = localizedTranslation?.label ?? input.label;
+  const helpText = localizedTranslation?.helpText ?? input.helpText;
+
+  return localizeDefaultQuoteField({
+    fieldKey: input.fieldKey,
+    helpText,
+    label,
+    language,
+  });
+}
+
+export async function getBusinessTemplateFieldOverrides(input: {
+  businessId: string;
+  supabase: SupabaseClient<Database>;
+  templateId: string;
+}): Promise<TemplateFieldOverrides> {
+  const { data: templateSettings, error: templateSettingsError } =
+    await input.supabase
+      .from("business_template_settings")
+      .select("field_overrides")
+      .eq("business_id", input.businessId)
+      .eq("template_id", input.templateId)
+      .maybeSingle();
+
+  await throwIfError(templateSettingsError);
+
+  return readTemplateFieldOverrides(templateSettings?.field_overrides ?? {});
+}
+
 export async function getCleaningTemplate(input: {
   businessId: string;
   preferredLanguage?: Database["public"]["Tables"]["businesses"]["Row"]["preferred_language"];
@@ -248,19 +516,11 @@ export async function getCleaningTemplate(input: {
 
   await throwIfError(fieldsError);
 
-  const { data: templateSettings, error: templateSettingsError } =
-    await input.supabase
-      .from("business_template_settings")
-      .select("field_overrides")
-      .eq("business_id", input.businessId)
-      .eq("template_id", template.id)
-      .maybeSingle();
-
-  await throwIfError(templateSettingsError);
-
-  const overrides = readTemplateFieldOverrides(
-    templateSettings?.field_overrides ?? {},
-  );
+  const overrides = await getBusinessTemplateFieldOverrides({
+    businessId: input.businessId,
+    supabase: input.supabase,
+    templateId: template.id,
+  });
   const mergedFields = (fields ?? [])
     .map((field): CleaningTemplateFieldRecord => {
       const fieldOverride = overrides.fields?.[field.field_key];
@@ -280,11 +540,12 @@ export async function getCleaningTemplate(input: {
 
       const label = fieldOverride?.label ?? legacyLabel ?? field.label;
       const helpText = fieldOverride?.helpText ?? field.help_text;
-      const localized = localizeDefaultQuoteField({
+      const localized = resolveLocalizedTemplateFieldCopy({
         fieldKey: field.field_key,
         helpText,
         label,
         language: input.preferredLanguage,
+        translations: fieldOverride?.translations,
       });
 
       return {
@@ -300,23 +561,33 @@ export async function getCleaningTemplate(input: {
       };
     });
   const customFields = Object.entries(overrides.customFields ?? {}).map(
-    ([fieldKey, field]): CleaningTemplateFieldRecord => ({
-      created_at: template.created_at,
-      field_key: fieldKey,
-      field_type: field.fieldType,
-      help_text: field.helpText ?? null,
-      id: `${template.id}:${fieldKey}`,
-      is_active: true,
-      is_custom: true,
-      is_hidden: field.isHidden ?? false,
-      is_required: field.isRequired ?? false,
-      label: field.label,
-      options: field.options ?? [],
-      sort_order: field.sortOrder ?? 500,
-      template_field_id: null,
-      template_id: template.id,
-      updated_at: template.updated_at,
-    }),
+    ([fieldKey, field]): CleaningTemplateFieldRecord => {
+      const localized = resolveLocalizedTemplateFieldCopy({
+        fieldKey,
+        helpText: field.helpText ?? null,
+        label: field.label,
+        language: input.preferredLanguage,
+        translations: field.translations,
+      });
+
+      return {
+        created_at: template.created_at,
+        field_key: fieldKey,
+        field_type: field.fieldType,
+        help_text: localized.helpText,
+        id: `${template.id}:${fieldKey}`,
+        is_active: true,
+        is_custom: true,
+        is_hidden: field.isHidden ?? false,
+        is_required: field.isRequired ?? false,
+        label: localized.label,
+        options: field.options ?? [],
+        sort_order: field.sortOrder ?? 500,
+        template_field_id: null,
+        template_id: template.id,
+        updated_at: template.updated_at,
+      };
+    },
   );
   const allFields = [...mergedFields, ...customFields]
     .sort((left, right) => left.sort_order - right.sort_order);

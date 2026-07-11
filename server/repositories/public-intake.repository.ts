@@ -10,8 +10,9 @@
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Added bilingual custom-field override resolution for public quote reads when route language differs from workspace default.
  * - 2026-07-04: Localized default public quote fields from the active route language instead of workspace default only.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-06: Created Phase 4 public intake repository.
@@ -23,7 +24,13 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 import { localizeDefaultQuoteField } from "@/lib/i18n/bizpilot-copy";
-import type { CleaningTemplateFieldRecord } from "@/server/repositories/business-configuration.repository";
+import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
+import {
+  getBusinessTemplateFieldOverrides,
+  resolveLocalizedTemplateFieldCopy,
+  type CleaningTemplateFieldRecord,
+  type TemplateFieldOverrides,
+} from "@/server/repositories/business-configuration.repository";
 import type { Database, Json } from "@/types/database";
 
 export type IntakeFormRecord =
@@ -69,6 +76,27 @@ async function throwIfError(error: { message: string } | null): Promise<void> {
 function cleanOptionalText(value: string | undefined): string | null {
   const trimmed = value?.trim();
   return trimmed && trimmed.length > 0 ? trimmed : null;
+}
+
+async function readLocalizedPublicFieldOverrides(input: {
+  businessId: string;
+  preferredLanguage: PublicLinkVariantRecord["preferred_language"];
+  requestedLanguage?: unknown;
+  templateId: string | null;
+}): Promise<TemplateFieldOverrides | null> {
+  if (!input.templateId || input.requestedLanguage === input.preferredLanguage) {
+    return null;
+  }
+
+  try {
+    return await getBusinessTemplateFieldOverrides({
+      businessId: input.businessId,
+      supabase: createSupabaseServiceRoleClient(),
+      templateId: input.templateId,
+    });
+  } catch {
+    return null;
+  }
 }
 
 export async function upsertPublicLinkVariant(input: {
@@ -228,6 +256,13 @@ export async function getPublicIntakePageBySlug(input: {
     return null;
   }
 
+  const overrides = await readLocalizedPublicFieldOverrides({
+    businessId: publicLink.business_id,
+    preferredLanguage: publicLink.preferred_language,
+    requestedLanguage: input.language,
+    templateId: form.data.template_id,
+  });
+
   const { data: fields, error: fieldsError } = await input.supabase
     .from("intake_form_fields")
     .select("*")
@@ -237,12 +272,22 @@ export async function getPublicIntakePageBySlug(input: {
 
   await throwIfError(fieldsError);
   const localizedFields = (fields ?? []).map((field) => {
-    const localized = localizeDefaultQuoteField({
+    const fieldOverride =
+      overrides?.fields?.[field.field_key] ?? overrides?.customFields?.[field.field_key];
+    const localized = fieldOverride
+      ? resolveLocalizedTemplateFieldCopy({
+          fieldKey: field.field_key,
+          helpText: fieldOverride.helpText ?? field.help_text,
+          label: fieldOverride.label ?? field.label,
+          language: input.language ?? publicLink.preferred_language,
+          translations: fieldOverride.translations,
+        })
+      : localizeDefaultQuoteField({
       fieldKey: field.field_key,
       helpText: field.help_text,
       label: field.label,
       language: input.language ?? publicLink.preferred_language,
-    });
+        });
 
     return {
       ...field,
