@@ -31,6 +31,7 @@
  * - 2026-07-05: Rewrote the homepage hero copy for the integrated product-scene redesign.
  * - 2026-07-05: Refocused homepage hero and preview copy on hot quote risk and owner-reviewed remedy.
  * - 2026-07-11: Strengthened the bilingual homepage hero around quote rescue, manual control, and missing details.
+ * - 2026-07-11: Refined the homepage hero around ready replies and clearer product-scene proof.
  * - 2026-07-11: Added localized quote-language switch labels for the public quote shell.
  * ============================================================
  */
@@ -1532,13 +1533,13 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "Join the founder pilot for cleaning businesses.",
     },
     hero: {
-      badge: "BizPilot AI - hot quote rescue",
+      badge: "Cleaning quote recovery",
       body:
-        "BizPilot turns scattered quote requests into one owner-controlled rescue path: urgency, missing details, and a reply draft you can review, copy, and send manually.",
+        "BizPilot gathers Google, phone, website, and social context, flags missing quote details, and prepares a draft you review, copy, and send manually.",
       bullets: [
-        "Catch at-risk quote requests",
-        "Collect missing details before quoting",
-        "Review, copy, and send manually",
+        "One lead view for scattered requests",
+        "Missing details before any quote",
+        "Review-ready reply, no auto-send",
       ],
       note: "Founder-led pilot. You copy and send. No auto-send or invented pricing.",
       primaryCta: "Join the pilot",
@@ -1546,19 +1547,19 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       secondaryCta: "See how it works",
       signals: [
         {
-          label: "Risk",
-          value: "47-minute wait",
+          label: "Sources",
+          value: "Google, call, social",
         },
         {
-          label: "Missing",
-          value: "Size, access, timing",
+          label: "Details",
+          value: "Size, access, time",
         },
         {
-          label: "Control",
-          value: "Review, copy, send",
+          label: "Reply",
+          value: "Review and copy",
         },
       ],
-      title: "Rescue cleaning quotes before customers move on.",
+      title: "Turn missed quote requests into ready replies.",
     },
     meta: {
       description:
@@ -1568,20 +1569,20 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     mockup: {
       boardLabel: "BizPilot hot quote rescue board",
       boardSafety: "Owner review first",
-      bizPilotActions: ["Square footage", "Appliances", "Access notes", "Preferred time"],
-      bizPilotBody: "BizPilot turns vague asks into the details you need.",
-      bizPilotTitle: "BizPilot found what's missing",
-      chaosBadge: "Likely to book with whoever replies first",
-      chaosHint: "Google, missed call, and Instagram context in one lead.",
-      chaosSubtitle: "Waiting 47 minutes",
-      chaosTitle: "Hot quote at risk",
-      clarityBadge: "Reply ready",
+      bizPilotActions: ["Home size", "Appliance interiors", "Access notes", "Preferred time"],
+      bizPilotBody: "Ask once for the quote facts that matter.",
+      bizPilotTitle: "Details BizPilot surfaces",
+      chaosBadge: "Customer may choose the first clear reply",
+      chaosHint: "Google search, missed call, and Instagram message connected.",
+      chaosSubtitle: "47-minute response gap",
+      chaosTitle: "Move-out quote is getting cold",
+      clarityBadge: "Owner-ready draft",
       claritySubtitle: "Owner review",
-      clarityTitle: "Reply ready for owner review",
+      clarityTitle: "Reply ready to review",
       copyButton: "Review & copy",
       draftBody:
-        "Hi Maria, thanks for reaching out. Could you confirm the square footage, appliances, access notes, and preferred time so I can prepare an accurate quote?",
-      draftTitle: "Draft ready to review",
+        "Hi Maria, thanks for reaching out. Could you confirm the home size, appliance interiors, access notes, and preferred time so I can prepare an accurate quote?",
+      draftTitle: "Ask the right questions once",
       leads: [
         {
           body: "Needs it before Friday",
@@ -3009,13 +3010,13 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "Rejoignez le projet pilote pour entreprises de nettoyage.",
     },
     hero: {
-      badge: "BizPilot AI - sauvetage de soumissions",
+      badge: "Récupération de soumissions",
       body:
-        "BizPilot transforme les demandes dispersées en un parcours sous votre contrôle: urgence, détails manquants et brouillon à valider, copier et envoyer manuellement.",
+        "BizPilot regroupe Google, téléphone, site web et réseaux sociaux, repère les détails manquants et prépare un brouillon à valider, copier et envoyer manuellement.",
       bullets: [
-        "Repérer les demandes à risque",
-        "Compléter les détails manquants",
-        "Valider, copier et envoyer manuellement",
+        "Vue unique des demandes dispersées",
+        "Détails manquants avant la soumission",
+        "Réponse à valider, aucun envoi auto",
       ],
       note:
         "Projet pilote guidé. Vous copiez et envoyez. Aucun envoi automatique ni prix inventé.",
@@ -3024,20 +3025,20 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       secondaryCta: "Voir le flux",
       signals: [
         {
-          label: "Risque",
-          value: "47 minutes d'attente",
+          label: "Sources",
+          value: "Google, appel, social",
         },
         {
-          label: "Manquant",
-          value: "Superficie, accès, moment",
+          label: "Détails",
+          value: "Taille, accès, moment",
         },
         {
-          label: "Contrôle",
-          value: "Valider, copier, envoyer",
+          label: "Réponse",
+          value: "Valider et copier",
         },
       ],
       title:
-        "Sauvez vos soumissions avant que le client parte.",
+        "Transformez les demandes manquées en réponses prêtes.",
     },
     meta: {
       description:
@@ -3047,20 +3048,20 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     mockup: {
       boardLabel: "Tableau BizPilot de sauvetage de soumission urgente",
       boardSafety: "Validation propriétaire",
-      bizPilotActions: ["Superficie", "Électroménagers", "Notes d'accès", "Moment souhaité"],
-      bizPilotBody: "La demande vague devient une prochaine réponse claire.",
-      bizPilotTitle: "BizPilot repère les détails manquants",
-      chaosBadge: "Le client peut réserver avec la première entreprise qui répond",
-      chaosHint: "Google, appel manqué et Instagram regroupés dans un prospect.",
-      chaosSubtitle: "47 minutes d'attente",
-      chaosTitle: "Soumission à risque",
-      clarityBadge: "Réponse prête",
+      bizPilotActions: ["Taille du logement", "Intérieur des électros", "Notes d'accès", "Moment souhaité"],
+      bizPilotBody: "Demandez une fois les faits utiles pour la soumission.",
+      bizPilotTitle: "Détails repérés par BizPilot",
+      chaosBadge: "Le client peut choisir la première réponse claire",
+      chaosHint: "Recherche Google, appel manqué et message Instagram reliés.",
+      chaosSubtitle: "47 minutes sans réponse",
+      chaosTitle: "La demande de déménagement refroidit",
+      clarityBadge: "Brouillon à valider",
       claritySubtitle: "Validation",
-      clarityTitle: "Réponse prête pour validation",
+      clarityTitle: "Réponse prête à valider",
       copyButton: "Réviser et copier",
       draftBody:
-        "Bonjour Maria, merci pour votre message. Pouvez-vous confirmer la superficie, les électroménagers, les notes d'accès et le moment souhaité afin que je prépare une soumission exacte?",
-      draftTitle: "Brouillon prêt à valider",
+        "Bonjour Maria, merci pour votre message. Pouvez-vous confirmer la taille du logement, l'intérieur des électros, les notes d'accès et le moment souhaité afin que je prépare une soumission exacte?",
+      draftTitle: "Poser les bonnes questions une fois",
       leads: [
         {
           body: "Besoin avant vendredi",

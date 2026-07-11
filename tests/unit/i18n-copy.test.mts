@@ -622,7 +622,7 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       frenchPublicCopy.home.hero.title,
-      "Sauvez vos soumissions avant que le client parte.",
+      "Transformez les demandes manquées en réponses prêtes.",
     );
     assert.ok(
       frenchPublicCopy.home.hero.title.length <= 70,
@@ -635,43 +635,43 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.hero.secondaryCta, "Voir le flux");
     assert.equal(
       frenchPublicCopy.home.hero.body,
-      "BizPilot transforme les demandes dispersées en un parcours sous votre contrôle: urgence, détails manquants et brouillon à valider, copier et envoyer manuellement.",
+      "BizPilot regroupe Google, téléphone, site web et réseaux sociaux, repère les détails manquants et prépare un brouillon à valider, copier et envoyer manuellement.",
     );
     assert.deepEqual(frenchPublicCopy.home.hero.bullets, [
-      "Repérer les demandes à risque",
-      "Compléter les détails manquants",
-      "Valider, copier et envoyer manuellement",
+      "Vue unique des demandes dispersées",
+      "Détails manquants avant la soumission",
+      "Réponse à valider, aucun envoi auto",
     ]);
     assert.equal(
       frenchPublicCopy.home.hero.note,
       "Projet pilote guidé. Vous copiez et envoyez. Aucun envoi automatique ni prix inventé.",
     );
-    assert.equal(frenchPublicCopy.home.mockup.chaosTitle, "Soumission à risque");
-    assert.equal(frenchPublicCopy.home.mockup.chaosSubtitle, "47 minutes d'attente");
-    assert.equal(frenchPublicCopy.home.mockup.bizPilotTitle, "BizPilot repère les détails manquants");
+    assert.equal(frenchPublicCopy.home.mockup.chaosTitle, "La demande de déménagement refroidit");
+    assert.equal(frenchPublicCopy.home.mockup.chaosSubtitle, "47 minutes sans réponse");
+    assert.equal(frenchPublicCopy.home.mockup.bizPilotTitle, "Détails repérés par BizPilot");
     assert.deepEqual(frenchPublicCopy.home.mockup.bizPilotActions, [
-      "Superficie",
-      "Électroménagers",
+      "Taille du logement",
+      "Intérieur des électros",
       "Notes d'accès",
       "Moment souhaité",
     ]);
-    assert.equal(frenchPublicCopy.home.mockup.clarityTitle, "Réponse prête pour validation");
+    assert.equal(frenchPublicCopy.home.mockup.clarityTitle, "Réponse prête à valider");
     assert.equal(frenchPublicCopy.home.mockup.claritySubtitle, "Validation");
-    assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon prêt à valider");
+    assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Poser les bonnes questions une fois");
     assert.equal(frenchPublicCopy.home.mockup.copyButton, "Réviser et copier");
     assert.equal(frenchPublicCopy.home.hero.proofLabel, "Parcours de sauvetage");
     assert.deepEqual(frenchPublicCopy.home.hero.signals, [
       {
-        label: "Risque",
-        value: "47 minutes d'attente",
+        label: "Sources",
+        value: "Google, appel, social",
       },
       {
-        label: "Manquant",
-        value: "Superficie, accès, moment",
+        label: "Détails",
+        value: "Taille, accès, moment",
       },
       {
-        label: "Contrôle",
-        value: "Valider, copier, envoyer",
+        label: "Réponse",
+        value: "Valider et copier",
       },
     ]);
     assert.equal(frenchPublicCopy.home.mockup.sources.length, 5);
@@ -697,7 +697,7 @@ describe("BizPilot language copy", () => {
 
     for (const englishPhrase of [
       "Stop losing cleaning quote requests to slow replies.",
-      "Turn missed quote requests into replies ready to send.",
+      "Turn missed quote requests into ready replies.",
       "Built for cleaning businesses first",
       "Cleaning quote recovery",
       "AI drafts reviewed by you",
@@ -947,47 +947,47 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       englishPublicCopy.home.hero.title,
-      "Rescue cleaning quotes before customers move on.",
+      "Turn missed quote requests into ready replies.",
     );
     assert.equal(
       englishPublicCopy.home.hero.body,
-      "BizPilot turns scattered quote requests into one owner-controlled rescue path: urgency, missing details, and a reply draft you can review, copy, and send manually.",
+      "BizPilot gathers Google, phone, website, and social context, flags missing quote details, and prepares a draft you review, copy, and send manually.",
     );
     assert.deepEqual(englishPublicCopy.home.hero.bullets, [
-      "Catch at-risk quote requests",
-      "Collect missing details before quoting",
-      "Review, copy, and send manually",
+      "One lead view for scattered requests",
+      "Missing details before any quote",
+      "Review-ready reply, no auto-send",
     ]);
     assert.equal(
       englishPublicCopy.home.hero.note,
       "Founder-led pilot. You copy and send. No auto-send or invented pricing.",
     );
-    assert.equal(englishPublicCopy.home.mockup.chaosTitle, "Hot quote at risk");
-    assert.equal(englishPublicCopy.home.mockup.chaosSubtitle, "Waiting 47 minutes");
-    assert.equal(englishPublicCopy.home.mockup.bizPilotTitle, "BizPilot found what's missing");
+    assert.equal(englishPublicCopy.home.mockup.chaosTitle, "Move-out quote is getting cold");
+    assert.equal(englishPublicCopy.home.mockup.chaosSubtitle, "47-minute response gap");
+    assert.equal(englishPublicCopy.home.mockup.bizPilotTitle, "Details BizPilot surfaces");
     assert.deepEqual(englishPublicCopy.home.mockup.bizPilotActions, [
-      "Square footage",
-      "Appliances",
+      "Home size",
+      "Appliance interiors",
       "Access notes",
       "Preferred time",
     ]);
-    assert.equal(englishPublicCopy.home.mockup.clarityTitle, "Reply ready for owner review");
+    assert.equal(englishPublicCopy.home.mockup.clarityTitle, "Reply ready to review");
     assert.equal(englishPublicCopy.home.mockup.claritySubtitle, "Owner review");
-    assert.equal(englishPublicCopy.home.mockup.draftTitle, "Draft ready to review");
+    assert.equal(englishPublicCopy.home.mockup.draftTitle, "Ask the right questions once");
     assert.equal(englishPublicCopy.home.mockup.copyButton, "Review & copy");
     assert.equal(englishPublicCopy.home.hero.proofLabel, "Quote rescue path");
     assert.deepEqual(englishPublicCopy.home.hero.signals, [
       {
-        label: "Risk",
-        value: "47-minute wait",
+        label: "Sources",
+        value: "Google, call, social",
       },
       {
-        label: "Missing",
-        value: "Size, access, timing",
+        label: "Details",
+        value: "Size, access, time",
       },
       {
-        label: "Control",
-        value: "Review, copy, send",
+        label: "Reply",
+        value: "Review and copy",
       },
     ]);
     assert.equal(englishPublicCopy.home.mockup.sources.length, 5);

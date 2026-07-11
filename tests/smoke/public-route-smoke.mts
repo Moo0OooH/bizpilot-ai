@@ -44,10 +44,10 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 const smokeTargets: readonly SmokeTarget[] = [
   {
     expectedText: [
-      "Rescue cleaning quotes before customers move on.",
+      "Turn missed quote requests into ready replies.",
       "Join the pilot",
-      "47-minute wait",
-      "Hot quote at risk",
+      "47-minute response gap",
+      "Move-out quote is getting cold",
       "Review &amp; copy",
     ],
     path: "/",

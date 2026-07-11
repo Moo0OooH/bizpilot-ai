@@ -41,6 +41,17 @@ Additional 2026 market scan on 2026-07-11:
 - Dynamic Yield, Website personalization strategy and best practices:
   https://www.dynamicyield.com/lesson/web-personalization/
 
+Continuation reference check on 2026-07-11:
+
+- Nielsen Norman Group, How Long Do Users Stay on Web Pages:
+  https://www.nngroup.com/articles/how-long-do-users-stay-on-web-pages/
+- Google Search Central, Creating helpful, reliable, people-first content:
+  https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+- web.dev, Largest Contentful Paint:
+  https://web.dev/articles/lcp
+- W3C WAI, Understanding SC 1.4.11 Non-text Contrast:
+  https://www.w3.org/WAI/WCAG21/Understanding/non-text-contrast.html
+
 Directional takeaway: current SaaS/startup guidance continues to favor a
 specific audience/pain/outcome hero, a real product visual above the fold,
 proof or trust close to the CTA, mobile-first clarity, and restrained dynamic
@@ -102,6 +113,25 @@ Follow-up gaps closed in the continuation pass:
   speed pages should reinforce one manual-first story instead of competing
   messages.
 
+## Homepage Hero Continuation Pass
+
+Applied on 2026-07-11:
+
+- Replaced the abstract right-side illustration/product visual with one
+  product-board narrative: scattered source context, missing details, and a
+  review/copy draft.
+- Shortened the EN/fr-CA hero promise so the value proposition is clear inside
+  the first viewport and avoids stale owner-reviewed wording on public copy.
+- Kept the promise people-first and concrete: Google, phone, website, social
+  context; missing quote details; owner-reviewed manual copy/send.
+- Avoided adding a large bitmap hero image so the above-the-fold LCP candidate
+  remains text/product UI rather than a heavy decorative asset.
+- Reworked mobile into a compact three-step rescue strip; desktop keeps the
+  fuller product proof board.
+- Browser QA on the dev target verified no horizontal overflow, no old
+  `homepage-cleaning-visual`/`homepage-intelligence-visual` DOM, and next
+  section hints in EN/fr-CA desktop and mobile viewports.
+
 ## Acceptance Notes
 
 Implementation should update source headers for materially edited code files,
@@ -137,6 +167,23 @@ Commands completed on 2026-07-11:
   pass, 25 routes.
 - `BIZPILOT_SMOKE_BASE_URL=http://127.0.0.1:3002 pnpm smoke:ui-matrix` - pass,
   0 failures.
+- `git diff --check` - pass.
+
+## Homepage Hero Continuation Validation Run
+
+Local production target: `http://127.0.0.1:3008`
+
+Commands completed on 2026-07-11:
+
+- `node --test tests/unit/i18n-copy.test.mts tests/unit/public-visual-stability-source.test.mts` - pass, 45/45.
+- `pnpm lint` - pass.
+- `pnpm typecheck` - pass.
+- `pnpm test:unit` - pass, 217/217.
+- `pnpm build` - initially failed on admin-only type wiring while checking the production tree: first a transient `FounderAdminNewsroom` `copy` prop issue, then the existing founder-admin dictionary additions needed matching `DashboardAdminCopy` fields and the work-queue filters needed `userPriorityGroups` built before render. The final rerun passed with 28 static pages generated.
+- `BIZPILOT_SMOKE_BASE_URL=http://127.0.0.1:3008 pnpm smoke:public` - pass, 19/19 routes.
+- `BIZPILOT_SMOKE_BASE_URL=http://127.0.0.1:3008 pnpm smoke:responsive` - pass, 25 routes.
+- `BIZPILOT_SMOKE_BASE_URL=http://127.0.0.1:3008 pnpm smoke:ui-matrix` - pass, 0 failures.
+- Browser QA on `http://127.0.0.1:3055` verified EN/fr-CA desktop and 390px mobile folds, no horizontal overflow, no old abstract hero visual DOM, and no console errors.
 - `git diff --check` - pass.
 
 Browser visual QA:

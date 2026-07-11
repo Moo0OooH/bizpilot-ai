@@ -34,6 +34,7 @@
  * - 2026-07-05: Added a route-aware next-step panel below the founder-pilot CTA.
  * - 2026-07-05: Refocused the hero and second section around a hot-lead risk-to-remedy story.
  * - 2026-07-11: Replaced the abstract cleaning illustration with a clearer premium product intelligence panel.
+ * - 2026-07-11: Rebuilt the homepage hero mockup as a source-to-details-to-reply rescue board.
  * ============================================================
  */
 
@@ -234,30 +235,32 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
           </span>
         </div>
 
-        <div className="homepage-risk-heading">
-          <span className="homepage-risk-icon" aria-hidden>
-            <MarketingIcon name="warning" />
-          </span>
-          <div className="min-w-0">
-            <p className="homepage-panel-heading-text">{copy.chaosTitle}</p>
-            <p className="homepage-panel-subtitle">{copy.chaosHint}</p>
-          </div>
-          <span className="homepage-product-safety">
-            <MarketingIcon name="shield" />
-            {copy.boardSafety}
-          </span>
-        </div>
-
-        <article className="homepage-lead-card" aria-label={activeLead?.title ?? copy.chaosTitle}>
-          <span className="homepage-lead-avatar" aria-hidden>
-            MA
-          </span>
-          <div className="min-w-0">
-            <div className="homepage-lead-title-row">
-              <p>{activeLead?.title}</p>
-              <span>{copy.messages[0]}</span>
+        <div className="homepage-rescue-flow">
+          <article
+            className="homepage-lead-card homepage-rescue-step homepage-rescue-step--risk"
+            aria-label={activeLead?.title ?? copy.chaosTitle}
+          >
+            <div className="homepage-risk-heading homepage-rescue-step-head">
+              <span className="homepage-rescue-index" aria-hidden>
+                01
+              </span>
+              <div className="min-w-0">
+                <p className="homepage-panel-heading-text">{copy.chaosTitle}</p>
+                <p className="homepage-panel-subtitle">{copy.chaosHint}</p>
+              </div>
             </div>
-            <p className="homepage-lead-meta">{activeLead?.body}</p>
+            <div className="homepage-lead-summary">
+              <span className="homepage-lead-avatar" aria-hidden>
+                MA
+              </span>
+              <div className="min-w-0">
+                <div className="homepage-lead-title-row">
+                  <p>{activeLead?.title}</p>
+                  <span>{copy.messages[0]}</span>
+                </div>
+                <p className="homepage-lead-meta">{activeLead?.body}</p>
+              </div>
+            </div>
             <div className="homepage-channel-strip" aria-label={copy.chaosHint}>
               {visibleSources.map((source) => (
                 <span className="homepage-channel-pill" key={source}>
@@ -270,13 +273,21 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
               <MarketingIcon name="warning" />
               {copy.chaosBadge}
             </p>
-          </div>
-        </article>
+          </article>
 
-        <div className="homepage-remedy-grid">
-          <section className="homepage-missing-card" aria-label={copy.bizPilotTitle}>
-            <p className="homepage-clarity-badge">{copy.bizPilotTitle}</p>
-            <p className="homepage-draft-title">{copy.bizPilotBody}</p>
+          <section
+            className="homepage-missing-card homepage-rescue-step homepage-rescue-step--details"
+            aria-label={copy.bizPilotTitle}
+          >
+            <div className="homepage-rescue-step-head">
+              <span className="homepage-rescue-index" aria-hidden>
+                02
+              </span>
+              <div className="min-w-0">
+                <p className="homepage-clarity-badge">{copy.bizPilotTitle}</p>
+                <p className="homepage-draft-title">{copy.bizPilotBody}</p>
+              </div>
+            </div>
             <div className="homepage-missing-list">
               {missingDetails.map((detail) => (
                 <p key={detail}>
@@ -287,50 +298,26 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
             </div>
           </section>
 
-          <div className="homepage-cleaning-visual homepage-intelligence-visual" aria-hidden="true">
-            <div className="homepage-intelligence-header">
-              <span>{copy.bizPilotTitle}</span>
-              <strong>{copy.boardSafety}</strong>
-            </div>
-            <div className="homepage-intelligence-meter">
-              <span className="homepage-intelligence-meter-fill" />
-            </div>
-            <div className="homepage-intelligence-grid">
-              <span>
-                <strong>{copy.chaosSubtitle}</strong>
-                <em>{copy.chaosTitle}</em>
+          <section
+            className="homepage-owner-draft homepage-rescue-step homepage-rescue-step--reply"
+            aria-label={copy.clarityTitle}
+          >
+            <div className="homepage-rescue-step-head">
+              <span className="homepage-rescue-index" aria-hidden>
+                03
               </span>
-              <span>
-                <strong>{missingDetails.length}</strong>
-                <em>{missingDetails[0]}</em>
-              </span>
-              <span>
-                <strong>{copy.copyButton}</strong>
-                <em>{copy.clarityBadge}</em>
-              </span>
+              <div className="min-w-0">
+                <p className="homepage-clarity-badge">{copy.clarityBadge}</p>
+                <p className="homepage-draft-title">{copy.draftTitle}</p>
+              </div>
             </div>
-            <div className="homepage-intelligence-path">
-              <i />
-              <i />
-              <i />
-            </div>
-          </div>
-        </div>
-
-        <section className="homepage-owner-draft" aria-label={copy.clarityTitle}>
-          <div className="homepage-draft-icon" aria-hidden>
-            <MarketingIcon name="message" />
-          </div>
-          <div className="min-w-0">
-            <p className="homepage-clarity-badge">{copy.clarityBadge}</p>
-            <p className="homepage-draft-title">{copy.draftTitle}</p>
             <p className="homepage-draft-body">{copy.draftBody}</p>
-          </div>
-          <span className="homepage-draft-action">
-            <MarketingIcon name="copy" />
-            {copy.copyButton}
-          </span>
-        </section>
+            <span className="homepage-draft-action">
+              <MarketingIcon name="copy" />
+              {copy.copyButton}
+            </span>
+          </section>
+        </div>
       </div>
     </div>
   );

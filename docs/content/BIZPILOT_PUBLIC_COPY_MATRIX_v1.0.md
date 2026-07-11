@@ -67,23 +67,20 @@ Each row uses this meaning:
 
 | ID | Route | Role | Canonical EN | Intent | Approved fr-CA | Prohibited Claims | Target | Line Budget | Wrap | A11y/Full Label |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| home.hero.eyebrow | / | eyebrow | Built for cleaning businesses first | Cleaning-first positioning. | Pour les entreprises de nettoyage, d'abord. | multi-industry active | EN <= 40; FR <= 48 | 1 line >= 768; max 2 mobile | Yes on mobile | Cleaning businesses are the first target market. |
-| home.hero.h1 | / | hero heading | Stop losing cleaning quote requests to slow replies. | Slow replies cost quote opportunities. | Ne perdez plus de soumissions faute de réponse rapide. | guaranteed revenue | EN <= 55; FR <= 58 | max 3 lines at 1440/1920; max 4 at 1280/1366/mobile | Yes | Main page heading. |
-| home.hero.body | / | hero paragraph | Capture quote requests, organize leads, and prepare replies for owner review — without auto-send. | Explain product loop and owner control. | Centralisez les demandes, organisez les prospects et préparez des réponses à valider — sans envoi automatique. | auto-send, autonomous AI | EN <= 100; FR <= 115 | max 3 lines >= 1280; max 4 at 1024 | Yes | Product supports capture, organization, draft prep, owner review, manual send. |
+| home.hero.badge | / | eyebrow | Cleaning quote recovery | Cleaning-first quote recovery positioning. | Récupération de soumissions | multi-industry active | EN <= 32; FR <= 34 | 1 line >= 768; max 2 mobile | Yes on mobile | Cleaning quote recovery is the first target market. |
+| home.hero.h1 | / | hero heading | Turn missed quote requests into ready replies. | Missed requests become review-ready replies. | Transformez les demandes manquées en réponses prêtes. | guaranteed revenue | EN <= 45; FR <= 58 | max 3 lines at 1440/1920; max 4 at 1280/1366/mobile | Yes | Main page heading. |
+| home.hero.body | / | hero paragraph | BizPilot gathers Google, phone, website, and social context, flags missing quote details, and prepares a draft you review, copy, and send manually. | Explain source gathering, missing details, draft prep, owner review, and manual send. | BizPilot regroupe Google, téléphone, site web et réseaux sociaux, repère les détails manquants et prépare un brouillon à valider, copier et envoyer manuellement. | auto-send, autonomous AI | EN <= 150; FR <= 170 | max 4 lines >= 1280; max 5 mobile | Yes | Product supports scattered-source context, missing-detail detection, owner review, manual copy/send. |
 | home.hero.cta.primary | / | CTA | Join founder pilot | Start founder-pilot conversion. | Rejoindre le pilote | paid launch | <= 20 | 1 line all viewports | No | Join the BizPilot founder pilot. |
-| home.hero.cta.secondary | / | CTA | Watch demo | Open workflow demo. | Voir la démo | live automation | <= 16 | 1 line all viewports | No | Watch the manual lead recovery demo. |
-| home.hero.badge.no-auto | / | status badge | No auto-send | Manual-control guardrail. | Aucun envoi automatique | automatic messaging | EN <= 14; FR <= 24 | 1 line preferred; max 2 mobile | Yes mobile | BizPilot does not send customer messages automatically. |
-| home.hero.badge.ai | / | status badge | AI drafts reviewed by you | AI is assistive and owner-reviewed. | Brouillons IA validés par vous | autonomous AI | EN <= 28; FR <= 32 | 1 line >= 768; max 2 mobile | Yes | AI drafts require owner validation. |
-| home.hero.badge.manual | / | status badge | Manual copy and send | Owner sends externally. | Copie et envoi manuels | in-app send automation | EN <= 22; FR <= 25 | 1 line >= 768; max 2 mobile | Yes | Owner copies and sends through their own channel. |
-| home.mockup.title | / | status/card title | New quote request | Show realistic incoming request. | Nouvelle demande | booked job | <= 20 | 1 line | No | New customer quote request. |
-| home.mockup.status | / | status badge | Needs reply | Request waits for owner response. | À répondre | SLA guarantee | <= 14 | 1 line nowrap | No | This quote request needs an owner reply. |
-| home.mockup.service.label | / | field label | Service | Field label. | Service | none | <= 10 | 1 line | No | Requested cleaning service. |
-| home.mockup.property.label | / | field label | Property | Field label. | Propriété | none | <= 10 | 1 line | No | Property details. |
-| home.mockup.timing.label | / | field label | Timing | Field label. | Moment | none | <= 10 | 1 line | No | Requested timing. |
-| home.mockup.status.label | / | field label | Status | Field label. | Statut | none | <= 10 | 1 line | No | Lead status. |
-| home.mockup.draft.title | / | card title | Suggested reply | Introduce draft without overclaim. | Brouillon suggéré | AI sends automatically | EN <= 18; FR <= 20 | 1 line | No | AI-assisted draft for owner review. |
-| home.mockup.draft.tag | / | status badge | AI drafts. You send. | Owner remains sender. | L'IA prépare. Vous envoyez. | auto-send | EN <= 22; FR <= 30 | 1 line desktop; max 2 mobile | Yes mobile | AI prepares the draft; the owner sends manually. |
-| home.mockup.copy | / | button | Copy reply | Manual copy action. | Copier la réponse | sent confirmation | <= 18 | 1 line | No | Copy the reply; it is not sent automatically. |
+| home.hero.cta.secondary | / | CTA | See how it works | Open workflow demo. | Voir le flux | live automation | <= 18 | 1 line all viewports | No | See the manual lead recovery flow. |
+| home.hero.signal.sources | / | proof tile | Sources / Google, call, social | Show scattered source capture. | Sources / Google, appel, social | automatic messaging | compact | 1-2 lines | Yes mobile | BizPilot gathers source context for owner review. |
+| home.hero.signal.details | / | proof tile | Details / Size, access, time | Show missing-detail detection. | Détails / Taille, accès, moment | invented prices | compact | 1-2 lines | Yes mobile | BizPilot flags missing details before quoting. |
+| home.hero.signal.reply | / | proof tile | Reply / Review and copy | Owner remains sender. | Réponse / Valider et copier | in-app send automation | compact | 1-2 lines | Yes mobile | Owner reviews, copies, and sends manually. |
+| home.mockup.risk.title | / | product-board panel | Move-out quote is getting cold | Show realistic quote risk without fake metric claims. | La demande de déménagement refroidit | booked job, guaranteed revenue | EN <= 36; FR <= 46 | max 2 desktop; 1 line in mobile strip | Yes | At-risk move-out cleaning quote request. |
+| home.mockup.risk.time | / | product-board badge | 47-minute response gap | Show urgency as product-scene context. | 47 minutes sans réponse | SLA guarantee | EN <= 24; FR <= 26 | 1 line | No | Response gap in the product scene. |
+| home.mockup.details.title | / | product-board panel | Details BizPilot surfaces | Introduce missing-detail panel. | Détails repérés par BizPilot | automatic quote | EN <= 28; FR <= 32 | 1-2 lines | Yes | Missing details surfaced before the owner replies. |
+| home.mockup.details.items | / | product-board chips | Home size; appliance interiors; access notes; preferred time | Specific quote facts needed before reply. | Taille du logement; intérieur des électros; notes d'accès; moment souhaité | invented details | compact | chips wrap; no horizontal overflow | Yes | Missing quote details to ask once. |
+| home.mockup.draft.title | / | product-board panel | Ask the right questions once | Introduce draft without overclaim. | Poser les bonnes questions une fois | AI sends automatically | EN <= 32; FR <= 42 | max 2 desktop; 1 line in mobile strip | Yes | Draft asks for missing facts; owner reviews before sending. |
+| home.mockup.copy | / | button | Review & copy | Manual copy action. | Réviser et copier | sent confirmation | <= 18 | 1 line | No | Review and copy the reply; it is not sent automatically. |
 | home.problem.title | / | section title | Your next customer may already be waiting. | Urgency without guarantee. | Votre prochain client attend peut-être déjà. | guaranteed jobs | EN <= 48; FR <= 52 | max 2 desktop; max 3 mobile | Yes | Problem section heading. |
 | home.problem.card.1 | / | card title/body | Messages get buried | Requests can be missed across channels. | Les messages se perdent | channel automation | title <= 28; body <= 90 | title max 2; body target 3 | Yes | Explain missed quote requests. |
 | home.problem.card.2 | / | card title/body | Replies take too long | Customers contact competitors. | Les réponses prennent trop de temps | guaranteed conversion | title <= 28; body <= 90 | title max 2; body target 3 | Yes | Explain slow response risk. |
@@ -229,16 +226,16 @@ after Phase L2. They supersede earlier literal or compact placeholder wording.
 | ID | Applied fr-CA |
 | --- | --- |
 | shell.brand.tagline | Suivi des demandes pour entreprises de nettoyage |
-| home.hero.eyebrow | Pour les entreprises de nettoyage, d’abord. |
-| home.hero.h1 | Ne perdez plus de soumissions faute de réponse rapide. |
-| home.hero.body | Centralisez les demandes, organisez les prospects et préparez des réponses à valider — sans envoi automatique. |
-| home.hero.badge.no-auto | Aucun envoi automatique |
-| home.hero.badge.ai | Brouillons IA validés par vous |
-| home.hero.badge.manual | Copie et envoi manuels |
-| home.mockup.title | Nouvelle demande |
-| home.mockup.status | À répondre |
-| home.mockup.service.value | Nettoyage après déménagement |
-| home.mockup.draft.title | Brouillon suggéré |
+| home.hero.badge | Récupération de soumissions |
+| home.hero.h1 | Transformez les demandes manquées en réponses prêtes. |
+| home.hero.body | BizPilot regroupe Google, téléphone, site web et réseaux sociaux, repère les détails manquants et prépare un brouillon à valider, copier et envoyer manuellement. |
+| home.hero.signal.sources | Sources / Google, appel, social |
+| home.hero.signal.details | Détails / Taille, accès, moment |
+| home.hero.signal.reply | Réponse / Valider et copier |
+| home.mockup.risk.title | La demande de déménagement refroidit |
+| home.mockup.risk.time | 47 minutes sans réponse |
+| home.mockup.details.title | Détails repérés par BizPilot |
+| home.mockup.draft.title | Poser les bonnes questions une fois |
 | cleaning.service.move | Nettoyage avant/après déménagement |
 | cleaning.service.airbnb | Nettoyage entre séjours Airbnb |
 | demo.chapter.3 | L’IA prépare un brouillon à valider. |

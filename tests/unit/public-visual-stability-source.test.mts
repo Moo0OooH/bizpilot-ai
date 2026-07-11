@@ -373,9 +373,9 @@ describe("public visual stability source contracts", () => {
       "Homepage hero should no longer use the previous taller desktop title size.",
     );
     assert.equal(
-      globals.includes("font-size: clamp(2.2rem, 3.85vw, 3.45rem);"),
+      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 43rem);\n  font-size: 2.75rem;"),
       true,
-      "Homepage hero should keep a confident fluid title size in CSS.",
+      "Homepage hero should keep a confident fixed title size in CSS.",
     );
     assert.equal(
       globals.lastIndexOf(".homepage-product-scene {\n  position: relative;") >
@@ -384,10 +384,11 @@ describe("public visual stability source contracts", () => {
       "Homepage hero should render the product visual as a readable foreground board.",
     );
     assert.equal(globals.includes(".homepage-rescue-board"), true);
-    assert.equal(globals.includes(".homepage-risk-heading"), true);
-    assert.equal(globals.includes(".homepage-cleaning-visual"), true);
-    assert.equal(homepage.includes("homepage-intelligence-visual"), true);
-    assert.equal(globals.includes(".homepage-intelligence-grid"), true);
+    assert.equal(globals.includes(".homepage-rescue-flow"), true);
+    assert.equal(globals.includes(".homepage-rescue-step"), true);
+    assert.equal(globals.includes(".homepage-rescue-index"), true);
+    assert.equal(homepage.includes("homepage-intelligence-visual"), false);
+    assert.equal(homepage.includes("homepage-cleaning-visual"), false);
     for (const unclearVisualMarker of [
       "homepage-bottle",
       "homepage-towel",
@@ -405,9 +406,9 @@ describe("public visual stability source contracts", () => {
       "Short desktop viewports need reduced hero padding instead of smaller body text.",
     );
     assert.equal(
-      globals.includes(".homepage-cleaning-visual {\n    min-block-size: 6.5rem;"),
+      globals.includes(".homepage-rescue-board,\n  .homepage-rescue-flow {\n    gap: 0.56rem;"),
       true,
-      "Short desktop viewports need compact rescue-board illustration height.",
+      "Short desktop viewports need compact rescue-board spacing.",
     );
     assert.equal(
       homepage.includes("copy.sources.slice(0, 3)") &&
@@ -424,10 +425,10 @@ describe("public visual stability source contracts", () => {
       "Homepage source channels should render as compact branded channel pills.",
     );
     assert.equal(
-      globals.includes(".homepage-cleaning-visual,\n  .homepage-risk-heading .homepage-product-safety {\n    display: none;") &&
+      !globals.includes(".homepage-missing-list p:nth-child(n + 3) {\n    display: none;") &&
         globals.includes(".homepage-product-scene {\n    display: block;"),
       true,
-      "Tiny mobile homepage hero should simplify secondary board details without hiding the board.",
+      "Tiny mobile homepage hero should keep the board and missing-detail content visible.",
     );
     assert.equal(homepage.includes("bp-button-row homepage-hero-actions"), true);
     assert.equal(homepage.includes("min-[390px]:flex-row"), true);

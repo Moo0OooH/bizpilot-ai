@@ -43,7 +43,7 @@ const TIMEOUT_MS = 15_000;
 
 const routes: readonly RouteContract[] = [
   {
-    h1: "Rescue cleaning quotes before customers move on.",
+    h1: "Turn missed quote requests into ready replies.",
     maxOccurrences: [
       {
         max: 5,
@@ -57,10 +57,10 @@ const routes: readonly RouteContract[] = [
       "homepage-use-case-grid",
       "homepage-hero-proof-rail",
       "homepage-product-scene",
-      "47-minute wait",
-      "Hot quote at risk",
-      "Reply ready for owner review",
-      "Review, copy, send",
+      "47-minute response gap",
+      "Move-out quote is getting cold",
+      "Reply ready to review",
+      "Review and copy",
       "Review &amp; copy",
       "Founder-led pilot. You copy and send. No auto-send or invented pricing.",
       "No auto-send",
@@ -69,7 +69,7 @@ const routes: readonly RouteContract[] = [
     path: "/",
   },
   {
-    h1: "Sauvez vos soumissions avant que le client parte.",
+    h1: "Transformez les demandes manquées en réponses prêtes.",
     maxOccurrences: [
       {
         max: 5,
@@ -83,10 +83,10 @@ const routes: readonly RouteContract[] = [
       "homepage-use-case-grid",
       "homepage-hero-proof-rail",
       "homepage-product-scene",
-      "47 minutes d&#x27;attente",
-      "Soumission à risque",
-      "Réponse prête pour validation",
-      "Valider, copier, envoyer",
+      "47 minutes sans réponse",
+      "La demande de déménagement refroidit",
+      "Réponse prête à valider",
+      "Valider et copier",
       "Réviser et copier",
       "Projet pilote guidé. Vous copiez et envoyez. Aucun envoi automatique ni prix inventé.",
       "Aucun envoi automatique",
