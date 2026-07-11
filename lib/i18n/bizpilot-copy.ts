@@ -11,7 +11,7 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-07-05: Added safe Google login copy for existing owner accounts.
  * - 2026-07-05: Added Quote Setup readiness command copy for first open setup actions.
@@ -24,6 +24,7 @@
  * - 2026-07-05: Standardized owner overview utility CTA copy for action-first dashboard hierarchy.
  * - 2026-07-05: Added accessible lead queue pagination labels and page-button copy.
  * - 2026-07-05: Expanded quote-field legacy default localization and dashboard form placeholders.
+ * - 2026-07-11: Localized remaining owner/public configuration labels, summaries, and quote language switch accessibility copy.
  * - 2026-07-04: Added Settings feature guide details and lead queue pagination copy.
  * - 2026-07-04: Tightened dashboard copy around manual draft review, copied replies, and unwired roadmap fields.
  * - 2026-07-04: Added local dashboard display preference copy for density, guide, and insight controls.
@@ -234,6 +235,7 @@ type DashboardConfigurationCopy = Readonly<{
     colorsConfigured: string;
     description: string;
     logoAndColorsConfigured: string;
+    logoPreviewAlt: string;
     logoPreview: string;
     logoUrl: string;
     primaryColor: string;
@@ -297,11 +299,16 @@ type DashboardConfigurationCopy = Readonly<{
     help: string;
     label: string;
     placeholder: string;
+    summary: (count: number) => string;
     title: string;
   }>;
   headerDescription: (businessName: string) => string;
   noBusinessDescription: string;
   notifications: Readonly<{
+    channels: Readonly<{
+      sms: string;
+      whatsapp: string;
+    }>;
     description: string;
     emailActive: string;
     futureDisabled: string;
@@ -385,6 +392,7 @@ type DashboardConfigurationCopy = Readonly<{
     workspaceReadiness: string;
   }>;
   tabs: Readonly<{
+    ariaLabel: string;
     ai: string;
     basics: string;
     branding: string;
@@ -1128,6 +1136,7 @@ export type BizPilotCopy = Readonly<{
   quotePage: Readonly<{
     badge: string;
     description: string;
+    languageMenuLabel: string;
     subtitle: string;
     unavailableBody: string;
     unavailableCta: string;
@@ -1383,6 +1392,7 @@ const englishCopy: BizPilotCopy = {
         description:
           "Public-facing visual settings for the cleaning quote experience.",
         logoAndColorsConfigured: "Logo and colors configured",
+        logoPreviewAlt: "Logo preview",
         logoPreview: "Logo preview",
         logoUrl: "Logo URL",
         primaryColor: "Primary color",
@@ -1513,12 +1523,17 @@ const englishCopy: BizPilotCopy = {
         help: "One FAQ per line. Use: Question? | Answer",
         label: "FAQ",
         placeholder: "Do you bring supplies? | Yes, we bring all standard supplies.",
+        summary: (count) => `${count} FAQs`,
         title: "AI instructions and FAQ",
       },
       headerDescription: (businessName) =>
         `Configure the cleaning quote experience, public link, consent, and owner-ready lead foundation for ${businessName}.`,
       noBusinessDescription: "No tenant business is available for this user yet.",
       notifications: {
+        channels: {
+          sms: "SMS",
+          whatsapp: "WhatsApp",
+        },
         description:
           "First pilot is manual-only: owners check the dashboard. Owner notification email, SMS, and WhatsApp stay disabled before validation.",
         emailActive: "Manual dashboard check only",
@@ -1611,6 +1626,7 @@ const englishCopy: BizPilotCopy = {
         workspaceReadiness: "Workspace readiness",
       },
       tabs: {
+        ariaLabel: "Quote setup sections",
         ai: "AI Instructions",
         basics: "Public Basics",
         branding: "Branding",
@@ -3021,6 +3037,7 @@ const englishCopy: BizPilotCopy = {
     badge: "Cleaning quote",
     description:
       "A short quote form. The business reviews every request and replies directly - nothing is sent automatically.",
+    languageMenuLabel: "Quote language",
     subtitle: "Quote request",
     unavailableBody:
       "This quote page is not accepting requests right now. Check that the link is complete, or contact the business directly if you need help with an existing request.",
@@ -3284,6 +3301,7 @@ const frenchCopy: BizPilotCopy = {
         description:
           "Réglages visuels publics pour l'expérience de soumission de nettoyage.",
         logoAndColorsConfigured: "Logo et couleurs configurés",
+        logoPreviewAlt: "Aperçu du logo",
         logoPreview: "Aperçu du logo",
         logoUrl: "URL du logo",
         primaryColor: "Couleur principale",
@@ -3418,6 +3436,7 @@ const frenchCopy: BizPilotCopy = {
         help: "Une FAQ par ligne. Format: Question? | Réponse",
         label: "FAQ",
         placeholder: "Apportez-vous les fournitures? | Oui, nous apportons les fournitures standards.",
+        summary: (count) => `${count} FAQ`,
         title: "Instructions IA et FAQ",
       },
       headerDescription: (businessName) =>
@@ -3425,6 +3444,10 @@ const frenchCopy: BizPilotCopy = {
       noBusinessDescription:
         "Aucune entreprise locataire n'est disponible pour cet utilisateur.",
       notifications: {
+        channels: {
+          sms: "SMS",
+          whatsapp: "WhatsApp",
+        },
         description:
           "Le premier pilote est manuel: vous vérifiez le tableau de bord. Les notifications courriel, SMS et WhatsApp restent désactivées avant validation.",
         emailActive: "Verification manuelle du tableau de bord",
@@ -3520,6 +3543,7 @@ const frenchCopy: BizPilotCopy = {
         workspaceReadiness: "Préparation de l'espace",
       },
       tabs: {
+        ariaLabel: "Sections de configuration",
         ai: "Instructions IA",
         basics: "Bases publiques",
         branding: "Marque",
@@ -4952,6 +4976,7 @@ const frenchCopy: BizPilotCopy = {
     badge: "Soumission de nettoyage",
     description:
       "Un court formulaire de soumission. L'entreprise révise chaque demande et répond directement - rien n'est envoyé automatiquement.",
+    languageMenuLabel: "Langue de la soumission",
     subtitle: "Demande de soumission",
     unavailableBody:
       "Cette page de soumission n'accepte pas de demandes en ce moment. Vérifiez que le lien est complet ou contactez l'entreprise directement si vous avez besoin d'aide pour une demande existante.",

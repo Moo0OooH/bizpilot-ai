@@ -11,9 +11,10 @@
  * - server/actions/business-configuration.actions.ts
  * Author: MoOoH
  * Created: 2026-05-16
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-07-05: Added pressed state and panel controls to Quote Setup section tabs.
+ * - 2026-07-11: Localized the Quote Setup tab-list aria label through dashboard copy.
  * - 2026-05-16: Created mounted tab panels so the parent form receives every required input on submit.
  * - 2026-05-18: Finalized sticky anchor tabs with theme-safe styling and mobile overflow.
  * - 2026-05-19: Switched to single-visible-panel tabs matching the approved index.html. Hidden panels remain mounted via Tailwind `hidden` (display:none) so their inputs continue to participate in FormData on submit — required by the consentNotice P0 fix.
@@ -25,20 +26,24 @@ import { Children, isValidElement } from "react";
 import { useState } from "react";
 
 type Section = Readonly<{ id: string; label: string }>;
-type Props = Readonly<{ children: ReactNode; sections: Section[] }>;
+type Props = Readonly<{
+  ariaLabel: string;
+  children: ReactNode;
+  sections: Section[];
+}>;
 
 function panelId(panel: ReactElement): string | undefined {
   return (panel as ReactElement<{ id?: string }>).props.id;
 }
 
-export function ConfigurationTabs({ children, sections }: Props) {
+export function ConfigurationTabs({ ariaLabel, children, sections }: Props) {
   const panels = Children.toArray(children).filter(isValidElement);
   const [activeSection, setActiveSection] = useState(sections[0]?.id ?? "");
 
   return (
     <div className="grid min-w-0 gap-3 xl:grid-cols-[13rem_minmax(0,1fr)] xl:items-start">
       <nav
-        aria-label="Quote setup sections"
+        aria-label={ariaLabel}
         className="sticky top-[70px] z-10 min-w-0 max-w-full overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)]/95 p-1.5 shadow-sm backdrop-blur xl:p-2"
       >
         <div className="flex min-w-0 gap-1 overflow-x-auto pb-0.5 xl:grid xl:overflow-visible xl:pb-0">

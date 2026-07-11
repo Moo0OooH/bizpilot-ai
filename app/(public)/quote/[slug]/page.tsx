@@ -12,7 +12,7 @@
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-05-06: Created public quote page with dynamic form rendering.
  * - 2026-05-19: Replaced inline single-page form with grouped quote sections for higher completion rate per UX research.
@@ -23,6 +23,7 @@
  * - 2026-06-27: Guarded route error copy against raw provider or database messages.
  * - 2026-07-04: Preserved safe quote-link attribution across source URL capture and language switches.
  * - 2026-07-04: Loaded default quote-field labels from the active quote language to prevent EN/FR mixing.
+ * - 2026-07-11: Localized the quote language-switch aria label through the public copy dictionary.
  * ============================================================
  */
 
@@ -134,7 +135,7 @@ export default async function QuotePage({
               {page.publicLink.display_name}
             </p>
             <nav
-              aria-label="Quote language"
+              aria-label={copy.languageMenuLabel}
               className="inline-flex w-fit rounded-[12px] border p-1"
               style={{
                 backgroundColor: "var(--surface-elevated)",

@@ -10,10 +10,11 @@
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-19: Mapped unavailable quote state to shared semantic theme tokens.
  * - 2026-06-20: Aligned the unavailable quote shell action with shared primary and focus tokens.
+ * - 2026-07-11: Added a localized aria label to the unavailable quote language switcher.
  * ============================================================
  */
 
@@ -48,7 +49,12 @@ export function QuoteUnavailable({
             {copy.unavailableBody}
           </p>
           <div className="mt-5 flex justify-center">
-            <div className="inline-flex rounded-[12px] border p-1" style={{ backgroundColor: "var(--surface-elevated)", borderColor: "var(--border-default)" }}>
+            <div
+              aria-label={copy.languageMenuLabel}
+              className="inline-flex rounded-[12px] border p-1"
+              role="navigation"
+              style={{ backgroundColor: "var(--surface-elevated)", borderColor: "var(--border-default)" }}
+            >
               {supportedLanguages.map((option) => {
                 const selected = option === language;
 

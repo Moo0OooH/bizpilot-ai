@@ -10,7 +10,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
  * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
@@ -30,6 +30,8 @@
  * - 2026-07-04: Expanded FAQ with AI-search owner-intent questions.
  * - 2026-07-05: Rewrote the homepage hero copy for the integrated product-scene redesign.
  * - 2026-07-05: Refocused homepage hero and preview copy on hot quote risk and owner-reviewed remedy.
+ * - 2026-07-11: Strengthened the bilingual homepage hero around quote rescue, manual control, and missing details.
+ * - 2026-07-11: Added localized quote-language switch labels for the public quote shell.
  * ============================================================
  */
 
@@ -529,6 +531,7 @@ type AuthMetaCopy = Readonly<{
 
 type QuoteShellCopy = Readonly<{
   guardrail: string;
+  languageMenuLabel: string;
   meta: MetaCopy;
   subtitle: string;
   title: string;
@@ -1531,31 +1534,31 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "BizPilot AI - hot quote rescue",
       body:
-        "BizPilot shows the urgent request, the missing details, and a reply draft you can review and copy before the customer moves on.",
+        "BizPilot turns scattered quote requests into one owner-controlled rescue path: urgency, missing details, and a reply draft you can review, copy, and send manually.",
       bullets: [
-        "Spot hot quote requests",
-        "See what is missing",
-        "Review and copy the reply",
+        "Catch at-risk quote requests",
+        "Collect missing details before quoting",
+        "Review, copy, and send manually",
       ],
-      note: "Founder-led pilot. No auto-send. No invented pricing.",
+      note: "Founder-led pilot. You copy and send. No auto-send or invented pricing.",
       primaryCta: "Join the pilot",
-      proofLabel: "Hot quote rescue flow",
+      proofLabel: "Quote rescue path",
       secondaryCta: "See how it works",
       signals: [
         {
           label: "Risk",
-          value: "Waiting 47 minutes",
+          value: "47-minute wait",
         },
         {
           label: "Missing",
-          value: "Square footage, access",
+          value: "Size, access, timing",
         },
         {
-          label: "Ready",
-          value: "Draft for review",
+          label: "Control",
+          value: "Review, copy, send",
         },
       ],
-      title: "Stop losing hot cleaning quotes to slow replies.",
+      title: "Rescue cleaning quotes before customers move on.",
     },
     meta: {
       description:
@@ -1600,7 +1603,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     preview: {
       badges: ["No auto-send", "No made-up prices", "Owner copies and sends"],
       body:
-        "One clear snapshot shows what is at risk, what is missing, and what the owner can review next.",
+        "One clear snapshot shows the quote risk, the missing details, and the reply the owner can review next.",
       copyButton: "Review & copy",
       cta: "Watch full demo",
       draft: {
@@ -1622,7 +1625,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
         title: "At-risk quote",
       },
       steps: ["Spot the hot request", "Find missing details", "Review the reply"],
-      title: "See the quote risk and the next reply in one view.",
+      title: "See the risk, missing details, and reply in one view.",
     },
     problem: {
       body:
@@ -1916,6 +1919,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   quoteShell: {
     guardrail:
       "This form does not confirm booking or pricing. The business will review your request and reply.",
+    languageMenuLabel: "Quote language",
     meta: {
       description:
         "Submit a cleaning quote request. No booking or price is confirmed by the form.",
@@ -3007,15 +3011,16 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     hero: {
       badge: "BizPilot AI - sauvetage de soumissions",
       body:
-        "BizPilot montre la demande urgente, les détails manquants et un brouillon que vous pouvez valider et copier avant que le client passe à autre chose.",
+        "BizPilot transforme les demandes dispersées en un parcours sous votre contrôle: urgence, détails manquants et brouillon à valider, copier et envoyer manuellement.",
       bullets: [
-        "Repérer les demandes chaudes",
-        "Voir ce qui manque",
-        "Valider et copier la réponse",
+        "Repérer les demandes à risque",
+        "Compléter les détails manquants",
+        "Valider, copier et envoyer manuellement",
       ],
-      note: "Projet pilote guidé. Aucun envoi automatique. Aucun prix inventé.",
+      note:
+        "Projet pilote guidé. Vous copiez et envoyez. Aucun envoi automatique ni prix inventé.",
       primaryCta: "Rejoindre le pilote",
-      proofLabel: "Flux de sauvetage",
+      proofLabel: "Parcours de sauvetage",
       secondaryCta: "Voir le flux",
       signals: [
         {
@@ -3024,15 +3029,15 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         },
         {
           label: "Manquant",
-          value: "Superficie, accès",
+          value: "Superficie, accès, moment",
         },
         {
-          label: "Prêt",
-          value: "Brouillon à valider",
+          label: "Contrôle",
+          value: "Valider, copier, envoyer",
         },
       ],
       title:
-        "Ne laissez pas une soumission urgente attendre.",
+        "Sauvez vos soumissions avant que le client parte.",
     },
     meta: {
       description:
@@ -3081,7 +3086,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         "Vous copiez et envoyez",
       ],
       body:
-        "Une vue claire montre ce qui est à risque, ce qui manque et ce que vous pouvez valider ensuite.",
+        "Une vue claire montre le risque, les détails manquants et la réponse que vous pouvez valider ensuite.",
       copyButton: "Réviser et copier",
       cta: "Voir la démo complète",
       draft: {
@@ -3103,8 +3108,8 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
           "\"Maria a besoin d'un nettoyage après déménagement avant vendredi.\"",
         title: "Soumission à risque",
       },
-      steps: ["Repérer l'urgence", "Trouver les détails manquants", "Valider la réponse"],
-      title: "Voyez le risque et la prochaine réponse au même endroit.",
+      steps: ["Repérer le risque", "Trouver les détails manquants", "Valider la réponse"],
+      title: "Voyez le risque, les détails manquants et la réponse.",
     },
     problem: {
       body:
@@ -3404,6 +3409,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   quoteShell: {
     guardrail:
       "Ce formulaire ne confirme ni réservation ni prix. L'entreprise révisera votre demande et vous répondra.",
+    languageMenuLabel: "Langue de la soumission",
     meta: {
       description:
         "Envoyez une demande de soumission de nettoyage pour validation par l'entreprise. Ce formulaire ne confirme ni réservation ni prix.",

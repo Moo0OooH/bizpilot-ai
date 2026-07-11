@@ -10,7 +10,7 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-07-05: Added a compact Quote Setup readiness command strip for first open setup action scanability.
  * - 2026-07-05: Clamped Quote Setup readiness progress to a safe 0-100 display range.
@@ -31,6 +31,7 @@
  * - 2026-06-20: Replaced the no-business setup fallback with an svh-based shell-safe layout.
  * - 2026-06-27: Normalized Quote Setup source structure and Dashboard V3 token usage.
  * - 2026-07-04: Switched internal quote preview anchors to Next Link for faster dashboard navigation.
+ * - 2026-07-11: Localized remaining Quote Setup hardcoded labels, summaries, and fallback values.
  * ============================================================
  */
 
@@ -140,12 +141,13 @@ function ConfigurationPanel({
 }
 
 function LogoPreviewImage({
+  alt,
   className,
   logoUrl,
-}: Readonly<{ className: string; logoUrl: string }>) {
+}: Readonly<{ alt: string; className: string; logoUrl: string }>) {
   return (
     // eslint-disable-next-line @next/next/no-img-element -- Customer logo URLs are arbitrary HTTPS assets; Next Image remote allowlists would block pilot setup previews.
-    <img alt="Logo preview" className={className} src={logoUrl} />
+    <img alt={alt} className={className} src={logoUrl} />
   );
 }
 
@@ -306,6 +308,7 @@ export default async function DashboardPage({
           <section className="grid items-start gap-4 2xl:grid-cols-[minmax(0,1fr)_320px]">
             <div className="min-w-0">
               <ConfigurationTabs
+                ariaLabel={configurationTabs.ariaLabel}
                 sections={[
                   { id: "configuration-overview", label: configurationTabs.overview },
                   { id: "business-profile", label: configurationTabs.basics },
@@ -331,6 +334,7 @@ export default async function DashboardPage({
                     <div className="flex h-28 items-center justify-center overflow-hidden rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-surface)]">
                       {logoUrl ? (
                         <LogoPreviewImage
+                          alt={configCopy.branding.logoPreviewAlt}
                           className="h-full max-h-28 w-full object-contain p-4"
                           logoUrl={logoUrl}
                         />
@@ -614,6 +618,7 @@ export default async function DashboardPage({
                 >
                   {logoUrl ? (
                     <LogoPreviewImage
+                      alt={configCopy.branding.logoPreviewAlt}
                       className="h-full max-h-24 w-full object-contain p-3"
                       logoUrl={logoUrl}
                     />
@@ -666,7 +671,8 @@ export default async function DashboardPage({
                     className={inputClass}
                     defaultValue={
                       configuration.consentSettings?.privacy_contact_email ??
-                      "owner@example.com"
+                      user.email ??
+                      ""
                     }
                     disabled
                     type="email"
@@ -680,7 +686,7 @@ export default async function DashboardPage({
                   </select>
                 </label>
                 <label className={labelClass}>
-                  SMS
+                  {configCopy.notifications.channels.sms}
                   <input
                     className={inputClass}
                     defaultValue={configCopy.notifications.futureDisabled}
@@ -689,7 +695,7 @@ export default async function DashboardPage({
                   />
                 </label>
                 <label className={labelClass}>
-                  WhatsApp
+                  {configCopy.notifications.channels.whatsapp}
                   <input
                     className={inputClass}
                     defaultValue={configCopy.notifications.futureDisabled}
@@ -893,7 +899,7 @@ export default async function DashboardPage({
             <ConfigurationPanel
               description={configCopy.faq.description}
               id="faq"
-              summary={`${configuration.faqs.length} FAQs`}
+              summary={configCopy.faq.summary(configuration.faqs.length)}
               title={configCopy.faq.title}
             >
               <label className={labelClass}>
@@ -1073,6 +1079,7 @@ export default async function DashboardPage({
                 <div className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-surface-muted)]">
                   {logoUrl ? (
                     <LogoPreviewImage
+                      alt={configCopy.branding.logoPreviewAlt}
                       className="h-full max-h-24 w-full object-contain p-3"
                       logoUrl={logoUrl}
                     />
