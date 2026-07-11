@@ -12,6 +12,8 @@
  * Created: 2026-05-26
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Replaced stale admin panel literal guard with localized topbar copy guard.
+ * - 2026-07-11: Guarded founder health, activity, and user-directory localization hooks.
  * - 2026-07-11: Updated founder user-operations guards for localized overview and support panels.
  * - 2026-07-11: Updated business-detail guards for localized admin tile labels.
  * - 2026-07-11: Updated founder-admin guards for centralized bilingual shell and handoff copy.
@@ -93,7 +95,7 @@ describe("Founder admin source safety", () => {
     assert.equal(source.includes("SUPABASE_SERVICE_ROLE_KEY"), false);
     assert.equal(source.includes("qfqendrqimqvkoojpjao"), true);
     assert.equal(pageSource.includes("FounderProductionHealthPanel"), true);
-    assert.equal(pageSource.includes("Production health"), true);
+    assert.equal(pageSource.includes("copy.overview.productionHealthPanel"), true);
   });
 
   it("keeps founder user operations capability-gated", () => {
@@ -109,7 +111,8 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("copy.tabs.items.users.label"), true);
     assert.equal(pageSource.includes("copy.tabs.items.businesses.label"), true);
     assert.equal(pageSource.indexOf("copy.tabs.items.users.label") < pageSource.indexOf("copy.tabs.items.businesses.label"), true);
-    assert.equal(pageSource.includes('User directory'), true);
+    assert.equal(pageSource.includes("directoryCopy.title"), true);
+    assert.equal(pageSource.includes("directoryCopy.description"), true);
     assert.equal(pageSource.includes("overviewCopy.operatingRule.title"), true);
     assert.equal(
       pageSource.indexOf("copy.users.searchLabel") <
@@ -177,9 +180,11 @@ describe("Founder admin source safety", () => {
     for (const required of [
       "FounderHealthSection",
       "FounderActivitySection",
-      "Production Health",
-      "Admin Inbox",
-      "Activity Log",
+      "copy.overview.healthSection",
+      "copy.overview.activitySection",
+      "copy.overview.productionHealthPanel",
+      "copy.topbar.panelTitles.leads",
+      "directoryCopy.title",
       "copy.businesses.priorityWorkspace",
       "xl:top-[5.75rem]",
     ]) {

@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Added founder-admin overview and directory copy fields to match bilingual dictionary entries.
  * - 2026-07-11: Completed founder-admin detail copy shape for type-safe bilingual admin labels.
  * - 2026-07-11: Restored dashboard admin and founder handoff copy shape for production type checks.
  * - 2026-07-05: Added safe Google login copy for existing owner accounts.
@@ -1028,6 +1029,13 @@ type DashboardAdminCopy = Readonly<{
     productionHealthy: string;
   }>;
   overview: Readonly<{
+    activitySection: Readonly<{
+      badgeCount: (count: number) => string;
+      description: string;
+      eyebrow: string;
+      feedTitle: string;
+      title: string;
+    }>;
     activitySummary: Readonly<{
       byLabel: string;
       emptyState: string;
@@ -1037,6 +1045,14 @@ type DashboardAdminCopy = Readonly<{
       viewAll: string;
     }>;
     activityZeroState: string;
+    healthSection: Readonly<{
+      description: string;
+      eyebrow: string;
+      healthy: string;
+      needsAttention: string;
+      notice: string;
+      title: string;
+    }>;
     leadStatusLabels: Readonly<{
       awaitingReply: string;
       completed: string;
@@ -1090,6 +1106,47 @@ type DashboardAdminCopy = Readonly<{
       }>;
       description: string;
       eyebrow: string;
+      title: string;
+    }>;
+    productionHealthPanel: Readonly<{
+      actionLog: string;
+      authRest: string;
+      authSdk: string;
+      businesses: string;
+      deletionRequests: string;
+      diagnosticsUnavailable: string;
+      fail: string;
+      healthy: string;
+      keyProject: string;
+      keyProjectMatches: string;
+      keyProjectMismatch: string;
+      keyProjectNotEncoded: string;
+      members: string;
+      needsAttention: string;
+      noStatus: string;
+      ok: string;
+      productionHealth: string;
+      profiles: string;
+      quoteLinks: string;
+      runtimeDescription: string;
+      runtimeUnavailableDescription: string;
+      serviceCredentialIssuerRefLabel: string;
+      serviceCredentialIssuerRefMismatch: string;
+      serviceCredentialKinds: Readonly<{
+        jwt_anon: string;
+        jwt_other: string;
+        jwt_service_role: string;
+        missing: string;
+        supabase_publishable: string;
+        supabase_secret: string;
+        unknown: string;
+      }>;
+      serviceKey: string;
+      statusSummary: (sdkStatus: string, restStatus: string) => string;
+      supabaseProjectRefLabel: string;
+      supabaseTarget: string;
+      supabaseTargetCanonical: string;
+      supabaseTargetMismatch: string;
       title: string;
     }>;
     recentActionsPanel: Readonly<{
@@ -1180,6 +1237,30 @@ type DashboardAdminCopy = Readonly<{
       title: string;
     }>;
     details: string;
+    directory: Readonly<{
+      businessLabel: string;
+      confirmedBadge: string;
+      description: string;
+      founderBadge: string;
+      groupTitles: Readonly<{
+        accessStatus: string;
+        plan: string;
+        priority: string;
+      }>;
+      lastSignInLabel: string;
+      leadsLabel: string;
+      loadedCount: (count: number) => string;
+      pageSizeOption: (count: number) => string;
+      pageSummary: (page: number, totalPages: number) => string;
+      phoneLabel: string;
+      rangeSummary: (start: number, end: number, total: number) => string;
+      searchModeIndexed: string;
+      searchModePaged: string;
+      shownBadge: (count: number) => string;
+      title: string;
+      unconfirmedBadge: string;
+      userIdLabel: string;
+    }>;
     hiddenByFilters: string;
     lockedAccess: Readonly<{
       blocked: string;
@@ -2028,6 +2109,14 @@ const englishCopy: BizPilotCopy = {
         productionHealthy: "Production: healthy",
       },
       overview: {
+        activitySection: {
+          badgeCount: (count) => `${count} logged`,
+          description:
+            "Trace founder-admin writes after authorization. Use this as the review trail for support, cleanup, and access changes.",
+          eyebrow: "Founder Admin",
+          feedTitle: "Activity command feed",
+          title: "Activity Log",
+        },
         activitySummary: {
           byLabel: "By",
           emptyState: "No admin actions logged yet.",
@@ -2037,6 +2126,16 @@ const englishCopy: BizPilotCopy = {
           viewAll: "View all activities",
         },
         activityZeroState: "No admin actions logged yet.",
+        healthSection: {
+          description:
+            "Read-only production diagnostics for founder operations. Failed checks explain why admin counts can look empty or incomplete.",
+          eyebrow: "Founder Admin",
+          healthy: "Healthy",
+          needsAttention: "Needs attention",
+          notice:
+            "Founder data may be incomplete because one or more production runtime checks failed. Treat zero users or zero businesses as diagnostic until this panel is clean.",
+          title: "Production Health",
+        },
         leadStatusLabels: {
           awaitingReply: "Awaiting Reply",
           completed: "Completed",
@@ -2125,6 +2224,51 @@ const englishCopy: BizPilotCopy = {
             "Monitor users, workspaces, lead flow, readiness, health, and recent founder actions from one read-only command view.",
           eyebrow: "Founder Admin",
           title: "Admin Overview",
+        },
+        productionHealthPanel: {
+          actionLog: "Action log",
+          authRest: "Auth REST",
+          authSdk: "Auth SDK",
+          businesses: "Businesses",
+          deletionRequests: "Deletion requests",
+          diagnosticsUnavailable: "Founder runtime diagnostics are unavailable.",
+          fail: "Fail",
+          healthy: "Healthy",
+          keyProject: "Key project",
+          keyProjectMatches: "Matches",
+          keyProjectMismatch: "Mismatch",
+          keyProjectNotEncoded: "Not encoded",
+          members: "Members",
+          needsAttention: "Needs attention",
+          noStatus: "n/a",
+          ok: "OK",
+          productionHealth: "Production health",
+          profiles: "Profiles",
+          quoteLinks: "Quote links",
+          runtimeDescription:
+            "Runtime health could not be loaded without exposing internals.",
+          runtimeUnavailableDescription:
+            "Read-only runtime diagnostics for Supabase targets, auth reachability, and founder-admin data dependencies.",
+          serviceCredentialIssuerRefLabel: "Service credential issuer ref",
+          serviceCredentialIssuerRefMismatch:
+            "(does not match Supabase target)",
+          serviceCredentialKinds: {
+            jwt_anon: "JWT anon",
+            jwt_other: "JWT non-service",
+            jwt_service_role: "JWT service",
+            missing: "Missing",
+            supabase_publishable: "Publishable",
+            supabase_secret: "Secret",
+            unknown: "Unknown",
+          },
+          serviceKey: "Service key",
+          statusSummary: (sdkStatus, restStatus) =>
+            `Auth status: SDK ${sdkStatus} / REST ${restStatus}`,
+          supabaseProjectRefLabel: "Supabase project ref",
+          supabaseTarget: "Supabase target",
+          supabaseTargetCanonical: "Canonical",
+          supabaseTargetMismatch: "Mismatch",
+          title: "Production health",
         },
         recentActionsPanel: {
           description: "Service-role writes after founder authorization.",
@@ -2258,6 +2402,31 @@ const englishCopy: BizPilotCopy = {
           title: "Admin capability matrix",
         },
         details: "Details",
+        directory: {
+          businessLabel: "Business",
+          confirmedBadge: "Confirmed",
+          description:
+            "Search first, then expand one user for account, workspace, and gated support tools.",
+          founderBadge: "Founder",
+          groupTitles: {
+            accessStatus: "Access status",
+            plan: "Plan",
+            priority: "Priority",
+          },
+          lastSignInLabel: "Last sign-in",
+          leadsLabel: "Leads",
+          loadedCount: (count) => `${count} loaded`,
+          pageSizeOption: (count) => `${count} users`,
+          pageSummary: (page, totalPages) => `Page ${page} / ${totalPages}`,
+          phoneLabel: "Phone",
+          rangeSummary: (start, end, total) => `Showing ${start}-${end} of ${total}`,
+          searchModeIndexed: "Search indexed",
+          searchModePaged: "Paged",
+          shownBadge: (count) => `${count} shown`,
+          title: "User directory",
+          unconfirmedBadge: "Unconfirmed",
+          userIdLabel: "User ID",
+        },
         hiddenByFilters: "Some loaded users are hidden by access/auth filters.",
         lockedAccess: {
           blocked: "Blocked",
@@ -4586,6 +4755,14 @@ const frenchCopy: BizPilotCopy = {
         productionHealthy: "Production: saine",
       },
       overview: {
+        activitySection: {
+          badgeCount: (count) => `${count} consignes`,
+          description:
+            "Trace les ecritures fondateur/admin apres autorisation. Utilisez cette piste pour le support, le nettoyage et les changements d'acces.",
+          eyebrow: "Admin fondateur",
+          feedTitle: "Flux des commandes d'activite",
+          title: "Journal d'activite",
+        },
         activitySummary: {
           byLabel: "Par",
           emptyState: "Aucune action admin consignée.",
@@ -4595,6 +4772,16 @@ const frenchCopy: BizPilotCopy = {
           viewAll: "Voir toutes les activites",
         },
         activityZeroState: "Aucune action admin consignée.",
+        healthSection: {
+          description:
+            "Diagnostics production en lecture seule pour les operations fondateur. Les verifications en echec expliquent pourquoi les comptes admin peuvent sembler vides ou incomplets.",
+          eyebrow: "Admin fondateur",
+          healthy: "Saine",
+          needsAttention: "A verifier",
+          notice:
+            "Les donnees fondateur peuvent etre incompletes parce qu'une ou plusieurs verifications runtime de production ont echoue. Traitez zero utilisateur ou zero entreprise comme un signal de diagnostic tant que ce panneau n'est pas sain.",
+          title: "Sante production",
+        },
         leadStatusLabels: {
           awaitingReply: "En attente de reponse",
           completed: "Complete",
@@ -4683,6 +4870,51 @@ const frenchCopy: BizPilotCopy = {
             "Surveillez utilisateurs, espaces, flux de prospects, preparation, sante et actions recentes du fondateur depuis une vue de commande en lecture seule.",
           eyebrow: "Admin fondateur",
           title: "Apercu admin",
+        },
+        productionHealthPanel: {
+          actionLog: "Journal d'actions",
+          authRest: "Auth REST",
+          authSdk: "Auth SDK",
+          businesses: "Entreprises",
+          deletionRequests: "Demandes de suppression",
+          diagnosticsUnavailable: "Les diagnostics runtime fondateur sont indisponibles.",
+          fail: "Echec",
+          healthy: "Saine",
+          keyProject: "Projet de cle",
+          keyProjectMatches: "Correspond",
+          keyProjectMismatch: "Ecart",
+          keyProjectNotEncoded: "Non encode",
+          members: "Membres",
+          needsAttention: "A verifier",
+          noStatus: "s.o.",
+          ok: "OK",
+          productionHealth: "Sante production",
+          profiles: "Profils",
+          quoteLinks: "Liens publics",
+          runtimeDescription:
+            "La sante runtime n'a pas pu etre chargee sans exposer d'informations internes.",
+          runtimeUnavailableDescription:
+            "Diagnostics runtime en lecture seule pour les cibles Supabase, la disponibilite auth et les dependances de donnees admin fondateur.",
+          serviceCredentialIssuerRefLabel: "Ref emetteur du secret service",
+          serviceCredentialIssuerRefMismatch:
+            "(ne correspond pas a la cible Supabase)",
+          serviceCredentialKinds: {
+            jwt_anon: "JWT anon",
+            jwt_other: "JWT non service",
+            jwt_service_role: "JWT service",
+            missing: "Manquant",
+            supabase_publishable: "Publishable",
+            supabase_secret: "Secret",
+            unknown: "Inconnu",
+          },
+          serviceKey: "Cle service",
+          statusSummary: (sdkStatus, restStatus) =>
+            `Statut auth : SDK ${sdkStatus} / REST ${restStatus}`,
+          supabaseProjectRefLabel: "Ref projet Supabase",
+          supabaseTarget: "Cible Supabase",
+          supabaseTargetCanonical: "Canonique",
+          supabaseTargetMismatch: "Ecart",
+          title: "Sante production",
         },
         recentActionsPanel: {
           description: "Ecritures service-role apres autorisation fondateur.",
@@ -4818,6 +5050,31 @@ const frenchCopy: BizPilotCopy = {
           title: "Matrice des capacites admin",
         },
         details: "Détails",
+        directory: {
+          businessLabel: "Entreprise",
+          confirmedBadge: "Confirme",
+          description:
+            "Cherchez d'abord, puis ouvrez un seul utilisateur pour le compte, l'espace et les outils de support gardes.",
+          founderBadge: "Fondateur",
+          groupTitles: {
+            accessStatus: "Etat d'acces",
+            plan: "Forfait",
+            priority: "Priorite",
+          },
+          lastSignInLabel: "Derniere connexion",
+          leadsLabel: "Prospects",
+          loadedCount: (count) => `${count} charges`,
+          pageSizeOption: (count) => `${count} utilisateurs`,
+          pageSummary: (page, totalPages) => `Page ${page} / ${totalPages}`,
+          phoneLabel: "Telephone",
+          rangeSummary: (start, end, total) => `Affichage ${start}-${end} de ${total}`,
+          searchModeIndexed: "Recherche indexee",
+          searchModePaged: "Pagine",
+          shownBadge: (count) => `${count} affiches`,
+          title: "Repertoire utilisateurs",
+          unconfirmedBadge: "Non confirme",
+          userIdLabel: "ID utilisateur",
+        },
         hiddenByFilters:
           "Certains utilisateurs chargés sont masqués par les filtres d'accès/auth.",
         lockedAccess: {

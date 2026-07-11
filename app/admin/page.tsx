@@ -12,6 +12,8 @@
  * Created: 2026-05-22
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Built localized founder user-priority groups before rendering the work-queue filters.
+ * - 2026-07-11: Localized founder health, activity, and user-directory chrome through shared admin copy.
  * - 2026-07-11: Wired founder activity newsroom copy through the localized admin dictionary.
  * - 2026-07-11: Localized founder user-operations overview, gated access panels, and account-support copy.
  * - 2026-07-11: Localized founder business control-card warnings, audit helpers, and session-policy option labels.
@@ -141,20 +143,6 @@ type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
 type SessionTimeoutMode = FounderAdminBusiness["sessionTimeoutMode"];
 
-const planOptions: ReadonlyArray<{ label: string; value: PlanSlug }> = [
-  { label: "Founder Pilot", value: "founder_pilot" },
-  { label: "Starter", value: "starter" },
-  { label: "Pro", value: "pro" },
-  { label: "Paused", value: "paused" },
-];
-
-const statusOptions: ReadonlyArray<{ label: string; value: BusinessStatus }> = [
-  { label: "Onboarding", value: "onboarding" },
-  { label: "Active", value: "active" },
-  { label: "Suspended", value: "suspended" },
-  { label: "Cancelled", value: "cancelled" },
-];
-
 const adminUserPageSizeOptions = [10, 25, 50] as const;
 
 const planLabels: Record<PlanSlug, string> = {
@@ -199,62 +187,101 @@ type UserPriorityOption = Readonly<{
   value: string;
 }>;
 
-const followUpPriorityOptions: ReadonlyArray<UserPriorityOption> = [
-  {
-    description: "Access, auth, quote, and activity risks.",
-    label: "Needs attention",
-    value: "attention",
-  },
-  {
-    description: "Signed up but email is not confirmed.",
-    label: "Unconfirmed",
-    value: "unconfirmed",
-  },
-  {
-    description: "Auth accounts with no linked business.",
-    label: "No business",
-    value: "no_business",
-  },
-  {
-    description: "Suspended or cancelled business access.",
-    label: "Paused access",
-    value: "paused",
-  },
-  {
-    description: "Linked business has no active public quote link.",
-    label: "Quote off",
-    value: "quote_off",
-  },
-] as const;
+function buildUserPriorityGroups(
+  copy: AdminCopy,
+): ReadonlyArray<Readonly<{ options: ReadonlyArray<UserPriorityOption>; title: string }>> {
+  const directoryCopy = copy.users.directory;
+  const planLabels = copy.businesses.detail.planLabels;
 
-const planPriorityOptions: ReadonlyArray<UserPriorityOption> = planOptions.map(
-  (option) => ({
-    description: `Users attached to ${option.label} workspaces.`,
-    label: option.label,
-    value: `plan_${option.value}`,
-  }),
-);
+  const planPriorityOptions: ReadonlyArray<UserPriorityOption> = [
+    {
+      description: "Users attached to founder-pilot workspaces.",
+      label: planLabels.founder_pilot,
+      value: "plan_founder_pilot",
+    },
+    {
+      description: "Users attached to starter workspaces.",
+      label: planLabels.starter,
+      value: "plan_starter",
+    },
+    {
+      description: "Users attached to pro workspaces.",
+      label: planLabels.pro,
+      value: "plan_pro",
+    },
+    {
+      description: "Users attached to paused workspaces.",
+      label: planLabels.paused,
+      value: "plan_paused",
+    },
+  ];
 
-const accessPriorityOptions: ReadonlyArray<UserPriorityOption> = [
-  ...statusOptions.map((option) => ({
-    description: `${option.label} workspace access.`,
-    label: option.label,
-    value: `access_${option.value}`,
-  })),
-  {
-    description: "Auth accounts without a linked business.",
-    label: "No business",
-    value: "access_unlinked",
-  },
-];
+  const accessPriorityOptions: ReadonlyArray<UserPriorityOption> = [
+    {
+      description: "Active workspace access.",
+      label: copy.users.accessStatusOptions.active,
+      value: "access_active",
+    },
+    {
+      description: "Onboarding workspace access.",
+      label: copy.users.accessStatusOptions.onboarding,
+      value: "access_onboarding",
+    },
+    {
+      description: "Suspended workspace access.",
+      label: copy.users.accessStatusOptions.suspended,
+      value: "access_suspended",
+    },
+    {
+      description: "Cancelled workspace access.",
+      label: copy.users.accessStatusOptions.cancelled,
+      value: "access_cancelled",
+    },
+    {
+      description: "Auth accounts without a linked business.",
+      label: copy.users.accessStatusOptions.unlinked,
+      value: "access_unlinked",
+    },
+  ];
 
-const userPriorityGroups: ReadonlyArray<
-  Readonly<{ options: ReadonlyArray<UserPriorityOption>; title: string }>
-> = [
-  { options: followUpPriorityOptions, title: "Priority" },
-  { options: planPriorityOptions, title: "Plan" },
-  { options: accessPriorityOptions, title: "Access status" },
-];
+  return [
+    {
+      options: [
+        {
+          description: "Access, auth, quote, and activity risks.",
+          label: copy.overview.healthSection.needsAttention,
+          value: "attention",
+        },
+        {
+          description: "Signed up but email is not confirmed.",
+          label: directoryCopy.unconfirmedBadge,
+          value: "unconfirmed",
+        },
+        {
+          description: "Auth accounts with no linked business.",
+          label: copy.users.noBusinessLinked,
+          value: "no_business",
+        },
+        {
+          description: "Suspended or cancelled business access.",
+          label: copy.users.overview.metrics.pausedAccessLabel,
+          value: "paused",
+        },
+        {
+          description: "Linked business has no active public quote link.",
+          label: copy.users.quoteInactive,
+          value: "quote_off",
+        },
+      ],
+      title: directoryCopy.groupTitles.priority,
+    },
+    { options: planPriorityOptions, title: directoryCopy.groupTitles.plan },
+    {
+      options: accessPriorityOptions,
+      title: directoryCopy.groupTitles.accessStatus,
+    },
+  ];
+}
 
 const activityFilters: ReadonlyArray<{
   label: string;
@@ -928,31 +955,22 @@ function FounderAdminSafetyRail() {
   );
 }
 
-function healthCount(check: FounderProductionHealth["authAdmin"]): string {
+function healthCount(
+  copy: AdminCopy,
+  check: FounderProductionHealth["authAdmin"],
+): string {
   if (!check.ok) {
-    return check.status ? `HTTP ${check.status}` : "Unavailable";
+    return check.status ? `HTTP ${check.status}` : copy.overview.productionHealthPanel.fail;
   }
 
-  return check.count === null ? "OK" : String(check.count);
+  return check.count === null ? copy.overview.productionHealthPanel.ok : String(check.count);
 }
 
 function credentialKindLabel(
+  copy: AdminCopy,
   kind: FounderProductionHealth["serviceCredentialKind"],
 ): string {
-  const labels: Record<
-    FounderProductionHealth["serviceCredentialKind"],
-    string
-  > = {
-    jwt_anon: "JWT anon",
-    jwt_other: "JWT non-service",
-    jwt_service_role: "JWT service",
-    missing: "Missing",
-    supabase_publishable: "Publishable",
-    supabase_secret: "Secret",
-    unknown: "Unknown",
-  };
-
-  return labels[kind];
+  return copy.overview.productionHealthPanel.serviceCredentialKinds[kind];
 }
 
 function isServiceCredentialLikelyPrivileged(
@@ -965,46 +983,59 @@ function isServiceCredentialLikelyPrivileged(
 }
 
 function FounderProductionHealthPanel({
+  copy,
   health,
-}: Readonly<{ health: FounderProductionHealth | null }>) {
+}: Readonly<{ copy: AdminCopy; health: FounderProductionHealth | null }>) {
+  const healthCopy = copy.overview.productionHealthPanel;
+
   if (!health) {
     return (
       <DashboardCard className="p-4 sm:p-5" variant="priority">
         <SectionHeader
-          description="Runtime health could not be loaded without exposing internals."
-          title="Production health"
+          description={healthCopy.runtimeDescription}
+          title={healthCopy.title}
         />
         <AdminNotice tone="error">
-          Founder runtime diagnostics are unavailable.
+          {healthCopy.diagnosticsUnavailable}
         </AdminNotice>
       </DashboardCard>
     );
   }
 
   const checks = [
-    ["Supabase target", health.supabaseTargetMatchesCanonical ? "Canonical" : "Mismatch", health.supabaseTargetMatchesCanonical],
     [
-      "Service key",
-      credentialKindLabel(health.serviceCredentialKind),
+      healthCopy.supabaseTarget,
+      health.supabaseTargetMatchesCanonical
+        ? healthCopy.supabaseTargetCanonical
+        : healthCopy.supabaseTargetMismatch,
+      health.supabaseTargetMatchesCanonical,
+    ],
+    [
+      healthCopy.serviceKey,
+      credentialKindLabel(copy, health.serviceCredentialKind),
       isServiceCredentialLikelyPrivileged(health),
     ],
     [
-      "Key project",
+      healthCopy.keyProject,
       health.serviceCredentialMatchesSupabaseRef === false
-        ? "Mismatch"
+        ? healthCopy.keyProjectMismatch
         : health.serviceCredentialMatchesSupabaseRef === true
-          ? "Matches"
-          : "Not encoded",
+          ? healthCopy.keyProjectMatches
+          : healthCopy.keyProjectNotEncoded,
       health.serviceCredentialMatchesSupabaseRef !== false,
     ],
-    ["Auth SDK", healthCount(health.authAdmin), health.authAdmin.ok],
-    ["Auth REST", healthCount(health.authRest), health.authRest.ok],
-    ["Businesses", healthCount(health.businesses), health.businesses.ok],
-    ["Members", healthCount(health.businessMembers), health.businessMembers.ok],
-    ["Profiles", healthCount(health.profiles), health.profiles.ok],
-    ["Quote links", healthCount(health.publicLinks), health.publicLinks.ok],
-    ["Action log", healthCount(health.recentActions), health.recentActions.ok],
-    ["Deletion requests", healthCount(health.deletionRequests), health.deletionRequests.ok],
+    [healthCopy.authSdk, healthCount(copy, health.authAdmin), health.authAdmin.ok],
+    [healthCopy.authRest, healthCount(copy, health.authRest), health.authRest.ok],
+    [healthCopy.businesses, healthCount(copy, health.businesses), health.businesses.ok],
+    [healthCopy.members, healthCount(copy, health.businessMembers), health.businessMembers.ok],
+    [healthCopy.profiles, healthCount(copy, health.profiles), health.profiles.ok],
+    [healthCopy.quoteLinks, healthCount(copy, health.publicLinks), health.publicLinks.ok],
+    [healthCopy.actionLog, healthCount(copy, health.recentActions), health.recentActions.ok],
+    [
+      healthCopy.deletionRequests,
+      healthCount(copy, health.deletionRequests),
+      health.deletionRequests.ok,
+    ],
   ] as const;
   const unhealthy = checks.some(([, , ok]) => !ok);
 
@@ -1013,10 +1044,11 @@ function FounderProductionHealthPanel({
       <SectionHeader
         action={
           <StatusBadge tone={unhealthy ? "red" : "emerald"}>
-            {unhealthy ? "Needs attention" : "Healthy"}
+            {unhealthy ? healthCopy.needsAttention : healthCopy.healthy}
           </StatusBadge>
         }
-        title="Production health"
+        description={healthCopy.runtimeUnavailableDescription}
+        title={healthCopy.productionHealth}
       />
       <div className="mt-3 grid grid-cols-2 gap-2">
         {checks.map(([label, value, ok]) => (
@@ -1029,7 +1061,7 @@ function FounderProductionHealthPanel({
                 {label}
               </p>
               <StatusBadge tone={ok ? "emerald" : "red"}>
-                {ok ? "OK" : "Fail"}
+                {ok ? healthCopy.ok : healthCopy.fail}
               </StatusBadge>
             </div>
             <p className="mt-1.5 truncate text-sm font-black text-[var(--dash-text)]">
@@ -1040,21 +1072,23 @@ function FounderProductionHealthPanel({
       </div>
       {health.supabaseHostRef ? (
         <p className="mt-3 truncate text-[11px] leading-5 text-[var(--dash-text-secondary)]">
-          Supabase project ref: {health.supabaseHostRef}
+          {healthCopy.supabaseProjectRefLabel}: {health.supabaseHostRef}
         </p>
       ) : null}
       {health.serviceCredentialIssuerRef ? (
         <p className="mt-1 truncate text-[11px] leading-5 text-[var(--dash-text-secondary)]">
-          Service credential issuer ref: {health.serviceCredentialIssuerRef}
+          {healthCopy.serviceCredentialIssuerRefLabel}: {health.serviceCredentialIssuerRef}
           {health.serviceCredentialMatchesSupabaseRef === false
-            ? " (does not match Supabase target)"
+            ? ` ${healthCopy.serviceCredentialIssuerRefMismatch}`
             : ""}
         </p>
       ) : null}
       {health.authAdmin.status || health.authRest.status ? (
         <p className="mt-1 text-[11px] leading-5 text-[var(--dash-text-secondary)]">
-          Auth status: SDK {health.authAdmin.status ?? "n/a"} / REST{" "}
-          {health.authRest.status ?? "n/a"}
+          {healthCopy.statusSummary(
+            String(health.authAdmin.status ?? healthCopy.noStatus),
+            String(health.authRest.status ?? healthCopy.noStatus),
+          )}
         </p>
       ) : null}
     </DashboardCard>
@@ -2694,9 +2728,11 @@ function FounderUsersSection({
   usersSearchMode: "auth_filter" | "paged";
   usersTotal: number;
 }>) {
+  const directoryCopy = copy.users.directory;
   const hasPreviousPage = usersPage > 1;
   const hasNextPage = usersPage < usersLastPage;
   const selectedPriority = safeParam(params.userPriority);
+  const userPriorityGroups = buildUserPriorityGroups(copy);
   const userPageStart = usersTotal === 0 ? 0 : (usersPage - 1) * usersPageSize + 1;
   const userPageEnd =
     usersTotal === 0
@@ -2722,22 +2758,24 @@ function FounderUsersSection({
                 className="text-sm font-black text-[var(--dash-text)]"
                 id="founder-users-list-title"
               >
-                User directory
+                {directoryCopy.title}
               </p>
               <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                Search first, then expand one user for account, workspace, and gated support tools.
+                {directoryCopy.description}
               </p>
             </div>
             <div className="flex flex-wrap gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
-              <StatusBadge tone="blue">{shownUsers.length} shown</StatusBadge>
+              <StatusBadge tone="blue">{directoryCopy.shownBadge(shownUsers.length)}</StatusBadge>
               <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
-                Showing {userPageStart}-{userPageEnd} of {usersTotal}
+                {directoryCopy.rangeSummary(userPageStart, userPageEnd, usersTotal)}
               </span>
               <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
-                Page {usersPage} / {usersLastPage}
+                {directoryCopy.pageSummary(usersPage, usersLastPage)}
               </span>
               <span className="rounded-full border border-[var(--dash-border)] px-3 py-1.5">
-                {usersSearchMode === "auth_filter" ? "Search indexed" : "Paged"}
+                {usersSearchMode === "auth_filter"
+                  ? directoryCopy.searchModeIndexed
+                  : directoryCopy.searchModePaged}
               </span>
             </div>
           </div>
@@ -2768,7 +2806,7 @@ function FounderUsersSection({
                 >
                   {adminUserPageSizeOptions.map((option) => (
                     <option key={option} value={option}>
-                      {option} users
+                      {directoryCopy.pageSizeOption(option)}
                     </option>
                   ))}
                 </select>
@@ -2856,7 +2894,7 @@ function FounderUsersSection({
                   >
                     {option.label}
                     <span className="text-[12px] text-[var(--dash-text-muted)]">
-                      {priorityCount(users, option.value)} loaded
+                      {directoryCopy.loadedCount(priorityCount(users, option.value))}
                     </span>
                   </Link>
                 ))}
@@ -2884,10 +2922,12 @@ function FounderUsersSection({
                     {user.displayName ?? user.email}
                   </p>
                   {user.isFounder ? (
-                    <StatusBadge tone="amber">Founder</StatusBadge>
+                    <StatusBadge tone="amber">{directoryCopy.founderBadge}</StatusBadge>
                   ) : null}
                   <StatusBadge tone={user.emailConfirmed ? "emerald" : "amber"}>
-                    {user.emailConfirmed ? "Confirmed" : "Unconfirmed"}
+                    {user.emailConfirmed
+                      ? directoryCopy.confirmedBadge
+                      : directoryCopy.unconfirmedBadge}
                   </StatusBadge>
                 </div>
                 <p className="mt-1 text-[12px] font-bold text-[var(--dash-text-muted)]">
@@ -2897,7 +2937,7 @@ function FounderUsersSection({
 
               <div className="min-w-0">
                 <p className="text-[11px] font-black uppercase text-[var(--dash-text-muted)]">
-                  Business
+                  {directoryCopy.businessLabel}
                 </p>
                 <p className="mt-1 truncate font-black text-[var(--dash-text)]">
                   {user.businessName ?? copy.users.noBusinessLinked}
@@ -2914,7 +2954,7 @@ function FounderUsersSection({
                     {planLabels[user.planSlug]}
                   </StatusBadge>
                 ) : (
-                  <StatusBadge>No plan</StatusBadge>
+                  <StatusBadge>{copy.users.noPlan}</StatusBadge>
                 )}
                 <StatusBadge tone={userAccessTone(user.businessAccessStatus)}>
                   {formatUserValue(user.businessAccessStatus)}
@@ -2941,25 +2981,25 @@ function FounderUsersSection({
               <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-4 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:p-4">
                 <dl className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2 text-[12px] sm:grid-cols-2 lg:grid-cols-4">
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
-                    <dt className="font-bold text-[var(--dash-text-muted)]">Leads</dt>
+                    <dt className="font-bold text-[var(--dash-text-muted)]">{directoryCopy.leadsLabel}</dt>
                     <dd className="mt-0.5 font-black text-[var(--dash-text)]">
                       {user.leadCount ?? "-"}
                     </dd>
                   </div>
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
-                    <dt className="font-bold text-[var(--dash-text-muted)]">Last sign-in</dt>
+                    <dt className="font-bold text-[var(--dash-text-muted)]">{directoryCopy.lastSignInLabel}</dt>
                     <dd className="mt-0.5 font-black text-[var(--dash-text)]">
                       {formatDate(user.lastSignInAt)}
                     </dd>
                   </div>
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
-                    <dt className="font-bold text-[var(--dash-text-muted)]">User ID</dt>
+                    <dt className="font-bold text-[var(--dash-text-muted)]">{directoryCopy.userIdLabel}</dt>
                     <dd className="mt-0.5 truncate font-black text-[var(--dash-text)]">
                       {user.userId}
                     </dd>
                   </div>
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
-                    <dt className="font-bold text-[var(--dash-text-muted)]">Phone</dt>
+                    <dt className="font-bold text-[var(--dash-text-muted)]">{directoryCopy.phoneLabel}</dt>
                     <dd className="mt-0.5 truncate font-black text-[var(--dash-text)]">
                       {formatContactValue(user.phone)}
                     </dd>
@@ -3198,29 +3238,29 @@ function FounderHealthSection({
   totals: FounderAdminOverview["totals"];
   usersTotal: number;
 }>) {
+  const healthSectionCopy = copy.overview.healthSection;
+
   return (
     <div className="space-y-3">
       <DashboardCard className="p-4 sm:p-5" variant="priority">
         <PageHeader
           actions={
             <StatusBadge tone={healthNeedsAttention ? "red" : "emerald"}>
-              {healthNeedsAttention ? "Needs attention" : "Healthy"}
+              {healthNeedsAttention
+                ? healthSectionCopy.needsAttention
+                : healthSectionCopy.healthy}
             </StatusBadge>
           }
-          description="Read-only production diagnostics for founder operations. Failed checks explain why admin counts can look empty or incomplete."
-          eyebrow="Founder Admin"
-          title="Production Health"
+          description={healthSectionCopy.description}
+          eyebrow={healthSectionCopy.eyebrow}
+          title={healthSectionCopy.title}
         />
       </DashboardCard>
       {healthNeedsAttention ? (
-        <AdminNotice tone="error">
-          Founder data may be incomplete because one or more production runtime
-          checks failed. Treat zero users or zero businesses as diagnostic until
-          this panel is clean.
-        </AdminNotice>
+        <AdminNotice tone="error">{healthSectionCopy.notice}</AdminNotice>
       ) : null}
       <FounderAdminMetricsPanel copy={copy} totals={totals} usersTotal={usersTotal} />
-      <FounderProductionHealthPanel health={health} />
+      <FounderProductionHealthPanel copy={copy} health={health} />
     </div>
   );
 }
@@ -3238,14 +3278,16 @@ function FounderActivitySection({
   params: AdminSearchParams;
   users: FounderAdminUser[];
 }>) {
+  const activitySectionCopy = copy.overview.activitySection;
+
   return (
     <div className="space-y-3">
       <DashboardCard className="p-4 sm:p-5" variant="priority">
         <PageHeader
-          actions={<StatusBadge tone="blue">{actions.length} logged</StatusBadge>}
-          description="Trace founder-admin writes after authorization. Use this as the review trail for support, cleanup, and access changes."
-          eyebrow="Founder Admin"
-          title="Activity Log"
+          actions={<StatusBadge tone="blue">{activitySectionCopy.badgeCount(actions.length)}</StatusBadge>}
+          description={activitySectionCopy.description}
+          eyebrow={activitySectionCopy.eyebrow}
+          title={activitySectionCopy.title}
         />
       </DashboardCard>
       <FounderAdminNewsroom
@@ -3254,7 +3296,7 @@ function FounderActivitySection({
         copy={copy}
         limit={20}
         params={params}
-        title="Activity command feed"
+        title={activitySectionCopy.feedTitle}
         users={users}
       />
     </div>
