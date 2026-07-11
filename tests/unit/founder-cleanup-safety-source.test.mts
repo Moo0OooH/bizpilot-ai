@@ -9,8 +9,9 @@
  * - components/admin/founder-test-cleanup-form.tsx
  * Author: MoOoH
  * Created: 2026-05-24
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Updated founder cleanup UI guard to track localized safety-rail copy instead of stale inline literals.
  * - 2026-07-05: Updated cleanup safety guards for customer-protected copy.
  * ============================================================
  */
@@ -109,7 +110,7 @@ describe("Founder cleanup source safety", () => {
       true,
     );
     assert.equal(adminPage.includes("FounderAdminSafetyRail"), true);
-    assert.equal(adminPage.includes("Customer workspace is protected"), true);
+    assert.equal(adminPage.includes("safetyCopy.customerWorkspaceTitle"), true);
   });
 
   it("dry-run counts rows without selecting customer content columns", () => {
