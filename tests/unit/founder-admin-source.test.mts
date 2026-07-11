@@ -109,7 +109,11 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.indexOf("copy.tabs.items.users.label") < pageSource.indexOf("copy.tabs.items.businesses.label"), true);
     assert.equal(pageSource.includes('User directory'), true);
     assert.equal(pageSource.includes("Operating rule"), true);
-    assert.equal(pageSource.indexOf("Search users") < pageSource.indexOf("Work queues"), true);
+    assert.equal(
+      pageSource.indexOf("copy.users.searchLabel") <
+        pageSource.indexOf("copy.users.workQueuesTitle"),
+      true,
+    );
     assert.equal(pageSource.includes("UserAccountSupportPanel"), true);
     assert.equal(pageSource.includes("UserAccountSafetyPanel"), true);
     assert.equal(pageSource.includes("FounderAuthUserDeleteForm"), true);
@@ -168,7 +172,7 @@ describe("Founder admin source safety", () => {
       "Production Health",
       "Admin Inbox",
       "Activity Log",
-      "Priority workspace",
+      "copy.businesses.priorityWorkspace",
       "xl:top-[5.75rem]",
     ]) {
       assert.equal(

@@ -340,7 +340,11 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(admin.includes("FounderAdminOverviewSection"), true);
     assert.equal(admin.includes("FounderLeadsStatusDonut"), true);
     assert.equal(admin.includes("FounderSystemHealthSummary"), true);
-    assert.equal(admin.indexOf("Search users") < admin.indexOf("Work queues"), true);
+    assert.equal(
+      admin.indexOf("copy.users.searchLabel") <
+        admin.indexOf("copy.users.workQueuesTitle"),
+      true,
+    );
     assert.equal(admin.includes("businessQuery?: string"), true);
     assert.equal(admin.includes("function limitedBusinessRows"), true);
     assert.equal(admin.includes("function paginationWindow"), true);
