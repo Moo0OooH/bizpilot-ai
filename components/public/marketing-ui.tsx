@@ -10,7 +10,7 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
@@ -26,6 +26,7 @@
  * - 2026-07-05: Added a reusable next-step panel for public conversion paths.
  * - 2026-07-05: Tokenized neutral badges and next-step labels for launch-ready light/dark consistency.
  * - 2026-07-05: Allowed the desktop brand subtitle to wrap for longer localized copy.
+ * - 2026-07-11: Added a research-backed public page hero primitive for bilingual first-fold pitch/proof structure.
  * ============================================================
  */
 
@@ -67,6 +68,27 @@ type MarketingNextStepItem = Readonly<{
   icon?: MarketingIconName;
   label: ReactNode;
   toneName?: BadgeTone;
+}>;
+
+type MarketingHeroAction = Readonly<{
+  href: string;
+  label: ReactNode;
+  variant?: ButtonVariant;
+}>;
+
+type MarketingHeroSignal = Readonly<{
+  icon?: MarketingIconName;
+  label: ReactNode;
+  toneName?: BadgeTone;
+  value: ReactNode;
+}>;
+
+type MarketingHeroVisual = Readonly<{
+  body?: ReactNode;
+  eyebrow?: ReactNode;
+  footer?: ReactNode;
+  items?: ReadonlyArray<MarketingHeroSignal>;
+  title: ReactNode;
 }>;
 
 const defaultMarketingNavCopy: HomeNavCopy = {
@@ -507,6 +529,174 @@ export function MarketingNextStepPanel({
         </div>
       </div>
     </MarketingCard>
+  );
+}
+
+export function MarketingPageHero({
+  actions = [],
+  align = "left",
+  badge,
+  badgeTone = "teal",
+  body,
+  className = "",
+  signals = [],
+  title,
+  visual,
+}: Readonly<{
+  actions?: ReadonlyArray<MarketingHeroAction>;
+  align?: "center" | "left";
+  badge: ReactNode;
+  badgeTone?: BadgeTone;
+  body?: ReactNode;
+  className?: string;
+  signals?: ReadonlyArray<MarketingHeroSignal>;
+  title: ReactNode;
+  visual?: MarketingHeroVisual;
+}>) {
+  const centered = align === "center";
+  const toneByName: Record<BadgeTone, { bg: string; color: string }> = {
+    blue: {
+      bg: "color-mix(in srgb, var(--primary) 12%, var(--surface))",
+      color: marketingTone.blue,
+    },
+    gold: {
+      bg: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
+      color: marketingTone.gold,
+    },
+    neutral: {
+      bg: "var(--surface-interactive)",
+      color: marketingTone.soft,
+    },
+    red: {
+      bg: "color-mix(in srgb, var(--danger) 12%, var(--surface))",
+      color: marketingTone.red,
+    },
+    teal: {
+      bg: "color-mix(in srgb, var(--accent) 12%, var(--surface))",
+      color: marketingTone.teal,
+    },
+  };
+
+  const renderSignal = (
+    signal: MarketingHeroSignal,
+    index: number,
+    classNameSuffix = "proof-item",
+  ) => {
+    const tone = toneByName[signal.toneName ?? "teal"];
+
+    return (
+      <div
+        className={`marketing-page-hero-${classNameSuffix} min-w-0`}
+        key={`hero-signal-${classNameSuffix}-${index}`}
+      >
+        <span
+          className="marketing-page-hero-signal-icon"
+          style={{ backgroundColor: tone.bg, color: tone.color }}
+        >
+          <MarketingIcon name={signal.icon ?? "check"} />
+        </span>
+        <span className="min-w-0">
+          <span
+            className="bp-copy-eyebrow marketing-page-hero-signal-label"
+            style={{ color: marketingTone.muted }}
+          >
+            {signal.label}
+          </span>
+          <span
+            className="marketing-page-hero-signal-value"
+            style={{ color: marketingTone.text }}
+          >
+            {signal.value}
+          </span>
+        </span>
+      </div>
+    );
+  };
+
+  return (
+    <div
+      className={`marketing-page-hero ${visual ? "marketing-page-hero-with-visual" : ""} ${
+        centered ? "marketing-page-hero-center" : ""
+      } ${className}`}
+    >
+      <div className="marketing-page-hero-copy">
+        <MarketingBadge toneName={badgeTone}>{badge}</MarketingBadge>
+        <h1
+          className="bp-page-title bp-copy-hero marketing-page-hero-title mt-5 font-black leading-[1.06]"
+          style={{ color: marketingTone.text }}
+        >
+          {title}
+        </h1>
+        {body ? (
+          <div
+            className="bp-body bp-copy-hero-body marketing-page-hero-body mt-5 leading-8"
+            style={{ color: marketingTone.soft }}
+          >
+            {body}
+          </div>
+        ) : null}
+        {actions.length > 0 ? (
+          <div className="bp-button-row marketing-page-hero-actions">
+            {actions.map((action, index) => (
+              <MarketingButton
+                href={action.href}
+                key={`${action.href}-${index}`}
+                variant={action.variant ?? "primary"}
+              >
+                {action.label}
+              </MarketingButton>
+            ))}
+          </div>
+        ) : null}
+        {signals.length > 0 ? (
+          <div className="marketing-page-hero-proof">
+            {signals.map((signal, index) => renderSignal(signal, index))}
+          </div>
+        ) : null}
+      </div>
+
+      {visual ? (
+        <MarketingCard className="marketing-page-hero-panel p-5 sm:p-6">
+          {visual.eyebrow ? (
+            <p
+              className="bp-copy-eyebrow text-[12px] font-black uppercase"
+              style={{ color: marketingTone.teal }}
+            >
+              {visual.eyebrow}
+            </p>
+          ) : null}
+          <h2
+            className="bp-card-title bp-copy-section-title marketing-page-hero-panel-title mt-3 font-black leading-tight"
+            style={{ color: marketingTone.text }}
+          >
+            {visual.title}
+          </h2>
+          {visual.body ? (
+            <div
+              className="bp-copy-card-body mt-3 text-[14px] font-bold leading-6"
+              style={{ color: marketingTone.soft }}
+            >
+              {visual.body}
+            </div>
+          ) : null}
+          {visual.items?.length ? (
+            <div className="marketing-page-hero-panel-list">
+              {visual.items.map((signal, index) =>
+                renderSignal(signal, index, "panel-item"),
+              )}
+            </div>
+          ) : null}
+          {visual.footer ? (
+            <div
+              className="marketing-page-hero-panel-footer"
+              style={{ color: marketingTone.soft }}
+            >
+              {visual.footer}
+            </div>
+          ) : null}
+        </MarketingCard>
+      ) : null}
+    </div>
   );
 }
 

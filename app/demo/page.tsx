@@ -10,7 +10,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-18: Grouped the demo into concise responsive chapters with visible guardrails.
  * - 2026-06-19: Moved visible demo-page copy and metadata into the public-site i18n dictionary.
@@ -20,6 +20,7 @@
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel after the product walkthrough.
  * - 2026-07-05: Tokenized demo workspace panels for launch-ready light/dark consistency.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
  * ============================================================
  */
 
@@ -28,13 +29,13 @@ import { cookies } from "next/headers";
 
 import { JsonLdScript } from "@/components/public/json-ld";
 import {
-  MarketingBadge,
   MarketingButton,
   MarketingCard,
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -302,21 +303,54 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
 
       <section className="bp-section-tight">
         <MarketingShell>
-          <div className="mx-auto max-w-[920px] text-center">
-            <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1
-              className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]"
-              style={{ color: marketingTone.text }}
-            >
-              {copy.title}
-            </h1>
-            <p
-              className="bp-body mx-auto mt-5 max-w-[760px] leading-8"
-              style={{ color: marketingTone.soft }}
-            >
-              {copy.body}
-            </p>
-          </div>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "/pilot",
+                label: (
+                  <>
+                    {copy.cta.button} <MarketingIcon name="arrow" />
+                  </>
+                ),
+              },
+              {
+                href: "/pricing",
+                label: navCopy.pricing,
+                variant: "secondary",
+              },
+            ]}
+            badge={copy.badge}
+            body={copy.body}
+            signals={copy.workspace.guardrails.slice(0, 3).map((item, index) => ({
+              icon: index === 0 ? "radar" : index === 1 ? "shield" : "check",
+              label: copy.workspace.sampleLabel,
+              value: item,
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.workspace.summary.body,
+              eyebrow: copy.workspace.sampleLabel,
+              items: [
+                {
+                  icon: "link",
+                  label: copy.workspace.quoteLink.label,
+                  value: copy.workspace.quoteLink.body,
+                },
+                {
+                  icon: "warning",
+                  label: copy.workspace.missingTitle,
+                  toneName: "gold",
+                  value: copy.workspace.missing.slice(0, 2).join(" / "),
+                },
+                {
+                  icon: "copy",
+                  label: copy.workspace.draft.title,
+                  value: copy.workspace.actions.join(" / "),
+                },
+              ],
+              title: copy.workspace.title,
+            }}
+          />
         </MarketingShell>
       </section>
 

@@ -10,11 +10,12 @@
  * - lib/public-structured-data.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-07-04: Created the public reply-speed content guide for Phase 25U.
  * - 2026-07-05: Added a route-aware next-step panel for reply-speed education.
  * - 2026-07-05: Tokenized reply-speed guardrail icon treatment for light/dark launch polish.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
  * ============================================================
  */
 
@@ -24,12 +25,12 @@ import { cookies } from "next/headers";
 import { JsonLdScript } from "@/components/public/json-ld";
 import {
   MarketingBadge,
-  MarketingButton,
   MarketingCard,
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -97,48 +98,44 @@ export default async function FasterQuoteRepliesPage({
       <MarketingHeader copy={navCopy} language={language} redirectPath="/faster-quote-replies" />
       <section className="bp-section-tight">
         <MarketingShell>
-          <div className="grid gap-8 lg:grid-cols-[minmax(0,0.54fr)_minmax(320px,0.46fr)] lg:items-start">
-            <div className="min-w-0">
-              <MarketingBadge toneName="blue">{copy.badge}</MarketingBadge>
-              <h1 className="bp-page-title bp-copy-hero mt-5 font-black leading-[1.06]" style={{ color: marketingTone.text }}>
-                {copy.title}
-              </h1>
-              <p className="bp-body bp-copy-hero-body mt-5 max-w-[760px] leading-8" style={{ color: marketingTone.soft }}>
-                {copy.body}
-              </p>
-              <div className="bp-button-row mt-6 flex flex-col gap-3 sm:flex-row">
-                <MarketingButton href="/quote-link-guide">
-                  {copy.primaryCta} <MarketingIcon name="arrow" />
-                </MarketingButton>
-                <MarketingButton href="/pilot" variant="secondary">
-                  {copy.secondaryCta}
-                </MarketingButton>
-              </div>
-            </div>
-
-            <MarketingCard className="reply-speed-board min-w-0 p-5 sm:p-6">
-              <MarketingBadge toneName="neutral">{copy.board.eyebrow}</MarketingBadge>
-              <h2 className="bp-card-title bp-copy-section-title mt-4 font-black leading-tight" style={{ color: marketingTone.text }}>
-                {copy.board.title}
-              </h2>
-              <div className="mt-5 grid gap-3">
-                {copy.board.items.map((item, index) => (
-                  <div
-                    className="grid min-w-0 gap-2 rounded-[14px] border px-4 py-3 sm:grid-cols-[minmax(0,0.38fr)_minmax(0,1fr)]"
-                    key={item[0]}
-                    style={{ backgroundColor: index === 2 ? "color-mix(in srgb, var(--primary) 10%, var(--surface))" : "var(--surface-interactive)", borderColor: marketingTone.border }}
-                  >
-                    <span className="text-[12px] font-black uppercase tracking-[0.12em]" style={{ color: index === 2 ? marketingTone.blue : marketingTone.muted }}>
-                      {item[0]}
-                    </span>
-                    <span className="bp-copy-card-body min-w-0 text-[14px] font-black leading-6" style={{ color: marketingTone.text }}>
-                      {item[1]}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </MarketingCard>
-          </div>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "/quote-link-guide",
+                label: (
+                  <>
+                    {copy.primaryCta} <MarketingIcon name="arrow" />
+                  </>
+                ),
+              },
+              {
+                href: "/pilot",
+                label: copy.secondaryCta,
+                variant: "secondary",
+              },
+            ]}
+            badge={copy.badge}
+            badgeTone="blue"
+            body={copy.body}
+            className="reply-speed-board"
+            signals={copy.board.items.slice(0, 3).map((item, index) => ({
+              icon: index === 0 ? "message" : index === 1 ? "warning" : "pen",
+              label: item[0],
+              toneName: index === 1 ? "gold" : "teal",
+              value: item[1],
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.calendarBody,
+              eyebrow: copy.board.eyebrow,
+              items: copy.workflow.slice(0, 4).map((item, index) => ({
+                icon: workflowIcons[index] ?? "check",
+                label: item.signal,
+                value: item.title,
+              })),
+              title: copy.board.title,
+            }}
+          />
         </MarketingShell>
       </section>
 

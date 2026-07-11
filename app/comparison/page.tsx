@@ -10,11 +10,12 @@
  * - lib/public-structured-data.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-07-04: Created the public comparison page.
  * - 2026-07-05: Added a route-aware next-step panel for buyer education.
  * - 2026-07-05: Tokenized guardrail warning treatment for light/dark launch polish.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
  * ============================================================
  */
 
@@ -23,13 +24,12 @@ import { cookies } from "next/headers";
 
 import { JsonLdScript } from "@/components/public/json-ld";
 import {
-  MarketingBadge,
-  MarketingButton,
   MarketingCard,
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -89,23 +89,42 @@ export default async function ComparisonPage({
       <MarketingHeader active="comparison" copy={navCopy} language={language} redirectPath="/comparison" />
       <section className="bp-section-tight">
         <MarketingShell>
-          <div className="max-w-[940px]">
-            <MarketingBadge toneName="blue">{copy.badge}</MarketingBadge>
-            <h1 className="bp-page-title bp-copy-hero mt-5 font-black leading-[1.06]" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </h1>
-            <p className="bp-body bp-copy-hero-body mt-5 max-w-[820px] leading-8" style={{ color: marketingTone.soft }}>
-              {copy.body}
-            </p>
-            <div className="bp-button-row mt-6 flex flex-col gap-3 sm:flex-row">
-              <MarketingButton href="/pilot">
-                {copy.primaryCta} <MarketingIcon name="arrow" />
-              </MarketingButton>
-              <MarketingButton href="/demo" variant="secondary">
-                {copy.secondaryCta}
-              </MarketingButton>
-            </div>
-          </div>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "/pilot",
+                label: (
+                  <>
+                    {copy.primaryCta} <MarketingIcon name="arrow" />
+                  </>
+                ),
+              },
+              {
+                href: "/demo",
+                label: copy.secondaryCta,
+                variant: "secondary",
+              },
+            ]}
+            badge={copy.badge}
+            badgeTone="blue"
+            body={copy.body}
+            signals={copy.proof.items.slice(0, 3).map((item, index) => ({
+              icon: index === 0 ? "search" : index === 1 ? "shield" : "check",
+              label: copy.proof.title,
+              value: item,
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.guardrail.body,
+              eyebrow: copy.guardrail.title,
+              items: copy.rows.slice(0, 3).map((row, index) => ({
+                icon: index === 0 ? "briefcase" : index === 1 ? "link" : "calendar",
+                label: row.option,
+                value: row.difference,
+              })),
+              title: copy.proof.title,
+            }}
+          />
         </MarketingShell>
       </section>
 

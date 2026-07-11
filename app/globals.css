@@ -9,8 +9,9 @@ Related:
 - app/page.tsx
 Author: MoOoH
 Created: 2026-05-02
-Last Updated: 2026-07-05
+Last Updated: 2026-07-11
 Change Log:
+- 2026-07-11: Added bilingual-safe public page hero sizing and proof-panel primitives.
 - 2026-07-05: Rebuilt the homepage hero as an integrated product-scene stage.
 - 2026-07-05: Refined dashboard light-theme tokens and added the route-guide rail surface.
 - 2026-07-05: Refocused the homepage hero and second section into a clear hot-quote rescue story.
@@ -534,6 +535,124 @@ select {
   flex-wrap: wrap;
   align-items: center;
   gap: clamp(0.75rem, 1.5vw, 1rem);
+}
+
+.marketing-page-hero {
+  display: grid;
+  min-inline-size: 0;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.marketing-page-hero-copy {
+  min-inline-size: 0;
+  max-inline-size: min(100%, 58rem);
+}
+
+.marketing-page-hero-center {
+  justify-items: center;
+}
+
+.marketing-page-hero-center .marketing-page-hero-copy,
+.marketing-page-hero-center .marketing-page-hero-body,
+.marketing-page-hero-center .marketing-page-hero-proof {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.marketing-page-hero-title {
+  max-inline-size: min(100%, 54rem);
+}
+
+.marketing-page-hero-body {
+  max-inline-size: min(100%, 48rem);
+}
+
+.marketing-page-hero-actions {
+  margin-block-start: 1.5rem;
+}
+
+.marketing-page-hero-center .marketing-page-hero-actions {
+  justify-content: center;
+}
+
+.marketing-page-hero-proof {
+  display: grid;
+  max-inline-size: min(100%, 48rem);
+  margin-block-start: 1.35rem;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.marketing-page-hero-proof-item,
+.marketing-page-hero-panel-item {
+  display: grid;
+  min-inline-size: 0;
+  align-items: start;
+  gap: 0.75rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  border: 1px solid var(--border-default);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  padding: 0.8rem 0.9rem;
+}
+
+.marketing-page-hero-proof-item {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+}
+
+.marketing-page-hero-signal-icon {
+  display: inline-flex;
+  block-size: 2rem;
+  inline-size: 2rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+}
+
+.marketing-page-hero-signal-label,
+.marketing-page-hero-signal-value {
+  display: block;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.marketing-page-hero-signal-label {
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.marketing-page-hero-signal-value {
+  margin-block-start: 0.2rem;
+  font-size: 0.88rem;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.marketing-page-hero-panel {
+  inline-size: 100%;
+  max-inline-size: min(100%, 31rem);
+  justify-self: stretch;
+}
+
+.marketing-page-hero-panel-title {
+  min-block-size: auto;
+}
+
+.marketing-page-hero-panel-list {
+  display: grid;
+  margin-block-start: 1rem;
+  gap: 0.75rem;
+}
+
+.marketing-page-hero-panel-footer {
+  margin-block-start: 1rem;
+  border-block-start: 1px solid var(--border-default);
+  padding-block-start: 1rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.6;
 }
 
 .public-container {
@@ -1304,6 +1423,10 @@ select {
 }
 
 @media (min-width: 768px) {
+  .marketing-page-hero-proof {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .bp-grid-six {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1335,6 +1458,14 @@ select {
 }
 
 @media (min-width: 1180px) {
+  .marketing-page-hero-with-visual {
+    grid-template-columns: minmax(0, 0.92fr) minmax(19rem, 0.46fr);
+  }
+
+  .marketing-page-hero-panel {
+    justify-self: end;
+  }
+
   .bp-hero-grid {
     grid-template-columns: minmax(0, 1fr) minmax(19rem, 0.44fr);
   }
@@ -1626,7 +1757,10 @@ select {
   inset: auto;
   z-index: 1;
   display: block;
+  min-inline-size: 0;
+  inline-size: 100%;
   max-inline-size: 100%;
+  justify-self: stretch;
   align-items: stretch;
   opacity: 1;
   pointer-events: none;
@@ -1647,7 +1781,8 @@ select {
 }
 
 .homepage-product-window {
-  width: min(100%, 41rem);
+  width: 100%;
+  max-width: 41rem;
   margin-inline: auto;
   border: 1px solid color-mix(in srgb, var(--border-strong) 72%, transparent);
   border-radius: 1.65rem;
@@ -1926,88 +2061,129 @@ select {
   border: 1px solid color-mix(in srgb, var(--primary) 16%, var(--border-default));
   border-radius: 1.2rem;
   background:
-    radial-gradient(circle at 62% 30%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 6rem),
-    linear-gradient(145deg, color-mix(in srgb, var(--surface-interactive) 86%, var(--primary) 14%), color-mix(in srgb, var(--surface) 88%, var(--accent) 12%));
+    radial-gradient(circle at 18% 10%, color-mix(in srgb, var(--primary) 18%, transparent), transparent 8rem),
+    radial-gradient(circle at 92% 82%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 8rem),
+    linear-gradient(145deg, color-mix(in srgb, var(--surface-interactive) 88%, var(--primary) 12%), color-mix(in srgb, var(--surface) 90%, var(--accent) 10%));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 52%, transparent);
+  padding: clamp(0.8rem, 1.5vw, 1rem);
 }
 
-.homepage-bottle,
-.homepage-towel,
-.homepage-brush {
-  position: absolute;
-  display: block;
-  box-shadow: 0 16px 28px rgba(37, 99, 235, 0.16);
+.homepage-intelligence-visual {
+  display: grid;
+  align-content: space-between;
+  gap: 0.7rem;
 }
 
-.homepage-bottle--spray {
-  inset-block-start: 2.1rem;
-  inset-inline-start: 24%;
-  block-size: 6.5rem;
-  inline-size: 2.5rem;
-  border-radius: 0.8rem 0.8rem 0.55rem 0.55rem;
-  background: linear-gradient(180deg, #bfdbfe, #3b82f6);
+.homepage-intelligence-header,
+.homepage-intelligence-grid,
+.homepage-intelligence-path {
+  position: relative;
+  z-index: 1;
 }
 
-.homepage-bottle--spray::before {
-  position: absolute;
-  inset-block-start: -1.15rem;
-  inset-inline-start: 0.3rem;
-  block-size: 1.6rem;
-  inline-size: 2.3rem;
-  border-radius: 0.5rem;
-  background: #60a5fa;
-  content: "";
+.homepage-intelligence-header {
+  display: flex;
+  min-inline-size: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
-.homepage-bottle--soap {
-  inset-block-start: 3.25rem;
-  inset-inline-end: 21%;
-  block-size: 5.25rem;
-  inline-size: 2.35rem;
-  border-radius: 0.62rem;
-  background: linear-gradient(180deg, #f8fafc, #93c5fd);
+.homepage-intelligence-header span {
+  color: var(--text-strong);
+  font-size: 0.78rem;
+  font-weight: 900;
+  line-height: 1.25;
+  text-transform: uppercase;
 }
 
-.homepage-bottle--soap::before {
-  position: absolute;
-  inset-block-start: -1rem;
-  inset-inline: 0.7rem;
-  block-size: 1.2rem;
-  border-radius: 0.25rem;
-  background: #2563eb;
-  content: "";
-}
-
-.homepage-towel {
-  inset-block-end: 1.65rem;
-  inset-inline-end: 13%;
-  block-size: 2.65rem;
-  inline-size: 7.8rem;
-  border-radius: 0.55rem;
-  background:
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.32) 0 0.35rem, transparent 0.35rem 0.7rem),
-    linear-gradient(135deg, #93c5fd, #2563eb);
-  transform: rotate(-4deg);
-}
-
-.homepage-brush {
-  inset-block-end: 1.55rem;
-  inset-inline-start: 13%;
-  block-size: 1rem;
-  inline-size: 7.3rem;
+.homepage-intelligence-header strong {
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border-default));
   border-radius: 999px;
-  background: #2563eb;
-  transform: rotate(-7deg);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: var(--accent);
+  font-size: 0.66rem;
+  font-weight: 900;
+  line-height: 1.1;
+  padding: 0.34rem 0.48rem;
+  white-space: nowrap;
 }
 
-.homepage-brush::before {
-  position: absolute;
-  inset-block-start: -0.7rem;
-  inset-inline-start: 0.3rem;
-  block-size: 1rem;
-  inline-size: 2.6rem;
-  border-radius: 0.4rem;
-  background: #dbeafe;
-  content: "";
+.homepage-intelligence-meter {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  block-size: 0.65rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--border-default) 70%, transparent);
+}
+
+.homepage-intelligence-meter-fill {
+  display: block;
+  block-size: 100%;
+  inline-size: 76%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--danger), var(--warning), var(--accent));
+}
+
+.homepage-intelligence-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.homepage-intelligence-grid span {
+  display: grid;
+  min-inline-size: 0;
+  gap: 0.22rem;
+  border: 1px solid color-mix(in srgb, var(--border-default) 78%, transparent);
+  border-radius: 0.82rem;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  padding: 0.55rem;
+}
+
+.homepage-intelligence-grid strong,
+.homepage-intelligence-grid em {
+  display: block;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.homepage-intelligence-grid strong {
+  color: var(--text-strong);
+  font-size: clamp(0.86rem, 1.3vw, 1rem);
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.homepage-intelligence-grid em {
+  color: var(--text-muted);
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.homepage-intelligence-path {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.homepage-intelligence-path i {
+  display: block;
+  block-size: 0.34rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 28%, var(--surface));
+}
+
+.homepage-intelligence-path i:nth-child(2) {
+  background: color-mix(in srgb, var(--warning) 36%, var(--surface));
+}
+
+.homepage-intelligence-path i:nth-child(3) {
+  background: color-mix(in srgb, var(--accent) 42%, var(--surface));
 }
 
 .homepage-owner-draft {
@@ -2159,7 +2335,8 @@ select {
   }
 
   .homepage-product-window {
-    width: min(100%, 39rem);
+    width: 100%;
+    max-width: 39rem;
     padding: 0.95rem;
   }
 
@@ -2261,31 +2438,27 @@ select {
     min-block-size: 7.25rem;
   }
 
-  .homepage-bottle--spray {
-    inset-block-start: 1.55rem;
-    block-size: 4.55rem;
-    inline-size: 1.75rem;
+  .homepage-intelligence-visual {
+    gap: 0.48rem;
+    padding: 0.62rem;
   }
 
-  .homepage-bottle--spray::before {
-    inset-block-start: -0.9rem;
-    block-size: 1.22rem;
-    inline-size: 1.8rem;
+  .homepage-intelligence-header span {
+    font-size: 0.62rem;
   }
 
-  .homepage-bottle--soap {
-    inset-block-start: 2.25rem;
-    block-size: 3.95rem;
-    inline-size: 1.72rem;
+  .homepage-intelligence-header strong,
+  .homepage-intelligence-grid em {
+    font-size: 0.54rem;
   }
 
-  .homepage-towel {
-    block-size: 1.9rem;
-    inline-size: 5.65rem;
+  .homepage-intelligence-grid span {
+    border-radius: 0.68rem;
+    padding: 0.42rem;
   }
 
-  .homepage-brush {
-    inline-size: 5.3rem;
+  .homepage-intelligence-grid strong {
+    font-size: 0.72rem;
   }
 
   .homepage-owner-draft {
@@ -2316,7 +2489,8 @@ select {
   }
 
   .homepage-product-window {
-    width: min(100%, 41rem);
+    width: 100%;
+    max-width: 41rem;
   }
 
   .homepage-cleaning-visual {

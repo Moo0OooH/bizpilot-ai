@@ -855,10 +855,19 @@ type DashboardAdminCopy = Readonly<{
     title: string;
   }>;
   businesses: Readonly<{
+    emptyWorkspace: string;
     hiddenMatches: (count: number) => string;
     intakeOff: string;
     intakeOpen: string;
     noMatches: string;
+    openControls: string;
+    operationsDescription: string;
+    operationsEyebrow: string;
+    operationsTitle: string;
+    openInbox: string;
+    checkHealth: string;
+    manageUsers: string;
+    priorityWorkspace: string;
     reset: string;
     searchLabel: string;
     searchPlaceholder: string;
@@ -923,13 +932,42 @@ type DashboardAdminCopy = Readonly<{
     productionHealthy: string;
   }>;
   users: Readonly<{
+    accessStatusLabel: string;
+    accessStatusOptions: Readonly<{
+      active: string;
+      all: string;
+      cancelled: string;
+      onboarding: string;
+      suspended: string;
+      unlinked: string;
+    }>;
+    authLabel: string;
+    authOptions: Readonly<{
+      all: string;
+      confirmed: string;
+      founder: string;
+      unconfirmed: string;
+    }>;
+    details: string;
     hiddenByFilters: string;
     next: string;
+    noBusinessLinked: string;
+    noQuoteLink: string;
+    noUsers: string;
     pageAriaLabel: (page: number) => string;
     paginationLabel: string;
     previous: string;
+    quoteActive: string;
+    quoteInactive: string;
+    reset: string;
+    searchLabel: string;
     searchPlaceholder: string;
+    searchSubmit: string;
+    showLabel: string;
     showingRange: (start: number, end: number, total: number) => string;
+    workQueuesDescription: string;
+    workQueuesTitle: string;
+    showingPerPage: (count: number) => string;
   }>;
 }>;
 
@@ -1465,11 +1503,21 @@ const englishCopy: BizPilotCopy = {
         title: "Access unavailable",
       },
       businesses: {
+        emptyWorkspace: "No business workspace is available yet.",
         hiddenMatches: (count) =>
           `Showing the first 10 matched workspaces. ${count} more matched ${count === 1 ? "workspace is" : "workspaces are"} hidden. Search by owner, business, or slug to narrow the list.`,
         intakeOff: "Intake off",
         intakeOpen: "Intake open",
         noMatches: "No businesses match this search.",
+        openControls: "Open controls",
+        operationsDescription:
+          "Founder command center for pilot access, quote links, plan state, workspace safety, customer notes, and audit trails.",
+        operationsEyebrow: "Founder Admin",
+        operationsTitle: "Business Operations",
+        openInbox: "Open inbox",
+        checkHealth: "Check health",
+        manageUsers: "Manage users",
+        priorityWorkspace: "Priority workspace",
         reset: "Reset",
         searchLabel: "Search businesses",
         searchPlaceholder: "Business, owner, slug",
@@ -1555,14 +1603,44 @@ const englishCopy: BizPilotCopy = {
         productionHealthy: "Production: healthy",
       },
       users: {
+        accessStatusLabel: "Access status",
+        accessStatusOptions: {
+          active: "Active access",
+          all: "All users",
+          cancelled: "Cancelled",
+          onboarding: "Onboarding",
+          suspended: "Suspended",
+          unlinked: "No business linked",
+        },
+        authLabel: "Auth",
+        authOptions: {
+          all: "All auth states",
+          confirmed: "Confirmed email",
+          founder: "Founder accounts",
+          unconfirmed: "Unconfirmed email",
+        },
+        details: "Details",
         hiddenByFilters: "Some loaded users are hidden by access/auth filters.",
         next: "Next",
+        noBusinessLinked: "No business linked",
+        noQuoteLink: "No quote link",
+        noUsers: "No users found.",
         pageAriaLabel: (page) => `Page ${page}`,
         paginationLabel: "User directory pagination",
         previous: "Previous",
+        quoteActive: "Quote active",
+        quoteInactive: "Quote inactive",
+        reset: "Reset",
+        searchLabel: "Search users",
         searchPlaceholder: "Name, email, phone",
+        searchSubmit: "Search",
+        showLabel: "Show",
         showingRange: (start, end, total) =>
           `Showing ${start}-${end} of ${total} auth user(s).`,
+        workQueuesDescription:
+          "Start with risk and recovery queues, then search inside the result.",
+        workQueuesTitle: "Work queues",
+        showingPerPage: (count) => `Showing up to ${count} users per page`,
       },
     },
     errorBoundary: {
@@ -3550,6 +3628,7 @@ const frenchCopy: BizPilotCopy = {
         title: "Accès indisponible",
       },
       businesses: {
+        emptyWorkspace: "Aucun espace entreprise n'est disponible pour l'instant.",
         hiddenMatches: (count) =>
           `Les 10 premiers espaces correspondants sont affichés. ${count} autre${count === 1 ? "" : "s"} espace${count === 1 ? "" : "s"} correspond${count === 1 ? "" : "ent"} mais reste${count === 1 ? "" : "nt"} masqué${count === 1 ? "" : "s"}. Recherchez par responsable, entreprise ou slug pour réduire la liste.`,
         intakeOff: "Demandes fermées",
@@ -3559,6 +3638,15 @@ const frenchCopy: BizPilotCopy = {
         searchLabel: "Rechercher des entreprises",
         searchPlaceholder: "Entreprise, responsable, slug",
         searchSubmit: "Rechercher",
+        openControls: "Ouvrir les controles",
+        operationsDescription:
+          "Poste de commande fondateur pour l'acces pilote, les liens publics, l'etat du forfait, la securite de l'espace, les notes client et les journaux d'audit.",
+        operationsEyebrow: "Admin fondateur",
+        operationsTitle: "Operations entreprises",
+        openInbox: "Ouvrir la boite",
+        checkHealth: "Verifier la sante",
+        manageUsers: "Gerer les utilisateurs",
+        priorityWorkspace: "Espace prioritaire",
         selectedWorkspaceVisible:
           "L'espace sélectionné reste visible même s'il ne correspond pas à la recherche actuelle.",
         subtitle: "Sélectionnez un espace; modifiez-le dans le panneau de détail.",
@@ -3640,15 +3728,46 @@ const frenchCopy: BizPilotCopy = {
         productionHealthy: "Production: saine",
       },
       users: {
+        accessStatusLabel: "État d'accès",
+        accessStatusOptions: {
+          active: "Accès actif",
+          all: "Tous les utilisateurs",
+          cancelled: "Annulé",
+          onboarding: "Intégration",
+          suspended: "Suspendu",
+          unlinked: "Aucune entreprise liée",
+        },
+        authLabel: "Auth",
+        authOptions: {
+          all: "Tous les états auth",
+          confirmed: "Courriel confirmé",
+          founder: "Comptes fondateur",
+          unconfirmed: "Courriel non confirmé",
+        },
+        details: "Détails",
         hiddenByFilters:
           "Certains utilisateurs chargés sont masqués par les filtres d'accès/auth.",
         next: "Suivant",
+        noBusinessLinked: "Aucune entreprise liée",
+        noQuoteLink: "Aucun lien de soumission",
+        noUsers: "Aucun utilisateur trouvé.",
         pageAriaLabel: (page) => `Page ${page}`,
         paginationLabel: "Pagination du répertoire utilisateurs",
         previous: "Précédent",
+        quoteActive: "Soumission active",
+        quoteInactive: "Soumission inactive",
+        reset: "Réinitialiser",
+        searchLabel: "Rechercher les utilisateurs",
         searchPlaceholder: "Nom, courriel, téléphone",
+        searchSubmit: "Rechercher",
+        showLabel: "Afficher",
         showingRange: (start, end, total) =>
           `Affichage ${start}-${end} de ${total} utilisateur${total === 1 ? "" : "s"} auth.`,
+        workQueuesDescription:
+          "Commencez par les files de risque et de reprise, puis cherchez dans le résultat.",
+        workQueuesTitle: "Files de travail",
+        showingPerPage: (count) =>
+          `Affichage de jusqu'à ${count} utilisateurs par page`,
       },
     },
     founderHandoff: {

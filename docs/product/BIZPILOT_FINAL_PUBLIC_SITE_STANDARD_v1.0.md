@@ -2,7 +2,7 @@
 
 **Status:** Active canonical pre-dashboard public-site standard  
 **Owner:** MoOoH  
-**Last updated:** 2026-06-20  
+**Last updated:** 2026-07-11
 **Applies to:** Marketing, legal, auth, public quote, and pre-dashboard report shells  
 **Supersedes when conflicting:** older public dark-homepage direction, public light-only/no-toggle guidance, wide segmented header utilities, two-viewport QA guidance, stale Pilot long-form preview guidance, and incomplete EN/fr-CA public-copy guidance.
 
@@ -86,6 +86,29 @@ Header requirements:
 - Language control is one compact EN/FR menu.
 - Theme control is one compact icon button in the header.
 - Compact menu supports keyboard use, Escape close, focus return, outside click, `aria-expanded`, and active route state.
+
+## 5A. Research-Backed Hero And Page Pitch Standard
+
+2026-07-11 research pass:
+
+- Nielsen Norman Group homepage guidance says the homepage must act as an elevator pitch, communicate what the organization does at a glance, and make the unique value proposition clear in the hero space.
+- CXL landing-page guidance emphasizes that visitors decide usefulness within seconds, so the first screen must answer what this is, whether it fits them, whether they can trust it, and what action comes next.
+- Unbounce's 2026 landing-page examples summarize the conversion pattern as one clear goal, strong headline, trust/proof near the action, and reduced distractions.
+- Figma's 2026 web-design trend guidance supports richer product scenes, thoughtful motion, dark/light personalization, accessibility, and progressive lead nurturing, but BizPilot must translate those ideas into manual-first quote recovery rather than autonomous automation.
+- Baymard's 2025 benchmark shows homepage/navigation UX remains weak on many desktop and mobile sites, so compact navigation and route-to-route clarity are conversion work, not decoration.
+- Google Search Central and web.dev reinforce useful, organized content plus Core Web Vitals: fast loading, responsive interaction, and visual stability.
+- WCAG 2.2 resize-text guidance requires text and controls to survive 200% text scaling without clipping, truncation, or obscuring content.
+
+Public hero requirements:
+
+- Every primary public marketing route must open with a clear role-specific pitch: audience, pain, manual-first remedy, proof or guardrail, and one primary next action.
+- The homepage hero must be the strongest product signal: copy plus a real product-scene mockup above the fold, not a generic SaaS splash.
+- Supporting routes should reuse a consistent page-hero pattern with a compact proof rail or product-signal panel when the route is part of the main public site.
+- Proof near CTAs must use approved evidence only: manual workflow boundaries, pilot learning metrics, source context, readiness gates, and product capabilities already implemented or explicitly gated.
+- Do not use fake testimonials, fake revenue, fake conversion rates, fake customer logos, fake analytics, or unsupported AI/autonomous claims.
+- Dynamic visual polish is allowed only when it improves comprehension: product-scene boards, signal flows, compact status rails, restrained hover/focus states, and bilingual-safe sizing.
+- Trend-led visuals that create clutter, dark patterns, performance risk, or unclear product scope are not allowed.
+- The first viewport must hint at the next section on mobile and desktop, and no route may rely on oversized hero height that hides the product story below.
 
 ## 6. Pilot Conversion-State Specification
 

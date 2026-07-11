@@ -11,7 +11,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-18: Made the request UI unmistakably preview-only with non-submitting controls.
  * - 2026-06-19: Moved visible pilot-page copy and metadata into the public-site i18n dictionary.
@@ -21,6 +21,7 @@
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel for pilot applicants.
  * - 2026-07-05: Tokenized pilot guardrail warning treatment while keeping the non-submitting path.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero and copy-template anchor.
  * ============================================================
  */
 
@@ -29,12 +30,12 @@ import { cookies } from "next/headers";
 
 import { JsonLdScript } from "@/components/public/json-ld";
 import {
-  MarketingBadge,
   MarketingCard,
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -108,56 +109,76 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
       />
       <section className="bp-section-tight">
         <MarketingShell>
-          <div className="grid gap-8 min-[1100px]:grid-cols-[minmax(0,0.9fr)_minmax(340px,0.72fr)] min-[1100px]:items-start">
-            <div>
-              <MarketingBadge>{copy.badge}</MarketingBadge>
-              <h1
-                className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]"
-                style={{ color: marketingTone.text }}
-              >
-                {copy.title}
-              </h1>
-              <p
-                className="bp-body mt-5 max-w-[760px] leading-8"
-                style={{ color: marketingTone.soft }}
-              >
-                {copy.body}
-              </p>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "#pilot-request-template",
+                label: copy.conversion.primaryAction,
+              },
+              {
+                href: "/pricing",
+                label: navCopy.pricing,
+                variant: "secondary",
+              },
+            ]}
+            badge={copy.badge}
+            body={copy.body}
+            signals={copy.proof.metrics.slice(0, 3).map((metric, index) => ({
+              icon: index === 0 ? "target" : index === 1 ? "shield" : "lock",
+              label: metric.label,
+              toneName: index === 2 ? "gold" : "teal",
+              value: metric.value,
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.proof.body,
+              eyebrow: copy.proof.title,
+              footer: copy.proof.guardrail,
+              items: copy.nextSteps.map((step, index) => ({
+                icon: index === 0 ? "message" : index === 1 ? "pen" : "copy",
+                label: `${index + 1}`,
+                value: step,
+              })),
+              title: copy.nextStepsTitle,
+            }}
+          />
 
-              <div className="mt-7 grid gap-4">
-                {valueSections.map((section) => (
-                  <MarketingCard className="p-5 sm:p-6" key={section.title}>
-                    <h2
-                      className="bp-card-title font-black leading-tight"
-                      style={{ color: marketingTone.text }}
-                    >
-                      {section.title}
-                    </h2>
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                      {section.items.map((item) => (
-                        <div
-                          className="flex min-w-0 items-start gap-3 text-[14px] font-bold leading-6"
-                          key={item}
-                          style={{ color: marketingTone.soft }}
+          <div className="mt-8 grid gap-8 min-[1100px]:grid-cols-[minmax(0,0.9fr)_minmax(340px,0.72fr)] min-[1100px]:items-start">
+            <div className="grid gap-4">
+              {valueSections.map((section) => (
+                <MarketingCard className="p-5 sm:p-6" key={section.title}>
+                  <h2
+                    className="bp-card-title font-black leading-tight"
+                    style={{ color: marketingTone.text }}
+                  >
+                    {section.title}
+                  </h2>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    {section.items.map((item) => (
+                      <div
+                        className="flex min-w-0 items-start gap-3 text-[14px] font-bold leading-6"
+                        key={item}
+                        style={{ color: marketingTone.soft }}
+                      >
+                        <span
+                          className="mt-0.5 shrink-0"
+                          style={{ color: marketingTone.teal }}
                         >
-                          <span
-                            className="mt-0.5 shrink-0"
-                            style={{ color: marketingTone.teal }}
-                          >
-                            <MarketingIcon name="check" />
-                          </span>
-                          <span className="min-w-0">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </MarketingCard>
-                ))}
-              </div>
+                          <MarketingIcon name="check" />
+                        </span>
+                        <span className="min-w-0">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </MarketingCard>
+              ))}
             </div>
 
-            <MarketingCard className="p-6 sm:p-7">
-              <PilotRequestTemplateCard copy={copy.conversion} />
-            </MarketingCard>
+            <div id="pilot-request-template">
+              <MarketingCard className="p-6 sm:p-7">
+                <PilotRequestTemplateCard copy={copy.conversion} />
+              </MarketingCard>
+            </div>
           </div>
 
           <MarketingCard className="mt-8 p-5 sm:p-6">

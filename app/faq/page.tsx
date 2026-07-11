@@ -10,12 +10,13 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-21
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-21: Created the dedicated full FAQ route moved out of the homepage.
  * - 2026-06-25: Normalized FAQ rhythm and compact section headings to bp primitives.
  * - 2026-07-04: Added FAQPage and breadcrumb JSON-LD for AI-search/SEO clarity.
  * - 2026-07-05: Added a route-aware next-step panel after FAQ answers.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
  * ============================================================
  */
 
@@ -24,13 +25,13 @@ import { cookies } from "next/headers";
 
 import { JsonLdScript } from "@/components/public/json-ld";
 import {
-  MarketingBadge,
   MarketingButton,
   MarketingCard,
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -98,15 +99,41 @@ export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
       <MarketingHeader copy={navCopy} language={language} redirectPath="/faq" />
       <section className="bp-section-tight">
         <MarketingShell>
-          <div className="max-w-[900px]">
-            <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1 className="bp-page-title bp-copy-hero mt-5 font-black leading-[1.06]" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </h1>
-            <p className="bp-body bp-copy-hero-body mt-5 max-w-[780px] leading-8" style={{ color: marketingTone.soft }}>
-              {copy.body}
-            </p>
-          </div>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "/pilot",
+                label: (
+                  <>
+                    {navCopy.startFull} <MarketingIcon name="arrow" />
+                  </>
+                ),
+              },
+              {
+                href: "/pricing",
+                label: navCopy.pricing,
+                variant: "secondary",
+              },
+            ]}
+            badge={copy.badge}
+            body={copy.body}
+            signals={copy.sections.slice(0, 3).map((section, index) => ({
+              icon: index === 0 ? "message" : index === 1 ? "shield" : "briefcase",
+              label: copy.badge,
+              value: section.title,
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.body,
+              eyebrow: copy.badge,
+              items: copy.sections.slice(0, 3).map((section, index) => ({
+                icon: index === 0 ? "check" : index === 1 ? "lock" : "spark",
+                label: section.title,
+                value: section.items[0]?.question ?? section.title,
+              })),
+              title: navCopy.flow,
+            }}
+          />
         </MarketingShell>
       </section>
 

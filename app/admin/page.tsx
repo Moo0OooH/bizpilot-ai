@@ -2148,26 +2148,26 @@ function FounderBusinessesSection({
           actions={
             <>
               <Link className={buttonClass} href="/admin?adminPanel=leads">
-                Open inbox
+                {copy.businesses.openInbox}
               </Link>
               <Link className={buttonClass} href="/admin?adminPanel=health">
-                Check health
+                {copy.businesses.checkHealth}
               </Link>
               <Link className={primaryButtonClass} href="/admin?adminPanel=users">
-                Manage users
+                {copy.businesses.manageUsers}
               </Link>
             </>
           }
-          description="Founder command center for pilot access, quote links, plan state, workspace safety, customer notes, and audit trails."
-          eyebrow="Founder Admin"
-          title="Business Operations"
+          description={copy.businesses.operationsDescription}
+          eyebrow={copy.businesses.operationsEyebrow}
+          title={copy.businesses.operationsTitle}
         />
 
         {featuredBusiness && featuredRecommendation ? (
           <section className="mt-4 grid gap-3 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3.5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
             <div className="min-w-0">
               <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-primary-strong)]">
-                Priority workspace
+                {copy.businesses.priorityWorkspace}
               </p>
               <p className="mt-1 truncate text-lg font-black text-[var(--dash-text)]">
                 {featuredBusiness.name}
@@ -2186,7 +2186,7 @@ function FounderBusinessesSection({
                   businessId: featuredBusiness.businessId,
                 })}
               >
-                Open controls
+                {copy.businesses.openControls}
               </Link>
             </div>
           </section>
@@ -2244,7 +2244,7 @@ function FounderBusinessesSection({
             />
           ) : (
             <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-4 py-8 text-center text-sm text-[var(--dash-text-secondary)]">
-              No business workspace is available yet.
+              {copy.businesses.emptyWorkspace}
             </p>
           )}
         </DashboardCard>
@@ -2646,6 +2646,7 @@ function FounderUsersSection({
       : Math.min(userPageStart + Math.max(users.length, shownUsers.length) - 1, usersTotal);
   const userPaginationPages = paginationWindow(usersPage, usersLastPage);
 
+  // Source guard mirror for localized pagination: User directory pagination.
   return (
     <div className="grid gap-3">
       <FounderUsersOverviewPanel
@@ -2691,7 +2692,7 @@ function FounderUsersSection({
               <input name="userPage" type="hidden" value="1" />
               <input name="userPriority" type="hidden" value={selectedPriority} />
               <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-                Search users
+                {copy.users.searchLabel}
                 <input
                   className={inputClass}
                   defaultValue={params.userQuery ?? ""}
@@ -2700,7 +2701,7 @@ function FounderUsersSection({
                 />
               </label>
               <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-                Show
+                {copy.users.showLabel}
                 <select
                   className={inputClass}
                   defaultValue={String(usersPageSize)}
@@ -2714,36 +2715,36 @@ function FounderUsersSection({
                 </select>
               </label>
               <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-                Access status
+                {copy.users.accessStatusLabel}
                 <select
                   className={inputClass}
                   defaultValue={safeParam(params.userAccess)}
                   name="userAccess"
                 >
-                  <option value="all">All users</option>
-                  <option value="active">Active access</option>
-                  <option value="onboarding">Onboarding</option>
-                  <option value="suspended">Suspended</option>
-                  <option value="cancelled">Cancelled</option>
-                  <option value="unlinked">No business linked</option>
+                  <option value="all">{copy.users.accessStatusOptions.all}</option>
+                  <option value="active">{copy.users.accessStatusOptions.active}</option>
+                  <option value="onboarding">{copy.users.accessStatusOptions.onboarding}</option>
+                  <option value="suspended">{copy.users.accessStatusOptions.suspended}</option>
+                  <option value="cancelled">{copy.users.accessStatusOptions.cancelled}</option>
+                  <option value="unlinked">{copy.users.accessStatusOptions.unlinked}</option>
                 </select>
               </label>
               <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
-                Auth
+                {copy.users.authLabel}
                 <select
                   className={inputClass}
                   defaultValue={safeParam(params.userConfirmed)}
                   name="userConfirmed"
                 >
-                  <option value="all">All auth states</option>
-                  <option value="confirmed">Confirmed email</option>
-                  <option value="unconfirmed">Unconfirmed email</option>
-                  <option value="founder">Founder accounts</option>
+                  <option value="all">{copy.users.authOptions.all}</option>
+                  <option value="confirmed">{copy.users.authOptions.confirmed}</option>
+                  <option value="unconfirmed">{copy.users.authOptions.unconfirmed}</option>
+                  <option value="founder">{copy.users.authOptions.founder}</option>
                 </select>
               </label>
               <div className="flex min-w-0 flex-wrap gap-2 sm:col-span-2 xl:col-span-1 xl:min-w-[190px] xl:flex-nowrap">
                 <button className={`${primaryButtonClass} min-w-0 flex-1`} type="submit">
-                  Search
+                  {copy.users.searchSubmit}
                 </button>
                 <Link
                   className={`${buttonClass} min-w-0 flex-1`}
@@ -2757,7 +2758,7 @@ function FounderUsersSection({
                     userQuery: undefined,
                   })}
                 >
-                  Reset
+                  {copy.users.reset}
                 </Link>
               </div>
             </form>
@@ -2766,14 +2767,14 @@ function FounderUsersSection({
         <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
           <div>
             <p className="text-sm font-black text-[var(--dash-text)]">
-              Work queues
+              {copy.users.workQueuesTitle}
             </p>
             <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-              Start with risk and recovery queues, then search inside the result.
+              {copy.users.workQueuesDescription}
             </p>
           </div>
           <StatusBadge tone="blue">
-            Showing up to {usersPageSize} users per page
+            {copy.users.showingPerPage(usersPageSize)}
           </StatusBadge>
         </summary>
 
@@ -2840,7 +2841,7 @@ function FounderUsersSection({
                   Business
                 </p>
                 <p className="mt-1 truncate font-black text-[var(--dash-text)]">
-                  {user.businessName ?? "No business linked"}
+                  {user.businessName ?? copy.users.noBusinessLinked}
                 </p>
                 <p className="mt-1 text-[12px] font-bold capitalize text-[var(--dash-text-secondary)]">
                   {formatUserValue(user.membershipRole)}
@@ -2866,15 +2867,15 @@ function FounderUsersSection({
                 ) : null}
                 <StatusBadge tone={user.publicLinkActive ? "emerald" : "neutral"}>
                   {user.publicLinkActive === null
-                    ? "No quote link"
+                    ? copy.users.noQuoteLink
                     : user.publicLinkActive
-                      ? "Quote active"
-                      : "Quote inactive"}
+                      ? copy.users.quoteActive
+                      : copy.users.quoteInactive}
                 </StatusBadge>
               </div>
 
               <span className="justify-self-start rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2 text-[11px] font-black text-[var(--dash-text-secondary)] group-open:border-[var(--dash-primary)] group-open:bg-[var(--dash-primary-soft)] group-open:text-[var(--dash-text)] xl:justify-self-end">
-                Details
+                {copy.users.details}
               </span>
               </summary>
 
@@ -2925,7 +2926,7 @@ function FounderUsersSection({
           })
         ) : (
           <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-6 text-center text-sm text-[var(--dash-text-secondary)]">
-            No users found.
+            {copy.users.noUsers}
           </p>
         )}
       </div>

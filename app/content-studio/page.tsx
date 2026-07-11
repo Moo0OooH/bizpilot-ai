@@ -10,7 +10,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-07-05: Reused the roadmap explanation in the next-step panel for clearer visitor guidance.
  * - 2026-06-18: Applied responsive section spacing and intrinsic card grid.
@@ -20,19 +20,20 @@
  * - 2026-06-25: Normalized roadmap page rhythm to canonical bp primitives.
  * - 2026-07-04: Marked roadmap-only Content Studio as noindex while keeping the route available for visitors.
  * - 2026-07-05: Added a route-aware next-step panel that keeps roadmap traffic in the current product scope.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import {
-  MarketingBadge,
   MarketingButton,
   MarketingCard,
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -79,15 +80,40 @@ export default async function ContentStudioPage({
       <MarketingHeader copy={navCopy} language={language} redirectPath="/content-studio" />
       <section className="bp-section-tight">
         <MarketingShell>
-          <div className="max-w-[860px]">
-            <MarketingBadge toneName="gold">{copy.badge}</MarketingBadge>
-            <h1 className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </h1>
-            <p className="bp-body mt-5 leading-8" style={{ color: marketingTone.soft }}>
-              {copy.body}
-            </p>
-          </div>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "/pilot",
+                label: copy.cta,
+              },
+              {
+                href: "/features",
+                label: navCopy.features,
+                variant: "secondary",
+              },
+            ]}
+            badge={copy.badge}
+            badgeTone="gold"
+            body={copy.body}
+            signals={copy.cards.slice(0, 3).map((card, index) => ({
+              icon: index === 0 ? "pen" : index === 1 ? "calendar" : "shield",
+              label: copy.badge,
+              toneName: "gold",
+              value: card.title,
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.footer,
+              eyebrow: copy.badge,
+              items: copy.cards.slice(0, 4).map((card, index) => ({
+                icon: index === 0 ? "pen" : index === 1 ? "message" : "check",
+                label: `${index + 1}`,
+                toneName: "gold",
+                value: card.body,
+              })),
+              title: navCopy.why,
+            }}
+          />
           <div className="bp-grid-six supporting-six-grid mt-8">
             {copy.cards.map((card, index) => (
               <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={card.title}>

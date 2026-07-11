@@ -11,7 +11,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-18: Tightened trust grid and added Privacy/Security links.
  * - 2026-06-19: Moved visible trust-page copy and metadata into the public-site i18n dictionary.
@@ -21,6 +21,7 @@
  * - 2026-07-04: Added current evidence and open-gate trust boundaries.
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel for trust and policy flow.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
  * ============================================================
  */
 
@@ -35,6 +36,7 @@ import {
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -94,15 +96,42 @@ export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
       <MarketingHeader copy={navCopy} language={language} redirectPath="/trust" />
       <section className="bp-section-tight">
         <MarketingShell>
-          <div className="mx-auto max-w-[820px] text-center">
-            <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1 className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </h1>
-            <p className="bp-body mt-5 leading-8" style={{ color: marketingTone.soft }}>
-              {copy.body}
-            </p>
-          </div>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "/privacy",
+                label: copy.privacyCta,
+                variant: "secondary",
+              },
+              {
+                href: "/security",
+                label: copy.securityCta,
+                variant: "secondary",
+              },
+              {
+                href: "/pilot",
+                label: copy.primaryCta,
+              },
+            ]}
+            badge={copy.badge}
+            body={copy.body}
+            signals={copy.pillars.map((pillar, index) => ({
+              icon: index === 0 ? "shield" : index === 1 ? "pen" : "lock",
+              label: pillar.title,
+              value: pillar.body,
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.evidence.body,
+              eyebrow: copy.evidence.title,
+              items: copy.evidence.items.slice(0, 3).map((item, index) => ({
+                icon: index === 0 ? "check" : index === 1 ? "shield" : "lock",
+                label: item.title,
+                value: item.body,
+              })),
+              title: copy.notes.badge,
+            }}
+          />
           <div className="bp-trust-grid supporting-three-grid mt-8">
             {copy.pillars.map((pillar) => (
               <MarketingCard className="flex min-w-0 flex-col p-5 sm:p-6" key={pillar.title}>

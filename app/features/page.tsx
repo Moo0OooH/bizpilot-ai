@@ -10,7 +10,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-18: Added compact proof visual, trust strip, and responsive intrinsic grid.
  * - 2026-06-19: Moved visible feature-page copy and metadata into the public-site i18n dictionary.
@@ -22,6 +22,7 @@
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel for public conversion flow.
  * - 2026-07-05: Tokenized proof and badge strips for launch-ready theme consistency.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
  * ============================================================
  */
 
@@ -37,6 +38,7 @@ import {
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -99,12 +101,41 @@ export default async function FeaturesPage({
       <MarketingHeader copy={navCopy} language={language} redirectPath="/features" />
       <section className="bp-section-tight">
         <MarketingShell>
-          <div className="max-w-[820px]">
-            <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1 className="bp-page-title bp-copy-hero mt-5 font-black leading-[1.06]" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </h1>
-          </div>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "/pilot",
+                label: (
+                  <>
+                    {copy.primaryCta} <MarketingIcon name="arrow" />
+                  </>
+                ),
+              },
+              {
+                href: "/trust",
+                label: copy.secondaryCta,
+                variant: "secondary",
+              },
+            ]}
+            badge={copy.badge}
+            body={copy.proof.body}
+            signals={copy.badges.slice(0, 3).map((item, index) => ({
+              icon: featureIcons[index] ?? "check",
+              label: index === 0 ? copy.proof.badge : copy.proof.title,
+              value: item,
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.proof.body,
+              eyebrow: copy.proof.badge,
+              items: copy.proof.items.slice(0, 4).map((item, index) => ({
+                icon: featureIcons[index] ?? "check",
+                label: `${index + 1}`,
+                value: item,
+              })),
+              title: copy.proof.title,
+            }}
+          />
           <div className="bp-grid-six supporting-six-grid mt-8">
             {copy.cards.map((item, index) => (
               <MarketingCard className="bp-card-structured min-w-0 p-5 sm:p-6" key={item.title}>

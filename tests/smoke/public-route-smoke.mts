@@ -9,7 +9,7 @@
  * - docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
  * - 2026-07-04: Added comparison route smoke coverage.
@@ -18,6 +18,7 @@
  * - 2026-07-05: Updated homepage smoke markers for the product-scene hero.
  * - 2026-07-05: Updated homepage smoke markers for the hot quote rescue hero.
  * - 2026-07-05: Aligned homepage smoke markers with escaped production HTML.
+ * - 2026-07-11: Updated homepage smoke markers for the stronger quote-rescue hero.
  * ============================================================
  */
 
@@ -42,9 +43,9 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 const smokeTargets: readonly SmokeTarget[] = [
   {
     expectedText: [
-      "Stop losing hot cleaning quotes to slow replies.",
+      "Rescue cleaning quotes before customers move on.",
       "Join the pilot",
-      "Waiting 47 minutes",
+      "47-minute wait",
       "Hot quote at risk",
       "Review &amp; copy",
     ],

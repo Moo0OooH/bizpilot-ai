@@ -1,6 +1,6 @@
 # BizPilot Final Bilingual Copy And UX Spec v1.0
 
-Date: 2026-06-21
+Date: 2026-07-11
 Status: Active F0 final bilingual public copy and UX contract.
 Scope: Public marketing routes, auth shells, quote shells, safe report shells,
 metadata, policy pages, and the tests that protect these surfaces.
@@ -179,6 +179,29 @@ tests.
   preference modes.
 - Compact labels must keep full meaning through nearby context or accessible
   labels.
+
+## 2026-07-11 Public Hero Copy Addendum
+
+Main public routes must keep hero copy specific enough to answer five questions
+quickly in both English and fr-CA:
+
+- Who is this for?
+- What costly moment does it prevent?
+- What does BizPilot organize or draft?
+- What remains manual and owner-controlled?
+- What should the visitor do next?
+
+Approved proof language may mention owner-reviewed drafts, manual copy/send,
+missing-detail visibility, quote-source context, pilot learning metrics, and
+readiness gates. It must not mention fake customers, fake conversion wins,
+autonomous sending, automatic booking, payments, invoices, SMS/WhatsApp
+automation, or full CRM scope.
+
+Longer French strings must be handled by responsive layout, wrapping, and
+shared sizing primitives, not language-specific clipping, hidden overflow, or
+essential ellipsis. Hero/product-scene copy should remain short enough for the
+first viewport to show a hint of the next section on supported mobile and
+desktop widths.
 
 ## Quote-Shell Rules
 

@@ -11,7 +11,7 @@
  * - components/ui/theme-preference-control.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-21: Added homepage demo numbering regression coverage.
  * - 2026-06-21: Added canonical public responsive-grid regression coverage.
@@ -34,6 +34,7 @@
  * - 2026-06-26: Locked the homepage workflow preview to one compact panel instead of four cards.
  * - 2026-07-05: Locked the homepage product-scene hero redesign.
  * - 2026-07-05: Locked the foreground hot quote rescue board and snapshot section.
+ * - 2026-07-11: Locked the shared public page hero primitive across the main marketing routes.
  * ============================================================
  */
 
@@ -55,6 +56,9 @@ const publicRouteFiles = [
   "app/pricing/page.tsx",
   "app/pilot/page.tsx",
   "app/content-studio/page.tsx",
+  "app/faq/page.tsx",
+  "app/quote-link-guide/page.tsx",
+  "app/faster-quote-replies/page.tsx",
   "app/privacy/page.tsx",
   "app/security/page.tsx",
   "app/terms/page.tsx",
@@ -88,6 +92,10 @@ describe("public visual stability source contracts", () => {
       ".bp-eyebrow",
       ".bp-badge",
       ".bp-button-row",
+      ".marketing-page-hero",
+      ".marketing-page-hero-with-visual",
+      ".marketing-page-hero-proof",
+      ".marketing-page-hero-panel",
     ]) {
       assert.equal(
         globals.includes(primitive),
@@ -243,6 +251,8 @@ describe("public visual stability source contracts", () => {
   });
 
   it("keeps supporting public pages on the canonical rhythm primitives", () => {
+    const marketingUi = source("components/public/marketing-ui.tsx");
+
     for (const route of [
       "app/comparison/page.tsx",
       "app/features/page.tsx",
@@ -252,11 +262,14 @@ describe("public visual stability source contracts", () => {
       "app/pilot/page.tsx",
       "app/content-studio/page.tsx",
       "app/faq/page.tsx",
+      "app/quote-link-guide/page.tsx",
+      "app/faster-quote-replies/page.tsx",
     ]) {
       const routeSource = source(route);
       assert.equal(routeSource.includes("bp-page public-site"), true, `${route} should use bp-page.`);
       assert.equal(routeSource.includes("bp-section-tight"), true, `${route} should use bp-section-tight.`);
-      assert.equal(routeSource.includes("bp-page-title"), true, `${route} should use bp-page-title.`);
+      assert.equal(routeSource.includes("MarketingPageHero"), true, `${route} should use the shared public page hero.`);
+      assert.equal(marketingUi.includes("bp-page-title"), true, "MarketingPageHero should own page-title sizing.");
     }
 
     const policyPage = source("components/public/policy-page.tsx");
@@ -271,8 +284,7 @@ describe("public visual stability source contracts", () => {
     const globals = source("app/globals.css");
 
     for (const required of [
-      "public-pricing-title",
-      "public-pricing-hero-cta",
+      "MarketingPageHero",
       "public-pricing-grid",
       "public-plan-card",
       "public-plan-card-header",
@@ -373,6 +385,19 @@ describe("public visual stability source contracts", () => {
     assert.equal(globals.includes(".homepage-rescue-board"), true);
     assert.equal(globals.includes(".homepage-risk-heading"), true);
     assert.equal(globals.includes(".homepage-cleaning-visual"), true);
+    assert.equal(homepage.includes("homepage-intelligence-visual"), true);
+    assert.equal(globals.includes(".homepage-intelligence-grid"), true);
+    for (const unclearVisualMarker of [
+      "homepage-bottle",
+      "homepage-towel",
+      "homepage-brush",
+    ]) {
+      assert.equal(
+        `${homepage}\n${globals}`.includes(unclearVisualMarker),
+        false,
+        `Homepage hero should not restore the unclear cleaning-object visual ${unclearVisualMarker}.`,
+      );
+    }
     assert.equal(
       globals.includes("@media (min-width: 1100px) and (max-height: 780px)"),
       true,

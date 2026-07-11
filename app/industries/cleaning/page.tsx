@@ -11,7 +11,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-18: Added quote example, organized lead details, and top/end pilot CTAs.
  * - 2026-06-19: Moved visible cleaning-page copy and metadata into the public-site i18n dictionary.
@@ -25,6 +25,7 @@
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel for cleaning-owner education.
  * - 2026-07-05: Tokenized cleaning proof cards for launch-ready light/dark consistency.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
  * ============================================================
  */
 
@@ -34,13 +35,13 @@ import { cookies } from "next/headers";
 import { JsonLdScript } from "@/components/public/json-ld";
 import { CleaningServiceDetails } from "@/components/public/cleaning-service-details";
 import {
-  MarketingBadge,
   MarketingButton,
   MarketingCard,
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -104,58 +105,53 @@ export default async function CleaningPage({
       <MarketingHeader copy={navCopy} language={language} redirectPath="/industries/cleaning" />
       <section className="bp-section-hero cleaning-page-section">
         <MarketingShell>
-          <div className="bp-hero-grid cleaning-hero-grid grid min-w-0 items-center gap-6 min-[1100px]:grid-cols-[minmax(0,0.96fr)_minmax(19rem,0.48fr)]">
-            <div className="min-w-0">
-              <MarketingBadge>{copy.badge}</MarketingBadge>
-              <h1 className="bp-page-title bp-copy-hero mt-5 font-black leading-[1.06]" style={{ color: marketingTone.text }}>
-                {copy.title}
-              </h1>
-              <p className="bp-body bp-copy-hero-body mt-5 max-w-[46rem] leading-8" style={{ color: marketingTone.soft }}>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "/pilot",
+                label: copy.ctaPrimary,
+              },
+              {
+                href: "/demo",
+                label: copy.ctaSecondary,
+                variant: "secondary",
+              },
+            ]}
+            badge={copy.badge}
+            body={
+              <>
                 {copy.body}
-              </p>
-              <p className="bp-copy-card-body mt-4 max-w-[46rem] text-[15px] leading-7" style={{ color: marketingTone.soft }}>
-                {copy.intro}
-              </p>
-              <div className="bp-button-row mt-6 flex flex-col gap-3 sm:flex-row">
-                <MarketingButton href="/pilot">{copy.ctaPrimary}</MarketingButton>
-                <MarketingButton href="/demo" variant="secondary">{copy.ctaSecondary}</MarketingButton>
-              </div>
-            </div>
-
-            <MarketingCard className="cleaning-before-after-card p-5 sm:p-6">
-              <MarketingBadge toneName="blue">{copy.beforeAfter.beforeLabel}</MarketingBadge>
-              <p
-                className="mt-4 rounded-[14px] border p-4 text-[15px] font-black leading-7"
-                style={{
-                  backgroundColor: "var(--surface-interactive)",
-                  borderColor: marketingTone.border,
-                  color: marketingTone.text,
-                }}
-              >
-                {copy.beforeAfter.before}
-              </p>
-              <h2 className="bp-card-title bp-copy-card-title mt-5 font-black leading-tight" style={{ color: marketingTone.text }}>
-                {copy.beforeAfter.title}
-              </h2>
-              <p className="bp-copy-card-body mt-3 text-[14px] leading-7" style={{ color: marketingTone.soft }}>
-                {copy.beforeAfter.body}
-              </p>
-              <div
-                className="mt-5 rounded-[14px] border p-4"
-                style={{
-                  backgroundColor: "color-mix(in srgb, var(--accent) 10%, var(--surface))",
-                  borderColor: "color-mix(in srgb, var(--accent) 30%, var(--border-default))",
-                }}
-              >
-                <p className="text-[12px] font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.teal }}>
-                  {copy.beforeAfter.afterLabel}
-                </p>
-                <p className="mt-2 text-[14px] font-bold leading-7" style={{ color: marketingTone.text }}>
-                  {copy.beforeAfter.after}
-                </p>
-              </div>
-            </MarketingCard>
-          </div>
+                <span className="mt-4 block text-[15px] font-bold leading-7">
+                  {copy.intro}
+                </span>
+              </>
+            }
+            className="cleaning-hero-grid"
+            signals={services.slice(0, 3).map((service, index) => ({
+              icon: index === 0 ? "briefcase" : index === 1 ? "spark" : "target",
+              label: copy.servicesTitle,
+              value: service.title,
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.beforeAfter.body,
+              eyebrow: copy.beforeAfter.beforeLabel,
+              items: [
+                {
+                  icon: "message",
+                  label: copy.beforeAfter.beforeLabel,
+                  toneName: "blue",
+                  value: copy.beforeAfter.before,
+                },
+                {
+                  icon: "pen",
+                  label: copy.beforeAfter.afterLabel,
+                  value: copy.beforeAfter.after,
+                },
+              ],
+              title: copy.beforeAfter.title,
+            }}
+          />
 
           <section aria-labelledby="cleaning-services-heading" className="mt-10">
             <h2 id="cleaning-services-heading" className="bp-section-title bp-copy-section-title font-black leading-tight" style={{ color: marketingTone.text }}>

@@ -9,7 +9,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
@@ -28,6 +28,7 @@
  * - 2026-07-05: Locked bilingual homepage product-scene hero copy.
  * - 2026-07-05: Locked the hot quote rescue hero and preview copy.
  * - 2026-07-05: Added regression coverage for legacy quote-field localization and dashboard form placeholders.
+ * - 2026-07-11: Locked the stronger bilingual quote-rescue homepage hero copy.
  * ============================================================
  */
 
@@ -621,7 +622,7 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       frenchPublicCopy.home.hero.title,
-      "Ne laissez pas une soumission urgente attendre.",
+      "Sauvez vos soumissions avant que le client parte.",
     );
     assert.ok(
       frenchPublicCopy.home.hero.title.length <= 70,
@@ -634,16 +635,16 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.hero.secondaryCta, "Voir le flux");
     assert.equal(
       frenchPublicCopy.home.hero.body,
-      "BizPilot montre la demande urgente, les détails manquants et un brouillon que vous pouvez valider et copier avant que le client passe à autre chose.",
+      "BizPilot transforme les demandes dispersées en un parcours sous votre contrôle: urgence, détails manquants et brouillon à valider, copier et envoyer manuellement.",
     );
     assert.deepEqual(frenchPublicCopy.home.hero.bullets, [
-      "Repérer les demandes chaudes",
-      "Voir ce qui manque",
-      "Valider et copier la réponse",
+      "Repérer les demandes à risque",
+      "Compléter les détails manquants",
+      "Valider, copier et envoyer manuellement",
     ]);
     assert.equal(
       frenchPublicCopy.home.hero.note,
-      "Projet pilote guidé. Aucun envoi automatique. Aucun prix inventé.",
+      "Projet pilote guidé. Vous copiez et envoyez. Aucun envoi automatique ni prix inventé.",
     );
     assert.equal(frenchPublicCopy.home.mockup.chaosTitle, "Soumission à risque");
     assert.equal(frenchPublicCopy.home.mockup.chaosSubtitle, "47 minutes d'attente");
@@ -658,7 +659,7 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.mockup.claritySubtitle, "Validation");
     assert.equal(frenchPublicCopy.home.mockup.draftTitle, "Brouillon prêt à valider");
     assert.equal(frenchPublicCopy.home.mockup.copyButton, "Réviser et copier");
-    assert.equal(frenchPublicCopy.home.hero.proofLabel, "Flux de sauvetage");
+    assert.equal(frenchPublicCopy.home.hero.proofLabel, "Parcours de sauvetage");
     assert.deepEqual(frenchPublicCopy.home.hero.signals, [
       {
         label: "Risque",
@@ -666,11 +667,11 @@ describe("BizPilot language copy", () => {
       },
       {
         label: "Manquant",
-        value: "Superficie, accès",
+        value: "Superficie, accès, moment",
       },
       {
-        label: "Prêt",
-        value: "Brouillon à valider",
+        label: "Contrôle",
+        value: "Valider, copier, envoyer",
       },
     ]);
     assert.equal(frenchPublicCopy.home.mockup.sources.length, 5);
@@ -678,14 +679,14 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchPublicCopy.home.mockup.leads.length, 2);
     assert.equal(
       frenchPublicCopy.home.preview.title,
-      "Voyez le risque et la prochaine réponse au même endroit.",
+      "Voyez le risque, les détails manquants et la réponse.",
     );
     assert.equal(
       frenchPublicCopy.home.preview.body,
-      "Une vue claire montre ce qui est à risque, ce qui manque et ce que vous pouvez valider ensuite.",
+      "Une vue claire montre le risque, les détails manquants et la réponse que vous pouvez valider ensuite.",
     );
     assert.deepEqual(frenchPublicCopy.home.preview.steps, [
-      "Repérer l'urgence",
+      "Repérer le risque",
       "Trouver les détails manquants",
       "Valider la réponse",
     ]);
@@ -946,20 +947,20 @@ describe("BizPilot language copy", () => {
 
     assert.equal(
       englishPublicCopy.home.hero.title,
-      "Stop losing hot cleaning quotes to slow replies.",
+      "Rescue cleaning quotes before customers move on.",
     );
     assert.equal(
       englishPublicCopy.home.hero.body,
-      "BizPilot shows the urgent request, the missing details, and a reply draft you can review and copy before the customer moves on.",
+      "BizPilot turns scattered quote requests into one owner-controlled rescue path: urgency, missing details, and a reply draft you can review, copy, and send manually.",
     );
     assert.deepEqual(englishPublicCopy.home.hero.bullets, [
-      "Spot hot quote requests",
-      "See what is missing",
-      "Review and copy the reply",
+      "Catch at-risk quote requests",
+      "Collect missing details before quoting",
+      "Review, copy, and send manually",
     ]);
     assert.equal(
       englishPublicCopy.home.hero.note,
-      "Founder-led pilot. No auto-send. No invented pricing.",
+      "Founder-led pilot. You copy and send. No auto-send or invented pricing.",
     );
     assert.equal(englishPublicCopy.home.mockup.chaosTitle, "Hot quote at risk");
     assert.equal(englishPublicCopy.home.mockup.chaosSubtitle, "Waiting 47 minutes");
@@ -974,19 +975,19 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.home.mockup.claritySubtitle, "Owner review");
     assert.equal(englishPublicCopy.home.mockup.draftTitle, "Draft ready to review");
     assert.equal(englishPublicCopy.home.mockup.copyButton, "Review & copy");
-    assert.equal(englishPublicCopy.home.hero.proofLabel, "Hot quote rescue flow");
+    assert.equal(englishPublicCopy.home.hero.proofLabel, "Quote rescue path");
     assert.deepEqual(englishPublicCopy.home.hero.signals, [
       {
         label: "Risk",
-        value: "Waiting 47 minutes",
+        value: "47-minute wait",
       },
       {
         label: "Missing",
-        value: "Square footage, access",
+        value: "Size, access, timing",
       },
       {
-        label: "Ready",
-        value: "Draft for review",
+        label: "Control",
+        value: "Review, copy, send",
       },
     ]);
     assert.equal(englishPublicCopy.home.mockup.sources.length, 5);
@@ -994,11 +995,11 @@ describe("BizPilot language copy", () => {
     assert.equal(englishPublicCopy.home.mockup.leads.length, 2);
     assert.equal(
       englishPublicCopy.home.preview.title,
-      "See the quote risk and the next reply in one view.",
+      "See the risk, missing details, and reply in one view.",
     );
     assert.equal(
       englishPublicCopy.home.preview.body,
-      "One clear snapshot shows what is at risk, what is missing, and what the owner can review next.",
+      "One clear snapshot shows the quote risk, the missing details, and the reply the owner can review next.",
     );
     assert.deepEqual(englishPublicCopy.home.preview.steps, [
       "Spot the hot request",

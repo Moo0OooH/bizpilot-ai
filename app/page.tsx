@@ -10,7 +10,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-18: Applied responsive hero, section density, and no-inner-scroll demo hardening.
  * - 2026-06-19: Mapped the hero product preview to semantic theme surfaces for dark contrast.
@@ -33,6 +33,7 @@
  * - 2026-07-05: Rebuilt the homepage hero as a full-stage product scene with overlay copy.
  * - 2026-07-05: Added a route-aware next-step panel below the founder-pilot CTA.
  * - 2026-07-05: Refocused the hero and second section around a hot-lead risk-to-remedy story.
+ * - 2026-07-11: Replaced the abstract cleaning illustration with a clearer premium product intelligence panel.
  * ============================================================
  */
 
@@ -286,11 +287,33 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
             </div>
           </section>
 
-          <div className="homepage-cleaning-visual" aria-hidden="true">
-            <span className="homepage-bottle homepage-bottle--spray" />
-            <span className="homepage-bottle homepage-bottle--soap" />
-            <span className="homepage-towel" />
-            <span className="homepage-brush" />
+          <div className="homepage-cleaning-visual homepage-intelligence-visual" aria-hidden="true">
+            <div className="homepage-intelligence-header">
+              <span>{copy.bizPilotTitle}</span>
+              <strong>{copy.boardSafety}</strong>
+            </div>
+            <div className="homepage-intelligence-meter">
+              <span className="homepage-intelligence-meter-fill" />
+            </div>
+            <div className="homepage-intelligence-grid">
+              <span>
+                <strong>{copy.chaosSubtitle}</strong>
+                <em>{copy.chaosTitle}</em>
+              </span>
+              <span>
+                <strong>{missingDetails.length}</strong>
+                <em>{missingDetails[0]}</em>
+              </span>
+              <span>
+                <strong>{copy.copyButton}</strong>
+                <em>{copy.clarityBadge}</em>
+              </span>
+            </div>
+            <div className="homepage-intelligence-path">
+              <i />
+              <i />
+              <i />
+            </div>
           </div>
         </div>
 

@@ -10,7 +10,7 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-18: Removed duplicate monthly price highlights and aligned card reflow.
  * - 2026-06-19: Moved visible pricing-page copy and metadata into the public-site i18n dictionary.
@@ -24,6 +24,7 @@
  * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
  * - 2026-07-05: Added a route-aware next-step panel for pricing decisions.
  * - 2026-07-05: Tokenized pricing guardrail icon treatment without changing payment gates.
+ * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
  * ============================================================
  */
 
@@ -31,13 +32,13 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { JsonLdScript } from "@/components/public/json-ld";
 import {
-  MarketingBadge,
   MarketingButton,
   MarketingCard,
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
   MarketingNextStepPanel,
+  MarketingPageHero,
   MarketingShell,
   marketingBackground,
   marketingTone,
@@ -99,20 +100,39 @@ export default async function PricingPage({
       <MarketingHeader active="pricing" copy={navCopy} language={language} redirectPath="/pricing" />
       <section className="bp-section-tight">
         <MarketingShell>
-          <div className="mx-auto max-w-[820px] text-center">
-            <MarketingBadge>{copy.badge}</MarketingBadge>
-            <h1 className="bp-page-title bp-copy-hero public-pricing-title mx-auto mt-5 max-w-[580px] font-black leading-[1.06]" style={{ color: marketingTone.text }}>
-              {copy.title}
-            </h1>
-            <p className="bp-body bp-copy-hero-body mt-5 leading-8" style={{ color: marketingTone.soft }}>
-              {copy.body}
-            </p>
-            <div className="bp-button-row public-pricing-hero-cta mt-6 flex justify-center">
-              <MarketingButton href="/pilot">
-                {copy.cards[0]?.cta ?? navCopy.pilot}
-              </MarketingButton>
-            </div>
-          </div>
+          <MarketingPageHero
+            actions={[
+              {
+                href: "/pilot",
+                label: copy.cards[0]?.cta ?? navCopy.pilot,
+              },
+              {
+                href: "/trust",
+                label: navCopy.trust,
+                variant: "secondary",
+              },
+            ]}
+            badge={copy.badge}
+            body={copy.body}
+            className="public-pricing-hero-cta"
+            signals={copy.cards.map((card, index) => ({
+              icon: index === 0 ? "spark" : index === 1 ? "briefcase" : "lock",
+              label: card.cohort,
+              toneName: index === 0 ? "teal" : index === 1 ? "blue" : "gold",
+              value: card.priceLines.join(" / "),
+            }))}
+            title={copy.title}
+            visual={{
+              body: copy.guardrail.body,
+              eyebrow: copy.guardrail.title,
+              items: copy.afterApply.steps.map((step, index) => ({
+                icon: index === 0 ? "message" : index === 1 ? "shield" : "check",
+                label: `${index + 1}`,
+                value: step,
+              })),
+              title: copy.afterApply.title,
+            }}
+          />
 
           <div className="bp-pricing-grid public-pricing-grid supporting-three-grid mt-8">
             {copy.cards.map((card, index) => (

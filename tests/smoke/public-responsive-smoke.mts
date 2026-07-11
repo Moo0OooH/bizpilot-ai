@@ -9,7 +9,7 @@
  * - docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
  * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
  * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
@@ -26,6 +26,7 @@
  * - 2026-07-05: Updated bilingual homepage checks for the product-scene hero.
  * - 2026-07-05: Updated bilingual homepage checks for the hot quote rescue hero.
  * - 2026-07-05: Aligned homepage smoke markers with escaped production HTML.
+ * - 2026-07-11: Updated bilingual homepage checks for the stronger quote-rescue hero.
  * ============================================================
  */
 
@@ -42,7 +43,7 @@ const TIMEOUT_MS = 15_000;
 
 const routes: readonly RouteContract[] = [
   {
-    h1: "Stop losing hot cleaning quotes to slow replies.",
+    h1: "Rescue cleaning quotes before customers move on.",
     maxOccurrences: [
       {
         max: 5,
@@ -56,19 +57,19 @@ const routes: readonly RouteContract[] = [
       "homepage-use-case-grid",
       "homepage-hero-proof-rail",
       "homepage-product-scene",
-      "Waiting 47 minutes",
+      "47-minute wait",
       "Hot quote at risk",
       "Reply ready for owner review",
-      "Draft for review",
+      "Review, copy, send",
       "Review &amp; copy",
-      "Founder-led pilot. No auto-send. No invented pricing.",
+      "Founder-led pilot. You copy and send. No auto-send or invented pricing.",
       "No auto-send",
     ],
     mustNotContain: ["homepage-workflow-grid"],
     path: "/",
   },
   {
-    h1: "Ne laissez pas une soumission urgente attendre.",
+    h1: "Sauvez vos soumissions avant que le client parte.",
     maxOccurrences: [
       {
         max: 5,
@@ -85,9 +86,9 @@ const routes: readonly RouteContract[] = [
       "47 minutes d&#x27;attente",
       "Soumission à risque",
       "Réponse prête pour validation",
-      "Brouillon à valider",
+      "Valider, copier, envoyer",
       "Réviser et copier",
-      "Projet pilote guidé. Aucun envoi automatique. Aucun prix inventé.",
+      "Projet pilote guidé. Vous copiez et envoyez. Aucun envoi automatique ni prix inventé.",
       "Aucun envoi automatique",
     ],
     mustNotContain: [
