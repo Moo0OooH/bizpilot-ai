@@ -12,6 +12,7 @@
  * Created: 2026-05-22
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Localized founder inbox, recent admin-change, cleanup-safety, activity-filter, and action-label helpers.
  * - 2026-07-11: Built localized founder user-priority groups before rendering the work-queue filters.
  * - 2026-07-11: Localized founder health, activity, and user-directory chrome through shared admin copy.
  * - 2026-07-11: Wired founder activity newsroom copy through the localized admin dictionary.
@@ -145,37 +146,6 @@ type SessionTimeoutMode = FounderAdminBusiness["sessionTimeoutMode"];
 
 const adminUserPageSizeOptions = [10, 25, 50] as const;
 
-const planLabels: Record<PlanSlug, string> = {
-  founder_pilot: "Founder Pilot",
-  paused: "Paused",
-  pro: "Pro",
-  starter: "Starter",
-};
-
-const statusLabels: Record<BusinessStatus, string> = {
-  active: "Active",
-  cancelled: "Cancelled",
-  onboarding: "Onboarding",
-  suspended: "Suspended",
-};
-
-const adminActionLabels: Readonly<Record<string, string>> = {
-  business_cancelled: "Business cancelled",
-  business_deletion_requested: "Deletion requested",
-  business_reactivated: "Business reactivated",
-  business_suspended: "Business suspended",
-  internal_note_added: "Internal note saved",
-  password_reset_requested: "Password reset requested",
-  plan_changed: "Plan changed",
-  quote_link_disabled: "Quote link disabled",
-  quote_link_enabled: "Quote link enabled",
-  session_policy_changed: "Session policy changed",
-  status_changed: "Workspace status changed",
-  temporary_password_set: "Temporary password set",
-  test_auth_user_deleted: "Test auth user deleted",
-  test_workspace_cleanup_completed: "Test workspace cleanup",
-};
-
 const controlPanelClass =
   "grid w-full min-w-0 max-w-full gap-3 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 sm:p-3.5 shadow-sm";
 const toolboxSectionClass =
@@ -186,6 +156,34 @@ type UserPriorityOption = Readonly<{
   label: string;
   value: string;
 }>;
+
+const activityFilterValues = [
+  "all",
+  "access",
+  "quote",
+  "plan",
+  "cleanup",
+  "notes",
+  "auth",
+  "system",
+] as const satisfies ReadonlyArray<ActivityFilter>;
+
+function hasOwnKey<T extends object>(
+  object: T,
+  key: PropertyKey,
+): key is keyof T {
+  return Object.prototype.hasOwnProperty.call(object, key);
+}
+
+function buildActivityFilters(
+  copy: AdminCopy,
+): ReadonlyArray<Readonly<{ label: string; value: ActivityFilter }>> {
+  const labels = copy.overview.activityFilters;
+  return activityFilterValues.map((value) => ({
+    label: labels[value],
+    value,
+  }));
+}
 
 function buildUserPriorityGroups(
   copy: AdminCopy,
@@ -283,38 +281,24 @@ function buildUserPriorityGroups(
   ];
 }
 
-const activityFilters: ReadonlyArray<{
-  label: string;
-  value: ActivityFilter;
-}> = [
-  { label: "All", value: "all" },
-  { label: "Access", value: "access" },
-  { label: "Quote", value: "quote" },
-  { label: "Plan", value: "plan" },
-  { label: "Cleanup", value: "cleanup" },
-  { label: "Notes", value: "notes" },
-  { label: "Auth", value: "auth" },
-  { label: "System", value: "system" },
-];
-
-function formatDate(value: string | null): string {
+function formatDate(copy: AdminCopy, value: string | null): string {
   if (!value) {
-    return "No activity yet";
+    return copy.overview.activityMeta.noActivityYet;
   }
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(copy.locale, {
     day: "numeric",
     month: "short",
     year: "numeric",
   }).format(new Date(value));
 }
 
-function formatDateTime(value: string | null): string {
+function formatDateTime(copy: AdminCopy, value: string | null): string {
   if (!value) {
-    return "No activity yet";
+    return copy.overview.activityMeta.noActivityYet;
   }
 
-  return new Intl.DateTimeFormat("en-US", {
+  return new Intl.DateTimeFormat(copy.locale, {
     day: "numeric",
     hour: "numeric",
     minute: "2-digit",
@@ -361,13 +345,14 @@ function humanizeAdminKey(value: string): string {
     .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
-function formatAdminJsonValue(value: unknown): string {
+function formatAdminJsonValue(copy: AdminCopy, value: unknown): string {
+  const metaCopy = copy.overview.activityMeta;
   if (value === null || value === undefined) {
-    return "empty";
+    return metaCopy.emptyValue;
   }
 
   if (typeof value === "boolean") {
-    return value ? "on" : "off";
+    return value ? metaCopy.stateOn : metaCopy.stateOff;
   }
 
   if (typeof value === "number") {
@@ -379,34 +364,44 @@ function formatAdminJsonValue(value: unknown): string {
   }
 
   if (Array.isArray(value)) {
-    return value.map((item) => formatAdminJsonValue(item)).join(", ");
+    return value.map((item) => formatAdminJsonValue(copy, item)).join(", ");
   }
 
   if (typeof value === "object") {
     const entries = Object.entries(value as Record<string, unknown>);
 
     if (entries.length === 0) {
-      return "no prior value";
+      return metaCopy.noPriorValue;
     }
 
     return entries
-      .map(([key, item]) => `${humanizeAdminKey(key)}: ${formatAdminJsonValue(item)}`)
+      .map(([key, item]) => `${humanizeAdminKey(key)}: ${formatAdminJsonValue(copy, item)}`)
       .join("; ");
   }
 
   return String(value);
 }
 
-function formatActionChange(action: FounderAdminActionSummary): string {
+function actionLabel(copy: AdminCopy, actionType: string): string {
+  const labels = copy.overview.activityMeta.actionLabels;
+  return hasOwnKey(labels, actionType) ? labels[actionType] : humanizeAdminKey(actionType);
+}
+
+function formatActionChange(
+  copy: AdminCopy,
+  action: FounderAdminActionSummary,
+): string {
+  const metaCopy = copy.overview.activityMeta;
   if (action.actionType === "internal_note_added") {
     return action.newValues &&
       typeof action.newValues === "object" &&
       "internal_note_present" in action.newValues
-      ? "Internal note presence changed"
-      : "Internal note saved";
+      ? metaCopy.internalNotePresenceChanged
+      : metaCopy.internalNoteSaved;
   }
 
-  return `${formatAdminJsonValue(action.previousValues)} -> ${formatAdminJsonValue(
+  return `${formatAdminJsonValue(copy, action.previousValues)} -> ${formatAdminJsonValue(
+    copy,
     action.newValues,
   )}`;
 }
@@ -775,7 +770,7 @@ function adminBusinessHref(
 }
 
 function readActivityFilter(value: string | undefined): ActivityFilter {
-  return activityFilters.some((filter) => filter.value === value)
+  return activityFilterValues.some((filter) => filter === value)
     ? (value as ActivityFilter)
     : "all";
 }
@@ -863,6 +858,7 @@ function actionTargetHref(
 }
 
 function actionTargetLabel(
+  copy: AdminCopy,
   action: FounderAdminOverview["recentActions"][number],
   businessById: Map<string, FounderAdminBusiness>,
 ): string {
@@ -871,18 +867,19 @@ function actionTargetLabel(
   }
 
   if (action.actionType.includes("lead") || action.actionType.includes("inbox")) {
-    return "Lead inbox";
+    return copy.overview.activityMeta.leadInboxTarget;
   }
 
-  return "Platform";
+  return copy.overview.activityMeta.platformTarget;
 }
 
 function actionActorLabel(
+  copy: AdminCopy,
   action: FounderAdminOverview["recentActions"][number],
   usersById: Map<string, FounderAdminUser>,
 ): string {
   if (!action.actorUserId) {
-    return "System";
+    return copy.overview.activityMeta.systemActor;
   }
 
   const user = usersById.get(action.actorUserId);
@@ -891,7 +888,7 @@ function actionActorLabel(
     return user.displayName ?? user.email;
   }
 
-  return `Actor ${shortActionId(action.actorUserId)}`;
+  return copy.overview.activityMeta.actorFallback(shortActionId(action.actorUserId));
 }
 
 function AdminNotice({
@@ -922,33 +919,28 @@ function AdminNotice({
   );
 }
 
-function FounderAdminSafetyRail() {
+function FounderAdminSafetyRail({ copy }: Readonly<{ copy: AdminCopy }>) {
+  const safetyCopy = copy.businesses.detail.safetyRail;
   return (
     <details className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] p-3">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
         <span className="text-[12px] font-black text-[var(--dash-text)]">
-          Cleanup safety
+          {safetyCopy.title}
         </span>
-        <StatusBadge tone="amber">Guarded</StatusBadge>
+        <StatusBadge tone="amber">{safetyCopy.guardedBadge}</StatusBadge>
       </summary>
       <div className="mt-3 grid gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
         <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2.5">
           <p className="font-black text-[var(--dash-text)]">
-            Customer workspace is protected
+            {safetyCopy.customerWorkspaceTitle}
           </p>
-          <p className="mt-1">
-            Hard cleanup and synthetic/test login cleanup are blocked for
-            production-customer workspaces and owner accounts.
-          </p>
+          <p className="mt-1">{safetyCopy.customerWorkspaceDescription}</p>
         </div>
         <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-2.5">
           <p className="font-black text-[var(--dash-text)]">
-            Dry-run comes first
+            {safetyCopy.dryRunTitle}
           </p>
-          <p className="mt-1">
-            Test/demo cleanup requires counts, acknowledgement, and exact
-            business name or slug confirmation.
-          </p>
+          <p className="mt-1">{safetyCopy.dryRunDescription}</p>
         </div>
       </div>
     </details>
@@ -1262,16 +1254,15 @@ function FounderSystemChangeLog({
             >
               <div>
                 <p className="font-black text-[var(--dash-text)]">
-                  {adminActionLabels[action.actionType] ??
-                    humanizeAdminKey(action.actionType)}
+                  {actionLabel(copy, action.actionType)}
                 </p>
                 <p className="mt-1 font-bold text-[var(--dash-text-muted)]">
-                  {formatDateTime(action.createdAt)}
+                  {formatDateTime(copy, action.createdAt)}
                 </p>
               </div>
               <div className="min-w-0">
                 <p className="break-words font-semibold leading-5 text-[var(--dash-text-secondary)]">
-                  {formatActionChange(action)}
+                  {formatActionChange(copy, action)}
                 </p>
                 {action.note ? (
                   <p className="mt-1 break-words leading-5 text-[var(--dash-text-muted)]">
@@ -1314,7 +1305,7 @@ function controlAuditText(
 
   return {
     updatedAt: action
-      ? formatDateTime(action.createdAt)
+      ? formatDateTime(copy, action.createdAt)
       : copy.businesses.detail.auditLog.notRecordedYet,
     updatedBy: copy.businesses.detail.auditLog.updatedByFounderAdmin,
   };
@@ -1451,19 +1442,22 @@ function SnapshotTile({
 
 function RecentAdminChangesPanel({
   actions,
-}: Readonly<{ actions: FounderAdminActionSummary[] }>) {
+  copy,
+}: Readonly<{ actions: FounderAdminActionSummary[]; copy: AdminCopy }>) {
+  const detailCopy = copy.businesses.detail;
+  const panelCopy = detailCopy.recentChangesPanel;
   return (
     <section className="min-w-0 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_12px_32px_rgba(15,23,42,0.05)]">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
-            Recent admin changes
+            {detailCopy.recentChangesTitle}
           </p>
           <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Founder/admin action trail for support verification.
+            {panelCopy.description}
           </p>
         </div>
-        <StatusBadge tone="blue">{actions.length} logged</StatusBadge>
+        <StatusBadge tone="blue">{panelCopy.loggedBadge(actions.length)}</StatusBadge>
       </div>
       <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2">
         {actions.length > 0 ? (
@@ -1475,15 +1469,14 @@ function RecentAdminChangesPanel({
               <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
                 <div className="min-w-0">
                   <p className="break-words font-black text-[var(--dash-text)] [overflow-wrap:anywhere]">
-                    {adminActionLabels[action.actionType] ??
-                      humanizeAdminKey(action.actionType)}
+                    {actionLabel(copy, action.actionType)}
                   </p>
                   <p className="mt-1 break-words font-semibold text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
-                    {formatActionChange(action)}
+                    {formatActionChange(copy, action)}
                   </p>
                 </div>
                 <p className="text-left font-bold text-[var(--dash-text-muted)] sm:text-right">
-                  {formatDate(action.createdAt)}
+                  {formatDate(copy, action.createdAt)}
                 </p>
               </div>
               <p className="break-all font-bold text-[var(--dash-text-muted)]">
@@ -1493,12 +1486,12 @@ function RecentAdminChangesPanel({
           ))
         ) : (
           <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-6 text-center text-[12px] text-[var(--dash-text-secondary)]">
-            No admin changes recorded yet.
+            {panelCopy.emptyState}
           </p>
         )}
       </div>
       <Link className={`${buttonClass} mt-4 w-full justify-center`} href="/admin?adminPanel=activity">
-        View full activity log
+        {panelCopy.viewFullActivity}
       </Link>
     </section>
   );
@@ -1615,10 +1608,10 @@ function FounderBusinessMasterRail({
               </div>
               <div className="flex flex-wrap gap-1.5">
                 <StatusBadge tone={statusTone(business.status)}>
-                  {statusLabels[business.status]}
+                  {copy.users.accessStatusOptions[business.status]}
                 </StatusBadge>
                 <StatusBadge tone={planTone(business.planSlug)}>
-                  {planLabels[business.planSlug]}
+                  {copy.businesses.detail.planLabels[business.planSlug]}
                 </StatusBadge>
                 <StatusBadge tone={leadBlocked ? "amber" : "emerald"}>
                   {leadBlocked
@@ -1716,7 +1709,7 @@ function BusinessControlCard({
     ].includes(action.actionType),
   );
   const latestAdminChange = business.actionLog[0]
-    ? formatDateTime(business.actionLog[0].createdAt)
+    ? formatDateTime(copy, business.actionLog[0].createdAt)
     : detailCopy.noAdminChanges;
 
   return (
@@ -2013,12 +2006,11 @@ function BusinessControlCard({
                 recentPriorityActions.slice(0, 2).map((action) => (
                   <p
                     className="break-words rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]"
-                    key={action.id}
-                  >
-                    {adminActionLabels[action.actionType] ??
-                      humanizeAdminKey(action.actionType)}
-                  </p>
-                ))
+                  key={action.id}
+                >
+                  {actionLabel(copy, action.actionType)}
+                </p>
+              ))
               ) : (
                 <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-3 text-[12px] text-[var(--dash-text-secondary)]">
                   {detailCopy.noAdminChanges}
@@ -2124,7 +2116,7 @@ function BusinessControlCard({
           />
 
           <div className="xl:col-span-2">
-            <FounderAdminSafetyRail />
+            <FounderAdminSafetyRail copy={copy} />
           </div>
             </div>
           {dryRun ? (
@@ -2166,7 +2158,7 @@ function BusinessControlCard({
           </details>
         </section>
 
-        <RecentAdminChangesPanel actions={business.actionLog} />
+        <RecentAdminChangesPanel actions={business.actionLog} copy={copy} />
       </div>
 
       <p className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-4 py-3 text-[12px] font-bold leading-5 text-[var(--dash-primary-strong)]">
@@ -2246,7 +2238,7 @@ function FounderBusinessesSection({
             </div>
             <div className="flex flex-wrap gap-2 lg:justify-end">
               <StatusBadge tone={featuredRecommendation.tone}>
-                {statusLabels[featuredBusiness.status]}
+                {copy.users.accessStatusOptions[featuredBusiness.status]}
               </StatusBadge>
               <Link
                 className={primaryButtonClass}
@@ -2951,7 +2943,7 @@ function FounderUsersSection({
               <div className="flex flex-wrap gap-2">
                 {user.planSlug ? (
                   <StatusBadge tone={planTone(user.planSlug)}>
-                    {planLabels[user.planSlug]}
+                    {copy.businesses.detail.planLabels[user.planSlug]}
                   </StatusBadge>
                 ) : (
                   <StatusBadge>{copy.users.noPlan}</StatusBadge>
@@ -2989,7 +2981,7 @@ function FounderUsersSection({
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
                     <dt className="font-bold text-[var(--dash-text-muted)]">{directoryCopy.lastSignInLabel}</dt>
                     <dd className="mt-0.5 font-black text-[var(--dash-text)]">
-                      {formatDate(user.lastSignInAt)}
+                      {formatDate(copy, user.lastSignInAt)}
                     </dd>
                   </div>
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2">
@@ -3110,8 +3102,10 @@ function FounderUsersSection({
 }
 
 function FounderInboxSection({
+  copy,
   items,
 }: Readonly<{
+  copy: AdminCopy;
   items: ReadonlyArray<{
     businessName: string;
     cityOrServiceArea: string | null;
@@ -3125,13 +3119,16 @@ function FounderInboxSection({
     status: string;
   }>;
 }>) {
+  const inboxCopy = copy.overview.leadInboxSection;
+  const statusLabels = inboxCopy.statusLabels;
+
   return (
     <DashboardCard className="space-y-4 p-4 sm:p-5" variant="priority">
       <PageHeader
-        actions={<StatusBadge tone="blue">{items.length} inbox items</StatusBadge>}
-        description="Incoming user quote messages for founder triage. Review, archive, or permanently delete spam/test submissions."
+        actions={<StatusBadge tone="blue">{inboxCopy.badgeCount(items.length)}</StatusBadge>}
+        description={inboxCopy.description}
         eyebrow="Founder Admin"
-        title="Admin Inbox"
+        title={copy.topbar.panelTitles.leads}
       />
       <div className="space-y-3">
         {items.length > 0 ? (
@@ -3143,35 +3140,47 @@ function FounderInboxSection({
               <summary className="grid min-w-0 cursor-pointer list-none gap-3 px-4 py-3 hover:bg-[var(--dash-surface-muted)]">
                 <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
                   <p className="min-w-0 break-words text-sm font-black text-[var(--dash-text)] [overflow-wrap:anywhere]">
-                    {item.customerName ?? "Unknown sender"}
+                    {item.customerName ?? inboxCopy.unknownSender}
                   </p>
                   <StatusBadge tone={leadStatusTone(item.status)}>
-                    {item.status.replaceAll("_", " ")}
+                    {hasOwnKey(statusLabels, item.status)
+                      ? statusLabels[item.status]
+                      : humanizeAdminKey(item.status)}
                   </StatusBadge>
                 </div>
                 <p className="break-words text-[12px] text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
-                  {item.businessName} | {formatDateTime(item.createdAt)}
+                  {item.businessName} | {formatDateTime(copy, item.createdAt)}
                 </p>
                 <p className="break-words text-[12px] text-[var(--dash-text-muted)] [overflow-wrap:anywhere]">
-                  {item.serviceType ?? "Service not set"} | {item.cityOrServiceArea ?? "Area not set"}
+                  {item.serviceType ?? inboxCopy.serviceNotSet} |{" "}
+                  {item.cityOrServiceArea ?? inboxCopy.areaNotSet}
                 </p>
               </summary>
               <div className="grid gap-3 border-t border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4">
                 <div className="grid gap-1 text-[12px] text-[var(--dash-text-secondary)]">
                   <p>
-                    <span className="font-black text-[var(--dash-text)]">Contact:</span>{" "}
+                    <span className="font-black text-[var(--dash-text)]">
+                      {inboxCopy.contactLabel}:
+                    </span>{" "}
                     {formatContactValue(item.customerContact)}
                   </p>
                   <p>
-                    <span className="font-black text-[var(--dash-text)]">Source:</span>{" "}
-                    {item.sourceChannel ?? "unknown"}
+                    <span className="font-black text-[var(--dash-text)]">
+                      {inboxCopy.sourceLabel}:
+                    </span>{" "}
+                    {item.sourceChannel ?? inboxCopy.unknownSource}
                   </p>
                   <p>
-                    <span className="font-black text-[var(--dash-text)]">Referrer:</span>{" "}
-                    {item.sourceReferrer ?? "none"}
+                    <span className="font-black text-[var(--dash-text)]">
+                      {inboxCopy.referrerLabel}:
+                    </span>{" "}
+                    {item.sourceReferrer ?? inboxCopy.noneReferrer}
                   </p>
                   <p>
-                    <span className="font-black text-[var(--dash-text)]">Lead ID:</span> {item.leadId}
+                    <span className="font-black text-[var(--dash-text)]">
+                      {inboxCopy.leadIdLabel}:
+                    </span>{" "}
+                    {item.leadId}
                   </p>
                 </div>
 
@@ -3180,14 +3189,14 @@ function FounderInboxSection({
                     <input name="leadId" type="hidden" value={item.leadId} />
                     <input name="status" type="hidden" value="reviewed" />
                     <button className={buttonClass} type="submit">
-                      Mark reviewed
+                      {inboxCopy.markReviewed}
                     </button>
                   </form>
                   <form action={founderInboxLeadStatusAction}>
                     <input name="leadId" type="hidden" value={item.leadId} />
                     <input name="status" type="hidden" value="archived" />
                     <button className={buttonClass} type="submit">
-                      Archive
+                      {inboxCopy.archive}
                     </button>
                   </form>
                 </div>
@@ -3198,18 +3207,18 @@ function FounderInboxSection({
                 >
                   <input name="leadId" type="hidden" value={item.leadId} />
                   <p className="text-[12px] font-black text-[var(--dash-danger-strong)]">
-                    Permanent delete (cannot be undone)
+                    {inboxCopy.permanentDeleteTitle}
                   </p>
                   <label className="grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
-                    Type Lead ID to confirm
+                    {inboxCopy.confirmLeadId}
                     <input className={inputClass} name="leadConfirmation" placeholder={item.leadId} />
                   </label>
                   <label className="flex items-center gap-2 text-[12px] font-bold text-[var(--dash-text)]">
                     <input className="h-4 w-4" name="deleteAcknowledgement" type="checkbox" />
-                    I understand this delete is permanent.
+                    {inboxCopy.deleteAcknowledgement}
                   </label>
                   <button className={primaryButtonClass} type="submit">
-                    Delete permanently
+                    {inboxCopy.deletePermanently}
                   </button>
                 </form>
               </div>
@@ -3217,7 +3226,7 @@ function FounderInboxSection({
           ))
         ) : (
           <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-4 py-5 text-sm text-[var(--dash-text-secondary)]">
-            No inbox items yet.
+            {inboxCopy.emptyState}
           </p>
         )}
       </div>
@@ -3465,15 +3474,16 @@ function FounderOverviewMetricCard({
 }
 
 function FounderLeadsStatusDonut({
+  copy,
   segments,
   total,
-}: Readonly<{ segments: readonly FounderChartSegment[]; total: number }>) {
+}: Readonly<{ copy: AdminCopy; segments: readonly FounderChartSegment[]; total: number }>) {
   return (
     <DashboardCard className="p-4">
-      <SectionHeader title="Leads by Status" />
+      <SectionHeader title={copy.overview.leadStatusChart.title} />
       <div className="mt-5 grid gap-4 sm:grid-cols-[150px_minmax(0,1fr)] sm:items-center xl:grid-cols-1 2xl:grid-cols-[150px_minmax(0,1fr)]">
         <div
-          aria-label="Leads by status"
+          aria-label={copy.overview.leadStatusChart.ariaLabel}
           className="mx-auto grid h-36 w-36 place-items-center rounded-full"
           role="img"
           style={{ background: founderConicGradient(segments) }}
@@ -3484,7 +3494,7 @@ function FounderLeadsStatusDonut({
                 {formatAdminMetricNumber(total)}
               </span>
               <span className="mt-1 block text-[11px] font-bold text-[var(--dash-text-secondary)]">
-                Total Leads
+                {copy.overview.leadStatusChart.totalLeads}
               </span>
             </span>
           </div>
@@ -3641,17 +3651,16 @@ function FounderRecentActivitiesSummary({
                   {overviewCopy.activitySummary.latestBadge}
                 </StatusBadge>
                 <span className="font-black text-[var(--dash-text)]">
-                  {adminActionLabels[latestAction.actionType] ??
-                    humanizeAdminKey(latestAction.actionType)}
+                  {actionLabel(copy, latestAction.actionType)}
                 </span>
               </div>
               <p className="break-words font-bold leading-5 text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
-                {overviewCopy.activitySummary.byLabel} {actionActorLabel(latestAction, usersById)}{" "}
+                {overviewCopy.activitySummary.byLabel} {actionActorLabel(copy, latestAction, usersById)}{" "}
                 {overviewCopy.activitySummary.targetLabel}{" "}
-                {actionTargetLabel(latestAction, businessById)}
+                {actionTargetLabel(copy, latestAction, businessById)}
               </p>
               <p className="text-[11px] font-bold text-[var(--dash-text-muted)]">
-                {formatDateTime(latestAction.createdAt)}
+                {formatDateTime(copy, latestAction.createdAt)}
               </p>
             </Link>
             {remainingActions.map((action) => (
@@ -3661,11 +3670,10 @@ function FounderRecentActivitiesSummary({
                 key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
               >
                 <span className="truncate font-black text-[var(--dash-text)]">
-                  {adminActionLabels[action.actionType] ??
-                    humanizeAdminKey(action.actionType)}
+                  {actionLabel(copy, action.actionType)}
                 </span>
                 <span className="truncate font-bold text-[var(--dash-text-secondary)]">
-                  {actionTargetLabel(action, businessById)}
+                  {actionTargetLabel(copy, action, businessById)}
                 </span>
               </Link>
             ))}
@@ -3704,6 +3712,7 @@ function FounderAdminNewsroom({
   users: FounderAdminUser[];
 }>) {
   const overviewCopy = copy.overview;
+  const activityFilters = buildActivityFilters(copy);
   const selectedFilter = readActivityFilter(params.activityFilter);
   const businessById = new Map(
     businesses.map((business) => [business.businessId, business]),
@@ -3780,8 +3789,7 @@ function FounderAdminNewsroom({
               >
                 <div className="min-w-0">
                   <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
-                    {adminActionLabels[action.actionType] ??
-                      humanizeAdminKey(action.actionType)}
+                    {actionLabel(copy, action.actionType)}
                   </p>
                   <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
                     {action.note ?? overviewCopy.newsroom.noNoteRecorded}
@@ -3792,13 +3800,13 @@ function FounderAdminNewsroom({
                     <span className="font-black text-[var(--dash-text)]">
                       {overviewCopy.newsroom.byLabel}
                     </span>{" "}
-                    {actionActorLabel(action, usersById)}
+                    {actionActorLabel(copy, action, usersById)}
                   </p>
                   <p className="truncate">
                     <span className="font-black text-[var(--dash-text)]">
                       {overviewCopy.newsroom.targetLabel}
                     </span>{" "}
-                    {actionTargetLabel(action, businessById)}
+                    {actionTargetLabel(copy, action, businessById)}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-1.5 md:justify-end">
@@ -3807,7 +3815,7 @@ function FounderAdminNewsroom({
                       overviewCopy.newsroom.defaultFilterLabel}
                   </StatusBadge>
                   <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2.5 py-1 text-[11px] font-black text-[var(--dash-text-secondary)]">
-                    {formatDateTime(action.createdAt)}
+                    {formatDateTime(copy, action.createdAt)}
                   </span>
                 </div>
               </Link>
@@ -3914,7 +3922,7 @@ function FounderNewUsersNotice({
   const age = daysSince(visibleUser.createdAt);
   const joinedLabel =
     age === null
-      ? formatDateTime(visibleUser.createdAt)
+      ? formatDateTime(copy, visibleUser.createdAt)
       : age === 0
         ? overviewCopy.newUsersNotice.today
         : overviewCopy.newUsersNotice.daysAgo(age);
@@ -4164,6 +4172,7 @@ function FounderAdminOverviewSection({
       <section className="grid min-w-0 gap-3 xl:grid-cols-[minmax(300px,0.9fr)_minmax(320px,1fr)_minmax(320px,1fr)] 2xl:grid-cols-[minmax(320px,0.95fr)_minmax(340px,1fr)_minmax(340px,1fr)_minmax(340px,1fr)]">
         <FounderUsersMiniList copy={copy} params={params} users={overview.users} />
         <FounderLeadsStatusDonut
+          copy={copy}
           segments={leadStatusSegments}
           total={leadStatusTotal}
         />
@@ -4244,19 +4253,18 @@ function FounderRecentActionsPanel({
             actions.map((action) => (
               <div
                 className="grid gap-1 bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
-                key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
-              >
-                <span className="font-black text-[var(--dash-text)]">
-                  {adminActionLabels[action.actionType] ??
-                    humanizeAdminKey(action.actionType)}
-                </span>
-                <span className="truncate text-[var(--dash-text-secondary)]">
-                  {action.note ?? action.businessId ?? overviewCopy.recentActionsPanel.noNote}
-                </span>
-                <span className="font-bold text-[var(--dash-text-muted)]">
-                  {formatDateTime(action.createdAt)}
-                </span>
-              </div>
+              key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
+            >
+              <span className="font-black text-[var(--dash-text)]">
+                {actionLabel(copy, action.actionType)}
+              </span>
+              <span className="truncate text-[var(--dash-text-secondary)]">
+                {action.note ?? action.businessId ?? overviewCopy.recentActionsPanel.noNote}
+              </span>
+              <span className="font-bold text-[var(--dash-text-muted)]">
+                {formatDateTime(copy, action.createdAt)}
+              </span>
+            </div>
             ))
           ) : (
             <p className="bg-[var(--dash-surface-muted)] px-3 py-4 text-center text-[12px] text-[var(--dash-text-secondary)]">
@@ -4760,7 +4768,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             ) : null}
 
             {activePanel === "leads" ? (
-              <FounderInboxSection items={overview.leadInbox} />
+              <FounderInboxSection copy={adminCopy} items={overview.leadInbox} />
             ) : null}
 
             {activePanel === "activity" ? (

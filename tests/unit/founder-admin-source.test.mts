@@ -12,6 +12,7 @@
  * Created: 2026-05-26
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Added guards for localized founder inbox, safety rail, and admin activity metadata hooks.
  * - 2026-07-11: Replaced stale admin panel literal guard with localized topbar copy guard.
  * - 2026-07-11: Guarded founder health, activity, and user-directory localization hooks.
  * - 2026-07-11: Updated founder user-operations guards for localized overview and support panels.
@@ -180,9 +181,12 @@ describe("Founder admin source safety", () => {
     for (const required of [
       "FounderHealthSection",
       "FounderActivitySection",
+      "copy.overview.activityMeta",
+      "copy.overview.leadInboxSection",
       "copy.overview.healthSection",
       "copy.overview.activitySection",
       "copy.overview.productionHealthPanel",
+      "copy.businesses.detail.safetyRail",
       "copy.topbar.panelTitles.leads",
       "directoryCopy.title",
       "copy.businesses.priorityWorkspace",

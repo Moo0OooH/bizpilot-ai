@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Added bilingual founder-admin activity metadata, inbox, status-chart, and safety-rail copy fields.
  * - 2026-07-11: Added founder-admin overview and directory copy fields to match bilingual dictionary entries.
  * - 2026-07-11: Completed founder-admin detail copy shape for type-safe bilingual admin labels.
  * - 2026-07-11: Restored dashboard admin and founder handoff copy shape for production type checks.
@@ -849,8 +850,18 @@ type DashboardErrorBoundaryCopy = Readonly<{
 type PlanSlug = "founder_pilot" | "paused" | "pro" | "starter";
 type SessionTimeoutMode = "after_duration" | "always_on";
 type WorkspaceKind = "demo" | "founder_test" | "production_customer" | "seed";
+type ActivityFilter =
+  | "access"
+  | "all"
+  | "auth"
+  | "cleanup"
+  | "notes"
+  | "plan"
+  | "quote"
+  | "system";
 
 type DashboardAdminCopy = Readonly<{
+  locale: string;
   accessBlocked: Readonly<{
     backToDashboard: string;
     badge: string;
@@ -908,6 +919,12 @@ type DashboardAdminCopy = Readonly<{
         warning: string;
       }>;
       recentChangesTitle: string;
+      recentChangesPanel: Readonly<{
+        description: string;
+        emptyState: string;
+        loggedBadge: (count: number) => string;
+        viewFullActivity: string;
+      }>;
       recommendedDescription: string;
       recommendationStates: Readonly<{
         activateQuoteLink: string;
@@ -947,6 +964,14 @@ type DashboardAdminCopy = Readonly<{
       workspaceKind: string;
       workspaceKindHelp: string;
       workspaceKindLabels: Readonly<Record<WorkspaceKind, string>>;
+      safetyRail: Readonly<{
+        customerWorkspaceDescription: string;
+        customerWorkspaceTitle: string;
+        dryRunDescription: string;
+        dryRunTitle: string;
+        guardedBadge: string;
+        title: string;
+      }>;
     }>;
     emptyWorkspace: string;
     hiddenMatches: (count: number) => string;
@@ -1029,6 +1054,36 @@ type DashboardAdminCopy = Readonly<{
     productionHealthy: string;
   }>;
   overview: Readonly<{
+    activityFilters: Readonly<Record<ActivityFilter, string>>;
+    activityMeta: Readonly<{
+      actionLabels: Readonly<{
+        business_cancelled: string;
+        business_deletion_requested: string;
+        business_reactivated: string;
+        business_suspended: string;
+        internal_note_added: string;
+        password_reset_requested: string;
+        plan_changed: string;
+        quote_link_disabled: string;
+        quote_link_enabled: string;
+        session_policy_changed: string;
+        status_changed: string;
+        temporary_password_set: string;
+        test_auth_user_deleted: string;
+        test_workspace_cleanup_completed: string;
+      }>;
+      actorFallback: (id: string) => string;
+      emptyValue: string;
+      internalNotePresenceChanged: string;
+      internalNoteSaved: string;
+      leadInboxTarget: string;
+      noActivityYet: string;
+      noPriorValue: string;
+      platformTarget: string;
+      stateOff: string;
+      stateOn: string;
+      systemActor: string;
+    }>;
     activitySection: Readonly<{
       badgeCount: (count: number) => string;
       description: string;
@@ -1052,6 +1107,36 @@ type DashboardAdminCopy = Readonly<{
       needsAttention: string;
       notice: string;
       title: string;
+    }>;
+    leadInboxSection: Readonly<{
+      archive: string;
+      areaNotSet: string;
+      badgeCount: (count: number) => string;
+      confirmLeadId: string;
+      contactLabel: string;
+      deleteAcknowledgement: string;
+      deletePermanently: string;
+      description: string;
+      emptyState: string;
+      leadIdLabel: string;
+      markReviewed: string;
+      noneReferrer: string;
+      permanentDeleteTitle: string;
+      referrerLabel: string;
+      serviceNotSet: string;
+      sourceLabel: string;
+      statusLabels: Readonly<{
+        archived: string;
+        reviewed: string;
+        submitted: string;
+      }>;
+      unknownSender: string;
+      unknownSource: string;
+    }>;
+    leadStatusChart: Readonly<{
+      ariaLabel: string;
+      title: string;
+      totalLeads: string;
     }>;
     leadStatusLabels: Readonly<{
       awaitingReply: string;
@@ -1858,6 +1943,7 @@ const englishCopy: BizPilotCopy = {
       signOut: "Sign out",
     },
     admin: {
+      locale: "en-US",
       accessBlocked: {
         backToDashboard: "Back to dashboard",
         badge: "Internal only",
@@ -1934,6 +2020,12 @@ const englishCopy: BizPilotCopy = {
               "If inactive, the public quote form is blocked and the customer cannot receive new leads from the public intake page.",
           },
           recentChangesTitle: "Recent admin changes",
+          recentChangesPanel: {
+            description: "Founder/admin action trail for support verification.",
+            emptyState: "No admin changes recorded yet.",
+            loggedBadge: (count) => `${count} logged`,
+            viewFullActivity: "View full activity log",
+          },
           recommendedDescription: "Based on current access and quote-link state.",
           recommendationStates: {
             activateQuoteLink:
@@ -1991,6 +2083,16 @@ const englishCopy: BizPilotCopy = {
             founder_test: "Founder test",
             production_customer: "Production customer",
             seed: "Seed",
+          },
+          safetyRail: {
+            customerWorkspaceDescription:
+              "Hard cleanup and synthetic/test login cleanup are blocked for production-customer workspaces and owner accounts.",
+            customerWorkspaceTitle: "Customer workspace is protected",
+            dryRunDescription:
+              "Test/demo cleanup requires counts, acknowledgement, and exact business name or slug confirmation.",
+            dryRunTitle: "Dry-run comes first",
+            guardedBadge: "Guarded",
+            title: "Cleanup safety",
           },
         },
         emptyWorkspace: "No business workspace is available yet.",
@@ -2109,6 +2211,45 @@ const englishCopy: BizPilotCopy = {
         productionHealthy: "Production: healthy",
       },
       overview: {
+        activityFilters: {
+          access: "Access",
+          all: "All",
+          auth: "Auth",
+          cleanup: "Cleanup",
+          notes: "Notes",
+          plan: "Plan",
+          quote: "Quote",
+          system: "System",
+        },
+        activityMeta: {
+          actionLabels: {
+            business_cancelled: "Business cancelled",
+            business_deletion_requested: "Deletion requested",
+            business_reactivated: "Business reactivated",
+            business_suspended: "Business suspended",
+            internal_note_added: "Internal note saved",
+            password_reset_requested: "Password reset requested",
+            plan_changed: "Plan changed",
+            quote_link_disabled: "Quote link disabled",
+            quote_link_enabled: "Quote link enabled",
+            session_policy_changed: "Session policy changed",
+            status_changed: "Workspace status changed",
+            temporary_password_set: "Temporary password set",
+            test_auth_user_deleted: "Test auth user deleted",
+            test_workspace_cleanup_completed: "Test workspace cleanup",
+          },
+          actorFallback: (id) => `Actor ${id}`,
+          emptyValue: "empty",
+          internalNotePresenceChanged: "Internal note presence changed",
+          internalNoteSaved: "Internal note saved",
+          leadInboxTarget: "Lead inbox",
+          noActivityYet: "No activity yet",
+          noPriorValue: "no prior value",
+          platformTarget: "Platform",
+          stateOff: "off",
+          stateOn: "on",
+          systemActor: "System",
+        },
         activitySection: {
           badgeCount: (count) => `${count} logged`,
           description:
@@ -2135,6 +2276,37 @@ const englishCopy: BizPilotCopy = {
           notice:
             "Founder data may be incomplete because one or more production runtime checks failed. Treat zero users or zero businesses as diagnostic until this panel is clean.",
           title: "Production Health",
+        },
+        leadInboxSection: {
+          archive: "Archive",
+          areaNotSet: "Area not set",
+          badgeCount: (count) => `${count} inbox items`,
+          confirmLeadId: "Type Lead ID to confirm",
+          contactLabel: "Contact",
+          deleteAcknowledgement: "I understand this delete is permanent.",
+          deletePermanently: "Delete permanently",
+          description:
+            "Incoming user quote messages for founder triage. Review, archive, or permanently delete spam/test submissions.",
+          emptyState: "No inbox items yet.",
+          leadIdLabel: "Lead ID",
+          markReviewed: "Mark reviewed",
+          noneReferrer: "none",
+          permanentDeleteTitle: "Permanent delete (cannot be undone)",
+          referrerLabel: "Referrer",
+          serviceNotSet: "Service not set",
+          sourceLabel: "Source",
+          statusLabels: {
+            archived: "Archived",
+            reviewed: "Reviewed",
+            submitted: "Submitted",
+          },
+          unknownSender: "Unknown sender",
+          unknownSource: "unknown",
+        },
+        leadStatusChart: {
+          ariaLabel: "Leads by status",
+          title: "Leads by Status",
+          totalLeads: "Total Leads",
         },
         leadStatusLabels: {
           awaitingReply: "Awaiting Reply",
@@ -4502,6 +4674,7 @@ const frenchCopy: BizPilotCopy = {
       signOut: "Déconnexion",
     },
     admin: {
+      locale: "fr-CA",
       accessBlocked: {
         backToDashboard: "Retour au tableau de bord",
         badge: "Interne seulement",
@@ -4579,6 +4752,12 @@ const frenchCopy: BizPilotCopy = {
               "Si le lien est inactif, le formulaire public est bloque et le client ne peut pas recevoir de nouveaux prospects depuis la page publique.",
           },
           recentChangesTitle: "Changements admin recents",
+          recentChangesPanel: {
+            description: "Piste d'actions fondateur/admin pour la verification du support.",
+            emptyState: "Aucun changement admin enregistre pour l'instant.",
+            loggedBadge: (count) => `${count} consignes`,
+            viewFullActivity: "Voir le journal complet",
+          },
           recommendedDescription:
             "Base sur l'acces actuel et l'etat du lien public.",
           recommendationStates: {
@@ -4637,6 +4816,16 @@ const frenchCopy: BizPilotCopy = {
             founder_test: "Test fondateur",
             production_customer: "Client production",
             seed: "Seed",
+          },
+          safetyRail: {
+            customerWorkspaceDescription:
+              "Le nettoyage dur et le nettoyage des connexions test/synthetiques restent bloques pour les espaces client production et les comptes proprietaire.",
+            customerWorkspaceTitle: "L'espace client reste protege",
+            dryRunDescription:
+              "Le nettoyage test/demo exige les comptes, l'accuse de reception et la confirmation exacte du nom ou slug d'entreprise.",
+            dryRunTitle: "Le dry-run passe d'abord",
+            guardedBadge: "Garde",
+            title: "Securite nettoyage",
           },
         },
         emptyWorkspace: "Aucun espace entreprise n'est disponible pour l'instant.",
@@ -4755,6 +4944,45 @@ const frenchCopy: BizPilotCopy = {
         productionHealthy: "Production: saine",
       },
       overview: {
+        activityFilters: {
+          access: "Acces",
+          all: "Tout",
+          auth: "Auth",
+          cleanup: "Nettoyage",
+          notes: "Notes",
+          plan: "Forfait",
+          quote: "Lien public",
+          system: "Systeme",
+        },
+        activityMeta: {
+          actionLabels: {
+            business_cancelled: "Entreprise annulee",
+            business_deletion_requested: "Suppression demandee",
+            business_reactivated: "Entreprise reactivee",
+            business_suspended: "Entreprise suspendue",
+            internal_note_added: "Note interne enregistree",
+            password_reset_requested: "Reinitialisation du mot de passe demandee",
+            plan_changed: "Forfait modifie",
+            quote_link_disabled: "Lien public desactive",
+            quote_link_enabled: "Lien public active",
+            session_policy_changed: "Politique de session modifiee",
+            status_changed: "Statut d'espace modifie",
+            temporary_password_set: "Mot de passe temporaire defini",
+            test_auth_user_deleted: "Utilisateur auth test supprime",
+            test_workspace_cleanup_completed: "Nettoyage d'espace test",
+          },
+          actorFallback: (id) => `Acteur ${id}`,
+          emptyValue: "vide",
+          internalNotePresenceChanged: "Presence de note interne modifiee",
+          internalNoteSaved: "Note interne enregistree",
+          leadInboxTarget: "Boite prospects",
+          noActivityYet: "Aucune activite",
+          noPriorValue: "aucune valeur precedente",
+          platformTarget: "Plateforme",
+          stateOff: "off",
+          stateOn: "on",
+          systemActor: "Systeme",
+        },
         activitySection: {
           badgeCount: (count) => `${count} consignes`,
           description:
@@ -4781,6 +5009,37 @@ const frenchCopy: BizPilotCopy = {
           notice:
             "Les donnees fondateur peuvent etre incompletes parce qu'une ou plusieurs verifications runtime de production ont echoue. Traitez zero utilisateur ou zero entreprise comme un signal de diagnostic tant que ce panneau n'est pas sain.",
           title: "Sante production",
+        },
+        leadInboxSection: {
+          archive: "Archiver",
+          areaNotSet: "Zone non definie",
+          badgeCount: (count) => `${count} elements boite`,
+          confirmLeadId: "Saisissez l'ID prospect pour confirmer",
+          contactLabel: "Contact",
+          deleteAcknowledgement: "Je comprends que cette suppression est definitive.",
+          deletePermanently: "Supprimer definitivement",
+          description:
+            "Messages entrants de soumission pour le tri fondateur. Revisez, archivez ou supprimez definitivement les envois spam/test.",
+          emptyState: "Aucun element dans la boite pour l'instant.",
+          leadIdLabel: "ID prospect",
+          markReviewed: "Marquer revise",
+          noneReferrer: "aucun",
+          permanentDeleteTitle: "Suppression definitive (irreversible)",
+          referrerLabel: "Referent",
+          serviceNotSet: "Service non defini",
+          sourceLabel: "Source",
+          statusLabels: {
+            archived: "Archive",
+            reviewed: "Revise",
+            submitted: "Soumis",
+          },
+          unknownSender: "Expediteur inconnu",
+          unknownSource: "inconnue",
+        },
+        leadStatusChart: {
+          ariaLabel: "Prospects par statut",
+          title: "Prospects par statut",
+          totalLeads: "Total prospects",
         },
         leadStatusLabels: {
           awaitingReply: "En attente de reponse",
