@@ -270,7 +270,7 @@ describe("Founder admin source safety", () => {
       pageSource.indexOf("function BusinessControlCard"),
     );
     const tileSection = businessDetail.slice(
-      businessDetail.indexOf("copy.businesses.detail.tiles.accessStatus"),
+      businessDetail.indexOf("detailCopy.tiles.accessStatus"),
       businessDetail.indexOf("<section className={toolboxSectionClass}>"),
     );
 
@@ -298,27 +298,27 @@ describe("Founder admin source safety", () => {
       true,
     );
     assert.equal(
-      tileSection.indexOf("copy.businesses.detail.tiles.accessStatus") <
-        tileSection.indexOf("copy.businesses.detail.tiles.quoteLink"),
+      tileSection.indexOf("detailCopy.tiles.accessStatus") <
+        tileSection.indexOf("detailCopy.tiles.quoteLink"),
       true,
     );
     assert.equal(
-      tileSection.indexOf("copy.businesses.detail.tiles.quoteLink") <
-        tileSection.indexOf("copy.businesses.detail.tiles.plan"),
+      tileSection.indexOf("detailCopy.tiles.quoteLink") <
+        tileSection.indexOf("detailCopy.tiles.plan"),
       true,
     );
     assert.equal(
-      tileSection.indexOf("copy.businesses.detail.tiles.plan") <
-        tileSection.indexOf("copy.businesses.detail.tiles.sessionPolicy"),
+      tileSection.indexOf("detailCopy.tiles.plan") <
+        tileSection.indexOf("detailCopy.tiles.sessionPolicy"),
       true,
     );
     assert.equal(
-      tileSection.indexOf("copy.businesses.detail.tiles.sessionPolicy") <
-        tileSection.indexOf("copy.businesses.detail.tiles.auditEvents"),
+      tileSection.indexOf("detailCopy.tiles.sessionPolicy") <
+        tileSection.indexOf("detailCopy.tiles.auditEvents"),
       true,
     );
     assert.equal(
-      businessDetail.indexOf("copy.businesses.detail.snapshotTitle") <
+      businessDetail.indexOf("detailCopy.snapshotTitle") <
         businessDetail.indexOf("FounderTestCleanupForm"),
       true,
     );

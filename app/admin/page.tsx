@@ -154,33 +154,7 @@ const statusOptions: ReadonlyArray<{ label: string; value: BusinessStatus }> = [
   { label: "Cancelled", value: "cancelled" },
 ];
 
-const workspaceKindOptions: ReadonlyArray<{ label: string; value: WorkspaceKind }> = [
-  { label: "Production customer", value: "production_customer" },
-  { label: "Founder test", value: "founder_test" },
-  { label: "Demo", value: "demo" },
-  { label: "Seed", value: "seed" },
-];
-
 const adminUserPageSizeOptions = [10, 25, 50] as const;
-
-const sessionTimeoutModeOptions: ReadonlyArray<{
-  label: string;
-  value: SessionTimeoutMode;
-}> = [
-  { label: "Always on", value: "always_on" },
-  { label: "Sign out after duration", value: "after_duration" },
-];
-
-const sessionTimeoutOptions: ReadonlyArray<{ label: string; value: number }> = [
-  { label: "15 minutes", value: 15 },
-  { label: "30 minutes", value: 30 },
-  { label: "1 hour", value: 60 },
-  { label: "4 hours", value: 240 },
-  { label: "8 hours", value: 480 },
-  { label: "12 hours", value: 720 },
-  { label: "24 hours", value: 1440 },
-  { label: "7 days", value: 10080 },
-];
 
 const planLabels: Record<PlanSlug, string> = {
   founder_pilot: "Founder Pilot",
@@ -338,37 +312,26 @@ function daysSince(value: string): number | null {
   return Math.max(0, Math.floor((Date.now() - timestamp) / 86_400_000));
 }
 
-function formatSlug(value: string | null): string {
-  return value ? `/quote/${value}` : "No quote link";
+function formatSlug(value: string | null, emptyLabel: string): string {
+  return value ? `/quote/${value}` : emptyLabel;
 }
 
-function formatDuration(minutes: number): string {
-  if (minutes < 60) {
-    return `${minutes} minutes`;
-  }
-
-  if (minutes % 1440 === 0) {
-    const days = minutes / 1440;
-    return days === 1 ? "1 day" : `${days} days`;
-  }
-
-  if (minutes % 60 === 0) {
-    const hours = minutes / 60;
-    return hours === 1 ? "1 hour" : `${hours} hours`;
-  }
-
-  return `${minutes} minutes`;
+function formatDuration(copy: AdminCopy, minutes: number): string {
+  return copy.controls.sessionTimeoutDurationLabels[minutes] ?? `${minutes}m`;
 }
 
 function sessionPolicyLabel(
+  copy: AdminCopy,
   mode: SessionTimeoutMode,
   minutes: number | null,
 ): string {
   if (mode === "after_duration") {
-    return `Sign out after ${formatDuration(minutes ?? 480)}`;
+    return copy.controls.sessionPolicySummaryAfterDuration(
+      formatDuration(copy, minutes ?? 480),
+    );
   }
 
-  return "Always on";
+  return copy.controls.sessionPolicySummaryAlwaysOn;
 }
 
 function humanizeAdminKey(value: string): string {
@@ -1685,6 +1648,12 @@ function BusinessControlCard({
     { label: statusLabels.cancelled, value: "cancelled" as const },
   ];
   const planLabels = detailCopy.planLabels;
+  const planOptions = [
+    { label: planLabels.founder_pilot, value: "founder_pilot" as const },
+    { label: planLabels.starter, value: "starter" as const },
+    { label: planLabels.pro, value: "pro" as const },
+    { label: planLabels.paused, value: "paused" as const },
+  ];
   const workspaceKindLabels = detailCopy.workspaceKindLabels;
   const workspaceKindOptions = [
     {
@@ -1735,7 +1704,9 @@ function BusinessControlCard({
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               <StatusBadge tone="neutral">{business.ownerEmail}</StatusBadge>
-              <StatusBadge tone="blue">{formatSlug(business.publicSlug)}</StatusBadge>
+              <StatusBadge tone="blue">
+                {formatSlug(business.publicSlug, detailCopy.tiles.quoteLinkInactive)}
+              </StatusBadge>
               <StatusBadge
                 tone={
                   business.workspaceKind === "production_customer"
@@ -1753,6 +1724,7 @@ function BusinessControlCard({
                 }
               >
                 {sessionPolicyLabel(
+                  copy,
                   business.sessionTimeoutMode,
                   business.sessionTimeoutMinutes,
                 )}
@@ -1803,6 +1775,7 @@ function BusinessControlCard({
             label={detailCopy.tiles.sessionPolicy}
             tone={business.sessionTimeoutMode === "always_on" ? "emerald" : "amber"}
             value={sessionPolicyLabel(
+              copy,
               business.sessionTimeoutMode,
               business.sessionTimeoutMinutes,
             )}
@@ -2006,7 +1979,7 @@ function BusinessControlCard({
             </div>
             <div className="mt-4 grid gap-2">
               <p className="text-[12px] font-black text-[var(--dash-text)]">
-                Recent admin changes
+                {detailCopy.recentChangesTitle}
               </p>
               {recentPriorityActions.length > 0 ? (
                 recentPriorityActions.slice(0, 2).map((action) => (
@@ -2198,7 +2171,7 @@ function FounderBusinessesSection({
   const selectedBusinessId = safeParam(params.businessId);
   const featuredBusiness = businessById.get(selectedBusinessId) ?? businesses[0] ?? null;
   const featuredRecommendation = featuredBusiness
-    ? recommendedPriorityAction(featuredBusiness)
+    ? recommendedPriorityAction(featuredBusiness, copy)
     : null;
   const inactiveLinks = businesses.filter((business) => !business.publicLinkActive).length;
   const onboarding = businesses.filter(

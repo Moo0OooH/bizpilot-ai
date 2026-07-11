@@ -906,6 +906,7 @@ type DashboardAdminCopy = Readonly<{
         title: string;
         warning: string;
       }>;
+      recentChangesTitle: string;
       recommendedDescription: string;
       recommendationStates: Readonly<{
         activateQuoteLink: string;
@@ -973,6 +974,8 @@ type DashboardAdminCopy = Readonly<{
     planNotePlaceholder: string;
     quoteLinkNotePlaceholder: string;
     savePolicy: string;
+    sessionPolicySummaryAfterDuration: (duration: string) => string;
+    sessionPolicySummaryAlwaysOn: string;
     sessionTimeoutDurationLabels: Readonly<Record<number, string>>;
     sessionTimeoutModeLabels: Readonly<Record<SessionTimeoutMode, string>>;
     sessionPolicy: string;
@@ -1659,6 +1662,7 @@ const englishCopy: BizPilotCopy = {
             warning:
               "If inactive, the public quote form is blocked and the customer cannot receive new leads from the public intake page.",
           },
+          recentChangesTitle: "Recent admin changes",
           recommendedDescription: "Based on current access and quote-link state.",
           recommendationStates: {
             activateQuoteLink:
@@ -1749,6 +1753,8 @@ const englishCopy: BizPilotCopy = {
         planNotePlaceholder: "Optional plan note",
         quoteLinkNotePlaceholder: "Optional quote link note",
         savePolicy: "Save policy",
+        sessionPolicySummaryAfterDuration: (duration) => `Sign out after ${duration}`,
+        sessionPolicySummaryAlwaysOn: "Always on",
         sessionTimeoutDurationLabels: {
           15: "15 minutes",
           30: "30 minutes",
@@ -3921,6 +3927,7 @@ const frenchCopy: BizPilotCopy = {
             warning:
               "Si le lien est inactif, le formulaire public est bloque et le client ne peut pas recevoir de nouveaux prospects depuis la page publique.",
           },
+          recentChangesTitle: "Changements admin recents",
           recommendedDescription:
             "Base sur l'acces actuel et l'etat du lien public.",
           recommendationStates: {
@@ -4012,6 +4019,8 @@ const frenchCopy: BizPilotCopy = {
         planNotePlaceholder: "Note de forfait optionnelle",
         quoteLinkNotePlaceholder: "Note de lien de soumission optionnelle",
         savePolicy: "Enregistrer la politique",
+        sessionPolicySummaryAfterDuration: (duration) => `Deconnexion apres ${duration}`,
+        sessionPolicySummaryAlwaysOn: "Toujours actif",
         sessionTimeoutDurationLabels: {
           15: "15 minutes",
           30: "30 minutes",
