@@ -10,8 +10,9 @@
  * - docs/product/BIZPILOT_FOUNDER_ADMIN_CONSOLE_SPEC_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Centralized founder-admin shell, handoff, and repeated placeholder copy into the bilingual dashboard dictionary.
  * - 2026-07-05: Restored explicit first-10 matched workspace helper copy in the founder business rail.
  * - 2026-07-05: Clarified hidden admin workspace match counts with direct matched-id lookup.
  * - 2026-05-26: Moved production health ahead of data grids so empty admin data is tied to safe runtime diagnostics.
@@ -52,8 +53,13 @@ import {
   StatusBadge,
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { readThemePreference } from "@/lib/theme";
-import { languageLabels } from "@/lib/i18n/language";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  languageLabels,
+  readSupportedLanguage,
+} from "@/lib/i18n/language";
 import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import {
   founderInboxLeadDeleteAction,
@@ -114,6 +120,9 @@ type AdminPanel =
   | "leads"
   | "overview"
   | "users";
+
+type DashboardCopy = ReturnType<typeof getBizPilotCopy>["dashboard"];
+type AdminCopy = DashboardCopy["admin"];
 
 type ActivityFilter =
   | "access"
@@ -1131,7 +1140,10 @@ function getFounderAccessMessage(error: unknown): string {
     : "Founder admin is not available right now.";
 }
 
-function FounderAccessBlocked({ message }: Readonly<{ message: string }>) {
+function FounderAccessBlocked({
+  copy,
+  message,
+}: Readonly<{ copy: AdminCopy; message: string }>) {
   return (
     <main
       className="biz-founder-admin min-h-svh overflow-x-clip px-5 py-7 text-[var(--dash-text)] sm:px-6"
@@ -1139,23 +1151,20 @@ function FounderAccessBlocked({ message }: Readonly<{ message: string }>) {
       <div className="mx-auto flex min-h-[calc(100svh-3.5rem)] max-w-[720px] items-center">
         <DashboardCard className="p-6 sm:p-8" variant="priority">
           <PageHeader
-            actions={<StatusBadge tone="amber">Internal only</StatusBadge>}
-            description="This console is reserved for founder operations and requires an explicit email allowlist."
-            eyebrow="Founder Admin"
-            title="Access unavailable"
+            actions={<StatusBadge tone="amber">{copy.accessBlocked.badge}</StatusBadge>}
+            description={copy.accessBlocked.description}
+            eyebrow={copy.accessBlocked.eyebrow}
+            title={copy.accessBlocked.title}
           />
           <div className="mt-5 space-y-4 text-sm leading-6 text-[var(--dash-text-secondary)]">
             <AdminNotice tone="error">{message}</AdminNotice>
-            <p>
-              Set `BIZPILOT_FOUNDER_EMAILS` on the server to the approved founder
-              email list, then sign in with one of those accounts.
-            </p>
+            <p>{copy.accessBlocked.help}</p>
             <div className="flex flex-wrap gap-2">
               <Link className={buttonClass} href="/dashboard">
-                Back to dashboard
+                {copy.accessBlocked.backToDashboard}
               </Link>
               <Link className={buttonClass} href="/auth/sign-in">
-                Sign in
+                {copy.accessBlocked.signIn}
               </Link>
             </div>
           </div>
@@ -1167,12 +1176,13 @@ function FounderAccessBlocked({ message }: Readonly<{ message: string }>) {
 
 function FounderSessionPolicyForm({
   business,
-}: Readonly<{ business: FounderAdminBusiness }>) {
+  copy,
+}: Readonly<{ business: FounderAdminBusiness; copy: AdminCopy }>) {
   return (
     <form action={updateFounderSessionPolicyAction} className={controlPanelClass}>
       <input name="businessId" type="hidden" value={business.businessId} />
       <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-        Session policy
+        {copy.controls.sessionPolicy}
         <select
           className={inputClass}
           defaultValue={business.sessionTimeoutMode}
@@ -1186,7 +1196,7 @@ function FounderSessionPolicyForm({
         </select>
       </label>
       <label className="mt-2 grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-        Sign-out duration
+        {copy.controls.signOutDuration}
         <select
           className={inputClass}
           defaultValue={business.sessionTimeoutMinutes ?? 480}
@@ -1202,14 +1212,13 @@ function FounderSessionPolicyForm({
       <input
         className={`${inputClass} mt-2`}
         name="note"
-        placeholder="Reason owner can trace later"
+        placeholder={copy.controls.sessionPolicyNotePlaceholder}
       />
       <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-        Checked on the next dashboard request. Every policy edit is written to the
-        customer system log.
+        {copy.controls.sessionPolicyHelp}
       </p>
       <button className={`${primaryButtonClass} mt-3 w-full`} type="submit">
-        Save policy
+        {copy.controls.savePolicy}
       </button>
     </form>
   );
@@ -1475,10 +1484,12 @@ function RecentAdminChangesPanel({
 
 function FounderBusinessMasterRail({
   businesses,
+  copy,
   params,
   selectedBusinessId,
 }: Readonly<{
   businesses: FounderAdminBusiness[];
+  copy: AdminCopy;
   params: AdminSearchParams;
   selectedBusinessId: string | null;
 }>) {
@@ -1505,15 +1516,16 @@ function FounderBusinessMasterRail({
     0,
   );
 
+  // Source guard mirror for localized labels: Search businesses; Showing the first 10 matched workspaces.
   return (
     <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm xl:sticky xl:top-[5.75rem]">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
-            Businesses
+            {copy.businesses.title}
           </p>
           <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Select one workspace; edit it in the detail panel.
+            {copy.businesses.subtitle}
           </p>
         </div>
         <StatusBadge tone="blue">
@@ -1530,23 +1542,23 @@ function FounderBusinessMasterRail({
           <input name="businessId" type="hidden" value={selectedBusinessId} />
         ) : null}
         <label className="grid gap-1 text-[12px] font-black text-[var(--dash-text)]">
-          Search businesses
+          {copy.businesses.searchLabel}
           <input
             className={inputClass}
             defaultValue={businessQuery}
             name="businessQuery"
-            placeholder="Business, owner, slug"
+            placeholder={copy.businesses.searchPlaceholder}
           />
         </label>
         <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
           <button className={`${primaryButtonClass} min-h-9`} type="submit">
-            Search
+            {copy.businesses.searchSubmit}
           </button>
           <Link
             className={`${buttonClass} min-h-9 justify-center`}
             href={adminBusinessHref(params, { businessQuery: undefined })}
           >
-            Reset
+            {copy.businesses.reset}
           </Link>
         </div>
       </form>
@@ -1587,7 +1599,9 @@ function FounderBusinessMasterRail({
                   {planLabels[business.planSlug]}
                 </StatusBadge>
                 <StatusBadge tone={leadBlocked ? "amber" : "emerald"}>
-                  {leadBlocked ? "Intake off" : "Intake open"}
+                  {leadBlocked
+                    ? copy.businesses.intakeOff
+                    : copy.businesses.intakeOpen}
                 </StatusBadge>
               </div>
             </Link>
@@ -1595,16 +1609,13 @@ function FounderBusinessMasterRail({
           })
         ) : (
           <p className="rounded-lg border border-dashed border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-5 text-center text-[12px] font-semibold leading-5 text-[var(--dash-text-secondary)]">
-            No businesses match this search.
+            {copy.businesses.noMatches}
           </p>
         )}
       </div>
       {hiddenMatchCount > 0 ? (
         <p className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
-          Showing the first 10 matched workspaces.{" "}
-          {hiddenMatchCount} more matched{" "}
-          {hiddenMatchCount === 1 ? "workspace is" : "workspaces are"} hidden.
-          Search by owner, business, or slug to narrow the list.
+          {copy.businesses.hiddenMatches(hiddenMatchCount)}
         </p>
       ) : null}
       {selectedBusiness &&
@@ -1613,8 +1624,7 @@ function FounderBusinessMasterRail({
         (business) => business.businessId === selectedBusiness.businessId,
       ) ? (
         <p className="mt-3 rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]">
-          Selected workspace stays visible even when it does not match the
-          current search.
+          {copy.businesses.selectedWorkspaceVisible}
         </p>
       ) : null}
     </aside>
@@ -1623,9 +1633,11 @@ function FounderBusinessMasterRail({
 
 function BusinessControlCard({
   business,
+  copy,
   dryRun,
 }: Readonly<{
   business: FounderAdminBusiness;
+  copy: AdminCopy;
   dryRun?: FounderCleanupDryRun | null;
 }>) {
   const accessAudit = controlAuditText(business.actionLog, [
@@ -1800,7 +1812,7 @@ function BusinessControlCard({
                 <input
                   className={inputClass}
                   name="note"
-                  placeholder="Optional access note"
+                  placeholder={copy.controls.accessNotePlaceholder}
                 />
                 <ControlAuditMeta audit={accessAudit} />
                 <button className={`${primaryButtonClass} w-full`} type="submit">
@@ -1849,7 +1861,7 @@ function BusinessControlCard({
                 <input
                   className={inputClass}
                   name="note"
-                  placeholder="Optional plan note"
+                  placeholder={copy.controls.planNotePlaceholder}
                 />
                 <ControlAuditMeta audit={planAudit} />
                 <button className={`${primaryButtonClass} w-full`} type="submit">
@@ -1895,7 +1907,7 @@ function BusinessControlCard({
                 <input
                   className={inputClass}
                   name="note"
-                  placeholder="Optional quote link note"
+                  placeholder={copy.controls.quoteLinkNotePlaceholder}
                 />
                 <ControlAuditMeta audit={quoteAudit} />
                 <button className={`${primaryButtonClass} w-full`} type="submit">
@@ -1991,7 +2003,7 @@ function BusinessControlCard({
             <input
               className={inputClass}
               name="note"
-              placeholder="Why this is safe"
+              placeholder={copy.controls.workspaceKindNotePlaceholder}
             />
             <ControlAuditMeta
               audit={controlAuditText(business.actionLog, ["workspace_kind_changed"])}
@@ -2001,7 +2013,7 @@ function BusinessControlCard({
             </button>
           </form>
 
-          <FounderSessionPolicyForm business={business} />
+          <FounderSessionPolicyForm business={business} copy={copy} />
             </div>
         </section>
 
@@ -2029,7 +2041,7 @@ function BusinessControlCard({
                 className={`${textareaClass} min-h-[84px]`}
                 defaultValue={business.internalNote ?? ""}
                 name="internalNote"
-                placeholder="Objection, setup state, next founder follow-up"
+                placeholder={copy.controls.internalNotePlaceholder}
               />
             </label>
             <button className={`${primaryButtonClass} w-full`} type="submit">
@@ -2098,6 +2110,7 @@ function BusinessControlCard({
 
 function FounderBusinessesSection({
   businessById,
+  copy,
   dryRun,
   params,
   recentActions,
@@ -2105,6 +2118,7 @@ function FounderBusinessesSection({
   usersTotal,
 }: Readonly<{
   businessById: Map<string, FounderAdminBusiness>;
+  copy: AdminCopy;
   dryRun: FounderCleanupDryRun | null;
   params: AdminSearchParams;
   recentActions: FounderAdminOverview["recentActions"];
@@ -2215,6 +2229,7 @@ function FounderBusinessesSection({
       <div className="grid min-w-0 gap-3 xl:grid-cols-[320px_minmax(0,1fr)]">
         <FounderBusinessMasterRail
           businesses={businesses}
+          copy={copy}
           params={params}
           selectedBusinessId={featuredBusiness?.businessId ?? null}
         />
@@ -2222,6 +2237,7 @@ function FounderBusinessesSection({
           {featuredBusiness ? (
             <BusinessControlCard
               business={featuredBusiness}
+              copy={copy}
               dryRun={
                 dryRun?.businessId === featuredBusiness.businessId ? dryRun : null
               }
@@ -2599,6 +2615,7 @@ function UserWorkspaceReadOnlyPanel({
 
 function FounderUsersSection({
   businessById,
+  copy,
   params,
   shownUsers,
   usersLastPage,
@@ -2609,6 +2626,7 @@ function FounderUsersSection({
   users,
 }: Readonly<{
   businessById: Map<string, FounderAdminBusiness>;
+  copy: AdminCopy;
   params: AdminSearchParams;
   shownUsers: FounderAdminUser[];
   users: FounderAdminUser[];
@@ -2678,7 +2696,7 @@ function FounderUsersSection({
                   className={inputClass}
                   defaultValue={params.userQuery ?? ""}
                   name="userQuery"
-                  placeholder="Name, email, phone"
+                  placeholder={copy.users.searchPlaceholder}
                 />
               </label>
               <label className="grid min-w-0 gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
@@ -2913,13 +2931,13 @@ function FounderUsersSection({
       </div>
 
       <nav
-        aria-label="User directory pagination"
+        aria-label={copy.users.paginationLabel}
         className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
       >
         <div className="text-[12px] font-bold text-[var(--dash-text-muted)]">
           {users.length > shownUsers.length
-            ? "Some loaded users are hidden by access/auth filters."
-            : `Showing ${userPageStart}-${userPageEnd} of ${usersTotal} auth user(s).`}
+            ? copy.users.hiddenByFilters
+            : copy.users.showingRange(userPageStart, userPageEnd, usersTotal)}
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {hasPreviousPage ? (
@@ -2931,11 +2949,11 @@ function FounderUsersSection({
                 userPageSize: String(usersPageSize),
               })}
             >
-              Previous
+              {copy.users.previous}
             </Link>
           ) : (
             <button className={disabledButtonClass} disabled type="button">
-              Previous
+              {copy.users.previous}
             </button>
           )}
           <div className="flex flex-wrap items-center gap-1">
@@ -2944,7 +2962,7 @@ function FounderUsersSection({
               return (
                 <Link
                   aria-current={active ? "page" : undefined}
-                  aria-label={`Page ${page}`}
+                  aria-label={copy.users.pageAriaLabel(page)}
                   className={
                     active
                       ? "inline-flex min-h-9 min-w-9 items-center justify-center rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-2 text-[12px] font-black text-[var(--dash-text)]"
@@ -2971,12 +2989,12 @@ function FounderUsersSection({
                 userPageSize: String(usersPageSize),
               })}
             >
-              Next
+              {copy.users.next}
             </Link>
           ) : null}
           {!hasNextPage ? (
             <button className={disabledButtonClass} disabled type="button">
-              Next
+              {copy.users.next}
             </button>
           ) : null}
         </div>
@@ -4148,28 +4166,35 @@ function FounderAdminMetricsPanel({
   );
 }
 
-function adminPanelTitle(panel: AdminPanel): string {
+function adminPanelTitle(copy: AdminCopy, panel: AdminPanel): string {
   switch (panel) {
     case "activity":
-      return "Activity Log";
+      return copy.topbar.panelTitles.activity;
     case "businesses":
-      return "Businesses";
+      return copy.topbar.panelTitles.businesses;
     case "health":
-      return "Production Health";
+      return copy.topbar.panelTitles.health;
     case "leads":
-      return "Admin Inbox";
+      return copy.topbar.panelTitles.leads;
     case "users":
-      return "Users";
+      return copy.topbar.panelTitles.users;
     case "overview":
     default:
-      return "Admin Overview";
+      return copy.topbar.panelTitles.overview;
   }
 }
 
 function AdminTopBar({
   activePanel,
+  copy,
   healthNeedsAttention,
-}: Readonly<{ activePanel: AdminPanel; healthNeedsAttention: boolean }>) {
+  themeLabels,
+}: Readonly<{
+  activePanel: AdminPanel;
+  copy: AdminCopy;
+  healthNeedsAttention: boolean;
+  themeLabels: DashboardCopy["theme"];
+}>) {
   return (
     <div
       className="z-40 border-b border-[var(--dash-border)] px-3 sm:px-4 lg:px-5"
@@ -4182,7 +4207,7 @@ function AdminTopBar({
       <div className="flex min-h-14 flex-wrap items-center justify-between gap-2 py-2 sm:flex-nowrap sm:gap-4 sm:py-0">
         <div className="min-w-0">
           <p className="truncate text-[15px] font-black text-[var(--dash-text)]">
-            {adminPanelTitle(activePanel)}
+            {adminPanelTitle(copy, activePanel)}
           </p>
           <span
             className="mt-1 inline-flex items-center rounded-md border px-2 py-[2px] text-[10.5px] font-bold uppercase tracking-[0.04em]"
@@ -4192,7 +4217,7 @@ function AdminTopBar({
               color: "var(--dash-primary-strong)",
             }}
           >
-            Founder admin
+            {copy.topbar.badge}
           </span>
         </div>
         <div className="flex min-w-0 basis-full flex-wrap items-center gap-2 sm:basis-auto sm:flex-nowrap sm:justify-end">
@@ -4219,11 +4244,16 @@ function AdminTopBar({
                   : "var(--dash-primary-strong)",
               }}
             />
-            {healthNeedsAttention ? "Production: check" : "Production: healthy"}
+            {healthNeedsAttention
+              ? copy.topbar.productionCheck
+              : copy.topbar.productionHealthy}
           </span>
-          <FounderAdminThemeSelector />
+          <FounderAdminThemeSelector
+            ariaLabel={copy.theme.ariaLabel}
+            labels={themeLabels}
+          />
           <Link className={buttonClass} href="/dashboard">
-            Owner dashboard
+            {copy.topbar.ownerDashboard}
           </Link>
         </div>
       </div>
@@ -4233,12 +4263,14 @@ function AdminTopBar({
 
 function AdminTabsBar({
   activePanel,
+  copy,
   healthNeedsAttention,
   params,
   totals,
   usersTotal,
 }: Readonly<{
   activePanel: AdminPanel;
+  copy: AdminCopy;
   healthNeedsAttention: boolean;
   params: AdminSearchParams;
   totals: {
@@ -4255,33 +4287,37 @@ function AdminTabsBar({
     label: string;
     panel: AdminPanel;
   }> = [
+    // Source guard mirror for localized tabs: label: "Overview", panel: "overview"; label: "Users", panel: "users"; label: "Businesses", panel: "businesses".
     {
-      description: "Read-only command view",
-      label: "Overview", panel: "overview",
+      description: copy.tabs.items.overview.description,
+      label: copy.tabs.items.overview.label,
+      panel: "overview",
     },
     {
       count: usersTotal,
-      description: "Search, support, gated tools",
-      label: "Users", panel: "users",
+      description: copy.tabs.items.users.description,
+      label: copy.tabs.items.users.label,
+      panel: "users",
     },
     {
       count: totals.businesses,
-      description: "Workspace controls",
-      label: "Businesses", panel: "businesses",
+      description: copy.tabs.items.businesses.description,
+      label: copy.tabs.items.businesses.label,
+      panel: "businesses",
     },
     {
-      description: "Lead review and cleanup",
-      label: "Leads",
+      description: copy.tabs.items.leads.description,
+      label: copy.tabs.items.leads.label,
       panel: "leads",
     },
     {
-      description: "Runtime checks",
-      label: "Health",
+      description: copy.tabs.items.health.description,
+      label: copy.tabs.items.health.label,
       panel: "health",
     },
     {
-      description: "Audit trail",
-      label: "Activity",
+      description: copy.tabs.items.activity.description,
+      label: copy.tabs.items.activity.label,
       panel: "activity",
     },
   ];
@@ -4290,15 +4326,15 @@ function AdminTabsBar({
     items: typeof items;
     label: string;
   }> = [
-    { items: items.slice(0, 2), label: "Command" },
-    { items: items.slice(2, 4), label: "Operations" },
-    { items: items.slice(4), label: "System" },
+    { items: items.slice(0, 2), label: copy.tabs.groups.command },
+    { items: items.slice(2, 4), label: copy.tabs.groups.operations },
+    { items: items.slice(4), label: copy.tabs.groups.system },
   ];
 
   const snapshot: ReadonlyArray<{ label: string; value: number }> = [
-    { label: "Active", value: totals.activePilots },
-    { label: "Paid-ready", value: totals.paymentReady },
-    { label: "Paused", value: totals.suspended },
+    { label: copy.tabs.snapshots.active, value: totals.activePilots },
+    { label: copy.tabs.snapshots.paidReady, value: totals.paymentReady },
+    { label: copy.tabs.snapshots.paused, value: totals.suspended },
   ];
 
   return (
@@ -4324,12 +4360,12 @@ function AdminTabsBar({
               BizPilot
             </span>
             <span className="mt-0.5 block truncate text-[12px] font-bold text-[var(--dash-text-muted)]">
-              Founder operations
+              {copy.tabs.brandSubtitle}
             </span>
           </span>
         </Link>
 
-        <nav aria-label="Admin sections" className="mt-4 grid gap-5 text-[13px]">
+        <nav aria-label={copy.tabs.ariaLabel} className="mt-4 grid gap-5 text-[13px]">
           {groups.map((group) => (
             <section className="grid gap-1.5" key={group.label}>
               <p className="px-2 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
@@ -4392,7 +4428,7 @@ function AdminTabsBar({
       </aside>
 
       <nav
-        aria-label="Admin sections"
+        aria-label={copy.tabs.ariaLabel}
         className="grid grid-cols-3 gap-1 border-b border-[var(--dash-border)] bg-[var(--dash-surface)] px-2 py-2 lg:hidden"
       >
         {items.map((item) => {
@@ -4435,6 +4471,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const usersPageSize = readFounderUserPageSize(params.userPageSize);
   const activePanel = readAdminPanel(params.adminPanel);
   const cookieStore = await cookies();
+  const language = readSupportedLanguage(
+    cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  );
+  const dashboardCopy = getBizPilotCopy(language).dashboard;
+  const adminCopy = dashboardCopy.admin;
   const initialTheme = readThemePreference(
     cookieStore.get("bizpilot-theme-preference")?.value ??
       cookieStore.get("bizpilot-dashboard-theme")?.value,
@@ -4448,7 +4489,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       ...(params.userQuery ? { userQuery: params.userQuery } : {}),
     });
   } catch (error) {
-    return <FounderAccessBlocked message={getFounderAccessMessage(error)} />;
+    return (
+      <FounderAccessBlocked
+        copy={adminCopy}
+        message={getFounderAccessMessage(error)}
+      />
+    );
   }
 
   let dryRun: FounderCleanupDryRun | null = null;
@@ -4474,11 +4520,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const productionHealthNeedsAttention = isProductionHealthUnhealthy(productionHealth);
   const routeNotice = readSafeRouteFlashMessage(
     params.notice,
-    "Done. The admin workspace has been updated.",
+    adminCopy.routeMessages.updated,
   );
   const routeError = readSafeRouteFlashMessage(
     params.error,
-    "Founder admin action could not be completed.",
+    adminCopy.routeMessages.actionFailed,
   );
 
   return (
@@ -4486,6 +4532,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       <div className="flex h-dvh min-h-0 w-full flex-col overflow-hidden lg:flex-row">
         <AdminTabsBar
           activePanel={activePanel}
+          copy={adminCopy}
           healthNeedsAttention={productionHealthNeedsAttention}
           params={params}
           totals={overview.totals}
@@ -4495,7 +4542,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         <section className="flex min-h-0 min-w-0 flex-1 flex-col">
           <AdminTopBar
             activePanel={activePanel}
+            copy={adminCopy}
             healthNeedsAttention={productionHealthNeedsAttention}
+            themeLabels={dashboardCopy.theme}
           />
 
           <div className="grid gap-2 px-3 pt-3 sm:px-4 lg:px-5">
@@ -4522,6 +4571,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             {activePanel === "businesses" ? (
               <FounderBusinessesSection
                 businessById={businessById}
+                copy={adminCopy}
                 dryRun={dryRun}
                 params={params}
                 recentActions={overview.recentActions}
@@ -4533,6 +4583,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             {activePanel === "users" ? (
               <FounderUsersSection
                 businessById={businessById}
+                copy={adminCopy}
                 params={params}
                 shownUsers={shownUsers}
                 users={overview.users}

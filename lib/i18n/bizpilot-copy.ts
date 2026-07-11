@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Restored dashboard admin and founder handoff copy shape for production type checks.
  * - 2026-07-05: Added safe Google login copy for existing owner accounts.
  * - 2026-07-05: Added Quote Setup readiness command copy for first open setup actions.
  * - 2026-07-05: Reframed lead-detail owner notes as a private scratchpad with gated persistence.
@@ -843,6 +844,145 @@ type DashboardErrorBoundaryCopy = Readonly<{
   title: string;
 }>;
 
+type DashboardAdminCopy = Readonly<{
+  accessBlocked: Readonly<{
+    backToDashboard: string;
+    badge: string;
+    description: string;
+    eyebrow: string;
+    help: string;
+    signIn: string;
+    title: string;
+  }>;
+  businesses: Readonly<{
+    hiddenMatches: (count: number) => string;
+    intakeOff: string;
+    intakeOpen: string;
+    noMatches: string;
+    reset: string;
+    searchLabel: string;
+    searchPlaceholder: string;
+    searchSubmit: string;
+    selectedWorkspaceVisible: string;
+    subtitle: string;
+    title: string;
+  }>;
+  controls: Readonly<{
+    accessNotePlaceholder: string;
+    internalNotePlaceholder: string;
+    planNotePlaceholder: string;
+    quoteLinkNotePlaceholder: string;
+    savePolicy: string;
+    sessionPolicy: string;
+    sessionPolicyHelp: string;
+    sessionPolicyNotePlaceholder: string;
+    signOutDuration: string;
+    workspaceKindNotePlaceholder: string;
+  }>;
+  routeMessages: Readonly<{
+    actionFailed: string;
+    updated: string;
+  }>;
+  tabs: Readonly<{
+    ariaLabel: string;
+    brandSubtitle: string;
+    groups: Readonly<{
+      command: string;
+      operations: string;
+      system: string;
+    }>;
+    items: Readonly<{
+      activity: Readonly<{ description: string; label: string }>;
+      businesses: Readonly<{ description: string; label: string }>;
+      health: Readonly<{ description: string; label: string }>;
+      leads: Readonly<{ description: string; label: string }>;
+      overview: Readonly<{ description: string; label: string }>;
+      users: Readonly<{ description: string; label: string }>;
+    }>;
+    snapshots: Readonly<{
+      active: string;
+      paidReady: string;
+      paused: string;
+    }>;
+  }>;
+  theme: Readonly<{
+    ariaLabel: string;
+  }>;
+  topbar: Readonly<{
+    badge: string;
+    ownerDashboard: string;
+    panelTitles: Readonly<{
+      activity: string;
+      businesses: string;
+      health: string;
+      leads: string;
+      overview: string;
+      users: string;
+    }>;
+    productionCheck: string;
+    productionHealthy: string;
+  }>;
+  users: Readonly<{
+    hiddenByFilters: string;
+    next: string;
+    pageAriaLabel: (page: number) => string;
+    paginationLabel: string;
+    previous: string;
+    searchPlaceholder: string;
+    showingRange: (start: number, end: number, total: number) => string;
+  }>;
+}>;
+
+type DashboardFounderHandoffCopy = Readonly<{
+  actions: Readonly<{
+    adminControls: string;
+    openFounderAdmin: string;
+    ownerDashboard: string;
+    previewQuote: string;
+  }>;
+  blockedGates: readonly string[];
+  description: string;
+  emptyState: string;
+  eyebrow: string;
+  metrics: Readonly<{
+    accessibleWorkspacesDetail: string;
+    accessibleWorkspacesLabel: string;
+    blockedGatesDetail: string;
+    blockedGatesLabel: string;
+    ownerWorkflowDetail: string;
+    ownerWorkflowLabel: string;
+    primaryAdminDetail: string;
+    primaryAdminLabel: string;
+  }>;
+  safetyGates: Readonly<{
+    description: string;
+    title: string;
+  }>;
+  statuses: Readonly<{
+    blocked: string;
+    handoff: string;
+    next: string;
+    ownerScope: string;
+    primaryConsole: string;
+  }>;
+  surfaceMap: Readonly<{
+    description: string;
+    title: string;
+  }>;
+  surfaces: Readonly<{
+    currentDescription: string;
+    currentTitle: string;
+    dashboardDescription: string;
+    dashboardTitle: string;
+    founderAdminDescription: string;
+    founderAdminTitle: string;
+  }>;
+  workspacePreview: Readonly<{
+    description: string;
+    title: string;
+  }>;
+}>;
+
 type DashboardFeatureRegistryCopy = Readonly<{
   activationLabel: string;
   categoryLabels: Readonly<Record<FeatureCategory, string>>;
@@ -972,9 +1112,11 @@ type DashboardCopy = Readonly<{
     saveConfiguration: string;
     signOut: string;
   }>;
+  admin: DashboardAdminCopy;
   businessProfile: DashboardBusinessProfileCopy;
   configuration: DashboardConfigurationCopy;
   errorBoundary: DashboardErrorBoundaryCopy;
+  founderHandoff: DashboardFounderHandoffCopy;
   guide: DashboardGuideCopy;
   leadDetail: DashboardLeadDetailCopy;
   leadQueue: DashboardLeadQueueCopy;
@@ -1310,12 +1452,190 @@ const englishCopy: BizPilotCopy = {
       saveConfiguration: "Save configuration",
       signOut: "Sign out",
     },
+    admin: {
+      accessBlocked: {
+        backToDashboard: "Back to dashboard",
+        badge: "Internal only",
+        description:
+          "This console is reserved for founder operations and requires an explicit email allowlist.",
+        eyebrow: "Founder Admin",
+        help:
+          "Set `BIZPILOT_FOUNDER_EMAILS` on the server to the approved founder email list, then sign in with one of those accounts.",
+        signIn: "Sign in",
+        title: "Access unavailable",
+      },
+      businesses: {
+        hiddenMatches: (count) =>
+          `Showing the first 10 matched workspaces. ${count} more matched ${count === 1 ? "workspace is" : "workspaces are"} hidden. Search by owner, business, or slug to narrow the list.`,
+        intakeOff: "Intake off",
+        intakeOpen: "Intake open",
+        noMatches: "No businesses match this search.",
+        reset: "Reset",
+        searchLabel: "Search businesses",
+        searchPlaceholder: "Business, owner, slug",
+        searchSubmit: "Search",
+        selectedWorkspaceVisible:
+          "Selected workspace stays visible even when it does not match the current search.",
+        subtitle: "Select one workspace; edit it in the detail panel.",
+        title: "Businesses",
+      },
+      controls: {
+        accessNotePlaceholder: "Optional access note",
+        internalNotePlaceholder:
+          "Objection, setup state, next founder follow-up",
+        planNotePlaceholder: "Optional plan note",
+        quoteLinkNotePlaceholder: "Optional quote link note",
+        savePolicy: "Save policy",
+        sessionPolicy: "Session policy",
+        sessionPolicyHelp:
+          "Checked on the next dashboard request. Every policy edit is written to the customer system log.",
+        sessionPolicyNotePlaceholder: "Reason owner can trace later",
+        signOutDuration: "Sign-out duration",
+        workspaceKindNotePlaceholder: "Why this is safe",
+      },
+      routeMessages: {
+        actionFailed: "Founder admin action could not be completed.",
+        updated: "Done. The admin workspace has been updated.",
+      },
+      tabs: {
+        ariaLabel: "Admin sections",
+        brandSubtitle: "Founder operations",
+        groups: {
+          command: "Command",
+          operations: "Operations",
+          system: "System",
+        },
+        items: {
+          activity: {
+            description: "Audit trail",
+            label: "Activity",
+          },
+          businesses: {
+            description: "Workspace controls",
+            label: "Businesses",
+          },
+          health: {
+            description: "Runtime checks",
+            label: "Health",
+          },
+          leads: {
+            description: "Lead review and cleanup",
+            label: "Leads",
+          },
+          overview: {
+            description: "Read-only command view",
+            label: "Overview",
+          },
+          users: {
+            description: "Search, support, gated tools",
+            label: "Users",
+          },
+        },
+        snapshots: {
+          active: "Active",
+          paidReady: "Paid-ready",
+          paused: "Paused",
+        },
+      },
+      theme: {
+        ariaLabel: "Founder admin theme",
+      },
+      topbar: {
+        badge: "Founder admin",
+        ownerDashboard: "Owner dashboard",
+        panelTitles: {
+          activity: "Activity Log",
+          businesses: "Businesses",
+          health: "Production Health",
+          leads: "Admin Inbox",
+          overview: "Admin Overview",
+          users: "Users",
+        },
+        productionCheck: "Production: check",
+        productionHealthy: "Production: healthy",
+      },
+      users: {
+        hiddenByFilters: "Some loaded users are hidden by access/auth filters.",
+        next: "Next",
+        pageAriaLabel: (page) => `Page ${page}`,
+        paginationLabel: "User directory pagination",
+        previous: "Previous",
+        searchPlaceholder: "Name, email, phone",
+        showingRange: (start, end, total) =>
+          `Showing ${start}-${end} of ${total} auth user(s).`,
+      },
+    },
     errorBoundary: {
       body:
         "BizPilot caught a safe dashboard error. Reload the workspace to try again without exposing internal details.",
       eyebrow: "Dashboard",
       reload: "Reload dashboard",
       title: "This workspace needs a refresh.",
+    },
+    founderHandoff: {
+      actions: {
+        adminControls: "Admin controls",
+        openFounderAdmin: "Open Founder Admin",
+        ownerDashboard: "Owner dashboard",
+        previewQuote: "Preview quote",
+      },
+      blockedGates: [
+        "Customer account deletion",
+        "Invite, role, suspend, or remove member access",
+        "Real customer data approval",
+        "Paid pilot, billing, payment, and refund automation",
+      ],
+      description:
+        "Internal handoff page for founder operations. The primary admin work happens in /admin; the owner dashboard stays focused on manual lead recovery.",
+      emptyState: "No workspace is linked to this account yet.",
+      eyebrow: "Founder Operations",
+      metrics: {
+        accessibleWorkspacesDetail:
+          "Visible through the current signed-in workspace context.",
+        accessibleWorkspacesLabel: "Accessible workspaces",
+        blockedGatesDetail:
+          "Do not cross these without owner-approved readiness gates.",
+        blockedGatesLabel: "Blocked gates",
+        ownerWorkflowDetail:
+          "Manual lead recovery remains the customer-facing surface.",
+        ownerWorkflowLabel: "Owner workflow",
+        primaryAdminDetail:
+          "Use /admin for cross-workspace operational review.",
+        primaryAdminLabel: "Primary admin",
+      },
+      safetyGates: {
+        description:
+          "These remain gated by the project operating standard and must not be blended into normal dashboard polish.",
+        title: "Safety gates",
+      },
+      statuses: {
+        blocked: "Blocked",
+        handoff: "Handoff",
+        next: "Next",
+        ownerScope: "Owner scope",
+        primaryConsole: "Primary console",
+      },
+      surfaceMap: {
+        description:
+          "Keep each surface clear: founder operations are internal, owner tools are manual-first, and customer quote forms stay public/intake-only.",
+        title: "Admin surface map",
+      },
+      surfaces: {
+        currentDescription:
+          "Current internal route: use it as an orientation page, not as the main admin surface.",
+        currentTitle: "This Page",
+        dashboardDescription:
+          "Owner workflow for quote requests, manual AI draft review, setup, profile, and settings.",
+        dashboardTitle: "Owner Dashboard",
+        founderAdminDescription:
+          "Cross-workspace businesses, plans, quote links, notes, cleanup gates, and audit trail.",
+        founderAdminTitle: "Founder Admin",
+      },
+      workspacePreview: {
+        description:
+          "This is a safe, owner-scoped preview only. Use the primary Founder Admin for cross-workspace controls.",
+        title: "Accessible workspace preview",
+      },
     },
     routeMessages: {
       genericError:
@@ -2340,7 +2660,7 @@ const englishCopy: BizPilotCopy = {
         title: "Dashboard",
       },
       founder: {
-        subtitle: "Phase 18B pilot tracking shell",
+        subtitle: "Founder handoff and internal admin orientation",
         title: "Founder Admin Console",
       },
       guide: {
@@ -3216,6 +3536,185 @@ const frenchCopy: BizPilotCopy = {
       previewQuotePage: "Aperçu de la soumission",
       saveConfiguration: "Enregistrer",
       signOut: "Déconnexion",
+    },
+    admin: {
+      accessBlocked: {
+        backToDashboard: "Retour au tableau de bord",
+        badge: "Interne seulement",
+        description:
+          "Cette console est réservée aux opérations fondateur et exige une liste d'accès courriel explicite.",
+        eyebrow: "Admin fondateur",
+        help:
+          "Définissez `BIZPILOT_FOUNDER_EMAILS` côté serveur avec les courriels fondateur approuvés, puis connectez-vous avec l'un de ces comptes.",
+        signIn: "Connexion",
+        title: "Accès indisponible",
+      },
+      businesses: {
+        hiddenMatches: (count) =>
+          `Les 10 premiers espaces correspondants sont affichés. ${count} autre${count === 1 ? "" : "s"} espace${count === 1 ? "" : "s"} correspond${count === 1 ? "" : "ent"} mais reste${count === 1 ? "" : "nt"} masqué${count === 1 ? "" : "s"}. Recherchez par responsable, entreprise ou slug pour réduire la liste.`,
+        intakeOff: "Demandes fermées",
+        intakeOpen: "Demandes ouvertes",
+        noMatches: "Aucune entreprise ne correspond à cette recherche.",
+        reset: "Réinitialiser",
+        searchLabel: "Rechercher des entreprises",
+        searchPlaceholder: "Entreprise, responsable, slug",
+        searchSubmit: "Rechercher",
+        selectedWorkspaceVisible:
+          "L'espace sélectionné reste visible même s'il ne correspond pas à la recherche actuelle.",
+        subtitle: "Sélectionnez un espace; modifiez-le dans le panneau de détail.",
+        title: "Entreprises",
+      },
+      controls: {
+        accessNotePlaceholder: "Note d'accès optionnelle",
+        internalNotePlaceholder:
+          "Objection, état de configuration, prochain suivi fondateur",
+        planNotePlaceholder: "Note de forfait optionnelle",
+        quoteLinkNotePlaceholder: "Note de lien de soumission optionnelle",
+        savePolicy: "Enregistrer la politique",
+        sessionPolicy: "Politique de session",
+        sessionPolicyHelp:
+          "Vérifiée à la prochaine requête du tableau de bord. Chaque modification est inscrite au journal système client.",
+        sessionPolicyNotePlaceholder: "Raison traçable par le client",
+        signOutDuration: "Durée de déconnexion",
+        workspaceKindNotePlaceholder: "Pourquoi c'est sûr",
+      },
+      routeMessages: {
+        actionFailed: "L'action admin fondateur n'a pas pu être complétée.",
+        updated: "Terminé. L'espace admin a été mis à jour.",
+      },
+      tabs: {
+        ariaLabel: "Sections admin",
+        brandSubtitle: "Opérations fondateur",
+        groups: {
+          command: "Commande",
+          operations: "Opérations",
+          system: "Système",
+        },
+        items: {
+          activity: {
+            description: "Journal d'audit",
+            label: "Activité",
+          },
+          businesses: {
+            description: "Contrôles des espaces",
+            label: "Entreprises",
+          },
+          health: {
+            description: "Vérifications runtime",
+            label: "Santé",
+          },
+          leads: {
+            description: "Révision et nettoyage des prospects",
+            label: "Prospects",
+          },
+          overview: {
+            description: "Vue de commande lecture seule",
+            label: "Aperçu",
+          },
+          users: {
+            description: "Recherche, soutien, outils gardés",
+            label: "Utilisateurs",
+          },
+        },
+        snapshots: {
+          active: "Actif",
+          paidReady: "Prêt payé",
+          paused: "En pause",
+        },
+      },
+      theme: {
+        ariaLabel: "Thème admin fondateur",
+      },
+      topbar: {
+        badge: "Admin fondateur",
+        ownerDashboard: "Tableau responsable",
+        panelTitles: {
+          activity: "Journal d'activité",
+          businesses: "Entreprises",
+          health: "Santé production",
+          leads: "Boîte admin",
+          overview: "Aperçu admin",
+          users: "Utilisateurs",
+        },
+        productionCheck: "Production: vérifier",
+        productionHealthy: "Production: saine",
+      },
+      users: {
+        hiddenByFilters:
+          "Certains utilisateurs chargés sont masqués par les filtres d'accès/auth.",
+        next: "Suivant",
+        pageAriaLabel: (page) => `Page ${page}`,
+        paginationLabel: "Pagination du répertoire utilisateurs",
+        previous: "Précédent",
+        searchPlaceholder: "Nom, courriel, téléphone",
+        showingRange: (start, end, total) =>
+          `Affichage ${start}-${end} de ${total} utilisateur${total === 1 ? "" : "s"} auth.`,
+      },
+    },
+    founderHandoff: {
+      actions: {
+        adminControls: "Contrôles admin",
+        openFounderAdmin: "Ouvrir l'admin fondateur",
+        ownerDashboard: "Tableau responsable",
+        previewQuote: "Aperçu soumission",
+      },
+      blockedGates: [
+        "Suppression de compte client",
+        "Invitation, rôle, suspension ou retrait d'accès membre",
+        "Approbation des données client réelles",
+        "Pilote payé, facturation, paiement et automatisation des remboursements",
+      ],
+      description:
+        "Page de transfert interne pour les opérations fondateur. Le travail admin principal se fait dans /admin; le tableau responsable reste centré sur la récupération manuelle des prospects.",
+      emptyState: "Aucun espace n'est lié à ce compte pour l'instant.",
+      eyebrow: "Opérations fondateur",
+      metrics: {
+        accessibleWorkspacesDetail:
+          "Visible selon le contexte d'espace du compte connecté.",
+        accessibleWorkspacesLabel: "Espaces accessibles",
+        blockedGatesDetail:
+          "Ne pas les franchir sans les gates de préparation approuvés.",
+        blockedGatesLabel: "Gates bloqués",
+        ownerWorkflowDetail:
+          "La récupération manuelle reste la surface visible par le client.",
+        ownerWorkflowLabel: "Flux responsable",
+        primaryAdminDetail:
+          "Utilisez /admin pour la révision opérationnelle multi-espaces.",
+        primaryAdminLabel: "Admin principal",
+      },
+      safetyGates: {
+        description:
+          "Ces limites restent gouvernées par le standard opérationnel du projet et ne doivent pas être mélangées au polish normal du tableau.",
+        title: "Gates de sécurité",
+      },
+      statuses: {
+        blocked: "Bloqué",
+        handoff: "Transfert",
+        next: "Prochain",
+        ownerScope: "Portée responsable",
+        primaryConsole: "Console principale",
+      },
+      surfaceMap: {
+        description:
+          "Gardez chaque surface claire: opérations fondateur internes, outils responsables manuels, formulaires publics réservés aux demandes.",
+        title: "Carte des surfaces admin",
+      },
+      surfaces: {
+        currentDescription:
+          "Route interne actuelle: l'utiliser comme orientation, pas comme surface admin principale.",
+        currentTitle: "Cette page",
+        dashboardDescription:
+          "Flux responsable pour demandes de soumission, révision manuelle des brouillons IA, configuration, profil et réglages.",
+        dashboardTitle: "Tableau responsable",
+        founderAdminDescription:
+          "Entreprises multi-espaces, forfaits, liens de soumission, notes, gates de nettoyage et journal d'audit.",
+        founderAdminTitle: "Admin fondateur",
+      },
+      workspacePreview: {
+        description:
+          "Aperçu sûr et limité à l'espace responsable. Utilisez l'admin fondateur principal pour les contrôles multi-espaces.",
+        title: "Aperçu de l'espace accessible",
+      },
     },
     errorBoundary: {
       body:
@@ -4267,7 +4766,7 @@ const frenchCopy: BizPilotCopy = {
         title: "Tableau de bord",
       },
       founder: {
-        subtitle: "Console de suivi pilote Phase 18B",
+        subtitle: "Relais fondateur et orientation vers la console interne",
         title: "Console fondateur",
       },
       guide: {

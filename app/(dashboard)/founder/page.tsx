@@ -9,8 +9,9 @@
  * - docs/readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Moved founder handoff labels and safety-gate copy into the bilingual dashboard dictionary.
  * - 2026-07-05: Removed stale placeholder wording from founder handoff history.
  * - 2026-05-18: Created original founder handoff shell.
  * - 2026-05-19: Matched approved index.html Founder Admin layout.
@@ -21,6 +22,7 @@
  */
 
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import {
@@ -32,45 +34,16 @@ import {
   SectionHeader,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  INTERFACE_LANGUAGE_COOKIE,
+  resolveWorkspaceInterfaceLanguage,
+} from "@/lib/i18n/language";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 import { isFounderUser } from "@/server/services/founder-admin.service";
 
 export const dynamic = "force-dynamic";
-
-const adminSurfaces = [
-  {
-    description:
-      "Cross-workspace businesses, plans, quote links, notes, cleanup gates, and audit trail.",
-    href: "/admin",
-    label: "Primary console",
-    title: "Founder Admin",
-    tone: "emerald",
-  },
-  {
-    description:
-      "Owner workflow for quote requests, manual AI draft review, setup, profile, and settings.",
-    href: "/dashboard",
-    label: "Owner scope",
-    title: "Owner Dashboard",
-    tone: "blue",
-  },
-  {
-    description:
-      "Current internal route: use it as an orientation page, not as the main admin surface.",
-    href: "/founder",
-    label: "Handoff",
-    title: "This Page",
-    tone: "amber",
-  },
-] as const;
-
-const blockedGates = [
-  "Customer account deletion",
-  "Invite, role, suspend, or remove member access",
-  "Real customer data approval",
-  "Paid pilot, billing, payment, and refund automation",
-] as const;
 
 export default async function FounderConsolePage() {
   const user = await getCurrentUser();
@@ -83,8 +56,41 @@ export default async function FounderConsolePage() {
     redirect("/dashboard");
   }
 
-  const workspace = await getBusinessWorkspace({ userId: user.id });
+  const [workspace, cookieStore] = await Promise.all([
+    getBusinessWorkspace({ userId: user.id }),
+    cookies(),
+  ]);
+  const activeLanguage = resolveWorkspaceInterfaceLanguage({
+    businessLanguage: workspace.businesses[0]?.preferred_language,
+    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
+  const dashboardCopy = getBizPilotCopy(activeLanguage).dashboard;
+  const founderCopy = dashboardCopy.founderHandoff;
   const accessibleBusinesses = workspace.businesses;
+  const adminSurfaces = [
+    {
+      description: founderCopy.surfaces.founderAdminDescription,
+      href: "/admin",
+      label: founderCopy.statuses.primaryConsole,
+      title: founderCopy.surfaces.founderAdminTitle,
+      tone: "emerald",
+    },
+    {
+      description: founderCopy.surfaces.dashboardDescription,
+      href: "/dashboard",
+      label: founderCopy.statuses.ownerScope,
+      title: founderCopy.surfaces.dashboardTitle,
+      tone: "blue",
+    },
+    {
+      description: founderCopy.surfaces.currentDescription,
+      href: "/founder",
+      label: founderCopy.statuses.handoff,
+      title: founderCopy.surfaces.currentTitle,
+      tone: "amber",
+    },
+  ] as const;
+  const blockedGates = founderCopy.blockedGates;
 
   return (
     <main className="space-y-4">
@@ -92,40 +98,40 @@ export default async function FounderConsolePage() {
         actions={
           <>
             <Link className={primaryButtonClass} href="/admin">
-              Open Founder Admin
+              {founderCopy.actions.openFounderAdmin}
             </Link>
             <Link className={buttonClass} href="/dashboard">
-              Owner dashboard
+              {founderCopy.actions.ownerDashboard}
             </Link>
           </>
         }
-        description="Internal handoff page for founder operations. The primary admin work happens in /admin; the owner dashboard stays focused on manual lead recovery."
-        eyebrow="Founder Operations"
-        title="Founder Admin Handoff"
+        description={founderCopy.description}
+        eyebrow={founderCopy.eyebrow}
+        title={dashboardCopy.pages.founder.title}
       />
 
       <section className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
-          detail="Visible through the current signed-in workspace context."
-          label="Accessible workspaces"
+          detail={founderCopy.metrics.accessibleWorkspacesDetail}
+          label={founderCopy.metrics.accessibleWorkspacesLabel}
           tone="emerald"
           value={accessibleBusinesses.length}
         />
         <MetricCard
-          detail="Use /admin for cross-workspace operational review."
-          label="Primary admin"
+          detail={founderCopy.metrics.primaryAdminDetail}
+          label={founderCopy.metrics.primaryAdminLabel}
           tone="blue"
           value="/admin"
         />
         <MetricCard
-          detail="Manual lead recovery remains the customer-facing surface."
-          label="Owner workflow"
+          detail={founderCopy.metrics.ownerWorkflowDetail}
+          label={founderCopy.metrics.ownerWorkflowLabel}
           tone="neutral"
           value="/dashboard"
         />
         <MetricCard
-          detail="Do not cross these without owner-approved readiness gates."
-          label="Blocked gates"
+          detail={founderCopy.metrics.blockedGatesDetail}
+          label={founderCopy.metrics.blockedGatesLabel}
           tone="red"
           value={blockedGates.length}
         />
@@ -133,8 +139,8 @@ export default async function FounderConsolePage() {
 
       <DashboardCard className="p-4 sm:p-5" variant="elevated">
         <SectionHeader
-          description="Keep each surface clear: founder operations are internal, owner tools are manual-first, and customer quote forms stay public/intake-only."
-          title="Admin surface map"
+          description={founderCopy.surfaceMap.description}
+          title={founderCopy.surfaceMap.title}
         />
         <div className="mt-4 grid gap-3 lg:grid-cols-3">
           {adminSurfaces.map((surface) => (
@@ -161,8 +167,8 @@ export default async function FounderConsolePage() {
         <DashboardCard className="p-4 sm:p-5" variant="priority">
           <SectionHeader
             action={<StatusBadge tone="blue">{accessibleBusinesses.length}</StatusBadge>}
-            description="This is a safe, owner-scoped preview only. Use the primary Founder Admin for cross-workspace controls."
-            title="Accessible workspace preview"
+            description={founderCopy.workspacePreview.description}
+            title={founderCopy.workspacePreview.title}
           />
           <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-lg border border-[var(--dash-border)]">
             {accessibleBusinesses.length > 0 ? (
@@ -180,19 +186,19 @@ export default async function FounderConsolePage() {
                     </p>
                   </div>
                   <Link className={buttonClass} href={`/quote/${business.slug}`}>
-                    Preview quote
+                    {founderCopy.actions.previewQuote}
                   </Link>
                   <Link
                     className={buttonClass}
                     href={`/admin?businessId=${encodeURIComponent(business.id)}`}
                   >
-                    Admin controls
+                    {founderCopy.actions.adminControls}
                   </Link>
                 </div>
               ))
             ) : (
               <p className="bg-[var(--dash-surface-muted)] px-4 py-6 text-center text-sm text-[var(--dash-text-secondary)]">
-                No workspace is linked to this account yet.
+                {founderCopy.emptyState}
               </p>
             )}
           </div>
@@ -200,9 +206,9 @@ export default async function FounderConsolePage() {
 
         <DashboardCard className="p-4 sm:p-5" variant="default">
           <SectionHeader
-            action={<StatusBadge tone="red">Blocked</StatusBadge>}
-            description="These remain gated by the project operating standard and must not be blended into normal dashboard polish."
-            title="Safety gates"
+            action={<StatusBadge tone="red">{founderCopy.statuses.blocked}</StatusBadge>}
+            description={founderCopy.safetyGates.description}
+            title={founderCopy.safetyGates.title}
           />
           <ul className="mt-4 grid gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
             {blockedGates.map((gate) => (

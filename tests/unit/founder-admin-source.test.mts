@@ -10,8 +10,9 @@
  * - components/admin/founder-test-cleanup-form.tsx
  * Author: MoOoH
  * Created: 2026-05-26
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Updated founder-admin guards for centralized bilingual shell and handoff copy.
  * - 2026-07-04: Added founder-admin metric honesty guards against sent-reply and fake-conversion claims.
  * - 2026-07-05: Guarded professional account-safety copy for protected auth cleanup.
  * - 2026-07-05: Guarded founder user pagination panel persistence and page sizes.
@@ -102,10 +103,10 @@ describe("Founder admin source safety", () => {
 
     assert.equal(pageSource.includes("FounderAdminCapabilityMatrix"), true);
     assert.equal(pageSource.includes('return "overview";'), true);
-    assert.equal(pageSource.includes('label: "Overview", panel: "overview"'), true);
-    assert.equal(pageSource.includes('label: "Users", panel: "users"'), true);
-    assert.equal(pageSource.includes('label: "Businesses", panel: "businesses"'), true);
-    assert.equal(pageSource.indexOf('label: "Users", panel: "users"') < pageSource.indexOf('label: "Businesses", panel: "businesses"'), true);
+    assert.equal(pageSource.includes("copy.tabs.items.overview.label"), true);
+    assert.equal(pageSource.includes("copy.tabs.items.users.label"), true);
+    assert.equal(pageSource.includes("copy.tabs.items.businesses.label"), true);
+    assert.equal(pageSource.indexOf("copy.tabs.items.users.label") < pageSource.indexOf("copy.tabs.items.businesses.label"), true);
     assert.equal(pageSource.includes('User directory'), true);
     assert.equal(pageSource.includes("Operating rule"), true);
     assert.equal(pageSource.indexOf("Search users") < pageSource.indexOf("Work queues"), true);
@@ -120,7 +121,7 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("Needs owner-approved role policy"), true);
     assert.equal(pageSource.includes('name="adminPanel" type="hidden" value="users"'), true);
     assert.equal(pageSource.includes("adminUserPageSizeOptions"), true);
-    assert.equal(pageSource.includes("User directory pagination"), true);
+    assert.equal(pageSource.includes("copy.users.paginationLabel"), true);
     assert.equal(pageSource.includes('aria-current={active ? "page" : undefined}'), true);
     assert.equal(
       pageSource.includes("aria-disabled=\"true\""),
@@ -204,10 +205,10 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes('className="mt-4 grid gap-2"'), true);
     assert.equal(pageSource.includes("(Search & Manage)"), false);
 
-    assert.equal(founderHandoffSource.includes("Founder Admin Handoff"), true);
-    assert.equal(founderHandoffSource.includes("Admin surface map"), true);
-    assert.equal(founderHandoffSource.includes("Safety gates"), true);
-    assert.equal(founderHandoffSource.includes("Open Founder Admin"), true);
+    assert.equal(founderHandoffSource.includes("founderCopy.surfaceMap.title"), true);
+    assert.equal(founderHandoffSource.includes("founderCopy.safetyGates.title"), true);
+    assert.equal(founderHandoffSource.includes("founderCopy.actions.openFounderAdmin"), true);
+    assert.equal(founderHandoffSource.includes("dashboardCopy.pages.founder.title"), true);
     assert.equal(founderHandoffSource.includes("Phase 18B shell"), false);
   });
 
@@ -276,8 +277,8 @@ describe("Founder admin source safety", () => {
       true,
     );
     assert.equal(pageSource.includes("].slice(0, 10);"), true);
-    assert.equal(pageSource.includes("Search businesses"), true);
-    assert.equal(pageSource.includes("Showing the first 10 matched workspaces"), true);
+    assert.equal(pageSource.includes("copy.businesses.searchLabel"), true);
+    assert.equal(pageSource.includes("copy.businesses.hiddenMatches(hiddenMatchCount)"), true);
     assert.equal(pageSource.includes("2xl:grid-cols-[minmax(360px,0.82fr)_minmax(0,1.18fr)]"), true);
     assert.equal(pageSource.includes("Save workspace kind"), false);
     assert.equal(pageSource.includes("Save session policy"), false);

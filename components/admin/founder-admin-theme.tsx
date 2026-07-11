@@ -6,8 +6,9 @@
  * Role: Keeps the internal console visually aligned with the shared owner dashboard theme system.
  * Author: MoOoH
  * Created: 2026-05-27
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Accepted localized labels and aria copy from the founder-admin dictionary.
  * - 2026-06-18: Switched the admin frame to svh for safer short-height scrolling.
  * - 2026-06-19: Added System theme preference support using the shared theme cookie.
  * - 2026-07-05: Kept admin DOM theme state synchronized when System theme changes.
@@ -113,7 +114,17 @@ export function FounderAdminThemeFrame({
   );
 }
 
-export function FounderAdminThemeSelector() {
+export function FounderAdminThemeSelector({
+  ariaLabel,
+  labels,
+}: Readonly<{
+  ariaLabel: string;
+  labels: Readonly<{
+    dark: string;
+    light: string;
+    system: string;
+  }>;
+}>) {
   const context = React.useContext(FounderAdminThemeContext);
 
   if (!context) {
@@ -122,7 +133,7 @@ export function FounderAdminThemeSelector() {
 
   return (
     <div
-      aria-label="Founder admin theme"
+      aria-label={ariaLabel}
       className="inline-flex rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-1"
     >
       {(["system", "light", "dark"] as const).map((option) => (
@@ -137,7 +148,7 @@ export function FounderAdminThemeSelector() {
           onClick={() => context.setTheme(option)}
           type="button"
         >
-          {option === "system" ? "System" : option === "light" ? "Light" : "Dark"}
+          {labels[option]}
         </button>
       ))}
     </div>

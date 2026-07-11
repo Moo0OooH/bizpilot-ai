@@ -10,8 +10,9 @@
  * - app/admin/page.tsx
  * Author: MoOoH
  * Created: 2026-06-27
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Updated final admin shell guards for centralized bilingual labels and pagination copy.
  * - 2026-07-05: Guarded the Quote Setup readiness command strip for first open setup actions.
  * - 2026-07-05: Guarded the lead queue focus command strip as the route-level recovery action.
  * - 2026-07-05: Guarded owner overview priority standardization and tokenized secondary insights.
@@ -139,7 +140,7 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(adminFrame.includes("h-svh overflow-hidden"), true);
     assert.equal(admin.includes("flex h-dvh min-h-0 w-full flex-col overflow-hidden lg:flex-row"), true);
     assert.equal(admin.includes('href={adminUsersHref(params, { adminPanel: item.panel })}'), true);
-    assert.equal(admin.includes('aria-label="Admin sections"'), true);
+    assert.equal(admin.includes("aria-label={copy.tabs.ariaLabel}"), true);
     assert.equal(admin.includes("grid grid-cols-3 gap-1"), true);
     assert.equal(admin.includes("flex-1 overflow-y-auto"), true);
   });
@@ -344,9 +345,9 @@ describe("Dashboard V3 final acceptance source guards", () => {
     assert.equal(admin.includes("function limitedBusinessRows"), true);
     assert.equal(admin.includes("function paginationWindow"), true);
     assert.equal(admin.includes("].slice(0, 10);"), true);
-    assert.equal(admin.includes("Search businesses"), true);
-    assert.equal(admin.indexOf("Search businesses") < admin.indexOf("visibleBusinesses.map"), true);
-    assert.equal(admin.includes("User directory pagination"), true);
+    assert.equal(admin.includes("copy.businesses.searchLabel"), true);
+    assert.equal(admin.indexOf("copy.businesses.searchLabel") < admin.indexOf("visibleBusinesses.map"), true);
+    assert.equal(admin.includes("copy.users.paginationLabel"), true);
     assert.equal(admin.includes('adminPanel: "users"'), true);
     assert.equal(cleanup.includes("<details className="), true);
     assert.equal(cleanup.includes("<details open"), false);
