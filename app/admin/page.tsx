@@ -12,6 +12,7 @@
  * Created: 2026-05-22
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Localized founder business control-card warnings, audit helpers, and session-policy option labels.
  * - 2026-07-11: Centralized founder-admin shell, handoff, and repeated placeholder copy into the bilingual dashboard dictionary.
  * - 2026-07-05: Restored explicit first-10 matched workspace helper copy in the founder business rail.
  * - 2026-07-05: Clarified hidden admin workspace match counts with direct matched-id lookup.
@@ -1178,6 +1179,23 @@ function FounderSessionPolicyForm({
   business,
   copy,
 }: Readonly<{ business: FounderAdminBusiness; copy: AdminCopy }>) {
+  const sessionTimeoutModeOptions = [
+    {
+      label: copy.controls.sessionTimeoutModeLabels.always_on,
+      value: "always_on" as const,
+    },
+    {
+      label: copy.controls.sessionTimeoutModeLabels.after_duration,
+      value: "after_duration" as const,
+    },
+  ];
+  const sessionTimeoutOptions = [
+    15, 30, 60, 240, 480, 720, 1440, 10080,
+  ].map((value) => ({
+    label: copy.controls.sessionTimeoutDurationLabels[value],
+    value,
+  }));
+
   return (
     <form action={updateFounderSessionPolicyAction} className={controlPanelClass}>
       <input name="businessId" type="hidden" value={business.businessId} />
@@ -1226,20 +1244,22 @@ function FounderSessionPolicyForm({
 
 function FounderSystemChangeLog({
   actions,
-}: Readonly<{ actions: FounderAdminActionSummary[] }>) {
+  copy,
+}: Readonly<{ actions: FounderAdminActionSummary[]; copy: AdminCopy }>) {
+  const detailCopy = copy.businesses.detail;
+
   return (
     <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 shadow-[0_12px_32px_rgba(15,23,42,0.05)] md:col-span-2">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-black text-[var(--dash-text)]">
-            Customer system change log
+            {detailCopy.auditLog.title}
           </p>
           <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-            Owner-visible trail for founder/admin changes, with trace IDs for
-            support verification.
+            {detailCopy.auditLog.description}
           </p>
         </div>
-        <StatusBadge tone="blue">{actions.length} logged</StatusBadge>
+        <StatusBadge tone="blue">{detailCopy.auditLog.badgeCount(actions.length)}</StatusBadge>
       </div>
 
       <div className="mt-4 divide-y divide-[var(--dash-border)] overflow-hidden rounded-lg border border-[var(--dash-border)]">
@@ -1264,7 +1284,7 @@ function FounderSystemChangeLog({
                 </p>
                 {action.note ? (
                   <p className="mt-1 break-words leading-5 text-[var(--dash-text-muted)]">
-                    Note: {action.note}
+                    {detailCopy.auditLog.notePrefix}: {action.note}
                   </p>
                 ) : null}
               </div>
@@ -1275,7 +1295,7 @@ function FounderSystemChangeLog({
           ))
         ) : (
           <p className="bg-[var(--dash-surface-muted)] px-4 py-5 text-center text-sm text-[var(--dash-text-secondary)]">
-            No system changes logged for this customer yet.
+            {detailCopy.auditLog.emptyState}
           </p>
         )}
       </div>
@@ -1295,45 +1315,51 @@ function latestAction(
 }
 
 function controlAuditText(
+  copy: AdminCopy,
   actions: FounderAdminActionSummary[],
   actionTypes: ReadonlyArray<string>,
 ): { updatedAt: string; updatedBy: string } {
   const action = latestAction(actions, actionTypes);
 
   return {
-    updatedAt: action ? formatDateTime(action.createdAt) : "Not recorded yet",
-    updatedBy: "Founder Admin",
+    updatedAt: action
+      ? formatDateTime(action.createdAt)
+      : copy.businesses.detail.auditLog.notRecordedYet,
+    updatedBy: copy.businesses.detail.auditLog.updatedByFounderAdmin,
   };
 }
 
-function recommendedPriorityAction(business: FounderAdminBusiness): {
+function recommendedPriorityAction(
+  business: FounderAdminBusiness,
+  copy: AdminCopy,
+): {
   tone: "amber" | "blue" | "emerald" | "red";
   text: string;
 } {
   if (business.status === "suspended" || business.status === "cancelled") {
     return {
       tone: "red",
-      text: "Customer and public access should stay blocked until the account is intentionally restored.",
+      text: copy.businesses.detail.recommendationStates.blockedUntilRestored,
     };
   }
 
   if (business.status === "onboarding" && !business.publicLinkActive) {
     return {
       tone: "blue",
-      text: "Keep the public quote form inactive until onboarding is complete and the customer is ready.",
+      text: copy.businesses.detail.recommendationStates.holdQuoteLinkDuringOnboarding,
     };
   }
 
   if (business.status === "active" && !business.publicLinkActive) {
     return {
       tone: "amber",
-      text: "Activate the public quote link so the customer can receive new leads.",
+      text: copy.businesses.detail.recommendationStates.activateQuoteLink,
     };
   }
 
   return {
     tone: "emerald",
-    text: "Business is ready for daily use.",
+    text: copy.businesses.detail.recommendationStates.readyForDailyUse,
   };
 }
 
@@ -1387,11 +1413,16 @@ function MiniControlIcon({
 
 function ControlAuditMeta({
   audit,
-}: Readonly<{ audit: { updatedAt: string; updatedBy: string } }>) {
+  copy,
+}: Readonly<{ audit: { updatedAt: string; updatedBy: string }; copy: AdminCopy }>) {
   return (
     <div className="grid gap-1 text-[11px] font-bold text-[var(--dash-text-muted)] sm:grid-cols-2">
-      <p>Last updated: {audit.updatedAt}</p>
-      <p className="sm:text-right">Updated by: {audit.updatedBy}</p>
+      <p>
+        {copy.businesses.detail.auditLog.lastUpdatedLabel}: {audit.updatedAt}
+      </p>
+      <p className="sm:text-right">
+        {copy.businesses.detail.auditLog.updatedByLabel}: {audit.updatedBy}
+      </p>
     </div>
   );
 }
@@ -1640,18 +1671,42 @@ function BusinessControlCard({
   copy: AdminCopy;
   dryRun?: FounderCleanupDryRun | null;
 }>) {
-  const accessAudit = controlAuditText(business.actionLog, [
+  const detailCopy = copy.businesses.detail;
+  const statusLabels: Record<BusinessStatus, string> = {
+    active: copy.users.accessStatusOptions.active,
+    cancelled: copy.users.accessStatusOptions.cancelled,
+    onboarding: copy.users.accessStatusOptions.onboarding,
+    suspended: copy.users.accessStatusOptions.suspended,
+  };
+  const statusOptions = [
+    { label: statusLabels.onboarding, value: "onboarding" as const },
+    { label: statusLabels.active, value: "active" as const },
+    { label: statusLabels.suspended, value: "suspended" as const },
+    { label: statusLabels.cancelled, value: "cancelled" as const },
+  ];
+  const planLabels = detailCopy.planLabels;
+  const workspaceKindLabels = detailCopy.workspaceKindLabels;
+  const workspaceKindOptions = [
+    {
+      label: workspaceKindLabels.production_customer,
+      value: "production_customer" as const,
+    },
+    { label: workspaceKindLabels.founder_test, value: "founder_test" as const },
+    { label: workspaceKindLabels.demo, value: "demo" as const },
+    { label: workspaceKindLabels.seed, value: "seed" as const },
+  ];
+  const accessAudit = controlAuditText(copy, business.actionLog, [
     "status_changed",
     "business_reactivated",
     "business_suspended",
     "business_cancelled",
   ]);
-  const planAudit = controlAuditText(business.actionLog, ["plan_changed"]);
-  const quoteAudit = controlAuditText(business.actionLog, [
+  const planAudit = controlAuditText(copy, business.actionLog, ["plan_changed"]);
+  const quoteAudit = controlAuditText(copy, business.actionLog, [
     "quote_link_disabled",
     "quote_link_enabled",
   ]);
-  const recommendation = recommendedPriorityAction(business);
+  const recommendation = recommendedPriorityAction(business, copy);
   const recentPriorityActions = business.actionLog.filter((action) =>
     [
       "status_changed",
@@ -1665,7 +1720,7 @@ function BusinessControlCard({
   );
   const latestAdminChange = business.actionLog[0]
     ? formatDateTime(business.actionLog[0].createdAt)
-    : "No admin changes recorded yet";
+    : detailCopy.noAdminChanges;
 
   return (
     <div className="grid w-full min-w-0 max-w-full grid-cols-[minmax(0,1fr)] gap-3">
@@ -1673,10 +1728,10 @@ function BusinessControlCard({
         <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-sm font-black text-[var(--dash-text)]">
-              Business snapshot
+              {detailCopy.snapshotTitle}
             </p>
             <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-              Operational summary at a glance for {business.name}.
+              {detailCopy.snapshotDescription(business.name)}
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               <StatusBadge tone="neutral">{business.ownerEmail}</StatusBadge>
@@ -1705,43 +1760,47 @@ function BusinessControlCard({
             </div>
           </div>
           <Link className={buttonClass} href="/dashboard/business-profile">
-            View full customer profile
+            {detailCopy.viewFullCustomerProfile}
           </Link>
         </div>
         <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5">
           <SnapshotTile
             description={
               business.status === "active"
-                ? "Customer has daily dashboard access."
-                : "Limited dashboard access and lifecycle readiness."
+                ? detailCopy.tiles.accessStatusActiveDescription
+                : detailCopy.tiles.accessStatusLimitedDescription
             }
-            label="Access status"
+            label={detailCopy.tiles.accessStatus}
             tone={statusTone(business.status)}
             value={statusLabels[business.status]}
           />
           <SnapshotTile
             description={
               business.publicLinkActive
-                ? "Public quote form can accept new leads."
-                : "Public quote form is blocked. No new leads can enter."
+                ? detailCopy.tiles.quoteLinkActiveDescription
+                : detailCopy.tiles.quoteLinkInactiveDescription
             }
-            label="Quote link"
+            label={detailCopy.tiles.quoteLink}
             tone={quoteLinkTone(business.publicLinkActive)}
-            value={business.publicLinkActive ? "Active" : "Inactive"}
+            value={
+              business.publicLinkActive
+                ? detailCopy.tiles.quoteLinkActive
+                : detailCopy.tiles.quoteLinkInactive
+            }
           />
           <SnapshotTile
-            description="Plan is founder controlled. Customer cannot change plan."
-            label="Plan"
+            description={detailCopy.tiles.planDescription}
+            label={detailCopy.tiles.plan}
             tone={planTone(business.planSlug)}
             value={planLabels[business.planSlug]}
           />
           <SnapshotTile
             description={
               business.sessionTimeoutMode === "always_on"
-                ? "Customer access stays active until sign-out."
-                : "Customer sessions expire after the selected duration."
+                ? detailCopy.tiles.sessionPolicyAlwaysOnDescription
+                : detailCopy.tiles.sessionPolicyTimedDescription
             }
-            label="Session policy"
+            label={detailCopy.tiles.sessionPolicy}
             tone={business.sessionTimeoutMode === "always_on" ? "emerald" : "amber"}
             value={sessionPolicyLabel(
               business.sessionTimeoutMode,
@@ -1750,9 +1809,9 @@ function BusinessControlCard({
           />
           <SnapshotTile
             description={latestAdminChange}
-            label="Audit events"
+            label={detailCopy.tiles.auditEvents}
             tone={business.actionLog.length > 0 ? "blue" : "neutral"}
-            value={`${business.actionLog.length} logged`}
+            value={detailCopy.auditLog.badgeCount(business.actionLog.length)}
           />
         </div>
       </section>
@@ -1761,16 +1820,18 @@ function BusinessControlCard({
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div>
             <p className="text-sm font-black text-[var(--dash-text)]">
-              1) Priority controls
+              {detailCopy.priorityTitle}
             </p>
             <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-              Change access, plan, and intake state first.
+              {detailCopy.priorityDescription}
             </p>
           </div>
           <StatusBadge
             tone={business.status === "active" ? "emerald" : statusTone(business.status)}
           >
-            {business.status === "active" ? "Daily use" : statusLabels[business.status]}
+            {business.status === "active"
+              ? detailCopy.dailyUse
+              : statusLabels[business.status]}
           </StatusBadge>
         </div>
 
@@ -1782,10 +1843,10 @@ function BusinessControlCard({
                   <div className="min-w-0">
                     <MiniControlIcon tone={statusTone(business.status)}>U</MiniControlIcon>
                     <p className="text-sm font-black text-[var(--dash-text)]">
-                      Access status
+                      {detailCopy.accessControl.title}
                     </p>
                     <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                      Controls sign-in eligibility, dashboard access, and the customer lifecycle state shown to founder operations.
+                      {detailCopy.accessControl.description}
                     </p>
                   </div>
                   <StatusBadge tone={statusTone(business.status)}>
@@ -1793,7 +1854,7 @@ function BusinessControlCard({
                   </StatusBadge>
                 </div>
                 <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-                  Change access to
+                  {detailCopy.accessControl.changeLabel}
                   <select
                     className={inputClass}
                     defaultValue={business.status}
@@ -1807,20 +1868,20 @@ function BusinessControlCard({
                   </select>
                 </label>
                 <p className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  Suspended or cancelled states block customer-facing access. Use them only when the account should stop operating.
+                  {detailCopy.accessControl.warning}
                 </p>
                 <input
                   className={inputClass}
                   name="note"
                   placeholder={copy.controls.accessNotePlaceholder}
                 />
-                <ControlAuditMeta audit={accessAudit} />
+                <ControlAuditMeta audit={accessAudit} copy={copy} />
                 <button className={`${primaryButtonClass} w-full`} type="submit">
-                  Save access
+                  {detailCopy.saveAccess}
                 </button>
               </form>
             <p className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-primary-strong)]">
-              Onboarding restricts full access until setup is complete.
+              {detailCopy.accessControl.onboardingNote}
             </p>
           </div>
 
@@ -1831,10 +1892,10 @@ function BusinessControlCard({
                   <div className="min-w-0">
                     <MiniControlIcon tone={planTone(business.planSlug)}>P</MiniControlIcon>
                     <p className="text-sm font-black text-[var(--dash-text)]">
-                      Plan
+                      {detailCopy.planControl.title}
                     </p>
                     <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                      Founder/admin controlled billing tier. Customers should not self-change this state from their dashboard.
+                      {detailCopy.planControl.description}
                     </p>
                   </div>
                   <StatusBadge tone={planTone(business.planSlug)}>
@@ -1842,7 +1903,7 @@ function BusinessControlCard({
                   </StatusBadge>
                 </div>
                 <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-                  Change plan to
+                  {detailCopy.planControl.changeLabel}
                   <select
                     className={inputClass}
                     defaultValue={business.planSlug}
@@ -1856,20 +1917,20 @@ function BusinessControlCard({
                   </select>
                 </label>
                 <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  Plan changes affect founder reporting and manual billing readiness. Record why the customer is moving tiers.
+                  {detailCopy.planControl.warning}
                 </p>
                 <input
                   className={inputClass}
                   name="note"
                   placeholder={copy.controls.planNotePlaceholder}
                 />
-                <ControlAuditMeta audit={planAudit} />
+                <ControlAuditMeta audit={planAudit} copy={copy} />
                 <button className={`${primaryButtonClass} w-full`} type="submit">
-                  Save plan
+                  {detailCopy.savePlan}
                 </button>
               </form>
             <p className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-primary-strong)]">
-              Pilot plan limits usage and supports controlled rollout.
+              {detailCopy.planControl.pilotNotice}
             </p>
           </div>
 
@@ -1880,42 +1941,44 @@ function BusinessControlCard({
                   <div className="min-w-0">
                     <MiniControlIcon tone={quoteLinkTone(business.publicLinkActive)}>Q</MiniControlIcon>
                     <p className="text-sm font-black text-[var(--dash-text)]">
-                      Public quote link
+                      {detailCopy.quoteLinkControl.title}
                     </p>
                     <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                      Controls whether the public quote form can accept new leads for this customer.
+                      {detailCopy.quoteLinkControl.description}
                     </p>
                   </div>
                   <StatusBadge tone={quoteLinkTone(business.publicLinkActive)}>
-                    {business.publicLinkActive ? "Active" : "Inactive"}
+                    {business.publicLinkActive
+                      ? detailCopy.tiles.quoteLinkActive
+                      : detailCopy.tiles.quoteLinkInactive}
                   </StatusBadge>
                 </div>
                 <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-                  Change quote link to
+                  {detailCopy.quoteLinkControl.changeLabel}
                   <select
                     className={inputClass}
                     defaultValue={business.publicLinkActive ? "true" : "false"}
                     name="quoteLinkActive"
                   >
-                    <option value="true">Active</option>
-                    <option value="false">Inactive</option>
+                    <option value="true">{detailCopy.tiles.quoteLinkActive}</option>
+                    <option value="false">{detailCopy.tiles.quoteLinkInactive}</option>
                   </select>
                 </label>
                 <p className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  If inactive, the public quote form is blocked and the customer cannot receive new leads from the public intake page.
+                  {detailCopy.quoteLinkControl.warning}
                 </p>
                 <input
                   className={inputClass}
                   name="note"
                   placeholder={copy.controls.quoteLinkNotePlaceholder}
                 />
-                <ControlAuditMeta audit={quoteAudit} />
+                <ControlAuditMeta audit={quoteAudit} copy={copy} />
                 <button className={`${primaryButtonClass} w-full`} type="submit">
-                  Save quote link
+                  {detailCopy.saveQuoteLink}
                 </button>
               </form>
             <p className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-warning-strong)]">
-              Inactive link blocks all incoming public quote submissions.
+              {detailCopy.quoteLinkControl.inactiveNotice}
             </p>
           </div>
 
@@ -1923,20 +1986,22 @@ function BusinessControlCard({
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
-                  Recommended next action
+                  {detailCopy.recommendedTitle}
                 </p>
                 <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  Based on current access and quote-link state.
+                  {detailCopy.recommendedDescription}
                 </p>
               </div>
-              <StatusBadge tone={recommendation.tone}>Next</StatusBadge>
+              <StatusBadge tone={recommendation.tone}>
+                {detailCopy.nextBadge}
+              </StatusBadge>
             </div>
             <div className="mt-4 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-3 py-3 text-[12px] leading-5">
               <p className="font-black text-[var(--dash-primary-strong)]">
                 {recommendation.text}
               </p>
               <p className="mt-3 font-bold text-[var(--dash-text-secondary)]">
-                Why: keeps customer experience clean and prevents incomplete lead intake.
+                {detailCopy.whyLabel}
               </p>
             </div>
             <div className="mt-4 grid gap-2">
@@ -1955,7 +2020,7 @@ function BusinessControlCard({
                 ))
               ) : (
                 <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-3 text-[12px] text-[var(--dash-text-secondary)]">
-                  No admin changes recorded yet.
+                  {detailCopy.noAdminChanges}
                 </p>
               )}
             </div>
@@ -1968,13 +2033,13 @@ function BusinessControlCard({
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
-                  2) Workspace tools
+                  {detailCopy.toolsTitle}
                 </p>
                 <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  Use these when setup, session, or cleanup state is wrong.
+                  {detailCopy.toolsDescription}
                 </p>
               </div>
-              <StatusBadge tone="amber">Controlled</StatusBadge>
+              <StatusBadge tone="amber">{detailCopy.toolsControlled}</StatusBadge>
             </div>
             <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-2 2xl:grid-cols-1">
           <form
@@ -1983,7 +2048,7 @@ function BusinessControlCard({
           >
             <input name="businessId" type="hidden" value={business.businessId} />
             <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-              Workspace kind
+              {detailCopy.workspaceKind}
               <select
                 className={inputClass}
                 defaultValue={business.workspaceKind}
@@ -1997,8 +2062,7 @@ function BusinessControlCard({
               </select>
             </label>
             <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-              Mark only confirmed synthetic/internal workspaces as Founder test,
-              Demo, or Seed before cleanup.
+              {detailCopy.workspaceKindHelp}
             </p>
             <input
               className={inputClass}
@@ -2006,10 +2070,11 @@ function BusinessControlCard({
               placeholder={copy.controls.workspaceKindNotePlaceholder}
             />
             <ControlAuditMeta
-              audit={controlAuditText(business.actionLog, ["workspace_kind_changed"])}
+              audit={controlAuditText(copy, business.actionLog, ["workspace_kind_changed"])}
+              copy={copy}
             />
             <button className={`${primaryButtonClass} w-full`} type="submit">
-              Save kind
+              {detailCopy.saveKind}
             </button>
           </form>
 
@@ -2021,13 +2086,13 @@ function BusinessControlCard({
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-sm font-black text-[var(--dash-text)]">
-                  3) Notes, cleanup, and audit
+                  {detailCopy.notesTitle}
                 </p>
                 <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  Record context, run cleanup, then review the change trail.
+                  {detailCopy.notesDescription}
                 </p>
               </div>
-              <StatusBadge tone="red">Sensitive</StatusBadge>
+              <StatusBadge tone="red">{detailCopy.notesSensitive}</StatusBadge>
             </div>
             <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] items-start gap-3 xl:grid-cols-[minmax(260px,0.9fr)_minmax(280px,1fr)]">
           <form
@@ -2036,7 +2101,7 @@ function BusinessControlCard({
           >
             <input name="businessId" type="hidden" value={business.businessId} />
             <label className="grid gap-1.5 text-sm font-bold text-[var(--dash-text)]">
-              Internal note
+              {detailCopy.internalNote}
               <textarea
                 className={`${textareaClass} min-h-[84px]`}
                 defaultValue={business.internalNote ?? ""}
@@ -2045,7 +2110,7 @@ function BusinessControlCard({
               />
             </label>
             <button className={`${primaryButtonClass} w-full`} type="submit">
-              Save note
+              {detailCopy.saveNote}
             </button>
           </form>
 
@@ -2064,7 +2129,7 @@ function BusinessControlCard({
           {dryRun ? (
             <div className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 text-sm">
               <p className="font-black text-[var(--dash-text)]">
-                Cleanup dry run counts
+                {detailCopy.cleanupDryRunCounts}
               </p>
               <dl className="mt-2 grid grid-cols-2 gap-2 text-[12px]">
                 {Object.entries(dryRun.counts)
@@ -2088,12 +2153,14 @@ function BusinessControlCard({
           <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2.5 [&::-webkit-details-marker]:hidden">
               <span className="text-[12px] font-black text-[var(--dash-text)]">
-                Full system change log
+                {detailCopy.fullSystemChangeLog}
               </span>
-              <StatusBadge tone="blue">{business.actionLog.length} logged</StatusBadge>
+              <StatusBadge tone="blue">
+                {detailCopy.auditLog.badgeCount(business.actionLog.length)}
+              </StatusBadge>
             </summary>
             <div className="border-t border-[var(--dash-border)] p-3">
-              <FounderSystemChangeLog actions={business.actionLog} />
+              <FounderSystemChangeLog actions={business.actionLog} copy={copy} />
             </div>
           </details>
         </section>
@@ -2102,7 +2169,7 @@ function BusinessControlCard({
       </div>
 
       <p className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-4 py-3 text-[12px] font-bold leading-5 text-[var(--dash-primary-strong)]">
-        All changes are manual, traceable, and reversible by the founder. Use controls with operational awareness.
+        {detailCopy.allChangesNote}
       </p>
     </div>
   );

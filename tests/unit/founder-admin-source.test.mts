@@ -12,6 +12,7 @@
  * Created: 2026-05-26
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Updated business-detail guards for localized admin tile labels.
  * - 2026-07-11: Updated founder-admin guards for centralized bilingual shell and handoff copy.
  * - 2026-07-04: Added founder-admin metric honesty guards against sent-reply and fake-conversion claims.
  * - 2026-07-05: Guarded professional account-safety copy for protected auth cleanup.
@@ -269,7 +270,7 @@ describe("Founder admin source safety", () => {
       pageSource.indexOf("function BusinessControlCard"),
     );
     const tileSection = businessDetail.slice(
-      businessDetail.indexOf('label="Access status"'),
+      businessDetail.indexOf("copy.businesses.detail.tiles.accessStatus"),
       businessDetail.indexOf("<section className={toolboxSectionClass}>"),
     );
 
@@ -287,36 +288,37 @@ describe("Founder admin source safety", () => {
     assert.equal(pageSource.includes("Save workspace kind"), false);
     assert.equal(pageSource.includes("Save session policy"), false);
     assert.equal(
-      pageSource.indexOf("Search businesses") < pageSource.indexOf("visibleBusinesses.map"),
+      pageSource.indexOf("copy.businesses.searchLabel") <
+        pageSource.indexOf("visibleBusinesses.map"),
       true,
     );
     assert.equal(
-      businessSection.indexOf("Priority workspace") <
+      businessSection.indexOf("copy.businesses.priorityWorkspace") <
         businessSection.indexOf("<MetricCard"),
       true,
     );
     assert.equal(
-      tileSection.indexOf('label="Access status"') <
-        tileSection.indexOf('label="Quote link"'),
+      tileSection.indexOf("copy.businesses.detail.tiles.accessStatus") <
+        tileSection.indexOf("copy.businesses.detail.tiles.quoteLink"),
       true,
     );
     assert.equal(
-      tileSection.indexOf('label="Quote link"') <
-        tileSection.indexOf('label="Plan"'),
+      tileSection.indexOf("copy.businesses.detail.tiles.quoteLink") <
+        tileSection.indexOf("copy.businesses.detail.tiles.plan"),
       true,
     );
     assert.equal(
-      tileSection.indexOf('label="Plan"') <
-        tileSection.indexOf('label="Session policy"'),
+      tileSection.indexOf("copy.businesses.detail.tiles.plan") <
+        tileSection.indexOf("copy.businesses.detail.tiles.sessionPolicy"),
       true,
     );
     assert.equal(
-      tileSection.indexOf('label="Session policy"') <
-        tileSection.indexOf('label="Audit events"'),
+      tileSection.indexOf("copy.businesses.detail.tiles.sessionPolicy") <
+        tileSection.indexOf("copy.businesses.detail.tiles.auditEvents"),
       true,
     );
     assert.equal(
-      businessDetail.indexOf("Business snapshot") <
+      businessDetail.indexOf("copy.businesses.detail.snapshotTitle") <
         businessDetail.indexOf("FounderTestCleanupForm"),
       true,
     );

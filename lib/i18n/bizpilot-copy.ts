@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Completed founder-admin detail copy shape for type-safe bilingual admin labels.
  * - 2026-07-11: Restored dashboard admin and founder handoff copy shape for production type checks.
  * - 2026-07-05: Added safe Google login copy for existing owner accounts.
  * - 2026-07-05: Added Quote Setup readiness command copy for first open setup actions.
@@ -844,6 +845,10 @@ type DashboardErrorBoundaryCopy = Readonly<{
   title: string;
 }>;
 
+type PlanSlug = "founder_pilot" | "paused" | "pro" | "starter";
+type SessionTimeoutMode = "after_duration" | "always_on";
+type WorkspaceKind = "demo" | "founder_test" | "production_customer" | "seed";
+
 type DashboardAdminCopy = Readonly<{
   accessBlocked: Readonly<{
     backToDashboard: string;
@@ -855,6 +860,92 @@ type DashboardAdminCopy = Readonly<{
     title: string;
   }>;
   businesses: Readonly<{
+    detail: Readonly<{
+      accessControl: Readonly<{
+        changeLabel: string;
+        description: string;
+        onboardingNote: string;
+        title: string;
+        warning: string;
+      }>;
+      allChangesNote: string;
+      auditLog: Readonly<{
+        badgeCount: (count: number) => string;
+        description: string;
+        emptyState: string;
+        lastUpdatedLabel: string;
+        notePrefix: string;
+        notRecordedYet: string;
+        title: string;
+        updatedByFounderAdmin: string;
+        updatedByLabel: string;
+      }>;
+      cleanupDryRunCounts: string;
+      dailyUse: string;
+      fullSystemChangeLog: string;
+      internalNote: string;
+      nextBadge: string;
+      noAdminChanges: string;
+      notesDescription: string;
+      notesSensitive: string;
+      notesTitle: string;
+      planControl: Readonly<{
+        changeLabel: string;
+        description: string;
+        pilotNotice: string;
+        title: string;
+        warning: string;
+      }>;
+      planLabels: Readonly<Record<PlanSlug, string>>;
+      priorityDescription: string;
+      priorityTitle: string;
+      quoteLinkControl: Readonly<{
+        changeLabel: string;
+        description: string;
+        inactiveNotice: string;
+        title: string;
+        warning: string;
+      }>;
+      recommendedDescription: string;
+      recommendationStates: Readonly<{
+        activateQuoteLink: string;
+        blockedUntilRestored: string;
+        holdQuoteLinkDuringOnboarding: string;
+        readyForDailyUse: string;
+      }>;
+      recommendedTitle: string;
+      saveAccess: string;
+      saveKind: string;
+      saveNote: string;
+      savePlan: string;
+      saveQuoteLink: string;
+      snapshotDescription: (businessName: string) => string;
+      snapshotTitle: string;
+      tiles: Readonly<{
+        accessStatus: string;
+        accessStatusActiveDescription: string;
+        accessStatusLimitedDescription: string;
+        auditEvents: string;
+        plan: string;
+        planDescription: string;
+        quoteLink: string;
+        quoteLinkActive: string;
+        quoteLinkActiveDescription: string;
+        quoteLinkInactive: string;
+        quoteLinkInactiveDescription: string;
+        sessionPolicy: string;
+        sessionPolicyAlwaysOnDescription: string;
+        sessionPolicyTimedDescription: string;
+      }>;
+      toolsControlled: string;
+      toolsDescription: string;
+      toolsTitle: string;
+      viewFullCustomerProfile: string;
+      whyLabel: string;
+      workspaceKind: string;
+      workspaceKindHelp: string;
+      workspaceKindLabels: Readonly<Record<WorkspaceKind, string>>;
+    }>;
     emptyWorkspace: string;
     hiddenMatches: (count: number) => string;
     intakeOff: string;
@@ -882,6 +973,8 @@ type DashboardAdminCopy = Readonly<{
     planNotePlaceholder: string;
     quoteLinkNotePlaceholder: string;
     savePolicy: string;
+    sessionTimeoutDurationLabels: Readonly<Record<number, string>>;
+    sessionTimeoutModeLabels: Readonly<Record<SessionTimeoutMode, string>>;
     sessionPolicy: string;
     sessionPolicyHelp: string;
     sessionPolicyNotePlaceholder: string;
@@ -1503,6 +1596,128 @@ const englishCopy: BizPilotCopy = {
         title: "Access unavailable",
       },
       businesses: {
+        detail: {
+          accessControl: {
+            changeLabel: "Change access to",
+            description:
+              "Controls sign-in eligibility, dashboard access, and the customer lifecycle state shown to founder operations.",
+            onboardingNote:
+              "Onboarding restricts full access until setup is complete.",
+            title: "Access status",
+            warning:
+              "Suspended or cancelled states block customer-facing access. Use them only when the account should stop operating.",
+          },
+          allChangesNote:
+            "All changes are manual, traceable, and reversible by the founder. Use controls with operational awareness.",
+          auditLog: {
+            badgeCount: (count) => `${count} logged`,
+            description:
+              "Owner-visible trail for founder/admin changes, with trace IDs for support verification.",
+            emptyState: "No system changes logged for this customer yet.",
+            lastUpdatedLabel: "Last updated",
+            notePrefix: "Note",
+            notRecordedYet: "Not recorded yet",
+            title: "Customer system change log",
+            updatedByFounderAdmin: "Founder Admin",
+            updatedByLabel: "Updated by",
+          },
+          cleanupDryRunCounts: "Cleanup dry run counts",
+          dailyUse: "Daily use",
+          fullSystemChangeLog: "Full system change log",
+          internalNote: "Internal note",
+          nextBadge: "Next",
+          noAdminChanges: "No admin changes recorded yet.",
+          notesDescription:
+            "Record context, run cleanup, then review the change trail.",
+          notesSensitive: "Sensitive",
+          notesTitle: "3) Notes, cleanup, and audit",
+          planControl: {
+            changeLabel: "Change plan to",
+            description:
+              "Founder/admin controlled billing tier. Customers should not self-change this state from their dashboard.",
+            pilotNotice:
+              "Pilot plan limits usage and supports controlled rollout.",
+            title: "Plan",
+            warning:
+              "Plan changes affect founder reporting and manual billing readiness. Record why the customer is moving tiers.",
+          },
+          planLabels: {
+            founder_pilot: "Founder Pilot",
+            paused: "Paused",
+            pro: "Pro",
+            starter: "Starter",
+          },
+          priorityDescription: "Change access, plan, and intake state first.",
+          priorityTitle: "1) Priority controls",
+          quoteLinkControl: {
+            changeLabel: "Change quote link to",
+            description:
+              "Controls whether the public quote form can accept new leads for this customer.",
+            inactiveNotice:
+              "Inactive link blocks all incoming public quote submissions.",
+            title: "Public quote link",
+            warning:
+              "If inactive, the public quote form is blocked and the customer cannot receive new leads from the public intake page.",
+          },
+          recommendedDescription: "Based on current access and quote-link state.",
+          recommendationStates: {
+            activateQuoteLink:
+              "Activate the public quote link so the customer can receive new leads.",
+            blockedUntilRestored:
+              "Customer and public access should stay blocked until the account is intentionally restored.",
+            holdQuoteLinkDuringOnboarding:
+              "Keep the public quote form inactive until onboarding is complete and the customer is ready.",
+            readyForDailyUse: "Business is ready for daily use.",
+          },
+          recommendedTitle: "Recommended next action",
+          saveAccess: "Save access",
+          saveKind: "Save kind",
+          saveNote: "Save note",
+          savePlan: "Save plan",
+          saveQuoteLink: "Save quote link",
+          snapshotDescription: (businessName) =>
+            `Operational summary at a glance for ${businessName}.`,
+          snapshotTitle: "Business snapshot",
+          tiles: {
+            accessStatus: "Access status",
+            accessStatusActiveDescription:
+              "Customer has daily dashboard access.",
+            accessStatusLimitedDescription:
+              "Limited dashboard access and lifecycle readiness.",
+            auditEvents: "Audit events",
+            plan: "Plan",
+            planDescription:
+              "Plan is founder controlled. Customer cannot change plan.",
+            quoteLink: "Quote link",
+            quoteLinkActive: "Active",
+            quoteLinkActiveDescription:
+              "Public quote form can accept new leads.",
+            quoteLinkInactive: "Inactive",
+            quoteLinkInactiveDescription:
+              "Public quote form is blocked. No new leads can enter.",
+            sessionPolicy: "Session policy",
+            sessionPolicyAlwaysOnDescription:
+              "Customer access stays active until sign-out.",
+            sessionPolicyTimedDescription:
+              "Customer sessions expire after the selected duration.",
+          },
+          toolsControlled: "Controlled",
+          toolsDescription:
+            "Use these when setup, session, or cleanup state is wrong.",
+          toolsTitle: "2) Workspace tools",
+          viewFullCustomerProfile: "View full customer profile",
+          whyLabel:
+            "Why: keeps customer experience clean and prevents incomplete lead intake.",
+          workspaceKind: "Workspace kind",
+          workspaceKindHelp:
+            "Mark only confirmed synthetic/internal workspaces as Founder test, Demo, or Seed before cleanup.",
+          workspaceKindLabels: {
+            demo: "Demo",
+            founder_test: "Founder test",
+            production_customer: "Production customer",
+            seed: "Seed",
+          },
+        },
         emptyWorkspace: "No business workspace is available yet.",
         hiddenMatches: (count) =>
           `Showing the first 10 matched workspaces. ${count} more matched ${count === 1 ? "workspace is" : "workspaces are"} hidden. Search by owner, business, or slug to narrow the list.`,
@@ -1534,6 +1749,20 @@ const englishCopy: BizPilotCopy = {
         planNotePlaceholder: "Optional plan note",
         quoteLinkNotePlaceholder: "Optional quote link note",
         savePolicy: "Save policy",
+        sessionTimeoutDurationLabels: {
+          15: "15 minutes",
+          30: "30 minutes",
+          60: "1 hour",
+          240: "4 hours",
+          480: "8 hours",
+          720: "12 hours",
+          1440: "24 hours",
+          10080: "7 days",
+        },
+        sessionTimeoutModeLabels: {
+          after_duration: "Sign out after duration",
+          always_on: "Always on",
+        },
         sessionPolicy: "Session policy",
         sessionPolicyHelp:
           "Checked on the next dashboard request. Every policy edit is written to the customer system log.",
@@ -3628,6 +3857,130 @@ const frenchCopy: BizPilotCopy = {
         title: "Accès indisponible",
       },
       businesses: {
+        detail: {
+          accessControl: {
+            changeLabel: "Changer l'acces pour",
+            description:
+              "Controle l'admissibilite a la connexion, l'acces au tableau et l'etat du cycle client visible aux operations fondateur.",
+            onboardingNote:
+              "L'onboarding limite l'acces complet jusqu'a la fin de la configuration.",
+            title: "Statut d'acces",
+            warning:
+              "Les etats suspendu ou annule bloquent l'acces client. Utilisez-les seulement quand le compte doit cesser d'operer.",
+          },
+          allChangesNote:
+            "Tous les changements restent manuels, tracables et reversibles par le fondateur. Utilisez les controles avec discernement operationnel.",
+          auditLog: {
+            badgeCount: (count) => `${count} consignes`,
+            description:
+              "Trace visible par le responsable pour les changements fondateur/admin, avec identifiants de suivi pour le soutien.",
+            emptyState: "Aucun changement systeme consigne pour ce client.",
+            lastUpdatedLabel: "Derniere mise a jour",
+            notePrefix: "Note",
+            notRecordedYet: "Pas encore consigne",
+            title: "Journal systeme client",
+            updatedByFounderAdmin: "Admin fondateur",
+            updatedByLabel: "Mis a jour par",
+          },
+          cleanupDryRunCounts: "Comptes du dry run de nettoyage",
+          dailyUse: "Usage quotidien",
+          fullSystemChangeLog: "Journal systeme complet",
+          internalNote: "Note interne",
+          nextBadge: "Suite",
+          noAdminChanges: "Aucun changement admin enregistre.",
+          notesDescription:
+            "Ajoutez le contexte, lancez le nettoyage, puis verifiez la trace.",
+          notesSensitive: "Sensible",
+          notesTitle: "3) Notes, nettoyage et audit",
+          priorityDescription:
+            "Changez d'abord l'acces, le forfait et l'etat de la demande publique.",
+          priorityTitle: "1) Controles prioritaires",
+          planControl: {
+            changeLabel: "Changer le forfait pour",
+            description:
+              "Palier de facturation controle par fondateur/admin. Le client ne doit pas le changer lui-meme depuis son tableau.",
+            pilotNotice:
+              "Le forfait pilote limite l'usage et soutient un deploiement controle.",
+            title: "Forfait",
+            warning:
+              "Les changements de forfait touchent les rapports fondateur et la preparation de facturation manuelle. Notez pourquoi le client change de palier.",
+          },
+          planLabels: {
+            founder_pilot: "Pilote fondateur",
+            paused: "En pause",
+            pro: "Pro",
+            starter: "Starter",
+          },
+          quoteLinkControl: {
+            changeLabel: "Changer le lien public pour",
+            description:
+              "Controle si le formulaire public peut accepter de nouveaux prospects pour ce client.",
+            inactiveNotice:
+              "Le lien inactif bloque toutes les nouvelles demandes publiques.",
+            title: "Lien public",
+            warning:
+              "Si le lien est inactif, le formulaire public est bloque et le client ne peut pas recevoir de nouveaux prospects depuis la page publique.",
+          },
+          recommendedDescription:
+            "Base sur l'acces actuel et l'etat du lien public.",
+          recommendationStates: {
+            activateQuoteLink:
+              "Activez le lien public pour que le client puisse recevoir de nouveaux prospects.",
+            blockedUntilRestored:
+              "L'acces client et public doit rester bloque jusqu'au retablissement volontaire du compte.",
+            holdQuoteLinkDuringOnboarding:
+              "Gardez le formulaire public inactif jusqu'a la fin de l'onboarding et la preparation du client.",
+            readyForDailyUse: "L'entreprise est prete pour l'usage quotidien.",
+          },
+          recommendedTitle: "Prochaine action recommandee",
+          saveAccess: "Enregistrer l'acces",
+          saveKind: "Enregistrer le type",
+          saveNote: "Enregistrer la note",
+          savePlan: "Enregistrer le forfait",
+          saveQuoteLink: "Enregistrer le lien public",
+          snapshotDescription: (businessName) =>
+            `Resume operationnel rapide pour ${businessName}.`,
+          snapshotTitle: "Apercu entreprise",
+          tiles: {
+            accessStatus: "Statut d'acces",
+            accessStatusActiveDescription:
+              "Le client a un acces quotidien au tableau.",
+            accessStatusLimitedDescription:
+              "Acces limite au tableau et preparation du cycle de vie.",
+            auditEvents: "Evenements d'audit",
+            plan: "Forfait",
+            planDescription:
+              "Le forfait est controle par le fondateur. Le client ne peut pas le modifier.",
+            quoteLink: "Lien public",
+            quoteLinkActive: "Actif",
+            quoteLinkActiveDescription:
+              "Le formulaire public peut accepter de nouveaux prospects.",
+            quoteLinkInactive: "Inactif",
+            quoteLinkInactiveDescription:
+              "Le formulaire public est bloque. Aucun nouveau prospect ne peut entrer.",
+            sessionPolicy: "Politique de session",
+            sessionPolicyAlwaysOnDescription:
+              "L'acces client reste actif jusqu'a la deconnexion.",
+            sessionPolicyTimedDescription:
+              "Les sessions client expirent apres la duree choisie.",
+          },
+          toolsControlled: "Controle",
+          toolsDescription:
+            "Utilisez ces outils quand la configuration, la session ou le nettoyage sont incorrects.",
+          toolsTitle: "2) Outils d'espace",
+          viewFullCustomerProfile: "Voir le profil client complet",
+          whyLabel:
+            "Pourquoi : garde une experience client claire et evite une demande publique incomplete.",
+          workspaceKind: "Type d'espace",
+          workspaceKindHelp:
+            "Marquez seulement les espaces internes/synthetiques confirmes comme Founder test, Demo ou Seed avant nettoyage.",
+          workspaceKindLabels: {
+            demo: "Demo",
+            founder_test: "Test fondateur",
+            production_customer: "Client production",
+            seed: "Seed",
+          },
+        },
         emptyWorkspace: "Aucun espace entreprise n'est disponible pour l'instant.",
         hiddenMatches: (count) =>
           `Les 10 premiers espaces correspondants sont affichés. ${count} autre${count === 1 ? "" : "s"} espace${count === 1 ? "" : "s"} correspond${count === 1 ? "" : "ent"} mais reste${count === 1 ? "" : "nt"} masqué${count === 1 ? "" : "s"}. Recherchez par responsable, entreprise ou slug pour réduire la liste.`,
@@ -3659,6 +4012,20 @@ const frenchCopy: BizPilotCopy = {
         planNotePlaceholder: "Note de forfait optionnelle",
         quoteLinkNotePlaceholder: "Note de lien de soumission optionnelle",
         savePolicy: "Enregistrer la politique",
+        sessionTimeoutDurationLabels: {
+          15: "15 minutes",
+          30: "30 minutes",
+          60: "1 heure",
+          240: "4 heures",
+          480: "8 heures",
+          720: "12 heures",
+          1440: "24 heures",
+          10080: "7 jours",
+        },
+        sessionTimeoutModeLabels: {
+          after_duration: "Deconnecter apres la duree choisie",
+          always_on: "Toujours actif",
+        },
         sessionPolicy: "Politique de session",
         sessionPolicyHelp:
           "Vérifiée à la prochaine requête du tableau de bord. Chaque modification est inscrite au journal système client.",

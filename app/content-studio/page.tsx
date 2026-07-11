@@ -21,11 +21,13 @@
  * - 2026-07-04: Marked roadmap-only Content Studio as noindex while keeping the route available for visitors.
  * - 2026-07-05: Added a route-aware next-step panel that keeps roadmap traffic in the current product scope.
  * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
+ * - 2026-07-11: Added BreadcrumbList JSON-LD for roadmap route parity with public pages.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
+import { JsonLdScript } from "@/components/public/json-ld";
 import {
   MarketingButton,
   MarketingCard,
@@ -42,6 +44,7 @@ import { getHomeCopy } from "@/lib/i18n/home-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
+import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 import {
   buildNoIndexMetadata,
@@ -77,6 +80,16 @@ export default async function ContentStudioPage({
 
   return (
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+      <JsonLdScript
+        data={buildBreadcrumbJsonLd(
+          [
+            { name: "BizPilot AI", path: "/" },
+            { name: copy.title, path: "/content-studio" },
+          ],
+          language,
+        )}
+        id="bizpilot-content-studio-breadcrumb-jsonld"
+      />
       <MarketingHeader copy={navCopy} language={language} redirectPath="/content-studio" />
       <section className="bp-section-tight">
         <MarketingShell>

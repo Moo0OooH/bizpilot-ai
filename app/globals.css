@@ -11,6 +11,7 @@ Author: MoOoH
 Created: 2026-05-02
 Last Updated: 2026-07-11
 Change Log:
+- 2026-07-11: Added product-board chrome treatment to public page hero visual panels.
 - 2026-07-11: Added bilingual-safe public page hero sizing and proof-panel primitives.
 - 2026-07-05: Rebuilt the homepage hero as an integrated product-scene stage.
 - 2026-07-05: Refined dashboard light-theme tokens and added the route-guide rail surface.
@@ -631,9 +632,42 @@ select {
 }
 
 .marketing-page-hero-panel {
+  position: relative;
+  overflow: hidden;
   inline-size: 100%;
   max-inline-size: min(100%, 31rem);
   justify-self: stretch;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-elevated) 92%, transparent), var(--surface));
+}
+
+.marketing-page-hero-panel::before {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 0.22rem;
+  background: linear-gradient(180deg, var(--accent), var(--primary));
+  content: "";
+}
+
+.marketing-page-hero-panel > * {
+  position: relative;
+}
+
+.marketing-page-hero-panel-chrome {
+  display: flex;
+  min-block-size: 0.65rem;
+  align-items: center;
+  gap: 0.38rem;
+}
+
+.marketing-page-hero-panel-chrome span {
+  display: block;
+  block-size: 0.32rem;
+  inline-size: 1.6rem;
+  border: 1px solid color-mix(in srgb, var(--border-strong) 72%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-interactive) 86%, var(--primary));
 }
 
 .marketing-page-hero-panel-title {

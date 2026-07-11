@@ -10,8 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Allowed breadcrumb JSON-LD to reference noindex public roadmap routes without adding them to canonical SEO routes.
  * - 2026-07-05: Localized service-output JSON-LD for Canadian French visitors.
  * - 2026-07-05: Added honest audience and feature context to public JSON-LD.
  * - 2026-07-04: Created structured-data builders for public marketing routes.
@@ -19,7 +20,14 @@
  */
 
 import type { SupportedLanguage } from "./i18n/language.ts";
-import { PUBLIC_SITE_NAME, publicAssetUrl, publicUrl, type PublicCanonicalRoute } from "./seo.ts";
+import { DEFAULT_LANGUAGE } from "./i18n/language.ts";
+import {
+  getPublicSiteOrigin,
+  PUBLIC_SITE_NAME,
+  publicAssetUrl,
+  publicUrl,
+  type PublicCanonicalRoute,
+} from "./seo.ts";
 
 export type JsonLdPrimitive = boolean | number | string | null;
 export type JsonLdValue =
@@ -34,7 +42,7 @@ type FaqJsonLdItem = Readonly<{
 
 type BreadcrumbItem = Readonly<{
   name: string;
-  path: PublicCanonicalRoute;
+  path: PublicCanonicalRoute | "/content-studio";
 }>;
 
 const context = "https://schema.org";
@@ -53,6 +61,19 @@ const coreWorkflowTopics = [
 
 function inLanguage(language: SupportedLanguage): "en-CA" | "fr-CA" {
   return language === "fr-CA" ? "fr-CA" : "en-CA";
+}
+
+function publicBreadcrumbUrl(
+  path: BreadcrumbItem["path"],
+  language: SupportedLanguage,
+): string {
+  const url = new URL(path, getPublicSiteOrigin());
+
+  if (language !== DEFAULT_LANGUAGE) {
+    url.searchParams.set("language", language);
+  }
+
+  return url.toString();
 }
 
 function organizationJsonLd() {
@@ -157,7 +178,7 @@ export function buildBreadcrumbJsonLd(
     "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
-      item: publicUrl(item.path, language),
+      item: publicBreadcrumbUrl(item.path, language),
       name: item.name,
       position: index + 1,
     })),

@@ -27,6 +27,7 @@
  * - 2026-07-05: Tokenized neutral badges and next-step labels for launch-ready light/dark consistency.
  * - 2026-07-05: Allowed the desktop brand subtitle to wrap for longer localized copy.
  * - 2026-07-11: Added a research-backed public page hero primitive for bilingual first-fold pitch/proof structure.
+ * - 2026-07-11: Added product-board chrome to public page hero visuals for clearer first-fold hierarchy.
  * ============================================================
  */
 
@@ -657,6 +658,11 @@ export function MarketingPageHero({
 
       {visual ? (
         <MarketingCard className="marketing-page-hero-panel p-5 sm:p-6">
+          <div className="marketing-page-hero-panel-chrome" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
           {visual.eyebrow ? (
             <p
               className="bp-copy-eyebrow text-[12px] font-black uppercase"

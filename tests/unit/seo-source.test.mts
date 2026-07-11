@@ -11,8 +11,9 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-11
  * Change Log:
+ * - 2026-07-11: Added Content Studio breadcrumb JSON-LD guard.
  * - 2026-06-21: Added public FAQ route SEO coverage.
  * - 2026-07-04: Added comparison route, JSON-LD, OG image, and roadmap noindex guards.
  * - 2026-07-04: Added Search Console and Core Web Vitals baseline evidence guards.
@@ -359,6 +360,7 @@ describe("final public SEO and legal source contracts", () => {
       ["app/demo/page.tsx", "bizpilot-demo-breadcrumb-jsonld"],
       ["app/pricing/page.tsx", "bizpilot-pricing-breadcrumb-jsonld"],
       ["app/pilot/page.tsx", "bizpilot-pilot-breadcrumb-jsonld"],
+      ["app/content-studio/page.tsx", "bizpilot-content-studio-breadcrumb-jsonld"],
     ] as const;
 
     assert.equal(jsonLd.includes('type="application/ld+json"'), true);

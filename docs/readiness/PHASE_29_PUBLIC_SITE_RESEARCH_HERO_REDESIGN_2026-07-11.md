@@ -30,6 +30,24 @@ Sources reviewed:
 - W3C, WCAG 2.2 Quick Reference:
   https://www.w3.org/WAI/WCAG22/quickref/
 
+Additional 2026 market scan on 2026-07-11:
+
+- SaaSFrame, 10 SaaS Landing Page Trends for 2026:
+  https://www.saasframe.io/blog/10-saas-landing-page-trends-for-2026-with-real-examples
+- Hedrick, Startup landing page examples 2026:
+  https://hedrick.io/post/startup-landing-page-examples
+- LearnyBox, Landing Page Best Practices for 2026:
+  https://learnybox.com/en/blog/landing-page-best-practices/
+- Dynamic Yield, Website personalization strategy and best practices:
+  https://www.dynamicyield.com/lesson/web-personalization/
+
+Directional takeaway: current SaaS/startup guidance continues to favor a
+specific audience/pain/outcome hero, a real product visual above the fold,
+proof or trust close to the CTA, mobile-first clarity, and restrained dynamic
+personalization. BizPilot should apply that pattern as route-specific product
+signals and bilingual-safe product boards, not as unsupported automation,
+fake social proof, or noisy trend decoration.
+
 ## Comparison Against Current Docs
 
 Already covered well:
@@ -56,6 +74,20 @@ Gaps added in this phase:
   structure.
 - A resize-text and bilingual-fit reminder based on WCAG 2.2.
 
+Follow-up gaps closed in the continuation pass:
+
+- Primary public marketing route smoke coverage now includes `/features`,
+  `/industries/cleaning`, `/trust`, `/pilot`, and roadmap-only
+  `/content-studio`.
+- Supporting page hero visuals now include a consistent product-board chrome
+  cue so the first fold reads more like a working product surface and less like
+  a generic content card.
+- `/content-studio` now has breadcrumb JSON-LD parity while staying noindex and
+  roadmap-only.
+- Founder-admin text localization touched only existing internal labels and did
+  not change dashboard behavior, automation, customer data, or paid-pilot
+  gates.
+
 ## Design Direction
 
 - Homepage: strongest first screen, with product scene, hot quote risk, missing
@@ -80,3 +112,38 @@ preserve dictionary parity, and run at least:
 - `pnpm test:unit`
 - `pnpm build`
 - `git diff --check`
+
+Continuation validation on 2026-07-11 should also include:
+
+- `pnpm smoke:public` against a local production server, because primary public
+  route coverage was expanded.
+- `pnpm smoke:responsive` and `pnpm smoke:ui-matrix`, because the hero visual
+  system is layout-sensitive in EN/fr-CA.
+
+## Continuation Validation Run
+
+Local production target: `http://127.0.0.1:3002`
+
+Commands completed on 2026-07-11:
+
+- `pnpm test:unit` - pass, 217/217.
+- `pnpm lint` - pass.
+- `pnpm typecheck` - pass after narrowing breadcrumb JSON-LD routing and
+  completing founder-admin copy shape.
+- `pnpm build` - pass, 28 static pages generated.
+- `BIZPILOT_SMOKE_BASE_URL=http://127.0.0.1:3002 pnpm smoke:public` - pass,
+  19/19 routes.
+- `BIZPILOT_SMOKE_BASE_URL=http://127.0.0.1:3002 pnpm smoke:responsive` -
+  pass, 25 routes.
+- `BIZPILOT_SMOKE_BASE_URL=http://127.0.0.1:3002 pnpm smoke:ui-matrix` - pass,
+  0 failures.
+- `git diff --check` - pass.
+
+Browser visual QA:
+
+- Desktop `/features`, 1280x720: product-board chrome rendered once, stayed
+  inside the hero panel, stayed away from the H1, and produced no horizontal
+  overflow.
+- Mobile `/features?language=fr-CA`, 390x844: document language stayed `fr-CA`,
+  product-board chrome rendered once, stayed inside the hero panel, appeared
+  below the H1, and produced no horizontal overflow.

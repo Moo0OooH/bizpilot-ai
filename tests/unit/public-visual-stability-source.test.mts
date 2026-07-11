@@ -96,6 +96,7 @@ describe("public visual stability source contracts", () => {
       ".marketing-page-hero-with-visual",
       ".marketing-page-hero-proof",
       ".marketing-page-hero-panel",
+      ".marketing-page-hero-panel-chrome",
     ]) {
       assert.equal(
         globals.includes(primitive),

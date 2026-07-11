@@ -19,6 +19,7 @@
  * - 2026-07-05: Updated homepage smoke markers for the hot quote rescue hero.
  * - 2026-07-05: Aligned homepage smoke markers with escaped production HTML.
  * - 2026-07-11: Updated homepage smoke markers for the stronger quote-rescue hero.
+ * - 2026-07-11: Added all primary public marketing pages to route smoke coverage.
  * ============================================================
  */
 
@@ -58,6 +59,25 @@ const smokeTargets: readonly SmokeTarget[] = [
       "Pilot basics",
     ],
     path: "/faq",
+    status: 200,
+  },
+  {
+    expectedText: [
+      "A simple system to manage cleaning quote requests faster.",
+      "From quote link to reply ready to send.",
+      "Review, copy, and send manually.",
+    ],
+    path: "/features",
+    status: 200,
+  },
+  {
+    expectedText: [
+      "Lead recovery software for cleaning businesses.",
+      "From vague request to clear next reply.",
+      "Move-in / move-out",
+      "Post-construction cleaning",
+    ],
+    path: "/industries/cleaning",
     status: 200,
   },
   {
@@ -103,8 +123,35 @@ const smokeTargets: readonly SmokeTarget[] = [
     status: 200,
   },
   {
+    expectedText: [
+      "Built for business control and trust.",
+      "No auto-send",
+      "Manual communication during the pilot",
+    ],
+    path: "/trust",
+    status: 200,
+  },
+  {
     expectedText: ["$149 setup", "$49/month"],
     path: "/pricing",
+    status: 200,
+  },
+  {
+    expectedText: [
+      "Help shape BizPilot around real cleaning work.",
+      "What the pilot will measure",
+      "Pilot requests are being prepared.",
+    ],
+    path: "/pilot",
+    status: 200,
+  },
+  {
+    expectedText: [
+      "Future Content Studio for local business growth.",
+      "This page is roadmap only.",
+      "still need your approval",
+    ],
+    path: "/content-studio",
     status: 200,
   },
   {
