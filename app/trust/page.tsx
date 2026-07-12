@@ -11,8 +11,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-06-18: Tightened trust grid and added Privacy/Security links.
  * - 2026-06-19: Moved visible trust-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Replaced trust cards with three full-width owner-control pillars.
@@ -97,6 +98,7 @@ export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "/privacy",
@@ -199,11 +201,12 @@ export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
             </p>
           </MarketingCard>
           <div className="bp-button-row mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <MarketingButton href="/privacy" variant="secondary">{copy.privacyCta}</MarketingButton>
-            <MarketingButton href="/security" variant="secondary">{copy.securityCta}</MarketingButton>
-            <MarketingButton href="/pilot">{copy.primaryCta}</MarketingButton>
+            <MarketingButton href="/privacy" language={language} variant="secondary">{copy.privacyCta}</MarketingButton>
+            <MarketingButton href="/security" language={language} variant="secondary">{copy.securityCta}</MarketingButton>
+            <MarketingButton href="/pilot" language={language}>{copy.primaryCta}</MarketingButton>
           </div>
           <MarketingNextStepPanel
+            language={language}
             body={copy.evidence.title}
             className="mt-8"
             items={[
@@ -232,7 +235,7 @@ export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
           />
         </MarketingShell>
       </section>
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

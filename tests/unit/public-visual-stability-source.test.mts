@@ -11,8 +11,9 @@
  * - components/ui/theme-preference-control.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Accepted the locale prop on the single homepage preview workflow.
  * - 2026-06-21: Added homepage demo numbering regression coverage.
  * - 2026-06-21: Added canonical public responsive-grid regression coverage.
  * - 2026-06-21: Added homepage workflow de-duplication coverage.
@@ -327,7 +328,7 @@ describe("public visual stability source contracts", () => {
       "Homepage should not keep the removed workflow-grid surface.",
     );
     assert.equal(
-      homepage.match(/<ProductPreview copy=\{copy\.preview\} \/>/g)?.length,
+      homepage.match(/<ProductPreview copy=\{copy\.preview\} language=\{language\} \/>/g)?.length,
       1,
       "Homepage should keep one product preview workflow demo.",
     );

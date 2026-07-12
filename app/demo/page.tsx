@@ -10,8 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-06-18: Grouped the demo into concise responsive chapters with visible guardrails.
  * - 2026-06-19: Moved visible demo-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-20: Tightened demo chapter spacing for a shorter normal-flow page.
@@ -304,6 +305,7 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "/pilot",
@@ -397,13 +399,14 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
                     {copy.cta.body}
                   </p>
                 </div>
-                <MarketingButton href="/pilot">
+                <MarketingButton href="/pilot" language={language}>
                   {copy.cta.button} <MarketingIcon name="arrow" />
                 </MarketingButton>
               </div>
             </MarketingCard>
 
             <MarketingNextStepPanel
+              language={language}
               body={copy.workspace.sampleLabel}
               items={[
                 {
@@ -433,7 +436,7 @@ export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
         </MarketingShell>
       </section>
 
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

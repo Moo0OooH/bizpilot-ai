@@ -10,8 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-21
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-06-21: Created the dedicated full FAQ route moved out of the homepage.
  * - 2026-06-25: Normalized FAQ rhythm and compact section headings to bp primitives.
  * - 2026-07-04: Added FAQPage and breadcrumb JSON-LD for AI-search/SEO clarity.
@@ -100,6 +101,7 @@ export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "/pilot",
@@ -169,14 +171,15 @@ export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
             })}
           </div>
           <div className="bp-button-row mt-10 flex flex-col gap-3 sm:flex-row">
-            <MarketingButton href="/pilot">
+            <MarketingButton href="/pilot" language={language}>
               {navCopy.startFull} <MarketingIcon name="arrow" />
             </MarketingButton>
-            <MarketingButton href="/pricing" variant="secondary">
+            <MarketingButton href="/pricing" language={language} variant="secondary">
               {navCopy.pricing}
             </MarketingButton>
           </div>
           <MarketingNextStepPanel
+            language={language}
             body={copy.badge}
             className="mt-8"
             items={[
@@ -205,7 +208,7 @@ export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
           />
         </MarketingShell>
       </section>
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

@@ -10,8 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-06-18: Applied responsive hero, section density, and no-inner-scroll demo hardening.
  * - 2026-06-19: Mapped the hero product preview to semantic theme surfaces for dark contrast.
  * - 2026-06-19: Moved visible homepage copy and metadata into the public-site i18n dictionary.
@@ -58,7 +59,9 @@ import {
 import { getHomeCopy } from "@/lib/i18n/home-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
+  type SupportedLanguage,
 } from "@/lib/i18n/language";
+import { publicHref } from "@/lib/i18n/public-href";
 import {
   getPublicSiteCopy,
   type PublicSiteCopy,
@@ -323,7 +326,10 @@ function MiniProductMockup({ copy }: Readonly<{ copy: HomeCopy["mockup"] }>) {
   );
 }
 
-function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
+function HeroSection({
+  copy,
+  language,
+}: Readonly<{ copy: HomeCopy; language: SupportedLanguage }>) {
   return (
     <section className="bp-section-hero homepage-hero-section">
       <MarketingShell className="homepage-hero-shell">
@@ -368,8 +374,8 @@ function HeroSection({ copy }: Readonly<{ copy: HomeCopy }>) {
               ))}
             </ul>
             <div className="bp-button-row homepage-hero-actions mt-5 flex flex-col gap-3 min-[390px]:flex-row">
-              <MarketingButton href="/pilot">{copy.hero.primaryCta}</MarketingButton>
-              <MarketingButton href="/demo" variant="secondary">
+              <MarketingButton href="/pilot" language={language}>{copy.hero.primaryCta}</MarketingButton>
+              <MarketingButton href="/demo" language={language} variant="secondary">
                 {copy.hero.secondaryCta}
               </MarketingButton>
             </div>
@@ -404,7 +410,10 @@ function CardGrid({
   );
 }
 
-function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
+function ProductPreview({
+  copy,
+  language,
+}: Readonly<{ copy: HomeCopy["preview"]; language: SupportedLanguage }>) {
   return (
     <section className="homepage-snapshot-section py-[var(--section-space-compact)]" id="demo">
       <MarketingShell>
@@ -519,7 +528,7 @@ function ProductPreview({ copy }: Readonly<{ copy: HomeCopy["preview"] }>) {
                 </span>
               ))}
             </div>
-              <MarketingButton href="/demo" variant="secondary">
+              <MarketingButton href="/demo" language={language} variant="secondary">
                 {copy.cta}
               </MarketingButton>
           </div>
@@ -566,8 +575,8 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
     <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <JsonLdScript data={buildHomeJsonLd(language)} id="bizpilot-home-jsonld" />
       <MarketingHeader copy={navCopy} language={language} redirectPath="/" />
-      <HeroSection copy={copy} />
-      <ProductPreview copy={copy.preview} />
+      <HeroSection copy={copy} language={language} />
+      <ProductPreview copy={copy.preview} language={language} />
 
       <section className="homepage-problem-section" id="features">
         <MarketingShell>
@@ -592,7 +601,7 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
               {copy.useCases.cards.map((item) => (
                 <Link
                   className="group flex min-w-0 flex-col justify-between rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-5 shadow-[var(--shadow-md)] transition duration-200 hover:-translate-y-0.5 hover:border-[var(--accent)] hover:bg-[var(--surface-elevated)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] active:translate-y-0"
-                  href={item.href}
+                  href={publicHref(item.href, language)}
                   key={item.href}
                   style={{
                     color: marketingTone.text,
@@ -637,12 +646,13 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
                   {copy.finalCta.note}
                 </p>
               </div>
-              <MarketingButton href="/pilot">
+              <MarketingButton href="/pilot" language={language}>
                 {copy.finalCta.cta} <MarketingIcon name="arrow" />
               </MarketingButton>
             </div>
           </MarketingCard>
           <MarketingNextStepPanel
+            language={language}
             body={copy.preview.title}
             className="mt-8"
             items={[
@@ -693,7 +703,7 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
               ))}
             </div>
             <div className="mt-7 flex justify-center">
-              <MarketingButton href="/faq" variant="secondary">
+              <MarketingButton href="/faq" language={language} variant="secondary">
                 {copy.faq.cta} <MarketingIcon name="arrow" />
               </MarketingButton>
             </div>
@@ -701,7 +711,7 @@ export default async function HomePage({ searchParams }: HomePageProps = {}) {
         </MarketingShell>
       </section>
 
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

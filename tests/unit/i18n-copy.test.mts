@@ -9,8 +9,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Updated pilot conversion assertions for the manual email-draft path.
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
  * - 2026-06-21: Added canonical four-step public grid coverage.
@@ -1478,8 +1479,9 @@ describe("BizPilot language copy", () => {
     );
     assert.equal(
       englishPilotCopy.conversion.title,
-      "Pilot requests are being prepared.",
+      "Send a clear founder-pilot request when you are ready.",
     );
+    assert.equal(englishPilotCopy.conversion.emailDraftAction, "Open email draft");
     assert.equal(
       englishPilotCopy.conversion.template,
       "Subject: BizPilot founder pilot request\nBusiness name:\nWork email:\nCity / service area:\nCleaning services:\nApproximate quote requests per week:\nBiggest lead-management problem:\nPreferred language: English / French / Both",

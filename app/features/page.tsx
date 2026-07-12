@@ -10,8 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-06-18: Added compact proof visual, trust strip, and responsive intrinsic grid.
  * - 2026-06-19: Moved visible feature-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Locked the feature grid and rebuilt product proof as one workflow strip.
@@ -102,6 +103,7 @@ export default async function FeaturesPage({
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "/pilot",
@@ -217,10 +219,11 @@ export default async function FeaturesPage({
             ))}
           </div>
           <div className="bp-button-row mt-8 flex flex-col gap-3 sm:flex-row">
-            <MarketingButton href="/pilot">{copy.primaryCta} <MarketingIcon name="arrow" /></MarketingButton>
-            <MarketingButton href="/trust" variant="secondary">{copy.secondaryCta}</MarketingButton>
+            <MarketingButton href="/pilot" language={language}>{copy.primaryCta} <MarketingIcon name="arrow" /></MarketingButton>
+            <MarketingButton href="/trust" language={language} variant="secondary">{copy.secondaryCta}</MarketingButton>
           </div>
           <MarketingNextStepPanel
+            language={language}
             body={copy.proof.badge}
             className="mt-8"
             items={[
@@ -249,7 +252,7 @@ export default async function FeaturesPage({
           />
         </MarketingShell>
       </section>
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

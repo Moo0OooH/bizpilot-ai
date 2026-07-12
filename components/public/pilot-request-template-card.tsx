@@ -4,17 +4,18 @@
  * ============================================================
  * File: components/public/pilot-request-template-card.tsx
  * Project: BizPilot AI
- * Description: Client-side no-endpoint pilot request copy action.
- * Role: Copies the founder pilot request template and reveals a selectable fallback when clipboard access is unavailable.
+ * Description: Client-side manual founder-pilot email request actions.
+ * Role: Lets visitors copy a request or open a locally composed email without storing it in BizPilot.
  * Related:
  * - app/pilot/page.tsx
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-07-12
  * Change Log:
  * - 2026-06-19: Added Branch B pilot copy-template action with clipboard fallback.
  * - 2026-06-25: Removed the fallback template preview's nested scroll cap for final visual acceptance.
+ * - 2026-07-12: Added a safe recipient-free email-draft path and localized pricing link.
  * ============================================================
  */
 
@@ -22,14 +23,18 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 
 import type { PilotConversionCopy } from "@/lib/i18n/public-site-copy";
+import type { SupportedLanguage } from "@/lib/i18n/language";
+import { publicHref } from "@/lib/i18n/public-href";
 import { trackPublicEvent } from "@/lib/public-events";
 
 export function PilotRequestTemplateCard({
   copy,
-}: Readonly<{ copy: PilotConversionCopy }>) {
+  language,
+}: Readonly<{ copy: PilotConversionCopy; language: SupportedLanguage }>) {
   const templateRef = useRef<HTMLPreElement | null>(null);
   const [fallbackVisible, setFallbackVisible] = useState(false);
   const [status, setStatus] = useState("");
+  const emailDraftHref = `mailto:?subject=${encodeURIComponent(copy.emailDraftSubject)}&body=${encodeURIComponent(copy.template)}`;
 
   function copyWithSelectionFallback() {
     const helper = document.createElement("pre");
@@ -113,7 +118,7 @@ export function PilotRequestTemplateCard({
         </p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]">
+      <div className="grid gap-3 sm:grid-cols-2">
         <button
           className="inline-flex min-h-12 min-w-0 items-center justify-center rounded-[14px] px-5 text-center text-[14px] font-black leading-tight transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
           onClick={handleCopy}
@@ -128,18 +133,30 @@ export function PilotRequestTemplateCard({
         >
           {copy.primaryAction}
         </button>
-        <Link
+        <a
           className="inline-flex min-h-12 min-w-0 items-center justify-center rounded-[14px] border px-5 text-center text-[14px] font-black leading-tight transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-          href="/pricing"
+          href={emailDraftHref}
           style={{
             backgroundColor: "var(--surface)",
             borderColor: "var(--border-strong)",
             color: "var(--text-strong)",
           }}
         >
-          {copy.secondaryAction}
-        </Link>
+          {copy.emailDraftAction}
+        </a>
       </div>
+
+      <p className="text-[13px] font-bold leading-6" style={{ color: "var(--text-muted)" }}>
+        {copy.emailDraftHint}
+      </p>
+
+      <Link
+        className="inline-flex min-h-11 w-fit min-w-0 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold leading-tight transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+        href={publicHref("/pricing", language)}
+        style={{ color: "var(--text-strong)" }}
+      >
+        {copy.secondaryAction}
+      </Link>
 
       <p
         aria-live="polite"

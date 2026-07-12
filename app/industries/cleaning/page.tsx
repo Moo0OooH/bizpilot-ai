@@ -11,8 +11,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-06-18: Added quote example, organized lead details, and top/end pilot CTAs.
  * - 2026-06-19: Moved visible cleaning-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Rebuilt cleaning page around three service-family panels with stable service anchors.
@@ -106,6 +107,7 @@ export default async function CleaningPage({
       <section className="bp-section-hero cleaning-page-section">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "/pilot",
@@ -260,12 +262,13 @@ export default async function CleaningPage({
                 </p>
               </div>
               <div className="bp-button-row flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <MarketingButton href="/pilot">{copy.ctaPrimary} <MarketingIcon name="arrow" /></MarketingButton>
-                <MarketingButton href="/demo" variant="secondary">{copy.ctaSecondary}</MarketingButton>
+                <MarketingButton href="/pilot" language={language}>{copy.ctaPrimary} <MarketingIcon name="arrow" /></MarketingButton>
+                <MarketingButton href="/demo" language={language} variant="secondary">{copy.ctaSecondary}</MarketingButton>
               </div>
             </div>
           </MarketingCard>
           <MarketingNextStepPanel
+            language={language}
             body={copy.detailHelp.title}
             className="mt-8"
             items={[
@@ -294,7 +297,7 @@ export default async function CleaningPage({
           />
         </MarketingShell>
       </section>
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

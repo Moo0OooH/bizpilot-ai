@@ -9,7 +9,7 @@
  * - docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
  * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
  * - 2026-07-04: Added comparison route smoke coverage.
@@ -20,6 +20,7 @@
  * - 2026-07-05: Aligned homepage smoke markers with escaped production HTML.
  * - 2026-07-11: Updated homepage smoke markers for the stronger quote-rescue hero.
  * - 2026-07-11: Added all primary public marketing pages to route smoke coverage.
+ * - 2026-07-12: Added fr-CA route and internal-link persistence smoke coverage.
  * ============================================================
  */
 
@@ -140,7 +141,7 @@ const smokeTargets: readonly SmokeTarget[] = [
     expectedText: [
       "Help shape BizPilot around real cleaning work.",
       "What the pilot will measure",
-      "Pilot requests are being prepared.",
+      "Send a clear founder-pilot request when you are ready.",
     ],
     path: "/pilot",
     status: 200,
@@ -190,6 +191,23 @@ const smokeTargets: readonly SmokeTarget[] = [
     status: 200,
   },
 ];
+
+const frenchPublicRoutes = [
+  "/",
+  "/features",
+  "/industries/cleaning",
+  "/comparison",
+  "/quote-link-guide",
+  "/faster-quote-replies",
+  "/trust",
+  "/demo",
+  "/pricing",
+  "/pilot",
+  "/faq",
+  "/privacy",
+  "/security",
+  "/terms",
+] as const;
 
 function readCliValue(name: string): string | undefined {
   const prefix = `--${name}=`;
@@ -332,6 +350,70 @@ async function runTarget(
   }
 }
 
+function frenchPath(path: string): string {
+  const url = new URL(path, "https://bizpilot.local");
+  url.searchParams.set("language", "fr-CA");
+  return `${url.pathname}${url.search}`;
+}
+
+function missingFrenchPublicHref(body: string): string | null {
+  const hrefs = Array.from(body.matchAll(/href="([^"]+)"/g), (match) =>
+    match[1]?.replaceAll("&amp;", "&") ?? "",
+  );
+
+  for (const href of hrefs) {
+    if (!href.startsWith("/")) {
+      continue;
+    }
+
+    const url = new URL(href, "https://bizpilot.local");
+    if (
+      frenchPublicRoutes.includes(url.pathname as (typeof frenchPublicRoutes)[number]) &&
+      url.searchParams.get("language") !== "fr-CA"
+    ) {
+      return href;
+    }
+  }
+
+  return null;
+}
+
+async function runFrenchLinkPersistence(
+  baseUrl: URL,
+  path: string,
+  timeoutMs: number,
+): Promise<SmokeResult> {
+  const targetPath = frenchPath(path);
+  const startedAt = Date.now();
+
+  try {
+    const response = await fetchWithTimeout(toTargetUrl(baseUrl, targetPath), timeoutMs);
+    const durationMs = Date.now() - startedAt;
+    const body = await response.text();
+    const missingHref = missingFrenchPublicHref(body);
+
+    return {
+      durationMs,
+      ...(missingHref
+        ? { error: `public fr-CA link drops language: ${missingHref}` }
+        : {}),
+      path: targetPath,
+      pass:
+        response.status === 200 &&
+        body.includes('<html lang="fr-CA"') &&
+        missingHref === null,
+      status: response.status,
+    };
+  } catch (error) {
+    return {
+      durationMs: Date.now() - startedAt,
+      error: error instanceof Error ? error.message : String(error),
+      path: targetPath,
+      pass: false,
+    };
+  }
+}
+
 async function main(): Promise<void> {
   const baseUrl = resolveBaseUrl();
   const timeoutMs = resolveTimeoutMs();
@@ -351,6 +433,19 @@ async function main(): Promise<void> {
     } else {
       console.log(`FAIL (${result.status ?? "no status"}, ${result.durationMs}ms)`);
       console.log(`    ${result.error}`);
+    }
+  }
+
+  for (const path of frenchPublicRoutes) {
+    process.stdout.write(`  ${frenchPath(path)} language links ... `);
+    const result = await runFrenchLinkPersistence(baseUrl, path, timeoutMs);
+    results.push(result);
+
+    if (result.pass) {
+      console.log(`pass (${result.status}, ${result.durationMs}ms)`);
+    } else {
+      console.log(`FAIL (${result.status ?? "no status"}, ${result.durationMs}ms)`);
+      console.log(`    ${result.error ?? "French route did not render as expected"}`);
     }
   }
 

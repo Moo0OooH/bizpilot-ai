@@ -10,8 +10,9 @@
  * - lib/public-structured-data.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-07-04: Created the public comparison page.
  * - 2026-07-05: Added a route-aware next-step panel for buyer education.
  * - 2026-07-05: Tokenized guardrail warning treatment for light/dark launch polish.
@@ -90,6 +91,7 @@ export default async function ComparisonPage({
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "/pilot",
@@ -210,6 +212,7 @@ export default async function ComparisonPage({
             </div>
           </MarketingCard>
           <MarketingNextStepPanel
+            language={language}
             body={copy.proof.title}
             className="mt-8"
             items={[
@@ -238,7 +241,7 @@ export default async function ComparisonPage({
           />
         </MarketingShell>
       </section>
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

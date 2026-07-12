@@ -10,8 +10,9 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Routed shared public navigation and CTA hrefs through the locale-preserving helper.
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
  * - 2026-06-19: Rebuilt public header utilities around compact locale/theme controls and content-fit navigation.
@@ -39,6 +40,7 @@ import { MarketingLanguageMenu } from "@/components/public/marketing-language-me
 import { ThemePreferenceControl } from "@/components/ui/theme-preference-control";
 import type { HomeNavCopy } from "@/lib/i18n/home-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
+import { publicHref } from "@/lib/i18n/public-href";
 
 export const marketingTone = {
   bg: "var(--canvas)",
@@ -384,13 +386,16 @@ export function MarketingButton({
   children,
   className = "",
   href,
+  language,
   variant = "primary",
 }: Readonly<{
   children: ReactNode;
   className?: string;
   href: string;
+  language?: SupportedLanguage | undefined;
   variant?: ButtonVariant;
 }>) {
+  const localizedHref = publicHref(href, language);
   const base =
     "bp-copy-button inline-flex min-h-12 max-w-full min-w-0 items-center justify-center gap-3 rounded-[14px] px-5 text-center text-[14px] font-black leading-tight transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]";
 
@@ -398,7 +403,7 @@ export function MarketingButton({
     return (
       <Link
         className={`${base} hover:-translate-y-0.5 ${className}`}
-        href={href}
+        href={localizedHref}
         style={{
           background: "linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%)",
           boxShadow: "0 16px 34px color-mix(in srgb, var(--primary) 22%, transparent)",
@@ -414,7 +419,7 @@ export function MarketingButton({
     return (
       <Link
         className={`${base} border hover:-translate-y-0.5 ${className}`}
-        href={href}
+        href={localizedHref}
         style={{
           backgroundColor: "var(--surface)",
           borderColor: marketingTone.borderStrong,
@@ -429,7 +434,7 @@ export function MarketingButton({
   return (
     <Link
       className={`bp-copy-button inline-flex min-h-11 min-w-0 items-center justify-center rounded-[12px] px-3 py-2 text-center text-[13px] font-bold leading-tight transition hover:bg-[var(--surface-interactive)] ${className}`}
-      href={href}
+      href={localizedHref}
       style={{ color: marketingTone.soft }}
     >
       {children}
@@ -441,11 +446,13 @@ export function MarketingNextStepPanel({
   body,
   className = "",
   items,
+  language,
   title,
 }: Readonly<{
   body?: ReactNode;
   className?: string;
   items: ReadonlyArray<MarketingNextStepItem>;
+  language?: SupportedLanguage | undefined;
   title: ReactNode;
 }>) {
   const toneByName: Record<BadgeTone, { bg: string; color: string }> = {
@@ -497,7 +504,7 @@ export function MarketingNextStepPanel({
             return (
               <Link
                 className="group grid min-w-0 gap-2 rounded-[10px] border px-4 py-3 transition hover:-translate-y-0.5 hover:bg-[var(--surface-elevated)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                href={item.href}
+                href={publicHref(item.href, language)}
                 key={item.href}
                 style={{
                   backgroundColor: "var(--surface-interactive)",
@@ -540,6 +547,7 @@ export function MarketingPageHero({
   badgeTone = "teal",
   body,
   className = "",
+  language,
   signals = [],
   title,
   visual,
@@ -550,6 +558,7 @@ export function MarketingPageHero({
   badgeTone?: BadgeTone;
   body?: ReactNode;
   className?: string;
+  language?: SupportedLanguage | undefined;
   signals?: ReadonlyArray<MarketingHeroSignal>;
   title: ReactNode;
   visual?: MarketingHeroVisual;
@@ -642,6 +651,7 @@ export function MarketingPageHero({
               <MarketingButton
                 href={action.href}
                 key={`${action.href}-${index}`}
+                language={language}
                 variant={action.variant ?? "primary"}
               >
                 {action.label}
@@ -707,10 +717,11 @@ export function MarketingPageHero({
 }
 
 export function MarketingBrand({
+  language,
   subtitle = defaultMarketingNavCopy.brandSubtitle,
-}: Readonly<{ subtitle?: string }>) {
+}: Readonly<{ language?: SupportedLanguage | undefined; subtitle?: string }>) {
   return (
-    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1240px]:min-w-[16rem]" href="/">
+    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1240px]:min-w-[16rem]" href={publicHref("/", language)}>
       <span
         aria-hidden
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[16px] font-black"
@@ -745,7 +756,7 @@ export function MarketingHeader({
 }: Readonly<{
   active?: MarketingNavKey;
   copy?: HomeNavCopy;
-  language?: SupportedLanguage;
+  language?: SupportedLanguage | undefined;
   redirectPath?: string;
 }>) {
   const navItems: ReadonlyArray<
@@ -781,7 +792,7 @@ export function MarketingHeader({
       style={{ backgroundColor: "color-mix(in srgb, var(--canvas) 88%, transparent)", borderColor: marketingTone.border }}
     >
       <nav className="bp-container public-container flex min-h-[64px] items-center justify-between gap-3 py-2 min-[1240px]:min-h-[76px]">
-        <MarketingBrand subtitle={copy.brandSubtitle} />
+        <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
         <div className="hidden items-center gap-1 min-[1240px]:flex">
           {navItems.map((item) => {
             const selected = isActiveItem(item);
@@ -790,7 +801,7 @@ export function MarketingHeader({
               <Link
                 aria-current={selected ? "page" : undefined}
                 className="bp-copy-nav inline-flex min-h-11 items-center rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                href={item.href}
+                href={publicHref(item.href, language)}
                 key={item.href}
                 style={{
                   backgroundColor: selected
@@ -809,12 +820,12 @@ export function MarketingHeader({
           <ThemePreferenceControl language={language ?? "en"} />
           <Link
             className="bp-copy-nav inline-flex min-h-11 items-center justify-center rounded-[12px] px-3 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-            href="/auth/sign-in"
+            href={publicHref("/auth/sign-in", language)}
             style={{ color: marketingTone.soft }}
           >
             {copy.signIn}
           </Link>
-          <MarketingButton className="min-h-11 px-4 text-[13px]" href="/pilot">
+          <MarketingButton className="min-h-11 px-4 text-[13px]" href="/pilot" language={language}>
             {copy.startShort}
           </MarketingButton>
         </div>
@@ -828,7 +839,7 @@ export function MarketingHeader({
                   <Link
                     aria-current={selected ? "page" : undefined}
                     className="bp-copy-nav min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                    href={item.href}
+                    href={publicHref(item.href, language)}
                     key={item.href}
                     style={{
                       backgroundColor: selected
@@ -847,12 +858,12 @@ export function MarketingHeader({
               <ThemePreferenceControl className="w-full justify-center" language={language ?? "en"} />
               <Link
                 className="bp-copy-nav inline-flex min-h-11 items-center justify-center rounded-[12px] border px-4 text-[13px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                href="/auth/sign-in"
+                href={publicHref("/auth/sign-in", language)}
                 style={{ borderColor: marketingTone.borderStrong, color: marketingTone.soft }}
               >
                 {copy.signIn}
               </Link>
-              <MarketingButton className="w-full" href="/pilot">
+              <MarketingButton className="w-full" href="/pilot" language={language}>
                 {copy.startShort}
               </MarketingButton>
             </div>
@@ -865,7 +876,8 @@ export function MarketingHeader({
 
 export function MarketingFooter({
   copy = defaultMarketingNavCopy,
-}: Readonly<{ copy?: HomeNavCopy }>) {
+  language,
+}: Readonly<{ copy?: HomeNavCopy; language?: SupportedLanguage | undefined }>) {
   const links: ReadonlyArray<Readonly<{ href: string; label: string }>> = [
     { href: "/features", label: copy.features },
     { href: "/industries/cleaning", label: copy.cleaning },
@@ -884,10 +896,10 @@ export function MarketingFooter({
   return (
     <footer className="border-t px-5 py-10 sm:px-8 lg:px-10" style={{ borderColor: marketingTone.border }}>
       <div className="bp-container-wide mx-auto flex w-full max-w-[1200px] flex-col gap-6 text-[12px] md:flex-row md:items-center md:justify-between">
-        <MarketingBrand subtitle={copy.brandSubtitle} />
+        <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2" style={{ color: marketingTone.soft }}>
           {links.map((link) => (
-            <Link className="inline-flex min-h-11 items-center rounded-[8px] py-1 hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]" href={link.href} key={link.href}>
+            <Link className="inline-flex min-h-11 items-center rounded-[8px] py-1 hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]" href={publicHref(link.href, language)} key={link.href}>
               {link.label}
             </Link>
           ))}

@@ -9,8 +9,9 @@
  * - docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Updated French href and manual pilot-request expectations.
  * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
  * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
  * - 2026-06-20: Locked balanced public grid classes into route-level smoke coverage.
@@ -77,8 +78,8 @@ const routes: readonly RouteContract[] = [
       },
     ],
     mustContain: [
-      "href=\"/demo\"",
-      "href=\"/faq\"",
+      "href=\"/demo?language=fr-CA\"",
+      "href=\"/faq?language=fr-CA\"",
       "homepage-demo-grid",
       "homepage-use-case-grid",
       "homepage-hero-proof-rail",
@@ -293,8 +294,9 @@ const routes: readonly RouteContract[] = [
   {
     h1: "Help shape BizPilot around real cleaning work.",
     mustContain: [
-      "Pilot requests are being prepared.",
+      "Send a clear founder-pilot request when you are ready.",
       "Copy pilot request template",
+      "Open email draft",
       "Preview the six application questions",
     ],
     path: "/pilot",

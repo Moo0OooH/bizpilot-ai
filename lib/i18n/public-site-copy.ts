@@ -10,8 +10,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Clarified the founder-pilot manual email request path in English and French.
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
  * - 2026-06-19: Added Phase 04 homepage demo state and cleaning-use-case card copy.
  * - 2026-06-20: Shortened fr-CA homepage hero copy for first-fold parity.
@@ -470,6 +471,9 @@ type ReplySpeedGuideCopy = Readonly<{
 export type PilotConversionCopy = Readonly<{
   body: string;
   copiedStatus: string;
+  emailDraftAction: string;
+  emailDraftHint: string;
+  emailDraftSubject: string;
   fallbackBody: string;
   previewQuestions: readonly string[];
   previewTitle: string;
@@ -1739,8 +1743,12 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Join a small founder-led pilot built to help cleaning businesses capture quote requests, reply faster, and stay in control.",
     conversion: {
       body:
-        "Copy a 60-second request template now. Nothing is submitted or stored on this page.",
+        "Choose a manual email draft or copy the 60-second request. BizPilot does not submit or store this request; you decide where and when to send it.",
       copiedStatus: "Pilot request template copied.",
+      emailDraftAction: "Open email draft",
+      emailDraftHint:
+        "Your email app opens with the request prefilled. Add the founder contact you use, then review and send it yourself.",
+      emailDraftSubject: "BizPilot founder pilot request",
       fallbackBody:
         "Clipboard permission was blocked. Use the fallback template below.",
       previewQuestions: [
@@ -1759,7 +1767,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       template:
         "Subject: BizPilot founder pilot request\nBusiness name:\nWork email:\nCity / service area:\nCleaning services:\nApproximate quote requests per week:\nBiggest lead-management problem:\nPreferred language: English / French / Both",
       templateLabel: "Pilot request template",
-      title: "Pilot requests are being prepared.",
+      title: "Send a clear founder-pilot request when you are ready.",
     },
     fitItems: [
       "Owner-operated cleaning businesses",
@@ -3227,8 +3235,12 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       "Joignez-vous à un petit projet pilote guidé par le fondateur, conçu pour aider les entreprises de nettoyage à capter les demandes de soumission, répondre plus vite et garder le contrôle.",
     conversion: {
       body:
-        "Copiez maintenant un modèle de demande de 60 secondes. Rien n'est soumis ni stocké sur cette page.",
+        "Ouvrez un brouillon de courriel ou copiez cette demande de 60 secondes. BizPilot ne soumet ni ne stocke cette demande; vous choisissez quand et comment l'envoyer.",
       copiedStatus: "Modèle de demande pilote copié.",
+      emailDraftAction: "Ouvrir un brouillon de courriel",
+      emailDraftHint:
+        "Votre application de courriel ouvre la demande préremplie. Ajoutez le contact du fondateur que vous utilisez, puis révisez et envoyez vous-même.",
+      emailDraftSubject: "Demande pour le projet pilote BizPilot",
       fallbackBody:
         "La permission du presse-papiers a été bloquée. Utilisez le modèle de secours ci-dessous.",
       previewQuestions: [
@@ -3247,7 +3259,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       template:
         "Objet : demande pour le projet pilote BizPilot\nNom de l'entreprise :\nCourriel professionnel :\nVille / zone de service :\nServices de nettoyage :\nDemandes de soumission approximatives par semaine :\nPlus grand problème de gestion des prospects :\nLangue préférée : anglais / français / les deux",
       templateLabel: "Modèle de demande pilote",
-      title: "Les demandes pour le projet pilote sont en préparation.",
+      title: "Envoyez une demande claire pour le projet pilote quand vous êtes prêt.",
     },
     fitItems: [
       "Entreprises de nettoyage dirigées par vous",

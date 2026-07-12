@@ -10,8 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-06-18: Removed duplicate monthly price highlights and aligned card reflow.
  * - 2026-06-19: Moved visible pricing-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Added post-apply strip and balanced staged pricing cards.
@@ -101,6 +102,7 @@ export default async function PricingPage({
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "/pilot",
@@ -176,7 +178,7 @@ export default async function PricingPage({
                   ))}
                 </div>
 
-                <MarketingButton className="public-plan-card-cta mt-auto w-full" href="/pilot">
+                <MarketingButton className="public-plan-card-cta mt-auto w-full" href="/pilot" language={language}>
                   {card.cta}
                 </MarketingButton>
               </MarketingCard>
@@ -258,6 +260,7 @@ export default async function PricingPage({
             </div>
           </MarketingCard>
           <MarketingNextStepPanel
+            language={language}
             body={copy.trustBoundary.title}
             className="mt-8"
             items={[
@@ -286,7 +289,7 @@ export default async function PricingPage({
           />
         </MarketingShell>
       </section>
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

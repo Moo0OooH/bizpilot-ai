@@ -10,8 +10,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-07-05: Reused the roadmap explanation in the next-step panel for clearer visitor guidance.
  * - 2026-06-18: Applied responsive section spacing and intrinsic card grid.
  * - 2026-06-19: Moved visible Content Studio roadmap copy and metadata into the public-site i18n dictionary.
@@ -94,6 +95,7 @@ export default async function ContentStudioPage({
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "/pilot",
@@ -149,11 +151,12 @@ export default async function ContentStudioPage({
                 </p>
               </div>
               <div className="bp-button-row">
-                <MarketingButton href="/pilot">{copy.cta}</MarketingButton>
+                <MarketingButton href="/pilot" language={language}>{copy.cta}</MarketingButton>
               </div>
             </div>
           </MarketingCard>
           <MarketingNextStepPanel
+            language={language}
             body={copy.body}
             className="mt-8"
             items={[
@@ -182,7 +185,7 @@ export default async function ContentStudioPage({
           />
         </MarketingShell>
       </section>
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

@@ -11,8 +11,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Added a manual email-draft conversion path and preserved public language links.
  * - 2026-06-18: Made the request UI unmistakably preview-only with non-submitting controls.
  * - 2026-06-19: Moved visible pilot-page copy and metadata into the public-site i18n dictionary.
  * - 2026-06-19: Replaced the inactive request UI with a concise copy-template conversion card.
@@ -110,6 +111,7 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "#pilot-request-template",
@@ -176,7 +178,7 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
 
             <div id="pilot-request-template">
               <MarketingCard className="p-6 sm:p-7">
-                <PilotRequestTemplateCard copy={copy.conversion} />
+                <PilotRequestTemplateCard copy={copy.conversion} language={language} />
               </MarketingCard>
             </div>
           </div>
@@ -244,6 +246,7 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
             </div>
           </MarketingCard>
           <MarketingNextStepPanel
+            language={language}
             body={copy.proof.title}
             className="mt-8"
             items={[
@@ -272,7 +275,7 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
           />
         </MarketingShell>
       </section>
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

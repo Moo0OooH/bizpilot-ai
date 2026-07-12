@@ -10,8 +10,9 @@
  * - lib/public-structured-data.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-07-04: Created the public reply-speed content guide for Phase 25U.
  * - 2026-07-05: Added a route-aware next-step panel for reply-speed education.
  * - 2026-07-05: Tokenized reply-speed guardrail icon treatment for light/dark launch polish.
@@ -99,6 +100,7 @@ export default async function FasterQuoteRepliesPage({
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
+            language={language}
             actions={[
               {
                 href: "/quote-link-guide",
@@ -244,6 +246,7 @@ export default async function FasterQuoteRepliesPage({
             </ul>
           </MarketingCard>
           <MarketingNextStepPanel
+            language={language}
             body={copy.workflowTitle}
             className="mt-8"
             items={[
@@ -272,7 +275,7 @@ export default async function FasterQuoteRepliesPage({
           />
         </MarketingShell>
       </section>
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

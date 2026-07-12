@@ -11,8 +11,9 @@
  * - app/terms/page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved the active public language through policy conversion links.
  * - 2026-06-18: Switched policy pages to narrow readable containers and owner-first summaries.
  * - 2026-06-25: Normalized policy page rhythm to canonical bp sizing primitives.
  * - 2026-07-05: Added shared BreadcrumbList JSON-LD for public policy pages.
@@ -208,11 +209,12 @@ export function PolicyPage({
             >
               {copy.footerNote}
             </p>
-            <MarketingButton href="/pricing" variant="secondary">
+            <MarketingButton href="/pricing" language={language} variant="secondary">
               {navCopy.pricing}
             </MarketingButton>
           </MarketingCard>
           <MarketingNextStepPanel
+            language={language}
             body={copy.footerNote}
             className="mt-5"
             items={[
@@ -242,7 +244,7 @@ export function PolicyPage({
         </div>
       </section>
 
-      <MarketingFooter copy={navCopy} />
+      <MarketingFooter copy={navCopy} language={language} />
     </main>
   );
 }

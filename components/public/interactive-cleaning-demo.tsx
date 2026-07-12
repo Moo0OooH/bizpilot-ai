@@ -10,8 +10,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-07-12
  * Change Log:
+ * - 2026-07-12: Preserved fr-CA when the demo CTA leads to public pricing.
  * - 2026-06-21: Corrected fr-CA accents and moved the draft label into localized demo copy.
  * ============================================================
  */
@@ -505,7 +506,7 @@ export function InteractiveCleaningDemoSection({
         </MarketingCard>
 
         <div className="mt-5 flex justify-center">
-          <MarketingButton href="/pricing" variant="secondary">
+          <MarketingButton href="/pricing" language={language} variant="secondary">
             {copy.cta}
           </MarketingButton>
         </div>
