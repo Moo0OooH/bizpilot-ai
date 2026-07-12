@@ -1,3 +1,18 @@
+# ============================================================
+# File: .github/workflows/ci.yml
+# Project: BizPilot AI
+# Description: Credential-free GitHub Actions validation for the application.
+# Role: Runs the same lint, typecheck, unit-test, and build gate as pnpm verify.
+# Related:
+# - package.json
+# - tests/unit/ci-workflow-source.test.mts
+# Author: MoOoH
+# Created: 2026-05-04
+# Last Updated: 2026-07-12
+# Change Log:
+# - 2026-07-12: Isolated CI from managed Supabase and consolidated validation through pnpm verify.
+# ============================================================
+
 name: CI
 
 on:
@@ -5,7 +20,6 @@ on:
   push:
     branches:
       - main
-      - "phase-*"
   workflow_dispatch:
 
 permissions:
@@ -22,7 +36,7 @@ jobs:
 
     env:
       NEXT_PUBLIC_APP_URL: http://localhost:3000
-      NEXT_PUBLIC_SUPABASE_URL: https://qfqendrqimqvkoojpjao.supabase.co
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
       BIZPILOT_FOUNDER_EMAILS: founder@example.com
 
@@ -45,14 +59,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Unit tests
-        run: pnpm test:unit
-
-      - name: Build
-        run: pnpm build
+      - name: Verify
+        run: pnpm verify
