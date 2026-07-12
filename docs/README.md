@@ -1,343 +1,74 @@
-# BizPilot AI Documentation — Start Here
-
-## Active Documentation Entry Point
-
-Before reading or implementing anything, start with:
-
-1. `CURRENT_CANONICAL_DOCS_v1.7.md`
-2. `AI_CODING_AGENT_START_HERE_v1.7.md`
-3. `readiness/CURRENT_PROJECT_STATUS_2026-06-26.md`
-4. `readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md`
-5. `readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md`
-6. `readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md`
-7. `readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md`
-8. `readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md`
-9. `readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md`
-10. `readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md`
-11. `readiness/PHASE_26E_OWNER_ACCESS_AND_SECRET_HYGIENE_GATE_2026-07-05.md`
-12. `readiness/PHASE_26F_DASHBOARD_CURRENT_STATE_AND_FINAL_POSITION_2026-07-05.md`
-13. `readiness/PHASE_26G_DASHBOARD_LOCAL_SMOKE_AND_PUBLIC_SITE_PAGE_AUDIT_2026-07-05.md`
-14. `readiness/POST_P8_D1_RELEASE_HYGIENE_AND_NEXT_GATES_2026-06-26.md`
-15. `readiness/NEXT_PHASE_EXECUTION_PLAN_2026-06-26.md`
-16. `P9_LANGUAGE_ISOLATION_AUDIT_AND_FIX_REPORT_2026-06-26.md`
-17. `A1_ADMIN_OWNER_USER_ACCESS_AUDIT_AND_SPEC_2026-06-26.md`
-18. `P8_PUBLIC_SITE_CLARITY_FINAL_REPORT_2026-06-26.md`
-19. `D1_FULL_PROJECT_REVIEW_AND_QA_REPORT_2026-06-26.md`
-20. `readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
-21. `readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
-22. `readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
-23. `readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
-24. `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
-25. `readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
-26. `operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
-27. `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`
-28. `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
-
-These files define the active feature-entitlement interpretation of the full documentation package.
-
-2026-06-26 status override: P8 public homepage clarity and D1 dashboard shell
-and lead workflow stabilization are now on `main`. D1 is code/test/visual ready
-on local synthetic data only. P9 language isolation moved dashboard error-boundary
-copy into the EN/fr-CA dictionary. A1 admin/owner user access remains audit/spec
-only. The next safe work is release hygiene, production deploy/cache
-confirmation, local synthetic QA, quote slug smoke, local DB/RLS proof, and
-explicit owner gates before real customer data or paid pilot.
-
-2026-06-27 operating-standard override: use
-`readiness/BIZPILOT_DASHBOARD_MARKETING_SEO_OPERATING_STANDARD_2026-06-27.md`
-as the canonical dashboard, founder-admin, public-site, marketing, SEO,
-accessibility, analytics, and QA standard before new UI or growth work. This
-replaces the temporary dashboard/marketing/SEO resource drafts and keeps real
-data and paid pilot gates blocked.
-
-2026-07-04 Phase 25 override: use
-`readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md` as the current
-source-backed backlog and execution order for final site, dashboard, SEO,
-AI-search, local GTM, analytics, demo, and pilot-ops work. This does not approve
-real customer data, paid pilot launch, production mutations, automation,
-booking, invoices, SMS/WhatsApp, autonomous AI, or broad feature expansion.
-
-2026-07-04 Phase 25Y local-gate override: use
-`readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md` for the
-latest local target classification and RLS evidence. Local DB/RLS passed
-against the confirmed local `DATABASE_URL`.
-
-2026-07-04 Phase 26 finalization override: use
-`readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md`
-for the latest dashboard/admin gate evidence. Authenticated owner dashboard,
-founder handoff, and founder-admin route smoke passed 14/14 against local
-Supabase with explicit synthetic founder email gating. Real customer data and
-paid pilot remain blocked.
-
-2026-07-04 Phase 26A owner guide override: use
-`readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md`
-for the latest protected owner dashboard guide, manual recovery queue, and
-15/15 local owner plus founder-admin smoke evidence.
-
-2026-07-05 Phase 26B cleanup override: use
-`readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md` for the latest
-owner-approved managed Supabase cleanup record, off-repo backup path, preserved
-owner workspace state, and local secret-rotation caveat.
-
-2026-07-05 Phase 26C public page-content override: use
-`readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md` for
-the latest public website page-content sweep. Deeper canonical public pages now
-emit BreadcrumbList JSON-LD; no real-data, paid-pilot, automation, booking,
-invoice, payment, SMS/WhatsApp, or autonomous AI gate is opened.
-
-2026-07-05 Phase 26D owner dashboard override: use
-`readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md`
-for the latest protected owner overview hierarchy pass. The owner overview now
-keeps one primary manual next-action region, quote-page preview as utility
-chrome, and tokenized secondary insight visuals without opening real-data,
-paid-pilot, automation, booking, invoice, payment, SMS/WhatsApp, or CRM gates.
-
-2026-07-05 Phase 26E post-cleanup owner-access/secret hygiene override: use
-`readiness/PHASE_26E_OWNER_ACCESS_AND_SECRET_HYGIENE_GATE_2026-07-05.md`
-for the latest environment and owner-access verification. This phase confirms
-direct Auth Admin access with the tracked owner credentials, one active owner
-workspace continuity, and that dashboard local smoke remains blocked by design
-until local-only targets are configured.
-
-2026-07-05 Phase 26F/26G dashboard and public-site verification override: use
-`readiness/PHASE_26F_DASHBOARD_CURRENT_STATE_AND_FINAL_POSITION_2026-07-05.md`
-for the current dashboard state/target-position map and
-`readiness/PHASE_26G_DASHBOARD_LOCAL_SMOKE_AND_PUBLIC_SITE_PAGE_AUDIT_2026-07-05.md`
-for the latest local dashboard/public page verification. Local authenticated
-dashboard smoke passed with local Supabase overrides, and public route,
-responsive, quote, and UI matrix smoke passed. Production-final dashboard
-acceptance still requires owner-approved authenticated managed-session proof.
-
-2026-06-01 status override: BizPilot is synthetic-ready, not
-real-data-approved, and not paid-pilot-ready. The next gates are Phase 24F final
-no-secret production smoke and Phase 24G explicit owner approval. After those,
-the highest priority work is product readiness, demo readiness, and customer
-validation: homepage polish, dashboard polish, manual email templates,
-end-to-end smoke, demo creation, demo video, and founder-led outreach.
-
-2026-06-20 public-site override: the pre-dashboard public-site foundation is GO
-for dashboard work after the final polish evidence in
-`readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`. This does not
-approve real customer data, paid-pilot launch, billing automation, or broader
-feature expansion.
-
-2026-06-20 post-D0 dashboard override: public-site visual truth verification and
-the dashboard D0 audit are complete. Use
-`readiness/CURRENT_PROJECT_STATUS_2026-06-20.md` for the active phase map and
-`readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md` for the dashboard route,
-component, data-flow, UX, and risk baseline. The next correct implementation
-phase is scoped dashboard visual stabilization, not real-data, billing, auth,
-RLS, AI provider, or production data-flow expansion.
-
-2026-06-21 public-site acceptance override: public-site acceptance P0-P5 is
-complete and production verified. Use
-`readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md` as the latest public-site
-GO evidence. Phase D1 dashboard visual stabilization may start, but all
-real-data, paid-pilot, billing, auth/RLS/database, AI provider, and production
-data-flow blockers remain in force.
-
-2026-06-21 multilingual responsive override: use
-`product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md` for public-site
-and dashboard EN/fr-CA sizing, card alignment, CTA anchoring, and multi-viewport
-visual parity. New public or D1 dashboard work must preserve this standard,
-including Light/Dark contrast mappings and fr-CA accent/meaning quality.
-
-2026-06-21 final bilingual content/layout acceptance override: use
-`readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md` as the latest
-production-verified acceptance record for EN/fr-CA public copy, sizing, pricing
-alignment, Light/Dark evidence, pseudolocalization guardrails, and the GO
-decision for starting scoped Dashboard Phase D1 visual stabilization. This does
-not approve real customer data, paid pilot launch, billing automation,
-auth/RLS/database changes, AI provider changes, or production data-flow
-expansion.
-
-## Active MVP Direction
-
-BizPilot AI's current live surface is a **Lead Recovery & Response System for cleaning businesses** and a **Quote Recovery Command Center**.
-
-2026-05-26 owner update: broader product expansion is allowed when it is owner-controlled, feature-gated, visible in Settings, guide-backed, and validated. Older blanket scope-freeze language now means "do not default-enable, fake, or overpromise broad capabilities before they are truly ready."
-
----
-
-# BizPilot AI Documentation Index
-
-**Current standards layer:** v1.5 foundation hardening  
-**Product strategy layer:** v1.4 remains active unless superseded  
-**Last updated:** 2026-05-28
-
----
-
-## How To Read These Docs
-
-BizPilot AI should continue from the current feature-entitlement direction. The v1.5 documents are a hardening layer for security, backend, RLS, privacy, accessibility, and readiness. They do not restart the project. Product growth is governed by `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`.
-
-Use the v1.4 product documents for strategy and phase context. Use the v1.5 documents for implementation standards before real customer pilots.
-
----
-
-## Active v1.5 Hardening Standards
-
-- `docs/BIZPILOT_FULL_CANONICAL_PACKAGE_v1.5.md`
-- `docs/reference/BIZPILOT_EXTERNAL_REFERENCE_BASELINE_v1.5.md`
-- `docs/operations/BIZPILOT_EXECUTIVE_AUDIT_AND_DECISION_v1.5.md`
-- `docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md`
-- `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
-- `docs/engineering/BIZPILOT_SUPABASE_CLIENT_ARCHITECTURE_v1.0.md`
-- `docs/engineering/BIZPILOT_SAFE_ERROR_HANDLING_STANDARD_v1.0.md`
-- `docs/engineering/BIZPILOT_SAFE_LOGGING_BASELINE_v1.0.md`
-- `docs/engineering/BIZPILOT_SERVICE_REPOSITORY_BOUNDARY_AUDIT_v1.0.md`
-- `docs/security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md`
-- `docs/security/BIZPILOT_AUTH_ROUTE_PROTECTION_AUDIT_v1.0.md`
-- `docs/security/BIZPILOT_RLS_AUDIT_REPORT_v1.0.md`
-- `docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
-- `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.1.md`
-- `docs/operations/BIZPILOT_MVP_HARDENING_CHECKLIST_v1.0.md`
-- `docs/operations/BIZPILOT_CODEX_IMPLEMENTATION_PROMPTS_v1.0.md`
-
----
-
-## Active Product Strategy
-
-- `docs/product/BIZPILOT_MASTER_BLUEPRINT_v1.4.md`
-- `docs/product/BIZPILOT_BUILD_PLAN_v1.4.md`
-- `docs/architecture/BIZPILOT_ARCHITECTURE_v1.4.md`
-- `docs/engineering/BIZPILOT_EXECUTION_ROADMAP_v1.4.md`
-- `docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md`
-- `docs/product/BIZPILOT_HOMEPAGE_AND_VISUAL_THEME_STANDARD_v1.0.md`
-- `docs/product/BIZPILOT_SCORING_SPEC_v1.1.md`
-- `docs/product/BIZPILOT_VALIDATION_DASHBOARD_SPEC_v1.1.md`
-- `docs/gtm/BIZPILOT_GTM_PLAYBOOK_v1.1.md`
-- `docs/finance/BIZPILOT_COST_CONTROL_AND_UNIT_ECONOMICS_v1.0.md`
-
-## Latest Readiness Evidence
-
-- `docs/readiness/PHASE_26G_DASHBOARD_LOCAL_SMOKE_AND_PUBLIC_SITE_PAGE_AUDIT_2026-07-05.md`
-- `docs/readiness/PHASE_26F_DASHBOARD_CURRENT_STATE_AND_FINAL_POSITION_2026-07-05.md`
-- `docs/readiness/PHASE_26E_OWNER_ACCESS_AND_SECRET_HYGIENE_GATE_2026-07-05.md`
-- `docs/readiness/PHASE_26D_OWNER_DASHBOARD_PRIORITY_STANDARDIZATION_2026-07-05.md`
-- `docs/readiness/PHASE_26C_PUBLIC_PAGE_CONTENT_BREADCRUMB_SWEEP_2026-07-05.md`
-- `docs/readiness/PHASE_26B_OWNER_ONLY_SUPABASE_CLEANUP_2026-07-05.md`
-- `docs/readiness/PHASE_26A_OWNER_DASHBOARD_GUIDE_AND_QUEUE_FINALIZATION_2026-07-04.md`
-- `docs/readiness/PHASE_26_FINALIZATION_CHECKLIST_AND_DASHBOARD_ADMIN_GATE_2026-07-04.md`
-- `docs/readiness/DASHBOARD_EXTERNAL_BENCHMARK_AUDIT_2026-07-04.md`
-- `docs/readiness/PHASE_25X_DASHBOARD_LEAD_QUEUE_PAGINATION_2026-07-04.md`
-- `docs/readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md`
-- `docs/readiness/PHASE_25W_POST_25V_RECHECK_AND_REMAINING_MAP_2026-07-04.md`
-- `docs/readiness/PHASE_25V_SETTINGS_FEATURE_GUIDE_DETAILS_2026-07-04.md`
-- `docs/readiness/PHASE_25U_REPLY_SPEED_CONTENT_GUIDE_2026-07-04.md`
-- `docs/readiness/PHASE_25T_FINAL_PUBLIC_VISUAL_MATRIX_2026-07-04.md`
-- `docs/readiness/PHASE_25S_PRODUCT_REAL_DEMO_VISUAL_POLISH_2026-07-04.md`
-- `docs/readiness/PHASE_25R_HOMEPAGE_HERO_BILINGUAL_VISUAL_POLISH_2026-07-04.md`
-- `docs/readiness/PHASE_25Q_WHOLE_PROJECT_REAUDIT_AND_FINAL_CHECKLIST_2026-07-04.md`
-- `docs/readiness/PHASE_25P_PUBLIC_QUOTE_INTAKE_FINAL_RECHECK_2026-07-04.md`
-- `docs/readiness/PHASE_25O_SECURITY_RUNTIME_OPS_2026-07-04.md`
-- `docs/readiness/PHASE_25N_FAQ_AI_SEARCH_COMPLETION_2026-07-04.md`
-- `docs/readiness/PHASE_25M_GTM_AND_PILOT_OPS_PACKET_2026-07-04.md`
-- `docs/readiness/PHASE_25L_NO_PII_ANALYTICS_FOUNDER_FUNNEL_2026-07-04.md`
-- `docs/readiness/PHASE_25K_SEARCH_CONSOLE_CWV_BASELINE_2026-07-04.md`
-- `docs/readiness/PHASE_25J_TRUST_SECURITY_EVIDENCE_ALIGNMENT_2026-07-04.md`
-- `docs/readiness/PHASE_25I_PRICING_TRUST_BOUNDARIES_2026-07-04.md`
-- `docs/readiness/PHASE_25H_PILOT_PROOF_METRICS_2026-07-04.md`
-- `docs/readiness/PHASE_25G_DASHBOARD_SMOKE_LOCAL_ONLY_GUARD_2026-07-04.md`
-- `docs/readiness/PHASE_25F_WORKFLOW_LED_PUBLIC_COPY_2026-07-04.md`
-- `docs/readiness/PHASE_25E_LEAD_SOURCE_ATTRIBUTION_VISIBILITY_2026-07-04.md`
-- `docs/readiness/PHASE_25D_DASHBOARD_DATA_RICH_QA_FIXTURE_2026-07-04.md`
-- `docs/readiness/PHASE_25C_QUOTE_LINK_PLACEMENT_GUIDE_2026-07-04.md`
-- `docs/readiness/PHASE_25B_INTAKE_ATTRIBUTION_2026-07-04.md`
-- `docs/readiness/PHASE_25A_SEO_COMPARISON_FOUNDATION_2026-07-04.md`
-- `docs/readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md`
-- `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-20.md`
-- `docs/readiness/PUBLIC_MULTILINGUAL_THEME_AND_POLICY_LOCALIZATION_FIX_2026-06-21.md`
-- `docs/readiness/PUBLIC_MULTILINGUAL_RESPONSIVE_STABILITY_FIX_2026-06-21.md`
-- `docs/readiness/FINAL_BILINGUAL_CONTENT_AND_LAYOUT_ACCEPTANCE.md`
-- `docs/readiness/FINAL_PUBLIC_SITE_ACCEPTANCE_2026-06-21.md`
-- `docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
-- `docs/readiness/DASHBOARD_DESIGN_AUDIT_2026-06-20.md`
-- `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_TRUTH_FIX_2026-06-20.md`
-- `docs/readiness/FINAL_PUBLIC_SITE_VISUAL_STABILITY_PATCH_2026-06-20.md`
-- `docs/readiness/FINAL_PRE_DASHBOARD_SITE_READINESS_2026-06-20.md`
-- `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`
-- `docs/readiness/BIZPILOT_SECOND_PASS_PROJECT_GAP_AND_SUGGESTIONS_2026-06-01.md`
-- `docs/readiness/BIZPILOT_PROJECT_GAP_AND_SUGGESTIONS_2026-06-01.md`
-- `docs/operations/BIZPILOT_FINAL_EXECUTION_AND_VALIDATION_PRIORITY_STANDARD_v1.0.md`
-- `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
-- `docs/readiness/WHERE_WE_ARE_WITH_NEXT_STEP_2026-05-29.md`
-- `docs/readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md`
-- `docs/readiness/DOCS_PROGRESS_AND_GAP_REPORT_2026-05-28.md`
-- `docs/readiness/PHASE_22_PRODUCTION_ACCESS_AND_RUNTIME_AUDIT_2026-05-27.md`
-- `docs/readiness/PHASE_21Z_AUTONOMOUS_STATUS_AND_OWNER_ACTIONS_2026-05-26.md`
-- `docs/readiness/PHASE_21R_PRODUCTION_HORIZONTAL_ACCESS_SMOKE.md`
-- `docs/readiness/HOMEPAGE_RENEW_V2_WORK_LOG.md`
-
-2026-06-01 interpretation: production access/admin-data loading and broad
-infrastructure discovery are no longer the main blocker after Phase 22/23/24
-evidence. Real customer data still requires Phase 24F final no-secret
-production smoke and Phase 24G owner approval. Paid pilot readiness still
-requires payment/support operating packet and strict restored app/dashboard/RLS
-proof before paid pilot, migrations, destructive cleanup, bulk work, or broader
-scale.
-
----
-
-## Active Architecture Standards
-
-- `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`
-
----
-
-## Phase Audit Reports
-
-- `docs/operations/BIZPILOT_PHASE_10A_VENDOR_INDEPENDENCE_GAP_REPORT_v1.0.md`
-- `docs/security/BIZPILOT_SUPABASE_EXPLICIT_GRANTS_AUDIT_v1.0.md`
-- `docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v1.0.md`
-- `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md`
-- `docs/operations/BIZPILOT_MAGIC_DEMO_FLOW_v1.0.md`
-
----
-
-## Operations
-
-- `docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
-- `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`
-- `docs/operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`
-- `docs/operations/BIZPILOT_MAGIC_DEMO_FLOW_v1.0.md`
-- `docs/operations/BIZPILOT_PHASE_18_PILOT_OPERATING_GUIDE_v1.0.md`
-- `docs/operations/BIZPILOT_PHASE_18_WORK_LOG_v1.0.md`
-- `artifacts/phase18/BizPilot_Phase18_Founder_CRM_Template.xlsx`
-
----
-
-## Design System
-
-- `docs/product/BIZPILOT_DESIGN_SYSTEM_SPEC_v1.0.md`
-
----
-
-## Superseded Or Historical Standards
-
-Keep older docs for context unless explicitly removed in a future documentation cleanup.
-
-- `docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.4.md`
-- `docs/engineering/BIZPILOT_DATABASE_RLS_POLICY_BASELINE_v1.0.md`
-- `docs/security/BIZPILOT_PRIVACY_SECURITY_COMPLIANCE_BASELINE_v1.0.md`
-- `docs/product/BIZPILOT_UI_UX_SYSTEM_STANDARD_v1.0.md`
-
----
-
-## MVP Rule
-
-Do not expand scope while hardening. No booking engine, full CRM, SMS, WhatsApp, Instagram API, full Stripe Billing, auto-send, background AI agents, or second vertical before validation.
-
-## Active v1.6 Strategic Alignment Overlay
-
-The active execution overlay is now `BIZPILOT_STRATEGIC_ALIGNMENT_UPDATE_v1.6.md`.
-
-This overlay does **not** remove the v1.4/v1.5 canonical documents. It clarifies the current MVP path:
-
-- BizPilot is currently sold as a **Lead Recovery & Response System**.
-- The first market is **cleaning businesses**.
-- The primary customer-facing concept is **Quote Recovery Command Center**.
-- The project must prioritize security hardening, first-three-minute Magic Moment, founder-led onboarding, customer discovery, retention, and operational calm UX.
-- Broader platform, multi-vertical, automation, and operating-system ideas remain long-term direction, not current MVP scope.
-
-When documents conflict, use the most conservative interpretation that preserves security, focus, customer trust, and MVP speed-to-value.
+<!--
+ * ============================================================
+ * File: docs/README.md
+ * Project: BizPilot AI
+ * Description: Documentation index and authority classification.
+ * Role: Directs readers to current controls before standards or historical evidence.
+ * Related:
+ * - docs/readiness/BIZPILOT_FINAL_SOURCE_OF_TRUTH_2026-07-12.md
+ * - docs/CURRENT_CANONICAL_DOCS_v1.7.md
+ * - docs/archive/README.md
+ * Author: MoOoH
+ * Created: 2026-05-28
+ * Last Updated: 2026-07-12
+ * Change Log:
+ * - 2026-07-12: Replaced the phase-by-phase entry list with current authority classes.
+ * ============================================================
+ -->
+
+# BizPilot AI Documentation
+
+Start with the current source of truth. Do not choose a phase report because it
+has the newest-sounding title or calls itself final.
+
+## CURRENT — controls present work
+
+1. [Final source of truth](readiness/BIZPILOT_FINAL_SOURCE_OF_TRUTH_2026-07-12.md)
+2. [Machine-readable status](readiness/current-status.json)
+3. [Canonical documentation map](CURRENT_CANONICAL_DOCS_v1.7.md)
+4. [AI coding agent start guide](AI_CODING_AGENT_START_HERE_v1.7.md)
+
+These documents state what is implemented, what is blocked, and which gates
+need owner approval. They override older status, readiness, phase, and “final”
+reports.
+
+## STANDARD — constrains implementation, does not prove readiness
+
+- `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
+- `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
+- `engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md`
+- `engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
+- `security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md`
+- `operations/BIZPILOT_DOMAIN_DEPLOYMENT_RUNBOOK_v1.0.md`
+- `ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
+- `business/PILOT_TERMS_DECISION_GATE.md`
+
+Follow a standard whenever it applies, but do not infer that its checklist has
+been completed. Current release status remains controlled by the CURRENT set.
+
+## HISTORICAL EVIDENCE — preserve and cite narrowly
+
+- `readiness/PHASE_25*` through `readiness/PHASE_30*`
+- Earlier `readiness/` reports, audits, QA records, and handoffs
+- Older canonical packages, work logs, and dated implementation reports
+
+These files are valuable records of a point-in-time test, decision, or change.
+They cannot override the current source of truth or authorize production work.
+
+## ARCHIVED — retained for traceability
+
+See [docs/archive/README.md](archive/README.md) for the interpretation rule.
+Archive tags and the branch cleanup record preserve historic Git branch state;
+they do not change release approval.
+
+## Documentation conflict rule
+
+1. Current source of truth and JSON status win.
+2. Security, RLS, privacy, and production-data restrictions win over convenience.
+3. Applicable standards constrain implementation.
+4. Historical evidence may establish a specific past result, but never a later
+   gate closure that it does not explicitly prove.
+
+When adding a new report, classify it as CURRENT only if it replaces the source
+of truth with evidence-backed, owner-approved status. Otherwise label it as
+historical evidence and link it from the appropriate current document.

@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-07-12T00:00:00-04:00",
+  "repository": "Moo0OooH/bizpilot-ai",
+  "branch": "main",
+  "head_sha": "5cebae28423a268c7bf277f78f630ccc15b8438b",
+  "product_status": "implemented_for_manual_cleaning_first_quote_recovery; not approved for real_customer_data_or_paid_pilot",
+  "public_site": "implemented; latest local public QA passed in Phase 30; current Vercel deployment is not verified",
+  "dashboard": "implemented for manual-first lead recovery; local/synthetic QA and owner-manual evidence exist; production-final proof is blocked",
+  "founder_admin": "implemented as gated internal oversight; not a customer CRM; production-sensitive operations remain guarded",
+  "quote_intake": "implemented with business-specific links, validation, consent, abuse safeguards, inactive-link handling, and local/synthetic evidence",
+  "ai_draft": "implemented as owner-reviewed draft assistance only; no auto-send, booking, price/availability promises, or autonomous actions",
+  "email_password_auth": "implemented; historical SMTP/auth evidence exists; no production transaction was performed in this consolidation",
+  "google_auth": "application code implemented with login-only scopes; Google/Supabase provider settings and owner QA are unverified; not live-approved",
+  "phone_auth": "not implemented; blocked",
+  "supabase": "migrations 0001-0024 exist; managed production target was not re-certified in this consolidation",
+  "rls": "13/13 local RLS files passed historically; restored-target RLS/application proof is not passed",
+  "vercel": "not verified in this consolidation; no deployment, domain, cache, or production environment claim",
+  "backup_restore": "DB-level export/restore proof passed; strict restored app/dashboard/RLS proof remains blocked",
+  "real_customer_data": "blocked pending no-secret production-safe smoke and explicit owner approval",
+  "paid_pilot": "blocked pending real-data approval, strict restored-target proof, and payment/support/refund/rollback readiness",
+  "payments": "manual approval/manual billing only; no self-serve checkout, payment capture, invoice system, or automated activation",
+  "blockers": [
+    "production-safe no-secret smoke",
+    "explicit owner approval for real customer data",
+    "restored-target application/dashboard/RLS proof",
+    "Vercel/domain/environment/Auth redirect verification",
+    "paid-pilot payment/support/refund/rollback rehearsal",
+    "Google provider configuration and owner QA before claiming Google login live"
+  ],
+  "owner_actions": [
+    "decide whether to keep Google login unavailable or authorize provider setup and owner QA",
+    "approve a safe production verification plan and any later real-data gate",
+    "approve a disposable restored-target proof plan",
+    "confirm Vercel, domain, and Auth redirect settings",
+    "approve paid-pilot operations only after prerequisite gates close"
+  ],
+  "next_gate": "production-safe no-secret verification plan, followed by explicit owner review; real customer data remains blocked"
+}
