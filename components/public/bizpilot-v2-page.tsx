@@ -11,6 +11,8 @@
  * Author: MoOoH
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Added route-specific capability, sequence, pricing, trust, comparison, FAQ, cleaning, and pilot variants.
  * ============================================================
  */
 
@@ -308,6 +310,122 @@ function SectionHeading({
   );
 }
 
+function RouteSectionCards({
+  faqItems,
+  path,
+  section,
+  sectionIndex,
+}: Readonly<{
+  faqItems?: readonly PublicV2FaqItem[] | undefined;
+  path: PublicCanonicalRoute;
+  section: PublicV2PageCopy["sections"][number];
+  sectionIndex: number;
+}>) {
+  if (path === "/faq" && sectionIndex === 0 && faqItems?.length) {
+    return (
+      <div className="mt-8 grid gap-3" data-route-variant="faq-groups">
+        {faqItems.map((item, index) => (
+          <details
+            className="group rounded-[18px] border p-5 open:bg-[var(--surface-elevated)]"
+            key={item.question}
+            style={{ backgroundColor: "var(--surface)", borderColor: marketingTone.border }}
+          >
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 font-black focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]">
+              <span>{item.question}</span>
+              <span aria-hidden style={{ color: marketingTone.teal }}>{index + 1}</span>
+            </summary>
+            <p className="mt-4 max-w-[900px] text-[15px] leading-7" style={{ color: marketingTone.soft }}>
+              {item.answer}
+            </p>
+          </details>
+        ))}
+      </div>
+    );
+  }
+
+  if (path === "/comparison") {
+    return (
+      <div className="mt-8 rounded-[18px] border" data-route-variant="comparison-matrix" style={{ borderColor: marketingTone.border }}>
+        <table className="w-full table-fixed border-collapse text-left">
+          <thead style={{ backgroundColor: "var(--surface-interactive)" }}>
+            <tr>
+              <th className="w-[36%] break-words p-3 text-[12px] font-black sm:p-4 sm:text-[13px]">{section.eyebrow ?? section.title}</th>
+              <th className="break-words p-3 text-[12px] font-black sm:p-4 sm:text-[13px]">{section.title}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {section.cards.map((card) => (
+              <tr className="border-t align-top" key={card.title} style={{ borderColor: marketingTone.border }}>
+                <th className="break-words p-3 text-[13px] font-black sm:p-4 sm:text-[14px]" scope="row">{card.title}</th>
+                <td className="break-words p-3 text-[13px] leading-6 sm:p-4 sm:text-[14px]" style={{ color: marketingTone.soft }}>
+                  <p>{card.body}</p>
+                  {card.points?.length ? <p className="mt-2 font-bold">{card.points.join(" · ")}</p> : null}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  if (path === "/industries/cleaning") {
+    return (
+      <div className="mt-8 grid gap-3 md:grid-cols-2" data-route-variant="cleaning-selector">
+        {section.cards.map((card, index) => (
+          <details className="rounded-[18px] border p-5 open:bg-[var(--surface-elevated)]" key={card.title} open={index === 0} style={{ backgroundColor: "var(--surface)", borderColor: marketingTone.border }}>
+            <summary className="min-h-11 cursor-pointer list-none font-black focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]">{card.title}</summary>
+            <p className="mt-3 text-[14px] leading-6" style={{ color: marketingTone.soft }}>{card.body}</p>
+            {card.points?.length ? (
+              <ul className="mt-3 grid gap-2 text-[13px] font-bold" style={{ color: marketingTone.soft }}>
+                {card.points.map((point) => <li key={point}>• {point}</li>)}
+              </ul>
+            ) : null}
+          </details>
+        ))}
+      </div>
+    );
+  }
+
+  if (path === "/demo" || path === "/pilot") {
+    return (
+      <ol className="mt-8 grid gap-4" data-route-variant={path === "/demo" ? "request-to-reply-sequence" : "pilot-process"}>
+        {section.cards.map((card, index) => (
+          <li className="grid gap-3 md:grid-cols-[3rem_minmax(0,1fr)] md:items-start" key={card.title}>
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-full font-black" style={{ backgroundColor: "var(--surface-interactive)", color: marketingTone.teal }}>{index + 1}</span>
+            <PageCard card={card} index={index} />
+          </li>
+        ))}
+      </ol>
+    );
+  }
+
+  const variant = path === "/features"
+    ? "capability-board"
+    : path === "/pricing"
+      ? "plan-comparison"
+      : path === "/trust"
+        ? "human-data-boundaries"
+        : "supporting-cards";
+
+  return (
+    <div
+      className={`mt-8 grid min-w-0 gap-4 sm:gap-5 ${
+        section.cards.length === 1
+          ? "max-w-[760px]"
+          : section.cards.length === 2
+            ? "bp-grid-two"
+            : "bp-grid-three"
+      }`}
+      data-route-variant={variant}
+    >
+      {section.cards.map((card, cardIndex) => (
+        <PageCard card={card} index={cardIndex} key={`${card.title}-${cardIndex}`} />
+      ))}
+    </div>
+  );
+}
+
 export function BizPilotV2Page({
   copy,
   faqItems,
@@ -412,23 +530,12 @@ export function BizPilotV2Page({
               index={sectionIndex}
               title={section.title}
             />
-            <div
-              className={`mt-8 grid min-w-0 gap-4 sm:gap-5 ${
-                section.cards.length === 1
-                  ? "max-w-[760px]"
-                  : section.cards.length === 2
-                    ? "bp-grid-two"
-                    : "bp-grid-three"
-              }`}
-            >
-              {section.cards.map((card, cardIndex) => (
-                <PageCard
-                  card={card}
-                  index={cardIndex}
-                  key={`${card.title}-${cardIndex}`}
-                />
-              ))}
-            </div>
+            <RouteSectionCards
+              faqItems={faqItems}
+              path={path}
+              section={section}
+              sectionIndex={sectionIndex}
+            />
           </MarketingShell>
         </section>
       ))}

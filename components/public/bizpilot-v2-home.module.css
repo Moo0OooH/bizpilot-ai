@@ -7,6 +7,8 @@
  * Author: MoOoH
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Allowed the localized final CTA grid and buttons to shrink safely at 320px.
  * ============================================================
  */
 
@@ -852,6 +854,12 @@
   line-height: 1.75;
 }
 
+.finalCopy,
+.finalActions {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .assuranceRow {
   display: flex;
   flex-wrap: wrap;
@@ -881,6 +889,12 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.finalActions a {
+  width: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 @media (min-width: 390px) {

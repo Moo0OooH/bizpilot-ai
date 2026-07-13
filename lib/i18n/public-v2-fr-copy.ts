@@ -10,6 +10,8 @@
  * Author: MoOoH
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Added natural fr-CA labels for grouped use-case and resource navigation.
  * ============================================================
  */
 
@@ -26,17 +28,22 @@ export function buildPublicV2FrenchCopy(legacyCopy: PublicV2Copy): PublicV2Copy 
     faq: "FAQ",
     features: "Produit",
     flow: "Fonctionnement",
+    fasterReplies: "Guide des réponses rapides",
+    futureTemplates: "Futurs modèles — Feuille de route",
     guide: "Guide du lien de demande",
     languageLabel: "Langue du site",
     pilot: "Pilote",
     pricing: "Tarifs",
     privacy: "Confidentialité",
+    resources: "Ressources",
     security: "Sécurité",
+    serviceOverview: "Aperçu pour entreprises de services",
     signIn: "Connexion",
     startFull: "Demander l’accès au pilote fondateur",
     startShort: "Demander l’accès",
     terms: "Conditions",
     trust: "Confiance",
+    useCases: "Cas d’utilisation",
     why: "Pourquoi BizPilot",
   } as const;
 
@@ -83,7 +90,7 @@ export function buildPublicV2FrenchCopy(legacyCopy: PublicV2Copy): PublicV2Copy 
         title:
           "Espace intelligent de demandes client et de réponses | BizPilot AI",
         description:
-          "BizPilot aide les entreprises de services à recueillir les demandes avec un lien intelligent, à organiser les renseignements manquants et à préparer des brouillons assistés par l’IA que le propriétaire valide, en commençant par les entreprises d’entretien.",
+          "BizPilot aide les entreprises de services locales à recueillir les demandes avec un lien intelligent, à organiser les renseignements manquants et à préparer des brouillons assistés par l’IA que le propriétaire valide.",
       },
       nav,
       hero: {
@@ -91,7 +98,7 @@ export function buildPublicV2FrenchCopy(legacyCopy: PublicV2Copy): PublicV2Copy 
         title:
           "Transformez les demandes dispersées en réponses claires, prêtes à vérifier.",
         body:
-          "BizPilot donne aux entreprises de services un lien intelligent, organise chaque demande, montre ce qui manque et prépare un brouillon assisté par l’IA que le propriétaire vérifie et envoie — en commençant par les entreprises d’entretien.",
+          "BizPilot donne aux entreprises de services locales un lien intelligent, organise chaque demande, montre ce qui manque et prépare un brouillon assisté par l’IA que le propriétaire vérifie et envoie manuellement.",
         primaryCta: "Voir le flux d’entretien",
         secondaryCta: "Demander l’accès au pilote fondateur",
         note:

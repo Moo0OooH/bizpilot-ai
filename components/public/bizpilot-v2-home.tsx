@@ -11,6 +11,8 @@
  * Author: MoOoH
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Added stable How it works and Use cases anchors for grouped navigation.
  * ============================================================
  */
 
@@ -279,7 +281,7 @@ export function BizPilotV2Home({
         </MarketingShell>
       </section>
 
-      <section className={`bp-section ${styles.flowSection}`}>
+      <section className={`bp-section ${styles.flowSection}`} id="how-it-works">
         <MarketingShell>
           <SectionHeading
             body={copy.flow.body}
@@ -364,7 +366,7 @@ export function BizPilotV2Home({
         </MarketingShell>
       </section>
 
-      <section className={`bp-section ${styles.industrySection}`}>
+      <section className={`bp-section ${styles.industrySection}`} id="use-cases">
         <MarketingShell>
           <SectionHeading
             body={copy.industries.body}

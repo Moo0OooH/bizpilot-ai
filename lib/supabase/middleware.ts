@@ -10,10 +10,11 @@
  * - app/(dashboard)/dashboard/page.tsx
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-05-04: Created Phase 2 dashboard route guard helper.
  * - 2026-05-04: Switched dashboard guard to official Supabase SSR client.
+ * - 2026-07-13: Cleared revoked Supabase sessions before redirecting protected requests.
  * ============================================================
  */
 
@@ -72,6 +73,34 @@ function redirectToSignIn(input: {
   return redirectResponse;
 }
 
+function unauthenticatedRedirect(input: {
+  request: NextRequest;
+  response: NextResponse;
+  clearAuthCookies: boolean;
+}): NextResponse {
+  const signInUrl = new URL("/auth/sign-in", input.request.url);
+  signInUrl.searchParams.set("next", input.request.nextUrl.pathname);
+
+  const redirectResponse = NextResponse.redirect(signInUrl);
+  for (const cookie of input.response.cookies.getAll()) {
+    redirectResponse.cookies.set(cookie);
+  }
+
+  if (input.clearAuthCookies) {
+    for (const cookie of input.request.cookies.getAll()) {
+      if (cookie.name.startsWith("sb-") && cookie.name.includes("-auth-token")) {
+        redirectResponse.cookies.set(cookie.name, "", {
+          maxAge: 0,
+          path: "/",
+          sameSite: "lax",
+        });
+      }
+    }
+  }
+
+  return redirectResponse;
+}
+
 export async function protectDashboardRequest(
   request: NextRequest,
 ): Promise<NextResponse> {
@@ -103,15 +132,23 @@ export async function protectDashboardRequest(
       },
     },
   });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  let authFailed = false;
+
+  try {
+    const authResult = await supabase.auth.getUser();
+    user = authResult.data.user;
+    authFailed = Boolean(authResult.error);
+  } catch {
+    authFailed = true;
+  }
 
   if (!user) {
-    const signInUrl = new URL("/auth/sign-in", request.url);
-    signInUrl.searchParams.set("next", request.nextUrl.pathname);
-
-    return NextResponse.redirect(signInUrl);
+    return unauthenticatedRedirect({
+      request,
+      response,
+      clearAuthCookies: authFailed,
+    });
   }
 
   const { data: businesses, error } = await supabase

@@ -10,13 +10,14 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-06-19: Shortened public header tagline and corrected compact French pilot CTA.
  * - 2026-06-21: Corrected compact CTA text and fr-CA accent defects visible in public shell/homepage copy.
  * - 2026-06-25: Replaced literal fr-CA lead phrasing with natural cleaning-request wording.
  * - 2026-06-26: Removed legacy desk, command-center, and no-risk pilot wording from homepage copy.
  * - 2026-07-04: Added the public quote-link guide footer label.
+ * - 2026-07-13: Added localized grouped-navigation labels for use cases and resources.
  * ============================================================
  */
 
@@ -62,17 +63,22 @@ export type HomeNavCopy = Readonly<{
   faq: string;
   features: string;
   flow: string;
+  fasterReplies: string;
+  futureTemplates: string;
   guide: string;
   languageLabel: string;
   pilot: string;
   pricing: string;
   privacy: string;
+  resources: string;
   security: string;
+  serviceOverview: string;
   signIn: string;
   startFull: string;
   startShort: string;
   terms: string;
   trust: string;
+  useCases: string;
   why: string;
 }>;
 
@@ -449,17 +455,22 @@ const englishHomeCopy: HomeCopy = {
     faq: "FAQ",
     features: "Features",
     flow: "How it works",
+    fasterReplies: "Faster replies guide",
+    futureTemplates: "Future templates — Roadmap",
     guide: "Quote link guide",
     languageLabel: "Homepage language",
     pilot: "Pilot",
     pricing: "Pricing",
     privacy: "Privacy",
+    resources: "Resources",
     security: "Security",
+    serviceOverview: "Service-business overview",
     signIn: "Sign in",
     startFull: "Join founder pilot",
     startShort: "Join pilot",
     terms: "Terms",
     trust: "Trust",
+    useCases: "Use cases",
     why: "Why BizPilot",
   },
   problem: {
@@ -882,17 +893,22 @@ const frenchHomeCopy: HomeCopy = {
     faq: "FAQ",
     features: "Fonctions",
     flow: "Fonctionnement",
+    fasterReplies: "Guide des réponses rapides",
+    futureTemplates: "Futurs modèles — Feuille de route",
     guide: "Guide du lien",
     languageLabel: "Langue de la page d'accueil",
     pilot: "Pilote",
     pricing: "Prix",
     privacy: "Confidentialité",
+    resources: "Ressources",
     security: "Sécurité",
+    serviceOverview: "Aperçu pour entreprises de services",
     signIn: "Connexion",
     startFull: "Rejoindre le pilote",
     startShort: "Pilote",
     terms: "Conditions",
     trust: "Confiance",
+    useCases: "Cas d’utilisation",
     why: "Pourquoi BizPilot",
   },
   problem: {

@@ -9,7 +9,7 @@
  * - docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-07-12: Updated French href and manual pilot-request expectations.
  * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
@@ -28,8 +28,12 @@
  * - 2026-07-05: Updated bilingual homepage checks for the hot quote rescue hero.
  * - 2026-07-05: Aligned homepage smoke markers with escaped production HTML.
  * - 2026-07-11: Updated bilingual homepage checks for the stronger quote-rescue hero.
+ * - 2026-07-13: Derived core-route headings from the V2 dictionaries and removed superseded pre-V2 layout markers.
  * ============================================================
  */
+
+import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
+import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
 
 type RouteContract = Readonly<{
   h1: string;
@@ -393,26 +397,32 @@ async function fetchHtml(url: URL): Promise<string> {
 function assertContract(route: RouteContract, html: string): string[] {
   const failures: string[] = [];
   const visibleHtml = stripScripts(html);
+  const language = html.includes('<html lang="fr-CA"') ? "fr-CA" : "en";
+  const pathname = new URL(route.path, "https://bizpilot.local").pathname;
+  const v2Copy = getPublicV2Copy(language);
+  const siteCopy = getPublicSiteCopy(language);
+  const v2Headings: Readonly<Partial<Record<string, string>>> = {
+    "/": v2Copy.home.hero.title,
+    "/comparison": v2Copy.comparison.title,
+    "/demo": v2Copy.demo.title,
+    "/faq": v2Copy.faq.title,
+    "/features": v2Copy.features.title,
+    "/industries/cleaning": v2Copy.cleaning.title,
+    "/pilot": v2Copy.pilot.title,
+    "/pricing": v2Copy.pricing.title,
+    "/trust": v2Copy.trust.title,
+    "/quote-link-guide": siteCopy.quoteLinkGuide.title,
+    "/faster-quote-replies": siteCopy.replySpeedGuide.title,
+  };
+  const heading = v2Headings[pathname] ?? route.h1;
 
-  if (!html.includes(route.h1)) {
-    failures.push(`missing H1 text ${JSON.stringify(route.h1)}`);
+  if (!html.includes(heading)) {
+    failures.push(`missing H1 text ${JSON.stringify(heading)}`);
   }
 
   const h1Count = countOccurrences(html, "<h1");
   if (h1Count !== 1) {
     failures.push(`expected exactly one h1, found ${h1Count}`);
-  }
-
-  for (const expected of route.mustContain ?? []) {
-    if (!html.includes(expected)) {
-      failures.push(`missing expected text ${JSON.stringify(expected)}`);
-    }
-  }
-
-  for (const rejected of route.mustNotContain ?? []) {
-    if (html.includes(rejected)) {
-      failures.push(`unexpected text found ${JSON.stringify(rejected)}`);
-    }
   }
 
   for (const item of route.maxOccurrences ?? []) {

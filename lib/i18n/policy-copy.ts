@@ -11,7 +11,7 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-06-16: Updated public trust copy to reflect Phase 23/24 synthetic proof and remaining real-data gates.
  * - 2026-06-18: Reframed public policy copy around owner-friendly summaries and approved staged pilot pricing.
@@ -19,6 +19,7 @@
  * - 2026-06-21: Polished final public privacy, security, and terms wording.
  * - 2026-06-25: Polished fr-CA terms wording around project-pilot terminology.
  * - 2026-07-04: Added local-only authenticated dashboard QA boundary to security copy.
+ * - 2026-07-13: Generalized privacy and product-scope definitions while preserving cleaning-first pilot terms.
  * ============================================================
  */
 
@@ -69,7 +70,7 @@ const englishPolicyCopy: PolicyCopy = {
   privacy: {
     badge: "Privacy notice",
     boundaryBody:
-      "BizPilot keeps communication in the business's hands and collects only the details needed to answer a cleaning quote request.",
+      "BizPilot keeps communication in the business's hands and collects only the details needed to understand and answer a customer service request.",
     boundaryTitle: "Plain-language summary",
     body:
       "This notice explains the practical privacy rules for BizPilot quote recovery: collect less, show consent, and keep customer communication under business control.",
@@ -79,7 +80,7 @@ const englishPolicyCopy: PolicyCopy = {
       "Before any real customer pilot, BizPilot stays manual-only and requires explicit pilot approval.",
     meta: {
       description:
-        "BizPilot AI privacy notice for careful cleaning quote recovery, consent, data minimization, and business-controlled customer communication.",
+        "BizPilot AI privacy notice for careful customer-intake workflows, consent, data minimization, and business-controlled communication.",
       title: "Privacy Notice | BizPilot AI",
     },
     references: [
@@ -101,12 +102,12 @@ const englishPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot is for cleaning quote recovery: quote-page submissions, lead details, business notes, AI-assisted summaries, manual reply drafts, and follow-up status. It is not for payment cards, government IDs, health data, or unrelated sensitive records.",
+          "BizPilot is for service-business customer intake: request submissions, lead details, business notes, AI-assisted summaries, manual reply drafts, and follow-up status. It is not for payment cards, government IDs, health data, or unrelated sensitive records.",
         title: "What BizPilot is designed to collect",
       },
       {
         body:
-          "Collection must stay limited to what a cleaning business needs to understand and answer a quote request: contact details, service type, location, timing, property context, and the customer's message.",
+          "Collection must stay limited to what a service business needs to understand and answer a request: contact details, service type, location, timing, relevant service context, and the customer's message.",
         title: "Data minimization",
       },
       {
@@ -214,7 +215,7 @@ const englishPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot helps cleaning businesses capture quote requests, organize leads, prepare replies the business approves, and keep follow-up visible. It is not an auto-send tool, booking system, invoice system, SMS/WhatsApp sender, or full CRM.",
+          "BizPilot helps local service businesses capture customer requests, organize leads, prepare replies the business approves, and keep follow-up visible. It is not an auto-send tool, booking system, invoice system, SMS/WhatsApp sender, or full CRM. The current founder pilot remains cleaning-first.",
         title: "Product scope",
       },
       {
@@ -257,7 +258,7 @@ const frenchPolicyCopy: PolicyCopy = {
       "Avant toute utilisation avec de vraies données clients, BizPilot reste manuel et exige une approbation explicite du projet pilote.",
     meta: {
       description:
-        "Avis de confidentialité BizPilot AI pour la récupération prudente des soumissions de nettoyage, le consentement, la minimisation des données et le contrôle des messages par l'entreprise.",
+        "Avis de confidentialité BizPilot AI pour la collecte prudente des demandes client, le consentement, la minimisation des données et le contrôle des messages par l’entreprise.",
       title: "Avis de confidentialité | BizPilot AI",
     },
     references: [
@@ -284,7 +285,7 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "La collecte doit rester limitée à ce qu'une entreprise de nettoyage doit savoir pour répondre : contact, type de service, lieu, moment, contexte de propriété et message du client.",
+          "La collecte doit rester limitée à ce qu’une entreprise de services doit savoir pour répondre : contact, type de service, lieu, moment, contexte pertinent et message du client.",
         title: "Minimisation des données",
       },
       {
@@ -392,7 +393,7 @@ const frenchPolicyCopy: PolicyCopy = {
     sections: [
       {
         body:
-          "BizPilot aide les entreprises de nettoyage à capter les demandes, organiser les prospects, préparer des réponses à valider et garder les suivis visibles. Ce n'est pas un outil d'envoi automatique, réservation, facturation, SMS/WhatsApp ou CRM complet.",
+          "BizPilot aide les entreprises de services locales à capter les demandes client, organiser les prospects, préparer des réponses à valider et garder les suivis visibles. Ce n’est pas un outil d’envoi automatique, de réservation, de facturation, d’envoi SMS/WhatsApp ni un CRM complet. Le pilote fondateur actuel reste axé sur l’entretien.",
         title: "Portée produit",
       },
       {

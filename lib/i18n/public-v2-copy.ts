@@ -11,6 +11,8 @@
  * Author: MoOoH
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Added localized labels for the final grouped public navigation.
  * ============================================================
  */
 
@@ -172,17 +174,22 @@ const englishNav: HomeNavCopy = {
   faq: "FAQ",
   features: "Product",
   flow: "How it works",
+  fasterReplies: "Faster replies guide",
+  futureTemplates: "Future templates — Roadmap",
   guide: "Intake link guide",
   languageLabel: "Website language",
   pilot: "Pilot",
   pricing: "Pricing",
   privacy: "Privacy",
+  resources: "Resources",
   security: "Security",
+  serviceOverview: "Service-business overview",
   signIn: "Sign in",
   startFull: "Apply for the founder pilot",
   startShort: "Apply for pilot",
   terms: "Terms",
   trust: "Trust",
+  useCases: "Use cases",
   why: "Why BizPilot",
 };
 
@@ -195,17 +202,22 @@ const frenchNav: HomeNavCopy = {
   faq: "FAQ",
   features: "Produit",
   flow: "Fonctionnement",
+  fasterReplies: "Guide des réponses rapides",
+  futureTemplates: "Futurs modèles — Feuille de route",
   guide: "Guide du lien de demande",
   languageLabel: "Langue du site",
   pilot: "Pilote",
   pricing: "Tarifs",
   privacy: "Confidentialite",
+  resources: "Ressources",
   security: "Securite",
+  serviceOverview: "Aperçu pour entreprises de services",
   signIn: "Connexion",
   startFull: "Demander l'acces au pilote fondateur",
   startShort: "Demander l'acces",
   terms: "Conditions",
   trust: "Confiance",
+  useCases: "Cas d’utilisation",
   why: "Pourquoi BizPilot",
 };
 
@@ -280,14 +292,14 @@ const englishCopy: PublicV2Copy = {
     meta: {
       title: "Smart Customer Intake and Reply Workspace | BizPilot AI",
       description:
-        "BizPilot helps service businesses collect customer requests through one smart link, organize missing details, and prepare owner-reviewed AI reply drafts, starting with cleaning businesses.",
+        "BizPilot helps local service businesses collect customer requests through one smart link, organize missing details, and prepare AI-assisted reply drafts for owner review.",
     },
     nav: englishNav,
     hero: {
       badge: "Smart customer intake + owner-reviewed replies",
       title: "Turn scattered customer requests into clear, ready-to-review replies.",
       body:
-        "BizPilot gives service businesses one smart intake link, organizes every request, shows what is missing, and prepares an AI-assisted reply for the owner to review and send — starting with cleaning businesses.",
+        "BizPilot gives local service businesses one smart intake link, organizes every request, shows what is missing, and prepares an AI-assisted reply for the owner to review and send manually.",
       primaryCta: "See the cleaning workflow",
       secondaryCta: "Apply for the founder pilot",
       note:
@@ -959,7 +971,11 @@ const englishCopy: PublicV2Copy = {
   },
 };
 
-const frenchCopy: PublicV2Copy = {
+/**
+ * @deprecated Structural migration snapshot only. Runtime fr-CA copy is owned
+ * exclusively by `buildPublicV2FrenchCopy` in `public-v2-fr-copy.ts`.
+ */
+const legacyFrenchCopyShape: PublicV2Copy = {
   home: {
     meta: {
       title: "Espace intelligent de demandes client et de reponses | BizPilot AI",
@@ -1221,7 +1237,7 @@ export const PUBLIC_V2_SOURCE_LANGUAGE = DEFAULT_LANGUAGE;
 
 export function getPublicV2Copy(language: unknown): PublicV2Copy {
   return readSupportedLanguage(language) === "fr-CA"
-    ? buildPublicV2FrenchCopy(frenchCopy)
+    ? buildPublicV2FrenchCopy(legacyFrenchCopyShape)
     : englishCopy;
 }
 

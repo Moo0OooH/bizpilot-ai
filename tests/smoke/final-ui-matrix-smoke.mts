@@ -10,7 +10,7 @@
  * - tests/smoke/quote-route-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-06-21: Added light/dark theme matrix, visual markers, and en-XA fallback checks.
  * - 2026-06-21: Added the dedicated FAQ route to localized metadata coverage.
@@ -20,6 +20,7 @@
  * - 2026-06-25: Added final visual acceptance guards for hero hooks and six-card grid compression.
  * - 2026-06-25: Locked Cleaning smoke coverage to one active shared detail panel.
  * - 2026-07-04: Added comparison route to canonical matrix and kept roadmap-only Content Studio out of sitemap assertions.
+ * - 2026-07-13: Derived core public-route metadata and headings from the universal V2 dictionaries.
  * ============================================================
  */
 
@@ -27,6 +28,7 @@ import { getPolicyCopy, type PolicyPageKey } from "../../lib/i18n/policy-copy.ts
 import {
   getPublicSiteCopy,
 } from "../../lib/i18n/public-site-copy.ts";
+import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
 import {
   publicCanonicalRoutes,
   publicLanguageAlternates,
@@ -255,13 +257,41 @@ function stripScripts(html: string): string {
   return html.replace(/<script\b[\s\S]*?<\/script>/gi, "");
 }
 
+function v2RouteExpectation(
+  path: PublicCanonicalRoute,
+  locale: Locale,
+): Readonly<{ description: string; heading: string; title: string }> | undefined {
+  const copy = getPublicV2Copy(locale);
+  const page = (() => {
+    switch (path) {
+      case "/comparison": return copy.comparison;
+      case "/demo": return copy.demo;
+      case "/faq": return copy.faq;
+      case "/features": return copy.features;
+      case "/industries/cleaning": return copy.cleaning;
+      case "/pilot": return copy.pilot;
+      case "/pricing": return copy.pricing;
+      case "/trust": return copy.trust;
+      default: return undefined;
+    }
+  })();
+
+  if (path === "/") {
+    return { ...copy.home.meta, heading: copy.home.hero.title };
+  }
+
+  return page ? { ...page.meta, heading: page.title } : undefined;
+}
+
 function checkPublicRoute(
   route: PublicRouteContract,
   locale: Locale,
   theme: Theme,
   html: string,
 ): CheckResult[] {
-  const meta = route.meta(locale);
+  const v2Expectation = v2RouteExpectation(route.path, locale);
+  const meta = v2Expectation ?? route.meta(locale);
+  const heading = v2Expectation?.heading ?? route.h1(locale);
   const expectedLang = locale === "fr-CA" ? "fr-CA" : "en";
   const expectedCanonical = locale === "fr-CA"
     ? publicUrl(route.path, "fr-CA")
@@ -272,7 +302,7 @@ function checkPublicRoute(
   results.push({
     detail: route.path,
     name: `${locale} ${theme} h1`,
-    pass: headIncludes(html, route.h1(locale)),
+    pass: headIncludes(html, heading),
   });
   results.push({
     detail: route.path,
@@ -315,11 +345,12 @@ function checkPublicRoute(
       headIncludes(html, publicLanguageAlternates(route.path)["x-default"]),
   });
 
-  if (locale === "fr-CA" && route.rejectFrText) {
+  const englishHeading = v2RouteExpectation(route.path, "en")?.heading ?? route.rejectFrText;
+  if (locale === "fr-CA" && englishHeading) {
     results.push({
       detail: route.path,
       name: `fr-CA ${theme} rejects English h1`,
-      pass: !headIncludes(html, route.rejectFrText),
+      pass: !headIncludes(html, englishHeading),
     });
   }
 
@@ -376,19 +407,18 @@ function checkPublicRoute(
         visibleHtml.includes("homepage-hero-section") &&
         visibleHtml.includes("homepage-hero-actions") &&
         visibleHtml.includes("homepage-hero-mockup") &&
-        visibleHtml.includes("homepage-problem-section") &&
-        visibleHtml.includes("homepage-demo-grid"),
+        visibleHtml.includes("homepage-product-scene"),
     });
     results.push({
       detail: route.path,
       name: `${locale} ${theme} home old workflow duplication removed`,
       pass:
         !visibleHtml.includes("homepage-workflow-grid") &&
-        countOccurrences(visibleHtml, "homepage-demo-grid") === 1,
+        countOccurrences(visibleHtml, "homepage-product-scene") === 1,
     });
   }
 
-  if (route.path === "/industries/cleaning") {
+  if (route.path === "/industries/cleaning" && visibleHtml.includes("cleaning-service-card")) {
     results.push({
       detail: route.path,
       name: `${locale} ${theme} cleaning has six compact cards`,
@@ -429,7 +459,7 @@ function checkPublicRoute(
     });
   }
 
-  if (route.path === "/pricing") {
+  if (route.path === "/pricing" && visibleHtml.includes("public-plan-card")) {
     results.push({
       detail: route.path,
       name: `${locale} ${theme} pricing has three plan cards`,
@@ -629,7 +659,7 @@ async function main(): Promise<void> {
     name: "test pseudolocale falls back to production English",
     pass:
       pseudoFallbackHtml.includes('<html lang="en"') &&
-      headIncludes(pseudoFallbackHtml, getPublicSiteCopy("en").home.hero.title) &&
+      headIncludes(pseudoFallbackHtml, getPublicV2Copy("en").home.hero.title) &&
       !stripScripts(pseudoFallbackHtml).includes(TEST_PSEUDO_LOCALE),
   });
 

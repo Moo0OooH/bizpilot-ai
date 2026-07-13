@@ -10,7 +10,7 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-07-12: Routed shared public navigation and CTA hrefs through the locale-preserving helper.
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
@@ -29,6 +29,7 @@
  * - 2026-07-05: Allowed the desktop brand subtitle to wrap for longer localized copy.
  * - 2026-07-11: Added a research-backed public page hero primitive for bilingual first-fold pitch/proof structure.
  * - 2026-07-11: Added product-board chrome to public page hero visuals for clearer first-fold hierarchy.
+ * - 2026-07-13: Grouped public navigation into Product, How it works, Use cases, Pricing, Trust, and Resources.
  * ============================================================
  */
 
@@ -103,17 +104,22 @@ const defaultMarketingNavCopy: HomeNavCopy = {
   faq: "FAQ",
   features: "Product",
   flow: "How it works",
+  fasterReplies: "Faster replies guide",
+  futureTemplates: "Future templates — Roadmap",
   guide: "Intake link guide",
   languageLabel: "Website language",
   pilot: "Pilot",
   pricing: "Pricing",
   privacy: "Privacy",
+  resources: "Resources",
   security: "Security",
+  serviceOverview: "Service-business overview",
   signIn: "Sign in",
   startFull: "Apply for the founder pilot",
   startShort: "Apply for pilot",
   terms: "Terms",
   trust: "Trust",
+  useCases: "Use cases",
   why: "Why BizPilot",
 };
 
@@ -759,22 +765,42 @@ export function MarketingHeader({
   language?: SupportedLanguage | undefined;
   redirectPath?: string;
 }>) {
-  const navItems: ReadonlyArray<
-    Readonly<{ href: string; key: Exclude<MarketingNavKey, "home">; label: string }>
-  > = [
+  type HeaderLink = Readonly<{
+    href: string;
+    key?: MarketingNavKey;
+    label: string;
+  }>;
+  type HeaderGroup = Readonly<{ items: readonly HeaderLink[]; label: string }>;
+
+  const directItems: readonly HeaderLink[] = [
     { href: "/features", key: "features", label: copy.features },
-    { href: "/industries/cleaning", key: "cleaning", label: copy.cleaning },
-    { href: "/comparison", key: "comparison", label: copy.comparison },
-    { href: "/trust", key: "trust", label: copy.trust },
-    { href: "/demo", key: "demo", label: copy.demo },
+    { href: "/#how-it-works", label: copy.flow },
     { href: "/pricing", key: "pricing", label: copy.pricing },
-    { href: "/pilot", key: "pilot", label: copy.pilot },
+    { href: "/trust", key: "trust", label: copy.trust },
+  ];
+  const navGroups: readonly HeaderGroup[] = [
+    {
+      items: [
+        { href: "/demo", key: "demo", label: copy.cleaning },
+        { href: "/#use-cases", label: copy.serviceOverview },
+        { href: "/#use-cases", label: copy.futureTemplates },
+      ],
+      label: copy.useCases,
+    },
+    {
+      items: [
+        { href: "/faq", label: copy.faq },
+        { href: "/quote-link-guide", label: copy.guide },
+        { href: "/faster-quote-replies", label: copy.fasterReplies },
+        { href: "/comparison", key: "comparison", label: copy.comparison },
+      ],
+      label: copy.resources,
+    },
   ];
 
   const currentPath = redirectPath.split(/[?#]/)[0] || "/";
-  const isActiveItem = (
-    item: Readonly<{ href: string; key: Exclude<MarketingNavKey, "home"> }>,
-  ) => active === item.key || currentPath === item.href;
+  const isActiveItem = (item: HeaderLink) =>
+    (item.key ? active === item.key : false) || currentPath === item.href.split("#")[0];
   const renderLanguageMenu = (compact = false) =>
     language ? (
       <MarketingLanguageMenu
@@ -794,7 +820,7 @@ export function MarketingHeader({
       <nav className="bp-container public-container flex min-h-[64px] items-center justify-between gap-3 py-2 min-[1240px]:min-h-[76px]">
         <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
         <div className="hidden items-center gap-1 min-[1240px]:flex">
-          {navItems.map((item) => {
+          {directItems.slice(0, 2).map((item) => {
             const selected = isActiveItem(item);
 
             return (
@@ -807,6 +833,58 @@ export function MarketingHeader({
                   backgroundColor: selected
                     ? "var(--surface-interactive)"
                     : "transparent",
+                  color: selected ? marketingTone.text : marketingTone.soft,
+                }}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
+          {navGroups.map((group) => {
+            const selected = group.items.some(isActiveItem);
+
+            return (
+              <details className="group relative" key={group.label}>
+                <summary
+                  className="bp-copy-nav inline-flex min-h-11 cursor-pointer list-none items-center gap-1 rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                  style={{
+                    backgroundColor: selected ? "var(--surface-interactive)" : "transparent",
+                    color: selected ? marketingTone.text : marketingTone.soft,
+                  }}
+                >
+                  {group.label}
+                  <span aria-hidden className="text-[10px]">▾</span>
+                </summary>
+                <div
+                  className="absolute left-0 top-full z-50 mt-2 grid min-w-[16rem] gap-1 rounded-[16px] border p-2 shadow-xl"
+                  style={{ backgroundColor: "var(--surface)", borderColor: marketingTone.borderStrong }}
+                >
+                  {group.items.map((item) => (
+                    <Link
+                      aria-current={isActiveItem(item) ? "page" : undefined}
+                      className="bp-copy-nav min-h-11 rounded-[10px] px-3 py-3 text-[13px] font-bold hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                      href={publicHref(item.href, language)}
+                      key={`${group.label}-${item.label}`}
+                      style={{ color: marketingTone.text }}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </details>
+            );
+          })}
+          {directItems.slice(2).map((item) => {
+            const selected = isActiveItem(item);
+
+            return (
+              <Link
+                aria-current={selected ? "page" : undefined}
+                className="bp-copy-nav inline-flex min-h-11 items-center rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                href={publicHref(item.href, language)}
+                key={item.href}
+                style={{
+                  backgroundColor: selected ? "var(--surface-interactive)" : "transparent",
                   color: selected ? marketingTone.text : marketingTone.soft,
                 }}
               >
@@ -832,7 +910,7 @@ export function MarketingHeader({
         <div className="flex shrink-0 items-center gap-2 min-[1240px]:hidden">
           <MarketingCompactMenu>
             <div className="grid gap-1">
-              {navItems.map((item) => {
+              {directItems.map((item) => {
                 const selected = isActiveItem(item);
 
                 return (
@@ -852,6 +930,24 @@ export function MarketingHeader({
                   </Link>
                 );
               })}
+              {navGroups.map((group) => (
+                <div className="mt-2 grid gap-1 border-t pt-3" key={group.label} style={{ borderColor: marketingTone.border }}>
+                  <p className="px-3 text-[11px] font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.muted }}>
+                    {group.label}
+                  </p>
+                  {group.items.map((item) => (
+                    <Link
+                      aria-current={isActiveItem(item) ? "page" : undefined}
+                      className="bp-copy-nav min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                      href={publicHref(item.href, language)}
+                      key={`${group.label}-${item.label}`}
+                      style={{ color: marketingTone.text }}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              ))}
             </div>
             <div className="grid gap-3 border-t pt-3" style={{ borderColor: marketingTone.border }}>
               {renderLanguageMenu(true)}
@@ -878,33 +974,50 @@ export function MarketingFooter({
   copy = defaultMarketingNavCopy,
   language,
 }: Readonly<{ copy?: HomeNavCopy; language?: SupportedLanguage | undefined }>) {
-  const links: ReadonlyArray<Readonly<{ href: string; label: string }>> = [
-    { href: "/features", label: copy.features },
-    { href: "/industries/cleaning", label: copy.cleaning },
-    { href: "/comparison", label: copy.comparison },
-    { href: "/quote-link-guide", label: copy.guide },
-    { href: "/trust", label: copy.trust },
-    { href: "/demo", label: copy.demo },
-    { href: "/pricing", label: copy.pricing },
-    { href: "/pilot", label: copy.pilot },
-    { href: "/faq", label: copy.faq },
-    { href: "/privacy", label: copy.privacy },
-    { href: "/security", label: copy.security },
-    { href: "/terms", label: copy.terms },
+  const groups: ReadonlyArray<Readonly<{ label: string; links: ReadonlyArray<Readonly<{ href: string; label: string }>> }>> = [
+    { label: copy.features, links: [
+      { href: "/features", label: copy.features },
+      { href: "/#how-it-works", label: copy.flow },
+      { href: "/pricing", label: copy.pricing },
+      { href: "/trust", label: copy.trust },
+    ] },
+    { label: copy.useCases, links: [
+      { href: "/demo", label: copy.cleaning },
+      { href: "/#use-cases", label: copy.serviceOverview },
+      { href: "/#use-cases", label: copy.futureTemplates },
+      { href: "/pilot", label: copy.pilot },
+    ] },
+    { label: copy.resources, links: [
+      { href: "/faq", label: copy.faq },
+      { href: "/quote-link-guide", label: copy.guide },
+      { href: "/faster-quote-replies", label: copy.fasterReplies },
+      { href: "/comparison", label: copy.comparison },
+    ] },
+    { label: copy.trust, links: [
+      { href: "/privacy", label: copy.privacy },
+      { href: "/security", label: copy.security },
+      { href: "/terms", label: copy.terms },
+      { href: "/auth/sign-in", label: copy.signIn },
+    ] },
   ];
 
   return (
     <footer className="border-t px-5 py-10 sm:px-8 lg:px-10" style={{ borderColor: marketingTone.border }}>
-      <div className="bp-container-wide mx-auto flex w-full max-w-[1200px] flex-col gap-6 text-[12px] md:flex-row md:items-center md:justify-between">
+      <div className="bp-container-wide mx-auto grid w-full max-w-[1200px] gap-8 text-[12px] lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)]">
         <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-2" style={{ color: marketingTone.soft }}>
-          {links.map((link) => (
-            <Link className="inline-flex min-h-11 items-center rounded-[8px] py-1 hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]" href={publicHref(link.href, language)} key={link.href}>
-              {link.label}
-            </Link>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ color: marketingTone.soft }}>
+          {groups.map((group) => (
+            <div className="grid content-start gap-1" key={group.label}>
+              <p className="mb-1 font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.text }}>{group.label}</p>
+              {group.links.map((link) => (
+                <Link className="inline-flex min-h-11 items-center rounded-[8px] py-1 hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]" href={publicHref(link.href, language)} key={`${group.label}-${link.label}`}>
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           ))}
         </div>
-        <span style={{ color: marketingTone.muted }}>
+        <span className="lg:col-span-2" style={{ color: marketingTone.muted }}>
           {copy.copyright}
         </span>
       </div>

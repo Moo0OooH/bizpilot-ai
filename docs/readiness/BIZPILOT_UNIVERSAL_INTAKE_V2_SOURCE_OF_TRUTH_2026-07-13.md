@@ -1,9 +1,9 @@
 # BizPilot Universal Intake V2 — Source of Truth
 
-**Date:** 2026-07-13  
-**Status:** Implementation complete on review branch; production release remains owner-gated  
-**Repository:** `Moo0OooH/bizpilot-ai`  
-**Branch:** `agent/universal-customer-intake-v2`  
+**Date:** 2026-07-13
+**Status:** Implementation complete on review branch; production release remains owner-gated
+**Repository:** `Moo0OooH/bizpilot-ai`
+**Branch:** `agent/universal-customer-intake-v2`
 **Pull request:** Draft PR #2
 
 ---

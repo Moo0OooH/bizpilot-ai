@@ -10,13 +10,14 @@
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-07-04: Passed the selected public quote language into intake reads and submit validation.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-06: Created Phase 4 public intake service.
  * - 2026-05-07: Added server-side non-negative validation for numeric quote fields.
  * - 2026-05-08: Added server-side validation to reject past date fields.
+ * - 2026-07-13: Isolated public intake from stale authenticated cookies with the anonymous server client.
  * ============================================================
  */
 
@@ -24,7 +25,7 @@ import "server-only";
 
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabasePublicServerClient } from "@/lib/supabase/server";
 import {
   enforceSubmissionRateLimit,
   recordPublicSubmissionAttempt,
@@ -223,7 +224,7 @@ export async function getPublicIntakePage(input: {
   language?: SupportedLanguage;
   slug: string;
 }): Promise<PublicIntakePageRecord | null> {
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabasePublicServerClient();
 
   return getPublicIntakePageBySlug({
     language: input.language,
@@ -235,7 +236,7 @@ export async function getPublicIntakePage(input: {
 export async function submitPublicIntake(
   input: PublicIntakeSubmissionInput,
 ): Promise<void> {
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabasePublicServerClient();
   const page = requirePublicPage(
     await getPublicIntakePageBySlug({
       language: input.language,

@@ -9,7 +9,7 @@
  * - docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
  * - 2026-07-04: Added comparison route smoke coverage.
@@ -21,6 +21,7 @@
  * - 2026-07-11: Updated homepage smoke markers for the stronger quote-rescue hero.
  * - 2026-07-11: Added all primary public marketing pages to route smoke coverage.
  * - 2026-07-12: Added fr-CA route and internal-link persistence smoke coverage.
+ * - 2026-07-13: Replaced legacy cleaning-only route markers with the universal V2 product truth.
  * ============================================================
  */
 
@@ -45,55 +46,48 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 const smokeTargets: readonly SmokeTarget[] = [
   {
     expectedText: [
-      "Turn missed quote requests into ready replies.",
-      "Join the pilot",
-      "47-minute response gap",
-      "Move-out quote is getting cold",
-      "Review &amp; copy",
+      "Turn scattered customer requests into clear, ready-to-review replies.",
+      "Smart intake link",
+      "Send manually",
     ],
     path: "/",
     status: 200,
   },
   {
     expectedText: [
-      "Questions cleaning business owners ask before joining.",
-      "Pilot basics",
+      "Know exactly what BizPilot does today",
+      "Roadmap",
     ],
     path: "/faq",
     status: 200,
   },
   {
     expectedText: [
-      "A simple system to manage cleaning quote requests faster.",
-      "From quote link to reply ready to send.",
-      "Review, copy, and send manually.",
+      "Everything needed to turn a vague request into a clear next reply.",
+      "One smart intake link",
     ],
     path: "/features",
     status: 200,
   },
   {
     expectedText: [
-      "Lead recovery software for cleaning businesses.",
-      "From vague request to clear next reply.",
-      "Move-in / move-out",
-      "Post-construction cleaning",
+      "A smart customer-intake workflow built around real cleaning quote questions.",
     ],
     path: "/industries/cleaning",
     status: 200,
   },
   {
     expectedText: [
-      "BizPilot vs CRMs, forms, and booking tools.",
-      "Full CRM",
-      "Form builder",
-      "The boundary matters.",
+      "Use BizPilot for the intake-and-response gap",
+      "Before CRM",
+      "Booking software",
     ],
     path: "/comparison",
     status: 200,
   },
   {
     expectedText: [
-      "Where to put your cleaning quote link.",
+      "Where to put your customer intake link.",
       "Google Business Profile",
       "Tracked link patterns",
       "Do not turn a quote request into a fake booking.",
@@ -103,7 +97,7 @@ const smokeTargets: readonly SmokeTarget[] = [
   },
   {
     expectedText: [
-      "Faster cleaning quote replies without auto-send.",
+      "Faster customer replies without auto-send.",
       "reply-speed-board",
       "A four-week reply-speed content plan.",
       "No automatic customer email",
@@ -114,20 +108,14 @@ const smokeTargets: readonly SmokeTarget[] = [
   },
   {
     expectedText: [
-      "Cleaning quote recovery demo.",
-      "demo-owner-workspace",
-      "Static owner-view demo",
-      "Reply draft for owner review",
-      "No booking confirmed",
+      "See one customer request become a safe, reviewable next reply.",
     ],
     path: "/demo",
     status: 200,
   },
   {
     expectedText: [
-      "Built for business control and trust.",
-      "No auto-send",
-      "Manual communication during the pilot",
+      "The safest claim is the one the product can prove today.",
     ],
     path: "/trust",
     status: 200,
@@ -139,8 +127,7 @@ const smokeTargets: readonly SmokeTarget[] = [
   },
   {
     expectedText: [
-      "Help shape BizPilot around real cleaning work.",
-      "What the pilot will measure",
+      "Validate one customer-intake workflow before expanding the product.",
       "Send a clear founder-pilot request when you are ready.",
     ],
     path: "/pilot",

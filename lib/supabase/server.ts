@@ -9,7 +9,7 @@
  * - lib/supabase/client.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-06-17
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created server Supabase config placeholder and added standard header.
@@ -17,6 +17,7 @@
  * - 2026-05-04: Added official Supabase SSR and service-role client factories.
  * - 2026-05-26: Added an explicit server user agent for service-role Auth Admin calls.
  * - 2026-06-17: Prefer Supabase publishable/secret keys with legacy key fallback.
+ * - 2026-07-13: Added a cookie-free anonymous client for public intake reads and submissions.
  * ============================================================
  */
 
@@ -87,6 +88,17 @@ export async function createSupabaseServerClient() {
           // Server Components cannot always set cookies; middleware refreshes sessions.
         }
       },
+    },
+  });
+}
+
+export function createSupabasePublicServerClient() {
+  const config = getSupabaseServerClientConfig();
+
+  return createClient<Database>(config.url, config.anonKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
     },
   });
 }

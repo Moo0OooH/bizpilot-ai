@@ -10,7 +10,7 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-07-12: Clarified the founder-pilot manual email request path in English and French.
  * - 2026-06-19: Added final public EN/fr-CA route copy for Phase 03 localization.
@@ -34,6 +34,7 @@
  * - 2026-07-11: Strengthened the bilingual homepage hero around quote rescue, manual control, and missing details.
  * - 2026-07-11: Refined the homepage hero around ready replies and clearer product-scene proof.
  * - 2026-07-11: Added localized quote-language switch labels for the public quote shell.
+ * - 2026-07-13: Generalized the intake-link and reply-speed guides while retaining cleaning as the current pilot example.
  * ============================================================
  */
 
@@ -853,18 +854,18 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     title: "BizPilot vs CRMs, forms, and booking tools.",
   },
   quoteLinkGuide: {
-    badge: "Quote-link placement",
+    badge: "Smart intake-link placement",
     body:
-      "Use one clean quote request link anywhere a warm cleaning lead already asks for price, scope, or availability. Keep the link honest, direct, and tagged by source so the owner can see where the request came from.",
+      "Use one clear customer-intake link wherever a warm service-business prospect asks about scope, timing, or availability. Keep the link honest, direct, and tagged by source so the owner can see where the request came from.",
     channels: [
       {
         body:
-          "Put the quote request link where visitors already decide whether to contact the cleaning business.",
+          "Put the customer-intake link where visitors already decide whether to contact the business.",
         caution:
           "Do not hide the only quote path in a footer or a long contact paragraph.",
         steps: [
-          "Add a primary Request a cleaning quote button on the home page.",
-          "Repeat it on contact, residential, move-out, office, and deep-cleaning pages.",
+          "Add a primary Request service details button on the home page.",
+          "Repeat it on the contact and relevant service pages.",
           "Send the button to the dedicated quote request page, not to a generic link hub.",
         ],
         tag: "website",
@@ -894,7 +895,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "If the bio already uses multiple links, keep the quote link near the top and label it clearly.",
         steps: [
           "Add the quote request URL in profile links.",
-          "Use a plain label such as Request a cleaning quote.",
+          "Use a plain label such as Share your service request.",
           "Test the link on mobile after saving.",
         ],
         tag: "instagram_bio",
@@ -924,7 +925,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
           "Keep the signature short so the quote link is visible on mobile.",
         steps: [
           "Add one line under the phone number or website.",
-          "Use text like Request a cleaning quote.",
+          "Use text like Share your service request.",
           "Use the same link for every team member until separate owner-approved source tags are needed.",
         ],
         tag: "email_signature",
@@ -943,7 +944,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     checklistTitle: "Before you publish the link",
     guardrail: {
       body:
-        "BizPilot quote pages collect requests for owner review. They do not confirm price, availability, scheduling, payment, or a booked cleaning job.",
+        "BizPilot intake pages collect requests for owner review. They do not confirm price, availability, scheduling, payment, or a booked service.",
       items: [
         "Use website/contact placement first when a platform action label does not match a quote request.",
         "Keep Google Business Profile links crawlable and specific to the business.",
@@ -953,8 +954,8 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     meta: {
       description:
-        "Where cleaning business owners should place a BizPilot quote request link across website, Google Business Profile, Instagram, saved replies, and email signatures.",
-      title: "Cleaning Quote Link Placement Guide | BizPilot AI",
+        "Where service-business owners should place a BizPilot customer-intake link across a website, Google Business Profile, Instagram, saved replies, and email signatures.",
+      title: "Customer Intake Link Placement Guide | BizPilot AI",
     },
     primaryCta: "Join founder pilot",
     references: [
@@ -989,7 +990,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       "Replace clean-team with the actual quote slug after setup. Keep tags simple and use one placement source per link.",
     templateTitle: "Tracked link patterns",
     templateUrlLabel: "Example link",
-    title: "Where to put your cleaning quote link.",
+    title: "Where to put your customer intake link.",
   },
   replySpeedGuide: {
     badge: "Reply-speed guide",
@@ -1004,7 +1005,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       title: "Turn a vague request into a safer manual reply.",
     },
     body:
-      "Cleaning quote speed is not about sending anything automatically. It is about capturing the request cleanly, seeing what is missing, preparing a careful draft, and making the owner's next manual action obvious.",
+      "Faster service replies are not about sending anything automatically. They start with a clear request, visible missing information, a careful draft, and an obvious next manual action for the owner.",
     calendar: [
       {
         actions: [
@@ -1019,7 +1020,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       },
       {
         actions: [
-          "Write saved replies for price, move-out, deep clean, and recurring requests.",
+          "Write saved replies for common service questions and request types.",
           "Keep each reply clear that a person will review the request.",
           "Remove any wording that sounds like a confirmed booking.",
         ],
@@ -1030,7 +1031,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       },
       {
         actions: [
-          "Add service-specific context for move-out, office, and deep cleaning.",
+          "Add the service-specific context needed to review a request responsibly.",
           "Ask for photos only when they help quote safely.",
           "Keep forms short enough for mobile customers.",
         ],
@@ -1052,7 +1053,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
       },
     ],
     calendarBody:
-      "This is a lean content and operations calendar for a cleaning owner, not a promise that BizPilot sends messages or guarantees more bookings.",
+      "This is a lean content and operations calendar for a service-business owner, not a promise that BizPilot sends messages or guarantees more bookings.",
     calendarTitle: "A four-week reply-speed content plan.",
     checklist: [
       "Know the service type before quoting.",
@@ -1075,12 +1076,12 @@ const englishPublicSiteCopy: PublicSiteCopy = {
     },
     meta: {
       description:
-        "A practical guide for cleaning businesses to reply to quote requests faster with safer intake, drafts for owner review, and no automatic sending.",
-      title: "Faster Cleaning Quote Replies Guide | BizPilot AI",
+        "A practical guide for service businesses to reply to customer requests faster with safer intake, drafts for owner review, and no automatic sending.",
+      title: "Faster Customer Replies Guide | BizPilot AI",
     },
     primaryCta: "See quote link guide",
     secondaryCta: "Join founder pilot",
-    title: "Faster cleaning quote replies without auto-send.",
+    title: "Faster customer replies without auto-send.",
     workflow: [
       {
         body:
@@ -1112,7 +1113,7 @@ const englishPublicSiteCopy: PublicSiteCopy = {
   contentStudio: {
     badge: "Roadmap",
     body:
-      "This page is roadmap only. BizPilot may later help local businesses prepare marketing content for approval after the cleaning lead recovery workflow is validated.",
+      "This page is roadmap only. BizPilot may later help local businesses prepare marketing content for approval after the customer-intake workflow is validated.",
     cards: [
       {
         body: "Future drafts for explaining cleaning services clearly.",
@@ -2331,19 +2332,19 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     title: "BizPilot vs CRM, formulaires et réservations.",
   },
   quoteLinkGuide: {
-    badge: "Placement du lien",
+    badge: "Placement du lien intelligent",
     body:
-      "Utilisez un seul lien clair de demande de soumission partout où un prospect chaud demande déjà un prix, une portée ou une disponibilité. Le lien doit rester honnête, direct et étiqueté par source afin que le propriétaire voie d'où vient la demande.",
+      "Utilisez un seul lien intelligent partout où un prospect d’une entreprise de services demande déjà une portée, un délai ou une disponibilité. Le lien doit rester honnête, direct et étiqueté par source afin que le propriétaire voie d’où vient la demande.",
     channels: [
       {
         body:
-          "Placez le lien la ou les visiteurs decident deja s'ils vont contacter l'entreprise de nettoyage.",
+          "Placez le lien là où les visiteurs décident déjà s’ils vont contacter l’entreprise.",
         caution:
           "Ne cachez pas le seul chemin de soumission dans un pied de page ou un long paragraphe de contact.",
         steps: [
-          "Ajoutez un bouton principal Demander une soumission de nettoyage sur la page d'accueil.",
-          "Repetez-le sur les pages contact, residentiel, demenagement, bureaux et grand menage.",
-          "Envoyez le bouton vers la page dediee de demande de soumission, pas vers un hub generique.",
+          "Ajoutez un bouton principal Partager une demande de service sur la page d’accueil.",
+          "Répétez-le sur les pages de contact et de services pertinentes.",
+          "Envoyez le bouton vers la page dédiée de demande de soumission, pas vers un répertoire générique de liens.",
         ],
         tag: "website",
         template:
@@ -2352,12 +2353,12 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Utilisez le site web ou le chemin de contact du profil pour une demande de soumission claire. Utilisez les liens d'action seulement quand l'action choisie correspond vraiment a ce que la page permet de faire.",
+          "Utilisez le site Web ou le chemin de contact du profil pour une demande claire. Utilisez les liens d’action seulement quand l’action choisie correspond vraiment à ce que la page permet de faire.",
         caution:
-          "Ne presentez pas une demande de soumission comme une reservation confirmee. Les liens d'entreprise Google peuvent etre refuses si la page ne complete pas l'action choisie.",
+          "Ne présentez pas une demande comme une réservation confirmée. Les liens d’entreprise Google peuvent être refusés si la page ne complète pas l’action choisie.",
         steps: [
-          "Utilisez un profil d'entreprise verifie et gardez le nom, la zone de service, le site web et le telephone coherents.",
-          "Utilisez une page dediee pour cette entreprise ou cet emplacement.",
+          "Utilisez un profil d’entreprise vérifié et gardez le nom, la zone de service, le site Web et le téléphone cohérents.",
+          "Utilisez une page dédiée pour cette entreprise ou cet emplacement.",
           "Gardez la page accessible aux robots, en HTTPS, sans raccourcisseur ni connexion obligatoire.",
         ],
         tag: "google_business_profile",
@@ -2369,11 +2370,11 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
         body:
           "Faites pointer le lien du profil directement vers la demande de soumission lorsque Instagram est une vraie source de prospects.",
         caution:
-          "Si la bio contient deja plusieurs liens, gardez le lien de soumission pres du haut avec une etiquette claire.",
+          "Si la bio contient déjà plusieurs liens, gardez le lien de demande près du haut avec une étiquette claire.",
         steps: [
           "Ajoutez l'URL de demande de soumission dans les liens du profil.",
-          "Utilisez une etiquette simple comme Demander une soumission de nettoyage.",
-          "Testez le lien sur mobile apres l'enregistrement.",
+          "Utilisez une étiquette simple comme Partager une demande de service.",
+          "Testez le lien sur mobile après l’enregistrement.",
         ],
         tag: "instagram_bio",
         template:
@@ -2382,28 +2383,28 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         body:
-          "Les reponses enregistrees transforment les DM repetitifs en chemin d'intake plus clair, tout en gardant la reponse manuelle.",
+          "Les réponses enregistrées transforment les messages privés répétitifs en chemin de demande plus clair, tout en gardant la réponse manuelle.",
         caution:
-          "Ne mettez pas le nom, le telephone ou le message du client dans les balises de suivi.",
+          "Ne mettez pas le nom, le téléphone ou le message du client dans les balises de suivi.",
         steps: [
-          "Creez une reponse enregistree pour les demandes de soumission.",
-          "Ajoutez une phrase indiquant que l'entreprise revise chaque demande.",
-          "Collez le lien de soumission suivi apres cette phrase.",
+          "Créez une réponse enregistrée pour les demandes client.",
+          "Ajoutez une phrase indiquant que l’entreprise révise chaque demande.",
+          "Collez le lien de demande suivi après cette phrase.",
         ],
         tag: "saved_reply",
         template:
           "https://bizpilo.com/quote/clean-team?source=saved_reply&utm_source=instagram&utm_medium=saved_reply&utm_campaign=quote_link",
-        title: "Reponses enregistrees et DM",
+        title: "Réponses enregistrées et messages privés",
       },
       {
         body:
-          "La signature courriel capte les referrals, suivis et anciens clients sans ajouter un autre outil.",
+          "La signature courriel capte les recommandations, les suivis et les anciens clients sans ajouter un autre outil.",
         caution:
           "Gardez la signature courte afin que le lien soit visible sur mobile.",
         steps: [
-          "Ajoutez une ligne sous le numero de telephone ou le site web.",
-          "Utilisez un texte comme Demander une soumission de nettoyage.",
-          "Utilisez le meme lien pour chaque membre de l'equipe jusqu'a l'approbation de sources separees.",
+          "Ajoutez une ligne sous le numéro de téléphone ou le site Web.",
+          "Utilisez un texte comme Partager une demande de service.",
+          "Utilisez le même lien pour chaque membre de l’équipe jusqu’à l’approbation de sources séparées.",
         ],
         tag: "email_signature",
         template:
@@ -2413,40 +2414,40 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     ],
     checklist: [
       "Utilisez la page directe HTTPS, pas un raccourcisseur.",
-      "Gardez la page dediee a la bonne entreprise ou au bon emplacement.",
-      "Dites demande de soumission, pas reservation confirmee.",
+      "Gardez la page dédiée à la bonne entreprise ou au bon emplacement.",
+      "Dites demande de service, pas réservation confirmée.",
       "Testez la page sur mobile avant de la partager.",
-      "Utilisez les balises seulement pour le placement, jamais pour les donnees personnelles du client.",
+      "Utilisez les balises seulement pour le placement, jamais pour les données personnelles du client.",
     ],
     checklistTitle: "Avant de publier le lien",
     guardrail: {
       body:
-        "Les pages de soumission BizPilot collectent des demandes pour revision par le proprietaire. Elles ne confirment pas le prix, la disponibilite, l'horaire, le paiement ou un travail de nettoyage reserve.",
+        "Les pages de demande BizPilot collectent des demandes pour révision par le propriétaire. Elles ne confirment pas le prix, la disponibilité, l’horaire, le paiement ou un service réservé.",
       items: [
-        "Utilisez d'abord le site web ou le contact quand l'etiquette d'action d'une plateforme ne correspond pas a une demande de soumission.",
-        "Gardez les liens Google Business Profile accessibles et propres a l'entreprise.",
-        "N'ajoutez pas de noms, courriels, numeros de telephone ou messages clients dans les balises UTM.",
+        "Utilisez d’abord le site Web ou le contact quand l’étiquette d’action d’une plateforme ne correspond pas à une demande.",
+        "Gardez les liens Google Business Profile accessibles et propres à l’entreprise.",
+        "N’ajoutez pas de noms, courriels, numéros de téléphone ou messages clients dans les balises UTM.",
       ],
       title: "Ne transformez pas une soumission en fausse réservation.",
     },
     meta: {
       description:
-        "Où placer un lien de demande de soumission BizPilot pour une entreprise de nettoyage: site web, Google Business Profile, Instagram, réponses enregistrées et signatures courriel.",
-      title: "Guide du lien de soumission de nettoyage | BizPilot AI",
+        "Où placer un lien intelligent BizPilot pour une entreprise de services : site web, Google Business Profile, Instagram, réponses enregistrées et signatures courriel.",
+      title: "Guide de placement du lien intelligent | BizPilot AI",
     },
     primaryCta: "Rejoindre le pilote",
     references: [
       {
         href: "https://support.google.com/business/answer/13769188?hl=en",
-        label: "Regles Google Business Profile pour les liens d'entreprise",
+        label: "Règles Google Business Profile pour les liens d’entreprise",
         note:
-          "Pages dediees, action completee, acces aux robots et limites des raccourcisseurs.",
+          "Pages dédiées, action complétée, accès aux robots et limites des raccourcisseurs.",
       },
       {
         href: "https://support.google.com/business/answer/3038177?hl=en",
-        label: "Regles de representation Google Business Profile",
+        label: "Règles de représentation Google Business Profile",
         note:
-          "Informations exactes, zones de service et coherence du site web et du telephone.",
+          "Informations exactes, zones de service et cohérence du site Web et du téléphone.",
       },
       {
         href: "https://help.instagram.com/362497417173378",
@@ -2455,8 +2456,8 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
       {
         href: "https://help.instagram.com/1264898753662278",
-        label: "Reponses enregistrees dans l'inbox professionnelle Instagram",
-        note: "Reponses enregistrees pour les messages recurrents.",
+        label: "Réponses enregistrées dans la boîte professionnelle Instagram",
+        note: "Réponses enregistrées pour les messages récurrents.",
       },
     ],
     referencesTitle: "Règles de placement vérifiées",
@@ -2464,10 +2465,10 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     secondaryCta: "Comparer BizPilot",
     sourceLabel: "Balise source",
     templateBody:
-      "Remplacez clean-team par le vrai slug de soumission apres la configuration. Gardez les balises simples et utilisez une source de placement par lien.",
+      "Remplacez clean-team par le vrai identifiant du lien après la configuration. Gardez les balises simples et utilisez une source de placement par lien.",
     templateTitle: "Modèles de liens suivis",
     templateUrlLabel: "Lien exemple",
-    title: "Où placer votre lien de soumission de nettoyage.",
+    title: "Où placer votre lien intelligent.",
   },
   replySpeedGuide: {
     badge: "Guide de réponse rapide",
@@ -2482,7 +2483,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       title: "Transformer une demande vague en réponse manuelle plus sûre.",
     },
     body:
-      "Répondre plus vite à une soumission de nettoyage ne veut pas dire envoyer automatiquement. Il faut capter la demande clairement, voir ce qui manque, préparer un brouillon prudent et rendre la prochaine action manuelle évidente.",
+      "Répondre plus vite à une demande client ne veut pas dire envoyer automatiquement. Il faut capter la demande clairement, voir ce qui manque, préparer un brouillon prudent et rendre la prochaine action manuelle évidente.",
     calendar: [
       {
         actions: [
@@ -2530,7 +2531,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
       },
     ],
     calendarBody:
-      "C'est un calendrier léger de contenu et d'opérations pour une entreprise de nettoyage, pas une promesse que BizPilot envoie des messages ou garantit plus de réservations.",
+      "C’est un calendrier léger de contenu et d’opérations pour une entreprise de services, pas une promesse que BizPilot envoie des messages ou garantit plus de réservations.",
     calendarTitle: "Un plan de contenu sur quatre semaines.",
     checklist: [
       "Connaître le type de service avant de soumissionner.",
@@ -2553,8 +2554,8 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
     },
     meta: {
       description:
-        "Guide pratique pour aider les entreprises de nettoyage à répondre plus vite aux demandes de soumission avec une collecte plus sûre, des brouillons à valider et aucun envoi automatique.",
-      title: "Guide de réponse rapide aux soumissions | BizPilot AI",
+        "Guide pratique pour aider les entreprises de services à répondre plus vite aux demandes client avec une collecte plus sûre, des brouillons à valider et aucun envoi automatique.",
+      title: "Guide de réponse rapide aux demandes client | BizPilot AI",
     },
     primaryCta: "Voir le guide du lien",
     secondaryCta: "Rejoindre le pilote",
@@ -2590,7 +2591,7 @@ const frenchPublicSiteCopy: PublicSiteCopy = {
   contentStudio: {
     badge: "Feuille de route",
     body:
-      "Cette page présente seulement une direction future. BizPilot pourrait plus tard aider les entreprises locales à préparer du contenu marketing à valider, après la validation du flux de récupération des demandes de nettoyage.",
+      "Cette page présente seulement une direction future. BizPilot pourrait plus tard aider les entreprises locales à préparer du contenu marketing à valider, après la validation du flux de demandes client.",
     cards: [
       {
         body: "Futurs brouillons pour expliquer les services clairement.",

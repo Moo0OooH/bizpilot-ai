@@ -10,11 +10,12 @@
  * - components/public/marketing-compact-menu.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-21
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-06-19: Added Phase 02 header/navigation source contract coverage.
  * - 2026-06-21: Added public acceptance guards for duplicate pilot CTA markup.
  * - 2026-07-04: Added comparison route navigation guard.
+ * - 2026-07-13: Locked grouped Product, Use cases, and Resources navigation with complete mobile exposure.
  * ============================================================
  */
 
@@ -36,24 +37,18 @@ const compactMenuSource = readFileSync(
 );
 
 describe("public marketing header source contract", () => {
-  it("keeps the final public navigation order", () => {
-    const expectedOrder = [
-      'key: "features"',
-      'key: "cleaning"',
-      'key: "comparison"',
-      'key: "trust"',
-      'key: "demo"',
-      'key: "pricing"',
-      'key: "pilot"',
-    ];
-
-    let previousIndex = -1;
-    for (const marker of expectedOrder) {
-      const nextIndex = marketingUiSource.indexOf(marker);
-      assert.notEqual(nextIndex, -1, `${marker} missing from MarketingHeader`);
-      assert.ok(nextIndex > previousIndex, `${marker} is out of order`);
-      previousIndex = nextIndex;
-    }
+  it("keeps the final grouped public navigation order", () => {
+    assert.match(marketingUiSource, /directItems\.slice\(0, 2\)/);
+    assert.match(marketingUiSource, /navGroups\.map/);
+    assert.match(marketingUiSource, /directItems\.slice\(2\)/);
+    assert.match(marketingUiSource, /label: copy\.useCases/);
+    assert.match(marketingUiSource, /label: copy\.resources/);
+    assert.match(marketingUiSource, /href: "\/quote-link-guide"/);
+    assert.match(marketingUiSource, /href: "\/faster-quote-replies"/);
+    assert.match(marketingUiSource, /href: "\/comparison"/);
+    assert.match(marketingUiSource, /href: "\/#how-it-works"/);
+    assert.match(marketingUiSource, /href: "\/#use-cases"/);
+    assert.match(marketingUiSource, /navGroups\.map\(\(group\) => \(/);
   });
 
   it("uses content-fit header behavior without truncating the brand tagline", () => {

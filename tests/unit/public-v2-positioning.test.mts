@@ -11,6 +11,9 @@
  * Author: MoOoH
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Added regression coverage for universal guide copy, fallback metadata, and accented fr-CA JSON-LD.
+ * - 2026-07-13: Added source guards for route-specific V2 page variants and grouped navigation copy.
  * ============================================================
  */
 
@@ -23,6 +26,7 @@ import {
   getPublicV2Copy,
   PUBLIC_V2_SOURCE_LANGUAGE,
 } from "../../lib/i18n/public-v2-copy.ts";
+import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
 
 type CopyShape =
   | string
@@ -72,18 +76,20 @@ describe("public V2 positioning", () => {
     }
   });
 
-  it("positions the brand for service businesses while keeping cleaning first", () => {
+  it("keeps the first fold universal and moves cleaning-first validation below it", () => {
     const english = getPublicV2Copy("en");
     const french = getPublicV2Copy("fr-CA");
 
     assert.match(english.home.hero.title, /customer requests/i);
     assert.match(english.home.hero.body, /service businesses/i);
-    assert.match(english.home.hero.body, /starting with cleaning businesses/i);
+    assert.doesNotMatch(english.home.hero.body, /starting with cleaning businesses/i);
+    assert.doesNotMatch(english.home.meta.description, /starting with cleaning businesses/i);
     assert.match(english.home.industries.cards[0]?.badge ?? "", /founder pilot/i);
     assert.equal(english.home.industries.cards[0]?.title, "Cleaning");
 
     assert.match(french.home.hero.body, /entreprises de services/i);
-    assert.match(french.home.hero.body, /entreprises d’entretien/i);
+    assert.doesNotMatch(french.home.hero.body, /en commençant par/i);
+    assert.doesNotMatch(french.home.meta.description, /en commençant par/i);
     assert.equal(french.home.industries.cards[0]?.title, "Entretien");
   });
 
@@ -185,10 +191,51 @@ describe("public V2 positioning", () => {
 
     const structuredData = readFileSync("lib/public-structured-data.ts", "utf8");
     const socialPreview = readFileSync("app/opengraph-image.tsx", "utf8");
+    const rootLayout = readFileSync("app/layout.tsx", "utf8");
 
     assert.equal(structuredData.includes("smart customer intake"), true);
     assert.equal(structuredData.includes("cleaning business founder pilot"), true);
     assert.equal(socialPreview.includes("Smart customer intake and reply workspace"), true);
     assert.equal(socialPreview.includes("Roadmap integrations labeled"), true);
+    assert.equal(rootLayout.includes("Smart Customer Intake & Reply Workspace"), true);
+    assert.equal(rootLayout.includes("Lead Recovery for Cleaning Businesses"), false);
+    assert.equal(structuredData.includes("prépare des brouillons assistés par IA à valider"), true);
+    assert.equal(structuredData.includes("Espace intelligent de demandes client et de réponses"), true);
+  });
+
+  it("keeps the educational guides universal while the demo and pilot remain cleaning-first", () => {
+    const english = getPublicSiteCopy("en");
+    const french = getPublicSiteCopy("fr-CA");
+
+    assert.match(english.quoteLinkGuide.title, /customer intake/i);
+    assert.match(english.replySpeedGuide.title, /customer replies/i);
+    assert.match(english.quoteLinkGuide.meta.title, /customer intake/i);
+    assert.match(english.replySpeedGuide.meta.title, /customer replies/i);
+    assert.match(french.quoteLinkGuide.title, /lien intelligent/i);
+    assert.match(french.replySpeedGuide.meta.title, /demandes client/i);
+    assert.match(english.demo.body, /move-out cleaning/i);
+    assert.match(english.pilot.title, /cleaning/i);
+  });
+
+  it("keeps core pages visually differentiated without duplicating route renderers", () => {
+    const renderer = readFileSync("components/public/bizpilot-v2-page.tsx", "utf8");
+    const header = readFileSync("components/public/marketing-ui.tsx", "utf8");
+
+    for (const marker of [
+      "capability-board",
+      "request-to-reply-sequence",
+      "plan-comparison",
+      "human-data-boundaries",
+      "comparison-matrix",
+      "faq-groups",
+      "cleaning-selector",
+      "pilot-process",
+    ]) {
+      assert.match(renderer, new RegExp(marker));
+    }
+
+    for (const marker of ["copy.useCases", "copy.resources", "copy.fasterReplies", "copy.futureTemplates"]) {
+      assert.match(header, new RegExp(marker.replace(".", "\\.")));
+    }
   });
 });

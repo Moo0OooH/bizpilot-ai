@@ -13,6 +13,7 @@
  * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-07-13: Repositioned public JSON-LD around smart service-business intake while preserving cleaning as the first complete pilot vertical.
+ * - 2026-07-13: Corrected Canadian-French structured-data accents and terminology.
  * ============================================================
  */
 
@@ -105,7 +106,7 @@ function websiteJsonLd(language: SupportedLanguage) {
 function softwareApplicationJsonLd(language: SupportedLanguage) {
   const description =
     language === "fr-CA"
-      ? "Un espace de travail pour les entreprises de services qui recueille les demandes client avec un lien intelligent, organise les renseignements manquants et prepare des brouillons assistes par IA a valider. Le premier pilote complet vise les entreprises d'entretien."
+      ? "Un espace de travail pour les entreprises de services qui recueille les demandes client avec un lien intelligent, organise les renseignements manquants et prépare des brouillons assistés par IA à valider. Le premier pilote complet vise les entreprises d’entretien."
       : "A smart customer-intake and reply workspace for service businesses that collects requests through one link, organizes missing information, and prepares AI-assisted drafts for owner review. The first complete pilot serves cleaning businesses.";
 
   return {
@@ -128,7 +129,7 @@ function softwareApplicationJsonLd(language: SupportedLanguage) {
 function serviceJsonLd(language: SupportedLanguage) {
   const description =
     language === "fr-CA"
-      ? "Collecte intelligente de demandes client, organisation des renseignements manquants et brouillons assistes par IA avec validation et envoi manuels par le proprietaire."
+      ? "Collecte intelligente de demandes client, organisation des renseignements manquants et brouillons assistés par IA avec validation et envoi manuels par le propriétaire."
       : "Smart customer request intake, missing-information organization, and AI-assisted reply drafts with manual owner review and sending.";
   const serviceOutput =
     language === "fr-CA"
@@ -144,7 +145,7 @@ function serviceJsonLd(language: SupportedLanguage) {
     inLanguage: inLanguage(language),
     name:
       language === "fr-CA"
-        ? "Espace intelligent de demandes client et de reponses"
+        ? "Espace intelligent de demandes client et de réponses"
         : "Smart customer intake and reply workspace",
     provider: {
       "@id": publicAssetUrl("/#organization"),
