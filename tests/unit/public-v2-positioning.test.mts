@@ -107,7 +107,7 @@ describe("public V2 positioning", () => {
     const french = getPublicV2Copy("fr-CA");
 
     assert.match(english.features.notice?.title ?? "", /not part of the current product claim/i);
-    assert.match(english.features.notice?.body ?? "", /after validation/i);
+    assert.match(english.features.notice?.body ?? "", /roadmap/i);
     assert.match(english.faq.items[0]?.answer ?? "", /No\./);
     assert.match(english.faq.items[0]?.answer ?? "", /roadmap items/i);
 

@@ -569,7 +569,7 @@ const englishCopy: PublicV2Copy = {
       badge: "Roadmap, not active",
       title: "Direct inbox integrations are not part of the current product claim.",
       body:
-        "Gmail, WhatsApp, Instagram, Messenger, and SMS connections can be explored after validation. Today, the honest workflow begins with the smart intake link.",
+        "Gmail, WhatsApp, Instagram, Messenger, and SMS connections are roadmap items that can be explored after validation. Today, the honest workflow begins with the smart intake link.",
     },
     finalCta: {
       title: "See the focused workflow before comparing feature lists.",
@@ -1102,7 +1102,7 @@ const frenchCopy: PublicV2Copy = {
     notice: {
       badge: "Feuille de route",
       title: "Les integrations directes aux boites de reception ne sont pas une fonction active.",
-      body: "Gmail, WhatsApp, Instagram, Messenger et les SMS pourront etre explores apres validation. Aujourd'hui, le flux commence honnetement par le lien intelligent.",
+      body: "Gmail, WhatsApp, Instagram, Messenger et les SMS sont des integrations de la feuille de route a explorer apres validation. Aujourd'hui, le flux commence honnetement par le lien intelligent.",
     },
     finalCta: { title: "Voyez le flux cible avant de comparer les listes de fonctions.", body: "La demo d'entretien montre le parcours actuel complet.", primary: "Voir la demo", secondary: "Comparer BizPilot" },
   },

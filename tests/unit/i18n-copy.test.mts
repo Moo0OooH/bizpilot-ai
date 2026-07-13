@@ -130,29 +130,6 @@ const dashboardSourceFiles = userFacingSourceFiles.filter((file) =>
   file.startsWith("app/(dashboard)") || file.startsWith("components/dashboard"),
 );
 
-const finalPublicRouteSourceFiles = [
-  "app/page.tsx",
-  "app/faq/page.tsx",
-  "app/comparison/page.tsx",
-  "app/features/page.tsx",
-  "app/industries/cleaning/page.tsx",
-  "app/trust/page.tsx",
-  "app/demo/page.tsx",
-  "app/pricing/page.tsx",
-  "app/pilot/page.tsx",
-  "app/content-studio/page.tsx",
-  "app/privacy/page.tsx",
-  "app/security/page.tsx",
-  "app/terms/page.tsx",
-  "app/auth/sign-in/page.tsx",
-  "app/auth/sign-up/page.tsx",
-  "app/auth/forgot-password/page.tsx",
-  "app/auth/reset-password/page.tsx",
-  "app/auth/check-email/page.tsx",
-  "app/(public)/quote/[slug]/page.tsx",
-  "components/public/quote-form-wizard.tsx",
-] as const;
-
 const mojibakePattern =
   /(?:\u00c3[\u0080-\u00bf]|\u00c2[\u0080-\u00bf]|\u00e2[\u0080-\uffff]|\ufffd)/u;
 
