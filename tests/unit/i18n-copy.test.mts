@@ -65,6 +65,7 @@ import {
   PUBLIC_SITE_COPY_SOURCE_LANGUAGE,
   publicSiteCopyNamespaces,
 } from "../../lib/i18n/public-site-copy.ts";
+import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
 import {
   languageDefinitions,
   resolveWorkspaceInterfaceLanguage,
@@ -541,21 +542,38 @@ describe("BizPilot language copy", () => {
     }
   });
 
-  it("keeps final public routes wired to dictionaries instead of hardcoded marketing copy", () => {
-    const dictionaryBackedRoutes = finalPublicRouteSourceFiles.filter(
-      (file) =>
-        !file.includes("quote-form-wizard") &&
-        !file.includes("/privacy/") &&
-        !file.includes("/security/") &&
-        !file.includes("/terms/"),
-    );
+  it("keeps final public routes wired to the active dictionaries instead of hardcoded marketing copy", () => {
+    const v2Routes = [
+      "app/page.tsx",
+      "app/features/page.tsx",
+      "app/demo/page.tsx",
+      "app/pricing/page.tsx",
+      "app/pilot/page.tsx",
+      "app/trust/page.tsx",
+      "app/comparison/page.tsx",
+      "app/faq/page.tsx",
+      "app/industries/cleaning/page.tsx",
+    ] as const;
 
-    for (const file of dictionaryBackedRoutes) {
+    for (const file of v2Routes) {
       const source = readFileSync(file, "utf8");
       assert.equal(
-        source.includes("getPublicSiteCopy"),
+        source.includes("getPublicV2Copy"),
         true,
-        `${file} should read public route copy from the public-site dictionary.`,
+        `${file} should read the active public V2 dictionary.`,
+      );
+      assert.equal(source.includes("generateMetadata"), true, file);
+    }
+
+    for (const file of [
+      "app/content-studio/page.tsx",
+      "app/quote-link-guide/page.tsx",
+      "app/faster-quote-replies/page.tsx",
+    ]) {
+      assert.equal(
+        readFileSync(file, "utf8").includes("getPublicSiteCopy"),
+        true,
+        `${file} should remain dictionary-backed until its own V2 migration.`,
       );
     }
 
@@ -565,19 +583,12 @@ describe("BizPilot language copy", () => {
       "app/terms/page.tsx",
     ]) {
       const source = readFileSync(file, "utf8");
-      assert.equal(
-        source.includes("getPolicyCopy"),
-        true,
-        `${file} should read public policy copy from the policy dictionary.`,
-      );
-      assert.equal(
-        source.includes("generateMetadata"),
-        true,
-        `${file} should expose language-aware metadata.`,
-      );
+      assert.equal(source.includes("getPolicyCopy"), true, file);
+      assert.equal(source.includes("generateMetadata"), true, file);
     }
 
     const homepageSource = readFileSync("app/page.tsx", "utf8");
+    assert.equal(homepageSource.includes("BizPilotV2Home"), true);
     for (const phrase of [
       "Stop losing cleaning quote requests to slow replies.",
       "Messages get buried",
@@ -587,7 +598,7 @@ describe("BizPilot language copy", () => {
       assert.equal(
         homepageSource.includes(phrase),
         false,
-        `app/page.tsx should not keep hardcoded homepage phrase: ${phrase}`,
+        `app/page.tsx should not keep hardcoded legacy phrase: ${phrase}`,
       );
     }
 
@@ -595,11 +606,7 @@ describe("BizPilot language copy", () => {
       "components/public/quote-form-wizard.tsx",
       "utf8",
     );
-    assert.equal(
-      quoteWizardSource.includes("copy.quoteForm.guardrail"),
-      true,
-      "Quote form guardrail copy should follow the selected quote language.",
-    );
+    assert.equal(quoteWizardSource.includes("copy.quoteForm.guardrail"), true);
 
     const proxySource = readFileSync("proxy.ts", "utf8");
     for (const authPath of [
@@ -609,11 +616,7 @@ describe("BizPilot language copy", () => {
       "/auth/reset-password",
       "/auth/check-email",
     ]) {
-      assert.equal(
-        proxySource.includes(authPath),
-        true,
-        `proxy.ts should apply language query cookies to ${authPath}.`,
-      );
+      assert.equal(proxySource.includes(authPath), true, authPath);
     }
   });
 
@@ -1057,505 +1060,189 @@ describe("BizPilot language copy", () => {
     );
   });
 
-  it("keeps homepage cleaning use-case cards locked to six service anchors", () => {
-    const englishUseCases = getPublicSiteCopy("en").home.useCases;
+  it("keeps the universal homepage honest while cleaning remains the complete launch vertical", () => {
+    const english = getPublicV2Copy("en");
+    const serviceCards = english.cleaning.sections[0]?.cards ?? [];
 
+    assert.equal(english.home.industries.cards.length, 4);
+    assert.equal(english.home.industries.cards[0]?.title, "Cleaning");
+    assert.match(english.home.industries.cards[0]?.badge ?? "", /Founder pilot/i);
     assert.equal(
-      englishUseCases.title,
-      "Built for the cleaning jobs you quote every week.",
-    );
-    assert.equal(
-      englishUseCases.body,
-      "Keep the service, timing, missing details, and next reply clear across common cleaning requests.",
+      english.home.industries.cards.slice(1).every((card) =>
+        /Roadmap template/i.test(card.badge ?? ""),
+      ),
+      true,
     );
     assert.deepEqual(
-      englishUseCases.cards.map((card) => card.href),
-      [
-        "/industries/cleaning#residential",
-        "/industries/cleaning#deep-cleaning",
-        "/industries/cleaning#move-in-out",
-        "/industries/cleaning#office",
-        "/industries/cleaning#airbnb",
-        "/industries/cleaning#post-construction",
-      ],
-    );
-
-    for (const language of supportedLanguages) {
-      assert.equal(
-        getPublicSiteCopy(language).home.useCases.cards.length,
-        6,
-        `${language} homepage use-case grid must stay 3x2 / 2x3 / 1x6 friendly.`,
-      );
-      assert.equal(
-        getPublicSiteCopy(language).home.preview.steps.length,
-        3,
-        `${language} homepage demo must keep three compact workflow labels.`,
-      );
-    }
-
-    const homepageSource = readFileSync("app/page.tsx", "utf8");
-    assert.equal(homepageSource.includes("homepage-use-case-grid"), true);
-    assert.equal(homepageSource.includes("homepage-demo-grid"), true);
-
-    const globalStyles = readFileSync("app/globals.css", "utf8");
-    assert.equal(
-      globalStyles.includes(".homepage-use-case-grid"),
-      true,
-      "Homepage service cards should use the locked grid class.",
-    );
-    assert.equal(
-      globalStyles.includes("grid-template-columns: repeat(3, minmax(0, 1fr));"),
-      true,
-      "Homepage service cards should lock to three columns on wide desktop.",
-    );
-  });
-
-  it("keeps homepage compressed with a short FAQ and the full FAQ on a dedicated route", () => {
-    const englishPublicCopy = getPublicSiteCopy("en");
-
-    assert.equal(englishPublicCopy.home.faq.items.length, 3);
-    assert.deepEqual(
-      englishPublicCopy.home.faq.items.map((item) => item.question),
-      [
-        "Does BizPilot send messages automatically?",
-        "Can AI create prices for me?",
-        "Who is the pilot for first?",
-      ],
-    );
-    assert.equal(englishPublicCopy.faq.sections.length, 5);
-    const fullFaqQuestions = englishPublicCopy.faq.sections.flatMap((section) =>
-      section.items.map((item) => item.question),
-    );
-    assert.equal(fullFaqQuestions.length >= 23, true);
-    for (const question of [
-      "What makes BizPilot different from a form builder?",
-      "Can BizPilot send SMS, WhatsApp, Instagram, or email replies for me?",
-      "What has to be confirmed before a paid pilot starts?",
-      "Does BizPilot track where quote requests came from?",
-      "Will FAQ schema or AI-search content guarantee rankings?",
-    ]) {
-      assert.equal(
-        fullFaqQuestions.includes(question),
-        true,
-        `Full FAQ missing owner-intent question: ${question}`,
-      );
-    }
-    assert.equal(
-      englishPublicCopy.faq.sections.reduce(
-        (total, section) => total + section.items.length,
-        0,
-      ) > englishPublicCopy.home.faq.items.length,
-      true,
-    );
-
-    for (const language of supportedLanguages) {
-      const copy = getPublicSiteCopy(language);
-      assert.equal(
-        copy.home.faq.items.length,
-        3,
-        `${language} homepage FAQ should stay a compact mini FAQ.`,
-      );
-      assert.equal(
-        copy.faq.sections.length,
-        5,
-        `${language} full FAQ should keep the five approved sections.`,
-      );
-    }
-
-    const homepageSource = readFileSync("app/page.tsx", "utf8");
-    const faqSource = readFileSync("app/faq/page.tsx", "utf8");
-    const comparisonSource = readFileSync("app/comparison/page.tsx", "utf8");
-    const replySpeedGuideSource = readFileSync(
-      "app/faster-quote-replies/page.tsx",
-      "utf8",
-    );
-    const featuresSource = readFileSync("app/features/page.tsx", "utf8");
-    const proxySource = readFileSync("proxy.ts", "utf8");
-    assert.equal(homepageSource.includes('href="/faq"'), true);
-    assert.equal(comparisonSource.includes('"/comparison"'), true);
-    assert.equal(
-      comparisonSource.includes("getPublicSiteCopy(language).comparison"),
-      true,
-    );
-    assert.equal(replySpeedGuideSource.includes('"/faster-quote-replies"'), true);
-    assert.equal(
-      replySpeedGuideSource.includes("getPublicSiteCopy(language).replySpeedGuide"),
-      true,
-    );
-    assert.equal(
-      homepageSource.includes("copy.roadmap"),
-      false,
-      "Homepage should stay compressed and leave roadmap disclosure to supporting pages.",
-    );
-    assert.equal(
-      featuresSource.includes("copy.roadmap"),
-      true,
-      "Features should keep roadmap disclosure after the homepage compression.",
-    );
-    assert.equal(faqSource.includes('"/faq"'), true);
-    assert.equal(faqSource.includes("getPublicSiteCopy(language).faq"), true);
-    assert.equal(proxySource.includes('"/comparison"'), true);
-    assert.equal(proxySource.includes('"/faster-quote-replies"'), true);
-    assert.equal(proxySource.includes('"/faq"'), true);
-  });
-
-  it("keeps final supporting-page polish structure locked", () => {
-    const englishPublicCopy = getPublicSiteCopy("en");
-
-    assert.deepEqual(
-      englishPublicCopy.features.cards.map((card) => card.title),
-      [
-        "Capture requests where customers already find you.",
-        "Organize each request before it becomes inbox work.",
-        "Keep source context visible on the lead.",
-        "Prepare the first reply without inventing details.",
-        "Review, copy, and send manually.",
-        "Keep follow-up from disappearing.",
-      ],
-    );
-    assert.deepEqual(
-      englishPublicCopy.features.proof.items,
-      [
-        "Customer opens the quote link and submits the request",
-        "BizPilot organizes service, source, timing, and missing details",
-        "AI prepares a practical draft for owner review",
-        "You copy, send manually, and keep follow-up visible",
-      ],
-    );
-
-    assert.equal(englishPublicCopy.cleaning.serviceCards.length, 6);
-    assert.deepEqual(
-      englishPublicCopy.cleaning.serviceCards.map((service) => service.title),
+      serviceCards.map((card) => card.title),
       [
         "Residential cleaning",
         "Deep cleaning",
         "Move-in / move-out",
         "Office cleaning",
         "Airbnb turnover",
-        "Post-construction cleaning",
+        "Post-construction",
       ],
     );
-    const cleaningServiceIds = new Set(
-      englishPublicCopy.cleaning.serviceCards.map((service) => service.id),
+
+    for (const language of supportedLanguages) {
+      const copy = getPublicV2Copy(language);
+      assert.equal(copy.home.flow.steps.length, 5, language);
+      assert.equal(copy.home.industries.cards.length, 4, language);
+      assert.equal(copy.cleaning.sections[0]?.cards.length, 6, language);
+    }
+
+    const homepageSource = readFileSync(
+      "components/public/bizpilot-v2-home.tsx",
+      "utf8",
     );
-    for (const serviceId of [
-      "residential",
-      "deep-cleaning",
-      "move-in-out",
-      "office",
-      "airbnb",
-      "post-construction",
+    assert.equal(homepageSource.includes("copy.industries.cards.map"), true);
+    assert.equal(homepageSource.includes("homepage-demo-grid"), true);
+    assert.equal(homepageSource.includes("homepage-use-case-grid"), false);
+  });
+
+  it("keeps the homepage focused while full product objections stay on the FAQ route", () => {
+    const english = getPublicV2Copy("en");
+    const questions = english.faq.items.map((item) => item.question);
+
+    assert.equal(english.faq.items.length, 6);
+    for (const question of [
+      "Does BizPilot connect directly to Gmail, WhatsApp, Instagram, or SMS today?",
+      "Does AI send messages automatically?",
+      "Can BizPilot invent prices or confirm bookings?",
+      "Is BizPilot only for cleaning businesses?",
+      "What happens after a customer submits the intake form?",
+      "Is BizPilot a CRM, booking platform, or invoicing system?",
     ]) {
-      assert.equal(
-        cleaningServiceIds.has(serviceId),
-        true,
-        `Cleaning page should expose #${serviceId}.`,
-      );
+      assert.equal(questions.includes(question), true, question);
     }
-    assert.equal(cleaningServiceIds.has("small-commercial"), false);
-    assert.equal(
-      englishPublicCopy.cleaning.serviceCards.every(
-        (service) =>
-          service.body.length >= 24 &&
-          service.clearDetails.length >= 4 &&
-          service.missingDetails.length >= 3 &&
-          service.request.includes("?"),
-      ),
-      true,
-      "Cleaning services should have compact card copy and full detail-panel content.",
+
+    const homepageSource = readFileSync(
+      "components/public/bizpilot-v2-home.tsx",
+      "utf8",
     );
-    assert.equal(
-      englishPublicCopy.cleaning.detailHelp.title,
-      "Missing details BizPilot can help ask for",
+    const faqSource = readFileSync("app/faq/page.tsx", "utf8");
+    const sharedPageSource = readFileSync(
+      "components/public/bizpilot-v2-page.tsx",
+      "utf8",
     );
 
-    assert.equal(englishPublicCopy.trust.pillars.length, 3);
-    assert.deepEqual(
-      englishPublicCopy.trust.pillars.map((pillar) => pillar.title),
-      [
-        "You stay in control",
-        "Quotes stay honest",
-        "The workflow fails safely",
-      ],
+    assert.equal(homepageSource.includes("copy.faq.items.map"), false);
+    assert.equal(faqSource.includes("faqItems={copy.items}"), true);
+    assert.equal(faqSource.includes("getPublicV2Copy"), true);
+    assert.equal(sharedPageSource.includes("buildFaqPageJsonLd"), true);
+    assert.equal(readFileSync("proxy.ts", "utf8").includes('"/faq"'), true);
+  });
+
+  it("keeps final V2 supporting-page structure and product boundaries locked", () => {
+    const english = getPublicV2Copy("en");
+
+    assert.equal(english.features.sections.length, 3);
+    assert.equal(
+      english.features.sections.every((section) => section.cards.length === 3),
+      true,
     );
-    for (const pillar of englishPublicCopy.trust.pillars) {
-      assert.equal(pillar.points.length, 3);
+    assert.equal(english.cleaning.sections[0]?.cards.length, 6);
+    assert.equal(english.trust.sections.length, 2);
+    assert.equal(
+      english.trust.sections.every((section) => section.cards.length === 3),
+      true,
+    );
+    assert.equal(english.demo.sections.length, 3);
+    assert.equal(
+      english.demo.sections.every((section) => section.cards.length === 3),
+      true,
+    );
+    assert.equal(english.pilot.sections.length, 2);
+
+    const pricingText = JSON.stringify(english.pricing);
+    for (const value of [
+      "$0 setup",
+      "$149 setup + $49/month",
+      "$199 setup + $79/month",
+    ]) {
+      assert.equal(pricingText.includes(value), true, value);
     }
-    assert.equal(
-      englishPublicCopy.trust.evidence.title,
-      "Current evidence and open gates",
-    );
-    assert.equal(englishPublicCopy.trust.evidence.items.length, 4);
-    assert.equal(
-      englishPublicCopy.trust.evidence.items.some((item) =>
-        item.title.includes("Dashboard QA remains local-only"),
-      ),
-      true,
-      "Trust evidence should mention local-only dashboard QA.",
-    );
-    assert.equal(
-      englishPublicCopy.trust.evidence.items.some((item) =>
-        item.body.includes("strict restored app/dashboard/RLS proof"),
-      ),
-      true,
-      "Trust evidence should keep strict restored app/dashboard/RLS proof gated.",
-    );
+    assert.match(english.features.notice?.badge ?? "", /Roadmap/i);
+    assert.match(english.trust.notice?.badge ?? "", /Production gate/i);
+    assert.match(english.pricing.notice?.badge ?? "", /Before any paid pilot/i);
 
-    const englishSecurityCopy = getPolicyCopy("en").security;
-    assert.equal(
-      englishSecurityCopy.sections.some(
-        (section) => section.title === "Local-only dashboard QA",
-      ),
-      true,
-      "Security copy should include the local-only dashboard QA boundary.",
-    );
-
-    assert.equal(englishPublicCopy.demo.chapters.length, 4);
-    assert.equal(
-      englishPublicCopy.demo.workspace.title,
-      "What the owner sees in BizPilot",
-    );
-    assert.deepEqual(englishPublicCopy.demo.workspace.actions, [
-      "Review draft",
-      "Copy reply",
-      "Mark contacted",
-    ]);
-    assert.deepEqual(englishPublicCopy.demo.workspace.guardrails, [
-      "Sample demo state",
-      "No auto-send",
-      "No price invented",
-      "No booking confirmed",
-    ]);
-    assert.equal(
-      englishPublicCopy.demo.workspace.draft.title,
-      "Reply draft for owner review",
-    );
-    assert.equal(
-      englishPublicCopy.demo.workspace.missing.length,
-      3,
-      "Demo owner-view preview should show the exact missing-info moment.",
-    );
-    assert.deepEqual(
-      englishPublicCopy.demo.chapters.at(-1)?.panelItems.slice(-5),
-      [
-        "No auto-send",
-        "No invented price",
-        "No booking confirmation",
-        "No SMS/WhatsApp automation",
-        "No full CRM claim",
-      ],
-    );
-
-    assert.deepEqual(
-      englishPublicCopy.pricing.cards.flatMap((card) => card.priceLines),
-      ["$0 setup", "$149 setup", "$49/month", "$199 setup", "$79/month"],
-    );
-    assert.equal(englishPublicCopy.pricing.afterApply.steps.length, 3);
-    assert.equal(
-      englishPublicCopy.pricing.trustBoundary.title,
-      "Before any paid pilot starts",
-    );
-    assert.equal(englishPublicCopy.pricing.trustBoundary.items.length, 3);
-    assert.equal(
-      englishPublicCopy.pricing.trustBoundary.items.some((item) =>
-        item.body.includes("refund handling"),
-      ),
-      true,
-      "Pricing trust boundaries should mention refund handling before payment.",
-    );
-    assert.equal(
-      englishPublicCopy.pilot.nextSteps.some((step) =>
-        step.includes("Support, refund, and payment expectations"),
-      ),
-      true,
-      "Pilot application flow should confirm support/refund/payment expectations before paid pilot.",
-    );
-    assert.equal(englishPublicCopy.contentStudio.cards.length, 6);
-    assert.equal(
-      englishPublicCopy.contentStudio.cards.every(
-        (card) => card.title.length > 0 && card.body.length >= 24,
-      ),
-      true,
-      "Content Studio six-card roadmap should include value text, not title-only cards.",
-    );
-    assert.equal(
-      englishPublicCopy.contentStudio.footer.includes(
-        "No automatic posting is promised.",
-      ),
-      true,
-    );
-    assert.equal(englishPublicCopy.replySpeedGuide.workflow.length, 4);
-    assert.equal(englishPublicCopy.replySpeedGuide.calendar.length, 4);
-    assert.equal(
-      englishPublicCopy.replySpeedGuide.body.includes(
-        "not about sending anything automatically",
-      ),
-      true,
-    );
-    assert.equal(
-      englishPublicCopy.replySpeedGuide.guardrail.items.some((item) =>
-        item.includes("No automatic customer email"),
-      ),
-      true,
-    );
-    assert.equal(
-      englishPublicCopy.replySpeedGuide.guardrail.items.some((item) =>
-        item.includes("No price, availability, or appointment"),
-      ),
-      true,
-    );
-
-    const routeExpectations: ReadonlyArray<
-      readonly [file: string, required: string, forbidden?: string]
-    > = [
-      ["app/features/page.tsx", "supporting-six-grid"],
-      ["app/features/page.tsx", "supporting-four-grid"],
-      ["app/comparison/page.tsx", "comparison-grid"],
-      ["app/comparison/page.tsx", "supporting-four-grid"],
-      ["app/faster-quote-replies/page.tsx", "reply-speed-board"],
-      ["app/faster-quote-replies/page.tsx", "supporting-four-grid"],
-      ["app/industries/cleaning/page.tsx", "cleaning-service-grid"],
-      ["app/industries/cleaning/page.tsx", "CleaningServiceDetails"],
-      ["components/public/cleaning-service-details.tsx", "cleaning-detail-tabs"],
-      ["app/trust/page.tsx", "copy.pillars", "copy.items"],
-      ["app/trust/page.tsx", "copy.evidence"],
-      ["app/trust/page.tsx", "supporting-three-grid"],
-      ["app/pricing/page.tsx", "copy.afterApply"],
-      ["app/pricing/page.tsx", "copy.trustBoundary"],
-      ["app/pricing/page.tsx", "supporting-three-grid"],
-      ["app/content-studio/page.tsx", "supporting-six-grid"],
-    ];
-
-    for (const [file, required, forbidden] of routeExpectations) {
+    for (const file of [
+      "app/features/page.tsx",
+      "app/comparison/page.tsx",
+      "app/industries/cleaning/page.tsx",
+      "app/trust/page.tsx",
+      "app/demo/page.tsx",
+      "app/pricing/page.tsx",
+      "app/faq/page.tsx",
+    ]) {
       const source = readFileSync(file, "utf8");
-      assert.equal(
-        source.includes(required),
-        true,
-        `${file} should include ${required}.`,
-      );
-      if (forbidden) {
-        assert.equal(
-          source.includes(forbidden),
-          false,
-          `${file} should no longer include ${forbidden}.`,
-        );
-      }
+      assert.equal(source.includes("BizPilotV2Page"), true, file);
+      assert.equal(source.includes("getPublicV2Copy"), true, file);
     }
 
-    const globalStyles = readFileSync("app/globals.css", "utf8");
-    assert.equal(globalStyles.includes(".supporting-six-grid"), true);
-    assert.equal(globalStyles.includes(".supporting-three-grid"), true);
-    assert.equal(
-      globalStyles.includes("gap: var(--grid-gap);"),
-      true,
-      "Supporting grids should use fluid grid gaps rather than fixed one-off spacing.",
+    const sharedPage = readFileSync(
+      "components/public/bizpilot-v2-page.tsx",
+      "utf8",
     );
+    for (const required of [
+      "copy.sections.map",
+      "linksForRoute",
+      "copy.notice",
+      "bp-grid-three",
+      "MarketingPageHero",
+    ]) {
+      assert.equal(sharedPage.includes(required), true, required);
+    }
 
     for (const [file, forbidden] of [
       ["app/page.tsx", "min-h-[170px]"],
       ["app/page.tsx", "min-h-[260px]"],
       ["app/features/page.tsx", "min-h-[210px]"],
-      ["app/content-studio/page.tsx", "min-h-[150px]"],
     ] as const) {
-      assert.equal(
-        readFileSync(file, "utf8").includes(forbidden),
-        false,
-        `${file} should not force marketing card height with ${forbidden}.`,
-      );
+      assert.equal(readFileSync(file, "utf8").includes(forbidden), false, file);
     }
   });
 
-  it("keeps pilot Branch B conversion honest and non-submitting", () => {
-    const englishPilotCopy = getPublicSiteCopy("en").pilot;
-    const frenchPilotCopy = getPublicSiteCopy("fr-CA").pilot;
+  it("keeps founder-pilot conversion honest, bilingual, and non-submitting", () => {
+    const v2English = getPublicV2Copy("en").pilot;
+    const v2French = getPublicV2Copy("fr-CA").pilot;
+    const englishConversion = getPublicSiteCopy("en").pilot.conversion;
+    const frenchConversion = getPublicSiteCopy("fr-CA").pilot.conversion;
 
+    assert.match(v2English.badge, /Cleaning businesses first/i);
+    assert.match(v2English.notice?.badge ?? "", /Approval gate/i);
+    assert.match(v2French.notice?.badge ?? "", /Porte d'approbation/i);
+    assert.equal(v2English.sections.length, 2);
+    assert.equal(v2French.sections.length, 2);
+
+    assert.equal(englishConversion.emailDraftAction, "Open email draft");
+    assert.equal(englishConversion.previewQuestions.length, 6);
+    assert.equal(frenchConversion.previewQuestions.length, 6);
     assert.equal(
-      englishPilotCopy.title,
-      "Help shape BizPilot around real cleaning work.",
-    );
-    assert.equal(
-      englishPilotCopy.body,
-      "Join a small founder-led pilot built to help cleaning businesses capture quote requests, reply faster, and stay in control.",
-    );
-    assert.equal(
-      englishPilotCopy.conversion.title,
-      "Send a clear founder-pilot request when you are ready.",
-    );
-    assert.equal(englishPilotCopy.conversion.emailDraftAction, "Open email draft");
-    assert.equal(
-      englishPilotCopy.conversion.template,
-      "Subject: BizPilot founder pilot request\nBusiness name:\nWork email:\nCity / service area:\nCleaning services:\nApproximate quote requests per week:\nBiggest lead-management problem:\nPreferred language: English / French / Both",
-    );
-    assert.equal(englishPilotCopy.conversion.previewQuestions.length, 6);
-    assert.equal(frenchPilotCopy.conversion.previewQuestions.length, 6);
-    assert.equal(
-      englishPilotCopy.proof.title,
-      "What the pilot will measure",
-    );
-    assert.equal(englishPilotCopy.proof.metrics.length, 4);
-    assert.equal(
-      englishPilotCopy.proof.guardrail,
-      "These are pilot learning metrics, not testimonials, conversion-rate claims, or a performance guarantee.",
-    );
-    assert.equal(
-      frenchPilotCopy.proof.title,
-      "Ce que le projet pilote mesurera",
-    );
-    assert.equal(
-      JSON.stringify(frenchPilotCopy).includes("Copy pilot request template"),
+      JSON.stringify(frenchConversion).includes("Copy pilot request template"),
       false,
-      "fr-CA pilot copy should not fall back to English CTA text.",
     );
 
     const pilotSource = readFileSync("app/pilot/page.tsx", "utf8");
     for (const forbidden of ["<form", "<input", "<select", "<textarea"]) {
-      assert.equal(
-        pilotSource.includes(forbidden),
-        false,
-        `Pilot page should not render default form control ${forbidden}.`,
-      );
+      assert.equal(pilotSource.includes(forbidden), false, forbidden);
     }
-    assert.equal(
-      pilotSource.includes("disabled"),
-      false,
-      "Pilot page should not keep disabled form/control source.",
-    );
-    assert.equal(
-      pilotSource.includes("PilotRequestTemplateCard"),
-      true,
-      "Pilot page should use the clipboard conversion component.",
-    );
-    assert.equal(
-      pilotSource.includes("copy.proof.metrics"),
-      true,
-      "Pilot page should render the pilot proof metrics from localized copy.",
-    );
+    assert.equal(pilotSource.includes("PilotRequestTemplateCard"), true);
+    assert.equal(pilotSource.includes("getPublicV2Copy"), true);
+    assert.equal(pilotSource.includes("getPublicSiteCopy"), true);
+    assert.equal(pilotSource.includes('id="pilot-request-template"'), true);
 
     const conversionSource = readFileSync(
       "components/public/pilot-request-template-card.tsx",
       "utf8",
     );
-    assert.equal(
-      conversionSource.includes("navigator.clipboard.writeText"),
-      true,
-      "Pilot request action should use the Clipboard API.",
-    );
-    assert.equal(
-      conversionSource.includes('document.execCommand("copy")'),
-      true,
-      "Pilot request action should attempt a selection-based copy fallback.",
-    );
-    assert.equal(
-      conversionSource.includes('aria-live="polite"'),
-      true,
-      "Pilot request copy status should be announced.",
-    );
+    assert.equal(conversionSource.includes("navigator.clipboard.writeText"), true);
+    assert.equal(conversionSource.includes('document.execCommand("copy")'), true);
+    assert.equal(conversionSource.includes('aria-live="polite"'), true);
+    assert.equal(conversionSource.includes("mailto:?subject="), true);
     for (const forbidden of ["fetch(", "XMLHttpRequest", "<form"]) {
-      assert.equal(
-        conversionSource.includes(forbidden),
-        false,
-        `Pilot request copy action should not include ${forbidden}.`,
-      );
+      assert.equal(conversionSource.includes(forbidden), false, forbidden);
     }
   });
 

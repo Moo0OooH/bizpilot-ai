@@ -107,7 +107,7 @@ describe("public V2 positioning", () => {
     const french = getPublicV2Copy("fr-CA");
 
     assert.match(english.features.notice?.title ?? "", /not part of the current product claim/i);
-    assert.match(english.features.notice?.body ?? "", /roadmap/i);
+    assert.match(english.features.notice?.body ?? "", /after validation/i);
     assert.match(english.faq.items[0]?.answer ?? "", /No\./);
     assert.match(english.faq.items[0]?.answer ?? "", /roadmap items/i);
 
@@ -142,7 +142,7 @@ describe("public V2 positioning", () => {
     assert.match(english.comparison.badge, /Before CRM/i);
     assert.match(english.comparison.body, /booking software handles confirmed work/i);
     assert.match(english.comparison.notice?.title ?? "", /does not auto-book/i);
-    assert.match(english.faq.items[5]?.answer ?? "", /does not.*replace a full CRM/i);
+    assert.match(english.faq.items[5]?.answer ?? "", /without trying to replace a full CRM/i);
   });
 
   it("keeps approved pilot pricing and manual billing boundaries", () => {
