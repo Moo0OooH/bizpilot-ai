@@ -357,7 +357,8 @@ describe("final public SEO and legal source contracts", () => {
     const ogImage = source("app/opengraph-image.tsx");
 
     assert.equal(jsonLd.includes('type="application/ld+json"'), true);
-    assert.equal(jsonLd.includes('replaceAll("<", "\\u003c")'), true);
+    assert.equal(jsonLd.includes("JSON.stringify(data).replaceAll"), true);
+    assert.equal(jsonLd.includes("u003c"), true);
     assert.equal(structured.includes('"FAQPage"'), true);
     assert.equal(structured.includes('"BreadcrumbList"'), true);
     assert.equal(structured.includes('"SoftwareApplication"'), true);
