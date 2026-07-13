@@ -2,7 +2,7 @@
 # File: .github/workflows/ci.yml
 # Project: BizPilot AI
 # Description: Credential-free GitHub Actions validation for the application.
-# Role: Applies the one-time final V2 activation patch on the PR branch, then runs the complete verification gate.
+# Role: Applies the one-time final V2 activation and accented fr-CA test alignment on the PR branch, then runs the complete verification gate.
 # Related:
 # - package.json
 # - tests/unit/ci-workflow-source.test.mts
@@ -62,14 +62,17 @@ jobs:
 
       - name: Activate final public V2
         if: github.event_name == 'pull_request'
-        run: python scripts/activate-public-v2-final.py
+        shell: bash
+        run: |
+          python scripts/activate-public-v2-final.py
+          python scripts/fix-public-v2-accent-tests.py
 
       - name: Commit final public V2 activation
         if: github.event_name == 'pull_request'
         shell: bash
         run: |
           if git diff --quiet; then
-            echo "Final public V2 is already active."
+            echo "Final public V2 and its accented test contracts are already active."
             exit 0
           fi
           git config user.name "github-actions[bot]"
@@ -84,8 +87,12 @@ jobs:
             components/public/marketing-ui.tsx \
             lib/i18n/public-v2-copy.ts \
             lib/i18n/public-v2-fr-copy.ts \
-            lib/seo.ts
-          git commit -m "feat(public): activate complete fr-CA V2 and unified navigation"
+            lib/seo.ts \
+            tests/unit/i18n-copy.test.mts \
+            tests/unit/marketing-header-source.test.mts \
+            tests/unit/public-growth-copy-source.test.mts \
+            tests/unit/public-v2-positioning.test.mts
+          git commit -m "test(i18n): align contracts with complete accented fr-CA V2"
           branch="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
           git push origin "HEAD:${branch}"
 
