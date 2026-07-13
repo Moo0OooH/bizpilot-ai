@@ -3,7 +3,7 @@
  * File: components/public/bizpilot-v2-page.tsx
  * Project: BizPilot AI
  * Description: Shared renderer for the universal public-site V2 pages.
- * Role: Keeps product positioning, responsive structure, localization, and roadmap boundaries consistent across public routes.
+ * Role: Keeps product positioning, responsive structure, localization, roadmap boundaries, and route-aware conversion paths consistent.
  * Related:
  * - lib/i18n/public-v2-copy.ts
  * - components/public/marketing-ui.tsx
@@ -14,7 +14,7 @@
  * ============================================================
  */
 
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { JsonLdScript } from "@/components/public/json-ld";
 import {
@@ -61,12 +61,81 @@ const cardIcons: readonly MarketingIconName[] = [
   "target",
 ];
 
-function cardToneStyle(tone: PublicV2Card["tone"]) {
+type RouteLinks = Readonly<{
+  finalPrimary: string;
+  finalSecondary: string;
+  heroPrimary: string;
+  heroSecondary: string;
+}>;
+
+function linksForRoute(path: PublicCanonicalRoute): RouteLinks {
+  switch (path) {
+    case "/features":
+      return {
+        finalPrimary: "/demo",
+        finalSecondary: "/comparison",
+        heroPrimary: "/demo",
+        heroSecondary: "/trust",
+      };
+    case "/demo":
+      return {
+        finalPrimary: "/pilot",
+        finalSecondary: "/pricing",
+        heroPrimary: "/pilot",
+        heroSecondary: "/features",
+      };
+    case "/pricing":
+      return {
+        finalPrimary: "/pilot",
+        finalSecondary: "/faq",
+        heroPrimary: "/pilot",
+        heroSecondary: "/trust",
+      };
+    case "/trust":
+      return {
+        finalPrimary: "/demo",
+        finalSecondary: "/faq",
+        heroPrimary: "/demo",
+        heroSecondary: "/privacy",
+      };
+    case "/comparison":
+      return {
+        finalPrimary: "/demo",
+        finalSecondary: "/pilot",
+        heroPrimary: "/demo",
+        heroSecondary: "/features",
+      };
+    case "/industries/cleaning":
+      return {
+        finalPrimary: "/pilot",
+        finalSecondary: "/pricing",
+        heroPrimary: "/demo",
+        heroSecondary: "/pilot",
+      };
+    case "/faq":
+      return {
+        finalPrimary: "/demo",
+        finalSecondary: "/trust",
+        heroPrimary: "/demo",
+        heroSecondary: "/pilot",
+      };
+    default:
+      return {
+        finalPrimary: "/demo",
+        finalSecondary: "/pilot",
+        heroPrimary: "/demo",
+        heroSecondary: "/trust",
+      };
+  }
+}
+
+function cardToneStyle(tone: PublicV2Card["tone"]): CSSProperties | undefined {
   if (tone === "gold") {
     return {
       background:
         "linear-gradient(145deg, color-mix(in srgb, var(--warning) 10%, var(--surface)) 0%, var(--surface) 64%)",
-      borderColor: "color-mix(in srgb, var(--warning) 30%, var(--border-default))",
+      borderColor:
+        "color-mix(in srgb, var(--warning) 30%, var(--border-default))",
     };
   }
 
@@ -74,7 +143,8 @@ function cardToneStyle(tone: PublicV2Card["tone"]) {
     return {
       background:
         "linear-gradient(145deg, color-mix(in srgb, var(--danger) 8%, var(--surface)) 0%, var(--surface) 64%)",
-      borderColor: "color-mix(in srgb, var(--danger) 26%, var(--border-default))",
+      borderColor:
+        "color-mix(in srgb, var(--danger) 26%, var(--border-default))",
     };
   }
 
@@ -82,7 +152,8 @@ function cardToneStyle(tone: PublicV2Card["tone"]) {
     return {
       background:
         "linear-gradient(145deg, color-mix(in srgb, var(--primary) 9%, var(--surface)) 0%, var(--surface) 64%)",
-      borderColor: "color-mix(in srgb, var(--primary) 26%, var(--border-default))",
+      borderColor:
+        "color-mix(in srgb, var(--primary) 26%, var(--border-default))",
     };
   }
 
@@ -90,7 +161,8 @@ function cardToneStyle(tone: PublicV2Card["tone"]) {
     return {
       background:
         "linear-gradient(145deg, color-mix(in srgb, var(--accent) 10%, var(--surface)) 0%, var(--surface) 64%)",
-      borderColor: "color-mix(in srgb, var(--accent) 28%, var(--border-default))",
+      borderColor:
+        "color-mix(in srgb, var(--accent) 28%, var(--border-default))",
     };
   }
 
@@ -115,7 +187,9 @@ function PageCard({ card, index }: Readonly<{ card: PublicV2Card; index: number 
           <MarketingIcon name={cardIcons[index % cardIcons.length] ?? "check"} />
         </span>
         {card.badge ? (
-          <MarketingBadge toneName={card.tone ?? "neutral"}>{card.badge}</MarketingBadge>
+          <MarketingBadge toneName={card.tone ?? "neutral"}>
+            {card.badge}
+          </MarketingBadge>
         ) : null}
       </div>
       <h3
@@ -203,7 +277,9 @@ function SectionHeading({
             color: marketingTone.blue,
           }}
         >
-          <MarketingIcon name={sectionIcons[index % sectionIcons.length] ?? "check"} />
+          <MarketingIcon
+            name={sectionIcons[index % sectionIcons.length] ?? "check"}
+          />
         </span>
         {eyebrow ? (
           <p
@@ -244,6 +320,7 @@ export function BizPilotV2Page({
   path: PublicCanonicalRoute;
 }>) {
   const navCopy = getPublicV2NavCopy(language);
+  const links = linksForRoute(path);
   const breadcrumb = buildBreadcrumbJsonLd(
     [
       { name: "BizPilot AI", path: "/" },
@@ -257,7 +334,10 @@ export function BizPilotV2Page({
       className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
-      <JsonLdScript data={breadcrumb} id={`bizpilot-v2-${path.replaceAll("/", "-") || "home"}-breadcrumb`} />
+      <JsonLdScript
+        data={breadcrumb}
+        id={`bizpilot-v2-${path.replaceAll("/", "-") || "home"}-breadcrumb`}
+      />
       {faqItems?.length ? (
         <JsonLdScript
           data={buildFaqPageJsonLd(faqItems, language)}
@@ -271,7 +351,7 @@ export function BizPilotV2Page({
           <MarketingPageHero
             actions={[
               {
-                href: path === "/demo" ? "/pilot" : "/demo",
+                href: links.heroPrimary,
                 label: (
                   <>
                     {copy.primaryCta}
@@ -280,7 +360,7 @@ export function BizPilotV2Page({
                 ),
               },
               {
-                href: path === "/trust" ? "/privacy" : "/trust",
+                href: links.heroSecondary,
                 label: copy.secondaryCta,
                 variant: "secondary",
               },
@@ -291,7 +371,8 @@ export function BizPilotV2Page({
             signals={copy.signals.map((signal, index) => ({
               icon: sectionIcons[index % sectionIcons.length] ?? "check",
               label: signal.label,
-              toneName: index === 1 ? "blue" : index === 2 ? "gold" : "teal",
+              toneName:
+                index === 1 ? "blue" : index === 2 ? "gold" : "teal",
               value: signal.value,
             }))}
             title={copy.title}
@@ -341,7 +422,11 @@ export function BizPilotV2Page({
               }`}
             >
               {section.cards.map((card, cardIndex) => (
-                <PageCard card={card} index={cardIndex} key={`${card.title}-${cardIndex}`} />
+                <PageCard
+                  card={card}
+                  index={cardIndex}
+                  key={`${card.title}-${cardIndex}`}
+                />
               ))}
             </div>
           </MarketingShell>
@@ -372,7 +457,9 @@ export function BizPilotV2Page({
                   <MarketingIcon name="warning" />
                 </span>
                 <div className="min-w-0">
-                  <MarketingBadge toneName="gold">{copy.notice.badge}</MarketingBadge>
+                  <MarketingBadge toneName="gold">
+                    {copy.notice.badge}
+                  </MarketingBadge>
                   <h2
                     className="bp-card-title bp-copy-section-title mt-4 font-black leading-tight"
                     style={{ color: marketingTone.text }}
@@ -425,11 +512,15 @@ export function BizPilotV2Page({
                 </p>
               </div>
               <div className="bp-button-row flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <MarketingButton href="/demo" language={language}>
+                <MarketingButton href={links.finalPrimary} language={language}>
                   {copy.finalCta.primary}
                   <MarketingIcon name="arrow" />
                 </MarketingButton>
-                <MarketingButton href="/pilot" language={language} variant="secondary">
+                <MarketingButton
+                  href={links.finalSecondary}
+                  language={language}
+                  variant="secondary"
+                >
                   {copy.finalCta.secondary}
                 </MarketingButton>
               </div>
