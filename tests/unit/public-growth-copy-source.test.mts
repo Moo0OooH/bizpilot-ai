@@ -41,7 +41,7 @@ test("features copy follows the current smart-intake workflow", () => {
     /Gmail, WhatsApp, Instagram, Messenger, and SMS/i,
   );
   assert.match(english.home.control.title, /owner keeps the decision/i);
-  assert.match(french.home.control.title, /proprietaire garde la decision/i);
+  assert.match(french.home.control.title, /propriétaire garde la décision/i);
 });
 
 test("cleaning remains the first complete vertical without booking claims", () => {
@@ -91,7 +91,7 @@ test("pilot conversion stays founder-led, measurable, and non-submitting", () =>
     english.pilot.notice?.body ?? "",
     /Real customer data, payment, and onboarding begin only after explicit/i,
   );
-  assert.match(french.pilot.notice?.badge ?? "", /Porte d'approbation/i);
+  assert.match(french.pilot.notice?.badge ?? "", /Porte d’approbation/i);
 
   assert.equal(pilotSource.includes("PilotRequestTemplateCard"), true);
   assert.equal(pilotSource.includes('id="pilot-request-template"'), true);

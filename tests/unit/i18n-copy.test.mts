@@ -1189,7 +1189,7 @@ describe("BizPilot language copy", () => {
 
     assert.match(v2English.badge, /Cleaning businesses first/i);
     assert.match(v2English.notice?.badge ?? "", /Approval gate/i);
-    assert.match(v2French.notice?.badge ?? "", /Porte d'approbation/i);
+    assert.match(v2French.notice?.badge ?? "", /Porte d’approbation/i);
     assert.equal(v2English.sections.length, 2);
     assert.equal(v2French.sections.length, 2);
 

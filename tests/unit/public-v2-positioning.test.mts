@@ -83,7 +83,7 @@ describe("public V2 positioning", () => {
     assert.equal(english.home.industries.cards[0]?.title, "Cleaning");
 
     assert.match(french.home.hero.body, /entreprises de services/i);
-    assert.match(french.home.hero.body, /entreprises d'entretien/i);
+    assert.match(french.home.hero.body, /entreprises d’entretien/i);
     assert.equal(french.home.industries.cards[0]?.title, "Entretien");
   });
 
@@ -131,7 +131,7 @@ describe("public V2 positioning", () => {
       );
       assert.match(
         faq[2]?.answer ?? "",
-        language === "fr-CA" ? /n'invente pas de prix/i : /does not invent pricing/i,
+        language === "fr-CA" ? /n’invente pas de prix/i : /does not invent pricing/i,
       );
     }
   });

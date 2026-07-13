@@ -59,7 +59,7 @@ describe("public marketing header source contract", () => {
   it("uses content-fit header behavior without truncating the brand tagline", () => {
     assert.match(marketingUiSource, /min-\[1240px\]:flex/);
     assert.match(marketingUiSource, /min-\[1240px\]:block/);
-    assert.match(marketingUiSource, /Lead recovery for cleaning businesses/);
+    assert.match(marketingUiSource, /Smart customer intake and reply workspace/);
     assert.equal(marketingUiSource.includes("truncate"), false);
   });
 
