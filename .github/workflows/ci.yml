@@ -2,13 +2,17 @@
 # File: .github/workflows/ci.yml
 # Project: BizPilot AI
 # Description: Credential-free GitHub Actions validation for the application.
-# Role: Applies the one-time final V2 activation and accented fr-CA test alignment on the PR branch, then runs the complete verification gate.
+# Role: Runs the same lint, typecheck, unit-test, and build gate as pnpm verify and preserves a failure log for diagnosis.
 # Related:
 # - package.json
 # - tests/unit/ci-workflow-source.test.mts
 # Author: MoOoH
 # Created: 2026-05-04
 # Last Updated: 2026-07-13
+# Change Log:
+# - 2026-07-13: Restored the final read-only workflow after completing the universal V2 and full fr-CA migration.
+# - 2026-07-13: Retains the complete verify log only when validation fails.
+# - 2026-07-12: Isolated CI from managed Supabase and consolidated validation through pnpm verify.
 # ============================================================
 
 name: CI
@@ -21,7 +25,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -41,9 +45,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
-          fetch-depth: 0
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v6
@@ -59,42 +60,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Activate final public V2
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          python scripts/activate-public-v2-final.py
-          python scripts/fix-public-v2-accent-tests.py
-
-      - name: Commit final public V2 activation
-        if: github.event_name == 'pull_request'
-        shell: bash
-        run: |
-          if git diff --quiet; then
-            echo "Final public V2 and its accented test contracts are already active."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            app/content-studio/page.tsx \
-            app/faster-quote-replies/page.tsx \
-            app/privacy/page.tsx \
-            app/quote-link-guide/page.tsx \
-            app/security/page.tsx \
-            app/terms/page.tsx \
-            components/public/marketing-ui.tsx \
-            lib/i18n/public-v2-copy.ts \
-            lib/i18n/public-v2-fr-copy.ts \
-            lib/seo.ts \
-            tests/unit/i18n-copy.test.mts \
-            tests/unit/marketing-header-source.test.mts \
-            tests/unit/public-growth-copy-source.test.mts \
-            tests/unit/public-v2-positioning.test.mts
-          git commit -m "test(i18n): align contracts with complete accented fr-CA V2"
-          branch="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
-          git push origin "HEAD:${branch}"
 
       - name: Verify
         shell: bash
