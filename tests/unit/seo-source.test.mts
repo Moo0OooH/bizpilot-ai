@@ -32,7 +32,6 @@ import { describe, it } from "node:test";
 import { getPolicyCopy } from "../../lib/i18n/policy-copy.ts";
 import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
 import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
-import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
 import {
   forbiddenPublicEventPayloadKeys,
   publicEventCatalog,
