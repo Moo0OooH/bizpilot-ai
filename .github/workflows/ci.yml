@@ -10,9 +10,7 @@
 # Created: 2026-05-04
 # Last Updated: 2026-07-13
 # Change Log:
-# - 2026-07-13: Temporarily applies the final V2 copy and verification corrections on the active PR branch.
-# - 2026-07-13: Temporarily migrates legacy public-site tests to the universal V2 contracts on the active PR branch.
-# - 2026-07-13: Temporarily applies and commits the exact V2 strict-type fixes on the active PR branch before validation.
+# - 2026-07-13: Temporarily normalizes the final duplicate V2 test import on the active PR branch.
 # - 2026-07-13: Uploads the complete verify log only when validation fails.
 # - 2026-07-12: Isolated CI from managed Supabase and consolidated validation through pnpm verify.
 # ============================================================
@@ -66,80 +64,38 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Apply exact V2 source and test-contract fixes
+      - name: Normalize final V2 verification import
         if: github.event_name == 'pull_request'
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
 
-          def ensure_replace(path: str, old: str, new: str) -> None:
-              file = Path(path)
-              text = file.read_text(encoding="utf-8")
-              if old in text:
-                  file.write_text(text.replace(old, new), encoding="utf-8")
-                  return
-              if new not in text:
-                  raise SystemExit(f"Neither expected source nor fixed source exists in {path}")
-
-          ensure_replace(
-              "components/public/bizpilot-v2-home.tsx",
-              "<p>{copy.intakeLabel}</p>",
-              "<p>{copy.workspace.intakeLabel}</p>",
+          path = Path("tests/unit/seo-source.test.mts")
+          text = path.read_text(encoding="utf-8")
+          duplicate = (
+              'import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";\n'
+              'import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";\n'
           )
-          for class_name in ("statementCard", "timelineCard", "featureCard", "finalCard"):
-              ensure_replace(
-                  "components/public/bizpilot-v2-home.tsx",
-                  f"className={{styles.{class_name}}}",
-                  f"className={{styles.{class_name} ?? \"\"}}",
-              )
-
-          ensure_replace(
-              "app/pilot/page.tsx",
-              "body: copy.sections[1]?.title,",
-              "body: copy.sections[1]?.title ?? copy.body,",
-          )
-          ensure_replace(
-              "app/pilot/page.tsx",
-              "items: copy.sections[1]?.cards.map((card, index) => ({",
-              "items: (copy.sections[1]?.cards ?? []).map((card, index) => ({",
-          )
-
-          ensure_replace(
-              "components/public/bizpilot-v2-page.tsx",
-              "  body?: string;\n  eyebrow?: string;",
-              "  body?: string | undefined;\n  eyebrow?: string | undefined;",
-          )
-
-          ensure_replace(
-              "tests/unit/public-visual-stability-source.test.mts",
-              '"copy.hero.placements.map",',
-              '"copy.placements.map",',
-          )
+          single = 'import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";\n'
+          if duplicate in text:
+              path.write_text(text.replace(duplicate, single), encoding="utf-8")
+          elif text.count(single) != 1:
+              raise SystemExit("Expected exactly one getPublicV2Copy import after normalization.")
           PY
-          python scripts/patch-public-v2-tests.py
-          python scripts/patch-public-v2-final-checks.py
 
-      - name: Commit exact V2 source and test-contract fixes
+      - name: Commit final V2 import normalization
         if: github.event_name == 'pull_request'
         shell: bash
         run: |
           if git diff --quiet; then
-            echo "Exact V2 source and test fixes are already committed."
+            echo "Final V2 import is already normalized."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            app/pilot/page.tsx \
-            components/public/bizpilot-v2-home.tsx \
-            components/public/bizpilot-v2-page.tsx \
-            lib/i18n/public-v2-copy.ts \
-            tests/unit/i18n-copy.test.mts \
-            tests/unit/public-v2-positioning.test.mts \
-            tests/unit/public-visual-stability-source.test.mts \
-            tests/unit/seo-source.test.mts
-          git commit -m "fix(public): close final V2 verification gaps"
+          git add tests/unit/seo-source.test.mts
+          git commit -m "fix(test): remove duplicate V2 SEO import"
           branch="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
           git push origin "HEAD:${branch}"
 
