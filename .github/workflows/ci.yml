@@ -2,16 +2,13 @@
 # File: .github/workflows/ci.yml
 # Project: BizPilot AI
 # Description: Credential-free GitHub Actions validation for the application.
-# Role: Runs the same lint, typecheck, unit-test, and build gate as pnpm verify and preserves a failure log for diagnosis.
+# Role: Applies the one-time final V2 activation patch on the PR branch, then runs the complete verification gate.
 # Related:
 # - package.json
 # - tests/unit/ci-workflow-source.test.mts
 # Author: MoOoH
 # Created: 2026-05-04
 # Last Updated: 2026-07-13
-# Change Log:
-# - 2026-07-13: Restored read-only final CI after the V2 migration and retained failure-log artifacts.
-# - 2026-07-12: Isolated CI from managed Supabase and consolidated validation through pnpm verify.
 # ============================================================
 
 name: CI
@@ -24,7 +21,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -44,6 +41,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 0
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v6
@@ -59,6 +59,35 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Activate final public V2
+        if: github.event_name == 'pull_request'
+        run: python scripts/activate-public-v2-final.py
+
+      - name: Commit final public V2 activation
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "Final public V2 is already active."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            app/content-studio/page.tsx \
+            app/faster-quote-replies/page.tsx \
+            app/privacy/page.tsx \
+            app/quote-link-guide/page.tsx \
+            app/security/page.tsx \
+            app/terms/page.tsx \
+            components/public/marketing-ui.tsx \
+            lib/i18n/public-v2-copy.ts \
+            lib/i18n/public-v2-fr-copy.ts \
+            lib/seo.ts
+          git commit -m "feat(public): activate complete fr-CA V2 and unified navigation"
+          branch="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME}}"
+          git push origin "HEAD:${branch}"
 
       - name: Verify
         shell: bash
