@@ -17,6 +17,7 @@
 import type { HomeNavCopy } from "./home-copy.ts";
 import { buildPublicV2FrenchCopy } from "./public-v2-fr-copy.ts";
 import { buildPublicV2FrenchCopy } from "./public-v2-fr-copy.ts";
+import { buildPublicV2FrenchCopy } from "./public-v2-fr-copy.ts";
 import {
   DEFAULT_LANGUAGE,
   readSupportedLanguage,
