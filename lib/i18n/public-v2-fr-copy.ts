@@ -15,7 +15,8 @@
 
 import type { PublicV2Copy } from "./public-v2-copy.ts";
 
-export function buildPublicV2FrenchCopy(): PublicV2Copy {
+export function buildPublicV2FrenchCopy(legacyCopy: PublicV2Copy): PublicV2Copy {
+  void legacyCopy;
   const nav = {
     brandSubtitle: "Espace intelligent de demandes client et de réponses",
     cleaning: "Pilote entretien",

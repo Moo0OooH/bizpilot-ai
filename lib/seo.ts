@@ -7,10 +7,10 @@
  * Related:
  * - app/sitemap.ts
  * - app/robots.ts
- * - lib/i18n/public-site-copy.ts
+ * - lib/i18n/public-v2-copy.ts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-07-05: Added richer public metadata identity, bilingual OG alternates, and crawler preview policy.
  * - 2026-06-21: Added the dedicated public FAQ route to canonical metadata helpers.
@@ -133,7 +133,7 @@ export function buildPublicMetadata(
       description: copy.description,
       images: [
         {
-          alt: "BizPilot AI lead recovery workspace preview",
+          alt: "BizPilot AI smart customer intake and reply workspace preview",
           height: 630,
           url: publicAssetUrl("/opengraph-image"),
           width: 1200,

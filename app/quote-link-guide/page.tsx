@@ -37,7 +37,7 @@ import {
   marketingTone,
   type MarketingIconName,
 } from "@/components/public/marketing-ui";
-import { getHomeCopy } from "@/lib/i18n/home-copy";
+import { getPublicV2NavCopy } from "@/lib/i18n/public-v2-copy";
 import { INTERFACE_LANGUAGE_COOKIE } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
@@ -81,7 +81,7 @@ export default async function QuoteLinkGuidePage({
   searchParams,
 }: QuoteLinkGuidePageProps = {}) {
   const language = await readPublicLanguage(searchParams);
-  const navCopy = getHomeCopy(language).nav;
+  const navCopy = getPublicV2NavCopy(language);
   const siteCopy = getPublicSiteCopy(language);
   const copy = siteCopy.quoteLinkGuide;
 

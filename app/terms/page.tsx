@@ -2,7 +2,7 @@
  * ============================================================
  * File: app/terms/page.tsx
  * Project: BizPilot AI
- * Description: Public pilot terms route for founder-led quote recovery.
+ * Description: Public pilot terms route for the founder-led smart-intake workflow.
  * Role: Keeps staged pricing, manual billing, and no-hidden-automation terms visible.
  * Related:
  * - components/public/policy-page.tsx
@@ -20,7 +20,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { PolicyPage } from "@/components/public/policy-page";
-import { getHomeCopy } from "@/lib/i18n/home-copy";
+import { getPublicV2NavCopy } from "@/lib/i18n/public-v2-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
@@ -58,7 +58,7 @@ export default async function TermsPage({ searchParams }: TermsPageProps = {}) {
     <PolicyPage
       copy={getPolicyCopy(language).terms}
       language={language}
-      navCopy={getHomeCopy(language).nav}
+      navCopy={getPublicV2NavCopy(language)}
       pagePath="/terms"
     />
   );

@@ -15,6 +15,7 @@
  */
 
 import type { HomeNavCopy } from "./home-copy.ts";
+import { buildPublicV2FrenchCopy } from "./public-v2-fr-copy.ts";
 import {
   DEFAULT_LANGUAGE,
   readSupportedLanguage,
@@ -1219,7 +1220,9 @@ const frenchCopy: PublicV2Copy = {
 export const PUBLIC_V2_SOURCE_LANGUAGE = DEFAULT_LANGUAGE;
 
 export function getPublicV2Copy(language: unknown): PublicV2Copy {
-  return readSupportedLanguage(language) === "fr-CA" ? frenchCopy : englishCopy;
+  return readSupportedLanguage(language) === "fr-CA"
+    ? buildPublicV2FrenchCopy(frenchCopy)
+    : englishCopy;
 }
 
 export function getPublicV2NavCopy(language: SupportedLanguage): HomeNavCopy {
