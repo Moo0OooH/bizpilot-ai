@@ -105,7 +105,7 @@ function ProductScene({ copy }: Readonly<{ copy: PublicV2HomeCopy["hero"] }>) {
           <div className={styles.panelHeading}>
             <span className={styles.stepNumber}>01</span>
             <div>
-              <p>{copy.intakeLabel}</p>
+              <p>{copy.workspace.intakeLabel}</p>
               <strong>{copy.placements[0]}</strong>
             </div>
           </div>
@@ -248,7 +248,7 @@ export function BizPilotV2Home({
 
       <section className={`homepage-problem-section bp-section-tight ${styles.statementSection}`}>
         <MarketingShell>
-          <MarketingCard className={styles.statementCard}>
+          <MarketingCard className={styles.statementCard ?? ""}>
             <span className={styles.statementIcon}>
               <MarketingIcon name="message" />
             </span>
@@ -354,7 +354,7 @@ export function BizPilotV2Home({
                   <span>{moment.badge}</span>
                   {index < copy.day.moments.length - 1 ? <i aria-hidden="true" /> : null}
                 </div>
-                <MarketingCard className={styles.timelineCard}>
+                <MarketingCard className={styles.timelineCard ?? ""}>
                   <h3>{moment.title}</h3>
                   <p>{moment.body}</p>
                 </MarketingCard>
@@ -392,7 +392,7 @@ export function BizPilotV2Home({
           />
           <div className={`bp-grid-three ${styles.featureGrid}`}>
             {copy.features.cards.map((card, index) => (
-              <MarketingCard className={styles.featureCard} key={card.title}>
+              <MarketingCard className={styles.featureCard ?? ""} key={card.title}>
                 <span>
                   <MarketingIcon name={featureIcons[index] ?? "check"} />
                 </span>
@@ -415,7 +415,7 @@ export function BizPilotV2Home({
 
       <section className={`bp-section ${styles.finalSection}`}>
         <MarketingShell>
-          <MarketingCard className={styles.finalCard}>
+          <MarketingCard className={styles.finalCard ?? ""}>
             <div className={styles.finalCopy}>
               <MarketingBadge toneName="blue">BizPilot AI</MarketingBadge>
               <h2 className="bp-section-title bp-copy-section-title">{copy.finalCta.title}</h2>

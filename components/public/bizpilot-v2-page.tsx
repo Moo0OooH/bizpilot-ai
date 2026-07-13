@@ -261,8 +261,8 @@ function SectionHeading({
   index,
   title,
 }: Readonly<{
-  body?: string;
-  eyebrow?: string;
+  body?: string | undefined;
+  eyebrow?: string | undefined;
   index: number;
   title: ReactNode;
 }>) {

@@ -118,9 +118,9 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
             }))}
             title={copy.title}
             visual={{
-              body: copy.sections[1]?.title,
+              body: copy.sections[1]?.title ?? copy.body,
               eyebrow: copy.badge,
-              items: copy.sections[1]?.cards.map((card, index) => ({
+              items: (copy.sections[1]?.cards ?? []).map((card, index) => ({
                 icon: index === 0 ? "search" : index === 1 ? "pen" : index === 2 ? "user" : "message",
                 label: card.badge ?? `${index + 1}`,
                 value: card.title,

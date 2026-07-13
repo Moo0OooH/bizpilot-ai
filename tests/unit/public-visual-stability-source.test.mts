@@ -131,7 +131,7 @@ describe("public V2 visual stability source contracts", () => {
       "homepage-problem-section",
       "homepage-demo-grid",
       "ProductScene",
-      "copy.hero.placements.map",
+      "copy.placements.map",
       "copy.workspace.fields.map",
       "copy.workspace.actions.map",
     ]) {
