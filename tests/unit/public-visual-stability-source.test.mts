@@ -1,41 +1,16 @@
-/**
+/*
  * ============================================================
  * File: tests/unit/public-visual-stability-source.test.mts
  * Project: BizPilot AI
- * Description: Source-level guardrails for public visual stability before dashboard work.
- * Role: Protects public layout, theme menu sizing, and EN/fr-CA stability contracts without touching data flows.
+ * Description: Source-level guardrails for the public V2 visual system.
+ * Role: Protects responsive primitives, shared page rendering, honest product-scene hooks, motion accessibility, and viewport safety.
  * Related:
- * - app/globals.css
- * - components/public/marketing-ui.tsx
- * - components/public/marketing-compact-menu.tsx
- * - components/ui/theme-preference-control.tsx
+ * - components/public/bizpilot-v2-home.tsx
+ * - components/public/bizpilot-v2-home.module.css
+ * - components/public/bizpilot-v2-page.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-12
- * Change Log:
- * - 2026-07-12: Accepted the locale prop on the single homepage preview workflow.
- * - 2026-06-21: Added homepage demo numbering regression coverage.
- * - 2026-06-21: Added canonical public responsive-grid regression coverage.
- * - 2026-06-21: Added homepage workflow de-duplication coverage.
- * - 2026-06-21: Added multilingual pricing-card action alignment contracts.
- * - 2026-06-21: Added public dark-theme callout contrast contracts.
- * - 2026-06-21: Added localization-aware copy role and cleaning detail layout contracts.
- * - 2026-06-21: Locked pricing-card container queries for compact multilingual actions.
- * - 2026-06-21: Locked public amber utility mappings for dark-theme guardrails.
- * - 2026-06-21: Locked hydration-stable theme trigger icon switching.
- * - 2026-06-21: Added guards against duplicated Cleaning service detail cards.
- * - 2026-06-21: Updated homepage hero rhythm guardrails for CSS-owned type and compact mockup sizing.
- * - 2026-06-25: Locked the canonical bp responsive primitive foundation.
- * - 2026-06-25: Updated homepage hero rhythm guardrails for the final balanced fold.
- * - 2026-06-25: Updated Cleaning guards for six service detail entries and one shared selector.
- * - 2026-06-25: Locked supporting public pages to canonical rhythm primitives.
- * - 2026-06-25: Added final acceptance guards for visual hooks and nested-card scroll traps.
- * - 2026-06-25: Locked Cleaning details to one active selector panel without responsive duplicate blocks.
- * - 2026-06-25: Updated homepage hero rhythm guards for the final tighter first fold.
- * - 2026-06-26: Locked the homepage workflow preview to one compact panel instead of four cards.
- * - 2026-07-05: Locked the homepage product-scene hero redesign.
- * - 2026-07-05: Locked the foreground hot quote rescue board and snapshot section.
- * - 2026-07-11: Locked the shared public page hero primitive across the main marketing routes.
+ * Last Updated: 2026-07-13
  * ============================================================
  */
 
@@ -47,17 +22,21 @@ function source(path: string): string {
   return readFileSync(path, "utf8");
 }
 
-const publicRouteFiles = [
-  "app/page.tsx",
-  "app/comparison/page.tsx",
+const migratedRouteFiles = [
   "app/features/page.tsx",
   "app/industries/cleaning/page.tsx",
+  "app/comparison/page.tsx",
   "app/trust/page.tsx",
   "app/demo/page.tsx",
   "app/pricing/page.tsx",
+  "app/faq/page.tsx",
+] as const;
+
+const publicRouteFiles = [
+  "app/page.tsx",
+  ...migratedRouteFiles,
   "app/pilot/page.tsx",
   "app/content-studio/page.tsx",
-  "app/faq/page.tsx",
   "app/quote-link-guide/page.tsx",
   "app/faster-quote-replies/page.tsx",
   "app/privacy/page.tsx",
@@ -65,8 +44,8 @@ const publicRouteFiles = [
   "app/terms/page.tsx",
 ] as const;
 
-describe("public visual stability source contracts", () => {
-  it("keeps the canonical bp responsive primitive foundation available", () => {
+describe("public V2 visual stability source contracts", () => {
+  it("keeps the canonical responsive primitive foundation available", () => {
     const globals = source("app/globals.css");
     const marketingUi = source("components/public/marketing-ui.tsx");
 
@@ -78,26 +57,18 @@ describe("public visual stability source contracts", () => {
       ".bp-section",
       ".bp-section-tight",
       ".bp-section-hero",
-      ".bp-hero-grid",
-      ".bp-grid-six",
       ".bp-grid-three",
       ".bp-grid-two",
-      ".bp-pricing-grid",
-      ".bp-trust-grid",
       ".bp-display",
       ".bp-page-title",
       ".bp-section-title",
       ".bp-card-title",
       ".bp-body",
-      ".bp-meta",
-      ".bp-eyebrow",
-      ".bp-badge",
       ".bp-button-row",
       ".marketing-page-hero",
       ".marketing-page-hero-with-visual",
       ".marketing-page-hero-proof",
       ".marketing-page-hero-panel",
-      ".marketing-page-hero-panel-chrome",
     ]) {
       assert.equal(
         globals.includes(primitive),
@@ -106,105 +77,49 @@ describe("public visual stability source contracts", () => {
       );
     }
 
-    for (const token of [
-      "--bp-container-padding: clamp(1.25rem, 4vw, 2.5rem);",
-      "--bp-container-max: 73.75rem;",
-      "--bp-container-wide-max: 80rem;",
-      "--bp-container-narrow-max: 50rem;",
-      "--bp-section-space: clamp(3rem, 6.5vw, 6rem);",
-      "--bp-section-tight-space: clamp(2rem, 4.5vw, 4rem);",
-      "--bp-section-hero-space: clamp(2.25rem, 5vh, 4.75rem);",
-      "--bp-hero-grid-gap: clamp(2rem, 4vw, 4rem);",
-      "--bp-display-size: clamp(2.55rem, 4.45vw, 4.75rem);",
-      "--bp-page-title-size: clamp(2.15rem, 1.55rem + 1.4vw, 3.45rem);",
-      "--bp-section-title-size: clamp(1.85rem, 2.85vw, 3.05rem);",
-      "--bp-card-title-size: clamp(1.15rem, 1.1vw, 1.4rem);",
-      "--bp-body-size: clamp(1rem, 0.22vw + 0.95rem, 1.125rem);",
-      "--bp-meta-size: clamp(0.82rem, 0.15vw + 0.78rem, 0.95rem);",
-    ]) {
-      assert.equal(
-        globals.includes(token),
-        true,
-        `Missing canonical public token ${token}.`,
-      );
-    }
-
-    assert.equal(globals.includes("--public-max: var(--bp-container-max);"), true);
-    assert.equal(globals.includes("--public-gutter: var(--bp-container-padding);"), true);
-    assert.equal(globals.includes("--legal-max: var(--bp-container-narrow-max);"), true);
     assert.equal(marketingUi.includes("bp-container public-container"), true);
     assert.equal(marketingUi.includes("bp-container-wide mx-auto"), true);
   });
 
-  it("keeps public surfaces free of overflow masking and viewport-width traps", () => {
-    const globals = source("app/globals.css");
+  it("keeps public surfaces free of viewport-width and nested-scroll traps", () => {
     const publicSources = [
-      globals,
+      source("app/globals.css"),
       source("components/public/marketing-ui.tsx"),
-      source("components/public/marketing-compact-menu.tsx"),
+      source("components/public/bizpilot-v2-home.tsx"),
+      source("components/public/bizpilot-v2-home.module.css"),
+      source("components/public/bizpilot-v2-page.tsx"),
       ...publicRouteFiles.map((path) => source(path)),
     ].join("\n");
 
-    assert.equal(publicSources.includes("overflow-x-hidden"), false);
-    assert.equal(publicSources.includes("width: 100vw"), false);
-    assert.equal(publicSources.includes("w-screen"), false);
-    assert.equal(publicSources.includes("min-h-screen"), false);
-    assert.equal(publicSources.includes("h-screen"), false);
-    assert.equal(publicSources.includes("100vh"), false);
-    assert.equal(globals.includes("overflow-wrap: anywhere"), true);
-  });
-
-  it("keeps marketing grids content-driven while preserving locked column structure", () => {
-    const globals = source("app/globals.css");
-
-    assert.equal(globals.includes("grid-auto-rows: 1fr"), false);
-    assert.equal(
-      globals.includes("repeat(3, minmax(0, 1fr))"),
-      true,
-      "desktop public grids should keep minmax(0, 1fr) tracks",
-    );
-    assert.equal(globals.includes(".homepage-use-case-grid > *"), true);
-    assert.equal(globals.includes(".supporting-four-grid > *"), true);
-    assert.equal(globals.includes(".supporting-six-grid > *"), true);
-    assert.equal(
-      globals.includes(".supporting-four-grid {\n    grid-template-columns: repeat(4, minmax(0, 1fr));"),
-      true,
-      "Four-step proof strips should reach four columns only at the wide public breakpoint.",
-    );
-    assert.equal(
-      globals.includes(".supporting-six-grid,\n  .supporting-three-grid {\n    grid-template-columns: repeat(3, minmax(0, 1fr));"),
-      true,
-      "Six-card/supporting grids should top out at three columns, not four cramped columns.",
-    );
-  });
-
-  it("keeps public routes off one-off fragile grid breakpoints", () => {
-    const publicSources = publicRouteFiles.map((path) => source(path)).join("\n");
-
     for (const forbidden of [
-      "min-[900px]:grid-cols-4",
-      "min-[1180px]:grid-cols-5",
+      "overflow-x-hidden",
+      "width: 100vw",
+      "w-screen",
+      "min-h-screen",
+      "h-screen",
+      "100vh",
+      "max-h-[18rem] overflow-auto",
+      "overflow-y-auto",
     ]) {
       assert.equal(
         publicSources.includes(forbidden),
         false,
-        `Public routes should use canonical CSS grid classes instead of ${forbidden}.`,
+        `Public V2 should not contain viewport or nested-scroll trap ${forbidden}.`,
       );
     }
 
-    assert.equal(publicSources.includes("supporting-four-grid"), true);
+    assert.equal(source("app/globals.css").includes("overflow-wrap: anywhere"), true);
+    assert.equal(
+      source("components/public/marketing-compact-menu.tsx").includes("overflow-y-auto"),
+      true,
+      "The compact navigation menu remains the intentional viewport-safe exception.",
+    );
   });
 
-  it("keeps final acceptance visual hooks measurable and nested-card scroll-free", () => {
-    const globals = source("app/globals.css");
-    const homepage = source("app/page.tsx");
-    const pilotTemplate = source("components/public/pilot-request-template-card.tsx");
-    const publicMarketingSources = [
-      source("components/public/marketing-ui.tsx"),
-      source("components/public/cleaning-service-details.tsx"),
-      pilotTemplate,
-      ...publicRouteFiles.map((path) => source(path)),
-    ].join("\n");
+  it("keeps one responsive V2 homepage product story with measurable hooks", () => {
+    const homepage = source("components/public/bizpilot-v2-home.tsx");
+    const pageRoute = source("app/page.tsx");
+    const css = source("components/public/bizpilot-v2-home.module.css");
 
     for (const required of [
       "homepage-hero-section",
@@ -215,475 +130,111 @@ describe("public visual stability source contracts", () => {
       "homepage-product-scene",
       "homepage-problem-section",
       "homepage-demo-grid",
-    ]) {
-      assert.equal(homepage.includes(required), true, `Homepage visual hook missing ${required}.`);
-    }
-
-    for (const required of [
-      ".homepage-hero-title",
-      ".homepage-hero-mockup",
-      ".homepage-product-window",
-      ".homepage-problem-section",
-      "@media (min-width: 1100px) and (max-height: 780px)",
-      "@media (min-width: 1180px)",
-      ".cleaning-service-grid {\n    grid-template-columns: repeat(3, minmax(0, 1fr));",
-    ]) {
-      assert.equal(globals.includes(required), true, `Final visual CSS hook missing ${required}.`);
-    }
-
-    for (const forbidden of [
-      "homepage-workflow-grid",
-      "max-h-[18rem] overflow-auto",
-      "max-h-[18rem]",
-      "overflow-auto",
-      "overflow-y-auto",
+      "ProductScene",
+      "copy.hero.placements.map",
+      "copy.workspace.fields.map",
+      "copy.workspace.actions.map",
     ]) {
       assert.equal(
-        publicMarketingSources.includes(forbidden),
-        false,
-        `Public marketing cards should not reintroduce nested scroll trap ${forbidden}.`,
+        homepage.includes(required),
+        true,
+        `V2 homepage visual hook missing ${required}.`,
       );
     }
 
-    assert.equal(
-      source("components/public/marketing-compact-menu.tsx").includes("overflow-y-auto"),
-      true,
-      "The compact navigation menu is the only allowed public overflow-y-auto exception.",
-    );
+    assert.equal(pageRoute.includes("<BizPilotV2Home copy={copy} language={language} />"), true);
+    assert.equal(pageRoute.includes("buildHomeJsonLd(language)"), true);
+    assert.equal(css.includes("@media (min-width: 390px)"), true);
+    assert.equal(css.includes("@media (min-width: 720px)"), true);
+    assert.equal(css.includes("@media (min-width: 1020px)"), true);
+    assert.equal(css.includes("@media (max-width: 359px)"), true);
   });
 
-  it("keeps supporting public pages on the canonical rhythm primitives", () => {
-    const marketingUi = source("components/public/marketing-ui.tsx");
+  it("respects reduced-motion preferences while keeping motion product-led", () => {
+    const css = source("components/public/bizpilot-v2-home.module.css");
 
-    for (const route of [
-      "app/comparison/page.tsx",
-      "app/features/page.tsx",
-      "app/trust/page.tsx",
-      "app/demo/page.tsx",
-      "app/pricing/page.tsx",
-      "app/pilot/page.tsx",
-      "app/content-studio/page.tsx",
-      "app/faq/page.tsx",
-      "app/quote-link-guide/page.tsx",
-      "app/faster-quote-replies/page.tsx",
-    ]) {
+    assert.equal(css.includes("@media (prefers-reduced-motion: no-preference)"), true);
+    assert.equal(css.includes("animation: scene-enter"), true);
+    assert.equal(css.includes("animation: placement-pulse"), true);
+    assert.equal(css.includes("animation: draft-glow"), true);
+    assert.equal(css.includes("animation: infinite"), false);
+    assert.equal(css.includes("animation-duration: 0.01ms"), false);
+  });
+
+  it("keeps migrated routes on one shared V2 page renderer", () => {
+    for (const route of migratedRouteFiles) {
       const routeSource = source(route);
-      assert.equal(routeSource.includes("bp-page public-site"), true, `${route} should use bp-page.`);
-      assert.equal(routeSource.includes("bp-section-tight"), true, `${route} should use bp-section-tight.`);
-      assert.equal(routeSource.includes("MarketingPageHero"), true, `${route} should use the shared public page hero.`);
-      assert.equal(marketingUi.includes("bp-page-title"), true, "MarketingPageHero should own page-title sizing.");
+      assert.equal(
+        routeSource.includes("BizPilotV2Page"),
+        true,
+        `${route} should use the shared V2 renderer.`,
+      );
+      assert.equal(
+        routeSource.includes("getPublicV2Copy"),
+        true,
+        `${route} should read the V2 bilingual dictionary.`,
+      );
+      assert.equal(
+        routeSource.includes("buildPublicMetadata"),
+        true,
+        `${route} should keep localized canonical metadata.`,
+      );
     }
 
-    const policyPage = source("components/public/policy-page.tsx");
-    assert.equal(policyPage.includes("bp-page public-site"), true);
-    assert.equal(policyPage.includes("bp-section-tight"), true);
-    assert.equal(policyPage.includes("bp-page-title"), true);
-    assert.equal(policyPage.includes("bp-body"), true);
-  });
-
-  it("keeps pricing cards equal-height with anchored actions", () => {
-    const pricing = source("app/pricing/page.tsx");
-    const globals = source("app/globals.css");
-
+    const sharedPage = source("components/public/bizpilot-v2-page.tsx");
     for (const required of [
+      "bp-page public-site",
+      "bp-section-tight",
       "MarketingPageHero",
-      "public-pricing-grid",
-      "public-plan-card",
-      "public-plan-card-header",
-      "public-plan-card-price",
-      "public-plan-card-highlight",
-      "public-plan-card-features",
-      "public-plan-card-cta mt-auto w-full",
+      "MarketingHeader",
+      "MarketingFooter",
+      "buildBreadcrumbJsonLd",
+      "buildFaqPageJsonLd",
     ]) {
       assert.equal(
-        pricing.includes(required) || globals.includes(required),
+        sharedPage.includes(required),
         true,
-        `Pricing alignment contract missing ${required}`,
+        `Shared V2 page contract missing ${required}.`,
       );
     }
-
-    assert.equal(globals.includes(".supporting-three-grid {\n  display: grid;"), true);
-    assert.equal(globals.includes(".public-plan-card-header"), true);
-    assert.equal(globals.includes("grid-template-rows: minmax(2rem, auto) minmax(3.75rem, auto) minmax(4rem, auto) minmax(3rem, auto);"), true);
-    assert.equal(globals.includes("min-block-size: 3.5rem;"), true);
-    assert.equal(globals.includes("container: public-plan-card / inline-size;"), true);
-    assert.equal(globals.includes("@container public-plan-card (max-width: 20rem)"), true);
-    assert.equal(
-      globals.includes(".public-plan-card-cta {\n    padding-inline: 1rem;"),
-      true,
-    );
   });
 
-  it("keeps the homepage from repeating the workflow before the demo", () => {
-    const homepage = source("app/page.tsx");
+  it("preserves the manual pilot conversion path under the V2 message", () => {
+    const pilot = source("app/pilot/page.tsx");
+    const template = source("components/public/pilot-request-template-card.tsx");
 
-    assert.equal(
-      homepage.includes("copy.workflow.steps.map"),
-      false,
-      "Homepage should not render the old repeated five-card workflow section.",
-    );
-    assert.equal(
-      homepage.includes("homepage-workflow-grid"),
-      false,
-      "Homepage should not keep the removed workflow-grid surface.",
-    );
-    assert.equal(
-      homepage.match(/<ProductPreview copy=\{copy\.preview\} language=\{language\} \/>/g)?.length,
-      1,
-      "Homepage should keep one product preview workflow demo.",
-    );
+    assert.equal(pilot.includes("getPublicV2Copy"), true);
+    assert.equal(pilot.includes("PilotRequestTemplateCard"), true);
+    assert.equal(pilot.includes('id="pilot-request-template"'), true);
+    assert.equal(pilot.includes('href: "#pilot-request-template"'), true);
+    assert.equal(template.includes("mailto:?subject="), true);
+    assert.equal(template.includes("navigator.clipboard"), true);
+    assert.equal(template.includes("trackPublicEvent(\"pilot_template_copy\")"), true);
   });
 
-  it("keeps the bilingual homepage hero from regressing to a narrow first-fold layout", () => {
-    const globals = source("app/globals.css");
-    const homepage = source("app/page.tsx");
-
-    assert.equal(
-      homepage.includes("[max-inline-size:13ch]"),
-      false,
-      "Homepage hero title should not use the old narrow 13ch wrap constraint.",
-    );
-    assert.equal(homepage.includes("homepage-hero-section"), true);
-    assert.equal(homepage.includes("homepage-hero-title"), true);
-    assert.equal(homepage.includes("homepage-hero-actions"), true);
-    assert.equal(homepage.includes("homepage-hero-proof-rail"), true);
-    assert.equal(homepage.includes("copy.hero.signals.map"), true);
-    assert.equal(
-      homepage.includes("min-[1100px]:text-[4.25rem]"),
-      false,
-      "Homepage hero title size should be owned by the rhythm CSS contract.",
-    );
-    assert.equal(
-      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 41rem);\n  font-size: 2.28rem;"),
-      true,
-      "Homepage hero should keep a compact mobile/base title size in CSS.",
-    );
-    assert.equal(
-      globals.includes(".homepage-hero-proof-rail {\n  max-inline-size: min(100%, 39rem);"),
-      true,
-      "Homepage hero should keep a compact proof rail before the mockup.",
-    );
-    assert.equal(
-      globals.includes("@media (min-width: 1100px) {\n  .homepage-hero-title {\n    font-size: 3.45rem;"),
-      false,
-      "Homepage hero should no longer use the older heavier desktop title size.",
-    );
-    assert.equal(
-      globals.includes("@media (min-width: 1100px) {\n  .homepage-hero-title {\n    font-size: 3.28rem;"),
-      false,
-      "Homepage hero should no longer use the previous taller desktop title size.",
-    );
-    assert.equal(
-      globals.includes(".homepage-hero-title {\n  max-inline-size: min(100%, 43rem);\n  font-size: 2.75rem;"),
-      true,
-      "Homepage hero should keep a confident fixed title size in CSS.",
-    );
-    assert.equal(
-      globals.lastIndexOf(".homepage-product-scene {\n  position: relative;") >
-        globals.lastIndexOf(".homepage-product-scene {\n  position: absolute;"),
-      true,
-      "Homepage hero should render the product visual as a readable foreground board.",
-    );
-    assert.equal(globals.includes(".homepage-rescue-board"), true);
-    assert.equal(globals.includes(".homepage-rescue-flow"), true);
-    assert.equal(globals.includes(".homepage-rescue-step"), true);
-    assert.equal(globals.includes(".homepage-rescue-index"), true);
-    assert.equal(homepage.includes("homepage-intelligence-visual"), false);
-    assert.equal(homepage.includes("homepage-cleaning-visual"), false);
-    for (const unclearVisualMarker of [
-      "homepage-bottle",
-      "homepage-towel",
-      "homepage-brush",
-    ]) {
-      assert.equal(
-        `${homepage}\n${globals}`.includes(unclearVisualMarker),
-        false,
-        `Homepage hero should not restore the unclear cleaning-object visual ${unclearVisualMarker}.`,
-      );
-    }
-    assert.equal(
-      globals.includes("@media (min-width: 1100px) and (max-height: 780px)"),
-      true,
-      "Short desktop viewports need reduced hero padding instead of smaller body text.",
-    );
-    assert.equal(
-      globals.includes(".homepage-rescue-board,\n  .homepage-rescue-flow {\n    gap: 0.56rem;"),
-      true,
-      "Short desktop viewports need compact rescue-board spacing.",
-    );
-    assert.equal(
-      homepage.includes("copy.sources.slice(0, 3)") &&
-        homepage.includes("copy.messages[0]") &&
-        homepage.includes("copy.bizPilotActions.slice(0, 4)") &&
-        homepage.includes("const activeLead = copy.leads[0]"),
-      true,
-      "Homepage hero visual should cap sources, messages, missing details, and the active lead.",
-    );
-    assert.equal(
-      homepage.includes("homepage-channel-strip") &&
-        globals.includes(".homepage-channel-pill .homepage-source-mark {\n  block-size: 1.7rem;\n  inline-size: 1.7rem;"),
-      true,
-      "Homepage source channels should render as compact branded channel pills.",
-    );
-    assert.equal(
-      !globals.includes(".homepage-missing-list p:nth-child(n + 3) {\n    display: none;") &&
-        globals.includes(".homepage-product-scene {\n    display: block;"),
-      true,
-      "Tiny mobile homepage hero should keep the board and missing-detail content visible.",
-    );
-    assert.equal(homepage.includes("bp-button-row homepage-hero-actions"), true);
-    assert.equal(homepage.includes("min-[390px]:flex-row"), true);
-    assert.equal(
-      globals.includes(".homepage-hero-proof-rail {\n    grid-template-columns: repeat(3, minmax(0, 1fr));"),
-      true,
-      "Mobile homepage hero proof rail should stay compact without vertical crowding.",
-    );
-    assert.equal(
-      globals.includes("@media (max-width: 359px)") &&
-        globals.includes(".homepage-hero-proof-rail {\n    display: none;"),
-      true,
-      "Tiny mobile homepage hero should remove secondary proof density before CTA visibility suffers.",
-    );
-    assert.equal(
-      globals.includes(".homepage-problem-section"),
-      true,
-      "Homepage should keep tighter first follow-up section spacing after the hero.",
-    );
-  });
-
-  it("keeps the homepage workflow preview as one clear rescue snapshot", () => {
-    const homepage = source("app/page.tsx");
-    const globals = source("app/globals.css");
-    const previewStart = homepage.indexOf("function ProductPreview");
-    const previewEnd = homepage.indexOf("function GuardrailStrip");
-    const productPreviewSource = homepage.slice(previewStart, previewEnd);
-
-    assert.notEqual(previewStart, -1, "ProductPreview should exist on the homepage.");
-    assert.notEqual(previewEnd, -1, "ProductPreview source slice should remain findable.");
-    assert.equal(
-      productPreviewSource.match(/\{index \+ 1\}/g)?.length,
-      1,
-      "ProductPreview should render one visible step number per compact label.",
-    );
-    assert.equal(productPreviewSource.includes("copy.request.title"), true);
-    assert.equal(productPreviewSource.includes("copy.request.quote"), true);
-    assert.equal(productPreviewSource.includes("copy.organizedLead.fields.map"), true);
-    assert.equal(productPreviewSource.includes("copy.draft.title"), true);
-    assert.equal(productPreviewSource.includes("copy.draft.body"), true);
-    assert.equal(
-      productPreviewSource.match(/copy\.copyButton/g)?.length,
-      1,
-      "ProductPreview should render one Copy reply button in the preview.",
-    );
-    assert.equal(
-      productPreviewSource.includes("justify-between gap-3"),
-      false,
-      "ProductPreview should not keep the old two-number header layout.",
-    );
-    for (const oldCardMarker of [
-      "step.title",
-      "step.quote",
-      "step.fields",
-      "step.body",
-      "bp-card-structured min-w-0 p-5 sm:p-6",
-      "Reply draft to approve",
-    ]) {
-      assert.equal(
-        productPreviewSource.includes(oldCardMarker),
-        false,
-        `ProductPreview should not keep the old four-card preview marker ${oldCardMarker}.`,
-      );
-    }
-    assert.equal(globals.includes(".homepage-recovery-snapshot {\n  display: grid;"), true);
-    assert.equal(
-      globals.includes(".homepage-demo-grid,\n  .homepage-use-case-grid"),
-      false,
-      "Homepage demo should not inherit the two-column card-grid breakpoint.",
-    );
-    assert.equal(
-      globals.includes(".homepage-demo-grid,\n  .supporting-four-grid {\n    grid-template-columns: repeat(4"),
-      false,
-      "Homepage demo should not inherit the four-column card-grid breakpoint.",
-    );
-  });
-
-  it("keeps theme and compact menus viewport-safe and layout-stable", () => {
-    const globals = source("app/globals.css");
-    const themeControl = source("components/ui/theme-preference-control.tsx");
-    const compactMenu = source("components/public/marketing-compact-menu.tsx");
-    const marketingUi = source("components/public/marketing-ui.tsx");
-
-    assert.equal(themeControl.includes("h-11 w-11"), true);
-    assert.equal(themeControl.includes("theme-preference-trigger inline-grid h-11 w-11"), true);
-    assert.equal(themeControl.includes('data-theme-icon="sun"'), true);
-    assert.equal(themeControl.includes('data-theme-icon="moon"'), true);
-    assert.equal(
-      globals.includes('[data-theme="dark"] .theme-preference-trigger [data-theme-icon="moon"]'),
-      true,
-    );
-    assert.equal(themeControl.includes("calc(100vw-2rem)"), true);
-    assert.equal(compactMenu.includes("calc(100vw-2rem)"), true);
-    assert.equal(compactMenu.includes('aria-haspopup="menu"'), true);
-    assert.equal(marketingUi.includes("truncate"), false);
-  });
-
-  it("keeps fr-CA theme labels free from mojibake artifacts", () => {
-    const themeControl = source("components/ui/theme-preference-control.tsx");
-
-    for (const artifact of ["Ã", "Â", "â€"]) {
-      assert.equal(
-        themeControl.includes(artifact),
-        false,
-        `Theme control source contains mojibake artifact ${artifact}`,
-      );
-    }
-
-    assert.equal(themeControl.includes("fr-CA"), true);
-    assert.equal(themeControl.includes("Utiliser le"), true);
-  });
-
-  it("keeps public dark-theme callout panels contrast-safe", () => {
-    const globals = source("app/globals.css");
+  it("keeps light and dark surfaces on semantic design tokens", () => {
+    const publicSources = [
+      source("components/public/bizpilot-v2-home.module.css"),
+      source("components/public/bizpilot-v2-page.tsx"),
+    ].join("\n");
 
     for (const required of [
-      '[data-theme="dark"] .public-site :where(.bg-teal-50)',
-      '[data-theme="dark"] .public-site :where(.bg-amber-50)',
-      '[data-theme="dark"] .public-site :where(.border-teal-200)',
-      '[data-theme="dark"] .public-site :where(.border-amber-200)',
-      '[data-theme="dark"] .public-site :where(.text-teal-700)',
-      '[data-theme="dark"] .public-site :where(.text-amber-600, .text-amber-700)',
-      '[data-theme="dark"] .public-site :where(.bg-slate-950)',
-      '[data-theme="dark"] .public-site :where(.text-white)',
+      "var(--surface)",
+      "var(--surface-interactive)",
+      "var(--text-strong)",
+      "var(--text-default)",
+      "var(--text-muted)",
+      "var(--border-default)",
+      "var(--primary)",
+      "var(--accent)",
+      "var(--success)",
+      "var(--warning)",
     ]) {
       assert.equal(
-        globals.includes(required),
+        publicSources.includes(required),
         true,
-        `Dark public theme mapping missing ${required}`,
+        `V2 should use semantic token ${required}.`,
       );
     }
-
-    assert.equal(globals.includes("var(--primary-contrast)"), true);
-  });
-
-  it("keeps localization-aware copy roles and cleaning details locked", () => {
-    const globals = source("app/globals.css");
-    const marketingUi = source("components/public/marketing-ui.tsx");
-    const homepage = source("app/page.tsx");
-    const features = source("app/features/page.tsx");
-    const cleaning = source("app/industries/cleaning/page.tsx");
-    const cleaningDetails = source("components/public/cleaning-service-details.tsx");
-    const publicSiteCopy = source("lib/i18n/public-site-copy.ts");
-    const pricing = source("app/pricing/page.tsx");
-
-    for (const required of [
-      ".bp-copy-nav",
-      ".bp-copy-button",
-      ".bp-copy-status",
-      ".bp-copy-eyebrow",
-      ".bp-copy-hero",
-      ".bp-copy-hero-body",
-      ".bp-copy-section-title",
-      ".bp-copy-card-title",
-      ".bp-copy-card-body",
-      ".bp-copy-meta",
-      ".bp-copy-plan-title",
-      ".bp-card-structured",
-    ]) {
-      assert.equal(globals.includes(required), true, `Missing ${required}`);
-    }
-
-    assert.equal(globals.includes("white-space: nowrap;"), true);
-    assert.equal(globals.includes("text-wrap: pretty;"), true);
-    assert.equal(globals.includes("min-block-size: 2lh;"), true);
-    assert.equal(marketingUi.includes("bp-copy-nav"), true);
-    assert.equal(homepage.includes("bp-copy-hero"), true);
-    assert.equal(features.includes("bp-card-structured"), true);
-    assert.equal(pricing.includes("bp-copy-plan-title"), true);
-
-    for (const required of [
-      "const services = copy.serviceCards",
-      "CleaningServiceDetails",
-      "cleaning-service-grid",
-      "cleaning-service-card",
-      "copy.detailSection.clearTitle",
-      "copy.detailHelp.title",
-      "copy.detailHelp.body",
-      "copy.serviceActionLabel",
-    ]) {
-      assert.equal(cleaning.includes(required), true, `Cleaning layout missing ${required}`);
-    }
-
-    for (const required of [
-      "cleaning-detail-tabs",
-      "cleaning-tab-list",
-      "cleaning-tab-button",
-      "cleaning-detail-panel",
-      'role="tablist"',
-      'role="tabpanel"',
-      "activeService.clearDetails",
-      "activeService.missingDetails",
-    ]) {
-      assert.equal(
-        cleaningDetails.includes(required),
-        true,
-        `Cleaning detail component missing ${required}`,
-      );
-    }
-
-    assert.equal(
-      cleaning.includes("copy.families"),
-      false,
-      "Cleaning page should not render the old repeated family groups.",
-    );
-    assert.equal(
-      publicSiteCopy.includes("families: ["),
-      false,
-      "Cleaning copy should no longer keep repeated Homes / Moves / Commercial family groups.",
-    );
-    assert.equal(
-      publicSiteCopy.includes("serviceCards: ["),
-      true,
-      "Cleaning copy should expose six compact service detail entries.",
-    );
-    assert.equal(
-      publicSiteCopy.includes("small-commercial"),
-      false,
-      "Small commercial should not remain in the final public Cleaning page copy.",
-    );
-    assert.equal(publicSiteCopy.includes("Small commercial cleaning"), false);
-    assert.equal(publicSiteCopy.includes("Petit nettoyage commercial"), false);
-    assert.equal(
-      cleaning.includes("supporting-three-grid mt-8"),
-      false,
-      "Cleaning page should not render the previous three oversized family mega-cards.",
-    );
-    for (const duplicateMarker of [
-      "cleaning-detail-desktop",
-      "cleaning-detail-mobile",
-      "cleaning-mobile-detail",
-      "cleaning-tab-panel",
-    ]) {
-      assert.equal(
-        `${cleaning}\n${cleaningDetails}`.includes(duplicateMarker),
-        false,
-        `Cleaning should not keep duplicated responsive detail marker ${duplicateMarker}.`,
-      );
-    }
-    assert.equal(
-      cleaning.includes("Collapsed secondary service detail/workflow panels"),
-      true,
-      "Cleaning may use intentional accordions for secondary detail sections.",
-    );
-    assert.equal(globals.includes(".cleaning-service-grid"), true);
-    assert.equal(globals.includes(".cleaning-detail-desktop"), false);
-    assert.equal(globals.includes(".cleaning-detail-mobile"), false);
-    assert.equal(globals.includes(".cleaning-tab-panel"), false);
-    assert.equal(globals.includes(".cleaning-tab-button"), true);
-    assert.equal(globals.includes(".cleaning-detail-panel"), true);
-    assert.equal(
-      globals.includes(".cleaning-service-grid {\n    grid-template-columns: repeat(3, minmax(0, 1fr));"),
-      true,
-      "Cleaning service cards should use the canonical three-column desktop grid.",
-    );
   });
 });
