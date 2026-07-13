@@ -14,15 +14,27 @@ def replace(path: str, old: str, new: str) -> None:
         raise SystemExit(f"Neither expected nor final source exists in {path}: {old!r}")
 
 
+def keep_one_line(path: str, line: str, after: str) -> None:
+    file = Path(path)
+    lines = file.read_text(encoding="utf-8").splitlines()
+    lines = [candidate for candidate in lines if candidate != line]
+    try:
+        index = lines.index(after)
+    except ValueError as error:
+        raise SystemExit(f"Anchor missing in {path}: {after!r}") from error
+    lines.insert(index + 1, line)
+    file.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 replace(
     "lib/i18n/public-v2-fr-copy.ts",
     "export function buildPublicV2FrenchCopy(): PublicV2Copy {",
     "export function buildPublicV2FrenchCopy(legacyCopy: PublicV2Copy): PublicV2Copy {\n  void legacyCopy;",
 )
-replace(
+keep_one_line(
     "lib/i18n/public-v2-copy.ts",
+    'import { buildPublicV2FrenchCopy } from "./public-v2-fr-copy.ts";',
     'import type { HomeNavCopy } from "./home-copy.ts";',
-    'import type { HomeNavCopy } from "./home-copy.ts";\nimport { buildPublicV2FrenchCopy } from "./public-v2-fr-copy.ts";',
 )
 replace(
     "lib/i18n/public-v2-copy.ts",
@@ -123,4 +135,4 @@ replace(
     " * Description: Public pilot terms route for the founder-led smart-intake workflow.",
 )
 
-print("Final public V2 activation patch applied.")
+print("Final public V2 activation patch applied idempotently.")
