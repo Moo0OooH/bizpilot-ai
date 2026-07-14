@@ -1,10 +1,12 @@
 # BizPilot Website V3 — Current State
 
-Local date: 2026-07-13
+Local date: 2026-07-14
 
-Branch: `codex/website-v3-rebuild`
+Branch: `main`
 
 Baseline: `f86ad3a3e24aac31e1b459a23d9bf6d72cefec22`
+
+Release merge: `7d262812efd0c06e6af01fb3bd640a193a5bc19e`
 
 Production: <https://bizpilo.com>
 
@@ -23,9 +25,14 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 | V3.5 Homepage conversion rebuild | Complete | Seven-section V3 story, three-stage product scene, EN/fr-CA first-view evidence, 100 accessibility, and 96 performance |
 | V3.6 Page consolidation and conversion | Complete | Ten canonical routes, five direct 308 redirects, distinct bilingual page jobs, safe interactive demo, and copy-only pilot path |
 | V3.7 Quality hardening | Complete | 98–99 Performance, 100 Accessibility/Best Practices/SEO, 1.956–2.495s LCP, 0 CLS, 249 tests, keyboard/reflow/SEO hardening |
-| V3.8 Production acceptance | Pending | Exact main SHA, deployment match, live proof |
+| V3.8 Production acceptance | Complete | PR #3, green CI, exact Vercel SHA match, live bilingual/responsive/browser/Lighthouse proof, and final acceptance report |
 
-## Confirmed production defects
+## Historical production defects — resolved in V3
+
+Every pre-rebuild production defect below was retested on the accepted
+deployment and is resolved. The final EN↔fr-CA click path, all retained French
+routes, reload persistence, 320–1920px reflow matrix, mobile menu containment,
+hero hierarchy, and dark theme pass on <https://bizpilo.com>.
 
 - P0: Clicking `FR — Français (Canada)` does not change visible copy, URL state, selected state, or `html lang` to French.
 - P0: On `/?language=en`, the same failed FR click remains on the English query and English content.
@@ -164,6 +171,18 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - Merge through reviewed green CI, deploy the exact merged `main` SHA, and confirm the Vercel deployment SHA and Ready alias.
 - Run the required read-only production route, language, viewport, redirect, theme, auth, legal, quote-unavailable, console, network, and Lighthouse acceptance without mutating Supabase or submitting customer data.
 
+## Phase 8 result
+
+- Complete: reviewed PR #3 passed PR CI run `29310167481`, was marked ready, and was squash-merged to `main` as `7d262812efd0c06e6af01fb3bd640a193a5bc19e`.
+- Complete: main CI run `29310282305` passed; Vercel deployment `dpl_EmhJwMSRsomrZGXxXhT5hLu136Bg` is Ready/Promoted and reports the exact same full Git SHA.
+- Complete: <https://bizpilo.com> serves the accepted deployment over verified HTTPS with HSTS; the production build and runtime log audit found no deployment error or warning.
+- Complete: real browser interaction proves EN→fr-CA, Product/Demo/Pricing/Pilot/FAQ/Trust locale persistence, reload, fr-CA→EN, mobile menu, dark theme, CTAs, keyboard behavior, and zero application runtime errors.
+- Complete: production public smoke is 34/34, responsive smoke is 20/20, UI matrix has zero failures, browser smoke passes 54 retained-route and 20 homepage reflow states, and inactive synthetic quote smoke is 1/1.
+- Complete: live Lighthouse is 99–100 Performance and 100 Accessibility/Best Practices/SEO across Home EN, Home fr-CA, Demo EN, and Pricing fr-CA, with 0 CLS and 0.936–1.828s LCP.
+- Complete: no customer data, real quote, Supabase mutation, migration, RLS change, access mutation, form submission, or destructive action occurred.
+- Verdict: **WEBSITE V3: PRODUCTION ACCEPTED**.
+- Evidence: [Website V3 final production acceptance](./BIZPILOT_WEBSITE_V3_FINAL_PRODUCTION_ACCEPTANCE.md).
+
 ## Canonical V3 documents
 
 - [Research and benchmark audit](./V3_RESEARCH_AND_BENCHMARK_AUDIT.md)
@@ -179,3 +198,4 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - [Homepage and hero acceptance](./V3_HOMEPAGE_AND_HERO_ACCEPTANCE.md)
 - [Page consolidation and conversion report](./V3_PAGE_CONSOLIDATION_AND_CONVERSION_REPORT.md)
 - [Performance, accessibility, SEO, and regression report](./V3_PERFORMANCE_ACCESSIBILITY_SEO_REPORT.md)
+- [Final production acceptance](./BIZPILOT_WEBSITE_V3_FINAL_PRODUCTION_ACCEPTANCE.md)

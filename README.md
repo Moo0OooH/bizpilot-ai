@@ -7,11 +7,12 @@ reviews, edits, copies, and sends through their existing channel.
 
 ## Current release posture
 
-The product code and local/synthetic QA are substantially implemented, but
-BizPilot is **not approved for real customer data or a paid pilot**. The public
-marketing experience has recent local QA evidence; the owner dashboard has
-local/synthetic and owner-manual evidence; current deployment, real-data,
-restored-target, and paid-pilot gates remain open.
+The bilingual Website V3 is production accepted at
+[bizpilo.com](https://bizpilo.com) from reviewed `main` SHA
+`7d262812efd0c06e6af01fb3bd640a193a5bc19e`. BizPilot is still **not approved
+for real customer data or a paid pilot**. The owner dashboard retains its
+local/synthetic and owner-manual evidence; real-data, restored-target, and
+paid-pilot gates remain open.
 
 Read the controlling status before planning, implementing, or claiming
 readiness:
@@ -20,6 +21,7 @@ readiness:
 - [Machine-readable current status](docs/readiness/current-status.json)
 - [Documentation authority map](docs/CURRENT_CANONICAL_DOCS_v1.7.md)
 - [Agent starting guide](docs/AI_CODING_AGENT_START_HERE_v1.7.md)
+- [Website V3 production acceptance](docs/rebuild-v3/BIZPILOT_WEBSITE_V3_FINAL_PRODUCTION_ACCEPTANCE.md)
 
 Historical phase reports are evidence, not current authorization. See
 [the archive guide](docs/archive/README.md).
@@ -39,7 +41,7 @@ Historical phase reports are evidence, not current authorization. See
 
 | Surface | Routes |
 | --- | --- |
-| Public site | `/`, `/features`, `/comparison`, `/industries/cleaning`, `/demo`, `/pricing`, `/pilot`, `/faq`, `/trust`, `/quote-link-guide`, `/faster-quote-replies`, `/privacy`, `/security`, `/terms` |
+| Public site | `/`, `/features`, `/demo`, `/pricing`, `/pilot`, `/faq`, `/trust`, `/privacy`, `/security`, `/terms` |
 | Quote intake | `/quote`, `/quote/[slug]`, `/quote/[slug]/success` |
 | Auth | `/auth/sign-in`, `/auth/sign-up`, `/auth/check-email`, `/auth/forgot-password`, `/auth/reset-password`, `/auth/callback` |
 | Owner dashboard | `/dashboard`, `/dashboard/leads`, `/dashboard/leads/[leadId]`, `/dashboard/configuration`, `/dashboard/quote-setup`, `/dashboard/business-profile`, `/dashboard/settings`, `/dashboard/guide` |
