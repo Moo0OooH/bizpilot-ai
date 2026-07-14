@@ -12,6 +12,7 @@
  * Created: 2026-06-19
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-14: Moved the desktop threshold to 1180px after simplifying the retained navigation.
  * - 2026-07-13: Locked deterministic locale links, the measured 1440px desktop threshold, and the compact final navigation architecture.
  * - 2026-06-19: Added Phase 02 header/navigation source contract coverage.
  * - 2026-06-21: Added public acceptance guards for duplicate pilot CTA markup.
@@ -52,7 +53,7 @@ describe("public marketing header source contract", () => {
   });
 
   it("uses content-fit header behavior without truncating the brand tagline", () => {
-    assert.match(marketingUiSource, /min-\[1440px\]:flex/);
+    assert.match(marketingUiSource, /min-\[1180px\]:flex/);
     assert.match(marketingUiSource, /min-\[1440px\]:block/);
     assert.match(marketingUiSource, /Smart customer intake and reply workspace/);
     assert.equal(marketingUiSource.includes("truncate"), false);

@@ -21,7 +21,7 @@ readiness:
 - [Machine-readable current status](docs/readiness/current-status.json)
 - [Documentation authority map](docs/CURRENT_CANONICAL_DOCS_v1.7.md)
 - [Agent starting guide](docs/AI_CODING_AGENT_START_HERE_v1.7.md)
-- [Website V3 production acceptance](docs/rebuild-v3/BIZPILOT_WEBSITE_V3_FINAL_PRODUCTION_ACCEPTANCE.md)
+- [Website V4 current report](docs/website-v4/CURRENT.md)
 
 Historical phase reports are evidence, not current authorization. See
 [the archive guide](docs/archive/README.md).

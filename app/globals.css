@@ -32,32 +32,38 @@
   color-scheme: light;
   --background: #ffffff;
   --foreground: #171717;
-  --canvas: #f8fafc;
-  --canvas-subtle: #f1f5f9;
+  --canvas: #f6f7fb;
+  --canvas-subtle: #eef1f8;
   --surface: #ffffff;
   --surface-elevated: #ffffff;
   --surface-interactive: #f8fafc;
-  --text-strong: #0f172a;
-  --text-default: #334155;
-  --text-muted: #64748b;
-  --border-default: #dce4ee;
-  --border-strong: #b8c5d6;
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
+  --text-strong: #111827;
+  --text-default: #3d4960;
+  --text-muted: #657188;
+  --border-default: #dce1ec;
+  --border-strong: #b9c2d2;
+  --primary: #3d5afe;
+  --primary-hover: #2844df;
   --primary-contrast: #ffffff;
-  --accent: #0f766e;
-  --accent-decorative: #14b8a6;
-  --success: #047857;
-  --warning: #b45309;
-  --danger: #b91c1c;
-  --focus-ring: #2563eb;
-  --shadow-sm: 0 8px 22px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 18px 48px rgba(15, 23, 42, 0.07);
-  --shadow-lg: 0 28px 78px rgba(15, 23, 42, 0.12);
-  --gradient-start: #2563eb;
+  --accent: #087f70;
+  --accent-decorative: #19c6a4;
+  --success: #087f5b;
+  --warning: #c45a28;
+  --danger: #c93f54;
+  --focus-ring: #3d5afe;
+  --brand-coral: #ff6b5f;
+  --brand-lime: #c7f36b;
+  --brand-violet: #7657ff;
+  --shadow-sm: 0 10px 28px rgba(22, 32, 58, 0.07);
+  --shadow-md: 0 22px 58px rgba(22, 32, 58, 0.1);
+  --shadow-lg: 0 35px 100px rgba(22, 32, 58, 0.16);
+  --gradient-start: #3d5afe;
   --gradient-end: var(--accent-decorative);
-  --marketing-background: linear-gradient(180deg, #f8fafc 0%, #ffffff 44%, #f4f7fb 100%);
-  --v3-content-max: 75rem;
+  --marketing-background:
+    radial-gradient(circle at 12% 2%, rgba(199, 243, 107, 0.2), transparent 24rem),
+    radial-gradient(circle at 88% 10%, rgba(118, 87, 255, 0.14), transparent 28rem),
+    linear-gradient(180deg, #fbfbfd 0%, #f6f7fb 45%, #ffffff 100%);
+  --v3-content-max: 80rem;
   --v3-reading-max: 45rem;
   --v3-gutter: clamp(1rem, 3vw, 2rem);
   --v3-section-space: clamp(4.5rem, 8vw, 8rem);
@@ -69,16 +75,16 @@
   --v3-space-5: 1.5rem;
   --v3-space-6: 2rem;
   --v3-space-7: 3rem;
-  --v3-radius-sm: 0.625rem;
-  --v3-radius-md: 1rem;
-  --v3-radius-lg: 1.5rem;
+  --v3-radius-sm: 0.8rem;
+  --v3-radius-md: 1.25rem;
+  --v3-radius-lg: 2rem;
   --v3-border: 1px solid var(--border-default);
-  --v3-shadow-card: 0 14px 40px rgba(15, 23, 42, 0.06);
-  --v3-shadow-float: 0 24px 70px rgba(15, 23, 42, 0.11);
+  --v3-shadow-card: 0 16px 44px rgba(22, 32, 58, 0.08);
+  --v3-shadow-float: 0 30px 90px rgba(22, 32, 58, 0.15);
   --v3-type-display: clamp(2.35rem, 4.2vw, 4.75rem);
   --v3-type-page: clamp(2.15rem, 3.5vw, 4rem);
   --v3-type-section: clamp(1.75rem, 2.5vw, 3rem);
-  --v3-type-card: clamp(1.125rem, 1vw, 1.375rem);
+  --v3-type-card: clamp(1.18rem, 1vw, 1.45rem);
   --v3-type-lead: clamp(1rem, 0.32vw + 0.98rem, 1.2rem);
   --v3-type-body: 1rem;
   --v3-type-small: 0.875rem;
@@ -210,7 +216,13 @@
   --shadow-lg: 0 30px 84px rgba(0, 0, 0, 0.38);
   --gradient-start: #60a5fa;
   --gradient-end: var(--accent-decorative);
-  --marketing-background: linear-gradient(180deg, #08111f 0%, #0b1627 48%, #0b1627 100%);
+  --brand-coral: #ff8b80;
+  --brand-lime: #d8ff86;
+  --brand-violet: #a78bfa;
+  --marketing-background:
+    radial-gradient(circle at 12% 3%, rgba(216, 255, 134, 0.08), transparent 25rem),
+    radial-gradient(circle at 88% 8%, rgba(167, 139, 250, 0.12), transparent 30rem),
+    linear-gradient(180deg, #08111f 0%, #0b1627 48%, #0b1627 100%);
   --v3-shadow-card: 0 14px 42px rgba(0, 0, 0, 0.22);
   --v3-shadow-float: 0 28px 80px rgba(0, 0, 0, 0.34);
   --public-bg-page: var(--canvas);
@@ -279,14 +291,15 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", sans-serif;
   --font-mono: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
 body {
   background: var(--canvas);
   color: var(--text-default);
-  font-family: "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", sans-serif;
+  font-feature-settings: "ss01" 1, "cv02" 1, "cv03" 1, "cv04" 1;
   min-width: 0;
 }
 

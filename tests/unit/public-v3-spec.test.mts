@@ -7,7 +7,7 @@
  * Related:
  * - lib/i18n/public-v3-spec.ts
  * - lib/i18n/language.ts
- * - docs/rebuild-v3/V3_FINAL_EN_FR_COPY_MATRIX.md
+ * - docs/archive/website-v3-2026-07-13/V3_FINAL_EN_FR_COPY_MATRIX.md
  * Author: MoOoH
  * Created: 2026-07-13
  * Last Updated: 2026-07-13

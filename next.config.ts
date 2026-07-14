@@ -6,7 +6,7 @@
  * Role: Applies application-wide framework behavior and the permanent Website V3 route-consolidation map.
  * Related:
  * - proxy.ts
- * - docs/rebuild-v3/V3_ROUTE_CONSOLIDATION_AND_REDIRECT_PLAN.md
+ * - docs/archive/website-v3-2026-07-13/V3_ROUTE_CONSOLIDATION_AND_REDIRECT_PLAN.md
  * - tests/unit/seo-source.test.mts
  * Author: MoOoH
  * Created: 2026-05-02

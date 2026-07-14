@@ -5,8 +5,8 @@
  * Description: Defines the approved bilingual Website V3 content and route specification.
  * Role: Keeps EN/fr-CA navigation, route jobs, homepage sections, and conversion copy structurally synchronized before UI implementation.
  * Related:
- * - docs/rebuild-v3/V3_FINAL_EN_FR_COPY_MATRIX.md
- * - docs/rebuild-v3/V3_FINAL_INFORMATION_ARCHITECTURE.md
+ * - docs/archive/website-v3-2026-07-13/V3_FINAL_EN_FR_COPY_MATRIX.md
+ * - docs/archive/website-v3-2026-07-13/V3_FINAL_INFORMATION_ARCHITECTURE.md
  * - tests/unit/public-v3-spec.test.mts
  * Author: MoOoH
  * Created: 2026-07-13

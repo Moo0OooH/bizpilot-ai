@@ -27,7 +27,6 @@ import {
   MarketingIcon,
   type MarketingIconName,
   MarketingProductFrame,
-  MarketingProductStage,
   MarketingStateChip,
 } from "@/components/public/marketing-ui";
 import { PublicV3Demo } from "@/components/public/public-v3-demo";
@@ -61,51 +60,99 @@ const routeIcons: Readonly<Record<PublicV3MarketingRoute, readonly MarketingIcon
   "/trust": ["inbox", "spark", "shield"],
 };
 
-function signalItems(spec: PublicV3Spec, path: PublicV3MarketingRoute) {
-  switch (path) {
-    case "/features":
-      return spec.features.slice(0, 3).map((item) => ({ detail: item.body, title: item.title }));
-    case "/demo":
-      return [
-        { detail: spec.demo.incoming, title: spec.home.visual.stageLabels[0] ?? "" },
-        { detail: spec.demo.questions[0]?.value ?? "", title: spec.home.visual.stageLabels[1] ?? "" },
-        { detail: spec.demo.reviewBoundary, title: spec.home.visual.stageLabels[2] ?? "" },
-      ];
-    case "/pricing":
-      return spec.pricing.tiers.map((tier) => ({ detail: tier.price, title: tier.name }));
-    case "/pilot":
-      return spec.pilot.nextSteps.slice(0, 3).map((item) => ({ detail: item.body, title: item.title }));
-    case "/faq":
-      return spec.faqItems.slice(0, 3).map((item) => ({ detail: item.answer, title: item.question }));
-    case "/trust":
-      return spec.trust.slice(0, 3).map((item) => ({ detail: item.body, title: item.title }));
-  }
-}
-
-function RouteSignal({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; spec: PublicV3Spec }>) {
+function RouteVisual({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; spec: PublicV3Spec }>) {
   const route = spec.routes[path];
-  const icons = routeIcons[path];
 
-  return (
-    <MarketingProductFrame className={styles.signalFrame} label={route.hero.eyebrow}>
-      <div className={styles.signalHeader}>
-        <span>{route.hero.eyebrow}</span>
-        <MarketingStateChip>{signalItems(spec, path).length}</MarketingStateChip>
-      </div>
-      <div className={styles.signalList}>
-        {signalItems(spec, path).map((item, index) => (
-          <MarketingProductStage className={styles.signalStage} key={item.title}>
-            <span className={styles.signalIcon}>
-              <MarketingIcon name={icons[index] ?? "check"} />
-            </span>
-            <div>
-              <strong>{item.title}</strong>
-              <span>{item.detail}</span>
+  if (path === "/features") {
+    return (
+      <MarketingProductFrame className={styles.routeVisual} label={route.hero.eyebrow}>
+        <div className={styles.visualChrome}>
+          <span>{route.hero.eyebrow}</span>
+          <MarketingStateChip>{spec.features.length}</MarketingStateChip>
+        </div>
+        <div className={styles.workspaceVisual}>
+          <div className={styles.workspaceRail}>
+            {spec.home.problemMessages.slice(0, 3).map((item, index) => (
+              <span className={index === 0 ? styles.activeRailItem : ""} key={item.label}>
+                <MarketingIcon name="message" />
+                {item.label}
+              </span>
+            ))}
+          </div>
+          <div className={styles.workspaceRecord}>
+            <strong>{spec.features[2]?.title}</strong>
+            {spec.demo.result.slice(0, 3).map((item) => (
+              <p key={item.label}><span>{item.label}</span>{item.value}</p>
+            ))}
+            <div className={styles.workspaceDraft}>
+              <MarketingIcon name="spark" />
+              <span>{spec.features[4]?.title}</span>
             </div>
-          </MarketingProductStage>
+          </div>
+        </div>
+      </MarketingProductFrame>
+    );
+  }
+
+  if (path === "/demo") {
+    return (
+      <MarketingProductFrame className={styles.routeVisual} label={route.hero.eyebrow}>
+        <div className={styles.visualChrome}><span>{route.hero.eyebrow}</span><MarketingStateChip>01 → 03</MarketingStateChip></div>
+        <div className={styles.journeyVisual}>
+          {spec.home.visual.stageLabels.map((label, index) => (
+            <div className={styles.journeyStep} key={label}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <div><strong>{label}</strong><small>{index === 0 ? spec.demo.incoming : index === 1 ? spec.demo.questions[0]?.value : spec.home.visual.replyDraft}</small></div>
+            </div>
+          ))}
+        </div>
+      </MarketingProductFrame>
+    );
+  }
+
+  if (path === "/pricing") {
+    return (
+      <div className={styles.pricingVisual} aria-label={route.hero.eyebrow}>
+        {spec.pricing.tiers.map((tier, index) => (
+          <div className={styles.miniPlan} key={tier.name}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <strong>{tier.name}</strong>
+            <b>{tier.price}</b>
+          </div>
         ))}
       </div>
-    </MarketingProductFrame>
+    );
+  }
+
+  if (path === "/pilot") {
+    return (
+      <div className={styles.pilotVisual} aria-label={route.hero.eyebrow}>
+        <span className={styles.pilotMark}><MarketingIcon name="user" /></span>
+        <strong>{spec.pilot.nextSteps[0]?.title}</strong>
+        <div>
+          {spec.pilot.fit.slice(0, 3).map((item) => <p key={item}><MarketingIcon name="check" />{item}</p>)}
+        </div>
+      </div>
+    );
+  }
+
+  if (path === "/faq") {
+    return (
+      <div className={styles.faqVisual} aria-label={route.hero.eyebrow}>
+        {spec.faqItems.slice(0, 4).map((item, index) => (
+          <div key={item.key}><span>0{index + 1}</span><strong>{item.question}</strong><MarketingIcon name="arrow" /></div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.trustVisual} aria-label={route.hero.eyebrow}>
+      <span className={styles.trustMark}><MarketingIcon name="shield" /></span>
+      <div>
+        {spec.home.finalAssurances.map((item) => <p key={item}><MarketingIcon name="check" />{item}</p>)}
+      </div>
+    </div>
   );
 }
 
@@ -311,7 +358,7 @@ export function PublicV3Page({
                 </MarketingButton>
               </div>
             </div>
-            <RouteSignal path={path} spec={spec} />
+            <RouteVisual path={path} spec={spec} />
           </div>
         </section>
         <RouteContent path={path} spec={spec} />

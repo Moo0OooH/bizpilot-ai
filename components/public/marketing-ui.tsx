@@ -425,7 +425,7 @@ export function MarketingBrand({
   subtitle = defaultMarketingNavCopy.brandSubtitle,
 }: Readonly<{ language?: SupportedLanguage | undefined; subtitle?: string }>) {
   return (
-    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1440px]:min-w-[16rem]" href={publicHref("/", language)}>
+    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3" href={publicHref("/", language)}>
       <span
         aria-hidden
         className="v3-brand-mark text-[16px] font-black"
@@ -505,7 +505,7 @@ export function MarketingHeader({
         className="v3-container v3-site-header-inner flex items-center justify-between gap-3 py-2"
       >
         <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
-        <div className="hidden items-center gap-1 min-[1440px]:flex">
+        <div className="hidden items-center gap-1 min-[1180px]:flex">
           {directItems.map((item) => {
             const selected = isActiveItem(item);
 
@@ -561,7 +561,7 @@ export function MarketingHeader({
             );
           })}
         </div>
-        <div className="hidden shrink-0 items-center gap-2 min-[1440px]:flex">
+        <div className="hidden shrink-0 items-center gap-2 min-[1180px]:flex">
           {renderLanguageMenu()}
           <ThemePreferenceControl language={language ?? "en"} />
           <Link
@@ -575,7 +575,7 @@ export function MarketingHeader({
             {copy.startShort}
           </MarketingButton>
         </div>
-        <div className="flex shrink-0 items-center gap-2 min-[1440px]:hidden">
+        <div className="flex shrink-0 items-center gap-2 min-[1180px]:hidden">
           <MarketingCompactMenu language={language}>
             <div className="grid gap-1">
               {directItems.map((item) => {
