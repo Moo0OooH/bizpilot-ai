@@ -1,7 +1,7 @@
 # BizPilot Website V4 — Current Report
 
 Date: 2026-07-14  
-Status: release candidate; production promotion pending public Preview QA  
+Status: PASS / production released and accepted  
 Scope: public marketing routes only; dashboard, auth, quote intake, and production data unchanged
 
 ## Product truth and approved bilingual message
@@ -76,11 +76,21 @@ report. Historical reports remain available only for traceability.
 - Responsive bilingual route smoke: 20/20 PASS
 - EN/fr-CA structural parity and manual-first claim guards: PASS
 - Light/dark token contrast guard: PASS
-- Local Chrome interaction smoke: pending public Preview because this workspace does not
-  include a Chrome binary and the managed cloud browser cannot access loopback URLs
+- Pull request CI: PASS (run 400)
+- Vercel Preview build: Ready; protected by Vercel Authentication
+- Vercel Production deployment: Ready (`Er52XYMyGQH5ZVifqxiRnSXjq3NB`)
+- Production public-route smoke: 34/34 PASS
+- Production responsive bilingual smoke: 20/20 PASS
+- Production final UI matrix: zero failures across EN/fr-CA, light/dark, metadata,
+  auth boundaries, sitemap, robots, and 11 recorded viewport targets
+- Managed-browser production interaction: PASS; the live language control changed the
+  homepage, navigation, links, and accessible labels from English to Canadian French
 
 ## Production and data safety
 
 No Supabase migration, production database write, seed data, auth setting, billing flow,
-or environment variable change is part of Website V4. Production promotion requires a
-public Preview browser pass, CI success, and a final production URL smoke.
+or environment variable change is part of Website V4. Pull request `#4` was squash-merged
+to `main` as `695054017ae80cc97a8fca3f5557861b23b14e37`. The public production release at
+`https://bizpilo.com` passed the final URL, responsive, UI-matrix, and language-control
+acceptance checks. Preview visual access remained protected by Vercel Authentication;
+the equivalent public Production deployment was tested after promotion.
