@@ -12,6 +12,12 @@
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Removed unused V2 hero and next-step primitives after the final V3 route migration.
+ * - 2026-07-13: Darkened blue badge text in light mode while preserving the dark-theme token for WCAG AA contrast.
+ * - 2026-07-13: Allowed shared cards to expose stable section anchors for consolidated V3 routes.
+ * - 2026-07-13: Added the V3 navigation-copy adapter contract and made product frames semantic figures.
+ * - 2026-07-13: Established V3 shell, button, card, product-scene, skip-link, and simplified footer primitives.
+ * - 2026-07-13: Applied the final compact header IA and delayed desktop expansion until the measured 1440px fit point.
  * - 2026-07-12: Routed shared public navigation and CTA hrefs through the locale-preserving helper.
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
@@ -39,7 +45,6 @@ import type { CSSProperties, ReactNode } from "react";
 import { MarketingCompactMenu } from "@/components/public/marketing-compact-menu";
 import { MarketingLanguageMenu } from "@/components/public/marketing-language-menu";
 import { ThemePreferenceControl } from "@/components/ui/theme-preference-control";
-import type { HomeNavCopy } from "@/lib/i18n/home-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
 import { publicHref } from "@/lib/i18n/public-href";
 
@@ -66,61 +71,42 @@ export const marketingBackground = "var(--marketing-background)";
 type ButtonVariant = "primary" | "secondary" | "ghost";
 type BadgeTone = "teal" | "gold" | "blue" | "red" | "neutral";
 
-type MarketingNextStepItem = Readonly<{
-  description?: ReactNode;
-  href: string;
-  icon?: MarketingIconName;
-  label: ReactNode;
-  toneName?: BadgeTone;
+export type MarketingNavCopy = Readonly<{
+  brandSubtitle: string;
+  copyright: string;
+  demo: string;
+  faq: string;
+  features: string;
+  flow: string;
+  languageLabel: string;
+  pilot: string;
+  pricing: string;
+  privacy: string;
+  resources: string;
+  security: string;
+  signIn: string;
+  startShort: string;
+  terms: string;
+  trust: string;
 }>;
 
-type MarketingHeroAction = Readonly<{
-  href: string;
-  label: ReactNode;
-  variant?: ButtonVariant;
-}>;
-
-type MarketingHeroSignal = Readonly<{
-  icon?: MarketingIconName;
-  label: ReactNode;
-  toneName?: BadgeTone;
-  value: ReactNode;
-}>;
-
-type MarketingHeroVisual = Readonly<{
-  body?: ReactNode;
-  eyebrow?: ReactNode;
-  footer?: ReactNode;
-  items?: ReadonlyArray<MarketingHeroSignal>;
-  title: ReactNode;
-}>;
-
-const defaultMarketingNavCopy: HomeNavCopy = {
+const defaultMarketingNavCopy: MarketingNavCopy = {
   brandSubtitle: "Smart customer intake and reply workspace",
-  cleaning: "Cleaning pilot",
-  comparison: "Compare",
   copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
   demo: "Demo",
   faq: "FAQ",
   features: "Product",
   flow: "How it works",
-  fasterReplies: "Faster replies guide",
-  futureTemplates: "Future templates — Roadmap",
-  guide: "Intake link guide",
   languageLabel: "Website language",
   pilot: "Pilot",
   pricing: "Pricing",
   privacy: "Privacy",
   resources: "Resources",
   security: "Security",
-  serviceOverview: "Service-business overview",
   signIn: "Sign in",
-  startFull: "Apply for the founder pilot",
   startShort: "Apply for pilot",
   terms: "Terms",
   trust: "Trust",
-  useCases: "Use cases",
-  why: "Why BizPilot",
 };
 
 type MarketingNavKey =
@@ -304,7 +290,7 @@ export function MarketingShell({
   className = "",
 }: Readonly<{ children: ReactNode; className?: string }>) {
   return (
-    <div className={`bp-container public-container ${className}`}>
+    <div className={`v3-container ${className}`}>
       {children}
     </div>
   );
@@ -313,21 +299,19 @@ export function MarketingShell({
 export function MarketingCard({
   children,
   className = "",
+  id,
   style,
 }: Readonly<{
   children: ReactNode;
-  className?: string;
+  className?: string | undefined;
+  id?: string;
   style?: CSSProperties | undefined;
 }>) {
   return (
     <div
-      className={`min-w-0 rounded-[20px] border ${className}`}
-      style={{
-        background: "var(--surface)",
-        borderColor: marketingTone.border,
-        boxShadow: "var(--shadow-md)",
-        ...style,
-      }}
+      className={`v3-card ${className}`}
+      id={id}
+      style={style}
     >
       {children}
     </div>
@@ -342,7 +326,7 @@ export function MarketingBadge({
     blue: {
       bg: "color-mix(in srgb, var(--primary) 12%, transparent)",
       border: "color-mix(in srgb, var(--primary) 28%, transparent)",
-      color: marketingTone.blue,
+      color: "var(--primary-hover)",
     },
     gold: {
       bg: "color-mix(in srgb, var(--warning) 12%, transparent)",
@@ -402,19 +386,13 @@ export function MarketingButton({
   variant?: ButtonVariant;
 }>) {
   const localizedHref = publicHref(href, language);
-  const base =
-    "bp-copy-button inline-flex min-h-12 max-w-full min-w-0 items-center justify-center gap-3 rounded-[14px] px-5 text-center text-[14px] font-black leading-tight transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]";
+  const base = "bp-copy-button v3-button";
 
   if (variant === "primary") {
     return (
       <Link
-        className={`${base} hover:-translate-y-0.5 ${className}`}
+        className={`${base} v3-button-primary ${className}`}
         href={localizedHref}
-        style={{
-          background: "linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%)",
-          boxShadow: "0 16px 34px color-mix(in srgb, var(--primary) 22%, transparent)",
-          color: "var(--primary-contrast)",
-        }}
       >
         {children}
       </Link>
@@ -424,13 +402,8 @@ export function MarketingButton({
   if (variant === "secondary") {
     return (
       <Link
-        className={`${base} border hover:-translate-y-0.5 ${className}`}
+        className={`${base} v3-button-secondary ${className}`}
         href={localizedHref}
-        style={{
-          backgroundColor: "var(--surface)",
-          borderColor: marketingTone.borderStrong,
-          color: marketingTone.text,
-        }}
       >
         {children}
       </Link>
@@ -439,286 +412,11 @@ export function MarketingButton({
 
   return (
     <Link
-      className={`bp-copy-button inline-flex min-h-11 min-w-0 items-center justify-center rounded-[12px] px-3 py-2 text-center text-[13px] font-bold leading-tight transition hover:bg-[var(--surface-interactive)] ${className}`}
+      className={`${base} v3-button-ghost ${className}`}
       href={localizedHref}
-      style={{ color: marketingTone.soft }}
     >
       {children}
     </Link>
-  );
-}
-
-export function MarketingNextStepPanel({
-  body,
-  className = "",
-  items,
-  language,
-  title,
-}: Readonly<{
-  body?: ReactNode;
-  className?: string;
-  items: ReadonlyArray<MarketingNextStepItem>;
-  language?: SupportedLanguage | undefined;
-  title: ReactNode;
-}>) {
-  const toneByName: Record<BadgeTone, { bg: string; color: string }> = {
-    blue: {
-      bg: "color-mix(in srgb, var(--primary) 12%, var(--surface))",
-      color: marketingTone.blue,
-    },
-    gold: {
-      bg: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
-      color: marketingTone.gold,
-    },
-    neutral: {
-      bg: "var(--surface-interactive)",
-      color: marketingTone.soft,
-    },
-    red: {
-      bg: "color-mix(in srgb, var(--danger) 12%, var(--surface))",
-      color: marketingTone.red,
-    },
-    teal: {
-      bg: "color-mix(in srgb, var(--accent) 12%, var(--surface))",
-      color: marketingTone.teal,
-    },
-  };
-
-  return (
-    <MarketingCard className={`p-4 sm:p-5 ${className}`}>
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,0.32fr)_minmax(0,1fr)] lg:items-center">
-        <div className="min-w-0">
-          <h2
-            className="bp-card-title bp-copy-section-title font-black leading-tight"
-            style={{ color: marketingTone.text }}
-          >
-            {title}
-          </h2>
-          {body ? (
-            <p
-              className="bp-copy-card-body mt-2 text-[14px] font-bold leading-6"
-              style={{ color: marketingTone.soft }}
-            >
-              {body}
-            </p>
-          ) : null}
-        </div>
-        <div className="grid min-w-0 gap-3 md:grid-cols-3">
-          {items.map((item) => {
-            const tone = toneByName[item.toneName ?? "teal"];
-
-            return (
-              <Link
-                className="group grid min-w-0 gap-2 rounded-[10px] border px-4 py-3 transition hover:-translate-y-0.5 hover:bg-[var(--surface-elevated)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                href={publicHref(item.href, language)}
-                key={item.href}
-                style={{
-                  backgroundColor: "var(--surface-interactive)",
-                  borderColor: marketingTone.border,
-                  color: marketingTone.text,
-                }}
-              >
-                <span className="flex min-w-0 items-center gap-3">
-                  <span
-                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px]"
-                    style={{ backgroundColor: tone.bg, color: tone.color }}
-                  >
-                    <MarketingIcon name={item.icon ?? "arrow"} />
-                  </span>
-                  <span className="min-w-0 break-words text-[14px] font-black leading-5">
-                    {item.label}
-                  </span>
-                </span>
-                {item.description ? (
-                  <span
-                    className="bp-copy-card-body text-[12px] font-bold leading-5"
-                    style={{ color: marketingTone.soft }}
-                  >
-                    {item.description}
-                  </span>
-                ) : null}
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-    </MarketingCard>
-  );
-}
-
-export function MarketingPageHero({
-  actions = [],
-  align = "left",
-  badge,
-  badgeTone = "teal",
-  body,
-  className = "",
-  language,
-  signals = [],
-  title,
-  visual,
-}: Readonly<{
-  actions?: ReadonlyArray<MarketingHeroAction>;
-  align?: "center" | "left";
-  badge: ReactNode;
-  badgeTone?: BadgeTone;
-  body?: ReactNode;
-  className?: string;
-  language?: SupportedLanguage | undefined;
-  signals?: ReadonlyArray<MarketingHeroSignal>;
-  title: ReactNode;
-  visual?: MarketingHeroVisual;
-}>) {
-  const centered = align === "center";
-  const toneByName: Record<BadgeTone, { bg: string; color: string }> = {
-    blue: {
-      bg: "color-mix(in srgb, var(--primary) 12%, var(--surface))",
-      color: marketingTone.blue,
-    },
-    gold: {
-      bg: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
-      color: marketingTone.gold,
-    },
-    neutral: {
-      bg: "var(--surface-interactive)",
-      color: marketingTone.soft,
-    },
-    red: {
-      bg: "color-mix(in srgb, var(--danger) 12%, var(--surface))",
-      color: marketingTone.red,
-    },
-    teal: {
-      bg: "color-mix(in srgb, var(--accent) 12%, var(--surface))",
-      color: marketingTone.teal,
-    },
-  };
-
-  const renderSignal = (
-    signal: MarketingHeroSignal,
-    index: number,
-    classNameSuffix = "proof-item",
-  ) => {
-    const tone = toneByName[signal.toneName ?? "teal"];
-
-    return (
-      <div
-        className={`marketing-page-hero-${classNameSuffix} min-w-0`}
-        key={`hero-signal-${classNameSuffix}-${index}`}
-      >
-        <span
-          className="marketing-page-hero-signal-icon"
-          style={{ backgroundColor: tone.bg, color: tone.color }}
-        >
-          <MarketingIcon name={signal.icon ?? "check"} />
-        </span>
-        <span className="min-w-0">
-          <span
-            className="bp-copy-eyebrow marketing-page-hero-signal-label"
-            style={{ color: marketingTone.muted }}
-          >
-            {signal.label}
-          </span>
-          <span
-            className="marketing-page-hero-signal-value"
-            style={{ color: marketingTone.text }}
-          >
-            {signal.value}
-          </span>
-        </span>
-      </div>
-    );
-  };
-
-  return (
-    <div
-      className={`marketing-page-hero ${visual ? "marketing-page-hero-with-visual" : ""} ${
-        centered ? "marketing-page-hero-center" : ""
-      } ${className}`}
-    >
-      <div className="marketing-page-hero-copy">
-        <MarketingBadge toneName={badgeTone}>{badge}</MarketingBadge>
-        <h1
-          className="bp-page-title bp-copy-hero marketing-page-hero-title mt-5 font-black leading-[1.06]"
-          style={{ color: marketingTone.text }}
-        >
-          {title}
-        </h1>
-        {body ? (
-          <div
-            className="bp-body bp-copy-hero-body marketing-page-hero-body mt-5 leading-8"
-            style={{ color: marketingTone.soft }}
-          >
-            {body}
-          </div>
-        ) : null}
-        {actions.length > 0 ? (
-          <div className="bp-button-row marketing-page-hero-actions">
-            {actions.map((action, index) => (
-              <MarketingButton
-                href={action.href}
-                key={`${action.href}-${index}`}
-                language={language}
-                variant={action.variant ?? "primary"}
-              >
-                {action.label}
-              </MarketingButton>
-            ))}
-          </div>
-        ) : null}
-        {signals.length > 0 ? (
-          <div className="marketing-page-hero-proof">
-            {signals.map((signal, index) => renderSignal(signal, index))}
-          </div>
-        ) : null}
-      </div>
-
-      {visual ? (
-        <MarketingCard className="marketing-page-hero-panel p-5 sm:p-6">
-          <div className="marketing-page-hero-panel-chrome" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </div>
-          {visual.eyebrow ? (
-            <p
-              className="bp-copy-eyebrow text-[12px] font-black uppercase"
-              style={{ color: marketingTone.teal }}
-            >
-              {visual.eyebrow}
-            </p>
-          ) : null}
-          <h2
-            className="bp-card-title bp-copy-section-title marketing-page-hero-panel-title mt-3 font-black leading-tight"
-            style={{ color: marketingTone.text }}
-          >
-            {visual.title}
-          </h2>
-          {visual.body ? (
-            <div
-              className="bp-copy-card-body mt-3 text-[14px] font-bold leading-6"
-              style={{ color: marketingTone.soft }}
-            >
-              {visual.body}
-            </div>
-          ) : null}
-          {visual.items?.length ? (
-            <div className="marketing-page-hero-panel-list">
-              {visual.items.map((signal, index) =>
-                renderSignal(signal, index, "panel-item"),
-              )}
-            </div>
-          ) : null}
-          {visual.footer ? (
-            <div
-              className="marketing-page-hero-panel-footer"
-              style={{ color: marketingTone.soft }}
-            >
-              {visual.footer}
-            </div>
-          ) : null}
-        </MarketingCard>
-      ) : null}
-    </div>
   );
 }
 
@@ -727,15 +425,10 @@ export function MarketingBrand({
   subtitle = defaultMarketingNavCopy.brandSubtitle,
 }: Readonly<{ language?: SupportedLanguage | undefined; subtitle?: string }>) {
   return (
-    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1240px]:min-w-[16rem]" href={publicHref("/", language)}>
+    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1440px]:min-w-[16rem]" href={publicHref("/", language)}>
       <span
         aria-hidden
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[16px] font-black"
-        style={{
-          background: "linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%)",
-          boxShadow: "0 12px 26px color-mix(in srgb, var(--primary) 20%, transparent)",
-          color: "var(--primary-contrast)",
-        }}
+        className="v3-brand-mark text-[16px] font-black"
       >
         B
       </span>
@@ -744,7 +437,7 @@ export function MarketingBrand({
           BizPilot AI
         </span>
         <span
-          className="bp-copy-nav hidden max-w-[14rem] whitespace-normal break-words text-[8px] font-black uppercase leading-[1.15] min-[1240px]:block"
+          className="bp-copy-nav hidden max-w-[14rem] whitespace-normal break-words text-[8px] font-black uppercase leading-[1.15] min-[1440px]:block"
           style={{ color: marketingTone.muted, maxWidth: "14rem", whiteSpace: "normal" }}
         >
           {subtitle}
@@ -761,7 +454,7 @@ export function MarketingHeader({
   redirectPath = "/",
 }: Readonly<{
   active?: MarketingNavKey;
-  copy?: HomeNavCopy;
+  copy?: MarketingNavCopy;
   language?: SupportedLanguage | undefined;
   redirectPath?: string;
 }>) {
@@ -775,24 +468,14 @@ export function MarketingHeader({
   const directItems: readonly HeaderLink[] = [
     { href: "/features", key: "features", label: copy.features },
     { href: "/#how-it-works", label: copy.flow },
+    { href: "/demo", key: "demo", label: copy.demo },
     { href: "/pricing", key: "pricing", label: copy.pricing },
-    { href: "/trust", key: "trust", label: copy.trust },
   ];
   const navGroups: readonly HeaderGroup[] = [
     {
       items: [
-        { href: "/demo", key: "demo", label: copy.cleaning },
-        { href: "/#use-cases", label: copy.serviceOverview },
-        { href: "/#use-cases", label: copy.futureTemplates },
-      ],
-      label: copy.useCases,
-    },
-    {
-      items: [
         { href: "/faq", label: copy.faq },
-        { href: "/quote-link-guide", label: copy.guide },
-        { href: "/faster-quote-replies", label: copy.fasterReplies },
-        { href: "/comparison", key: "comparison", label: copy.comparison },
+        { href: "/trust", key: "trust", label: copy.trust },
       ],
       label: copy.resources,
     },
@@ -813,14 +496,17 @@ export function MarketingHeader({
     ) : null;
 
   return (
-    <header
-      className="sticky top-0 z-40 border-b backdrop-blur-xl"
-      style={{ backgroundColor: "color-mix(in srgb, var(--canvas) 88%, transparent)", borderColor: marketingTone.border }}
-    >
-      <nav className="bp-container public-container flex min-h-[64px] items-center justify-between gap-3 py-2 min-[1240px]:min-h-[76px]">
+    <header className="v3-site-header sticky top-0 z-40 border-b">
+      <a className="v3-skip-link" href="#main-content">
+        {language === "fr-CA" ? "Aller au contenu" : "Skip to content"}
+      </a>
+      <nav
+        aria-label={language === "fr-CA" ? "Navigation principale" : "Primary navigation"}
+        className="v3-container v3-site-header-inner flex items-center justify-between gap-3 py-2"
+      >
         <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
-        <div className="hidden items-center gap-1 min-[1240px]:flex">
-          {directItems.slice(0, 2).map((item) => {
+        <div className="hidden items-center gap-1 min-[1440px]:flex">
+          {directItems.map((item) => {
             const selected = isActiveItem(item);
 
             return (
@@ -874,26 +560,8 @@ export function MarketingHeader({
               </details>
             );
           })}
-          {directItems.slice(2).map((item) => {
-            const selected = isActiveItem(item);
-
-            return (
-              <Link
-                aria-current={selected ? "page" : undefined}
-                className="bp-copy-nav inline-flex min-h-11 items-center rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                href={publicHref(item.href, language)}
-                key={item.href}
-                style={{
-                  backgroundColor: selected ? "var(--surface-interactive)" : "transparent",
-                  color: selected ? marketingTone.text : marketingTone.soft,
-                }}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
         </div>
-        <div className="hidden shrink-0 items-center gap-2 min-[1240px]:flex">
+        <div className="hidden shrink-0 items-center gap-2 min-[1440px]:flex">
           {renderLanguageMenu()}
           <ThemePreferenceControl language={language ?? "en"} />
           <Link
@@ -907,8 +575,8 @@ export function MarketingHeader({
             {copy.startShort}
           </MarketingButton>
         </div>
-        <div className="flex shrink-0 items-center gap-2 min-[1240px]:hidden">
-          <MarketingCompactMenu>
+        <div className="flex shrink-0 items-center gap-2 min-[1440px]:hidden">
+          <MarketingCompactMenu language={language}>
             <div className="grid gap-1">
               {directItems.map((item) => {
                 const selected = isActiveItem(item);
@@ -973,37 +641,45 @@ export function MarketingHeader({
 export function MarketingFooter({
   copy = defaultMarketingNavCopy,
   language,
-}: Readonly<{ copy?: HomeNavCopy; language?: SupportedLanguage | undefined }>) {
+}: Readonly<{ copy?: MarketingNavCopy; language?: SupportedLanguage | undefined }>) {
+  const footerLabels = language === "fr-CA"
+    ? {
+        account: "Compte",
+        legal: "Confiance et aspects légaux",
+        product: "Produit",
+        resources: "Ressources",
+      }
+    : {
+        account: "Account",
+        legal: "Trust and legal",
+        product: "Product",
+        resources: "Resources",
+      };
   const groups: ReadonlyArray<Readonly<{ label: string; links: ReadonlyArray<Readonly<{ href: string; label: string }>> }>> = [
-    { label: copy.features, links: [
+    { label: footerLabels.product, links: [
       { href: "/features", label: copy.features },
       { href: "/#how-it-works", label: copy.flow },
+      { href: "/demo", label: copy.demo },
       { href: "/pricing", label: copy.pricing },
+    ] },
+    { label: footerLabels.resources, links: [
+      { href: "/pilot", label: copy.pilot },
+      { href: "/faq", label: copy.faq },
       { href: "/trust", label: copy.trust },
     ] },
-    { label: copy.useCases, links: [
-      { href: "/demo", label: copy.cleaning },
-      { href: "/#use-cases", label: copy.serviceOverview },
-      { href: "/#use-cases", label: copy.futureTemplates },
-      { href: "/pilot", label: copy.pilot },
-    ] },
-    { label: copy.resources, links: [
-      { href: "/faq", label: copy.faq },
-      { href: "/quote-link-guide", label: copy.guide },
-      { href: "/faster-quote-replies", label: copy.fasterReplies },
-      { href: "/comparison", label: copy.comparison },
-    ] },
-    { label: copy.trust, links: [
+    { label: footerLabels.legal, links: [
       { href: "/privacy", label: copy.privacy },
       { href: "/security", label: copy.security },
       { href: "/terms", label: copy.terms },
+    ] },
+    { label: footerLabels.account, links: [
       { href: "/auth/sign-in", label: copy.signIn },
     ] },
   ];
 
   return (
-    <footer className="border-t px-5 py-10 sm:px-8 lg:px-10" style={{ borderColor: marketingTone.border }}>
-      <div className="bp-container-wide mx-auto grid w-full max-w-[1200px] gap-8 text-[12px] lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)]">
+    <footer className="v3-site-footer border-t py-10">
+      <div className="v3-container grid gap-8 text-[12px] lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)]">
         <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ color: marketingTone.soft }}>
           {groups.map((group) => (
@@ -1017,12 +693,38 @@ export function MarketingFooter({
             </div>
           ))}
         </div>
-        <span className="lg:col-span-2" style={{ color: marketingTone.muted }}>
+        <span className="font-medium lg:col-span-2" style={{ color: marketingTone.soft }}>
           {copy.copyright}
         </span>
       </div>
     </footer>
   );
+}
+
+export function MarketingProductFrame({
+  children,
+  className = "",
+  label,
+}: Readonly<{ children: ReactNode; className?: string | undefined; label: string }>) {
+  return (
+    <figure aria-label={label} className={`v3-product-frame ${className}`}>
+      {children}
+    </figure>
+  );
+}
+
+export function MarketingProductStage({
+  children,
+  className = "",
+}: Readonly<{ children: ReactNode; className?: string | undefined }>) {
+  return <div className={`v3-product-stage ${className}`}>{children}</div>;
+}
+
+export function MarketingStateChip({
+  children,
+  className = "",
+}: Readonly<{ children: ReactNode; className?: string }>) {
+  return <span className={`v3-state-chip ${className}`}>{children}</span>;
 }
 
 export function MarketingSectionTitle({

@@ -1,24 +1,27 @@
-/*
+/**
  * ============================================================
  * File: app/trust/page.tsx
  * Project: BizPilot AI
- * Description: Public trust page for human-controlled smart intake and AI-assisted replies.
- * Role: Explains current product limits, data discipline, roadmap labeling, and production approval gates.
+ * Description: Retained Website V3 trust and human-control page.
+ * Role: Explains explicit inputs, visible gaps, bounded AI, human review, data minimization, and operational boundaries.
  * Related:
- * - components/public/bizpilot-v2-page.tsx
- * - lib/i18n/public-v2-copy.ts
+ * - components/public/public-v3-page.tsx
+ * - lib/i18n/public-v3-spec.ts
+ * - app/security/page.tsx
  * Author: MoOoH
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Migrated Trust to the six-control V3 content contract and compact renderer.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
-import { BizPilotV2Page } from "@/components/public/bizpilot-v2-page";
+import { PublicV3Page } from "@/components/public/public-v3-page";
 import { INTERFACE_LANGUAGE_COOKIE } from "@/lib/i18n/language";
-import { getPublicV2Copy } from "@/lib/i18n/public-v2-copy";
+import { getPublicV3Spec } from "@/lib/i18n/public-v3-spec";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -40,19 +43,12 @@ export async function generateMetadata({
   const language = await readPublicLanguage(searchParams);
   return buildPublicMetadata(
     "/trust",
-    getPublicV2Copy(language).trust.meta,
+    getPublicV3Spec(language).routes["/trust"].meta,
     language,
   );
 }
 
 export default async function TrustPage({ searchParams }: TrustPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
-
-  return (
-    <BizPilotV2Page
-      copy={getPublicV2Copy(language).trust}
-      language={language}
-      path="/trust"
-    />
-  );
+  return <PublicV3Page language={language} path="/trust" />;
 }

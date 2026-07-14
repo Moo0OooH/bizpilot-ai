@@ -11,8 +11,11 @@
  * - app/terms/page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated policy pages to the V3 shell, route hero, metadata contract, and compact legal navigation.
+ * - 2026-07-13: Separated header, main content, and footer into correct page landmarks.
+ * - 2026-07-13: Added the shared main-content target for keyboard skip navigation.
  * - 2026-07-12: Preserved the active public language through policy conversion links.
  * - 2026-06-18: Switched policy pages to narrow readable containers and owner-first summaries.
  * - 2026-06-25: Normalized policy page rhythm to canonical bp sizing primitives.
@@ -29,15 +32,15 @@ import {
   MarketingFooter,
   MarketingHeader,
   MarketingIcon,
-  MarketingNextStepPanel,
+  type MarketingNavCopy,
   MarketingSectionTitle,
   marketingBackground,
   marketingTone,
 } from "@/components/public/marketing-ui";
 import { TrackedExternalReferenceLink } from "@/components/public/tracked-external-reference-link";
-import type { HomeNavCopy } from "@/lib/i18n/home-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
 import type { PolicyPageCopy } from "@/lib/i18n/policy-copy";
+import type { PublicV3Spec } from "@/lib/i18n/public-v3-spec";
 import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
 import type { PublicCanonicalRoute } from "@/lib/seo";
 
@@ -46,16 +49,18 @@ export function PolicyPage({
   language,
   navCopy,
   pagePath,
+  routeHero,
 }: Readonly<{
   copy: PolicyPageCopy;
   language: SupportedLanguage;
-  navCopy: HomeNavCopy;
+  navCopy: MarketingNavCopy;
   pagePath: PublicCanonicalRoute;
+  routeHero: PublicV3Spec["routes"]["/privacy"]["hero"];
 }>) {
   const breadcrumbId = `bizpilot-${pagePath.slice(1).replaceAll("/", "-")}-breadcrumb-jsonld`;
 
   return (
-    <main
+    <div
       className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
@@ -74,24 +79,38 @@ export function PolicyPage({
         language={language}
         redirectPath={pagePath}
       />
+      <main id="main-content">
 
       <section className="bp-section-tight">
         <div className="legal-container">
           <div className="grid min-w-0 gap-6">
             <div className="min-w-0">
-              <MarketingBadge>{copy.badge}</MarketingBadge>
+              <MarketingBadge>{routeHero.eyebrow}</MarketingBadge>
               <h1
                 className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]"
                 style={{ color: marketingTone.text }}
               >
-                {copy.title}
+                {routeHero.title}
               </h1>
               <p
                 className="bp-body mt-5 max-w-[720px] leading-8"
                 style={{ color: marketingTone.soft }}
               >
-                {copy.body}
+                {routeHero.body}
               </p>
+              <div className="bp-button-row mt-6 flex flex-col gap-3 sm:flex-row">
+                <MarketingButton href={routeHero.primary.href} language={language}>
+                  {routeHero.primary.label}
+                  <MarketingIcon name="arrow" />
+                </MarketingButton>
+                <MarketingButton
+                  href={routeHero.secondary.href}
+                  language={language}
+                  variant="secondary"
+                >
+                  {routeHero.secondary.label}
+                </MarketingButton>
+              </div>
               <p
                 className="mt-4 text-[12px] font-bold uppercase"
                 style={{ color: marketingTone.muted }}
@@ -213,38 +232,19 @@ export function PolicyPage({
               {navCopy.pricing}
             </MarketingButton>
           </MarketingCard>
-          <MarketingNextStepPanel
-            language={language}
-            body={copy.footerNote}
-            className="mt-5"
-            items={[
-              {
-                description: copy.badge,
-                href: "/trust",
-                icon: "shield",
-                label: navCopy.trust,
-              },
-              {
-                description: copy.boundaryTitle,
-                href: "/pricing",
-                icon: "briefcase",
-                label: navCopy.pricing,
-                toneName: "blue",
-              },
-              {
-                description: navCopy.startFull,
-                href: "/pilot",
-                icon: "arrow",
-                label: navCopy.pilot,
-                toneName: "gold",
-              },
-            ]}
-            title={navCopy.why}
-          />
+          <div className="bp-button-row mt-5 flex flex-col gap-3 sm:flex-row">
+            <MarketingButton href="/trust" language={language} variant="secondary">
+              {navCopy.trust}
+            </MarketingButton>
+            <MarketingButton href="/pilot" language={language} variant="secondary">
+              {navCopy.pilot}
+            </MarketingButton>
+          </div>
         </div>
       </section>
 
+      </main>
       <MarketingFooter copy={navCopy} language={language} />
-    </main>
+    </div>
   );
 }

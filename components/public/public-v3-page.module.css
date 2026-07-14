@@ -1,0 +1,541 @@
+/**
+ * ============================================================
+ * File: components/public/public-v3-page.module.css
+ * Project: BizPilot AI
+ * Description: Responsive styles for retained Website V3 product, proof, pricing, FAQ, and trust pages.
+ * Role: Gives every retained route one compact job while sharing the V3 spacing, type, card, and product-scene foundation.
+ * Related:
+ * - components/public/public-v3-page.tsx
+ * - components/public/public-v3-demo.tsx
+ * - components/public/public-v3-pilot-request.tsx
+ * - app/globals.css
+ * Author: MoOoH
+ * Created: 2026-07-13
+ * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Added explicit focus-visible treatment for Demo tabs and Pilot copy controls.
+ * - 2026-07-13: Created the consolidated responsive layout for retained V3 marketing pages.
+ * ============================================================
+ */
+
+.page {
+  min-block-size: 100svh;
+  overflow-wrap: anywhere;
+  background: var(--marketing-background);
+  color: var(--text-strong);
+}
+
+.hero {
+  padding-block: clamp(2.75rem, 7vw, 5.5rem) clamp(3rem, 6vw, 5rem);
+}
+
+.heroGrid {
+  display: grid;
+  min-inline-size: 0;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.heroCopy {
+  min-inline-size: 0;
+  max-inline-size: 47rem;
+}
+
+.heroTitle {
+  max-inline-size: 17ch;
+  margin-block: 1.25rem 0;
+  font-size: clamp(2.5rem, 5.8vw, 4.75rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.heroBody {
+  max-inline-size: 42rem;
+  margin-block: 1.35rem 0;
+  color: var(--text-default);
+  font-size: clamp(1rem, 1.6vw, 1.16rem);
+  line-height: 1.72;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-block-start: 1.75rem;
+}
+
+.signalFrame {
+  min-inline-size: 0;
+}
+
+.signalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-block-end: var(--v3-border);
+  border-color: var(--border-default);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.signalList {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.signalStage {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.signalIcon,
+.cardIcon {
+  display: inline-flex;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border-radius: var(--v3-radius-sm);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--accent);
+}
+
+.signalStage strong {
+  display: block;
+  color: var(--text-strong);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.signalStage span {
+  display: block;
+  margin-block-start: 0.2rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.section,
+.sectionCompact {
+  padding-block: var(--v3-section-space);
+  border-block-start: var(--v3-border);
+  border-color: var(--border-default);
+}
+
+.sectionCompact {
+  padding-block: var(--v3-section-compact-space);
+}
+
+.sectionIntro {
+  max-inline-size: var(--v3-reading-max);
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.sectionTitle {
+  max-inline-size: 21ch;
+  margin-block: 0.7rem 0;
+  font-size: var(--v3-type-section);
+  font-weight: 900;
+  line-height: var(--v3-leading-heading);
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.sectionLead {
+  margin-block: 1rem 0;
+  color: var(--text-default);
+  font-size: var(--v3-type-body);
+  line-height: var(--v3-leading-body);
+}
+
+.featureGrid,
+.trustGrid,
+.stepGrid,
+.fitGrid,
+.pricingGrid {
+  display: grid;
+  gap: 1rem;
+  margin-block-start: 2rem;
+}
+
+.featureCard,
+.trustCard,
+.stepCard,
+.fitCard,
+.priceCard,
+.scopeCard,
+.applicationCard {
+  min-inline-size: 0;
+  padding: clamp(1.2rem, 3vw, 1.6rem);
+}
+
+.cardTitle {
+  margin-block: 1rem 0;
+  color: var(--text-strong);
+  font-size: var(--v3-type-card);
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.cardBody {
+  margin-block: 0.65rem 0;
+  color: var(--text-default);
+  font-size: 0.92rem;
+  line-height: 1.68;
+}
+
+.scopeCard {
+  display: grid;
+  gap: 1rem;
+  margin-block-start: 1rem;
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-default));
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
+}
+
+.scopeCard h2,
+.scopeCard p {
+  margin: 0;
+}
+
+.scopeCard h2 {
+  font-size: var(--v3-type-card);
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.scopeCard p {
+  color: var(--text-default);
+  line-height: 1.68;
+}
+
+.priceCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.price {
+  margin-block: 1rem 0;
+  color: var(--text-strong);
+  font-size: clamp(1.7rem, 4vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.pointList,
+.fitList {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pointList li,
+.fitList li {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: start;
+  color: var(--text-default);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.pointList svg,
+.fitList svg {
+  margin-block-start: 0.15rem;
+  color: var(--accent);
+}
+
+.notice {
+  margin-block-start: 1rem;
+  padding: 1rem 1.1rem;
+  border: var(--v3-border);
+  border-color: color-mix(in srgb, var(--warning) 34%, var(--border-default));
+  border-radius: var(--v3-radius-sm);
+  background: color-mix(in srgb, var(--warning) 7%, var(--surface));
+  color: var(--text-default);
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.pilotGrid {
+  display: grid;
+  gap: 1rem;
+  margin-block-start: 2rem;
+}
+
+.faqList {
+  display: grid;
+  gap: 0.75rem;
+  margin-block-start: 2rem;
+}
+
+.faqItem {
+  border: var(--v3-border);
+  border-color: var(--border-default);
+  border-radius: var(--v3-radius-sm);
+  background: var(--surface);
+  box-shadow: var(--v3-shadow-card);
+}
+
+.faqItem summary {
+  min-block-size: 3.5rem;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  color: var(--text-strong);
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.faqItem p {
+  margin: 0;
+  padding: 0 1.1rem 1.1rem;
+  color: var(--text-default);
+  line-height: 1.7;
+}
+
+.demoPanel {
+  display: grid;
+  gap: 1rem;
+  margin-block-start: 2rem;
+}
+
+.demoTabs {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.demoTab {
+  min-block-size: 3rem;
+  padding: 0.65rem;
+  border: var(--v3-border);
+  border-color: var(--border-default);
+  border-radius: var(--v3-radius-sm);
+  background: var(--surface);
+  color: var(--text-default);
+  font-size: 0.78rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.demoTab[aria-selected="true"] {
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--border-default));
+  background: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  color: var(--text-strong);
+}
+
+.demoTab:focus-visible,
+.template:focus-visible,
+.copyButton:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.demoContent {
+  min-block-size: 23rem;
+  padding: clamp(1.2rem, 4vw, 2rem);
+}
+
+.messageBubble {
+  max-inline-size: 30rem;
+  margin-inline-start: auto;
+  padding: 1rem 1.1rem;
+  border-radius: 1.25rem 1.25rem 0.3rem 1.25rem;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.demoGrid {
+  display: grid;
+  gap: 0.75rem;
+  margin-block-start: 1rem;
+}
+
+.demoDatum {
+  padding: 0.9rem;
+  border: var(--v3-border);
+  border-color: var(--border-default);
+  border-radius: var(--v3-radius-sm);
+  background: var(--surface-interactive);
+}
+
+.demoDatum span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.demoDatum strong {
+  display: block;
+  margin-block-start: 0.35rem;
+  color: var(--text-strong);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.draft {
+  margin-block-start: 1rem;
+  padding: 1rem;
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 0 var(--v3-radius-sm) var(--v3-radius-sm) 0;
+  background: color-mix(in srgb, var(--accent) 7%, var(--surface));
+  color: var(--text-default);
+  line-height: 1.7;
+}
+
+.reviewActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block-start: 1rem;
+}
+
+.reviewActions span {
+  padding: 0.45rem 0.75rem;
+  border: var(--v3-border);
+  border-color: var(--border-default);
+  border-radius: 999px;
+  color: var(--text-strong);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.boundary {
+  margin-block: 1rem 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.applicationCard {
+  scroll-margin-top: calc(var(--v3-header-height) + 1rem);
+}
+
+.template {
+  margin: 1rem 0 0;
+  padding: 1rem;
+  white-space: pre-wrap;
+  border: var(--v3-border);
+  border-color: var(--border-default);
+  border-radius: var(--v3-radius-sm);
+  background: var(--surface-interactive);
+  color: var(--text-default);
+  font-family: inherit;
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+
+.copyRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-block-start: 1rem;
+}
+
+.copyButton {
+  min-block-size: 2.75rem;
+  padding-inline: 1rem;
+  border: 0;
+  border-radius: var(--v3-radius-sm);
+  background: var(--primary);
+  color: var(--primary-contrast);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.copyStatus {
+  min-block-size: 1.5rem;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+@media (min-width: 700px) {
+  .featureGrid,
+  .trustGrid,
+  .fitGrid,
+  .stepGrid,
+  .demoGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pricingGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.75fr);
+  }
+
+  .featureGrid,
+  .trustGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pilotGrid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+
+  .demoPanel {
+    grid-template-columns: minmax(12rem, 0.3fr) minmax(0, 0.7fr);
+  }
+
+  .demoTabs {
+    grid-template-columns: 1fr;
+    align-content: start;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: clamp(2.25rem, 11vw, 2.75rem);
+  }
+
+  .actions > * {
+    inline-size: 100%;
+  }
+
+  .demoTabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .demoTab,
+  .copyButton {
+    transition: none;
+  }
+}

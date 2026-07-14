@@ -1,24 +1,27 @@
-/*
+/**
  * ============================================================
  * File: app/demo/page.tsx
  * Project: BizPilot AI
- * Description: Public demonstration of the current cleaning smart-intake workflow.
- * Role: Shows request collection, organization, missing-detail detection, AI-assisted drafting, and manual owner approval.
+ * Description: Retained Website V3 cleaning Smart Intake Link walkthrough.
+ * Role: Demonstrates one vague request becoming structured details and a human-reviewed draft without submitting data or triggering automation.
  * Related:
- * - components/public/bizpilot-v2-page.tsx
- * - lib/i18n/public-v2-copy.ts
+ * - components/public/public-v3-page.tsx
+ * - components/public/public-v3-demo.tsx
+ * - lib/i18n/public-v3-spec.ts
  * Author: MoOoH
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Replaced the long V2 demo route with the focused, safe V3 walkthrough.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
-import { BizPilotV2Page } from "@/components/public/bizpilot-v2-page";
+import { PublicV3Page } from "@/components/public/public-v3-page";
 import { INTERFACE_LANGUAGE_COOKIE } from "@/lib/i18n/language";
-import { getPublicV2Copy } from "@/lib/i18n/public-v2-copy";
+import { getPublicV3Spec } from "@/lib/i18n/public-v3-spec";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -40,19 +43,12 @@ export async function generateMetadata({
   const language = await readPublicLanguage(searchParams);
   return buildPublicMetadata(
     "/demo",
-    getPublicV2Copy(language).demo.meta,
+    getPublicV3Spec(language).routes["/demo"].meta,
     language,
   );
 }
 
 export default async function DemoPage({ searchParams }: DemoPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
-
-  return (
-    <BizPilotV2Page
-      copy={getPublicV2Copy(language).demo}
-      language={language}
-      path="/demo"
-    />
-  );
+  return <PublicV3Page language={language} path="/demo" />;
 }

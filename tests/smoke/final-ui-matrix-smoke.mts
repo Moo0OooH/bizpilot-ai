@@ -12,6 +12,8 @@
  * Created: 2026-06-20
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Reduced the UI matrix to the ten retained V3 routes and their typed bilingual metadata.
+ * - 2026-07-13: Migrated homepage metadata and visual-hook checks to the seven-section V3 renderer.
  * - 2026-06-21: Added light/dark theme matrix, visual markers, and en-XA fallback checks.
  * - 2026-06-21: Added the dedicated FAQ route to localized metadata coverage.
  * - 2026-06-21: Added Cleaning service de-duplication checks across locales and themes.
@@ -24,11 +26,7 @@
  * ============================================================
  */
 
-import { getPolicyCopy, type PolicyPageKey } from "../../lib/i18n/policy-copy.ts";
-import {
-  getPublicSiteCopy,
-} from "../../lib/i18n/public-site-copy.ts";
-import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
+import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
 import {
   publicCanonicalRoutes,
   publicLanguageAlternates,
@@ -71,82 +69,14 @@ const viewportMatrix = [
 const themeMatrix = ["light", "dark"] as const satisfies readonly Theme[];
 const TEST_PSEUDO_LOCALE = "en-XA";
 
-const routeContracts: readonly PublicRouteContract[] = [
-  {
-    h1: (locale) => getPublicSiteCopy(locale).home.hero.title,
-    meta: (locale) => getPublicSiteCopy(locale).home.meta,
-    path: "/",
-    rejectFrText: getPublicSiteCopy("en").home.hero.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).faq.title,
-    meta: (locale) => getPublicSiteCopy(locale).faq.meta,
-    path: "/faq",
-    rejectFrText: getPublicSiteCopy("en").faq.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).features.title,
-    meta: (locale) => getPublicSiteCopy(locale).features.meta,
-    path: "/features",
-    rejectFrText: getPublicSiteCopy("en").features.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).comparison.title,
-    meta: (locale) => getPublicSiteCopy(locale).comparison.meta,
-    path: "/comparison",
-    rejectFrText: getPublicSiteCopy("en").comparison.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).quoteLinkGuide.title,
-    meta: (locale) => getPublicSiteCopy(locale).quoteLinkGuide.meta,
-    path: "/quote-link-guide",
-    rejectFrText: getPublicSiteCopy("en").quoteLinkGuide.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).replySpeedGuide.title,
-    meta: (locale) => getPublicSiteCopy(locale).replySpeedGuide.meta,
-    path: "/faster-quote-replies",
-    rejectFrText: getPublicSiteCopy("en").replySpeedGuide.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).cleaning.title,
-    meta: (locale) => getPublicSiteCopy(locale).cleaning.meta,
-    path: "/industries/cleaning",
-    rejectFrText: getPublicSiteCopy("en").cleaning.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).trust.title,
-    meta: (locale) => getPublicSiteCopy(locale).trust.meta,
-    path: "/trust",
-    rejectFrText: getPublicSiteCopy("en").trust.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).demo.title,
-    meta: (locale) => getPublicSiteCopy(locale).demo.meta,
-    path: "/demo",
-    rejectFrText: getPublicSiteCopy("en").demo.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).pricing.title,
-    meta: (locale) => getPublicSiteCopy(locale).pricing.meta,
-    path: "/pricing",
-    rejectFrText: getPublicSiteCopy("en").pricing.title,
-  },
-  {
-    h1: (locale) => getPublicSiteCopy(locale).pilot.title,
-    meta: (locale) => getPublicSiteCopy(locale).pilot.meta,
-    path: "/pilot",
-    rejectFrText: getPublicSiteCopy("en").pilot.title,
-  },
-  ...(["privacy", "security", "terms"] as const satisfies readonly PolicyPageKey[]).map(
-    (key) => ({
-      h1: (locale: Locale) => getPolicyCopy(locale)[key].title,
-      meta: (locale: Locale) => getPolicyCopy(locale)[key].meta,
-      path: `/${key}` as PublicCanonicalRoute,
-      rejectFrText: getPolicyCopy("en")[key].title,
-    }),
-  ),
-];
+const routeContracts: readonly PublicRouteContract[] = publicCanonicalRoutes.map(
+  (path) => ({
+    h1: (locale: Locale) => getPublicV3Spec(locale).routes[path].hero.title,
+    meta: (locale: Locale) => getPublicV3Spec(locale).routes[path].meta,
+    path,
+    rejectFrText: getPublicV3Spec("en").routes[path].hero.title,
+  }),
+);
 
 function readCliValue(name: string): string | undefined {
   const prefix = `--${name}=`;
@@ -257,41 +187,14 @@ function stripScripts(html: string): string {
   return html.replace(/<script\b[\s\S]*?<\/script>/gi, "");
 }
 
-function v2RouteExpectation(
-  path: PublicCanonicalRoute,
-  locale: Locale,
-): Readonly<{ description: string; heading: string; title: string }> | undefined {
-  const copy = getPublicV2Copy(locale);
-  const page = (() => {
-    switch (path) {
-      case "/comparison": return copy.comparison;
-      case "/demo": return copy.demo;
-      case "/faq": return copy.faq;
-      case "/features": return copy.features;
-      case "/industries/cleaning": return copy.cleaning;
-      case "/pilot": return copy.pilot;
-      case "/pricing": return copy.pricing;
-      case "/trust": return copy.trust;
-      default: return undefined;
-    }
-  })();
-
-  if (path === "/") {
-    return { ...copy.home.meta, heading: copy.home.hero.title };
-  }
-
-  return page ? { ...page.meta, heading: page.title } : undefined;
-}
-
 function checkPublicRoute(
   route: PublicRouteContract,
   locale: Locale,
   theme: Theme,
   html: string,
 ): CheckResult[] {
-  const v2Expectation = v2RouteExpectation(route.path, locale);
-  const meta = v2Expectation ?? route.meta(locale);
-  const heading = v2Expectation?.heading ?? route.h1(locale);
+  const meta = route.meta(locale);
+  const heading = route.h1(locale);
   const expectedLang = locale === "fr-CA" ? "fr-CA" : "en";
   const expectedCanonical = locale === "fr-CA"
     ? publicUrl(route.path, "fr-CA")
@@ -345,7 +248,7 @@ function checkPublicRoute(
       headIncludes(html, publicLanguageAlternates(route.path)["x-default"]),
   });
 
-  const englishHeading = v2RouteExpectation(route.path, "en")?.heading ?? route.rejectFrText;
+  const englishHeading = route.rejectFrText;
   if (locale === "fr-CA" && englishHeading) {
     results.push({
       detail: route.path,
@@ -404,21 +307,21 @@ function checkPublicRoute(
       detail: route.path,
       name: `${locale} ${theme} home has final first-fold visual hooks`,
       pass:
-        visibleHtml.includes("homepage-hero-section") &&
-        visibleHtml.includes("homepage-hero-actions") &&
-        visibleHtml.includes("homepage-hero-mockup") &&
-        visibleHtml.includes("homepage-product-scene"),
+        visibleHtml.includes('data-v3-section="hero"') &&
+        visibleHtml.includes('data-v3-section="workflow"') &&
+        visibleHtml.includes('data-v3-section="cleaning-demo"') &&
+        visibleHtml.includes("heroProductFrame"),
     });
     results.push({
       detail: route.path,
       name: `${locale} ${theme} home old workflow duplication removed`,
       pass:
         !visibleHtml.includes("homepage-workflow-grid") &&
-        countOccurrences(visibleHtml, "homepage-product-scene") === 1,
+        countOccurrences(visibleHtml, "data-v3-section=") === 7,
     });
   }
 
-  if (route.path === "/industries/cleaning" && visibleHtml.includes("cleaning-service-card")) {
+  if (String(route.path) === "/industries/cleaning" && visibleHtml.includes("cleaning-service-card")) {
     results.push({
       detail: route.path,
       name: `${locale} ${theme} cleaning has six compact cards`,
@@ -659,7 +562,7 @@ async function main(): Promise<void> {
     name: "test pseudolocale falls back to production English",
     pass:
       pseudoFallbackHtml.includes('<html lang="en"') &&
-      headIncludes(pseudoFallbackHtml, getPublicV2Copy("en").home.hero.title) &&
+      headIncludes(pseudoFallbackHtml, getPublicV3Spec("en").routes["/"].hero.title) &&
       !stripScripts(pseudoFallbackHtml).includes(TEST_PSEUDO_LOCALE),
   });
 

@@ -9,8 +9,10 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated retained-route, FAQ, pilot, and fr-CA shell guards to the completed Website V3 contract.
+ * - 2026-07-13: Migrated the homepage dictionary guard to the typed Website V3 specification.
  * - 2026-07-12: Updated pilot conversion assertions for the manual email-draft path.
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
@@ -65,7 +67,7 @@ import {
   PUBLIC_SITE_COPY_SOURCE_LANGUAGE,
   publicSiteCopyNamespaces,
 } from "../../lib/i18n/public-site-copy.ts";
-import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
+import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
 import {
   languageDefinitions,
   resolveWorkspaceInterfaceLanguage,
@@ -520,38 +522,29 @@ describe("BizPilot language copy", () => {
   });
 
   it("keeps final public routes wired to the active dictionaries instead of hardcoded marketing copy", () => {
-    const v2Routes = [
-      "app/page.tsx",
+    const homepage = readFileSync("app/page.tsx", "utf8");
+    assert.equal(homepage.includes("getPublicV3Spec"), true);
+    assert.equal(homepage.includes("PublicV3Home"), true);
+    assert.equal(homepage.includes("generateMetadata"), true);
+
+    const retainedRoutes = [
       "app/features/page.tsx",
       "app/demo/page.tsx",
       "app/pricing/page.tsx",
       "app/pilot/page.tsx",
       "app/trust/page.tsx",
-      "app/comparison/page.tsx",
       "app/faq/page.tsx",
-      "app/industries/cleaning/page.tsx",
     ] as const;
 
-    for (const file of v2Routes) {
+    for (const file of retainedRoutes) {
       const source = readFileSync(file, "utf8");
       assert.equal(
-        source.includes("getPublicV2Copy"),
+        source.includes("getPublicV3Spec"),
         true,
-        `${file} should read the active public V2 dictionary.`,
+        `${file} should read the active public V3 dictionary.`,
       );
+      assert.equal(source.includes("PublicV3Page"), true, file);
       assert.equal(source.includes("generateMetadata"), true, file);
-    }
-
-    for (const file of [
-      "app/content-studio/page.tsx",
-      "app/quote-link-guide/page.tsx",
-      "app/faster-quote-replies/page.tsx",
-    ]) {
-      assert.equal(
-        readFileSync(file, "utf8").includes("getPublicSiteCopy"),
-        true,
-        `${file} should remain dictionary-backed until its own V2 migration.`,
-      );
     }
 
     for (const file of [
@@ -561,11 +554,12 @@ describe("BizPilot language copy", () => {
     ]) {
       const source = readFileSync(file, "utf8");
       assert.equal(source.includes("getPolicyCopy"), true, file);
+      assert.equal(source.includes("getPublicV3Spec"), true, file);
       assert.equal(source.includes("generateMetadata"), true, file);
     }
 
     const homepageSource = readFileSync("app/page.tsx", "utf8");
-    assert.equal(homepageSource.includes("BizPilotV2Home"), true);
+    assert.equal(homepageSource.includes("PublicV3Home"), true);
     for (const phrase of [
       "Stop losing cleaning quote requests to slow replies.",
       "Messages get buried",
@@ -750,23 +744,18 @@ describe("BizPilot language copy", () => {
   });
 
   it("keeps fr-CA public shell and homepage copy accented", () => {
-    const frenchHomeCopy = getHomeCopy("fr-CA");
-    const frenchHomeText = JSON.stringify(frenchHomeCopy);
+    const frenchSpec = getPublicV3Spec("fr-CA");
+    const frenchHomeText = JSON.stringify(frenchSpec);
     const interactiveDemoSource = readFileSync(
-      "components/public/interactive-cleaning-demo.tsx",
+      "components/public/public-v3-demo.tsx",
       "utf8",
     );
 
-    assert.equal(frenchHomeCopy.nav.demo, "Démo");
-    assert.equal(frenchHomeCopy.nav.privacy, "Confidentialité");
-    assert.equal(frenchHomeCopy.nav.security, "Sécurité");
-    assert.equal(frenchHomeCopy.nav.startFull, "Rejoindre le pilote");
-    assert.equal(frenchHomeCopy.nav.startShort, "Pilote");
-    assert.equal(frenchHomeCopy.workflowDemo.eyebrow, "Démo par onglets");
-    assert.equal(
-      frenchHomeCopy.workflowDemo.safety,
-      "Confidentialité, consentement et envoi manuel restent visibles.",
-    );
+    assert.equal(frenchSpec.nav.demo, "Démo");
+    assert.equal(frenchSpec.nav.privacy, "Confidentialité");
+    assert.equal(frenchSpec.nav.security, "Sécurité");
+    assert.equal(frenchSpec.nav.startShort, "Pilote");
+    assert.match(frenchSpec.routes["/demo"].hero.title, /réponse prête à valider/i);
 
     for (const forbidden of [
       "Confidentialite",
@@ -793,9 +782,9 @@ describe("BizPilot language copy", () => {
       );
     }
 
-    assert.equal(interactiveDemoSource.includes("Démo nettoyage"), true);
-    assert.equal(interactiveDemoSource.includes("Brouillon pour révision"), true);
-    assert.equal(interactiveDemoSource.includes("Étape ${current} de ${total}"), true);
+    assert.equal(interactiveDemoSource.includes("PublicV3Spec"), true);
+    assert.equal(interactiveDemoSource.includes("copy.reviewBoundary"), true);
+    assert.equal(interactiveDemoSource.includes("copy.reviewActions.map"), true);
   });
 
   it("keeps fr-CA public policy copy accented and meaning-equivalent", () => {
@@ -1038,99 +1027,78 @@ describe("BizPilot language copy", () => {
   });
 
   it("keeps the universal homepage honest while cleaning remains the complete launch vertical", () => {
-    const english = getPublicV2Copy("en");
-    const serviceCards = english.cleaning.sections[0]?.cards ?? [];
+    const english = getPublicV3Spec("en");
 
-    assert.equal(english.home.industries.cards.length, 4);
-    assert.equal(english.home.industries.cards[0]?.title, "Cleaning");
-    assert.match(english.home.industries.cards[0]?.badge ?? "", /Founder pilot/i);
-    assert.equal(
-      english.home.industries.cards.slice(1).every((card) =>
-        /Roadmap template/i.test(card.badge ?? ""),
-      ),
-      true,
-    );
-    assert.deepEqual(
-      serviceCards.map((card) => card.title),
-      [
-        "Residential cleaning",
-        "Deep cleaning",
-        "Move-in / move-out",
-        "Office cleaning",
-        "Airbnb turnover",
-        "Post-construction",
-      ],
-    );
+    assert.match(english.routes["/"].hero.eyebrow, /service teams/i);
+    assert.match(english.routes["/demo"].hero.eyebrow, /cleaning/i);
+    assert.match(english.routes["/pilot"].hero.eyebrow, /cleaning/i);
+    assert.match(english.faqItems.at(-1)?.answer ?? "", /only complete pilot template/i);
+    assert.equal(english.demo.questions.length, 4);
+    assert.equal(english.demo.result.length, 5);
 
     for (const language of supportedLanguages) {
-      const copy = getPublicV2Copy(language);
-      assert.equal(copy.home.flow.steps.length, 5, language);
-      assert.equal(copy.home.industries.cards.length, 4, language);
-      assert.equal(copy.cleaning.sections[0]?.cards.length, 6, language);
+      const copy = getPublicV3Spec(language);
+      assert.equal(copy.home.sections.length, 7, language);
+      assert.equal(copy.home.workflowSteps.length, 4, language);
+      assert.equal(copy.demo.questions.length, 4, language);
     }
 
     const homepageSource = readFileSync(
-      "components/public/bizpilot-v2-home.tsx",
+      "components/public/public-v3-home.tsx",
       "utf8",
     );
-    assert.equal(homepageSource.includes("copy.industries.cards.map"), true);
-    assert.equal(homepageSource.includes("homepage-demo-grid"), true);
-    assert.equal(homepageSource.includes("homepage-use-case-grid"), false);
+    assert.equal(homepageSource.includes('data-v3-section="cleaning-demo"'), true);
+    assert.equal(homepageSource.includes("spec.demo.result.slice"), true);
+    assert.equal(homepageSource.includes("direct inbox integrations"), false);
   });
 
   it("keeps the homepage focused while full product objections stay on the FAQ route", () => {
-    const english = getPublicV2Copy("en");
-    const questions = english.faq.items.map((item) => item.question);
+    const english = getPublicV3Spec("en");
+    const keys = english.faqItems.map((item) => item.key);
 
-    assert.equal(english.faq.items.length, 6);
-    for (const question of [
-      "Does BizPilot connect directly to Gmail, WhatsApp, Instagram, or SMS today?",
-      "Does AI send messages automatically?",
-      "Can BizPilot invent prices or confirm bookings?",
-      "Is BizPilot only for cleaning businesses?",
-      "What happens after a customer submits the intake form?",
-      "Is BizPilot a CRM, booking platform, or invoicing system?",
+    assert.equal(english.faqItems.length, 10);
+    for (const key of [
+      "direct-integrations",
+      "link-placement",
+      "after-submit",
+      "ai-role",
+      "auto-send",
+      "pricing-booking",
+      "setup",
+      "data",
+      "pricing",
+      "verticals",
     ]) {
-      assert.equal(questions.includes(question), true, question);
+      assert.equal(keys.includes(key), true, key);
     }
 
     const homepageSource = readFileSync(
-      "components/public/bizpilot-v2-home.tsx",
+      "components/public/public-v3-home.tsx",
       "utf8",
     );
     const faqSource = readFileSync("app/faq/page.tsx", "utf8");
     const sharedPageSource = readFileSync(
-      "components/public/bizpilot-v2-page.tsx",
+      "components/public/public-v3-page.tsx",
       "utf8",
     );
 
-    assert.equal(homepageSource.includes("copy.faq.items.map"), false);
-    assert.equal(faqSource.includes("faqItems={copy.items}"), true);
-    assert.equal(faqSource.includes("getPublicV2Copy"), true);
-    assert.equal(sharedPageSource.includes("buildFaqPageJsonLd"), true);
+    assert.equal(homepageSource.includes("spec.faqItems.map"), false);
+    assert.equal(faqSource.includes("PublicV3Page"), true);
+    assert.equal(faqSource.includes("getPublicV3Spec"), true);
+    assert.equal(sharedPageSource.includes("spec.faqItems.map"), true);
     assert.equal(readFileSync("proxy.ts", "utf8").includes('"/faq"'), true);
   });
 
-  it("keeps final V2 supporting-page structure and product boundaries locked", () => {
-    const english = getPublicV2Copy("en");
+  it("keeps final V3 supporting-page structure and product boundaries locked", () => {
+    const english = getPublicV3Spec("en");
 
-    assert.equal(english.features.sections.length, 3);
-    assert.equal(
-      english.features.sections.every((section) => section.cards.length === 3),
-      true,
-    );
-    assert.equal(english.cleaning.sections[0]?.cards.length, 6);
-    assert.equal(english.trust.sections.length, 2);
-    assert.equal(
-      english.trust.sections.every((section) => section.cards.length === 3),
-      true,
-    );
-    assert.equal(english.demo.sections.length, 3);
-    assert.equal(
-      english.demo.sections.every((section) => section.cards.length === 3),
-      true,
-    );
-    assert.equal(english.pilot.sections.length, 2);
+    assert.equal(english.features.length, 6);
+    assert.equal(english.trust.length, 6);
+    assert.equal(english.demo.questions.length, 4);
+    assert.equal(english.demo.result.length, 5);
+    assert.equal(english.pilot.fit.length, 4);
+    assert.equal(english.pilot.nextSteps.length, 4);
+    assert.equal(english.faqItems.length, 10);
 
     const pricingText = JSON.stringify(english.pricing);
     for (const value of [
@@ -1140,34 +1108,34 @@ describe("BizPilot language copy", () => {
     ]) {
       assert.equal(pricingText.includes(value), true, value);
     }
-    assert.match(english.features.notice?.badge ?? "", /Roadmap/i);
-    assert.match(english.trust.notice?.badge ?? "", /Production gate/i);
-    assert.match(english.pricing.notice?.badge ?? "", /Before any paid pilot/i);
+    assert.match(english.faqItems[0]?.answer ?? "", /not active product functionality/i);
+    assert.match(english.trust[3]?.title ?? "", /Human review/i);
+    assert.match(english.pricing.notice, /No checkout happens/i);
 
     for (const file of [
       "app/features/page.tsx",
-      "app/comparison/page.tsx",
-      "app/industries/cleaning/page.tsx",
       "app/trust/page.tsx",
       "app/demo/page.tsx",
       "app/pricing/page.tsx",
       "app/faq/page.tsx",
+      "app/pilot/page.tsx",
     ]) {
       const source = readFileSync(file, "utf8");
-      assert.equal(source.includes("BizPilotV2Page"), true, file);
-      assert.equal(source.includes("getPublicV2Copy"), true, file);
+      assert.equal(source.includes("PublicV3Page"), true, file);
+      assert.equal(source.includes("getPublicV3Spec"), true, file);
     }
 
     const sharedPage = readFileSync(
-      "components/public/bizpilot-v2-page.tsx",
+      "components/public/public-v3-page.tsx",
       "utf8",
     );
     for (const required of [
-      "copy.sections.map",
-      "linksForRoute",
-      "copy.notice",
-      "bp-grid-three",
-      "MarketingPageHero",
+      "FeaturesContent",
+      "DemoContent",
+      "PricingContent",
+      "PilotContent",
+      "FaqContent",
+      "TrustContent",
     ]) {
       assert.equal(sharedPage.includes(required), true, required);
     }
@@ -1182,43 +1150,31 @@ describe("BizPilot language copy", () => {
   });
 
   it("keeps founder-pilot conversion honest, bilingual, and non-submitting", () => {
-    const v2English = getPublicV2Copy("en").pilot;
-    const v2French = getPublicV2Copy("fr-CA").pilot;
-    const englishConversion = getPublicSiteCopy("en").pilot.conversion;
-    const frenchConversion = getPublicSiteCopy("fr-CA").pilot.conversion;
+    const englishPilot = getPublicV3Spec("en").pilot;
+    const frenchPilot = getPublicV3Spec("fr-CA").pilot;
 
-    assert.match(v2English.badge, /Cleaning businesses first/i);
-    assert.match(v2English.notice?.badge ?? "", /Approval gate/i);
-    assert.match(v2French.notice?.badge ?? "", /Porte d’approbation/i);
-    assert.equal(v2English.sections.length, 2);
-    assert.equal(v2French.sections.length, 2);
-
-    assert.equal(englishConversion.emailDraftAction, "Open email draft");
-    assert.equal(englishConversion.previewQuestions.length, 6);
-    assert.equal(frenchConversion.previewQuestions.length, 6);
-    assert.equal(
-      JSON.stringify(frenchConversion).includes("Copy pilot request template"),
-      false,
-    );
+    assert.equal(englishPilot.fit.length, 4);
+    assert.equal(frenchPilot.fit.length, 4);
+    assert.equal(englishPilot.applicationFields.length, 7);
+    assert.equal(frenchPilot.applicationFields.length, 7);
+    assert.match(englishPilot.submissionBoundary, /does not submit or store/i);
+    assert.match(frenchPilot.submissionBoundary, /n'envoie ni ne conserve/i);
 
     const pilotSource = readFileSync("app/pilot/page.tsx", "utf8");
     for (const forbidden of ["<form", "<input", "<select", "<textarea"]) {
       assert.equal(pilotSource.includes(forbidden), false, forbidden);
     }
-    assert.equal(pilotSource.includes("PilotRequestTemplateCard"), true);
-    assert.equal(pilotSource.includes("getPublicV2Copy"), true);
-    assert.equal(pilotSource.includes("getPublicSiteCopy"), true);
-    assert.equal(pilotSource.includes('id="pilot-request-template"'), true);
+    assert.equal(pilotSource.includes("PublicV3Page"), true);
+    assert.equal(pilotSource.includes("getPublicV3Spec"), true);
 
     const conversionSource = readFileSync(
-      "components/public/pilot-request-template-card.tsx",
+      "components/public/public-v3-pilot-request.tsx",
       "utf8",
     );
     assert.equal(conversionSource.includes("navigator.clipboard.writeText"), true);
-    assert.equal(conversionSource.includes('document.execCommand("copy")'), true);
+    assert.equal(conversionSource.includes("selectTemplate"), true);
     assert.equal(conversionSource.includes('aria-live="polite"'), true);
-    assert.equal(conversionSource.includes("mailto:?subject="), true);
-    for (const forbidden of ["fetch(", "XMLHttpRequest", "<form"]) {
+    for (const forbidden of ["mailto:", "fetch(", "XMLHttpRequest", "<form"]) {
       assert.equal(conversionSource.includes(forbidden), false, forbidden);
     }
   });

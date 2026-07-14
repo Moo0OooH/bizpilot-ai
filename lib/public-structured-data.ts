@@ -1,4 +1,4 @@
-/*
+/**
  * ============================================================
  * File: lib/public-structured-data.ts
  * Project: BizPilot AI
@@ -7,11 +7,12 @@
  * Related:
  * - components/public/json-ld.tsx
  * - lib/seo.ts
- * - lib/i18n/public-v2-copy.ts
+ * - lib/i18n/public-v3-spec.ts
  * Author: MoOoH
  * Created: 2026-07-04
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Removed the retired Content Studio breadcrumb type and aligned localized service output with visible V3 copy.
  * - 2026-07-13: Repositioned public JSON-LD around smart service-business intake while preserving cleaning as the first complete pilot vertical.
  * - 2026-07-13: Corrected Canadian-French structured-data accents and terminology.
  * ============================================================
@@ -40,7 +41,7 @@ type FaqJsonLdItem = Readonly<{
 
 type BreadcrumbItem = Readonly<{
   name: string;
-  path: PublicCanonicalRoute | "/content-studio";
+  path: PublicCanonicalRoute;
 }>;
 
 const context = "https://schema.org";
@@ -133,7 +134,7 @@ function serviceJsonLd(language: SupportedLanguage) {
       : "Smart customer request intake, missing-information organization, and AI-assisted reply drafts with manual owner review and sending.";
   const serviceOutput =
     language === "fr-CA"
-      ? "Une demande client organisee, les renseignements manquants et un brouillon pret a verifier."
+      ? "Une demande client organisée, les renseignements manquants et un brouillon prêt à vérifier."
       : "An organized customer request, visible missing information, and a reply draft ready for owner review.";
 
   return {

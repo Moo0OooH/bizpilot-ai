@@ -10,8 +10,9 @@
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Removed the obsolete public locale Server Action after public switching moved to deterministic locale URLs.
  * - 2026-07-11: Added per-language custom quote-field translation payloads for bilingual workspace saves.
  * - 2026-06-16: Rejected forward-only privacy mode until the full intake/storage behavior exists.
  * - 2026-05-16: Restored truncated file tail; kept [CONFIG_SAVE_ERROR] dev log.
@@ -521,17 +522,6 @@ export async function saveBusinessConfigurationAction(
   redirect(
     "/dashboard/configuration?notice=Business%20configuration%20saved.",
   );
-}
-
-export async function setInterfaceLanguageAction(
-  formData: FormData,
-): Promise<never> {
-  const language = readSupportedLanguageOrThrow(
-    readRequiredFormValue(formData, "language"),
-  );
-
-  await persistInterfaceLanguage(language);
-  redirect(readRedirectPath(formData, "/auth/sign-in"));
 }
 
 export async function updateWorkspaceLanguageAction(

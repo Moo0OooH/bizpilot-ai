@@ -1,24 +1,27 @@
-/*
+/**
  * ============================================================
  * File: app/faq/page.tsx
  * Project: BizPilot AI
- * Description: Public FAQ for the universal smart-intake product and cleaning-first founder pilot.
- * Role: Separates current capabilities, human-control boundaries, pilot terms, and roadmap integrations clearly.
+ * Description: Retained Website V3 frequently asked questions page.
+ * Role: Answers the ten approved product, AI, channel, data, pricing, and pilot objections without duplicating the homepage.
  * Related:
- * - components/public/bizpilot-v2-page.tsx
- * - lib/i18n/public-v2-copy.ts
+ * - components/public/public-v3-page.tsx
+ * - lib/i18n/public-v3-spec.ts
+ * - lib/seo.ts
  * Author: MoOoH
  * Created: 2026-06-21
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Migrated FAQ to the concise ten-question V3 content contract and renderer.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
-import { BizPilotV2Page } from "@/components/public/bizpilot-v2-page";
+import { PublicV3Page } from "@/components/public/public-v3-page";
 import { INTERFACE_LANGUAGE_COOKIE } from "@/lib/i18n/language";
-import { getPublicV2Copy } from "@/lib/i18n/public-v2-copy";
+import { getPublicV3Spec } from "@/lib/i18n/public-v3-spec";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -40,21 +43,12 @@ export async function generateMetadata({
   const language = await readPublicLanguage(searchParams);
   return buildPublicMetadata(
     "/faq",
-    getPublicV2Copy(language).faq.meta,
+    getPublicV3Spec(language).routes["/faq"].meta,
     language,
   );
 }
 
 export default async function FaqPage({ searchParams }: FaqPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
-  const copy = getPublicV2Copy(language).faq;
-
-  return (
-    <BizPilotV2Page
-      copy={copy}
-      faqItems={copy.items}
-      language={language}
-      path="/faq"
-    />
-  );
+  return <PublicV3Page language={language} path="/faq" />;
 }

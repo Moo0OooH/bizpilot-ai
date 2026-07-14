@@ -1,4 +1,4 @@
-/*
+/**
  * ============================================================
  * File: tests/unit/public-v2-french-copy.test.mts
  * Project: BizPilot AI
@@ -11,6 +11,8 @@
  * Author: MoOoH
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Migrated retained-route navigation guards from the retired V2 source to the V3 contract.
  * ============================================================
  */
 
@@ -127,18 +129,21 @@ describe("public V2 Canadian French copy", () => {
     assert.match(french.pilot.notice?.badge ?? "", /Porte d’approbation/i);
   });
 
-  it("keeps supporting and policy routes on the V2 navigation source", () => {
+  it("keeps retained and policy routes on the V3 navigation source", () => {
     for (const file of [
-      "app/content-studio/page.tsx",
-      "app/quote-link-guide/page.tsx",
-      "app/faster-quote-replies/page.tsx",
+      "app/features/page.tsx",
+      "app/demo/page.tsx",
+      "app/pricing/page.tsx",
+      "app/pilot/page.tsx",
+      "app/faq/page.tsx",
+      "app/trust/page.tsx",
       "app/privacy/page.tsx",
       "app/security/page.tsx",
       "app/terms/page.tsx",
     ]) {
       const route = source(file);
-      assert.equal(route.includes("getPublicV2NavCopy"), true, file);
-      assert.equal(route.includes("getHomeCopy"), false, file);
+      assert.equal(route.includes("getPublicV3Spec"), true, file);
+      assert.equal(route.includes("getPublicV2NavCopy"), false, file);
     }
   });
 

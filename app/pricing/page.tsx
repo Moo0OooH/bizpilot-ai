@@ -1,24 +1,27 @@
-/*
+/**
  * ============================================================
  * File: app/pricing/page.tsx
  * Project: BizPilot AI
- * Description: Public founder-pilot pricing for the current controlled smart-intake workflow.
- * Role: Preserves approved staged pricing and manual billing boundaries under the universal product positioning.
+ * Description: Retained Website V3 founder-pilot pricing page.
+ * Role: Shows the approved three pilot tiers and manual approval gates without checkout or unsupported billing claims.
  * Related:
- * - components/public/bizpilot-v2-page.tsx
- * - lib/i18n/public-v2-copy.ts
+ * - components/public/public-v3-page.tsx
+ * - lib/i18n/public-v3-spec.ts
+ * - lib/seo.ts
  * Author: MoOoH
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Migrated pilot pricing to the compact V3 renderer while preserving approved prices and manual billing boundaries.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
-import { BizPilotV2Page } from "@/components/public/bizpilot-v2-page";
+import { PublicV3Page } from "@/components/public/public-v3-page";
 import { INTERFACE_LANGUAGE_COOKIE } from "@/lib/i18n/language";
-import { getPublicV2Copy } from "@/lib/i18n/public-v2-copy";
+import { getPublicV3Spec } from "@/lib/i18n/public-v3-spec";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -40,7 +43,7 @@ export async function generateMetadata({
   const language = await readPublicLanguage(searchParams);
   return buildPublicMetadata(
     "/pricing",
-    getPublicV2Copy(language).pricing.meta,
+    getPublicV3Spec(language).routes["/pricing"].meta,
     language,
   );
 }
@@ -49,12 +52,5 @@ export default async function PricingPage({
   searchParams,
 }: PricingPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
-
-  return (
-    <BizPilotV2Page
-      copy={getPublicV2Copy(language).pricing}
-      language={language}
-      path="/pricing"
-    />
-  );
+  return <PublicV3Page language={language} path="/pricing" />;
 }

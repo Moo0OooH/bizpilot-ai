@@ -1,16 +1,19 @@
-/*
+/**
  * ============================================================
  * File: tests/unit/i18n-layout-source.test.mts
  * Project: BizPilot AI
  * Description: Source-level guards for bilingual copy health and compact responsive layouts.
- * Role: Protects localized copy quality, dashboard disclosure behavior, and the V2 mobile-first public narrative.
+ * Role: Protects localized copy quality, dashboard disclosure behavior, and the V3 mobile-first public narrative.
  * Related:
- * - lib/i18n/public-v2-copy.ts
- * - components/public/bizpilot-v2-home.tsx
- * - components/public/bizpilot-v2-home.module.css
+ * - lib/i18n/public-v3-spec.ts
+ * - components/public/public-v3-home.tsx
+ * - components/public/public-v3-home.module.css
  * Author: MoOoH
  * Created: 2026-06-19
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Treated the animation-free V3 homepage as the strongest reduced-motion contract.
+ * - 2026-07-13: Migrated compact public-layout guards from retired V2 files to the shared V3 renderers.
  * ============================================================
  */
 
@@ -66,62 +69,33 @@ describe("bilingual copy and compact layout guards", () => {
     assert.equal(source.includes('DashboardCard className="p-[18px]'), false);
   });
 
-  it("keeps the V2 public story compact, responsive, and free of nested-scroll panels", () => {
-    const homeSource = readFileSync(
-      "components/public/bizpilot-v2-home.tsx",
-      "utf8",
-    );
-    const homeStyles = readFileSync(
-      "components/public/bizpilot-v2-home.module.css",
-      "utf8",
-    );
-    const sharedPage = readFileSync(
-      "components/public/bizpilot-v2-page.tsx",
-      "utf8",
-    );
-    const cleaningSource = readFileSync(
-      "app/industries/cleaning/page.tsx",
-      "utf8",
-    );
+  it("keeps the V3 public story compact, responsive, and free of nested-scroll panels", () => {
+    const homeSource = readFileSync("components/public/public-v3-home.tsx", "utf8");
+    const homeStyles = readFileSync("components/public/public-v3-home.module.css", "utf8");
+    const sharedPage = readFileSync("components/public/public-v3-page.tsx", "utf8");
+    const pageStyles = readFileSync("components/public/public-v3-page.module.css", "utf8");
 
     for (const required of [
-      "copy.problem.cards.map",
-      "copy.flow.steps.map",
-      "copy.industries.cards.map",
-      "copy.features.cards.map",
-      "homepage-demo-grid",
-      "homepage-hero-proof-rail",
+      "spec.home.problemMessages.map",
+      "spec.home.workflowSteps.map",
+      "spec.home.outcomeCards.map",
+      "MarketingProductFrame",
+      "RouteContent",
+      "PublicV3Demo",
     ]) {
-      assert.equal(homeSource.includes(required), true, required);
+      assert.equal(`${homeSource}\n${sharedPage}`.includes(required), true, required);
     }
 
-    for (const required of [
-      "@media (min-width: 390px)",
-      "@media (min-width: 720px)",
-      "@media (min-width: 1020px)",
-      "@media (max-width: 359px)",
-      "@media (prefers-reduced-motion: no-preference)",
-    ]) {
-      assert.equal(homeStyles.includes(required), true, required);
-    }
-
-    for (const forbidden of [
-      "overflow-y-auto",
-      "100vh",
-      "width: 100vw",
-      "h-screen",
-      "w-screen",
-    ]) {
+    for (const forbidden of ["overflow-y-auto", "100vh", "width: 100vw", "h-screen", "w-screen"]) {
       assert.equal(
-        `${homeSource}\n${homeStyles}\n${sharedPage}`.includes(forbidden),
+        `${homeSource}\n${homeStyles}\n${sharedPage}\n${pageStyles}`.includes(forbidden),
         false,
         forbidden,
       );
     }
 
-    assert.equal(sharedPage.includes("copy.sections.map"), true);
-    assert.equal(sharedPage.includes("MarketingPageHero"), true);
-    assert.equal(cleaningSource.includes("BizPilotV2Page"), true);
-    assert.equal(cleaningSource.includes("CleaningServiceDetails"), false);
+    assert.equal(pageStyles.includes("@media (min-width: 960px)"), true);
+    assert.equal(pageStyles.includes("@media (max-width: 480px)"), true);
+    assert.equal(homeStyles.includes("animation:"), false);
   });
 });

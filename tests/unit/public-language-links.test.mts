@@ -10,8 +10,9 @@
  * - tests/smoke/public-route-smoke.mts
  * Author: MoOoH
  * Created: 2026-07-12
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Added stale-locale replacement coverage for both language directions while preserving query and hash state.
  * - 2026-07-12: Added fr-CA query, hash, and shared-shell link regression coverage.
  * ============================================================
  */
@@ -20,7 +21,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
-import { publicHref } from "../../lib/i18n/public-href.ts";
+import {
+  publicHref,
+  publicLanguageHref,
+} from "../../lib/i18n/public-href.ts";
 
 const marketingUiSource = readFileSync(
   "components/public/marketing-ui.tsx",
@@ -40,6 +44,31 @@ describe("public language-preserving links", () => {
     assert.equal(publicHref("/features", "en"), "/features");
     assert.equal(publicHref("mailto:?subject=pilot", "fr-CA"), "mailto:?subject=pilot");
     assert.equal(publicHref("#pilot-request-template", "fr-CA"), "#pilot-request-template");
+  });
+
+  it("replaces stale locale state without dropping other query or hash values", () => {
+    assert.equal(
+      publicHref("/features?source=header&language=en#details", "fr-CA"),
+      "/features?source=header&language=fr-CA#details",
+    );
+    assert.equal(
+      publicHref("/features?source=header&language=fr-CA#details", "en"),
+      "/features?source=header#details",
+    );
+  });
+
+  it("keeps locale-switch requests explicit so the persistence cookie can reverse", () => {
+    assert.equal(
+      publicLanguageHref(
+        "/features?source=header&language=fr-CA#details",
+        "en",
+      ),
+      "/features?source=header&language=en#details",
+    );
+    assert.equal(
+      publicLanguageHref("/features?source=header#details", "fr-CA"),
+      "/features?source=header&language=fr-CA#details",
+    );
   });
 
   it("routes every shared marketing link primitive through the helper", () => {
