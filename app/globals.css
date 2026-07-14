@@ -189,6 +189,27 @@
   --dash-ai-soft: rgba(139, 92, 246, 0.1);
 }
 
+/* Keep public marketing pages composed on short laptop viewports and scaled displays. */
+@media (min-width: 1180px) and (max-height: 900px) {
+  :root {
+    --v3-type-display: clamp(3rem, 2.55rem + 0.75vw, 3.5rem);
+    --v3-type-page: clamp(2.75rem, 2.45rem + 0.6vw, 3.35rem);
+    --v3-type-section: clamp(1.9rem, 1.65rem + 0.75vw, 2.75rem);
+    --v3-section-space: clamp(3.25rem, 5vw, 4.75rem);
+    --v3-section-space-compact: clamp(2.75rem, 4vw, 3.75rem);
+    --v3-header-height: 3.75rem;
+  }
+}
+
+@media (min-width: 1180px) and (max-height: 760px) {
+  :root {
+    --v3-type-display: 3.125rem;
+    --v3-type-page: 3rem;
+    --v3-type-section: 2.5rem;
+    --v3-header-height: 3.5rem;
+  }
+}
+
 [data-theme="dark"] {
   color-scheme: dark;
   --background: #08111f;
@@ -679,6 +700,21 @@ select {
   background: var(--primary);
   color: var(--primary-contrast);
   box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+@media (min-width: 1180px) and (max-height: 900px) {
+  .v3-site-header-inner {
+    padding-block: 0.25rem;
+  }
+
+  .v3-site-header .min-h-12 {
+    min-height: 2.625rem;
+  }
+
+  .v3-brand-mark {
+    block-size: 2.25rem;
+    inline-size: 2.25rem;
+  }
 }
 
 .v3-site-footer {

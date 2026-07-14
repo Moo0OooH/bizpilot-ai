@@ -126,6 +126,10 @@
   font-weight: 800;
 }
 
+.workspaceRail > span:nth-child(1) svg { color: var(--brand-coral); }
+.workspaceRail > span:nth-child(2) svg { color: var(--warning); }
+.workspaceRail > span:nth-child(3) svg { color: var(--primary); }
+
 .workspaceRail .activeRailItem {
   background: var(--surface);
   color: var(--text-strong);
@@ -179,12 +183,16 @@
 .journeyVisual { display: grid; padding: 1.1rem; }
 
 .journeyStep {
+  --step-accent: var(--brand-coral);
   position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.9rem;
   padding: 1rem 0;
 }
+
+.journeyStep:nth-child(2) { --step-accent: var(--primary); }
+.journeyStep:nth-child(3) { --step-accent: var(--accent); }
 
 .journeyStep:not(:last-child)::after {
   position: absolute;
@@ -202,8 +210,8 @@
   block-size: 2rem;
   place-items: center;
   border-radius: 0.65rem;
-  background: var(--route-accent);
-  color: var(--primary-contrast);
+  background: color-mix(in srgb, var(--step-accent) 14%, var(--surface));
+  color: var(--step-accent);
   font-size: 0.8125rem;
   font-weight: 900;
 }
@@ -220,15 +228,19 @@
 }
 
 .miniPlan {
+  --plan-accent: var(--warning);
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.3rem 0.8rem;
   padding: 1.05rem;
-  border: 1px solid var(--border-default);
+  border: 1px solid color-mix(in srgb, var(--plan-accent) 28%, var(--border-default));
   border-radius: 1rem;
   background: var(--surface);
   box-shadow: var(--shadow-sm);
 }
+
+.miniPlan:nth-child(2) { --plan-accent: var(--primary); }
+.miniPlan:nth-child(3) { --plan-accent: var(--brand-violet); }
 
 .miniPlan > span {
   grid-row: 1 / 3;
@@ -237,8 +249,8 @@
   block-size: 2.2rem;
   place-items: center;
   border-radius: 0.7rem;
-  background: var(--text-strong);
-  color: var(--surface);
+  background: color-mix(in srgb, var(--plan-accent) 14%, var(--surface));
+  color: var(--plan-accent);
   font-size: 0.8125rem;
   font-weight: 900;
 }
@@ -287,7 +299,10 @@
 
 .faqVisual > div:last-child { border-block-end: 0; }
 .faqVisual > div:nth-child(2) { background: var(--route-soft); }
-.faqVisual span { color: var(--route-accent); font-size: 0.8125rem; font-weight: 900; }
+.faqVisual span { display: grid; inline-size: 2.15rem; block-size: 2.15rem; place-items: center; border-radius: 0.7rem; background: var(--route-soft); color: var(--route-accent); }
+.faqVisual > div:nth-child(2) span { background: color-mix(in srgb, var(--primary) 13%, var(--surface)); color: var(--primary); }
+.faqVisual > div:nth-child(3) span { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); color: var(--accent); }
+.faqVisual > div:nth-child(4) span { background: color-mix(in srgb, var(--warning) 13%, var(--surface)); color: var(--warning); }
 .faqVisual strong { font-size: 1rem; line-height: 1.45; }
 .faqVisual svg { color: var(--text-muted); }
 
@@ -352,6 +367,13 @@
   background: var(--route-soft);
   color: var(--route-accent);
 }
+
+.featureCard:nth-child(3n + 1) .cardIcon,
+.fitCard:nth-child(3n + 1) .cardIcon { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); }
+.featureCard:nth-child(3n + 2) .cardIcon,
+.fitCard:nth-child(3n + 2) .cardIcon { background: color-mix(in srgb, var(--accent) 13%, var(--surface)); color: var(--accent); }
+.featureCard:nth-child(3n) .cardIcon,
+.fitCard:nth-child(3n) .cardIcon { background: color-mix(in srgb, var(--warning) 12%, var(--surface)); color: var(--warning); }
 
 .cardTitle {
   margin-block: 1rem 0;
@@ -536,6 +558,32 @@
   .demoTabs { grid-template-columns: 1fr; align-content: start; }
   .pricingGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .priceCard:nth-child(3) { grid-column: auto; }
+}
+
+@media (min-width: 1120px) and (max-height: 900px) {
+  .hero { padding-block: 2rem 3.5rem; }
+  .heroGrid { align-items: start; gap: clamp(2.25rem, 4vw, 4rem); }
+  .heroTitle { max-inline-size: 100%; margin-block-start: 1rem; line-height: 1.03; }
+  .heroBody { margin-block-start: 1.05rem; font-size: 1.0625rem; line-height: 1.55; }
+  .actions { margin-block-start: 1.35rem; }
+  .visualChrome { min-block-size: 2.75rem; }
+  .workspaceVisual { min-block-size: 21rem; }
+  .workspaceRail { padding-block: 0.75rem; }
+  .workspaceRecord { gap: 0.65rem; padding: 1rem; }
+  .journeyVisual { padding: 0.85rem 1rem; }
+  .journeyStep { gap: 0.7rem; padding: 0.78rem 0; }
+  .pricingVisual { gap: 0.55rem; padding: 0.75rem; }
+  .miniPlan { padding: 0.78rem; }
+  .pilotVisual,
+  .trustVisual { padding: 1.35rem; }
+  .faqVisual > div { padding: 0.9rem 1rem; }
+}
+
+@media (min-width: 1120px) and (max-height: 760px) {
+  .hero { padding-block: 1.5rem 2.75rem; }
+  .heroGrid { gap: 2.25rem; }
+  .heroBody { line-height: 1.48; }
+  .actions { margin-block-start: 1.1rem; }
 }
 
 @media (max-width: 699px) {

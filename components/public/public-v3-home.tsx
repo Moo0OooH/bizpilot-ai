@@ -37,6 +37,20 @@ import styles from "./public-v3-home.module.css";
 
 type HomeSection = PublicV3Spec["home"]["sections"][number];
 
+const problemSourceIcons: readonly MarketingIconName[] = [
+  "camera",
+  "phone",
+  "globe",
+  "inbox",
+];
+const heroStageIcons: readonly MarketingIconName[] = ["message", "link", "briefcase"];
+const requestFieldIcons: readonly MarketingIconName[] = [
+  "briefcase",
+  "user",
+  "target",
+  "clock",
+];
+
 function sectionCopy(spec: PublicV3Spec, key: string): HomeSection {
   const section = spec.home.sections.find((item) => item.key === key);
 
@@ -99,13 +113,16 @@ function HeroProductStory({
       <div className={styles.heroStages}>
         <MarketingProductStage className={styles.storyStage ?? ""}>
           <div className={styles.stageHeader}>
-            <span>01</span>
+            <span aria-hidden="true"><MarketingIcon name={heroStageIcons[0] ?? "message"} /></span>
             <strong>{labels[0]}</strong>
           </div>
           <div className={styles.messageStack}>
-            {spec.home.problemMessages.map((message) => (
+            {spec.home.problemMessages.map((message, index) => (
               <div className={styles.messageBubble} key={message.label}>
-                <span>{message.label}</span>
+                <span>
+                  <MarketingIcon name={problemSourceIcons[index % problemSourceIcons.length] ?? "message"} />
+                  {message.label}
+                </span>
                 <strong>{message.value}</strong>
               </div>
             ))}
@@ -118,7 +135,7 @@ function HeroProductStory({
 
         <MarketingProductStage className={`${styles.storyStage} ${styles.linkStage}`}>
           <div className={styles.stageHeader}>
-            <span>02</span>
+            <span aria-hidden="true"><MarketingIcon name={heroStageIcons[1] ?? "link"} /></span>
             <strong>{labels[1]}</strong>
           </div>
           <div className={styles.intakeLinkCard}>
@@ -139,13 +156,16 @@ function HeroProductStory({
 
         <MarketingProductStage className={`${styles.storyStage} ${styles.readyStage}`}>
           <div className={styles.stageHeader}>
-            <span>03</span>
+            <span aria-hidden="true"><MarketingIcon name={heroStageIcons[2] ?? "briefcase"} /></span>
             <strong>{labels[2]}</strong>
           </div>
           <div className={styles.requestSummary}>
-            {spec.demo.result.slice(0, 4).map((item) => (
+            {spec.demo.result.slice(0, 4).map((item, index) => (
               <div key={item.label}>
-                <span>{item.label}</span>
+                <span>
+                  <MarketingIcon name={requestFieldIcons[index % requestFieldIcons.length] ?? "check"} />
+                  {item.label}
+                </span>
                 <strong>{item.value}</strong>
               </div>
             ))}
@@ -242,7 +262,9 @@ export function PublicV3Home({
               <div className={styles.problemMessages}>
                 {spec.home.problemMessages.map((message, index) => (
                   <article key={message.label}>
-                    <span className={styles.sourceDot} aria-hidden="true" />
+                    <span className={styles.sourceIcon} aria-hidden="true">
+                      <MarketingIcon name={problemSourceIcons[index % problemSourceIcons.length] ?? "message"} />
+                    </span>
                     <div>
                       <p>{message.label}</p>
                       <strong>{message.value}</strong>
