@@ -20,7 +20,7 @@
 .hero {
   position: relative;
   isolation: isolate;
-  padding-block: clamp(3.5rem, 6vw, 5.75rem) clamp(4rem, 6vw, 5.5rem);
+  padding-block: clamp(3rem, 5vw, 4.75rem) clamp(3.75rem, 5.5vw, 5rem);
 }
 
 .hero::before {
@@ -45,7 +45,7 @@
 
 .heroTitle {
   max-inline-size: 15ch;
-  margin-block: 1.35rem 0;
+  margin-block: 1.2rem 0;
   font-size: var(--v3-type-display);
   font-weight: 850;
   line-height: var(--v3-leading-display);
@@ -55,7 +55,7 @@
 
 .heroBody {
   max-inline-size: 62ch;
-  margin-block: 1.5rem 0;
+  margin-block: 1.35rem 0;
   color: var(--text-default);
   font-size: var(--v3-type-lead);
   line-height: 1.68;
