@@ -94,7 +94,7 @@ describe("bilingual copy and compact layout guards", () => {
       );
     }
 
-    assert.equal(pageStyles.includes("@media (min-width: 960px)"), true);
+    assert.equal(pageStyles.includes("@media (min-width: 1120px)"), true);
     assert.equal(pageStyles.includes("@media (max-width: 480px)"), true);
     assert.equal(homeStyles.includes("animation:"), false);
   });

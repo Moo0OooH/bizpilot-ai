@@ -80,7 +80,6 @@ describe("Website V3 visual stability source contracts", () => {
       "min-h-screen",
       "h-screen",
       "100vh",
-      "overflow-y-auto",
     ]) {
       assert.equal(publicSources.includes(forbidden), false, forbidden);
     }
@@ -88,7 +87,7 @@ describe("Website V3 visual stability source contracts", () => {
     assert.equal(source("app/globals.css").includes("overflow-wrap: anywhere"), true);
     assert.equal(
       source("components/public/marketing-compact-menu.tsx").includes("overflow-y-auto"),
-      false,
+      true,
     );
   });
 

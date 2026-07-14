@@ -106,6 +106,7 @@ describe("public marketing header source contract", () => {
     assert.match(compactMenuSource, /buttonRef/);
     assert.match(compactMenuSource, /Escape/);
     assert.match(compactMenuSource, /requestAnimationFrame/);
-    assert.equal(compactMenuSource.includes("overflow-y-auto"), false);
+    assert.equal(compactMenuSource.includes("max-h-[calc(100dvh"), true);
+    assert.equal(compactMenuSource.includes("overflow-y-auto"), true);
   });
 });
