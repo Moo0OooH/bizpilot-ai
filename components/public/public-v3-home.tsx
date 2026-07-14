@@ -162,9 +162,8 @@ function HeroProductStory({
           <div className={styles.requestSummary}>
             {spec.demo.result.slice(0, 4).map((item, index) => (
               <div key={item.label}>
-                <span>
+                <span aria-label={item.label} role="img" title={item.label}>
                   <MarketingIcon name={requestFieldIcons[index % requestFieldIcons.length] ?? "check"} />
-                  {item.label}
                 </span>
                 <strong>{item.value}</strong>
               </div>

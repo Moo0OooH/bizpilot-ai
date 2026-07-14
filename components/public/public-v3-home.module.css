@@ -237,6 +237,15 @@
   color: var(--item-accent);
 }
 
+.requestSummary > div > span {
+  display: grid;
+  inline-size: 1.7rem;
+  block-size: 1.7rem;
+  place-items: center;
+  border-radius: 0.55rem;
+  background: color-mix(in srgb, var(--item-accent) 13%, var(--surface));
+}
+
 .messageBubble strong {
   color: var(--text-strong);
   font-size: 0.9375rem;
