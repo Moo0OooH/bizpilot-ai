@@ -2,20 +2,130 @@
  * ============================================================
  * File: docs/readiness/FINAL_GIT_BRANCH_ARCHIVE_AND_CLEANUP_2026-07-12.md
  * Project: BizPilot AI
- * Description: Auditable record of the 2026-07-12 remote branch archive and cleanup.
- * Role: Preserves branch evidence, recovery decisions, archive-tag integrity, and deletion results.
+ * Description: Auditable record of the 2026-07-12 remote archive and the 2026-07-13 final V2 merge/branch/worktree cleanup.
+ * Role: Preserves branch evidence, recovery decisions, archive-tag integrity, merge proof, worktree preservation, and deletion results.
  * Related:
  * - docs/readiness/
  * - .git/refs/tags/archive/branches/
  * Author: MoOoH
  * Created: 2026-07-12
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-07-12: Recorded final remote branch archival, verification, and cleanup evidence.
+ * - 2026-07-13: Recorded PR #2 squash merge, production deployment/smoke gate, final local/remote branch cleanup, and preserved detached-worktree changes.
  * ============================================================
  -->
 
-# Final Git Branch Archive and Cleanup — 2026-07-12
+# Final Git Branch Archive and Cleanup — 2026-07-13
+
+## 2026-07-13 universal V2 merge and final cleanup
+
+### Merge gate and result
+
+| Item | Exact result |
+| --- | --- |
+| Source branch | `agent/universal-customer-intake-v2` at `17a6890f0646a0203569adabf6f38b74b910b89b` |
+| Pull request | `#2`, base `main`, no unresolved review threads |
+| Ahead/behind before merge | 55 ahead, 0 behind `origin/main` |
+| GitHub CI on source head | Pass |
+| Vercel Preview on source head | Ready |
+| Local verify | Lint, typecheck, 236/236 unit tests, and Next.js build pass |
+| Local/Preview visual acceptance | Recorded in PR #2 and the universal V2 preflight report |
+| Supabase requirement | No production mutation required; read-only audit, private backup, and restored-target proof pass |
+| Merge method | Squash merge; no force push and no history rewrite |
+| Squash title | `feat(public): launch universal smart-intake V2` |
+| Merge/main SHA | `e3904b8ada8302344b5087bd9060ae308cf3e998` |
+| Tree preservation proof | `git diff --quiet 17a6890... e3904b8...` returned 0; the feature and squash-merge trees are identical. |
+
+The owner explicitly approved finalization and merge in the active prompt-pack
+session. PR #2 was marked Ready only after all current-head checks passed. The
+feature branch was retained until the production deployment and smoke checks
+below passed.
+
+### Production gate before deletion
+
+| Check | Result |
+| --- | --- |
+| GitHub CI on merged `main` | Pass; run `29297896631`, job `86975290322`. |
+| Vercel deployment | `dpl_CfnYE5riFtQvQPNN44JFhXkp8B5n`, target `production`, state Ready. |
+| Production alias | `https://bizpilo.com` points to the merged production deployment. |
+| Public route smoke | 33/33 pass against `https://bizpilo.com`. |
+| Responsive route smoke | 25/25 pass against `https://bizpilo.com`. |
+
+### Branch and worktree inventory before cleanup
+
+Remote heads were exactly `main` and `agent/universal-customer-intake-v2`.
+Local heads included `main`, the feature branch, and 18 historical
+backup/review branches. Two additional historical worktrees were registered:
+
+- detached `bizpilot-openai-cache-fix` worktree;
+- clean `founder-admin-user-list` worktree.
+
+Every historical branch tip was inspected against `main`. Tips with unique
+commits were already covered by the 2026-07-12 archive tags except for the
+feature branch and two same-tip local pre-sync backup branches. The detached
+worktree contained four staged files; they were committed instead of discarded.
+
+### New preservation tags
+
+All three tags are annotated and were pushed to `origin` before deletion:
+
+| Archive tag | Peeled target | Purpose |
+| --- | --- | --- |
+| `archive/branches/agent-universal-customer-intake-v2-20260713` | `17a6890f0646a0203569adabf6f38b74b910b89b` | Preserves the full pre-squash feature history. |
+| `archive/worktrees/bizpilot-openai-cache-fix-20260713` | `679df15cd4127f000800076bd15b237bbcf373c4` | Preserves four staged files from the detached worktree. |
+| `archive/local/backup-local-main-pre-sync-20260713` | `2dcabe8b342e310c8589c465dbe7c167482e6e61` | Preserves both local pre-sync backup branch tips. |
+
+All pre-existing `archive/*` and `backup/*` tags remain intact. No tag was
+deleted or rewritten.
+
+### Deleted refs and worktrees
+
+- Deleted remote branch: `agent/universal-customer-intake-v2`.
+- Deleted local feature branch and all 18 historical backup/review branches.
+- Removed the two historical worktrees only after clean status and archive-tag
+  preservation were verified.
+- The detached worktree's ignored `node_modules` leftovers required Windows
+  extended-length path cleanup after Git had already detached the worktree.
+  Only the two verified historical worktree paths were removed.
+
+### Exact final state
+
+At the completion of branch cleanup:
+
+```text
+LOCAL_BRANCHES
+main e3904b8
+
+REMOTE_HEADS
+e3904b8ada8302344b5087bd9060ae308cf3e998 refs/heads/main
+
+WORKTREES
+E:/bizpilot-ai e3904b8 [main]
+```
+
+`main` was clean and synchronized with `origin/main`. This documentation-only
+follow-up commit may advance the final `main` SHA, but it does not change the
+verified squash-merge tree or recreate any deleted branch.
+
+### 2026-07-13 command/result ledger
+
+| Command / class | Result |
+| --- | --- |
+| `git fetch --all --tags --prune` | Passed before merge and cleanup. |
+| `git rev-list --left-right --count origin/main...HEAD` | `0 55`; source branch not behind main. |
+| `gh pr view`, `gh pr checks`, GraphQL `reviewThreads` | Mergeable/Clean, all checks pass, zero review threads. |
+| `gh pr merge 2 --squash` | Passed; merge SHA `e3904b8...`. |
+| `git diff --quiet <feature> <merge>` | Passed; exact tree preservation. |
+| `gh run watch 29297896631 --exit-status` | Merged-main CI passed. |
+| Vercel inspect | Production deployment Ready with `bizpilo.com` alias. |
+| `pnpm smoke:public -- --base-url=https://bizpilo.com` | 33/33 pass. |
+| `pnpm smoke:responsive -- --base-url=https://bizpilo.com` | 25/25 pass. |
+| `git tag -a` and `git push origin <three tags>` | New preservation tags created and pushed. |
+| `git worktree remove`, verified extended-path cleanup, `git worktree prune` | Only the primary worktree remains. |
+| `git branch -D` after archive verification | All non-main local branches removed. |
+| `git push origin --delete agent/universal-customer-intake-v2` | Remote feature branch removed after production pass. |
+| `git ls-remote --heads origin` | Only `refs/heads/main` remains. |
 
 ## Scope and safety result
 
