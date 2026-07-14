@@ -89,7 +89,8 @@ describe("Website V3 design-system foundation", () => {
     const compactMenu = source("components/public/marketing-compact-menu.tsx");
     assert.equal(compactMenu.includes("Ouvrir la navigation du site"), true);
     assert.equal(compactMenu.includes("Fermer la navigation du site"), true);
-    assert.equal(compactMenu.includes("overflow-y-auto"), false);
+    assert.equal(compactMenu.includes("max-h-[calc(100dvh"), true);
+    assert.equal(compactMenu.includes("overflow-y-auto"), true);
   });
 
   it("provides the skip-link target on every currently rendered public shell", () => {

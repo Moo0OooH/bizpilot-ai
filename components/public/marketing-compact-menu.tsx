@@ -87,7 +87,7 @@ export function MarketingCompactMenu({
   }, [closeMenu, open]);
 
   return (
-    <div className="relative min-[1440px]:hidden" ref={rootRef}>
+    <div className="relative min-[1180px]:hidden" ref={rootRef}>
       <button
         aria-controls="marketing-compact-menu"
         aria-expanded={open}
@@ -115,7 +115,7 @@ export function MarketingCompactMenu({
       </button>
       {open ? (
         <div
-          className="absolute right-0 top-[calc(100%+0.65rem)] z-50 grid w-[min(calc(100vw-2rem),22rem)] gap-3 rounded-[18px] border p-3 shadow-[var(--shadow-lg)]"
+          className="fixed right-4 top-[calc(var(--v3-header-height)+0.75rem)] z-50 grid max-h-[calc(100dvh-var(--v3-header-height)-1.5rem)] w-[min(calc(100vw-2rem),24rem)] gap-3 overflow-y-auto overscroll-contain rounded-[var(--v3-radius-lg)] border p-4 shadow-[var(--shadow-lg)]"
           id="marketing-compact-menu"
           style={{
             backgroundColor: "var(--surface-elevated)",
