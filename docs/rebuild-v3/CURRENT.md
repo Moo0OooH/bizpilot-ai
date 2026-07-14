@@ -18,8 +18,8 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 | --- | --- | --- |
 | V3.1 Research and evidence audit | Complete | Commit `f09d3aebf8e32417476ae4225b9d4410c2f6d8d1` plus audit, defect, and positioning documents |
 | V3.2 Information architecture and bilingual copy | Complete | Commit `0fbd589b6b703033ec3b2dc2141ceed6c7d9ddfa`; ten retained routes, five merge redirects, seven homepage sections, and typed EN/fr-CA contract |
-| V3.3 Public-shell reliability | Complete pending commit | Native locale navigation, explicit cookie transition, 1440px desktop threshold, compact final header IA, and real Chrome interaction smoke |
-| V3.4 Marketing design foundation | Pending | Tokens, shell, compact menu, typography, primitives |
+| V3.3 Public-shell reliability | Complete | Commit `760beb297a8b686a762e5ac81c58a47f746db797`; native locale navigation, explicit cookie transition, 1440px desktop threshold, compact final header IA, and real Chrome interaction smoke |
+| V3.4 Marketing design foundation | Complete | Consolidated V3 tokens and primitives, simplified header/footer, corrected landmarks, 100 accessibility score, and documented browser/visual evidence |
 | V3.5 Homepage conversion rebuild | Pending | Seven sections and three-stage product story |
 | V3.6 Page consolidation and conversion | Pending | Route decisions, redirects, distinct page jobs |
 | V3.7 Quality hardening | Pending | Performance, accessibility, SEO, resilient browser tests |
@@ -90,6 +90,25 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - Establish typography, layout, button, card, focus, motion, light/dark, and product-scene foundations from `V3_VISUAL_SYSTEM_SPEC.md`.
 - Do not implement the final seven-section homepage until the foundation passes unit, build, public smoke, responsive smoke, and browser interaction smoke.
 
+## Phase 4 result
+
+- Complete: type, line-height, spacing, radius, border, elevation, width, focus, and motion tokens form one V3 public foundation while legacy `bp-*` roles map forward to it.
+- Complete: shared shell, card, button, brand, skip-link, and product-scene primitives replace repeated one-off values where current route use allowed.
+- Complete: header and compact menu preserve the reliable language path, theme control, 1440px measured desktop fit, one primary CTA, and no nested scrolling.
+- Complete: footer now exposes only Product, Resources, Trust/Legal, and Account jobs; links scheduled for Phase 6 redirects are no longer promoted.
+- Complete: semantic landmarks now separate banner, main, and contentinfo; Lighthouse accessibility is 100 after repairing the one 4.39:1 footer contrast failure.
+- Complete: EN/fr-CA overflow is 0px at 320, 360, 390, 430, 768, 1024, 1280, 1440, and 1920; the French 390×844 menu fits from 64px to 661px without nested scroll.
+- Complete: lint, typecheck, 249 unit tests, production build, 33-route public smoke, 25-route responsive smoke, and real-browser interaction smoke pass.
+- Evidence: [V3 design-system implementation report](./V3_DESIGN_SYSTEM_IMPLEMENTATION_REPORT.md).
+
+## Phase 5 entry conditions
+
+- Replace the V2 homepage renderer with the approved typed V3 seven-section story; do not reopen IA or copy strategy.
+- Preserve the working locale, theme, semantic landmark, focus, reduced-motion, and responsive-shell contracts.
+- Use the new product-frame primitives for a readable three-stage visual and keep channel placement distinct from direct inbox integration.
+- Prove H1 line count, CTA visibility, product-story readability, no clipping, and 0px overflow at the required desktop, laptop, tablet, and mobile evidence sizes.
+- Re-run accessibility and Lighthouse; the Phase 4 local mobile performance sample was 94 with 2.9s LCP, 110ms TBT, 0 CLS, and 311KiB transfer.
+
 ## Canonical V3 documents
 
 - [Research and benchmark audit](./V3_RESEARCH_AND_BENCHMARK_AUDIT.md)
@@ -101,3 +120,4 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - [Homepage storyboard](./V3_HOMEPAGE_STORYBOARD.md)
 - [Visual system specification](./V3_VISUAL_SYSTEM_SPEC.md)
 - [Public shell reliability report](./V3_PUBLIC_SHELL_RELIABILITY_REPORT.md)
+- [Design-system implementation report](./V3_DESIGN_SYSTEM_IMPLEMENTATION_REPORT.md)

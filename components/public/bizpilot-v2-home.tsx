@@ -1,4 +1,4 @@
-/*
+/**
  * ============================================================
  * File: components/public/bizpilot-v2-home.tsx
  * Project: BizPilot AI
@@ -12,6 +12,8 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Separated header, main content, and footer into correct page landmarks.
+ * - 2026-07-13: Added the shared main-content target for keyboard skip navigation.
  * - 2026-07-13: Added stable How it works and Use cases anchors for grouped navigation.
  * ============================================================
  */
@@ -203,11 +205,12 @@ export function BizPilotV2Home({
   language,
 }: Readonly<{ copy: PublicV2HomeCopy; language: SupportedLanguage }>) {
   return (
-    <main
+    <div
       className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
       <MarketingHeader copy={copy.nav} language={language} redirectPath="/" />
+      <main id="main-content">
 
       <section className={`homepage-hero-section bp-section-hero ${styles.heroSection}`}>
         <MarketingShell>
@@ -444,7 +447,8 @@ export function BizPilotV2Home({
         </MarketingShell>
       </section>
 
+      </main>
       <MarketingFooter copy={copy.nav} language={language} />
-    </main>
+    </div>
   );
 }

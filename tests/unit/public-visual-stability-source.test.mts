@@ -14,6 +14,7 @@
  * Created: 2026-06-20
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Updated shared-shell assertions to the V3 container foundation.
  * - 2026-07-13: Replaced the obsolete nested-scroll exception with the measured no-internal-scroll compact-menu contract.
  * ============================================================
  */
@@ -81,8 +82,8 @@ describe("public V2 visual stability source contracts", () => {
       );
     }
 
-    assert.equal(marketingUi.includes("bp-container public-container"), true);
-    assert.equal(marketingUi.includes("bp-container-wide mx-auto"), true);
+    assert.equal(marketingUi.includes("v3-container"), true);
+    assert.equal(marketingUi.includes("v3-site-footer"), true);
   });
 
   it("keeps public surfaces free of viewport-width and nested-scroll traps", () => {

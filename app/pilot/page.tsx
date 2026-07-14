@@ -1,4 +1,4 @@
-/*
+/**
  * ============================================================
  * File: app/pilot/page.tsx
  * Project: BizPilot AI
@@ -11,6 +11,9 @@
  * Author: MoOoH
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Separated header, main content, and footer into correct page landmarks.
+ * - 2026-07-13: Added the shared main-content target for keyboard skip navigation.
  * ============================================================
  */
 
@@ -68,7 +71,7 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
   const conversion = getPublicSiteCopy(language).pilot.conversion;
 
   return (
-    <main
+    <div
       className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
@@ -87,6 +90,7 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
         language={language}
         redirectPath="/pilot"
       />
+      <main id="main-content">
 
       <section className="bp-section-tight">
         <MarketingShell>
@@ -267,7 +271,8 @@ export default async function PilotPage({ searchParams }: PilotPageProps = {}) {
         </MarketingShell>
       </section>
 
+      </main>
       <MarketingFooter copy={v2.home.nav} language={language} />
-    </main>
+    </div>
   );
 }

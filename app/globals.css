@@ -1,51 +1,25 @@
-/*
-============================================================
-File: app/globals.css
-Project: BizPilot AI
-Description: Defines global Tailwind, semantic UI tokens, public responsive tokens, and scoped dashboard themes.
-Role: Provides the global styling foundation, theme primitives, public responsive primitives, and protected dashboard theme tokens.
-Related:
-- app/layout.tsx
-- app/page.tsx
-Author: MoOoH
-Created: 2026-05-02
-Last Updated: 2026-07-11
-Change Log:
-- 2026-07-11: Rebuilt the homepage hero product mockup as a three-panel rescue board.
-- 2026-07-11: Added product-board chrome treatment to public page hero visual panels.
-- 2026-07-11: Added bilingual-safe public page hero sizing and proof-panel primitives.
-- 2026-07-05: Rebuilt the homepage hero as an integrated product-scene stage.
-- 2026-07-05: Refined dashboard light-theme tokens and added the route-guide rail surface.
-- 2026-07-05: Refocused the homepage hero and second section into a clear hot-quote rescue story.
-- 2026-05-04: Added standard project file header.
-- 2026-05-17: Added scoped calm dark/light dashboard theme utilities for Phase 17 polish.
-- 2026-05-18: Updated dashboard dark theme to the approved emerald/navy command-center direction.
-- 2026-05-26: Unified dashboard light/dark action colors and component surfaces for Phase 21X UI QA.
-- 2026-06-18: Added public responsive tokens, no-overflow primitives, and legal/dashboard containers.
-- 2026-06-19: Added semantic System/Light/Dark tokens shared by marketing, auth, quote, dashboard, and admin shells.
-- 2026-06-19: Aligned Light/Dark tokens with the final polish contrast baseline.
-- 2026-06-20: Stabilized public grids and wrapping before dashboard work.
-- 2026-06-20: Balanced public marketing grids with fluid gaps and content-driven card heights.
-- 2026-06-21: Added canonical four-step and workflow grid classes for public responsive acceptance.
-- 2026-06-21: Removed the homepage workflow grid after the repeated workflow section was collapsed.
-- 2026-06-21: Added multilingual plan-card alignment utilities for pricing and future dashboard parity.
-- 2026-06-21: Added public dark-theme mappings for teal callout panels and dark utility buttons.
-- 2026-06-21: Added localization-aware copy roles and cleaning service/detail grids.
-- 2026-06-21: Tightened homepage hero first-fold spacing and preview-card sizing.
-- 2026-07-04: Added protected dashboard display preference selectors for density, optional guides, and insights.
-- 2026-06-21: Added pricing-card container query behavior for compact multilingual CTAs.
-- 2026-06-21: Mapped public amber utility surfaces to semantic dark-theme tokens.
-- 2026-06-21: Added hydration-stable theme trigger icon switching.
-- 2026-06-25: Added canonical bp responsive sizing, typography, container, section, and grid primitives.
-- 2026-06-25: Rebalanced homepage hero and Problem section rhythm for final visual sizing.
-- 2026-06-25: Reworked Cleaning page service/detail rhythm around one six-service selector.
-- 2026-06-25: Replaced duplicated Cleaning desktop/mobile detail CSS with one active detail selector.
-- 2026-06-25: Tightened homepage hero width, mockup density, and section typography scale.
-- 2026-06-26: Converted the homepage demo hook from four-card grid behavior to one compact preview panel.
-- 2026-06-26: Upgraded homepage hero signal-flow board and mobile no-overflow behavior.
-- 2026-06-27: Tightened dashboard container sizing so nested setup panels cannot create mobile horizontal overflow.
-============================================================
-*/
+/**
+ * ============================================================
+ * File: app/globals.css
+ * Project: BizPilot AI
+ * Description: Defines global Tailwind, semantic UI tokens, public responsive tokens, and scoped dashboard themes.
+ * Role: Provides the global styling foundation, theme primitives, public responsive primitives, and protected dashboard theme tokens.
+ * Related:
+ * - app/layout.tsx
+ * - components/public/marketing-ui.tsx
+ * - components/public/marketing-language-menu.tsx
+ * Author: MoOoH
+ * Created: 2026-05-02
+ * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Added the V3 marketing type, space, radius, surface, focus, motion, shell, card, button, badge, and product-frame foundation.
+ * - 2026-07-11: Added the bilingual product-board and public page hero treatment.
+ * - 2026-06-25: Added canonical public responsive sizing, typography, container, section, and grid primitives.
+ * - 2026-06-19: Added shared semantic light, dark, and theme-preference tokens.
+ * - 2026-06-18: Added public no-overflow primitives and legal/dashboard containers.
+ * - 2026-05-02: Created the global application stylesheet.
+ * ============================================================
+ */
 
 @import "tailwindcss";
 
@@ -78,7 +52,40 @@ Change Log:
   --shadow-lg: 0 28px 78px rgba(15, 23, 42, 0.12);
   --gradient-start: #2563eb;
   --gradient-end: var(--accent-decorative);
-  --marketing-background: radial-gradient(circle at 8% 4%, rgba(37,99,235,0.09), transparent 28rem), radial-gradient(circle at 92% 12%, rgba(20,184,166,0.12), transparent 30rem), linear-gradient(180deg, #f8fafc 0%, #ffffff 46%, #f1f5f9 100%);
+  --marketing-background: linear-gradient(180deg, #f8fafc 0%, #ffffff 44%, #f4f7fb 100%);
+  --v3-content-max: 75rem;
+  --v3-reading-max: 45rem;
+  --v3-gutter: clamp(1rem, 3vw, 2rem);
+  --v3-section-space: clamp(4.5rem, 8vw, 8rem);
+  --v3-section-space-compact: clamp(3rem, 6vw, 5.5rem);
+  --v3-space-1: 0.25rem;
+  --v3-space-2: 0.5rem;
+  --v3-space-3: 0.75rem;
+  --v3-space-4: 1rem;
+  --v3-space-5: 1.5rem;
+  --v3-space-6: 2rem;
+  --v3-space-7: 3rem;
+  --v3-radius-sm: 0.625rem;
+  --v3-radius-md: 1rem;
+  --v3-radius-lg: 1.5rem;
+  --v3-border: 1px solid var(--border-default);
+  --v3-shadow-card: 0 14px 40px rgba(15, 23, 42, 0.06);
+  --v3-shadow-float: 0 24px 70px rgba(15, 23, 42, 0.11);
+  --v3-type-display: clamp(2.35rem, 4.2vw, 4.75rem);
+  --v3-type-page: clamp(2.15rem, 3.5vw, 4rem);
+  --v3-type-section: clamp(1.75rem, 2.5vw, 3rem);
+  --v3-type-card: clamp(1.125rem, 1vw, 1.375rem);
+  --v3-type-lead: clamp(1rem, 0.32vw + 0.98rem, 1.2rem);
+  --v3-type-body: 1rem;
+  --v3-type-small: 0.875rem;
+  --v3-leading-display: 1;
+  --v3-leading-heading: 1.08;
+  --v3-leading-body: 1.6;
+  --v3-motion-fast: 140ms;
+  --v3-motion-standard: 200ms;
+  --v3-motion-panel: 280ms;
+  --v3-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --v3-header-height: 4rem;
   --public-bg-page: var(--canvas);
   --public-bg-surface: var(--surface);
   --public-bg-surface-alt: var(--canvas-subtle);
@@ -100,19 +107,19 @@ Change Log:
   --text-strong-semantic: var(--text-strong);
   --border-default-semantic: var(--border-default);
   --teal-accent: var(--accent);
-  --bp-container-padding: clamp(1.25rem, 4vw, 2.5rem);
-  --bp-container-max: 73.75rem;
+  --bp-container-padding: var(--v3-gutter);
+  --bp-container-max: var(--v3-content-max);
   --bp-container-wide-max: 80rem;
   --bp-container-narrow-max: 50rem;
-  --bp-section-space: clamp(3rem, 6.5vw, 6rem);
-  --bp-section-tight-space: clamp(2rem, 4.5vw, 4rem);
+  --bp-section-space: var(--v3-section-space);
+  --bp-section-tight-space: var(--v3-section-space-compact);
   --bp-section-hero-space: clamp(2.25rem, 5vh, 4.75rem);
   --bp-hero-grid-gap: clamp(2rem, 4vw, 4rem);
-  --bp-display-size: clamp(2.55rem, 4.45vw, 4.75rem);
-  --bp-page-title-size: clamp(2.15rem, 1.55rem + 1.4vw, 3.45rem);
-  --bp-section-title-size: clamp(1.85rem, 2.85vw, 3.05rem);
-  --bp-card-title-size: clamp(1.15rem, 1.1vw, 1.4rem);
-  --bp-body-size: clamp(1rem, 0.22vw + 0.95rem, 1.125rem);
+  --bp-display-size: var(--v3-type-display);
+  --bp-page-title-size: var(--v3-type-page);
+  --bp-section-title-size: var(--v3-type-section);
+  --bp-card-title-size: var(--v3-type-card);
+  --bp-body-size: var(--v3-type-lead);
   --bp-meta-size: clamp(0.82rem, 0.15vw + 0.78rem, 0.95rem);
   --public-max: var(--bp-container-max);
   --public-gutter: var(--bp-container-padding);
@@ -199,7 +206,9 @@ Change Log:
   --shadow-lg: 0 30px 84px rgba(0, 0, 0, 0.38);
   --gradient-start: #60a5fa;
   --gradient-end: var(--accent-decorative);
-  --marketing-background: radial-gradient(circle at 8% 4%, rgba(96,165,250,0.12), transparent 28rem), radial-gradient(circle at 92% 12%, rgba(45,212,191,0.12), transparent 30rem), linear-gradient(180deg, #08111f 0%, #0b1627 48%, #0b1627 100%);
+  --marketing-background: linear-gradient(180deg, #08111f 0%, #0b1627 48%, #0b1627 100%);
+  --v3-shadow-card: 0 14px 42px rgba(0, 0, 0, 0.22);
+  --v3-shadow-float: 0 28px 80px rgba(0, 0, 0, 0.34);
   --public-bg-page: var(--canvas);
   --public-bg-surface: var(--surface);
   --public-bg-surface-alt: var(--canvas-subtle);
@@ -537,6 +546,179 @@ select {
   flex-wrap: wrap;
   align-items: center;
   gap: clamp(0.75rem, 1.5vw, 1rem);
+}
+
+.v3-container {
+  width: min(100% - (2 * var(--v3-gutter)), var(--v3-content-max));
+  margin-inline: auto;
+  min-inline-size: 0;
+}
+
+.v3-reading-width {
+  max-inline-size: min(100%, var(--v3-reading-max));
+}
+
+.v3-section {
+  padding-block: var(--v3-section-space);
+}
+
+.v3-section-compact {
+  padding-block: var(--v3-section-space-compact);
+}
+
+.v3-card {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  border: var(--v3-border);
+  border-radius: var(--v3-radius-md);
+  background: var(--surface);
+  box-shadow: var(--v3-shadow-card);
+}
+
+.v3-card-flat {
+  box-shadow: none;
+}
+
+.v3-button {
+  display: inline-flex;
+  min-block-size: 2.875rem;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: var(--v3-space-3);
+  border-radius: var(--v3-radius-sm);
+  padding: 0.75rem 1.125rem;
+  font-size: 0.875rem;
+  font-weight: 850;
+  line-height: 1.25;
+  text-align: center;
+  text-wrap: balance;
+  transition:
+    border-color var(--v3-motion-fast) var(--v3-ease-out),
+    background-color var(--v3-motion-fast) var(--v3-ease-out),
+    color var(--v3-motion-fast) var(--v3-ease-out),
+    box-shadow var(--v3-motion-fast) var(--v3-ease-out),
+    transform var(--v3-motion-fast) var(--v3-ease-out);
+}
+
+.v3-button:focus-visible,
+.v3-control:focus-visible,
+.v3-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.v3-button-primary {
+  border: 1px solid transparent;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.v3-button-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.v3-button-secondary {
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-strong);
+}
+
+.v3-button-secondary:hover {
+  border-color: color-mix(in srgb, var(--primary) 48%, var(--border-strong));
+  background: var(--surface-interactive);
+}
+
+.v3-button-ghost {
+  min-block-size: 2.75rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-default);
+}
+
+.v3-button-ghost:hover {
+  background: var(--surface-interactive);
+  color: var(--text-strong);
+}
+
+.v3-site-header {
+  border-color: color-mix(in srgb, var(--border-default) 82%, transparent);
+  background: color-mix(in srgb, var(--canvas) 92%, transparent);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--border-default) 55%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.v3-site-header-inner {
+  min-block-size: var(--v3-header-height);
+}
+
+.v3-brand-mark {
+  display: grid;
+  block-size: 2.25rem;
+  inline-size: 2.25rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 0.6rem;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 18%, transparent);
+}
+
+.v3-site-footer {
+  border-color: var(--border-default);
+  background: color-mix(in srgb, var(--canvas-subtle) 72%, var(--canvas));
+}
+
+.v3-skip-link {
+  position: fixed;
+  inset-block-start: var(--v3-space-3);
+  inset-inline-start: var(--v3-space-3);
+  z-index: 100;
+  border-radius: var(--v3-radius-sm);
+  background: var(--text-strong);
+  color: var(--canvas);
+  padding: 0.75rem 1rem;
+  font-weight: 850;
+  transform: translateY(calc(-100% - 1rem));
+  transition: transform var(--v3-motion-fast) var(--v3-ease-out);
+}
+
+.v3-skip-link:focus {
+  transform: translateY(0);
+}
+
+.v3-product-frame {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  border: var(--v3-border);
+  border-radius: var(--v3-radius-lg);
+  background: var(--surface);
+  box-shadow: var(--v3-shadow-float);
+}
+
+.v3-product-stage {
+  min-inline-size: 0;
+  border: var(--v3-border);
+  border-radius: var(--v3-radius-sm);
+  background: var(--surface-interactive);
+  padding: var(--v3-space-4);
+}
+
+.v3-state-chip {
+  display: inline-flex;
+  min-block-size: 1.75rem;
+  align-items: center;
+  gap: var(--v3-space-2);
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background: var(--surface-interactive);
+  padding-inline: 0.65rem;
+  color: var(--text-default);
+  font-size: 0.75rem;
+  font-weight: 800;
 }
 
 .marketing-page-hero {
@@ -2954,6 +3136,21 @@ select {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .public-site,
+  .public-site *,
+  .public-site *::before,
+  .public-site *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .public-site *,
+  .public-site *::before,
+  .public-site *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
   .homepage-demo-step,
   .homepage-demo-meter {
     animation: none;

@@ -12,6 +12,7 @@
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Established V3 shell, button, card, product-scene, skip-link, and simplified footer primitives.
  * - 2026-07-13: Applied the final compact header IA and delayed desktop expansion until the measured 1440px fit point.
  * - 2026-07-12: Routed shared public navigation and CTA hrefs through the locale-preserving helper.
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
@@ -305,7 +306,7 @@ export function MarketingShell({
   className = "",
 }: Readonly<{ children: ReactNode; className?: string }>) {
   return (
-    <div className={`bp-container public-container ${className}`}>
+    <div className={`v3-container ${className}`}>
       {children}
     </div>
   );
@@ -322,13 +323,8 @@ export function MarketingCard({
 }>) {
   return (
     <div
-      className={`min-w-0 rounded-[20px] border ${className}`}
-      style={{
-        background: "var(--surface)",
-        borderColor: marketingTone.border,
-        boxShadow: "var(--shadow-md)",
-        ...style,
-      }}
+      className={`v3-card ${className}`}
+      style={style}
     >
       {children}
     </div>
@@ -403,19 +399,13 @@ export function MarketingButton({
   variant?: ButtonVariant;
 }>) {
   const localizedHref = publicHref(href, language);
-  const base =
-    "bp-copy-button inline-flex min-h-12 max-w-full min-w-0 items-center justify-center gap-3 rounded-[14px] px-5 text-center text-[14px] font-black leading-tight transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]";
+  const base = "bp-copy-button v3-button";
 
   if (variant === "primary") {
     return (
       <Link
-        className={`${base} hover:-translate-y-0.5 ${className}`}
+        className={`${base} v3-button-primary ${className}`}
         href={localizedHref}
-        style={{
-          background: "linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%)",
-          boxShadow: "0 16px 34px color-mix(in srgb, var(--primary) 22%, transparent)",
-          color: "var(--primary-contrast)",
-        }}
       >
         {children}
       </Link>
@@ -425,13 +415,8 @@ export function MarketingButton({
   if (variant === "secondary") {
     return (
       <Link
-        className={`${base} border hover:-translate-y-0.5 ${className}`}
+        className={`${base} v3-button-secondary ${className}`}
         href={localizedHref}
-        style={{
-          backgroundColor: "var(--surface)",
-          borderColor: marketingTone.borderStrong,
-          color: marketingTone.text,
-        }}
       >
         {children}
       </Link>
@@ -440,9 +425,8 @@ export function MarketingButton({
 
   return (
     <Link
-      className={`bp-copy-button inline-flex min-h-11 min-w-0 items-center justify-center rounded-[12px] px-3 py-2 text-center text-[13px] font-bold leading-tight transition hover:bg-[var(--surface-interactive)] ${className}`}
+      className={`${base} v3-button-ghost ${className}`}
       href={localizedHref}
-      style={{ color: marketingTone.soft }}
     >
       {children}
     </Link>
@@ -731,12 +715,7 @@ export function MarketingBrand({
     <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1440px]:min-w-[16rem]" href={publicHref("/", language)}>
       <span
         aria-hidden
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[16px] font-black"
-        style={{
-          background: "linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%)",
-          boxShadow: "0 12px 26px color-mix(in srgb, var(--primary) 20%, transparent)",
-          color: "var(--primary-contrast)",
-        }}
+        className="v3-brand-mark text-[16px] font-black"
       >
         B
       </span>
@@ -804,11 +783,14 @@ export function MarketingHeader({
     ) : null;
 
   return (
-    <header
-      className="sticky top-0 z-40 border-b backdrop-blur-xl"
-      style={{ backgroundColor: "color-mix(in srgb, var(--canvas) 88%, transparent)", borderColor: marketingTone.border }}
-    >
-      <nav className="bp-container public-container flex min-h-[64px] items-center justify-between gap-3 py-2 min-[1440px]:min-h-[76px]">
+    <header className="v3-site-header sticky top-0 z-40 border-b">
+      <a className="v3-skip-link" href="#main-content">
+        {language === "fr-CA" ? "Aller au contenu" : "Skip to content"}
+      </a>
+      <nav
+        aria-label={language === "fr-CA" ? "Navigation principale" : "Primary navigation"}
+        className="v3-container v3-site-header-inner flex items-center justify-between gap-3 py-2"
+      >
         <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
         <div className="hidden items-center gap-1 min-[1440px]:flex">
           {directItems.map((item) => {
@@ -881,7 +863,7 @@ export function MarketingHeader({
           </MarketingButton>
         </div>
         <div className="flex shrink-0 items-center gap-2 min-[1440px]:hidden">
-          <MarketingCompactMenu>
+          <MarketingCompactMenu language={language}>
             <div className="grid gap-1">
               {directItems.map((item) => {
                 const selected = isActiveItem(item);
@@ -947,36 +929,44 @@ export function MarketingFooter({
   copy = defaultMarketingNavCopy,
   language,
 }: Readonly<{ copy?: HomeNavCopy; language?: SupportedLanguage | undefined }>) {
+  const footerLabels = language === "fr-CA"
+    ? {
+        account: "Compte",
+        legal: "Confiance et aspects légaux",
+        product: "Produit",
+        resources: "Ressources",
+      }
+    : {
+        account: "Account",
+        legal: "Trust and legal",
+        product: "Product",
+        resources: "Resources",
+      };
   const groups: ReadonlyArray<Readonly<{ label: string; links: ReadonlyArray<Readonly<{ href: string; label: string }>> }>> = [
-    { label: copy.features, links: [
+    { label: footerLabels.product, links: [
       { href: "/features", label: copy.features },
       { href: "/#how-it-works", label: copy.flow },
+      { href: "/demo", label: copy.demo },
       { href: "/pricing", label: copy.pricing },
+    ] },
+    { label: footerLabels.resources, links: [
+      { href: "/pilot", label: copy.pilot },
+      { href: "/faq", label: copy.faq },
       { href: "/trust", label: copy.trust },
     ] },
-    { label: copy.useCases, links: [
-      { href: "/demo", label: copy.cleaning },
-      { href: "/#use-cases", label: copy.serviceOverview },
-      { href: "/#use-cases", label: copy.futureTemplates },
-      { href: "/pilot", label: copy.pilot },
-    ] },
-    { label: copy.resources, links: [
-      { href: "/faq", label: copy.faq },
-      { href: "/quote-link-guide", label: copy.guide },
-      { href: "/faster-quote-replies", label: copy.fasterReplies },
-      { href: "/comparison", label: copy.comparison },
-    ] },
-    { label: copy.trust, links: [
+    { label: footerLabels.legal, links: [
       { href: "/privacy", label: copy.privacy },
       { href: "/security", label: copy.security },
       { href: "/terms", label: copy.terms },
+    ] },
+    { label: footerLabels.account, links: [
       { href: "/auth/sign-in", label: copy.signIn },
     ] },
   ];
 
   return (
-    <footer className="border-t px-5 py-10 sm:px-8 lg:px-10" style={{ borderColor: marketingTone.border }}>
-      <div className="bp-container-wide mx-auto grid w-full max-w-[1200px] gap-8 text-[12px] lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)]">
+    <footer className="v3-site-footer border-t py-10">
+      <div className="v3-container grid gap-8 text-[12px] lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)]">
         <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ color: marketingTone.soft }}>
           {groups.map((group) => (
@@ -990,12 +980,38 @@ export function MarketingFooter({
             </div>
           ))}
         </div>
-        <span className="lg:col-span-2" style={{ color: marketingTone.muted }}>
+        <span className="font-medium lg:col-span-2" style={{ color: marketingTone.soft }}>
           {copy.copyright}
         </span>
       </div>
     </footer>
   );
+}
+
+export function MarketingProductFrame({
+  children,
+  className = "",
+  label,
+}: Readonly<{ children: ReactNode; className?: string; label: string }>) {
+  return (
+    <section aria-label={label} className={`v3-product-frame ${className}`}>
+      {children}
+    </section>
+  );
+}
+
+export function MarketingProductStage({
+  children,
+  className = "",
+}: Readonly<{ children: ReactNode; className?: string }>) {
+  return <div className={`v3-product-stage ${className}`}>{children}</div>;
+}
+
+export function MarketingStateChip({
+  children,
+  className = "",
+}: Readonly<{ children: ReactNode; className?: string }>) {
+  return <span className={`v3-state-chip ${className}`}>{children}</span>;
 }
 
 export function MarketingSectionTitle({

@@ -12,6 +12,8 @@
  * Created: 2026-07-04
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Separated header, main content, and footer into correct page landmarks.
+ * - 2026-07-13: Added the shared main-content target for keyboard skip navigation.
  * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-07-04: Created the public reply-speed content guide for Phase 25U.
  * - 2026-07-05: Added a route-aware next-step panel for reply-speed education.
@@ -86,7 +88,7 @@ export default async function FasterQuoteRepliesPage({
   const copy = siteCopy.replySpeedGuide;
 
   return (
-    <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <div className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <JsonLdScript
         data={buildBreadcrumbJsonLd(
           [
@@ -98,6 +100,7 @@ export default async function FasterQuoteRepliesPage({
         id="bizpilot-faster-quote-replies-breadcrumb-jsonld"
       />
       <MarketingHeader copy={navCopy} language={language} redirectPath="/faster-quote-replies" />
+      <main id="main-content">
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
@@ -276,7 +279,8 @@ export default async function FasterQuoteRepliesPage({
           />
         </MarketingShell>
       </section>
+      </main>
       <MarketingFooter copy={navCopy} language={language} />
-    </main>
+    </div>
   );
 }

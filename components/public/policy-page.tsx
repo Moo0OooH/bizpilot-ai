@@ -11,8 +11,10 @@
  * - app/terms/page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Separated header, main content, and footer into correct page landmarks.
+ * - 2026-07-13: Added the shared main-content target for keyboard skip navigation.
  * - 2026-07-12: Preserved the active public language through policy conversion links.
  * - 2026-06-18: Switched policy pages to narrow readable containers and owner-first summaries.
  * - 2026-06-25: Normalized policy page rhythm to canonical bp sizing primitives.
@@ -55,7 +57,7 @@ export function PolicyPage({
   const breadcrumbId = `bizpilot-${pagePath.slice(1).replaceAll("/", "-")}-breadcrumb-jsonld`;
 
   return (
-    <main
+    <div
       className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
@@ -74,6 +76,7 @@ export function PolicyPage({
         language={language}
         redirectPath={pagePath}
       />
+      <main id="main-content">
 
       <section className="bp-section-tight">
         <div className="legal-container">
@@ -244,7 +247,8 @@ export function PolicyPage({
         </div>
       </section>
 
+      </main>
       <MarketingFooter copy={navCopy} language={language} />
-    </main>
+    </div>
   );
 }

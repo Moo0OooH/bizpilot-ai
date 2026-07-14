@@ -1,4 +1,4 @@
-/*
+/**
  * ============================================================
  * File: components/public/bizpilot-v2-page.tsx
  * Project: BizPilot AI
@@ -12,6 +12,8 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Separated header, main content, and footer into correct page landmarks.
+ * - 2026-07-13: Added the shared main-content target for keyboard skip navigation.
  * - 2026-07-13: Added route-specific capability, sequence, pricing, trust, comparison, FAQ, cleaning, and pilot variants.
  * ============================================================
  */
@@ -448,7 +450,7 @@ export function BizPilotV2Page({
   );
 
   return (
-    <main
+    <div
       className="bp-page public-site min-h-svh"
       style={{ background: marketingBackground, color: marketingTone.text }}
     >
@@ -463,6 +465,7 @@ export function BizPilotV2Page({
         />
       ) : null}
       <MarketingHeader copy={navCopy} language={language} redirectPath={path} />
+      <main id="main-content">
 
       <section className="bp-section-tight">
         <MarketingShell>
@@ -636,7 +639,8 @@ export function BizPilotV2Page({
         </MarketingShell>
       </section>
 
+      </main>
       <MarketingFooter copy={navCopy} language={language} />
-    </main>
+    </div>
   );
 }

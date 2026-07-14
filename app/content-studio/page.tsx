@@ -10,8 +10,10 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Separated header, main content, and footer into correct page landmarks.
+ * - 2026-07-13: Added the shared main-content target for keyboard skip navigation.
  * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-07-05: Reused the roadmap explanation in the next-step panel for clearer visitor guidance.
  * - 2026-06-18: Applied responsive section spacing and intrinsic card grid.
@@ -80,7 +82,7 @@ export default async function ContentStudioPage({
   const copy = siteCopy.contentStudio;
 
   return (
-    <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
+    <div className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
       <JsonLdScript
         data={buildBreadcrumbJsonLd(
           [
@@ -92,6 +94,7 @@ export default async function ContentStudioPage({
         id="bizpilot-content-studio-breadcrumb-jsonld"
       />
       <MarketingHeader copy={navCopy} language={language} redirectPath="/content-studio" />
+      <main id="main-content">
       <section className="bp-section-tight">
         <MarketingShell>
           <MarketingPageHero
@@ -185,7 +188,8 @@ export default async function ContentStudioPage({
           />
         </MarketingShell>
       </section>
+      </main>
       <MarketingFooter copy={navCopy} language={language} />
-    </main>
+    </div>
   );
 }

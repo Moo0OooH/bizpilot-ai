@@ -13,6 +13,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Verified the localized fr-CA compact-navigation trigger during mobile containment checks.
  * - 2026-07-13: Added the Website V3 Phase 3 Chrome interaction and responsive-shell regression smoke.
  * ============================================================
  */
@@ -580,11 +581,11 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
     }
   }
 
-  await navigate(client, new URL("/", baseUrl));
+  await navigate(client, new URL("/?language=fr-CA", baseUrl));
   await setViewport(client, 390, 844);
   await realClick(
     client,
-    buttonWithLabelPrefix("Open site navigation"),
+    buttonWithLabelPrefix("Ouvrir la navigation du site"),
     "Mobile navigation trigger",
   );
   await waitFor(client, "mobile navigation panel", `Boolean(document.querySelector("#marketing-compact-menu"))`);

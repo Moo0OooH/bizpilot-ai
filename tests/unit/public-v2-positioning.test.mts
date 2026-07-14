@@ -1,4 +1,4 @@
-/*
+/**
  * ============================================================
  * File: tests/unit/public-v2-positioning.test.mts
  * Project: BizPilot AI
@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Aligned shared-shell coverage with the simplified V3 footer information architecture.
  * - 2026-07-13: Added regression coverage for universal guide copy, fallback metadata, and accented fr-CA JSON-LD.
  * - 2026-07-13: Added source guards for route-specific V2 page variants and grouped navigation copy.
  * ============================================================
@@ -234,8 +235,12 @@ describe("public V2 positioning", () => {
       assert.match(renderer, new RegExp(marker));
     }
 
-    for (const marker of ["copy.useCases", "copy.resources", "copy.fasterReplies", "copy.futureTemplates"]) {
+    for (const marker of ["copy.features", "copy.resources", "copy.trust", "copy.privacy"]) {
       assert.match(header, new RegExp(marker.replace(".", "\\.")));
+    }
+
+    for (const removedRoute of ["/comparison", "/quote-link-guide", "/faster-quote-replies"]) {
+      assert.doesNotMatch(header, new RegExp(`href: "${removedRoute}"`));
     }
   });
 });

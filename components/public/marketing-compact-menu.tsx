@@ -12,6 +12,7 @@
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Localized compact-navigation controls and adopted shared V3 focus and control styling.
  * - 2026-07-13: Removed the first-viewport nested scroller and aligned the compact-menu breakpoint with measured desktop fit.
  * - 2026-06-18: Created compact navigation controller for responsive header QA.
  * - 2026-06-19: Switched compact menu colors to semantic theme tokens.
@@ -21,6 +22,8 @@
  */
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+
+import type { SupportedLanguage } from "@/lib/i18n/language";
 
 function MenuIcon() {
   return (
@@ -42,7 +45,8 @@ function MenuIcon() {
 
 export function MarketingCompactMenu({
   children,
-}: Readonly<{ children: ReactNode }>) {
+  language = "en",
+}: Readonly<{ children: ReactNode; language?: SupportedLanguage | undefined }>) {
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -88,8 +92,16 @@ export function MarketingCompactMenu({
         aria-controls="marketing-compact-menu"
         aria-expanded={open}
         aria-haspopup="menu"
-        aria-label={open ? "Close site navigation" : "Open site navigation"}
-        className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-[12px] border text-[13px] font-black shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+        aria-label={
+          language === "fr-CA"
+            ? open
+              ? "Fermer la navigation du site"
+              : "Ouvrir la navigation du site"
+            : open
+              ? "Close site navigation"
+              : "Open site navigation"
+        }
+        className="v3-control flex h-11 w-11 cursor-pointer items-center justify-center rounded-[var(--v3-radius-sm)] border text-[13px] font-black shadow-sm transition hover:bg-[var(--surface-interactive)]"
         onClick={() => setOpen((value) => !value)}
         ref={buttonRef}
         style={{
