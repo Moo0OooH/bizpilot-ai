@@ -23,10 +23,11 @@ has the newest-sounding title or calls itself final.
 
 ## CURRENT — controls present work
 
-1. [Final source of truth](readiness/BIZPILOT_FINAL_SOURCE_OF_TRUTH_2026-07-12.md)
-2. [Machine-readable status](readiness/current-status.json)
-3. [Canonical documentation map](CURRENT_CANONICAL_DOCS_v1.7.md)
-4. [AI coding agent start guide](AI_CODING_AGENT_START_HERE_v1.7.md)
+1. [Website V4 current report](website-v4/CURRENT.md)
+2. [Final source of truth](readiness/BIZPILOT_FINAL_SOURCE_OF_TRUTH_2026-07-12.md)
+3. [Machine-readable status](readiness/current-status.json)
+4. [Canonical documentation map](CURRENT_CANONICAL_DOCS_v1.7.md)
+5. [AI coding agent start guide](AI_CODING_AGENT_START_HERE_v1.7.md)
 
 These documents state what is implemented, what is blocked, and which gates
 need owner approval. They override older status, readiness, phase, and “final”
@@ -60,6 +61,10 @@ They cannot override the current source of truth or authorize production work.
 See [docs/archive/README.md](archive/README.md) for the interpretation rule.
 Archive tags and the branch cleanup record preserve historic Git branch state;
 they do not change release approval.
+
+The superseded Website V3 planning and acceptance set is consolidated under
+`archive/website-v3-2026-07-13/`. Do not treat those reports as the current
+website design authority.
 
 ## Documentation conflict rule
 
