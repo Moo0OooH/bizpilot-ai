@@ -24,6 +24,10 @@ automation are introduced by this pass.
   `docs/operations/BIZPILOT_AUTH_EMAIL_SMTP_INTEGRATION_PLAN_v1.0.md`.
 - Added a small homepage UX polish: the main header now links directly to the
   interactive cleaning demo through centralized EN/fr-CA navigation copy.
+- Added `tests/unit/source-integrity.test.mts` after a local homepage
+  cherry-pick attempt exposed corrupt source bytes and a truncated component.
+  The guard scans executable source under `app`, `components`, `lib`, `server`,
+  and `tests` for NUL bytes and unsafe control characters before build.
 - Updated readiness/operations docs to keep synthetic-only vs real-customer
   gates explicit.
 
@@ -71,7 +75,7 @@ Validation completed on 2026-05-25:
 pnpm smoke:public: pass locally against http://127.0.0.1:3000, 9/9 routes
 pnpm smoke:public -- --base-url=https://bizpilo.com: pass, 9/9 routes
 pnpm verify: pass
-pnpm test:unit: pass, 54/54
+pnpm test:unit: pass, 59/59 after source-integrity guard
 pnpm build: pass
 pnpm test:rls: pass, 13/13 through a temporary local-only 127.0.0.1:55432 Docker proxy
 git diff --check: pass, CRLF warnings only
