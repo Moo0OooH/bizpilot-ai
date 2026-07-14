@@ -12,6 +12,7 @@
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Allowed shared cards to expose stable section anchors for consolidated V3 routes.
  * - 2026-07-13: Added the V3 navigation-copy adapter contract and made product frames semantic figures.
  * - 2026-07-13: Established V3 shell, button, card, product-scene, skip-link, and simplified footer primitives.
  * - 2026-07-13: Applied the final compact header IA and delayed desktop expansion until the measured 1440px fit point.
@@ -325,15 +326,18 @@ export function MarketingShell({
 export function MarketingCard({
   children,
   className = "",
+  id,
   style,
 }: Readonly<{
   children: ReactNode;
-  className?: string;
+  className?: string | undefined;
+  id?: string;
   style?: CSSProperties | undefined;
 }>) {
   return (
     <div
       className={`v3-card ${className}`}
+      id={id}
       style={style}
     >
       {children}
@@ -1002,7 +1006,7 @@ export function MarketingProductFrame({
   children,
   className = "",
   label,
-}: Readonly<{ children: ReactNode; className?: string; label: string }>) {
+}: Readonly<{ children: ReactNode; className?: string | undefined; label: string }>) {
   return (
     <figure aria-label={label} className={`v3-product-frame ${className}`}>
       {children}
@@ -1013,7 +1017,7 @@ export function MarketingProductFrame({
 export function MarketingProductStage({
   children,
   className = "",
-}: Readonly<{ children: ReactNode; className?: string }>) {
+}: Readonly<{ children: ReactNode; className?: string | undefined }>) {
   return <div className={`v3-product-stage ${className}`}>{children}</div>;
 }
 

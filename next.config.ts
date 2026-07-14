@@ -1,3 +1,21 @@
+/**
+ * ============================================================
+ * File: next.config.ts
+ * Project: BizPilot AI
+ * Description: Next.js runtime, security-header, image, development-origin, and public redirect configuration.
+ * Role: Applies application-wide framework behavior and the permanent Website V3 route-consolidation map.
+ * Related:
+ * - proxy.ts
+ * - docs/rebuild-v3/V3_ROUTE_CONSOLIDATION_AND_REDIRECT_PLAN.md
+ * - tests/unit/seo-source.test.mts
+ * Author: MoOoH
+ * Created: 2026-05-02
+ * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Added five permanent direct redirects for the approved Website V3 route consolidation.
+ * ============================================================
+ */
+
 import type { NextConfig } from "next";
 
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -44,6 +62,35 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   ...(isDevelopment ? { allowedDevOrigins: ["127.0.0.1"] } : {}),
+  async redirects() {
+    return [
+      {
+        destination: "/features#focused-by-design",
+        permanent: true,
+        source: "/comparison",
+      },
+      {
+        destination: "/features#share-anywhere",
+        permanent: true,
+        source: "/quote-link-guide",
+      },
+      {
+        destination: "/#how-it-works",
+        permanent: true,
+        source: "/faster-quote-replies",
+      },
+      {
+        destination: "/features#reply-drafts",
+        permanent: true,
+        source: "/content-studio",
+      },
+      {
+        destination: "/demo",
+        permanent: true,
+        source: "/industries/cleaning",
+      },
+    ];
+  },
   async headers() {
     return [
       {

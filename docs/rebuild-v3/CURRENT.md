@@ -21,7 +21,7 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 | V3.3 Public-shell reliability | Complete | Commit `760beb297a8b686a762e5ac81c58a47f746db797`; native locale navigation, explicit cookie transition, 1440px desktop threshold, compact final header IA, and real Chrome interaction smoke |
 | V3.4 Marketing design foundation | Complete | Consolidated V3 tokens and primitives, simplified header/footer, corrected landmarks, 100 accessibility score, and documented browser/visual evidence |
 | V3.5 Homepage conversion rebuild | Complete | Seven-section V3 story, three-stage product scene, EN/fr-CA first-view evidence, 100 accessibility, and 96 performance |
-| V3.6 Page consolidation and conversion | Pending | Route decisions, redirects, distinct page jobs |
+| V3.6 Page consolidation and conversion | Complete | Ten canonical routes, five direct 308 redirects, distinct bilingual page jobs, safe interactive demo, and copy-only pilot path |
 | V3.7 Quality hardening | Pending | Performance, accessibility, SEO, resilient browser tests |
 | V3.8 Production acceptance | Pending | Exact main SHA, deployment match, live proof |
 
@@ -128,6 +128,23 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - Keep each retained route short and job-specific; do not reproduce merged guide content as new long-form pages.
 - Use a safe copy-only pilot request until a verified public founder contact or submission path is approved.
 
+## Phase 6 result
+
+- Complete: ten canonical public routes now use the V3 content contract, shell, metadata, and one distinct conversion job per page.
+- Complete: `/comparison`, `/quote-link-guide`, `/faster-quote-replies`, `/content-studio`, and `/industries/cleaning` are removed and return direct HTTP 308 redirects with locale/campaign queries preserved.
+- Complete: Demo moves from a vague cleaning question through the Smart Intake Link to an organized request and owner-reviewed draft without submitting data or inventing a quote.
+- Complete: Pilot uses a localized copy-only 60-second request with no empty-recipient `mailto:`, form submission, storage, payment, account creation, or production-data access.
+- Complete: Features, Demo, Pricing, Pilot, FAQ, Trust, and legal pages are concise, bilingual, responsive, and connected to one logical next step.
+- Complete: `pnpm verify` passes with 249/249 unit tests; public smoke is 34/34, responsive smoke is 20/20, the final UI matrix has zero failures, and browser smoke passes 54 retained-page responsive states with zero runtime errors.
+- Evidence: [V3 page consolidation and conversion report](./V3_PAGE_CONSOLIDATION_AND_CONVERSION_REPORT.md).
+
+## Phase 7 entry conditions
+
+- Preserve the ten canonical routes, direct 308 redirects, safe conversion path, EN/fr-CA parity, and zero-overflow matrix.
+- Record route-level transfer and bundle evidence and measure the final Lighthouse mobile matrix without gaming scores.
+- Audit WCAG 2.2 AA behavior, keyboard/focus order, screen-reader names and states, reflow, contrast, reduced motion, unique metadata, structured-data parity, sitemap/robots isolation, console errors, and secrets.
+- Keep client JavaScript limited to necessary language, theme, menu, Demo, and Pilot interactions.
+
 ## Canonical V3 documents
 
 - [Research and benchmark audit](./V3_RESEARCH_AND_BENCHMARK_AUDIT.md)
@@ -141,3 +158,4 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - [Public shell reliability report](./V3_PUBLIC_SHELL_RELIABILITY_REPORT.md)
 - [Design-system implementation report](./V3_DESIGN_SYSTEM_IMPLEMENTATION_REPORT.md)
 - [Homepage and hero acceptance](./V3_HOMEPAGE_AND_HERO_ACCEPTANCE.md)
+- [Page consolidation and conversion report](./V3_PAGE_CONSOLIDATION_AND_CONVERSION_REPORT.md)

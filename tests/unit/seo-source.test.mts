@@ -11,8 +11,9 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated canonical, redirect, structured-data, and pilot-event guards to the ten retained V3 routes.
  * - 2026-07-11: Added Content Studio breadcrumb JSON-LD guard.
  * - 2026-06-21: Added public FAQ route SEO coverage.
  * - 2026-07-04: Added comparison route, JSON-LD, OG image, and roadmap noindex guards.
@@ -31,7 +32,7 @@ import { describe, it } from "node:test";
 
 import { getPolicyCopy } from "../../lib/i18n/policy-copy.ts";
 import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
-import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
+import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
 import {
   forbiddenPublicEventPayloadKeys,
   publicEventCatalog,
@@ -133,16 +134,12 @@ describe("final public SEO and legal source contracts", () => {
   it("generates canonical public URLs and hreflang alternates only for real public pages", () => {
     assert.deepEqual(publicCanonicalRoutes, [
       "/",
-      "/faq",
-      "/comparison",
-      "/quote-link-guide",
-      "/faster-quote-replies",
       "/features",
-      "/industries/cleaning",
-      "/trust",
       "/demo",
       "/pricing",
       "/pilot",
+      "/faq",
+      "/trust",
       "/privacy",
       "/security",
       "/terms",
@@ -202,16 +199,12 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(seo.includes('"x-default"'), true);
     assert.equal(seo.includes("summary_large_image"), true);
     assert.equal(seo.includes("/opengraph-image"), true);
-    assert.equal(sitemap.includes("2026-07-05T00:00:00.000Z"), true);
+    assert.equal(sitemap.includes("2026-07-13T00:00:00.000Z"), true);
 
     for (const route of [
       "app/page.tsx",
       "app/faq/page.tsx",
-      "app/comparison/page.tsx",
-      "app/quote-link-guide/page.tsx",
-      "app/faster-quote-replies/page.tsx",
       "app/features/page.tsx",
-      "app/industries/cleaning/page.tsx",
       "app/trust/page.tsx",
       "app/demo/page.tsx",
       "app/pricing/page.tsx",
@@ -225,11 +218,16 @@ describe("final public SEO and legal source contracts", () => {
       assert.equal(routeSource.includes("resolvePublicRouteLanguage"), true, route);
     }
 
-    assert.equal(
-      source("app/content-studio/page.tsx").includes("buildNoIndexMetadata"),
-      true,
-      "Content Studio should remain available but noindex while it is roadmap-only.",
-    );
+    const redirectConfig = source("next.config.ts");
+    for (const path of [
+      "/comparison",
+      "/quote-link-guide",
+      "/faster-quote-replies",
+      "/content-studio",
+      "/industries/cleaning",
+    ]) {
+      assert.equal(redirectConfig.includes(`source: "${path}"`), true, path);
+    }
 
     for (const route of [
       "app/auth/sign-in/page.tsx",
@@ -337,22 +335,19 @@ describe("final public SEO and legal source contracts", () => {
       true,
     );
     assert.equal(
-      source("components/public/pilot-request-template-card.tsx").includes(
+      source("components/public/public-v3-pilot-request.tsx").includes(
         "pilot_template_copy",
       ),
       true,
     );
   });
 
-  it("emits structured data through the approved helper and shared V2 renderer", () => {
+  it("emits structured data through the approved helper and shared V3 renderer", () => {
     const jsonLd = source("components/public/json-ld.tsx");
     const structured = source("lib/public-structured-data.ts");
     const home = source("app/page.tsx");
     const faq = source("app/faq/page.tsx");
-    const sharedV2 = source("components/public/bizpilot-v2-page.tsx");
-    const pilot = source("app/pilot/page.tsx");
-    const quoteLinkGuide = source("app/quote-link-guide/page.tsx");
-    const replySpeedGuide = source("app/faster-quote-replies/page.tsx");
+    const sharedV3 = source("components/public/public-v3-page.tsx");
     const policyPage = source("components/public/policy-page.tsx");
     const ogImage = source("app/opengraph-image.tsx");
 
@@ -364,24 +359,19 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(structured.includes('"SoftwareApplication"'), true);
     assert.equal(structured.includes('"Service"'), true);
     assert.equal(home.includes("buildHomeJsonLd"), true);
-    assert.equal(faq.includes("faqItems={copy.items}"), true);
-    assert.equal(sharedV2.includes("buildFaqPageJsonLd(faqItems, language)"), true);
-    assert.equal(sharedV2.includes("buildBreadcrumbJsonLd"), true);
-    assert.equal(pilot.includes("buildBreadcrumbJsonLd"), true);
-    assert.equal(pilot.includes("bizpilot-v2-pilot-breadcrumb-jsonld"), true);
-    assert.equal(quoteLinkGuide.includes("buildBreadcrumbJsonLd"), true);
-    assert.equal(replySpeedGuide.includes("buildBreadcrumbJsonLd"), true);
+    assert.equal(faq.includes("PublicV3Page"), true);
+    assert.equal(sharedV3.includes("buildFaqPageJsonLd(spec.faqItems, language)"), true);
+    assert.equal(sharedV3.includes("buildBreadcrumbJsonLd"), true);
 
     for (const route of [
       "app/features/page.tsx",
-      "app/industries/cleaning/page.tsx",
       "app/trust/page.tsx",
       "app/demo/page.tsx",
       "app/pricing/page.tsx",
-      "app/comparison/page.tsx",
       "app/faq/page.tsx",
+      "app/pilot/page.tsx",
     ]) {
-      assert.equal(source(route).includes("BizPilotV2Page"), true, route);
+      assert.equal(source(route).includes("PublicV3Page"), true, route);
     }
 
     assert.equal(policyPage.includes("buildBreadcrumbJsonLd"), true);
@@ -391,29 +381,28 @@ describe("final public SEO and legal source contracts", () => {
   });
 
   it("keeps FAQ AI-search content source-backed without ranking claims", () => {
-    const questions = getPublicV2Copy("en").faq.items.map(
-      (item) => item.question,
-    );
+    const faqItems = getPublicV3Spec("en").faqItems;
+    const keys = faqItems.map((item) => item.key);
     const faqRoute = source("app/faq/page.tsx");
-    const sharedV2 = source("components/public/bizpilot-v2-page.tsx");
+    const sharedV3 = source("components/public/public-v3-page.tsx");
     const structured = source("lib/public-structured-data.ts");
     const phase25n = source(
       "docs/readiness/PHASE_25N_FAQ_AI_SEARCH_COMPLETION_2026-07-04.md",
     );
 
-    for (const question of [
-      "Does BizPilot connect directly to Gmail, WhatsApp, Instagram, or SMS today?",
-      "Does AI send messages automatically?",
-      "Can BizPilot invent prices or confirm bookings?",
-      "Is BizPilot only for cleaning businesses?",
-      "What happens after a customer submits the intake form?",
-      "Is BizPilot a CRM, booking platform, or invoicing system?",
+    for (const key of [
+      "direct-integrations",
+      "after-submit",
+      "ai-role",
+      "auto-send",
+      "pricing-booking",
+      "verticals",
     ]) {
-      assert.equal(questions.includes(question), true, question);
+      assert.equal(keys.includes(key), true, key);
     }
 
-    assert.equal(faqRoute.includes("faqItems={copy.items}"), true);
-    assert.equal(sharedV2.includes("buildFaqPageJsonLd(faqItems, language)"), true);
+    assert.equal(faqRoute.includes("PublicV3Page"), true);
+    assert.equal(sharedV3.includes("buildFaqPageJsonLd(spec.faqItems, language)"), true);
     assert.equal(structured.includes('"FAQPage"'), true);
     for (const required of [
       "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data",

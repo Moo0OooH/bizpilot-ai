@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated secondary-route and shared-renderer guards from the Phase 5 transition state to completed Phase 6 V3 consolidation.
  * - 2026-07-13: Moved the homepage source guard to V3 while retained secondary pages remain on V2 until Phase 6.
  * - 2026-07-13: Aligned shared-shell coverage with the simplified V3 footer information architecture.
  * - 2026-07-13: Added regression coverage for universal guide copy, fallback metadata, and accented fr-CA JSON-LD.
@@ -170,7 +171,7 @@ describe("public V2 positioning", () => {
     assert.match(englishPricing.notice?.body ?? "", /does not currently offer in-app billing automation/i);
   });
 
-  it("keeps the homepage on V3 while retained secondary routes remain on V2 until Phase 6", () => {
+  it("keeps the homepage and retained secondary routes on V3 after Phase 6", () => {
     const homepage = readFileSync("app/page.tsx", "utf8");
     assert.equal(homepage.includes("getPublicV3Spec"), true);
     assert.equal(homepage.includes("PublicV3Home"), true);
@@ -182,16 +183,17 @@ describe("public V2 positioning", () => {
       "app/pricing/page.tsx",
       "app/pilot/page.tsx",
       "app/trust/page.tsx",
-      "app/comparison/page.tsx",
       "app/faq/page.tsx",
-      "app/industries/cleaning/page.tsx",
+      "app/privacy/page.tsx",
+      "app/security/page.tsx",
+      "app/terms/page.tsx",
     ] as const;
 
     for (const file of sourceFiles) {
       assert.equal(
-        readFileSync(file, "utf8").includes("getPublicV2Copy"),
+        readFileSync(file, "utf8").includes("getPublicV3Spec"),
         true,
-        `${file} must read the public V2 dictionary.`,
+        `${file} must read the public V3 dictionary.`,
       );
     }
 
@@ -224,28 +226,30 @@ describe("public V2 positioning", () => {
   });
 
   it("keeps core pages visually differentiated without duplicating route renderers", () => {
-    const renderer = readFileSync("components/public/bizpilot-v2-page.tsx", "utf8");
+    const renderer = readFileSync("components/public/public-v3-page.tsx", "utf8");
     const header = readFileSync("components/public/marketing-ui.tsx", "utf8");
+    const redirects = readFileSync("next.config.ts", "utf8");
 
     for (const marker of [
-      "capability-board",
-      "request-to-reply-sequence",
-      "plan-comparison",
-      "human-data-boundaries",
-      "comparison-matrix",
-      "faq-groups",
-      "cleaning-selector",
-      "pilot-process",
+      "FeaturesContent",
+      "DemoContent",
+      "PricingContent",
+      "PilotContent",
+      "FaqContent",
+      "TrustContent",
     ]) {
       assert.match(renderer, new RegExp(marker));
     }
 
-    for (const marker of ["copy.features", "copy.resources", "copy.trust", "copy.privacy"]) {
-      assert.match(header, new RegExp(marker.replace(".", "\\.")));
-    }
-
-    for (const removedRoute of ["/comparison", "/quote-link-guide", "/faster-quote-replies"]) {
+    for (const removedRoute of [
+      "/comparison",
+      "/quote-link-guide",
+      "/faster-quote-replies",
+      "/content-studio",
+      "/industries/cleaning",
+    ]) {
       assert.doesNotMatch(header, new RegExp(`href: "${removedRoute}"`));
+      assert.match(redirects, new RegExp(`source: "${removedRoute.replaceAll("/", "\\/")}"`));
     }
   });
 });

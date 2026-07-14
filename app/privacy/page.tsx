@@ -10,8 +10,9 @@
  * - docs/security/BIZPILOT_PRIVACY_SECURITY_COMPLIANCE_BASELINE_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated Privacy metadata, hero, navigation, and footer to the Website V3 content contract.
  * - 2026-07-05: Added complete BizPilot source header metadata for public policy route hygiene.
  * ============================================================
  */
@@ -20,11 +21,11 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { PolicyPage } from "@/components/public/policy-page";
-import { getPublicV2NavCopy } from "@/lib/i18n/public-v2-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
 import { getPolicyCopy } from "@/lib/i18n/policy-copy";
+import { getPublicV3Spec } from "@/lib/i18n/public-v3-spec";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -46,22 +47,26 @@ export async function generateMetadata({
   searchParams,
 }: PrivacyPageProps = {}): Promise<Metadata> {
   const language = await readPolicyLanguage(searchParams);
-  const copy = getPolicyCopy(language).privacy;
-
-  return buildPublicMetadata("/privacy", copy.meta, language);
+  return buildPublicMetadata(
+    "/privacy",
+    getPublicV3Spec(language).routes["/privacy"].meta,
+    language,
+  );
 }
 
 export default async function PrivacyPage({
   searchParams,
 }: PrivacyPageProps = {}) {
   const language = await readPolicyLanguage(searchParams);
+  const spec = getPublicV3Spec(language);
 
   return (
     <PolicyPage
       copy={getPolicyCopy(language).privacy}
       language={language}
-      navCopy={getPublicV2NavCopy(language)}
+      navCopy={spec.nav}
       pagePath="/privacy"
+      routeHero={spec.routes["/privacy"].hero}
     />
   );
 }

@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Updated skip-link coverage to the consolidated V3 home, retained-page, and policy renderers.
  * - 2026-07-13: Added V3 token, primitive, shell, footer, reduced-motion, and skip-link contracts.
  * ============================================================
  */
@@ -93,13 +94,9 @@ describe("Website V3 design-system foundation", () => {
 
   it("provides the skip-link target on every currently rendered public shell", () => {
     for (const path of [
-      "components/public/bizpilot-v2-home.tsx",
-      "components/public/bizpilot-v2-page.tsx",
+      "components/public/public-v3-home.tsx",
+      "components/public/public-v3-page.tsx",
       "components/public/policy-page.tsx",
-      "app/pilot/page.tsx",
-      "app/content-studio/page.tsx",
-      "app/quote-link-guide/page.tsx",
-      "app/faster-quote-replies/page.tsx",
     ]) {
       assert.equal(
         source(path).includes('id="main-content"'),

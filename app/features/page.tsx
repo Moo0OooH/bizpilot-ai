@@ -1,24 +1,27 @@
-/*
+/**
  * ============================================================
  * File: app/features/page.tsx
  * Project: BizPilot AI
- * Description: Public product page for the smart customer-intake and owner-reviewed reply workspace.
- * Role: Explains current capabilities and explicitly separates roadmap integrations from active product claims.
+ * Description: Retained Website V3 product-capability page.
+ * Role: Explains the current Smart Intake Link, organized-request, missing-detail, draft, and human-review capabilities.
  * Related:
- * - components/public/bizpilot-v2-page.tsx
- * - lib/i18n/public-v2-copy.ts
+ * - components/public/public-v3-page.tsx
+ * - lib/i18n/public-v3-spec.ts
+ * - lib/seo.ts
  * Author: MoOoH
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Migrated the retained Features route from V2 to the consolidated V3 renderer and copy contract.
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
-import { BizPilotV2Page } from "@/components/public/bizpilot-v2-page";
+import { PublicV3Page } from "@/components/public/public-v3-page";
 import { INTERFACE_LANGUAGE_COOKIE } from "@/lib/i18n/language";
-import { getPublicV2Copy } from "@/lib/i18n/public-v2-copy";
+import { getPublicV3Spec } from "@/lib/i18n/public-v3-spec";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -40,7 +43,7 @@ export async function generateMetadata({
   const language = await readPublicLanguage(searchParams);
   return buildPublicMetadata(
     "/features",
-    getPublicV2Copy(language).features.meta,
+    getPublicV3Spec(language).routes["/features"].meta,
     language,
   );
 }
@@ -49,12 +52,5 @@ export default async function FeaturesPage({
   searchParams,
 }: FeaturesPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
-
-  return (
-    <BizPilotV2Page
-      copy={getPublicV2Copy(language).features}
-      language={language}
-      path="/features"
-    />
-  );
+  return <PublicV3Page language={language} path="/features" />;
 }

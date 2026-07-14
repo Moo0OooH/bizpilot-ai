@@ -13,6 +13,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated retained Product navigation, metadata, and reverse-locale assertions to the V3 contract.
  * - 2026-07-13: Migrated homepage interaction assertions to the approved V3 copy while secondary pages remain on V2.
  * - 2026-07-13: Verified the localized fr-CA compact-navigation trigger during mobile containment checks.
  * - 2026-07-13: Added the Website V3 Phase 3 Chrome interaction and responsive-shell regression smoke.
@@ -25,8 +26,10 @@ import { access, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promise
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
-import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
+import {
+  getPublicV3Spec,
+  publicV3PrimaryRoutes,
+} from "../../lib/i18n/public-v3-spec.ts";
 
 type CdpMessage = Readonly<{
   error?: Readonly<{ message: string }>;
@@ -403,9 +406,11 @@ async function realClick(
 }
 
 async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> {
-  const english = getPublicV2Copy("en");
-  const french = getPublicV2Copy("fr-CA");
-  const frenchHome = getPublicV3Spec("fr-CA").routes["/"];
+  const englishSpec = getPublicV3Spec("en");
+  const frenchSpec = getPublicV3Spec("fr-CA");
+  const englishFeatures = englishSpec.routes["/features"];
+  const frenchFeatures = frenchSpec.routes["/features"];
+  const frenchHome = frenchSpec.routes["/"];
   const runtimeErrors: string[] = [];
 
   client.on("Runtime.exceptionThrown", (params) => {
@@ -489,7 +494,7 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   await waitFor(
     client,
     "French Product navigation",
-    `location.pathname === "/features" && document.documentElement.lang === "fr-CA" && document.querySelector("h1")?.textContent?.includes(${JSON.stringify(french.features.title)}) === true`,
+    `location.pathname === "/features" && document.documentElement.lang === "fr-CA" && document.querySelector("h1")?.textContent?.includes(${JSON.stringify(frenchFeatures.hero.title)}) === true`,
   );
   const frenchProductMs = Date.now() - frenchProductStartedAt;
 
@@ -498,7 +503,7 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   await waitFor(
     client,
     "French persistence after reload",
-    `document.readyState === "complete" && location.pathname === "/features" && document.documentElement.lang === "fr-CA" && document.querySelector("h1")?.textContent?.includes(${JSON.stringify(french.features.title)}) === true`,
+    `document.readyState === "complete" && location.pathname === "/features" && document.documentElement.lang === "fr-CA" && document.querySelector("h1")?.textContent?.includes(${JSON.stringify(frenchFeatures.hero.title)}) === true`,
   );
   const reloadMs = Date.now() - reloadStartedAt;
 
@@ -517,12 +522,12 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   await waitFor(
     client,
     "English visible content and explicit persistence URL",
-    `document.documentElement.lang === "en" && new URLSearchParams(location.search).get("language") === "en" && document.querySelector("h1")?.textContent?.includes(${JSON.stringify(english.features.title)}) === true`,
+    `document.documentElement.lang === "en" && new URLSearchParams(location.search).get("language") === "en" && document.querySelector("h1")?.textContent?.includes(${JSON.stringify(englishFeatures.hero.title)}) === true`,
   );
   const englishClickMs = Date.now() - englishClickStartedAt;
   metadata = await readMetadata(client);
-  assert.equal(metadata.title, english.features.meta.title);
-  assert.equal(metadata.ogTitle, english.features.meta.title);
+  assert.equal(metadata.title, englishFeatures.meta.title);
+  assert.equal(metadata.ogTitle, englishFeatures.meta.title);
   assert.equal(metadata.ogLocale, "en_CA");
   assert.equal(metadata.canonical, "https://bizpilo.com/features");
   assert.ok(metadata.alternates.includes("en-CA:https://bizpilo.com/features"));
@@ -577,7 +582,8 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
 
   const widths = [320, 360, 390, 430, 768, 1024, 1280, 1440, 1920];
   for (const language of ["en", "fr-CA"] as const) {
-    const url = new URL(language === "fr-CA" ? "/?language=fr-CA" : "/", baseUrl);
+    const url = new URL("/", baseUrl);
+    url.searchParams.set("language", language);
     await navigate(client, url);
 
     for (const width of widths) {
@@ -595,6 +601,28 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
       console.log(
         `  ${language} ${width}px overflow: ${snapshot.scrollWidth - snapshot.clientWidth}px`,
       );
+    }
+  }
+
+  let retainedPageStates = 0;
+  for (const language of ["en", "fr-CA"] as const) {
+    const spec = getPublicV3Spec(language);
+    for (const path of publicV3PrimaryRoutes.filter((route) => route !== "/")) {
+      const url = new URL(path, baseUrl);
+      url.searchParams.set("language", language);
+      await navigate(client, url);
+
+      for (const width of [320, 390, 1440]) {
+        await setViewport(client, width, 900);
+        await waitFor(client, `${path} ${width}px viewport`, `window.innerWidth === ${width}`);
+        snapshot = await readSnapshot(client);
+        assert.equal(snapshot.h1, spec.routes[path].hero.title, `${language} ${path} H1 drift`);
+        assert.ok(
+          snapshot.scrollWidth <= snapshot.clientWidth,
+          `${language} ${path} overflows at ${width}px: ${snapshot.scrollWidth} > ${snapshot.clientWidth}`,
+        );
+        retainedPageStates += 1;
+      }
     }
   }
 
@@ -635,6 +663,7 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   console.log(
     `  Local interaction timings: FR ${frenchClickMs}ms, Product ${frenchProductMs}ms, reload ${reloadMs}ms, EN ${englishClickMs}ms, theme ${themeClickMs}ms`,
   );
+  console.log(`  Retained-page overflow/H1 matrix: pass (${retainedPageStates} states)`);
   console.log(`  Mobile menu containment: pass (${Math.round(menu.top)}–${Math.round(menu.bottom)}px)`);
   console.log("  Application console/runtime errors: 0");
 }

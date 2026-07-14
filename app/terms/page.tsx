@@ -10,8 +10,9 @@
  * - docs/business/PILOT_TERMS_DECISION_GATE.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated Terms metadata, hero, navigation, and footer to the Website V3 content contract.
  * - 2026-07-05: Added complete BizPilot source header metadata for public policy route hygiene.
  * ============================================================
  */
@@ -20,11 +21,11 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { PolicyPage } from "@/components/public/policy-page";
-import { getPublicV2NavCopy } from "@/lib/i18n/public-v2-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
 import { getPolicyCopy } from "@/lib/i18n/policy-copy";
+import { getPublicV3Spec } from "@/lib/i18n/public-v3-spec";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
@@ -46,20 +47,24 @@ export async function generateMetadata({
   searchParams,
 }: TermsPageProps = {}): Promise<Metadata> {
   const language = await readPolicyLanguage(searchParams);
-  const copy = getPolicyCopy(language).terms;
-
-  return buildPublicMetadata("/terms", copy.meta, language);
+  return buildPublicMetadata(
+    "/terms",
+    getPublicV3Spec(language).routes["/terms"].meta,
+    language,
+  );
 }
 
 export default async function TermsPage({ searchParams }: TermsPageProps = {}) {
   const language = await readPolicyLanguage(searchParams);
+  const spec = getPublicV3Spec(language);
 
   return (
     <PolicyPage
       copy={getPolicyCopy(language).terms}
       language={language}
-      navCopy={getPublicV2NavCopy(language)}
+      navCopy={spec.nav}
       pagePath="/terms"
+      routeHero={spec.routes["/terms"].hero}
     />
   );
 }

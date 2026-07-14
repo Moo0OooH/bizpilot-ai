@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Added localized status copy for the safe copy-only founder-pilot request.
  * - 2026-07-13: Completed the V3 shell dictionary for the homepage and retained public routes.
  * - 2026-07-13: Created the typed V3 bilingual content and route contract for Phase 2.
  * ============================================================
@@ -118,6 +119,8 @@ export type PublicV3Spec = Readonly<{
     copyright: string;
     demo: string;
     faq: string;
+    features: string;
+    flow: string;
     howItWorks: string;
     languageLabel: string;
     pilot: string;
@@ -127,13 +130,17 @@ export type PublicV3Spec = Readonly<{
     resources: string;
     security: string;
     signIn: string;
+    startShort: string;
     terms: string;
     themeLabel: string;
     trust: string;
   }>;
   pilot: Readonly<{
     applicationAction: string;
+    applicationCopied: string;
     applicationFields: readonly string[];
+    applicationSelectFallback: string;
+    applicationTemplateTitle: string;
     fit: readonly string[];
     nextSteps: readonly FeatureCopy[];
     submissionBoundary: string;
@@ -158,8 +165,11 @@ const englishSpec: PublicV3Spec = {
     resources: "Resources",
     security: "Security",
     faq: "FAQ",
+    features: "Product",
+    flow: "How it works",
     trust: "Trust",
     signIn: "Sign in",
+    startShort: "Pilot",
     terms: "Terms",
     pilot: "Apply for pilot",
     languageLabel: "Website language",
@@ -579,6 +589,9 @@ const englishSpec: PublicV3Spec = {
       "Preferred language",
     ],
     applicationAction: "Copy the 60-second pilot request",
+    applicationCopied: "Pilot request copied.",
+    applicationSelectFallback: "The request is selected. Copy it manually.",
+    applicationTemplateTitle: "BizPilot founder pilot request",
     submissionBoundary:
       "BizPilot does not submit or store this public request. Copy it and send it through the founder contact method you already use. No account, charge, or production-data access is created.",
   },
@@ -690,8 +703,11 @@ const frenchSpec: PublicV3Spec = {
     resources: "Ressources",
     security: "Sécurité",
     faq: "FAQ",
+    features: "Produit",
+    flow: "Fonctionnement",
     trust: "Confiance",
     signIn: "Connexion",
+    startShort: "Pilote",
     terms: "Conditions",
     pilot: "Demander l'accès",
     languageLabel: "Langue du site",
@@ -1111,6 +1127,10 @@ const frenchSpec: PublicV3Spec = {
       "Langue préférée",
     ],
     applicationAction: "Copier la demande de pilote de 60 secondes",
+    applicationCopied: "Demande de pilote copiée.",
+    applicationSelectFallback:
+      "La demande est sélectionnée. Copiez-la manuellement.",
+    applicationTemplateTitle: "Demande pour le pilote fondateur BizPilot",
     submissionBoundary:
       "BizPilot n'envoie ni ne conserve cette demande publique. Copiez-la et transmettez-la par le moyen de contact que vous utilisez déjà avec le fondateur. Aucun compte, paiement ni accès aux données de production n'est créé.",
   },

@@ -2,350 +2,32 @@
  * ============================================================
  * File: tests/smoke/public-responsive-smoke.mts
  * Project: BizPilot AI
- * Description: Public responsive contract smoke checks for local or production URLs.
- * Role: Verifies public-route copy, route hierarchy, duplicate-price fixes, and stale responsive-risk markers.
+ * Description: Synthetic retained-route responsive and bilingual contract smoke.
+ * Role: Verifies all ten V3 public routes use the shared shell, one localized H1, safe layout markers, and route-specific compact content.
  * Related:
- * - docs/product/BIZPILOT_RESPONSIVE_LAYOUT_AND_DEVICE_STANDARD_v1.0.md
- * - docs/readiness/BIZPILOT_PUBLIC_SITE_VISUAL_AUDIT_2026-06-18.md
+ * - components/public/public-v3-page.tsx
+ * - components/public/public-v3-page.module.css
+ * - tests/smoke/public-browser-interaction-smoke.mts
  * Author: MoOoH
- * Created: 2026-06-18
+ * Created: 2026-06-20
  * Last Updated: 2026-07-13
  * Change Log:
- * - 2026-07-13: Migrated the homepage heading contract to the typed bilingual V3 specification.
- * - 2026-07-12: Updated French href and manual pilot-request expectations.
- * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
- * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
- * - 2026-06-20: Locked balanced public grid classes into route-level smoke coverage.
- * - 2026-06-21: Locked canonical four-step grid classes into smoke coverage.
- * - 2026-06-21: Added fr-CA hero/pricing parity markers.
- * - 2026-06-21: Locked cleaning service grid and detail panel responsive markers.
- * - 2026-06-21: Added homepage mini FAQ and dedicated FAQ route smoke coverage.
- * - 2026-06-21: Added Cleaning service de-duplication and small-commercial smoke guards.
- * - 2026-06-25: Updated Cleaning checks for service cards plus shared detail selector markup.
- * - 2026-06-25: Locked Cleaning to one active detail panel instead of duplicated desktop/mobile details.
- * - 2026-07-04: Added comparison route responsive contract coverage.
- * - 2026-07-04: Added quote-link guide responsive contract coverage.
- * - 2026-07-05: Updated bilingual homepage checks for the product-scene hero.
- * - 2026-07-05: Updated bilingual homepage checks for the hot quote rescue hero.
- * - 2026-07-05: Aligned homepage smoke markers with escaped production HTML.
- * - 2026-07-11: Updated bilingual homepage checks for the stronger quote-rescue hero.
- * - 2026-07-13: Derived core-route headings from the V2 dictionaries and removed superseded pre-V2 layout markers.
+ * - 2026-07-13: Replaced retired V2 and merged-route checks with all ten retained V3 routes in EN and fr-CA.
  * ============================================================
  */
 
-import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
-import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
-import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
+import { getPublicV3Spec, publicV3PrimaryRoutes } from "../../lib/i18n/public-v3-spec.ts";
 
-type RouteContract = Readonly<{
-  h1: string;
-  maxOccurrences?: readonly Readonly<{ max: number; text: string }>[];
-  mustContain?: readonly string[];
-  mustNotContain?: readonly string[];
+type Locale = "en" | "fr-CA";
+
+type ResponsiveResult = Readonly<{
+  errors: readonly string[];
   path: string;
+  pass: boolean;
 }>;
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3000";
-const TIMEOUT_MS = 15_000;
-
-const routes: readonly RouteContract[] = [
-  {
-    h1: "Turn missed quote requests into ready replies.",
-    maxOccurrences: [
-      {
-        max: 5,
-        text: "<details",
-      },
-    ],
-    mustContain: [
-      "href=\"/demo\"",
-      "href=\"/faq\"",
-      "homepage-demo-grid",
-      "homepage-use-case-grid",
-      "homepage-hero-proof-rail",
-      "homepage-product-scene",
-      "47-minute response gap",
-      "Move-out quote is getting cold",
-      "Reply ready to review",
-      "Review and copy",
-      "Review &amp; copy",
-      "Founder-led pilot. You copy and send. No auto-send or invented pricing.",
-      "No auto-send",
-    ],
-    mustNotContain: ["homepage-workflow-grid"],
-    path: "/",
-  },
-  {
-    h1: "Transformez les demandes manquées en réponses prêtes.",
-    maxOccurrences: [
-      {
-        max: 5,
-        text: "<details",
-      },
-    ],
-    mustContain: [
-      "href=\"/demo?language=fr-CA\"",
-      "href=\"/faq?language=fr-CA\"",
-      "homepage-demo-grid",
-      "homepage-use-case-grid",
-      "homepage-hero-proof-rail",
-      "homepage-product-scene",
-      "47 minutes sans réponse",
-      "La demande de déménagement refroidit",
-      "Réponse prête à valider",
-      "Valider et copier",
-      "Réviser et copier",
-      "Projet pilote guidé. Vous copiez et envoyez. Aucun envoi automatique ni prix inventé.",
-      "Aucun envoi automatique",
-    ],
-    mustNotContain: [
-      "Confidentialite",
-      "Securite",
-      "Demo par onglets",
-      "demande realiste",
-      "Le systeme",
-      "Le proprietaire",
-      "Aucun prix invente",
-      "Pret a reviser",
-      "Leads pour le nettoyage",
-      "Nettoyage de départ",
-      "révisé par le propriétaire",
-      "espace propriétaire",
-      "homepage-workflow-grid",
-    ],
-    path: "/?language=fr-CA",
-  },
-  {
-    h1: "Questions cleaning business owners ask before joining.",
-    mustContain: [
-      "public-faq-section",
-      "public-faq-grid",
-      "Pilot basics",
-      "AI and business control",
-    ],
-    path: "/faq",
-  },
-  {
-    h1: "Questions que les entreprises de nettoyage posent avant de participer.",
-    mustContain: [
-      "public-faq-section",
-      "public-faq-grid",
-      "Bases du projet pilote",
-      "IA et contrôle par l'entreprise",
-    ],
-    path: "/faq?language=fr-CA",
-  },
-  {
-    h1: "BizPilot vs CRMs, forms, and booking tools.",
-    mustContain: [
-      "comparison-grid",
-      "Full CRM",
-      "Form builder",
-      "Booking or invoice software",
-      "Manual inboxes and spreadsheets",
-      "The boundary matters.",
-    ],
-    path: "/comparison",
-  },
-  {
-    h1: "BizPilot vs CRM, formulaires et réservations.",
-    mustContain: [
-      "comparison-grid",
-      "CRM complet",
-      "Générateur de formulaire",
-      "Réservation ou facturation",
-      "Boîtes de réception et tableurs",
-      "La limite est importante.",
-    ],
-    path: "/comparison?language=fr-CA",
-  },
-  {
-    h1: "Where to put your cleaning quote link.",
-    mustContain: [
-      "Google Business Profile",
-      "Tracked link patterns",
-      "href=\"/faster-quote-replies\"",
-      "source=website",
-      "Do not turn a quote request into a fake booking.",
-    ],
-    path: "/quote-link-guide",
-  },
-  {
-    h1: "Où placer votre lien de soumission de nettoyage.",
-    mustContain: [
-      "Google Business Profile",
-      "Modèles de liens suivis",
-      "google_business_profile",
-      "Ne transformez pas une soumission en fausse réservation.",
-    ],
-    path: "/quote-link-guide?language=fr-CA",
-  },
-  {
-    h1: "Faster cleaning quote replies without auto-send.",
-    mustContain: [
-      "reply-speed-board",
-      "Owner-reviewed reply workflow",
-      "A four-week reply-speed content plan.",
-      "No automatic customer email",
-      "No price, availability, or appointment",
-    ],
-    path: "/faster-quote-replies",
-  },
-  {
-    h1: "Réponses plus rapides, sans envoi automatique.",
-    mustContain: [
-      "reply-speed-board",
-      "Le flux de réponse validé par le propriétaire.",
-      "Un plan de contenu sur quatre semaines.",
-      "Aucun envoi automatique",
-      "Aucun prix, disponibilité ou rendez-vous",
-    ],
-    path: "/faster-quote-replies?language=fr-CA",
-  },
-  {
-    h1: "A simple system to manage cleaning quote requests faster.",
-    mustContain: [
-      "Product proof",
-      "Roadmap",
-      "Manual copy/send",
-      "supporting-four-grid",
-      "supporting-six-grid",
-    ],
-    path: "/features",
-  },
-  {
-    h1: "Lead recovery software for cleaning businesses.",
-    mustContain: [
-      "Example request",
-      "Move-out cleaning",
-      "Needs reply",
-      "cleaning-service-grid",
-      "cleaning-service-card",
-      "cleaning-detail-tabs",
-      "cleaning-tab-button",
-      "cleaning-detail-panel",
-      "Missing details BizPilot can help ask for",
-    ],
-    mustNotContain: ["Small commercial cleaning", "Commercial and specialist"],
-    path: "/industries/cleaning",
-  },
-  {
-    h1: "Récupération des demandes pour entreprises de nettoyage.",
-    mustContain: [
-      "Exemple de demande",
-      "À répondre",
-      "cleaning-service-grid",
-      "cleaning-service-card",
-      "cleaning-detail-tabs",
-      "cleaning-tab-button",
-      "cleaning-detail-panel",
-      "Détails manquants que BizPilot peut aider à demander",
-    ],
-    mustNotContain: ["Petit nettoyage commercial", "Commercial et spécialisé"],
-    path: "/industries/cleaning?language=fr-CA",
-  },
-  {
-    h1: "Built for business control and trust.",
-    mustContain: [
-      "Read privacy",
-      "Read security",
-      "Pilot readiness notes",
-      "supporting-three-grid",
-    ],
-    path: "/trust",
-  },
-  {
-    h1: "Cleaning quote recovery demo.",
-    mustContain: [
-      "demo-owner-workspace",
-      "Static owner-view demo",
-      "Reply draft for owner review",
-      "Request arrives.",
-      "You review, copy, and send manually.",
-      "No invented price",
-    ],
-    path: "/demo",
-  },
-  {
-    h1: "Simple pilot pricing for cleaning businesses.",
-    mustContain: [
-      "public-pricing-grid",
-      "public-pricing-hero-cta",
-      "public-plan-card",
-      "$149 setup",
-      "$49/month",
-      "$199 setup",
-      "$79/month",
-      "supporting-three-grid",
-    ],
-    path: "/pricing",
-  },
-  {
-    h1: "Tarifs pilotes simples pour le nettoyage.",
-    mustContain: [
-      "public-pricing-grid",
-      "public-pricing-hero-cta",
-      "public-plan-card",
-      "Entreprises 1 à 5",
-      "Projet pilote",
-      "Facturation après approbation",
-      "$149 setup",
-      "$49/month",
-      "$199 setup",
-      "$79/month",
-      "supporting-three-grid",
-    ],
-    path: "/pricing?language=fr-CA",
-  },
-  {
-    h1: "Help shape BizPilot around real cleaning work.",
-    mustContain: [
-      "Send a clear founder-pilot request when you are ready.",
-      "Copy pilot request template",
-      "Open email draft",
-      "Preview the six application questions",
-    ],
-    path: "/pilot",
-  },
-  {
-    h1: "Future Content Studio for local business growth.",
-    mustContain: ["Roadmap", "business before publishing", "supporting-six-grid"],
-    path: "/content-studio",
-  },
-  {
-    h1: "Privacy rules for careful quote recovery.",
-    mustContain: ["Plain-language summary"],
-    path: "/privacy",
-  },
-  {
-    h1: "Règles de confidentialité pour la récupération des soumissions.",
-    mustContain: ["Résumé simple", "Avis de confidentialité"],
-    mustNotContain: ["Regles", "confidentialite", "recuperation"],
-    path: "/privacy?language=fr-CA",
-  },
-  {
-    h1: "Security boundaries before real pilot data.",
-    mustContain: ["Plain-language summary"],
-    path: "/security",
-  },
-  {
-    h1: "Frontières de sécurité avant les données réelles.",
-    mustContain: ["Résumé simple", "Posture de sécurité"],
-    mustNotContain: ["Frontieres", "securite", "donnees reelles"],
-    path: "/security?language=fr-CA",
-  },
-  {
-    h1: "Clear founder-pilot terms, no hidden automation.",
-    mustContain: ["$149 setup", "$79/month", "Manual billing only"],
-    path: "/terms",
-  },
-  {
-    h1: "Conditions claires, sans automatisation cachée.",
-    mustContain: ["Résumé simple", "$149 setup", "$79/month"],
-    mustNotContain: ["automation cachee", "donnees reelles", "proprietaire"],
-    path: "/terms?language=fr-CA",
-  },
-];
+const DEFAULT_TIMEOUT_MS = 15_000;
 
 function readCliValue(name: string): string | undefined {
   const prefix = `--${name}=`;
@@ -353,181 +35,184 @@ function readCliValue(name: string): string | undefined {
   if (inline) {
     return inline.slice(prefix.length);
   }
-
   const index = process.argv.indexOf(`--${name}`);
-  if (index >= 0) {
-    return process.argv[index + 1];
+  return index >= 0 ? process.argv[index + 1] : undefined;
+}
+
+function baseUrl(): URL {
+  return new URL(
+    readCliValue("base-url") ??
+      process.env.BIZPILOT_SMOKE_BASE_URL ??
+      DEFAULT_BASE_URL,
+  );
+}
+
+function timeoutMs(): number {
+  const raw = readCliValue("timeout-ms") ?? process.env.BIZPILOT_SMOKE_TIMEOUT_MS;
+  if (!raw) {
+    return DEFAULT_TIMEOUT_MS;
   }
-
-  return undefined;
+  const value = Number.parseInt(raw, 10);
+  if (!Number.isFinite(value) || value < 1_000) {
+    throw new Error("Smoke timeout must be an integer >= 1000ms.");
+  }
+  return value;
 }
 
-function resolveBaseUrl(): URL {
-  return new URL(readCliValue("base-url") ?? process.env.BIZPILOT_SMOKE_BASE_URL ?? DEFAULT_BASE_URL);
+function targetPath(path: string, locale: Locale): string {
+  if (locale === "en") {
+    return path;
+  }
+  const url = new URL(path, "https://bizpilot.local");
+  url.searchParams.set("language", locale);
+  return `${url.pathname}${url.search}`;
 }
 
-function countOccurrences(value: string, needle: string): number {
-  return value.split(needle).length - 1;
+function targetUrl(origin: URL, path: string): URL {
+  return new URL(path, origin);
 }
 
-function stripScripts(html: string): string {
+function count(source: string, marker: string): number {
+  return source.split(marker).length - 1;
+}
+
+function visibleMarkup(html: string): string {
   return html.replace(/<script\b[\s\S]*?<\/script>/gi, "");
 }
 
-async function fetchHtml(url: URL): Promise<string> {
+function routeSpecificErrors(
+  path: string,
+  html: string,
+  spec: ReturnType<typeof getPublicV3Spec>,
+): string[] {
+  const errors: string[] = [];
+
+  if (path === "/" && count(html, "data-v3-section=") !== 7) {
+    errors.push("homepage must render exactly seven V3 sections");
+  }
+  if (path === "/features") {
+    for (const anchor of ["share-anywhere", "reply-drafts", "focused-by-design"]) {
+      if (!html.includes(`id="${anchor}"`)) {
+        errors.push(`missing consolidation anchor ${anchor}`);
+      }
+    }
+  }
+  if (path === "/demo" && !html.includes('role="tablist"')) {
+    errors.push("demo must expose the three-stage tablist");
+  }
+  if (path === "/pricing") {
+    for (const value of spec.pricing.tiers.map((tier) => tier.price)) {
+      if (!html.includes(value)) {
+        errors.push(`pricing missing ${value}`);
+      }
+    }
+  }
+  if (path === "/pilot") {
+    if (!html.includes('id="application"')) {
+      errors.push("pilot copy-only application anchor missing");
+    }
+    for (const forbidden of ["mailto:", "<form", "<input", "<textarea"]) {
+      if (html.includes(forbidden)) {
+        errors.push(`pilot contains forbidden conversion marker ${forbidden}`);
+      }
+    }
+  }
+  if (path === "/faq" && count(html, "faqItem") !== 10) {
+    errors.push("FAQ must render ten compact disclosures");
+  }
+
+  return errors;
+}
+
+async function checkRoute(
+  origin: URL,
+  path: (typeof publicV3PrimaryRoutes)[number],
+  locale: Locale,
+  requestTimeout: number,
+): Promise<ResponsiveResult> {
+  const localized = targetPath(path, locale);
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), requestTimeout);
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(targetUrl(origin, localized), {
       cache: "no-store",
-      headers: { "user-agent": "BizPilot-responsive-smoke/1.0" },
-      redirect: "follow",
+      headers: { "user-agent": "BizPilot-responsive-smoke/3.0" },
       signal: controller.signal,
     });
+    const html = await response.text();
+    const visibleHtml = visibleMarkup(html);
+    const spec = getPublicV3Spec(locale);
+    const errors: string[] = [];
 
     if (response.status !== 200) {
-      throw new Error(`expected HTTP 200, received HTTP ${response.status}`);
+      errors.push(`expected HTTP 200, received ${response.status}`);
     }
+    if (!html.includes(spec.routes[path].hero.title)) {
+      errors.push("localized V3 H1 missing");
+    }
+    if (count(html, "<h1") !== 1) {
+      errors.push("route must render exactly one H1");
+    }
+    if (!html.includes(`<html lang="${locale}"`)) {
+      errors.push(`document language is not ${locale}`);
+    }
+    for (const required of ['id="main-content"', "v3-site-footer", "v3-container"]) {
+      if (!html.includes(required)) {
+        errors.push(`shared V3 marker missing ${required}`);
+      }
+    }
+    for (const forbidden of ["overflow-x-hidden", "w-screen", "h-screen", "100vh"]) {
+      if (visibleHtml.includes(forbidden)) {
+        errors.push(`responsive escape hatch found ${forbidden}`);
+      }
+    }
+    if (locale === "fr-CA" && !html.includes("language=fr-CA")) {
+      errors.push("French internal-link persistence marker missing");
+    }
+    errors.push(...routeSpecificErrors(path, visibleHtml, spec));
 
-    return await response.text();
+    return { errors, pass: errors.length === 0, path: localized };
+  } catch (error) {
+    return {
+      errors: [error instanceof Error ? error.message : String(error)],
+      pass: false,
+      path: localized,
+    };
   } finally {
     clearTimeout(timeout);
   }
 }
 
-function assertContract(route: RouteContract, html: string): string[] {
-  const failures: string[] = [];
-  const visibleHtml = stripScripts(html);
-  const language = html.includes('<html lang="fr-CA"') ? "fr-CA" : "en";
-  const pathname = new URL(route.path, "https://bizpilot.local").pathname;
-  const v2Copy = getPublicV2Copy(language);
-  const siteCopy = getPublicSiteCopy(language);
-  const v2Headings: Readonly<Partial<Record<string, string>>> = {
-    "/": getPublicV3Spec(language).routes["/"].hero.title,
-    "/comparison": v2Copy.comparison.title,
-    "/demo": v2Copy.demo.title,
-    "/faq": v2Copy.faq.title,
-    "/features": v2Copy.features.title,
-    "/industries/cleaning": v2Copy.cleaning.title,
-    "/pilot": v2Copy.pilot.title,
-    "/pricing": v2Copy.pricing.title,
-    "/trust": v2Copy.trust.title,
-    "/quote-link-guide": siteCopy.quoteLinkGuide.title,
-    "/faster-quote-replies": siteCopy.replySpeedGuide.title,
-  };
-  const heading = v2Headings[pathname] ?? route.h1;
-
-  if (!html.includes(heading)) {
-    failures.push(`missing H1 text ${JSON.stringify(heading)}`);
-  }
-
-  const h1Count = countOccurrences(html, "<h1");
-  if (h1Count !== 1) {
-    failures.push(`expected exactly one h1, found ${h1Count}`);
-  }
-
-  for (const item of route.maxOccurrences ?? []) {
-    const count = countOccurrences(visibleHtml, item.text);
-    if (count > item.max) {
-      failures.push(
-        `expected ${JSON.stringify(item.text)} at most ${item.max} time(s), found ${count}`,
-      );
-    }
-  }
-
-  for (const stale of ["Start free recovery", "Start Join founder pilot"]) {
-    if (html.includes(stale)) {
-      failures.push(`stale CTA found: ${stale}`);
-    }
-  }
-
-  for (const stale of ["ENFR", "System Light Dark"]) {
-    if (html.includes(stale)) {
-      failures.push(`stale header control text found: ${stale}`);
-    }
-  }
-
-  for (const artifact of ["MISSING_COPY", "__MISSING", ">undefined<"]) {
-    if (html.includes(artifact)) {
-      failures.push(`missing-copy artifact found: ${artifact}`);
-    }
-  }
-
-  for (const artifact of [
-    "Confidentialite",
-    "Securite",
-    "Demo par onglets",
-    "Aucun prix invente",
-    "Pret a reviser",
-  ]) {
-    if (html.includes(artifact)) {
-      failures.push(`public acceptance artifact found: ${artifact}`);
-    }
-  }
-
-  if (route.path !== "/demo" && html.includes("Quote Recovery Command Center")) {
-    failures.push("stale command-center public framing found");
-  }
-
-  if (route.path === "/pricing") {
-    for (const price of ["$49/month", "$79/month"]) {
-      const count = countOccurrences(html, price);
-      if (count < 1) {
-        failures.push(`expected ${price} on pricing page`);
-      }
-    }
-  }
-
-  if (html.includes("overflow-x-hidden")) {
-    failures.push("public route still renders overflow-x-hidden");
-  }
-
-  return failures;
-}
-
 async function main(): Promise<void> {
-  const baseUrl = resolveBaseUrl();
-  let failures = 0;
+  const origin = baseUrl();
+  const requestTimeout = timeoutMs();
+  const results: ResponsiveResult[] = [];
 
-  console.log(`BizPilot responsive smoke target: ${baseUrl.origin}`);
-  console.log(`Routes: ${routes.length}`);
+  console.log(`BizPilot responsive smoke target: ${origin.origin}`);
+  console.log(`Routes: ${publicV3PrimaryRoutes.length * 2}`);
   console.log("");
 
-  for (const route of routes) {
-    const url = new URL(route.path, baseUrl);
-    process.stdout.write(`  ${route.path} ... `);
-
-    try {
-      const html = await fetchHtml(url);
-      const routeFailures = assertContract(route, html);
-      if (routeFailures.length > 0) {
-        failures += routeFailures.length;
-        console.log("FAIL");
-        for (const failure of routeFailures) {
-          console.log(`    ${failure}`);
-        }
-      } else {
-        console.log("pass");
+  for (const locale of ["en", "fr-CA"] as const) {
+    for (const path of publicV3PrimaryRoutes) {
+      const result = await checkRoute(origin, path, locale, requestTimeout);
+      results.push(result);
+      console.log(`  ${result.path} ... ${result.pass ? "pass" : "FAIL"}`);
+      for (const error of result.errors) {
+        console.log(`    ${error}`);
       }
-    } catch (error) {
-      failures += 1;
-      const message = error instanceof Error ? error.message : String(error);
-      console.log("FAIL");
-      console.log(`    ${message}`);
     }
   }
 
+  const failures = results.filter((result) => !result.pass);
   console.log("");
-  console.log(`Responsive smoke failures: ${failures}`);
-
-  if (failures > 0) {
+  console.log(`Responsive smoke failures: ${failures.length}`);
+  if (failures.length > 0) {
     process.exit(1);
   }
 }
 
 main().catch((error: unknown) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error(`Responsive smoke runner error: ${message}`);
+  console.error(error instanceof Error ? error.message : String(error));
   process.exit(1);
 });

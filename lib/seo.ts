@@ -7,11 +7,12 @@
  * Related:
  * - app/sitemap.ts
  * - app/robots.ts
- * - lib/i18n/public-v2-copy.ts
+ * - lib/i18n/public-v3-spec.ts
  * Author: MoOoH
  * Created: 2026-06-20
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Reduced canonical indexing to the ten retained Website V3 routes.
  * - 2026-07-05: Added richer public metadata identity, bilingual OG alternates, and crawler preview policy.
  * - 2026-06-21: Added the dedicated public FAQ route to canonical metadata helpers.
  * - 2026-07-04: Added comparison as a canonical route, removed roadmap-only Content Studio from canonical indexing, and wired social preview assets.
@@ -20,6 +21,8 @@
  */
 
 import type { Metadata } from "next";
+
+import { publicV3PrimaryRoutes } from "./i18n/public-v3-spec.ts";
 
 import {
   DEFAULT_LANGUAGE,
@@ -43,22 +46,7 @@ type PublicMetaCopy = Readonly<{
 export const PUBLIC_SITE_ORIGIN = "https://bizpilo.com";
 export const PUBLIC_SITE_NAME = "BizPilot AI";
 
-export const publicCanonicalRoutes = [
-  "/",
-  "/faq",
-  "/comparison",
-  "/quote-link-guide",
-  "/faster-quote-replies",
-  "/features",
-  "/industries/cleaning",
-  "/trust",
-  "/demo",
-  "/pricing",
-  "/pilot",
-  "/privacy",
-  "/security",
-  "/terms",
-] as const;
+export const publicCanonicalRoutes = publicV3PrimaryRoutes;
 
 export type PublicCanonicalRoute = (typeof publicCanonicalRoutes)[number];
 

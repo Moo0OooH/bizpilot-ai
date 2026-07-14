@@ -11,6 +11,7 @@
  * Created: 2026-05-25
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Replaced retired V2 page checks with ten retained V3 routes and exact 308 redirect-location coverage.
  * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
  * - 2026-07-04: Added comparison route smoke coverage.
  * - 2026-07-04: Added quote-link guide smoke coverage.
@@ -26,8 +27,11 @@
  * ============================================================
  */
 
+import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
+
 type SmokeTarget = Readonly<{
   expectedText?: readonly string[];
+  location?: string;
   maxBytes?: number;
   path: string;
   status: number;
@@ -43,6 +47,7 @@ type SmokeResult = Readonly<{
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3000";
 const DEFAULT_TIMEOUT_MS = 15_000;
+const englishV3 = getPublicV3Spec("en");
 
 const smokeTargets: readonly SmokeTarget[] = [
   {
@@ -56,105 +61,61 @@ const smokeTargets: readonly SmokeTarget[] = [
   },
   {
     expectedText: [
-      "Know exactly what BizPilot does today",
-      "Roadmap",
+      englishV3.routes["/faq"].hero.title,
+      englishV3.faqItems[0]?.question ?? "",
     ],
     path: "/faq",
     status: 200,
   },
   {
     expectedText: [
-      "Everything needed to turn a vague request into a clear next reply.",
-      "One smart intake link",
+      englishV3.routes["/features"].hero.title,
+      englishV3.features[0]?.title ?? "",
     ],
     path: "/features",
     status: 200,
   },
   {
     expectedText: [
-      "A smart customer-intake workflow built around real cleaning quote questions.",
-    ],
-    path: "/industries/cleaning",
-    status: 200,
-  },
-  {
-    expectedText: [
-      "Use BizPilot for the intake-and-response gap",
-      "Before CRM",
-      "Booking software",
-    ],
-    path: "/comparison",
-    status: 200,
-  },
-  {
-    expectedText: [
-      "Where to put your customer intake link.",
-      "Google Business Profile",
-      "Tracked link patterns",
-      "Do not turn a quote request into a fake booking.",
-    ],
-    path: "/quote-link-guide",
-    status: 200,
-  },
-  {
-    expectedText: [
-      "Faster customer replies without auto-send.",
-      "reply-speed-board",
-      "A four-week reply-speed content plan.",
-      "No automatic customer email",
-      "No price, availability, or appointment",
-    ],
-    path: "/faster-quote-replies",
-    status: 200,
-  },
-  {
-    expectedText: [
-      "See one customer request become a safe, reviewable next reply.",
+      englishV3.routes["/demo"].hero.title,
+      englishV3.demo.incoming,
     ],
     path: "/demo",
     status: 200,
   },
   {
     expectedText: [
-      "The safest claim is the one the product can prove today.",
+      englishV3.routes["/trust"].hero.title,
+      englishV3.trust[3]?.title ?? "",
     ],
     path: "/trust",
     status: 200,
   },
   {
-    expectedText: ["$149 setup", "$49/month"],
+    expectedText: [englishV3.routes["/pricing"].hero.title, "$149 setup + $49/month"],
     path: "/pricing",
     status: 200,
   },
   {
     expectedText: [
-      "Validate one customer-intake workflow before expanding the product.",
-      "Send a clear founder-pilot request when you are ready.",
+      englishV3.routes["/pilot"].hero.title,
+      englishV3.pilot.applicationAction,
     ],
     path: "/pilot",
     status: 200,
   },
   {
-    expectedText: [
-      "Future Content Studio for local business growth.",
-      "This page is roadmap only.",
-      "still need your approval",
-    ],
-    path: "/content-studio",
-    status: 200,
-  },
-  {
-    expectedText: ["Privacy rules for careful quote recovery."],
+    expectedText: [englishV3.routes["/privacy"].hero.title],
     path: "/privacy",
     status: 200,
   },
   {
-    expectedText: ["Security boundaries before real pilot data."],
+    expectedText: [englishV3.routes["/security"].hero.title],
     path: "/security",
     status: 200,
   },
   {
-    expectedText: ["Clear founder-pilot terms, no hidden automation."],
+    expectedText: [englishV3.routes["/terms"].hero.title],
     path: "/terms",
     status: 200,
   },
@@ -178,20 +139,66 @@ const smokeTargets: readonly SmokeTarget[] = [
     path: "/auth/reset-password",
     status: 200,
   },
+  {
+    location: "/features#focused-by-design",
+    path: "/comparison",
+    status: 308,
+  },
+  {
+    location: "/features#share-anywhere",
+    path: "/quote-link-guide",
+    status: 308,
+  },
+  {
+    location: "/#how-it-works",
+    path: "/faster-quote-replies",
+    status: 308,
+  },
+  {
+    location: "/features#reply-drafts",
+    path: "/content-studio",
+    status: 308,
+  },
+  {
+    location: "/demo",
+    path: "/industries/cleaning",
+    status: 308,
+  },
+  {
+    location: "/features?language=fr-CA&source=smoke#focused-by-design",
+    path: "/comparison?language=fr-CA&source=smoke",
+    status: 308,
+  },
+  {
+    location: "/features?language=fr-CA&source=smoke#share-anywhere",
+    path: "/quote-link-guide?language=fr-CA&source=smoke",
+    status: 308,
+  },
+  {
+    location: "/?language=fr-CA&source=smoke#how-it-works",
+    path: "/faster-quote-replies?language=fr-CA&source=smoke",
+    status: 308,
+  },
+  {
+    location: "/features?language=fr-CA&source=smoke#reply-drafts",
+    path: "/content-studio?language=fr-CA&source=smoke",
+    status: 308,
+  },
+  {
+    location: "/demo?language=fr-CA&source=smoke",
+    path: "/industries/cleaning?language=fr-CA&source=smoke",
+    status: 308,
+  },
 ];
 
 const frenchPublicRoutes = [
   "/",
   "/features",
-  "/industries/cleaning",
-  "/comparison",
-  "/quote-link-guide",
-  "/faster-quote-replies",
-  "/trust",
   "/demo",
   "/pricing",
   "/pilot",
   "/faq",
+  "/trust",
   "/privacy",
   "/security",
   "/terms",
@@ -250,7 +257,11 @@ function toTargetUrl(baseUrl: URL, path: string): URL {
   return new URL(path, normalizedBase);
 }
 
-async function fetchWithTimeout(url: URL, timeoutMs: number): Promise<Response> {
+async function fetchWithTimeout(
+  url: URL,
+  timeoutMs: number,
+  redirect: RequestRedirect = "follow",
+): Promise<Response> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -260,7 +271,7 @@ async function fetchWithTimeout(url: URL, timeoutMs: number): Promise<Response> 
       headers: {
         "user-agent": "BizPilot-public-smoke/1.0",
       },
-      redirect: "follow",
+      redirect,
       signal: controller.signal,
     });
   } finally {
@@ -277,7 +288,11 @@ async function runTarget(
   const url = toTargetUrl(baseUrl, target.path);
 
   try {
-    const response = await fetchWithTimeout(url, timeoutMs);
+    const response = await fetchWithTimeout(
+      url,
+      timeoutMs,
+      target.location ? "manual" : "follow",
+    );
     const durationMs = Date.now() - startedAt;
 
     if (response.status !== target.status) {
@@ -286,6 +301,25 @@ async function runTarget(
         error: `expected HTTP ${target.status}, received HTTP ${response.status}`,
         path: target.path,
         pass: false,
+        status: response.status,
+      };
+    }
+
+    if (target.location && response.headers.get("location") !== target.location) {
+      return {
+        durationMs,
+        error: `expected Location ${JSON.stringify(target.location)}, received ${JSON.stringify(response.headers.get("location"))}`,
+        path: target.path,
+        pass: false,
+        status: response.status,
+      };
+    }
+
+    if (target.location) {
+      return {
+        durationMs,
+        path: target.path,
+        pass: true,
         status: response.status,
       };
     }
