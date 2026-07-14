@@ -1,21 +1,25 @@
-/*
+/**
  * ============================================================
  * File: app/opengraph-image.tsx
  * Project: BizPilot AI
  * Description: Generated social preview image for public marketing metadata.
- * Role: Presents the universal smart-intake positioning without external assets or overstated integrations.
+ * Role: Presents the final V3 message-to-request workflow without external assets or unsupported claims.
  * Related:
  * - lib/seo.ts
  * - app/page.tsx
+ * - lib/i18n/public-v3-spec.ts
  * Author: MoOoH
  * Created: 2026-07-04
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Aligned the social preview with the final V3 hero and current-product boundaries.
  * ============================================================
  */
 
 import { ImageResponse } from "next/og";
 
-export const alt = "BizPilot AI smart customer intake and owner-reviewed reply workspace";
+export const alt =
+  "BizPilot AI turns scattered customer messages into complete requests and replies ready to review";
 export const contentType = "image/png";
 export const size = {
   height: 630,
@@ -104,7 +108,7 @@ export default function OpenGraphImage() {
                 maxWidth: 980,
               }}
             >
-              Turn scattered customer requests into clear, ready-to-review replies.
+              Turn scattered customer messages into complete requests—and replies ready to review.
             </div>
             <div
               style={{
@@ -115,13 +119,13 @@ export default function OpenGraphImage() {
                 maxWidth: 980,
               }}
             >
-              One smart intake link. Organized missing details. AI-assisted drafts.
-              Final approval stays with the owner.
+              One Smart Intake Link collects the details. Your team reviews, edits,
+              copies, and sends every reply.
             </div>
           </div>
 
           <div style={{ display: "flex", gap: 16 }}>
-            {["Cleaning pilot first", "No auto-send", "Roadmap integrations labeled"].map(
+            {["One Smart Intake Link", "Human-reviewed drafts", "Manual sending"].map(
               (item) => (
                 <div
                   key={item}

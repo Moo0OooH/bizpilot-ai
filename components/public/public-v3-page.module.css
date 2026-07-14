@@ -13,6 +13,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Added explicit focus-visible treatment for Demo tabs and Pilot copy controls.
  * - 2026-07-13: Created the consolidated responsive layout for retained V3 marketing pages.
  * ============================================================
  */
@@ -344,6 +345,13 @@
   border-color: color-mix(in srgb, var(--accent) 55%, var(--border-default));
   background: color-mix(in srgb, var(--accent) 9%, var(--surface));
   color: var(--text-strong);
+}
+
+.demoTab:focus-visible,
+.template:focus-visible,
+.copyButton:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 
 .demoContent {

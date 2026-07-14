@@ -3,15 +3,16 @@
  * File: tests/unit/i18n-layout-source.test.mts
  * Project: BizPilot AI
  * Description: Source-level guards for bilingual copy health and compact responsive layouts.
- * Role: Protects localized copy quality, dashboard disclosure behavior, and the V2 mobile-first public narrative.
+ * Role: Protects localized copy quality, dashboard disclosure behavior, and the V3 mobile-first public narrative.
  * Related:
- * - lib/i18n/public-v2-copy.ts
- * - components/public/bizpilot-v2-home.tsx
- * - components/public/bizpilot-v2-home.module.css
+ * - lib/i18n/public-v3-spec.ts
+ * - components/public/public-v3-home.tsx
+ * - components/public/public-v3-home.module.css
  * Author: MoOoH
  * Created: 2026-06-19
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Treated the animation-free V3 homepage as the strongest reduced-motion contract.
  * - 2026-07-13: Migrated compact public-layout guards from retired V2 files to the shared V3 renderers.
  * ============================================================
  */
@@ -95,6 +96,6 @@ describe("bilingual copy and compact layout guards", () => {
 
     assert.equal(pageStyles.includes("@media (min-width: 960px)"), true);
     assert.equal(pageStyles.includes("@media (max-width: 480px)"), true);
-    assert.equal(homeStyles.includes("@media (prefers-reduced-motion: no-preference)"), true);
+    assert.equal(homeStyles.includes("animation:"), false);
   });
 });

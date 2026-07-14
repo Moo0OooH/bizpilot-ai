@@ -12,13 +12,14 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Added roving focus and arrow, Home, and End keyboard behavior for the accessible tab pattern.
  * - 2026-07-13: Created the safe three-stage V3 cleaning walkthrough.
  * ============================================================
  */
 
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { MarketingCard } from "@/components/public/marketing-ui";
 import type { PublicV3Spec } from "@/lib/i18n/public-v3-spec";
@@ -35,6 +36,35 @@ export function PublicV3Demo({
   labels: readonly [string, string, string];
 }>) {
   const [activeStage, setActiveStage] = useState(0);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+
+  function selectStage(index: number) {
+    setActiveStage(index);
+    tabRefs.current[index]?.focus();
+  }
+
+  function handleTabKeyDown(
+    event: React.KeyboardEvent<HTMLButtonElement>,
+    index: number,
+  ) {
+    const lastIndex = labels.length - 1;
+    let nextIndex: number | undefined;
+
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      nextIndex = index === lastIndex ? 0 : index + 1;
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      nextIndex = index === 0 ? lastIndex : index - 1;
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = lastIndex;
+    }
+
+    if (nextIndex !== undefined) {
+      event.preventDefault();
+      selectStage(nextIndex);
+    }
+  }
 
   return (
     <div className={styles.demoPanel} id="demo">
@@ -46,8 +76,13 @@ export function PublicV3Demo({
             className={styles.demoTab}
             id={`demo-tab-${index}`}
             key={label}
+            onKeyDown={(event) => handleTabKeyDown(event, index)}
             onClick={() => setActiveStage(index)}
+            ref={(node) => {
+              tabRefs.current[index] = node;
+            }}
             role="tab"
+            tabIndex={activeStage === index ? 0 : -1}
             type="button"
           >
             {index + 1}. {label}

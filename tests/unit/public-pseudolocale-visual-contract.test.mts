@@ -6,12 +6,14 @@
  * Role: Ensures en-XA expansion coverage without exposing it in production language menus.
  * Related:
  * - lib/i18n/language.ts
- * - lib/i18n/public-site-copy.ts
- * - app/globals.css
+ * - components/public/public-v3-home.module.css
+ * - components/public/public-v3-page.module.css
+ * - tests/smoke/public-browser-interaction-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-21
- * Last Updated: 2026-06-25
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Replaced retired V2 cleaning/pricing selector guards with final V3 layout and keyboard-behavior hooks.
  * - 2026-06-21: Added accented pseudolocale output and final UI matrix source contracts.
  * - 2026-06-25: Locked final visual acceptance matrix labels for homepage and six-card checks.
  * - 2026-06-25: Updated Cleaning matrix labels for one shared detail selector.
@@ -217,23 +219,36 @@ describe("public pseudolocale visual contracts", () => {
 
   it("keeps visual measurement hooks available for multilingual browser contracts", () => {
     const globals = readFileSync("app/globals.css", "utf8");
+    const pageStyles = readFileSync(
+      "components/public/public-v3-page.module.css",
+      "utf8",
+    );
     const matrixSmoke = readFileSync(
       "tests/smoke/final-ui-matrix-smoke.mts",
       "utf8",
     );
+    const browserSmoke = readFileSync(
+      "tests/smoke/public-browser-interaction-smoke.mts",
+      "utf8",
+    );
 
     for (const required of [
-      ".bp-copy-hero",
-      ".bp-copy-button",
-      ".bp-copy-status",
-      ".cleaning-service-grid",
-      ".public-pricing-grid",
+      ".v3-button",
+      ".v3-card",
+      ".v3-site-header",
+      ".pricingGrid",
+      ".demoTabs",
+      ".copyStatus",
       "data-theme",
       "themeMatrix",
+      "retainedPageStates",
+      "Demo ArrowRight selection and roving focus",
       TEST_PSEUDO_LOCALE,
     ]) {
       assert.equal(
-        globals.includes(required) || matrixSmoke.includes(required),
+        [globals, pageStyles, matrixSmoke, browserSmoke].some((file) =>
+          file.includes(required),
+        ),
         true,
         `Visual contract hook missing ${required}`,
       );

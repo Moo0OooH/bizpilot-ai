@@ -13,6 +13,7 @@
  * Created: 2026-06-20
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Replaced legacy V2 title/event guards with V3 metadata, JSON-LD parity, and current no-op event behavior checks.
  * - 2026-07-13: Migrated canonical, redirect, structured-data, and pilot-event guards to the ten retained V3 routes.
  * - 2026-07-11: Added Content Studio breadcrumb JSON-LD guard.
  * - 2026-06-21: Added public FAQ route SEO coverage.
@@ -31,13 +32,17 @@ import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import { getPolicyCopy } from "../../lib/i18n/policy-copy.ts";
-import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
 import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
 import {
   forbiddenPublicEventPayloadKeys,
   publicEventCatalog,
 } from "../../lib/public-events.ts";
 import {
+  buildFaqPageJsonLd,
+  buildHomeJsonLd,
+} from "../../lib/public-structured-data.ts";
+import {
+  buildPublicMetadata,
   publicCanonicalRoutes,
   publicLanguageAlternates,
   publicUrl,
@@ -48,45 +53,32 @@ function source(path: string): string {
 }
 
 describe("final public SEO and legal source contracts", () => {
-  it("keeps Phase 08 suggested marketing titles claim-safe", () => {
-    const copy = getPublicSiteCopy("en");
+  it("builds unique, localized V3 metadata for every canonical route", () => {
+    for (const language of ["en", "fr-CA"] as const) {
+      const spec = getPublicV3Spec(language);
+      const titles = publicCanonicalRoutes.map((path) => spec.routes[path].meta.title);
+      const descriptions = publicCanonicalRoutes.map(
+        (path) => spec.routes[path].meta.description,
+      );
 
-    assert.equal(
-      copy.home.meta.title,
-      "BizPilot AI | Lead Recovery for Cleaning Businesses",
-    );
-    assert.equal(
-      copy.features.meta.title,
-      "Cleaning Lead Recovery Features | BizPilot AI",
-    );
-    assert.equal(
-      copy.faq.meta.title,
-      "FAQ for Cleaning Business Owners | BizPilot AI",
-    );
-    assert.equal(
-      copy.comparison.meta.title,
-      "BizPilot vs CRM, Forms, and Booking Tools | BizPilot AI",
-    );
-    assert.equal(
-      copy.cleaning.meta.title,
-      "Cleaning Business Lead Recovery Software | BizPilot AI",
-    );
-    assert.equal(
-      copy.trust.meta.title,
-      "Business-Controlled AI and Trust | BizPilot AI",
-    );
-    assert.equal(
-      copy.demo.meta.title,
-      "Cleaning Quote Workflow Demo | BizPilot AI",
-    );
-    assert.equal(
-      copy.pricing.meta.title,
-      "Founder Pilot Pricing | BizPilot AI",
-    );
-    assert.equal(
-      copy.pilot.meta.title,
-      "Cleaning Business Founder Pilot | BizPilot AI",
-    );
+      assert.equal(new Set(titles).size, publicCanonicalRoutes.length);
+      assert.equal(new Set(descriptions).size, publicCanonicalRoutes.length);
+
+      for (const path of publicCanonicalRoutes) {
+        const copy = spec.routes[path].meta;
+        const metadata = buildPublicMetadata(path, copy, language);
+
+        assert.equal(metadata.title, copy.title);
+        assert.equal(metadata.description, copy.description);
+        assert.equal(metadata.alternates?.canonical, publicUrl(path, language));
+        assert.deepEqual(
+          metadata.alternates?.languages,
+          publicLanguageAlternates(path),
+        );
+        assert.equal(JSON.stringify(metadata).includes(copy.title), true);
+        assert.equal(JSON.stringify(metadata).includes(copy.description), true);
+      }
+    }
   });
 
   it("uses official resource-card references without compliance claims", () => {
@@ -249,14 +241,7 @@ describe("final public SEO and legal source contracts", () => {
     );
 
     for (const eventName of [
-      "comparison_cta_click",
-      "founder_pilot_cta_click",
-      "demo_cta_click",
-      "pricing_cta_click",
-      "quote_link_guide_cta_click",
       "pilot_template_copy",
-      "faq_item_open",
-      "service_use_case_click",
       "locale_change",
       "theme_preference_change",
       "external_reference_click",
@@ -269,16 +254,9 @@ describe("final public SEO and legal source contracts", () => {
     assert.deepEqual(
       Object.keys(publicEventCatalog).sort(),
       [
-        "comparison_cta_click",
-        "demo_cta_click",
         "external_reference_click",
-        "faq_item_open",
-        "founder_pilot_cta_click",
         "locale_change",
         "pilot_template_copy",
-        "pricing_cta_click",
-        "quote_link_guide_cta_click",
-        "service_use_case_click",
         "theme_preference_change",
       ].sort(),
     );
@@ -378,6 +356,23 @@ describe("final public SEO and legal source contracts", () => {
     assert.equal(policyPage.includes("JsonLdScript"), true);
     assert.equal(policyPage.includes("breadcrumbId"), true);
     assert.equal(ogImage.includes("ImageResponse"), true);
+
+    const englishHomeJson = JSON.stringify(buildHomeJsonLd("en"));
+    const frenchHomeJson = JSON.stringify(buildHomeJsonLd("fr-CA"));
+    const frenchSpec = getPublicV3Spec("fr-CA");
+    const frenchFaqJson = JSON.stringify(
+      buildFaqPageJsonLd(frenchSpec.faqItems, "fr-CA"),
+    );
+
+    assert.equal(englishHomeJson.includes("one link"), true);
+    assert.equal(englishHomeJson.includes("owner review"), true);
+    assert.equal(frenchHomeJson.includes("demande client organisée"), true);
+    assert.equal(frenchHomeJson.includes("brouillon prêt à vérifier"), true);
+    assert.equal(frenchHomeJson.includes("content-studio"), false);
+    for (const item of frenchSpec.faqItems) {
+      assert.equal(frenchFaqJson.includes(item.question), true);
+      assert.equal(frenchFaqJson.includes(item.answer), true);
+    }
   });
 
   it("keeps FAQ AI-search content source-backed without ranking claims", () => {

@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Aligned final social-preview assertions with the V3 hero and removed the retired roadmap-label expectation.
  * - 2026-07-13: Migrated secondary-route and shared-renderer guards from the Phase 5 transition state to completed Phase 6 V3 consolidation.
  * - 2026-07-13: Moved the homepage source guard to V3 while retained secondary pages remain on V2 until Phase 6.
  * - 2026-07-13: Aligned shared-shell coverage with the simplified V3 footer information architecture.
@@ -203,8 +204,9 @@ describe("public V2 positioning", () => {
 
     assert.equal(structuredData.includes("smart customer intake"), true);
     assert.equal(structuredData.includes("cleaning business founder pilot"), true);
-    assert.equal(socialPreview.includes("Smart customer intake and reply workspace"), true);
-    assert.equal(socialPreview.includes("Roadmap integrations labeled"), true);
+    assert.equal(socialPreview.includes("scattered customer messages"), true);
+    assert.equal(socialPreview.includes("Human-reviewed drafts"), true);
+    assert.equal(socialPreview.includes("Roadmap integrations labeled"), false);
     assert.equal(rootLayout.includes("Smart Customer Intake & Reply Workspace"), true);
     assert.equal(rootLayout.includes("Lead Recovery for Cleaning Businesses"), false);
     assert.equal(structuredData.includes("prépare des brouillons assistés par IA à valider"), true);

@@ -3,7 +3,7 @@
  * File: tests/smoke/public-browser-interaction-smoke.mts
  * Project: BizPilot AI
  * Description: Runs real Chrome interactions against the public marketing shell.
- * Role: Verifies locale clicks, persistence, internal navigation, reloads, reverse switching, mobile-menu containment, overflow, and runtime-error safety.
+ * Role: Verifies locale and CTA clicks, persistence, keyboard behavior, responsive containment, overflow, timing, and runtime-error safety.
  * Related:
  * - components/public/marketing-language-menu.tsx
  * - components/public/marketing-compact-menu.tsx
@@ -13,6 +13,9 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Added the 640px reflow checkpoint as a practical 200% zoom proxy alongside the 320px 400% proxy.
+ * - 2026-07-13: Added primary-CTA and mobile-menu response timing to the real interaction evidence.
+ * - 2026-07-13: Added keyboard coverage for skip navigation, Demo tabs, Pilot copy, and mobile-menu focus return.
  * - 2026-07-13: Migrated retained Product navigation, metadata, and reverse-locale assertions to the V3 contract.
  * - 2026-07-13: Migrated homepage interaction assertions to the approved V3 copy while secondary pages remain on V2.
  * - 2026-07-13: Verified the localized fr-CA compact-navigation trigger during mobile containment checks.
@@ -405,6 +408,35 @@ async function realClick(
   });
 }
 
+async function pressKey(
+  client: CdpClient,
+  key: "ArrowRight" | "End" | "Enter" | "Escape" | "Tab",
+): Promise<void> {
+  const keyCode = {
+    ArrowRight: 39,
+    End: 35,
+    Enter: 13,
+    Escape: 27,
+    Tab: 9,
+  }[key];
+
+  await client.send("Input.dispatchKeyEvent", {
+    code: key,
+    key,
+    nativeVirtualKeyCode: keyCode,
+    text: key === "Enter" ? "\r" : undefined,
+    type: key === "Enter" ? "keyDown" : "rawKeyDown",
+    windowsVirtualKeyCode: keyCode,
+  });
+  await client.send("Input.dispatchKeyEvent", {
+    code: key,
+    key,
+    nativeVirtualKeyCode: keyCode,
+    type: "keyUp",
+    windowsVirtualKeyCode: keyCode,
+  });
+}
+
 async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> {
   const englishSpec = getPublicV3Spec("en");
   const frenchSpec = getPublicV3Spec("fr-CA");
@@ -580,7 +612,7 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
     `document.documentElement.dataset.theme === "light"`,
   );
 
-  const widths = [320, 360, 390, 430, 768, 1024, 1280, 1440, 1920];
+  const widths = [320, 360, 390, 430, 640, 768, 1024, 1280, 1440, 1920];
   for (const language of ["en", "fr-CA"] as const) {
     const url = new URL("/", baseUrl);
     url.searchParams.set("language", language);
@@ -626,14 +658,64 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
     }
   }
 
+  await navigate(client, new URL("/demo?language=en", baseUrl));
+  await setViewport(client, 1440, 900);
+  await client.value(`document.querySelector("#demo-tab-0")?.focus()`);
+  await pressKey(client, "ArrowRight");
+  await waitFor(
+    client,
+    "Demo ArrowRight selection and roving focus",
+    `document.activeElement?.id === "demo-tab-1" && document.querySelector("#demo-tab-1")?.getAttribute("aria-selected") === "true" && document.querySelector("#demo-tab-0")?.tabIndex === -1`,
+  );
+  await pressKey(client, "End");
+  await waitFor(
+    client,
+    "Demo End selection and result panel",
+    `document.activeElement?.id === "demo-tab-2" && document.querySelector("#demo-tab-2")?.getAttribute("aria-selected") === "true" && document.querySelector('[role="tabpanel"]')?.getAttribute("aria-labelledby") === "demo-tab-2"`,
+  );
+
+  await navigate(client, new URL("/pilot?language=en", baseUrl));
+  await setViewport(client, 390, 844);
+  await client.value(`Array.from(document.querySelectorAll("button")).find((button) => button.textContent?.includes("Copy the 60-second pilot request"))?.focus()`);
+  await pressKey(client, "Enter");
+  await waitFor(
+    client,
+    "Pilot keyboard copy status",
+    `Boolean(document.querySelector('[aria-live="polite"]')?.textContent?.trim())`,
+  );
+
+  await navigate(client, new URL("/?language=en", baseUrl));
+  await setViewport(client, 1440, 900);
+  await client.value(`document.activeElement instanceof HTMLElement && document.activeElement.blur()`);
+  await pressKey(client, "Tab");
+  await waitFor(
+    client,
+    "skip link as the first keyboard target",
+    `document.activeElement?.getAttribute("href") === "#main-content"`,
+  );
+  const heroCtaStartedAt = Date.now();
+  await realClick(
+    client,
+    `document.querySelector('main section[data-v3-section="hero"] a')`,
+    "Homepage primary CTA",
+  );
+  await waitFor(
+    client,
+    "homepage primary CTA section navigation",
+    `location.pathname === "/" && location.hash === "#how-it-works" && document.querySelector("#how-it-works")?.getBoundingClientRect().top < innerHeight`,
+  );
+  const heroCtaMs = Date.now() - heroCtaStartedAt;
+
   await navigate(client, new URL("/?language=fr-CA", baseUrl));
   await setViewport(client, 390, 844);
+  const menuOpenStartedAt = Date.now();
   await realClick(
     client,
     buttonWithLabelPrefix("Ouvrir la navigation du site"),
     "Mobile navigation trigger",
   );
   await waitFor(client, "mobile navigation panel", `Boolean(document.querySelector("#marketing-compact-menu"))`);
+  const menuOpenMs = Date.now() - menuOpenStartedAt;
   const menu = await client.value<MenuSnapshot>(`(() => {
     const panel = document.querySelector("#marketing-compact-menu");
     if (!(panel instanceof HTMLElement)) throw new Error("Mobile menu missing");
@@ -652,6 +734,12 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   assert.ok(menu.scrollHeight <= menu.clientHeight + 1, `Mobile menu has nested scrolling: ${JSON.stringify(menu)}`);
   assert.notEqual(menu.overflowY, "auto");
   assert.notEqual(menu.overflowY, "scroll");
+  await pressKey(client, "Escape");
+  await waitFor(
+    client,
+    "mobile menu close and trigger focus return",
+    `!document.querySelector("#marketing-compact-menu") && document.activeElement?.getAttribute("aria-label") === "Ouvrir la navigation du site"`,
+  );
 
   const evidenceDir = readCliValue("evidence-dir");
   if (evidenceDir) {
@@ -661,9 +749,10 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   assert.deepEqual(runtimeErrors, [], `Application runtime errors: ${runtimeErrors.join("\n")}`);
   console.log("  Locale click, navigation, reload, reverse switch: pass");
   console.log(
-    `  Local interaction timings: FR ${frenchClickMs}ms, Product ${frenchProductMs}ms, reload ${reloadMs}ms, EN ${englishClickMs}ms, theme ${themeClickMs}ms`,
+    `  Local interaction timings: FR ${frenchClickMs}ms, Product ${frenchProductMs}ms, reload ${reloadMs}ms, EN ${englishClickMs}ms, theme ${themeClickMs}ms, hero CTA ${heroCtaMs}ms, menu ${menuOpenMs}ms`,
   );
   console.log(`  Retained-page overflow/H1 matrix: pass (${retainedPageStates} states)`);
+  console.log("  Keyboard: skip link, Demo tabs, Pilot copy, and menu focus return pass");
   console.log(`  Mobile menu containment: pass (${Math.round(menu.top)}–${Math.round(menu.bottom)}px)`);
   console.log("  Application console/runtime errors: 0");
 }

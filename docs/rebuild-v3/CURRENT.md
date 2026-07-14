@@ -22,7 +22,7 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 | V3.4 Marketing design foundation | Complete | Consolidated V3 tokens and primitives, simplified header/footer, corrected landmarks, 100 accessibility score, and documented browser/visual evidence |
 | V3.5 Homepage conversion rebuild | Complete | Seven-section V3 story, three-stage product scene, EN/fr-CA first-view evidence, 100 accessibility, and 96 performance |
 | V3.6 Page consolidation and conversion | Complete | Ten canonical routes, five direct 308 redirects, distinct bilingual page jobs, safe interactive demo, and copy-only pilot path |
-| V3.7 Quality hardening | Pending | Performance, accessibility, SEO, resilient browser tests |
+| V3.7 Quality hardening | Complete | 98–99 Performance, 100 Accessibility/Best Practices/SEO, 1.956–2.495s LCP, 0 CLS, 249 tests, keyboard/reflow/SEO hardening |
 | V3.8 Production acceptance | Pending | Exact main SHA, deployment match, live proof |
 
 ## Confirmed production defects
@@ -145,6 +145,25 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - Audit WCAG 2.2 AA behavior, keyboard/focus order, screen-reader names and states, reflow, contrast, reduced motion, unique metadata, structured-data parity, sitemap/robots isolation, console errors, and secrets.
 - Keep client JavaScript limited to necessary language, theme, menu, Demo, and Pilot interactions.
 
+## Phase 7 result
+
+- Complete: the exact final local production build scores 98–99 Performance and 100 Accessibility, Best Practices, and SEO across 12 Lighthouse route/language states.
+- Complete: lab LCP is 1.956–2.495s, TBT is 18–47ms, CLS is 0, transfer is 227–238KiB, and no webfont request remains.
+- Complete: compiled global CSS is 100,259 bytes, down 51,181 bytes (33.8%), while shared dashboard/legal contracts remain intact.
+- Complete: Demo has roving keyboard tabs; skip navigation, Pilot Enter/live status, Escape/focus return, dark/light contrast, and screen-reader names/states are verified.
+- Complete: EN/fr-CA reflow has 0px overflow at ten widths including practical 200%/400% proxies; 54 retained-page states and 20 homepage states pass with zero runtime errors.
+- Complete: all ten routes have unique localized metadata, canonical/hreflang, matching structured data, canonical sitemap isolation, robots isolation, and direct intent-preserving redirects.
+- Complete: `pnpm verify`, public smoke 34/34, responsive smoke 20/20, UI matrix, browser smoke, header audit, secret scan, and `git diff --check` pass.
+- Gated: quote smoke requires an approved synthetic slug; no customer data or Supabase fixture was opened or created.
+- Evidence: [V3 performance, accessibility, SEO, and regression report](./V3_PERFORMANCE_ACCESSIBILITY_SEO_REPORT.md).
+
+## Phase 8 entry conditions
+
+- Synchronize the branch with `main`, review the V3 reports, and run a clean install plus the full validation set.
+- Confirm no secret, environment value, temporary screenshot, dump, archive, artifact, or production data is tracked.
+- Merge through reviewed green CI, deploy the exact merged `main` SHA, and confirm the Vercel deployment SHA and Ready alias.
+- Run the required read-only production route, language, viewport, redirect, theme, auth, legal, quote-unavailable, console, network, and Lighthouse acceptance without mutating Supabase or submitting customer data.
+
 ## Canonical V3 documents
 
 - [Research and benchmark audit](./V3_RESEARCH_AND_BENCHMARK_AUDIT.md)
@@ -159,3 +178,4 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - [Design-system implementation report](./V3_DESIGN_SYSTEM_IMPLEMENTATION_REPORT.md)
 - [Homepage and hero acceptance](./V3_HOMEPAGE_AND_HERO_ACCEPTANCE.md)
 - [Page consolidation and conversion report](./V3_PAGE_CONSOLIDATION_AND_CONVERSION_REPORT.md)
+- [Performance, accessibility, SEO, and regression report](./V3_PERFORMANCE_ACCESSIBILITY_SEO_REPORT.md)

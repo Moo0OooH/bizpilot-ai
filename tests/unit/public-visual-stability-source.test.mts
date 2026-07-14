@@ -13,6 +13,7 @@
  * Created: 2026-06-20
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Accepted an animation-free homepage while retaining explicit reduced-motion handling on shared pages.
  * - 2026-07-13: Replaced retired V2 guards with retained-route V3 consolidation, redirect, and copy-only pilot contracts.
  * ============================================================
  */
@@ -152,7 +153,7 @@ describe("Website V3 visual stability source contracts", () => {
     const homeCss = source("components/public/public-v3-home.module.css");
     const pageCss = source("components/public/public-v3-page.module.css");
 
-    assert.equal(homeCss.includes("@media (prefers-reduced-motion: no-preference)"), true);
+    assert.equal(homeCss.includes("animation:"), false);
     assert.equal(pageCss.includes("@media (prefers-reduced-motion: reduce)"), true);
     assert.equal(`${homeCss}\n${pageCss}`.includes("animation: infinite"), false);
   });
