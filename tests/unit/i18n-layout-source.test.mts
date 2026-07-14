@@ -1,18 +1,16 @@
-/**
+/*
  * ============================================================
  * File: tests/unit/i18n-layout-source.test.mts
  * Project: BizPilot AI
- * Description: Source-level guards for bilingual copy health and compact page layouts.
- * Role: Protects localized copy shape and compact/collapsible page behavior.
+ * Description: Source-level guards for bilingual copy health and compact responsive layouts.
+ * Role: Protects localized copy quality, dashboard disclosure behavior, and the V2 mobile-first public narrative.
  * Related:
- * - lib/i18n/bizpilot-copy.ts
- * - app/(dashboard)/dashboard/settings/page.tsx
- * - app/page.tsx
+ * - lib/i18n/public-v2-copy.ts
+ * - components/public/bizpilot-v2-home.tsx
+ * - components/public/bizpilot-v2-home.module.css
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-04
- * Change Log:
- * - 2026-07-04: Updated Settings compact guide guard for display-preference data attributes.
+ * Last Updated: 2026-07-13
  * ============================================================
  */
 
@@ -24,6 +22,7 @@ const copyFiles = [
   "lib/i18n/language.ts",
   "lib/i18n/home-copy.ts",
   "lib/i18n/public-site-copy.ts",
+  "lib/i18n/public-v2-copy.ts",
   "lib/i18n/bizpilot-copy.ts",
   "lib/i18n/policy-copy.ts",
   "lib/i18n/pricing-copy.ts",
@@ -67,22 +66,62 @@ describe("bilingual copy and compact layout guards", () => {
     assert.equal(source.includes('DashboardCard className="p-[18px]'), false);
   });
 
-  it("keeps secondary public content collapsible instead of long-scroll by default", () => {
-    const homeSource = readFileSync("app/page.tsx", "utf8");
+  it("keeps the V2 public story compact, responsive, and free of nested-scroll panels", () => {
+    const homeSource = readFileSync(
+      "components/public/bizpilot-v2-home.tsx",
+      "utf8",
+    );
+    const homeStyles = readFileSync(
+      "components/public/bizpilot-v2-home.module.css",
+      "utf8",
+    );
+    const sharedPage = readFileSync(
+      "components/public/bizpilot-v2-page.tsx",
+      "utf8",
+    );
     const cleaningSource = readFileSync(
       "app/industries/cleaning/page.tsx",
       "utf8",
     );
 
-    assert.equal(homeSource.includes("<details>"), true);
-    assert.equal(homeSource.includes("copy.useCases.cards.map"), true);
-    assert.equal(homeSource.includes("copy.faq.items.map"), true);
-    assert.equal(
-      cleaningSource.includes(
-        "Collapsed secondary service detail/workflow panels",
-      ),
-      true,
-    );
-    assert.equal(cleaningSource.includes("<CleaningServiceDetails"), true);
+    for (const required of [
+      "copy.problem.cards.map",
+      "copy.flow.steps.map",
+      "copy.industries.cards.map",
+      "copy.features.cards.map",
+      "homepage-demo-grid",
+      "homepage-hero-proof-rail",
+    ]) {
+      assert.equal(homeSource.includes(required), true, required);
+    }
+
+    for (const required of [
+      "@media (min-width: 390px)",
+      "@media (min-width: 720px)",
+      "@media (min-width: 1020px)",
+      "@media (max-width: 359px)",
+      "@media (prefers-reduced-motion: no-preference)",
+    ]) {
+      assert.equal(homeStyles.includes(required), true, required);
+    }
+
+    for (const forbidden of [
+      "overflow-y-auto",
+      "100vh",
+      "width: 100vw",
+      "h-screen",
+      "w-screen",
+    ]) {
+      assert.equal(
+        `${homeSource}\n${homeStyles}\n${sharedPage}`.includes(forbidden),
+        false,
+        forbidden,
+      );
+    }
+
+    assert.equal(sharedPage.includes("copy.sections.map"), true);
+    assert.equal(sharedPage.includes("MarketingPageHero"), true);
+    assert.equal(cleaningSource.includes("BizPilotV2Page"), true);
+    assert.equal(cleaningSource.includes("CleaningServiceDetails"), false);
   });
 });

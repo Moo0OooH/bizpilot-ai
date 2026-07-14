@@ -31,6 +31,7 @@ import { describe, it } from "node:test";
 
 import { getPolicyCopy } from "../../lib/i18n/policy-copy.ts";
 import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
+import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
 import {
   forbiddenPublicEventPayloadKeys,
   publicEventCatalog,
@@ -343,42 +344,46 @@ describe("final public SEO and legal source contracts", () => {
     );
   });
 
-  it("emits structured data only through the approved public JSON-LD helper", () => {
+  it("emits structured data through the approved helper and shared V2 renderer", () => {
     const jsonLd = source("components/public/json-ld.tsx");
     const structured = source("lib/public-structured-data.ts");
     const home = source("app/page.tsx");
     const faq = source("app/faq/page.tsx");
-    const comparison = source("app/comparison/page.tsx");
+    const sharedV2 = source("components/public/bizpilot-v2-page.tsx");
+    const pilot = source("app/pilot/page.tsx");
     const quoteLinkGuide = source("app/quote-link-guide/page.tsx");
     const replySpeedGuide = source("app/faster-quote-replies/page.tsx");
     const policyPage = source("components/public/policy-page.tsx");
     const ogImage = source("app/opengraph-image.tsx");
-    const breadcrumbRoutes = [
-      ["app/features/page.tsx", "bizpilot-features-breadcrumb-jsonld"],
-      ["app/industries/cleaning/page.tsx", "bizpilot-cleaning-breadcrumb-jsonld"],
-      ["app/trust/page.tsx", "bizpilot-trust-breadcrumb-jsonld"],
-      ["app/demo/page.tsx", "bizpilot-demo-breadcrumb-jsonld"],
-      ["app/pricing/page.tsx", "bizpilot-pricing-breadcrumb-jsonld"],
-      ["app/pilot/page.tsx", "bizpilot-pilot-breadcrumb-jsonld"],
-      ["app/content-studio/page.tsx", "bizpilot-content-studio-breadcrumb-jsonld"],
-    ] as const;
 
     assert.equal(jsonLd.includes('type="application/ld+json"'), true);
-    assert.equal(jsonLd.includes("replaceAll(\"<\", \"\\\\u003c\")"), true);
+    assert.equal(jsonLd.includes("JSON.stringify(data).replaceAll"), true);
+    assert.equal(jsonLd.includes("u003c"), true);
     assert.equal(structured.includes('"FAQPage"'), true);
     assert.equal(structured.includes('"BreadcrumbList"'), true);
     assert.equal(structured.includes('"SoftwareApplication"'), true);
     assert.equal(structured.includes('"Service"'), true);
     assert.equal(home.includes("buildHomeJsonLd"), true);
-    assert.equal(faq.includes("buildFaqPageJsonLd"), true);
-    assert.equal(comparison.includes("buildBreadcrumbJsonLd"), true);
+    assert.equal(faq.includes("faqItems={copy.items}"), true);
+    assert.equal(sharedV2.includes("buildFaqPageJsonLd(faqItems, language)"), true);
+    assert.equal(sharedV2.includes("buildBreadcrumbJsonLd"), true);
+    assert.equal(pilot.includes("buildBreadcrumbJsonLd"), true);
+    assert.equal(pilot.includes("bizpilot-v2-pilot-breadcrumb-jsonld"), true);
     assert.equal(quoteLinkGuide.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(replySpeedGuide.includes("buildBreadcrumbJsonLd"), true);
-    for (const [route, jsonLdId] of breadcrumbRoutes) {
-      const routeSource = source(route);
-      assert.equal(routeSource.includes("buildBreadcrumbJsonLd"), true, route);
-      assert.equal(routeSource.includes(jsonLdId), true, route);
+
+    for (const route of [
+      "app/features/page.tsx",
+      "app/industries/cleaning/page.tsx",
+      "app/trust/page.tsx",
+      "app/demo/page.tsx",
+      "app/pricing/page.tsx",
+      "app/comparison/page.tsx",
+      "app/faq/page.tsx",
+    ]) {
+      assert.equal(source(route).includes("BizPilotV2Page"), true, route);
     }
+
     assert.equal(policyPage.includes("buildBreadcrumbJsonLd"), true);
     assert.equal(policyPage.includes("JsonLdScript"), true);
     assert.equal(policyPage.includes("breadcrumbId"), true);
@@ -386,27 +391,29 @@ describe("final public SEO and legal source contracts", () => {
   });
 
   it("keeps FAQ AI-search content source-backed without ranking claims", () => {
-    const faqCopy = getPublicSiteCopy("en").faq;
-    const questions = faqCopy.sections.flatMap((section) =>
-      section.items.map((item) => item.question),
+    const questions = getPublicV2Copy("en").faq.items.map(
+      (item) => item.question,
     );
     const faqRoute = source("app/faq/page.tsx");
+    const sharedV2 = source("components/public/bizpilot-v2-page.tsx");
     const structured = source("lib/public-structured-data.ts");
     const phase25n = source(
       "docs/readiness/PHASE_25N_FAQ_AI_SEARCH_COMPLETION_2026-07-04.md",
     );
 
     for (const question of [
-      "What makes BizPilot different from a form builder?",
-      "Can BizPilot send SMS, WhatsApp, Instagram, or email replies for me?",
-      "What has to be confirmed before a paid pilot starts?",
-      "Does BizPilot track where quote requests came from?",
-      "Will FAQ schema or AI-search content guarantee rankings?",
+      "Does BizPilot connect directly to Gmail, WhatsApp, Instagram, or SMS today?",
+      "Does AI send messages automatically?",
+      "Can BizPilot invent prices or confirm bookings?",
+      "Is BizPilot only for cleaning businesses?",
+      "What happens after a customer submits the intake form?",
+      "Is BizPilot a CRM, booking platform, or invoicing system?",
     ]) {
-      assert.equal(questions.includes(question), true);
+      assert.equal(questions.includes(question), true, question);
     }
 
-    assert.equal(faqRoute.includes("buildFaqPageJsonLd(faqItems"), true);
+    assert.equal(faqRoute.includes("faqItems={copy.items}"), true);
+    assert.equal(sharedV2.includes("buildFaqPageJsonLd(faqItems, language)"), true);
     assert.equal(structured.includes('"FAQPage"'), true);
     for (const required of [
       "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data",
@@ -418,11 +425,7 @@ describe("final public SEO and legal source contracts", () => {
       "BizPilot does not auto-send messages.",
       "Paid pilot collection remains blocked",
     ]) {
-      assert.equal(
-        phase25n.includes(required),
-        true,
-        `Phase 25N evidence missing ${required}.`,
-      );
+      assert.equal(phase25n.includes(required), true, required);
     }
   });
 

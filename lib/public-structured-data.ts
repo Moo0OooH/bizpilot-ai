@@ -1,21 +1,19 @@
-/**
+/*
  * ============================================================
  * File: lib/public-structured-data.ts
  * Project: BizPilot AI
  * Description: Structured-data builders for public marketing routes.
- * Role: Keeps JSON-LD honest, localized, and aligned with manual-first product truth.
+ * Role: Keeps JSON-LD honest, localized, and aligned with the universal smart-intake core and cleaning-first pilot.
  * Related:
  * - components/public/json-ld.tsx
  * - lib/seo.ts
- * - lib/i18n/public-site-copy.ts
+ * - lib/i18n/public-v2-copy.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-13
  * Change Log:
- * - 2026-07-11: Allowed breadcrumb JSON-LD to reference noindex public roadmap routes without adding them to canonical SEO routes.
- * - 2026-07-05: Localized service-output JSON-LD for Canadian French visitors.
- * - 2026-07-05: Added honest audience and feature context to public JSON-LD.
- * - 2026-07-04: Created structured-data builders for public marketing routes.
+ * - 2026-07-13: Repositioned public JSON-LD around smart service-business intake while preserving cleaning as the first complete pilot vertical.
+ * - 2026-07-13: Corrected Canadian-French structured-data accents and terminology.
  * ============================================================
  */
 
@@ -47,16 +45,17 @@ type BreadcrumbItem = Readonly<{
 
 const context = "https://schema.org";
 const availableLanguages = ["en-CA", "fr-CA"] as const;
-const cleaningOwnerAudience = {
+const serviceBusinessAudience = {
   "@type": "BusinessAudience",
-  audienceType: "Cleaning business owners",
+  audienceType: "Local service business owners and owner-operated service teams",
 } as const;
 const coreWorkflowTopics = [
-  "cleaning quote requests",
-  "manual lead recovery",
-  "owner-reviewed AI drafts",
-  "quote link intake",
-  "service business follow-up",
+  "smart customer intake",
+  "service-aware request forms",
+  "missing-information detection",
+  "owner-reviewed AI reply drafts",
+  "manual customer follow-up",
+  "cleaning business founder pilot",
 ] as const;
 
 function inLanguage(language: SupportedLanguage): "en-CA" | "fr-CA" {
@@ -107,14 +106,14 @@ function websiteJsonLd(language: SupportedLanguage) {
 function softwareApplicationJsonLd(language: SupportedLanguage) {
   const description =
     language === "fr-CA"
-      ? "Un espace de travail manuel pour aider les entreprises de nettoyage a capter les demandes, organiser les prospects et preparer des brouillons de reponse a valider."
-      : "A manual-first workspace for cleaning businesses to capture quote requests, organize leads, and prepare owner-reviewed reply drafts.";
+      ? "Un espace de travail pour les entreprises de services qui recueille les demandes client avec un lien intelligent, organise les renseignements manquants et prépare des brouillons assistés par IA à valider. Le premier pilote complet vise les entreprises d’entretien."
+      : "A smart customer-intake and reply workspace for service businesses that collects requests through one link, organizes missing information, and prepares AI-assisted drafts for owner review. The first complete pilot serves cleaning businesses.";
 
   return {
     "@id": publicAssetUrl("/#software"),
     "@type": "SoftwareApplication",
     applicationCategory: "BusinessApplication",
-    audience: cleaningOwnerAudience,
+    audience: serviceBusinessAudience,
     description,
     featureList: coreWorkflowTopics,
     inLanguage: inLanguage(language),
@@ -130,29 +129,29 @@ function softwareApplicationJsonLd(language: SupportedLanguage) {
 function serviceJsonLd(language: SupportedLanguage) {
   const description =
     language === "fr-CA"
-      ? "Recuperation de demandes de soumission pour entreprises de nettoyage avec brouillons IA a valider et envoi manuel."
-      : "Lead recovery for cleaning businesses with owner-reviewed AI drafts and manual sending.";
+      ? "Collecte intelligente de demandes client, organisation des renseignements manquants et brouillons assistés par IA avec validation et envoi manuels par le propriétaire."
+      : "Smart customer request intake, missing-information organization, and AI-assisted reply drafts with manual owner review and sending.";
   const serviceOutput =
     language === "fr-CA"
-      ? "Brouillons de reponse a valider et file organisee de demandes de soumission."
-      : "Owner-reviewed response drafts and an organized quote request queue.";
+      ? "Une demande client organisee, les renseignements manquants et un brouillon pret a verifier."
+      : "An organized customer request, visible missing information, and a reply draft ready for owner review.";
 
   return {
     "@id": publicAssetUrl("/#service"),
     "@type": "Service",
     areaServed: "Canada",
-    audience: cleaningOwnerAudience,
+    audience: serviceBusinessAudience,
     description,
     inLanguage: inLanguage(language),
     name:
       language === "fr-CA"
-        ? "Recuperation de demandes de soumission"
-        : "Cleaning quote lead recovery",
+        ? "Espace intelligent de demandes client et de réponses"
+        : "Smart customer intake and reply workspace",
     provider: {
       "@id": publicAssetUrl("/#organization"),
     },
     serviceOutput,
-    serviceType: "Cleaning business lead recovery workflow",
+    serviceType: "Service-business customer intake and owner-reviewed reply workflow",
     url: publicUrl("/", language),
   } as const;
 }

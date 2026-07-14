@@ -2,7 +2,7 @@
  * ============================================================
  * File: app/privacy/page.tsx
  * Project: BizPilot AI
- * Description: Public privacy notice route for pilot-stage quote recovery.
+ * Description: Public privacy notice route for the pilot-stage smart-intake workspace.
  * Role: Gives prospects and pilot owners a clear privacy boundary before real data.
  * Related:
  * - components/public/policy-page.tsx
@@ -20,7 +20,7 @@ import type { Metadata } from "next";
 import { cookies } from "next/headers";
 
 import { PolicyPage } from "@/components/public/policy-page";
-import { getHomeCopy } from "@/lib/i18n/home-copy";
+import { getPublicV2NavCopy } from "@/lib/i18n/public-v2-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
@@ -60,7 +60,7 @@ export default async function PrivacyPage({
     <PolicyPage
       copy={getPolicyCopy(language).privacy}
       language={language}
-      navCopy={getHomeCopy(language).nav}
+      navCopy={getPublicV2NavCopy(language)}
       pagePath="/privacy"
     />
   );

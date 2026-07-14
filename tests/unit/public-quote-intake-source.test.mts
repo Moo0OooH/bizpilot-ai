@@ -14,10 +14,11 @@
  * - server/services/public-intake.service.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-07-11: Added guards for bilingual custom-field override resolution on public quote reads.
  * - 2026-07-04: Added active-language default field localization guards.
+ * - 2026-07-13: Guarded public intake against stale authenticated-cookie refresh attempts.
  * ============================================================
  */
 
@@ -46,6 +47,16 @@ describe("public quote intake source contracts", () => {
     assert.equal(quoteUnavailable.includes("unavailableTitle"), true);
     assert.equal(quoteUnavailable.includes("supportedLanguages.map"), true);
     assert.equal(quoteUnavailable.includes("pathname"), true);
+  });
+
+  it("uses a cookie-free anonymous client for public intake", () => {
+    const service = source("server/services/public-intake.service.ts");
+    const serverClient = source("lib/supabase/server.ts");
+
+    assert.equal(service.includes("createSupabasePublicServerClient"), true);
+    assert.equal(service.includes("createSupabaseServerClient"), false);
+    assert.equal(serverClient.includes("autoRefreshToken: false"), true);
+    assert.equal(serverClient.includes("persistSession: false"), true);
   });
 
   it("localizes default and saved custom quote fields from the active quote language", () => {

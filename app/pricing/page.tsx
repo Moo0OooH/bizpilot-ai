@@ -1,64 +1,31 @@
-/**
+/*
  * ============================================================
  * File: app/pricing/page.tsx
  * Project: BizPilot AI
- * Description: Public pilot pricing page for cleaning-first lead recovery.
- * Role: Presents approved staged pilot terms with readiness/payment guardrails.
+ * Description: Public founder-pilot pricing for the current controlled smart-intake workflow.
+ * Role: Preserves approved staged pricing and manual billing boundaries under the universal product positioning.
  * Related:
- * - components/public/marketing-ui.tsx
- * - lib/i18n/home-copy.ts
- * - lib/i18n/public-site-copy.ts
+ * - components/public/bizpilot-v2-page.tsx
+ * - lib/i18n/public-v2-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-12
- * Change Log:
- * - 2026-07-12: Preserved the active public language through shared conversion links.
- * - 2026-06-18: Removed duplicate monthly price highlights and aligned card reflow.
- * - 2026-06-19: Moved visible pricing-page copy and metadata into the public-site i18n dictionary.
- * - 2026-06-19: Added post-apply strip and balanced staged pricing cards.
- * - 2026-06-20: Tightened pricing spacing without changing staged pricing or guardrails.
- * - 2026-06-21: Anchored plan card actions and header rows for EN/fr-CA visual parity.
- * - 2026-06-21: Applied localization-aware copy roles to plan cards and supporting panels.
- * - 2026-06-21: Added a first-fold pricing CTA before the long plan-card grid.
- * - 2026-06-25: Normalized pricing rhythm to bp primitives without changing price values.
- * - 2026-07-04: Added paid-pilot trust boundaries for payment, support, refund, and scope.
- * - 2026-07-05: Added BreadcrumbList JSON-LD for the public page-content sweep.
- * - 2026-07-05: Added a route-aware next-step panel for pricing decisions.
- * - 2026-07-05: Tokenized pricing guardrail icon treatment without changing payment gates.
- * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
+ * Last Updated: 2026-07-13
  * ============================================================
  */
 
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { JsonLdScript } from "@/components/public/json-ld";
-import {
-  MarketingButton,
-  MarketingCard,
-  MarketingFooter,
-  MarketingHeader,
-  MarketingIcon,
-  MarketingNextStepPanel,
-  MarketingPageHero,
-  MarketingShell,
-  marketingBackground,
-  marketingTone,
-} from "@/components/public/marketing-ui";
-import { getHomeCopy } from "@/lib/i18n/home-copy";
-import {
-  INTERFACE_LANGUAGE_COOKIE,
-} from "@/lib/i18n/language";
-import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
-import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
+
+import { BizPilotV2Page } from "@/components/public/bizpilot-v2-page";
+import { INTERFACE_LANGUAGE_COOKIE } from "@/lib/i18n/language";
+import { getPublicV2Copy } from "@/lib/i18n/public-v2-copy";
 import {
   buildPublicMetadata,
   resolvePublicRouteLanguage,
   type PublicRouteSearchParams,
 } from "@/lib/seo";
 
-type PricingPageProps = Readonly<{
-  searchParams?: PublicRouteSearchParams;
-}>;
+type PricingPageProps = Readonly<{ searchParams?: PublicRouteSearchParams }>;
 
 async function readPublicLanguage(searchParams?: PublicRouteSearchParams) {
   return resolvePublicRouteLanguage(
@@ -73,7 +40,7 @@ export async function generateMetadata({
   const language = await readPublicLanguage(searchParams);
   return buildPublicMetadata(
     "/pricing",
-    getPublicSiteCopy(language).pricing.meta,
+    getPublicV2Copy(language).pricing.meta,
     language,
   );
 }
@@ -82,214 +49,12 @@ export default async function PricingPage({
   searchParams,
 }: PricingPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
-  const navCopy = getHomeCopy(language).nav;
-  const siteCopy = getPublicSiteCopy(language);
-  const copy = siteCopy.pricing;
 
   return (
-    <main className="bp-page public-site min-h-svh" style={{ background: marketingBackground, color: marketingTone.text }}>
-      <JsonLdScript
-        data={buildBreadcrumbJsonLd(
-          [
-            { name: "BizPilot AI", path: "/" },
-            { name: copy.title, path: "/pricing" },
-          ],
-          language,
-        )}
-        id="bizpilot-pricing-breadcrumb-jsonld"
-      />
-      <MarketingHeader active="pricing" copy={navCopy} language={language} redirectPath="/pricing" />
-      <section className="bp-section-tight">
-        <MarketingShell>
-          <MarketingPageHero
-            language={language}
-            actions={[
-              {
-                href: "/pilot",
-                label: copy.cards[0]?.cta ?? navCopy.pilot,
-              },
-              {
-                href: "/trust",
-                label: navCopy.trust,
-                variant: "secondary",
-              },
-            ]}
-            badge={copy.badge}
-            body={copy.body}
-            className="public-pricing-hero-cta"
-            signals={copy.cards.map((card, index) => ({
-              icon: index === 0 ? "spark" : index === 1 ? "briefcase" : "lock",
-              label: card.cohort,
-              toneName: index === 0 ? "teal" : index === 1 ? "blue" : "gold",
-              value: card.priceLines.join(" / "),
-            }))}
-            title={copy.title}
-            visual={{
-              body: copy.guardrail.body,
-              eyebrow: copy.guardrail.title,
-              items: copy.afterApply.steps.map((step, index) => ({
-                icon: index === 0 ? "message" : index === 1 ? "shield" : "check",
-                label: `${index + 1}`,
-                value: step,
-              })),
-              title: copy.afterApply.title,
-            }}
-          />
-
-          <div className="bp-pricing-grid public-pricing-grid supporting-three-grid mt-8">
-            {copy.cards.map((card, index) => (
-              <MarketingCard
-                className="public-plan-card flex min-w-0 flex-col p-6 sm:p-7"
-                key={card.title}
-                style={{
-                  borderColor:
-                    index === 0
-                      ? "color-mix(in srgb, var(--accent) 38%, var(--border-default))"
-                      : marketingTone.border,
-                }}
-              >
-                <div className="public-plan-card-header">
-                  <p className="bp-copy-eyebrow text-[12px] font-black uppercase tracking-[0.14em]" style={{ color: marketingTone.teal }}>
-                    {card.cohort}
-                  </p>
-                  <h2 className="bp-card-title bp-copy-plan-title mt-3 font-black leading-tight" style={{ color: marketingTone.text }}>
-                    {card.title}
-                  </h2>
-                  <div className="mt-5 public-plan-card-price">
-                    {card.priceLines.map((line) => (
-                      <p className="text-[26px] font-black leading-tight" key={line} style={{ color: marketingTone.text }}>
-                        {line}
-                      </p>
-                    ))}
-                  </div>
-                  <p className="bp-copy-status public-plan-card-highlight mt-3 rounded-[12px] border px-3 py-2 text-[13px] font-black" style={{ borderColor: marketingTone.border, color: marketingTone.soft }}>
-                    {card.highlight}
-                  </p>
-                </div>
-
-                <div className="public-plan-card-features mt-5 grid gap-3">
-                  {card.bullets.map((item) => (
-                    <div className="bp-copy-card-body flex min-w-0 items-start gap-3 text-[14px] font-bold leading-6" key={item} style={{ color: marketingTone.soft }}>
-                      <span className="mt-0.5 shrink-0" style={{ color: marketingTone.teal }}>
-                        <MarketingIcon name="check" />
-                      </span>
-                      <span className="min-w-0 break-words">{item}</span>
-                    </div>
-                  ))}
-                </div>
-
-                <MarketingButton className="public-plan-card-cta mt-auto w-full" href="/pilot" language={language}>
-                  {card.cta}
-                </MarketingButton>
-              </MarketingCard>
-            ))}
-          </div>
-
-          <MarketingCard className="mt-8 p-5 sm:p-6">
-            <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.34fr)_minmax(0,1fr)] lg:items-center">
-              <h2 className="bp-card-title bp-copy-section-title font-black leading-tight" style={{ color: marketingTone.text }}>
-                {copy.afterApply.title}
-              </h2>
-              <div className="grid gap-3 min-[900px]:grid-cols-3">
-                {copy.afterApply.steps.map((step, index) => (
-                  <div className="bp-copy-card-body flex min-w-0 items-start gap-3 rounded-[14px] border px-4 py-3 text-[14px] font-bold leading-6" key={step} style={{ backgroundColor: "var(--surface-interactive)", borderColor: marketingTone.border, color: marketingTone.soft }}>
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-[9px] text-[12px] font-black" style={{ backgroundColor: "color-mix(in srgb, var(--primary) 14%, transparent)", color: marketingTone.blue }}>
-                      {index + 1}
-                    </span>
-                    <span className="min-w-0 break-words">{step}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </MarketingCard>
-
-          <MarketingCard className="mt-8 p-5 sm:p-6">
-            <div className="grid gap-4 lg:grid-cols-[minmax(220px,0.34fr)_minmax(0,1fr)] lg:items-start">
-              <h2 className="bp-card-title bp-copy-section-title font-black leading-tight" style={{ color: marketingTone.text }}>
-                {copy.trustBoundary.title}
-              </h2>
-              <div className="grid gap-3 min-[900px]:grid-cols-3">
-                {copy.trustBoundary.items.map((item) => (
-                  <div
-                    className="bp-copy-card-body min-w-0 rounded-[14px] border px-4 py-3"
-                    key={item.title}
-                    style={{
-                      backgroundColor: "var(--surface-interactive)",
-                      borderColor: marketingTone.border,
-                      color: marketingTone.soft,
-                    }}
-                  >
-                    <div className="flex min-w-0 items-start gap-3">
-                      <span className="mt-1 shrink-0" style={{ color: marketingTone.teal }}>
-                        <MarketingIcon name="check" />
-                      </span>
-                      <div className="min-w-0">
-                        <h3 className="text-[14px] font-black leading-6" style={{ color: marketingTone.text }}>
-                          {item.title}
-                        </h3>
-                        <p className="mt-1 text-[13px] font-bold leading-6">
-                          {item.body}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </MarketingCard>
-
-          <MarketingCard className="mt-8 p-6 sm:p-7" style={{ borderColor: "rgba(245,158,11,0.32)" }}>
-            <div className="grid gap-5 lg:grid-cols-[auto_minmax(0,1fr)] lg:items-start">
-              <span
-                className="inline-flex h-12 w-12 items-center justify-center rounded-[14px]"
-                style={{
-                  backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
-                  color: marketingTone.gold,
-                }}
-              >
-                <MarketingIcon name="lock" />
-              </span>
-              <div>
-                <h2 className="bp-card-title bp-copy-section-title font-black" style={{ color: marketingTone.text }}>
-                  {copy.guardrail.title}
-                </h2>
-                <p className="bp-copy-card-body mt-3 text-[15px] font-bold leading-7" style={{ color: marketingTone.soft }}>
-                  {copy.guardrail.body}
-                </p>
-              </div>
-            </div>
-          </MarketingCard>
-          <MarketingNextStepPanel
-            language={language}
-            body={copy.trustBoundary.title}
-            className="mt-8"
-            items={[
-              {
-                description: siteCopy.pilot.badge,
-                href: "/pilot",
-                icon: "arrow",
-                label: navCopy.pilot,
-                toneName: "gold",
-              },
-              {
-                description: siteCopy.trust.badge,
-                href: "/trust",
-                icon: "shield",
-                label: navCopy.trust,
-              },
-              {
-                description: siteCopy.faq.badge,
-                href: "/faq",
-                icon: "message",
-                label: navCopy.faq,
-                toneName: "blue",
-              },
-            ]}
-            title={navCopy.why}
-          />
-        </MarketingShell>
-      </section>
-      <MarketingFooter copy={navCopy} language={language} />
-    </main>
+    <BizPilotV2Page
+      copy={getPublicV2Copy(language).pricing}
+      language={language}
+      path="/pricing"
+    />
   );
 }

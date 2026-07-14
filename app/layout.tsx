@@ -9,7 +9,7 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-06-27
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-05-04: Added standard project file header.
  * - 2026-05-04: Updated metadata description for Phase 2 tenant foundation.
@@ -19,6 +19,7 @@
  * - 2026-06-19: Defaulted fresh sessions to Light and synced theme-color before paint.
  * - 2026-06-21: Aligned global metadata with canonical manual-first public copy.
  * - 2026-06-27: Moved theme bootstrap into the document head to avoid hydration warnings.
+ * - 2026-07-13: Updated fallback site metadata to the universal smart-intake category.
  * ============================================================
  */
 
@@ -54,22 +55,22 @@ const themeBootstrapScript = `(function(){try{var r=document.documentElement;var
 
 export const metadata: Metadata = {
   description:
-    "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
+    "BizPilot AI gives local service businesses one smart intake link, organized requests, and AI-assisted reply drafts for owner review and manual sending.",
   metadataBase: new URL(getPublicSiteOrigin()),
   openGraph: {
     description:
-      "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
+      "One smart intake link, organized customer requests, and AI-assisted reply drafts for owner review and manual sending.",
     siteName: PUBLIC_SITE_NAME,
-    title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
+    title: "BizPilot AI | Smart Customer Intake & Reply Workspace",
     type: "website",
     url: getPublicSiteOrigin(),
   },
-  title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
+  title: "BizPilot AI | Smart Customer Intake & Reply Workspace",
   twitter: {
     card: "summary",
     description:
-      "BizPilot AI helps cleaning businesses collect quote requests, organize leads, and prepare replies for owner review without auto-send.",
-    title: "BizPilot AI | Lead Recovery for Cleaning Businesses",
+      "One smart intake link, organized customer requests, and AI-assisted reply drafts for owner review and manual sending.",
+    title: "BizPilot AI | Smart Customer Intake & Reply Workspace",
   },
 };
 

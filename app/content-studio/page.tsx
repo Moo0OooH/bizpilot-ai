@@ -3,7 +3,7 @@
  * File: app/content-studio/page.tsx
  * Project: BizPilot AI
  * Description: Public roadmap page for future owner-reviewed content assistance.
- * Role: Labels Content Studio as roadmap while preserving cleaning-first lead recovery scope.
+ * Role: Labels Content Studio as roadmap while preserving the current smart-intake and owner-reviewed reply scope.
  * Related:
  * - components/public/marketing-ui.tsx
  * - app/features/page.tsx
@@ -41,7 +41,7 @@ import {
   marketingBackground,
   marketingTone,
 } from "@/components/public/marketing-ui";
-import { getHomeCopy } from "@/lib/i18n/home-copy";
+import { getPublicV2NavCopy } from "@/lib/i18n/public-v2-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
 } from "@/lib/i18n/language";
@@ -75,7 +75,7 @@ export default async function ContentStudioPage({
   searchParams,
 }: ContentStudioPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
-  const navCopy = getHomeCopy(language).nav;
+  const navCopy = getPublicV2NavCopy(language);
   const siteCopy = getPublicSiteCopy(language);
   const copy = siteCopy.contentStudio;
 

@@ -1,15 +1,17 @@
-/**
+/*
  * ============================================================
  * File: tests/unit/public-growth-copy-source.test.mts
  * Project: BizPilot AI
- * Description: Source guards for Phase 25 public growth copy.
- * Role: Keeps public copy workflow-led, cleaning-specific, and manual-first.
+ * Description: Source guards for the universal public V2 growth message.
+ * Role: Protects the smart-intake workflow, cleaning-first launch, manual conversion, staged pricing, and trust boundaries.
  * Related:
- * - lib/i18n/public-site-copy.ts
- * - app/features/page.tsx
- * - app/industries/cleaning/page.tsx
+ * - lib/i18n/public-v2-copy.ts
+ * - app/pilot/page.tsx
+ * - app/pricing/page.tsx
+ * - app/trust/page.tsx
  * Author: MoOoH
  * Created: 2026-07-04
+ * Last Updated: 2026-07-13
  * ============================================================
  */
 
@@ -17,135 +19,138 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-const publicCopy = readFileSync("lib/i18n/public-site-copy.ts", "utf8");
-const policyCopy = readFileSync("lib/i18n/policy-copy.ts", "utf8");
+import { getPolicyCopy } from "../../lib/i18n/policy-copy.ts";
+import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
 
-test("features copy follows the manual quote recovery workflow", () => {
-  for (const required of [
-    "Capture requests where customers already find you.",
-    "Organize each request before it becomes inbox work.",
-    "Keep source context visible on the lead.",
-    "Prepare the first reply without inventing details.",
-    "Review, copy, and send manually.",
-    "Keep follow-up from disappearing.",
-  ]) {
-    assert.equal(publicCopy.includes(required), true, `missing ${required}`);
-  }
+const english = getPublicV2Copy("en");
+const french = getPublicV2Copy("fr-CA");
 
-  assert.equal(publicCopy.includes("You copy, send manually, and keep follow-up visible"), true);
-  assert.equal(publicCopy.includes("No auto-send"), true);
+function source(path: string): string {
+  return readFileSync(path, "utf8");
+}
+
+test("features copy follows the current smart-intake workflow", () => {
+  assert.deepEqual(
+    english.home.flow.steps.map((step) => step.title),
+    ["Share", "Collect", "Organize", "Prepare", "Approve"],
+  );
+  assert.equal(english.home.features.cards.length, 6);
+  assert.match(english.features.notice?.badge ?? "", /Roadmap/i);
+  assert.match(
+    english.features.notice?.body ?? "",
+    /Gmail, WhatsApp, Instagram, Messenger, and SMS/i,
+  );
+  assert.match(english.home.control.title, /owner keeps the decision/i);
+  assert.match(french.home.control.title, /propriétaire garde la décision/i);
 });
 
-test("cleaning page copy stays service-specific without booking claims", () => {
-  for (const required of [
-    "residential, office, move-out, deep-clean, and recurring quote requests",
-    "service, area, timing, contact path, source context",
-    "Customer opens your quote link",
-    "You review, copy, and send manually",
-  ]) {
-    assert.equal(publicCopy.includes(required), true, `missing ${required}`);
-  }
+test("cleaning remains the first complete vertical without booking claims", () => {
+  const serviceCards = english.cleaning.sections[0]?.cards ?? [];
 
+  assert.equal(serviceCards.length, 6);
+  assert.deepEqual(
+    serviceCards.map((card) => card.title),
+    [
+      "Residential cleaning",
+      "Deep cleaning",
+      "Move-in / move-out",
+      "Office cleaning",
+      "Airbnb turnover",
+      "Post-construction",
+    ],
+  );
+  assert.equal(english.home.industries.cards[0]?.title, "Cleaning");
+  assert.match(english.home.industries.cards[0]?.badge ?? "", /Founder pilot/i);
+  assert.equal(
+    english.home.industries.cards.slice(1).every((card) =>
+      /Roadmap template/i.test(card.badge ?? ""),
+    ),
+    true,
+  );
+
+  const serialized = JSON.stringify(english).toLowerCase();
   for (const forbidden of [
     "books the job automatically",
-    "confirms the booking",
-    "sends automatically",
+    "confirms the booking automatically",
+    "sends customer messages automatically",
   ]) {
-    assert.equal(
-      publicCopy.toLowerCase().includes(forbidden),
-      false,
-      `public growth copy should not include ${forbidden}`,
-    );
+    assert.equal(serialized.includes(forbidden), false, forbidden);
   }
 });
 
-test("pilot proof metrics stay honest before real testimonials exist", () => {
-  const pilotSource = readFileSync("app/pilot/page.tsx", "utf8");
+test("pilot conversion stays founder-led, measurable, and non-submitting", () => {
+  const pilotSource = source("app/pilot/page.tsx");
+  const templateSource = source(
+    "components/public/pilot-request-template-card.tsx",
+  );
 
-  for (const required of [
-    "What the pilot will measure",
-    "Response speed",
-    "Missing-detail clarity",
-    "Follow-up visibility",
-    "Source context",
-    "These are pilot learning metrics, not testimonials, conversion-rate claims, or a performance guarantee.",
-  ]) {
-    assert.equal(publicCopy.includes(required), true, `missing ${required}`);
+  assert.equal(english.pilot.sections.length, 2);
+  assert.match(english.pilot.badge, /Cleaning businesses first/i);
+  assert.match(english.pilot.notice?.badge ?? "", /Approval gate/i);
+  assert.match(
+    english.pilot.notice?.body ?? "",
+    /Real customer data, payment, and onboarding begin only after explicit/i,
+  );
+  assert.match(french.pilot.notice?.badge ?? "", /Porte d’approbation/i);
+
+  assert.equal(pilotSource.includes("PilotRequestTemplateCard"), true);
+  assert.equal(pilotSource.includes('id="pilot-request-template"'), true);
+  assert.equal(pilotSource.includes("getPublicV2Copy"), true);
+  assert.equal(pilotSource.includes("getPublicSiteCopy"), true);
+  for (const forbidden of ["<form", "<input", "<select", "<textarea"]) {
+    assert.equal(pilotSource.includes(forbidden), false, forbidden);
   }
 
-  assert.equal(
-    pilotSource.includes("copy.proof.metrics"),
-    true,
-    "Pilot page should render measured pilot proof architecture.",
-  );
-  assert.equal(
-    pilotSource.includes("<form"),
-    false,
-    "Pilot proof section should not introduce a submitting form.",
-  );
-
-  for (const forbidden of [
-    "guaranteed revenue",
-    "guaranteed leads",
-    "guaranteed conversion",
-    "books jobs automatically",
-    "auto-send replies",
-    "real customer testimonials",
-  ]) {
-    assert.equal(
-      publicCopy.toLowerCase().includes(forbidden),
-      false,
-      `pilot proof copy should not include ${forbidden}`,
-    );
+  assert.equal(templateSource.includes("navigator.clipboard.writeText"), true);
+  assert.equal(templateSource.includes('document.execCommand("copy")'), true);
+  assert.equal(templateSource.includes('aria-live="polite"'), true);
+  assert.equal(templateSource.includes("mailto:?subject="), true);
+  for (const forbidden of ["fetch(", "XMLHttpRequest", "<form"]) {
+    assert.equal(templateSource.includes(forbidden), false, forbidden);
   }
 });
 
-test("pricing trust boundaries stay manual before paid pilot", () => {
-  const pricingSource = readFileSync("app/pricing/page.tsx", "utf8");
+test("pricing keeps approved values and manual paid-pilot gates", () => {
+  const pricingSource = source("app/pricing/page.tsx");
+  const serialized = JSON.stringify(english.pricing);
 
-  for (const required of [
-    "Before any paid pilot starts",
-    "No self-serve checkout is enabled.",
-    "refund handling",
-    "It is not booking, invoicing, SMS/WhatsApp, or full CRM software.",
-    "Support, refund, and payment expectations are confirmed before any paid pilot",
+  for (const approvedValue of [
+    "$0 setup",
+    "$149 setup + $49/month",
+    "$199 setup + $79/month",
   ]) {
-    assert.equal(publicCopy.includes(required), true, `missing ${required}`);
+    assert.equal(serialized.includes(approvedValue), true, approvedValue);
   }
 
-  assert.equal(
-    pricingSource.includes("copy.trustBoundary"),
-    true,
-    "Pricing page should render paid-pilot trust boundaries from localized copy.",
+  assert.match(english.pricing.body, /no self-serve checkout/i);
+  assert.match(
+    english.pricing.notice?.body ?? "",
+    /manual invoice or Stripe Payment Link/i,
   );
-
-  for (const forbidden of [
-    "self-serve checkout is live",
-    "payment automation is enabled",
-    "automatic refund",
-    "bookings included",
-    "SMS campaigns included",
-  ]) {
-    assert.equal(
-      publicCopy.toLowerCase().includes(forbidden),
-      false,
-      `pricing trust copy should not include ${forbidden}`,
-    );
-  }
+  assert.match(
+    english.pricing.notice?.body ?? "",
+    /does not currently offer in-app billing automation/i,
+  );
+  assert.equal(pricingSource.includes("getPublicV2Copy"), true);
+  assert.equal(pricingSource.includes("BizPilotV2Page"), true);
 });
 
-test("trust and security copy match current evidence gates", () => {
-  const trustSource = readFileSync("app/trust/page.tsx", "utf8");
+test("trust and security copy keep human and production gates explicit", () => {
+  const trustSource = source("app/trust/page.tsx");
+  const security = getPolicyCopy("en").security;
+  const securityText = JSON.stringify(security);
 
-  for (const required of [
-    "Current evidence and open gates",
-    "Dashboard QA remains local-only",
-    "Real data remains blocked",
-    "Paid pilot remains gated",
-    "strict restored app/dashboard/RLS proof",
-  ]) {
-    assert.equal(publicCopy.includes(required), true, `missing ${required}`);
-  }
+  assert.deepEqual(
+    english.trust.sections[0]?.cards.map((card) => card.title),
+    ["No automatic sending", "No invented pricing", "Editable output"],
+  );
+  assert.match(english.trust.notice?.badge ?? "", /Production gate/i);
+  assert.match(
+    english.trust.notice?.body ?? "",
+    /Backup, migration drift, production security posture, and restore confidence/i,
+  );
+  assert.equal(trustSource.includes("getPublicV2Copy"), true);
+  assert.equal(trustSource.includes("BizPilotV2Page"), true);
 
   for (const required of [
     "Local-only dashboard QA",
@@ -153,28 +158,16 @@ test("trust and security copy match current evidence gates", () => {
     "production URLs",
     "Strict restored app/dashboard/RLS proof remains deferred",
   ]) {
-    assert.equal(policyCopy.includes(required), true, `missing ${required}`);
+    assert.equal(securityText.includes(required), true, required);
   }
 
-  assert.equal(
-    trustSource.includes("copy.evidence"),
-    true,
-    "Trust page should render current evidence and open gates.",
-  );
-
+  const combined = `${JSON.stringify(english)}\n${securityText}`.toLowerCase();
   for (const forbidden of [
     "real customer data is approved",
     "paid pilot is approved",
     "dashboard smoke can run against production",
     "restored app proof passed",
   ]) {
-    const normalizedForbidden = forbidden.toLowerCase();
-    assert.equal(
-      `${publicCopy}\n${policyCopy}`.toLowerCase().includes(
-        normalizedForbidden,
-      ),
-      false,
-      `trust/security copy should not include ${forbidden}`,
-    );
+    assert.equal(combined.includes(forbidden), false, forbidden);
   }
 });

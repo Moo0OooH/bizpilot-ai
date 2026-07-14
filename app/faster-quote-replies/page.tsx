@@ -2,21 +2,22 @@
  * ============================================================
  * File: app/faster-quote-replies/page.tsx
  * Project: BizPilot AI
- * Description: Public reply-speed guide for cleaning quote requests.
- * Role: Gives cleaning owners a practical content and operations guide without implying automation.
+ * Description: Public reply-speed guide for customer requests.
+ * Role: Gives service-business owners a practical content and operations guide without implying automation.
  * Related:
  * - components/public/marketing-ui.tsx
  * - lib/i18n/public-site-copy.ts
  * - lib/public-structured-data.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
  * - 2026-07-12: Preserved the active public language through shared conversion links.
  * - 2026-07-04: Created the public reply-speed content guide for Phase 25U.
  * - 2026-07-05: Added a route-aware next-step panel for reply-speed education.
  * - 2026-07-05: Tokenized reply-speed guardrail icon treatment for light/dark launch polish.
  * - 2026-07-11: Rebuilt the first fold with the shared research-backed public page hero.
+ * - 2026-07-13: Aligned the guide route with the universal customer-intake category.
  * ============================================================
  */
 
@@ -37,7 +38,7 @@ import {
   marketingTone,
   type MarketingIconName,
 } from "@/components/public/marketing-ui";
-import { getHomeCopy } from "@/lib/i18n/home-copy";
+import { getPublicV2NavCopy } from "@/lib/i18n/public-v2-copy";
 import { INTERFACE_LANGUAGE_COOKIE } from "@/lib/i18n/language";
 import { getPublicSiteCopy } from "@/lib/i18n/public-site-copy";
 import { buildBreadcrumbJsonLd } from "@/lib/public-structured-data";
@@ -80,7 +81,7 @@ export default async function FasterQuoteRepliesPage({
   searchParams,
 }: FasterQuoteRepliesPageProps = {}) {
   const language = await readPublicLanguage(searchParams);
-  const navCopy = getHomeCopy(language).nav;
+  const navCopy = getPublicV2NavCopy(language);
   const siteCopy = getPublicSiteCopy(language);
   const copy = siteCopy.replySpeedGuide;
 
