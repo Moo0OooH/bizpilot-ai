@@ -166,10 +166,25 @@
   flex: 0 0 auto;
   place-items: center;
   border-radius: 0.65rem;
-  background: var(--text-strong);
-  color: var(--canvas);
+  background: color-mix(in srgb, var(--brand-coral) 14%, var(--surface));
+  color: var(--brand-coral);
   font-size: 0.8125rem;
   font-weight: 900;
+}
+
+.stageHeader > span svg {
+  inline-size: 1.05rem;
+  block-size: 1.05rem;
+}
+
+.linkStage .stageHeader > span {
+  background: color-mix(in srgb, var(--primary) 13%, var(--surface));
+  color: var(--primary);
+}
+
+.readyStage .stageHeader > span {
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  color: var(--accent);
 }
 
 .stageHeader strong {
@@ -183,27 +198,43 @@
 }
 
 .messageBubble {
+  --item-accent: var(--brand-coral);
   display: grid;
   gap: 0.2rem;
   padding: 0.72rem 0.78rem;
-  border: 1px solid var(--border-default);
+  border: 1px solid color-mix(in srgb, var(--item-accent) 26%, var(--border-default));
   border-radius: 0.85rem 0.85rem 0.85rem 0.2rem;
   background: var(--surface);
   box-shadow: var(--shadow-sm);
 }
+
+.messageBubble:nth-child(2) { --item-accent: var(--warning); }
+.messageBubble:nth-child(3) { --item-accent: var(--primary); }
+.messageBubble:nth-child(4) { --item-accent: var(--accent); }
 
 .messageBubble:nth-child(even) {
   margin-inline-start: 0.7rem;
   border-radius: 0.85rem 0.85rem 0.2rem;
 }
 
-.messageBubble span,
-.requestSummary span {
+.messageBubble > span,
+.requestSummary > div > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   color: var(--text-muted);
   font-size: 0.8125rem;
   font-weight: 850;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.messageBubble > span svg,
+.requestSummary > div > span svg {
+  inline-size: 0.95rem;
+  block-size: 0.95rem;
+  flex: 0 0 auto;
+  color: var(--item-accent);
 }
 
 .messageBubble strong {
@@ -276,13 +307,18 @@
 }
 
 .requestSummary > div {
+  --item-accent: var(--primary);
   display: grid;
   gap: 0.25rem;
   padding: 0.68rem;
-  border: 1px solid var(--border-default);
+  border: 1px solid color-mix(in srgb, var(--item-accent) 25%, var(--border-default));
   border-radius: 0.72rem;
   background: var(--surface);
 }
+
+.requestSummary > div:nth-child(2) { --item-accent: var(--brand-violet); }
+.requestSummary > div:nth-child(3) { --item-accent: var(--accent); }
+.requestSummary > div:nth-child(4) { --item-accent: var(--warning); }
 
 .requestSummary strong {
   font-size: 0.875rem;
@@ -392,18 +428,19 @@
   box-shadow: 0 1.4rem 3rem rgba(0, 0, 0, 0.15);
 }
 
-.sourceDot {
-  inline-size: 0.75rem;
-  block-size: 0.75rem;
-  border-radius: 999px;
-  background: var(--brand-coral);
-  box-shadow: 0 0 0 0.34rem rgba(255, 107, 95, 0.13);
+.sourceIcon {
+  display: grid;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  place-items: center;
+  border-radius: 0.72rem;
+  background: color-mix(in srgb, var(--brand-coral) 16%, transparent);
+  color: var(--brand-coral);
 }
 
-.problemMessages article:nth-child(even) .sourceDot {
-  background: var(--primary);
-  box-shadow: 0 0 0 0.34rem color-mix(in srgb, var(--primary) 13%, transparent);
-}
+.problemMessages article:nth-child(2) .sourceIcon { background: color-mix(in srgb, var(--warning) 16%, transparent); color: var(--warning); }
+.problemMessages article:nth-child(3) .sourceIcon { background: color-mix(in srgb, var(--primary) 18%, transparent); color: #91a1ff; }
+.problemMessages article:nth-child(4) .sourceIcon { background: color-mix(in srgb, var(--accent-decorative) 16%, transparent); color: var(--accent-decorative); }
 
 .problemMessages p,
 .problemMessages small {
@@ -652,6 +689,36 @@
   .workflowList li:last-child { border-inline-end: 1px solid var(--border-default); }
   .workflowList li > span { font-size: 1.1rem; }
   .demoFlow { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr) minmax(0, 1.15fr); }
+}
+
+@media (min-width: 1180px) and (max-height: 900px) {
+  .heroSection { padding-block: 2rem 3.5rem; }
+  .heroGrid { align-items: start; gap: clamp(2.25rem, 3.5vw, 3.5rem); }
+  .heroTitle { max-inline-size: 100%; margin-block-start: 1rem; line-height: 1.02; }
+  .heroBody { margin-block-start: 1.05rem; font-size: 1.0625rem; line-height: 1.55; }
+  .heroActions { margin-block-start: 1.35rem; }
+  .heroAssurances { margin-block-start: 1rem; }
+  .productChrome { min-block-size: 2.75rem; }
+  .heroStages { gap: 0.65rem; padding: 0.85rem; }
+  .storyStage { gap: 0.7rem; padding: 0.78rem; }
+  .stageHeader { gap: 0.5rem; }
+  .stageHeader > span { inline-size: 1.8rem; block-size: 1.8rem; }
+  .messageStack { gap: 0.4rem; }
+  .messageBubble { padding: 0.55rem 0.62rem; }
+  .messageBubble:nth-child(even) { margin-inline-start: 0.35rem; }
+  .intakeLinkCard,
+  .draftCard { gap: 0.5rem; padding: 0.72rem; }
+  .requestSummary { gap: 0.4rem; }
+  .requestSummary > div { padding: 0.55rem; }
+  .placementNote { padding: 0.68rem 0.85rem; }
+}
+
+@media (min-width: 1180px) and (max-height: 760px) {
+  .heroSection { padding-block: 1.5rem 2.75rem; }
+  .heroGrid { gap: 2.25rem; }
+  .heroBody { line-height: 1.48; }
+  .heroActions { margin-block-start: 1.1rem; }
+  .heroAssurances { margin-block-start: 0.8rem; }
 }
 
 @media (max-width: 719px) {

@@ -59,6 +59,9 @@ const routeIcons: Readonly<Record<PublicV3MarketingRoute, readonly MarketingIcon
   "/faq": ["message", "shield", "check"],
   "/trust": ["inbox", "spark", "shield"],
 };
+const visualStageIcons: readonly MarketingIconName[] = ["message", "link", "check"];
+const visualSourceIcons: readonly MarketingIconName[] = ["camera", "phone", "globe"];
+const visualPlanIcons: readonly MarketingIconName[] = ["target", "briefcase", "spark"];
 
 function RouteVisual({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; spec: PublicV3Spec }>) {
   const route = spec.routes[path];
@@ -74,7 +77,7 @@ function RouteVisual({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; sp
           <div className={styles.workspaceRail}>
             {spec.home.problemMessages.slice(0, 3).map((item, index) => (
               <span className={index === 0 ? styles.activeRailItem : ""} key={item.label}>
-                <MarketingIcon name="message" />
+                <MarketingIcon name={visualSourceIcons[index % visualSourceIcons.length] ?? "message"} />
                 {item.label}
               </span>
             ))}
@@ -101,7 +104,9 @@ function RouteVisual({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; sp
         <div className={styles.journeyVisual}>
           {spec.home.visual.stageLabels.map((label, index) => (
             <div className={styles.journeyStep} key={label}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
+              <span aria-hidden="true">
+                <MarketingIcon name={visualStageIcons[index % visualStageIcons.length] ?? "check"} />
+              </span>
               <div><strong>{label}</strong><small>{index === 0 ? spec.demo.incoming : index === 1 ? spec.demo.questions[0]?.value : spec.home.visual.replyDraft}</small></div>
             </div>
           ))}
@@ -115,7 +120,9 @@ function RouteVisual({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; sp
       <div className={styles.pricingVisual} aria-label={route.hero.eyebrow}>
         {spec.pricing.tiers.map((tier, index) => (
           <div className={styles.miniPlan} key={tier.name}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
+            <span aria-hidden="true">
+              <MarketingIcon name={visualPlanIcons[index % visualPlanIcons.length] ?? "briefcase"} />
+            </span>
             <strong>{tier.name}</strong>
             <b>{tier.price}</b>
           </div>
@@ -140,7 +147,13 @@ function RouteVisual({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; sp
     return (
       <div className={styles.faqVisual} aria-label={route.hero.eyebrow}>
         {spec.faqItems.slice(0, 4).map((item, index) => (
-          <div key={item.key}><span>0{index + 1}</span><strong>{item.question}</strong><MarketingIcon name="arrow" /></div>
+          <div key={item.key}>
+            <span aria-hidden="true">
+              <MarketingIcon name={routeIcons["/faq"][index % routeIcons["/faq"].length] ?? "message"} />
+            </span>
+            <strong>{item.question}</strong>
+            <MarketingIcon name="arrow" />
+          </div>
         ))}
       </div>
     );
