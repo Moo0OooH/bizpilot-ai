@@ -100,15 +100,15 @@ Proof rail:
 
 Eyebrow:
 
-`DEMANDES INTELLIGENTES POUR ÉQUIPES DE SERVICES`
+`COLLECTE INTELLIGENTE POUR ÉQUIPES DE SERVICES`
 
 H1:
 
-`Transformez les messages dispersés en demandes complètes — et en réponses prêtes à valider.`
+`Transformez les messages dispersés en demandes complètes et en réponses prêtes à valider.`
 
 Body:
 
-`Partagez un seul lien intelligent partout où vos clients vous écrivent. BizPilot pose les bonnes questions, organise chaque demande, signale les renseignements manquants et prépare une réponse que votre équipe valide avant de l'envoyer.`
+`Partagez un seul lien de collecte partout où vos clients vous écrivent. BizPilot pose les bonnes questions, organise chaque demande, signale les renseignements manquants et prépare une réponse que votre équipe valide avant de l'envoyer.`
 
 Primary CTA:
 
