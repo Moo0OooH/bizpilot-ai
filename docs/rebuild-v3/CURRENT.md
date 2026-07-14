@@ -20,7 +20,7 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 | V3.2 Information architecture and bilingual copy | Complete | Commit `0fbd589b6b703033ec3b2dc2141ceed6c7d9ddfa`; ten retained routes, five merge redirects, seven homepage sections, and typed EN/fr-CA contract |
 | V3.3 Public-shell reliability | Complete | Commit `760beb297a8b686a762e5ac81c58a47f746db797`; native locale navigation, explicit cookie transition, 1440px desktop threshold, compact final header IA, and real Chrome interaction smoke |
 | V3.4 Marketing design foundation | Complete | Consolidated V3 tokens and primitives, simplified header/footer, corrected landmarks, 100 accessibility score, and documented browser/visual evidence |
-| V3.5 Homepage conversion rebuild | Pending | Seven sections and three-stage product story |
+| V3.5 Homepage conversion rebuild | Complete | Seven-section V3 story, three-stage product scene, EN/fr-CA first-view evidence, 100 accessibility, and 96 performance |
 | V3.6 Page consolidation and conversion | Pending | Route decisions, redirects, distinct page jobs |
 | V3.7 Quality hardening | Pending | Performance, accessibility, SEO, resilient browser tests |
 | V3.8 Production acceptance | Pending | Exact main SHA, deployment match, live proof |
@@ -109,6 +109,25 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - Prove H1 line count, CTA visibility, product-story readability, no clipping, and 0px overflow at the required desktop, laptop, tablet, and mobile evidence sizes.
 - Re-run accessibility and Lighthouse; the Phase 4 local mobile performance sample was 94 with 2.9s LCP, 110ms TBT, 0 CLS, and 311KiB transfer.
 
+## Phase 5 result
+
+- Complete: `/` now renders exactly seven direct story sections and no longer uses the repeated V2 homepage narrative.
+- Complete: the EN and fr-CA headlines state message overload, complete requests, and review-ready replies without unsupported automation claims.
+- Complete: the product scene shows Scattered questions → One Smart Intake Link → Ready for your team and labels direct inbox integrations as roadmap.
+- Complete: both CTAs are visible at every captured viewport; the product story is visible in the first viewport at 390×844 and above, with the full mechanism already stated in copy at 360×740.
+- Complete: EN/fr-CA browser checks have 0px overflow at 320 through 1920, the mobile menu remains contained, and the application reports zero runtime errors.
+- Complete: Lighthouse mobile EN is 96 performance, 100 accessibility, 100 best practices, and 100 SEO, with 2.8s LCP, 20ms TBT, 0 CLS, and 298KiB transfer.
+- Complete: `pnpm verify`, 33-route public smoke, 25-route responsive smoke, browser interaction smoke, and the final UI matrix pass.
+- Evidence: [V3 homepage and hero acceptance](./V3_HOMEPAGE_AND_HERO_ACCEPTANCE.md).
+
+## Phase 6 entry conditions
+
+- Preserve the accepted homepage, locale reliability, 0px responsive overflow, human-review boundary, and product-scene readability.
+- Migrate the retained Features, Demo, Pricing, Pilot, FAQ, Trust, Privacy, Security, and Terms routes to the V3 copy contract and shared shell.
+- Implement the five approved permanent redirects with direct destinations, fragments, and locale query preservation.
+- Keep each retained route short and job-specific; do not reproduce merged guide content as new long-form pages.
+- Use a safe copy-only pilot request until a verified public founder contact or submission path is approved.
+
 ## Canonical V3 documents
 
 - [Research and benchmark audit](./V3_RESEARCH_AND_BENCHMARK_AUDIT.md)
@@ -121,3 +140,4 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - [Visual system specification](./V3_VISUAL_SYSTEM_SPEC.md)
 - [Public shell reliability report](./V3_PUBLIC_SHELL_RELIABILITY_REPORT.md)
 - [Design-system implementation report](./V3_DESIGN_SYSTEM_IMPLEMENTATION_REPORT.md)
+- [Homepage and hero acceptance](./V3_HOMEPAGE_AND_HERO_ACCEPTANCE.md)

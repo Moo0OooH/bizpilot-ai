@@ -13,6 +13,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated homepage interaction assertions to the approved V3 copy while secondary pages remain on V2.
  * - 2026-07-13: Verified the localized fr-CA compact-navigation trigger during mobile containment checks.
  * - 2026-07-13: Added the Website V3 Phase 3 Chrome interaction and responsive-shell regression smoke.
  * ============================================================
@@ -20,11 +21,12 @@
 
 import assert from "node:assert/strict";
 import { spawn, type ChildProcess } from "node:child_process";
-import { access, mkdtemp, readFile, rm } from "node:fs/promises";
+import { access, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
+import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
 
 type CdpMessage = Readonly<{
   error?: Readonly<{ message: string }>;
@@ -63,6 +65,20 @@ type MetadataSnapshot = Readonly<{
   ogLocale: string;
   ogTitle: string;
   title: string;
+}>;
+
+type HomepageVisualMetrics = Readonly<{
+  clientWidth: number;
+  ctasInViewport: number;
+  h1Lines: number;
+  language: string;
+  productStoryInViewport: boolean;
+  reducedMotion: boolean;
+  scrollWidth: number;
+  sectionCount: number;
+  theme: string;
+  viewportHeight: number;
+  viewportWidth: number;
 }>;
 
 const DEFAULT_BASE_URL = "http://127.0.0.1:3000";
@@ -389,6 +405,7 @@ async function realClick(
 async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> {
   const english = getPublicV2Copy("en");
   const french = getPublicV2Copy("fr-CA");
+  const frenchHome = getPublicV3Spec("fr-CA").routes["/"];
   const runtimeErrors: string[] = [];
 
   client.on("Runtime.exceptionThrown", (params) => {
@@ -431,7 +448,7 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   await waitFor(
     client,
     "French visible content",
-    `document.documentElement.lang === "fr-CA" && document.querySelector("h1")?.textContent?.includes(${JSON.stringify(french.home.hero.title)}) === true`,
+    `document.documentElement.lang === "fr-CA" && document.querySelector("h1")?.textContent?.includes(${JSON.stringify(frenchHome.hero.title)}) === true`,
   );
   const frenchClickMs = Date.now() - frenchClickStartedAt;
 
@@ -441,8 +458,8 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   assert.match(snapshot.search, /language=fr-CA/);
   assert.match(snapshot.search, /source=browser-smoke/);
   let metadata = await readMetadata(client);
-  assert.equal(metadata.title, french.home.meta.title);
-  assert.equal(metadata.ogTitle, french.home.meta.title);
+  assert.equal(metadata.title, frenchHome.meta.title);
+  assert.equal(metadata.ogTitle, frenchHome.meta.title);
   assert.equal(metadata.ogLocale, "fr_CA");
   assert.equal(metadata.canonical, "https://bizpilo.com/?language=fr-CA");
   assert.ok(metadata.alternates.includes("en-CA:https://bizpilo.com"));
@@ -608,6 +625,11 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   assert.notEqual(menu.overflowY, "auto");
   assert.notEqual(menu.overflowY, "scroll");
 
+  const evidenceDir = readCliValue("evidence-dir");
+  if (evidenceDir) {
+    await captureHomepageEvidence(client, baseUrl, evidenceDir);
+  }
+
   assert.deepEqual(runtimeErrors, [], `Application runtime errors: ${runtimeErrors.join("\n")}`);
   console.log("  Locale click, navigation, reload, reverse switch: pass");
   console.log(
@@ -615,6 +637,100 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
   );
   console.log(`  Mobile menu containment: pass (${Math.round(menu.top)}–${Math.round(menu.bottom)}px)`);
   console.log("  Application console/runtime errors: 0");
+}
+
+async function captureHomepageEvidence(
+  client: CdpClient,
+  baseUrl: URL,
+  evidenceDir: string,
+): Promise<void> {
+  await mkdir(evidenceDir, { recursive: true });
+  const metrics: Record<string, HomepageVisualMetrics> = {};
+
+  async function capture(
+    name: string,
+    path: string,
+    width: number,
+    height: number,
+  ): Promise<void> {
+    await setViewport(client, width, height);
+    await navigate(client, new URL(path, baseUrl));
+    await new Promise((resolve) => setTimeout(resolve, 350));
+
+    metrics[name] = await client.value<HomepageVisualMetrics>(`(() => {
+      const h1 = document.querySelector("h1");
+      const productStory = document.querySelector("main figure");
+      if (!(h1 instanceof HTMLElement) || !(productStory instanceof HTMLElement)) {
+        throw new Error("V3 homepage evidence hooks are missing");
+      }
+      const lineHeight = Number.parseFloat(getComputedStyle(h1).lineHeight);
+      const h1Lines = lineHeight > 0 ? Math.round(h1.getBoundingClientRect().height / lineHeight) : 0;
+      const primaryActions = Array.from(document.querySelectorAll('main section[data-v3-section="hero"] a'));
+      return {
+        clientWidth: document.documentElement.clientWidth,
+        ctasInViewport: primaryActions.filter((item) => item.getBoundingClientRect().bottom <= innerHeight).length,
+        h1Lines,
+        language: document.documentElement.lang,
+        productStoryInViewport: productStory.getBoundingClientRect().top < innerHeight,
+        reducedMotion: matchMedia("(prefers-reduced-motion: reduce)").matches,
+        scrollWidth: document.documentElement.scrollWidth,
+        sectionCount: document.querySelectorAll("main > section[data-v3-section]").length,
+        theme: document.documentElement.dataset.theme ?? "",
+        viewportHeight: innerHeight,
+        viewportWidth: innerWidth
+      };
+    })()`);
+
+    const screenshot = await client.send("Page.captureScreenshot", {
+      captureBeyondViewport: false,
+      format: "png",
+      fromSurface: true,
+    }) as { data: string };
+    await writeFile(join(evidenceDir, `${name}.png`), Buffer.from(screenshot.data, "base64"));
+  }
+
+  await client.send("Emulation.setEmulatedMedia", { features: [] });
+  await capture("home-en-1440x900", "/?language=en", 1440, 900);
+  await capture("home-fr-1440x900", "/?language=fr-CA", 1440, 900);
+  await capture("home-en-1280x720", "/?language=en", 1280, 720);
+  await capture("home-en-768x1024", "/?language=en", 768, 1024);
+  await capture("home-en-390x844", "/?language=en", 390, 844);
+  await capture("home-fr-390x844", "/?language=fr-CA", 390, 844);
+  await capture("home-en-360x740", "/?language=en", 360, 740);
+
+  await setViewport(client, 1440, 900);
+  await navigate(client, new URL("/?language=en", baseUrl));
+  await realClick(client, buttonWithLabelPrefix("Theme."), "Evidence theme trigger");
+  await waitFor(
+    client,
+    "evidence dark theme option",
+    `Array.from(document.querySelectorAll('[role="menuitemradio"]')).some((option) => option.textContent?.includes("Dark"))`,
+  );
+  await realClick(client, menuOptionWithLabel("Dark"), "Evidence dark theme option");
+  await waitFor(client, "evidence dark theme", `document.documentElement.dataset.theme === "dark"`);
+  await capture("home-en-dark-1440x900", "/?language=en", 1440, 900);
+
+  await realClick(client, buttonWithLabelPrefix("Theme."), "Evidence theme reset trigger");
+  await waitFor(
+    client,
+    "evidence light theme option",
+    `Array.from(document.querySelectorAll('[role="menuitemradio"]')).some((option) => option.textContent?.includes("Light"))`,
+  );
+  await realClick(client, menuOptionWithLabel("Light"), "Evidence light theme option");
+  await waitFor(client, "evidence light theme", `document.documentElement.dataset.theme === "light"`);
+
+  await client.send("Emulation.setEmulatedMedia", {
+    features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+  });
+  await capture("home-en-reduced-motion-1440x900", "/?language=en", 1440, 900);
+  await client.send("Emulation.setEmulatedMedia", { features: [] });
+
+  await writeFile(
+    join(evidenceDir, "homepage-visual-metrics.json"),
+    `${JSON.stringify(metrics, null, 2)}\n`,
+    "utf8",
+  );
+  console.log(`  Homepage visual evidence: ${Object.keys(metrics).length} states captured`);
 }
 
 async function terminateChrome(process: ChildProcess): Promise<void> {

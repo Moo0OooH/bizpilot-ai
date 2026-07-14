@@ -12,6 +12,7 @@
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Added the V3 navigation-copy adapter contract and made product frames semantic figures.
  * - 2026-07-13: Established V3 shell, button, card, product-scene, skip-link, and simplified footer primitives.
  * - 2026-07-13: Applied the final compact header IA and delayed desktop expansion until the measured 1440px fit point.
  * - 2026-07-12: Routed shared public navigation and CTA hrefs through the locale-preserving helper.
@@ -41,7 +42,6 @@ import type { CSSProperties, ReactNode } from "react";
 import { MarketingCompactMenu } from "@/components/public/marketing-compact-menu";
 import { MarketingLanguageMenu } from "@/components/public/marketing-language-menu";
 import { ThemePreferenceControl } from "@/components/ui/theme-preference-control";
-import type { HomeNavCopy } from "@/lib/i18n/home-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
 import { publicHref } from "@/lib/i18n/public-href";
 
@@ -97,32 +97,42 @@ type MarketingHeroVisual = Readonly<{
   title: ReactNode;
 }>;
 
-const defaultMarketingNavCopy: HomeNavCopy = {
+export type MarketingNavCopy = Readonly<{
+  brandSubtitle: string;
+  copyright: string;
+  demo: string;
+  faq: string;
+  features: string;
+  flow: string;
+  languageLabel: string;
+  pilot: string;
+  pricing: string;
+  privacy: string;
+  resources: string;
+  security: string;
+  signIn: string;
+  startShort: string;
+  terms: string;
+  trust: string;
+}>;
+
+const defaultMarketingNavCopy: MarketingNavCopy = {
   brandSubtitle: "Smart customer intake and reply workspace",
-  cleaning: "Cleaning pilot",
-  comparison: "Compare",
   copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
   demo: "Demo",
   faq: "FAQ",
   features: "Product",
   flow: "How it works",
-  fasterReplies: "Faster replies guide",
-  futureTemplates: "Future templates — Roadmap",
-  guide: "Intake link guide",
   languageLabel: "Website language",
   pilot: "Pilot",
   pricing: "Pricing",
   privacy: "Privacy",
   resources: "Resources",
   security: "Security",
-  serviceOverview: "Service-business overview",
   signIn: "Sign in",
-  startFull: "Apply for the founder pilot",
   startShort: "Apply for pilot",
   terms: "Terms",
   trust: "Trust",
-  useCases: "Use cases",
-  why: "Why BizPilot",
 };
 
 type MarketingNavKey =
@@ -741,7 +751,7 @@ export function MarketingHeader({
   redirectPath = "/",
 }: Readonly<{
   active?: MarketingNavKey;
-  copy?: HomeNavCopy;
+  copy?: MarketingNavCopy;
   language?: SupportedLanguage | undefined;
   redirectPath?: string;
 }>) {
@@ -928,7 +938,7 @@ export function MarketingHeader({
 export function MarketingFooter({
   copy = defaultMarketingNavCopy,
   language,
-}: Readonly<{ copy?: HomeNavCopy; language?: SupportedLanguage | undefined }>) {
+}: Readonly<{ copy?: MarketingNavCopy; language?: SupportedLanguage | undefined }>) {
   const footerLabels = language === "fr-CA"
     ? {
         account: "Compte",
@@ -994,9 +1004,9 @@ export function MarketingProductFrame({
   label,
 }: Readonly<{ children: ReactNode; className?: string; label: string }>) {
   return (
-    <section aria-label={label} className={`v3-product-frame ${className}`}>
+    <figure aria-label={label} className={`v3-product-frame ${className}`}>
       {children}
-    </section>
+    </figure>
   );
 }
 

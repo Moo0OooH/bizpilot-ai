@@ -12,6 +12,7 @@
  * Created: 2026-06-20
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated homepage metadata and visual-hook checks to the seven-section V3 renderer.
  * - 2026-06-21: Added light/dark theme matrix, visual markers, and en-XA fallback checks.
  * - 2026-06-21: Added the dedicated FAQ route to localized metadata coverage.
  * - 2026-06-21: Added Cleaning service de-duplication checks across locales and themes.
@@ -29,6 +30,7 @@ import {
   getPublicSiteCopy,
 } from "../../lib/i18n/public-site-copy.ts";
 import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
+import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
 import {
   publicCanonicalRoutes,
   publicLanguageAlternates,
@@ -261,6 +263,11 @@ function v2RouteExpectation(
   path: PublicCanonicalRoute,
   locale: Locale,
 ): Readonly<{ description: string; heading: string; title: string }> | undefined {
+  if (path === "/") {
+    const home = getPublicV3Spec(locale).routes["/"];
+    return { ...home.meta, heading: home.hero.title };
+  }
+
   const copy = getPublicV2Copy(locale);
   const page = (() => {
     switch (path) {
@@ -275,10 +282,6 @@ function v2RouteExpectation(
       default: return undefined;
     }
   })();
-
-  if (path === "/") {
-    return { ...copy.home.meta, heading: copy.home.hero.title };
-  }
 
   return page ? { ...page.meta, heading: page.title } : undefined;
 }
@@ -404,17 +407,17 @@ function checkPublicRoute(
       detail: route.path,
       name: `${locale} ${theme} home has final first-fold visual hooks`,
       pass:
-        visibleHtml.includes("homepage-hero-section") &&
-        visibleHtml.includes("homepage-hero-actions") &&
-        visibleHtml.includes("homepage-hero-mockup") &&
-        visibleHtml.includes("homepage-product-scene"),
+        visibleHtml.includes('data-v3-section="hero"') &&
+        visibleHtml.includes('data-v3-section="workflow"') &&
+        visibleHtml.includes('data-v3-section="cleaning-demo"') &&
+        visibleHtml.includes("heroProductFrame"),
     });
     results.push({
       detail: route.path,
       name: `${locale} ${theme} home old workflow duplication removed`,
       pass:
         !visibleHtml.includes("homepage-workflow-grid") &&
-        countOccurrences(visibleHtml, "homepage-product-scene") === 1,
+        countOccurrences(visibleHtml, "data-v3-section=") === 7,
     });
   }
 
@@ -659,7 +662,7 @@ async function main(): Promise<void> {
     name: "test pseudolocale falls back to production English",
     pass:
       pseudoFallbackHtml.includes('<html lang="en"') &&
-      headIncludes(pseudoFallbackHtml, getPublicV2Copy("en").home.hero.title) &&
+      headIncludes(pseudoFallbackHtml, getPublicV3Spec("en").routes["/"].hero.title) &&
       !stripScripts(pseudoFallbackHtml).includes(TEST_PSEUDO_LOCALE),
   });
 

@@ -14,6 +14,7 @@
  * Created: 2026-06-20
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Replaced V2 homepage hooks with the seven-section V3 product-story and responsive-motion contract.
  * - 2026-07-13: Updated shared-shell assertions to the V3 container foundation.
  * - 2026-07-13: Replaced the obsolete nested-scroll exception with the measured no-internal-scroll compact-menu contract.
  * ============================================================
@@ -121,47 +122,48 @@ describe("public V2 visual stability source contracts", () => {
     );
   });
 
-  it("keeps one responsive V2 homepage product story with measurable hooks", () => {
-    const homepage = source("components/public/bizpilot-v2-home.tsx");
+  it("keeps one responsive V3 homepage product story with measurable hooks", () => {
+    const homepage = source("components/public/public-v3-home.tsx");
     const pageRoute = source("app/page.tsx");
-    const css = source("components/public/bizpilot-v2-home.module.css");
+    const css = source("components/public/public-v3-home.module.css");
 
     for (const required of [
-      "homepage-hero-section",
-      "homepage-hero-stage",
-      "homepage-hero-actions",
-      "homepage-hero-proof-rail",
-      "homepage-hero-mockup",
-      "homepage-product-scene",
-      "homepage-problem-section",
-      "homepage-demo-grid",
-      "ProductScene",
-      "copy.placements.map",
-      "copy.workspace.fields.map",
-      "copy.workspace.actions.map",
+      'data-v3-section="hero"',
+      'data-v3-section="problem"',
+      'data-v3-section="workflow"',
+      'data-v3-section="outcomes"',
+      'data-v3-section="cleaning-demo"',
+      'data-v3-section="trust"',
+      'data-v3-section="final-cta"',
+      "HeroProductStory",
+      "MarketingProductFrame",
+      "spec.home.problemMessages.map",
+      "spec.home.workflowSteps.map",
+      "spec.home.outcomeCards.map",
     ]) {
       assert.equal(
         homepage.includes(required),
         true,
-        `V2 homepage visual hook missing ${required}.`,
+        `V3 homepage visual hook missing ${required}.`,
       );
     }
 
-    assert.equal(pageRoute.includes("<BizPilotV2Home copy={copy} language={language} />"), true);
+    assert.equal((homepage.match(/data-v3-section=/g) ?? []).length, 7);
+    assert.equal(pageRoute.includes("<PublicV3Home language={language} spec={spec} />"), true);
     assert.equal(pageRoute.includes("buildHomeJsonLd(language)"), true);
-    assert.equal(css.includes("@media (min-width: 390px)"), true);
     assert.equal(css.includes("@media (min-width: 720px)"), true);
     assert.equal(css.includes("@media (min-width: 1020px)"), true);
-    assert.equal(css.includes("@media (max-width: 359px)"), true);
+    assert.equal(css.includes("@media (min-width: 1280px)"), true);
+    assert.equal(css.includes("@media (max-width: 389px)"), true);
   });
 
   it("respects reduced-motion preferences while keeping motion product-led", () => {
-    const css = source("components/public/bizpilot-v2-home.module.css");
+    const css = source("components/public/public-v3-home.module.css");
 
     assert.equal(css.includes("@media (prefers-reduced-motion: no-preference)"), true);
-    assert.equal(css.includes("animation: scene-enter"), true);
-    assert.equal(css.includes("animation: placement-pulse"), true);
-    assert.equal(css.includes("animation: draft-glow"), true);
+    assert.equal(css.includes("animation: v3-story-reveal"), true);
+    assert.equal(css.includes("animation-delay: 90ms"), true);
+    assert.equal(css.includes("animation-delay: 180ms"), true);
     assert.equal(css.includes("animation: infinite"), false);
     assert.equal(css.includes("animation-duration: 0.01ms"), false);
   });

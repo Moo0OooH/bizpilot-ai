@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Completed the V3 shell dictionary for the homepage and retained public routes.
  * - 2026-07-13: Created the typed V3 bilingual content and route contract for Phase 2.
  * ============================================================
  */
@@ -113,15 +114,20 @@ export type PublicV3Spec = Readonly<{
     workflowSteps: readonly FeatureCopy[];
   }>;
   nav: Readonly<{
+    brandSubtitle: string;
+    copyright: string;
     demo: string;
     faq: string;
     howItWorks: string;
     languageLabel: string;
     pilot: string;
     pricing: string;
+    privacy: string;
     product: string;
     resources: string;
+    security: string;
     signIn: string;
+    terms: string;
     themeLabel: string;
     trust: string;
   }>;
@@ -142,14 +148,19 @@ export type PublicV3Spec = Readonly<{
 
 const englishSpec: PublicV3Spec = {
   nav: {
+    brandSubtitle: "Smart intake and reply workspace",
+    copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
     product: "Product",
     howItWorks: "How it works",
     demo: "Demo",
     pricing: "Pricing",
+    privacy: "Privacy",
     resources: "Resources",
+    security: "Security",
     faq: "FAQ",
     trust: "Trust",
     signIn: "Sign in",
+    terms: "Terms",
     pilot: "Apply for pilot",
     languageLabel: "Website language",
     themeLabel: "Theme",
@@ -669,14 +680,19 @@ const englishSpec: PublicV3Spec = {
 
 const frenchSpec: PublicV3Spec = {
   nav: {
+    brandSubtitle: "Collecte et réponses intelligentes",
+    copyright: "Copyright 2026 BizPilot AI. Tous droits réservés.",
     product: "Produit",
     howItWorks: "Fonctionnement",
     demo: "Démo",
     pricing: "Tarifs",
+    privacy: "Confidentialité",
     resources: "Ressources",
+    security: "Sécurité",
     faq: "FAQ",
     trust: "Confiance",
     signIn: "Connexion",
+    terms: "Conditions",
     pilot: "Demander l'accès",
     languageLabel: "Langue du site",
     themeLabel: "Thème",

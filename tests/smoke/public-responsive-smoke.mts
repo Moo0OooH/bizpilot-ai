@@ -11,6 +11,7 @@
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated the homepage heading contract to the typed bilingual V3 specification.
  * - 2026-07-12: Updated French href and manual pilot-request expectations.
  * - 2026-06-18: Created route-level responsive contract smoke for public hardening.
  * - 2026-06-20: Added fr-CA homepage coverage for bilingual hero stability.
@@ -34,6 +35,7 @@
 
 import { getPublicV2Copy } from "../../lib/i18n/public-v2-copy.ts";
 import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
+import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
 
 type RouteContract = Readonly<{
   h1: string;
@@ -402,7 +404,7 @@ function assertContract(route: RouteContract, html: string): string[] {
   const v2Copy = getPublicV2Copy(language);
   const siteCopy = getPublicSiteCopy(language);
   const v2Headings: Readonly<Partial<Record<string, string>>> = {
-    "/": v2Copy.home.hero.title,
+    "/": getPublicV3Spec(language).routes["/"].hero.title,
     "/comparison": v2Copy.comparison.title,
     "/demo": v2Copy.demo.title,
     "/faq": v2Copy.faq.title,

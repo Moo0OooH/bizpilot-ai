@@ -9,8 +9,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Migrated the homepage dictionary guard to the typed Website V3 specification.
  * - 2026-07-12: Updated pilot conversion assertions for the manual email-draft path.
  * - 2026-06-20: Added public-grid balance and forced-height regression checks.
  * - 2026-06-21: Added fr-CA public shell accent regression checks.
@@ -520,8 +521,12 @@ describe("BizPilot language copy", () => {
   });
 
   it("keeps final public routes wired to the active dictionaries instead of hardcoded marketing copy", () => {
+    const homepage = readFileSync("app/page.tsx", "utf8");
+    assert.equal(homepage.includes("getPublicV3Spec"), true);
+    assert.equal(homepage.includes("PublicV3Home"), true);
+    assert.equal(homepage.includes("generateMetadata"), true);
+
     const v2Routes = [
-      "app/page.tsx",
       "app/features/page.tsx",
       "app/demo/page.tsx",
       "app/pricing/page.tsx",
@@ -565,7 +570,7 @@ describe("BizPilot language copy", () => {
     }
 
     const homepageSource = readFileSync("app/page.tsx", "utf8");
-    assert.equal(homepageSource.includes("BizPilotV2Home"), true);
+    assert.equal(homepageSource.includes("PublicV3Home"), true);
     for (const phrase of [
       "Stop losing cleaning quote requests to slow replies.",
       "Messages get buried",

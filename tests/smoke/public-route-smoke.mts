@@ -22,6 +22,7 @@
  * - 2026-07-11: Added all primary public marketing pages to route smoke coverage.
  * - 2026-07-12: Added fr-CA route and internal-link persistence smoke coverage.
  * - 2026-07-13: Replaced legacy cleaning-only route markers with the universal V2 product truth.
+ * - 2026-07-13: Aligned homepage smoke markers with the V3 message-to-reply hero.
  * ============================================================
  */
 
@@ -46,9 +47,9 @@ const DEFAULT_TIMEOUT_MS = 15_000;
 const smokeTargets: readonly SmokeTarget[] = [
   {
     expectedText: [
-      "Turn scattered customer requests into clear, ready-to-review replies.",
-      "Smart intake link",
-      "Send manually",
+      "Turn scattered customer messages into complete requests—and replies ready to review.",
+      "One Smart Intake Link",
+      "Read, edit, and copy the AI-assisted draft, then send it manually through the real customer channel.",
     ],
     path: "/",
     status: 200,

@@ -1,0 +1,802 @@
+/**
+ * ============================================================
+ * File: components/public/public-v3-home.module.css
+ * Project: BizPilot AI
+ * Description: Responsive styling for the seven-section Website V3 homepage.
+ * Role: Keeps the hero, product story, workflow, outcomes, cleaning demo, trust boundary, and conversion panel readable across themes and viewports.
+ * Related:
+ * - components/public/public-v3-home.tsx
+ * - app/globals.css
+ * - docs/rebuild-v3/V3_VISUAL_SYSTEM_SPEC.md
+ * Author: MoOoH
+ * Created: 2026-07-13
+ * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Created the responsive V3 homepage composition and motion-safe product story.
+ * ============================================================
+ */
+
+.page {
+  min-block-size: 100svh;
+  overflow-wrap: anywhere;
+  background: var(--marketing-background);
+  color: var(--text-strong);
+}
+
+.heroSection {
+  padding-block: clamp(2.75rem, 6vh, 5rem) clamp(4rem, 7vw, 6.5rem);
+}
+
+.heroGrid {
+  display: grid;
+  min-inline-size: 0;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+.heroCopy,
+.sectionHeading,
+.heroProductFrame,
+.storyStage,
+.outcomePanel,
+.demoFlow,
+.finalPanel {
+  min-inline-size: 0;
+}
+
+.heroTitle {
+  max-inline-size: 15ch;
+  margin-block-start: var(--v3-space-5);
+  font-size: clamp(2.55rem, 7.7vw, 4.5rem);
+  font-weight: 900;
+  letter-spacing: -0.055em;
+  line-height: var(--v3-leading-display);
+  text-wrap: balance;
+}
+
+.heroBody {
+  max-inline-size: 43rem;
+  margin-block-start: var(--v3-space-5);
+  color: var(--text-default);
+  font-size: var(--v3-type-lead);
+  line-height: var(--v3-leading-body);
+}
+
+.heroActions,
+.finalActions {
+  display: flex;
+  min-inline-size: 0;
+  flex-wrap: wrap;
+  gap: var(--v3-space-3);
+  margin-block-start: var(--v3-space-6);
+}
+
+.heroAssurances {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--v3-space-3) var(--v3-space-5);
+  margin-block-start: var(--v3-space-5);
+  color: var(--text-default);
+  font-size: var(--v3-type-small);
+  font-weight: 750;
+}
+
+.heroAssurances span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--v3-space-2);
+}
+
+.heroAssurances svg {
+  color: var(--success);
+}
+
+.heroProductFrame {
+  overflow: hidden;
+}
+
+.productChrome {
+  display: flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  gap: 0.35rem;
+  border-block-end: var(--v3-border);
+  padding-inline: var(--v3-space-4);
+  background: var(--surface-elevated);
+}
+
+.productChrome span {
+  block-size: 0.55rem;
+  inline-size: 0.55rem;
+  border-radius: 999px;
+  background: var(--border-strong);
+}
+
+.productChrome span:first-child {
+  background: var(--danger);
+}
+
+.productChrome span:nth-child(2) {
+  background: var(--warning);
+}
+
+.productChrome span:nth-child(3) {
+  background: var(--success);
+}
+
+.productChrome strong {
+  margin-inline-start: auto;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroStages {
+  display: grid;
+  gap: var(--v3-space-3);
+  padding: var(--v3-space-4);
+}
+
+.storyStage {
+  display: grid;
+  align-content: start;
+  gap: var(--v3-space-3);
+  padding: var(--v3-space-3);
+}
+
+.stageHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--v3-space-2);
+}
+
+.stageHeader > span,
+.demoLabel {
+  display: grid;
+  block-size: 1.75rem;
+  inline-size: 1.75rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.5rem;
+  background: var(--text-strong);
+  color: var(--canvas);
+  font-size: 0.68rem;
+  font-weight: 900;
+}
+
+.stageHeader strong {
+  font-size: 0.76rem;
+  line-height: 1.25;
+}
+
+.messageStack {
+  display: grid;
+  gap: var(--v3-space-2);
+}
+
+.messageBubble {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.2rem var(--v3-space-2);
+  border: var(--v3-border);
+  border-radius: 0.7rem;
+  padding: 0.65rem 0.75rem;
+  background: var(--surface);
+}
+
+.messageBubble span {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.messageBubble strong {
+  color: var(--text-strong);
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.storyConnector {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.linkStage {
+  background: color-mix(in srgb, var(--primary) 5%, var(--surface-interactive));
+}
+
+.intakeLinkCard {
+  display: grid;
+  justify-items: start;
+  gap: var(--v3-space-2);
+  border: 1px solid color-mix(in srgb, var(--primary) 25%, var(--border-default));
+  border-radius: 0.8rem;
+  padding: var(--v3-space-3);
+  background: var(--surface);
+}
+
+.linkIcon,
+.outcomeIcon {
+  display: grid;
+  block-size: 2rem;
+  inline-size: 2rem;
+  place-items: center;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--primary) 11%, var(--surface));
+  color: var(--primary);
+}
+
+.intakeLinkCard strong {
+  font-size: 0.86rem;
+}
+
+.intakeLinkCard p,
+.draftCard p {
+  color: var(--text-default);
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+.linkButton {
+  margin-block-start: var(--v3-space-1);
+  border-radius: 0.5rem;
+  background: var(--primary);
+  padding: 0.5rem 0.65rem;
+  color: var(--primary-contrast);
+  font-size: 0.7rem;
+  font-weight: 850;
+}
+
+.readyStage {
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface-interactive));
+}
+
+.requestSummary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--v3-space-2);
+}
+
+.requestSummary > div {
+  display: grid;
+  gap: 0.15rem;
+  border: var(--v3-border);
+  border-radius: 0.65rem;
+  padding: 0.55rem;
+  background: var(--surface);
+}
+
+.requestSummary span {
+  color: var(--text-muted);
+  font-size: 0.58rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.requestSummary strong {
+  font-size: 0.7rem;
+  line-height: 1.3;
+}
+
+.draftCard {
+  display: grid;
+  gap: var(--v3-space-2);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border-default));
+  border-radius: 0.7rem;
+  padding: 0.7rem;
+  background: var(--surface);
+}
+
+.draftCard > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--v3-space-2);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.placementNote {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--v3-space-2);
+  border-block-start: var(--v3-border);
+  padding: var(--v3-space-3) var(--v3-space-4);
+  color: var(--text-default);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.placementNote svg {
+  flex: 0 0 auto;
+  color: var(--accent);
+}
+
+.problemSection,
+.workflowSection,
+.outcomesSection,
+.demoSection,
+.trustSection,
+.finalSection {
+  padding-block: var(--v3-section-space);
+}
+
+.problemSection,
+.outcomesSection,
+.trustSection {
+  border-block: 1px solid color-mix(in srgb, var(--border-default) 68%, transparent);
+  background: color-mix(in srgb, var(--canvas-subtle) 62%, transparent);
+}
+
+.problemGrid,
+.outcomesGrid,
+.trustGrid {
+  display: grid;
+  align-items: start;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+
+.sectionHeading {
+  max-inline-size: var(--v3-reading-max);
+}
+
+.eyebrow,
+.sectionHeading > p:first-child {
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.sectionHeading h2,
+.finalPanel h2 {
+  margin-block-start: var(--v3-space-3);
+  font-size: var(--v3-type-section);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: var(--v3-leading-heading);
+  text-wrap: balance;
+}
+
+.sectionHeading > p:last-child,
+.finalPanel > div > p:last-child {
+  margin-block-start: var(--v3-space-4);
+  color: var(--text-default);
+  font-size: var(--v3-type-lead);
+  line-height: var(--v3-leading-body);
+}
+
+.problemMessages {
+  display: grid;
+  gap: var(--v3-space-3);
+}
+
+.problemMessages article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--v3-space-3);
+  border: var(--v3-border);
+  border-radius: var(--v3-radius-sm);
+  padding: 0.9rem 1rem;
+  background: var(--surface);
+  box-shadow: var(--v3-shadow-card);
+}
+
+.sourceDot {
+  block-size: 0.65rem;
+  inline-size: 0.65rem;
+  border-radius: 999px;
+  background: var(--warning);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--warning) 12%, transparent);
+}
+
+.problemMessages article:nth-child(even) .sourceDot {
+  background: var(--primary);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--primary) 11%, transparent);
+}
+
+.problemMessages p,
+.problemMessages small {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.problemMessages strong {
+  display: block;
+  margin-block-start: 0.2rem;
+  font-size: 0.95rem;
+}
+
+.workflowSection .sectionHeading,
+.demoSection .sectionHeading {
+  max-inline-size: 52rem;
+}
+
+.workflowList {
+  display: grid;
+  margin-block-start: clamp(2rem, 5vw, 3.5rem);
+  list-style: none;
+}
+
+.workflowList li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--v3-space-4);
+  border-block-start: var(--v3-border);
+  padding-block: var(--v3-space-5);
+}
+
+.workflowList li:last-child {
+  border-block-end: var(--v3-border);
+}
+
+.workflowList li > span {
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.workflowList h3,
+.outcomeList h3,
+.demoFlow h3 {
+  font-size: var(--v3-type-card);
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.workflowList p,
+.outcomeList p {
+  margin-block-start: var(--v3-space-2);
+  color: var(--text-default);
+  font-size: 0.95rem;
+  line-height: var(--v3-leading-body);
+}
+
+.outcomePanel {
+  border: var(--v3-border);
+  border-radius: var(--v3-radius-lg);
+  background: var(--surface);
+  box-shadow: var(--v3-shadow-float);
+}
+
+.outcomeRecordHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--v3-space-3);
+  border-block-end: var(--v3-border);
+  padding: var(--v3-space-5);
+}
+
+.outcomeRecordHeader > div {
+  display: grid;
+  gap: var(--v3-space-1);
+}
+
+.outcomeRecordHeader > div span {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.outcomeList {
+  display: grid;
+  gap: var(--v3-space-4);
+  padding: var(--v3-space-5);
+}
+
+.outcomeList article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--v3-space-3);
+}
+
+.outcomeIcon {
+  block-size: 2.25rem;
+  inline-size: 2.25rem;
+}
+
+.demoHeadingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--v3-space-5);
+}
+
+.demoHeadingRow > a {
+  flex: 0 0 auto;
+}
+
+.demoFlow {
+  display: grid;
+  gap: var(--v3-space-3);
+  margin-block-start: clamp(2rem, 5vw, 3.5rem);
+}
+
+.demoFlow article {
+  display: grid;
+  align-content: start;
+  gap: var(--v3-space-3);
+  border: var(--v3-border);
+  border-radius: var(--v3-radius-md);
+  padding: var(--v3-space-5);
+  background: var(--surface);
+}
+
+.demoIncoming {
+  box-shadow: var(--v3-shadow-card);
+}
+
+.demoIncoming > p {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.demoIncoming blockquote {
+  border-inline-start: 3px solid var(--warning);
+  padding-inline-start: var(--v3-space-4);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.demoQuestions > div {
+  display: grid;
+  gap: var(--v3-space-2);
+}
+
+.demoQuestions > div p {
+  display: grid;
+  gap: 0.2rem;
+  border: var(--v3-border);
+  border-radius: 0.65rem;
+  padding: 0.65rem;
+  background: var(--surface-interactive);
+}
+
+.demoQuestions p strong {
+  font-size: 0.78rem;
+}
+
+.demoQuestions p span,
+.demoReady > p {
+  color: var(--text-default);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.demoReady {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border-default)) !important;
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface)) !important;
+}
+
+.demoReady > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--v3-space-2);
+}
+
+.trustBoundaries {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--v3-space-3);
+}
+
+.trustBoundaries > div {
+  display: grid;
+  min-inline-size: 0;
+  align-content: start;
+  gap: var(--v3-space-3);
+  border: var(--v3-border);
+  border-radius: var(--v3-radius-sm);
+  padding: var(--v3-space-4);
+  background: var(--surface);
+}
+
+.trustBoundaries span {
+  display: grid;
+  block-size: 2rem;
+  inline-size: 2rem;
+  place-items: center;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--success) 10%, var(--surface));
+  color: var(--success);
+}
+
+.trustBoundaries strong {
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.finalSection {
+  padding-block-start: var(--v3-section-space-compact);
+}
+
+.finalPanel {
+  display: grid;
+  align-items: center;
+  gap: var(--v3-space-6);
+  border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--border-default));
+  border-radius: var(--v3-radius-lg);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  background: color-mix(in srgb, var(--primary) 6%, var(--surface));
+  box-shadow: var(--v3-shadow-card);
+}
+
+.finalPanel > div:first-child {
+  max-inline-size: 48rem;
+}
+
+.finalActions {
+  margin-block-start: 0;
+}
+
+@media (min-width: 720px) {
+  .heroStages {
+    grid-template-columns: minmax(0, 0.95fr) auto minmax(0, 0.82fr) auto minmax(0, 1.2fr);
+    align-items: stretch;
+  }
+
+  .storyConnector {
+    display: flex;
+  }
+
+  .problemMessages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .workflowList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--v3-space-6);
+  }
+
+  .workflowList li:nth-child(2) {
+    border-block-start: var(--v3-border);
+  }
+
+  .workflowList li:nth-last-child(2) {
+    border-block-end: var(--v3-border);
+  }
+
+  .demoFlow {
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr) minmax(0, 1.12fr);
+  }
+
+  .finalPanel {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .finalActions {
+    max-inline-size: 18rem;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 719px) {
+  .heroSection {
+    padding-block: 2rem 4rem;
+  }
+
+  .heroGrid {
+    gap: var(--v3-space-5);
+  }
+
+  .heroTitle {
+    margin-block-start: var(--v3-space-4);
+    font-size: clamp(2.2rem, 10vw, 2.45rem);
+    letter-spacing: -0.045em;
+  }
+
+  .heroBody {
+    margin-block-start: var(--v3-space-4);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .heroActions {
+    margin-block-start: 1.25rem;
+  }
+
+  .heroAssurances span:nth-child(n + 2) {
+    display: none;
+  }
+}
+
+@media (min-width: 1020px) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(32rem, 1fr);
+    gap: clamp(2rem, 3vw, 3rem);
+  }
+
+  .heroTitle {
+    max-inline-size: 22ch;
+    font-size: clamp(3rem, 3.4vw, 3.35rem);
+  }
+
+  :global(html[lang="fr-CA"]) .heroTitle {
+    max-inline-size: 24ch;
+    font-size: clamp(2.75rem, 3.1vw, 3.1rem);
+  }
+
+  .problemGrid,
+  .outcomesGrid,
+  .trustGrid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(30rem, 1.1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .workflowList {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .workflowList li {
+    grid-template-columns: 1fr;
+    border-block-end: var(--v3-border);
+    border-inline-start: var(--v3-border);
+    padding: var(--v3-space-5);
+  }
+
+  .workflowList li:last-child {
+    border-inline-end: var(--v3-border);
+  }
+}
+
+@media (max-width: 389px) {
+  .heroActions > a,
+  .finalActions > a {
+    inline-size: 100%;
+  }
+
+  .trustBoundaries,
+  .requestSummary {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .storyStage {
+    animation: v3-story-reveal var(--v3-motion-panel) var(--v3-ease-out) both;
+  }
+
+  .storyStage:nth-of-type(2) {
+    animation-delay: 90ms;
+  }
+
+  .storyStage:nth-of-type(3) {
+    animation-delay: 180ms;
+  }
+}
+
+@keyframes v3-story-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

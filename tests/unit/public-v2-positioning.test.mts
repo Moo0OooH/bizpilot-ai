@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Moved the homepage source guard to V3 while retained secondary pages remain on V2 until Phase 6.
  * - 2026-07-13: Aligned shared-shell coverage with the simplified V3 footer information architecture.
  * - 2026-07-13: Added regression coverage for universal guide copy, fallback metadata, and accented fr-CA JSON-LD.
  * - 2026-07-13: Added source guards for route-specific V2 page variants and grouped navigation copy.
@@ -169,9 +170,13 @@ describe("public V2 positioning", () => {
     assert.match(englishPricing.notice?.body ?? "", /does not currently offer in-app billing automation/i);
   });
 
-  it("keeps routes, metadata, social preview, and JSON-LD on the V2 source", () => {
+  it("keeps the homepage on V3 while retained secondary routes remain on V2 until Phase 6", () => {
+    const homepage = readFileSync("app/page.tsx", "utf8");
+    assert.equal(homepage.includes("getPublicV3Spec"), true);
+    assert.equal(homepage.includes("PublicV3Home"), true);
+    assert.equal(homepage.includes("buildHomeJsonLd(language)"), true);
+
     const sourceFiles = [
-      "app/page.tsx",
       "app/features/page.tsx",
       "app/demo/page.tsx",
       "app/pricing/page.tsx",
