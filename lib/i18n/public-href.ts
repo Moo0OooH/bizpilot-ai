@@ -10,28 +10,46 @@
  * - tests/unit/public-language-links.test.mts
  * Author: MoOoH
  * Created: 2026-07-12
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Normalized both locale directions so English removes stale language queries while fr-CA replaces them without dropping other URL state.
  * - 2026-07-12: Added centralized fr-CA query preservation for public links.
  * ============================================================
  */
 
-import { DEFAULT_LANGUAGE, type SupportedLanguage } from "./language.ts";
+import type { SupportedLanguage } from "./language.ts";
 
 const publicHrefBase = "https://bizpilot.local";
 
-/** Preserves the active public locale without changing external or hash-only links. */
+/** Applies the selected public locale without changing external or hash-only links. */
 export function publicHref(href: string, language?: SupportedLanguage): string {
   if (
-    language !== "fr-CA" ||
-    language === DEFAULT_LANGUAGE ||
+    !language ||
     !href.startsWith("/")
   ) {
     return href;
   }
 
   const url = new URL(href, publicHrefBase);
-  url.searchParams.set("language", language);
+  if (language === "fr-CA") {
+    url.searchParams.set("language", language);
+  } else {
+    url.searchParams.delete("language");
+  }
 
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
+/** Sends an explicit locale signal so the request proxy can update persistence. */
+export function publicLanguageHref(
+  href: string,
+  language: SupportedLanguage,
+): string {
+  if (!href.startsWith("/")) {
+    return href;
+  }
+
+  const url = new URL(href, publicHrefBase);
+  url.searchParams.set("language", language);
   return `${url.pathname}${url.search}${url.hash}`;
 }

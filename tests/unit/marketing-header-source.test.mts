@@ -12,6 +12,7 @@
  * Created: 2026-06-19
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Locked deterministic locale links, the measured 1440px desktop threshold, and the compact final navigation architecture.
  * - 2026-06-19: Added Phase 02 header/navigation source contract coverage.
  * - 2026-06-21: Added public acceptance guards for duplicate pilot CTA markup.
  * - 2026-07-04: Added comparison route navigation guard.
@@ -38,22 +39,21 @@ const compactMenuSource = readFileSync(
 
 describe("public marketing header source contract", () => {
   it("keeps the final grouped public navigation order", () => {
-    assert.match(marketingUiSource, /directItems\.slice\(0, 2\)/);
+    assert.match(marketingUiSource, /directItems\.map/);
     assert.match(marketingUiSource, /navGroups\.map/);
-    assert.match(marketingUiSource, /directItems\.slice\(2\)/);
-    assert.match(marketingUiSource, /label: copy\.useCases/);
     assert.match(marketingUiSource, /label: copy\.resources/);
-    assert.match(marketingUiSource, /href: "\/quote-link-guide"/);
-    assert.match(marketingUiSource, /href: "\/faster-quote-replies"/);
-    assert.match(marketingUiSource, /href: "\/comparison"/);
+    assert.match(marketingUiSource, /href: "\/features"/);
     assert.match(marketingUiSource, /href: "\/#how-it-works"/);
-    assert.match(marketingUiSource, /href: "\/#use-cases"/);
+    assert.match(marketingUiSource, /href: "\/demo"/);
+    assert.match(marketingUiSource, /href: "\/pricing"/);
+    assert.match(marketingUiSource, /href: "\/faq"/);
+    assert.match(marketingUiSource, /href: "\/trust"/);
     assert.match(marketingUiSource, /navGroups\.map\(\(group\) => \(/);
   });
 
   it("uses content-fit header behavior without truncating the brand tagline", () => {
-    assert.match(marketingUiSource, /min-\[1240px\]:flex/);
-    assert.match(marketingUiSource, /min-\[1240px\]:block/);
+    assert.match(marketingUiSource, /min-\[1440px\]:flex/);
+    assert.match(marketingUiSource, /min-\[1440px\]:block/);
     assert.match(marketingUiSource, /Smart customer intake and reply workspace/);
     assert.equal(marketingUiSource.includes("truncate"), false);
   });
@@ -93,6 +93,11 @@ describe("public marketing header source contract", () => {
     assert.match(languageMenuSource, /role="menuitemradio"/);
     assert.match(languageMenuSource, /window\.location\.hash/);
     assert.match(languageMenuSource, /languageNativeLabels/);
+    assert.match(languageMenuSource, /href=\{publicLanguageHref\(navigationTarget, option\)\}/);
+    assert.match(languageMenuSource, /<a\s+aria-checked=\{selected\}/);
+    assert.equal(languageMenuSource.includes('import Link from "next/link"'), false);
+    assert.equal(languageMenuSource.includes("setInterfaceLanguageAction"), false);
+    assert.equal(languageMenuSource.includes("type=\"submit\""), false);
   });
 
   it("keeps the compact disclosure keyboard-safe", () => {
@@ -100,5 +105,6 @@ describe("public marketing header source contract", () => {
     assert.match(compactMenuSource, /buttonRef/);
     assert.match(compactMenuSource, /Escape/);
     assert.match(compactMenuSource, /requestAnimationFrame/);
+    assert.equal(compactMenuSource.includes("overflow-y-auto"), false);
   });
 });

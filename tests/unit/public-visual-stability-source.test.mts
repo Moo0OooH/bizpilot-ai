@@ -1,4 +1,4 @@
-/*
+/**
  * ============================================================
  * File: tests/unit/public-visual-stability-source.test.mts
  * Project: BizPilot AI
@@ -8,9 +8,13 @@
  * - components/public/bizpilot-v2-home.tsx
  * - components/public/bizpilot-v2-home.module.css
  * - components/public/bizpilot-v2-page.tsx
+ * - components/public/marketing-compact-menu.tsx
+ * - tests/smoke/public-browser-interaction-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
  * Last Updated: 2026-07-13
+ * Change Log:
+ * - 2026-07-13: Replaced the obsolete nested-scroll exception with the measured no-internal-scroll compact-menu contract.
  * ============================================================
  */
 
@@ -111,8 +115,8 @@ describe("public V2 visual stability source contracts", () => {
     assert.equal(source("app/globals.css").includes("overflow-wrap: anywhere"), true);
     assert.equal(
       source("components/public/marketing-compact-menu.tsx").includes("overflow-y-auto"),
-      true,
-      "The compact navigation menu remains the intentional viewport-safe exception.",
+      false,
+      "The compact navigation menu must not restore a first-viewport nested scroller.",
     );
   });
 

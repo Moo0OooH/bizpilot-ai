@@ -12,6 +12,7 @@
  * Created: 2026-06-18
  * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Applied the final compact header IA and delayed desktop expansion until the measured 1440px fit point.
  * - 2026-07-12: Routed shared public navigation and CTA hrefs through the locale-preserving helper.
  * - 2026-06-18: Added compact responsive navigation and public container primitives.
  * - 2026-06-19: Mapped public primitives to shared semantic theme tokens and added theme preference controls.
@@ -727,7 +728,7 @@ export function MarketingBrand({
   subtitle = defaultMarketingNavCopy.brandSubtitle,
 }: Readonly<{ language?: SupportedLanguage | undefined; subtitle?: string }>) {
   return (
-    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1240px]:min-w-[16rem]" href={publicHref("/", language)}>
+    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3 min-[1440px]:min-w-[16rem]" href={publicHref("/", language)}>
       <span
         aria-hidden
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[8px] text-[16px] font-black"
@@ -744,7 +745,7 @@ export function MarketingBrand({
           BizPilot AI
         </span>
         <span
-          className="bp-copy-nav hidden max-w-[14rem] whitespace-normal break-words text-[8px] font-black uppercase leading-[1.15] min-[1240px]:block"
+          className="bp-copy-nav hidden max-w-[14rem] whitespace-normal break-words text-[8px] font-black uppercase leading-[1.15] min-[1440px]:block"
           style={{ color: marketingTone.muted, maxWidth: "14rem", whiteSpace: "normal" }}
         >
           {subtitle}
@@ -775,24 +776,14 @@ export function MarketingHeader({
   const directItems: readonly HeaderLink[] = [
     { href: "/features", key: "features", label: copy.features },
     { href: "/#how-it-works", label: copy.flow },
+    { href: "/demo", key: "demo", label: copy.demo },
     { href: "/pricing", key: "pricing", label: copy.pricing },
-    { href: "/trust", key: "trust", label: copy.trust },
   ];
   const navGroups: readonly HeaderGroup[] = [
     {
       items: [
-        { href: "/demo", key: "demo", label: copy.cleaning },
-        { href: "/#use-cases", label: copy.serviceOverview },
-        { href: "/#use-cases", label: copy.futureTemplates },
-      ],
-      label: copy.useCases,
-    },
-    {
-      items: [
         { href: "/faq", label: copy.faq },
-        { href: "/quote-link-guide", label: copy.guide },
-        { href: "/faster-quote-replies", label: copy.fasterReplies },
-        { href: "/comparison", key: "comparison", label: copy.comparison },
+        { href: "/trust", key: "trust", label: copy.trust },
       ],
       label: copy.resources,
     },
@@ -817,10 +808,10 @@ export function MarketingHeader({
       className="sticky top-0 z-40 border-b backdrop-blur-xl"
       style={{ backgroundColor: "color-mix(in srgb, var(--canvas) 88%, transparent)", borderColor: marketingTone.border }}
     >
-      <nav className="bp-container public-container flex min-h-[64px] items-center justify-between gap-3 py-2 min-[1240px]:min-h-[76px]">
+      <nav className="bp-container public-container flex min-h-[64px] items-center justify-between gap-3 py-2 min-[1440px]:min-h-[76px]">
         <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
-        <div className="hidden items-center gap-1 min-[1240px]:flex">
-          {directItems.slice(0, 2).map((item) => {
+        <div className="hidden items-center gap-1 min-[1440px]:flex">
+          {directItems.map((item) => {
             const selected = isActiveItem(item);
 
             return (
@@ -874,26 +865,8 @@ export function MarketingHeader({
               </details>
             );
           })}
-          {directItems.slice(2).map((item) => {
-            const selected = isActiveItem(item);
-
-            return (
-              <Link
-                aria-current={selected ? "page" : undefined}
-                className="bp-copy-nav inline-flex min-h-11 items-center rounded-[12px] px-3 py-2 text-[12px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                href={publicHref(item.href, language)}
-                key={item.href}
-                style={{
-                  backgroundColor: selected ? "var(--surface-interactive)" : "transparent",
-                  color: selected ? marketingTone.text : marketingTone.soft,
-                }}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
         </div>
-        <div className="hidden shrink-0 items-center gap-2 min-[1240px]:flex">
+        <div className="hidden shrink-0 items-center gap-2 min-[1440px]:flex">
           {renderLanguageMenu()}
           <ThemePreferenceControl language={language ?? "en"} />
           <Link
@@ -907,7 +880,7 @@ export function MarketingHeader({
             {copy.startShort}
           </MarketingButton>
         </div>
-        <div className="flex shrink-0 items-center gap-2 min-[1240px]:hidden">
+        <div className="flex shrink-0 items-center gap-2 min-[1440px]:hidden">
           <MarketingCompactMenu>
             <div className="grid gap-1">
               {directItems.map((item) => {

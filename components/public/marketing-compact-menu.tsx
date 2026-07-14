@@ -10,8 +10,9 @@
  * - components/public/marketing-ui.tsx
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-06-20
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Removed the first-viewport nested scroller and aligned the compact-menu breakpoint with measured desktop fit.
  * - 2026-06-18: Created compact navigation controller for responsive header QA.
  * - 2026-06-19: Switched compact menu colors to semantic theme tokens.
  * - 2026-06-19: Added focus return, icon trigger, and disclosure semantics for final header polish.
@@ -82,7 +83,7 @@ export function MarketingCompactMenu({
   }, [closeMenu, open]);
 
   return (
-    <div className="relative min-[1240px]:hidden" ref={rootRef}>
+    <div className="relative min-[1440px]:hidden" ref={rootRef}>
       <button
         aria-controls="marketing-compact-menu"
         aria-expanded={open}
@@ -102,7 +103,7 @@ export function MarketingCompactMenu({
       </button>
       {open ? (
         <div
-          className="absolute right-0 top-[calc(100%+0.65rem)] z-50 grid max-h-[min(70svh,32rem)] w-[min(calc(100vw-2rem),22rem)] gap-3 overflow-y-auto overscroll-contain rounded-[18px] border p-3 shadow-[var(--shadow-lg)]"
+          className="absolute right-0 top-[calc(100%+0.65rem)] z-50 grid w-[min(calc(100vw-2rem),22rem)] gap-3 rounded-[18px] border p-3 shadow-[var(--shadow-lg)]"
           id="marketing-compact-menu"
           style={{
             backgroundColor: "var(--surface-elevated)",

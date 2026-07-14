@@ -17,8 +17,8 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 | Phase | Status | Evidence |
 | --- | --- | --- |
 | V3.1 Research and evidence audit | Complete | Commit `f09d3aebf8e32417476ae4225b9d4410c2f6d8d1` plus audit, defect, and positioning documents |
-| V3.2 Information architecture and bilingual copy | Complete pending commit | Ten retained routes, five merge redirects, seven homepage sections, typed EN/fr-CA contract, and parity tests |
-| V3.3 Public-shell reliability | Pending | P0 locale switch plus 1280px header overflow |
+| V3.2 Information architecture and bilingual copy | Complete | Commit `0fbd589b6b703033ec3b2dc2141ceed6c7d9ddfa`; ten retained routes, five merge redirects, seven homepage sections, and typed EN/fr-CA contract |
+| V3.3 Public-shell reliability | Complete pending commit | Native locale navigation, explicit cookie transition, 1440px desktop threshold, compact final header IA, and real Chrome interaction smoke |
 | V3.4 Marketing design foundation | Pending | Tokens, shell, compact menu, typography, primitives |
 | V3.5 Homepage conversion rebuild | Pending | Seven sections and three-stage product story |
 | V3.6 Page consolidation and conversion | Pending | Route decisions, redirects, distinct page jobs |
@@ -76,11 +76,19 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 
 ## Phase 3 entry conditions
 
-- Replace the fragile language form submission with a deterministic URL/cookie transition.
-- Ensure query, cookie, selected state, rendered copy, metadata, and `<html lang>` agree after a language change and reload.
-- Add a real interaction regression test that opens the language menu and clicks French.
-- Remove the 1280px header overflow without changing the marketing visual system yet.
-- Preserve unrelated query parameters and hashes while replacing stale `language` values.
+- Complete: public locale selection uses native document navigation and an explicit locale query rather than the old Server Action form.
+- Complete: FR and EN clicks, selected state, internal navigation, reload, cookie persistence, visible copy, and `<html lang>` pass in real Chrome.
+- Complete: EN/fr-CA root overflow is 0px at 320, 360, 390, 430, 768, 1024, 1280, 1440, and 1920 requested widths.
+- Complete: the 390×844 mobile menu fits from 64px to 663px with no nested scroll.
+- Complete: the browser smoke reports zero application console/runtime errors.
+
+## Phase 4 entry conditions
+
+- Preserve the working locale anchors, explicit switch helper, 1440px measured fit rule, and real browser smoke.
+- Implement semantic marketing tokens and primitives without creating a second competing CSS system.
+- Rebuild the header and footer to the approved V3 architecture while preserving the reliability behavior.
+- Establish typography, layout, button, card, focus, motion, light/dark, and product-scene foundations from `V3_VISUAL_SYSTEM_SPEC.md`.
+- Do not implement the final seven-section homepage until the foundation passes unit, build, public smoke, responsive smoke, and browser interaction smoke.
 
 ## Canonical V3 documents
 
@@ -92,3 +100,4 @@ BizPilot helps service businesses turn scattered, incomplete customer questions 
 - [Route consolidation and redirect plan](./V3_ROUTE_CONSOLIDATION_AND_REDIRECT_PLAN.md)
 - [Homepage storyboard](./V3_HOMEPAGE_STORYBOARD.md)
 - [Visual system specification](./V3_VISUAL_SYSTEM_SPEC.md)
+- [Public shell reliability report](./V3_PUBLIC_SHELL_RELIABILITY_REPORT.md)

@@ -9,11 +9,12 @@
  * Related:
  * - components/public/marketing-ui.tsx
  * - lib/i18n/language.ts
- * - server/actions/business-configuration.actions.ts
+ * - lib/i18n/public-href.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-06-19
+ * Last Updated: 2026-07-13
  * Change Log:
+ * - 2026-07-13: Replaced the timing-sensitive Server Action form with deterministic locale links that preserve the live route, query, and hash.
  * - 2026-06-19: Added compact EN/FR locale control for public header polish.
  * ============================================================
  */
@@ -33,8 +34,8 @@ import {
   supportedLanguages,
   type SupportedLanguage,
 } from "@/lib/i18n/language";
+import { publicLanguageHref } from "@/lib/i18n/public-href";
 import { trackPublicEvent } from "@/lib/public-events";
-import { setInterfaceLanguageAction } from "@/server/actions/business-configuration.actions";
 
 function LocaleIcon() {
   return (
@@ -89,10 +90,10 @@ export function MarketingLanguageMenu({
 }>) {
   const menuId = useId();
   const buttonRef = useRef<HTMLButtonElement | null>(null);
-  const optionRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const redirectRef = useRef<HTMLInputElement | null>(null);
-  const rootRef = useRef<HTMLFormElement | null>(null);
+  const optionRefs = useRef<Array<HTMLAnchorElement | null>>([]);
+  const rootRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(false);
+  const [navigationTarget, setNavigationTarget] = useState(redirectPath);
   const selectedIndex = Math.max(0, supportedLanguages.indexOf(language));
 
   const closeMenu = useCallback((restoreFocus = false) => {
@@ -146,12 +147,18 @@ export function MarketingLanguageMenu({
     };
   }, [closeMenu, open]);
 
-  function syncRedirectTarget() {
-    if (!redirectRef.current) {
-      return;
-    }
+  function readNavigationTarget() {
+    return `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  }
 
-    redirectRef.current.value = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  function toggleMenu() {
+    setOpen((current) => {
+      if (!current) {
+        setNavigationTarget(readNavigationTarget());
+      }
+
+      return !current;
+    });
   }
 
   function focusOption(index: number) {
@@ -163,12 +170,13 @@ export function MarketingLanguageMenu({
   function handleTriggerKeyDown(event: ReactKeyboardEvent<HTMLButtonElement>) {
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
+      setNavigationTarget(readNavigationTarget());
       setOpen(true);
     }
   }
 
   function handleOptionKeyDown(
-    event: ReactKeyboardEvent<HTMLButtonElement>,
+    event: ReactKeyboardEvent<HTMLAnchorElement>,
     index: number,
   ) {
     if (event.key === "ArrowDown") {
@@ -197,34 +205,24 @@ export function MarketingLanguageMenu({
 
     if (event.key === "Tab") {
       setOpen(false);
+      return;
+    }
+
+    if (event.key === " ") {
+      event.preventDefault();
+      event.currentTarget.click();
     }
   }
 
   return (
-    <form
-      action={setInterfaceLanguageAction}
-      aria-label={label}
-      className={`relative inline-flex items-center ${className}`}
-      onSubmit={() => {
-        syncRedirectTarget();
-        trackPublicEvent("locale_change");
-        setOpen(false);
-      }}
-      ref={rootRef}
-    >
-      <input
-        defaultValue={redirectPath}
-        name="redirectTo"
-        ref={redirectRef}
-        type="hidden"
-      />
+    <div className={`relative inline-flex items-center ${className}`} ref={rootRef}>
       <button
         aria-controls={open ? menuId : undefined}
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={`${label}: ${languageNativeLabels[language]}`}
         className={`inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-[12px] border px-3 text-[12px] font-black shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] ${buttonClassName}`}
-        onClick={() => setOpen((current) => !current)}
+        onClick={toggleMenu}
         onKeyDown={handleTriggerKeyDown}
         ref={buttonRef}
         style={{
@@ -254,11 +252,14 @@ export function MarketingLanguageMenu({
             const selected = option === language;
 
             return (
-              <button
+              <a
                 aria-checked={selected}
                 className="flex min-h-11 w-full items-center gap-3 rounded-[10px] border px-3 text-left transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                href={publicLanguageHref(navigationTarget, option)}
                 key={option}
-                name="language"
+                onClick={() => {
+                  trackPublicEvent("locale_change");
+                }}
                 onKeyDown={(event) => handleOptionKeyDown(event, index)}
                 ref={(element) => {
                   optionRefs.current[index] = element;
@@ -274,8 +275,6 @@ export function MarketingLanguageMenu({
                   color: "var(--text-strong)",
                 }}
                 tabIndex={-1}
-                type="submit"
-                value={option}
               >
                 <span
                   className="inline-flex h-8 min-w-8 items-center justify-center rounded-[9px] text-[11px]"
@@ -305,11 +304,11 @@ export function MarketingLanguageMenu({
                       : "var(--border-strong)",
                   }}
                 />
-              </button>
+              </a>
             );
           })}
         </div>
       ) : null}
-    </form>
+    </div>
   );
 }
