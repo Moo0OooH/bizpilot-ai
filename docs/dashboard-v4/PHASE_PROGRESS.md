@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Closed the V2.1 release at SHA e922485 with successful CI/Vercel and Production 46/46, 20/20, UI zero, and inactive Quote 2/2 evidence.
  * - 2026-07-15: Recorded the V2.1 candidate verification at 249/249 unit, 46/46 public, 20/20 responsive, zero UI-matrix failures, and 2/2 inactive Quote GET.
  * - 2026-07-15: Linked Dashboard progress to the consolidated V2.1 external gate sequence.
  * - 2026-07-14: Closed the push, CI, Vercel, and Production public read-only release phases with exact evidence.
@@ -37,9 +38,8 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | Lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit: 249/249; Next.js 16.2.4 production build: PASS. |
 | P0 | Local production public route/responsive/UI/Quote smoke | DONE | Public: 46/46; bilingual responsive: 20/20; final UI matrix: zero failures; inactive Quote GET: 2/2. |
 | P0 | Documentation V2.1 cleanup and link audit | DONE | 55 active docs artifacts; 54 Markdown files including root README audited with zero broken local Markdown links; obsolete snapshots removed from the tree and retained in Git history. |
-| P0 | V2.1 main push, CI, Vercel, Production rerun | IN PROGRESS | Candidate local gate passed; exact commit/deployment and Production results must be recorded after push. |
-| P0 | Main push, CI, and Vercel rollout | DONE | Functional release SHA `b81f71d`; GitHub App validation success; Vercel status success; local and `origin/main` synchronized. |
-| P0 | Production public read-only acceptance | DONE | `bizpilo.com`: public 34/34; bilingual responsive 20/20; final UI matrix zero failures; inactive quote GET 1/1. |
+| P0 | V2.1 main push, CI, and Vercel rollout | DONE | Release SHA `e922485`; GitHub CI run `29390428140` success; Vercel target `FMTLX7SnzUMBsPLsf1iKgeNbPyvi` success; one `main` branch/worktree synchronized with `origin/main`. |
+| P0 | V2.1 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; inactive Quote GET 2/2 EN/fr-CA; HTTPS/security headers present. |
 | P1 | Real Chrome public interaction smoke | GATED | The runner is available, but this execution environment has no Chrome/Chromium binary. |
 | P0 | Authenticated local/synthetic browser smoke | GATED | Local dashboard/auth target variables are unavailable; Production synthetic writes are prohibited. |
 | P0 | Production authenticated read-only visual QA | GATED | Requires owner-approved credentials/session and no-secret QA procedure. |
@@ -60,16 +60,17 @@ This section is updated only with commands actually run on the final working tre
 - Local bilingual responsive smoke: PASS, 20/20.
 - Local final UI matrix: PASS, zero failures across the recorded route/locale/theme/metadata matrix.
 - Local inactive Quote GET: PASS, 2/2 EN/fr-CA with no configured Supabase target; provider/configuration read failure safely returns the unavailable state.
-- GitHub CI: PASS for functional release SHA `b81f71d870528219a13eae8575e387397c4883e7`.
-- Vercel commit deployment status: SUCCESS for functional release SHA `b81f71d870528219a13eae8575e387397c4883e7`.
-- Production public route smoke: PASS, 34/34.
+- GitHub CI: PASS for release SHA `e922485fff985dfe03a508b1d2c8a5794db9d3cb`, workflow run `29390428140`.
+- Vercel commit deployment status: SUCCESS for release SHA `e922485fff985dfe03a508b1d2c8a5794db9d3cb`, target `FMTLX7SnzUMBsPLsf1iKgeNbPyvi`.
+- Production public route smoke: PASS, 46/46.
 - Production bilingual responsive smoke: PASS, 20/20.
 - Production final UI matrix: PASS, zero failures.
-- Production inactive quote GET: PASS, 1/1; no submission or data mutation was performed.
+- Production inactive Quote GET: PASS, 2/2 EN/fr-CA; no submission or data mutation was performed.
+- Production HTTPS/security header check: PASS; CSP, HSTS, frame, content-type, referrer, and permissions controls were present.
 - Real Chrome interaction smoke: GATED because Chrome/Chromium is not installed in the execution environment; no application failure was observed.
 - Safe target classifier: executed; Dashboard/Auth and RLS-required smoke remained gated because `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, and `DATABASE_URL` were missing.
 - Database/RLS mutation: NOT RUN; Production data unchanged.
 
 ## Ideal completion definition
 
-The dashboard code release is complete when the final local code suite passes and the commit is pushed. The product is not “paid-pilot ready” until every gated item above has separate evidence. These two states must never be conflated.
+The Dashboard V4/V2.1 code and public read-only release is complete. The product is not “paid-pilot ready” until every gated item above has separate evidence. These two states must never be conflated.

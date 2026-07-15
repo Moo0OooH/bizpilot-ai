@@ -19,7 +19,7 @@
     "docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md"
   ],
   "currentReadiness": {
-    "codeRelease": "previous functional SHA b81f71d passed CI/Vercel/Production; V2.1 candidate passed lint, typecheck, 249/249 unit tests, Next.js production build, local public 46/46, responsive 20/20, final UI matrix, and inactive quote GET 2/2; final V2.1 push and Production rerun pending",
+    "codeRelease": "V2.1 release SHA e922485 passed lint, typecheck, 249/249 unit tests, Next.js production build, GitHub CI run 29390428140, Vercel target FMTLX7SnzUMBsPLsf1iKgeNbPyvi, Production public 46/46, responsive 20/20, final UI matrix, and inactive Quote GET 2/2",
     "authenticatedDashboardQA": "blocked until an approved local/disposable synthetic auth target is available",
     "productionDatabase": "unchanged by Dashboard V4",
     "realCustomerData": "blocked pending restored-target application/dashboard/RLS proof and explicit owner approval",

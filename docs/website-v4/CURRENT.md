@@ -2,7 +2,7 @@
 
 Date: 2026-07-15
 
-Status: PASS locally for V2.1 candidate; previous Production release remains accepted; final V2.1 rollout pending
+Status: PASS / LIVE for V2.1 public read-only release
 
 Scope: public marketing, Auth GET states, Quote read/recovery states, and system 404/error surfaces; production data unchanged
 
@@ -77,16 +77,16 @@ trail.
 - Responsive bilingual route smoke: 20/20 PASS
 - EN/fr-CA structural parity and manual-first claim guards: PASS
 - Light/dark token contrast guard: PASS
-- Pull request CI: PASS (run 400)
-- Vercel Preview build: Ready; protected by Vercel Authentication
-- Vercel Production deployment: Ready (`Er52XYMyGQH5ZVifqxiRnSXjq3NB`)
-- V2.1 candidate local public-route smoke: 46/46 PASS
-- V2.1 candidate local inactive Quote GET: 2/2 PASS in EN/fr-CA, including safe missing-environment fallback
-- V2.1 candidate documentation link audit: zero broken local Markdown links
-- Previous Production public-route smoke: 34/34 PASS
+- V2.1 release SHA: `e922485fff985dfe03a508b1d2c8a5794db9d3cb` on `main`
+- GitHub CI: PASS (run `29390428140`)
+- Vercel Production status: SUCCESS (target `FMTLX7SnzUMBsPLsf1iKgeNbPyvi`)
+- Local and Production public-route smoke: 46/46 PASS
+- Local and Production inactive Quote GET: 2/2 PASS in EN/fr-CA, including safe missing-environment fallback
+- V2.1 documentation link audit: zero broken local Markdown links
 - Production responsive bilingual smoke: 20/20 PASS
 - Production final UI matrix: zero failures across EN/fr-CA, light/dark, metadata,
   auth boundaries, sitemap, robots, and 11 recorded viewport targets
+- Production HTTPS/security headers: PASS for CSP, HSTS, frame, content-type, referrer, and permissions controls
 - Previous managed-browser production interaction: PASS; the live language control changed the
   homepage, navigation, links, and accessible labels from English to Canadian French
 - Current execution environment browser interaction: GATED because Chrome/Chromium is not installed
@@ -94,8 +94,7 @@ trail.
 ## Production and data safety
 
 No Supabase migration, production database write, seed data, auth setting, billing flow,
-or environment variable change is part of Website V4. Pull request `#4` was squash-merged
-to `main` as `695054017ae80cc97a8fca3f5557861b23b14e37`. The public production release at
-`https://bizpilo.com` passed the final URL, responsive, UI-matrix, and language-control
-acceptance checks. Preview visual access remained protected by Vercel Authentication;
-the equivalent public Production deployment was tested after promotion.
+or environment variable change is part of Website V4/V2.1. Release SHA `e922485` was
+published directly to `main` without an extra branch or PR. The public Production release
+at `https://bizpilo.com` passed the final URL, bilingual responsive, UI-matrix, Quote
+fallback, and security-header acceptance checks.

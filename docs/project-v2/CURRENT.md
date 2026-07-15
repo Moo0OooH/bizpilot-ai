@@ -12,6 +12,7 @@
  * Created: 2026-07-15
  * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Closed the V2.1 public release with exact GitHub CI, Vercel, and Production read-only evidence.
  * - 2026-07-15: Recorded consolidation to 55 active documentation artifacts with historical snapshots retained only in Git history.
  * - 2026-07-15: Created the V2.1 whole-project documentation entry point.
  * ============================================================
@@ -20,6 +21,8 @@
 # BizPilot Project V2.1 — Current
 
 BizPilot is a bilingual, manual-first Smart Intake and owner-reviewed reply-preparation product for service businesses. Cleaning is the first complete pilot vertical. The public site, public quote intake, owner dashboard, and guarded founder console are implemented in source; real customer data and paid pilot activation remain separate approval gates.
+
+V2.1 release SHA `e922485fff985dfe03a508b1d2c8a5794db9d3cb` is on `main`. GitHub CI run `29390428140` and Vercel target `FMTLX7SnzUMBsPLsf1iKgeNbPyvi` succeeded. `https://bizpilo.com` passed public route `46/46`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA. No Production database or customer-data mutation was performed.
 
 ## Current control documents
 

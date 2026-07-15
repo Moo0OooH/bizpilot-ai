@@ -12,6 +12,7 @@
  * Created: 2026-07-15
  * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Closed the V2.1 public release phase with exact main, CI, Vercel, HTTPS, and Production smoke evidence.
  * - 2026-07-15: Created the consolidated whole-project phase, dependency, responsibility, and ideal-exit plan.
  * ============================================================
  -->
@@ -30,7 +31,7 @@ The current product does not claim direct social inbox integration, autonomous s
 | ---: | --- | --- | --- | --- |
 | 0 | Repository, branch, instructions, version, and documentation authority | DONE | One `main` worktree; current docs only; product/version manifests agree | Codex |
 | 1 | Public product story and conversion UX | DONE | Ten intentional routes; distinct page jobs; clear problem → intake → organized request → human-reviewed reply story | Codex |
-| 2 | EN/fr-CA public, Auth, Intake, 404, error, metadata, nav, footer | DONE in source; release recheck required after final commit | Structural parity, correct document language, locale-preserving links, no mixed copy, responsive smoke | Codex |
+| 2 | EN/fr-CA public, Auth, Intake, 404, error, metadata, nav, footer | DONE | Structural parity, correct document language, locale-preserving links, no mixed copy, public 46/46, responsive 20/20, UI zero failures | Codex |
 | 3 | Email/password Auth foundation | DONE in source | Sign-up/sign-in/reset/callback tests plus safe synthetic browser proof | Codex + approved synthetic target |
 | 4 | Google OAuth decision | GATED | Either visibly unavailable, or provider configured with approved origins/callbacks and owner browser QA | Owner/external console, then Codex QA |
 | 5 | Smart Intake and public quote flow | DONE in source | Active/inactive EN/fr-CA synthetic flow, consent/validation, abuse safeguards, success boundary, no production test writes | Codex + approved synthetic target |
@@ -38,7 +39,7 @@ The current product does not claim direct social inbox integration, autonomous s
 | 7 | Founder/Admin controls | DONE in source; live authorization proof GATED | Founder-only access, normal-owner denial, guarded actions, dry runs, audit evidence, no decorative business claims | Codex + approved synthetic target |
 | 8 | AI summary/draft boundary | DONE in source | Structured output and fallback tests, no content logging, owner review, provider failure path, cost/budget monitoring | Codex; monitoring configuration may require owner |
 | 9 | Tenant isolation, RLS, schema, backup, restore | GATED for current managed/restored evidence | Read-only drift map, current backup, disposable restore, RLS suite, authenticated restored-app smoke, rollback proof | Owner authorizes target; Codex executes bounded plan |
-| 10 | GitHub, CI, Vercel, domain, HTTPS, read-only Production release | DONE for prior release; final commit must repeat | Exact commit/deployment mapping, successful CI/Vercel, HTTPS/security headers, all public smokes | Codex |
+| 10 | GitHub, CI, Vercel, domain, HTTPS, read-only Production release | DONE | SHA `e922485`; CI run `29390428140`; Vercel `FMTLX7SnzUMBsPLsf1iKgeNbPyvi`; HTTPS/security headers; public 46/46; responsive 20/20; UI zero failures; inactive Quote 2/2 | Codex |
 | 11 | Search discovery and non-PII measurement | PARTIAL / GATED | Sitemap submitted, indexing inspected, field CWV reviewed, analytics sink separately approved or intentionally off | Owner external access; Codex audit |
 | 12 | Real customer data | NOT APPROVED | Privacy/consent/retention/deletion/incident/support evidence plus restored-target proof and explicit owner approval | Owner decision after Codex packet |
 | 13 | Paid pilot | NOT APPROVED | Real-data gate passed; offer, taxes, manual billing, refund/cancellation, support, onboarding, offboarding, rollback and metrics approved | Owner/commercial action after Codex packet |
@@ -83,7 +84,7 @@ The current product does not claim direct social inbox integration, autonomous s
 
 1. `P0 — Codex`: finish V2.1 documentation consolidation, remove obsolete phase logs/evidence, and repair references.
 2. `P0 — Codex`: run final EN/fr-CA source, build, route, responsive, footer/nav/metadata, 404/error, and safe quote checks.
-3. `P0 — Codex`: commit and push `main`; confirm GitHub CI, Vercel, domain, and read-only Production results.
+3. `P0 — DONE`: commit and push `main`; GitHub CI, Vercel, domain, HTTPS/security headers, and read-only Production results are recorded.
 4. `P0 — Owner → Codex`: provide/authorize a disposable authenticated target; then run Owner/Admin/Auth/active-Intake/RLS-adjacent browser workflows.
 5. `P0 — Owner → Codex`: authorize read-only managed Supabase reconciliation, backup confirmation, and disposable restore proof.
 6. `P1 — Owner`: decide whether Google OAuth stays off or is configured and verified.

@@ -13,6 +13,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Closed the V2.1 public read-only release gate at SHA e922485 while preserving authenticated, real-data, and paid-pilot gates.
  * - 2026-07-15: Recorded the V2.1 local candidate gate while keeping release, authenticated, real-data, and paid-pilot evidence separate.
  * - 2026-07-15: Aligned gated execution with the complete V2.1 external-action sequence.
  * - 2026-07-14: Closed the code-release gate with pushed SHA, CI, Vercel, and Production public read-only evidence.
@@ -26,8 +27,8 @@
 
 | Level | Status | Meaning |
 | --- | --- | --- |
-| Source/build | PASS | Dashboard V4 and Documentation V2.1 are implemented; local candidate evidence is lint/type/build PASS, unit 249/249, public 46/46, responsive 20/20, UI zero failures, and inactive Quote 2/2. |
-| Public read-only release | PASS | SHA `b81f71d` passed GitHub CI, Vercel status, public 34/34, responsive 20/20, UI matrix, and inactive quote GET 1/1. |
+| Source/build | PASS | Dashboard V4 and Documentation V2.1 are implemented; lint/type/build PASS, unit 249/249, local public 46/46, responsive 20/20, UI zero failures, and inactive Quote 2/2. |
+| Public read-only release | PASS | SHA `e922485` passed GitHub CI run `29390428140`, Vercel target `FMTLX7SnzUMBsPLsf1iKgeNbPyvi`, Production public 46/46, responsive 20/20, UI matrix zero failures, inactive Quote GET 2/2, and HTTPS/security-header checks. |
 | Authenticated synthetic QA | GATED | Requires an explicitly approved local/Preview synthetic target and credentials. |
 | Real customer data | NOT APPROVED | Requires all real-data gates below and explicit owner approval. |
 | Paid pilot | NOT APPROVED | Requires real-data readiness plus commercial, payment, support, backup, and rollback evidence. |
@@ -41,8 +42,8 @@ The first pilot remains cleaning-focused, manual-first, and owner-reviewed. BizP
 - [x] Lint, typecheck, unit tests, and production build pass on the release tree.
 - [x] Navigation and route contracts add no unapproved route.
 - [x] No production DB mutation or real/test customer data was created during the release.
-- [x] Functional release commit `b81f71d870528219a13eae8575e387397c4883e7` is pushed and GitHub CI passes.
-- [x] Vercel status is successful and Production public read-only smoke passes; protected authenticated acceptance remains Gate B/D work.
+- [x] Release commit `e922485fff985dfe03a508b1d2c8a5794db9d3cb` is pushed and GitHub CI run `29390428140` passes.
+- [x] Vercel target `FMTLX7SnzUMBsPLsf1iKgeNbPyvi` is successful and Production public read-only smoke passes; protected authenticated acceptance remains Gate B/D work.
 
 ## Gate B — authenticated synthetic acceptance
 
