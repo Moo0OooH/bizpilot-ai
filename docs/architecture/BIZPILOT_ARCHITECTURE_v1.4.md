@@ -3,16 +3,16 @@
 **Project:** BizPilot AI
 **Document Type:** Architecture
 **Version:** v1.4
-**Status:** Final Founder-Grade Canonical Draft — Phase 5 Alignment Synced
+**Status:** Active architecture baseline; current release and UX status is controlled by Documentation V2.1
 **Owner:** MoOoH
-**Phase:** Phase 5 Stabilization / Completion Candidate; Phase 6 Foundation Started
-**Last Updated:** 2026-05-11
+**Phase:** Manual-first Smart Intake, Website V4, Dashboard V4, and guarded Founder/Admin implemented in source
+**Last Updated:** 2026-07-15
 
 ---
 
-## Current Implementation Status — 2026-05-11
+## Current Implementation Status — 2026-07-15
 
-The protected dashboard architecture has reached Phase 5 stabilization / completion candidate status. The shared shell, dashboard overview, business configuration workspace, lead workspace, and lead detail routes are implemented.
+The shared public/intake/Auth shell, Dashboard V4 owner workflow, and guarded Founder/Admin surfaces are implemented. Current phase, route, evidence, and gate truth is maintained in `docs/project-v2/CURRENT.md` and `docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md`; those documents override historical phase labels in this architecture baseline.
 
 The next architecture step is end-to-end manual QA and demo readiness. Keep the product focused on quote request capture, lead organization, reply urgency, follow-up discipline, public quote link visibility, business readiness, and simple recovery proof.
 
@@ -497,7 +497,7 @@ The MVP architecture must not include:
 Dashboard IA and UX decisions are canonical and detailed in:
 
 ```text
-docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md
+docs/dashboard-v4/CURRENT.md
 ```
 
 ### Protected Dashboard Shell

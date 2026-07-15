@@ -6,11 +6,12 @@
  * Role: Keeps AI prompts versioned and outside UI components.
  * Related:
  * - server/services/ai/lead-conversion-assistant.service.ts
- * - docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.4.md
+ * - docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Repointed prompt authority to the current engineering standard.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-11: Created first lead conversion assistant prompt entry.
  * ============================================================

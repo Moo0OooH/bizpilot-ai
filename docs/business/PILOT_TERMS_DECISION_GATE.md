@@ -4,14 +4,14 @@
 **Document Type:** Pilot terms decision gate
 **Status:** Historical staged terms; paid pilot remains gated by current operational and owner approvals
 **Owner:** MoOoH
-**Last Updated:** 2026-07-14
+**Last Updated:** 2026-07-15
 **Related:**
 - `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md`
 - `docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md`
 - `docs/product/BIZPILOT_PLAN_ENTITLEMENTS_AND_MANUAL_BILLING_SPEC_v1.0.md`
-- `docs/product/BIZPILOT_PRICING_PAGE_SPEC_v1.0.md`
+- `docs/website-v4/CURRENT.md`
 - `app/pricing/page.tsx`
-- `lib/i18n/pricing-copy.ts`
+- `lib/i18n/public-v3-spec.ts`
 
 ---
 
@@ -35,10 +35,10 @@ Current sources checked:
 
 | Source | Current evidence |
 | --- | --- |
-| `app/pricing/page.tsx` | Renders public pricing route from `lib/i18n/pricing-copy.ts`. |
-| `lib/i18n/pricing-copy.ts` | Founder Pilot shows free setup for first 1-5 pilot customers with a feedback commitment; Starter shows `$149 setup` / `$49/mo`; Pro shows `$199 setup` / `$79/mo`. |
+| `app/pricing/page.tsx` | Renders the current public pricing route from the Website V3/V4 renderer. |
+| `lib/i18n/public-v3-spec.ts` | Founder Pilot shows free setup for the first pilot cohort with a feedback commitment; Starter shows `$149 setup` / `$49/mo`; Pro shows `$199 setup` / `$79/mo`. |
 | `docs/product/BIZPILOT_PLAN_ENTITLEMENTS_AND_MANUAL_BILLING_SPEC_v1.0.md` | Manual billing only; invoice or separate Stripe Payment Link; refund, trial length, and cancellation require owner decision. |
-| `docs/product/BIZPILOT_PRICING_PAGE_SPEC_v1.0.md` | Pricing page must avoid billing automation, booking, invoice, CRM, SMS, WhatsApp, and auto-send claims. |
+| `docs/website-v4/CURRENT.md` | Pricing must avoid billing automation, booking, invoice, CRM, SMS, WhatsApp, and auto-send claims. |
 
 ## 3. Approved Staged Terms
 

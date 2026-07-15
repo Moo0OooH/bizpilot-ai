@@ -5,11 +5,13 @@
  * Description: Synthetic public quote-route smoke runner.
  * Role: Checks approved synthetic quote links without secrets, SQL, or real data.
  * Related:
- * - docs/readiness/PHASE_21N_SYNTHETIC_PRODUCTION_SMOKE_PLAN.md
- * - docs/readiness/PHASE_21P_NO_COST_READINESS_HARDENING.md
+ * - docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md
+ * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-05-25
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Added GET-only fr-CA coverage for inactive/unavailable quote links.
  * - 2026-06-21: Added GET-only quote honeypot and single-review-notice guards.
  * ============================================================
  */
@@ -123,6 +125,12 @@ function quotePathFromSlug(slug: string): string {
   const query = queryIndex >= 0 ? normalized.slice(queryIndex) : "";
 
   return `/quote/${encodeURIComponent(pathSlug)}${query}`;
+}
+
+function quotePathWithLanguage(slug: string, language: "fr-CA"): string {
+  const url = new URL(quotePathFromSlug(slug), "https://bizpilot.local");
+  url.searchParams.set("language", language);
+  return `${url.pathname}${url.search}`;
 }
 
 function toTargetUrl(baseUrl: URL, path: string): URL {
@@ -275,6 +283,10 @@ function buildChecks(): QuoteSmokeCheck[] {
     "inactive-slug",
     "BIZPILOT_SMOKE_INACTIVE_QUOTE_SLUG",
   );
+  const inactiveFrSlug = readOptionalValue(
+    "inactive-fr-slug",
+    "BIZPILOT_SMOKE_INACTIVE_FR_QUOTE_SLUG",
+  );
   const frSlug = readOptionalValue("fr-slug", "BIZPILOT_SMOKE_FR_QUOTE_SLUG");
 
   const checks: QuoteSmokeCheck[] = [];
@@ -310,6 +322,16 @@ function buildChecks(): QuoteSmokeCheck[] {
     });
   }
 
+  if (inactiveFrSlug) {
+    checks.push({
+      expectedText: ["Page de soumission indisponible"],
+      name: "lien de soumission synthétique inactif ou indisponible en fr-CA",
+      path: quotePathWithLanguage(inactiveFrSlug, "fr-CA"),
+      rejectedText: ["Quote page unavailable"],
+      status: 200,
+    });
+  }
+
   if (frSlug) {
     checks.push({
       expectedText: [
@@ -322,7 +344,7 @@ function buildChecks(): QuoteSmokeCheck[] {
         { max: 1, text: "BizPilot peut aider à préparer un brouillon interne" },
       ],
       name: "fr-CA synthetic quote link",
-      path: quotePathFromSlug(frSlug),
+      path: quotePathWithLanguage(frSlug, "fr-CA"),
       rejectedText: [
         "Quote page unavailable",
         "Send quote request",
@@ -335,7 +357,7 @@ function buildChecks(): QuoteSmokeCheck[] {
 
   if (checks.length === 0) {
     throw new Error(
-      "Provide at least one approved synthetic slug through --active-slug, --inactive-slug, or --fr-slug.",
+      "Provide at least one approved synthetic slug through --active-slug, --inactive-slug, --inactive-fr-slug, or --fr-slug.",
     );
   }
 

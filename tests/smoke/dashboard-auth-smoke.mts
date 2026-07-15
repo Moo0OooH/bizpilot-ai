@@ -5,12 +5,13 @@
  * Description: Authenticated synthetic dashboard smoke runner.
  * Role: Creates a synthetic owner workspace and checks dashboard routes through SSR auth cookies without printing secrets.
  * Related:
- * - docs/readiness/PHASE_21U_DASHBOARD_RUNTIME_FIX_AND_SMOKE.md
+ * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Repointed authenticated smoke authority to the current bilingual route/flow audit.
  * - 2026-07-04: Added opt-in founder/admin route smoke support with explicit synthetic founder email gating.
  * - 2026-07-04: Added the owner operating guide route to authenticated dashboard smoke coverage.
  * ============================================================

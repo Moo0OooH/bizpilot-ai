@@ -9,20 +9,44 @@
  * Related:
  * - app/layout.tsx
  * - app/(dashboard)/dashboard/error.tsx
+ * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-07-05
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Localized the global recovery state from the active document language.
  * - 2026-07-05: Added complete BizPilot source header metadata and alert semantics.
  * ============================================================
  */
 
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+
+import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  readSupportedLanguage,
+  type SupportedLanguage,
+} from "@/lib/i18n/language";
 
 type GlobalErrorProps = Readonly<{
   error: Error & { digest?: string };
   reset: () => void;
 }>;
+
+function readGlobalErrorLanguage(): SupportedLanguage {
+  if (typeof document === "undefined") {
+    return "en";
+  }
+
+  return readSupportedLanguage(document.documentElement.lang);
+}
+
+function readServerGlobalErrorLanguage(): SupportedLanguage {
+  return "en";
+}
+
+function subscribeGlobalLanguage(): () => void {
+  return () => undefined;
+}
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   useEffect(() => {
@@ -32,6 +56,13 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
     });
   }, [error]);
 
+  const language = useSyncExternalStore(
+    subscribeGlobalLanguage,
+    readGlobalErrorLanguage,
+    readServerGlobalErrorLanguage,
+  );
+  const copy = getBizPilotCopy(language).globalError;
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#071018] px-4 py-8 text-white">
       <section
@@ -39,21 +70,20 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
         role="alert"
       >
         <p className="text-xs font-black uppercase tracking-[0.14em] text-white/45">
-          BizPilot
+          {copy.eyebrow}
         </p>
         <h1 className="mt-3 text-2xl font-black tracking-tight">
-          The workspace needs a refresh.
+          {copy.title}
         </h1>
         <p className="mt-3 text-sm leading-6 text-white/70">
-          The app caught a safe runtime error instead of leaving the page in a
-          generic crash state.
+          {copy.body}
         </p>
         <button
           className="mt-5 inline-flex min-h-10 items-center justify-center rounded-lg bg-[#17d492] px-4 text-sm font-black text-[#062014]"
           onClick={reset}
           type="button"
         >
-          Reload workspace
+          {copy.reload}
         </button>
       </section>
     </main>

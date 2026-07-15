@@ -14,8 +14,9 @@
  * - server/services/public-intake.service.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Guarded public quote reads against provider/configuration failures with a safe unavailable fallback.
  * - 2026-07-11: Added guards for bilingual custom-field override resolution on public quote reads.
  * - 2026-07-04: Added active-language default field localization guards.
  * - 2026-07-13: Guarded public intake against stale authenticated-cookie refresh attempts.
@@ -38,6 +39,8 @@ describe("public quote intake source contracts", () => {
 
     assert.equal(quotePage.includes("buildNoIndexMetadata"), true);
     assert.equal(quoteSuccessPage.includes("buildNoIndexMetadata"), true);
+    assert.equal(quoteSuccessPage.includes("redirect(quotePath)"), true);
+    assert.equal(quoteSuccessPage.includes('publicHref("/", language)'), true);
     assert.equal(
       quotePage.includes("buildQuoteAttributionFormQuery({ query, slug })"),
       true,
@@ -57,6 +60,8 @@ describe("public quote intake source contracts", () => {
     assert.equal(service.includes("createSupabaseServerClient"), false);
     assert.equal(serverClient.includes("autoRefreshToken: false"), true);
     assert.equal(serverClient.includes("persistSession: false"), true);
+    assert.equal(service.includes('safeLogger.warn("public_intake.page_unavailable"'), true);
+    assert.equal(service.includes("return null;"), true);
   });
 
   it("localizes default and saved custom quote fields from the active quote language", () => {

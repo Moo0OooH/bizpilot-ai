@@ -2,15 +2,15 @@
 
 **Project:** BizPilot AI
 **Document Type:** Production data-safety decision matrix
-**Status:** Active Phase 24 gate; synthetic demos allowed, real customer data blocked
+**Status:** Active real-data gate; synthetic demos allowed, real customer data blocked
 **Owner:** MoOoH
-**Last Updated:** 2026-05-25
+**Last Updated:** 2026-07-15
 **Related:**
 
 - `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
 - `docs/operations/BIZPILOT_BACKUP_AND_EXPORT_STRATEGY_v1.0.md`
-- `docs/readiness/PHASE_21A_PRODUCTION_TARGET_AND_BACKUP_GATE.md`
-- `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md`
+- `docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md`
+- `docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md`
 
 ---
 

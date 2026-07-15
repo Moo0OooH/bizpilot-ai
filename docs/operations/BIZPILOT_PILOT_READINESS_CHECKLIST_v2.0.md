@@ -8,11 +8,13 @@
  * - docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md
  * - docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md
  * - docs/business/PILOT_TERMS_DECISION_GATE.md
- * - prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.0.md
+ * - prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Recorded the V2.1 local candidate gate while keeping release, authenticated, real-data, and paid-pilot evidence separate.
+ * - 2026-07-15: Aligned gated execution with the complete V2.1 external-action sequence.
  * - 2026-07-14: Closed the code-release gate with pushed SHA, CI, Vercel, and Production public read-only evidence.
  * - 2026-07-14: Replaced contradictory historical phase tables with one current, evidence-first V2 gate.
  * ============================================================
@@ -20,11 +22,11 @@
 
 # BizPilot AI Pilot Readiness Checklist V2.0
 
-## Current posture — 2026-07-14
+## Current posture — 2026-07-15
 
 | Level | Status | Meaning |
 | --- | --- | --- |
-| Source/build | PASS | Dashboard V4 and Documentation V2 are implemented and locally verified. |
+| Source/build | PASS | Dashboard V4 and Documentation V2.1 are implemented; local candidate evidence is lint/type/build PASS, unit 249/249, public 46/46, responsive 20/20, UI zero failures, and inactive Quote 2/2. |
 | Public read-only release | PASS | SHA `b81f71d` passed GitHub CI, Vercel status, public 34/34, responsive 20/20, UI matrix, and inactive quote GET 1/1. |
 | Authenticated synthetic QA | GATED | Requires an explicitly approved local/Preview synthetic target and credentials. |
 | Real customer data | NOT APPROVED | Requires all real-data gates below and explicit owner approval. |

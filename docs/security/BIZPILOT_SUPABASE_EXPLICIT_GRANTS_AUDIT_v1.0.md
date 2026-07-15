@@ -4,10 +4,10 @@
 **Status:** Active — audit only, no SQL changes
 **Owner:** MoOoH
 **Scope:** Per-table and per-function Data API grant matrix across `anon`, `authenticated`, `service_role`. Output is the input to Phase 10C migration.
-**Last Updated:** 2026-05-15
+**Last Updated:** 2026-07-15
 **Source standard:** `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`, Sections 8, 9, 21, 25
 **Related:**
-- `docs/operations/BIZPILOT_PHASE_10A_VENDOR_INDEPENDENCE_GAP_REPORT_v1.0.md`
+- `docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md`
 - `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
 - `supabase/migrations/README.md`
 

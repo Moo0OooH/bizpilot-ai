@@ -11,8 +11,9 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Added centralized EN/fr-CA copy for the global runtime error boundary.
  * - 2026-07-14: Polished Canadian French dashboard/admin accents and updated Settings guidance to match the simplified protected experience.
  * - 2026-07-11: Added bilingual founder-admin activity metadata, inbox, status-chart, and safety-rail copy fields.
  * - 2026-07-11: Added founder-admin overview and directory copy fields to match bilingual dictionary entries.
@@ -82,6 +83,13 @@ type QuoteFieldTypeLabelKey =
 
 type MetaCopy = Readonly<{
   description: string;
+  title: string;
+}>;
+
+type GlobalErrorCopy = Readonly<{
+  body: string;
+  eyebrow: string;
+  reload: string;
   title: string;
 }>;
 
@@ -1759,6 +1767,7 @@ export type BizPilotCopy = Readonly<{
   auth: AuthCopy;
   dashboard: DashboardCopy;
   demo: DemoCopy;
+  globalError: GlobalErrorCopy;
   intakeErrors: IntakeErrorCopy;
   leadRules: LeadRuleCopy;
   missingInfoLabels: Record<string, string>;
@@ -1811,6 +1820,7 @@ export const bizPilotCopyNamespaces = [
   "leadRules",
   "aiFallback",
   "demo",
+  "globalError",
   "missingInfoLabels",
 ] as const satisfies readonly (keyof BizPilotCopy)[];
 
@@ -1937,6 +1947,13 @@ const englishCopy: BizPilotCopy = {
     updatePasswordPending: "Updating password...",
     yourBusiness: "Your business",
     yourName: "Your name",
+  },
+  globalError: {
+    body:
+      "BizPilot caught a safe runtime error. Reload the page to try again without exposing internal details.",
+    eyebrow: "BizPilot",
+    reload: "Reload page",
+    title: "This page needs a refresh.",
   },
   dashboard: {
     actions: {
@@ -4676,6 +4693,13 @@ const frenchCopy: BizPilotCopy = {
     updatePasswordPending: "Mise à jour...",
     yourBusiness: "Votre entreprise",
     yourName: "Votre nom",
+  },
+  globalError: {
+    body:
+      "BizPilot a intercepté une erreur sûre. Rechargez la page pour réessayer sans exposer de détails internes.",
+    eyebrow: "BizPilot",
+    reload: "Recharger la page",
+    title: "Cette page doit être rafraîchie.",
   },
   dashboard: {
     actions: {

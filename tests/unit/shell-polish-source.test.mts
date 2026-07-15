@@ -3,15 +3,17 @@
  * File: tests/unit/shell-polish-source.test.mts
  * Project: BizPilot AI
  * Description: Source-level guardrails for final auth, quote, and report shell polish.
- * Role: Verifies Phase 07 shell presentation without exercising auth/data flows.
+ * Role: Verifies current bilingual shell presentation and smoke coverage without exercising authenticated writes.
  * Related:
  * - components/auth/auth-ui.tsx
  * - components/auth/auth-password-field.tsx
  * - app/(public)/quote/[slug]/page.tsx
+ * - app/error.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Required direct EN/fr-CA public smoke coverage for all auth pages and unavailable quote states.
  * - 2026-06-20: Added 11D shell alignment contracts for auth, quote, and dashboard setup shells.
  * - 2026-06-21: Locked quote honeypot hiding and single consent review notice rendering.
  * - 2026-06-25: Locked final auth and quote spacing polish markers.
@@ -26,6 +28,7 @@ import { describe, it } from "node:test";
 
 import { getBizPilotCopy } from "../../lib/i18n/bizpilot-copy.ts";
 import { getPublicSiteCopy } from "../../lib/i18n/public-site-copy.ts";
+import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
 
 function source(path: string): string {
   return readFileSync(path, "utf8");
@@ -96,6 +99,48 @@ describe("final shell polish source contracts", () => {
     assert.equal(authMeta.signIn.title, "Sign in | BizPilot AI");
     assert.equal(authMeta.signUp.title, "Create Owner Access | BizPilot AI");
     assert.equal(authMeta.resetPassword.title, "Reset Password | BizPilot AI");
+  });
+
+  it("keeps every public auth and unavailable quote state in bilingual smoke", () => {
+    const publicSmoke = source("tests/smoke/public-route-smoke.mts");
+    const quoteSmoke = source("tests/smoke/quote-route-smoke.mts");
+
+    for (const route of [
+      "/auth/sign-in?language=fr-CA",
+      "/auth/sign-up?language=fr-CA",
+      "/auth/check-email?language=fr-CA",
+      "/auth/forgot-password?language=fr-CA",
+      "/auth/reset-password?language=fr-CA",
+      "/quote?language=fr-CA",
+    ]) {
+      assert.equal(publicSmoke.includes(route), true, `Missing bilingual smoke: ${route}`);
+    }
+
+    assert.equal(publicSmoke.includes("expectedLanguage"), true);
+    assert.equal(quoteSmoke.includes('"inactive-fr-slug"'), true);
+    assert.equal(quoteSmoke.includes("Page de soumission indisponible"), true);
+  });
+
+  it("keeps the global runtime recovery state bilingual", () => {
+    const globalError = source("app/error.tsx");
+    const english = getBizPilotCopy("en").globalError;
+    const french = getBizPilotCopy("fr-CA").globalError;
+
+    assert.equal(globalError.includes("getBizPilotCopy(language).globalError"), true);
+    assert.equal(english.reload, "Reload page");
+    assert.equal(french.reload, "Recharger la page");
+  });
+
+  it("keeps unmatched URLs on the bilingual public shell", () => {
+    const notFound = source("app/not-found.tsx");
+    const english = getPublicV3Spec("en").notFound;
+    const french = getPublicV3Spec("fr-CA").notFound;
+
+    assert.equal(notFound.includes("MarketingHeader"), true);
+    assert.equal(notFound.includes("MarketingFooter"), true);
+    assert.equal(notFound.includes("INTERFACE_LANGUAGE_COOKIE"), true);
+    assert.equal(english.primary, "Return home");
+    assert.equal(french.primary, "Retour à l'accueil");
   });
 
   it("keeps quote shell mobile-first with locale switching and no theme control", () => {

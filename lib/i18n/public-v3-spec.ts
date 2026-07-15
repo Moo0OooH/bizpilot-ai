@@ -5,13 +5,14 @@
  * Description: Defines the approved bilingual Website V3 content and route specification.
  * Role: Keeps EN/fr-CA navigation, route jobs, homepage sections, and conversion copy structurally synchronized before UI implementation.
  * Related:
- * - docs/archive/website-v3-2026-07-13/V3_FINAL_EN_FR_COPY_MATRIX.md
- * - docs/archive/website-v3-2026-07-13/V3_FINAL_INFORMATION_ARCHITECTURE.md
+ * - docs/website-v4/CURRENT.md
+ * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * - tests/unit/public-v3-spec.test.mts
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Added synchronized EN/fr-CA copy for the shared not-found state.
  * - 2026-07-13: Added localized status copy for the safe copy-only founder-pilot request.
  * - 2026-07-13: Completed the V3 shell dictionary for the homepage and retained public routes.
  * - 2026-07-13: Created the typed V3 bilingual content and route contract for Phase 2.
@@ -135,6 +136,13 @@ export type PublicV3Spec = Readonly<{
     themeLabel: string;
     trust: string;
   }>;
+  notFound: Readonly<{
+    body: string;
+    eyebrow: string;
+    primary: string;
+    secondary: string;
+    title: string;
+  }>;
   pilot: Readonly<{
     applicationAction: string;
     applicationCopied: string;
@@ -174,6 +182,14 @@ const englishSpec: PublicV3Spec = {
     pilot: "Apply for pilot",
     languageLabel: "Website language",
     themeLabel: "Theme",
+  },
+  notFound: {
+    body:
+      "The page may have moved or the link may be incomplete. Return to the product overview or see the current workflow.",
+    eyebrow: "404 · PAGE NOT FOUND",
+    primary: "Return home",
+    secondary: "See how it works",
+    title: "This page is not part of the current BizPilot experience.",
   },
   routes: {
     "/": {
@@ -712,6 +728,14 @@ const frenchSpec: PublicV3Spec = {
     pilot: "Demander l'accès",
     languageLabel: "Langue du site",
     themeLabel: "Thème",
+  },
+  notFound: {
+    body:
+      "La page a peut-être été déplacée ou le lien est incomplet. Revenez à la présentation du produit ou consultez le flux actuel.",
+    eyebrow: "404 · PAGE INTROUVABLE",
+    primary: "Retour à l'accueil",
+    secondary: "Voir le fonctionnement",
+    title: "Cette page ne fait pas partie de l'expérience BizPilot actuelle.",
   },
   routes: {
     "/": {

@@ -3,7 +3,7 @@
 **Phase:** 20B - Production DB Safety Gate
 **Status:** Not yet pilot-complete  
 **Owner:** MoOoH  
-**Last updated:** 2026-05-25
+**Last updated:** 2026-07-15
 **Scope:** Minimum data safety process before real cleaning-business pilot data
 
 ## 1. Current Environment
@@ -305,7 +305,7 @@ Steps:
 9. Run `pnpm test:rls` only if `DATABASE_URL` points to an allowed local host.
 10. Start the app locally and verify dashboard/public quote routes can load against the restored target.
 11. Verify a test lead can be read from the restored target without printing real customer content in logs.
-12. Record the drill result in this document or a future `docs/ops/RESTORE_DRILL_LOG.md`.
+12. Record the drill result in a new dated section of this document.
 
 Phase 24C disposable Supabase restore command shape:
 

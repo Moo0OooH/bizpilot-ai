@@ -1,13 +1,25 @@
 # BizPilot Security Operations Register
 
-Date: 2026-07-04
-Status: Phase 25O operating template
+Created: 2026-07-04
+Last updated: 2026-07-15
+Status: Current operating template
 Owner: MoOoH
 
 ## Purpose
 
 Keep security/privacy operations ready before paid pilot or real customer data.
 This register is intentionally header-only. Do not add real customer personal data, secrets, tokens, passwords, reset links, private keys, or payment data.
+
+## Reference baseline
+
+- OWASP Logging Cheat Sheet: `https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html`
+- OWASP HTTP Security Response Headers Cheat Sheet: `https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html`
+- OWASP Content Security Policy Cheat Sheet: `https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html`
+- MDN Content-Security-Policy: `https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy`
+- MDN Content-Security-Policy-Report-Only: `https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only`
+- OWASP Secrets Management Cheat Sheet: `https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html`
+
+This register does not authorize anyone to run migrations against Production, print or rotate secrets, or enter real customer data. The RLS suite remains `GATED` when a classifier-approved local/disposable `DATABASE_URL` is unavailable.
 
 ## Abuse Log Retention
 

@@ -4,12 +4,11 @@
 **Document Type:** Founder CRM / Customer Validation Playbook  
 **Status:** Current external prospect-validation workflow; real-data and paid-pilot gates remain separate
 **Owner:** MoOoH  
-**Last Updated:** 2026-07-14
+**Last Updated:** 2026-07-15
 **Related:**
 - `docs/sales/FOUNDER_CRM_PROSPECT_TEMPLATE.csv`
-- `docs/operations/BIZPILOT_FOUNDER_CRM_AND_PILOT_TRACKING_WORKFLOW_v1.0.md`
-- `docs/operations/BIZPILOT_PHASE_18_FOUNDER_LED_PILOT_WORKFLOW_v1.0.md`
 - `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md`
+- `docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md`
 - `docs/dashboard-v4/CURRENT.md`
 - `app/admin/page.tsx`
 

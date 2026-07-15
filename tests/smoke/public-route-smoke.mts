@@ -5,12 +5,14 @@
  * Description: Synthetic public-route smoke runner for local and production URLs.
  * Role: Verifies public demo, pricing, trust, and auth surfaces without secrets or real data.
  * Related:
- * - docs/readiness/PHASE_21N_SYNTHETIC_PRODUCTION_SMOKE_PLAN.md
- * - docs/readiness/PHASE_21O_PUBLIC_TRUST_PAGES_AND_SAFE_GAP_REVIEW.md
+ * - docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md
+ * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Added safe EN/fr-CA missing-success coverage for the dynamic quote success boundary.
+ * - 2026-07-15: Added direct EN/fr-CA coverage for every auth page and the base quote-unavailable route.
  * - 2026-07-13: Replaced retired V2 page checks with ten retained V3 routes and exact 308 redirect-location coverage.
  * - 2026-06-21: Added the dedicated public FAQ route to smoke coverage.
  * - 2026-07-04: Added comparison route smoke coverage.
@@ -27,10 +29,14 @@
  * ============================================================
  */
 
+import { getBizPilotCopy } from "../../lib/i18n/bizpilot-copy.ts";
+import { INTERFACE_LANGUAGE_COOKIE } from "../../lib/i18n/language.ts";
 import { getPublicV3Spec } from "../../lib/i18n/public-v3-spec.ts";
 
 type SmokeTarget = Readonly<{
+  cookieLanguage?: "en" | "fr-CA";
   expectedText?: readonly string[];
+  expectedLanguage?: "en" | "fr-CA";
   location?: string;
   maxBytes?: number;
   path: string;
@@ -48,6 +54,10 @@ type SmokeResult = Readonly<{
 const DEFAULT_BASE_URL = "http://127.0.0.1:3000";
 const DEFAULT_TIMEOUT_MS = 15_000;
 const englishV3 = getPublicV3Spec("en");
+const englishAuth = getBizPilotCopy("en").auth;
+const englishQuote = getBizPilotCopy("en").quotePage;
+const frenchAuth = getBizPilotCopy("fr-CA").auth;
+const frenchQuote = getBizPilotCopy("fr-CA").quotePage;
 
 const smokeTargets: readonly SmokeTarget[] = [
   {
@@ -120,24 +130,110 @@ const smokeTargets: readonly SmokeTarget[] = [
     status: 200,
   },
   {
-    expectedText: ["Sign in"],
+    expectedLanguage: "en",
+    expectedText: [englishAuth.signInTitle],
     path: "/auth/sign-in",
     status: 200,
   },
   {
-    expectedText: ["Create owner access", "Apply through the founder pilot page first."],
+    expectedLanguage: "en",
+    expectedText: [
+      englishAuth.createWorkspaceTitle,
+      "Apply through the founder pilot page first.",
+    ],
     path: "/auth/sign-up",
     status: 200,
   },
   {
-    expectedText: ["Reset password"],
+    expectedLanguage: "en",
+    expectedText: [englishAuth.checkEmailTitle],
+    path: "/auth/check-email",
+    status: 200,
+  },
+  {
+    expectedLanguage: "en",
+    expectedText: [englishAuth.forgotPasswordTitle],
     path: "/auth/forgot-password",
     status: 200,
   },
   {
-    expectedText: ["Set new password"],
+    expectedLanguage: "en",
+    expectedText: [englishAuth.resetPasswordTitle],
     path: "/auth/reset-password",
     status: 200,
+  },
+  {
+    expectedLanguage: "fr-CA",
+    expectedText: [frenchAuth.signInTitle],
+    path: "/auth/sign-in?language=fr-CA",
+    status: 200,
+  },
+  {
+    expectedLanguage: "fr-CA",
+    expectedText: [frenchAuth.createWorkspaceTitle],
+    path: "/auth/sign-up?language=fr-CA",
+    status: 200,
+  },
+  {
+    expectedLanguage: "fr-CA",
+    expectedText: [frenchAuth.checkEmailTitle],
+    path: "/auth/check-email?language=fr-CA",
+    status: 200,
+  },
+  {
+    expectedLanguage: "fr-CA",
+    expectedText: [frenchAuth.forgotPasswordTitle],
+    path: "/auth/forgot-password?language=fr-CA",
+    status: 200,
+  },
+  {
+    expectedLanguage: "fr-CA",
+    expectedText: [frenchAuth.resetPasswordTitle],
+    path: "/auth/reset-password?language=fr-CA",
+    status: 200,
+  },
+  {
+    expectedLanguage: "en",
+    expectedText: [englishQuote.unavailableTitle],
+    path: "/quote",
+    status: 200,
+  },
+  {
+    expectedLanguage: "fr-CA",
+    expectedText: [frenchQuote.unavailableTitle],
+    path: "/quote?language=fr-CA",
+    status: 200,
+  },
+  {
+    cookieLanguage: "en",
+    expectedLanguage: "en",
+    expectedText: [englishQuote.unavailableTitle],
+    path: "/quote/__bizpilot-smoke-inactive__/success",
+    status: 200,
+  },
+  {
+    cookieLanguage: "fr-CA",
+    expectedLanguage: "fr-CA",
+    expectedText: [frenchQuote.unavailableTitle],
+    path: "/quote/__bizpilot-smoke-inactive__/success?language=fr-CA",
+    status: 200,
+  },
+  {
+    cookieLanguage: "en",
+    expectedLanguage: "en",
+    expectedText: [englishV3.notFound.title, englishV3.notFound.primary],
+    path: "/__bizpilot-not-found-smoke__",
+    status: 404,
+  },
+  {
+    cookieLanguage: "fr-CA",
+    expectedLanguage: "fr-CA",
+    expectedText: [
+      getPublicV3Spec("fr-CA").notFound.title,
+      getPublicV3Spec("fr-CA").notFound.primary,
+    ],
+    path: "/__bizpilot-not-found-smoke__?language=fr-CA",
+    status: 404,
   },
   {
     location: "/features#focused-by-design",
@@ -261,6 +357,7 @@ async function fetchWithTimeout(
   url: URL,
   timeoutMs: number,
   redirect: RequestRedirect = "follow",
+  cookieLanguage?: "en" | "fr-CA",
 ): Promise<Response> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -269,6 +366,9 @@ async function fetchWithTimeout(
     return await fetch(url, {
       cache: "no-store",
       headers: {
+        ...(cookieLanguage
+          ? { cookie: `${INTERFACE_LANGUAGE_COOKIE}=${cookieLanguage}` }
+          : {}),
         "user-agent": "BizPilot-public-smoke/1.0",
       },
       redirect,
@@ -292,6 +392,7 @@ async function runTarget(
       url,
       timeoutMs,
       target.location ? "manual" : "follow",
+      target.cookieLanguage,
     );
     const durationMs = Date.now() - startedAt;
 
@@ -330,6 +431,19 @@ async function runTarget(
       return {
         durationMs,
         error: `response body too large for smoke check (${body.length} bytes)`,
+        path: target.path,
+        pass: false,
+        status: response.status,
+      };
+    }
+
+    if (
+      target.expectedLanguage &&
+      !body.includes(`<html lang="${target.expectedLanguage}"`)
+    ) {
+      return {
+        durationMs,
+        error: `expected document language ${target.expectedLanguage}`,
         path: target.path,
         pass: false,
         status: response.status,

@@ -6,12 +6,13 @@
  * Role: Applies application-wide framework behavior and the permanent Website V3 route-consolidation map.
  * Related:
  * - proxy.ts
- * - docs/archive/website-v3-2026-07-13/V3_ROUTE_CONSOLIDATION_AND_REDIRECT_PLAN.md
+ * - docs/website-v4/CURRENT.md
  * - tests/unit/seo-source.test.mts
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Repointed route-consolidation authority to the current Website V4 contract.
  * - 2026-07-13: Added five permanent direct redirects for the approved Website V3 route consolidation.
  * ============================================================
  */

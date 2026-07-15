@@ -1,8 +1,10 @@
 # BizPilot Website V4 — Current Report
 
-Date: 2026-07-14  
-Status: PASS / production released and accepted  
-Scope: public marketing routes only; dashboard, auth, quote intake, and production data unchanged
+Date: 2026-07-15
+
+Status: PASS locally for V2.1 candidate; previous Production release remains accepted; final V2.1 rollout pending
+
+Scope: public marketing, Auth GET states, Quote read/recovery states, and system 404/error surfaces; production data unchanged
 
 ## Product truth and approved bilingual message
 
@@ -60,12 +62,11 @@ The redesign used current public SaaS patterns as directional references, not te
 BizPilot intentionally does not reuse direct-inbox language from omnichannel products
 because the current product is a shareable intake and reply workspace.
 
-## Documentation cleanup
+## Documentation authority
 
-Fourteen V3 planning, research, implementation, and acceptance reports were removed from
-the active `docs/rebuild-v3` path and moved together to
-`docs/archive/website-v3-2026-07-13/`. This document is the sole active website-design
-report. Historical reports remain available only for traceability.
+This file is the sole active website-design contract. Superseded V3 planning and visual
+evidence were removed from the working tree; Git history remains the point-in-time audit
+trail.
 
 ## Verification evidence
 
@@ -79,12 +80,16 @@ report. Historical reports remain available only for traceability.
 - Pull request CI: PASS (run 400)
 - Vercel Preview build: Ready; protected by Vercel Authentication
 - Vercel Production deployment: Ready (`Er52XYMyGQH5ZVifqxiRnSXjq3NB`)
-- Production public-route smoke: 34/34 PASS
+- V2.1 candidate local public-route smoke: 46/46 PASS
+- V2.1 candidate local inactive Quote GET: 2/2 PASS in EN/fr-CA, including safe missing-environment fallback
+- V2.1 candidate documentation link audit: zero broken local Markdown links
+- Previous Production public-route smoke: 34/34 PASS
 - Production responsive bilingual smoke: 20/20 PASS
 - Production final UI matrix: zero failures across EN/fr-CA, light/dark, metadata,
   auth boundaries, sitemap, robots, and 11 recorded viewport targets
-- Managed-browser production interaction: PASS; the live language control changed the
+- Previous managed-browser production interaction: PASS; the live language control changed the
   homepage, navigation, links, and accessible labels from English to Canadian French
+- Current execution environment browser interaction: GATED because Chrome/Chromium is not installed
 
 ## Production and data safety
 

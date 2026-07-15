@@ -2,27 +2,30 @@
  * ============================================================
  * File: docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md
  * Project: BizPilot AI
- * Description: Evidence-bounded whole-project source of truth after the Website V4 and Dashboard V4 consolidation.
+ * Description: Evidence-bounded whole-project source of truth for Website V4, Dashboard V4, and Documentation V2.1.
  * Role: Controls release claims, product boundaries, current gaps, next actions, and production/data gates.
  * Related:
  * - docs/readiness/current-status.json
  * - docs/dashboard-v4/CURRENT.md
  * - docs/website-v4/CURRENT.md
- * - docs/CURRENT_CANONICAL_DOCS_v2.0.md
+ * - docs/CURRENT_CANONICAL_DOCS_v2.1.md
+ * - docs/project-v2/CURRENT.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Recorded the final V2.1 local verification, documentation cleanup, safe quote-read fallback, and unchanged external gates.
+ * - 2026-07-15: Added the exhaustive project/route/flow audit, bilingual 404/error coverage, V2.1 phase plan, and consolidated external gates.
  * - 2026-07-14: Recorded the pushed release SHA, successful GitHub CI/Vercel rollout, and read-only Production smoke evidence.
  * - 2026-07-14: Consolidated the current public, dashboard, admin, documentation, verification, and external-gate posture.
  * ============================================================
  -->
 
-# BizPilot AI Source of Truth — 2026-07-14
+# BizPilot AI Source of Truth — Updated 2026-07-15
 
 ## Executive status
 
-BizPilot is implemented as a bilingual, manual-first Smart Intake and reply-preparation product for service businesses, with cleaning as the first complete pilot vertical. The public Website V4 explains the problem and workflow; the protected Dashboard V4 helps an owner configure one intake link, triage requests, identify missing information, and review/edit drafts before sending through an existing channel.
+BizPilot is implemented as a bilingual, manual-first Smart Intake and reply-preparation product for service businesses, with cleaning as the first complete pilot vertical. Website V4 explains the problem and workflow; Dashboard V4 supports configuration, triage, missing-information review, draft edit/copy, and manual follow-up. Documentation V2.1 now provides one phase/dependency plan and one complete EN/fr-CA route/workflow audit.
 
 This code release does **not** approve real customer data, a paid pilot, Google login as live, remote migration changes, or Production data mutation. Those remain separately gated even when lint, tests, and build pass.
 
@@ -52,7 +55,7 @@ No route was added by Dashboard V4.
 
 | Surface | Canonical routes |
 | --- | --- |
-| Public | `/`, `/features`, `/demo`, `/pricing`, `/pilot`, `/faq`, `/trust`, `/privacy`, `/security`, `/terms` |
+| Public | `/`, `/features`, `/demo`, `/pricing`, `/pilot`, `/faq`, `/trust`, `/privacy`, `/security`, `/terms`; unmatched URLs use the shared bilingual 404 state |
 | Intake | `/quote`, `/quote/[slug]`, `/quote/[slug]/success` |
 | Auth | `/auth/sign-in`, `/auth/sign-up`, `/auth/check-email`, `/auth/forgot-password`, `/auth/reset-password`, `/auth/callback` |
 | Owner | `/dashboard`, `/dashboard/leads`, `/dashboard/leads/[leadId]`, `/dashboard/configuration`, `/dashboard/business-profile`, `/dashboard/settings`, `/dashboard/guide` |
@@ -77,23 +80,26 @@ Full detail: `docs/dashboard-v4/CURRENT.md` and `docs/dashboard-v4/CHANGELOG.md`
 
 The final verification ledger is maintained in `docs/dashboard-v4/PHASE_PROGRESS.md` and updated only with commands actually run on the final tree.
 
-Functional release commit `b81f71d870528219a13eae8575e387397c4883e7` is on `main`. GitHub App validation completed successfully, Vercel reported success for the same SHA, and `https://bizpilo.com` passed public route `34/34`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive quote GET `1/1`.
+The previous functional release commit `b81f71d870528219a13eae8575e387397c4883e7` is on `main`. GitHub App validation completed successfully, Vercel reported success for the same SHA, and `https://bizpilo.com` passed public route `34/34`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive quote GET `1/1`.
 
-Environment fact: the local workspace does not currently contain the approved local dashboard/auth target variables required for authenticated browser smoke. The safe target classifier therefore blocks that test. This is an honest environment gate, not permission to use managed Production for synthetic writes.
+The V2.1 candidate tree passed ESLint with zero warnings, TypeScript, `249/249` unit tests, Next.js 16.2.4 production build, local public route `46/46`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive dynamic Quote GET `2/2`. The route set now directly covers every Auth page, base/dynamic unavailable Quote states, invalid Quote-success recovery, bilingual 404, localized global error, redirects, metadata, sitemap, robots, locale-preserving links, and light/dark contracts. GitHub/Vercel/Production evidence for V2.1 must be recorded after its final commit is pushed; prior release evidence is not reused as proof for the candidate.
+
+Environment fact: the local workspace does not currently contain `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, or `DATABASE_URL`. The safe classifier explicitly blocked Dashboard/Auth and RLS-required tests. Chrome/Chromium is also absent, so real browser interaction smoke is gated. These are honest environment gates, not permission to use managed Production for synthetic writes.
 
 No Production database change, migration, cleanup, user deletion, or test-data insertion was performed in this release.
 
 ## Gate sequence and current state
 
-1. **Code release — CLOSED:** lint, typecheck, full unit suite, build, push, CI, Vercel status, and Production public read-only smoke passed.
-2. **Safe authenticated QA target:** owner supplies/authorizes a local or disposable synthetic auth target; run desktop/mobile EN/fr-CA dashboard smoke.
-3. **External OAuth decision:** keep Google unavailable or configure Google/Supabase provider and complete owner QA.
-4. **Managed database reconciliation:** read-only migration/status audit, backup confirmation, explicit change plan, then separately authorized apply if needed.
-5. **Production authenticated read-only acceptance:** public Vercel/domain/read-only smoke passed; protected dashboard visual QA still requires an owner-approved no-secret session procedure.
-6. **Real customer data:** explicit owner approval only after restored-target app/dashboard/RLS proof.
-7. **Paid pilot:** support, payment/manual billing, refund, incident, backup, and rollback rehearsal after the real-data gate.
+1. **V2.1 local code gate — CLOSED:** lint, typecheck, full unit suite, build, documentation links, and all safe local HTTP smokes passed.
+2. **V2.1 release gate — IN PROGRESS:** commit/push, CI, Vercel mapping, and final Production read-only rerun remain before release closure.
+3. **Safe authenticated QA target:** owner supplies/authorizes a local or disposable synthetic auth target; run desktop/mobile EN/fr-CA dashboard smoke.
+4. **External OAuth decision:** keep Google unavailable or configure Google/Supabase provider and complete owner QA.
+5. **Managed database reconciliation:** read-only migration/status audit, backup confirmation, explicit change plan, then separately authorized apply if needed.
+6. **Production authenticated read-only acceptance:** protected dashboard visual QA requires an owner-approved no-secret session procedure.
+7. **Real customer data:** explicit owner approval only after restored-target app/dashboard/RLS proof.
+8. **Paid pilot:** support, payment/manual billing, refund, incident, backup, and rollback rehearsal after the real-data gate.
 
-The copy-ready, least-privilege prompts for steps 2–7 are in `prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.0.md`.
+The copy-ready, least-privilege prompts for all external gates are in `prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md`.
 
 ## Owner decisions still required
 
@@ -102,4 +108,4 @@ The copy-ready, least-privilege prompts for steps 2–7 are in `prompts/BIZPILOT
 - Approve any managed Supabase inspection or later change after a read-only plan.
 - Approve real-data and paid-pilot gates only after their prerequisites have evidence.
 
-Everything else in the Dashboard V4 code/documentation release is suitable for Codex to complete without owner intervention.
+The dependency order, ideal expectations, Codex work, owner work, and stop rules are maintained in `docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md`.

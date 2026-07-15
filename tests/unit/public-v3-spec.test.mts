@@ -7,11 +7,12 @@
  * Related:
  * - lib/i18n/public-v3-spec.ts
  * - lib/i18n/language.ts
- * - docs/archive/website-v3-2026-07-13/V3_FINAL_EN_FR_COPY_MATRIX.md
+ * - docs/website-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Repointed the bilingual contract to the current Website V4 authority.
  * - 2026-07-13: Added Phase 2 parity, route, section, pricing, and product-boundary checks.
  * ============================================================
  */

@@ -6,12 +6,15 @@
  * Role: Defines evidence required after automated checks and before any real-data or paid-pilot approval.
  * Related:
  * - docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md
+ * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * - docs/dashboard-v4/CURRENT.md
  * - docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Recorded the complete V2.1 automated candidate gate and explicit browser/auth/RLS environment gates.
+ * - 2026-07-15: Added the complete route/flow audit as the current bilingual acceptance matrix.
  * - 2026-07-14: Replaced the stale phase-specific checklist with the V2 route, language, workflow, and safety acceptance gate.
  * ============================================================
  -->
@@ -24,10 +27,10 @@ Status: current. Run only against an approved local, Preview, or synthetic targe
 
 | Field | Value |
 | --- | --- |
-| Date and tester |  |
-| Commit SHA and branch |  |
-| Target URL and environment |  |
-| Browser, OS, and viewports |  |
+| Date and tester | 2026-07-15, Codex automated candidate verification |
+| Commit SHA and branch | Pre-commit V2.1 candidate tree on `main`; exact release SHA pending |
+| Target URL and environment | `http://127.0.0.1:3037`, local Next.js production server, read-only GET smoke |
+| Browser, OS, and viewports | HTTP/source matrix on Linux; Chrome interaction GATED because no Chrome/Chromium binary is installed; viewport contract records 320–1920 CSS pixels |
 | Test workspace/user classification |  |
 | Screenshots or run links |  |
 
@@ -37,11 +40,12 @@ Record the exact result of each command. Missing environment variables are `GATE
 
 | Check | Expected | Result/evidence |
 | --- | --- | --- |
-| `pnpm lint` or direct ESLint binary | Zero errors and warnings |  |
-| `pnpm typecheck` or `tsc --noEmit` | PASS |  |
-| `pnpm test:unit` | All current tests pass |  |
-| `pnpm build` | Next.js production build passes |  |
-| Local target classifier | Explicitly local/synthetic for authenticated or write smoke |  |
+| `pnpm lint` or direct ESLint binary | Zero errors and warnings | PASS, zero warnings |
+| `pnpm typecheck` or `tsc --noEmit` | PASS | PASS |
+| `pnpm test:unit` | All current tests pass | PASS, 249/249 |
+| `pnpm build` | Next.js production build passes | PASS, Next.js 16.2.4 |
+| Local safe HTTP smokes | Public/locale/responsive/UI/Quote contracts pass | PASS: public 46/46; responsive 20/20; UI matrix zero failures; inactive Quote 2/2 |
+| Local target classifier | Explicitly local/synthetic for authenticated or write smoke | GATED: App/Supabase/DB target variables missing; no authenticated/write smoke authorized |
 
 ## Public website
 

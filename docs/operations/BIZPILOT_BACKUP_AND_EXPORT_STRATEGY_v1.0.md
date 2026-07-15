@@ -4,10 +4,10 @@
 **Status:** Pilot-readiness skeleton
 **Owner:** MoOoH
 **Scope:** Database backup awareness, manual export procedure, restore placeholder, auth migration risk
-**Last Updated:** 2026-05-25
+**Last Updated:** 2026-07-15
 **Source standard:** `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`, Sections 14, 15
 **Related:**
-- `docs/operations/BIZPILOT_PHASE_10A_VENDOR_INDEPENDENCE_GAP_REPORT_v1.0.md`
+- `docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md`
 - `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
 - `supabase/migrations/README.md`
 
@@ -28,8 +28,8 @@ cleanup, bulk work, or broader real-data scale.
 
 For current status, use:
 
-- `docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md`
-- `docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md`
+- `docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md`
+- `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md`
 - `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
 
 ---
@@ -290,7 +290,7 @@ A real restore procedure does not exist yet. The placeholder steps for the first
 5. Recreate `auth.users` rows. For a pilot-stage drill, manually create the small number of test accounts; this is acceptable while the user count is in the tens.
 6. Verify RLS by running every `tests/rls/*.test.sql` file against the restored database.
 7. Verify the application boots end-to-end against the restored database by pointing a local `next dev` instance at the restored project credentials.
-8. Record the date, duration, and any anomalies in a `docs/operations/BIZPILOT_RESTORE_DRILL_LOG.md` (to be created on first drill).
+8. Record the date, duration, and any anomalies in a new dated section of `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`.
 
 The Phase 24C.0 DB-level drill is validated. The strict app/dashboard/RLS
 restore procedure is not yet validated because the restored-target RLS suite

@@ -9,10 +9,12 @@
  * - app/sitemap.ts
  * - app/robots.ts
  * - components/public/policy-page.tsx
+ * - docs/project-v2/SEO_ANALYTICS_AND_DISCOVERY_CHECKLIST_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Repointed SEO, FAQ, CWV, and no-PII evidence guards to the consolidated current checklist.
  * - 2026-07-13: Replaced legacy V2 title/event guards with V3 metadata, JSON-LD parity, and current no-op event behavior checks.
  * - 2026-07-13: Migrated canonical, redirect, structured-data, and pilot-event guards to the ten retained V3 routes.
  * - 2026-07-11: Added Content Studio breadcrumb JSON-LD guard.
@@ -53,6 +55,10 @@ function source(path: string): string {
 }
 
 describe("final public SEO and legal source contracts", () => {
+  const discoveryChecklist = source(
+    "docs/project-v2/SEO_ANALYTICS_AND_DISCOVERY_CHECKLIST_2026-07-15.md",
+  );
+
   it("builds unique, localized V3 metadata for every canonical route", () => {
     for (const language of ["en", "fr-CA"] as const) {
       const spec = getPublicV3Spec(language);
@@ -236,9 +242,6 @@ describe("final public SEO and legal source contracts", () => {
 
   it("documents approved public events through a typed no-op helper only", () => {
     const events = source("lib/public-events.ts");
-    const analyticsSpec = source(
-      "docs/readiness/PHASE_25L_NO_PII_ANALYTICS_FOUNDER_FUNNEL_2026-07-04.md",
-    );
 
     for (const eventName of [
       "pilot_template_copy",
@@ -295,7 +298,7 @@ describe("final public SEO and legal source contracts", () => {
       "first-party analytics sink",
     ]) {
       assert.equal(
-        analyticsSpec.includes(required),
+        discoveryChecklist.includes(required),
         true,
         `Analytics spec missing ${required}.`,
       );
@@ -381,9 +384,6 @@ describe("final public SEO and legal source contracts", () => {
     const faqRoute = source("app/faq/page.tsx");
     const sharedV3 = source("components/public/public-v3-page.tsx");
     const structured = source("lib/public-structured-data.ts");
-    const phase25n = source(
-      "docs/readiness/PHASE_25N_FAQ_AI_SEARCH_COMPLETION_2026-07-04.md",
-    );
 
     for (const key of [
       "direct-integrations",
@@ -406,17 +406,14 @@ describe("final public SEO and legal source contracts", () => {
       "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
       "https://developers.google.com/search/docs/fundamentals/ai-optimization-guide",
       "FAQPage JSON-LD does not guarantee indexing, rankings, rich results, AI",
-      "BizPilot does not auto-send messages.",
-      "Paid pilot collection remains blocked",
+      "BizPilot does not auto-send messages",
     ]) {
-      assert.equal(phase25n.includes(required), true, required);
+      assert.equal(discoveryChecklist.includes(required), true, required);
     }
   });
 
   it("keeps Search Console and Core Web Vitals checklist source-backed", () => {
-    const checklist = source(
-      "docs/readiness/PHASE_25K_SEARCH_CONSOLE_CWV_BASELINE_2026-07-04.md",
-    );
+    const checklist = discoveryChecklist;
 
     for (const officialSource of [
       "https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap",
@@ -436,14 +433,13 @@ describe("final public SEO and legal source contracts", () => {
     for (const required of [
       "https://bizpilo.com/sitemap.xml",
       "Use URL Inspection",
-      "Google treats sitemap submission as a discovery hint",
-      "not a noindex mechanism",
-      "LCP good: <= 2.5s",
-      "INP good: <= 200ms",
-      "CLS good: <= 0.1",
-      "Lighthouse 13.4.0",
-      "| `/` | 65 | 6505ms | 0.000 | 419ms |",
-      "INP must be verified",
+      "discovery hint, not an indexing guarantee",
+      "robots.txt is not a noindex mechanism",
+      "LCP ≤ 2.5 s",
+      "INP ≤ 200 ms",
+      "CLS ≤ 0.1",
+      "do not reuse old Phase 25 numbers as current evidence",
+      "No analytics sink is approved",
     ]) {
       assert.equal(checklist.includes(required), true, `Missing ${required}.`);
     }

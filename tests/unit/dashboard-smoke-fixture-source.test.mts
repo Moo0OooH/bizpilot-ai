@@ -6,11 +6,12 @@
  * Role: Keeps data-rich dashboard QA synthetic-only and production-prohibited.
  * Related:
  * - tests/smoke/dashboard-auth-smoke.mts
- * - docs/readiness/PHASE_25D_DASHBOARD_DATA_RICH_QA_FIXTURE_2026-07-04.md
+ * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Repointed fixture coverage to the current bilingual workflow audit.
  * - 2026-07-04: Added source guards for opt-in founder/admin dashboard smoke coverage.
  * - 2026-07-04: Guarded owner operating guide route smoke coverage.
  * ============================================================

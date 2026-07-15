@@ -9,8 +9,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Added the bilingual global error copy namespace to the explicit dictionary contract.
  * - 2026-07-13: Migrated retained-route, FAQ, pilot, and fr-CA shell guards to the completed Website V3 contract.
  * - 2026-07-13: Migrated the homepage dictionary guard to the typed Website V3 specification.
  * - 2026-07-12: Updated pilot conversion assertions for the manual email-draft path.
@@ -1194,6 +1195,7 @@ describe("BizPilot language copy", () => {
         "leadRules",
         "aiFallback",
         "demo",
+        "globalError",
         "missingInfoLabels",
       ],
     );

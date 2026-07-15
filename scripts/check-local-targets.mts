@@ -7,11 +7,12 @@
  * Related:
  * - tests/smoke/dashboard-auth-smoke.mts
  * - tests/rls/run-rls-tests.mts
- * - docs/readiness/PHASE_25Y_LOCAL_TARGET_AND_RLS_GATE_RECHECK_2026-07-04.md
+ * - docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Repointed safe-target authority to the current master phase plan.
  * - 2026-07-04: Created a no-secret target classifier for local Supabase and database gates.
  * ============================================================
  */

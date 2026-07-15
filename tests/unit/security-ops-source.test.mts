@@ -7,11 +7,12 @@
  * Related:
  * - supabase/migrations/0023_public_submission_abuse_log_retention.sql
  * - docs/security/BIZPILOT_SECURITY_OPERATIONS_REGISTER_2026-07-04.md
- * - docs/readiness/PHASE_25O_SECURITY_RUNTIME_OPS_2026-07-04.md
+ * - docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Replaced Phase 25 report guards with current register and master-gate guards.
  * - 2026-07-04: Added Phase 25O security/runtime operations guards.
  * - 2026-07-04: Synced migration index guard after Supabase readiness hardening migration.
  * ============================================================
@@ -34,11 +35,8 @@ describe("security and runtime operations source contracts", () => {
   const register = source(
     "docs/security/BIZPILOT_SECURITY_OPERATIONS_REGISTER_2026-07-04.md",
   );
-  const phase25o = source(
-    "docs/readiness/PHASE_25O_SECURITY_RUNTIME_OPS_2026-07-04.md",
-  );
-  const backlog = source(
-    "docs/readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md",
+  const masterPlan = source(
+    "docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md",
   );
   const nextConfig = source("next.config.ts");
   const packageJson = source("package.json");
@@ -129,7 +127,7 @@ describe("security and runtime operations source contracts", () => {
     }
   });
 
-  it("records official source-backed Phase 25O evidence and preserved gates", () => {
+  it("records official security references and preserves current external gates", () => {
     for (const required of [
       "https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html",
       "https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html",
@@ -137,25 +135,23 @@ describe("security and runtime operations source contracts", () => {
       "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy",
       "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy-Report-Only",
       "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html",
-      "does not",
-      "run migrations against production",
+      "does not authorize anyone to run migrations against Production",
       "print or rotate secrets",
-      "pnpm test:rls NOT RUN - requires local DATABASE_URL target",
+      "RLS suite remains `GATED`",
     ]) {
-      assert.equal(phase25o.includes(required), true, `Missing ${required}.`);
+      assert.equal(register.includes(required), true, `Missing ${required}.`);
     }
 
     for (const required of [
-      "Progress Addendum - Phase 25O",
-      "85 done",
-      "86 done with migration-ready cleanup helper",
-      "87 done as header-only privacy request and incident registers",
-      "88 done as CSP/report-only hardening plan",
-      "91 done",
-      "92 done as credential rotation register and owner-action flow",
-      "100 preserved",
+      "Tenant isolation, RLS, schema, backup, restore",
+      "Read-only drift map",
+      "Synthetic writes run only against a classifier-approved local/disposable target",
+      "Production is read-only unless an exact separately approved change plan",
+      "Real customer data",
+      "NOT APPROVED",
+      "Paid pilot",
     ]) {
-      assert.equal(backlog.includes(required), true, `Missing ${required}.`);
+      assert.equal(masterPlan.includes(required), true, `Missing ${required}.`);
     }
   });
 });

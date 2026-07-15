@@ -7,11 +7,12 @@
  * Related:
  * - app/(public)/quote/[slug]/page.tsx
  * - server/actions/public-intake.actions.ts
- * - docs/product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md
+ * - docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-19
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Repointed form UI authority to the current multilingual responsive standard.
  * - 2026-05-19: Created 3-step grouped public quote form.
  * - 2026-05-22: Removed client-side step navigation dependency so public submissions cannot get stuck before submit.
  * - 2026-06-19: Mapped quote form visual styling to shared System/Light/Dark tokens.

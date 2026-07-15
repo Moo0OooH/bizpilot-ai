@@ -155,8 +155,8 @@ or surrounding context that keeps the full meaning:
 
 ## Visual Budget Rules
 
-French strings must be written to fit the component budget from
-`docs/content/BIZPILOT_PUBLIC_COPY_MATRIX_v1.0.md` and
+French strings must be written to fit the component budget implemented in
+`lib/i18n/public-v3-spec.ts` and the rules in
 `docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`.
 
 Do not solve overlong French with:

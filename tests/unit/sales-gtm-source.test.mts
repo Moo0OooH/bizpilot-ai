@@ -7,11 +7,13 @@
  * Related:
  * - docs/sales/FOUNDER_CRM_AND_OUTREACH_PLAYBOOK.md
  * - docs/sales/FOUNDER_CRM_PROSPECT_TEMPLATE.csv
- * - docs/readiness/PHASE_25M_GTM_AND_PILOT_OPS_PACKET_2026-07-04.md
+ * - docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md
+ * - prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Replaced Phase 25 report dependencies with the current master and pilot-readiness gates.
  * - 2026-07-14: Replaced the stale Phase 25M status assertion with the current external-validation and V2 gate contract.
  * - 2026-07-04: Added Phase 25M GTM/pilot-ops packet guards.
  * ============================================================
@@ -28,11 +30,17 @@ function source(path: string): string {
 describe("founder GTM and pilot-ops source contracts", () => {
   const playbook = source("docs/sales/FOUNDER_CRM_AND_OUTREACH_PLAYBOOK.md");
   const template = source("docs/sales/FOUNDER_CRM_PROSPECT_TEMPLATE.csv");
-  const phase25m = source(
-    "docs/readiness/PHASE_25M_GTM_AND_PILOT_OPS_PACKET_2026-07-04.md",
+  const pilotReadiness = source(
+    "docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md",
   );
-  const backlog = source(
-    "docs/readiness/PHASE_25_SITE_DASHBOARD_GROWTH_BACKLOG_2026-07-04.md",
+  const masterPlan = source(
+    "docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md",
+  );
+  const routeAudit = source(
+    "docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md",
+  );
+  const externalPromptPack = source(
+    "prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md",
   );
 
   it("keeps the founder CRM template header-only and validation-ready", () => {
@@ -84,10 +92,10 @@ describe("founder GTM and pilot-ops source contracts", () => {
       "refund terms before collection",
       "support expectations",
       "rollback path",
-      "paid pilot remains blocked",
+      "NOT APPROVED",
     ]) {
       assert.equal(
-        `${playbook}\n${phase25m}`.includes(required),
+        `${playbook}\n${pilotReadiness}\n${masterPlan}`.includes(required),
         true,
         `Missing ${required}.`,
       );
@@ -103,35 +111,36 @@ describe("founder GTM and pilot-ops source contracts", () => {
       "Do not offer incentives for reviews",
       "Do not ask customers to remove/change negative reviews",
       "Do not generate fake, AI-written, staff, family, or conflict-of-interest reviews",
-      "selective positive-review solicitation",
+      "selective review",
       "https://support.google.com/business/answer/3474122",
       "https://support.google.com/contributionpolicy/answer/7400114",
       "https://www.ftc.gov/business-guidance/resources/consumer-reviews-testimonials-rule-questions-answers",
     ]) {
       assert.equal(
-        `${playbook}\n${phase25m}`.includes(required),
+        `${playbook}\n${pilotReadiness}`.includes(required),
         true,
         `Missing ${required}.`,
       );
     }
   });
 
-  it("records Phase 25M backlog advancement without opening future gates", () => {
+  it("keeps founder-led validation sequenced before real data and paid pilot", () => {
     for (const required of [
-      "Progress Addendum - Phase 25M",
-      "80 done",
-      "81 done",
-      "82 done",
-      "83 done as a manual pilot-ops packet; paid pilot remains blocked",
-      "84 done",
-      "89 preserved as a required paid-pilot blocker",
-      "94 preserved",
-      "95 preserved",
-      "96 preserved",
-      "97 preserved",
-      "100 preserved",
+      "Public discovery → pilot",
+      "There is no fake form submission, automated outreach, checkout, or activation",
+      "Real customer data",
+      "NOT APPROVED",
+      "Paid pilot",
+      "NOT APPROVED",
+      "Use only real prospect consent evidence",
     ]) {
-      assert.equal(backlog.includes(required), true, `Missing ${required}.`);
+      assert.equal(
+        `${masterPlan}\n${pilotReadiness}\n${routeAudit}\n${externalPromptPack}`.includes(
+          required,
+        ),
+        true,
+        `Missing ${required}.`,
+      );
     }
   });
 });

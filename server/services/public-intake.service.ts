@@ -8,10 +8,12 @@
  * - server/actions/public-intake.actions.ts
  * - server/repositories/public-intake.repository.ts
  * - app/(public)/quote/[slug]/page.tsx
+ * - server/logging/safe-logger.ts
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Made public quote reads fail closed to the unavailable state with sanitized operational logging.
  * - 2026-07-04: Passed the selected public quote language into intake reads and submit validation.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-06: Created Phase 4 public intake service.
@@ -26,6 +28,7 @@ import "server-only";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
 import { createSupabasePublicServerClient } from "@/lib/supabase/server";
+import { safeLogger } from "@/server/logging/safe-logger";
 import {
   enforceSubmissionRateLimit,
   recordPublicSubmissionAttempt,
@@ -224,13 +227,20 @@ export async function getPublicIntakePage(input: {
   language?: SupportedLanguage;
   slug: string;
 }): Promise<PublicIntakePageRecord | null> {
-  const supabase = createSupabasePublicServerClient();
+  try {
+    const supabase = createSupabasePublicServerClient();
 
-  return getPublicIntakePageBySlug({
-    language: input.language,
-    slug: input.slug,
-    supabase,
-  });
+    return await getPublicIntakePageBySlug({
+      language: input.language,
+      slug: input.slug,
+      supabase,
+    });
+  } catch (error) {
+    safeLogger.warn("public_intake.page_unavailable", {
+      errorName: error instanceof Error ? error.name : "unknown",
+    });
+    return null;
+  }
 }
 
 export async function submitPublicIntake(

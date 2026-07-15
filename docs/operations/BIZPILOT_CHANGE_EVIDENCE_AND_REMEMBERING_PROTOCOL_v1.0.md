@@ -95,7 +95,8 @@ For every requested or completed work item, the team must:
 - Dashboard mutating smoke remains prohibited in production and managed/non-local Supabase regardless of guard behavior.
 
 ## Canonical files to attach to every handoff
-- `docs/readiness/PHASE_21V_SYNTHESIS_STATUS_AND_ACTION_REPORT_2026-05-26.md`
+- `docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md`
+- `docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md`
 - This protocol itself
 - Any smoke or verification evidence docs used in the current change set
 

@@ -4,11 +4,11 @@
 **Document Type:** Signup confirmation and auth-email delivery plan
 **Status:** External Auth email/custom SMTP gate passed by owner-provided Resend/Supabase proof
 **Owner:** MoOoH
-**Last Updated:** 2026-05-25
+**Last Updated:** 2026-07-15
 **Related:**
 
-- `docs/readiness/PHASE_21H_SIGNUP_CONFIRMATION_SMOKE.md`
-- `docs/readiness/PHASE_21M_CONSOLIDATED_STATUS_AND_SERVICE_CAPABILITIES.md`
+- `docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md`
+- `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md`
 - `docs/operations/BIZPILOT_COST_AND_UPGRADE_GATE_v1.0.md`
 - `docs/security/BIZPILOT_PRIVACY_SECURITY_COMPLIANCE_BASELINE_v1.0.md`
 

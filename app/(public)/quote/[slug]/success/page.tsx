@@ -7,11 +7,13 @@
  * Related:
  * - app/(public)/quote/[slug]/page.tsx
  * - server/services/public-intake.service.ts
- * - docs/product/BIZPILOT_DASHBOARD_DESIGN_SYSTEM_v1.0.md
+ * - docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Redirected invalid success URLs to the localized unavailable quote state and preserved locale on the home link.
+ * - 2026-07-15: Repointed the shell contract to the current V2 QA authority after legacy design-standard retirement.
  * - 2026-05-06: Created public quote request success page.
  * - 2026-06-20: Aligned success actions with shared public shell focus and short-height behavior.
  * - 2026-05-19: Rebuilt to match the approved index — dark navy surface, emerald check, next-steps card, return link. Removed the light slate theme that broke design-system parity.
@@ -23,9 +25,10 @@
 
 import Link from "next/link";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import { publicHref } from "@/lib/i18n/public-href";
 import {
   DEFAULT_LANGUAGE,
   readSupportedLanguage,
@@ -97,15 +100,15 @@ export default async function QuoteSuccessPage({
   const { slug } = await params;
   const query = await searchParams;
   const language = readSuccessLanguage(query);
+  const quotePath = `/quote/${encodeURIComponent(slug)}${quoteLanguageSuffix(language)}`;
   const page = await getPublicIntakePage({ language, slug });
 
   if (!page) {
-    notFound();
+    redirect(quotePath);
   }
 
   const businessName = readDisplayableBusinessName(page.publicLink.display_name);
   const copy = getBizPilotCopy(language);
-  const quotePath = `/quote/${slug}${quoteLanguageSuffix(language)}`;
 
   return (
     <main
@@ -214,7 +217,7 @@ export default async function QuoteSuccessPage({
           </Link>
           <Link
             className="inline-flex h-11 flex-1 items-center justify-center rounded-[13px] border px-3.5 text-[13px] font-extrabold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] sm:flex-none sm:min-w-[140px]"
-            href="/"
+            href={publicHref("/", language)}
             style={{
               borderColor: "var(--border-strong)",
               color: "var(--text-strong)",
