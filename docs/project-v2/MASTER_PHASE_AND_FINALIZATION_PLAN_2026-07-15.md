@@ -12,6 +12,7 @@
  * Created: 2026-07-15
  * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Added the pre-existing remote legacy-branch retirement gate and exact safe external procedure.
  * - 2026-07-15: Closed the V2.1 public release phase with exact main, CI, Vercel, HTTPS, and Production smoke evidence.
  * - 2026-07-15: Created the consolidated whole-project phase, dependency, responsibility, and ideal-exit plan.
  * ============================================================
@@ -30,6 +31,7 @@ The current product does not claim direct social inbox integration, autonomous s
 | Order | Phase | Current status | Ideal exit evidence | Responsibility |
 | ---: | --- | --- | --- | --- |
 | 0 | Repository, branch, instructions, version, and documentation authority | DONE | One `main` worktree; current docs only; product/version manifests agree | Codex |
+| 0A | Remote legacy-branch retirement | GATED | Eleven merged legacy refs can be revalidated and retired; four unmerged refs require owner classification or approved archival before deletion; Prompt 00 records the exact procedure | Owner-authenticated GitHub action, then Codex verification |
 | 1 | Public product story and conversion UX | DONE | Ten intentional routes; distinct page jobs; clear problem → intake → organized request → human-reviewed reply story | Codex |
 | 2 | EN/fr-CA public, Auth, Intake, 404, error, metadata, nav, footer | DONE | Structural parity, correct document language, locale-preserving links, no mixed copy, public 46/46, responsive 20/20, UI zero failures | Codex |
 | 3 | Email/password Auth foundation | DONE in source | Sign-up/sign-in/reset/callback tests plus safe synthetic browser proof | Codex + approved synthetic target |

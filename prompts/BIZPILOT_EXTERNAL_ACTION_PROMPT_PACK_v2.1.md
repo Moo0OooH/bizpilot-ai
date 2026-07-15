@@ -12,6 +12,7 @@
  * Created: 2026-07-15
  * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Added the owner-authenticated remote legacy-branch retirement procedure with merged and unmerged safeguards.
  * - 2026-07-15: Replaced V2.0 with complete Auth, OAuth, Supabase, Production, SEO, analytics, real-data, and paid-pilot prompts.
  * ============================================================
  -->
@@ -19,6 +20,28 @@
 # BizPilot External Action Prompt Pack V2.1
 
 Use one prompt at a time and in dependency order. Never paste credentials, tokens, cookies, keys, personal data, or customer messages into chat, source, screenshots, logs, or commits. Authenticate directly in official tooling. Each prompt authorizes only its named scope.
+
+## 00 — Owner-authenticated remote legacy-branch retirement
+
+```text
+Work in the existing BizPilot AI repository. Do not create a branch, PR, tag, route, worktree, or deployment. Authenticate directly through official GitHub tooling without exposing credentials.
+
+Goal: retire pre-existing remote legacy branches while preserving main and any unmerged work that has not been explicitly classified.
+
+Current audited baseline:
+- main release/evidence head: e43aa831cb14e52fb20a2aa151e283a8ffdb67c0
+- local branches/worktrees: main only, one worktree, clean and synchronized
+- fully merged legacy candidates: backup/pre-dashboard-redesign-20260525-194012, backup/pre-dashboard-redesign-synced-20260525-194041, backup/status-snapshot-20260527-094538, codex/public-site-hero-redesign, phase-19-readiness-findings, phase-20-pilot-gate, phase-21-production-alignment, phase-21q-dashboard-redesign, review/p11-premium-home-admin-foundation, review/p12-dashboard-professionalization-gates, review/p13-founder-admin-console-professionalization
+- unmerged legacy candidates: backup/dashboard-redesign-pre-rebase-20260525-202820, backup/phase21q-pre-dashboard-fix-20260525-205945, founder-admin-user-list, review/public-site-clarity-and-breathing-room
+
+Procedure:
+1. Fetch/prune and reconfirm origin/main, branch tips, commit dates, open PRs, protection rules, and merged/no-merged classification. Stop if main moved unexpectedly.
+2. For every fully merged candidate, compare its tip to main and delete the remote branch only when Git proves it is an ancestor of current origin/main and no open PR or protection blocks deletion.
+3. For each unmerged candidate, produce a compact unique-commit and diff-stat table. Do not merge it into main. Do not delete it unless the owner explicitly classifies it as superseded or approves a named archival artifact first.
+4. If archival is approved, create the approved local bundle or protected archival reference outside the active branch list, verify it can resolve the tip, then delete only the specifically approved remote branch.
+5. Prune remote refs and verify the final exact branch list, main SHA, one local main branch, one worktree, clean status, and 0/0 main divergence.
+6. Report deleted, retained, blocked, and archived branches separately. Do not change application files, Production, Vercel, Supabase, data, environments, or documentation unless separately instructed.
+```
 
 ## 01 — Disposable authenticated target and complete browser QA
 

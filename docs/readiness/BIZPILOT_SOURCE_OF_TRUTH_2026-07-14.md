@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-15
  * Change Log:
+ * - 2026-07-15: Recorded the pre-existing remote legacy-branch inventory and least-destructive owner-authenticated retirement gate.
  * - 2026-07-15: Closed the V2.1 push, CI, Vercel, HTTPS, and Production public read-only release with exact evidence.
  * - 2026-07-15: Recorded the final V2.1 local verification, documentation cleanup, safe quote-read fallback, and unchanged external gates.
  * - 2026-07-15: Added the exhaustive project/route/flow audit, bilingual 404/error coverage, V2.1 phase plan, and consolidated external gates.
@@ -89,20 +90,24 @@ Environment fact: the local workspace does not currently contain `NEXT_PUBLIC_AP
 
 No Production database change, migration, cleanup, user deletion, or test-data insertion was performed in this release.
 
+Repository hygiene fact: local Git has one clean `main` branch and one worktree synchronized `0/0` with `origin/main`. GitHub still contains 15 pre-existing legacy branches. Eleven are ancestors of current `main`; four contain unmerged commits and therefore require explicit superseded/archival classification before deletion. The current connector cannot delete remote refs, so Prompt 00 in the external-action pack is the exact owner-authenticated retirement procedure. No new branch was created in this release.
+
 ## Gate sequence and current state
 
 1. **V2.1 code and public release gate — CLOSED:** lint, typecheck, full unit suite, build, documentation links, safe local HTTP smokes, `main` push, CI, Vercel mapping, HTTPS/security headers, and final Production read-only smokes passed.
-2. **Safe authenticated QA target:** owner supplies/authorizes a local or disposable synthetic auth target; run desktop/mobile EN/fr-CA dashboard smoke.
-3. **External OAuth decision:** keep Google unavailable or configure Google/Supabase provider and complete owner QA.
-4. **Managed database reconciliation:** read-only migration/status audit, backup confirmation, explicit change plan, then separately authorized apply if needed.
-5. **Production authenticated read-only acceptance:** protected dashboard visual QA requires an owner-approved no-secret session procedure.
-6. **Real customer data:** explicit owner approval only after restored-target app/dashboard/RLS proof.
-7. **Paid pilot:** support, payment/manual billing, refund, incident, backup, and rollback rehearsal after the real-data gate.
+2. **Remote branch hygiene:** owner-authenticated Prompt 00 retires revalidated merged refs and classifies/archives four unmerged refs before any deletion.
+3. **Safe authenticated QA target:** owner supplies/authorizes a local or disposable synthetic auth target; run desktop/mobile EN/fr-CA dashboard smoke.
+4. **External OAuth decision:** keep Google unavailable or configure Google/Supabase provider and complete owner QA.
+5. **Managed database reconciliation:** read-only migration/status audit, backup confirmation, explicit change plan, then separately authorized apply if needed.
+6. **Production authenticated read-only acceptance:** protected dashboard visual QA requires an owner-approved no-secret session procedure.
+7. **Real customer data:** explicit owner approval only after restored-target app/dashboard/RLS proof.
+8. **Paid pilot:** support, payment/manual billing, refund, incident, backup, and rollback rehearsal after the real-data gate.
 
 The copy-ready, least-privilege prompts for all external gates are in `prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md`.
 
 ## Owner decisions still required
 
+- Run Prompt 00 with owner-authenticated GitHub access; classify or approve archival for the four unmerged legacy branches.
 - Choose whether Google login remains unavailable or proceeds to external configuration/QA.
 - Authorize and provide access for a safe authenticated QA target.
 - Approve any managed Supabase inspection or later change after a read-only plan.
