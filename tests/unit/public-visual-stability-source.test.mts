@@ -11,8 +11,9 @@
  * - tests/smoke/public-browser-interaction-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Added final-polish guards for balanced desktop grids and legible card icons.
  * - 2026-07-13: Accepted an animation-free homepage while retaining explicit reduced-motion handling on shared pages.
  * - 2026-07-13: Replaced retired V2 guards with retained-route V3 consolidation, redirect, and copy-only pilot contracts.
  * ============================================================
@@ -170,5 +171,19 @@ describe("Website V3 visual stability source contracts", () => {
     ]) {
       assert.equal(publicSources.includes(required), true, required);
     }
+  });
+
+  it("keeps desktop feature and trust cards balanced with legible local icons", () => {
+    const pageCss = source("components/public/public-v3-page.module.css");
+
+    assert.equal(
+      pageCss.includes(".featureGrid,\n  .trustGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }"),
+      true,
+    );
+    assert.equal(pageCss.includes(".trustCard:first-child { grid-row: span 2; }"), false);
+    assert.equal(pageCss.includes(".cardIcon svg"), true);
+    assert.equal(pageCss.includes(".trustCard:nth-child(3n + 1) .cardIcon"), true);
+    assert.equal(pageCss.includes("text-wrap: balance"), true);
+    assert.equal(pageCss.includes("text-wrap: pretty"), true);
   });
 });

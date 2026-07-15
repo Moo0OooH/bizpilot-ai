@@ -1,4 +1,20 @@
-/** BizPilot Website V4 route-specific marketing layouts. */
+/**
+ * ============================================================
+ * File: components/public/public-v3-page.module.css
+ * Project: BizPilot AI
+ * Description: Route-specific layouts and responsive styling for public marketing pages.
+ * Role: Controls the public page heroes, visuals, content cards, and breakpoint behavior.
+ * Related:
+ * - components/public/public-v3-page.tsx
+ * - components/public/marketing-ui.tsx
+ * - app/globals.css
+ * Author: MoOoH
+ * Created: 2026-07-14
+ * Last Updated: 2026-07-14
+ * Change Log:
+ * - 2026-07-14: Balanced desktop card grids and improved card icon and text clarity.
+ * ============================================================
+ */
 
 .page {
   --route-accent: var(--primary);
@@ -368,12 +384,21 @@
   color: var(--route-accent);
 }
 
+.cardIcon svg {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  stroke-width: 2;
+}
+
 .featureCard:nth-child(3n + 1) .cardIcon,
-.fitCard:nth-child(3n + 1) .cardIcon { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); }
+.fitCard:nth-child(3n + 1) .cardIcon,
+.trustCard:nth-child(3n + 1) .cardIcon { background: color-mix(in srgb, var(--primary) 12%, var(--surface)); color: var(--primary); }
 .featureCard:nth-child(3n + 2) .cardIcon,
-.fitCard:nth-child(3n + 2) .cardIcon { background: color-mix(in srgb, var(--accent) 13%, var(--surface)); color: var(--accent); }
+.fitCard:nth-child(3n + 2) .cardIcon,
+.trustCard:nth-child(3n + 2) .cardIcon { background: color-mix(in srgb, var(--accent) 13%, var(--surface)); color: var(--accent); }
 .featureCard:nth-child(3n) .cardIcon,
-.fitCard:nth-child(3n) .cardIcon { background: color-mix(in srgb, var(--warning) 12%, var(--surface)); color: var(--warning); }
+.fitCard:nth-child(3n) .cardIcon,
+.trustCard:nth-child(3n) .cardIcon { background: color-mix(in srgb, var(--warning) 12%, var(--surface)); color: var(--warning); }
 
 .cardTitle {
   margin-block: 1rem 0;
@@ -382,6 +407,7 @@
   font-weight: 850;
   line-height: 1.25;
   letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 .cardBody {
@@ -389,6 +415,7 @@
   color: var(--text-default);
   font-size: 1rem;
   line-height: 1.7;
+  text-wrap: pretty;
 }
 
 .scopeCard {
@@ -547,12 +574,11 @@
 
 @media (min-width: 1120px) {
   .heroGrid { grid-template-columns: minmax(0, 0.96fr) minmax(27rem, 0.84fr); }
-  .featureGrid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .featureCard { grid-column: span 2; }
+  .featureGrid,
+  .trustGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .featureCard { grid-column: auto; }
   .featureCard:first-child,
-  .featureCard:last-child { grid-column: span 3; display: block; }
-  .trustGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .trustCard:first-child { grid-row: span 2; }
+  .featureCard:last-child { grid-column: auto; display: block; }
   .pilotGrid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
   .demoPanel { grid-template-columns: minmax(12rem, 0.3fr) minmax(0, 0.7fr); }
   .demoTabs { grid-template-columns: 1fr; align-content: start; }
