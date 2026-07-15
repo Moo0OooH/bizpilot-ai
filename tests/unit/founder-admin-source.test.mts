@@ -10,8 +10,9 @@
  * - components/admin/founder-test-cleanup-form.tsx
  * Author: MoOoH
  * Created: 2026-05-26
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Updated overview guards for localized compact metrics and direct founder-to-admin routing.
  * - 2026-07-11: Added guards for localized founder inbox, safety rail, and admin activity metadata hooks.
  * - 2026-07-11: Replaced stale admin panel literal guard with localized topbar copy guard.
  * - 2026-07-11: Guarded founder health, activity, and user-directory localization hooks.
@@ -181,16 +182,16 @@ describe("Founder admin source safety", () => {
     for (const required of [
       "FounderHealthSection",
       "FounderActivitySection",
+      "FounderAdminOverviewSection",
+      "FounderAdminNewsroom",
       "copy.overview.activityMeta",
       "copy.overview.leadInboxSection",
       "copy.overview.healthSection",
-      "copy.overview.activitySection",
       "copy.overview.productionHealthPanel",
       "copy.businesses.detail.safetyRail",
       "copy.topbar.panelTitles.leads",
       "directoryCopy.title",
       "copy.businesses.priorityWorkspace",
-      "xl:top-[5.75rem]",
     ]) {
       assert.equal(
         pageSource.includes(required),
@@ -205,31 +206,18 @@ describe("Founder admin source safety", () => {
     assert.equal(cleanupSource.includes("text-red-200"), false);
     assert.equal(cleanupSource.includes("rounded-[14px]"), false);
     assert.equal(pageSource.includes("function adminBusinessHref"), true);
-    assert.equal(
-      pageSource.includes("href={adminUsersHref(params, {\n                businessId: business.businessId"),
-      false,
-    );
-    assert.equal(pageSource.includes("function FounderUsersMiniList"), true);
-    assert.equal(pageSource.includes("function FounderNewUsersNotice"), true);
-    assert.equal(pageSource.includes("function FounderAdminNewsroom"), true);
-    assert.equal(pageSource.includes("overviewCopy.newsroom.description"), true);
+    assert.equal(pageSource.includes("function FounderUsersMiniList"), false);
+    assert.equal(pageSource.includes("function FounderNewUsersNotice"), false);
+    assert.equal(pageSource.includes("function FounderLeadsStatusDonut"), false);
     assert.equal(pageSource.match(/<FounderAdminNewsroom/g)?.length, 1);
-    assert.equal(pageSource.includes("overviewCopy.activitySummary.byLabel"), true);
-    assert.equal(pageSource.includes("xl:grid-cols-[minmax(300px,0.9fr)_minmax(320px,1fr)_minmax(320px,1fr)]"), true);
-    assert.equal(pageSource.includes("const previewUsers = users.slice(0, 4);"), true);
     assert.equal(pageSource.includes("function actionActorLabel"), true);
     assert.equal(pageSource.includes("activityFilter?: string"), true);
-    assert.equal(pageSource.includes("overviewCopy.newUsersNotice.newTitle"), true);
-    assert.equal(pageSource.includes("overviewCopy.newUsersNotice.reviewUsers"), true);
     assert.equal(pageSource.includes("FounderUsersMiniTable"), false);
     assert.equal(pageSource.includes("hidden overflow-x-auto sm:block"), false);
-    assert.equal(pageSource.includes('className="mt-4 grid gap-2"'), true);
     assert.equal(pageSource.includes("(Search & Manage)"), false);
 
-    assert.equal(founderHandoffSource.includes("founderCopy.surfaceMap.title"), true);
-    assert.equal(founderHandoffSource.includes("founderCopy.safetyGates.title"), true);
-    assert.equal(founderHandoffSource.includes("founderCopy.actions.openFounderAdmin"), true);
-    assert.equal(founderHandoffSource.includes("dashboardCopy.pages.founder.title"), true);
+    assert.equal(founderHandoffSource.includes('redirect("/admin")'), true);
+    assert.equal(founderHandoffSource.includes("founderCopy.surfaceMap.title"), false);
     assert.equal(founderHandoffSource.includes("Phase 18B shell"), false);
   });
 
@@ -245,6 +233,11 @@ describe("Founder admin source safety", () => {
       "Leads This Month",
       "Last 7 days",
       'value={aiReplySignal > 0 ? "28m" : "N/A"}',
+      'label="Businesses"',
+      'label="Active pilots"',
+      'label="Payment-ready"',
+      'label="Quote links off"',
+      'label="Paused access"',
     ]) {
       assert.equal(
         pageSource.includes(forbidden),
@@ -254,25 +247,23 @@ describe("Founder admin source safety", () => {
     }
 
     for (const required of [
-      "overviewCopy.metricCards.replyTraces.label",
-      "overviewCopy.trackingCards.responseTimeTracking.label",
-      "overviewCopy.trackingCards.responseTimeTracking.value",
-      "overviewCopy.trackingCards.readyQuoteLinks.label",
-      "overviewCopy.trackingCards.activeLinkCoverage.label",
-      "overviewCopy.trackingCards.paymentReadyWorkspaces.label",
-      "overviewCopy.metricCards.loadedLeads.label",
-      "overviewCopy.page.actions.currentSnapshot",
+      "overviewCopy.metricCards.totalUsers",
+      "overviewCopy.metricCards.activeBusinesses",
+      "overviewCopy.metricCards.loadedLeads",
+      "overviewCopy.metricCards.readinessCompleted",
+      "overviewCopy.healthSection.notice",
       "overviewCopy.page.actions.activityLog",
-      "overviewCopy.metricCards.replyTraces.detail",
+      "copy.overview.metricsPanel.activePilots",
+      "copy.overview.metricsPanel.paymentReady",
+      "copy.overview.metricsPanel.pausedAccess",
     ]) {
       assert.equal(
         pageSource.includes(required),
         true,
-        `Founder admin overview should keep honest metric label: ${required}`,
+        `Founder admin overview should keep honest localized metric: ${required}`,
       );
     }
   });
-
   it("keeps founder business detail search-driven and cleanup secondary", () => {
     const pageSource = readFileSync("app/admin/page.tsx", "utf8");
     const cleanupSource = readFileSync(

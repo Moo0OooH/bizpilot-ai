@@ -12,8 +12,9 @@
  * - server/actions/business-configuration.actions.ts
  * Author: MoOoH
  * Created: 2026-06-27
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Corrected the built-in French field examples so accents and owner-facing phrasing remain production quality.
  * - 2026-07-05: Added complete BizPilot source header metadata for the custom quote field builder.
  * ============================================================
  */
@@ -168,72 +169,72 @@ const fallbackPlaceholders: Record<
 const frenchFallbackPlaceholders: typeof fallbackPlaceholders = {
   boolean: {
     fieldKey: "animaux_maison",
-    helper: "Utile si l'equipe doit se preparer pour des animaux.",
-    label: "Avez-vous des animaux a la maison?",
+    helper: "Utile si l’équipe doit se préparer pour des animaux.",
+    label: "Avez-vous des animaux à la maison?",
     options: "",
     preview: "Le client coche oui/non.",
   },
   date: {
     fieldKey: "date_menage_souhaitee",
-    helper: "Demandez la date ideale du service.",
-    label: "Date de menage souhaitee",
+    helper: "Demandez la date idéale du service.",
+    label: "Date de ménage souhaitée",
     options: "",
     preview: "Le client choisit une date.",
   },
   email: {
     fieldKey: "courriel_facturation",
-    helper: "A utiliser seulement si ce courriel differe du contact principal.",
+    helper: "À utiliser seulement si ce courriel diffère du contact principal.",
     label: "Courriel de facturation",
     options: "",
     preview: "nom@exemple.com",
   },
   number: {
     fieldKey: "nombre_chambres",
-    helper: "Les nombres aident a estimer le temps et l'equipe.",
+    helper: "Les nombres aident à estimer le temps et l’équipe.",
     label: "Combien de chambres?",
     options: "",
-    preview: "Exemple de reponse: 3",
+    preview: "Exemple de réponse: 3",
   },
   phone: {
     fieldKey: "telephone_rappel",
-    helper: "Meilleur numero si le responsable doit confirmer les details.",
-    label: "Telephone de rappel",
+    helper: "Meilleur numéro si le responsable doit confirmer les détails.",
+    label: "Téléphone de rappel",
     options: "",
     preview: "(555) 123-4567",
   },
   radio: {
     fieldKey: "logement_meuble",
-    helper: "Radio convient quand le client doit choisir une seule reponse.",
-    label: "Le logement est-il meuble?",
+    helper: "Le choix unique convient quand le client doit sélectionner une seule réponse.",
+    label: "Le logement est-il meublé?",
     options: "Oui\nNon\nPartiellement",
     preview: "Une seule option visible est choisie.",
   },
   select: {
     fieldKey: "type_propriete",
-    helper: "La liste deroulante garde les longues listes compactes.",
-    label: "Type de propriete",
+    helper: "La liste déroulante garde les longues listes compactes.",
+    label: "Type de propriété",
     options: "Appartement\nCondo\nMaison\nBureau",
     preview: "Le client ouvre une liste.",
   },
   text: {
     fieldKey: "instructions_stationnement",
-    helper: "Reponse courte affichee avec la demande.",
-    label: "Instructions de stationnement ou d'acces",
+    helper: "Réponse courte affichée avec la demande.",
+    label: "Instructions de stationnement ou d’accès",
     options: "",
     preview: "Exemple: utilisez le stationnement visiteur.",
   },
   textarea: {
     fieldKey: "demandes_speciales",
-    helper: "Utilisez un texte long pour les details a expliquer.",
-    label: "Autre chose a savoir?",
+    helper: "Utilisez un texte long pour les détails à expliquer.",
+    label: "Autre chose à savoir?",
     options: "",
-    preview: "Le client ecrit une note plus longue.",
+    preview: "Le client écrit une note plus longue.",
   },
   time_window: {
     fieldKey: "plage_arrivee_souhaitee",
     helper: "Les plages horaires facilitent la planification.",
-    label: "Plage d'arrivee souhaitee",
-    options: "Matin, 8-11\nApres-midi, 12-3\nSoir, 4-7",
+    label: "Plage d’arrivée souhaitée",
+    options: "Matin, 8-11\nAprès-midi, 12-3\nSoir, 4-7",
     preview: "Le client choisit une plage horaire.",
   },
 };

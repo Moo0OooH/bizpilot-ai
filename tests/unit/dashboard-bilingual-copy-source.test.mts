@@ -13,8 +13,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-07-11
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Updated Quote Setup guards for the six-section V4 setup flow and hidden identity preservation.
  * - 2026-07-11: Added source guards for localized quote language controls and remaining Quote Setup hardcoded labels.
  * ============================================================
  */
@@ -71,14 +72,20 @@ describe("Dashboard bilingual copy source guards", () => {
     );
 
     assert.equal(configurationSource.includes("owner@example.com"), false);
-    assert.equal(
-      configurationSource.includes("configCopy.notifications.channels.sms"),
-      true,
-    );
-    assert.equal(
-      configurationSource.includes("configCopy.notifications.channels.whatsapp"),
-      true,
-    );
+    for (const tabId of [
+      "configuration-overview",
+      "services-areas",
+      "cleaning-template-fields",
+      "branding",
+      "faq",
+      "privacy-consent",
+    ]) {
+      assert.equal(configurationSource.includes(`id: "${tabId}"`), true);
+    }
+    assert.equal(configurationSource.includes('id: "business"'), false);
+    assert.equal(configurationSource.includes('id: "notifications"'), false);
+    assert.equal(configurationSource.includes('name="businessName"'), true);
+    assert.equal(configurationSource.includes('name="preferredLanguage"'), true);
     assert.equal(
       configurationSource.includes("configCopy.faq.summary(configuration.faqs.length)"),
       true,

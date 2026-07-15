@@ -2,15 +2,16 @@
  * ============================================================
  * File: lib/features/feature-registry.ts
  * Project: BizPilot AI
- * Description: Central Settings-visible feature state registry.
- * Role: Keeps customer-visible capability states honest against readiness gates.
+ * Description: Internal feature-state registry for entitlement and readiness planning.
+ * Role: Keeps capability states honest without expanding the compact owner Settings surface.
  * Related:
- * - app/(dashboard)/dashboard/settings/page.tsx
- * - docs/product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md
+ * - docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md
+ * - docs/dashboard-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-05-26
- * Last Updated: 2026-06-16
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Reclassified the registry as internal planning data after removing repeated roadmap documentation from Settings.
  * - 2026-06-16: Aligned AI, auth email, and backup states with Phase 23/24 readiness truth.
  * ============================================================
  */

@@ -2,16 +2,17 @@
  * ============================================================
  * File: tests/unit/sales-gtm-source.test.mts
  * Project: BizPilot AI
- * Description: Source-level guardrails for founder-led GTM and pilot operations.
- * Role: Keeps sales docs aligned with manual-first quote recovery and policy-safe local trust.
+ * Description: Source-level guardrails for founder-led validation and gated pilot operations.
+ * Role: Keeps sales docs aligned with manual-first quote recovery, current V2 gates, and policy-safe local trust.
  * Related:
  * - docs/sales/FOUNDER_CRM_AND_OUTREACH_PLAYBOOK.md
  * - docs/sales/FOUNDER_CRM_PROSPECT_TEMPLATE.csv
  * - docs/readiness/PHASE_25M_GTM_AND_PILOT_OPS_PACKET_2026-07-04.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Replaced the stale Phase 25M status assertion with the current external-validation and V2 gate contract.
  * - 2026-07-04: Added Phase 25M GTM/pilot-ops packet guards.
  * ============================================================
  */
@@ -61,7 +62,8 @@ describe("founder GTM and pilot-ops source contracts", () => {
 
   it("keeps outreach and demo scripts manual-first and cleaning-specific", () => {
     for (const required of [
-      "Phase 25M GTM / pilot-ops packet ready",
+      "Current external prospect-validation workflow",
+      "real-data and paid-pilot gates remain separate",
       "cleaning quote workflow",
       "Nothing sends automatically. You review, edit, copy, and send",
       "Five-Minute Demo Run-Of-Show",

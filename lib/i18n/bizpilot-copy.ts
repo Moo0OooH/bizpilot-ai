@@ -11,8 +11,9 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Polished Canadian French dashboard/admin accents and updated Settings guidance to match the simplified protected experience.
  * - 2026-07-11: Added bilingual founder-admin activity metadata, inbox, status-chart, and safety-rail copy fields.
  * - 2026-07-11: Added founder-admin overview and directory copy fields to match bilingual dictionary entries.
  * - 2026-07-11: Completed founder-admin detail copy shape for type-safe bilingual admin labels.
@@ -4599,10 +4600,10 @@ const frenchCopy: BizPilotCopy = {
       "Entrez le courriel du responsable. Nous enverrons les instructions si un compte existe.",
     forgotPasswordTitle: "Réinitialiser le mot de passe",
     googleExistingWorkspaceOnly:
-      "Google est reserve aux responsables deja approuves avec un espace existant. Pour creer un nouvel espace, utilisez le formulaire courriel ci-dessous.",
+      "Google est réservé aux responsables deja approuves avec un espace existant. Pour créer un nouvel espace, utilisez le formulaire courriel ci-dessous.",
     googleSignIn: "Continuer avec Google",
     googleSignInHelp:
-      "Connexion seulement. BizPilot ne demande pas l'acces Gmail et ne cree pas d'espace depuis Google.",
+      "Connexion seulement. BizPilot ne demande pas l'accès Gmail et ne crée pas d'espace depuis Google.",
     hidePassword: "Masquer le mot de passe",
     hidePasswordShort: "Masquer",
     name: "Nom",
@@ -4629,7 +4630,7 @@ const frenchCopy: BizPilotCopy = {
         "Nous n'avons pas pu compléter cette demande. Vérifiez le formulaire et réessayez.",
       genericNotice: "La mise à jour du compte a été reçue.",
       googleUnavailable:
-        "La connexion Google n'est pas encore prete. Utilisez le courriel et le mot de passe ou demandez au fondateur de l'activer.",
+        "La connexion Google n'est pas encore prête. Utilisez le courriel et le mot de passe ou demandez au fondateur de l'activer.",
       nameRequired: "Entrez votre nom.",
       newPasswordRequired: "Entrez votre nouveau mot de passe.",
       passwordIncorrect: "Le courriel ou le mot de passe est incorrect.",
@@ -4681,7 +4682,7 @@ const frenchCopy: BizPilotCopy = {
       copyFailed: "Copie impossible",
       copyQuoteLink: "Copier le lien",
       copySuccess: "Copié",
-      displaySettings: "Reglages d'affichage",
+      displaySettings: "Réglages d'affichage",
       moreActions: "Actions",
       openLeadQueue: "Ouvrir les prospects",
       previewPublicPage: "Voir la page publique",
@@ -4705,51 +4706,51 @@ const frenchCopy: BizPilotCopy = {
       businesses: {
         detail: {
           accessControl: {
-            changeLabel: "Changer l'acces pour",
+            changeLabel: "Changer l'accès pour",
             description:
-              "Controle l'admissibilite a la connexion, l'acces au tableau et l'etat du cycle client visible aux operations fondateur.",
+              "Contrôle l'admissibilité à la connexion, l'accès au tableau et l'état du cycle client visible aux opérations fondateur.",
             onboardingNote:
-              "L'onboarding limite l'acces complet jusqu'a la fin de la configuration.",
-            title: "Statut d'acces",
+              "L'onboarding limite l'accès complet jusqu’à la fin de la configuration.",
+            title: "Statut d'accès",
             warning:
-              "Les etats suspendu ou annule bloquent l'acces client. Utilisez-les seulement quand le compte doit cesser d'operer.",
+              "Les états suspendu ou annule bloquent l'accès client. Utilisez-les seulement quand le compte doit cesser d'opérer.",
           },
           allChangesNote:
-            "Tous les changements restent manuels, tracables et reversibles par le fondateur. Utilisez les controles avec discernement operationnel.",
+            "Tous les changements restent manuels, traçables et réversibles par le fondateur. Utilisez les contrôles avec discernement opérationnel.",
           auditLog: {
             badgeCount: (count) => `${count} consignes`,
             description:
               "Trace visible par le responsable pour les changements fondateur/admin, avec identifiants de suivi pour le soutien.",
-            emptyState: "Aucun changement systeme consigne pour ce client.",
-            lastUpdatedLabel: "Derniere mise a jour",
+            emptyState: "Aucun changement système consigne pour ce client.",
+            lastUpdatedLabel: "Dernière mise à jour",
             notePrefix: "Note",
             notRecordedYet: "Pas encore consigne",
-            title: "Journal systeme client",
+            title: "Journal système client",
             updatedByFounderAdmin: "Admin fondateur",
-            updatedByLabel: "Mis a jour par",
+            updatedByLabel: "Mis à jour par",
           },
           cleanupDryRunCounts: "Comptes du dry run de nettoyage",
           dailyUse: "Usage quotidien",
-          fullSystemChangeLog: "Journal systeme complet",
+          fullSystemChangeLog: "Journal système complet",
           internalNote: "Note interne",
           nextBadge: "Suite",
           noAdminChanges: "Aucun changement admin enregistre.",
           notesDescription:
-            "Ajoutez le contexte, lancez le nettoyage, puis verifiez la trace.",
+            "Ajoutez le contexte, lancez le nettoyage, puis vérifiez la trace.",
           notesSensitive: "Sensible",
           notesTitle: "3) Notes, nettoyage et audit",
           priorityDescription:
-            "Changez d'abord l'acces, le forfait et l'etat de la demande publique.",
-          priorityTitle: "1) Controles prioritaires",
+            "Changez d'abord l'accès, le forfait et l'état de la demande publique.",
+          priorityTitle: "1) Contrôles prioritaires",
           planControl: {
             changeLabel: "Changer le forfait pour",
             description:
-              "Palier de facturation controle par fondateur/admin. Le client ne doit pas le changer lui-meme depuis son tableau.",
+              "Palier de facturation contrôlé par le fondateur/admin. Le client ne doit pas le changer lui-même depuis son tableau.",
             pilotNotice:
-              "Le forfait pilote limite l'usage et soutient un deploiement controle.",
+              "Le forfait pilote limité l'usage et soutient un déploiement contrôlé.",
             title: "Forfait",
             warning:
-              "Les changements de forfait touchent les rapports fondateur et la preparation de facturation manuelle. Notez pourquoi le client change de palier.",
+              "Les changements de forfait touchent les rapports fondateur et la préparation de facturation manuelle. Notez pourquoi le client change de palier.",
           },
           planLabels: {
             founder_pilot: "Pilote fondateur",
@@ -4760,73 +4761,73 @@ const frenchCopy: BizPilotCopy = {
           quoteLinkControl: {
             changeLabel: "Changer le lien public pour",
             description:
-              "Controle si le formulaire public peut accepter de nouveaux prospects pour ce client.",
+              "Contrôle si le formulaire public peut accepter de nouveaux prospects pour ce client.",
             inactiveNotice:
               "Le lien inactif bloque toutes les nouvelles demandes publiques.",
             title: "Lien public",
             warning:
-              "Si le lien est inactif, le formulaire public est bloque et le client ne peut pas recevoir de nouveaux prospects depuis la page publique.",
+              "Si le lien est inactif, le formulaire public est bloqué et le client ne peut pas recevoir de nouveaux prospects depuis la page publique.",
           },
-          recentChangesTitle: "Changements admin recents",
+          recentChangesTitle: "Changements admin récents",
           recentChangesPanel: {
-            description: "Piste d'actions fondateur/admin pour la verification du support.",
+            description: "Piste d'actions fondateur/admin pour la vérification du support.",
             emptyState: "Aucun changement admin enregistre pour l'instant.",
             loggedBadge: (count) => `${count} consignes`,
             viewFullActivity: "Voir le journal complet",
           },
           recommendedDescription:
-            "Base sur l'acces actuel et l'etat du lien public.",
+            "Basé sur l'accès actuel et l'état du lien public.",
           recommendationStates: {
             activateQuoteLink:
               "Activez le lien public pour que le client puisse recevoir de nouveaux prospects.",
             blockedUntilRestored:
-              "L'acces client et public doit rester bloque jusqu'au retablissement volontaire du compte.",
+              "L'accès client et public doit rester bloque jusqu’àu rétablissement volontaire du compte.",
             holdQuoteLinkDuringOnboarding:
-              "Gardez le formulaire public inactif jusqu'a la fin de l'onboarding et la preparation du client.",
-            readyForDailyUse: "L'entreprise est prete pour l'usage quotidien.",
+              "Gardez le formulaire public inactif jusqu’à la fin de l'onboarding et la préparation du client.",
+            readyForDailyUse: "L'entreprise est prête pour l'usage quotidien.",
           },
-          recommendedTitle: "Prochaine action recommandee",
-          saveAccess: "Enregistrer l'acces",
+          recommendedTitle: "Prochaine action recommandée",
+          saveAccess: "Enregistrer l'accès",
           saveKind: "Enregistrer le type",
           saveNote: "Enregistrer la note",
           savePlan: "Enregistrer le forfait",
           saveQuoteLink: "Enregistrer le lien public",
           snapshotDescription: (businessName) =>
-            `Resume operationnel rapide pour ${businessName}.`,
-          snapshotTitle: "Apercu entreprise",
+            `Résumé opérationnel rapide pour ${businessName}.`,
+          snapshotTitle: "Aperçu entreprise",
           tiles: {
-            accessStatus: "Statut d'acces",
+            accessStatus: "Statut d'accès",
             accessStatusActiveDescription:
-              "Le client a un acces quotidien au tableau.",
+              "Le client a un accès quotidien au tableau.",
             accessStatusLimitedDescription:
-              "Acces limite au tableau et preparation du cycle de vie.",
-            auditEvents: "Evenements d'audit",
+              "Accès limite au tableau et préparation du cycle de vie.",
+            auditEvents: "Événements d'audit",
             plan: "Forfait",
             planDescription:
-              "Le forfait est controle par le fondateur. Le client ne peut pas le modifier.",
+              "Le forfait est contrôlé par le fondateur. Le client ne peut pas le modifier.",
             quoteLink: "Lien public",
             quoteLinkActive: "Actif",
             quoteLinkActiveDescription:
               "Le formulaire public peut accepter de nouveaux prospects.",
             quoteLinkInactive: "Inactif",
             quoteLinkInactiveDescription:
-              "Le formulaire public est bloque. Aucun nouveau prospect ne peut entrer.",
+              "Le formulaire public est bloqué. Aucun nouveau prospect ne peut entrer.",
             sessionPolicy: "Politique de session",
             sessionPolicyAlwaysOnDescription:
-              "L'acces client reste actif jusqu'a la deconnexion.",
+              "L'accès client reste actif jusqu’à la déconnexion.",
             sessionPolicyTimedDescription:
-              "Les sessions client expirent apres la duree choisie.",
+              "Les sessions client expirent après la durée choisie.",
           },
-          toolsControlled: "Controle",
+          toolsControlled: "Contrôle",
           toolsDescription:
             "Utilisez ces outils quand la configuration, la session ou le nettoyage sont incorrects.",
           toolsTitle: "2) Outils d'espace",
           viewFullCustomerProfile: "Voir le profil client complet",
           whyLabel:
-            "Pourquoi : garde une experience client claire et evite une demande publique incomplete.",
+            "Pourquoi : garde une expérience client claire et évite une demande publique incomplète.",
           workspaceKind: "Type d'espace",
           workspaceKindHelp:
-            "Marquez seulement les espaces internes/synthetiques confirmes comme Founder test, Demo ou Seed avant nettoyage.",
+            "Marquez seulement les espaces internes/synthétiques confirmes comme Founder test, Demo ou Seed avant nettoyage.",
           workspaceKindLabels: {
             demo: "Demo",
             founder_test: "Test fondateur",
@@ -4835,13 +4836,13 @@ const frenchCopy: BizPilotCopy = {
           },
           safetyRail: {
             customerWorkspaceDescription:
-              "Le nettoyage dur et le nettoyage des connexions test/synthetiques restent bloques pour les espaces client production et les comptes proprietaire.",
-            customerWorkspaceTitle: "L'espace client reste protege",
+              "Le nettoyage dur et le nettoyage des connexions test/synthétiques restent bloqués pour les espaces client production et les comptes propriétaire.",
+            customerWorkspaceTitle: "L'espace client reste protégé",
             dryRunDescription:
               "Le nettoyage test/demo exige les comptes, l'accuse de reception et la confirmation exacte du nom ou slug d'entreprise.",
             dryRunTitle: "Le dry-run passe d'abord",
             guardedBadge: "Garde",
-            title: "Securite nettoyage",
+            title: "Sécurité nettoyage",
           },
         },
         emptyWorkspace: "Aucun espace entreprise n'est disponible pour l'instant.",
@@ -4854,11 +4855,11 @@ const frenchCopy: BizPilotCopy = {
         searchLabel: "Rechercher des entreprises",
         searchPlaceholder: "Entreprise, responsable, slug",
         searchSubmit: "Rechercher",
-        openControls: "Ouvrir les controles",
+        openControls: "Ouvrir les contrôles",
         operationsDescription:
-          "Poste de commande fondateur pour l'acces pilote, les liens publics, l'etat du forfait, la securite de l'espace, les notes client et les journaux d'audit.",
+          "Poste de commande fondateur pour l'accès pilote, les liens publics, l'état du forfait, la sécurité de l'espace, les notes client et les journaux d'audit.",
         operationsEyebrow: "Admin fondateur",
-        operationsTitle: "Operations entreprises",
+        operationsTitle: "Opérations entreprises",
         openInbox: "Ouvrir la boite",
         checkHealth: "Verifier la sante",
         manageUsers: "Gerer les utilisateurs",
@@ -4875,7 +4876,7 @@ const frenchCopy: BizPilotCopy = {
         planNotePlaceholder: "Note de forfait optionnelle",
         quoteLinkNotePlaceholder: "Note de lien de soumission optionnelle",
         savePolicy: "Enregistrer la politique",
-        sessionPolicySummaryAfterDuration: (duration) => `Deconnexion apres ${duration}`,
+        sessionPolicySummaryAfterDuration: (duration) => `Déconnexion après ${duration}`,
         sessionPolicySummaryAlwaysOn: "Toujours actif",
         sessionTimeoutDurationLabels: {
           15: "15 minutes",
@@ -4888,7 +4889,7 @@ const frenchCopy: BizPilotCopy = {
           10080: "7 jours",
         },
         sessionTimeoutModeLabels: {
-          after_duration: "Deconnecter apres la duree choisie",
+          after_duration: "Deconnecter après la durée choisie",
           always_on: "Toujours actif",
         },
         sessionPolicy: "Politique de session",
@@ -4961,14 +4962,14 @@ const frenchCopy: BizPilotCopy = {
       },
       overview: {
         activityFilters: {
-          access: "Acces",
+          access: "Accès",
           all: "Tout",
           auth: "Auth",
           cleanup: "Nettoyage",
           notes: "Notes",
           plan: "Forfait",
           quote: "Lien public",
-          system: "Systeme",
+          system: "Système",
         },
         activityMeta: {
           actionLabels: {
@@ -4978,9 +4979,9 @@ const frenchCopy: BizPilotCopy = {
             business_suspended: "Entreprise suspendue",
             internal_note_added: "Note interne enregistree",
             password_reset_requested: "Reinitialisation du mot de passe demandee",
-            plan_changed: "Forfait modifie",
-            quote_link_disabled: "Lien public desactive",
-            quote_link_enabled: "Lien public active",
+            plan_changed: "Forfait modifié",
+            quote_link_disabled: "Lien public désactivé",
+            quote_link_enabled: "Lien public activé",
             session_policy_changed: "Politique de session modifiee",
             status_changed: "Statut d'espace modifie",
             temporary_password_set: "Mot de passe temporaire defini",
@@ -4997,12 +4998,12 @@ const frenchCopy: BizPilotCopy = {
           platformTarget: "Plateforme",
           stateOff: "off",
           stateOn: "on",
-          systemActor: "Systeme",
+          systemActor: "Système",
         },
         activitySection: {
           badgeCount: (count) => `${count} consignes`,
           description:
-            "Trace les ecritures fondateur/admin apres autorisation. Utilisez cette piste pour le support, le nettoyage et les changements d'acces.",
+            "Trace les ecritures fondateur/admin après autorisation. Utilisez cette piste pour le support, le nettoyage et les changements d'accès.",
           eyebrow: "Admin fondateur",
           feedTitle: "Flux des commandes d'activite",
           title: "Journal d'activite",
@@ -5010,7 +5011,7 @@ const frenchCopy: BizPilotCopy = {
         activitySummary: {
           byLabel: "Par",
           emptyState: "Aucune action admin consignée.",
-          latestBadge: "Derniere",
+          latestBadge: "Dernière",
           targetLabel: "sur",
           title: "Activites recentes",
           viewAll: "Voir toutes les activites",
@@ -5018,18 +5019,18 @@ const frenchCopy: BizPilotCopy = {
         activityZeroState: "Aucune action admin consignée.",
         healthSection: {
           description:
-            "Diagnostics production en lecture seule pour les operations fondateur. Les verifications en echec expliquent pourquoi les comptes admin peuvent sembler vides ou incomplets.",
+            "Diagnostics production en lecture seule pour les opérations fondateur. Les vérifications en echec expliquent pourquoi les comptes admin peuvent sembler vides ou incomplets.",
           eyebrow: "Admin fondateur",
           healthy: "Saine",
           needsAttention: "A verifier",
           notice:
-            "Les donnees fondateur peuvent etre incompletes parce qu'une ou plusieurs verifications runtime de production ont echoue. Traitez zero utilisateur ou zero entreprise comme un signal de diagnostic tant que ce panneau n'est pas sain.",
+            "Les données fondateur peuvent etre incomplètes parce qu'une ou plusieurs vérifications runtime de production ont echoue. Traitez zero utilisateur ou zero entreprise comme un signal de diagnostic tant que ce panneau n'est pas sain.",
           title: "Sante production",
         },
         leadInboxSection: {
           archive: "Archiver",
           areaNotSet: "Zone non definie",
-          badgeCount: (count) => `${count} elements boite`,
+          badgeCount: (count) => `${count} éléments boite`,
           confirmLeadId: "Saisissez l'ID prospect pour confirmer",
           contactLabel: "Contact",
           deleteAcknowledgement: "Je comprends que cette suppression est definitive.",
@@ -5058,11 +5059,11 @@ const frenchCopy: BizPilotCopy = {
           totalLeads: "Total prospects",
         },
         leadStatusLabels: {
-          awaitingReply: "En attente de reponse",
+          awaitingReply: "En attente de réponse",
           completed: "Complete",
           new: "Nouveau",
-          quoteSent: "Devis envoye",
-          replyCopied: "Reponse copiee",
+          quoteSent: "Devis envoyé",
+          replyCopied: "Réponse copiee",
         },
         metricCards: {
           activeBusinesses: {
@@ -5075,12 +5076,12 @@ const frenchCopy: BizPilotCopy = {
           },
           readinessCompleted: {
             detail: "Liens publics actifs.",
-            label: "Preparation completee",
+            label: "Préparation completee",
           },
           replyTraces: {
             detail:
-              "Prospects ou actions admin avec un etat lie a la reponse; aucun envoi n'est sous-entendu.",
-            label: "Traces de reponse",
+              "Prospects ou actions admin avec un état lié à la réponse; aucun envoi n'est sous-entendu.",
+            label: "Traces de réponse",
           },
           totalUsers: {
             detail: "Utilisateurs auth dans la recherche fondateur.",
@@ -5088,7 +5089,7 @@ const frenchCopy: BizPilotCopy = {
           },
           usersNeedingAttention: {
             detail: "Utilisateurs prioritaires pour le support.",
-            label: "Utilisateurs a surveiller",
+            label: "Utilisateurs à surveiller",
           },
         },
         metricsPanel: {
@@ -5097,27 +5098,27 @@ const frenchCopy: BizPilotCopy = {
             label: "Pilotes actifs",
           },
           authUsers: {
-            detail: "Utilisateurs auth disponibles via recherche paginee fondateur.",
+            detail: "Utilisateurs auth disponibles via recherche paginée fondateur.",
             label: "Utilisateurs auth",
           },
           description:
-            "Les comptes de haut niveau restent ici comme apercu compact au lieu d'occuper l'espace de travail.",
+            "Les comptes de haut niveau restent ici comme aperçu compact au lieu d'occuper l'espace de travail.",
           paymentReady: {
             detail: "Forfaits manuels Starter ou Pro.",
-            label: "Pret paiement",
+            label: "Prêt paiement",
           },
           pausedAccess: {
-            detail: "Acces suspendu ou annule.",
-            label: "Acces en pause",
+            detail: "Accès suspendu ou annule.",
+            label: "Accès en pause",
           },
-          title: "Apercu de l'espace",
+          title: "Aperçu de l'espace",
         },
         newUsersNotice: {
           confirmed: "Confirme",
           daysAgo: (days) => `il y a ${days} j`,
           emailPending: "Courriel en attente",
           latestBadge: "Dernier",
-          latestTitle: "Derniere activite utilisateur",
+          latestTitle: "Dernière activite utilisateur",
           newBadge: (count) => `${count} nouveau${count === 1 ? "" : "x"}`,
           newTitle: "Nouveaux utilisateurs detectes",
           noWorkspace: "Aucun espace",
@@ -5126,9 +5127,9 @@ const frenchCopy: BizPilotCopy = {
         },
         newsroom: {
           byLabel: "Par :",
-          defaultFilterLabel: "Systeme",
+          defaultFilterLabel: "Système",
           description:
-            "Derniers changements fondateur/admin avec acteur, cible, categorie, horodatage et liens directs de revision.",
+            "Derniers changements fondateur/admin avec acteur, cible, catégorie, horodatage et liens directs de révision.",
           emptyState: "Aucune action admin correspondante pour l'instant.",
           noNoteRecorded: "Aucune note enregistree",
           shownBadge: (count) => `${count} affiches`,
@@ -5143,9 +5144,9 @@ const frenchCopy: BizPilotCopy = {
             currentSnapshot: "Instantane actuel",
           },
           description:
-            "Surveillez utilisateurs, espaces, flux de prospects, preparation, sante et actions recentes du fondateur depuis une vue de commande en lecture seule.",
+            "Surveillez utilisateurs, espaces, flux de prospects, préparation, sante et actions recentes du fondateur depuis une vue de commande en lecture seule.",
           eyebrow: "Admin fondateur",
-          title: "Apercu admin",
+          title: "Aperçu admin",
         },
         productionHealthPanel: {
           actionLog: "Journal d'actions",
@@ -5170,10 +5171,10 @@ const frenchCopy: BizPilotCopy = {
           runtimeDescription:
             "La sante runtime n'a pas pu etre chargee sans exposer d'informations internes.",
           runtimeUnavailableDescription:
-            "Diagnostics runtime en lecture seule pour les cibles Supabase, la disponibilite auth et les dependances de donnees admin fondateur.",
+            "Diagnostics runtime en lecture seule pour les cibles Supabase, la disponibilite auth et les dependances de données admin fondateur.",
           serviceCredentialIssuerRefLabel: "Ref emetteur du secret service",
           serviceCredentialIssuerRefMismatch:
-            "(ne correspond pas a la cible Supabase)",
+            "(ne correspond pas à la cible Supabase)",
           serviceCredentialKinds: {
             jwt_anon: "JWT anon",
             jwt_other: "JWT non service",
@@ -5193,7 +5194,7 @@ const frenchCopy: BizPilotCopy = {
           title: "Sante production",
         },
         recentActionsPanel: {
-          description: "Ecritures service-role apres autorisation fondateur.",
+          description: "Écritures service-rôle après autorisation fondateur.",
           emptyState: "Aucune action admin consignée.",
           noNote: "Aucune note",
           title: "Actions admin recentes",
@@ -5203,15 +5204,15 @@ const frenchCopy: BizPilotCopy = {
           checks: {
             adminLog: "Journal admin",
             authService: "Service auth",
-            database: "Base de donnees",
+            database: "Base de données",
             deletionRequests: "Demandes de suppression",
             profiles: "Profils",
             quoteLinks: "Liens publics",
           },
           needsCheck: "A verifier",
-          operational: "Operationnel",
-          title: "Sante systeme",
-          viewSystemHealth: "Voir la sante systeme",
+          operational: "Opérationnel",
+          title: "Sante système",
+          viewSystemHealth: "Voir la sante système",
         },
         leadSourceLabels: {
           facebook: "Facebook",
@@ -5238,7 +5239,7 @@ const frenchCopy: BizPilotCopy = {
           responseTimeTracking: {
             detail:
               "Exige de vrais horodatages du flux responsable avant tout reporting pilote.",
-            label: "Suivi du temps de reponse",
+            label: "Suivi du temps de réponse",
             value: "Non active",
           },
         },
@@ -5252,25 +5253,25 @@ const frenchCopy: BizPilotCopy = {
       users: {
         accountSafety: {
           description:
-            "Nettoyage des connexions synthetiques/test seulement. Les comptes clients proteges restent verrouilles.",
+            "Nettoyage des connexions synthétiques/test seulement. Les comptes clients protégés restent verrouillés.",
           doubleConfirm: "Double confirmation",
           protected: "Protege",
-          title: "Securite et nettoyage du compte",
+          title: "Sécurité et nettoyage du compte",
         },
         accountSupport: {
           available: "Disponible",
           description:
-            "Support auth reserve au fondateur. Preferez le courriel de reinitialisation aux mots de passe temporaires.",
+            "Support auth reserve au fondateur. Preferez le courriel de réinitialisation aux mots de passe temporaires.",
           emergencyDescription:
-            "Le mot de passe temporaire est reserve aux urgences et reste volontairement absent de la console. Utilisez le courriel de reinitialisation sauf si un incident de support distinct est approuve.",
+            "Le mot de passe temporaire est réservé aux urgences et reste volontairement absent de la console. Utilisez le courriel de réinitialisation sauf si un incident de support distinct est approuvé.",
           emergencyLocked: "Mot de passe d'urgence verrouille",
           passwordResetUnavailable: "Reinitialisation indisponible",
           resetDescription:
-            "Envoie un courriel de reinitialisation Supabase au compte cible et consigne une trace. Aucun mot de passe n'est affiche ni stocke ici.",
+            "Envoie un courriel de réinitialisation Supabase au compte cible et consigne une trace. Aucun mot de passe n'est affiche ni stocke ici.",
           resetUnavailableDescription:
-            "La reinitialisation est desactivee pour les comptes fondateur ou sans adresse courriel.",
+            "La réinitialisation est desactivee pour les comptes fondateur ou sans adresse courriel.",
           restricted: "Restreint",
-          sendPasswordReset: "Envoyer la reinitialisation",
+          sendPasswordReset: "Envoyer la réinitialisation",
           title: "Support du compte",
         },
         accessStatusLabel: "État d'accès",
@@ -5291,7 +5292,7 @@ const frenchCopy: BizPilotCopy = {
         },
         capabilityMatrix: {
           description:
-            "Carte des capacites operationnelles pour le travail fondateur/admin. Les actions destructrices ou qui changent l'acces restent explicites.",
+            "Carte des capacites opérationnelles pour le travail fondateur/admin. Les actions destructrices ou qui changent l'accès restent explicites.",
           gateAware: "Sous garde",
           items: {
             customerAccountDeletion: {
@@ -5302,8 +5303,8 @@ const frenchCopy: BizPilotCopy = {
             },
             inviteRoleSuspend: {
               detail:
-                "Necessite schema/RLS approuve par le responsable et protection du dernier proprietaire.",
-              label: "Invitation / role / suspension",
+                "Nécessite schéma/RLS approuve par le responsable et protection du dernier propriétaire.",
+              label: "Invitation / rôle / suspension",
               value: "Bloque",
             },
             leadInboxCleanup: {
@@ -5314,19 +5315,19 @@ const frenchCopy: BizPilotCopy = {
             },
             passwordReset: {
               detail:
-                "Envoie un courriel de reinitialisation; les comptes fondateur restent proteges dans l'UI.",
+                "Envoie un courriel de réinitialisation; les comptes fondateur restent protégés dans l'UI.",
               label: "Reinitialisation du mot de passe",
               value: "Disponible",
             },
             planStatusQuoteLink: {
-              detail: "Controles entreprise reserves au fondateur et audites.",
+              detail: "Contrôles entreprise réservés au fondateur et audités.",
               label: "Forfait, statut, lien public",
               value: "Actif",
             },
             syntheticLoginCleanup: {
               detail:
-                "Confirmation exacte par courriel/ID; les utilisateurs client proteges restent bloques.",
-              label: "Nettoyage des connexions synthetiques",
+                "Confirmation exacte par courriel/ID; les utilisateurs client protégés restent bloqués.",
+              label: "Nettoyage des connexions synthétiques",
               value: "Garde",
             },
           },
@@ -5340,52 +5341,52 @@ const frenchCopy: BizPilotCopy = {
             "Cherchez d'abord, puis ouvrez un seul utilisateur pour le compte, l'espace et les outils de support gardes.",
           founderBadge: "Fondateur",
           groupTitles: {
-            accessStatus: "Etat d'acces",
+            accessStatus: "État d'accès",
             plan: "Forfait",
-            priority: "Priorite",
+            priority: "Priorité",
           },
-          lastSignInLabel: "Derniere connexion",
+          lastSignInLabel: "Dernière connexion",
           leadsLabel: "Prospects",
           loadedCount: (count) => `${count} charges`,
           pageSizeOption: (count) => `${count} utilisateurs`,
           pageSummary: (page, totalPages) => `Page ${page} / ${totalPages}`,
-          phoneLabel: "Telephone",
+          phoneLabel: "Téléphone",
           rangeSummary: (start, end, total) => `Affichage ${start}-${end} de ${total}`,
-          searchModeIndexed: "Recherche indexee",
+          searchModeIndexed: "Recherche indexée",
           searchModePaged: "Pagine",
           shownBadge: (count) => `${count} affiches`,
           title: "Repertoire utilisateurs",
-          unconfirmedBadge: "Non confirme",
+          unconfirmedBadge: "Non confirmé",
           userIdLabel: "ID utilisateur",
         },
         hiddenByFilters:
           "Certains utilisateurs chargés sont masqués par les filtres d'accès/auth.",
         lockedAccess: {
           blocked: "Bloque",
-          description: "Necessite une garde de securite approuvee par le responsable.",
+          description: "Nécessite une garde de sécurité approuvée par le responsable.",
           items: {
             changeRole: {
-              label: "Changer le role",
+              label: "Changer le rôle",
               reason:
-                "Necessite une politique de role approuvee et une protection du dernier proprietaire.",
+                "Nécessite une politique de rôle approuvée et une protection du dernier propriétaire.",
             },
             inviteMember: {
               label: "Inviter un membre",
               reason:
-                "Necessite le schema de membre d'equipe et un flux d'audit d'invitation.",
+                "Nécessite le schéma de membre d'équipe et un flux d'audit d'invitation.",
             },
             removeFromWorkspace: {
               label: "Retirer de l'espace",
               reason:
-                "Necessite audit d'appartenance, verifications de propriete et chemin de reprise.",
+                "Nécessite audit d'appartenance, vérifications de propriété et chemin de reprise.",
             },
             suspendAccess: {
-              label: "Suspendre l'acces",
+              label: "Suspendre l'accès",
               reason:
-                "Necessite un etat d'acces reversible et un avis visible cote client.",
+                "Nécessite un état d'accès réversible et un avis visible côté client.",
             },
           },
-          title: "Gestion des acces",
+          title: "Gestion des accès",
         },
         next: "Suivant",
         noBusinessLinked: "Aucune entreprise liée",
@@ -5399,31 +5400,31 @@ const frenchCopy: BizPilotCopy = {
             health: "Sante",
           },
           description:
-            "Recherche utilisateur reservee au fondateur, support de compte, nettoyage synthetique/test et revision detaillee. Les changements de role et d'acces production restent bloques jusqu'a la garde securite/RLS approuvee.",
+            "Recherche utilisateur réservée au fondateur, support de compte, nettoyage synthétique/test et révision détaillée. Les changements de rôle et d'accès production restent bloqués jusqu’à la garde sécurité/RLS approuvée.",
           eyebrow: "Admin fondateur",
-          gatedOperations: "Operations gardees",
+          gatedOperations: "Opérations gardees",
           metrics: {
             authUsersDescription:
-              "Utilisateurs auth disponibles via pagination/recherche reservee au fondateur.",
+              "Utilisateurs auth disponibles via pagination/recherche réservée au fondateur.",
             authUsersLabel: "Utilisateurs auth",
             noBusinessDescription:
               "Utilisateurs charges sans espace lie.",
             noBusinessLabel: "Aucune entreprise",
             pausedAccessDescription:
-              "Utilisateurs charges rattaches a un acces suspendu ou annule.",
-            pausedAccessLabel: "Acces en pause",
+              "Utilisateurs chargés rattachés à un accès suspendu ou annule.",
+            pausedAccessLabel: "Accès en pause",
             unconfirmedDescription:
               "Utilisateurs charges dont la confirmation courriel reste en attente.",
-            unconfirmedLabel: "Non confirmes",
+            unconfirmedLabel: "Non confirmés",
           },
           operatingRule: {
             description:
-              "Invitation, changement de role, suspension, retrait et suppression de compte client exigent la garde securite/RLS approuvee par le responsable.",
-            searchModeIndexed: "filtre auth indexe",
+              "Invitation, changement de rôle, suspension, retrait et suppression de compte client exigent la garde sécurité/RLS approuvée par le responsable.",
+            searchModeIndexed: "filtre auth indexé",
             searchModeLabel: "Mode de recherche",
             searchModePaged: "liste auth paginee",
             supportGuard:
-              "La reinitialisation du mot de passe et le nettoyage des connexions synthetiques restent gardes.",
+              "La réinitialisation du mot de passe et le nettoyage des connexions synthétiques restent gardes.",
             title: "Regle d'exploitation",
           },
           title: "Utilisateurs",
@@ -5442,7 +5443,7 @@ const frenchCopy: BizPilotCopy = {
           `Affichage ${start}-${end} de ${total} utilisateur${total === 1 ? "" : "s"} auth.`,
         workspaceDetail: {
           description:
-            "Contexte du compte et de l'espace en lecture seule pour la revision du fondateur.",
+            "Contexte du compte et de l'espace en lecture seule pour la révision du fondateur.",
           fields: {
             business: "Entreprise",
             membership: "Appartenance",
@@ -5451,7 +5452,7 @@ const frenchCopy: BizPilotCopy = {
             role: "Role",
             workspaceKind: "Type d'espace",
           },
-          openBusinessControls: "Ouvrir les controles entreprise",
+          openBusinessControls: "Ouvrir les contrôles entreprise",
           repairNotice:
             "La reparation d'espace reste une action fondateur-admin hors de cette base Utilisateurs en lecture seule.",
           title: "Detail utilisateur",
@@ -5761,7 +5762,7 @@ const frenchCopy: BizPilotCopy = {
         },
         description:
           "Le premier pilote est manuel: vous vérifiez le tableau de bord. Les notifications courriel, SMS et WhatsApp restent désactivées avant validation.",
-        emailActive: "Verification manuelle du tableau de bord",
+        emailActive: "Vérification manuelle du tableau de bord",
         futureDisabled: "Desactive avant validation",
         newQuoteRequest: "Nouvelle demande",
         off: "Désactivé",
@@ -5824,13 +5825,13 @@ const frenchCopy: BizPilotCopy = {
         description: (completed, total) => `${completed}/${total} tâches complétées.`,
         fixFirst: (task) =>
           `Terminez "${task}" avant de partager le lien de soumission.`,
-        manualOnly: "Configuration controlee par le responsable",
+        manualOnly: "Configuration contrôlée par le responsable",
         nextAction: "Prochaine action de configuration",
         readyToShare: "Prêt à partager",
-        readyState: "Pret au partage manuel",
+        readyState: "Prêt au partage manuel",
         reviewChecklist: "Revoir la liste",
         shareWhenReady:
-          "Tous les elements de configuration sont termines. Enregistrez, previsualisez le lien public, puis partagez-le manuellement dans vos canaux existants.",
+          "Tous les éléments de configuration sont termines. Enregistrez, previsualisez le lien public, puis partagez-le manuellement dans vos canaux existants.",
         setupInProgress: "Configuration en cours",
         title: "Préparation du lien public",
       },
@@ -6008,7 +6009,7 @@ const frenchCopy: BizPilotCopy = {
           "Commencez par l'action propriétaire la plus sûre: révisez la demande, utilisez le brouillon IA seulement comme soutien, puis copiez et envoyez par votre canal client habituel.",
         outcomeNote:
           "Notez gagné ou perdu seulement après avoir contacté le client hors de BizPilot.",
-        primaryAction: "Marquer copie apres copie",
+        primaryAction: "Marquer copie après copie",
         secondaryAction: "Noter le résultat après contact",
         steps: [
           ["Réviser", "Vérifier la demande et les détails manquants."],
@@ -6263,7 +6264,7 @@ const frenchCopy: BizPilotCopy = {
       actions: {
         openQueue: "Ouvrir la file",
         openSetup: "Ouvrir Configuration",
-        viewSettings: "Voir les reglages d'affichage",
+        viewSettings: "Voir les réglages d'affichage",
       },
       boundaries: {
         description:
@@ -6271,7 +6272,7 @@ const frenchCopy: BizPilotCopy = {
         items: [
           "Aucun envoi automatique, aucune reservation, aucune facture et aucun paiement.",
           "Aucun prix, disponibilite ou engagement client invente.",
-          "Aucune purge production, aucune ouverture de donnees reelles et aucune porte de pilote payant sans approbation explicite.",
+          "Aucune purge production, aucune ouverture de données reelles et aucune porte de pilote payant sans approbation explicite.",
         ],
         title: "Limites manuelles",
       },
@@ -6279,10 +6280,10 @@ const frenchCopy: BizPilotCopy = {
         description:
           "Les ecarts connus restent visibles sans pretendre qu'ils sont deja actives.",
         items: [
-          ["QA visuelle et focus", "La verification clavier/focus et captures d'ecran reste a faire avant un pilote payant."],
-          ["Vues sauvegardees de file", "Utile apres avoir observe les vrais comportements du responsable."],
-          ["Assignation d'equipe", "Bloque jusqu'a l'approbation de la porte acces equipe et RLS."],
-          ["Notifications automatisees", "Courriel, SMS et WhatsApp restent bloques par consentement, fournisseur, couts et retour arriere."],
+          ["QA visuelle et focus", "La vérification clavier/focus et captures d’écran reste à faire avant un pilote payant."],
+          ["Vues sauvegardees de file", "Utile après avoir observe les vrais comportements du responsable."],
+          ["Assignation d'équipe", "Bloqué jusqu’à l'approbation de la porte accès équipe et RLS."],
+          ["Notifications automatisées", "Courriel, SMS et WhatsApp restent bloqués par consentement, fournisseur, coûts et retour arrière."],
         ],
         title: "Ecarts visibles et portes",
       },
@@ -6294,13 +6295,13 @@ const frenchCopy: BizPilotCopy = {
       },
       launchChecklist: {
         description:
-          "Le chemin le plus court entre la configuration et la revision quotidienne.",
+          "Le chemin le plus court entre la configuration et la révision quotidienne.",
         items: [
           ["1", "Terminer la configuration", "Confirmer services, zones, questions, confidentialite et marque."],
           ["2", "Partager un lien public", "Utiliser le lien sur le site, le profil Google ou la prospection manuelle."],
-          ["3", "Reviser la file chaque jour", "Commencer par les demandes en retard, incompletes et nouvelles."],
-          ["4", "Copier seulement apres revision", "Modifier les brouillons IA avant d'envoyer hors BizPilot."],
-          ["5", "Noter le resultat", "Mettre a jour le statut ou le resultat apres le contact."],
+          ["3", "Réviser la file chaque jour", "Commencer par les demandes en retard, incomplètes et nouvelles."],
+          ["4", "Copier seulement après révision", "Modifier les brouillons IA avant d'envoyer hors BizPilot."],
+          ["5", "Noter le résultat", "Mettre à jour le statut ou le résultat après le contact."],
         ],
         title: "Checklist de lancement",
       },
@@ -6309,22 +6310,22 @@ const frenchCopy: BizPilotCopy = {
           "Le tableau de bord suit une boucle de recuperation manuelle, pas un CRM complet.",
         lanes: [
           ["Capture", "Les demandes arrivent depuis le lien public.", "Garder le lien actif et partageable."],
-          ["Triage", "Demandes a risque, incompletes et nouvelles montent d'abord.", "Ouvrir les filtres de file."],
-          ["Brouillon", "BizPilot prepare des brouillons a reviser.", "Generer ou inspecter le brouillon."],
-          ["Envoi manuel", "Le responsable copie, modifie et envoie hors BizPilot.", "Aucun message n'est envoye par l'app."],
-          ["Noter", "Statut, actions et resultats gardent l'espace a jour.", "Mettre a jour apres un vrai contact."],
+          ["Triage", "Demandes à risque, incomplètes et nouvelles montent d'abord.", "Ouvrir les filtres de file."],
+          ["Brouillon", "BizPilot prépare des brouillons à réviser.", "Générer ou inspecter le brouillon."],
+          ["Envoi manuel", "Le responsable copie, modifie et envoie hors BizPilot.", "Aucun message n'est envoyé par l'app."],
+          ["Noter", "Statut, actions et résultats gardent l’espace à jour.", "Mettre à jour après un vrai contact."],
         ],
-        title: "Systeme de recuperation manuelle",
+        title: "Système de recuperation manuelle",
       },
       routeMap: {
         description:
           "Chaque route a un travail clair pour garder l'espace compact.",
         items: [
-          ["Vue d'ensemble", "Une prochaine action, la preparation et les demandes urgentes.", "/dashboard", "Ouvrir"],
+          ["Vue d'ensemble", "Une prochaine action, la préparation et les demandes urgentes.", "/dashboard", "Ouvrir"],
           ["Prospects", "Chercher, filtrer, trier et reviser chaque demande.", "/dashboard/leads", "Ouvrir la file"],
           ["Configuration", "Services, zones, questions, consentement, marque et lien public.", "/dashboard/configuration", "Ouvrir"],
-          ["Profil d'entreprise", "Identite et contexte utiles aux reponses manuelles.", "/dashboard/business-profile", "Ouvrir le profil"],
-          ["Reglages", "Langue, theme, affichage, etat des fonctions et actions protegees.", "/dashboard/settings", "Ouvrir"],
+          ["Profil d'entreprise", "Identité et contexte utiles aux réponses manuelles.", "/dashboard/business-profile", "Ouvrir le profil"],
+          ["Réglages", "Langue, thème, historique, sécurité et cycle de vie.", "/dashboard/settings", "Ouvrir"],
         ],
         title: "Carte des routes",
       },
@@ -6449,17 +6450,17 @@ const frenchCopy: BizPilotCopy = {
       setupChecklist: "Liste de configuration",
       visualDashboard: {
         aiAssistantBody: (count) =>
-          `${count} prospect${count === 1 ? "" : "s"} attend${count === 1 ? "" : "ent"} votre reponse. La validation du responsable reste requise avant tout envoi.`,
+          `${count} prospect${count === 1 ? "" : "s"} attend${count === 1 ? "" : "ent"} votre réponse. La validation du responsable reste requise avant tout envoi.`,
         aiAssistantTitle: "Assistant IA",
         dateRange: "7 derniers jours",
         filters: "Filtrer la file",
         kpis: {
           aiRepliesSent: "Brouillons copies",
-          awaitingReply: "En attente de votre reponse",
-          dealsWon: "Resultats reserves",
+          awaitingReply: "En attente de votre réponse",
+          dealsWon: "Résultats réservés",
           newLeads: "Nouveaux prospects",
           quoteLinkSent: "Lien de soumission actif",
-          readinessCompleted: "Preparation terminee",
+          readinessCompleted: "Préparation terminée",
         },
         leadQueueTitle: "File de prospects (a traiter)",
         leadSources: "Sources des prospects",
@@ -6469,7 +6470,7 @@ const frenchCopy: BizPilotCopy = {
         ownerReviewRequired:
           "La validation du responsable reste requise avant tout envoi.",
         todo: {
-          completeReadiness: "Completer la preparation",
+          completeReadiness: "Completer la préparation",
           prepareQuotes: "Preparer les soumissions",
           replyToLeads: "Repondre aux prospects",
           sendFollowUp: "Envoyer un suivi",
@@ -6488,63 +6489,63 @@ const frenchCopy: BizPilotCopy = {
         businessProfile: {
           focus: "Le profil explique comment le responsable veut cadrer les soumissions.",
           next:
-            "Gardez l'identite, les notes de service et les FAQ a jour avant d'utiliser les brouillons IA.",
+            "Gardez l'identité, les notes de service et les FAQ à jour avant d'utiliser les brouillons IA.",
           primaryHref: "/dashboard/business-profile",
-          primaryLabel: "Reviser le profil",
+          primaryLabel: "Réviser le profil",
           secondaryHref: "/dashboard/configuration",
           secondaryLabel: "Ouvrir la configuration",
         },
         configuration: {
-          focus: "La configuration controle ce que le client voit avant l'envoi.",
+          focus: "La configuration contrôle ce que le client voit avant l'envoi.",
           next:
-            "Confirmez services, zones, consentement, questions et regles IA avant de partager le lien.",
+            "Confirmez services, zones, consentement, questions et règles IA avant de partager le lien.",
           primaryHref: "/dashboard/configuration",
           primaryLabel: "Verifier la configuration",
           secondaryHref: "/dashboard/business-profile",
-          secondaryLabel: "Reviser le profil",
+          secondaryLabel: "Réviser le profil",
         },
         guide: {
           focus: "Le guide garde la routine manuelle visible.",
           next:
-            "Utilisez-le pour confirmer les priorites, les limites MVP et les gates restants avant la production.",
+            "Utilisez-le pour confirmer les priorités, les limites MVP et les gates restants avant la production.",
           primaryHref: "/dashboard/leads",
           primaryLabel: "Ouvrir la file",
           secondaryHref: "/dashboard/settings",
           secondaryLabel: "Voir les limites",
         },
         leadDetail: {
-          focus: "Le bureau de reponse sert a traiter une reponse client validee par le responsable.",
+          focus: "Le bureau de réponse sert a traiter une réponse client validee par le responsable.",
           next:
             "Verifiez les infos manquantes, inspectez le texte IA, copiez le brouillon et notez seulement le contact manuel.",
           primaryHref: "/dashboard/leads",
-          primaryLabel: "Retour a la file",
+          primaryLabel: "Retour à la file",
           secondaryHref: "/dashboard/guide",
-          secondaryLabel: "Reviser la routine",
+          secondaryLabel: "Réviser la routine",
         },
         leads: {
           focus: "La file de prospects est le poste principal de recuperation manuelle.",
           next:
             "Priorisez les demandes en retard, les brouillons prets et les infos manquantes avant les lignes moins urgentes.",
           primaryHref: "/dashboard/leads?focus=at_risk",
-          primaryLabel: "Reviser les prospects a risque",
+          primaryLabel: "Réviser les prospects à risque",
           secondaryHref: "/dashboard/leads?focus=ai_ready",
           secondaryLabel: "Brouillons IA prets",
         },
         overview: {
           focus: "Le tableau de bord affiche d'abord l'action responsable la plus sure.",
           next:
-            "Commencez par le prospect le plus risque, puis terminez les blocages qui empechent le partage du lien.",
+            "Commencez par le prospect le plus risqué, puis terminez les blocages qui empêchent le partage du lien.",
           primaryHref: "/dashboard/leads?focus=at_risk",
-          primaryLabel: "Reviser les prospects a risque",
+          primaryLabel: "Réviser les prospects à risque",
           secondaryHref: "/dashboard/configuration",
           secondaryLabel: "Terminer la configuration",
         },
         settings: {
-          focus: "Les reglages gardent compte, affichage et limites MVP explicites.",
+          focus: "Les réglages gardent le compte, la sécurité et les limites MVP explicites.",
           next:
-            "Ajustez les preferences locales ici, mais gardez facturation, automatisations et equipe gates.",
+            "Ajustez les preferences locales ici, mais gardez facturation, automatisations et équipe gates.",
           primaryHref: "/dashboard/settings",
-          primaryLabel: "Reviser les reglages",
+          primaryLabel: "Réviser les réglages",
           secondaryHref: "/dashboard/guide",
           secondaryLabel: "Ouvrir le guide",
         },
@@ -6614,14 +6615,14 @@ const frenchCopy: BizPilotCopy = {
       billing: "Facturation",
       business: "Entreprise",
       displayPreferences: {
-        densityLabel: "Densite",
+        densityLabel: "Densité",
         densityOptions: {
           compact: "Compact",
           comfortable: "Confortable",
           spacious: "Large",
         },
         description:
-          "Ajustez la quantite d'aide et de details visibles dans ce navigateur. Ces reglages ne changent pas les donnees de l'espace.",
+          "Ajustez la quantite d'aide et de détails visibles dans ce navigateur. Ces réglages ne changent pas les données de l'espace.",
         guideLabel: "Guides",
         guideOptions: {
           expanded: "Developpe",
@@ -6634,9 +6635,9 @@ const frenchCopy: BizPilotCopy = {
           standard: "Afficher les analyses",
         },
         localOnly:
-          "Enregistre localement dans ce navigateur. Le flux responsable, la configuration et les controles admin ne changent pas.",
+          "Enregistre localement dans ce navigateur. Le flux responsable, la configuration et les contrôles admin ne changent pas.",
         reset: "Reinitialiser la vue",
-        title: "Reglages d'affichage",
+        title: "Réglages d'affichage",
       },
       featureRegistry: {
         activationLabel: "Activation",
@@ -6645,11 +6646,11 @@ const frenchCopy: BizPilotCopy = {
           ai: "IA",
           billing: "Facturation",
           communication: "Communication",
-          data: "Donnees",
+          data: "Données",
           intake: "Demandes",
           recovery: "Relance",
           scheduling: "Planification",
-          settings: "Reglages",
+          settings: "Réglages",
         },
         description:
           "Niveaux de fonctionnalites contrôlés par le responsable principal. Les outils actifs sont clairs, les outils à configurer affichent le blocage, et les outils planifiés restent non cliquables.",
@@ -6667,16 +6668,16 @@ const frenchCopy: BizPilotCopy = {
             textGuide:
               "Explique le fallback, la confidentialite et le fait que BizPilot n'envoie pas automatiquement.",
             visualGuide:
-              "Montrer resume, reponse suggeree, suivi, action copier et banniere fallback.",
+              "Montrer résumé, réponse suggérée, suivi, action copier et banniere fallback.",
           },
           backup_restore_posture: {
             activation:
-              "Le fondateur accepte la preuve DB-level pour le premier pilote limite et complete la preuve app/RLS restauree avant pilote payant ou travail data risque.",
+              "Le fondateur accepte la preuve DB-level pour le premier pilote limité et complète la preuve app/RLS restaurée avant pilote payant ou travail sur des données à risque.",
             name: "Sauvegarde et restauration",
             ownerGuide:
-              "Noter emplacement, acces, cible de restauration, preuve Phase 24C.0 et deferral Phase 24C.1.",
+              "Noter emplacement, accès, cible de restauration, preuve Phase 24C.0 et deferral Phase 24C.1.",
             setup:
-              "La preuve export/restauration DB-level est passee; la preuve app/dashboard/RLS restauree reste P1 avant pilote payant, migrations ou operations destructives.",
+              "La preuve export/restauration DB-level est passee; la preuve app/dashboard/RLS restaurée reste P1 avant pilote payant, migrations ou opérations destructives.",
             summary:
               "Separe la preuve DB-level passee de la preuve stricte app/RLS differee.",
             textGuide:
@@ -6702,18 +6703,18 @@ const frenchCopy: BizPilotCopy = {
             activation: "Vous modifiez la marque dans Configuration.",
             name: "Marque d'entreprise",
             ownerGuide:
-              "Verifier contraste et apercu public apres les changements logo/couleur.",
+              "Verifier contraste et aperçu public après les changements logo/couleur.",
             setup: "Disponible maintenant.",
             summary:
               "Logo, couleurs, zones, services, FAQ et confidentialite forment la page publique.",
             textGuide:
               "Explique comment la marque renforce la confiance sur la page publique.",
             visualGuide:
-              "Montrer apercu public, couleurs, services, FAQ et consentement.",
+              "Montrer aperçu public, couleurs, services, FAQ et consentement.",
           },
           custom_smtp_auth_email: {
             activation:
-              "Le courriel auth est actif apres Resend DNS, SMTP Supabase, confirmation signup et reset smokes passes.",
+              "Le courriel auth est actif après Resend DNS, SMTP Supabase, confirmation signup et reset smokes passes.",
             name: "SMTP personnalise auth email",
             ownerGuide:
               "Ne jamais imprimer les identifiants. Garder la notification courriel app séparée et différée.",
@@ -6741,14 +6742,14 @@ const frenchCopy: BizPilotCopy = {
           },
           founder_admin_controls: {
             activation: "Fondateur/admin seulement.",
-            name: "Controles admin fondateur",
+            name: "Contrôles admin fondateur",
             ownerGuide:
               "Utiliser dry-run d'abord, journaliser les actions et separer les actions destructives.",
             setup: "Contrôle par le responsable principal.",
             summary:
-              "Type d'espace, forfait/statut, lien public, session, notes et securite cleanup.",
+              "Type d'espace, forfait/statut, lien public, session, notes et sécurité cleanup.",
             textGuide:
-              "Explique les changements visibles par le client et ceux reserves au fondateur.",
+              "Explique les changements visibles par le client et ceux réservés au fondateur.",
             visualGuide:
               "Montrer actions tracees, session, dry-run cleanup et purge bloquee.",
           },
@@ -6762,18 +6763,18 @@ const frenchCopy: BizPilotCopy = {
             summary:
               "Workflow futur qui ne doit pas impliquer un paiement reussi avant d'exister.",
             textGuide:
-              "Explique les actions manuelles versus automatisees.",
+              "Explique les actions manuelles versus automatisées.",
             visualGuide:
               "Montrer brouillon facture, statut paiement, erreur et fallback manuel.",
           },
           customer_contact_list: {
             activation:
-              "Le fondateur active apres regles de consentement, retention, export et acces premium.",
+              "Le fondateur active après règles de consentement, retention, export et accès premium.",
             name: "Liste de contacts clients",
             ownerGuide:
               "Définir visibilité responsable/admin, import contacts, opt-out et limites export.",
             setup:
-              "Fonction premium planifiee; regles contact et posture backup requises d'abord.",
+              "Fonction premium planifiee; règles contact et posture backup requises d'abord.",
             summary:
               "Liste premium responsable/admin créée depuis courriel ou téléphone client pour suivi et statistiques.",
             textGuide:
@@ -6783,7 +6784,7 @@ const frenchCopy: BizPilotCopy = {
           },
           lead_source_attribution_analytics: {
             activation:
-              "Le fondateur active apres taxonomie source et regles de confidentialite des graphiques.",
+              "Le fondateur active après taxonomie source et règles de confidentialite des graphiques.",
             name: "Analyse des sources de prospects",
             ownerGuide:
               "Utiliser leads.source_channel et lead_source_metadata; ne jamais ajouter leads.source.",
@@ -6800,12 +6801,12 @@ const frenchCopy: BizPilotCopy = {
             activation: "Vous contrôlez le lien public actif.",
             name: "Lien public et formulaire",
             ownerGuide:
-              "Lancer le smoke securite quote quand le formulaire change.",
+              "Lancer le smoke sécurité quote quand le formulaire change.",
             setup: "Disponible maintenant.",
             summary:
               "Un lien client capture des demandes structurees de nettoyage.",
             textGuide:
-              "Explique partage du lien, champs requis, consentement et etats indisponibles.",
+              "Explique partage du lien, champs requis, consentement et états indisponibles.",
             visualGuide:
               "Montrer lien actif, etapes, validation, consentement et succes.",
           },
@@ -6824,21 +6825,21 @@ const frenchCopy: BizPilotCopy = {
           },
           scheduling_booking: {
             activation:
-              "Le fondateur choisit fournisseur et niveau apres preuve quote recovery.",
+              "Le fondateur choisit fournisseur et niveau après preuve quote recovery.",
             name: "Planification et réservation",
             ownerGuide:
               "Definir limite manuel/auto, sync fournisseur, conflits et annulations.",
             setup: "Planifie; non active.",
             summary:
-              "Flux futur qui ne confirme pas de réservation avant la vraie integration.",
+              "Flux futur qui ne confirme pas de réservation avant la vraie intégration.",
             textGuide:
-              "Explique demande versus réservation confirmée et regles d'approbation.",
+              "Explique demande versus réservation confirmée et règles d'approbation.",
             visualGuide:
               "Montrer heure demandee, approbation, confirmation, conflit et annulation.",
           },
           sms_whatsapp_messaging: {
             activation:
-              "Le fondateur active apres approbation fournisseur, consentement, templates et smokes.",
+              "Le fondateur active après approbation fournisseur, consentement, templates et smokes.",
             name: "Messagerie SMS / WhatsApp",
             ownerGuide:
               "Verifier opt-in, templates, logs, desinscription et retention.",
@@ -6853,24 +6854,24 @@ const frenchCopy: BizPilotCopy = {
           team_members: {
             activation:
               "Le fondateur choisit le niveau équipe après stabilité du compte principal.",
-            name: "Membres d'equipe",
+            name: "Membres d'équipe",
             ownerGuide:
-              "Definir roles, invitations, RLS, audit log et offboarding.",
+              "Definir rôles, invitations, RLS, audit log et offboarding.",
             setup: "Planifie; non active.",
             summary:
-              "Acces multi-utilisateur futur avec roles et tracabilite.",
+              "Accès multi-utilisateur futur avec rôles et tracabilite.",
             textGuide:
-              "Explique roles, permissions, invitations et acces.",
+              "Explique rôles, permissions, invitations et accès.",
             visualGuide:
-              "Montrer roles, invitation, invitation en attente, acces refuse et retrait.",
+              "Montrer rôles, invitation, invitation en attente, accès refuse et retrait.",
           },
         },
         guideLabels: {
           draft: "Guide brouillon",
-          ready: "Guide pret",
+          ready: "Guide prêt",
           required: "Guide requis",
         },
-        guideDetailsLabel: "Details du guide",
+        guideDetailsLabel: "Détails du guide",
         guidesLabel: "Guides",
         levelLabel: "Niveau",
         levelLabels: {
@@ -6908,7 +6909,7 @@ const frenchCopy: BizPilotCopy = {
       },
       guardrails: "Garde-fous de préparation production",
       guardrailsDescription:
-        "Ce qui reste vrai pendant que BizPilot grandit avec des niveaux de fonctionnalites controles.",
+        "Ce qui reste vrai pendant que BizPilot grandit avec des niveaux de fonctionnalites contrôles.",
       guardrailItems: [
         "Ne pas activer par defaut les fonctions fournisseur, paiement ou automatisation.",
         "Ne pas impliquer envoi, réservation, facture ou paiement réussi avant que BizPilot le fasse vraiment.",

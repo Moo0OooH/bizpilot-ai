@@ -3,77 +3,44 @@
  * File: docs/README.md
  * Project: BizPilot AI
  * Description: Documentation index and authority classification.
- * Role: Directs readers to current controls before standards or historical evidence.
+ * Role: Directs readers to the V2 current set before standards or historical evidence.
  * Related:
- * - docs/readiness/BIZPILOT_FINAL_SOURCE_OF_TRUTH_2026-07-12.md
- * - docs/CURRENT_CANONICAL_DOCS_v1.7.md
+ * - docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md
+ * - docs/CURRENT_CANONICAL_DOCS_v2.0.md
  * - docs/archive/README.md
  * Author: MoOoH
  * Created: 2026-05-28
- * Last Updated: 2026-07-12
+ * Last Updated: 2026-07-14
  * Change Log:
- * - 2026-07-12: Replaced the phase-by-phase entry list with current authority classes.
+ * - 2026-07-14: Replaced the V1.7/phase-oriented index with the compact V2 current working set.
  * ============================================================
  -->
 
 # BizPilot AI Documentation
 
-Start with the current source of truth. Do not choose a phase report because it
-has the newest-sounding title or calls itself final.
+## Start here
 
-## CURRENT — controls present work
+1. [Whole-project source of truth](readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md)
+2. [Machine-readable status](readiness/current-status.json)
+3. [Canonical authority map V2.0](CURRENT_CANONICAL_DOCS_v2.0.md)
+4. [Dashboard V4 current contract](dashboard-v4/CURRENT.md)
+5. [Website V4 current contract](website-v4/CURRENT.md)
+6. [AI coding-agent start guide V2.0](AI_CODING_AGENT_START_HERE_v2.0.md)
+7. [Manual QA checklist V2.0](operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md)
+8. [Pilot-readiness checklist V2.0](operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md)
+9. [External-access prompt pack](../prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.0.md)
 
-1. [Website V4 current report](website-v4/CURRENT.md)
-2. [Final source of truth](readiness/BIZPILOT_FINAL_SOURCE_OF_TRUTH_2026-07-12.md)
-3. [Machine-readable status](readiness/current-status.json)
-4. [Canonical documentation map](CURRENT_CANONICAL_DOCS_v1.7.md)
-5. [AI coding agent start guide](AI_CODING_AGENT_START_HERE_v1.7.md)
+These files control current planning and claims. A dated phase report, work log, or file named “final” is not current unless the authority map lists it.
 
-These documents state what is implemented, what is blocked, and which gates
-need owner approval. They override older status, readiness, phase, and “final”
-reports.
+## Classification
 
-## STANDARD — constrains implementation, does not prove readiness
+- `CURRENT`: the nine links above.
+- `STANDARD`: current engineering, security, product, operations, and business constraints listed by the authority map.
+- `EVIDENCE`: retained migration, security, GTM, release, or QA records that prove only their point-in-time result.
+- `ARCHIVE`: superseded public-design material intentionally retained under `docs/archive/` for traceability.
 
-- `product/BIZPILOT_FEATURE_ENTITLEMENT_AND_GUIDE_STANDARD_v1.0.md`
-- `product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md`
-- `engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md`
-- `engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
-- `security/BIZPILOT_SECURITY_PRIVACY_COMPLIANCE_STANDARD_v1.5.md`
-- `operations/BIZPILOT_DOMAIN_DEPLOYMENT_RUNBOOK_v1.0.md`
-- `ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
-- `business/PILOT_TERMS_DECISION_GATE.md`
+## Conflict rule
 
-Follow a standard whenever it applies, but do not infer that its checklist has
-been completed. Current release status remains controlled by the CURRENT set.
+Security/RLS/production-data restrictions win first. Then the current source of truth and status JSON. Then the current surface contract. Standards constrain implementation but do not prove readiness. Historical evidence cannot close a later gate.
 
-## HISTORICAL EVIDENCE — preserve and cite narrowly
-
-- `readiness/PHASE_25*` through `readiness/PHASE_30*`
-- Earlier `readiness/` reports, audits, QA records, and handoffs
-- Older canonical packages, work logs, and dated implementation reports
-
-These files are valuable records of a point-in-time test, decision, or change.
-They cannot override the current source of truth or authorize production work.
-
-## ARCHIVED — retained for traceability
-
-See [docs/archive/README.md](archive/README.md) for the interpretation rule.
-Archive tags and the branch cleanup record preserve historic Git branch state;
-they do not change release approval.
-
-The superseded Website V3 planning and acceptance set is consolidated under
-`archive/website-v3-2026-07-13/`. Do not treat those reports as the current
-website design authority.
-
-## Documentation conflict rule
-
-1. Current source of truth and JSON status win.
-2. Security, RLS, privacy, and production-data restrictions win over convenience.
-3. Applicable standards constrain implementation.
-4. Historical evidence may establish a specific past result, but never a later
-   gate closure that it does not explicitly prove.
-
-When adding a new report, classify it as CURRENT only if it replaces the source
-of truth with evidence-backed, owner-approved status. Otherwise label it as
-historical evidence and link it from the appropriate current document.
+Git history preserves deleted superseded reports, so active documentation does not need multiple competing “final” files.

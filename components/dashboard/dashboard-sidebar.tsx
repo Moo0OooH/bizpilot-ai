@@ -5,13 +5,13 @@
  * File: components/dashboard/dashboard-sidebar.tsx
  * Project: BizPilot AI
  * Description: Renders the shared protected dashboard sidebar navigation.
- * Role: Provides route-aware app navigation for the Quote Recovery Command Center.
+ * Role: Provides five task-based owner destinations plus a secondary operating-guide link.
  * Related:
  * - components/dashboard/dashboard-shell.tsx
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-14
  * Change Log:
  * - 2026-07-05: Added aria-current states for desktop and mobile dashboard navigation links.
  * - 2026-05-19: Matched approved index.html sidebar rhythm, brand block, active states, mobile nav, and quote-link readiness footer.
@@ -19,6 +19,7 @@
  * - 2026-05-26: Replaced letter-only navigation markers with consistent inline dashboard icons.
  * - 2026-06-18: Updated desktop sidebar height to svh for responsive shell readiness.
  * - 2026-07-04: Added the owner operating guide route to protected dashboard navigation.
+ * - 2026-07-14: Reduced primary navigation to five owner tasks and made Settings discoverable in the mobile bar.
  * ============================================================
  */
 
@@ -94,12 +95,6 @@ function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
     {
       label: copy.nav.groupControl,
       items: [
-        {
-          href: "/dashboard/guide",
-          icon: "guide",
-          label: copy.nav.guide,
-          match: (pathname) => pathname === "/dashboard/guide",
-        },
         {
           href: "/dashboard/settings",
           icon: "settings",
@@ -224,8 +219,7 @@ export function DashboardSidebar({
   const pathname = usePathname();
   const navigation = getOwnerNavigation(copy);
   const mobileNavigation = navigation
-    .flatMap((group) => group.items)
-    .slice(0, 5);
+    .flatMap((group) => group.items);
 
   return (
     <>
@@ -275,7 +269,15 @@ export function DashboardSidebar({
           ))}
         </nav>
 
-        <div className="mt-auto">
+        <div className="mt-auto grid gap-3">
+          <Link
+            aria-current={pathname === "/dashboard/guide" ? "page" : undefined}
+            className={navClass(pathname === "/dashboard/guide")}
+            href="/dashboard/guide"
+          >
+            <NavIcon active={pathname === "/dashboard/guide"} name="guide" />
+            <span className="truncate">{copy.nav.guide}</span>
+          </Link>
           <div
             className="flex items-center gap-2.5 border-t border-[var(--dash-border)] px-2 pt-3 text-[12px]"
             title={userLabel}

@@ -10,13 +10,14 @@
  * - server/services/auth.service.ts
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-14
  * Change Log:
  * - 2026-06-19: Resolved theme preference from cookies for hydration-safe dashboard rendering.
  * - 2026-06-20: Made the workspace-access recovery shell short-height safe with svh and natural overflow.
  * - 2026-06-27: Sanitized workspace recovery flash copy before rendering.
  * - 2026-06-27: Tokenized workspace recovery error styling for Dashboard V3.
  * - 2026-07-05: Passed bilingual route-guide copy into the protected dashboard shell.
+ * - 2026-07-14: Removed obsolete route-guide copy from the compact owner shell contract.
  * ============================================================
  */
 
@@ -154,7 +155,6 @@ export default async function DashboardLayout({
     actions: copy.actions,
     nav: copy.nav,
     pages: copy.pages,
-    routeGuide: copy.routeGuide,
     settings: {
       plan: copy.settings.plan,
     },

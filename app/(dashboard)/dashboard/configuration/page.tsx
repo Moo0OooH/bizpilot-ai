@@ -2,15 +2,15 @@
  * ============================================================
  * File: app/(dashboard)/dashboard/configuration/page.tsx
  * Project: BizPilot AI
- * Description: Renders the protected Quote Setup workspace.
- * Role: Lets owners configure the public quote page, services, form questions, AI guardrails, and privacy settings.
+ * Description: Renders the focused protected Quote Setup workspace.
+ * Role: Lets owners configure services, intake questions, branding, reply guidance, privacy, consent, and public-link readiness without duplicating Business Profile.
  * Related:
  * - server/services/auth.service.ts
  * - server/services/business.service.ts
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-14
  * Change Log:
  * - 2026-07-05: Added a compact Quote Setup readiness command strip for first open setup action scanability.
  * - 2026-07-05: Clamped Quote Setup readiness progress to a safe 0-100 display range.
@@ -32,6 +32,7 @@
  * - 2026-06-27: Normalized Quote Setup source structure and Dashboard V3 token usage.
  * - 2026-07-04: Switched internal quote preview anchors to Next Link for faster dashboard navigation.
  * - 2026-07-11: Localized remaining Quote Setup hardcoded labels, summaries, and fallback values.
+ * - 2026-07-14: Reduced ten overlapping sections to six owner tasks and made Business Profile the sole identity editor.
  * ============================================================
  */
 
@@ -54,9 +55,7 @@ import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import {
   INTERFACE_LANGUAGE_COOKIE,
-  languageLabels,
   resolveWorkspaceInterfaceLanguage,
-  supportedLanguages,
 } from "@/lib/i18n/language";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
@@ -304,6 +303,17 @@ export default async function DashboardPage({
             type="hidden"
             value={cleaningTemplate.template.id}
           />
+          <input name="businessName" type="hidden" value={activeBusiness.name} />
+          <input name="businessSlug" type="hidden" value={activeBusiness.slug} />
+          <input
+            name="customTemplateName"
+            type="hidden"
+            value={
+              configuration.templateSettings?.custom_name ??
+              cleaningTemplate.template.name
+            }
+          />
+          <input name="preferredLanguage" type="hidden" value={activeLanguage} />
 
           <section className="grid items-start gap-4 2xl:grid-cols-[minmax(0,1fr)_320px]">
             <div className="min-w-0">
@@ -311,15 +321,11 @@ export default async function DashboardPage({
                 ariaLabel={configurationTabs.ariaLabel}
                 sections={[
                   { id: "configuration-overview", label: configurationTabs.overview },
-                  { id: "business-profile", label: configurationTabs.basics },
-                  { id: "cleaning-template-fields", label: configurationTabs.fields },
                   { id: "services-areas", label: configurationTabs.services },
+                  { id: "cleaning-template-fields", label: configurationTabs.fields },
                   { id: "branding", label: configurationTabs.branding },
                   { id: "faq", label: configurationTabs.ai },
-                  { id: "public-page", label: configurationTabs.link },
-                  { id: "notifications", label: configurationTabs.notifications },
                   { id: "privacy-consent", label: configurationTabs.privacy },
-                  { id: "setup-checklist", label: configurationTabs.readiness },
                 ]}
               >
             <ConfigurationPanel
@@ -481,67 +487,6 @@ export default async function DashboardPage({
             </ConfigurationPanel>
 
             <ConfigurationPanel
-              description={configCopy.basics.description}
-              id="business-profile"
-              summary={`${activeBusiness.name} - /quote/${activeBusiness.slug}`}
-              title={configCopy.basics.title}
-            >
-              <div className="grid gap-2.5 sm:grid-cols-3">
-                <label className={labelClass}>
-                  {configCopy.basics.businessName}
-                  <input
-                    className={inputClass}
-                    defaultValue={activeBusiness.name}
-                    name="businessName"
-                    required
-                    type="text"
-                  />
-                </label>
-                <label className={labelClass}>
-                  {configCopy.basics.publicSlug}
-                  <input
-                    className={inputClass}
-                    defaultValue={activeBusiness.slug}
-                    name="businessSlug"
-                    pattern="[a-z0-9]+(-[a-z0-9]+)*"
-                    required
-                    type="text"
-                  />
-                </label>
-                <label className={labelClass}>
-                  {configCopy.basics.templateName}
-                  <input
-                    className={inputClass}
-                    defaultValue={
-                      configuration.templateSettings?.custom_name ??
-                      cleaningTemplate.template.name
-                    }
-                    name="customTemplateName"
-                    type="text"
-                  />
-                </label>
-                <label className={labelClass}>
-                  {configCopy.basics.preferredLanguage}
-                  <select
-                    className={inputClass}
-                    defaultValue={activeLanguage}
-                    name="preferredLanguage"
-                    required
-                  >
-                    {supportedLanguages.map((language) => (
-                      <option key={language} value={language}>
-                        {languageLabels[language]}
-                      </option>
-                    ))}
-                  </select>
-                  <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
-                    {configCopy.basics.languageHelp}
-                  </span>
-                </label>
-              </div>
-            </ConfigurationPanel>
-
-            <ConfigurationPanel
               description={configCopy.branding.description}
               id="branding"
               summary={
@@ -628,81 +573,6 @@ export default async function DashboardPage({
                     </div>
                   )}
                 </div>
-              </div>
-            </ConfigurationPanel>
-
-            <ConfigurationPanel
-              description={configCopy.publicPage.description}
-              id="public-page"
-              summary={`/quote/${activeBusiness.slug}`}
-              title={configCopy.publicPage.title}
-            >
-              <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
-                <div className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-                  <p className="text-xs font-medium text-[var(--dash-text-secondary)]">
-                    {configCopy.publicPage.publicQuoteLink}
-                  </p>
-                  <p className="mt-1 break-all text-sm font-semibold text-[var(--dash-text)]">
-                    /quote/{activeBusiness.slug}
-                  </p>
-                  <p className="mt-1 text-xs leading-5 text-[var(--dash-text-muted)]">
-                    {configCopy.publicPage.saveBeforePreview}
-                  </p>
-                </div>
-                <Link
-                  className="inline-flex h-8 items-center justify-center rounded-md border border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-3 text-xs font-medium text-[var(--dash-text)]"
-                  href={`/quote/${activeBusiness.slug}`}
-                >
-                  {configCopy.publicPage.previewPublicPage}
-                </Link>
-              </div>
-            </ConfigurationPanel>
-
-            <ConfigurationPanel
-              description={configCopy.notifications.description}
-              id="notifications"
-              summary={configCopy.notifications.summary}
-              title={configCopy.notifications.title}
-            >
-              <div className="grid gap-2.5 sm:grid-cols-2">
-                <label className={labelClass}>
-                  {configCopy.notifications.ownerEmail}
-                  <input
-                    className={inputClass}
-                    defaultValue={
-                      configuration.consentSettings?.privacy_contact_email ??
-                      user.email ??
-                      ""
-                    }
-                    disabled
-                    type="email"
-                  />
-                </label>
-                <label className={labelClass}>
-                  {configCopy.notifications.newQuoteRequest}
-                  <select className={inputClass} defaultValue="manual_dashboard" disabled>
-                    <option value="manual_dashboard">{configCopy.notifications.emailActive}</option>
-                    <option value="off">{configCopy.notifications.off}</option>
-                  </select>
-                </label>
-                <label className={labelClass}>
-                  {configCopy.notifications.channels.sms}
-                  <input
-                    className={inputClass}
-                    defaultValue={configCopy.notifications.futureDisabled}
-                    disabled
-                    type="text"
-                  />
-                </label>
-                <label className={labelClass}>
-                  {configCopy.notifications.channels.whatsapp}
-                  <input
-                    className={inputClass}
-                    defaultValue={configCopy.notifications.futureDisabled}
-                    disabled
-                    type="text"
-                  />
-                </label>
               </div>
             </ConfigurationPanel>
 
@@ -994,41 +864,6 @@ export default async function DashboardPage({
               </div>
             </ConfigurationPanel>
 
-            <ConfigurationPanel
-              description={configCopy.readiness.description(
-                readiness.completed,
-                readiness.total,
-              )}
-              id="setup-checklist"
-              summary={
-                readiness.completed === readiness.total
-                  ? configCopy.readiness.readyToShare
-                  : configCopy.readiness.setupInProgress
-              }
-              title={configCopy.readiness.title}
-            >
-              <div className="grid gap-1.5 sm:grid-cols-2">
-                {readiness.items.map((item) => (
-                  <div
-                    className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-1.5 text-xs"
-                    key={item.label}
-                  >
-                    <span
-                      className={
-                        item.complete
-                          ? "font-medium text-[var(--dash-success-strong)]"
-                          : "font-medium text-[var(--dash-text-muted)]"
-                      }
-                    >
-                      {item.complete ? configCopy.overview.done : configCopy.overview.open}
-                    </span>{" "}
-                    <span className="text-[var(--dash-text-secondary)]">
-                      {readinessLabel(item)}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </ConfigurationPanel>
               </ConfigurationTabs>
             </div>
 

@@ -1,7 +1,19 @@
 /**
+ * ============================================================
  * File: tests/unit/dashboard-heading-source.test.mts
  * Project: BizPilot AI
- * Description: Source guard for one content-owned dashboard heading hierarchy.
+ * Description: Source guard for dashboard heading hierarchy and mobile containment.
+ * Role: Keeps one route-owned H1 and prevents protected workspace controls from widening the viewport.
+ * Related:
+ * - components/dashboard/dashboard-topbar.tsx
+ * - app/(dashboard)/dashboard/page.tsx
+ * - components/dashboard/lead-workspace-queue.tsx
+ * Author: MoOoH
+ * Created: 2026-06-27
+ * Last Updated: 2026-07-14
+ * Change Log:
+ * - 2026-07-14: Aligned containment guards with the compact V4 topbar and decision-first overview.
+ * ============================================================
  */
 
 import assert from "node:assert/strict";
@@ -21,7 +33,7 @@ describe("dashboard heading hierarchy", () => {
 
     assert.equal(overviewSource.includes("<h1 className="), true);
     assert.equal(topbarSource.includes("<h1"), false);
-    assert.equal(topbarSource.includes("page content owns the H1"), true);
+    assert.equal(topbarSource.includes("duplicating route headings"), true);
   });
 
   it("keeps mobile lead cards from widening on long contact text", () => {
@@ -57,15 +69,15 @@ describe("dashboard heading hierarchy", () => {
       topbarSource.includes("w-[min(220px,calc(100vw-1.5rem))]"),
       true,
     );
-    assert.equal(topbarSource.includes("sm:left-auto sm:right-0"), true);
+    assert.equal(topbarSource.includes("absolute right-0 top-11"), true);
     assert.equal(tabsSource.includes("grid min-w-0 gap-3"), true);
     assert.equal(tabsSource.includes("min-w-0 max-w-full overflow-hidden"), true);
     assert.equal(tabsSource.includes("flex min-w-0 gap-1 overflow-x-auto"), true);
     assert.equal(
-      overviewSource.includes("Consolidated the owner command lane and KPI strip"),
+      overviewSource.includes("data-dashboard-primary-action"),
       true,
     );
     assert.equal(overviewSource.includes("overflow-hidden p-0"), true);
-    assert.equal(overviewSource.includes("grid min-h-[86px]"), true);
+    assert.equal(overviewSource.includes("grid min-h-[88px]"), true);
   });
 });

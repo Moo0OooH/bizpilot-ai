@@ -2,12 +2,12 @@
 
 **Project:** BizPilot AI
 **Document Type:** Pilot terms decision gate
-**Status:** Staged commercial terms approved; real pilot still blocked by production/data gates
+**Status:** Historical staged terms; paid pilot remains gated by current operational and owner approvals
 **Owner:** MoOoH
-**Last Updated:** 2026-05-25
+**Last Updated:** 2026-07-14
 **Related:**
-- `docs/business/PILOT_OFFER_AND_PRICING_DECISIONS.md`
-- `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v1.0.md`
+- `docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md`
+- `docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md`
 - `docs/product/BIZPILOT_PLAN_ENTITLEMENTS_AND_MANUAL_BILLING_SPEC_v1.0.md`
 - `docs/product/BIZPILOT_PRICING_PAGE_SPEC_v1.0.md`
 - `app/pricing/page.tsx`
@@ -21,13 +21,13 @@ This gate prevents BizPilot from starting a real pilot without clear commercial 
 
 Do not accept payment, onboard a real cleaning business, or collect real customer data until the current real-data and paid-pilot gates are closed.
 
-Current gate status as of 2026-06-01:
+Current gate status as of 2026-07-14:
 
-- Real customer data is still blocked by Phase 24F final no-secret production smoke and Phase 24G explicit owner approval.
-- Paid pilot execution is still blocked by the payment collection asset/process, support/escalation/refund operating packet, and strict restored app/dashboard/RLS proof before paid pilot or risky production work.
-- Historical OpenAI, Auth email/SMTP, and DB-level backup/export/restore blockers are superseded where Phase 23/24 evidence records them as passed or deferred.
+- Real customer data remains unapproved until the V2 authenticated, restore/RLS, privacy, monitoring, and explicit owner gates pass.
+- Paid pilot execution also requires final payment, tax, support, refund, onboarding, offboarding, and rollback evidence.
+- Historical phase reports are evidence only and cannot close a current V2 gate.
 
-This document records the owner-approved staged commercial terms for the first pilot cohorts. The terms approval closes the pricing mismatch, but it does not approve a real customer pilot by itself.
+This document records previously approved staged commercial terms. It does not prove that current public pricing matches them, that payment operations are ready, or that a real customer pilot is approved.
 
 ## 2. Current Pricing Evidence
 
@@ -37,7 +37,6 @@ Current sources checked:
 | --- | --- |
 | `app/pricing/page.tsx` | Renders public pricing route from `lib/i18n/pricing-copy.ts`. |
 | `lib/i18n/pricing-copy.ts` | Founder Pilot shows free setup for first 1-5 pilot customers with a feedback commitment; Starter shows `$149 setup` / `$49/mo`; Pro shows `$199 setup` / `$79/mo`. |
-| `docs/business/PILOT_OFFER_AND_PRICING_DECISIONS.md` | Older recommendation source; superseded by this staged owner-approved gate for pilot execution. |
 | `docs/product/BIZPILOT_PLAN_ENTITLEMENTS_AND_MANUAL_BILLING_SPEC_v1.0.md` | Manual billing only; invoice or separate Stripe Payment Link; refund, trial length, and cancellation require owner decision. |
 | `docs/product/BIZPILOT_PRICING_PAGE_SPEC_v1.0.md` | Pricing page must avoid billing automation, booking, invoice, CRM, SMS, WhatsApp, and auto-send claims. |
 

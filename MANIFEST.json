@@ -1,38 +1,42 @@
 {
   "project": "BizPilot AI",
-  "version": "v1.7",
-  "lastUpdated": "2026-06-17",
-  "status": "Synthetic-ready; not approved for real customer data; not ready for paid pilot.",
-  "productBoundary": "Lead Recovery & Response System for cleaning businesses. Public quote intake, lead organization, AI summary/draft, owner review, and manual response are in scope for the first pilot.",
+  "version": "v2.0",
+  "lastUpdated": "2026-07-14",
+  "branch": "main",
+  "status": "Website V4 and Dashboard V4 implemented; real customer data and paid pilot remain gated.",
+  "productBoundary": "Bilingual Smart Intake and owner-reviewed reply preparation for service businesses; cleaning is the first complete pilot vertical; no autonomous send, booking, pricing, payment, direct inbox integration, or full CRM claim.",
   "sourceOfTruth": [
-    "docs/CURRENT_CANONICAL_DOCS_v1.7.md",
-    "docs/readiness/CURRENT_PROJECT_STATUS_2026-06-01.md",
-    "docs/readiness/PHASE_23_PRODUCTION_FUNCTIONAL_SMOKE_2026-05-29.md",
-    "docs/readiness/PHASE_24_REAL_DATA_APPROVAL_GATE_2026-05-30.md",
-    "docs/product/PRODUCT_DECISION_OWNER_NOTIFICATION_EMAIL_DEFERRED_FIRST_PILOT_2026-05-30.md"
+    "docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md",
+    "docs/readiness/current-status.json",
+    "docs/CURRENT_CANONICAL_DOCS_v2.0.md",
+    "docs/dashboard-v4/CURRENT.md",
+    "docs/website-v4/CURRENT.md",
+    "docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md",
+    "docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md"
   ],
   "currentReadiness": {
-    "syntheticProductionProof": "passed",
-    "realCustomerData": "blocked pending Phase 24F final no-secret production smoke and Phase 24G explicit owner approval",
-    "paidPilot": "blocked pending payment/support operating packet and strict restored app/dashboard/RLS proof",
-    "firstPilotMode": "cleaning-only, manual dashboard check, owner-reviewed AI drafts, manual copy/send"
+    "codeRelease": "lint, typecheck, 246/246 unit tests, Next.js production build, public 34/34, responsive 20/20, and final UI matrix passed on the release working tree",
+    "authenticatedDashboardQA": "blocked until an approved local/disposable synthetic auth target is available",
+    "productionDatabase": "unchanged by Dashboard V4",
+    "realCustomerData": "blocked pending restored-target application/dashboard/RLS proof and explicit owner approval",
+    "paidPilot": "blocked pending real-data approval and payment/support/refund/rollback readiness",
+    "firstPilotMode": "cleaning-first, manual owner review, manual copy/send"
   },
   "doNotDefaultEnable": [
     "owner notification email",
     "AI auto-send",
-    "customer-facing email automation",
-    "SMS or WhatsApp",
+    "customer-facing messaging automation",
+    "SMS or WhatsApp automation",
+    "direct social inbox integration",
     "booking engine",
-    "invoicing or billing platform",
-    "full CRM expansion"
+    "payment or invoicing platform",
+    "full CRM expansion",
+    "real customer data"
   ],
   "localVerification": {
-    "standard": "pnpm verify",
+    "standard": "pnpm lint && pnpm typecheck && pnpm test:unit && pnpm build",
     "databaseRequired": "pnpm verify:local-db",
-    "rlsSafety": "RLS tests must only run against a local DATABASE_URL."
+    "targetSafety": "Authenticated dashboard/database smoke must prove a local or disposable synthetic target before any write."
   },
-  "notes": [
-    "This manifest is navigation metadata only; canonical documents remain the source of truth.",
-    "Do not treat historical v1.4/v1.5/v1.6 docs as current unless listed by the canonical docs index."
-  ]
+  "externalActionPrompts": "prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.0.md"
 }

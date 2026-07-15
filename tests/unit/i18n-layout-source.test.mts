@@ -10,8 +10,9 @@
  * - components/public/public-v3-home.module.css
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Updated Settings disclosure guards after removing repeated roadmap and display-preference documentation.
  * - 2026-07-13: Treated the animation-free V3 homepage as the strongest reduced-motion contract.
  * - 2026-07-13: Migrated compact public-layout guards from retired V2 files to the shared V3 renderers.
  * ============================================================
@@ -60,12 +61,13 @@ describe("bilingual copy and compact layout guards", () => {
       "utf8",
     );
 
-    assert.equal(source.includes("countFeaturesByState"), true);
-    assert.equal(source.includes("featureStateCounts"), true);
-    assert.equal(source.includes("settingsCopy.featureRegistry.guidesLabel"), true);
-    assert.equal(source.includes("data-dashboard-optional-guide"), true);
+    assert.equal(source.includes("countFeaturesByState"), false);
+    assert.equal(source.includes("featureStateCounts"), false);
+    assert.equal(source.includes("settingsCopy.featureRegistry.guidesLabel"), false);
+    assert.equal(source.includes("settingsCopy.guardrails"), true);
     assert.equal(source.includes("settingsCopy.systemHistory.title"), true);
     assert.equal(source.includes("settingsCopy.lifecycle.title"), true);
+    assert.equal(source.match(/<details className=/g)?.length, 3);
     assert.equal(source.includes('DashboardCard className="p-[18px]'), false);
   });
 

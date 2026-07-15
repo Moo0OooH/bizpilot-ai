@@ -12,8 +12,9 @@
  * - components/dashboard/dashboard-ui.tsx
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Pointed empty-state setup guidance at the canonical Quote Setup route.
  * - 2026-07-05: Added explicit accessible labels for lead queue row links.
  * - 2026-07-04: Added URL-driven initial filters so overview links open the queue in the requested focus state.
  * - 2026-07-04: Added full lead queue pagination with page-size controls and reset behavior.
@@ -670,7 +671,7 @@ function LeadQueueEmptyStarter({
           successLabel={copy.dashboard.actions.copySuccess}
           value={quotePath}
         />
-        <Link className={buttonClass} href="/dashboard/quote-setup">
+        <Link className={buttonClass} href="/dashboard/configuration">
           {copy.dashboard.nav.quoteSetup}
         </Link>
       </div>

@@ -2,19 +2,17 @@
  * ============================================================
  * File: app/(dashboard)/dashboard/leads/page.tsx
  * Project: BizPilot AI
- * Description: Lead Recovery Queue route.
- * Role: Shows the manual lead recovery queue with focus guidance, queue controls, and setup support.
+ * Description: Owner Lead Recovery Queue route.
+ * Role: Shows one filter-aware recovery cue above the searchable, sortable, paginated lead queue.
  * Related:
  * - server/services/lead-conversion.service.ts
  * - components/dashboard/lead-workspace-queue.tsx
- * - docs/product/BIZPILOT_DASHBOARD_UX_STANDARD_v1.0.md
+ * - docs/dashboard-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-14
  * Change Log:
- * - 2026-07-05: Added a focus-aware command strip so overview queue links surface the safest manual next action.
- * - 2026-07-04: Added safe URL focus handling so overview metrics open the queue with the right filter selected.
- * - 2026-05-19: Removed duplicate header + duplicate search/filter card; right rail rebuilt to mirror index pixel-for-pixel content.
+ * - 2026-07-14: Removed repeated status, link-health, and rules rails; kept contextual guidance only when a focused queue is requested.
  * ============================================================
  */
 
@@ -33,7 +31,6 @@ import {
   ownerSafeLeadText,
   PageHeader,
   primaryButtonClass,
-  SectionHeader,
   shortCustomerName,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
@@ -51,12 +48,8 @@ import {
 
 export const dynamic = "force-dynamic";
 
-type LeadQueueCopy = ReturnType<typeof getBizPilotCopy>["dashboard"]["leadQueue"];
-
 type LeadConversionDeskPageProps = Readonly<{
-  searchParams?: Promise<{
-    focus?: string | string[];
-  }>;
+  searchParams?: Promise<{ focus?: string | string[] }>;
 }>;
 
 function readLeadQueueFocus(
@@ -115,26 +108,20 @@ function leadMatchesQueueFocus(
   return true;
 }
 
-function queueFocusPriority(item: LeadDeskItem): number {
+function queuePriority(item: LeadDeskItem): number {
   if (item.lead.response_sla_state === "overdue") return 100;
   if (item.score.quality_level === "needs_info") return 86;
   if (item.lead.status === "new") return 80;
   if (item.lead.status === "follow_up_needed") return 72;
   if (item.action?.status === "open") return 65;
-  if (item.lead.status === "booked") return 34;
-  if (item.lead.status === "lost") return 30;
-
   return 20;
 }
 
-function pickFocusLead(leads: LeadDeskItem[]): LeadDeskItem | undefined {
+function pickFocusLead(leads: readonly LeadDeskItem[]): LeadDeskItem | undefined {
   return [...leads].sort((left, right) => {
-    const priorityDifference =
-      queueFocusPriority(right) - queueFocusPriority(left);
+    const priorityDifference = queuePriority(right) - queuePriority(left);
 
-    if (priorityDifference !== 0) {
-      return priorityDifference;
-    }
+    if (priorityDifference !== 0) return priorityDifference;
 
     return (
       new Date(right.lead.created_at).getTime() -
@@ -143,7 +130,7 @@ function pickFocusLead(leads: LeadDeskItem[]): LeadDeskItem | undefined {
   })[0];
 }
 
-function queueFocusTone(
+function focusTone(
   focus: LeadQueueInitialFilter,
   matchCount: number,
 ): "amber" | "blue" | "emerald" | "neutral" | "red" {
@@ -152,28 +139,13 @@ function queueFocusTone(
   if (focus === "missing_info") return "amber";
   if (focus === "reviewed" || focus === "won") return "emerald";
   if (focus === "lost") return "neutral";
-
   return "blue";
-}
-
-function formatAgeShort(value: string | null, copy: LeadQueueCopy): string {
-  if (!value) return copy.age.notAvailable;
-  const diffMinutes = Math.max(
-    0,
-    Math.round((Date.now() - new Date(value).getTime()) / 60000),
-  );
-  const suffix = copy.age.ago ? ` ${copy.age.ago}` : "";
-  if (diffMinutes < 60) return `${copy.age.minute(Math.max(diffMinutes, 1))}${suffix}`;
-  const diffHours = Math.round(diffMinutes / 60);
-  if (diffHours < 24) return `${copy.age.hour(diffHours)}${suffix}`;
-  const diffDays = Math.round(diffHours / 24);
-  return `${copy.age.day(diffDays)}${suffix}`;
 }
 
 export default async function LeadConversionDeskPage({
   searchParams,
 }: LeadConversionDeskPageProps) {
-  const user = await getCurrentUser();
+  const [query, user] = await Promise.all([searchParams, getCurrentUser()]);
   if (!user) redirect("/auth/sign-in");
 
   const workspace = await getBusinessWorkspace({ userId: user.id });
@@ -187,52 +159,30 @@ export default async function LeadConversionDeskPage({
   const copy = getBizPilotCopy(activeLanguage).dashboard;
   const leadsCopy = copy.leadsPage;
   const queueCopy = copy.leadQueue;
-  const query = await searchParams;
   const initialFilter = readLeadQueueFocus(query?.focus);
-
   const desk = await getLeadConversionDesk({
     actorUserId: user.id,
     business: { ...activeBusiness, preferred_language: activeLanguage },
   });
-
   const quotePath = `/quote/${activeBusiness.slug}`;
-  const overdueCount = desk.leads.filter(
-    (item) => item.lead.response_sla_state === "overdue",
-  ).length;
-  const missingInfoCount = desk.leads.filter(
-    (item) => item.score.quality_level === "needs_info",
-  ).length;
-  const newLeadCount = desk.leads.filter(
-    (item) => item.lead.status === "new",
-  ).length;
-  const lastSubmissionAt = desk.leads[0]?.lead.created_at ?? null;
   const focusedLeads = desk.leads.filter((item) =>
     leadMatchesQueueFocus(item, initialFilter),
   );
   const focusLead = pickFocusLead(focusedLeads);
   const focusCommand = leadsCopy.command.states[initialFilter];
-  const focusHasLead = Boolean(focusLead);
-  const focusTitle = focusHasLead ? focusCommand.title : focusCommand.emptyTitle;
-  const focusDescription = focusHasLead
-    ? focusCommand.description
-    : focusCommand.emptyDescription;
+  const hasFocus = initialFilter !== "all";
+  const hasFocusLead = Boolean(focusLead);
+  const focusLeadName = focusLead
+    ? ownerSafeLeadText(
+        focusLead.lead.customer_name,
+        queueCopy.fallbacks.unnamedLead,
+      )
+    : null;
   const focusPrimaryHref = focusLead
     ? `/dashboard/leads/${focusLead.lead.id}`
     : desk.leads.length > 0
       ? "/dashboard/leads"
       : "/dashboard/configuration";
-  const focusPrimaryLabel = focusHasLead
-    ? focusCommand.primaryLabel
-    : focusCommand.emptyPrimaryLabel;
-  const focusLeadName = focusLead
-    ? ownerSafeLeadText(focusLead.lead.customer_name, queueCopy.fallbacks.unnamedLead)
-    : null;
-  const focusLeadService = focusLead
-    ? ownerSafeLeadText(focusLead.lead.service_type, queueCopy.fallbacks.service)
-    : null;
-  const focusLeadArea = focusLead
-    ? ownerSafeLeadText(focusLead.lead.city_or_service_area, queueCopy.fallbacks.area)
-    : null;
 
   return (
     <main className="space-y-4">
@@ -255,134 +205,61 @@ export default async function LeadConversionDeskPage({
         title={copy.pages.leads.title}
       />
 
-      <DashboardCard
-        className="p-4 sm:p-5"
-        data-dashboard-lead-focus-command
-        data-dashboard-lead-focus-state={initialFilter}
-        variant="priority"
-      >
-        <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.46fr)] lg:items-center">
-          <div className="min-w-0">
-            <div className="flex flex-wrap gap-2">
-              <StatusBadge tone={queueFocusTone(initialFilter, focusedLeads.length)}>
-                {leadsCopy.command.countLabel(focusedLeads.length, desk.leads.length)}
-              </StatusBadge>
-              <StatusBadge tone="blue">{leadsCopy.command.manualOnly}</StatusBadge>
-            </div>
-            <p className="mt-3 text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-primary-strong)]">
-              {leadsCopy.command.safeAction}
-            </p>
-            <h2 className="mt-1 text-[22px] font-black leading-tight text-[var(--dash-text)] sm:text-[26px]">
-              {focusTitle}
-            </h2>
-            <p className="mt-2 max-w-3xl text-[13px] leading-6 text-[var(--dash-text-secondary)]">
-              {focusDescription}
-            </p>
-          </div>
-
-          <div
-            className="grid min-w-0 gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm"
-            data-dashboard-lead-command-action
-          >
-            <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
-              {leadsCopy.command.routeLabel}
-            </p>
-            {focusLead && focusLeadName && focusLeadService && focusLeadArea ? (
-              <div className="min-w-0 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-                <p className="truncate text-[14px] font-black text-[var(--dash-text)]">
-                  {shortCustomerName(focusLeadName, queueCopy.fallbacks.unnamedLead)}
-                </p>
-                <p className="mt-1 truncate text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  {focusLeadService} / {focusLeadArea}
-                </p>
+      {hasFocus ? (
+        <DashboardCard
+          className="p-4"
+          data-dashboard-lead-focus-command
+          data-dashboard-lead-focus-state={initialFilter}
+          variant="priority"
+        >
+          <div className="grid min-w-0 gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <StatusBadge tone={focusTone(initialFilter, focusedLeads.length)}>
+                  {leadsCopy.command.countLabel(
+                    focusedLeads.length,
+                    desk.leads.length,
+                  )}
+                </StatusBadge>
+                {focusLeadName ? (
+                  <span className="truncate text-[12px] font-black text-[var(--dash-text)]">
+                    {shortCustomerName(
+                      focusLeadName,
+                      queueCopy.fallbacks.unnamedLead,
+                    )}
+                  </span>
+                ) : null}
               </div>
-            ) : (
-              <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                {leadsCopy.command.noMatchingLead}
+              <h2 className="mt-2 text-[18px] font-black text-[var(--dash-text)] sm:text-[21px]">
+                {hasFocusLead ? focusCommand.title : focusCommand.emptyTitle}
+              </h2>
+              <p className="mt-1 max-w-3xl text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                {hasFocusLead
+                  ? focusCommand.description
+                  : focusCommand.emptyDescription}
               </p>
-            )}
-            <div className="flex flex-wrap gap-2">
+            </div>
+            <div className="flex flex-wrap gap-2 lg:justify-end">
               <Link className={primaryButtonClass} href={focusPrimaryHref}>
-                {focusPrimaryLabel}
+                {hasFocusLead
+                  ? focusCommand.primaryLabel
+                  : focusCommand.emptyPrimaryLabel}
               </Link>
-              <Link className={buttonClass} href="/dashboard/guide">
-                {leadsCopy.command.secondaryLabel}
+              <Link className={buttonClass} href="/dashboard/leads">
+                {queueCopy.filters.all}
               </Link>
             </div>
           </div>
-        </div>
-      </DashboardCard>
+        </DashboardCard>
+      ) : null}
 
-      <section className="grid min-w-0 items-start gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
-        <LeadWorkspaceQueue
-          initialFilter={initialFilter}
-          key={initialFilter}
-          language={activeLanguage}
-          leads={desk.leads}
-          quotePath={quotePath}
-        />
-
-        <aside className="min-w-0 space-y-3 xl:sticky xl:top-[82px]">
-          <DashboardCard className="p-4" variant="priority">
-            <SectionHeader
-              description={
-                overdueCount > 0
-                  ? leadsCopy.focusAtRiskDescription(overdueCount)
-                  : leadsCopy.focusHealthyDescription
-              }
-              title={leadsCopy.focusTitle}
-            />
-            <div className="mt-3 flex flex-wrap gap-2">
-              <StatusBadge tone={overdueCount > 0 ? "red" : "neutral"}>
-                {leadsCopy.atRiskBadge(overdueCount)}
-              </StatusBadge>
-              <StatusBadge tone={missingInfoCount > 0 ? "amber" : "neutral"}>
-                {leadsCopy.missingInfoBadge(missingInfoCount)}
-              </StatusBadge>
-              <StatusBadge tone={newLeadCount > 0 ? "blue" : "neutral"}>
-                {leadsCopy.newBadge(newLeadCount)}
-              </StatusBadge>
-            </div>
-          </DashboardCard>
-
-          <DashboardCard className="p-4">
-            <SectionHeader
-              action={<StatusBadge tone="emerald">{leadsCopy.active}</StatusBadge>}
-              description={leadsCopy.lastSubmission(
-                formatAgeShort(lastSubmissionAt, queueCopy),
-              )}
-              title={leadsCopy.quoteLinkHealth}
-            />
-            <div className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[13px] text-[var(--dash-text-secondary)]">
-              <span className="break-all font-black text-[var(--dash-text)]">
-                {quotePath}
-              </span>
-            </div>
-            <div className="mt-3">
-              <CopyButton
-                className="w-full"
-                failedLabel={copy.actions.copyFailed}
-                label={copy.actions.copyQuoteLink}
-                successLabel={copy.actions.copySuccess}
-                value={quotePath}
-              />
-            </div>
-          </DashboardCard>
-
-          <DashboardCard className="p-4">
-            <SectionHeader title={leadsCopy.statusRulesTitle} />
-            <div className="my-3 h-px bg-[var(--dash-border)]" />
-            <p className="text-[13px] leading-6 text-[var(--dash-text-secondary)]">
-              {leadsCopy.statusRulesBody}
-            </p>
-            <div className="mt-3">
-              <Link className={`${buttonClass} w-full`} href="/dashboard/configuration">
-                {leadsCopy.openQuoteSetup}
-              </Link>
-            </div>
-          </DashboardCard>
-        </aside>
-      </section>
+      <LeadWorkspaceQueue
+        initialFilter={initialFilter}
+        key={initialFilter}
+        language={activeLanguage}
+        leads={desk.leads}
+        quotePath={quotePath}
+      />
     </main>
   );
 }

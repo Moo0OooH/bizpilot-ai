@@ -5,13 +5,13 @@
  * File: components/dashboard/dashboard-topbar.tsx
  * Project: BizPilot AI
  * Description: Renders the protected workspace topbar.
- * Role: Provides route-aware command-center page context, quote-link actions, theme selector, and user controls.
+ * Role: Provides compact quote-link, help, language, theme, account, and founder utilities without duplicating route headings.
  * Related:
  * - components/dashboard/dashboard-shell.tsx
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-14
  * Change Log:
  * - 2026-07-05: Corrected the More actions control title and accessible label.
  * - 2026-05-19: Matched approved index.html topbar hierarchy: page title left, focused actions right, no global search clutter.
@@ -22,6 +22,7 @@
  * - 2026-07-04: Added a direct route to local display settings from the action menu.
  * - 2026-07-04: Added the core owner route map to Actions so every dashboard function is reachable from the topbar.
  * - 2026-07-04: Added the owner operating guide route to page context and Actions.
+ * - 2026-07-14: Removed duplicate route title/subtitle chrome and reduced the More menu to genuinely secondary actions.
  * ============================================================
  */
 
@@ -46,46 +47,6 @@ type DashboardTopbarProps = Readonly<{
   showFounderAdmin?: boolean;
   userLabel: string;
 }>;
-
-type PageContext = Readonly<{
-  subtitle: string;
-  title: string;
-}>;
-
-function getPageContext(
-  pathname: string,
-  copy: DashboardShellCopy,
-): PageContext {
-  if (pathname.startsWith("/dashboard/leads/")) {
-    return copy.pages.leadDetail;
-  }
-
-  if (pathname.startsWith("/dashboard/leads")) {
-    return copy.pages.leads;
-  }
-
-  if (pathname === "/dashboard/configuration" || pathname === "/dashboard/quote-setup") {
-    return copy.pages.configuration;
-  }
-
-  if (pathname === "/dashboard/business-profile") {
-    return copy.pages.businessProfile;
-  }
-
-  if (pathname === "/dashboard/settings") {
-    return copy.pages.settings;
-  }
-
-  if (pathname === "/dashboard/guide") {
-    return copy.pages.guide;
-  }
-
-  if (pathname === "/founder" || pathname === "/admin") {
-    return copy.pages.founder;
-  }
-
-  return copy.pages.dashboard;
-}
 
 function MoreIcon() {
   return (
@@ -116,21 +77,20 @@ export function DashboardTopbar({
 }: DashboardTopbarProps) {
   const quotePath = `/quote/${businessSlug}`;
   const pathname = usePathname();
-  const pageContext = getPageContext(pathname, copy);
 
   return (
     <header className="dashboard-topbar sticky top-0 z-20 shrink-0 border-b backdrop-blur">
-      <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 px-3 py-2 sm:min-h-[60px] sm:flex-nowrap sm:gap-3 sm:px-5 md:px-6 lg:px-5">
-        <div className="min-w-0 flex-1 basis-[12rem]">
-          <p className="truncate text-[16px] font-extrabold leading-[1.2] text-[var(--dash-text)] sm:text-[17px]">
-            {pageContext.title}
-          </p>
-          <p className="mt-0.5 hidden truncate text-[11px] leading-4 text-[var(--dash-text-muted)] sm:block">
-            {pageContext.subtitle}
-          </p>
+      <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-2 sm:min-h-[56px] sm:gap-3 sm:px-5 md:px-6 lg:px-5">
+        <div className="flex min-w-0 items-center gap-2 lg:hidden">
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--dash-primary)] text-sm font-black text-white">
+            B
+          </span>
+          <span className="truncate text-[14px] font-black text-[var(--dash-text)]">
+            BizPilot AI
+          </span>
         </div>
 
-        <div className="flex min-w-0 basis-full flex-wrap items-center justify-start gap-2 sm:basis-auto sm:flex-nowrap sm:justify-end">
+        <div className="flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
           <details className="group relative">
             <summary
               aria-label={copy.actions.moreActions}
@@ -140,7 +100,7 @@ export function DashboardTopbar({
               <MoreIcon />
               <span className="hidden md:inline">{copy.actions.moreActions}</span>
             </summary>
-            <div className="absolute left-0 top-11 z-30 grid w-[min(220px,calc(100vw-1.5rem))] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)] sm:left-auto sm:right-0">
+            <div className="absolute right-0 top-11 z-30 grid w-[min(220px,calc(100vw-1.5rem))] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)]">
               <CopyButton
                 className="!w-full !justify-start"
                 failedLabel={copy.actions.copyFailed}
@@ -151,23 +111,14 @@ export function DashboardTopbar({
               <Link className={`${buttonClass} w-full justify-start`} href={quotePath}>
                 {copy.actions.previewQuotePage}
               </Link>
-              <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/leads">
-                {copy.actions.openLeadQueue}
-              </Link>
-              <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/configuration">
-                {copy.nav.quoteSetup}
-              </Link>
-              <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/business-profile">
-                {copy.nav.businessProfile}
-              </Link>
               <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/guide">
                 {copy.nav.guide}
               </Link>
               <Link
                 className={`${buttonClass} w-full justify-start`}
-                href="/dashboard/settings#display-preferences"
+                href="/dashboard/settings"
               >
-                {copy.actions.displaySettings}
+                {copy.nav.settings}
               </Link>
               {showFounderAdmin ? (
                 <Link className={`${ghostButtonClass} w-full justify-start`} href="/admin">
@@ -178,7 +129,7 @@ export function DashboardTopbar({
           </details>
           <form
             action={updateWorkspaceLanguageAction}
-            className="flex h-9 max-w-[11rem] items-center overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:h-10"
+            className="hidden h-9 max-w-[11rem] items-center overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:flex sm:h-10"
           >
             <input name="businessId" type="hidden" value={businessId} />
             <input name="redirectTo" type="hidden" value={pathname} />
@@ -199,13 +150,15 @@ export function DashboardTopbar({
               </button>
             ))}
           </form>
-          <DashboardThemeSelector />
+          <div className="hidden sm:block">
+            <DashboardThemeSelector />
+          </div>
           <div className="hidden min-w-0 max-w-[190px] rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-3 py-2 text-[13px] font-bold text-[var(--dash-text)] xl:block">
             <span className="block truncate">{activeBusinessName}</span>
           </div>
           <form action={signOutAction}>
             <button
-              className="biz-button-secondary inline-flex h-9 max-w-[5.5rem] items-center justify-center rounded-lg border px-3 text-[12px] font-bold shadow-sm sm:h-10 sm:max-w-[8rem] sm:text-[13px]"
+              className="biz-button-secondary inline-flex h-9 max-w-[5.5rem] items-center justify-center rounded-lg border px-2.5 text-[11px] font-bold shadow-sm sm:h-10 sm:max-w-[8rem] sm:px-3 sm:text-[13px]"
               title={userLabel}
               type="submit"
             >

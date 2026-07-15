@@ -2,16 +2,17 @@
  * ============================================================
  * File: tests/unit/feature-registry.test.mts
  * Project: BizPilot AI
- * Description: Source guards for Settings-visible feature registry states.
- * Role: Verifies feature states, localized guide copy, and blocked-scope honesty.
+ * Description: Source guards for the internal feature registry and Settings scope.
+ * Role: Verifies feature states and localized guide copy while keeping long roadmap documentation out of owner Settings.
  * Related:
  * - lib/features/feature-registry.ts
  * - app/(dashboard)/dashboard/settings/page.tsx
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-05-26
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Kept the registry as an internal source contract while removing its repeated long-form rendering from Settings.
  * - 2026-07-04: Added Settings guide-detail source guards without enabling blocked features.
  * ============================================================
  */
@@ -100,13 +101,13 @@ describe("feature registry", () => {
     }
   });
 
-  it("renders Settings guide details without enabling blocked features", () => {
+  it("keeps roadmap documentation out of the compact Settings surface", () => {
     const settingsSource = readFileSync(
       "app/(dashboard)/dashboard/settings/page.tsx",
       "utf8",
     );
 
-    for (const required of [
+    for (const removed of [
       "settingsCopy.featureRegistry.guideDetailsLabel",
       "featureText.activation",
       "featureText.setup",
@@ -116,12 +117,14 @@ describe("feature registry", () => {
       "getFeatureStateTone(feature.state)",
     ]) {
       assert.equal(
-        settingsSource.includes(required),
-        true,
-        `Settings should render ${required}.`,
+        settingsSource.includes(removed),
+        false,
+        `Settings should not repeat ${removed}.`,
       );
     }
 
+    assert.equal(settingsSource.includes("countFeaturesByState"), false);
+    assert.equal(settingsSource.includes("WorkspaceDeletionRequestForm"), true);
     assert.equal(
       settingsSource.includes("feature.state ="),
       false,

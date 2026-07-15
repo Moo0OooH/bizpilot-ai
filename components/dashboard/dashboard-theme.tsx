@@ -5,16 +5,16 @@
  * File: components/dashboard/dashboard-theme.tsx
  * Project: BizPilot AI
  * Description: Hydration-safe dashboard theme provider and selector.
- * Role: Applies protected dashboard theme state and default display preference attributes.
+ * Role: Applies protected dashboard theme state and renders the shared theme selector.
  * Related:
  * - components/dashboard/dashboard-shell.tsx
- * - components/dashboard/dashboard-display-preferences.tsx
  * - lib/theme.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-14
  * Change Log:
  * - 2026-07-04: Added default dashboard display data attributes for density, guides, and insights.
+ * - 2026-07-14: Removed obsolete local density, guide, and insight attributes after dashboard simplification.
  * ============================================================
  */
 
@@ -129,9 +129,6 @@ export function DashboardThemeFrame({
     <ThemeContext.Provider value={value}>
       <main
         className={`${themeClass} dashboard-frame h-svh min-w-0 overflow-hidden transition-colors lg:grid lg:grid-cols-[224px_minmax(0,1fr)]`}
-        data-dashboard-density="compact"
-        data-dashboard-guides="standard"
-        data-dashboard-insights="standard"
       >
         {children}
       </main>

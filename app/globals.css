@@ -10,9 +10,10 @@
  * - components/public/marketing-language-menu.tsx
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-14
  * Change Log:
- * - 2026-07-13: Restored shared public/legal containers and dashboard density/display controls after narrowing the V2 CSS cleanup.
+ * - 2026-07-14: Tightened the protected dashboard content measure and removed obsolete density/route-guide presentation rules.
+ * - 2026-07-13: Restored shared public/legal containers after narrowing the V2 CSS cleanup.
  * - 2026-07-13: Replaced the live header backdrop blur with a near-opaque tokenized surface to reduce paint cost.
  * - 2026-07-13: Replaced route-wide webfont loading with a zero-request native UI font stack to remove text-LCP swaps.
  * - 2026-07-13: Removed the unreferenced V2 homepage and cleaning-page CSS after V3 route consolidation.
@@ -135,7 +136,7 @@
   --public-max: var(--bp-container-max);
   --public-gutter: var(--bp-container-padding);
   --legal-max: var(--bp-container-narrow-max);
-  --dashboard-max: 108rem;
+  --dashboard-max: 90rem;
   --text-hero: var(--bp-display-size);
   --text-section: var(--bp-section-title-size);
   --text-page: var(--bp-page-title-size);
@@ -926,28 +927,6 @@ select {
   min-inline-size: 0;
 }
 
-.dashboard-frame[data-dashboard-density="compact"] .dashboard-container {
-  --dashboard-max: 84rem;
-}
-
-.dashboard-frame[data-dashboard-density="comfortable"] .dashboard-container {
-  --dashboard-max: 96rem;
-}
-
-.dashboard-frame[data-dashboard-density="spacious"] .dashboard-container {
-  --dashboard-max: 108rem;
-}
-
-.dashboard-frame[data-dashboard-guides="minimal"] [data-dashboard-optional-guide],
-.dashboard-frame[data-dashboard-insights="hidden"] [data-dashboard-insight-panel] {
-  display: none !important;
-}
-
-[data-dashboard-optional-guide],
-[data-dashboard-insight-panel] {
-  scroll-margin-top: 5rem;
-}
-
 .bp-copy-nav,
 .bp-copy-button,
 .bp-copy-status {
@@ -1306,23 +1285,6 @@ select {
 .dashboard-frame {
   background: var(--dash-bg);
   color: var(--dash-text);
-}
-
-.dashboard-route-guide {
-  border-color: var(--dash-border);
-  background: color-mix(in srgb, var(--dash-surface) 84%, var(--dash-bg-soft));
-}
-
-.biz-dashboard-light .dashboard-route-guide {
-  background:
-    linear-gradient(90deg, rgba(13, 148, 136, 0.08), rgba(37, 99, 235, 0.06) 48%, rgba(245, 158, 11, 0.05)),
-    rgba(255, 255, 255, 0.9);
-}
-
-.biz-dashboard-dark .dashboard-route-guide {
-  background:
-    linear-gradient(90deg, rgba(20, 184, 166, 0.11), rgba(37, 99, 235, 0.08) 48%, rgba(245, 158, 11, 0.05)),
-    rgba(13, 24, 32, 0.92);
 }
 
 .biz-card,
