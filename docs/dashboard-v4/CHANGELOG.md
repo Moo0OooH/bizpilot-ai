@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Added final release, CI, Vercel, and Production smoke evidence.
  * - 2026-07-14: Created for Dashboard V4.
  * ============================================================
  -->
@@ -48,3 +49,10 @@
 ### Boundaries
 
 - No application route, feature entitlement, database migration, Production data mutation, automatic sending, booking, payment, or direct social integration was added.
+
+### Release evidence
+
+- Functional release commit `b81f71d870528219a13eae8575e387397c4883e7` was published directly to `main` without an extra branch or PR.
+- GitHub App validation and the Vercel commit status completed successfully.
+- Production public route smoke passed `34/34`; bilingual responsive smoke passed `20/20`; final UI matrix reported zero failures; inactive quote GET passed `1/1`.
+- Authenticated dashboard, real Chrome, managed database, real-data, and paid-pilot gates remain explicitly separate.

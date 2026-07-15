@@ -13,6 +13,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Recorded the pushed release SHA, successful GitHub CI/Vercel rollout, and read-only Production smoke evidence.
  * - 2026-07-14: Consolidated the current public, dashboard, admin, documentation, verification, and external-gate posture.
  * ============================================================
  -->
@@ -76,17 +77,19 @@ Full detail: `docs/dashboard-v4/CURRENT.md` and `docs/dashboard-v4/CHANGELOG.md`
 
 The final verification ledger is maintained in `docs/dashboard-v4/PHASE_PROGRESS.md` and updated only with commands actually run on the final tree.
 
+Functional release commit `b81f71d870528219a13eae8575e387397c4883e7` is on `main`. GitHub App validation completed successfully, Vercel reported success for the same SHA, and `https://bizpilo.com` passed public route `34/34`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive quote GET `1/1`.
+
 Environment fact: the local workspace does not currently contain the approved local dashboard/auth target variables required for authenticated browser smoke. The safe target classifier therefore blocks that test. This is an honest environment gate, not permission to use managed Production for synthetic writes.
 
 No Production database change, migration, cleanup, user deletion, or test-data insertion was performed in this release.
 
-## Open gates in dependency order
+## Gate sequence and current state
 
-1. **Code release:** final lint, typecheck, full unit suite, build, commit, and push.
+1. **Code release — CLOSED:** lint, typecheck, full unit suite, build, push, CI, Vercel status, and Production public read-only smoke passed.
 2. **Safe authenticated QA target:** owner supplies/authorizes a local or disposable synthetic auth target; run desktop/mobile EN/fr-CA dashboard smoke.
 3. **External OAuth decision:** keep Google unavailable or configure Google/Supabase provider and complete owner QA.
 4. **Managed database reconciliation:** read-only migration/status audit, backup confirmation, explicit change plan, then separately authorized apply if needed.
-5. **Production read-only acceptance:** Vercel/domain/redirect/environment and authenticated visual QA using a no-secret procedure.
+5. **Production authenticated read-only acceptance:** public Vercel/domain/read-only smoke passed; protected dashboard visual QA still requires an owner-approved no-secret session procedure.
 6. **Real customer data:** explicit owner approval only after restored-target app/dashboard/RLS proof.
 7. **Paid pilot:** support, payment/manual billing, refund, incident, backup, and rollback rehearsal after the real-data gate.
 

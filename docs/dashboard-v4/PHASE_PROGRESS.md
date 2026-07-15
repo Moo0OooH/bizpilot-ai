@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Closed the push, CI, Vercel, and Production public read-only release phases with exact evidence.
  * - 2026-07-14: Created the V4 phase ledger with completion evidence and explicit external gates.
  * ============================================================
  -->
@@ -33,6 +34,8 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P1 | Documentation V2 consolidation | DONE | Current authority map, source of truth, dashboard contract, phase ledger, changelog, status JSON, and external prompt pack created/updated. |
 | P0 | Lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit: 246/246; Next.js 16.2.4 production build: PASS. |
 | P0 | Local production public route/responsive/UI smoke | DONE | Public: 34/34; bilingual responsive: 20/20; final UI matrix: zero failures. |
+| P0 | Main push, CI, and Vercel rollout | DONE | Functional release SHA `b81f71d`; GitHub App validation success; Vercel status success; local and `origin/main` synchronized. |
+| P0 | Production public read-only acceptance | DONE | `bizpilo.com`: public 34/34; bilingual responsive 20/20; final UI matrix zero failures; inactive quote GET 1/1. |
 | P1 | Real Chrome public interaction smoke | GATED | The runner is available, but this execution environment has no Chrome/Chromium binary. |
 | P0 | Authenticated local/synthetic browser smoke | GATED | Local dashboard/auth target variables are unavailable; Production synthetic writes are prohibited. |
 | P0 | Production authenticated read-only visual QA | GATED | Requires owner-approved credentials/session and no-secret QA procedure. |
@@ -52,6 +55,12 @@ This section is updated only with commands actually run on the final working tre
 - Local production public route smoke: PASS, 34/34.
 - Local bilingual responsive smoke: PASS, 20/20.
 - Local final UI matrix: PASS, zero failures across the recorded route/locale/theme/metadata matrix.
+- GitHub CI: PASS for functional release SHA `b81f71d870528219a13eae8575e387397c4883e7`.
+- Vercel commit deployment status: SUCCESS for functional release SHA `b81f71d870528219a13eae8575e387397c4883e7`.
+- Production public route smoke: PASS, 34/34.
+- Production bilingual responsive smoke: PASS, 20/20.
+- Production final UI matrix: PASS, zero failures.
+- Production inactive quote GET: PASS, 1/1; no submission or data mutation was performed.
 - Real Chrome interaction smoke: GATED because Chrome/Chromium is not installed in the execution environment; no application failure was observed.
 - Safe target classifier: executed; dashboard smoke remained gated because `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, and `DATABASE_URL` were missing.
 - Database/RLS mutation: NOT RUN; Production data unchanged.

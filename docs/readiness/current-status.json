@@ -3,9 +3,9 @@
   "repository": "Moo0OooH/bizpilot-ai",
   "branch": "main",
   "release_version": "2.0.0",
-  "release_commit": "this status file is part of the Dashboard V4 release commit",
+  "release_commit": "b81f71d870528219a13eae8575e387397c4883e7",
   "product_status": "manual_first_smart_intake_and_owner_reviewed_reply_preparation_implemented; real_customer_data_and_paid_pilot_blocked",
-  "public_site": "Website V4 is the current public design and content authority; final release verification is tracked separately",
+  "public_site": "Website V4 is live; Production public 34/34, bilingual responsive 20/20, final UI matrix zero failures, and inactive quote GET 1/1 passed for the Dashboard V4 release",
   "dashboard": "Dashboard V4 task-first simplification implemented; lint, typecheck, 246/246 unit tests, and production build passed; authenticated browser proof requires an approved safe target",
   "founder_admin": "guarded founder oversight implemented; overview simplified and localized; production-sensitive operations remain gated",
   "quote_intake": "implemented with business-specific links, validation, consent, abuse safeguards, inactive-link handling, and manual-first success boundaries",
@@ -15,7 +15,7 @@
   "phone_auth": "not implemented",
   "supabase": "migrations 0001-0024 remain in source; no managed Production audit, apply, or data mutation was performed in Dashboard V4",
   "rls": "local RLS evidence exists historically; restored-target application/dashboard/RLS proof remains gated",
-  "vercel": "production deployment mapping and authenticated read-only Dashboard V4 acceptance pending after push",
+  "vercel": "commit status succeeded for release SHA b81f71d; public Production acceptance passed; authenticated protected-surface acceptance remains gated",
   "backup_restore": "historical DB-level evidence exists; strict restored application/dashboard/RLS proof remains gated",
   "real_customer_data": "blocked pending safe target proof and explicit owner approval",
   "paid_pilot": "blocked pending real-data approval and payment, support, refund, incident, backup, and rollback readiness",
@@ -29,6 +29,12 @@
     "public_route_smoke": "pass: 34/34 against a local production server",
     "responsive_smoke": "pass: 20/20 bilingual routes against a local production server",
     "ui_matrix": "pass: zero failures across the recorded route, locale, theme, metadata, sitemap, robots, and auth matrix",
+    "github_ci": "pass for functional release SHA b81f71d870528219a13eae8575e387397c4883e7",
+    "vercel_status": "success for functional release SHA b81f71d870528219a13eae8575e387397c4883e7",
+    "production_public_route_smoke": "pass: 34/34",
+    "production_responsive_smoke": "pass: 20/20 bilingual routes",
+    "production_ui_matrix": "pass: zero failures",
+    "production_inactive_quote_get": "pass: 1/1 with no submission or data mutation",
     "real_chrome_interaction": "gated: no Chrome or Chromium binary is installed in this execution environment",
     "authenticated_dashboard_smoke": "gated: NEXT_PUBLIC_APP_URL, NEXT_PUBLIC_SUPABASE_URL, and DATABASE_URL are unavailable; target classifier did not authorize a dashboard target"
   },
@@ -36,7 +42,7 @@
     "approved safe authenticated dashboard QA target",
     "Google provider configuration and owner QA if Google login is to be live",
     "read-only-first managed Supabase reconciliation and separately approved apply plan if drift exists",
-    "Vercel/domain/environment/Auth redirect and authenticated Production read-only acceptance",
+    "owner-approved no-secret authenticated Production read-only acceptance procedure",
     "restored-target application/dashboard/RLS proof",
     "explicit owner approval for real customer data",
     "paid-pilot payment/support/refund/incident/rollback rehearsal"
@@ -47,5 +53,5 @@
     "approve any managed Supabase inspection and later change as separate steps",
     "approve real-data and paid-pilot gates only after their evidence prerequisites"
   ],
-  "next_gate": "finish the local code release suite and push main; then run the external prompt pack in dependency order"
+  "next_gate": "authorize a disposable local/synthetic authenticated QA target, then run the external prompt pack in dependency order"
 }

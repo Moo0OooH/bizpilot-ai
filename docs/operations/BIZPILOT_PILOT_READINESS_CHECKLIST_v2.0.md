@@ -13,6 +13,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-14
  * Change Log:
+ * - 2026-07-14: Closed the code-release gate with pushed SHA, CI, Vercel, and Production public read-only evidence.
  * - 2026-07-14: Replaced contradictory historical phase tables with one current, evidence-first V2 gate.
  * ============================================================
  -->
@@ -24,7 +25,7 @@
 | Level | Status | Meaning |
 | --- | --- | --- |
 | Source/build | PASS | Dashboard V4 and Documentation V2 are implemented and locally verified. |
-| Public read-only release | PASS with deployment verification required after push | Public checks may use production without signing in or writing data. |
+| Public read-only release | PASS | SHA `b81f71d` passed GitHub CI, Vercel status, public 34/34, responsive 20/20, UI matrix, and inactive quote GET 1/1. |
 | Authenticated synthetic QA | GATED | Requires an explicitly approved local/Preview synthetic target and credentials. |
 | Real customer data | NOT APPROVED | Requires all real-data gates below and explicit owner approval. |
 | Paid pilot | NOT APPROVED | Requires real-data readiness plus commercial, payment, support, backup, and rollback evidence. |
@@ -38,8 +39,8 @@ The first pilot remains cleaning-focused, manual-first, and owner-reviewed. BizP
 - [x] Lint, typecheck, unit tests, and production build pass on the release tree.
 - [x] Navigation and route contracts add no unapproved route.
 - [x] No production DB mutation or real/test customer data was created during the release.
-- [ ] Commit is pushed and GitHub CI passes for the pushed SHA.
-- [ ] Vercel Production is Ready for the pushed SHA and public smoke passes.
+- [x] Functional release commit `b81f71d870528219a13eae8575e387397c4883e7` is pushed and GitHub CI passes.
+- [x] Vercel status is successful and Production public read-only smoke passes; protected authenticated acceptance remains Gate B/D work.
 
 ## Gate B — authenticated synthetic acceptance
 
