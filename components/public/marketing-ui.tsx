@@ -644,14 +644,18 @@ export function MarketingFooter({
 }: Readonly<{ copy?: MarketingNavCopy; language?: SupportedLanguage | undefined }>) {
   const footerLabels = language === "fr-CA"
     ? {
-        account: "Compte",
+        getStarted: "Commencer",
         legal: "Confiance et aspects légaux",
+        navigation: "Navigation du pied de page",
+        note: "La validation humaine reste toujours dans la boucle.",
         product: "Produit",
         resources: "Ressources",
       }
     : {
-        account: "Account",
+        getStarted: "Get started",
         legal: "Trust and legal",
+        navigation: "Footer navigation",
+        note: "Human review always stays in the loop.",
         product: "Product",
         resources: "Resources",
       };
@@ -659,11 +663,13 @@ export function MarketingFooter({
     { label: footerLabels.product, links: [
       { href: "/features", label: copy.features },
       { href: "/#how-it-works", label: copy.flow },
+    ] },
+    { label: footerLabels.getStarted, links: [
       { href: "/demo", label: copy.demo },
       { href: "/pricing", label: copy.pricing },
+      { href: "/pilot", label: copy.pilot },
     ] },
     { label: footerLabels.resources, links: [
-      { href: "/pilot", label: copy.pilot },
       { href: "/faq", label: copy.faq },
       { href: "/trust", label: copy.trust },
     ] },
@@ -672,30 +678,36 @@ export function MarketingFooter({
       { href: "/security", label: copy.security },
       { href: "/terms", label: copy.terms },
     ] },
-    { label: footerLabels.account, links: [
-      { href: "/auth/sign-in", label: copy.signIn },
-    ] },
   ];
 
   return (
-    <footer className="v3-site-footer border-t py-12">
-      <div className="v3-container grid gap-10 text-[14px] leading-relaxed lg:grid-cols-[minmax(0,1.2fr)_minmax(0,2fr)]">
-        <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" style={{ color: marketingTone.soft }}>
+    <footer className="v3-site-footer border-t">
+      <div className="v3-container">
+        <div className="v3-footer-layout">
+          <div className="v3-footer-brand">
+            <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
+            <p>{copy.brandSubtitle}</p>
+          </div>
+          <nav aria-label={footerLabels.navigation} className="v3-footer-nav">
           {groups.map((group) => (
-            <div className="grid content-start gap-1" key={group.label}>
-              <p className="mb-1 font-black uppercase tracking-[0.12em]" style={{ color: marketingTone.text }}>{group.label}</p>
+            <div className="v3-footer-group" key={group.label}>
+              <p>{group.label}</p>
               {group.links.map((link) => (
-                <Link className="inline-flex min-h-11 items-center rounded-[8px] py-1 hover:opacity-80 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]" href={publicHref(link.href, language)} key={`${group.label}-${link.label}`}>
+                <Link className="v3-footer-link" href={publicHref(link.href, language)} key={`${group.label}-${link.label}`}>
                   {link.label}
                 </Link>
               ))}
             </div>
           ))}
+          </nav>
         </div>
-        <span className="font-medium lg:col-span-2" style={{ color: marketingTone.soft }}>
-          {copy.copyright}
-        </span>
+        <div className="v3-footer-bottom">
+          <span>{copy.copyright}</span>
+          <span className="v3-footer-note">
+            <MarketingIcon name="check" />
+            {footerLabels.note}
+          </span>
+        </div>
       </div>
     </footer>
   );

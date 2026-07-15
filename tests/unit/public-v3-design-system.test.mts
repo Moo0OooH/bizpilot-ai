@@ -80,6 +80,28 @@ describe("Website V3 design-system foundation", () => {
     assert.equal(marketingUi.includes('href: "/faster-quote-replies"'), false);
   });
 
+  it("keeps the footer task-based without a redundant account-only column", () => {
+    const footer = marketingUi.slice(
+      marketingUi.indexOf("export function MarketingFooter"),
+      marketingUi.indexOf("export function MarketingProductFrame"),
+    );
+
+    for (const required of [
+      "v3-footer-layout",
+      "v3-footer-nav",
+      "v3-footer-link",
+      "v3-footer-bottom",
+      'getStarted: "Get started"',
+      'navigation: "Footer navigation"',
+    ]) {
+      assert.equal(footer.includes(required), true, required);
+    }
+
+    assert.equal(footer.includes('/auth/sign-in'), false);
+    assert.equal(footer.includes('account: "Account"'), false);
+    assert.equal(globals.includes(".v3-footer-nav"), true);
+  });
+
   it("keeps keyboard and motion accessibility in the shared public shell", () => {
     assert.equal(marketingUi.includes('href="#main-content"'), true);
     assert.equal(marketingUi.includes('"Aller au contenu"'), true);
