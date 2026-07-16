@@ -12,7 +12,7 @@
  * Created: 2026-06-18
  * Last Updated: 2026-07-16
  * Change Log:
- * - 2026-07-16: Added a focused legal shell, raised microcopy sizing, and aligned every pilot link with the copy-only request anchor.
+ * - 2026-07-16: Added a focused legal shell, enforced the 14px public microcopy floor, and aligned every pilot link with the copy-only request anchor.
  * - 2026-07-13: Removed unused V2 hero and next-step primitives after the final V3 route migration.
  * - 2026-07-13: Darkened blue badge text in light mode while preserving the dark-theme token for WCAG AA contrast.
  * - 2026-07-13: Allowed shared cards to expose stable section anchors for consolidated V3 routes.
@@ -436,7 +436,7 @@ export function MarketingBrand({
           BizPilot AI
         </span>
         <span
-          className="bp-copy-nav hidden max-w-[15rem] whitespace-normal break-words text-[13px] font-bold uppercase leading-[1.3] min-[1440px]:block"
+          className="bp-copy-nav hidden max-w-[15rem] whitespace-normal break-words text-[14px] font-bold uppercase leading-[1.3] min-[1440px]:block"
           style={{ color: marketingTone.muted, maxWidth: "14rem", whiteSpace: "normal" }}
         >
           {subtitle}
@@ -560,7 +560,7 @@ export function MarketingHeader({
                   }}
                 >
                   {group.label}
-                  <span aria-hidden className="text-[12px]">▾</span>
+                  <span aria-hidden className="text-[14px]">▾</span>
                 </summary>
                 <div
                   className="absolute left-0 top-full z-50 mt-2 grid min-w-[16rem] gap-1 rounded-[16px] border p-2 shadow-xl"
@@ -621,7 +621,7 @@ export function MarketingHeader({
               })}
               {navGroups.map((group) => (
                 <div className="mt-2 grid gap-1 border-t pt-3" key={group.label} style={{ borderColor: marketingTone.border }}>
-                  <p className="px-3 text-[13px] font-black uppercase tracking-[0.1em]" style={{ color: marketingTone.muted }}>
+                  <p className="px-3 text-[14px] font-black uppercase tracking-[0.1em]" style={{ color: marketingTone.muted }}>
                     {group.label}
                   </p>
                   {group.items.map((item) => (
@@ -803,7 +803,7 @@ export function MarketingSectionTitle({
   return (
     <div className={align === "center" ? "mx-auto max-w-[980px] text-center" : "max-w-[760px]"}>
       {eyebrow ? (
-        <p className="text-[13px] font-black uppercase" style={{ color: marketingTone.teal }}>
+        <p className="text-[14px] font-black uppercase" style={{ color: marketingTone.teal }}>
           {eyebrow}
         </p>
       ) : null}

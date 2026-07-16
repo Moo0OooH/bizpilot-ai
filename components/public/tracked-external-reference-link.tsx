@@ -11,8 +11,9 @@
  * - lib/public-events.ts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Raised legal-reference descriptions and external-link labels to the 14px public microcopy floor.
  * - 2026-07-05: Added complete source header metadata and explicit external-link label.
  * - 2026-06-20: Created tracked external reference link card.
  * ============================================================
@@ -85,13 +86,13 @@ export function TrackedExternalReferenceLink({
         </span>
       </span>
       <span
-        className="text-[13px] leading-6"
+        className="text-[14px] leading-6"
         style={{ color: "var(--text-default)" }}
       >
         {description}
       </span>
       <span
-        className="text-[11px] font-black uppercase tracking-[0.08em]"
+        className="text-[14px] font-black uppercase tracking-[0.08em]"
         style={{ color: "var(--text-muted)" }}
       >
         {newTabLabel}

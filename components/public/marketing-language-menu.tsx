@@ -12,8 +12,9 @@
  * - lib/i18n/public-href.ts
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Raised trigger and option labels to the 14px public microcopy floor.
  * - 2026-07-13: Replaced the timing-sensitive Server Action form with deterministic locale links that preserve the live route, query, and hash.
  * - 2026-06-19: Added compact EN/FR locale control for public header polish.
  * ============================================================
@@ -221,7 +222,7 @@ export function MarketingLanguageMenu({
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={`${label}: ${languageNativeLabels[language]}`}
-        className={`inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-[12px] border px-3 text-[12px] font-black shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] ${buttonClassName}`}
+        className={`inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-[12px] border px-3 text-[14px] font-black shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)] ${buttonClassName}`}
         onClick={toggleMenu}
         onKeyDown={handleTriggerKeyDown}
         ref={buttonRef}
@@ -239,7 +240,7 @@ export function MarketingLanguageMenu({
       {open ? (
         <div
           aria-label={label}
-          className="absolute right-0 top-full z-50 mt-2 grid w-60 gap-1 rounded-[12px] border p-2 text-[13px] font-black shadow-lg"
+          className="absolute right-0 top-full z-50 mt-2 grid w-60 gap-1 rounded-[12px] border p-2 text-[14px] font-black shadow-lg"
           id={menuId}
           role="menu"
           style={{
@@ -277,7 +278,7 @@ export function MarketingLanguageMenu({
                 tabIndex={-1}
               >
                 <span
-                  className="inline-flex h-8 min-w-8 items-center justify-center rounded-[9px] text-[11px]"
+                  className="inline-flex h-8 min-w-8 items-center justify-center rounded-[9px] text-[14px]"
                   style={{
                     backgroundColor: selected
                       ? "var(--primary)"
