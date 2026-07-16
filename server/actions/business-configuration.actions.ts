@@ -10,8 +10,9 @@
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added save-and-preview intent so owner previews synchronize and repair the public quote page before navigation.
  * - 2026-07-13: Removed the obsolete public locale Server Action after public switching moved to deterministic locale URLs.
  * - 2026-07-11: Added per-language custom quote-field translation payloads for bilingual workspace saves.
  * - 2026-06-16: Rejected forward-only privacy mode until the full intake/storage behavior exists.
@@ -282,6 +283,8 @@ function redirectWithConfigurationError(error: unknown): never {
       value === "Invalid privacy mode." ||
       value === "Invalid preferred language." ||
       value === "Lead retention must be between 1 and 3650 days." ||
+      value ===
+        "Logo must be a secure HTTPS URL or a PNG, JPG, or WebP upload under 2 MB." ||
       value === "You do not have permission to manage this business." ||
       value.endsWith(" must be a valid hex color."),
     code: "CONFIGURATION_ERROR",
@@ -463,8 +466,13 @@ export async function saveBusinessConfigurationAction(
   const user = await getCurrentUser();
   if (!user) redirect("/auth/sign-in");
 
+  const shouldPreview = formData.get("submitIntent") === "preview";
+  let savedBusinessSlug = "";
+  let savedLanguage: SupportedLanguage = "en";
+
   try {
     const businessSlug = readRequiredFormValue(formData, "businessSlug");
+    savedBusinessSlug = businessSlug;
     const customTemplateName = readOptionalFormValue(
       formData,
       "customTemplateName",
@@ -478,6 +486,7 @@ export async function saveBusinessConfigurationAction(
     const preferredLanguage = readSupportedLanguageOrThrow(
       readRequiredFormValue(formData, "preferredLanguage"),
     );
+    savedLanguage = preferredLanguage;
     const faqs = readFaqs(faqText);
     if (faqText && faqs.length === 0) {
       throw new Error("FAQ entries must include both a question and an answer.");
@@ -519,6 +528,15 @@ export async function saveBusinessConfigurationAction(
 
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/configuration");
+
+  if (shouldPreview) {
+    const languageQuery =
+      savedLanguage === "en"
+        ? "?preview=dashboard"
+        : `?preview=dashboard&language=${encodeURIComponent(savedLanguage)}`;
+    redirect(`/quote/${savedBusinessSlug}${languageQuery}`);
+  }
+
   redirect(
     "/dashboard/configuration?notice=Business%20configuration%20saved.",
   );

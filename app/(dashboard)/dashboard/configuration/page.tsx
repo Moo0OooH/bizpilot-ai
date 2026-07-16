@@ -10,8 +10,9 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Simplified Quote Setup into guided tasks, added local branding and FAQ knowledge editors, exposed the full unique business link, and made preview repair derived public records before opening.
  * - 2026-07-05: Added a compact Quote Setup readiness command strip for first open setup action scanability.
  * - 2026-07-05: Clamped Quote Setup readiness progress to a safe 0-100 display range.
  * - 2026-07-05: Highlighted the first open Quote Setup readiness item for final owner acceptance polish.
@@ -40,8 +41,11 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { BrandingEditor } from "@/components/dashboard/branding-editor";
 import { ConfigurationTabs } from "@/components/dashboard/configuration-tabs";
+import { CopyButton } from "@/components/dashboard/copy-button";
 import { CustomQuoteFieldBuilder } from "@/components/dashboard/custom-quote-field-builder";
+import { FaqKnowledgeEditor } from "@/components/dashboard/faq-knowledge-editor";
 import { FlashMessage } from "@/components/dashboard/flash-message";
 import { QuoteFieldTypeControl } from "@/components/dashboard/quote-field-type-control";
 import {
@@ -57,6 +61,7 @@ import {
   INTERFACE_LANGUAGE_COOKIE,
   resolveWorkspaceInterfaceLanguage,
 } from "@/lib/i18n/language";
+import { getPublicSiteOrigin } from "@/lib/seo";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
@@ -220,6 +225,8 @@ export default async function DashboardPage({
       item.taskKey as keyof typeof dashboardCopy.readinessTasks
     ] ?? item.label;
   const logoUrl = configuration.branding?.logo_url ?? "";
+  const quotePath = `/quote/${activeBusiness.slug}`;
+  const quoteUrl = new URL(quotePath, getPublicSiteOrigin()).toString();
   const visibleTemplateFieldCount = cleaningTemplate.fields.filter(
     (field) => !field.is_hidden,
   ).length;
@@ -280,15 +287,18 @@ export default async function DashboardPage({
             </p>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row md:justify-end">
-            <Link className={buttonClass} href="#setup-checklist">
+            <Link className={buttonClass} href="#configuration-overview">
               {configCopy.readiness.reviewChecklist}
             </Link>
-            <Link
+            <button
               className={buttonClass}
-              href={`/quote/${activeBusiness.slug}`}
+              form="business-configuration-form"
+              name="submitIntent"
+              type="submit"
+              value="preview"
             >
               {configCopy.overview.previewPublicQuote}
-            </Link>
+            </button>
           </div>
         </section>
 
@@ -315,12 +325,13 @@ export default async function DashboardPage({
           />
           <input name="preferredLanguage" type="hidden" value={activeLanguage} />
 
-          <section className="grid items-start gap-4 2xl:grid-cols-[minmax(0,1fr)_320px]">
+          <section>
             <div className="min-w-0">
               <ConfigurationTabs
                 ariaLabel={configurationTabs.ariaLabel}
                 sections={[
                   { id: "configuration-overview", label: configurationTabs.overview },
+                  { id: "public-link", label: configurationTabs.link },
                   { id: "services-areas", label: configurationTabs.services },
                   { id: "cleaning-template-fields", label: configurationTabs.fields },
                   { id: "branding", label: configurationTabs.branding },
@@ -476,13 +487,70 @@ export default async function DashboardPage({
                       );
                     })}
                   </div>
-                  <Link
+                  <button
                     className={`${buttonClass} mt-4 w-full`}
-                    href={`/quote/${activeBusiness.slug}`}
+                    name="submitIntent"
+                    type="submit"
+                    value="preview"
                   >
                     {configCopy.overview.previewPublicQuote}
-                  </Link>
+                  </button>
                 </div>
+              </div>
+            </ConfigurationPanel>
+
+            <ConfigurationPanel
+              description={configCopy.publicPage.description}
+              id="public-link"
+              summary={configCopy.publicPage.uniqueLinkDescription}
+              title={configCopy.publicPage.uniqueLinkTitle}
+            >
+              <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_22rem]">
+                <div className="min-w-0 rounded-xl border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-4">
+                  <p className="text-[12px] font-black uppercase tracking-[0.08em] text-[var(--dash-primary-strong)]">
+                    {configCopy.publicPage.publicQuoteLink}
+                  </p>
+                  <p className="mt-2 break-all rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-3 font-mono text-[13px] font-bold text-[var(--dash-text)]">
+                    {quoteUrl}
+                  </p>
+                  <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                    <CopyButton
+                      className="min-h-10"
+                      label={configCopy.publicPage.copyLink}
+                      value={quoteUrl}
+                    />
+                    <button
+                      className="biz-button-primary min-h-10 rounded-lg px-4 text-[12px] font-bold"
+                      name="submitIntent"
+                      type="submit"
+                      value="preview"
+                    >
+                      {configCopy.bottomBar.openPublicQuoteLink}
+                    </button>
+                  </div>
+                  <p className="mt-3 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                    {configCopy.publicPage.saveBeforePreview}
+                  </p>
+                </div>
+
+                <aside className="rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4">
+                  <h3 className="text-[14px] font-black text-[var(--dash-text)]">
+                    {configCopy.publicPage.placementTitle}
+                  </h3>
+                  <ol className="mt-3 grid gap-2.5">
+                    {configCopy.publicPage.placements.map((placement, index) => (
+                      <li
+                        className="grid grid-cols-[1.5rem_minmax(0,1fr)] gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]"
+                        key={placement}
+                      >
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--dash-primary)] text-[10px] font-black text-white">
+                          {index + 1}
+                        </span>
+                        <span>{placement}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </aside>
               </div>
             </ConfigurationPanel>
 
@@ -496,84 +564,13 @@ export default async function DashboardPage({
               }
               title={configCopy.branding.title}
             >
-              <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_16rem]">
-                <div className="grid gap-2.5 sm:grid-cols-3">
-                  <label className={`${labelClass} sm:col-span-3`}>
-                    {configCopy.branding.logoUrl}
-                    <input
-                      className={inputClass}
-                      defaultValue={logoUrl}
-                      name="logoUrl"
-                      type="url"
-                    />
-                  </label>
-                  <label className={labelClass}>
-                    {configCopy.branding.primaryColor}
-                    <input
-                      className="mt-1 h-8 w-full rounded-md border border-[var(--dash-border-strong)] px-2 py-1"
-                      defaultValue={primaryColor}
-                      name="primaryColor"
-                      type="color"
-                    />
-                  </label>
-                  <label className={labelClass}>
-                    {configCopy.branding.accentColor}
-                    <input
-                      className="mt-1 h-8 w-full rounded-md border border-[var(--dash-border-strong)] px-2 py-1"
-                      defaultValue={accentColor}
-                      name="accentColor"
-                      type="color"
-                    />
-                  </label>
-                  <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:col-span-3">
-                    <p className="text-xs font-medium text-[var(--dash-text-secondary)]">
-                      {configCopy.branding.whereColorsApply}
-                    </p>
-                    <div className="mt-2 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-preview-bg)] p-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-xs font-semibold text-[#F5F7FA]">
-                          {configCopy.branding.publicQuoteButton}
-                        </span>
-                        <span
-                          className="rounded-md px-3 py-1.5 text-xs font-semibold text-white"
-                          style={{ backgroundColor: primaryColor }}
-                        >
-                          {configCopy.branding.submitQuoteRequest}
-                        </span>
-                      </div>
-                      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-[var(--dash-surface)]/10">
-                        <div
-                          className="h-full rounded-full"
-                          style={{ backgroundColor: accentColor, width: "62%" }}
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-2 flex items-center gap-2 text-xs text-[var(--dash-text-secondary)]">
-                      <span
-                        className="h-3 w-3 rounded-full border border-[var(--dash-border)]"
-                        style={{ backgroundColor: accentColor }}
-                      />
-                      {configCopy.branding.accentAppears}
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="flex min-h-24 items-center justify-center overflow-hidden rounded-md border bg-[var(--dash-surface-muted)]"
-                  style={{ borderColor: accentColor }}
-                >
-                  {logoUrl ? (
-                    <LogoPreviewImage
-                      alt={configCopy.branding.logoPreviewAlt}
-                      className="h-full max-h-24 w-full object-contain p-3"
-                      logoUrl={logoUrl}
-                    />
-                  ) : (
-                    <div className="px-3 text-center text-xs text-[var(--dash-text-muted)]">
-                      {configCopy.branding.logoPreview}
-                    </div>
-                  )}
-                </div>
-              </div>
+              <BrandingEditor
+                businessName={activeBusiness.name}
+                copy={configCopy.branding}
+                initialAccentColor={accentColor}
+                initialLogoUrl={logoUrl}
+                initialPrimaryColor={primaryColor}
+              />
             </ConfigurationPanel>
 
             <ConfigurationPanel
@@ -769,21 +766,16 @@ export default async function DashboardPage({
             <ConfigurationPanel
               description={configCopy.faq.description}
               id="faq"
-              summary={configCopy.faq.summary(configuration.faqs.length)}
+              summary={configCopy.faq.summary(
+                configuration.faqs.length || configCopy.faq.examples.length,
+              )}
               title={configCopy.faq.title}
             >
-              <label className={labelClass}>
-                {configCopy.faq.label}
-                <textarea
-                  className={`${inputClass} h-24 min-h-24 py-2`}
-                  defaultValue={faqsToText(configuration.faqs)}
-                  name="faqs"
-                  placeholder={configCopy.faq.placeholder}
-                />
-                <span className="mt-1 block text-xs leading-4 text-[var(--dash-text-muted)]">
-                  {configCopy.faq.help}
-                </span>
-              </label>
+              <FaqKnowledgeEditor
+                copy={configCopy.faq}
+                examples={configCopy.faq.examples}
+                initialValue={faqsToText(configuration.faqs)}
+              />
             </ConfigurationPanel>
 
             <ConfigurationPanel
@@ -866,98 +858,6 @@ export default async function DashboardPage({
 
               </ConfigurationTabs>
             </div>
-
-            <aside className="space-y-3 2xl:sticky 2xl:top-20">
-              <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
-                <p className="text-[18px] font-extrabold text-[var(--dash-text)]">
-                  {configCopy.side.workspaceReadiness}
-                </p>
-                <p className="mt-1 text-xs text-[var(--dash-text-muted)]">
-                  {configCopy.overview.summary(readiness.completed, readiness.total)}
-                </p>
-                <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--dash-surface-muted)]">
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      backgroundColor: "var(--dash-primary)",
-                      width: `${readinessPercent}%`,
-                    }}
-                  />
-                </div>
-                <div className="mt-3 grid gap-2">
-                  {readiness.items.slice(0, 6).map((item) => (
-                    <div
-                      className="flex items-center justify-between gap-3 rounded-md bg-[var(--dash-surface-muted)] px-3 py-2 text-xs"
-                      key={item.label}
-                    >
-                      <span className="truncate text-[var(--dash-text-secondary)]">
-                        {readinessLabel(item)}
-                      </span>
-                      <span
-                        className={
-                          item.complete
-                            ? "font-medium text-[var(--dash-success-strong)]"
-                            : "font-medium text-[var(--dash-warning-strong)]"
-                        }
-                      >
-                        {item.complete ? configCopy.overview.done : configCopy.overview.open}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
-                <p className="text-[18px] font-extrabold text-[var(--dash-text)]">
-                  {configCopy.side.brandingPreview}
-                </p>
-                <div className="mt-3 flex h-24 items-center justify-center overflow-hidden rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-surface-muted)]">
-                  {logoUrl ? (
-                    <LogoPreviewImage
-                      alt={configCopy.branding.logoPreviewAlt}
-                      className="h-full max-h-24 w-full object-contain p-3"
-                      logoUrl={logoUrl}
-                    />
-                  ) : (
-                    <span
-                      className="flex h-10 w-10 items-center justify-center rounded-lg text-xs font-semibold text-white"
-                      style={{ backgroundColor: primaryColor }}
-                    >
-                      BP
-                    </span>
-                  )}
-                </div>
-                <div className="mt-3 flex items-center gap-2 text-xs text-[var(--dash-text-muted)]">
-                  <span
-                    className="h-5 w-5 rounded-full border border-[var(--dash-border)]"
-                    style={{ backgroundColor: primaryColor }}
-                  />
-                  <span
-                    className="h-5 w-5 rounded-full border border-[var(--dash-border)]"
-                    style={{ backgroundColor: accentColor }}
-                  />
-                  {configCopy.side.publicQuoteColors}
-                </div>
-              </section>
-
-              <section className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm">
-                <p className="text-[18px] font-extrabold text-[var(--dash-text)]">
-                  {configCopy.side.publicQuoteLink}
-                </p>
-                <p className="mt-1 text-xs leading-5 text-[var(--dash-text-muted)]">
-                  {configCopy.side.saveThenPreview}
-                </p>
-                <p className="mt-3 break-all rounded-md bg-[var(--dash-surface-muted)] px-3 py-2 text-sm font-semibold text-[var(--dash-text)]">
-                  /quote/{activeBusiness.slug}
-                </p>
-                <Link
-                  className={`${buttonClass} mt-3 w-full`}
-                  href={`/quote/${activeBusiness.slug}`}
-                >
-                  {configCopy.publicPage.previewPublicPage}
-                </Link>
-              </section>
-            </aside>
           </section>
 
         </form>
@@ -968,12 +868,15 @@ export default async function DashboardPage({
             {configCopy.bottomBar.text}
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Link
+            <button
               className="biz-button-secondary inline-flex h-8 items-center justify-center rounded-lg border px-3 text-xs font-bold"
-              href={`/quote/${activeBusiness.slug}`}
+              form="business-configuration-form"
+              name="submitIntent"
+              type="submit"
+              value="preview"
             >
               {configCopy.bottomBar.openPublicQuoteLink}
-            </Link>
+            </button>
             <button
               className="biz-button-primary h-8 rounded-lg px-4 text-xs font-bold"
               form="business-configuration-form"

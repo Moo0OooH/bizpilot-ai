@@ -10,8 +10,9 @@
  * - server/policies/business-membership.policy.ts
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Validated bounded local logo data URLs and secure remote logo URLs before persisting public branding.
  * - 2026-07-11: Preserved bilingual custom quote-field translations while syncing template and public intake updates.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-05: Created Phase 3 business configuration service and readiness scoring.
@@ -100,11 +101,42 @@ export type BusinessConfigurationInput = Readonly<{
 }>;
 
 const colorPattern = /^#[0-9a-fA-F]{6}$/;
+const logoDataUrlPattern = /^data:image\/(?:jpeg|png|webp);base64,[a-zA-Z0-9+/=]+$/;
+const maxLogoDataUrlLength = 360_000;
+const maxRemoteLogoUrlLength = 2_048;
 const slugPattern = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 function cleanOptionalText(value: string | undefined): string | undefined {
   const trimmed = value?.trim();
   return trimmed && trimmed.length > 0 ? trimmed : undefined;
+}
+
+function normalizeLogoUrl(value: string | undefined): string | undefined {
+  const logoUrl = cleanOptionalText(value);
+  if (!logoUrl) return undefined;
+
+  if (
+    logoUrl.length <= maxLogoDataUrlLength &&
+    logoDataUrlPattern.test(logoUrl)
+  ) {
+    return logoUrl;
+  }
+
+  try {
+    const parsed = new URL(logoUrl);
+    if (
+      parsed.protocol === "https:" &&
+      logoUrl.length <= maxRemoteLogoUrlLength
+    ) {
+      return parsed.toString();
+    }
+  } catch {
+    // The shared validation error below intentionally hides URL parser details.
+  }
+
+  throw new Error(
+    "Logo must be a secure HTTPS URL or a PNG, JPG, or WebP upload under 2 MB.",
+  );
 }
 
 function assertHexColor(label: string, value: string): void {
@@ -329,7 +361,7 @@ export async function saveBusinessConfiguration(
     userId: input.userId,
   });
 
-  const logoUrl = cleanOptionalText(input.logoUrl);
+  const logoUrl = normalizeLogoUrl(input.logoUrl);
   const privacyContactEmail = cleanOptionalText(input.privacyContactEmail);
   const customTemplateName = cleanOptionalText(input.customTemplateName);
   const existingFieldOverrides = await getBusinessTemplateFieldOverrides({

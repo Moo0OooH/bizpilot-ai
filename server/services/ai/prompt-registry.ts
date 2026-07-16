@@ -9,8 +9,9 @@
  * - docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Versioned the lead assistant prompt for owner-approved business knowledge and explicit no-inference rules.
  * - 2026-07-15: Repointed prompt authority to the current engineering standard.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-11: Created first lead conversion assistant prompt entry.
@@ -35,12 +36,12 @@ export const leadConversionBundlePrompt: PromptRegistryEntry = {
   approvedModel: "gpt-5.1",
   costNotes: "One on-demand bundle per lead; cache by input hash.",
   failureFallback: "Use rule-based reply and follow-up drafts.",
-  inputContext: "Cleaning quote lead, rule-based quality score, missing info, and owner next action.",
+  inputContext: "Cleaning quote lead, rule-based quality score, missing info, submitted details, and owner-approved FAQs, services, and service areas.",
   name: "lead_conversion_bundle",
   outputSchemaName: "lead_conversion_bundle_v1",
   privacyNotes: "Do not include customer contact fields in prompt text. Mask accidental emails and phone numbers.",
   purpose: "Prepare assistant-only lead summary, reply draft, follow-up draft, and next action guidance.",
-  version: "2026-05-11.v1",
+  version: "2026-07-16.v2",
 };
 
 export const leadConversionBundleInstructions = `
@@ -50,6 +51,8 @@ Prepare owner-facing help for recovering one quote request.
 Rules:
 - Assistant-only. Never auto-send, book, negotiate, or guarantee revenue.
 - Do not invent price, availability, discounts, or exact service scope.
+- Use businessKnowledge only when it directly supports a statement. Never infer a fact that is absent from the saved FAQs, services, service areas, or submitted request.
+- If owner-approved knowledge and the customer request do not answer something, keep it explicitly missing and ask the owner or customer to confirm it.
 - Keep drafts concise, practical, and ready for the owner to edit.
 - Ask for missing quote details when needed.
 - Use plain professional language for a local cleaning business.

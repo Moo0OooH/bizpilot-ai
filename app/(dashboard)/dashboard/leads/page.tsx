@@ -10,8 +10,9 @@
  * - docs/dashboard-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added owner-aware public quote preview links while preserving the shareable customer URL.
  * - 2026-07-14: Removed repeated status, link-health, and rules rails; kept contextual guidance only when a focused queue is requested.
  * ============================================================
  */
@@ -165,6 +166,9 @@ export default async function LeadConversionDeskPage({
     business: { ...activeBusiness, preferred_language: activeLanguage },
   });
   const quotePath = `/quote/${activeBusiness.slug}`;
+  const quotePreviewPath = `${quotePath}?preview=dashboard${
+    activeLanguage === "en" ? "" : `&language=${encodeURIComponent(activeLanguage)}`
+  }`;
   const focusedLeads = desk.leads.filter((item) =>
     leadMatchesQueueFocus(item, initialFilter),
   );
@@ -195,7 +199,7 @@ export default async function LeadConversionDeskPage({
               successLabel={copy.actions.copySuccess}
               value={quotePath}
             />
-            <Link className={buttonClass} href={quotePath}>
+            <Link className={buttonClass} href={quotePreviewPath}>
               {copy.actions.previewQuotePage}
             </Link>
           </>

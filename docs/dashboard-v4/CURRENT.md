@@ -12,8 +12,9 @@
  * - docs/dashboard-v4/PHASE_PROGRESS.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.1 guided Quote Setup, safe local branding, approved AI knowledge, unique-link workflow, and owner preview recovery contract.
  * - 2026-07-14: Established the task-first Dashboard V4 contract and superseded the V3/P12–P28 dashboard reports.
  * ============================================================
  -->
@@ -22,7 +23,7 @@
 
 ## Outcome
 
-Dashboard V4 is a simplification and reliability release, not a new product expansion. It removes repeated guidance, decorative analytics, hidden mobile destinations, and no-op controls while preserving every safe owner workflow.
+Dashboard V4.1 completes the simplification and reliability release with a guided Quote Setup workflow. It removes repeated guidance, decorative analytics, hidden mobile destinations, and no-op controls while making the customer quote link, branding, questions, and AI knowledge understandable without technical setup knowledge.
 
 ## Jobs to be done
 
@@ -31,7 +32,7 @@ Dashboard V4 is a simplification and reliability release, not a new product expa
 | Overview | Tell the owner what to do next and show the shortest path to the lead queue. |
 | Leads | Search, filter, prioritize, and open customer requests. |
 | Lead Detail | Understand the request, fill information gaps, review/edit a draft, and record manual progress. |
-| Quote Setup | Configure what customers are asked and when the public link is ready to share. |
+| Quote Setup | Configure services, questions, branding, approved FAQ knowledge, privacy, and the unique customer link through progressive tasks. |
 | Business Profile | Maintain business identity and contact context. |
 | Settings | Manage personal preferences, session visibility, audit/history, and lifecycle controls. |
 | Guide | Explain the manual operating model as secondary help. |
@@ -43,6 +44,8 @@ Primary owner navigation is exactly five destinations: Overview, Leads, Quote Se
 
 No new application route was added in this release. `/founder` now performs guarded role checks and sends an authorized founder directly to `/admin`.
 
+Quote Setup uses one horizontal task bar with seven mounted panels: Overview, Public Link, Services, Form Questions, Branding, AI Instructions, and Privacy. The panel system keeps every required form value mounted while showing only one owner task at a time. It must not reintroduce a nested left sidebar.
+
 ## Interaction rules
 
 - One visible route heading; utility chrome contains no repeated title/subtitle.
@@ -50,6 +53,12 @@ No new application route was added in this release. `/founder` now performs guar
 - Contextual help appears only when needed or inside a disclosure.
 - Mobile navigation includes Settings and respects safe-area padding.
 - Menus stay within the viewport; pages avoid nested-scroll cards.
+- The desktop Actions menu opens into the content column and never beneath the fixed sidebar.
+- Add Field starts empty, offers cleaning-specific starters, previews customer-facing output, and hides priority/key controls under Advanced settings.
+- Branding accepts a bounded PNG/JPG/WebP selected from the owner device or a secure HTTPS URL, provides a live preview, and applies the saved logo/colors to the public quote page.
+- The full unique business URL is visible and copyable. `Save & preview` first saves owner choices and synchronizes the derived public link, consent version, and intake form.
+- An owner preview that is not ready returns to Quote Setup with an actionable explanation; anonymous visitors still receive a tenant-safe unavailable state and a marketing-site return.
+- Saved FAQs, services, and service areas are the only approved business-knowledge inputs added to AI draft context. Missing facts stay missing and every draft remains owner-reviewed.
 - Owner-facing controls either work or are absent. Editing the AI draft is real local editing; non-persisted owner scratchpads are removed.
 - The manual workflow and attribution/routing detail remain available inside disclosures.
 - AI is bounded draft assistance. No automatic send, booking, price, availability, or autonomous decision is implied.
@@ -68,10 +77,10 @@ English and Canadian French use the central `getBizPilotCopy` dictionary. Route/
 
 ## Data and security posture
 
-Dashboard V4 changes presentation and safe local editing only. It does not apply a migration, mutate Production data, enable an integration, open real-customer-data access, or approve a paid pilot. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
+Dashboard V4.1 applies presentation, validation, and existing-record synchronization only. It adds no migration, external upload service, autonomous integration, real-customer-data access, or paid-pilot approval. Local logos are resized in the browser and stored only after the authenticated owner submits Quote Setup. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
 
 ## Verification status
 
-Source contracts, localization shape, TypeScript, lint, unit tests, and production build are required for completion. Authenticated browser smoke additionally requires an approved local/synthetic auth target; absence of that target must be reported as an environment gate rather than silently skipped or run against Production.
+Source contracts, localization shape, TypeScript, lint, unit tests, production build, and bilingual public/responsive smoke are required for completion. Authenticated browser smoke additionally requires an approved local/synthetic auth target; absence of that target must be reported as an environment gate rather than silently skipped or run against Production.
 
 See `PHASE_PROGRESS.md` for exact completion evidence and remaining gates.

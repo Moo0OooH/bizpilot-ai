@@ -10,8 +10,9 @@
  * - server/services/auth.service.ts
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Supplied a complete customer-ready quote URL to dashboard copy controls.
  * - 2026-06-19: Resolved theme preference from cookies for hydration-safe dashboard rendering.
  * - 2026-06-20: Made the workspace-access recovery shell short-height safe with svh and natural overflow.
  * - 2026-06-27: Sanitized workspace recovery flash copy before rendering.
@@ -39,6 +40,7 @@ import {
 } from "@/lib/i18n/language";
 import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import { readThemePreference } from "@/lib/theme";
+import { getPublicSiteOrigin } from "@/lib/seo";
 import { WORKSPACE_RECOVERY_ERROR_COOKIE } from "@/lib/workspace-recovery/constants";
 import { signOutAction } from "@/server/actions/auth.actions";
 import { recoverWorkspaceAccessAction } from "@/server/actions/workspace-recovery.actions";
@@ -161,6 +163,10 @@ export default async function DashboardLayout({
     status: copy.status,
     theme: copy.theme,
   };
+  const quoteUrl = new URL(
+    `/quote/${activeBusiness.slug}`,
+    getPublicSiteOrigin(),
+  ).toString();
 
   return (
     <DashboardShell
@@ -168,6 +174,7 @@ export default async function DashboardLayout({
       activeLanguage={activeLanguage}
       businessId={activeBusiness.id}
       businessSlug={activeBusiness.slug}
+      quoteUrl={quoteUrl}
       copy={shellCopy}
       initialTheme={initialTheme}
       showFounderAdmin={isFounderUser(user)}

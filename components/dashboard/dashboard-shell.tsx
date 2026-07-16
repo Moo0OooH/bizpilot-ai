@@ -10,8 +10,9 @@
  * - components/dashboard/dashboard-topbar.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Passed the absolute business quote URL into the shell so copy actions share a complete customer-ready link.
  * - 2026-06-19: Added shared theme preference support to the protected dashboard shell.
  * - 2026-06-20: Matched the shell fallback theme to the product-wide light-first default.
  * - 2026-07-04: Added local display preference provider for density, guide, and insight controls.
@@ -39,6 +40,7 @@ type DashboardShellProps = Readonly<{
   activeLanguage: string;
   businessId: string;
   businessSlug: string;
+  quoteUrl: string;
   children: React.ReactNode;
   initialTheme?: ThemePreference;
   copy: DashboardShellCopy;
@@ -51,6 +53,7 @@ export function DashboardShell({
   activeLanguage,
   businessId,
   businessSlug,
+  quoteUrl,
   children,
   copy,
   initialTheme = "light",
@@ -70,6 +73,7 @@ export function DashboardShell({
           activeLanguage={activeLanguage}
           businessId={businessId}
           businessSlug={businessSlug}
+          quoteUrl={quoteUrl}
           copy={copy}
           showFounderAdmin={showFounderAdmin}
           userLabel={userLabel}

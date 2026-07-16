@@ -13,8 +13,9 @@
  * - lib/i18n/public-site-copy.ts
  * Author: MoOoH
  * Created: 2026-07-11
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Updated Quote Setup guards for the explicit public-link task and five-example FAQ summary fallback.
  * - 2026-07-14: Updated Quote Setup guards for the six-section V4 setup flow and hidden identity preservation.
  * - 2026-07-11: Added source guards for localized quote language controls and remaining Quote Setup hardcoded labels.
  * ============================================================
@@ -74,6 +75,7 @@ describe("Dashboard bilingual copy source guards", () => {
     assert.equal(configurationSource.includes("owner@example.com"), false);
     for (const tabId of [
       "configuration-overview",
+      "public-link",
       "services-areas",
       "cleaning-template-fields",
       "branding",
@@ -87,7 +89,9 @@ describe("Dashboard bilingual copy source guards", () => {
     assert.equal(configurationSource.includes('name="businessName"'), true);
     assert.equal(configurationSource.includes('name="preferredLanguage"'), true);
     assert.equal(
-      configurationSource.includes("configCopy.faq.summary(configuration.faqs.length)"),
+      configurationSource.includes(
+        "configuration.faqs.length || configCopy.faq.examples.length",
+      ),
       true,
     );
     assert.equal(

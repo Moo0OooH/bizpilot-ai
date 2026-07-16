@@ -10,8 +10,9 @@
  * - server/policies/business-membership.policy.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Seeded five language-aware owner-approved FAQ examples for new cleaning workspaces.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created Phase 2 business foundation service.
  * - 2026-05-04: Added service-role path for sign-up before confirmed sessions.
@@ -115,7 +116,25 @@ async function bootstrapDefaultQuoteConfiguration(input: {
     throw error;
   }
   const consentNotice =
-    "By submitting this request, you agree that the business may contact you about your quote. AI may help draft owner-reviewed replies.";
+    input.business.preferred_language === "fr-CA"
+      ? "En soumettant cette demande, vous acceptez que l'entreprise vous contacte au sujet de votre soumission. L'IA peut aider à préparer des brouillons révisés par le responsable."
+      : "By submitting this request, you agree that the business may contact you about your quote. AI may help draft owner-reviewed replies.";
+  const defaultFaqs =
+    input.business.preferred_language === "fr-CA"
+      ? [
+          { answer: "Oui, nous apportons les fournitures courantes, sauf si vous préférez les vôtres.", question: "Apportez-vous les fournitures?" },
+          { answer: "Nous desservons les zones indiquées sur la page publique et confirmons la couverture après réception de l'adresse.", question: "Quelles zones desservez-vous?" },
+          { answer: "Oui. Choisissez le nettoyage de déménagement et indiquez la taille du logement et les détails d'accès.", question: "Offrez-vous le nettoyage de déménagement?" },
+          { answer: "Nous révisons les détails avant de confirmer une soumission; le formulaire ne crée pas un prix final.", question: "Comment le prix est-il confirmé?" },
+          { answer: "Nous révisons manuellement les demandes et répondons après vérification des détails et des disponibilités.", question: "Quand répondrez-vous?" },
+        ]
+      : [
+          { answer: "Yes, we bring standard cleaning supplies unless you prefer us to use yours.", question: "Do you bring supplies?" },
+          { answer: "We serve the areas listed on the public page and confirm coverage after receiving the address.", question: "What areas do you serve?" },
+          { answer: "Yes. Select move-out cleaning and share the property size and access details.", question: "Do you offer move-out cleaning?" },
+          { answer: "We review the request details before confirming a quote; the form does not create a final price.", question: "How is pricing confirmed?" },
+          { answer: "We review requests manually and reply after availability and details are checked.", question: "How soon will you reply?" },
+        ];
 
   await Promise.all([
     upsertBusinessBranding({
@@ -140,13 +159,7 @@ async function bootstrapDefaultQuoteConfiguration(input: {
     }),
     replaceBusinessFaqs({
       businessId: input.business.id,
-      faqs: [
-        {
-          answer:
-            "Share the basics in the quote form and the owner can follow up with next steps.",
-          question: "How do I request a cleaning quote?",
-        },
-      ],
+      faqs: defaultFaqs,
       supabase: input.supabase,
     }),
     replaceBusinessServiceAreas({

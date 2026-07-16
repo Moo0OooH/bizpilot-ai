@@ -11,8 +11,9 @@
  * - server/actions/business-configuration.actions.ts
  * Author: MoOoH
  * Created: 2026-05-16
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Replaced the nested desktop sidebar with one compact horizontal task bar to reduce dashboard navigation density.
  * - 2026-07-05: Added pressed state and panel controls to Quote Setup section tabs.
  * - 2026-07-11: Localized the Quote Setup tab-list aria label through dashboard copy.
  * - 2026-05-16: Created mounted tab panels so the parent form receives every required input on submit.
@@ -41,20 +42,20 @@ export function ConfigurationTabs({ ariaLabel, children, sections }: Props) {
   const [activeSection, setActiveSection] = useState(sections[0]?.id ?? "");
 
   return (
-    <div className="grid min-w-0 gap-3 xl:grid-cols-[13rem_minmax(0,1fr)] xl:items-start">
+    <div className="grid min-w-0 gap-3">
       <nav
         aria-label={ariaLabel}
-        className="sticky top-[70px] z-10 min-w-0 max-w-full overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)]/95 p-1.5 shadow-sm backdrop-blur xl:p-2"
+        className="sticky top-[66px] z-10 min-w-0 max-w-full overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)]/95 p-1.5 shadow-sm backdrop-blur"
       >
-        <div className="flex min-w-0 gap-1 overflow-x-auto pb-0.5 xl:grid xl:overflow-visible xl:pb-0">
+        <div className="flex min-w-0 gap-1 overflow-x-auto pb-0.5">
           {sections.map((section) => (
             <button
               aria-controls={section.id}
               aria-pressed={activeSection === section.id}
               className={
                 activeSection === section.id
-                  ? "inline-flex h-9 shrink-0 items-center justify-start rounded-md border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-3 text-left text-xs font-semibold text-[var(--dash-text)]"
-                  : "inline-flex h-9 shrink-0 items-center justify-start rounded-md border border-transparent px-3 text-left text-xs font-semibold text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-border)] hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
+                  ? "inline-flex h-10 shrink-0 items-center justify-center rounded-md border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] px-3.5 text-center text-[13px] font-bold text-[var(--dash-text)]"
+                  : "inline-flex h-10 shrink-0 items-center justify-center rounded-md border border-transparent px-3.5 text-center text-[13px] font-bold text-[var(--dash-text-secondary)] transition hover:border-[var(--dash-border)] hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
               }
               key={section.id}
               onClick={() => setActiveSection(section.id)}

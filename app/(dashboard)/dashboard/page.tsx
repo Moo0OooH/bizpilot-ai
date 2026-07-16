@@ -11,8 +11,9 @@
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Marked owner quote previews so unavailable states return to setup instead of the marketing site.
  * - 2026-07-14: Rebuilt the overview around one decision, one readiness block, one priority list, and one queue; removed low-signal charts and repeated panels.
  * ============================================================
  */
@@ -202,6 +203,9 @@ export default async function DashboardOverviewPage() {
 
   const { readiness } = configurationWorkspace;
   const quotePath = `/quote/${activeBusiness.slug}`;
+  const quotePreviewPath = `${quotePath}?preview=dashboard${
+    activeLanguage === "en" ? "" : `&language=${encodeURIComponent(activeLanguage)}`
+  }`;
   const leadQueueHref = "/dashboard/leads";
   const needsReplyHref = "/dashboard/leads?focus=needs_reply";
   const atRiskHref = "/dashboard/leads?focus=at_risk";
@@ -333,6 +337,10 @@ export default async function DashboardOverviewPage() {
     newQuoteCount > 0,
     desk.leads.length > 0 && needsReplyCount + atRiskCount === 0,
   ] as const;
+  const quotePreviewHref =
+    readiness.completed === readiness.total
+      ? quotePreviewPath
+      : "/dashboard/configuration";
 
   return (
     <main className="space-y-4">
@@ -355,7 +363,7 @@ export default async function DashboardOverviewPage() {
             successLabel={dashboardCopy.actions.copySuccess}
             value={quotePath}
           />
-          <Link className={buttonClass} href={quotePath}>
+          <Link className={buttonClass} href={quotePreviewHref}>
             {dashboardCopy.actions.previewQuotePage}
           </Link>
         </div>

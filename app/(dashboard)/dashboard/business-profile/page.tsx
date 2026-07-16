@@ -10,8 +10,9 @@
  * - docs/engineering/BIZPILOT_ENGINEERING_STANDARD_v1.5.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Removed the duplicate logo editor, displayed the full customer-ready link, and added owner-aware quote preview recovery.
  * - 2026-07-05: Reframed collapsed future profile fields as gated storage decisions.
  * - 2026-05-18: Split Business Profile from Quote Setup.
  * - 2026-05-23: Localized owner-facing business profile copy.
@@ -43,6 +44,7 @@ import {
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import { getPublicSiteOrigin } from "@/lib/seo";
 import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import {
   INTERFACE_LANGUAGE_COOKIE,
@@ -119,6 +121,10 @@ export default async function BusinessProfilePage({
   });
   const { cleaningTemplate, configuration } = configurationWorkspace;
   const quotePath = `/quote/${activeBusiness.slug}`;
+  const quoteUrl = new URL(quotePath, getPublicSiteOrigin()).toString();
+  const quotePreviewPath = `${quotePath}?preview=dashboard${
+    activeLanguage === "en" ? "" : `&language=${encodeURIComponent(activeLanguage)}`
+  }`;
   const primaryColor = configuration.branding?.primary_color ?? "#18181b";
   const accentColor = configuration.branding?.accent_color ?? "#0f766e";
   const copy = getBizPilotCopy(activeLanguage);
@@ -148,12 +154,12 @@ export default async function BusinessProfilePage({
               failedLabel={dashboardCopy.actions.copyFailed}
               label={dashboardCopy.actions.copyQuoteLink}
               successLabel={dashboardCopy.actions.copySuccess}
-              value={quotePath}
+              value={quoteUrl}
             />
             <Link className={buttonClass} href="/dashboard/configuration">
               {text.openQuoteSetup}
             </Link>
-            <Link className={primaryButtonClass} href={quotePath}>
+            <Link className={primaryButtonClass} href={quotePreviewPath}>
               {text.previewQuotePage}
             </Link>
           </>
@@ -285,7 +291,7 @@ export default async function BusinessProfilePage({
               title={text.businessIdentity}
             />
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <label className={labelClass}>
+              <label className={`${labelClass} sm:col-span-2`}>
                 {text.businessName}
                 <input
                   autoComplete="organization"
@@ -375,21 +381,16 @@ export default async function BusinessProfilePage({
               title={text.aiNotes}
             />
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <label className={labelClass}>
-                {text.logoUrl}
-                <input
-                  autoComplete="url"
-                  className={inputClass}
-                  defaultValue={configuration.branding?.logo_url ?? ""}
-                  name="logoUrl"
-                  type="url"
-                />
-              </label>
+              <input
+                name="logoUrl"
+                type="hidden"
+                value={configuration.branding?.logo_url ?? ""}
+              />
               <label className={labelClass}>
                 {text.publicQuoteLink}
                 <input
                   className={inputClass}
-                  defaultValue={quotePath}
+                  defaultValue={quoteUrl}
                   readOnly
                   type="text"
                 />

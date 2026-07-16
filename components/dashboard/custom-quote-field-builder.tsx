@@ -4,59 +4,64 @@
  * ============================================================
  * File: components/dashboard/custom-quote-field-builder.tsx
  * Project: BizPilot AI
- * Description: Client-side builder for adding custom public quote fields.
- * Role: Lets owners draft additional intake questions while preserving manual-first Quote Setup form submission.
+ * Description: Progressive custom-field builder for the public quote form.
+ * Role: Keeps the common add-question flow compact while offering recommended starters, live previews, and optional advanced controls.
  * Related:
  * - app/(dashboard)/dashboard/configuration/page.tsx
  * - components/dashboard/quote-field-type-control.tsx
  * - server/actions/business-configuration.actions.ts
  * Author: MoOoH
  * Created: 2026-06-27
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Removed the always-open blank field, added recommended starters and live previews, and moved priority/key into progressive advanced settings.
  * - 2026-07-14: Corrected the built-in French field examples so accents and owner-facing phrasing remain production quality.
  * - 2026-07-05: Added complete BizPilot source header metadata for the custom quote field builder.
  * ============================================================
  */
 
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import type {
   FieldBuilderCopy,
   QuoteFieldType,
 } from "@/components/dashboard/quote-field-type-control";
 
+type FieldPlaceholder = Readonly<{
+  fieldKey: string;
+  helper: string;
+  label: string;
+  options: string;
+  preview: string;
+}>;
+
 type CustomFieldBuilderCopy = FieldBuilderCopy &
   Readonly<{
     addAnotherField: string;
     advancedSettings: string;
+    chooseStarter: string;
     customFieldBuilder: string;
+    emptyBody: string;
+    emptyTitle: string;
     fieldKey: string;
     fieldKeyHelp: string;
     helperText: string;
     newFieldName: string;
     options: string;
     optionsHelp: string;
-    placeholders?: Readonly<
-      Record<
-        QuoteFieldType,
-        Readonly<{
-          fieldKey: string;
-          helper: string;
-          label: string;
-          options: string;
-          preview: string;
-        }>
-      >
-    >;
+    placeholders?: Readonly<Record<QuoteFieldType, FieldPlaceholder>>;
     priority: string;
+    recommendedQuestions: string;
     removeField: string;
     required: string;
     showOnPublicForm: string;
   }>;
 
 type DraftField = Readonly<{
+  helper: string;
   id: string;
+  label: string;
+  options: string;
   type: QuoteFieldType;
 }>;
 
@@ -73,6 +78,14 @@ const configurableFieldTypes: readonly QuoteFieldType[] = [
   "time_window",
 ];
 
+const starterTypes: readonly QuoteFieldType[] = [
+  "select",
+  "number",
+  "boolean",
+  "textarea",
+  "time_window",
+];
+
 const choiceFieldTypes = new Set<QuoteFieldType>([
   "radio",
   "select",
@@ -84,27 +97,18 @@ const fieldInputClass =
 const fieldTextareaClass =
   "biz-field min-h-24 w-full rounded-lg border px-3 py-2 text-[13px] outline-none transition focus:border-[var(--dash-primary)]";
 
-const fallbackPlaceholders: Record<
-  QuoteFieldType,
-  Readonly<{
-    fieldKey: string;
-    helper: string;
-    label: string;
-    options: string;
-    preview: string;
-  }>
-> = {
+const fallbackPlaceholders: Record<QuoteFieldType, FieldPlaceholder> = {
   boolean: {
-    fieldKey: "yes_no_question",
-    helper: "Use for a simple yes/no detail.",
-    label: "Yes/no question",
+    fieldKey: "pets_at_home",
+    helper: "Helps the team prepare for pets before arrival.",
+    label: "Will pets be at home?",
     options: "",
     preview: "Customer checks one box.",
   },
   date: {
     fieldKey: "preferred_date",
     helper: "Use when a calendar date matters.",
-    label: "Preferred date",
+    label: "Preferred cleaning date",
     options: "",
     preview: "Customer chooses a date.",
   },
@@ -116,50 +120,50 @@ const fallbackPlaceholders: Record<
     preview: "name@example.com",
   },
   number: {
-    fieldKey: "room_count",
-    helper: "Use when the answer should be numeric.",
-    label: "How many rooms?",
+    fieldKey: "bedroom_count",
+    helper: "Helps the owner understand the property size.",
+    label: "How many bedrooms?",
     options: "",
     preview: "Example answer: 3",
   },
   phone: {
     fieldKey: "callback_phone",
-    helper: "Use when a phone number is required.",
+    helper: "Best number if the owner needs to confirm details.",
     label: "Callback phone",
     options: "",
     preview: "(555) 123-4567",
   },
   radio: {
     fieldKey: "home_furnished",
-    helper: "Radio is best when the customer must choose one answer.",
+    helper: "Use when the customer must choose one visible answer.",
     label: "Is the home furnished?",
     options: "Yes\nNo\nPartially",
     preview: "One visible choice is selected.",
   },
   select: {
     fieldKey: "property_type",
-    helper: "Select keeps a longer list compact on the public form.",
-    label: "Property type",
+    helper: "Helps route the request to the right cleaning workflow.",
+    label: "What type of property is this?",
     options: "Apartment\nCondo\nHouse\nOffice",
-    preview: "Customer opens a dropdown.",
+    preview: "Customer opens a compact list.",
   },
   text: {
     fieldKey: "parking_instructions",
-    helper: "Short answer shown beside the quote request.",
+    helper: "Short access detail shown beside the quote request.",
     label: "Parking or access instructions",
     options: "",
     preview: "Example: Use visitor parking behind the building.",
   },
   textarea: {
-    fieldKey: "long_answer",
-    helper: "Use when the customer may explain details.",
-    label: "Long answer question",
+    fieldKey: "special_requests",
+    helper: "Use for details that do not fit a short answer.",
+    label: "Anything else we should know?",
     options: "",
     preview: "Customer writes a longer note.",
   },
   time_window: {
     fieldKey: "arrival_window",
-    helper: "Use when scheduling windows matter.",
+    helper: "Collect a preferred window without confirming availability.",
     label: "Preferred arrival window",
     options: "Morning, 8-11\nAfternoon, 12-3\nEvening, 4-7",
     preview: "Customer chooses a time window.",
@@ -169,31 +173,31 @@ const fallbackPlaceholders: Record<
 const frenchFallbackPlaceholders: typeof fallbackPlaceholders = {
   boolean: {
     fieldKey: "animaux_maison",
-    helper: "Utile si l’équipe doit se préparer pour des animaux.",
-    label: "Avez-vous des animaux à la maison?",
+    helper: "Aide l'équipe à se préparer avant son arrivée.",
+    label: "Y aura-t-il des animaux sur place?",
     options: "",
-    preview: "Le client coche oui/non.",
+    preview: "Le client coche une case.",
   },
   date: {
     fieldKey: "date_menage_souhaitee",
-    helper: "Demandez la date idéale du service.",
+    helper: "Demandez la date idéale sans confirmer la disponibilité.",
     label: "Date de ménage souhaitée",
     options: "",
     preview: "Le client choisit une date.",
   },
   email: {
-    fieldKey: "courriel_facturation",
-    helper: "À utiliser seulement si ce courriel diffère du contact principal.",
-    label: "Courriel de facturation",
+    fieldKey: "courriel_secondaire",
+    helper: "À utiliser seulement si un second courriel est utile.",
+    label: "Courriel secondaire",
     options: "",
     preview: "nom@exemple.com",
   },
   number: {
     fieldKey: "nombre_chambres",
-    helper: "Les nombres aident à estimer le temps et l’équipe.",
+    helper: "Aide le responsable à comprendre la taille du logement.",
     label: "Combien de chambres?",
     options: "",
-    preview: "Exemple de réponse: 3",
+    preview: "Exemple de réponse : 3",
   },
   phone: {
     fieldKey: "telephone_rappel",
@@ -204,45 +208,52 @@ const frenchFallbackPlaceholders: typeof fallbackPlaceholders = {
   },
   radio: {
     fieldKey: "logement_meuble",
-    helper: "Le choix unique convient quand le client doit sélectionner une seule réponse.",
+    helper: "À utiliser quand le client doit choisir une réponse visible.",
     label: "Le logement est-il meublé?",
     options: "Oui\nNon\nPartiellement",
     preview: "Une seule option visible est choisie.",
   },
   select: {
     fieldKey: "type_propriete",
-    helper: "La liste déroulante garde les longues listes compactes.",
-    label: "Type de propriété",
+    helper: "Aide à diriger la demande vers le bon service.",
+    label: "Quel est le type de propriété?",
     options: "Appartement\nCondo\nMaison\nBureau",
-    preview: "Le client ouvre une liste.",
+    preview: "Le client ouvre une liste compacte.",
   },
   text: {
-    fieldKey: "instructions_stationnement",
-    helper: "Réponse courte affichée avec la demande.",
-    label: "Instructions de stationnement ou d’accès",
+    fieldKey: "instructions_acces",
+    helper: "Courte précision d'accès affichée avec la demande.",
+    label: "Instructions de stationnement ou d'accès",
     options: "",
-    preview: "Exemple: utilisez le stationnement visiteur.",
+    preview: "Exemple : utilisez le stationnement visiteur.",
   },
   textarea: {
     fieldKey: "demandes_speciales",
-    helper: "Utilisez un texte long pour les détails à expliquer.",
+    helper: "Utilisez ce champ pour les détails plus longs.",
     label: "Autre chose à savoir?",
     options: "",
     preview: "Le client écrit une note plus longue.",
   },
   time_window: {
     fieldKey: "plage_arrivee_souhaitee",
-    helper: "Les plages horaires facilitent la planification.",
-    label: "Plage d’arrivée souhaitée",
+    helper: "Recueille une préférence sans confirmer la disponibilité.",
+    label: "Plage d'arrivée souhaitée",
     options: "Matin, 8-11\nAprès-midi, 12-3\nSoir, 4-7",
     preview: "Le client choisit une plage horaire.",
   },
 };
 
-function createDraftField(index: number): DraftField {
+function createDraftField(
+  index: number,
+  type: QuoteFieldType,
+  placeholder?: FieldPlaceholder,
+): DraftField {
   return {
+    helper: placeholder?.helper ?? "",
     id: `custom_${index}`,
-    type: "text",
+    label: placeholder?.label ?? "",
+    options: placeholder?.options ?? "",
+    type,
   };
 }
 
@@ -255,216 +266,253 @@ export function CustomQuoteFieldBuilder({
     copy.typeLabels.email.toLowerCase().includes("courriel")
       ? frenchFallbackPlaceholders
       : fallbackPlaceholders;
-  const nextIndex = useRef(2);
-  const [fields, setFields] = useState<readonly DraftField[]>([
-    createDraftField(1),
-  ]);
-  const defaultPriorityById = useMemo(
-    () =>
-      Object.fromEntries(
-        fields.map((field, index) => [field.id, String((index + 13) * 10)]),
+  const nextIndex = useRef(1);
+  const [fields, setFields] = useState<readonly DraftField[]>([]);
+
+  function addField(type: QuoteFieldType, useStarter: boolean) {
+    const placeholder = copy.placeholders?.[type] ?? fallbackCopy[type];
+    const field = createDraftField(
+      nextIndex.current,
+      type,
+      useStarter ? placeholder : undefined,
+    );
+    nextIndex.current += 1;
+    setFields((current) => [...current, field]);
+  }
+
+  function updateField(id: string, update: Partial<DraftField>) {
+    setFields((current) =>
+      current.map((field) =>
+        field.id === id ? { ...field, ...update } : field,
       ),
-    [fields],
-  );
+    );
+  }
 
   return (
-    <div className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-      <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
-        <div>
-          <h3 className="text-sm font-extrabold text-[var(--dash-text)]">
+    <div className="mt-4 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5 sm:p-4">
+      <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+        <div className="min-w-0">
+          <h3 className="text-[15px] font-black text-[var(--dash-text)]">
             {copy.addAnotherField}
           </h3>
-          <p className="mt-1 text-xs leading-5 text-[var(--dash-text-secondary)]">
+          <p className="mt-1 max-w-3xl text-[12px] leading-5 text-[var(--dash-text-secondary)]">
             {copy.customFieldBuilder}
           </p>
         </div>
         <button
-          className="biz-button-secondary inline-flex h-9 items-center justify-center rounded-lg border px-3 text-xs font-bold"
-          onClick={() => {
-            const field = createDraftField(nextIndex.current);
-            nextIndex.current += 1;
-            setFields((current) => [...current, field]);
-          }}
+          className="biz-button-secondary inline-flex h-10 items-center justify-center rounded-lg border px-3.5 text-[12px] font-bold"
+          onClick={() => addField("text", false)}
           type="button"
         >
-          {copy.addAnotherField}
+          + {copy.addAnotherField}
         </button>
       </div>
 
+      <details className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]">
+        <summary className="cursor-pointer list-none px-3.5 py-3 text-[12px] font-black text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
+          {copy.chooseStarter}
+        </summary>
+        <div className="border-t border-[var(--dash-border)] p-3.5">
+          <p className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
+            {copy.recommendedQuestions}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {starterTypes.map((type) => {
+              const placeholder = copy.placeholders?.[type] ?? fallbackCopy[type];
+              return (
+                <button
+                  className="biz-button-secondary inline-flex min-h-9 items-center justify-center rounded-lg border px-3 text-left text-[12px] font-bold"
+                  key={type}
+                  onClick={() => addField(type, true)}
+                  type="button"
+                >
+                  + {placeholder.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </details>
+
+      {fields.length === 0 ? (
+        <div className="mt-3 rounded-lg border border-dashed border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-4 py-5 text-center">
+          <p className="text-[13px] font-black text-[var(--dash-text)]">
+            {copy.emptyTitle}
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-muted)]">
+            {copy.emptyBody}
+          </p>
+        </div>
+      ) : null}
+
       <div className="mt-3 grid gap-3">
-        {fields.map((field) => {
+        {fields.map((field, index) => {
           const isChoiceField = choiceFieldTypes.has(field.type);
-          const placeholder =
-            copy.placeholders?.[field.type] ?? fallbackCopy[field.type];
+          const placeholder = copy.placeholders?.[field.type] ?? fallbackCopy[field.type];
+          const previewLabel = field.label.trim() || placeholder.label;
+          const previewHelper = field.helper.trim() || placeholder.helper;
+          const previewOptions = field.options.trim() || placeholder.options;
 
           return (
-            <div
-              className="grid gap-3 rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 xl:grid-cols-[minmax(0,1fr)_18rem]"
+            <article
+              className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5"
               key={field.id}
             >
               <input name="newCustomFieldSlots" type="hidden" value={field.id} />
-              <div className="min-w-0">
-                <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_12rem_7rem] lg:items-end">
-                  <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
-                    {copy.newFieldName}
-                    <input
-                      className={fieldInputClass}
-                      name={`newFieldLabel:${field.id}`}
-                      placeholder={placeholder.label}
-                      type="text"
-                    />
-                  </label>
-                  <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
-                    {copy.type}
-                    <select
-                      className={fieldInputClass}
-                      name={`newFieldType:${field.id}`}
-                      onChange={(event) => {
-                        const nextType =
-                          event.currentTarget.value as QuoteFieldType;
-                        setFields((current) =>
-                          current.map((item) =>
-                            item.id === field.id
-                              ? {
-                                  ...item,
-                                  type: nextType,
-                                }
-                              : item,
-                          ),
-                        );
-                      }}
-                      value={field.type}
-                    >
-                      {configurableFieldTypes.map((type) => (
-                        <option key={type} value={type}>
-                          {copy.typeLabels[type]}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
-                    {copy.priority}
-                    <input
-                      className={fieldInputClass}
-                      defaultValue={defaultPriorityById[field.id]}
-                      max={999}
-                      min={1}
-                      name={`newFieldSort:${field.id}`}
-                      type="number"
-                    />
-                  </label>
-                </div>
+              <div className="flex items-center justify-between gap-3 border-b border-[var(--dash-border)] pb-3">
+                <p className="text-[13px] font-black text-[var(--dash-text)]">
+                  {index + 1}. {previewLabel}
+                </p>
+                <button
+                  className="text-[12px] font-bold text-[var(--dash-danger-strong)]"
+                  onClick={() =>
+                    setFields((current) => current.filter((item) => item.id !== field.id))
+                  }
+                  type="button"
+                >
+                  {copy.removeField}
+                </button>
+              </div>
 
-                <div className="mt-3 grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-                  <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+              <div className="mt-3 grid gap-3 xl:grid-cols-[minmax(0,1fr)_18rem]">
+                <div className="min-w-0">
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_13rem]">
+                    <label className="grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
+                      {copy.newFieldName}
+                      <input
+                        className={fieldInputClass}
+                        name={`newFieldLabel:${field.id}`}
+                        onChange={(event) => updateField(field.id, { label: event.currentTarget.value })}
+                        placeholder={placeholder.label}
+                        type="text"
+                        value={field.label}
+                      />
+                    </label>
+                    <label className="grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
+                      {copy.type}
+                      <select
+                        className={fieldInputClass}
+                        name={`newFieldType:${field.id}`}
+                        onChange={(event) => {
+                          const nextType = event.currentTarget.value as QuoteFieldType;
+                          setFields((current) =>
+                            current.map((item) =>
+                              item.id === field.id ? { ...item, type: nextType } : item,
+                            ),
+                          );
+                        }}
+                        value={field.type}
+                      >
+                        {configurableFieldTypes.map((type) => (
+                          <option key={type} value={type}>
+                            {copy.typeLabels[type]}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+
+                  <label className="mt-3 grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
                     {copy.helperText}
                     <input
                       className={fieldInputClass}
                       name={`newFieldHelp:${field.id}`}
+                      onChange={(event) => updateField(field.id, { helper: event.currentTarget.value })}
                       placeholder={placeholder.helper}
                       type="text"
+                      value={field.helper}
                     />
                   </label>
+
                   {isChoiceField ? (
-                    <label className="grid gap-1 text-xs font-medium text-[var(--dash-text)]">
+                    <label className="mt-3 grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
                       {copy.options}
                       <textarea
                         className={fieldTextareaClass}
                         name={`newFieldOptions:${field.id}`}
+                        onChange={(event) => updateField(field.id, { options: event.currentTarget.value })}
                         placeholder={placeholder.options}
+                        value={field.options}
                       />
                       <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
                         {copy.optionsHelp}
                       </span>
                     </label>
-                  ) : (
-                    <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[12px] leading-5 text-[var(--dash-text-muted)]">
-                      {placeholder.preview}
-                    </div>
-                  )}
-                </div>
+                  ) : null}
 
-                <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
-                  <div className="flex flex-wrap gap-3">
-                    <label className="flex min-h-7 items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
-                      <input
-                        name={`newFieldRequired:${field.id}`}
-                        type="checkbox"
-                      />
+                  <div className="mt-3 flex flex-wrap gap-4 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5">
+                    <label className="flex min-h-7 items-center gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                      <input name={`newFieldRequired:${field.id}`} type="checkbox" />
                       {copy.required}
                     </label>
-                    <label className="flex min-h-7 items-center gap-2 text-xs font-medium text-[var(--dash-text-secondary)]">
-                      <input
-                        defaultChecked
-                        name={`newFieldVisible:${field.id}`}
-                        type="checkbox"
-                      />
+                    <label className="flex min-h-7 items-center gap-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                      <input defaultChecked name={`newFieldVisible:${field.id}`} type="checkbox" />
                       {copy.showOnPublicForm}
                     </label>
                   </div>
-                  {fields.length > 1 ? (
-                    <button
-                      className="biz-button-secondary inline-flex h-8 items-center justify-center rounded-lg border px-3 text-xs font-bold"
-                      onClick={() =>
-                        setFields((current) =>
-                          current.filter((item) => item.id !== field.id),
-                        )
-                      }
-                      type="button"
-                    >
-                      {copy.removeField}
-                    </button>
-                  ) : null}
+
+                  <details className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
+                    <summary className="cursor-pointer list-none px-3 py-2.5 text-[12px] font-bold text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
+                      {copy.advancedSettings}
+                    </summary>
+                    <div className="grid gap-3 border-t border-[var(--dash-border)] p-3 md:grid-cols-[8rem_minmax(0,1fr)]">
+                      <label className="grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
+                        {copy.priority}
+                        <input
+                          className={fieldInputClass}
+                          defaultValue={(index + 13) * 10}
+                          max={999}
+                          min={1}
+                          name={`newFieldSort:${field.id}`}
+                          type="number"
+                        />
+                      </label>
+                      <label className="grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
+                        {copy.fieldKey}
+                        <input
+                          className={fieldInputClass}
+                          name={`newFieldKey:${field.id}`}
+                          pattern="[a-z][a-z0-9_]*"
+                          placeholder={placeholder.fieldKey}
+                          type="text"
+                        />
+                        <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
+                          {copy.fieldKeyHelp}
+                        </span>
+                      </label>
+                    </div>
+                  </details>
                 </div>
 
-                <details className="mt-3 rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2">
-                  <summary className="cursor-pointer list-none text-xs font-bold text-[var(--dash-text)] [&::-webkit-details-marker]:hidden">
-                    {copy.advancedSettings}
-                  </summary>
-                  <label className="mt-2 grid gap-1 text-xs font-medium text-[var(--dash-text)]">
-                    {copy.fieldKey}
-                    <input
-                      className={fieldInputClass}
-                      name={`newFieldKey:${field.id}`}
-                      pattern="[a-z][a-z0-9_]*"
-                      placeholder={placeholder.fieldKey}
-                      type="text"
-                    />
-                    <span className="text-[11px] leading-4 text-[var(--dash-text-muted)]">
-                      {copy.fieldKeyHelp}
-                    </span>
-                  </label>
-                </details>
-              </div>
-
-              <aside className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
-                <p className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
-                  {copy.typeLabels[field.type]}
-                </p>
-                <p className="mt-2 text-[13px] font-black text-[var(--dash-text)]">
-                  {placeholder.label}
-                </p>
-                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
-                  {placeholder.helper}
-                </p>
-                {isChoiceField ? (
-                  <div className="mt-3 grid gap-1.5">
-                    {placeholder.options.split(/\n|,/).map((option) => (
-                      <span
-                        className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2.5 py-1.5 text-[12px] font-bold text-[var(--dash-text-secondary)]"
-                        key={option.trim()}
-                      >
-                        {option.trim()}
-                      </span>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="mt-3 rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2.5 py-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
-                    {placeholder.preview}
+                <aside className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3.5">
+                  <p className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-primary-strong)]">
+                    {copy.typeLabels[field.type]}
                   </p>
-                )}
-              </aside>
-            </div>
+                  <p className="mt-2 text-[14px] font-black text-[var(--dash-text)]">
+                    {previewLabel}
+                  </p>
+                  <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                    {previewHelper}
+                  </p>
+                  {isChoiceField ? (
+                    <div className="mt-3 grid gap-1.5">
+                      {previewOptions.split(/\n|,/).filter(Boolean).map((option) => (
+                        <span
+                          className="rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2.5 py-1.5 text-[12px] font-bold text-[var(--dash-text-secondary)]"
+                          key={option.trim()}
+                        >
+                          {option.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="mt-3 rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2.5 py-2 text-[12px] font-bold text-[var(--dash-text-secondary)]">
+                      {placeholder.preview}
+                    </p>
+                  )}
+                </aside>
+              </div>
+            </article>
           );
         })}
       </div>

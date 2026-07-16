@@ -11,8 +11,9 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added bilingual guided setup copy for local logo uploads, recommended fields, FAQ knowledge, unique quote links, and owner preview recovery.
  * - 2026-07-15: Added centralized EN/fr-CA copy for the global runtime error boundary.
  * - 2026-07-14: Polished Canadian French dashboard/admin accents and updated Settings guidance to match the simplified protected experience.
  * - 2026-07-11: Added bilingual founder-admin activity metadata, inbox, status-chart, and safety-rail copy fields.
@@ -247,14 +248,20 @@ type DashboardConfigurationCopy = Readonly<{
     addLogoAndColors: string;
     colorsConfigured: string;
     description: string;
+    fileError: string;
     logoAndColorsConfigured: string;
     logoPreviewAlt: string;
     logoPreview: string;
     logoUrl: string;
+    logoUrlHelp: string;
     primaryColor: string;
     publicQuoteButton: string;
+    removeLogo: string;
+    resetColors: string;
     submitQuoteRequest: string;
     title: string;
+    uploadHelp: string;
+    uploadLogo: string;
     whereColorsApply: string;
   }>;
   basics: Readonly<{
@@ -271,11 +278,14 @@ type DashboardConfigurationCopy = Readonly<{
     addCustomField: string;
     advancedSettings: string;
     close: string;
+    chooseStarter: string;
     customFieldBuilder: string;
     customerFacingQuestion: string;
     customerQuestion: string;
     customize: string;
     description: string;
+    emptyBody: string;
+    emptyTitle: string;
     fieldKey: string;
     fieldKeyHelp: string;
     helperText: string;
@@ -298,6 +308,7 @@ type DashboardConfigurationCopy = Readonly<{
     >;
     position: string;
     priority: string;
+    recommendedQuestions: string;
     removeField: string;
     required: string;
     showOnPublicForm: string;
@@ -308,9 +319,14 @@ type DashboardConfigurationCopy = Readonly<{
     visibleOnForm: string;
   }>;
   faq: Readonly<{
+    clearExamples: string;
     description: string;
+    examples: readonly string[];
+    guardrailTitle: string;
+    guardrails: readonly string[];
     help: string;
     label: string;
+    loadExamples: string;
     placeholder: string;
     summary: (count: number) => string;
     title: string;
@@ -370,11 +386,16 @@ type DashboardConfigurationCopy = Readonly<{
     title: string;
   }>;
   publicPage: Readonly<{
+    copyLink: string;
     description: string;
+    placementTitle: string;
+    placements: readonly string[];
     previewPublicPage: string;
     publicQuoteLink: string;
     saveBeforePreview: string;
     title: string;
+    uniqueLinkDescription: string;
+    uniqueLinkTitle: string;
   }>;
   readiness: Readonly<{
     description: (completed: number, total: number) => string;
@@ -1787,6 +1808,9 @@ export type BizPilotCopy = Readonly<{
     badge: string;
     description: string;
     languageMenuLabel: string;
+    ownerUnavailableBody: string;
+    ownerUnavailableCta: string;
+    ownerUnavailableTitle: string;
     subtitle: string;
     unavailableBody: string;
     unavailableCta: string;
@@ -2869,9 +2893,9 @@ const englishCopy: BizPilotCopy = {
         title: "Public quote basics",
       },
       bottomBar: {
-        openPublicQuoteLink: "Open public quote link",
+        openPublicQuoteLink: "Save & preview",
         saveConfiguration: "Save configuration",
-        text: "Save configuration after editing, then preview the public quote link.",
+        text: "Save applies the setup and repairs the public quote link before preview.",
       },
       branding: {
         accentAppears:
@@ -2881,20 +2905,27 @@ const englishCopy: BizPilotCopy = {
         colorsConfigured: "Colors ready",
         description:
           "Public-facing visual settings for the cleaning quote experience.",
+        fileError: "Choose a PNG, JPG, or WebP logo under 2 MB.",
         logoAndColorsConfigured: "Logo and colors configured",
         logoPreviewAlt: "Logo preview",
         logoPreview: "Logo preview",
         logoUrl: "Logo URL",
+        logoUrlHelp: "Optional alternative: paste a secure HTTPS image URL.",
         primaryColor: "Primary color",
         publicQuoteButton: "Public quote button",
+        removeLogo: "Remove logo",
+        resetColors: "Reset colors",
         submitQuoteRequest: "Submit quote request",
         title: "Branding",
+        uploadHelp: "PNG, JPG, or WebP up to 2 MB. BizPilot resizes it before saving.",
+        uploadLogo: "Choose logo file",
         whereColorsApply: "Where these colors apply",
       },
       fields: {
         addAnotherField: "Add field",
         addCustomField: "Add custom field",
         advancedSettings: "Advanced settings",
+        chooseStarter: "Start with a recommended question",
         close: "Close",
         customFieldBuilder:
           "Create owner-specific questions. Choice options appear only when the field type needs them.",
@@ -2903,6 +2934,8 @@ const englishCopy: BizPilotCopy = {
         customize: "Customize",
         description:
           "Choose which customer questions appear on the public quote form, add owner-specific fields, and set their priority.",
+        emptyBody: "Add a blank question or choose a recommended cleaning question above.",
+        emptyTitle: "No new custom question yet",
         fieldKey: "Field key",
         fieldKeyHelp:
           "Optional. Lowercase letters, numbers, and underscores. Leave blank to generate from the label.",
@@ -2987,6 +3020,7 @@ const englishCopy: BizPilotCopy = {
         },
         position: "Position",
         priority: "Priority",
+        recommendedQuestions: "Recommended for cleaning quotes",
         removeField: "Remove field",
         required: "Required",
         showOnPublicForm: "Show on public form",
@@ -3008,10 +3042,26 @@ const englishCopy: BizPilotCopy = {
         visibleOnForm: "Visible on form",
       },
       faq: {
+        clearExamples: "Clear",
         description:
-          "Reusable customer questions and answers for the cleaning business profile.",
+          "Owner-approved facts that help BizPilot prepare safer reply drafts. Every draft still requires your review.",
+        examples: [
+          "Do you bring supplies? | Yes, we bring standard cleaning supplies unless you prefer us to use yours.",
+          "What areas do you serve? | We serve the areas listed on this quote page; share your address and we will confirm coverage.",
+          "Do you offer move-out cleaning? | Yes, select move-out cleaning and share the property size and access details.",
+          "How is pricing confirmed? | We review the request details before confirming a quote; the form does not create a final price.",
+          "How soon will you reply? | We review new requests manually and reply after availability and details are checked.",
+        ],
+        guardrailTitle: "How BizPilot uses this knowledge",
+        guardrails: [
+          "Uses only answers you save here.",
+          "Does not invent prices or availability.",
+          "Keeps missing information visible.",
+          "Creates a draft for owner review, never an automatic send.",
+        ],
         help: "One FAQ per line. Use: Question? | Answer",
         label: "FAQ",
+        loadExamples: "Load 5 examples",
         placeholder: "Do you bring supplies? | Yes, we bring all standard supplies.",
         summary: (count) => `${count} FAQs`,
         title: "AI instructions and FAQ",
@@ -3075,13 +3125,24 @@ const englishCopy: BizPilotCopy = {
         title: "Privacy",
       },
       publicPage: {
+        copyLink: "Copy unique link",
         description:
           "Shareable customer quote page generated from the active business slug and quote form.",
+        placementTitle: "Where to place it",
+        placements: [
+          "Instagram and Facebook bio or message reply",
+          "WhatsApp Business greeting or quick reply",
+          "Website quote button",
+          "Email signature and Google Business profile",
+        ],
         previewPublicPage: "Preview public page",
         publicQuoteLink: "Public quote link",
         saveBeforePreview:
           "Save changes before previewing branding, consent, services, and quote questions.",
         title: "Quote link and public page",
+        uniqueLinkDescription:
+          "This customer-ready address belongs only to this business. Save setup before sharing it.",
+        uniqueLinkTitle: "Your business quote link",
       },
       readiness: {
         description: (completed, total) => `${completed}/${total} setup tasks complete.`,
@@ -4528,6 +4589,10 @@ const englishCopy: BizPilotCopy = {
     description:
       "A short quote form. The business reviews every request and replies directly - nothing is sent automatically.",
     languageMenuLabel: "Quote language",
+    ownerUnavailableBody:
+      "This owner preview is not ready yet. Return to Quote Setup, complete the required items, then choose Save & preview to create or repair the public page.",
+    ownerUnavailableCta: "Back to Quote Setup",
+    ownerUnavailableTitle: "Finish quote setup first",
     subtitle: "Quote request",
     unavailableBody:
       "This quote page is not accepting requests right now. Check that the link is complete, or contact the business directly if you need help with an existing request.",
@@ -5624,9 +5689,9 @@ const frenchCopy: BizPilotCopy = {
         title: "Bases du lien public",
       },
       bottomBar: {
-        openPublicQuoteLink: "Ouvrir le lien public",
+        openPublicQuoteLink: "Enregistrer et prévisualiser",
         saveConfiguration: "Enregistrer",
-        text: "Enregistrez la configuration après les changements, puis prévisualisez le lien public.",
+        text: "L'enregistrement applique la configuration et répare le lien public avant l'aperçu.",
       },
       branding: {
         accentAppears:
@@ -5636,20 +5701,27 @@ const frenchCopy: BizPilotCopy = {
         colorsConfigured: "Couleurs prêtes",
         description:
           "Réglages visuels publics pour l'expérience de soumission de nettoyage.",
+        fileError: "Choisissez un logo PNG, JPG ou WebP de moins de 2 Mo.",
         logoAndColorsConfigured: "Logo et couleurs configurés",
         logoPreviewAlt: "Aperçu du logo",
         logoPreview: "Aperçu du logo",
         logoUrl: "URL du logo",
+        logoUrlHelp: "Autre option : collez une URL d'image HTTPS sécurisée.",
         primaryColor: "Couleur principale",
         publicQuoteButton: "Bouton de soumission public",
+        removeLogo: "Retirer le logo",
+        resetColors: "Réinitialiser les couleurs",
         submitQuoteRequest: "Envoyer la demande",
         title: "Marque",
+        uploadHelp: "PNG, JPG ou WebP jusqu'à 2 Mo. BizPilot le redimensionne avant l'enregistrement.",
+        uploadLogo: "Choisir un fichier de logo",
         whereColorsApply: "Où ces couleurs s'appliquent",
       },
       fields: {
         addAnotherField: "Ajouter un champ",
         addCustomField: "Ajouter un champ",
         advancedSettings: "Paramètres avancés",
+        chooseStarter: "Commencer avec une question recommandée",
         close: "Fermer",
         customFieldBuilder:
           "Créez des questions internes. Les options apparaissent seulement quand le type du champ les exige.",
@@ -5658,6 +5730,8 @@ const frenchCopy: BizPilotCopy = {
         customize: "Personnaliser",
         description:
           "Choisissez les questions affichées sur le formulaire public, ajoutez des champs internes et définissez leur priorité.",
+        emptyBody: "Ajoutez une question vide ou choisissez une question de nettoyage recommandée ci-dessus.",
+        emptyTitle: "Aucune nouvelle question personnalisée",
         fieldKey: "Clé du champ",
         fieldKeyHelp:
           "Optionnel. Lettres minuscules, chiffres et traits de soulignement. Laissez vide pour générer depuis le libellé.",
@@ -5746,6 +5820,7 @@ const frenchCopy: BizPilotCopy = {
         },
         position: "Position",
         priority: "Priorité",
+        recommendedQuestions: "Recommandées pour les soumissions de nettoyage",
         removeField: "Retirer le champ",
         required: "Requis",
         showOnPublicForm: "Afficher sur le formulaire public",
@@ -5767,10 +5842,26 @@ const frenchCopy: BizPilotCopy = {
         visibleOnForm: "Visible sur le formulaire",
       },
       faq: {
+        clearExamples: "Effacer",
         description:
-          "Questions et réponses réutilisables pour le profil de l'entreprise de nettoyage.",
+          "Faits approuvés par le responsable qui aident BizPilot à préparer des brouillons plus sûrs. Chaque brouillon exige toujours votre révision.",
+        examples: [
+          "Apportez-vous les fournitures? | Oui, nous apportons les fournitures de nettoyage courantes, sauf si vous préférez les vôtres.",
+          "Quelles zones desservez-vous? | Nous desservons les zones indiquées sur cette page; partagez votre adresse et nous confirmerons la couverture.",
+          "Offrez-vous le nettoyage de déménagement? | Oui, choisissez ce service et indiquez la taille du logement et les détails d'accès.",
+          "Comment le prix est-il confirmé? | Nous révisons les détails avant de confirmer une soumission; le formulaire ne crée pas un prix final.",
+          "Quand répondrez-vous? | Nous révisons manuellement les nouvelles demandes et répondons après vérification des détails et des disponibilités.",
+        ],
+        guardrailTitle: "Comment BizPilot utilise ces renseignements",
+        guardrails: [
+          "Utilise seulement les réponses enregistrées ici.",
+          "N'invente ni prix ni disponibilité.",
+          "Garde les renseignements manquants visibles.",
+          "Crée un brouillon à réviser, jamais un envoi automatique.",
+        ],
         help: "Une FAQ par ligne. Format: Question? | Réponse",
         label: "FAQ",
+        loadExamples: "Charger 5 exemples",
         placeholder: "Apportez-vous les fournitures? | Oui, nous apportons les fournitures standards.",
         summary: (count) => `${count} FAQ`,
         title: "Instructions IA et FAQ",
@@ -5837,13 +5928,24 @@ const frenchCopy: BizPilotCopy = {
         title: "Confidentialité",
       },
       publicPage: {
+        copyLink: "Copier le lien unique",
         description:
           "Page de soumission partageable générée à partir du slug actif et du formulaire.",
+        placementTitle: "Où le partager",
+        placements: [
+          "Bio Instagram et Facebook ou réponse aux messages",
+          "Message d'accueil ou réponse rapide WhatsApp Business",
+          "Bouton de soumission sur votre site web",
+          "Signature courriel et fiche d'établissement Google",
+        ],
         previewPublicPage: "Aperçu public",
         publicQuoteLink: "Lien public",
         saveBeforePreview:
           "Enregistrez les changements avant de prévisualiser la marque, le consentement, les services et les questions.",
         title: "Lien public et page de soumission",
+        uniqueLinkDescription:
+          "Cette adresse destinée aux clients appartient uniquement à cette entreprise. Enregistrez la configuration avant de la partager.",
+        uniqueLinkTitle: "Lien de soumission de votre entreprise",
       },
       readiness: {
         description: (completed, total) => `${completed}/${total} tâches complétées.`,
@@ -7313,6 +7415,10 @@ const frenchCopy: BizPilotCopy = {
     description:
       "Un court formulaire de soumission. L'entreprise révise chaque demande et répond directement - rien n'est envoyé automatiquement.",
     languageMenuLabel: "Langue de la soumission",
+    ownerUnavailableBody:
+      "Cet aperçu n'est pas encore prêt. Retournez à Configuration, complétez les éléments requis, puis choisissez Enregistrer et prévisualiser pour créer ou réparer la page publique.",
+    ownerUnavailableCta: "Retour à Configuration",
+    ownerUnavailableTitle: "Terminez d'abord la configuration",
     subtitle: "Demande de soumission",
     unavailableBody:
       "Cette page de soumission n'accepte pas de demandes en ce moment. Vérifiez que le lien est complet ou contactez l'entreprise directement si vous avez besoin d'aide pour une demande existante.",

@@ -11,8 +11,9 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Anchored the desktop Actions menu inside the content column so it no longer opens beneath the fixed sidebar.
  * - 2026-07-05: Corrected the More actions control title and accessible label.
  * - 2026-05-19: Matched approved index.html topbar hierarchy: page title left, focused actions right, no global search clutter.
  * - 2026-05-23: Localized route context and actions through the central dashboard copy dictionary.
@@ -43,6 +44,7 @@ type DashboardTopbarProps = Readonly<{
   activeLanguage: string;
   businessId: string;
   businessSlug: string;
+  quoteUrl: string;
   copy: DashboardShellCopy;
   showFounderAdmin?: boolean;
   userLabel: string;
@@ -71,11 +73,15 @@ export function DashboardTopbar({
   activeLanguage,
   businessId,
   businessSlug,
+  quoteUrl,
   copy,
   showFounderAdmin = false,
   userLabel,
 }: DashboardTopbarProps) {
   const quotePath = `/quote/${businessSlug}`;
+  const quotePreviewPath = `${quotePath}?preview=dashboard${
+    activeLanguage === "fr-CA" ? "&language=fr-CA" : ""
+  }`;
   const pathname = usePathname();
 
   return (
@@ -100,15 +106,15 @@ export function DashboardTopbar({
               <MoreIcon />
               <span className="hidden md:inline">{copy.actions.moreActions}</span>
             </summary>
-            <div className="absolute right-0 top-11 z-30 grid w-[min(220px,calc(100vw-1.5rem))] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)]">
+            <div className="absolute right-0 top-11 z-30 grid w-[min(220px,calc(100vw-1.5rem))] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)] lg:left-0 lg:right-auto">
               <CopyButton
                 className="!w-full !justify-start"
                 failedLabel={copy.actions.copyFailed}
                 label={copy.actions.copyQuoteLink}
                 successLabel={copy.actions.copySuccess}
-                value={quotePath}
+                value={quoteUrl}
               />
-              <Link className={`${buttonClass} w-full justify-start`} href={quotePath}>
+              <Link className={`${buttonClass} w-full justify-start`} href={quotePreviewPath}>
                 {copy.actions.previewQuotePage}
               </Link>
               <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/guide">

@@ -9,8 +9,9 @@
  * - docs/dashboard-v4/PHASE_PROGRESS.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.1 guided Quote Setup and quote-page recovery release candidate.
  * - 2026-07-15: Replaced the prior release snapshot with final V2.1 CI, Vercel, and Production evidence.
  * - 2026-07-14: Added final release, CI, Vercel, and Production smoke evidence.
  * - 2026-07-14: Created for Dashboard V4.
@@ -18,6 +19,35 @@
  -->
 
 # Dashboard V4 Changelog
+
+## 2026-07-16 — V4.1 Quote Setup finalization
+
+### Dashboard shell and simplicity
+
+- Corrected the desktop Actions dropdown so it opens inside the content column instead of beneath the fixed left sidebar.
+- Replaced Quote Setup's nested desktop sidebar and repeated right rail with one compact horizontal task bar and one visible task at a time.
+- Added a dedicated Public Link task with the full unique URL, copy action, placement examples, and clear save-before-share guidance.
+
+### Forms, branding, and AI knowledge
+
+- Rebuilt Add Field as an empty-first progressive flow with five cleaning-specific starters, live previews, and advanced-only priority/key controls.
+- Added local PNG/JPG/WebP logo selection with bounded browser resizing, a secure HTTPS alternative, remove/reset controls, and a live brand preview.
+- Applied saved logos and primary/accent colors to the public Quote page instead of limiting branding to the dashboard preview.
+- Added five English and Canadian French FAQ starters plus visible manual-first AI boundaries.
+- Added saved FAQs, services, and service areas to the versioned AI draft context; absent facts remain explicitly unknown.
+
+### Quote-link reliability
+
+- `Save & preview` now persists owner choices, synchronizes the existing public-link/consent/intake dependencies, and then opens an owner-marked preview.
+- Unready owner previews explain the missing setup and return directly to Quote Setup; anonymous unavailable pages preserve the public-safe return to BizPilot.
+- Removed the duplicate logo editor from Business Profile and kept Quote Setup as the single branding authority.
+
+### Candidate verification
+
+- TypeScript, ESLint, and Next.js 16.2.4 production build pass.
+- Unit source/regression suite passes `254/254`.
+- Local production public route smoke passes `46/46`; bilingual responsive smoke passes `20/20`.
+- Real Chrome and authenticated local dashboard browser runs remain environment-gated; no Production data, migration, synthetic customer, or authenticated browser mutation was used.
 
 ## 2026-07-14
 

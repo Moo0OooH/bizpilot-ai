@@ -11,8 +11,9 @@
  * - server/services/ai/error-sanitizer.ts
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-05-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added owner-approved FAQ, service, and service-area knowledge to the bounded AI draft context.
  * - 2026-05-15: Phase 15. Extracted raw OpenAI fetch into server/providers/ai/openai-provider.ts.
  *   Service now depends on the AIProvider boundary and sanitizes persisted error metadata.
  * - 2026-05-13: Enforced the server-only runtime boundary.
@@ -47,6 +48,7 @@ import {
   insertUsageEvent,
   type AiOutputRecord,
 } from "@/server/repositories/ai.repository";
+import { getBusinessConfiguration } from "@/server/repositories/business-configuration.repository";
 import type { BusinessRecord } from "@/server/repositories/businesses.repository";
 import {
   getLeadById,
@@ -162,6 +164,7 @@ function parseAiOutput(record: AiOutputRecord | null): LeadConversionAiOutput | 
 
 function buildPromptContext(input: {
   business: BusinessRecord;
+  businessKnowledge: Awaited<ReturnType<typeof getBusinessConfiguration>>;
   lead: NonNullable<Awaited<ReturnType<typeof getLeadById>>>;
   qualityScore: NonNullable<Awaited<ReturnType<typeof getQualityScoreForLead>>>;
   submissionValues: Awaited<ReturnType<typeof listSubmissionValuesForLead>>;
@@ -171,6 +174,17 @@ function buildPromptContext(input: {
       preferredLanguage: input.business.preferred_language,
       name: input.business.name,
       vertical: "cleaning",
+    },
+    businessKnowledge: {
+      approvedFaqs: input.businessKnowledge.faqs.map((faq) => ({
+        answer: faq.answer,
+        question: faq.question,
+      })),
+      serviceAreas: input.businessKnowledge.serviceAreas.map((area) => area.name),
+      services: input.businessKnowledge.services.map((service) => ({
+        description: service.description,
+        name: service.name,
+      })),
     },
     lead: {
       cityOrServiceArea: input.lead.city_or_service_area,
@@ -267,7 +281,7 @@ export async function generateLeadAiBundle(input: {
   }
 
   const supabase = await createSupabaseServerClient();
-  const [lead, qualityScore] = await Promise.all([
+  const [lead, qualityScore, businessKnowledge] = await Promise.all([
     getLeadById({
       businessId: input.business.id,
       leadId: input.leadId,
@@ -276,6 +290,10 @@ export async function generateLeadAiBundle(input: {
     getQualityScoreForLead({
       businessId: input.business.id,
       leadId: input.leadId,
+      supabase,
+    }),
+    getBusinessConfiguration({
+      businessId: input.business.id,
       supabase,
     }),
   ]);
@@ -292,6 +310,7 @@ export async function generateLeadAiBundle(input: {
   });
   const context = buildPromptContext({
     business: input.business,
+    businessKnowledge,
     lead,
     qualityScore,
     submissionValues,

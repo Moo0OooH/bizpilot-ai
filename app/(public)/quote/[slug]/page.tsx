@@ -12,8 +12,9 @@
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Applied saved business logo and colors to the public quote experience and added owner-aware preview recovery.
  * - 2026-05-06: Created public quote page with dynamic form rendering.
  * - 2026-05-19: Replaced inline single-page form with grouped quote sections for higher completion rate per UX research.
  * - 2026-05-22: Kept all grouped sections visible so public submit does not depend on client-side step navigation.
@@ -46,6 +47,7 @@ import {
 } from "@/lib/quote-attribution";
 import { buildNoIndexMetadata } from "@/lib/seo";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +59,7 @@ type QuotePageProps = Readonly<{
   searchParams?: Promise<{
     error?: string | string[];
     language?: string | string[];
+    preview?: string | string[];
     ref?: string | string[];
     source?: string | string[];
     utm_campaign?: string | string[];
@@ -66,6 +69,53 @@ type QuotePageProps = Readonly<{
 }>;
 
 const appTimeZone = "America/New_York";
+const safeHexColorPattern = /^#[0-9a-fA-F]{6}$/;
+const safeLogoDataPattern = /^data:image\/(?:jpeg|png|webp);base64,[a-zA-Z0-9+/=]+$/;
+
+function readSingleQueryValue(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+function isSafeLogoSource(value: string | null | undefined): value is string {
+  if (!value) return false;
+  if (value.length <= 360_000 && safeLogoDataPattern.test(value)) return true;
+
+  try {
+    return value.length <= 2_048 && new URL(value).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function contrastColor(hexColor: string): "#ffffff" | "#0f172a" {
+  const red = Number.parseInt(hexColor.slice(1, 3), 16);
+  const green = Number.parseInt(hexColor.slice(3, 5), 16);
+  const blue = Number.parseInt(hexColor.slice(5, 7), 16);
+  const perceivedBrightness = (red * 299 + green * 587 + blue * 114) / 1000;
+  return perceivedBrightness >= 160 ? "#0f172a" : "#ffffff";
+}
+
+type PublicBranding = NonNullable<
+  Awaited<ReturnType<typeof getPublicIntakePage>>
+>["branding"];
+
+function getBrandStyle(branding: PublicBranding): CSSProperties {
+  const primary = safeHexColorPattern.test(branding?.primary_color ?? "")
+    ? branding?.primary_color ?? "#3f5cff"
+    : "#3f5cff";
+  const accent = safeHexColorPattern.test(branding?.accent_color ?? "")
+    ? branding?.accent_color ?? "#0f8f83"
+    : "#0f8f83";
+
+  return {
+    "--focus-ring": accent,
+    "--link": primary,
+    "--primary": primary,
+    "--primary-contrast": contrastColor(primary),
+    "--primary-hover": primary,
+    "--success": accent,
+  } as CSSProperties;
+}
 
 function readQuoteLanguage(query: Awaited<QuotePageProps["searchParams"]>) {
   const requestedLanguage = Array.isArray(query?.language)
@@ -121,19 +171,48 @@ export default async function QuotePage({
       : null;
 
   if (!page) {
-    return <QuoteUnavailable language={activeLanguage} pathname={`/quote/${slug}`} />;
+    return (
+      <QuoteUnavailable
+        language={activeLanguage}
+        ownerPreview={readSingleQueryValue(query?.preview) === "dashboard"}
+        pathname={`/quote/${slug}`}
+      />
+    );
   }
 
   const todayDate = todayDateString();
+  const logoUrl = isSafeLogoSource(page.branding?.logo_url)
+    ? page.branding.logo_url
+    : null;
 
   return (
-    <main className="bp-page public-site min-h-svh bg-[var(--canvas)] text-[var(--text-strong)]">
+    <main
+      className="bp-page public-site min-h-svh bg-[var(--canvas)] text-[var(--text-strong)]"
+      style={getBrandStyle(page.branding)}
+    >
       <section className="border-b border-[var(--border-default)] px-4 py-5 sm:px-8 sm:py-6">
         <div className="mx-auto w-full max-w-[780px]">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-[13px] font-black uppercase tracking-[0.14em] text-[var(--primary)]">
-              {page.publicLink.display_name}
-            </p>
+            <div className="flex min-w-0 items-center gap-3">
+              {logoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element -- Business logos may be bounded local data images or owner-provided HTTPS assets.
+                <img
+                  alt=""
+                  className="h-11 w-11 shrink-0 rounded-[12px] border border-[var(--border-default)] bg-white object-contain p-1.5 shadow-sm"
+                  src={logoUrl}
+                />
+              ) : (
+                <span
+                  aria-hidden
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-[var(--primary)] text-[13px] font-black text-[var(--primary-contrast)] shadow-sm"
+                >
+                  {page.publicLink.display_name.slice(0, 2).toUpperCase()}
+                </span>
+              )}
+              <p className="truncate text-[13px] font-black uppercase tracking-[0.12em] text-[var(--primary)]">
+                {page.publicLink.display_name}
+              </p>
+            </div>
             <nav
               aria-label={copy.languageMenuLabel}
               className="inline-flex w-fit rounded-[12px] border p-1"
