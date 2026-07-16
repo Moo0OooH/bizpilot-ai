@@ -10,8 +10,9 @@
  * - docs/readiness/current-status.json
  * Author: MoOoH
  * Created: 2026-07-15
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Confirmed the Website V4 authority now contains the final public design-polish release evidence.
  * - 2026-07-15: Replaced V2.0 with the consolidated whole-project V2.1 authority hierarchy.
  * ============================================================
  -->

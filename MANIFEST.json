@@ -1,9 +1,9 @@
 {
   "project": "BizPilot AI",
   "version": "v2.1",
-  "lastUpdated": "2026-07-15",
+  "lastUpdated": "2026-07-16",
   "branch": "main",
-  "status": "Website V4, Dashboard V4, bilingual system states, and Documentation V2.1 implemented; authenticated synthetic proof, real customer data, and paid pilot remain gated.",
+  "status": "Website V4 final design polish, Dashboard V4, bilingual system states, and Documentation V2.1 implemented; authenticated synthetic proof, real customer data, and paid pilot remain gated.",
   "productBoundary": "Bilingual Smart Intake and owner-reviewed reply preparation for service businesses; cleaning is the first complete pilot vertical; no autonomous send, booking, pricing, payment, direct inbox integration, or full CRM claim.",
   "sourceOfTruth": [
     "docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md",
@@ -19,7 +19,7 @@
     "docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md"
   ],
   "currentReadiness": {
-    "codeRelease": "V2.1 release SHA e922485 passed lint, typecheck, 249/249 unit tests, Next.js production build, GitHub CI run 29390428140, Vercel target FMTLX7SnzUMBsPLsf1iKgeNbPyvi, Production public 46/46, responsive 20/20, final UI matrix, and inactive Quote GET 2/2",
+    "codeRelease": "Current public release SHA c78596b passed lint, typecheck, 249/249 unit tests, Next.js 16.2.4 production build, GitHub CI run 29517118330, Vercel target CbDDUpqxCVMoG3L8hTgGRoymvi5m, Production public 46/46, responsive 20/20, final UI matrix, managed-browser EN/fr-CA design audit, and inactive Quote GET 2/2",
     "repositoryHygiene": "local main is clean with one worktree; Prompt 00 covers 11 merged and 4 unmerged pre-existing remote legacy branches that require owner-authenticated retirement",
     "authenticatedDashboardQA": "blocked until an approved local/disposable synthetic auth target is available",
     "productionDatabase": "unchanged by Dashboard V4",

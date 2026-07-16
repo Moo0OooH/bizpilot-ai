@@ -12,8 +12,9 @@
  * - docs/project-v2/CURRENT.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Recorded the final Website V4 typography, hierarchy, CTA, legal-shell, CI, Vercel, and managed-browser release evidence.
  * - 2026-07-15: Recorded the pre-existing remote legacy-branch inventory and least-destructive owner-authenticated retirement gate.
  * - 2026-07-15: Closed the V2.1 push, CI, Vercel, HTTPS, and Production public read-only release with exact evidence.
  * - 2026-07-15: Recorded the final V2.1 local verification, documentation cleanup, safe quote-read fallback, and unchanged external gates.
@@ -23,7 +24,7 @@
  * ============================================================
  -->
 
-# BizPilot AI Source of Truth — Updated 2026-07-15
+# BizPilot AI Source of Truth — Updated 2026-07-16
 
 ## Executive status
 
@@ -82,11 +83,11 @@ Full detail: `docs/dashboard-v4/CURRENT.md` and `docs/dashboard-v4/CHANGELOG.md`
 
 The final verification ledger is maintained in `docs/dashboard-v4/PHASE_PROGRESS.md` and updated only with commands actually run on the final tree.
 
-V2.1 release commit `e922485fff985dfe03a508b1d2c8a5794db9d3cb` is on `main` with the exact locally verified tree. GitHub CI run `29390428140` completed successfully, and Vercel reported success at deployment target `FMTLX7SnzUMBsPLsf1iKgeNbPyvi`.
+Current public release commit `c78596b1f1530ff3586b9b076702822b0b711802` is on `main` with the exact locally verified tree. GitHub CI run `29517118330` completed successfully, and Vercel reported success at deployment target `CbDDUpqxCVMoG3L8hTgGRoymvi5m`.
 
 The release passed ESLint with zero warnings, TypeScript, `249/249` unit tests, Next.js 16.2.4 production build, local and Production public route `46/46`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive dynamic Quote GET `2/2` in EN/fr-CA. The Production route set directly covers every Auth page, base/dynamic unavailable Quote states, invalid Quote-success recovery, bilingual 404, localized global error source contract, redirects, metadata, sitemap, robots, locale-preserving links, and light/dark contracts. HTTPS responded successfully with CSP, HSTS, frame, content-type, referrer, and permissions controls present.
 
-Environment fact: the local workspace does not currently contain `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, or `DATABASE_URL`. The safe classifier explicitly blocked Dashboard/Auth and RLS-required tests. Chrome/Chromium is also absent, so real browser interaction smoke is gated. These are honest environment gates, not permission to use managed Production for synthetic writes.
+Environment fact: the local workspace does not currently contain `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, or `DATABASE_URL`. The safe classifier explicitly blocked Dashboard/Auth and RLS-required tests. Chrome/Chromium is absent, so the repository's standalone local browser runner remains gated; the public Production site was instead verified read-only through the managed browser across all ten routes in EN/fr-CA, with no authenticated or data-writing action. These are honest environment gates, not permission to use managed Production for synthetic writes.
 
 No Production database change, migration, cleanup, user deletion, or test-data insertion was performed in this release.
 
