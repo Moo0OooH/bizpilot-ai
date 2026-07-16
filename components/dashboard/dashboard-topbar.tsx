@@ -5,7 +5,7 @@
  * File: components/dashboard/dashboard-topbar.tsx
  * Project: BizPilot AI
  * Description: Renders the protected workspace topbar.
- * Role: Provides compact quote-link, help, language, theme, account, and founder utilities without duplicating route headings.
+ * Role: Provides centered, resilient workspace navigation plus compact quote-link, language, theme, account, and founder utilities.
  * Related:
  * - components/dashboard/dashboard-shell.tsx
  * - server/actions/auth.actions.ts
@@ -13,6 +13,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Replaced the fragile client-managed desktop disclosure with centered native route navigation and full-page protected-route transitions.
  * - 2026-07-16: Moved desktop utilities to the right, restored the complete owner route menu, closed it after navigation, and disabled protected-route prefetch pressure.
  * - 2026-07-16: Anchored the desktop Actions menu inside the content column so it no longer opens beneath the fixed sidebar.
  * - 2026-07-05: Corrected the More actions control title and accessible label.
@@ -30,9 +31,7 @@
 
 import type { DashboardShellCopy } from "./dashboard-shell";
 import { languageShortLabels, supportedLanguages } from "@/lib/i18n/language";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef } from "react";
 
 import { signOutAction } from "@/server/actions/auth.actions";
 import { updateWorkspaceLanguageAction } from "@/server/actions/business-configuration.actions";
@@ -85,23 +84,26 @@ export function DashboardTopbar({
     activeLanguage === "fr-CA" ? "&language=fr-CA" : ""
   }`;
   const pathname = usePathname();
-  const actionsMenuRef = useRef<HTMLDetailsElement>(null);
+  const routes = [
+    { href: "/dashboard", label: copy.nav.overview },
+    { href: "/dashboard/leads", label: copy.nav.leads },
+    { href: "/dashboard/configuration", label: copy.nav.quoteSetup },
+    { href: "/dashboard/business-profile", label: copy.nav.businessProfile },
+    { href: "/dashboard/guide", label: copy.nav.guide },
+    { href: "/dashboard/settings", label: copy.nav.settings },
+  ] as const;
 
-  useEffect(() => {
-    if (actionsMenuRef.current) {
-      actionsMenuRef.current.open = false;
+  function isActiveRoute(href: string): boolean {
+    if (href === "/dashboard") {
+      return pathname === href;
     }
-  }, [pathname]);
 
-  function closeActionsMenu() {
-    if (actionsMenuRef.current) {
-      actionsMenuRef.current.open = false;
-    }
+    return pathname.startsWith(href);
   }
 
   return (
     <header className="dashboard-topbar sticky top-0 z-20 shrink-0 border-b backdrop-blur">
-      <div className="flex min-w-0 items-center justify-between gap-2 px-3 py-2 sm:min-h-[56px] sm:gap-3 sm:px-5 md:px-6 lg:px-5">
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:min-h-[56px] sm:gap-3 sm:px-5 md:px-6 lg:px-5 xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
         <div className="flex min-w-0 items-center gap-2 lg:hidden">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--dash-primary)] text-sm font-black text-white">
             B
@@ -111,8 +113,32 @@ export function DashboardTopbar({
           </span>
         </div>
 
+        <nav
+          aria-label={copy.nav.groupCommand}
+          className="hidden min-w-0 items-center justify-center gap-1 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 xl:flex"
+        >
+          {routes.map((route) => {
+            const isActive = isActiveRoute(route.href);
+
+            return (
+              <a
+                aria-current={isActive ? "page" : undefined}
+                className={
+                  isActive
+                    ? "inline-flex min-h-9 items-center justify-center whitespace-nowrap rounded-lg bg-[var(--dash-primary-soft)] px-2.5 text-[12px] font-black text-[var(--dash-primary-strong)]"
+                    : "inline-flex min-h-9 items-center justify-center whitespace-nowrap rounded-lg px-2.5 text-[12px] font-bold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
+                }
+                href={route.href}
+                key={route.href}
+              >
+                {route.label}
+              </a>
+            );
+          })}
+        </nav>
+
         <div className="ml-auto flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
-          <details className="group relative" ref={actionsMenuRef}>
+          <details className="group relative xl:hidden">
             <summary
               aria-label={copy.actions.moreActions}
               className={`${buttonClass} list-none cursor-pointer [&::-webkit-details-marker]:hidden`}
@@ -129,42 +155,27 @@ export function DashboardTopbar({
                 successLabel={copy.actions.copySuccess}
                 value={quoteUrl}
               />
-              <Link
+              <a
                 className={`${buttonClass} w-full justify-start`}
                 href={quotePreviewPath}
-                onClick={closeActionsMenu}
-                prefetch={false}
               >
                 {copy.actions.previewQuotePage}
-              </Link>
+              </a>
               <div className="my-0.5 border-t border-[var(--dash-border)]" />
-              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard" onClick={closeActionsMenu} prefetch={false}>
-                {copy.nav.overview}
-              </Link>
-              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard/leads" onClick={closeActionsMenu} prefetch={false}>
-                {copy.nav.leads}
-              </Link>
-              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard/configuration" onClick={closeActionsMenu} prefetch={false}>
-                {copy.nav.quoteSetup}
-              </Link>
-              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard/business-profile" onClick={closeActionsMenu} prefetch={false}>
-                {copy.nav.businessProfile}
-              </Link>
-              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard/guide" onClick={closeActionsMenu} prefetch={false}>
-                {copy.nav.guide}
-              </Link>
-              <Link
-                className={`${ghostButtonClass} w-full justify-start`}
-                href="/dashboard/settings"
-                onClick={closeActionsMenu}
-                prefetch={false}
-              >
-                {copy.nav.settings}
-              </Link>
+              {routes.map((route) => (
+                <a
+                  aria-current={isActiveRoute(route.href) ? "page" : undefined}
+                  className={`${ghostButtonClass} w-full justify-start`}
+                  href={route.href}
+                  key={route.href}
+                >
+                  {route.label}
+                </a>
+              ))}
               {showFounderAdmin ? (
-                <Link className={`${ghostButtonClass} w-full justify-start`} href="/admin" onClick={closeActionsMenu} prefetch={false}>
+                <a className={`${ghostButtonClass} w-full justify-start`} href="/admin">
                   {copy.pages.founder.title}
-                </Link>
+                </a>
               ) : null}
             </div>
           </details>
@@ -194,7 +205,7 @@ export function DashboardTopbar({
           <div className="hidden sm:block">
             <DashboardThemeSelector />
           </div>
-          <div className="hidden min-w-0 max-w-[190px] rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-3 py-2 text-[13px] font-bold text-[var(--dash-text)] xl:block">
+          <div className="hidden min-w-0 max-w-[190px] rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-3 py-2 text-[13px] font-bold text-[var(--dash-text)] 2xl:block">
             <span className="block truncate">{activeBusinessName}</span>
           </div>
           <form action={signOutAction}>

@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.3 centered native navigation and request-scoped protected data-read contract.
  * - 2026-07-16: Closed V4.2 on main with successful CI/Vercel and Production public read-only acceptance evidence.
  * - 2026-07-16: Added the V4.2 protected-navigation, first-run Guide, and founder Business Operations polish contract.
  * - 2026-07-16: Recorded the V4.1 main release, successful CI/Vercel rollout, and Production read-only acceptance evidence.
@@ -26,7 +27,7 @@
 
 ## Outcome
 
-Dashboard V4.2 completes the protected-navigation and first-run usability polish after the guided Quote Setup release. It keeps every approved owner/founder capability while making the Actions menu reliable, dashboard route recovery explicit, the Guide useful to a first-time owner, and Business Operations progressively disclosed instead of fully expanded.
+Dashboard V4.3 repairs the protected runtime regression reported after V4.2. It keeps every approved owner/founder capability while replacing fragile client-managed route transitions with centered native navigation and sharing one authenticated user/workspace read across the protected layout and route render.
 
 ## Jobs to be done
 
@@ -56,8 +57,9 @@ Quote Setup uses one horizontal task bar with seven mounted panels: Overview, Pu
 - Contextual help appears only when needed or inside a disclosure.
 - Mobile navigation includes Settings and respects safe-area padding.
 - Menus stay within the viewport; pages avoid nested-scroll cards.
-- The desktop Actions menu opens into the content column and never beneath the fixed sidebar.
-- The Actions toolbar remains right-aligned on desktop, closes after navigation, and contains every protected owner destination. Protected links opt out of automatic prefetch so inactive database-heavy routes are not requested in the background.
+- Wide screens expose the complete owner route bar in the center of the topbar; tablet and mobile keep a compact Actions disclosure.
+- Protected topbar, sidebar, and mobile destinations use native full-page transitions. A stale client router or failed React Server Component transition must not trap the owner.
+- Current-user and business-workspace reads are memoized per server render so layout and page do not repeat the same authenticated queries.
 - A caught dashboard route error offers a full reload plus native links to Overview, Quote Setup, and Guide; one failed client transition must not trap the owner.
 - Add Field starts empty, offers cleaning-specific starters, previews customer-facing output, and hides priority/key controls under Advanced settings.
 - Branding accepts a bounded PNG/JPG/WebP selected from the owner device or a secure HTTPS URL, provides a live preview, and applies the saved logo/colors to the public quote page.
@@ -84,12 +86,10 @@ English and Canadian French use the central `getBizPilotCopy` dictionary. Route/
 
 ## Data and security posture
 
-Dashboard V4.2 applies presentation, navigation, recovery, documentation, and progressive-disclosure changes only. It adds no migration, external upload service, autonomous integration, real-customer-data access, or paid-pilot approval. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
+Dashboard V4.3 applies protected navigation and request-read reliability changes only. It adds no migration, external upload service, autonomous integration, real-customer-data access, or paid-pilot approval. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
 
 ## Verification status
 
-Dashboard V4.2 release SHA `5d9ce9bfc01cc57630282a08cdc1ec265c72fdc4` is on `main`. GitHub CI run `29537073204` and Vercel target `4YFtU4y2aAMAUxKLNyHevhKGDccJ` succeeded. Production read-only acceptance passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA. No authenticated submission, database mutation, migration, or synthetic Production data was used.
-
-Source contracts, localization shape, TypeScript, lint, unit tests, production build, and bilingual public/responsive smoke are complete. Authenticated browser smoke additionally requires an approved local/synthetic auth target; absence of that target remains an environment gate and was not silently skipped or run against Production.
+The V4.3 candidate passes source contracts, localization shape, TypeScript, lint, all `256/256` unit tests, and the Next.js 16.2.4 production build. Main/CI/Vercel evidence is recorded after publication. Authenticated browser smoke still requires an approved local/synthetic auth target; absence of that target is not silently presented as a passed authenticated test.
 
 See `PHASE_PROGRESS.md` for exact completion evidence and remaining gates.

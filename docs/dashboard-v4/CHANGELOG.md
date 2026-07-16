@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.3 protected dashboard runtime and centered-navigation repair candidate.
  * - 2026-07-16: Closed the V4.2 main release with successful CI, Vercel, and Production read-only evidence.
  * - 2026-07-16: Added the V4.2 protected navigation, owner onboarding Guide, and progressive founder operations polish.
  * - 2026-07-16: Closed the V4.1 main release with successful CI, Vercel, and Production read-only evidence.
@@ -22,6 +23,21 @@
  -->
 
 # Dashboard V4 Changelog
+
+## 2026-07-16 — V4.3 protected runtime recovery
+
+### Dashboard loading and navigation
+
+- Removed the client-managed desktop Actions disclosure introduced in V4.2 and replaced it with a centered, always-visible owner route bar on wide screens.
+- Kept a compact mobile/tablet Actions disclosure while moving every protected route destination to a native full-page transition, so a stale App Router state cannot trap the owner.
+- Applied the same native transition behavior to the desktop sidebar and mobile task bar.
+- Memoized the authenticated user and tenant workspace reads per server render, eliminating duplicate session and tenant queries between the protected layout and route page.
+
+### Bilingual and release verification
+
+- The centered and compact navigation both consume the shared EN/fr-CA owner dictionary and preserve the current workspace language action.
+- ESLint, TypeScript, all `256/256` unit/source tests, and the Next.js 16.2.4 production build pass on the candidate tree.
+- No route, migration, tenant data, submission, or Production database state was added or changed.
 
 ## 2026-07-16 — V4.2 protected navigation and first-run polish
 

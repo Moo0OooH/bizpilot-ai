@@ -9,8 +9,9 @@
  * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Memoized the current-user read per server render so protected layouts and pages share one verified session lookup.
  * - 2026-07-05: Added login-only Google OAuth redirect support without tenant bootstrap.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created Phase 2 Supabase Auth service.
@@ -20,6 +21,8 @@
  */
 
 import "server-only";
+
+import { cache } from "react";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -242,7 +245,7 @@ export async function updatePasswordFromReset(input: {
   }
 }
 
-export async function getCurrentUser(): Promise<AuthUser | null> {
+export const getCurrentUser = cache(async (): Promise<AuthUser | null> => {
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },
@@ -254,7 +257,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   }
 
   return toAuthUser(user);
-}
+});
 
 export async function signOut(): Promise<void> {
   const supabase = await createSupabaseServerClient();

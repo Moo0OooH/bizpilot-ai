@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.3 centered native navigation, shared protected reads, and local 256/256/build verification record.
  * - 2026-07-16: Closed V4.2 on main with CI run 29537073204, successful Vercel rollout, and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
  * - 2026-07-16: Added the V4.2 navigation recovery, expanded first-run Guide, progressive Business Operations, and 256/256 candidate verification record.
  * - 2026-07-16: Closed Dashboard V4.1 on main with CI run 29524786852, successful Vercel rollout, and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
@@ -35,8 +36,11 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | Overview decision hierarchy | DONE | One recommended action, compact readiness, three daily priorities, four metrics, five-row queue; redundant charts/rails removed. |
 | P0 | Lead queue and detail workflow | DONE | Focus guidance only when requested; no repeated rules rail; real editable draft; non-persisted scratchpad and duplicate identity card removed. |
 | P0 | Quote Setup and Settings scope | DONE | Quote Setup uses seven progressive owner tasks including an explicit Public Link task; duplicate identity/notification/readiness rails remain removed; Settings remains focused on preferences plus advanced disclosures. |
-| P0 | Dashboard Actions menu placement | DONE | Desktop menu opens to the right inside the content column; mobile remains right-aligned and viewport bounded. |
-| P0 | Protected navigation and recovery hardening | DONE | Desktop toolbar is right-aligned; complete owner menu closes after navigation; protected prefetch is disabled; native error recovery reaches Overview, Quote Setup, and Guide. |
+| P0 | Dashboard menu placement | DONE | Wide-screen owner routes are centered; compact Actions stays right-aligned and viewport-bounded on tablet/mobile. |
+| P0 | Protected navigation and recovery hardening | DONE | Complete owner navigation is centered on wide screens and compact below that; native route transitions and error recovery prevent client-router traps. |
+| P0 | V4.3 protected runtime regression repair | DONE | Centered wide-screen route bar; compact tablet/mobile menu; native topbar/sidebar/mobile transitions; current-user and workspace reads shared per server render. |
+| P0 | V4.3 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit: 256/256; Next.js 16.2.4 production build: PASS. |
+| P0 | V4.3 main push, CI, and Vercel rollout | GATED | Candidate is locally complete; exact SHA and remote deployment evidence are recorded after direct `main` publication. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
 | P0 | Branding and local logo workflow | DONE | Bounded PNG/JPG/WebP browser resize, HTTPS alternative, remove/reset actions, live preview, server validation, and public Quote logo/color application implemented. |
@@ -70,8 +74,9 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 This section is updated only with commands actually run on the final working tree.
 
 - TypeScript: PASS.
+- V4.3 centered/native protected navigation and shared-read contracts: PASS.
 - V4 targeted source contracts: PASS.
-- Full unit suite: PASS, 256/256 for the V4.2 candidate.
+- Full unit suite: PASS, 256/256 for the V4.3 candidate.
 - ESLint: PASS, zero warnings.
 - Next.js 16.2.4 production build: PASS.
 - V4.2 local production public route smoke: PASS, 46/46.
@@ -102,4 +107,4 @@ This section is updated only with commands actually run on the final working tre
 
 ## Ideal completion definition
 
-The Dashboard V4.2 code and public read-only release is complete. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
+The Dashboard V4.3 candidate is source-complete. Publication, CI/Vercel, and an approved authenticated smoke require their own evidence before the protected runtime repair is called Production-verified. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.

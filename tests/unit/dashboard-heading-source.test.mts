@@ -12,6 +12,7 @@
  * Created: 2026-06-27
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Aligned the heading guard with the centered resilient dashboard topbar role.
  * - 2026-07-16: Aligned the mobile menu containment guard with the expanded owner Actions menu.
  * - 2026-07-14: Aligned containment guards with the compact V4 topbar and decision-first overview.
  * ============================================================
@@ -34,7 +35,7 @@ describe("dashboard heading hierarchy", () => {
 
     assert.equal(overviewSource.includes("<h1 className="), true);
     assert.equal(topbarSource.includes("<h1"), false);
-    assert.equal(topbarSource.includes("duplicating route headings"), true);
+    assert.equal(topbarSource.includes("centered, resilient workspace navigation"), true);
   });
 
   it("keeps mobile lead cards from widening on long contact text", () => {

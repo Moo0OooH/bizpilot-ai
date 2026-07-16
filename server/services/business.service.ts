@@ -12,6 +12,7 @@
  * Created: 2026-05-04
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Memoized workspace reads by user per server render to remove duplicate protected-route tenant queries.
  * - 2026-07-16: Seeded five language-aware owner-approved FAQ examples for new cleaning workspaces.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-04: Created Phase 2 business foundation service.
@@ -21,6 +22,8 @@
  */
 
 import "server-only";
+
+import { cache } from "react";
 
 import {
   createSupabaseServerClient,
@@ -449,15 +452,15 @@ export async function recoverWorkspaceAccess(input: {
   return business;
 }
 
-export async function getBusinessWorkspace(input: {
-  userId: string;
-}): Promise<BusinessWorkspace> {
+const getBusinessWorkspaceByUserId = cache(async (
+  userId: string,
+): Promise<BusinessWorkspace> => {
   const supabase = await createSupabaseServerClient();
   const [businesses, memberships] = await Promise.all([
     listBusinessesForUser({ supabase }),
     listMembershipsForUser({
       supabase,
-      userId: input.userId,
+      userId,
     }),
   ]);
 
@@ -465,6 +468,12 @@ export async function getBusinessWorkspace(input: {
     businesses,
     memberships,
   };
+});
+
+export async function getBusinessWorkspace(input: {
+  userId: string;
+}): Promise<BusinessWorkspace> {
+  return getBusinessWorkspaceByUserId(input.userId);
 }
 
 export async function getWorkspaceAccessSummary(input: {

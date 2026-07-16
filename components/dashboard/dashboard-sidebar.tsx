@@ -5,7 +5,7 @@
  * File: components/dashboard/dashboard-sidebar.tsx
  * Project: BizPilot AI
  * Description: Renders the shared protected dashboard sidebar navigation.
- * Role: Provides five task-based owner destinations plus a secondary operating-guide link.
+ * Role: Provides five task-based owner destinations plus a secondary operating-guide link with resilient full-page transitions.
  * Related:
  * - components/dashboard/dashboard-shell.tsx
  * - app/(dashboard)/layout.tsx
@@ -13,6 +13,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Switched protected route destinations to native navigation so a stale client router cannot trap an owner on the current page.
  * - 2026-07-16: Disabled automatic prefetch on protected navigation so first-load database routes open only when selected.
  * - 2026-07-05: Added aria-current states for desktop and mobile dashboard navigation links.
  * - 2026-05-19: Matched approved index.html sidebar rhythm, brand block, active states, mobile nav, and quote-link readiness footer.
@@ -24,7 +25,6 @@
  * ============================================================
  */
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import type { DashboardShellCopy } from "./dashboard-shell";
@@ -195,7 +195,7 @@ function MobileNavLink({
   const isActive = item.match?.(pathname) ?? pathname === item.href;
 
   return (
-    <Link
+    <a
       aria-current={isActive ? "page" : undefined}
       className={
         isActive
@@ -203,13 +203,12 @@ function MobileNavLink({
           : "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 text-[var(--dash-text-muted)]"
       }
       href={item.href}
-      prefetch={false}
     >
       <DashboardNavIcon name={item.icon} />
       <span className="max-w-full truncate text-[10px] font-bold leading-none">
         {item.label}
       </span>
-    </Link>
+    </a>
   );
 }
 
@@ -226,10 +225,9 @@ export function DashboardSidebar({
   return (
     <>
       <aside className="dashboard-sidebar sticky top-0 hidden h-svh w-[224px] border-r px-3.5 py-4 lg:flex lg:flex-col">
-        <Link
+        <a
           className="flex items-center gap-3 border-b border-[var(--dash-border)] px-2 pb-4"
           href="/dashboard"
-          prefetch={false}
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--dash-primary)] text-[16px] font-black text-white">
             B
@@ -242,7 +240,7 @@ export function DashboardSidebar({
               {copy.nav.workspaceSubtitle}
             </span>
           </span>
-        </Link>
+        </a>
 
         <nav className="mt-4 flex-1 space-y-4 text-[13px]">
           {navigation.map((group) => (
@@ -256,16 +254,15 @@ export function DashboardSidebar({
                     item.match?.(pathname) ?? pathname === item.href;
 
                   return (
-                    <Link
+                    <a
                       aria-current={isActive ? "page" : undefined}
                       className={navClass(isActive)}
                       href={item.href}
                       key={item.href}
-                      prefetch={false}
                     >
                       <NavIcon active={isActive} name={item.icon} />
                       <span className="truncate">{item.label}</span>
-                    </Link>
+                    </a>
                   );
                 })}
               </div>
@@ -274,15 +271,14 @@ export function DashboardSidebar({
         </nav>
 
         <div className="mt-auto grid gap-3">
-          <Link
+          <a
             aria-current={pathname === "/dashboard/guide" ? "page" : undefined}
             className={navClass(pathname === "/dashboard/guide")}
             href="/dashboard/guide"
-            prefetch={false}
           >
             <NavIcon active={pathname === "/dashboard/guide"} name="guide" />
             <span className="truncate">{copy.nav.guide}</span>
-          </Link>
+          </a>
           <div
             className="flex items-center gap-2.5 border-t border-[var(--dash-border)] px-2 pt-3 text-[12px]"
             title={userLabel}
