@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Recorded the V4.1 main release, successful CI/Vercel rollout, and Production read-only acceptance evidence.
  * - 2026-07-16: Added the V4.1 guided Quote Setup, safe local branding, approved AI knowledge, unique-link workflow, and owner preview recovery contract.
  * - 2026-07-14: Established the task-first Dashboard V4 contract and superseded the V3/P12–P28 dashboard reports.
  * ============================================================
@@ -81,6 +82,8 @@ Dashboard V4.1 applies presentation, validation, and existing-record synchroniza
 
 ## Verification status
 
-Source contracts, localization shape, TypeScript, lint, unit tests, production build, and bilingual public/responsive smoke are required for completion. Authenticated browser smoke additionally requires an approved local/synthetic auth target; absence of that target must be reported as an environment gate rather than silently skipped or run against Production.
+Dashboard V4.1 release SHA `510043f8f5d6985e26aa5db52989f6b6806b009c` is on `main`. GitHub CI run `29524786852` and Vercel target `9dK6XxKYcGM6TiMHBng2DwDY4pRZ` succeeded. Production read-only acceptance passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA.
+
+Source contracts, localization shape, TypeScript, lint, unit tests, production build, and bilingual public/responsive smoke are complete. Authenticated browser smoke additionally requires an approved local/synthetic auth target; absence of that target remains an environment gate and was not silently skipped or run against Production.
 
 See `PHASE_PROGRESS.md` for exact completion evidence and remaining gates.

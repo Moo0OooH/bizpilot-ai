@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed the V4.1 main release with successful CI, Vercel, and Production read-only evidence.
  * - 2026-07-16: Added the V4.1 guided Quote Setup and quote-page recovery release candidate.
  * - 2026-07-15: Replaced the prior release snapshot with final V2.1 CI, Vercel, and Production evidence.
  * - 2026-07-14: Added final release, CI, Vercel, and Production smoke evidence.
@@ -42,11 +43,14 @@
 - Unready owner previews explain the missing setup and return directly to Quote Setup; anonymous unavailable pages preserve the public-safe return to BizPilot.
 - Removed the duplicate logo editor from Business Profile and kept Quote Setup as the single branding authority.
 
-### Candidate verification
+### Release verification
 
 - TypeScript, ESLint, and Next.js 16.2.4 production build pass.
 - Unit source/regression suite passes `254/254`.
 - Local production public route smoke passes `46/46`; bilingual responsive smoke passes `20/20`.
+- Exact tested tree was published directly to `main` as release SHA `510043f8f5d6985e26aa5db52989f6b6806b009c`, without an extra branch or PR.
+- GitHub CI run `29524786852` and Vercel target `9dK6XxKYcGM6TiMHBng2DwDY4pRZ` succeeded.
+- Production passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive `bizpilot0wner` Quote GET `2/2` in EN/fr-CA.
 - Real Chrome and authenticated local dashboard browser runs remain environment-gated; no Production data, migration, synthetic customer, or authenticated browser mutation was used.
 
 ## 2026-07-14
