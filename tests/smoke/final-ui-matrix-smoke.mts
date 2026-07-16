@@ -10,9 +10,10 @@
  * - tests/smoke/quote-route-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-16
  * Change Log:
  * - 2026-07-13: Reduced the UI matrix to the ten retained V3 routes and their typed bilingual metadata.
+ * - 2026-07-16: Updated visual-hook coverage for the focused five-section homepage renderer.
  * - 2026-07-13: Migrated homepage metadata and visual-hook checks to the seven-section V3 renderer.
  * - 2026-06-21: Added light/dark theme matrix, visual markers, and en-XA fallback checks.
  * - 2026-06-21: Added the dedicated FAQ route to localized metadata coverage.
@@ -317,7 +318,7 @@ function checkPublicRoute(
       name: `${locale} ${theme} home old workflow duplication removed`,
       pass:
         !visibleHtml.includes("homepage-workflow-grid") &&
-        countOccurrences(visibleHtml, "data-v3-section=") === 7,
+        countOccurrences(visibleHtml, "data-v3-section=") === 5,
     });
   }
 

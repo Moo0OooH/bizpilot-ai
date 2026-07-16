@@ -9,9 +9,10 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
  * - 2026-07-15: Added the bilingual global error copy namespace to the explicit dictionary contract.
+ * - 2026-07-16: Aligned CTA-truth, grouped-FAQ, and focused-home assertions with the final public polish.
  * - 2026-07-13: Migrated retained-route, FAQ, pilot, and fr-CA shell guards to the completed Website V3 contract.
  * - 2026-07-13: Migrated the homepage dictionary guard to the typed Website V3 specification.
  * - 2026-07-12: Updated pilot conversion assertions for the manual email-draft path.
@@ -755,7 +756,7 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchSpec.nav.demo, "Démo");
     assert.equal(frenchSpec.nav.privacy, "Confidentialité");
     assert.equal(frenchSpec.nav.security, "Sécurité");
-    assert.equal(frenchSpec.nav.startShort, "Pilote");
+    assert.equal(frenchSpec.nav.startShort, "Préparer");
     assert.match(frenchSpec.routes["/demo"].hero.title, /réponse prête à valider/i);
 
     for (const forbidden of [
@@ -1086,7 +1087,8 @@ describe("BizPilot language copy", () => {
     assert.equal(homepageSource.includes("spec.faqItems.map"), false);
     assert.equal(faqSource.includes("PublicV3Page"), true);
     assert.equal(faqSource.includes("getPublicV3Spec"), true);
-    assert.equal(sharedPageSource.includes("spec.faqItems.map"), true);
+    assert.equal(sharedPageSource.includes("spec.faqGroups.map"), true);
+    assert.equal(english.faqGroups.length, 3);
     assert.equal(readFileSync("proxy.ts", "utf8").includes('"/faq"'), true);
   });
 

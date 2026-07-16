@@ -10,8 +10,9 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added a focused legal shell, raised microcopy sizing, and aligned every pilot link with the copy-only request anchor.
  * - 2026-07-13: Removed unused V2 hero and next-step primitives after the final V3 route migration.
  * - 2026-07-13: Darkened blue badge text in light mode while preserving the dark-theme token for WCAG AA contrast.
  * - 2026-07-13: Allowed shared cards to expose stable section anchors for consolidated V3 routes.
@@ -98,20 +99,18 @@ const defaultMarketingNavCopy: MarketingNavCopy = {
   features: "Product",
   flow: "How it works",
   languageLabel: "Website language",
-  pilot: "Pilot",
+  pilot: "Prepare pilot request",
   pricing: "Pricing",
   privacy: "Privacy",
   resources: "Resources",
   security: "Security",
   signIn: "Sign in",
-  startShort: "Apply for pilot",
+  startShort: "Prepare request",
   terms: "Terms",
   trust: "Trust",
 };
 
 type MarketingNavKey =
-  | "cleaning"
-  | "comparison"
   | "demo"
   | "features"
   | "home"
@@ -353,7 +352,7 @@ export function MarketingBadge({
 
   return (
     <span
-      className="bp-copy-eyebrow inline-flex min-w-0 max-w-full flex-wrap items-center gap-2 rounded-full border px-3 py-1.5 text-[13px] font-black uppercase leading-tight"
+      className="bp-copy-eyebrow inline-flex min-w-0 max-w-full flex-wrap items-center gap-2 rounded-full border px-3 py-1.5 text-[14px] font-extrabold uppercase leading-tight"
       style={{
         backgroundColor: selected.bg,
         borderColor: selected.border,
@@ -452,11 +451,13 @@ export function MarketingHeader({
   copy = defaultMarketingNavCopy,
   language,
   redirectPath = "/",
+  variant = "default",
 }: Readonly<{
   active?: MarketingNavKey;
   copy?: MarketingNavCopy;
   language?: SupportedLanguage | undefined;
   redirectPath?: string;
+  variant?: "default" | "legal";
 }>) {
   type HeaderLink = Readonly<{
     href: string;
@@ -494,6 +495,26 @@ export function MarketingHeader({
         redirectPath={redirectPath}
       />
     ) : null;
+
+  if (variant === "legal") {
+    return (
+      <header className="v3-site-header sticky top-0 z-40 border-b" data-shell-variant="legal">
+        <a className="v3-skip-link" href="#main-content">
+          {language === "fr-CA" ? "Aller au contenu" : "Skip to content"}
+        </a>
+        <nav
+          aria-label={language === "fr-CA" ? "Navigation des politiques" : "Policy navigation"}
+          className="v3-container v3-site-header-inner flex items-center justify-between gap-3 py-2"
+        >
+          <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
+          <div className="flex shrink-0 items-center gap-2">
+            {renderLanguageMenu()}
+            <ThemePreferenceControl language={language ?? "en"} />
+          </div>
+        </nav>
+      </header>
+    );
+  }
 
   return (
     <header className="v3-site-header sticky top-0 z-40 border-b">
@@ -571,7 +592,7 @@ export function MarketingHeader({
           >
             {copy.signIn}
           </Link>
-          <MarketingButton className="min-h-12 px-4 text-[14px]" href="/pilot" language={language}>
+          <MarketingButton className="min-h-12 px-4 text-[14px]" href="/pilot#application" language={language}>
             {copy.startShort}
           </MarketingButton>
         </div>
@@ -627,7 +648,7 @@ export function MarketingHeader({
               >
                 {copy.signIn}
               </Link>
-              <MarketingButton className="w-full" href="/pilot" language={language}>
+              <MarketingButton className="w-full" href="/pilot#application" language={language}>
                 {copy.startShort}
               </MarketingButton>
             </div>
@@ -641,7 +662,12 @@ export function MarketingHeader({
 export function MarketingFooter({
   copy = defaultMarketingNavCopy,
   language,
-}: Readonly<{ copy?: MarketingNavCopy; language?: SupportedLanguage | undefined }>) {
+  variant = "default",
+}: Readonly<{
+  copy?: MarketingNavCopy;
+  language?: SupportedLanguage | undefined;
+  variant?: "default" | "legal";
+}>) {
   const footerLabels = language === "fr-CA"
     ? {
         getStarted: "Commencer",
@@ -667,7 +693,7 @@ export function MarketingFooter({
     { label: footerLabels.getStarted, links: [
       { href: "/demo", label: copy.demo },
       { href: "/pricing", label: copy.pricing },
-      { href: "/pilot", label: copy.pilot },
+      { href: "/pilot#application", label: copy.pilot },
     ] },
     { label: footerLabels.resources, links: [
       { href: "/faq", label: copy.faq },
@@ -679,6 +705,30 @@ export function MarketingFooter({
       { href: "/terms", label: copy.terms },
     ] },
   ];
+
+  if (variant === "legal") {
+    return (
+      <footer className="v3-site-footer v3-site-footer-legal border-t" data-shell-variant="legal">
+        <div className="v3-container">
+          <div className="v3-footer-legal-layout">
+            <MarketingBrand language={language} subtitle={copy.brandSubtitle} />
+            <nav aria-label={footerLabels.navigation} className="v3-footer-legal-nav">
+              <Link className="v3-footer-link" href={publicHref("/privacy", language)}>{copy.privacy}</Link>
+              <Link className="v3-footer-link" href={publicHref("/security", language)}>{copy.security}</Link>
+              <Link className="v3-footer-link" href={publicHref("/terms", language)}>{copy.terms}</Link>
+            </nav>
+          </div>
+          <div className="v3-footer-bottom">
+            <span>{copy.copyright}</span>
+            <span className="v3-footer-note">
+              <MarketingIcon name="check" />
+              {footerLabels.note}
+            </span>
+          </div>
+        </div>
+      </footer>
+    );
+  }
 
   return (
     <footer className="v3-site-footer border-t">

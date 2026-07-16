@@ -3,7 +3,7 @@
  * File: components/public/policy-page.tsx
  * Project: BizPilot AI
  * Description: Shared renderer for public privacy, security, and terms pages.
- * Role: Keeps trust pages visually consistent with the public marketing surface.
+ * Role: Keeps legal reading focused while preserving bilingual navigation, evidence, and policy references.
  * Related:
  * - lib/i18n/policy-copy.ts
  * - app/privacy/page.tsx
@@ -11,8 +11,9 @@
  * - app/terms/page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Replaced the marketing-heavy legal shell with focused brand/language controls, calmer typography, and one trust-oriented next step.
  * - 2026-07-13: Migrated policy pages to the V3 shell, route hero, metadata contract, and compact legal navigation.
  * - 2026-07-13: Separated header, main content, and footer into correct page landmarks.
  * - 2026-07-13: Added the shared main-content target for keyboard skip navigation.
@@ -78,6 +79,7 @@ export function PolicyPage({
         copy={navCopy}
         language={language}
         redirectPath={pagePath}
+        variant="legal"
       />
       <main id="main-content">
 
@@ -87,8 +89,8 @@ export function PolicyPage({
             <div className="min-w-0">
               <MarketingBadge>{routeHero.eyebrow}</MarketingBadge>
               <h1
-                className="bp-page-title mt-5 font-black leading-[1.06] [text-wrap:balance]"
-                style={{ color: marketingTone.text }}
+                className="bp-page-title mt-5 leading-[1.08] [text-wrap:balance]"
+                style={{ color: marketingTone.text, fontWeight: 780 }}
               >
                 {routeHero.title}
               </h1>
@@ -98,21 +100,8 @@ export function PolicyPage({
               >
                 {routeHero.body}
               </p>
-              <div className="bp-button-row mt-6 flex flex-col gap-3 sm:flex-row">
-                <MarketingButton href={routeHero.primary.href} language={language}>
-                  {routeHero.primary.label}
-                  <MarketingIcon name="arrow" />
-                </MarketingButton>
-                <MarketingButton
-                  href={routeHero.secondary.href}
-                  language={language}
-                  variant="secondary"
-                >
-                  {routeHero.secondary.label}
-                </MarketingButton>
-              </div>
               <p
-                className="mt-4 text-[12px] font-bold uppercase"
+                className="mt-5 text-[14px] font-bold uppercase tracking-[0.06em]"
                 style={{ color: marketingTone.muted }}
               >
                 {copy.effectiveDate}
@@ -121,13 +110,13 @@ export function PolicyPage({
 
             <MarketingCard className="p-5">
               <p
-                className="text-[12px] font-black uppercase"
+                className="text-[14px] font-extrabold uppercase tracking-[0.06em]"
                 style={{ color: marketingTone.teal }}
               >
                 {copy.boundaryTitle}
               </p>
               <p
-                className="mt-3 text-[14px] leading-7"
+                className="mt-3 text-[16px] leading-7"
                 style={{ color: marketingTone.soft }}
               >
                 {copy.boundaryBody}
@@ -198,13 +187,13 @@ export function PolicyPage({
                     <MarketingIcon name="shield" />
                   </span>
                   <h2
-                    className="bp-card-title mt-5 font-black leading-snug"
+                    className="bp-card-title mt-5 font-extrabold leading-snug"
                     style={{ color: marketingTone.text }}
                   >
                     {section.title}
                   </h2>
                   <p
-                    className="mt-3 text-[14px] leading-7"
+                    className="mt-3 text-[16px] leading-7"
                     style={{ color: marketingTone.soft }}
                   >
                     {section.body}
@@ -223,28 +212,20 @@ export function PolicyPage({
             style={{ borderColor: "rgba(45,212,191,0.24)" }}
           >
             <p
-              className="max-w-[760px] text-[14px] leading-7"
+              className="max-w-[760px] text-[16px] leading-7"
               style={{ color: marketingTone.soft }}
             >
               {copy.footerNote}
             </p>
-            <MarketingButton href="/pricing" language={language} variant="secondary">
-              {navCopy.pricing}
-            </MarketingButton>
-          </MarketingCard>
-          <div className="bp-button-row mt-5 flex flex-col gap-3 sm:flex-row">
             <MarketingButton href="/trust" language={language} variant="secondary">
               {navCopy.trust}
             </MarketingButton>
-            <MarketingButton href="/pilot" language={language} variant="secondary">
-              {navCopy.pilot}
-            </MarketingButton>
-          </div>
+          </MarketingCard>
         </div>
       </section>
 
       </main>
-      <MarketingFooter copy={navCopy} language={language} />
+      <MarketingFooter copy={navCopy} language={language} variant="legal" />
     </div>
   );
 }

@@ -10,8 +10,9 @@
  * - docs/website-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Clarified that seven bilingual copy modules feed the focused five-section homepage renderer.
  * - 2026-07-15: Repointed the bilingual contract to the current Website V4 authority.
  * - 2026-07-13: Added Phase 2 parity, route, section, pricing, and product-boundary checks.
  * ============================================================
@@ -70,7 +71,7 @@ describe("Website V3 bilingual content contract", () => {
     );
   });
 
-  it("keeps the homepage to the approved seven-step story", () => {
+  it("keeps seven approved copy modules available to the focused homepage renderer", () => {
     const expectedKeys = [
       "hero",
       "problem",

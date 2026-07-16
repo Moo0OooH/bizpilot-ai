@@ -10,8 +10,9 @@
  * - tests/smoke/public-browser-interaction-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Updated the homepage smoke contract for the focused five-section story.
  * - 2026-07-13: Replaced retired V2 and merged-route checks with all ten retained V3 routes in EN and fr-CA.
  * ============================================================
  */
@@ -87,8 +88,8 @@ function routeSpecificErrors(
 ): string[] {
   const errors: string[] = [];
 
-  if (path === "/" && count(html, "data-v3-section=") !== 7) {
-    errors.push("homepage must render exactly seven V3 sections");
+  if (path === "/" && count(html, "data-v3-section=") !== 5) {
+    errors.push("homepage must render exactly five focused V3 sections");
   }
   if (path === "/features") {
     for (const anchor of ["share-anywhere", "reply-drafts", "focused-by-design"]) {

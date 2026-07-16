@@ -10,8 +10,9 @@
  * - tests/unit/public-v3-spec.test.mts
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Made pilot CTAs truthfully describe the copy-only request flow and grouped the bilingual FAQ for faster scanning.
  * - 2026-07-15: Added synchronized EN/fr-CA copy for the shared not-found state.
  * - 2026-07-13: Added localized status copy for the safe copy-only founder-pilot request.
  * - 2026-07-13: Completed the V3 shell dictionary for the homepage and retained public routes.
@@ -83,6 +84,12 @@ type FaqCopy = Readonly<{
   question: string;
 }>;
 
+type FaqGroupCopy = Readonly<{
+  itemKeys: readonly string[];
+  key: string;
+  title: string;
+}>;
+
 type PricingTierCopy = Readonly<{
   badge: string;
   body: string;
@@ -99,6 +106,7 @@ export type PublicV3Spec = Readonly<{
     reviewActions: readonly string[];
     reviewBoundary: string;
   }>;
+  faqGroups: readonly FaqGroupCopy[];
   faqItems: readonly FaqCopy[];
   features: readonly FeatureCopy[];
   home: Readonly<{
@@ -177,9 +185,9 @@ const englishSpec: PublicV3Spec = {
     flow: "How it works",
     trust: "Trust",
     signIn: "Sign in",
-    startShort: "Pilot",
+    startShort: "Prepare request",
     terms: "Terms",
-    pilot: "Apply for pilot",
+    pilot: "Prepare pilot request",
     languageLabel: "Website language",
     themeLabel: "Theme",
   },
@@ -205,7 +213,7 @@ const englishSpec: PublicV3Spec = {
         body:
           "Share one smart intake link anywhere customers reach you. BizPilot asks the right service questions, organizes every request, flags what is missing, and prepares a reply your team approves before sending.",
         primary: { href: "/#how-it-works", label: "See how it works" },
-        secondary: { href: "/pilot", label: "Apply for the founder pilot" },
+        secondary: { href: "/pilot#application", label: "Prepare a pilot request" },
       },
     },
     "/features": {
@@ -220,7 +228,7 @@ const englishSpec: PublicV3Spec = {
         body:
           "Give customers one clear request path, give your team the details that matter, and keep every reply under human control.",
         primary: { href: "/demo", label: "Walk through the demo" },
-        secondary: { href: "/pilot", label: "Apply for pilot" },
+        secondary: { href: "/pilot#application", label: "Prepare a pilot request" },
       },
     },
     "/demo": {
@@ -249,7 +257,7 @@ const englishSpec: PublicV3Spec = {
         title: "Start with fit, scope, and a price you approve before setup.",
         body:
           "The first cohort is feedback-led. Later Starter and Pro pilots use manual billing only after the workflow, support, cancellation, and payment terms are confirmed.",
-        primary: { href: "/pilot", label: "Apply for the pilot" },
+        primary: { href: "/pilot#application", label: "Prepare a pilot request" },
         secondary: { href: "/faq", label: "Read common questions" },
       },
     },
@@ -280,7 +288,7 @@ const englishSpec: PublicV3Spec = {
         body:
           "Start with the practical questions about channels, the intake link, AI, setup, data, pricing, and manual sending.",
         primary: { href: "/demo", label: "See the workflow" },
-        secondary: { href: "/pilot", label: "Apply for pilot" },
+        secondary: { href: "/pilot#application", label: "Prepare a pilot request" },
       },
     },
     "/trust": {
@@ -673,6 +681,23 @@ const englishSpec: PublicV3Spec = {
         "The product foundation is intended for service businesses, but cleaning is the only complete pilot template and public demo today. Other service categories remain future work until validated.",
     },
   ],
+  faqGroups: [
+    {
+      key: "channels",
+      title: "Channels and intake",
+      itemKeys: ["direct-integrations", "link-placement", "after-submit"],
+    },
+    {
+      key: "control",
+      title: "AI and human control",
+      itemKeys: ["ai-role", "auto-send", "pricing-booking"],
+    },
+    {
+      key: "pilot",
+      title: "Setup, data, and pilot",
+      itemKeys: ["setup", "data", "pricing", "verticals"],
+    },
+  ],
   trust: [
     {
       key: "explicit-inputs",
@@ -723,9 +748,9 @@ const frenchSpec: PublicV3Spec = {
     flow: "Fonctionnement",
     trust: "Confiance",
     signIn: "Connexion",
-    startShort: "Pilote",
+    startShort: "Préparer",
     terms: "Conditions",
-    pilot: "Demander l'accès",
+    pilot: "Préparer une demande",
     languageLabel: "Langue du site",
     themeLabel: "Thème",
   },
@@ -751,7 +776,7 @@ const frenchSpec: PublicV3Spec = {
         body:
           "Partagez un seul lien de collecte partout où vos clients vous écrivent. BizPilot pose les bonnes questions, organise chaque demande, signale les renseignements manquants et prépare une réponse que votre équipe valide avant de l'envoyer.",
         primary: { href: "/#how-it-works", label: "Voir le fonctionnement" },
-        secondary: { href: "/pilot", label: "Demander l'accès au pilote" },
+        secondary: { href: "/pilot#application", label: "Préparer une demande pilote" },
       },
     },
     "/features": {
@@ -766,7 +791,7 @@ const frenchSpec: PublicV3Spec = {
         body:
           "Offrez aux clients un parcours clair, donnez à votre équipe les détails importants et gardez chaque réponse sous contrôle humain.",
         primary: { href: "/demo", label: "Parcourir la démo" },
-        secondary: { href: "/pilot", label: "Demander l'accès" },
+        secondary: { href: "/pilot#application", label: "Préparer une demande" },
       },
     },
     "/demo": {
@@ -795,7 +820,7 @@ const frenchSpec: PublicV3Spec = {
         title: "Commencez par la compatibilité, la portée et un prix approuvé avant la configuration.",
         body:
           "La première cohorte mise sur la rétroaction. Les pilotes Démarrage et Pro sont facturés manuellement seulement après confirmation du flux, du soutien, de l'annulation et du paiement.",
-        primary: { href: "/pilot", label: "Demander l'accès au pilote" },
+        primary: { href: "/pilot#application", label: "Préparer une demande pilote" },
         secondary: { href: "/faq", label: "Lire les questions fréquentes" },
       },
     },
@@ -826,7 +851,7 @@ const frenchSpec: PublicV3Spec = {
         body:
           "Commencez par les questions pratiques sur les canaux, le lien, l'IA, la configuration, les données, les tarifs et l'envoi manuel.",
         primary: { href: "/demo", label: "Voir le flux" },
-        secondary: { href: "/pilot", label: "Demander l'accès" },
+        secondary: { href: "/pilot#application", label: "Préparer une demande" },
       },
     },
     "/trust": {
@@ -1218,6 +1243,23 @@ const frenchSpec: PublicV3Spec = {
       question: "BizPilot est-il réservé aux entreprises d'entretien?",
       answer:
         "La base du produit vise les entreprises de services, mais l'entretien est le seul modèle pilote complet et la seule démo publique aujourd'hui. Les autres secteurs restent à valider.",
+    },
+  ],
+  faqGroups: [
+    {
+      key: "channels",
+      title: "Canaux et collecte",
+      itemKeys: ["direct-integrations", "link-placement", "after-submit"],
+    },
+    {
+      key: "control",
+      title: "IA et contrôle humain",
+      itemKeys: ["ai-role", "auto-send", "pricing-booking"],
+    },
+    {
+      key: "pilot",
+      title: "Configuration, données et pilote",
+      itemKeys: ["setup", "data", "pricing", "verticals"],
     },
   ],
   trust: [

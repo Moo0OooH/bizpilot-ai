@@ -10,8 +10,9 @@
  * - components/public/public-v3-home.module.css
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Locked the consolidated 720/1180 responsive scale used by polished public routes.
  * - 2026-07-14: Updated Settings disclosure guards after removing repeated roadmap and display-preference documentation.
  * - 2026-07-13: Treated the animation-free V3 homepage as the strongest reduced-motion contract.
  * - 2026-07-13: Migrated compact public-layout guards from retired V2 files to the shared V3 renderers.
@@ -96,8 +97,8 @@ describe("bilingual copy and compact layout guards", () => {
       );
     }
 
-    assert.equal(pageStyles.includes("@media (min-width: 1120px)"), true);
-    assert.equal(pageStyles.includes("@media (max-width: 480px)"), true);
+    assert.equal(pageStyles.includes("@media (min-width: 1180px)"), true);
+    assert.equal(pageStyles.includes("@media (max-width: 520px)"), true);
     assert.equal(homeStyles.includes("animation:"), false);
   });
 });

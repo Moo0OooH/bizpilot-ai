@@ -2,8 +2,8 @@
  * ============================================================
  * File: components/public/public-v3-home.tsx
  * Project: BizPilot AI
- * Description: Renders the final seven-section Website V3 homepage in English and Canadian French.
- * Role: Communicates the scattered-message problem, one-link mechanism, organized request, human-reviewed draft, cleaning example, and pilot conversion path.
+ * Description: Renders the focused five-section Website V4 homepage in English and Canadian French.
+ * Role: Communicates the scattered-message problem, one-link mechanism, organized result, cleaning proof, and truthful pilot conversion path without repeating the story.
  * Related:
  * - app/page.tsx
  * - lib/i18n/public-v3-spec.ts
@@ -11,8 +11,9 @@
  * - components/public/marketing-ui.tsx
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Consolidated outcomes into the workflow and trust assurances into the final CTA for a shorter five-section homepage.
  * - 2026-07-13: Created the approved seven-section V3 homepage and three-stage product story.
  * ============================================================
  */
@@ -196,7 +197,6 @@ export function PublicV3Home({
   const workflow = sectionCopy(spec, "workflow");
   const outcomes = sectionCopy(spec, "outcomes");
   const cleaningDemo = sectionCopy(spec, "cleaning-demo");
-  const trust = sectionCopy(spec, "trust");
   const finalCta = sectionCopy(spec, "final-cta");
   const outcomeIcons: readonly MarketingIconName[] = [
     "briefcase",
@@ -294,15 +294,7 @@ export function PublicV3Home({
                 </li>
               ))}
             </ol>
-          </MarketingShell>
-        </section>
-
-        <section
-          className={styles.outcomesSection}
-          data-v3-section="outcomes"
-        >
-          <MarketingShell>
-            <div className={styles.outcomesGrid}>
+            <div className={`${styles.outcomesGrid} ${styles.workflowOutcomeGrid}`}>
               <SectionHeading section={outcomes} />
               <div className={styles.outcomePanel}>
                 <div className={styles.outcomeRecordHeader}>
@@ -378,27 +370,6 @@ export function PublicV3Home({
         </section>
 
         <section
-          className={styles.trustSection}
-          data-v3-section="trust"
-        >
-          <MarketingShell>
-            <div className={styles.trustGrid}>
-              <SectionHeading section={trust} />
-              <div className={styles.trustBoundaries}>
-                {spec.home.finalAssurances.map((assurance) => (
-                  <div key={assurance}>
-                    <span>
-                      <MarketingIcon name="shield" />
-                    </span>
-                    <strong>{assurance}</strong>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </MarketingShell>
-        </section>
-
-        <section
           className={styles.finalSection}
           data-v3-section="final-cta"
         >
@@ -408,6 +379,14 @@ export function PublicV3Home({
                 <p className={styles.eyebrow}>{finalCta.eyebrow}</p>
                 <h2>{finalCta.title}</h2>
                 <p>{finalCta.body}</p>
+                <div className={styles.finalAssurances}>
+                  {spec.home.finalAssurances.map((assurance) => (
+                    <span key={assurance}>
+                      <MarketingIcon name="shield" />
+                      {assurance}
+                    </span>
+                  ))}
+                </div>
               </div>
               <div className={styles.finalActions}>
                 <MarketingButton href="/demo" language={language}>
@@ -415,7 +394,7 @@ export function PublicV3Home({
                   <MarketingIcon name="arrow" />
                 </MarketingButton>
                 <MarketingButton
-                  href="/pilot"
+                  href="/pilot#application"
                   language={language}
                   variant="secondary"
                 >

@@ -11,8 +11,9 @@
  * - components/public/public-v3-pilot-request.tsx
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Gave Features, Pricing, FAQ, and Trust distinct visual jobs and aligned pricing conversion with the copy-only pilot request.
  * - 2026-07-13: Created the consolidated V3 renderer for six retained marketing routes.
  * ============================================================
  */
@@ -177,12 +178,18 @@ function FeaturesContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
       <div className="v3-container">
         <div className={styles.featureGrid}>
           {spec.features.map((feature, index) => (
-            <MarketingCard className={styles.featureCard} id={feature.key} key={feature.key}>
+            <MarketingCard
+              className={`${styles.featureCard} ${index === 0 ? styles.featureCardFeatured : ""} ${index === spec.features.length - 1 ? styles.featureCardControl : ""}`}
+              id={feature.key}
+              key={feature.key}
+            >
               <span className={styles.cardIcon}>
                 <MarketingIcon name={routeIcons["/features"][index % 3] ?? "check"} />
               </span>
-              <h2 className={styles.cardTitle}>{feature.title}</h2>
-              <p className={styles.cardBody}>{feature.body}</p>
+              <div>
+                <h2 className={styles.cardTitle}>{feature.title}</h2>
+                <p className={styles.cardBody}>{feature.body}</p>
+              </div>
             </MarketingCard>
           ))}
         </div>
@@ -209,14 +216,20 @@ function DemoContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
   );
 }
 
-function PricingContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
+function PricingContent({
+  language,
+  spec,
+}: Readonly<{ language: SupportedLanguage; spec: PublicV3Spec }>) {
   return (
     <section className={styles.section}>
       <div className="v3-container">
         <div className={styles.pricingGrid}>
-          {spec.pricing.tiers.map((tier) => (
-            <MarketingCard className={styles.priceCard} key={tier.name}>
-              <MarketingBadge toneName={tier.price.startsWith("$0") ? "teal" : "blue"}>
+          {spec.pricing.tiers.map((tier, index) => (
+            <MarketingCard
+              className={`${styles.priceCard} ${index === 0 ? styles.priceCardFeatured : styles.priceCardFuture}`}
+              key={tier.name}
+            >
+              <MarketingBadge toneName={index === 0 ? "teal" : "neutral"}>
                 {tier.badge}
               </MarketingBadge>
               <h2 className={styles.cardTitle}>{tier.name}</h2>
@@ -230,6 +243,16 @@ function PricingContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
                   </li>
                 ))}
               </ul>
+              {index === 0 ? (
+                <MarketingButton
+                  className={styles.priceCta ?? ""}
+                  href="/pilot#application"
+                  language={language}
+                >
+                  {spec.routes["/pilot"].hero.primary.label}
+                  <MarketingIcon name="arrow" />
+                </MarketingButton>
+              ) : null}
             </MarketingCard>
           ))}
         </div>
@@ -274,12 +297,26 @@ function FaqContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
   return (
     <section className={styles.section}>
       <div className="v3-container">
-        <div className={styles.faqList}>
-          {spec.faqItems.map((item) => (
-            <details className={styles.faqItem} key={item.key}>
-              <summary>{item.question}</summary>
-              <p>{item.answer}</p>
-            </details>
+        <div className={styles.faqGroups}>
+          {spec.faqGroups.map((group, groupIndex) => (
+            <section className={styles.faqGroup} key={group.key}>
+              <div className={styles.faqGroupHeading}>
+                <MarketingStateChip>{String(groupIndex + 1).padStart(2, "0")}</MarketingStateChip>
+                <h2>{group.title}</h2>
+              </div>
+              <div className={styles.faqList}>
+                {group.itemKeys.map((itemKey) => {
+                  const item = spec.faqItems.find((candidate) => candidate.key === itemKey);
+
+                  return item ? (
+                    <details className={styles.faqItem} key={item.key}>
+                      <summary>{item.question}</summary>
+                      <p>{item.answer}</p>
+                    </details>
+                  ) : null;
+                })}
+              </div>
+            </section>
           ))}
         </div>
       </div>
@@ -287,12 +324,32 @@ function FaqContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
   );
 }
 
-function TrustContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
+function TrustContent({
+  language,
+  spec,
+}: Readonly<{ language: SupportedLanguage; spec: PublicV3Spec }>) {
+  const controlFlow = spec.trust.slice(0, 4);
+  const operatingBoundaries = spec.trust.slice(4);
+
   return (
     <section className={styles.section}>
       <div className="v3-container">
+        <ol className={styles.trustSequence}>
+          {controlFlow.map((item, index) => (
+            <li key={item.key}>
+              <MarketingStateChip>{String(index + 1).padStart(2, "0")}</MarketingStateChip>
+              <span className={styles.cardIcon}>
+                <MarketingIcon name={routeIcons["/trust"][index % 3] ?? "shield"} />
+              </span>
+              <div>
+                <h2 className={styles.cardTitle}>{item.title}</h2>
+                <p className={styles.cardBody}>{item.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
         <div className={styles.trustGrid}>
-          {spec.trust.map((item, index) => (
+          {operatingBoundaries.map((item, index) => (
             <MarketingCard className={styles.trustCard} key={item.key}>
               <span className={styles.cardIcon}>
                 <MarketingIcon name={routeIcons["/trust"][index % 3] ?? "shield"} />
@@ -302,25 +359,44 @@ function TrustContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
             </MarketingCard>
           ))}
         </div>
+        <div className={styles.trustEvidenceLinks}>
+          <MarketingButton href="/privacy" language={language} variant="secondary">
+            {spec.nav.privacy}
+          </MarketingButton>
+          <MarketingButton href="/security" language={language} variant="secondary">
+            {spec.nav.security}
+          </MarketingButton>
+          <MarketingButton href="/terms" language={language} variant="ghost">
+            {spec.nav.terms}
+          </MarketingButton>
+        </div>
       </div>
     </section>
   );
 }
 
-function RouteContent({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; spec: PublicV3Spec }>) {
+function RouteContent({
+  language,
+  path,
+  spec,
+}: Readonly<{
+  language: SupportedLanguage;
+  path: PublicV3MarketingRoute;
+  spec: PublicV3Spec;
+}>) {
   switch (path) {
     case "/features":
       return <FeaturesContent spec={spec} />;
     case "/demo":
       return <DemoContent spec={spec} />;
     case "/pricing":
-      return <PricingContent spec={spec} />;
+      return <PricingContent language={language} spec={spec} />;
     case "/pilot":
       return <PilotContent spec={spec} />;
     case "/faq":
       return <FaqContent spec={spec} />;
     case "/trust":
-      return <TrustContent spec={spec} />;
+      return <TrustContent language={language} spec={spec} />;
   }
 }
 
@@ -374,7 +450,7 @@ export function PublicV3Page({
             <RouteVisual path={path} spec={spec} />
           </div>
         </section>
-        <RouteContent path={path} spec={spec} />
+        <RouteContent language={language} path={path} spec={spec} />
       </main>
       <MarketingFooter copy={spec.nav} language={language} />
     </div>

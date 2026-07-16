@@ -1,6 +1,10 @@
 /**
- * BizPilot Website V4 homepage.
- * A route-native visual story: scattered messages -> guided intake -> team-ready work.
+ * File: components/public/public-v3-home.module.css
+ * Project: BizPilot AI
+ * Description: Responsive visual system for the focused Website V4 homepage.
+ * Last Updated: 2026-07-16
+ * Change Log:
+ * - 2026-07-16: Consolidated the page to five sections, softened display weights, and raised product-scene microcopy to a 14px floor.
  */
 
 .page {
@@ -57,7 +61,7 @@
   margin-block-start: 1.25rem;
   color: var(--text-strong);
   font-size: var(--v3-type-display);
-  font-weight: 850;
+  font-weight: 780;
   letter-spacing: -0.045em;
   line-height: var(--v3-leading-display);
   text-wrap: balance;
@@ -133,7 +137,7 @@
 .productChrome strong {
   margin-inline-start: auto;
   color: var(--text-muted);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
@@ -168,7 +172,7 @@
   border-radius: 0.65rem;
   background: color-mix(in srgb, var(--brand-coral) 14%, var(--surface));
   color: var(--brand-coral);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 900;
 }
 
@@ -223,8 +227,8 @@
   align-items: center;
   gap: 0.4rem;
   color: var(--text-muted);
-  font-size: 0.8125rem;
-  font-weight: 850;
+  font-size: 0.875rem;
+  font-weight: 780;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -306,7 +310,7 @@
   background: var(--primary);
   color: var(--primary-contrast);
   font-size: 0.875rem;
-  font-weight: 850;
+  font-weight: 780;
 }
 
 .requestSummary {
@@ -344,7 +348,7 @@
   gap: 0.45rem;
   color: var(--accent);
   font-size: 0.875rem;
-  font-weight: 850;
+  font-weight: 780;
 }
 
 .placementNote {
@@ -363,9 +367,7 @@
 
 .problemSection,
 .workflowSection,
-.outcomesSection,
 .demoSection,
-.trustSection,
 .finalSection {
   content-visibility: auto;
   contain-intrinsic-block-size: auto 42rem;
@@ -379,8 +381,7 @@
 }
 
 .problemGrid,
-.outcomesGrid,
-.trustGrid {
+.outcomesGrid {
   display: grid;
   align-items: center;
   gap: clamp(2.5rem, 6vw, 6rem);
@@ -391,7 +392,7 @@
 .eyebrow,
 .sectionHeading > p:first-child {
   color: var(--accent);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 900;
   letter-spacing: 0.12em;
   line-height: 1.35;
@@ -402,7 +403,7 @@
 .finalPanel h2 {
   margin-block-start: 0.8rem;
   font-size: var(--v3-type-section);
-  font-weight: 850;
+  font-weight: 780;
   letter-spacing: -0.04em;
   line-height: 1.08;
   text-wrap: balance;
@@ -454,7 +455,7 @@
 .problemMessages p,
 .problemMessages small {
   color: var(--marketing-on-ink-muted);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 800;
 }
 
@@ -466,6 +467,12 @@
 }
 
 .workflowSection { background: var(--surface); }
+
+.workflowOutcomeGrid {
+  margin-block-start: clamp(3.5rem, 7vw, 6rem);
+  padding-block-start: clamp(3rem, 5vw, 4.5rem);
+  border-block-start: 1px solid var(--border-default);
+}
 
 .workflowList {
   display: grid;
@@ -487,7 +494,7 @@
 
 .workflowList li > span {
   color: var(--primary);
-  font-size: 0.84rem;
+  font-size: 0.875rem;
   font-weight: 900;
 }
 
@@ -496,7 +503,7 @@
 .demoFlow h3 {
   color: var(--text-strong);
   font-size: clamp(1.18rem, 1.4vw, 1.5rem);
-  font-weight: 850;
+  font-weight: 780;
   line-height: 1.2;
 }
 
@@ -506,10 +513,6 @@
   color: var(--text-default);
   font-size: 1rem;
   line-height: 1.68;
-}
-
-.outcomesSection {
-  background: color-mix(in srgb, var(--primary) 5%, var(--canvas));
 }
 
 .outcomePanel {
@@ -535,8 +538,8 @@
 
 .outcomeRecordHeader > div span {
   color: var(--text-muted);
-  font-size: 0.8125rem;
-  font-weight: 850;
+  font-size: 0.875rem;
+  font-weight: 780;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -588,8 +591,8 @@
 
 .demoIncoming > p {
   color: var(--text-muted);
-  font-size: 0.8125rem;
-  font-weight: 850;
+  font-size: 0.875rem;
+  font-weight: 780;
   text-transform: uppercase;
 }
 
@@ -598,7 +601,7 @@
   border-inline-start: 3px solid var(--brand-coral);
   color: var(--text-strong);
   font-size: clamp(1.2rem, 2vw, 1.65rem);
-  font-weight: 850;
+  font-weight: 780;
   line-height: 1.4;
 }
 
@@ -618,44 +621,6 @@
 .demoReady > p { color: var(--text-default); font-size: 1rem; line-height: 1.65; }
 .demoReady > div { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 
-.trustSection {
-  background: var(--marketing-ink-soft);
-  color: var(--marketing-on-ink);
-}
-
-.trustSection .sectionHeading > p:first-child { color: var(--brand-lime); }
-.trustSection .sectionHeading > p:last-child { color: var(--marketing-on-ink-muted); }
-
-.trustBoundaries {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.8rem;
-}
-
-.trustBoundaries > div {
-  display: grid;
-  min-inline-size: 0;
-  align-content: start;
-  gap: 1rem;
-  min-block-size: 9rem;
-  padding: 1.15rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.trustBoundaries span {
-  display: grid;
-  inline-size: 2.35rem;
-  block-size: 2.35rem;
-  place-items: center;
-  border-radius: 0.75rem;
-  background: var(--brand-lime);
-  color: var(--marketing-ink);
-}
-
-.trustBoundaries strong { color: var(--marketing-on-ink); font-size: 1rem; line-height: 1.5; }
-
 .finalSection { padding-block-start: clamp(3.5rem, 6vw, 6rem); }
 
 .finalPanel {
@@ -672,11 +637,32 @@
 
 .finalPanel .eyebrow { color: var(--brand-lime); }
 .finalPanel > div:first-child { max-inline-size: 48rem; }
-.finalPanel > div > p:last-child { color: color-mix(in srgb, var(--primary-contrast) 88%, var(--primary)); }
+.finalPanel > div:first-child > p:last-of-type { color: color-mix(in srgb, var(--primary-contrast) 88%, var(--primary)); }
 .finalActions { margin-block-start: 0; }
+
+.finalAssurances {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-block-start: 1.5rem;
+}
+
+.finalAssurances span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--primary-contrast) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary-contrast) 8%, transparent);
+  color: var(--primary-contrast);
+  font-size: 0.875rem;
+  font-weight: 760;
+}
 
 @media (min-width: 720px) {
   .problemMessages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .heroStages { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
   .workflowList { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 2rem; }
   .workflowList li:nth-child(2) { border-block-start: 1px solid var(--border-default); }
   .workflowList li:nth-last-child(2) { border-block-end: 1px solid var(--border-default); }
@@ -684,15 +670,10 @@
   .finalActions { max-inline-size: 18rem; justify-content: flex-end; }
 }
 
-@media (min-width: 900px) {
-  .heroStages { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
-}
-
 @media (min-width: 1180px) {
   .heroGrid { grid-template-columns: minmax(0, 0.86fr) minmax(34rem, 1.14fr); }
   .problemGrid,
-  .outcomesGrid,
-  .trustGrid { grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr); }
+  .outcomesGrid { grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr); }
   .workflowList { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
   .workflowList li { grid-template-columns: 1fr; padding: 1.5rem; border-inline-start: 1px solid var(--border-default); border-block-end: 1px solid var(--border-default); }
   .workflowList li:last-child { border-inline-end: 1px solid var(--border-default); }
@@ -736,7 +717,6 @@
   .heroActions > * { inline-size: 100%; }
   .heroAssurances span:nth-child(n + 3) { display: none; }
   .requestSummary { grid-template-columns: 1fr; }
-  .trustBoundaries { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

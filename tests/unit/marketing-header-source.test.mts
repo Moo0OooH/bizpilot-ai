@@ -10,8 +10,9 @@
  * - components/public/marketing-compact-menu.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Locked both header pilot actions to the truthful copy-only application anchor.
  * - 2026-07-14: Moved the desktop threshold to 1180px after simplifying the retained navigation.
  * - 2026-07-13: Locked deterministic locale links, the measured 1440px desktop threshold, and the compact final navigation architecture.
  * - 2026-06-19: Added Phase 02 header/navigation source contract coverage.
@@ -83,7 +84,7 @@ describe("public marketing header source contract", () => {
       "Compact menu should use the short pilot CTA.",
     );
     assert.equal(
-      marketingUiSource.match(/<MarketingButton[^>]+href="\/pilot"/g)?.length,
+      marketingUiSource.match(/<MarketingButton[^>]+href="\/pilot#application"/g)?.length,
       2,
       "MarketingHeader should expose only desktop and compact-menu pilot CTA buttons.",
     );

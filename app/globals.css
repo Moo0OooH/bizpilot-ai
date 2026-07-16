@@ -10,8 +10,9 @@
  * - components/public/marketing-language-menu.tsx
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Softened public display/button weights, raised footer microcopy, consolidated shell breakpoints, and added the focused legal footer layout.
  * - 2026-07-14: Tightened the protected dashboard content measure and removed obsolete density/route-guide presentation rules.
  * - 2026-07-13: Restored shared public/legal containers after narrowing the V2 CSS cleanup.
  * - 2026-07-13: Replaced the live header backdrop blur with a near-opaque tokenized surface to reduce paint cost.
@@ -132,7 +133,7 @@
   --bp-section-title-size: var(--v3-type-section);
   --bp-card-title-size: var(--v3-type-card);
   --bp-body-size: var(--v3-type-lead);
-  --bp-meta-size: clamp(0.8125rem, 0.77rem + 0.18vw, 0.9375rem);
+  --bp-meta-size: var(--v3-type-small);
   --public-max: var(--bp-container-max);
   --public-gutter: var(--bp-container-padding);
   --legal-max: var(--bp-container-narrow-max);
@@ -627,7 +628,7 @@ select {
   border-radius: var(--v3-radius-sm);
   padding: 0.8rem 1.2rem;
   font-size: 1rem;
-  font-weight: 850;
+  font-weight: 780;
   line-height: 1.25;
   text-align: center;
   text-wrap: balance;
@@ -764,8 +765,8 @@ select {
 .v3-footer-group > p {
   margin-block-end: 0.55rem;
   color: var(--text-strong);
-  font-size: 0.8125rem;
-  font-weight: 900;
+  font-size: 0.875rem;
+  font-weight: 800;
   letter-spacing: 0.1em;
   line-height: 1.35;
   text-transform: uppercase;
@@ -822,7 +823,7 @@ select {
   padding-block-start: 1.25rem;
   border-block-start: 1px solid var(--border-default);
   color: var(--text-muted);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 650;
   line-height: 1.55;
 }
@@ -837,14 +838,33 @@ select {
   color: var(--accent);
 }
 
-@media (min-width: 900px) {
+.v3-site-footer-legal {
+  padding-block-start: 2rem;
+}
+
+.v3-footer-legal-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem 3rem;
+}
+
+.v3-footer-legal-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1rem;
+}
+
+@media (min-width: 720px) {
   .v3-footer-layout {
     grid-template-columns: minmax(15rem, 0.85fr) minmax(0, 1.65fr);
     align-items: start;
   }
 }
 
-@media (min-width: 1120px) {
+@media (min-width: 1180px) {
   .v3-footer-nav {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -870,7 +890,7 @@ select {
   background: var(--text-strong);
   color: var(--canvas);
   padding: 0.75rem 1rem;
-  font-weight: 850;
+  font-weight: 800;
   transform: translateY(calc(-100% - 1rem));
   transition: transform var(--v3-motion-fast) var(--v3-ease-out);
 }
@@ -906,7 +926,7 @@ select {
   background: var(--surface-interactive);
   padding-inline: 0.75rem;
   color: var(--text-default);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 800;
 }
 

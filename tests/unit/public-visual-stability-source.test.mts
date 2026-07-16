@@ -11,8 +11,9 @@
  * - tests/smoke/public-browser-interaction-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Replaced the seven-section guard with the focused five-section home contract.
  * - 2026-07-14: Added final-polish guards for balanced desktop grids and legible card icons.
  * - 2026-07-13: Accepted an animation-free homepage while retaining explicit reduced-motion handling on shared pages.
  * - 2026-07-13: Replaced retired V2 guards with retained-route V3 consolidation, redirect, and copy-only pilot contracts.
@@ -92,7 +93,7 @@ describe("Website V3 visual stability source contracts", () => {
     );
   });
 
-  it("keeps exactly one measurable seven-section homepage story", () => {
+  it("keeps exactly one measurable five-section homepage story", () => {
     const homepage = source("components/public/public-v3-home.tsx");
     const pageRoute = source("app/page.tsx");
 
@@ -100,15 +101,15 @@ describe("Website V3 visual stability source contracts", () => {
       "hero",
       "problem",
       "workflow",
-      "outcomes",
       "cleaning-demo",
-      "trust",
       "final-cta",
     ]) {
       assert.equal(homepage.includes(`data-v3-section="${key}"`), true, key);
     }
 
-    assert.equal((homepage.match(/data-v3-section=/g) ?? []).length, 7);
+    assert.equal((homepage.match(/data-v3-section=/g) ?? []).length, 5);
+    assert.equal(homepage.includes("workflowOutcomeGrid"), true);
+    assert.equal(homepage.includes("finalAssurances"), true);
     assert.equal(pageRoute.includes("PublicV3Home"), true);
     assert.equal(pageRoute.includes("buildHomeJsonLd(language)"), true);
   });
@@ -173,11 +174,19 @@ describe("Website V3 visual stability source contracts", () => {
     }
   });
 
-  it("keeps desktop feature and trust cards balanced with legible local icons", () => {
+  it("keeps flagship features and proof-first trust content balanced with legible icons", () => {
     const pageCss = source("components/public/public-v3-page.module.css");
 
     assert.equal(
-      pageCss.includes(".featureGrid,\n  .trustGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }"),
+      pageCss.includes(".featureGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }"),
+      true,
+    );
+    assert.equal(
+      pageCss.includes(".trustGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }"),
+      true,
+    );
+    assert.equal(
+      pageCss.includes(".trustSequence { grid-template-columns: repeat(4, minmax(0, 1fr)); }"),
       true,
     );
     assert.equal(pageCss.includes(".trustCard:first-child { grid-row: span 2; }"), false);
