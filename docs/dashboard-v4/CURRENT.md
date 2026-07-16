@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.2 protected-navigation, first-run Guide, and founder Business Operations polish contract.
  * - 2026-07-16: Recorded the V4.1 main release, successful CI/Vercel rollout, and Production read-only acceptance evidence.
  * - 2026-07-16: Added the V4.1 guided Quote Setup, safe local branding, approved AI knowledge, unique-link workflow, and owner preview recovery contract.
  * - 2026-07-14: Established the task-first Dashboard V4 contract and superseded the V3/P12–P28 dashboard reports.
@@ -24,7 +25,7 @@
 
 ## Outcome
 
-Dashboard V4.1 completes the simplification and reliability release with a guided Quote Setup workflow. It removes repeated guidance, decorative analytics, hidden mobile destinations, and no-op controls while making the customer quote link, branding, questions, and AI knowledge understandable without technical setup knowledge.
+Dashboard V4.2 completes the protected-navigation and first-run usability polish after the guided Quote Setup release. It keeps every approved owner/founder capability while making the Actions menu reliable, dashboard route recovery explicit, the Guide useful to a first-time owner, and Business Operations progressively disclosed instead of fully expanded.
 
 ## Jobs to be done
 
@@ -36,8 +37,8 @@ Dashboard V4.1 completes the simplification and reliability release with a guide
 | Quote Setup | Configure services, questions, branding, approved FAQ knowledge, privacy, and the unique customer link through progressive tasks. |
 | Business Profile | Maintain business identity and contact context. |
 | Settings | Manage personal preferences, session visibility, audit/history, and lifecycle controls. |
-| Guide | Explain the manual operating model as secondary help. |
-| Founder Admin | Inspect users/workspaces/health and perform explicitly gated manual controls. |
+| Guide | Explain first-session setup, the daily routine, route ownership, troubleshooting, and manual boundaries. |
+| Founder Admin | Inspect users/workspaces/health and perform explicitly gated manual controls without presenting every sensitive form at once. |
 
 ## Information architecture
 
@@ -55,6 +56,8 @@ Quote Setup uses one horizontal task bar with seven mounted panels: Overview, Pu
 - Mobile navigation includes Settings and respects safe-area padding.
 - Menus stay within the viewport; pages avoid nested-scroll cards.
 - The desktop Actions menu opens into the content column and never beneath the fixed sidebar.
+- The Actions toolbar remains right-aligned on desktop, closes after navigation, and contains every protected owner destination. Protected links opt out of automatic prefetch so inactive database-heavy routes are not requested in the background.
+- A caught dashboard route error offers a full reload plus native links to Overview, Quote Setup, and Guide; one failed client transition must not trap the owner.
 - Add Field starts empty, offers cleaning-specific starters, previews customer-facing output, and hides priority/key controls under Advanced settings.
 - Branding accepts a bounded PNG/JPG/WebP selected from the owner device or a secure HTTPS URL, provides a live preview, and applies the saved logo/colors to the public quote page.
 - The full unique business URL is visible and copyable. `Save & preview` first saves owner choices and synchronizes the derived public link, consent version, and intake form.
@@ -62,6 +65,8 @@ Quote Setup uses one horizontal task bar with seven mounted panels: Overview, Pu
 - Saved FAQs, services, and service areas are the only approved business-knowledge inputs added to AI draft context. Missing facts stay missing and every draft remains owner-reviewed.
 - Owner-facing controls either work or are absent. Editing the AI draft is real local editing; non-persisted owner scratchpads are removed.
 - The manual workflow and attribution/routing detail remain available inside disclosures.
+- The Guide starts with four ordered first-session actions, then separates the daily routine, route map, launch check, boundaries, and practical troubleshooting in both languages.
+- Founder Business Operations keeps the workspace snapshot and recommended priority visible while access/plan/quote controls, workspace tools, and sensitive tools open on demand. No guarded capability is removed.
 - AI is bounded draft assistance. No automatic send, booking, price, availability, or autonomous decision is implied.
 
 ## Visual system
@@ -78,11 +83,11 @@ English and Canadian French use the central `getBizPilotCopy` dictionary. Route/
 
 ## Data and security posture
 
-Dashboard V4.1 applies presentation, validation, and existing-record synchronization only. It adds no migration, external upload service, autonomous integration, real-customer-data access, or paid-pilot approval. Local logos are resized in the browser and stored only after the authenticated owner submits Quote Setup. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
+Dashboard V4.2 applies presentation, navigation, recovery, documentation, and progressive-disclosure changes only. It adds no migration, external upload service, autonomous integration, real-customer-data access, or paid-pilot approval. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
 
 ## Verification status
 
-Dashboard V4.1 release SHA `510043f8f5d6985e26aa5db52989f6b6806b009c` is on `main`. GitHub CI run `29524786852` and Vercel target `9dK6XxKYcGM6TiMHBng2DwDY4pRZ` succeeded. Production read-only acceptance passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA.
+Dashboard V4.2 candidate validation passes TypeScript, ESLint, `256/256` unit contracts, the Next.js 16.2.4 production build, public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2`. The prior V4.1 release remains the currently recorded Production baseline until this exact V4.2 tree is published and its CI/Vercel/public read-only checks are recorded.
 
 Source contracts, localization shape, TypeScript, lint, unit tests, production build, and bilingual public/responsive smoke are complete. Authenticated browser smoke additionally requires an approved local/synthetic auth target; absence of that target remains an environment gate and was not silently skipped or run against Production.
 

@@ -10,8 +10,9 @@
  * - components/dashboard/lead-workspace-queue.tsx
  * Author: MoOoH
  * Created: 2026-06-27
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Aligned the mobile menu containment guard with the expanded owner Actions menu.
  * - 2026-07-14: Aligned containment guards with the compact V4 topbar and decision-first overview.
  * ============================================================
  */
@@ -66,7 +67,7 @@ describe("dashboard heading hierarchy", () => {
     assert.equal(globalStyles.includes("max-width: var(--dashboard-max);"), true);
     assert.equal(globalStyles.includes("min-inline-size: 0;"), true);
     assert.equal(
-      topbarSource.includes("w-[min(220px,calc(100vw-1.5rem))]"),
+      topbarSource.includes("w-[min(240px,calc(100vw-1.5rem))]"),
       true,
     );
     assert.equal(topbarSource.includes("absolute right-0 top-11"), true);

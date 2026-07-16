@@ -10,8 +10,9 @@
  * - components/admin/founder-test-cleanup-form.tsx
  * Author: MoOoH
  * Created: 2026-05-26
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Guarded progressive Business Operations disclosures and protected-route navigation hardening.
  * - 2026-07-14: Updated overview guards for localized compact metrics and direct founder-to-admin routing.
  * - 2026-07-11: Added guards for localized founder inbox, safety rail, and admin activity metadata hooks.
  * - 2026-07-11: Replaced stale admin panel literal guard with localized topbar copy guard.
@@ -254,7 +255,6 @@ describe("Founder admin source safety", () => {
       "overviewCopy.healthSection.notice",
       "overviewCopy.page.actions.activityLog",
       "copy.overview.metricsPanel.activePilots",
-      "copy.overview.metricsPanel.paymentReady",
       "copy.overview.metricsPanel.pausedAccess",
     ]) {
       assert.equal(
@@ -263,6 +263,16 @@ describe("Founder admin source safety", () => {
         `Founder admin overview should keep honest localized metric: ${required}`,
       );
     }
+  });
+  it("keeps Business Operations complete but progressively disclosed", () => {
+    const pageSource = readFileSync("app/admin/page.tsx", "utf8");
+
+    assert.equal(pageSource.includes("data-admin-business-controls"), true);
+    assert.equal(pageSource.includes("data-admin-workspace-tools"), true);
+    assert.equal(pageSource.includes("data-admin-sensitive-tools"), true);
+    assert.equal(pageSource.includes("data-admin-recent-changes"), true);
+    assert.equal(pageSource.includes("xl:grid-cols-4"), true);
+    assert.equal(pageSource.includes("prefetch={false}"), true);
   });
   it("keeps founder business detail search-driven and cleanup secondary", () => {
     const pageSource = readFileSync("app/admin/page.tsx", "utf8");

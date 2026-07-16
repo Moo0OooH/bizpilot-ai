@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Expanded the bilingual first-run owner guide with a first-session path, daily routine, and practical troubleshooting.
  * - 2026-07-16: Added bilingual guided setup copy for local logo uploads, recommended fields, FAQ knowledge, unique quote links, and owner preview recovery.
  * - 2026-07-15: Added centralized EN/fr-CA copy for the global runtime error boundary.
  * - 2026-07-14: Polished Canadian French dashboard/admin accents and updated Settings guidance to match the simplified protected experience.
@@ -691,6 +692,16 @@ type DashboardGuideCopy = Readonly<{
   boundaries: Readonly<{
     description: string;
     items: readonly string[];
+    title: string;
+  }>;
+  dailyRoutine: Readonly<{
+    description: string;
+    items: ReadonlyArray<readonly [string, string, string]>;
+    title: string;
+  }>;
+  firstSession: Readonly<{
+    description: string;
+    items: ReadonlyArray<readonly [string, string, string, string]>;
     title: string;
   }>;
   gaps: Readonly<{
@@ -3579,7 +3590,7 @@ const englishCopy: BizPilotCopy = {
       actions: {
         openQueue: "Open lead queue",
         openSetup: "Open Quote Setup",
-        viewSettings: "View display settings",
+        viewSettings: "Open settings",
       },
       boundaries: {
         description:
@@ -3591,26 +3602,48 @@ const englishCopy: BizPilotCopy = {
         ],
         title: "Manual-first boundaries",
       },
+      dailyRoutine: {
+        description:
+          "Use this short rhythm whenever the dashboard has real requests.",
+        items: [
+          ["Start of day", "Open Overview", "Follow the single suggested next action before opening other panels."],
+          ["New request", "Open Leads", "Check service, area, timing, contact details, and every visible missing-information flag."],
+          ["Before replying", "Review the draft", "Correct facts and tone, then copy and send it yourself outside BizPilot."],
+          ["After contact", "Record the outcome", "Update the lead only after the real conversation, quote, or follow-up happened."],
+        ],
+        title: "Simple daily routine",
+      },
+      firstSession: {
+        description:
+          "If this is your first time here, complete these steps in order. You do not need to learn every screen first.",
+        items: [
+          ["1", "Complete Quote Setup", "Confirm services, service areas, questions, branding, FAQ knowledge, and privacy.", "/dashboard/configuration"],
+          ["2", "Save and preview", "Use Save & preview once so BizPilot synchronizes the unique public link and form readiness.", "/dashboard/configuration#public-link"],
+          ["3", "Share one unique link", "Place the same business link on your website, Google profile, social bio, or saved replies.", "/dashboard/configuration#public-link"],
+          ["4", "Review the first request", "Open Leads, verify the captured details, review the draft, and send the reply manually.", "/dashboard/leads"],
+        ],
+        title: "New here? Start with these four steps",
+      },
       gaps: {
         description:
-          "Known gaps are named here so they stay visible without pretending they are already enabled.",
+          "Use these checks before assuming a feature is missing or starting setup again.",
         items: [
-          ["Visual focus QA", "Dedicated keyboard/focus and screenshot review still needs a browser QA pass before paid pilot."],
-          ["Saved queue views", "Useful after real owner behavior proves which lead lanes matter most."],
-          ["Team assignment", "Blocked until the owner/team access and RLS gate is approved."],
-          ["Notification automation", "Email, SMS, and WhatsApp automation remain future-gated behind consent, provider, cost, and rollback checks."],
+          ["A dashboard page does not open", "Use Overview or Guide from the Actions menu. If the safe error card appears, choose Reload dashboard for a full refresh."],
+          ["The quote page is unavailable", "Open Quote Setup, finish the required items, and use Save & preview once before sharing the link."],
+          ["No requests appear", "Confirm the public link is active and that customers are using the exact unique business URL shown in Quote Setup."],
+          ["A draft needs more information", "Open the lead, review the missing-information flags, and ask the customer for those facts before sending."],
         ],
-        title: "Visible gaps and gates",
+        title: "If something looks wrong",
       },
       header: {
         description:
-          "A compact operating guide for the manual quote-recovery dashboard: what to open, what to do first, and what stays intentionally blocked.",
+          "A first-run and daily operating guide: where to begin, what each page does, and how to move from a customer request to an owner-reviewed reply.",
         eyebrow: "BizPilotOwner",
         title: "Owner Operating Guide",
       },
       launchChecklist: {
         description:
-          "The shortest path from setup to repeatable owner review.",
+          "Check these five items before you treat the public link as ready for customers.",
         items: [
           ["1", "Finish quote setup", "Confirm services, areas, intake questions, privacy, and branding."],
           ["2", "Share one public link", "Use the quote link on the website, Google profile, or manual outreach."],
@@ -3618,7 +3651,7 @@ const englishCopy: BizPilotCopy = {
           ["4", "Copy only after review", "Edit AI-supported drafts before sending outside BizPilot."],
           ["5", "Record the result", "Update status or manual outcome after contact happens."],
         ],
-        title: "Owner launch checklist",
+        title: "Before sharing the link",
       },
       operatingSystem: {
         description:
@@ -3640,6 +3673,7 @@ const englishCopy: BizPilotCopy = {
           ["Leads", "Search, filter, sort, and review every quote request.", "/dashboard/leads", "Open queue"],
           ["Quote Setup", "Services, areas, questions, consent, branding, and public link readiness.", "/dashboard/configuration", "Open setup"],
           ["Business Profile", "Business identity and reply context that supports better manual responses.", "/dashboard/business-profile", "Open profile"],
+          ["Guide", "First-run steps, daily routine, route map, and practical troubleshooting.", "/dashboard/guide", "Open guide"],
           ["Settings", "Language, theme, display preferences, feature state, and guarded lifecycle actions.", "/dashboard/settings", "Open settings"],
         ],
         title: "Dashboard route map",
@@ -6390,7 +6424,7 @@ const frenchCopy: BizPilotCopy = {
       actions: {
         openQueue: "Ouvrir la file",
         openSetup: "Ouvrir Configuration",
-        viewSettings: "Voir les réglages d'affichage",
+        viewSettings: "Ouvrir les réglages",
       },
       boundaries: {
         description:
@@ -6402,26 +6436,48 @@ const frenchCopy: BizPilotCopy = {
         ],
         title: "Limites manuelles",
       },
+      dailyRoutine: {
+        description:
+          "Utilisez ce rythme simple dès que votre lien public est prêt. Chaque étape reste sous le contrôle du responsable.",
+        items: [
+          ["Début de journée", "Ouvrir Vue d'ensemble", "Suivez d'abord la prochaine action recommandée et les demandes urgentes."],
+          ["Nouvelle demande", "Ouvrir Prospects", "Vérifiez les coordonnées, les réponses et les informations manquantes."],
+          ["Avant de répondre", "Réviser le brouillon", "Corrigez le ton, les faits et toute promesse avant de copier la réponse."],
+          ["Après le contact", "Noter le résultat", "Mettez à jour le statut et l'action suivante pour garder la file fiable."],
+        ],
+        title: "Routine quotidienne simple",
+      },
+      firstSession: {
+        description:
+          "Si vous ouvrez BizPilot pour la première fois, suivez ces quatre étapes dans l'ordre. Vous pourrez ensuite travailler depuis Vue d'ensemble et Prospects.",
+        items: [
+          ["1", "Terminer la configuration", "Confirmez les services, les zones, les questions, la marque et la confidentialité.", "/dashboard/configuration"],
+          ["2", "Enregistrer et prévisualiser", "Utilisez l'aperçu pour vérifier l'expérience client avant de partager le lien.", "/dashboard/configuration#public-link"],
+          ["3", "Partager le lien unique", "Placez l'URL propre à votre entreprise là où les clients vous contactent déjà.", "/dashboard/configuration#public-link"],
+          ["4", "Réviser la première demande", "Ouvrez Prospects, vérifiez les détails et révisez le brouillon avant toute réponse.", "/dashboard/leads"],
+        ],
+        title: "Première visite? Commencez par ces quatre étapes",
+      },
       gaps: {
         description:
-          "Les ecarts connus restent visibles sans pretendre qu'ils sont deja actives.",
+          "Ces vérifications rapides règlent les problèmes les plus courants sans modifier votre configuration.",
         items: [
-          ["QA visuelle et focus", "La vérification clavier/focus et captures d’écran reste à faire avant un pilote payant."],
-          ["Vues sauvegardees de file", "Utile après avoir observe les vrais comportements du responsable."],
-          ["Assignation d'équipe", "Bloqué jusqu’à l'approbation de la porte accès équipe et RLS."],
-          ["Notifications automatisées", "Courriel, SMS et WhatsApp restent bloqués par consentement, fournisseur, coûts et retour arrière."],
+          ["Une page du tableau de bord ne s'ouvre pas", "Rechargez l'espace une fois, puis revenez par Vue d'ensemble ou le menu Actions."],
+          ["La page de devis est indisponible", "Ouvrez Configuration, complétez les éléments requis, enregistrez, puis utilisez Prévisualiser."],
+          ["Aucune demande n'apparaît", "Vérifiez que vous partagez l'URL unique exacte affichée dans Configuration."],
+          ["Le brouillon demande plus d'informations", "Ouvrez le prospect, vérifiez les champs manquants et contactez le client avant de finaliser."],
         ],
-        title: "Ecarts visibles et portes",
+        title: "Si quelque chose semble incorrect",
       },
       header: {
         description:
-          "Guide compact du tableau de bord manuel: quoi ouvrir, quoi traiter en premier et ce qui reste volontairement bloque.",
+          "Guide de première utilisation et routine quotidienne: quoi configurer, où trouver chaque outil et quoi traiter en premier.",
         eyebrow: "BizPilotOwner",
         title: "Guide d'operation responsable",
       },
       launchChecklist: {
         description:
-          "Le chemin le plus court entre la configuration et la révision quotidienne.",
+          "Vérifiez ces cinq éléments avant de placer le lien unique devant vos clients.",
         items: [
           ["1", "Terminer la configuration", "Confirmer services, zones, questions, confidentialite et marque."],
           ["2", "Partager un lien public", "Utiliser le lien sur le site, le profil Google ou la prospection manuelle."],
@@ -6429,7 +6485,7 @@ const frenchCopy: BizPilotCopy = {
           ["4", "Copier seulement après révision", "Modifier les brouillons IA avant d'envoyer hors BizPilot."],
           ["5", "Noter le résultat", "Mettre à jour le statut ou le résultat après le contact."],
         ],
-        title: "Checklist de lancement",
+        title: "Avant de partager le lien",
       },
       operatingSystem: {
         description:
@@ -6451,6 +6507,7 @@ const frenchCopy: BizPilotCopy = {
           ["Prospects", "Chercher, filtrer, trier et reviser chaque demande.", "/dashboard/leads", "Ouvrir la file"],
           ["Configuration", "Services, zones, questions, consentement, marque et lien public.", "/dashboard/configuration", "Ouvrir"],
           ["Profil d'entreprise", "Identité et contexte utiles aux réponses manuelles.", "/dashboard/business-profile", "Ouvrir le profil"],
+          ["Guide", "Premiers pas, routine quotidienne, carte des routes et dépannage pratique.", "/dashboard/guide", "Ouvrir le guide"],
           ["Réglages", "Langue, thème, historique, sécurité et cycle de vie.", "/dashboard/settings", "Ouvrir"],
         ],
         title: "Carte des routes",

@@ -13,6 +13,7 @@
  * Created: 2026-07-16
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Guarded right-aligned protected navigation, recovery links, and the expanded first-run owner guide.
  * - 2026-07-16: Added final dashboard Quote Setup regression coverage.
  * ============================================================
  */
@@ -29,9 +30,29 @@ describe("dashboard quote setup finalization", () => {
   it("keeps the desktop Actions menu clear of the fixed sidebar", () => {
     const topbar = source("components/dashboard/dashboard-topbar.tsx");
 
-    assert.equal(topbar.includes("lg:left-0 lg:right-auto"), true);
+    assert.equal(topbar.includes("ml-auto"), true);
+    assert.equal(topbar.includes("absolute right-0 top-11"), true);
+    assert.equal(topbar.includes("lg:left-0 lg:right-auto"), false);
+    assert.equal(topbar.includes('href="/dashboard/guide"'), true);
+    assert.equal(topbar.includes("prefetch={false}"), true);
     assert.equal(topbar.includes("value={quoteUrl}"), true);
     assert.equal(topbar.includes("?preview=dashboard"), true);
+  });
+
+  it("provides safe route recovery and a complete first-run guide", () => {
+    const errorBoundary = source("app/(dashboard)/dashboard/error.tsx");
+    const guide = source("app/(dashboard)/dashboard/guide/page.tsx");
+    const copy = source("lib/i18n/bizpilot-copy.ts");
+
+    assert.equal(errorBoundary.includes("window.location.reload()"), true);
+    assert.equal(errorBoundary.includes('href="/dashboard"'), true);
+    assert.equal(errorBoundary.includes('href="/dashboard/configuration"'), true);
+    assert.equal(errorBoundary.includes('href="/dashboard/guide"'), true);
+    assert.equal(guide.includes("guideCopy.firstSession.items"), true);
+    assert.equal(guide.includes("guideCopy.dailyRoutine.items"), true);
+    assert.equal(guide.includes("prefetch={false}"), true);
+    assert.equal(copy.includes('title: "If something looks wrong"'), true);
+    assert.equal(copy.includes('title: "Si quelque chose semble incorrect"'), true);
   });
 
   it("keeps custom questions progressive and owner-readable", () => {

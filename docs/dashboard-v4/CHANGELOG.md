@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.2 protected navigation, owner onboarding Guide, and progressive founder operations polish.
  * - 2026-07-16: Closed the V4.1 main release with successful CI, Vercel, and Production read-only evidence.
  * - 2026-07-16: Added the V4.1 guided Quote Setup and quote-page recovery release candidate.
  * - 2026-07-15: Replaced the prior release snapshot with final V2.1 CI, Vercel, and Production evidence.
@@ -20,6 +21,34 @@
  -->
 
 # Dashboard V4 Changelog
+
+## 2026-07-16 — V4.2 protected navigation and first-run polish
+
+### Dashboard navigation and recovery
+
+- Right-aligned the desktop utility toolbar instead of letting the single remaining flex child fall to the left.
+- Restored all owner destinations inside Actions, closed the menu after navigation, and disabled protected-route prefetch to avoid background requests for database-heavy routes.
+- Added full-reload recovery plus native Overview, Quote Setup, and Guide links to the protected route error state.
+
+### First-time owner guidance
+
+- Added a four-step first-session path covering setup, preview, the unique link, and the first lead review.
+- Added a concise daily routine and the Guide itself to the route map.
+- Replaced roadmap-style “gaps” with practical bilingual troubleshooting so the Guide teaches the existing complete workflow instead of implying missing features.
+
+### Founder Business Operations
+
+- Removed duplicated cross-panel header actions and duplicated recent activity from Businesses.
+- Reduced the visible summary to four operational metrics while keeping other system signals in their existing Overview/sidebar locations.
+- Moved access/plan/quote controls, workspace tools, and sensitive tools into clearly labeled progressive disclosures. All guarded forms and safety rails remain available.
+
+### Candidate verification
+
+- Package version: `0.2.2`.
+- TypeScript, ESLint, and Next.js 16.2.4 production build pass.
+- Unit/source suite passes `256/256`.
+- Local production-mode public routes pass `46/46`, bilingual responsive routes pass `20/20`, the final UI matrix has zero failures, and inactive Quote GET passes `2/2` in EN/fr-CA.
+- Publication, CI, Vercel, and Production public read-only evidence are recorded only after the exact tested tree reaches `main`.
 
 ## 2026-07-16 — V4.1 Quote Setup finalization
 

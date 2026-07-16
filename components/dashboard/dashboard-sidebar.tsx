@@ -11,8 +11,9 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Disabled automatic prefetch on protected navigation so first-load database routes open only when selected.
  * - 2026-07-05: Added aria-current states for desktop and mobile dashboard navigation links.
  * - 2026-05-19: Matched approved index.html sidebar rhythm, brand block, active states, mobile nav, and quote-link readiness footer.
  * - 2026-05-23: Localized sidebar labels from the central BizPilot copy dictionary.
@@ -202,6 +203,7 @@ function MobileNavLink({
           : "flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-lg px-1.5 py-1.5 text-[var(--dash-text-muted)]"
       }
       href={item.href}
+      prefetch={false}
     >
       <DashboardNavIcon name={item.icon} />
       <span className="max-w-full truncate text-[10px] font-bold leading-none">
@@ -227,6 +229,7 @@ export function DashboardSidebar({
         <Link
           className="flex items-center gap-3 border-b border-[var(--dash-border)] px-2 pb-4"
           href="/dashboard"
+          prefetch={false}
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--dash-primary)] text-[16px] font-black text-white">
             B
@@ -258,6 +261,7 @@ export function DashboardSidebar({
                       className={navClass(isActive)}
                       href={item.href}
                       key={item.href}
+                      prefetch={false}
                     >
                       <NavIcon active={isActive} name={item.icon} />
                       <span className="truncate">{item.label}</span>
@@ -274,6 +278,7 @@ export function DashboardSidebar({
             aria-current={pathname === "/dashboard/guide" ? "page" : undefined}
             className={navClass(pathname === "/dashboard/guide")}
             href="/dashboard/guide"
+            prefetch={false}
           >
             <NavIcon active={pathname === "/dashboard/guide"} name="guide" />
             <span className="truncate">{copy.nav.guide}</span>

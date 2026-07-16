@@ -11,8 +11,9 @@
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-07-05
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added full-reload recovery and native fallback navigation so one failed route cannot trap the owner.
  * - 2026-07-05: Added complete BizPilot source header metadata and alert semantics.
  * ============================================================
  */
@@ -46,7 +47,7 @@ function subscribeDashboardLanguage(): () => void {
   return () => undefined;
 }
 
-export default function DashboardError({ error, reset }: DashboardErrorProps) {
+export default function DashboardError({ error }: DashboardErrorProps) {
   useEffect(() => {
     console.error("[bizpilot] dashboard.error_boundary", {
       digest: error.digest ?? "none",
@@ -60,6 +61,7 @@ export default function DashboardError({ error, reset }: DashboardErrorProps) {
     readServerDashboardErrorLanguage,
   );
   const errorCopy = getBizPilotCopy(language).dashboard.errorBoundary;
+  const navCopy = getBizPilotCopy(language).dashboard.nav;
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-4 py-8">
@@ -78,11 +80,22 @@ export default function DashboardError({ error, reset }: DashboardErrorProps) {
         </p>
         <button
           className="mt-5 inline-flex min-h-10 items-center justify-center rounded-lg bg-[var(--dash-primary)] px-4 text-sm font-black text-white"
-          onClick={reset}
+          onClick={() => window.location.reload()}
           type="button"
         >
           {errorCopy.reload}
         </button>
+        <nav className="mt-3 flex flex-wrap gap-2" aria-label={navCopy.groupCommand}>
+          <a className="biz-button-secondary inline-flex min-h-10 items-center justify-center rounded-lg border px-3 text-[12px] font-bold" href="/dashboard">
+            {navCopy.overview}
+          </a>
+          <a className="biz-button-secondary inline-flex min-h-10 items-center justify-center rounded-lg border px-3 text-[12px] font-bold" href="/dashboard/configuration">
+            {navCopy.quoteSetup}
+          </a>
+          <a className="biz-button-secondary inline-flex min-h-10 items-center justify-center rounded-lg border px-3 text-[12px] font-bold" href="/dashboard/guide">
+            {navCopy.guide}
+          </a>
+        </nav>
       </section>
     </main>
   );

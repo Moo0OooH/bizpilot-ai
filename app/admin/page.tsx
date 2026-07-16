@@ -10,8 +10,9 @@
  * - docs/dashboard-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Reduced Business Operations density with progressive disclosures, removed duplicated actions and activity, and hardened protected admin navigation.
  * - 2026-07-14: Simplified the founder overview, removed redundant charts, localized remaining summary labels, and retained guarded manual controls in dedicated tabs.
  * - 2026-07-11: Localized founder inbox, recent admin-change, cleanup-safety, activity-filter, and action-label helpers.
  * - 2026-07-11: Built localized founder user-priority groups before rendering the work-queue filters.
@@ -1409,53 +1410,62 @@ function RecentAdminChangesPanel({
   const detailCopy = copy.businesses.detail;
   const panelCopy = detailCopy.recentChangesPanel;
   return (
-    <section className="min-w-0 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-[0_12px_32px_rgba(15,23,42,0.05)]">
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div>
-          <p className="text-sm font-black text-[var(--dash-text)]">
+    <details
+      className="min-w-0 overflow-hidden rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface)] shadow-[0_12px_32px_rgba(15,23,42,0.05)]"
+      data-admin-recent-changes
+    >
+      <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3.5 [&::-webkit-details-marker]:hidden">
+        <span className="min-w-0">
+          <span className="block text-sm font-black text-[var(--dash-text)]">
             {detailCopy.recentChangesTitle}
-          </p>
-          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          </span>
+          <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
             {panelCopy.description}
-          </p>
-        </div>
+          </span>
+        </span>
         <StatusBadge tone="blue">{panelCopy.loggedBadge(actions.length)}</StatusBadge>
-      </div>
-      <div className="mt-4 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2">
-        {actions.length > 0 ? (
-          actions.slice(0, 4).map((action) => (
-            <div
-              className="grid min-w-0 gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
-              key={action.id}
-            >
-              <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
-                <div className="min-w-0">
-                  <p className="break-words font-black text-[var(--dash-text)] [overflow-wrap:anywhere]">
-                    {actionLabel(copy, action.actionType)}
-                  </p>
-                  <p className="mt-1 break-words font-semibold text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
-                    {formatActionChange(copy, action)}
+      </summary>
+      <div className="border-t border-[var(--dash-border)] p-3.5">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-2">
+          {actions.length > 0 ? (
+            actions.slice(0, 4).map((action) => (
+              <div
+                className="grid min-w-0 gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
+                key={action.id}
+              >
+                <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+                  <div className="min-w-0">
+                    <p className="break-words font-black text-[var(--dash-text)] [overflow-wrap:anywhere]">
+                      {actionLabel(copy, action.actionType)}
+                    </p>
+                    <p className="mt-1 break-words font-semibold text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
+                      {formatActionChange(copy, action)}
+                    </p>
+                  </div>
+                  <p className="text-left font-bold text-[var(--dash-text-muted)] sm:text-right">
+                    {formatDate(copy, action.createdAt)}
                   </p>
                 </div>
-                <p className="text-left font-bold text-[var(--dash-text-muted)] sm:text-right">
-                  {formatDate(copy, action.createdAt)}
+                <p className="break-all font-bold text-[var(--dash-text-muted)]">
+                  trace_{shortActionId(action.id)}
                 </p>
               </div>
-              <p className="break-all font-bold text-[var(--dash-text-muted)]">
-                trace_{shortActionId(action.id)}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-6 text-center text-[12px] text-[var(--dash-text-secondary)]">
-            {panelCopy.emptyState}
-          </p>
-        )}
+            ))
+          ) : (
+            <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-6 text-center text-[12px] text-[var(--dash-text-secondary)]">
+              {panelCopy.emptyState}
+            </p>
+          )}
+        </div>
+        <Link
+          className={`${buttonClass} mt-4 w-full justify-center`}
+          href="/admin?adminPanel=activity"
+          prefetch={false}
+        >
+          {panelCopy.viewFullActivity}
+        </Link>
       </div>
-      <Link className={`${buttonClass} mt-4 w-full justify-center`} href="/admin?adminPanel=activity">
-        {panelCopy.viewFullActivity}
-      </Link>
-    </section>
+    </details>
   );
 }
 
@@ -1534,6 +1544,7 @@ function FounderBusinessMasterRail({
           <Link
             className={`${buttonClass} min-h-9 justify-center`}
             href={adminBusinessHref(params, { businessQuery: undefined })}
+            prefetch={false}
           >
             {copy.businesses.reset}
           </Link>
@@ -1559,6 +1570,7 @@ function FounderBusinessMasterRail({
                 businessId: business.businessId,
               })}
               key={business.businessId}
+              prefetch={false}
             >
               <div className="min-w-0">
                 <p className="truncate text-sm font-black text-[var(--dash-text)]">
@@ -1714,7 +1726,11 @@ function BusinessControlCard({
               </StatusBadge>
             </div>
           </div>
-          <Link className={buttonClass} href="/dashboard/business-profile">
+          <Link
+            className={buttonClass}
+            href="/dashboard/business-profile"
+            prefetch={false}
+          >
             {detailCopy.viewFullCustomerProfile}
           </Link>
         </div>
@@ -1772,16 +1788,19 @@ function BusinessControlCard({
         </div>
       </section>
 
-      <section className={toolboxSectionClass}>
-        <div className="flex flex-wrap items-start justify-between gap-2">
-          <div>
-            <p className="text-sm font-black text-[var(--dash-text)]">
+      <details
+        className="w-full min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]"
+        data-admin-business-controls
+      >
+        <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3.5 [&::-webkit-details-marker]:hidden">
+          <span className="min-w-0">
+            <span className="block text-sm font-black text-[var(--dash-text)]">
               {detailCopy.priorityTitle}
-            </p>
-            <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            </span>
+            <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
               {detailCopy.priorityDescription}
-            </p>
-          </div>
+            </span>
+          </span>
           <StatusBadge
             tone={business.status === "active" ? "emerald" : statusTone(business.status)}
           >
@@ -1789,9 +1808,9 @@ function BusinessControlCard({
               ? detailCopy.dailyUse
               : statusLabels[business.status]}
           </StatusBadge>
-        </div>
+        </summary>
 
-        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_280px]">
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 border-t border-[var(--dash-border)] p-3 lg:grid-cols-2 2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_280px]">
           <div className="grid gap-2">
             <form action={updateFounderStatusAction} className={controlPanelClass}>
                 <input name="businessId" type="hidden" value={business.businessId} />
@@ -1981,22 +2000,25 @@ function BusinessControlCard({
             </div>
           </aside>
         </div>
-      </section>
+      </details>
 
       <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] items-start gap-3 2xl:grid-cols-[minmax(360px,0.82fr)_minmax(0,1.18fr)]">
-        <section className={toolboxSectionClass}>
-            <div className="flex flex-wrap items-start justify-between gap-2">
-              <div>
-                <p className="text-sm font-black text-[var(--dash-text)]">
+        <details
+          className="w-full min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]"
+          data-admin-workspace-tools
+        >
+            <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3.5 [&::-webkit-details-marker]:hidden">
+              <span className="min-w-0">
+                <span className="block text-sm font-black text-[var(--dash-text)]">
                   {detailCopy.toolsTitle}
-                </p>
-                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                </span>
+                <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
                   {detailCopy.toolsDescription}
-                </p>
-              </div>
+                </span>
+              </span>
               <StatusBadge tone="amber">{detailCopy.toolsControlled}</StatusBadge>
-            </div>
-            <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 md:grid-cols-2 2xl:grid-cols-1">
+            </summary>
+            <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 border-t border-[var(--dash-border)] p-3 md:grid-cols-2 2xl:grid-cols-1">
           <form
             action={updateFounderWorkspaceKindAction}
             className={controlPanelClass}
@@ -2035,21 +2057,24 @@ function BusinessControlCard({
 
           <FounderSessionPolicyForm business={business} copy={copy} />
             </div>
-        </section>
+        </details>
 
-        <section className={toolboxSectionClass}>
-            <div className="flex flex-wrap items-start justify-between gap-2">
-              <div>
-                <p className="text-sm font-black text-[var(--dash-text)]">
+        <details
+          className="w-full min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]"
+          data-admin-sensitive-tools
+        >
+            <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-4 py-3.5 [&::-webkit-details-marker]:hidden">
+              <span className="min-w-0">
+                <span className="block text-sm font-black text-[var(--dash-text)]">
                   {detailCopy.notesTitle}
-                </p>
-                <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                </span>
+                <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
                   {detailCopy.notesDescription}
-                </p>
-              </div>
+                </span>
+              </span>
               <StatusBadge tone="red">{detailCopy.notesSensitive}</StatusBadge>
-            </div>
-            <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] items-start gap-3 xl:grid-cols-[minmax(260px,0.9fr)_minmax(280px,1fr)]">
+            </summary>
+            <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] items-start gap-3 border-t border-[var(--dash-border)] p-3 xl:grid-cols-[minmax(260px,0.9fr)_minmax(280px,1fr)]">
           <form
             action={updateFounderInternalNoteAction}
             className={controlPanelClass}
@@ -2082,7 +2107,7 @@ function BusinessControlCard({
           </div>
             </div>
           {dryRun ? (
-            <div className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 text-sm">
+            <div className="mx-3 mb-3 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 text-sm">
               <p className="font-black text-[var(--dash-text)]">
                 {detailCopy.cleanupDryRunCounts}
               </p>
@@ -2105,7 +2130,7 @@ function BusinessControlCard({
               </dl>
             </div>
           ) : null}
-          <details className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]">
+          <details className="mx-3 mb-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)]">
             <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2.5 [&::-webkit-details-marker]:hidden">
               <span className="text-[12px] font-black text-[var(--dash-text)]">
                 {detailCopy.fullSystemChangeLog}
@@ -2118,7 +2143,7 @@ function BusinessControlCard({
               <FounderSystemChangeLog actions={business.actionLog} copy={copy} />
             </div>
           </details>
-        </section>
+        </details>
 
         <RecentAdminChangesPanel actions={business.actionLog} copy={copy} />
       </div>
@@ -2135,7 +2160,6 @@ function FounderBusinessesSection({
   copy,
   dryRun,
   params,
-  recentActions,
   totals,
   usersTotal,
 }: Readonly<{
@@ -2143,7 +2167,6 @@ function FounderBusinessesSection({
   copy: AdminCopy;
   dryRun: FounderCleanupDryRun | null;
   params: AdminSearchParams;
-  recentActions: FounderAdminOverview["recentActions"];
   totals: FounderAdminOverview["totals"];
   usersTotal: number;
 }>) {
@@ -2167,19 +2190,6 @@ function FounderBusinessesSection({
     <div className="grid gap-3">
       <DashboardCard className="p-4 sm:p-5" variant="priority">
         <PageHeader
-          actions={
-            <>
-              <Link className={buttonClass} href="/admin?adminPanel=leads">
-                {copy.businesses.openInbox}
-              </Link>
-              <Link className={buttonClass} href="/admin?adminPanel=health">
-                {copy.businesses.checkHealth}
-              </Link>
-              <Link className={primaryButtonClass} href="/admin?adminPanel=users">
-                {copy.businesses.manageUsers}
-              </Link>
-            </>
-          }
           description={copy.businesses.operationsDescription}
           eyebrow={copy.businesses.operationsEyebrow}
           title={copy.businesses.operationsTitle}
@@ -2207,6 +2217,7 @@ function FounderBusinessesSection({
                 href={adminBusinessHref(params, {
                   businessId: featuredBusiness.businessId,
                 })}
+                prefetch={false}
               >
                 {copy.businesses.openControls}
               </Link>
@@ -2214,7 +2225,7 @@ function FounderBusinessesSection({
           </section>
         ) : null}
 
-        <section className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        <section className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <MetricCard
             detail={copy.overview.metricsPanel.description}
             label={copy.businesses.operationsTitle}
@@ -2226,12 +2237,6 @@ function FounderBusinessesSection({
             label={copy.overview.metricsPanel.activePilots.label}
             tone="emerald"
             value={totals.activePilots}
-          />
-          <MetricCard
-            detail={copy.overview.metricsPanel.paymentReady.detail}
-            label={copy.overview.metricsPanel.paymentReady.label}
-            tone="amber"
-            value={totals.paymentReady}
           />
           <MetricCard
             detail={copy.businesses.detail.quoteLinkControl.inactiveNotice}
@@ -2271,8 +2276,6 @@ function FounderBusinessesSection({
           )}
         </DashboardCard>
       </div>
-
-      <FounderRecentActionsPanel actions={recentActions} copy={copy} />
     </div>
   );
 }
@@ -3781,7 +3784,7 @@ function AdminTopBar({
             ariaLabel={copy.theme.ariaLabel}
             labels={themeLabels}
           />
-          <Link className={buttonClass} href="/dashboard">
+          <Link className={buttonClass} href="/dashboard" prefetch={false}>
             {copy.topbar.ownerDashboard}
           </Link>
         </div>
@@ -3872,6 +3875,7 @@ function AdminTabsBar({
         <Link
           className="flex items-center gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-3"
           href="/admin"
+          prefetch={false}
         >
           <span
             aria-hidden
@@ -3909,6 +3913,7 @@ function AdminTabsBar({
                     className="grid min-h-[54px] gap-1 rounded-lg border px-3 py-2 transition"
                     href={adminUsersHref(params, { adminPanel: item.panel })}
                     key={item.panel}
+                    prefetch={false}
                     style={{
                       backgroundColor: active
                         ? "var(--dash-primary-soft)"
@@ -3967,6 +3972,7 @@ function AdminTabsBar({
               className="inline-flex min-h-10 min-w-0 items-center justify-center gap-1.5 rounded-lg border px-2 py-2 text-center text-[12px] font-black"
               href={adminUsersHref(params, { adminPanel: item.panel })}
               key={item.panel}
+              prefetch={false}
               style={{
                 backgroundColor: active ? "var(--dash-primary-soft)" : "transparent",
                 borderColor: active
@@ -4104,7 +4110,6 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                 copy={adminCopy}
                 dryRun={dryRun}
                 params={params}
-                recentActions={overview.recentActions}
                 totals={overview.totals}
                 usersTotal={overview.usersTotal}
               />

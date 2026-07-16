@@ -2,16 +2,17 @@
  * ============================================================
  * File: app/(dashboard)/dashboard/guide/page.tsx
  * Project: BizPilot AI
- * Description: Protected owner operating guide for the manual quote-recovery dashboard.
- * Role: Gives owners a compact route map, daily manual workflow, visible gaps, and current pilot boundaries.
+ * Description: Protected first-run and daily operating guide for the manual quote-recovery dashboard.
+ * Role: Gives owners a compact setup path, route map, daily workflow, troubleshooting, and current pilot boundaries.
  * Related:
  * - components/dashboard/dashboard-sidebar.tsx
  * - components/dashboard/dashboard-topbar.tsx
  * - lib/i18n/bizpilot-copy.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added a first-session path, daily routine, protected-link hardening, and practical troubleshooting for new owners.
  * - 2026-07-05: Collapsed the optional gaps panel by default to keep the owner guide lower-scroll for final polish.
  * - 2026-07-05: Added explicit accessible labels to owner guide route-map cards.
  * - 2026-07-05: Tokenized boundary status dots for dashboard theme consistency.
@@ -80,10 +81,10 @@ export default async function DashboardGuidePage() {
       <PageHeader
         actions={
           <>
-            <Link className={primaryButtonClass} href="/dashboard/leads">
+            <Link className={primaryButtonClass} href="/dashboard/leads" prefetch={false}>
               {guideCopy.actions.openQueue}
             </Link>
-            <Link className={buttonClass} href="/dashboard/configuration">
+            <Link className={buttonClass} href="/dashboard/configuration" prefetch={false}>
               {guideCopy.actions.openSetup}
             </Link>
           </>
@@ -92,6 +93,32 @@ export default async function DashboardGuidePage() {
         eyebrow={guideCopy.header.eyebrow}
         title={guideCopy.header.title}
       />
+
+      <DashboardCard className="p-4 sm:p-5" variant="priority">
+        <SectionHeader
+          description={guideCopy.firstSession.description}
+          title={guideCopy.firstSession.title}
+        />
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          {guideCopy.firstSession.items.map(([step, title, detail, href]) => (
+            <Link
+              aria-label={`${step}. ${title} - ${detail}`}
+              className="group grid min-h-[148px] gap-2 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface)] p-4 transition hover:-translate-y-0.5 hover:border-[var(--dash-primary)] hover:shadow-sm"
+              href={href}
+              key={`${step}-${href}`}
+              prefetch={false}
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--dash-primary)] text-[12px] font-black text-white">
+                {step}
+              </span>
+              <span className="text-[14px] font-black text-[var(--dash-text)]">{title}</span>
+              <span className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                {detail}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </DashboardCard>
 
       <section className="grid min-w-0 gap-4 xl:grid-cols-[minmax(0,1.25fr)_minmax(320px,0.75fr)]">
         <div className="grid min-w-0 gap-4">
@@ -135,6 +162,7 @@ export default async function DashboardGuidePage() {
                   className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)] sm:grid-cols-[minmax(0,0.36fr)_minmax(0,1fr)_auto] sm:items-center"
                   href={href}
                   key={href}
+                  prefetch={false}
                 >
                   <span className="text-[13px] font-black text-[var(--dash-text)]">
                     {title}
@@ -150,6 +178,29 @@ export default async function DashboardGuidePage() {
         </div>
 
         <aside className="grid min-w-0 gap-4 xl:sticky xl:top-[82px]">
+          <DashboardCard className="p-4">
+            <SectionHeader
+              description={guideCopy.dailyRoutine.description}
+              title={guideCopy.dailyRoutine.title}
+            />
+            <div className="mt-4 grid gap-2">
+              {guideCopy.dailyRoutine.items.map(([when, title, detail]) => (
+                <div
+                  className="grid gap-1 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3"
+                  key={when}
+                >
+                  <span className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-primary)]">
+                    {when}
+                  </span>
+                  <span className="text-[13px] font-black text-[var(--dash-text)]">{title}</span>
+                  <span className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                    {detail}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </DashboardCard>
+
           <DashboardCard className="p-4">
             <SectionHeader
               description={guideCopy.launchChecklist.description}
@@ -228,7 +279,11 @@ export default async function DashboardGuidePage() {
                   </p>
                 </div>
               ))}
-              <Link className={`${buttonClass} w-full`} href="/dashboard/settings#display-preferences">
+              <Link
+                className={`${buttonClass} w-full`}
+                href="/dashboard/settings"
+                prefetch={false}
+              >
                 {guideCopy.actions.viewSettings}
               </Link>
             </div>

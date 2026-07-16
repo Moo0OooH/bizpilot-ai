@@ -13,6 +13,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Moved desktop utilities to the right, restored the complete owner route menu, closed it after navigation, and disabled protected-route prefetch pressure.
  * - 2026-07-16: Anchored the desktop Actions menu inside the content column so it no longer opens beneath the fixed sidebar.
  * - 2026-07-05: Corrected the More actions control title and accessible label.
  * - 2026-05-19: Matched approved index.html topbar hierarchy: page title left, focused actions right, no global search clutter.
@@ -31,6 +32,7 @@ import type { DashboardShellCopy } from "./dashboard-shell";
 import { languageShortLabels, supportedLanguages } from "@/lib/i18n/language";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 
 import { signOutAction } from "@/server/actions/auth.actions";
 import { updateWorkspaceLanguageAction } from "@/server/actions/business-configuration.actions";
@@ -83,6 +85,19 @@ export function DashboardTopbar({
     activeLanguage === "fr-CA" ? "&language=fr-CA" : ""
   }`;
   const pathname = usePathname();
+  const actionsMenuRef = useRef<HTMLDetailsElement>(null);
+
+  useEffect(() => {
+    if (actionsMenuRef.current) {
+      actionsMenuRef.current.open = false;
+    }
+  }, [pathname]);
+
+  function closeActionsMenu() {
+    if (actionsMenuRef.current) {
+      actionsMenuRef.current.open = false;
+    }
+  }
 
   return (
     <header className="dashboard-topbar sticky top-0 z-20 shrink-0 border-b backdrop-blur">
@@ -96,8 +111,8 @@ export function DashboardTopbar({
           </span>
         </div>
 
-        <div className="flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
-          <details className="group relative">
+        <div className="ml-auto flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
+          <details className="group relative" ref={actionsMenuRef}>
             <summary
               aria-label={copy.actions.moreActions}
               className={`${buttonClass} list-none cursor-pointer [&::-webkit-details-marker]:hidden`}
@@ -106,7 +121,7 @@ export function DashboardTopbar({
               <MoreIcon />
               <span className="hidden md:inline">{copy.actions.moreActions}</span>
             </summary>
-            <div className="absolute right-0 top-11 z-30 grid w-[min(220px,calc(100vw-1.5rem))] gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2 shadow-[0_18px_48px_rgba(2,6,23,0.18)] lg:left-0 lg:right-auto">
+            <div className="absolute right-0 top-11 z-30 grid w-[min(240px,calc(100vw-1.5rem))] gap-1.5 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2.5 shadow-[0_18px_48px_rgba(2,6,23,0.18)]">
               <CopyButton
                 className="!w-full !justify-start"
                 failedLabel={copy.actions.copyFailed}
@@ -114,20 +129,40 @@ export function DashboardTopbar({
                 successLabel={copy.actions.copySuccess}
                 value={quoteUrl}
               />
-              <Link className={`${buttonClass} w-full justify-start`} href={quotePreviewPath}>
+              <Link
+                className={`${buttonClass} w-full justify-start`}
+                href={quotePreviewPath}
+                onClick={closeActionsMenu}
+                prefetch={false}
+              >
                 {copy.actions.previewQuotePage}
               </Link>
-              <Link className={`${buttonClass} w-full justify-start`} href="/dashboard/guide">
+              <div className="my-0.5 border-t border-[var(--dash-border)]" />
+              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard" onClick={closeActionsMenu} prefetch={false}>
+                {copy.nav.overview}
+              </Link>
+              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard/leads" onClick={closeActionsMenu} prefetch={false}>
+                {copy.nav.leads}
+              </Link>
+              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard/configuration" onClick={closeActionsMenu} prefetch={false}>
+                {copy.nav.quoteSetup}
+              </Link>
+              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard/business-profile" onClick={closeActionsMenu} prefetch={false}>
+                {copy.nav.businessProfile}
+              </Link>
+              <Link className={`${ghostButtonClass} w-full justify-start`} href="/dashboard/guide" onClick={closeActionsMenu} prefetch={false}>
                 {copy.nav.guide}
               </Link>
               <Link
-                className={`${buttonClass} w-full justify-start`}
+                className={`${ghostButtonClass} w-full justify-start`}
                 href="/dashboard/settings"
+                onClick={closeActionsMenu}
+                prefetch={false}
               >
                 {copy.nav.settings}
               </Link>
               {showFounderAdmin ? (
-                <Link className={`${ghostButtonClass} w-full justify-start`} href="/admin">
+                <Link className={`${ghostButtonClass} w-full justify-start`} href="/admin" onClick={closeActionsMenu} prefetch={false}>
                   {copy.pages.founder.title}
                 </Link>
               ) : null}
