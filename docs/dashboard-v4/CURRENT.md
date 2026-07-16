@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed V4.3 on main with successful CI/Vercel and Production public read-only acceptance evidence.
  * - 2026-07-16: Added the V4.3 centered native navigation and request-scoped protected data-read contract.
  * - 2026-07-16: Closed V4.2 on main with successful CI/Vercel and Production public read-only acceptance evidence.
  * - 2026-07-16: Added the V4.2 protected-navigation, first-run Guide, and founder Business Operations polish contract.
@@ -90,6 +91,8 @@ Dashboard V4.3 applies protected navigation and request-read reliability changes
 
 ## Verification status
 
-The V4.3 candidate passes source contracts, localization shape, TypeScript, lint, all `256/256` unit tests, and the Next.js 16.2.4 production build. Main/CI/Vercel evidence is recorded after publication. Authenticated browser smoke still requires an approved local/synthetic auth target; absence of that target is not silently presented as a passed authenticated test.
+Dashboard V4.3 release SHA `bcf037090717935a2cd97bcdccb08a525795c246` is on `main`. GitHub CI run `29538671150` and Vercel target `FTVpVmQT8j8ST74YvpzF6Q47vdDq` succeeded. Production read-only acceptance passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA.
+
+Source contracts, localization shape, TypeScript, lint, all `256/256` unit tests, and the Next.js 16.2.4 production build pass. Authenticated browser smoke still requires an approved local/synthetic auth target; absence of that target is not silently presented as a passed authenticated test.
 
 See `PHASE_PROGRESS.md` for exact completion evidence and remaining gates.

@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed V4.3 on main with successful CI, Vercel, and Production public read-only evidence.
  * - 2026-07-16: Added the V4.3 protected dashboard runtime and centered-navigation repair candidate.
  * - 2026-07-16: Closed the V4.2 main release with successful CI, Vercel, and Production read-only evidence.
  * - 2026-07-16: Added the V4.2 protected navigation, owner onboarding Guide, and progressive founder operations polish.
@@ -38,6 +39,8 @@
 - The centered and compact navigation both consume the shared EN/fr-CA owner dictionary and preserve the current workspace language action.
 - ESLint, TypeScript, all `256/256` unit/source tests, and the Next.js 16.2.4 production build pass on the candidate tree.
 - No route, migration, tenant data, submission, or Production database state was added or changed.
+- Exact source was published directly to `main` as `bcf037090717935a2cd97bcdccb08a525795c246`; GitHub CI run `29538671150` and Vercel target `FTVpVmQT8j8ST74YvpzF6Q47vdDq` succeeded.
+- Production passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA.
 
 ## 2026-07-16 — V4.2 protected navigation and first-run polish
 

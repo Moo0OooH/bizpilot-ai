@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed V4.3 on main with CI run 29538671150, successful Vercel rollout, and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
  * - 2026-07-16: Added the V4.3 centered native navigation, shared protected reads, and local 256/256/build verification record.
  * - 2026-07-16: Closed V4.2 on main with CI run 29537073204, successful Vercel rollout, and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
  * - 2026-07-16: Added the V4.2 navigation recovery, expanded first-run Guide, progressive Business Operations, and 256/256 candidate verification record.
@@ -40,7 +41,8 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | Protected navigation and recovery hardening | DONE | Complete owner navigation is centered on wide screens and compact below that; native route transitions and error recovery prevent client-router traps. |
 | P0 | V4.3 protected runtime regression repair | DONE | Centered wide-screen route bar; compact tablet/mobile menu; native topbar/sidebar/mobile transitions; current-user and workspace reads shared per server render. |
 | P0 | V4.3 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit: 256/256; Next.js 16.2.4 production build: PASS. |
-| P0 | V4.3 main push, CI, and Vercel rollout | GATED | Candidate is locally complete; exact SHA and remote deployment evidence are recorded after direct `main` publication. |
+| P0 | V4.3 main push, CI, and Vercel rollout | DONE | Exact source published directly to `main` as `bcf0370`; GitHub CI run `29538671150` success; Vercel target `FTVpVmQT8j8ST74YvpzF6Q47vdDq` success; no extra branch or PR. |
+| P0 | V4.3 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; inactive `bizpilot0wner` Quote GET 2/2 EN/fr-CA; no submission or data mutation. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
 | P0 | Branding and local logo workflow | DONE | Bounded PNG/JPG/WebP browser resize, HTTPS alternative, remove/reset actions, live preview, server validation, and public Quote logo/color application implemented. |
@@ -75,6 +77,12 @@ This section is updated only with commands actually run on the final working tre
 
 - TypeScript: PASS.
 - V4.3 centered/native protected navigation and shared-read contracts: PASS.
+- GitHub CI: PASS for V4.3 release SHA `bcf037090717935a2cd97bcdccb08a525795c246`, workflow run `29538671150`.
+- Vercel commit deployment: SUCCESS for V4.3 release SHA, target `FTVpVmQT8j8ST74YvpzF6Q47vdDq`.
+- V4.3 Production public route smoke: PASS, 46/46.
+- V4.3 Production bilingual responsive smoke: PASS, 20/20.
+- V4.3 Production final UI matrix: PASS, zero failures.
+- V4.3 Production inactive Quote GET: PASS, 2/2 EN/fr-CA; no submission or data mutation.
 - V4 targeted source contracts: PASS.
 - Full unit suite: PASS, 256/256 for the V4.3 candidate.
 - ESLint: PASS, zero warnings.
@@ -107,4 +115,4 @@ This section is updated only with commands actually run on the final working tre
 
 ## Ideal completion definition
 
-The Dashboard V4.3 candidate is source-complete. Publication, CI/Vercel, and an approved authenticated smoke require their own evidence before the protected runtime repair is called Production-verified. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
+The Dashboard V4.3 source and public read-only release are complete. Authenticated visual confirmation remains separately gated because this environment has no approved owner session. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
