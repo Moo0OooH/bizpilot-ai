@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed V4.2 on main with successful CI/Vercel and Production public read-only acceptance evidence.
  * - 2026-07-16: Added the V4.2 protected-navigation, first-run Guide, and founder Business Operations polish contract.
  * - 2026-07-16: Recorded the V4.1 main release, successful CI/Vercel rollout, and Production read-only acceptance evidence.
  * - 2026-07-16: Added the V4.1 guided Quote Setup, safe local branding, approved AI knowledge, unique-link workflow, and owner preview recovery contract.
@@ -87,7 +88,7 @@ Dashboard V4.2 applies presentation, navigation, recovery, documentation, and pr
 
 ## Verification status
 
-Dashboard V4.2 candidate validation passes TypeScript, ESLint, `256/256` unit contracts, the Next.js 16.2.4 production build, public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2`. The prior V4.1 release remains the currently recorded Production baseline until this exact V4.2 tree is published and its CI/Vercel/public read-only checks are recorded.
+Dashboard V4.2 release SHA `5d9ce9bfc01cc57630282a08cdc1ec265c72fdc4` is on `main`. GitHub CI run `29537073204` and Vercel target `4YFtU4y2aAMAUxKLNyHevhKGDccJ` succeeded. Production read-only acceptance passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA. No authenticated submission, database mutation, migration, or synthetic Production data was used.
 
 Source contracts, localization shape, TypeScript, lint, unit tests, production build, and bilingual public/responsive smoke are complete. Authenticated browser smoke additionally requires an approved local/synthetic auth target; absence of that target remains an environment gate and was not silently skipped or run against Production.
 

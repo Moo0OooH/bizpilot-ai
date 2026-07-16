@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed the V4.2 main release with successful CI, Vercel, and Production read-only evidence.
  * - 2026-07-16: Added the V4.2 protected navigation, owner onboarding Guide, and progressive founder operations polish.
  * - 2026-07-16: Closed the V4.1 main release with successful CI, Vercel, and Production read-only evidence.
  * - 2026-07-16: Added the V4.1 guided Quote Setup and quote-page recovery release candidate.
@@ -42,13 +43,16 @@
 - Reduced the visible summary to four operational metrics while keeping other system signals in their existing Overview/sidebar locations.
 - Moved access/plan/quote controls, workspace tools, and sensitive tools into clearly labeled progressive disclosures. All guarded forms and safety rails remain available.
 
-### Candidate verification
+### Release verification
 
 - Package version: `0.2.2`.
 - TypeScript, ESLint, and Next.js 16.2.4 production build pass.
 - Unit/source suite passes `256/256`.
 - Local production-mode public routes pass `46/46`, bilingual responsive routes pass `20/20`, the final UI matrix has zero failures, and inactive Quote GET passes `2/2` in EN/fr-CA.
-- Publication, CI, Vercel, and Production public read-only evidence are recorded only after the exact tested tree reaches `main`.
+- Exact tested tree was published directly to `main` as release SHA `5d9ce9bfc01cc57630282a08cdc1ec265c72fdc4`, without an extra branch or PR.
+- GitHub CI run `29537073204` and Vercel target `4YFtU4y2aAMAUxKLNyHevhKGDccJ` succeeded.
+- Production passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive `bizpilot0wner` Quote GET `2/2` in EN/fr-CA.
+- No Production submission, database mutation, migration, synthetic customer, or authenticated browser automation was used.
 
 ## 2026-07-16 — V4.1 Quote Setup finalization
 

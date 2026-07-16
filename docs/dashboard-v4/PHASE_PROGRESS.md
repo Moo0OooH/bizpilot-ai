@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed V4.2 on main with CI run 29537073204, successful Vercel rollout, and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
  * - 2026-07-16: Added the V4.2 navigation recovery, expanded first-run Guide, progressive Business Operations, and 256/256 candidate verification record.
  * - 2026-07-16: Closed Dashboard V4.1 on main with CI run 29524786852, successful Vercel rollout, and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
  * - 2026-07-16: Added Dashboard V4.1 Quote Setup implementation and local candidate verification evidence at 254/254 unit, 46/46 public, and 20/20 responsive.
@@ -48,8 +49,8 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | V4.1 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit: 254/254; Next.js 16.2.4 production build: PASS. |
 | P0 | V4.2 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit: 256/256; Next.js 16.2.4 production build: PASS. |
 | P0 | V4.2 local public, responsive, UI, and Quote smoke | DONE | Public 46/46; bilingual responsive 20/20; final UI matrix zero failures; inactive Quote GET 2/2 EN/fr-CA. |
-| P0 | V4.2 main push, CI, and Vercel rollout | NOT STARTED | Awaiting publication of the exact tested tree directly to `main`; no extra branch or PR will be created. |
-| P0 | V4.2 Production public read-only acceptance | NOT STARTED | Run only after Vercel Production is ready; no authenticated mutation or Production test data. |
+| P0 | V4.2 main push, CI, and Vercel rollout | DONE | Exact tested tree published directly to `main` as release SHA `5d9ce9b`; GitHub CI run `29537073204` success; Vercel target `4YFtU4y2aAMAUxKLNyHevhKGDccJ` success; no extra branch or PR. |
+| P0 | V4.2 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; inactive `bizpilot0wner` Quote GET 2/2 EN/fr-CA; no submission or data mutation. |
 | P0 | V4.1 local public and responsive smoke | DONE | Public routes/languages: 46/46; responsive EN/fr-CA: 20/20. Real Chrome remains environment-gated because no binary is installed. |
 | P0 | Local production public route/responsive/UI/Quote smoke | DONE | Public: 46/46; bilingual responsive: 20/20; final UI matrix: zero failures; inactive Quote GET: 2/2. |
 | P0 | V4.1 main push, CI, and Vercel rollout | DONE | Exact tested tree published directly to `main` as release SHA `510043f`; GitHub CI run `29524786852` success; Vercel target `9dK6XxKYcGM6TiMHBng2DwDY4pRZ` success; no extra branch or PR. |
@@ -77,6 +78,12 @@ This section is updated only with commands actually run on the final working tre
 - V4.2 local bilingual responsive smoke: PASS, 20/20.
 - V4.2 local final UI matrix: PASS, zero failures.
 - V4.2 local inactive Quote GET: PASS, 2/2 EN/fr-CA; no submission or data mutation.
+- GitHub CI: PASS for V4.2 release SHA `5d9ce9bfc01cc57630282a08cdc1ec265c72fdc4`, workflow run `29537073204`.
+- Vercel commit deployment status: SUCCESS for V4.2 release SHA `5d9ce9bfc01cc57630282a08cdc1ec265c72fdc4`, target `4YFtU4y2aAMAUxKLNyHevhKGDccJ`.
+- V4.2 Production public route smoke: PASS, 46/46.
+- V4.2 Production bilingual responsive smoke: PASS, 20/20.
+- V4.2 Production final UI matrix: PASS, zero failures.
+- V4.2 Production inactive `bizpilot0wner` Quote GET: PASS, 2/2 EN/fr-CA; no submission or data mutation.
 - Local production public route smoke: PASS, 46/46, including every Auth GET, unavailable Quote states, invalid success recovery, bilingual 404, and compatibility redirects.
 - Local bilingual responsive smoke: PASS, 20/20.
 - Local final UI matrix: PASS, zero failures across the recorded route/locale/theme/metadata matrix.
@@ -95,4 +102,4 @@ This section is updated only with commands actually run on the final working tre
 
 ## Ideal completion definition
 
-The V4.2 source candidate is complete; release closure still requires its exact `main` SHA, CI, Vercel, and public read-only evidence. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
+The Dashboard V4.2 code and public read-only release is complete. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
