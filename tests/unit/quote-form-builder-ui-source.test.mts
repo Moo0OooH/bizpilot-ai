@@ -8,11 +8,36 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
+import { getBizPilotCopy } from "../../lib/i18n/bizpilot-copy.ts";
+
 function source(path: string): string {
   return readFileSync(path, "utf8");
 }
 
 describe("quote form builder UI source contracts", () => {
+  it("keeps every Quote Setup field-builder prop serializable", () => {
+    function functionPaths(value: unknown, path = "fields"): string[] {
+      if (typeof value === "function") return [path];
+      if (!value || typeof value !== "object") return [];
+      return Object.entries(value as Record<string, unknown>).flatMap(
+        ([key, child]) => functionPaths(child, `${path}.${key}`),
+      );
+    }
+
+    for (const language of ["en", "fr-CA"] as const) {
+      const fields = getBizPilotCopy(language).dashboard.configuration.fields;
+      assert.deepEqual(
+        functionPaths(fields),
+        [],
+        `${language} Quote Setup fields copy must cross Client Component boundaries`,
+      );
+      assert.doesNotThrow(() => JSON.stringify(fields));
+    }
+
+    const page = source("app/(dashboard)/dashboard/configuration/page.tsx");
+    assert.equal(page.includes("copy={configCopy.fields.formStructure}"), true);
+  });
+
   it("connects the saved layout and field assignments to Quote Setup", () => {
     const page = source("app/(dashboard)/dashboard/configuration/page.tsx");
     const builder = source(

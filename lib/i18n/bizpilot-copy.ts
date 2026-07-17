@@ -317,7 +317,7 @@ type DashboardConfigurationCopy = Readonly<{
       livePreview: string;
       moveDown: string;
       moveUp: string;
-      newSectionName: (index: number) => string;
+      newSectionName: string;
       question: string;
       removeSection: string;
       sectionDescription: string;
@@ -3170,7 +3170,7 @@ const englishCopy: BizPilotCopy = {
           livePreview: "Structure preview",
           moveDown: "Move section down",
           moveUp: "Move section up",
-          newSectionName: (index) => `Section ${index}`,
+          newSectionName: "Section",
           question: "Question",
           removeSection: "Remove",
           sectionDescription: "Section description",
@@ -6233,7 +6233,7 @@ const frenchCopy: BizPilotCopy = {
           livePreview: "Aperçu de la structure",
           moveDown: "Descendre la section",
           moveUp: "Monter la section",
-          newSectionName: (index) => `Section ${index}`,
+          newSectionName: "Section",
           question: "Question",
           removeSection: "Retirer",
           sectionDescription: "Description de la section",

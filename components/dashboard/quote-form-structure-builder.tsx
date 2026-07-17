@@ -50,7 +50,7 @@ export type QuoteFormStructureCopy = Readonly<{
   livePreview: string;
   moveDown: string;
   moveUp: string;
-  newSectionName: (index: number) => string;
+  newSectionName: string;
   question: string;
   removeSection: string;
   sectionDescription: string;
@@ -148,7 +148,7 @@ export function QuoteFormStructureBuilder({
     if (sections.length >= MAX_QUOTE_FORM_SECTIONS) return;
     const generated = nextSectionKey(sections, nextSectionSeed.current);
     nextSectionSeed.current = generated.nextSeed;
-    const label = copy.newSectionName(sections.length + 1);
+    const label = `${copy.newSectionName} ${sections.length + 1}`;
     setSections((current) => [
       ...current,
       {
