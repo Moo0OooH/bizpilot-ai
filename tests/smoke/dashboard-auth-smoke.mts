@@ -9,8 +9,9 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added the protected Reports route to the authenticated owner smoke matrix.
  * - 2026-07-15: Repointed authenticated smoke authority to the current bilingual route/flow audit.
  * - 2026-07-04: Added opt-in founder/admin route smoke support with explicit synthetic founder email gating.
  * - 2026-07-04: Added the owner operating guide route to authenticated dashboard smoke coverage.
@@ -122,6 +123,7 @@ const DEFAULT_TIMEOUT_MS = 20_000;
 const dashboardTargets: readonly DashboardSmokeTarget[] = [
   { path: "/dashboard" },
   { path: "/dashboard/leads" },
+  { path: "/dashboard/reports" },
   { path: "/dashboard/configuration" },
   { path: "/dashboard/business-profile" },
   {

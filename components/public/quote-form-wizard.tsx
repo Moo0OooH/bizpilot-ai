@@ -22,6 +22,7 @@
 import {
   getBizPilotCopy,
   getDefaultBizPilotCopy,
+  resolveConsentNoticeForLanguage,
   type BizPilotCopy,
   type QuoteStepCopy,
 } from "@/lib/i18n/bizpilot-copy";
@@ -445,7 +446,10 @@ export function QuoteFormWizard({
               )}
               {index === sections.length - 1 ? (
                 <ConsentBlock
-                  consentNotice={page.consentVersion.consent_notice}
+                  consentNotice={resolveConsentNoticeForLanguage({
+                    language,
+                    value: page.consentVersion.consent_notice,
+                  })}
                 />
               ) : null}
             </>

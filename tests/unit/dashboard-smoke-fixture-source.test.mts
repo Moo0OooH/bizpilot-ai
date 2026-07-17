@@ -9,8 +9,9 @@
  * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Guarded Reports route coverage and the RSC serialization failure marker.
  * - 2026-07-15: Repointed fixture coverage to the current bilingual workflow audit.
  * - 2026-07-04: Added source guards for opt-in founder/admin dashboard smoke coverage.
  * - 2026-07-04: Guarded owner operating guide route smoke coverage.
@@ -111,6 +112,16 @@ test("dashboard smoke can opt into founder admin routes only with synthetic foun
   }
 });
 
-test("dashboard smoke includes the protected owner operating guide route", () => {
-  assert.equal(smokeSource.includes('path: "/dashboard/guide"'), true);
+test("dashboard smoke includes optional owner routes and catches RSC serialization failures", () => {
+  for (const required of [
+    'path: "/dashboard/reports"',
+    'path: "/dashboard/guide"',
+    "Functions cannot be passed directly to Client Components",
+  ]) {
+    assert.equal(
+      smokeSource.includes(required),
+      true,
+      `dashboard smoke should include ${required}`,
+    );
+  }
 });

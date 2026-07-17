@@ -210,9 +210,14 @@ describe("final shell polish source contracts", () => {
       "Company website honeypot must stay display-hidden, assistive-tech hidden, and out of tab order.",
     );
     assert.equal(
-      quoteWizard.includes("consentNotice={page.consentVersion.consent_notice}"),
+      quoteWizard.includes("resolveConsentNoticeForLanguage({"),
       true,
-      "Visible quote consent copy should use the persisted active notice.",
+      "Visible quote consent should localize stored defaults while preserving owner-authored copy.",
+    );
+    assert.equal(
+      quoteWizard.includes("value: page.consentVersion.consent_notice"),
+      true,
+      "Visible quote consent should still use the persisted active notice as its source.",
     );
   });
 
