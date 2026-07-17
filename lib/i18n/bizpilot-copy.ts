@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added serializable FAQ count labels and clearer dashboard recovery copy in both supported languages.
  * - 2026-07-16: Expanded the bilingual first-run owner guide with a first-session path, daily routine, and practical troubleshooting.
  * - 2026-07-16: Added bilingual guided setup copy for local logo uploads, recommended fields, FAQ knowledge, unique quote links, and owner preview recovery.
  * - 2026-07-15: Added centralized EN/fr-CA copy for the global runtime error boundary.
@@ -321,6 +322,8 @@ type DashboardConfigurationCopy = Readonly<{
   }>;
   faq: Readonly<{
     clearExamples: string;
+    countMany: string;
+    countOne: string;
     description: string;
     examples: readonly string[];
     guardrailTitle: string;
@@ -2772,10 +2775,10 @@ const englishCopy: BizPilotCopy = {
     },
     errorBoundary: {
       body:
-        "BizPilot caught a safe dashboard error. Reload the workspace to try again without exposing internal details.",
+        "We could not open this page. Your saved workspace data was not changed. Try the page again or use a safe destination below.",
       eyebrow: "Dashboard",
-      reload: "Reload dashboard",
-      title: "This workspace needs a refresh.",
+      reload: "Try again",
+      title: "This page did not open.",
     },
     founderHandoff: {
       actions: {
@@ -3054,6 +3057,8 @@ const englishCopy: BizPilotCopy = {
       },
       faq: {
         clearExamples: "Clear",
+        countMany: "FAQs",
+        countOne: "FAQ",
         description:
           "Owner-approved facts that help BizPilot prepare safer reply drafts. Every draft still requires your review.",
         examples: [
@@ -5654,10 +5659,10 @@ const frenchCopy: BizPilotCopy = {
     },
     errorBoundary: {
       body:
-        "BizPilot a intercepté une erreur sûre du tableau de bord. Rechargez l'espace pour réessayer sans exposer de détails internes.",
+        "Nous n'avons pas pu ouvrir cette page. Les données enregistrées de l'espace n'ont pas été modifiées. Réessayez ou utilisez une destination sûre ci-dessous.",
       eyebrow: "Tableau de bord",
-      reload: "Recharger le tableau de bord",
-      title: "Cet espace doit être rafraîchi.",
+      reload: "Réessayer",
+      title: "Cette page ne s'est pas ouverte.",
     },
     routeMessages: {
       genericError:
@@ -5877,6 +5882,8 @@ const frenchCopy: BizPilotCopy = {
       },
       faq: {
         clearExamples: "Effacer",
+        countMany: "FAQ",
+        countOne: "FAQ",
         description:
           "Faits approuvés par le responsable qui aident BizPilot à préparer des brouillons plus sûrs. Chaque brouillon exige toujours votre révision.",
         examples: [

@@ -13,6 +13,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Made the centered five-route bar the single desktop navigation and moved Guide to secondary help.
  * - 2026-07-16: Replaced the fragile client-managed desktop disclosure with centered native route navigation and full-page protected-route transitions.
  * - 2026-07-16: Moved desktop utilities to the right, restored the complete owner route menu, closed it after navigation, and disabled protected-route prefetch pressure.
  * - 2026-07-16: Anchored the desktop Actions menu inside the content column so it no longer opens beneath the fixed sidebar.
@@ -84,13 +85,16 @@ export function DashboardTopbar({
     activeLanguage === "fr-CA" ? "&language=fr-CA" : ""
   }`;
   const pathname = usePathname();
-  const routes = [
+  const primaryRoutes = [
     { href: "/dashboard", label: copy.nav.overview },
     { href: "/dashboard/leads", label: copy.nav.leads },
     { href: "/dashboard/configuration", label: copy.nav.quoteSetup },
     { href: "/dashboard/business-profile", label: copy.nav.businessProfile },
-    { href: "/dashboard/guide", label: copy.nav.guide },
     { href: "/dashboard/settings", label: copy.nav.settings },
+  ] as const;
+  const menuRoutes = [
+    ...primaryRoutes,
+    { href: "/dashboard/guide", label: copy.nav.guide },
   ] as const;
 
   function isActiveRoute(href: string): boolean {
@@ -104,20 +108,25 @@ export function DashboardTopbar({
   return (
     <header className="dashboard-topbar sticky top-0 z-20 shrink-0 border-b backdrop-blur">
       <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:min-h-[56px] sm:gap-3 sm:px-5 md:px-6 lg:px-5 xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
-        <div className="flex min-w-0 items-center gap-2 lg:hidden">
+        <a className="flex min-w-0 items-center gap-2" href="/dashboard">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--dash-primary)] text-sm font-black text-white">
             B
           </span>
-          <span className="truncate text-[14px] font-black text-[var(--dash-text)]">
-            BizPilot AI
+          <span className="min-w-0">
+            <span className="block truncate text-[14px] font-black text-[var(--dash-text)]">
+              BizPilot AI
+            </span>
+            <span className="hidden truncate text-[11px] text-[var(--dash-text-muted)] sm:block">
+              {activeBusinessName}
+            </span>
           </span>
-        </div>
+        </a>
 
         <nav
           aria-label={copy.nav.groupCommand}
           className="hidden min-w-0 items-center justify-center gap-1 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 xl:flex"
         >
-          {routes.map((route) => {
+          {primaryRoutes.map((route) => {
             const isActive = isActiveRoute(route.href);
 
             return (
@@ -162,7 +171,7 @@ export function DashboardTopbar({
                 {copy.actions.previewQuotePage}
               </a>
               <div className="my-0.5 border-t border-[var(--dash-border)]" />
-              {routes.map((route) => (
+              {menuRoutes.map((route) => (
                 <a
                   aria-current={isActiveRoute(route.href) ? "page" : undefined}
                   className={`${ghostButtonClass} w-full justify-start`}
@@ -205,9 +214,12 @@ export function DashboardTopbar({
           <div className="hidden sm:block">
             <DashboardThemeSelector />
           </div>
-          <div className="hidden min-w-0 max-w-[190px] rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-3 py-2 text-[13px] font-bold text-[var(--dash-text)] 2xl:block">
-            <span className="block truncate">{activeBusinessName}</span>
-          </div>
+          <a
+            className={`${ghostButtonClass} hidden min-h-10 items-center justify-center px-2.5 xl:inline-flex`}
+            href="/dashboard/guide"
+          >
+            {copy.nav.guide}
+          </a>
           <form action={signOutAction}>
             <button
               className="biz-button-secondary inline-flex h-9 max-w-[5.5rem] items-center justify-center rounded-lg border px-2.5 text-[11px] font-bold shadow-sm sm:h-10 sm:max-w-[8rem] sm:px-3 sm:text-[13px]"

@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.4 Quote Setup serialization repair, single desktop navigation, and accurate route recovery candidate.
  * - 2026-07-16: Closed V4.3 on main with successful CI, Vercel, and Production public read-only evidence.
  * - 2026-07-16: Added the V4.3 protected dashboard runtime and centered-navigation repair candidate.
  * - 2026-07-16: Closed the V4.2 main release with successful CI, Vercel, and Production read-only evidence.
@@ -24,6 +25,26 @@
  -->
 
 # Dashboard V4 Changelog
+
+## 2026-07-16 — V4.4 Quote Setup render and shell repair
+
+### Authenticated rendering
+
+- Removed the function-valued FAQ count formatter from the props passed into the client-side FAQ editor. The editor now receives serializable singular/plural labels, so authenticated Quote Setup requests no longer fail the Next.js Server/Client Component boundary.
+- Added a focused regression source guard for the exact boundary that caused the protected route error.
+- Kept the existing server-side localized summary formatter where it is safe; no owner data shape or saved configuration changed.
+
+### Navigation and recovery
+
+- Removed the fixed desktop sidebar after the five primary destinations were already promoted into the centered topbar, eliminating duplicated navigation and restoring the full content width.
+- Kept the five-destination mobile bottom bar and the compact tablet Actions menu. Guide remains a secondary help destination.
+- Replaced the whole-dashboard reload action with Next.js route-segment retry, clearer EN/fr-CA copy, saved-data reassurance, and native recovery destinations.
+
+### Candidate verification
+
+- ESLint, TypeScript, all `257/257` unit/source tests, and the Next.js 16.2.4 production build pass.
+- No route, migration, schema, submission, tenant record, or Production database state was added or changed.
+- Authenticated browser confirmation remains gated until an approved local/synthetic session or an owner-run deployed check is available.
 
 ## 2026-07-16 — V4.3 protected runtime recovery
 

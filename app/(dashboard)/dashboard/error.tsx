@@ -13,6 +13,7 @@
  * Created: 2026-07-05
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Replaced the misleading full-dashboard reload with segment retry and explicit unchanged-data reassurance.
  * - 2026-07-16: Added full-reload recovery and native fallback navigation so one failed route cannot trap the owner.
  * - 2026-07-05: Added complete BizPilot source header metadata and alert semantics.
  * ============================================================
@@ -47,7 +48,7 @@ function subscribeDashboardLanguage(): () => void {
   return () => undefined;
 }
 
-export default function DashboardError({ error }: DashboardErrorProps) {
+export default function DashboardError({ error, reset }: DashboardErrorProps) {
   useEffect(() => {
     console.error("[bizpilot] dashboard.error_boundary", {
       digest: error.digest ?? "none",
@@ -80,7 +81,7 @@ export default function DashboardError({ error }: DashboardErrorProps) {
         </p>
         <button
           className="mt-5 inline-flex min-h-10 items-center justify-center rounded-lg bg-[var(--dash-primary)] px-4 text-sm font-black text-white"
-          onClick={() => window.location.reload()}
+          onClick={reset}
           type="button"
         >
           {errorCopy.reload}

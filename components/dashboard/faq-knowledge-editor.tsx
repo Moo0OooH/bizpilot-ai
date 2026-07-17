@@ -14,6 +14,7 @@
  * Created: 2026-07-16
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Replaced the function-valued count formatter with serializable singular/plural labels for the server-to-client boundary.
  * - 2026-07-16: Added starter FAQ insertion, clear control, live count, and visible AI knowledge guardrails.
  * ============================================================
  */
@@ -22,12 +23,13 @@ import { useMemo, useState } from "react";
 
 type FaqKnowledgeEditorCopy = Readonly<{
   clearExamples: string;
+  countMany: string;
+  countOne: string;
   guardrailTitle: string;
   guardrails: readonly string[];
   help: string;
   label: string;
   loadExamples: string;
-  summary: (count: number) => string;
 }>;
 
 function countFaqLines(value: string): number {
@@ -58,7 +60,7 @@ export function FaqKnowledgeEditor({
             {copy.label}
           </label>
           <span className="rounded-full border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-2.5 py-1 text-[11px] font-black text-[var(--dash-primary-strong)]">
-            {copy.summary(count)}
+            {count} {count === 1 ? copy.countOne : copy.countMany}
           </span>
         </div>
         <textarea

@@ -12,6 +12,7 @@
  * Created: 2026-05-04
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Kept FAQ editor props fully serializable so Quote Setup renders in authenticated production requests.
  * - 2026-07-16: Simplified Quote Setup into guided tasks, added local branding and FAQ knowledge editors, exposed the full unique business link, and made preview repair derived public records before opening.
  * - 2026-07-05: Added a compact Quote Setup readiness command strip for first open setup action scanability.
  * - 2026-07-05: Clamped Quote Setup readiness progress to a safe 0-100 display range.
@@ -772,7 +773,16 @@ export default async function DashboardPage({
               title={configCopy.faq.title}
             >
               <FaqKnowledgeEditor
-                copy={configCopy.faq}
+                copy={{
+                  clearExamples: configCopy.faq.clearExamples,
+                  countMany: configCopy.faq.countMany,
+                  countOne: configCopy.faq.countOne,
+                  guardrailTitle: configCopy.faq.guardrailTitle,
+                  guardrails: configCopy.faq.guardrails,
+                  help: configCopy.faq.help,
+                  label: configCopy.faq.label,
+                  loadExamples: configCopy.faq.loadExamples,
+                }}
                 examples={configCopy.faq.examples}
                 initialValue={faqsToText(configuration.faqs)}
               />

@@ -11,6 +11,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Aligned dashboard recovery assertions with segment retry instead of a misleading full reload.
  * - 2026-07-15: Added the bilingual global error copy namespace to the explicit dictionary contract.
  * - 2026-07-16: Aligned CTA-truth, grouped-FAQ, and focused-home assertions with the final public polish.
  * - 2026-07-13: Migrated retained-route, FAQ, pilot, and fr-CA shell guards to the completed Website V3 contract.
@@ -435,11 +436,11 @@ describe("BizPilot language copy", () => {
     );
     assert.equal(
       englishDashboardCopy.errorBoundary.reload,
-      "Reload dashboard",
+      "Try again",
     );
     assert.equal(
       frenchDashboardCopy.errorBoundary.reload,
-      "Recharger le tableau de bord",
+      "Réessayer",
     );
 
     const dashboardErrorSource = readFileSync(

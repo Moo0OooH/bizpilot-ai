@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.4 authenticated Quote Setup render repair, single desktop navigation, segment retry, and 257/257 candidate record.
  * - 2026-07-16: Closed V4.3 on main with CI run 29538671150, successful Vercel rollout, and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
  * - 2026-07-16: Added the V4.3 centered native navigation, shared protected reads, and local 256/256/build verification record.
  * - 2026-07-16: Closed V4.2 on main with CI run 29537073204, successful Vercel rollout, and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
@@ -43,6 +44,10 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | V4.3 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit: 256/256; Next.js 16.2.4 production build: PASS. |
 | P0 | V4.3 main push, CI, and Vercel rollout | DONE | Exact source published directly to `main` as `bcf0370`; GitHub CI run `29538671150` success; Vercel target `FTVpVmQT8j8ST74YvpzF6Q47vdDq` success; no extra branch or PR. |
 | P0 | V4.3 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; inactive `bizpilot0wner` Quote GET 2/2 EN/fr-CA; no submission or data mutation. |
+| P0 | V4.4 Quote Setup authenticated render repair | DONE | FAQ editor now receives only serializable strings/arrays; function-valued dictionary formatter remains server-side; regression source guard added. |
+| P0 | V4.4 single-navigation shell and recovery | DONE | Removed the duplicate fixed desktop sidebar; centered five-route topbar is the single desktop route map; mobile keeps five destinations; caught routes use segment retry and unchanged-data reassurance. |
+| P0 | V4.4 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit/source: 257/257; Next.js 16.2.4 production build: PASS. |
+| P0 | V4.4 authenticated visual confirmation | GATED | Requires an approved local/synthetic authenticated session or an owner-run Production check after deployment; no Production authenticated automation was attempted. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
 | P0 | Branding and local logo workflow | DONE | Bounded PNG/JPG/WebP browser resize, HTTPS alternative, remove/reset actions, live preview, server validation, and public Quote logo/color application implemented. |
@@ -76,6 +81,12 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 This section is updated only with commands actually run on the final working tree.
 
 - TypeScript: PASS.
+- V4.4 Quote Setup serialization regression contract: PASS.
+- V4.4 single desktop navigation and segment-retry contracts: PASS.
+- Full unit/source suite: PASS, 257/257 for the V4.4 candidate.
+- ESLint: PASS, zero warnings for the V4.4 candidate.
+- Next.js 16.2.4 production build: PASS for the V4.4 candidate.
+- V4.4 authenticated browser confirmation: GATED because this environment has no approved local/synthetic authenticated session.
 - V4.3 centered/native protected navigation and shared-read contracts: PASS.
 - GitHub CI: PASS for V4.3 release SHA `bcf037090717935a2cd97bcdccb08a525795c246`, workflow run `29538671150`.
 - Vercel commit deployment: SUCCESS for V4.3 release SHA, target `FTVpVmQT8j8ST74YvpzF6Q47vdDq`.
@@ -115,4 +126,4 @@ This section is updated only with commands actually run on the final working tre
 
 ## Ideal completion definition
 
-The Dashboard V4.3 source and public read-only release are complete. Authenticated visual confirmation remains separately gated because this environment has no approved owner session. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
+The Dashboard V4.4 repair candidate is source-complete and locally verified. Publication, deployed CI/Vercel evidence, and authenticated visual confirmation remain separate from source completion. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.

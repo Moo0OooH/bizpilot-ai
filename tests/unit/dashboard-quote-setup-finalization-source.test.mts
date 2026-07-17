@@ -42,7 +42,8 @@ describe("dashboard quote setup finalization", () => {
     assert.equal(topbar.includes('import Link from "next/link"'), false);
     assert.equal(topbar.includes("useEffect"), false);
     assert.equal(topbar.includes("useRef"), false);
-    assert.equal(sidebar.includes('import Link from "next/link"'), false);
+    assert.equal(sidebar.includes("dashboard-sidebar sticky"), false);
+    assert.equal(sidebar.includes("dashboard-mobile-nav fixed"), true);
     assert.equal(authService.includes("export const getCurrentUser = cache("), true);
     assert.equal(businessService.includes("const getBusinessWorkspaceByUserId = cache("), true);
     assert.equal(topbar.includes("value={quoteUrl}"), true);
@@ -54,7 +55,8 @@ describe("dashboard quote setup finalization", () => {
     const guide = source("app/(dashboard)/dashboard/guide/page.tsx");
     const copy = source("lib/i18n/bizpilot-copy.ts");
 
-    assert.equal(errorBoundary.includes("window.location.reload()"), true);
+    assert.equal(errorBoundary.includes("onClick={reset}"), true);
+    assert.equal(errorBoundary.includes("window.location.reload()"), false);
     assert.equal(errorBoundary.includes('href="/dashboard"'), true);
     assert.equal(errorBoundary.includes('href="/dashboard/configuration"'), true);
     assert.equal(errorBoundary.includes('href="/dashboard/guide"'), true);

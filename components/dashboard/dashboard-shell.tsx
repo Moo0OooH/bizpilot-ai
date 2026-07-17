@@ -12,6 +12,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Removed the duplicated desktop sidebar while retaining the five-destination mobile action bar.
  * - 2026-07-16: Passed the absolute business quote URL into the shell so copy actions share a complete customer-ready link.
  * - 2026-06-19: Added shared theme preference support to the protected dashboard shell.
  * - 2026-06-20: Matched the shell fallback theme to the product-wide light-first default.
@@ -63,9 +64,7 @@ export function DashboardShell({
   return (
     <DashboardThemeFrame initialTheme={initialTheme} labels={copy.theme}>
       <DashboardSidebar
-        activeBusinessName={activeBusinessName}
         copy={copy}
-        userLabel={userLabel}
       />
       <section className="flex h-svh min-w-0 flex-col overflow-hidden pb-20 lg:pb-0">
         <DashboardTopbar
