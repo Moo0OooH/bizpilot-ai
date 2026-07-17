@@ -12,6 +12,8 @@
  * Created: 2026-05-04
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Scoped full Quote Setup saves to setup tasks while preserving separate Business Profile confirmation.
+ * - 2026-07-16: Added a first-to-last setup journey, reordered tasks for launch logic, and added privacy-safe tracked channel links.
  * - 2026-07-16: Kept FAQ editor props fully serializable so Quote Setup renders in authenticated production requests.
  * - 2026-07-16: Simplified Quote Setup into guided tasks, added local branding and FAQ knowledge editors, exposed the full unique business link, and made preview repair derived public records before opening.
  * - 2026-07-05: Added a compact Quote Setup readiness command strip for first open setup action scanability.
@@ -49,6 +51,7 @@ import { CustomQuoteFieldBuilder } from "@/components/dashboard/custom-quote-fie
 import { FaqKnowledgeEditor } from "@/components/dashboard/faq-knowledge-editor";
 import { FlashMessage } from "@/components/dashboard/flash-message";
 import { QuoteFieldTypeControl } from "@/components/dashboard/quote-field-type-control";
+import { TrackedQuoteLinkBuilder } from "@/components/dashboard/tracked-quote-link-builder";
 import {
   buttonClass,
   inputClass,
@@ -159,6 +162,66 @@ function LogoPreviewImage({
 const fieldInputClass =
   "biz-field h-10 w-full rounded-lg border px-3 text-[13px] outline-none transition focus:border-[var(--dash-primary)]";
 
+type SetupReadinessKey =
+  | "branding"
+  | "business_profile"
+  | "cleaning_template"
+  | "consent"
+  | "faqs"
+  | "privacy"
+  | "service_areas"
+  | "services";
+
+type SetupJourneyStatus = "complete" | "current" | "upcoming";
+
+const setupJourneyStageDefinitions: ReadonlyArray<{
+  copyIndex: 0 | 1 | 2 | 3 | 4 | 5;
+  defaultHref: string;
+  tasks: ReadonlyArray<Readonly<{ href: string; key: SetupReadinessKey }>>;
+}> = [
+  {
+    copyIndex: 0,
+    defaultHref: "/dashboard/business-profile",
+    tasks: [
+      { href: "/dashboard/business-profile", key: "business_profile" },
+    ],
+  },
+  {
+    copyIndex: 1,
+    defaultHref: "#services-areas",
+    tasks: [
+      { href: "#services-areas", key: "services" },
+      { href: "#services-areas", key: "service_areas" },
+    ],
+  },
+  {
+    copyIndex: 2,
+    defaultHref: "#cleaning-template-fields",
+    tasks: [
+      { href: "#cleaning-template-fields", key: "cleaning_template" },
+    ],
+  },
+  {
+    copyIndex: 3,
+    defaultHref: "#branding",
+    tasks: [{ href: "#branding", key: "branding" }],
+  },
+  {
+    copyIndex: 4,
+    defaultHref: "#faq",
+    tasks: [
+      { href: "#faq", key: "faqs" },
+      { href: "#privacy-consent", key: "privacy" },
+      { href: "#privacy-consent", key: "consent" },
+    ],
+  },
+  {
+    copyIndex: 5,
+    defaultHref: "#public-link",
+    tasks: [],
+  },
+];
+
 export default async function DashboardPage({
   searchParams,
 }: DashboardPageProps) {
@@ -245,6 +308,41 @@ export default async function DashboardPage({
   const readinessCommandBody = firstOpenReadinessItem
     ? configCopy.readiness.fixFirst(readinessLabel(firstOpenReadinessItem))
     : configCopy.readiness.shareWhenReady;
+  const readinessByTaskKey = new Map(
+    readiness.items.map((item) => [item.taskKey, item.complete]),
+  );
+  const setupJourneyStages = setupJourneyStageDefinitions.map((stage) => {
+    const completedTaskCount = stage.tasks.filter(
+      (task) => readinessByTaskKey.get(task.key) === true,
+    ).length;
+    const firstOpenTask = stage.tasks.find(
+      (task) => readinessByTaskKey.get(task.key) !== true,
+    );
+
+    return {
+      completedTaskCount:
+        stage.tasks.length > 0 ? completedTaskCount : readiness.completed,
+      description: configCopy.setupJourney.stages[stage.copyIndex].description,
+      href: firstOpenTask?.href ?? stage.defaultHref,
+      isComplete:
+        stage.tasks.length > 0 && completedTaskCount === stage.tasks.length,
+      taskCount: stage.tasks.length > 0 ? stage.tasks.length : readiness.total,
+      title: configCopy.setupJourney.stages[stage.copyIndex].title,
+    };
+  });
+  const currentSetupJourneyStageIndex = setupJourneyStages.findIndex(
+    (stage) => !stage.isComplete,
+  );
+  const setupJourneyStatus = (
+    isComplete: boolean,
+    index: number,
+  ): SetupJourneyStatus => {
+    if (index === currentSetupJourneyStageIndex) {
+      return "current";
+    }
+
+    return isComplete ? "complete" : "upcoming";
+  };
 
   return (
     <>
@@ -303,12 +401,107 @@ export default async function DashboardPage({
           </div>
         </section>
 
+        <section
+          className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm sm:p-4"
+          data-dashboard-setup-journey
+        >
+          <div className="grid gap-1 md:grid-cols-[minmax(0,1fr)_minmax(16rem,30rem)] md:items-end md:gap-6">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-text-muted)]">
+                {configCopy.readiness.title}
+              </p>
+              <h2 className="mt-1 text-[20px] font-extrabold text-[var(--dash-text)]">
+                {configCopy.setupJourney.title}
+              </h2>
+            </div>
+            <p className="text-[13px] leading-5 text-[var(--dash-text-secondary)] md:text-right">
+              {configCopy.setupJourney.description}
+            </p>
+          </div>
+
+          <ol
+            aria-label={configCopy.setupJourney.ariaLabel}
+            className="mt-4 grid gap-2.5 sm:grid-cols-2 2xl:grid-cols-3"
+          >
+            {setupJourneyStages.map((stage, index) => {
+              const status = setupJourneyStatus(stage.isComplete, index);
+              const statusLabel =
+                status === "complete"
+                  ? configCopy.setupJourney.complete
+                  : status === "current"
+                    ? configCopy.setupJourney.current
+                    : configCopy.setupJourney.upcoming;
+              const statusClass =
+                status === "complete"
+                  ? "border-[var(--dash-success-border)] bg-[var(--dash-success-soft)] text-[var(--dash-success-strong)]"
+                  : status === "current"
+                    ? "border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] text-[var(--dash-primary-strong)]"
+                    : "border-[var(--dash-border)] bg-[var(--dash-surface-muted)] text-[var(--dash-text-muted)]";
+
+              return (
+                <li key={stage.title}>
+                  <Link
+                    aria-current={status === "current" ? "step" : undefined}
+                    className={`group grid h-full min-h-36 grid-rows-[auto_1fr_auto] rounded-lg border p-3.5 outline-none transition hover:border-[var(--dash-primary-border)] hover:bg-[var(--dash-primary-soft)] focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-surface)] ${
+                      status === "current"
+                        ? "border-[var(--dash-primary)] bg-[var(--dash-primary-soft)]"
+                        : "border-[var(--dash-border)] bg-[var(--dash-surface)]"
+                    }`}
+                    href={stage.href}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-[11px] font-bold uppercase tracking-wide text-[var(--dash-text-muted)]">
+                        {configCopy.setupJourney.stepLabel(
+                          index + 1,
+                          setupJourneyStages.length,
+                        )}
+                      </span>
+                      <span
+                        className={`rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide ${statusClass}`}
+                      >
+                        {statusLabel}
+                      </span>
+                    </div>
+                    <div className="mt-3 grid grid-cols-[2rem_minmax(0,1fr)] gap-2.5">
+                      <span
+                        aria-hidden="true"
+                        className={`flex h-8 w-8 items-center justify-center rounded-full border text-xs font-extrabold ${
+                          status === "current"
+                            ? "border-[var(--dash-primary)] bg-[var(--dash-primary)] text-white"
+                            : "border-[var(--dash-border)] bg-[var(--dash-surface-muted)] text-[var(--dash-text-secondary)]"
+                        }`}
+                      >
+                        {index + 1}
+                      </span>
+                      <div className="min-w-0">
+                        <h3 className="text-sm font-extrabold text-[var(--dash-text)] group-hover:text-[var(--dash-primary-strong)]">
+                          {stage.title}
+                        </h3>
+                        <p className="mt-1 text-xs leading-[1.15rem] text-[var(--dash-text-secondary)]">
+                          {stage.description}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="mt-3 border-t border-[var(--dash-border)] pt-2 text-[11px] font-semibold text-[var(--dash-text-muted)]">
+                      {configCopy.setupJourney.tasksReady(
+                        stage.completedTaskCount,
+                        stage.taskCount,
+                      )}
+                    </p>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+
         <form
           action={saveBusinessConfigurationAction}
           className="space-y-3"
           id="business-configuration-form"
         >
           <input name="businessId" type="hidden" value={activeBusiness.id} />
+          <input name="reviewScope" type="hidden" value="quote_setup" />
           <input
             name="templateId"
             type="hidden"
@@ -332,12 +525,12 @@ export default async function DashboardPage({
                 ariaLabel={configurationTabs.ariaLabel}
                 sections={[
                   { id: "configuration-overview", label: configurationTabs.overview },
-                  { id: "public-link", label: configurationTabs.link },
                   { id: "services-areas", label: configurationTabs.services },
                   { id: "cleaning-template-fields", label: configurationTabs.fields },
                   { id: "branding", label: configurationTabs.branding },
                   { id: "faq", label: configurationTabs.ai },
                   { id: "privacy-consent", label: configurationTabs.privacy },
+                  { id: "public-link", label: configurationTabs.link },
                 ]}
               >
             <ConfigurationPanel
@@ -552,6 +745,12 @@ export default async function DashboardPage({
                     ))}
                   </ol>
                 </aside>
+              </div>
+              <div className="mt-4">
+                <TrackedQuoteLinkBuilder
+                  baseUrl={quoteUrl}
+                  copy={configCopy.sourceLinks}
+                />
               </div>
             </ConfigurationPanel>
 

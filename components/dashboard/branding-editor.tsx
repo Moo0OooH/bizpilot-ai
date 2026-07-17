@@ -14,21 +14,28 @@
  * Created: 2026-07-16
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Matched the live preview to the public customer flow and explained every color placement and save boundary.
  * - 2026-07-16: Added local PNG/JPEG/WebP logo selection, bounded browser resizing, URL fallback, color controls, and live preview.
  * ============================================================
  */
 
 import { useState, type ChangeEvent } from "react";
 
+import { getPublicBrandPalette } from "@/lib/public-brand-theme";
+
 type BrandingEditorCopy = Readonly<{
   accentAppears: string;
+  accentUsage: string;
   accentColor: string;
+  dashboardUnaffected: string;
   fileError: string;
   logoPreview: string;
   logoPreviewAlt: string;
   logoUrl: string;
   logoUrlHelp: string;
   primaryColor: string;
+  primaryUsage: string;
+  previewNotice: string;
   publicQuoteButton: string;
   removeLogo: string;
   resetColors: string;
@@ -127,6 +134,10 @@ export function BrandingEditor({
     initialLogoUrl.startsWith("data:") ? "" : initialLogoUrl,
   );
   const [primaryColor, setPrimaryColor] = useState(initialPrimaryColor);
+  const palette = getPublicBrandPalette({
+    accent_color: accentColor,
+    primary_color: primaryColor,
+  });
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.currentTarget.files?.[0];
@@ -249,59 +260,98 @@ export function BrandingEditor({
       </div>
 
       <aside className="overflow-hidden rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]">
-        <div className="flex min-h-28 items-center justify-center border-b border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-4">
-          {logoSource ? (
-            <LogoImage alt={copy.logoPreviewAlt} source={logoSource} />
-          ) : (
-            <span
-              className="flex h-14 w-14 items-center justify-center rounded-xl text-[16px] font-black text-white"
-              style={{ backgroundColor: primaryColor }}
-            >
-              {businessName
-                .split(/\s+/)
-                .map((word) => word.charAt(0))
-                .join("")
-                .slice(0, 2)
-                .toUpperCase() || "BP"}
-            </span>
-          )}
-        </div>
-        <div className="p-4">
-          <p className="text-[12px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
+        <div className="border-b border-[var(--dash-border)] p-3">
+          <p className="text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">
             {copy.logoPreview}
           </p>
-          <p className="mt-2 text-[16px] font-black text-[var(--dash-text)]">
-            {businessName}
+          <p className="mt-1 text-[11px] leading-4 text-[var(--dash-text-secondary)]">
+            {copy.previewNotice}
           </p>
-          <div className="mt-4 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-preview-bg)] p-3">
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-[12px] font-bold text-[#F5F7FA]">
-                {copy.publicQuoteButton}
-              </span>
-              <span
-                className="rounded-md px-3 py-1.5 text-[12px] font-bold text-white"
-                style={{ backgroundColor: primaryColor }}
-              >
-                {copy.submitQuoteRequest}
+        </div>
+        <div className="bg-[#f7f8fc] p-4 text-[#0f172a]">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex min-w-0 items-center gap-2.5">
+              {logoSource ? (
+                <span className="flex h-11 w-11 items-center justify-center overflow-hidden rounded-xl border border-[#d8dee9] bg-white">
+                  <LogoImage alt={copy.logoPreviewAlt} source={logoSource} />
+                </span>
+              ) : (
+                <span
+                  className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-[13px] font-black"
+                  style={{
+                    backgroundColor: palette.primary,
+                    color: palette.onPrimary,
+                  }}
+                >
+                  {businessName
+                    .split(/\s+/)
+                    .map((word) => word.charAt(0))
+                    .join("")
+                    .slice(0, 2)
+                    .toUpperCase() || "BP"}
+                </span>
+              )}
+              <span className="truncate text-[12px] font-black uppercase tracking-[0.08em]">
+                {businessName}
               </span>
             </div>
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/10">
+            <span
+              className="rounded-lg px-2.5 py-1.5 text-[10px] font-black"
+              style={{
+                backgroundColor: palette.primary,
+                color: palette.onPrimary,
+              }}
+            >
+              EN
+            </span>
+          </div>
+
+          <div className="mt-4 rounded-xl border border-[#d8dee9] bg-white p-3 shadow-sm">
+            <div className="flex items-center justify-between gap-2 text-[10px] font-black uppercase tracking-[0.08em] text-[#64748b]">
+              <span>{copy.publicQuoteButton}</span>
+              <span>1 / 3</span>
+            </div>
+            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#e8edf4]">
               <div
-                className="h-full rounded-full"
-                style={{ backgroundColor: accentColor, width: "62%" }}
+                className="h-full w-1/3 rounded-full"
+                style={{ backgroundColor: palette.accent }}
               />
             </div>
-          </div>
-          <p className="mt-3 flex items-start gap-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            <div className="mt-3 flex items-center gap-2 rounded-lg border border-[#d8dee9] px-3 py-2 text-[11px] text-[#334155]">
+              <span
+                aria-hidden
+                className="flex h-4 w-4 items-center justify-center rounded-full border-4 border-white ring-2"
+                style={{
+                  backgroundColor: palette.accent,
+                  color: palette.accent,
+                  boxShadow: `0 0 0 1px ${palette.accent}`,
+                }}
+              />
+              {copy.accentAppears}
+            </div>
             <span
-              aria-hidden
-              className="mt-1 h-3 w-3 shrink-0 rounded-full"
-              style={{ backgroundColor: accentColor }}
-            />
-            {copy.accentAppears}
+              className="mt-3 inline-flex w-full items-center justify-center rounded-lg px-3 py-2 text-[11px] font-black"
+              style={{
+                backgroundColor: palette.primary,
+                color: palette.onPrimary,
+              }}
+            >
+              {copy.submitQuoteRequest}
+            </span>
+          </div>
+        </div>
+        <div className="grid gap-2 p-4 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+          <p className="font-black text-[var(--dash-text)]">{copy.whereColorsApply}</p>
+          <p className="flex gap-2">
+            <span aria-hidden className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: palette.primary }} />
+            {copy.primaryUsage}
           </p>
-          <p className="mt-2 text-[12px] leading-5 text-[var(--dash-text-muted)]">
-            {copy.whereColorsApply}
+          <p className="flex gap-2">
+            <span aria-hidden className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: palette.accent }} />
+            {copy.accentUsage}
+          </p>
+          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2 text-[11px] text-[var(--dash-text-muted)]">
+            {copy.dashboardUnaffected}
           </p>
         </div>
       </aside>

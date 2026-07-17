@@ -9,8 +9,9 @@
  * - supabase/migrations/0015_business_access_plan_and_admin_log.sql
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added a minimal-column bounded lead sample for founder source reporting without loading customer contact fields.
  * - 2026-07-05: Added complete source header changelog for founder admin repository.
  * - 2026-05-22: Created service-role founder admin repository.
  * ============================================================
@@ -44,6 +45,15 @@ export type FounderBusinessMemberRecord =
 export type FounderPublicLinkRecord =
   Database["public"]["Tables"]["public_link_variants"]["Row"];
 export type FounderLeadRecord = Database["public"]["Tables"]["leads"]["Row"];
+export type FounderLeadReportingRecord = Pick<
+  FounderLeadRecord,
+  | "business_id"
+  | "created_at"
+  | "id"
+  | "manual_outcome"
+  | "source_channel"
+  | "status"
+>;
 export type FounderLeadSourceRecord =
   Database["public"]["Tables"]["lead_source_metadata"]["Row"];
 
@@ -114,6 +124,21 @@ export async function listFounderLeadInbox(input: {
     .select("*")
     .order("created_at", { ascending: false })
     .limit(input.limit ?? 80);
+
+  throwIfError(error);
+
+  return data ?? [];
+}
+
+export async function listFounderLeadReportingSample(input: {
+  limit: number;
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderLeadReportingRecord[]> {
+  const { data, error } = await input.supabase
+    .from("leads")
+    .select("business_id,created_at,id,manual_outcome,source_channel,status")
+    .order("created_at", { ascending: false })
+    .limit(input.limit);
 
   throwIfError(error);
 

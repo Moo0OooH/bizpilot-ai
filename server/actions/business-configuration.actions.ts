@@ -12,6 +12,7 @@
  * Created: 2026-05-05
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Passed an explicit review scope so each surface confirms its own tasks and returns success or errors to its safe owning route.
  * - 2026-07-16: Added save-and-preview intent so owner previews synchronize and repair the public quote page before navigation.
  * - 2026-07-13: Removed the obsolete public locale Server Action after public switching moved to deterministic locale URLs.
  * - 2026-07-11: Added per-language custom quote-field translation payloads for bilingual workspace saves.
@@ -100,6 +101,14 @@ function readOptionalFormValue(
   if (typeof value !== "string") return undefined;
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : undefined;
+}
+
+function readConfigurationReviewScope(
+  formData: FormData,
+): "business_profile" | "quote_setup" {
+  return formData.get("reviewScope") === "business_profile"
+    ? "business_profile"
+    : "quote_setup";
 }
 
 function readList(value: string | undefined): string[] {
@@ -261,7 +270,10 @@ function getConfigurationErrorKind(error: unknown): string {
   return "unknown";
 }
 
-function redirectWithConfigurationError(error: unknown): never {
+function redirectWithConfigurationError(
+  error: unknown,
+  reviewScope: "business_profile" | "quote_setup",
+): never {
   safeLogger.error("business_configuration.save_failed", {
     errorKind: getConfigurationErrorKind(error),
     errorName: getConfigurationErrorName(error),
@@ -292,7 +304,11 @@ function redirectWithConfigurationError(error: unknown): never {
     fallbackMessage:
       "We couldn't save the business configuration. Please review the form and try again.",
   });
-  redirect(`/dashboard/configuration?error=${encodeURIComponent(message)}`);
+  const returnPath =
+    reviewScope === "business_profile"
+      ? "/dashboard/business-profile"
+      : "/dashboard/configuration";
+  redirect(`${returnPath}?error=${encodeURIComponent(message)}`);
 }
 
 function readRedirectPath(formData: FormData, fallback: string): string {
@@ -467,6 +483,11 @@ export async function saveBusinessConfigurationAction(
   if (!user) redirect("/auth/sign-in");
 
   const shouldPreview = formData.get("submitIntent") === "preview";
+  const reviewScope = readConfigurationReviewScope(formData);
+  const returnPath =
+    reviewScope === "business_profile"
+      ? "/dashboard/business-profile"
+      : "/dashboard/configuration";
   let savedBusinessSlug = "";
   let savedLanguage: SupportedLanguage = "en";
 
@@ -512,6 +533,7 @@ export async function saveBusinessConfigurationAction(
         readRequiredFormValue(formData, "retainLeadsDays"),
         10,
       ),
+      reviewScope,
       serviceAreas: readList(readOptionalFormValue(formData, "serviceAreas")),
       services: readServices(readOptionalFormValue(formData, "services")),
       templateId: readRequiredFormValue(formData, "templateId"),
@@ -523,10 +545,11 @@ export async function saveBusinessConfigurationAction(
     await persistInterfaceLanguage(preferredLanguage);
     revalidatePath(`/quote/${businessSlug}`);
   } catch (error) {
-    redirectWithConfigurationError(error);
+    redirectWithConfigurationError(error, reviewScope);
   }
 
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/business-profile");
   revalidatePath("/dashboard/configuration");
 
   if (shouldPreview) {
@@ -537,9 +560,7 @@ export async function saveBusinessConfigurationAction(
     redirect(`/quote/${savedBusinessSlug}${languageQuery}`);
   }
 
-  redirect(
-    "/dashboard/configuration?notice=Business%20configuration%20saved.",
-  );
+  redirect(`${returnPath}?notice=Business%20configuration%20saved.`);
 }
 
 export async function updateWorkspaceLanguageAction(
@@ -571,7 +592,7 @@ export async function updateWorkspaceLanguageAction(
       revalidatePath("/dashboard/configuration");
       redirect(redirectTo);
     }
-    redirectWithConfigurationError(error);
+    redirectWithConfigurationError(error, "quote_setup");
   }
 
   revalidatePath("/dashboard");

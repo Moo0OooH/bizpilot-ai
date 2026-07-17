@@ -13,6 +13,7 @@
  * Created: 2026-05-23
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added bilingual Reports, tracked-source links, branding clarity, public quote navigation, and an ordered Quote Setup journey.
  * - 2026-07-16: Added serializable FAQ count labels and clearer dashboard recovery copy in both supported languages.
  * - 2026-07-16: Expanded the bilingual first-run owner guide with a first-session path, daily routine, and practical troubleshooting.
  * - 2026-07-16: Added bilingual guided setup copy for local logo uploads, recommended fields, FAQ knowledge, unique quote links, and owner preview recovery.
@@ -238,6 +239,11 @@ type DashboardBusinessProfileCopy = Readonly<{
   verticalHelp: string;
 }>;
 
+type SetupJourneyStageCopy = Readonly<{
+  description: string;
+  title: string;
+}>;
+
 type DashboardConfigurationCopy = Readonly<{
   bottomBar: Readonly<{
     openPublicQuoteLink: string;
@@ -246,9 +252,11 @@ type DashboardConfigurationCopy = Readonly<{
   }>;
   branding: Readonly<{
     accentAppears: string;
+    accentUsage: string;
     accentColor: string;
     addLogoAndColors: string;
     colorsConfigured: string;
+    dashboardUnaffected: string;
     description: string;
     fileError: string;
     logoAndColorsConfigured: string;
@@ -257,6 +265,8 @@ type DashboardConfigurationCopy = Readonly<{
     logoUrl: string;
     logoUrlHelp: string;
     primaryColor: string;
+    primaryUsage: string;
+    previewNotice: string;
     publicQuoteButton: string;
     removeLogo: string;
     resetColors: string;
@@ -400,6 +410,39 @@ type DashboardConfigurationCopy = Readonly<{
     title: string;
     uniqueLinkDescription: string;
     uniqueLinkTitle: string;
+  }>;
+  sourceLinks: Readonly<{
+    campaignLabel: string;
+    campaignPlaceholder: string;
+    copyLink: string;
+    customLabel: string;
+    customPlaceholder: string;
+    description: string;
+    privacy: string;
+    presets: ReadonlyArray<Readonly<{
+      key: string;
+      label: string;
+      medium: string;
+    }>>;
+    title: string;
+  }>;
+  setupJourney: Readonly<{
+    ariaLabel: string;
+    complete: string;
+    current: string;
+    description: string;
+    stages: readonly [
+      SetupJourneyStageCopy,
+      SetupJourneyStageCopy,
+      SetupJourneyStageCopy,
+      SetupJourneyStageCopy,
+      SetupJourneyStageCopy,
+      SetupJourneyStageCopy,
+    ];
+    stepLabel: (current: number, total: number) => string;
+    tasksReady: (completed: number, total: number) => string;
+    title: string;
+    upcoming: string;
   }>;
   readiness: Readonly<{
     description: (completed: number, total: number) => string;
@@ -727,11 +770,106 @@ type DashboardGuideCopy = Readonly<{
     lanes: ReadonlyArray<readonly [string, string, string]>;
     title: string;
   }>;
+  parts: Readonly<{
+    setup: Readonly<{
+      description: string;
+      title: string;
+    }>;
+    workflow: Readonly<{
+      description: string;
+      title: string;
+    }>;
+  }>;
   routeMap: Readonly<{
     description: string;
     items: ReadonlyArray<readonly [string, string, string, string]>;
     title: string;
   }>;
+}>;
+
+type DashboardReportsCopy = Readonly<{
+  actions: Readonly<{
+    buildLinks: string;
+    openLeads: string;
+  }>;
+  campaigns: Readonly<{
+    description: string;
+    empty: string;
+    title: string;
+  }>;
+  filters: Readonly<{
+    all: string;
+    label: string;
+    last30: string;
+    last7: string;
+    last90: string;
+  }>;
+  header: Readonly<{
+    description: string;
+    eyebrow: string;
+    title: string;
+  }>;
+  metrics: Readonly<{
+    attributed: Readonly<{ detail: string; label: string }>;
+    manualOutcomes: Readonly<{ detail: string; label: string }>;
+    topSource: Readonly<{ detail: string; label: string }>;
+    totalRequests: Readonly<{ detail: string; label: string }>;
+  }>;
+  notices: Readonly<{
+    privacy: string;
+    trackedDefinition: string;
+    truncated: string;
+  }>;
+  outcomes: Readonly<{
+    description: string;
+    empty: string;
+    title: string;
+  }>;
+  recent: Readonly<{
+    campaign: string;
+    date: string;
+    description: string;
+    empty: string;
+    source: string;
+    status: string;
+    title: string;
+  }>;
+  sourceLabels: Readonly<Record<
+    | "custom"
+    | "direct"
+    | "email"
+    | "facebook"
+    | "google_business_profile"
+    | "instagram"
+    | "linkedin"
+    | "saved_reply"
+    | "tiktok"
+    | "unknown"
+    | "website"
+    | "whatsapp"
+    | "youtube",
+    string
+  >>;
+  sourceMix: Readonly<{
+    description: string;
+    empty: string;
+    requestCount: (count: number) => string;
+    title: string;
+  }>;
+  workflowLabels: Readonly<Record<
+    | "archived"
+    | "asked_info"
+    | "booked"
+    | "follow_up_needed"
+    | "lost"
+    | "new"
+    | "no_response"
+    | "not_a_fit"
+    | "replied"
+    | "reviewed"
+    | "unknown",
+    string
+  >>;
 }>;
 
 type DashboardRouteGuideKey =
@@ -1664,6 +1802,7 @@ type DashboardCopy = Readonly<{
   leadQueue: DashboardLeadQueueCopy;
   leadsPage: DashboardLeadsPageCopy;
   overview: DashboardOverviewCopy;
+  reports: DashboardReportsCopy;
   routeGuide: DashboardRouteGuideCopy;
   routeMessages: Readonly<{
     genericError: string;
@@ -1679,6 +1818,7 @@ type DashboardCopy = Readonly<{
     overview: string;
     ownerWorkspace: string;
     quoteSetup: string;
+    reports: string;
     settings: string;
     workspaceSubtitle: string;
   }>;
@@ -1690,6 +1830,7 @@ type DashboardCopy = Readonly<{
     guide: PageContextCopy;
     leadDetail: PageContextCopy;
     leads: PageContextCopy;
+    reports: PageContextCopy;
     settings: PageContextCopy;
   }>;
   readinessTasks: Readonly<Record<
@@ -1813,6 +1954,7 @@ export type BizPilotCopy = Readonly<{
     consentNoticeDefault: string;
     emptySection: string;
     guardrail: string;
+    sectionNavigationLabel: string;
     selectPlaceholder: string;
     submitButton: string;
     stepProgress: (index: number, total: number, label: string) => string;
@@ -2914,9 +3056,11 @@ const englishCopy: BizPilotCopy = {
       branding: {
         accentAppears:
           "Accent appears on progress, focus, and supporting highlights.",
+        accentUsage: "Accent: step progress, selected controls, and focus highlights.",
         accentColor: "Accent color",
         addLogoAndColors: "Add logo and colors",
         colorsConfigured: "Colors ready",
+        dashboardUnaffected: "These colors change the customer quote pages only; your dashboard theme stays separate.",
         description:
           "Public-facing visual settings for the cleaning quote experience.",
         fileError: "Choose a PNG, JPG, or WebP logo under 2 MB.",
@@ -2926,6 +3070,8 @@ const englishCopy: BizPilotCopy = {
         logoUrl: "Logo URL",
         logoUrlHelp: "Optional alternative: paste a secure HTTPS image URL.",
         primaryColor: "Primary color",
+        primaryUsage: "Primary: business mark, active language, and submit buttons.",
+        previewNotice: "Live customer preview. Save configuration to publish these choices.",
         publicQuoteButton: "Public quote button",
         removeLogo: "Remove logo",
         resetColors: "Reset colors",
@@ -3159,6 +3305,72 @@ const englishCopy: BizPilotCopy = {
         uniqueLinkDescription:
           "This customer-ready address belongs only to this business. Save setup before sharing it.",
         uniqueLinkTitle: "Your business quote link",
+      },
+      sourceLinks: {
+        campaignLabel: "Optional campaign tag",
+        campaignPlaceholder: "Example: summer-cleaning",
+        copyLink: "Copy tracked link",
+        customLabel: "Custom source",
+        customPlaceholder: "Example: local-partner",
+        description: "Use one tracked variant per placement. Every link opens the same quote form, while Reports groups submitted requests by source.",
+        privacy: "Never put a customer name, email, phone number, address, or message in a source or campaign tag.",
+        presets: [
+          { key: "website", label: "Website button", medium: "cta" },
+          { key: "google_business_profile", label: "Google Business Profile", medium: "profile" },
+          { key: "instagram", label: "Instagram bio", medium: "bio" },
+          { key: "facebook", label: "Facebook page", medium: "page" },
+          { key: "tiktok", label: "TikTok bio", medium: "bio" },
+          { key: "linkedin", label: "LinkedIn page", medium: "company_page" },
+          { key: "youtube", label: "YouTube profile", medium: "profile" },
+          { key: "whatsapp", label: "WhatsApp saved reply", medium: "saved_reply" },
+          { key: "email", label: "Email signature", medium: "signature" },
+          { key: "saved_reply", label: "Social saved reply", medium: "direct_message" },
+        ],
+        title: "Tracked links by channel",
+      },
+      setupJourney: {
+        ariaLabel: "Quote Setup journey",
+        complete: "Complete",
+        current: "Current",
+        description:
+          "Follow these stages from business identity to a reviewed, trackable public link. Each stage opens the exact place where its work is completed.",
+        stages: [
+          {
+            description:
+              "Confirm the customer-facing business name, language, and unique public address.",
+            title: "Business identity",
+          },
+          {
+            description:
+              "List the cleaning services you offer and every city or area you cover.",
+            title: "Services and coverage",
+          },
+          {
+            description:
+              "Review the cleaning template and keep only the questions needed for a useful request.",
+            title: "Quote questions",
+          },
+          {
+            description:
+              "Apply the logo and accessible colors used on the customer quote and success pages.",
+            title: "Public brand",
+          },
+          {
+            description:
+              "Add approved FAQ facts, choose privacy settings, and confirm the customer consent notice.",
+            title: "Knowledge and trust",
+          },
+          {
+            description:
+              "Save, preview the full customer flow, then copy a tracked link for each channel you use.",
+            title: "Preview, track, and share",
+          },
+        ],
+        stepLabel: (current, total) => `Stage ${current} of ${total}`,
+        tasksReady: (completed, total) =>
+          `${completed} of ${total} checks complete`,
+        title: "Setup from first step to launch",
+        upcoming: "Upcoming",
       },
       readiness: {
         description: (completed, total) => `${completed}/${total} setup tasks complete.`,
@@ -3670,6 +3882,18 @@ const englishCopy: BizPilotCopy = {
         ],
         title: "Manual recovery operating system",
       },
+      parts: {
+        setup: {
+          description:
+            "Complete setup in order, preview the customer experience, then refine services, questions, branding, knowledge, and privacy before sharing.",
+          title: "Setup and optimization",
+        },
+        workflow: {
+          description:
+            "Process each request through the manual recovery loop, record real outcomes, and compare submitted requests by tracked source.",
+          title: "Workflow and reporting",
+        },
+      },
       routeMap: {
         description:
           "Each route has one owner job so the dashboard stays compact.",
@@ -3682,6 +3906,100 @@ const englishCopy: BizPilotCopy = {
           ["Settings", "Language, theme, display preferences, feature state, and guarded lifecycle actions.", "/dashboard/settings", "Open settings"],
         ],
         title: "Dashboard route map",
+      },
+    },
+    reports: {
+      actions: {
+        buildLinks: "Build tracked links",
+        openLeads: "Open lead queue",
+      },
+      campaigns: {
+        description: "Campaign tags are optional labels from the tracked links you share.",
+        empty: "No campaign-tagged quote requests in this period.",
+        title: "Campaign tags",
+      },
+      filters: {
+        all: "All time",
+        label: "Reporting period",
+        last30: "30 days",
+        last7: "7 days",
+        last90: "90 days",
+      },
+      header: {
+        description: "Understand which tagged placements bring quote requests and whether manual outcomes are being recorded.",
+        eyebrow: "Owner reporting",
+        title: "Lead source report",
+      },
+      metrics: {
+        attributed: {
+          detail: "Requests with a recognized tagged source",
+          label: "Tracked coverage",
+        },
+        manualOutcomes: {
+          detail: "Requests with an owner-recorded outcome",
+          label: "Manual outcomes",
+        },
+        topSource: {
+          detail: "Largest source by submitted quote requests",
+          label: "Top source",
+        },
+        totalRequests: {
+          detail: "Submitted quote requests in this period",
+          label: "Quote requests",
+        },
+      },
+      notices: {
+        privacy: "Source tags must never contain a customer name, email, phone number, address, or message.",
+        trackedDefinition: "This report counts submitted quote requests, not profile views, clicks, revenue, or automatic conversions. Untagged requests stay visible as Direct or Unknown.",
+        truncated: "This view reached the 1,000-request safety limit. Narrow the date range for a complete period view.",
+      },
+      outcomes: {
+        description: "Statuses and outcomes are counted only after the owner records the real-world result.",
+        empty: "No statuses or manual outcomes are recorded in this period.",
+        title: "Workflow and manual outcomes",
+      },
+      recent: {
+        campaign: "Campaign",
+        date: "Received",
+        description: "Latest source signals without customer contact information.",
+        empty: "No quote requests in this period.",
+        source: "Source",
+        status: "Status",
+        title: "Recent source activity",
+      },
+      sourceLabels: {
+        custom: "Custom source",
+        direct: "Direct / untagged",
+        email: "Email",
+        facebook: "Facebook",
+        google_business_profile: "Google Business Profile",
+        instagram: "Instagram",
+        linkedin: "LinkedIn",
+        saved_reply: "Saved reply",
+        tiktok: "TikTok",
+        unknown: "Unknown",
+        website: "Website",
+        whatsapp: "WhatsApp",
+        youtube: "YouTube",
+      },
+      sourceMix: {
+        description: "Share of submitted quote requests by normalized source.",
+        empty: "No source data yet. Create a tracked link for each placement and keep the base link as a safe fallback.",
+        requestCount: (count) => `${count} request${count === 1 ? "" : "s"}`,
+        title: "Source mix",
+      },
+      workflowLabels: {
+        archived: "Archived",
+        asked_info: "Information requested",
+        booked: "Booked outcome",
+        follow_up_needed: "Follow-up needed",
+        lost: "Lost outcome",
+        new: "New",
+        no_response: "No response",
+        not_a_fit: "Not a fit",
+        replied: "Replied",
+        reviewed: "Reviewed",
+        unknown: "Not recorded",
       },
     },
     overview: {
@@ -3912,6 +4230,7 @@ const englishCopy: BizPilotCopy = {
       overview: "Overview",
       ownerWorkspace: "Workspace",
       quoteSetup: "Quote Setup",
+      reports: "Reports",
       settings: "Settings",
       workspaceSubtitle: "Lead recovery workspace",
     },
@@ -3944,6 +4263,10 @@ const englishCopy: BizPilotCopy = {
       leads: {
         subtitle: "Prioritize quote requests before customers move on",
         title: "Lead Recovery Queue",
+      },
+      reports: {
+        subtitle: "Source mix, tagged placements, and manual outcome coverage",
+        title: "Reports",
       },
       settings: {
         subtitle: "Workspace, account, theme, and MVP boundaries",
@@ -4134,18 +4457,18 @@ const englishCopy: BizPilotCopy = {
           },
           lead_source_attribution_analytics: {
             activation:
-              "Founder enables after source taxonomy and chart privacy rules are approved.",
+              "Available to every workspace owner; founder reporting uses the same privacy-safe taxonomy.",
             name: "Lead source analytics",
             ownerGuide:
-              "Use leads.source_channel and lead_source_metadata; never add leads.source.",
+              "Build a tagged link for each placement, then review submitted requests in Reports. Never place customer information in a tag.",
             setup:
-              "Planned premium/admin feature; source taxonomy and dashboard charts are not active yet.",
+              "Available now in Quote Setup and Reports; no external analytics account is required.",
             summary:
-              "Shows whether leads came from website, Instagram, Facebook, Google, direct links, or campaign URLs.",
+              "Shows which tagged website, social, messaging, email, or campaign placements produce submitted quote requests.",
             textGuide:
-              "Explains source labels, UTM fields, referrers, and why unknown sources stay honest.",
+              "Explains source labels, campaign tags, manual outcomes, and why Direct or Unknown requests stay visible.",
             visualGuide:
-              "Show source mix chart, top channels, recent source list, unknown bucket, and date filter.",
+              "Show tracked coverage, source mix, campaign tags, recent source activity, workflow outcomes, and date filters.",
           },
           quote_link_intake: {
             activation: "Owner controls the active public quote link.",
@@ -4596,6 +4919,7 @@ const englishCopy: BizPilotCopy = {
     emptySection: "Nothing to fill on this section.",
     guardrail:
       "Submitting this form does not confirm pricing, availability, or booking.",
+    sectionNavigationLabel: "Quote request sections",
     selectPlaceholder: "Select an option",
     stepProgress: (index, total, label) => `Step ${index} of ${total} - ${label}`,
     steps: [
@@ -5735,9 +6059,11 @@ const frenchCopy: BizPilotCopy = {
       branding: {
         accentAppears:
           "L'accent apparaît sur la progression, le focus et les éléments de soutien.",
+        accentUsage: "Accent : progression, contrôles sélectionnés et focus.",
         accentColor: "Couleur d'accent",
         addLogoAndColors: "Ajouter logo et couleurs",
         colorsConfigured: "Couleurs prêtes",
+        dashboardUnaffected: "Ces couleurs modifient seulement les pages publiques; le thème du tableau de bord reste indépendant.",
         description:
           "Réglages visuels publics pour l'expérience de soumission de nettoyage.",
         fileError: "Choisissez un logo PNG, JPG ou WebP de moins de 2 Mo.",
@@ -5747,6 +6073,8 @@ const frenchCopy: BizPilotCopy = {
         logoUrl: "URL du logo",
         logoUrlHelp: "Autre option : collez une URL d'image HTTPS sécurisée.",
         primaryColor: "Couleur principale",
+        primaryUsage: "Principale : marque, langue active et boutons d'envoi.",
+        previewNotice: "Aperçu client en direct. Enregistrez pour publier ces choix.",
         publicQuoteButton: "Bouton de soumission public",
         removeLogo: "Retirer le logo",
         resetColors: "Réinitialiser les couleurs",
@@ -5987,6 +6315,72 @@ const frenchCopy: BizPilotCopy = {
         uniqueLinkDescription:
           "Cette adresse destinée aux clients appartient uniquement à cette entreprise. Enregistrez la configuration avant de la partager.",
         uniqueLinkTitle: "Lien de soumission de votre entreprise",
+      },
+      sourceLinks: {
+        campaignLabel: "Étiquette de campagne facultative",
+        campaignPlaceholder: "Exemple : nettoyage-ete",
+        copyLink: "Copier le lien suivi",
+        customLabel: "Source personnalisée",
+        customPlaceholder: "Exemple : partenaire-local",
+        description: "Utilisez une variante suivie par emplacement. Tous les liens ouvrent le même formulaire et Rapports regroupe les demandes soumises par source.",
+        privacy: "N'inscrivez jamais le nom, le courriel, le téléphone, l'adresse ou le message d'un client dans une source ou une campagne.",
+        presets: [
+          { key: "website", label: "Bouton du site web", medium: "cta" },
+          { key: "google_business_profile", label: "Fiche d'établissement Google", medium: "profile" },
+          { key: "instagram", label: "Bio Instagram", medium: "bio" },
+          { key: "facebook", label: "Page Facebook", medium: "page" },
+          { key: "tiktok", label: "Bio TikTok", medium: "bio" },
+          { key: "linkedin", label: "Page LinkedIn", medium: "company_page" },
+          { key: "youtube", label: "Profil YouTube", medium: "profile" },
+          { key: "whatsapp", label: "Réponse enregistrée WhatsApp", medium: "saved_reply" },
+          { key: "email", label: "Signature courriel", medium: "signature" },
+          { key: "saved_reply", label: "Réponse sociale enregistrée", medium: "direct_message" },
+        ],
+        title: "Liens suivis par canal",
+      },
+      setupJourney: {
+        ariaLabel: "Parcours de configuration du lien public",
+        complete: "Terminé",
+        current: "Étape actuelle",
+        description:
+          "Suivez ces étapes, de l'identité de l'entreprise jusqu'à un lien public vérifié et mesurable. Chaque étape ouvre directement le bon réglage.",
+        stages: [
+          {
+            description:
+              "Confirmez le nom visible par les clients, la langue et l'adresse publique unique.",
+            title: "Identité de l'entreprise",
+          },
+          {
+            description:
+              "Indiquez les services de nettoyage offerts ainsi que chaque ville ou zone desservie.",
+            title: "Services et couverture",
+          },
+          {
+            description:
+              "Révisez le modèle de nettoyage et gardez seulement les questions nécessaires à une demande utile.",
+            title: "Questions de soumission",
+          },
+          {
+            description:
+              "Appliquez le logo et les couleurs accessibles utilisés sur les pages publiques de demande et de confirmation.",
+            title: "Marque publique",
+          },
+          {
+            description:
+              "Ajoutez les faits FAQ approuvés, choisissez les réglages de confidentialité et confirmez l'avis de consentement.",
+            title: "Connaissances et confiance",
+          },
+          {
+            description:
+              "Enregistrez, vérifiez tout le parcours client, puis copiez un lien suivi pour chaque canal utilisé.",
+            title: "Prévisualiser, suivre et partager",
+          },
+        ],
+        stepLabel: (current, total) => `Étape ${current} sur ${total}`,
+        tasksReady: (completed, total) =>
+          `${completed} vérification${completed === 1 ? "" : "s"} sur ${total} terminée${completed === 1 ? "" : "s"}`,
+        title: "Configuration, de la première étape au lancement",
+        upcoming: "À venir",
       },
       readiness: {
         description: (completed, total) => `${completed}/${total} tâches complétées.`,
@@ -6506,6 +6900,18 @@ const frenchCopy: BizPilotCopy = {
         ],
         title: "Système de recuperation manuelle",
       },
+      parts: {
+        setup: {
+          description:
+            "Terminez la configuration dans l'ordre, prévisualisez l'expérience client, puis optimisez services, questions, marque, connaissances et confidentialité avant le partage.",
+          title: "Configuration et optimisation",
+        },
+        workflow: {
+          description:
+            "Traitez chaque demande dans le flux manuel, consignez les résultats réels et comparez les demandes soumises selon leur source suivie.",
+          title: "Méthode de travail et rapports",
+        },
+      },
       routeMap: {
         description:
           "Chaque route a un travail clair pour garder l'espace compact.",
@@ -6518,6 +6924,100 @@ const frenchCopy: BizPilotCopy = {
           ["Réglages", "Langue, thème, historique, sécurité et cycle de vie.", "/dashboard/settings", "Ouvrir"],
         ],
         title: "Carte des routes",
+      },
+    },
+    reports: {
+      actions: {
+        buildLinks: "Créer des liens suivis",
+        openLeads: "Ouvrir la file de prospects",
+      },
+      campaigns: {
+        description: "Les campagnes sont des étiquettes facultatives ajoutées aux liens suivis.",
+        empty: "Aucune demande avec campagne pour cette période.",
+        title: "Campagnes",
+      },
+      filters: {
+        all: "Depuis le début",
+        label: "Période du rapport",
+        last30: "30 jours",
+        last7: "7 jours",
+        last90: "90 jours",
+      },
+      header: {
+        description: "Voyez quels emplacements suivis apportent des demandes et si les résultats manuels sont consignés.",
+        eyebrow: "Rapports du responsable",
+        title: "Rapport des sources de prospects",
+      },
+      metrics: {
+        attributed: {
+          detail: "Demandes associées à une source suivie reconnue",
+          label: "Couverture suivie",
+        },
+        manualOutcomes: {
+          detail: "Demandes avec un résultat consigné par le responsable",
+          label: "Résultats manuels",
+        },
+        topSource: {
+          detail: "Principale source selon les demandes reçues",
+          label: "Meilleure source",
+        },
+        totalRequests: {
+          detail: "Demandes de soumission reçues pendant cette période",
+          label: "Demandes reçues",
+        },
+      },
+      notices: {
+        privacy: "Les étiquettes de source ne doivent jamais contenir le nom, le courriel, le téléphone, l'adresse ou le message d'un client.",
+        trackedDefinition: "Ce rapport compte les demandes soumises, pas les vues, clics, revenus ou conversions automatiques. Les demandes non étiquetées restent Directes ou Inconnues.",
+        truncated: "La limite de sécurité de 1 000 demandes est atteinte. Réduisez la période pour obtenir une vue complète.",
+      },
+      outcomes: {
+        description: "Les statuts et résultats sont comptés seulement après la consignation du résultat réel.",
+        empty: "Aucun statut ou résultat manuel pour cette période.",
+        title: "Flux et résultats manuels",
+      },
+      recent: {
+        campaign: "Campagne",
+        date: "Reçue",
+        description: "Derniers signaux de source sans coordonnées client.",
+        empty: "Aucune demande pour cette période.",
+        source: "Source",
+        status: "Statut",
+        title: "Activité récente par source",
+      },
+      sourceLabels: {
+        custom: "Source personnalisée",
+        direct: "Directe / non étiquetée",
+        email: "Courriel",
+        facebook: "Facebook",
+        google_business_profile: "Fiche d'établissement Google",
+        instagram: "Instagram",
+        linkedin: "LinkedIn",
+        saved_reply: "Réponse enregistrée",
+        tiktok: "TikTok",
+        unknown: "Inconnue",
+        website: "Site web",
+        whatsapp: "WhatsApp",
+        youtube: "YouTube",
+      },
+      sourceMix: {
+        description: "Part des demandes reçues selon la source normalisée.",
+        empty: "Aucune donnée de source. Créez un lien suivi par emplacement et gardez le lien de base comme solution de repli.",
+        requestCount: (count) => `${count} demande${count === 1 ? "" : "s"}`,
+        title: "Répartition des sources",
+      },
+      workflowLabels: {
+        archived: "Archivée",
+        asked_info: "Informations demandées",
+        booked: "Résultat réservé",
+        follow_up_needed: "Suivi requis",
+        lost: "Résultat perdu",
+        new: "Nouvelle",
+        no_response: "Sans réponse",
+        not_a_fit: "Non compatible",
+        replied: "Réponse envoyée",
+        reviewed: "Révisée",
+        unknown: "Non consigné",
       },
     },
     overview: {
@@ -6751,6 +7251,7 @@ const frenchCopy: BizPilotCopy = {
       overview: "Vue d'ensemble",
       ownerWorkspace: "Espace de travail",
       quoteSetup: "Configuration",
+      reports: "Rapports",
       settings: "Réglages",
       workspaceSubtitle: "Espace de récupération",
     },
@@ -6784,6 +7285,10 @@ const frenchCopy: BizPilotCopy = {
         subtitle:
           "Priorisez les demandes avant que les clients passent à autre chose",
         title: "File de récupération",
+      },
+      reports: {
+        subtitle: "Sources, emplacements suivis et couverture des résultats manuels",
+        title: "Rapports",
       },
       settings: {
         subtitle: "Espace, compte, thème et limites MVP",
@@ -6974,18 +7479,18 @@ const frenchCopy: BizPilotCopy = {
           },
           lead_source_attribution_analytics: {
             activation:
-              "Le fondateur active après taxonomie source et règles de confidentialite des graphiques.",
+              "Disponible à chaque responsable d'espace; les rapports fondateur utilisent la même taxonomie respectueuse de la confidentialité.",
             name: "Analyse des sources de prospects",
             ownerGuide:
-              "Utiliser leads.source_channel et lead_source_metadata; ne jamais ajouter leads.source.",
+              "Créez un lien étiqueté pour chaque emplacement, puis révisez les demandes soumises dans Rapports. N'inscrivez jamais de renseignement client dans une étiquette.",
             setup:
-              "Fonction premium/admin planifiee; taxonomie source et graphiques non actifs.",
+              "Disponible maintenant dans Configuration soumission et Rapports; aucun compte d'analyse externe n'est requis.",
             summary:
-              "Montre si les prospects viennent du site web, Instagram, Facebook, Google, liens directs ou campagnes.",
+              "Montre quels emplacements étiquetés du site, des réseaux sociaux, de la messagerie, du courriel ou des campagnes produisent des demandes soumises.",
             textGuide:
-              "Explique libelles de source, UTM, referents et pourquoi les sources inconnues restent honnetes.",
+              "Explique les sources, campagnes, résultats manuels et pourquoi les demandes Directes ou Inconnues restent visibles.",
             visualGuide:
-              "Montrer graphique des sources, meilleurs canaux, liste recente, bucket inconnu et filtre date.",
+              "Montrer couverture suivie, répartition des sources, campagnes, activité récente, résultats du flux et filtres de période.",
           },
           quote_link_intake: {
             activation: "Vous contrôlez le lien public actif.",
@@ -7446,6 +7951,7 @@ const frenchCopy: BizPilotCopy = {
     emptySection: "Rien à remplir dans cette section.",
     guardrail:
       "L’envoi de ce formulaire ne confirme ni prix, ni disponibilité, ni réservation.",
+    sectionNavigationLabel: "Sections de la demande de soumission",
     selectPlaceholder: "Sélectionner une option",
     stepProgress: (index, total, label) =>
       `Étape ${index} sur ${total} - ${label}`,

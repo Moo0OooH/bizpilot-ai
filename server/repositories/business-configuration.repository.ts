@@ -9,8 +9,9 @@
  * - supabase/migrations/0002_business_template_configuration.sql
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-07-11
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added a minimal onboarding-review read so scoped saves preserve previously confirmed setup steps.
  * - 2026-07-11: Added bilingual custom quote-field override parsing, merge helpers, and localized field resolution.
  * - 2026-05-13: Enforced the server-only runtime boundary.
  * - 2026-05-05: Created Phase 3 business configuration repository.
@@ -676,6 +677,19 @@ export async function getBusinessConfiguration(input: {
     services: services.data ?? [],
     templateSettings: templateSettings.data,
   };
+}
+
+export async function listBusinessOnboardingTaskReviews(input: {
+  businessId: string;
+  supabase: SupabaseClient<Database>;
+}): Promise<Array<Pick<BusinessOnboardingTaskRecord, "completed_at" | "task_key">>> {
+  const { data, error } = await input.supabase
+    .from("business_onboarding_tasks")
+    .select("completed_at,task_key")
+    .eq("business_id", input.businessId);
+
+  await throwIfError(error);
+  return data ?? [];
 }
 
 export async function upsertBusinessBranding(input: {

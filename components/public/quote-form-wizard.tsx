@@ -10,8 +10,9 @@
  * - docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-19
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added a real branded section rail, aligned selected controls to saved accent, improved bilingual grouping, and rendered the persisted consent version.
  * - 2026-07-15: Repointed form UI authority to the current multilingual responsive standard.
  * - 2026-05-19: Created 3-step grouped public quote form.
  * - 2026-05-22: Removed client-side step navigation dependency so public submissions cannot get stuck before submit.
@@ -59,14 +60,35 @@ function groupForField(field: FieldRecord): StepId {
   const key = field.field_key.toLowerCase();
 
   if (
+    key.includes("contact") ||
+    key.includes("customer_name") ||
+    key.includes("email") ||
+    key.includes("courriel") ||
+    key.includes("message") ||
+    key.includes("name") ||
+    key.includes("nom") ||
+    key.includes("note") ||
+    key.includes("phone") ||
+    key.includes("telephone")
+  ) {
+    return "contact";
+  }
+
+  if (
     key.includes("service_type") ||
     key.includes("cleaning_type") ||
+    key.includes("type_nettoyage") ||
     key.includes("property") ||
+    key.includes("propriete") ||
     key.includes("bedroom") ||
+    key.includes("chambre") ||
     key.includes("bathroom") ||
+    key.includes("salle_bain") ||
     key.includes("square") ||
+    key.includes("superficie") ||
     key.includes("size") ||
-    key.includes("pet")
+    key.includes("pet") ||
+    key.includes("animaux")
   ) {
     return "service";
   }
@@ -75,10 +97,15 @@ function groupForField(field: FieldRecord): StepId {
     key.includes("date") ||
     key.includes("time") ||
     key.includes("schedule") ||
+    key.includes("horaire") ||
     key.includes("city") ||
+    key.includes("ville") ||
     key.includes("area") ||
+    key.includes("secteur") ||
     key.includes("location") ||
+    key.includes("emplacement") ||
     key.includes("address") ||
+    key.includes("adresse") ||
     key.includes("postal")
   ) {
     return "when_where";
@@ -440,6 +467,30 @@ export function QuoteFormWizard({
         />
       ))}
 
+      <nav
+        aria-label={copy.quoteForm.sectionNavigationLabel}
+        className="rounded-[16px] border border-[var(--border-default)] bg-[var(--surface)] p-3 shadow-[var(--shadow-sm)]"
+      >
+        <ol className="grid grid-cols-3 gap-2">
+          {steps.map((step, index) => (
+            <li key={step.id}>
+              <a
+                className="group grid gap-2 rounded-[11px] px-2 py-2 text-center focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                href={`#quote-step-${index}`}
+              >
+                <span
+                  aria-hidden
+                  className="h-1.5 rounded-full bg-[var(--brand-accent)] transition group-hover:opacity-80"
+                />
+                <span className="truncate text-[11px] font-extrabold text-[var(--text-strong)] sm:text-[12px]">
+                  {index + 1}. {step.label}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
       {steps.map((step, index) => {
         const fields = groups[step.id];
 
@@ -453,6 +504,15 @@ export function QuoteFormWizard({
               <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[var(--text-muted)]">
                 {copy.quoteForm.stepProgress(index + 1, steps.length, step.label)}
               </p>
+              <div
+                aria-hidden
+                className="h-1.5 overflow-hidden rounded-full bg-[var(--canvas-subtle)]"
+              >
+                <div
+                  className="h-full rounded-full bg-[var(--brand-accent)]"
+                  style={{ width: `${((index + 1) / steps.length) * 100}%` }}
+                />
+              </div>
               <h2 className="text-[22px] font-extrabold leading-tight text-[var(--text-strong)]">
                 {step.title}
               </h2>
@@ -480,7 +540,7 @@ export function QuoteFormWizard({
 
             {index === steps.length - 1 ? (
               <ConsentBlock
-                consentNotice={copy.quoteForm.consentNoticeDefault}
+                consentNotice={page.consentVersion.consent_notice}
               />
             ) : null}
           </section>

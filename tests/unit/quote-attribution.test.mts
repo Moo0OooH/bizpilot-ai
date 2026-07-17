@@ -11,6 +11,9 @@
  * - components/public/quote-form-wizard.tsx
  * Author: MoOoH
  * Created: 2026-07-04
+ * Last Updated: 2026-07-16
+ * Change Log:
+ * - 2026-07-16: Added regression coverage for safe attribution preservation on submission retries.
  * ============================================================
  */
 
@@ -20,6 +23,7 @@ import { describe, it } from "node:test";
 import {
   buildQuoteAttributionFormQuery,
   buildQuoteLanguageHref,
+  buildQuoteRetryHref,
   buildQuoteSourceUrl,
   type QuoteAttributionSearchParams,
 } from "../../lib/quote-attribution.ts";
@@ -53,6 +57,29 @@ describe("quote attribution", () => {
     assert.equal(url.searchParams.get("utm_source"), "instagram");
     assert.equal(formQuery.source, "instagram");
     assert.equal(formQuery.utm_source, "instagram");
+
+    const retryUrl = new URL(
+      buildQuoteRetryHref({
+        error: "Please review the form and try again.",
+        language: "fr-CA",
+        query: formQuery,
+        slug: "sparkle-cleaning",
+      }),
+      "https://bizpilo.com",
+    );
+
+    assert.equal(retryUrl.pathname, "/quote/sparkle-cleaning");
+    assert.equal(
+      retryUrl.searchParams.get("error"),
+      "Please review the form and try again.",
+    );
+    assert.equal(retryUrl.searchParams.get("language"), "fr-CA");
+    assert.equal(retryUrl.searchParams.get("ref"), "website-footer");
+    assert.equal(retryUrl.searchParams.get("source"), "instagram");
+    assert.equal(retryUrl.searchParams.get("utm_campaign"), "summer cleaning");
+    assert.equal(retryUrl.searchParams.get("utm_medium"), "bio");
+    assert.equal(retryUrl.searchParams.get("utm_source"), "instagram");
+    assert.equal(retryUrl.searchParams.has("sourceUrl"), false);
   });
 
   it("drops arbitrary customer or redirect query fields from sourceUrl", () => {

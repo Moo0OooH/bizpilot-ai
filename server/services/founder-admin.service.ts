@@ -11,6 +11,8 @@
  * Created: 2026-05-22
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Separated the detailed inbox from a minimal-column reporting sample so aggregate reads do not load customer contact fields.
+ * - 2026-07-16: Added a bounded, business-aware founder lead-source report with campaign, attribution, and manual-outcome summaries.
  * - 2026-07-16: Kept the founder console available when the linked-user fallback read is unavailable.
  * - 2026-05-26: Sent a server user agent on Auth Admin REST fallback to avoid browser-agent secret-key rejection.
  * - 2026-06-17: Read Supabase admin credentials through the shared secret-key-compatible config.
@@ -24,6 +26,10 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 
 import { getServerEnv } from "@/lib/env/server-env";
+import {
+  buildLeadSourceAnalytics,
+  type LeadSourceAnalyticsResult,
+} from "@/lib/lead-source-analytics";
 import {
   createSupabaseAdminRestHeaders,
   createSupabaseServiceRoleClient,
@@ -45,6 +51,7 @@ import {
   listFounderBusinessMembers,
   listFounderDeletionRequests,
   listFounderLeadInbox,
+  listFounderLeadReportingSample,
   listFounderLeadSignals,
   listFounderLeadSourcesByLeadIds,
   listFounderProfilesByUserIds,
@@ -60,6 +67,7 @@ import {
   type FounderAdminLogRecord,
   type FounderBusinessMemberRecord,
   type FounderBusinessStatus,
+  type FounderLeadSourceRecord,
   type FounderPlanSlug,
   type FounderSessionTimeoutMode,
   type FounderWorkspaceKind,
@@ -138,6 +146,11 @@ export type FounderAdminOverview = Readonly<{
     sourceReferrer: string | null;
     status: string;
   }>;
+  sourceReport: Readonly<{
+    analytics: LeadSourceAnalyticsResult;
+    isTruncated: boolean;
+    sampleLimit: number;
+  }>;
   recentActions: ReadonlyArray<{
     actionType: string;
     actorUserId: string | null;
@@ -185,6 +198,10 @@ const sessionTimeoutModes = new Set<FounderSessionTimeoutMode>([
 const founderUserPageSizes = new Set([10, 25, 50]);
 const minimumTemporaryPasswordLength = 12;
 const sessionTimeoutMinuteOptions = new Set([15, 30, 60, 240, 480, 720, 1440, 10080]);
+const founderLeadDetailLimit = 120;
+const founderLeadReportingLimit = 1_000;
+const founderLeadReportingReadLimit = founderLeadReportingLimit + 1;
+const founderLeadSourceBatchSize = 200;
 
 type FounderAuthUserRecord = Readonly<{
   confirmed_at?: string;
@@ -785,6 +802,25 @@ async function buildFounderLinkedUsersPage(input: {
   };
 }
 
+async function listFounderLeadSourceSample(input: {
+  leadIds: string[];
+  supabase: ReturnType<typeof createSupabaseServiceRoleClient>;
+}): Promise<FounderLeadSourceRecord[]> {
+  const batches: string[][] = [];
+
+  for (let index = 0; index < input.leadIds.length; index += founderLeadSourceBatchSize) {
+    batches.push(input.leadIds.slice(index, index + founderLeadSourceBatchSize));
+  }
+
+  const rows = await Promise.all(
+    batches.map((leadIds) =>
+      listFounderLeadSourcesByLeadIds({ leadIds, supabase: input.supabase }),
+    ),
+  );
+
+  return rows.flat();
+}
+
 export async function getFounderAdminOverview(input: {
   userPage?: number;
   userPageSize?: number;
@@ -808,6 +844,7 @@ export async function getFounderAdminOverview(input: {
     deletionRequests,
     initialUsersResult,
     leadInbox,
+    reportingLeadSample,
   ] = await Promise.all([
     listFounderBusinesses({ supabase }).catch((error) => {
       logFounderAdminReadUnavailable({ error, readName: "businesses" });
@@ -858,13 +895,31 @@ export async function getFounderAdminOverview(input: {
         users: [],
       };
     }),
-    listFounderLeadInbox({ limit: 120, supabase }).catch((error) => {
+    listFounderLeadInbox({ limit: founderLeadDetailLimit, supabase }).catch((error) => {
       logFounderAdminReadUnavailable({ error, readName: "lead_inbox" });
       return [];
     }),
+    listFounderLeadReportingSample({
+      limit: founderLeadReportingReadLimit,
+      supabase,
+    }).catch((error) => {
+      logFounderAdminReadUnavailable({ error, readName: "lead_reporting" });
+      return [];
+    }),
   ]);
-  const leadSourceRows = await listFounderLeadSourcesByLeadIds({
-    leadIds: leadInbox.map((lead) => lead.id),
+  const reportingLeadInbox = reportingLeadSample.slice(
+    0,
+    founderLeadReportingLimit,
+  );
+  const detailedLeadInbox = leadInbox.slice(0, founderLeadDetailLimit);
+  const leadSourceIds = [
+    ...new Set([
+      ...reportingLeadInbox.map((lead) => lead.id),
+      ...detailedLeadInbox.map((lead) => lead.id),
+    ]),
+  ];
+  const leadSourceRows = await listFounderLeadSourceSample({
+    leadIds: leadSourceIds,
     supabase,
   }).catch((error) => {
     logFounderAdminReadUnavailable({ error, readName: "lead_source_metadata" });
@@ -960,6 +1015,24 @@ export async function getFounderAdminOverview(input: {
   }
   const leadSourceByLeadId = new Map(
     leadSourceRows.map((row) => [row.lead_id, row]),
+  );
+  const sourceAnalytics = buildLeadSourceAnalytics(
+    reportingLeadInbox.map((lead) => {
+      const source = leadSourceByLeadId.get(lead.id);
+
+      return {
+        businessId: lead.business_id,
+        businessName: businessById.get(lead.business_id)?.name ?? null,
+        createdAt: lead.created_at,
+        id: lead.id,
+        manualOutcome: lead.manual_outcome,
+        sourceChannel: lead.source_channel ?? source?.source_channel ?? null,
+        status: lead.status,
+        utmCampaign: source?.utm_campaign ?? null,
+        utmSource: source?.utm_source ?? null,
+      };
+    }),
+    { range: "all", recentLimit: 10 },
   );
 
   const overviewBusinesses = businesses.map((business) => {
@@ -1069,7 +1142,7 @@ export async function getFounderAdminOverview(input: {
 
   return {
     businesses: overviewBusinesses,
-    leadInbox: leadInbox.map((lead) => ({
+    leadInbox: detailedLeadInbox.map((lead) => ({
       businessId: lead.business_id,
       businessName:
         businessById.get(lead.business_id)?.name ?? "—",
@@ -1084,6 +1157,11 @@ export async function getFounderAdminOverview(input: {
       sourceReferrer: leadSourceByLeadId.get(lead.id)?.referrer ?? null,
       status: lead.status,
     })),
+    sourceReport: {
+      analytics: sourceAnalytics,
+      isTruncated: reportingLeadSample.length > founderLeadReportingLimit,
+      sampleLimit: founderLeadReportingLimit,
+    },
     recentActions: recentActions.map((action) => ({
       actionType: action.action_type,
       actorUserId: action.actor_user_id,

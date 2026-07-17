@@ -15,6 +15,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the role-safe owner Reports destination while retaining five focused mobile tasks.
  * - 2026-07-16: Restored the professional grouped desktop sidebar and added an explicit authorized Founder Admin destination.
  * - 2026-07-16: Kept resilient native navigation and a focused five-task mobile bar.
  * ============================================================
@@ -38,6 +39,7 @@ type DashboardNavIconName =
   | "leads"
   | "overview"
   | "quote"
+  | "reports"
   | "settings";
 
 type NavigationItem = Readonly<{
@@ -68,6 +70,12 @@ function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
           icon: "leads",
           label: copy.nav.leads,
           match: (pathname) => pathname.startsWith("/dashboard/leads"),
+        },
+        {
+          href: "/dashboard/reports",
+          icon: "reports",
+          label: copy.nav.reports,
+          match: (pathname) => pathname === "/dashboard/reports",
         },
       ],
     },
@@ -146,6 +154,12 @@ function DashboardNavIcon({ name }: Readonly<{ name: DashboardNavIconName }>) {
       <>
         <path d="M6 4h12v16H6z" />
         <path d="M9 8h6M9 12h6M9 16h3" />
+      </>
+    ),
+    reports: (
+      <>
+        <path d="M5 20V11M12 20V4M19 20v-6" />
+        <path d="M3 20h18" />
       </>
     ),
     settings: (
@@ -231,7 +245,11 @@ export function DashboardSidebar({
   const navigation = getOwnerNavigation(copy);
   const mobileNavigation = navigation
     .flatMap((group) => group.items)
-    .filter((item) => item.href !== "/dashboard/guide");
+    .filter(
+      (item) =>
+        item.href !== "/dashboard/guide" &&
+        item.href !== "/dashboard/reports",
+    );
 
   return (
     <>

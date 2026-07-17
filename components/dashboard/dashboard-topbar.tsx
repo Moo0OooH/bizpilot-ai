@@ -13,6 +13,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added Reports to compact navigation without duplicating desktop sidebar routes.
  * - 2026-07-16: Removed duplicated desktop route links, kept complete compact navigation, and made founder access visible at every responsive tier.
  * - 2026-07-16: Made the centered five-route bar the single desktop navigation and moved Guide to secondary help.
  * - 2026-07-16: Replaced the fragile client-managed desktop disclosure with centered native route navigation and full-page protected-route transitions.
@@ -95,6 +96,7 @@ export function DashboardTopbar({
   ] as const;
   const menuRoutes = [
     ...primaryRoutes,
+    { href: "/dashboard/reports", label: copy.nav.reports },
     { href: "/dashboard/guide", label: copy.nav.guide },
   ] as const;
 

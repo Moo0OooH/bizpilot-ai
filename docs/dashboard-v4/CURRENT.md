@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.6 ordered setup journey, two-part Guide, owner/founder source reports, tracked-link builder, and accurate public-brand preview contract.
  * - 2026-07-16: Closed the V4.5 source publication and Production public read-only acceptance record.
  * - 2026-07-16: Added the V4.5 complete navigation restoration and founder-admin access resilience contract.
  * - 2026-07-16: Closed V4.4 on main with successful Vercel and Production public read-only acceptance evidence.
@@ -32,7 +33,7 @@
 
 ## Outcome
 
-Dashboard V4.5 restores a complete, professional desktop workspace after V4.4 made essential destinations too easy to lose. A fixed grouped sidebar exposes every owner route, Guide, workspace identity, and the authorized Founder Admin entry; the topbar is reserved for language, theme, account, and compact-screen actions. Founder data reads now degrade panel-by-panel instead of hiding the entire Admin console when an optional Auth fallback fails.
+Dashboard V4.6 completes the owner operating path from first setup through source-aware reporting. Quote Setup now presents six ordered, readiness-backed stages; Guide separates setup/optimization from workflow/reporting; and the new Reports route summarizes submitted requests by safe tracked source, campaign, and manually recorded outcome. The fixed grouped sidebar still exposes every authorized route, while public branding preview and runtime now share the same accessible color rules.
 
 ## Jobs to be done
 
@@ -41,6 +42,7 @@ Dashboard V4.5 restores a complete, professional desktop workspace after V4.4 ma
 | Overview | Tell the owner what to do next and show the shortest path to the lead queue. |
 | Leads | Search, filter, prioritize, and open customer requests. |
 | Lead Detail | Understand the request, fill information gaps, review/edit a draft, and record manual progress. |
+| Reports | Compare submitted quote requests by tracked placement, campaign tag, workflow status, and manual outcome without claiming views, clicks, revenue, or automatic conversion. |
 | Quote Setup | Configure services, questions, branding, approved FAQ knowledge, privacy, and the unique customer link through progressive tasks. |
 | Business Profile | Maintain business identity and contact context. |
 | Settings | Manage personal preferences, session visibility, audit/history, and lifecycle controls. |
@@ -49,11 +51,11 @@ Dashboard V4.5 restores a complete, professional desktop workspace after V4.4 ma
 
 ## Information architecture
 
-Desktop owner navigation is grouped by job: Command (Overview, Leads), Setup (Quote Setup, Business Profile), and Control (Settings, Guide). The authorized Founder Admin entry is explicit and role-gated. Mobile keeps five focused primary tasks in the bottom bar, with Guide and Admin available through compact utilities. The `/dashboard/quote-setup` compatibility alias may redirect to the canonical `/dashboard/configuration` route; it must not create a duplicate UI.
+Desktop owner navigation is grouped by job: Command (Overview, Leads, Reports), Setup (Quote Setup, Business Profile), and Control (Settings, Guide). The authorized Founder Admin entry is explicit and role-gated. Mobile keeps five focused primary tasks in the bottom bar, with Reports, Guide, and Admin available through compact utilities. The `/dashboard/quote-setup` compatibility alias may redirect to the canonical `/dashboard/configuration` route; it must not create a duplicate UI.
 
-No new application route was added in this release. `/founder` now performs guarded role checks and sends an authorized founder directly to `/admin`.
+`/dashboard/reports` is a protected owner route. It reads only the active workspace through existing RLS-scoped tables and applies a 1,000-request safety bound. `/founder` continues to perform guarded role checks and sends an authorized founder directly to `/admin`.
 
-Quote Setup uses one horizontal task bar with seven mounted panels: Overview, Public Link, Services, Form Questions, Branding, AI Instructions, and Privacy. The panel system keeps every required form value mounted while showing only one owner task at a time. It must not reintroduce a nested left sidebar.
+Quote Setup uses a six-stage journey backed by the existing eight readiness checks, followed by one horizontal task bar with seven mounted panels: Overview, Services, Form Questions, Branding, AI Instructions, Privacy, and Public Link. Deep links open the correct panel, tabs support standard keyboard movement, and every required form value stays mounted while only one task is visible.
 
 ## Interaction rules
 
@@ -70,12 +72,18 @@ Quote Setup uses one horizontal task bar with seven mounted panels: Overview, Pu
 - Server-rendered dashboard pages pass only serializable values into Client Components; dictionary formatter functions remain on the server side.
 - Add Field starts empty, offers cleaning-specific starters, previews customer-facing output, and hides priority/key controls under Advanced settings.
 - Branding accepts a bounded PNG/JPG/WebP selected from the owner device or a secure HTTPS URL, provides a live preview, and applies the saved logo/colors to the public quote page.
+- Branding states exactly where primary and accent colors appear, notes that protected dashboard colors are unaffected, uses WCAG-derived foreground/focus colors, and carries the saved identity through the public success page.
 - The full unique business URL is visible and copyable. `Save & preview` first saves owner choices and synchronizes the derived public link, consent version, and intake form.
 - An owner preview that is not ready returns to Quote Setup with an actionable explanation; anonymous visitors still receive a tenant-safe unavailable state and a marketing-site return.
 - Saved FAQs, services, and service areas are the only approved business-knowledge inputs added to AI draft context. Missing facts stay missing and every draft remains owner-reviewed.
 - Owner-facing controls either work or are absent. Editing the AI draft is real local editing; non-persisted owner scratchpads are removed.
-- The manual workflow and attribution/routing detail remain available inside disclosures.
-- The Guide starts with four ordered first-session actions, then separates the daily routine, route map, launch check, boundaries, and practical troubleshooting in both languages.
+- The Public Link panel builds privacy-safe variants for website, Google Business Profile, social, messaging, email, saved replies, and custom placements using the existing attribution allowlist.
+- Public submission rebuilds attribution from that same allowlist and keeps safe placement tags through validation retries; arbitrary posted source URLs are not trusted.
+- Safe starter services, FAQs, colors, and consent remain editable examples; new workspaces do not mark those tasks complete until the owner reviews and saves setup.
+- Business Profile confirms only its identity readiness responsibility; Quote Setup confirms only its seven setup responsibilities, while invalid saved data can still reopen a previously completed task. Save outcomes return to the owning route.
+- Reports counts submitted quote requests only. Direct and Unknown stay visible; no profile views, clicks, revenue, or automatic conversions are inferred.
+- Owner Reports supports 7-, 30-, 90-day, and all-time filters; source metadata reads are batched in groups of 200 below the 1,000-request bound. Founder Admin receives a bounded cross-workspace aggregate while retaining the detailed inbox.
+- Guide has two explicit bilingual parts: Setup and optimization, then Workflow and reporting. It shows live readiness, first-session actions, launch checks, tracked-source guidance, daily routine, route map, boundaries, and troubleshooting.
 - Founder Business Operations keeps the workspace snapshot and recommended priority visible while access/plan/quote controls, workspace tools, and sensitive tools open on demand. No guarded capability is removed.
 - AI is bounded draft assistance. No automatic send, booking, price, availability, or autonomous decision is implied.
 
@@ -93,12 +101,12 @@ English and Canadian French use the central `getBizPilotCopy` dictionary. Route/
 
 ## Data and security posture
 
-Dashboard V4.5 applies protected shell, localization, and read-resilience changes only. It adds no migration, external upload service, autonomous integration, real-customer-data access, or paid-pilot approval. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
+Dashboard V4.6 uses the existing `leads.source_channel` and `lead_source_metadata` schema and adds no migration. Owner reporting remains tenant-scoped through RLS; founder aggregation remains founder-gated and bounded. It adds no external upload service, direct social integration, autonomous action, real-customer-data approval, or paid-pilot approval. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
 
 ## Verification status
 
-Dashboard V4.5 source release SHA `5fdcf929d5b1393178a2fcf7e9e06192b00cbb5b` is on `main`. Production read-only acceptance passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA. GitHub returned no deployment status record for this commit, so no Vercel target or deployment success is invented; authenticated owner confirmation remains required to prove the protected rollout.
+The V4.6 candidate passes all `272/272` unit/source tests, ESLint with zero warnings, TypeScript, and the Next.js 16.2.4 production build. A local production server passes public routes `46/46`, bilingual responsive routes `20/20`, and the final UI matrix with zero failures. No active synthetic Quote slug was supplied, so no new active-form submission or Quote fixture result is claimed.
 
-The exact release tree passes the Quote Setup serialization regression contract, all `257/257` unit/source tests, ESLint, TypeScript, and the Next.js 16.2.4 production build. The available GitHub connector does not expose push-triggered Actions runs, so a GitHub CI run number is not invented. Authenticated browser smoke still requires an approved local/synthetic auth target; absence of that target is not silently presented as a passed authenticated test.
+Authenticated browser smoke still requires an approved local/synthetic auth target. Source, type, build, and public GET evidence do not substitute for owner-authenticated visual confirmation of protected screens.
 
 See `PHASE_PROGRESS.md` for exact completion evidence and remaining gates.

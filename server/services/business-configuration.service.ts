@@ -12,6 +12,8 @@
  * Created: 2026-05-05
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Scoped profile and Quote Setup review state so saving one surface cannot falsely confirm untouched setup steps.
+ * - 2026-07-16: Honored explicit onboarding review state so safe starter content does not falsely mark first-time setup as owner-confirmed.
  * - 2026-07-16: Validated bounded local logo data URLs and secure remote logo URLs before persisting public branding.
  * - 2026-07-11: Preserved bilingual custom quote-field translations while syncing template and public intake updates.
  * - 2026-05-13: Enforced the server-only runtime boundary.
@@ -30,6 +32,7 @@ import {
   getBusinessConfiguration,
   getBusinessTemplateFieldOverrides,
   getCleaningTemplate,
+  listBusinessOnboardingTaskReviews,
   mergeTemplateFieldOverridesForLanguage,
   replaceBusinessOnboardingTasks,
   replaceBusinessFaqs,
@@ -94,6 +97,7 @@ export type BusinessConfigurationInput = Readonly<{
   privacyMode: BusinessPrivacySettingsRecord["privacy_mode"];
   preferredLanguage: BusinessRecord["preferred_language"];
   retainLeadsDays: number;
+  reviewScope: "business_profile" | "quote_setup";
   serviceAreas: readonly string[];
   services: ReadonlyArray<{ description?: string; name: string }>;
   templateId: string;
@@ -196,45 +200,70 @@ function getConfigurationReadinessTasks(input: {
   configuration: BusinessConfigurationRecord;
 }): ReadinessTask[] {
   const { business, configuration } = input;
+  const reviewedByTaskKey = new Map(
+    configuration.onboardingTasks.map((task) => [
+      task.task_key,
+      task.completed_at !== null,
+    ]),
+  );
+  const isReviewedAndValid = (taskKey: string, isValid: boolean) =>
+    reviewedByTaskKey.has(taskKey)
+      ? reviewedByTaskKey.get(taskKey) === true && isValid
+      : isValid;
 
   return [
     {
-      complete: business.name.trim().length > 0 && slugPattern.test(business.slug),
+      complete: isReviewedAndValid(
+        "business_profile",
+        business.name.trim().length > 0 && slugPattern.test(business.slug),
+      ),
       label: "Business profile confirmed",
       taskKey: "business_profile",
     },
     {
-      complete: Boolean(configuration.branding),
+      complete: isReviewedAndValid("branding", Boolean(configuration.branding)),
       label: "Branding configured",
       taskKey: "branding",
     },
     {
-      complete: configuration.services.length > 0,
+      complete: isReviewedAndValid("services", configuration.services.length > 0),
       label: "At least one service added",
       taskKey: "services",
     },
     {
-      complete: configuration.serviceAreas.length > 0,
+      complete: isReviewedAndValid(
+        "service_areas",
+        configuration.serviceAreas.length > 0,
+      ),
       label: "At least one service area added",
       taskKey: "service_areas",
     },
     {
-      complete: configuration.faqs.length > 0,
+      complete: isReviewedAndValid("faqs", configuration.faqs.length > 0),
       label: "At least one FAQ added",
       taskKey: "faqs",
     },
     {
-      complete: Boolean(configuration.privacySettings),
+      complete: isReviewedAndValid(
+        "privacy",
+        Boolean(configuration.privacySettings),
+      ),
       label: "Privacy mode selected",
       taskKey: "privacy",
     },
     {
-      complete: Boolean(configuration.consentSettings),
+      complete: isReviewedAndValid(
+        "consent",
+        Boolean(configuration.consentSettings),
+      ),
       label: "Consent notice configured",
       taskKey: "consent",
     },
     {
-      complete: Boolean(configuration.templateSettings),
+      complete: isReviewedAndValid(
+        "cleaning_template",
+        Boolean(configuration.templateSettings),
+      ),
       label: "Cleaning template activated",
       taskKey: "cleaning_template",
     },
@@ -289,6 +318,37 @@ function getInputReadinessTasks(input: {
       taskKey: "cleaning_template",
     },
   ];
+}
+
+function scopeReviewedReadinessTasks(input: {
+  currentReviews: ReadonlyArray<
+    Readonly<{ completed_at: string | null; task_key: string }>
+  >;
+  reviewScope: BusinessConfigurationInput["reviewScope"];
+  tasks: readonly ReadinessTask[];
+}): ReadinessTask[] {
+  const reviewByTaskKey = new Map(
+    input.currentReviews.map((task) => [
+      task.task_key,
+      task.completed_at !== null,
+    ]),
+  );
+
+  return input.tasks.map((task) => {
+    const isInCurrentReviewScope =
+      input.reviewScope === "business_profile"
+        ? task.taskKey === "business_profile"
+        : task.taskKey !== "business_profile";
+    const wasPreviouslyReviewed = reviewByTaskKey.has(task.taskKey)
+      ? reviewByTaskKey.get(task.taskKey) === true
+      : true;
+
+    return {
+      ...task,
+      complete:
+        task.complete && (isInCurrentReviewScope || wasPreviouslyReviewed),
+    };
+  });
 }
 
 function calculateReadiness(
@@ -368,6 +428,10 @@ export async function saveBusinessConfiguration(
     businessId: input.businessId,
     supabase,
     templateId: input.templateId,
+  });
+  const currentOnboardingReviews = await listBusinessOnboardingTaskReviews({
+    businessId: input.businessId,
+    supabase,
   });
   const mergedFieldOverrides = mergeTemplateFieldOverridesForLanguage({
     currentLanguage: input.preferredLanguage,
@@ -464,9 +528,13 @@ export async function saveBusinessConfiguration(
   await replaceBusinessOnboardingTasks({
     businessId: input.businessId,
     supabase,
-    tasks: getInputReadinessTasks({
-      business: updatedBusiness,
-      configuration: input,
+    tasks: scopeReviewedReadinessTasks({
+      currentReviews: currentOnboardingReviews,
+      reviewScope: input.reviewScope,
+      tasks: getInputReadinessTasks({
+        business: updatedBusiness,
+        configuration: input,
+      }),
     }),
   });
 }

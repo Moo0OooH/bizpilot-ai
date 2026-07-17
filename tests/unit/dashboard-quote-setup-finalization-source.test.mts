@@ -13,6 +13,8 @@
  * Created: 2026-07-16
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Guarded scoped setup confirmation so profile-only saves cannot complete untouched Quote Setup tasks.
+ * - 2026-07-16: Guarded shared accessible brand tokens across setup preview and the public quote runtime.
  * - 2026-07-16: Guarded restored grouped desktop navigation and visible authorized Founder Admin access.
  * - 2026-07-16: Guarded centered desktop navigation and native protected-route recovery transitions.
  * - 2026-07-16: Guarded right-aligned protected navigation, recovery links, and the expanded first-run owner guide.
@@ -95,7 +97,8 @@ describe("dashboard quote setup finalization", () => {
     assert.equal(editor.includes('name="logoUrl" type="hidden"'), true);
     assert.equal(service.includes("logoDataUrlPattern"), true);
     assert.equal(service.includes('parsed.protocol === "https:"'), true);
-    assert.equal(quotePage.includes("getBrandStyle(page.branding)"), true);
+    assert.equal(quotePage.includes("getPublicBrandStyle(page.branding)"), true);
+    assert.equal(editor.includes("getPublicBrandPalette"), true);
     assert.equal(quotePage.includes("page.branding?.logo_url"), true);
   });
 
@@ -133,5 +136,61 @@ describe("dashboard quote setup finalization", () => {
     assert.equal(action.includes("?preview=dashboard"), true);
     assert.equal(unavailable.includes('href={ownerPreview ? "/dashboard/configuration" : "/"}'), true);
     assert.equal(unavailable.includes("ownerUnavailableTitle"), true);
+  });
+
+  it("does not mistake safe starter content for owner-confirmed setup", () => {
+    const action = source("server/actions/business-configuration.actions.ts");
+    const businessProfile = source(
+      "app/(dashboard)/dashboard/business-profile/page.tsx",
+    );
+    const businessService = source("server/services/business.service.ts");
+    const quoteSetup = source(
+      "app/(dashboard)/dashboard/configuration/page.tsx",
+    );
+    const configurationService = source(
+      "server/services/business-configuration.service.ts",
+    );
+
+    assert.equal(
+      businessService.match(/\{ complete: false,/g)?.length,
+      8,
+    );
+    assert.equal(configurationService.includes("reviewedByTaskKey"), true);
+    assert.equal(
+      configurationService.includes(
+        "reviewedByTaskKey.get(taskKey) === true && isValid",
+      ),
+      true,
+    );
+    assert.equal(
+      businessProfile.includes(
+        'name="reviewScope" type="hidden" value="business_profile"',
+      ),
+      true,
+    );
+    assert.equal(
+      quoteSetup.includes(
+        'name="reviewScope" type="hidden" value="quote_setup"',
+      ),
+      true,
+    );
+    assert.equal(action.includes("readConfigurationReviewScope"), true);
+    assert.equal(
+      action.includes(
+        'reviewScope === "business_profile"\n      ? "/dashboard/business-profile"',
+      ),
+      true,
+    );
+    assert.equal(
+      action.includes("redirectWithConfigurationError(error, reviewScope)"),
+      true,
+    );
+    assert.equal(configurationService.includes("scopeReviewedReadinessTasks"), true);
+    assert.equal(
+      configurationService.includes(
+        'task.taskKey !== "business_profile"',
+      ),
+      true,
+    );
   });
 });

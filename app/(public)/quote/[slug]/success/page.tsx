@@ -10,8 +10,9 @@
  * - docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Carried saved business branding and identity through the success state with shared accessible tokens.
  * - 2026-07-15: Redirected invalid success URLs to the localized unavailable quote state and preserved locale on the home link.
  * - 2026-07-15: Repointed the shell contract to the current V2 QA authority after legacy design-standard retirement.
  * - 2026-05-06: Created public quote request success page.
@@ -33,6 +34,10 @@ import {
   DEFAULT_LANGUAGE,
   readSupportedLanguage,
 } from "@/lib/i18n/language";
+import {
+  getPublicBrandStyle,
+  isSafePublicLogoSource,
+} from "@/lib/public-brand-theme";
 import { buildNoIndexMetadata } from "@/lib/seo";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
 
@@ -108,12 +113,16 @@ export default async function QuoteSuccessPage({
   }
 
   const businessName = readDisplayableBusinessName(page.publicLink.display_name);
+  const logoUrl = isSafePublicLogoSource(page.branding?.logo_url)
+    ? page.branding.logo_url
+    : null;
   const copy = getBizPilotCopy(language);
 
   return (
     <main
       className="bp-page public-site flex min-h-svh items-start justify-center px-4 py-8 sm:items-center sm:px-6 sm:py-10"
       style={{
+        ...getPublicBrandStyle(page.branding),
         background: "var(--marketing-background)",
         color: "var(--text-strong)",
       }}
@@ -126,6 +135,27 @@ export default async function QuoteSuccessPage({
           boxShadow: "var(--shadow-md)",
         }}
       >
+        <div className="mb-5 flex items-center gap-3 border-b border-[var(--border-default)] pb-4">
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element -- Owner-provided bounded data/HTTPS branding is shared with the quote page.
+            <img
+              alt=""
+              className="h-10 w-10 rounded-[11px] border border-[var(--border-default)] bg-white object-contain p-1"
+              src={logoUrl}
+            />
+          ) : (
+            <span
+              aria-hidden
+              className="flex h-10 w-10 items-center justify-center rounded-[11px] bg-[var(--primary)] text-[12px] font-black text-[var(--primary-contrast)]"
+            >
+              {page.publicLink.display_name.slice(0, 2).toUpperCase()}
+            </span>
+          )}
+          <span className="min-w-0 truncate text-[12px] font-black uppercase tracking-[0.1em] text-[var(--brand-primary-text)]">
+            {page.publicLink.display_name}
+          </span>
+        </div>
+
         <span
           aria-hidden="true"
           className="flex h-12 w-12 items-center justify-center rounded-full"

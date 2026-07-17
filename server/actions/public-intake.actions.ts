@@ -5,13 +5,15 @@
  * Description: Provides Phase 4 public intake submission server actions.
  * Role: Connects public quote forms to server-side validation and scoped lead creation.
  * Related:
+ * - lib/quote-attribution.ts
  * - server/errors/safe-error.ts
  * - server/services/public-intake.service.ts
  * - app/(public)/quote/[slug]/page.tsx
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Sanitized posted attribution server-side and preserved it across failed-submission retries.
  * - 2026-05-13: Mapped public intake failures to safe user-facing messages.
  * - 2026-05-06: Created public intake submission action.
  * ============================================================
@@ -31,6 +33,11 @@ import {
   readSupportedLanguage,
   type SupportedLanguage,
 } from "@/lib/i18n/language";
+import {
+  buildQuoteAttributionFormQuery,
+  buildQuoteRetryHref,
+  type QuoteAttributionFormQuery,
+} from "@/lib/quote-attribution";
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { safeLogger } from "@/server/logging/safe-logger";
 import {
@@ -147,6 +154,7 @@ function getPublicIntakeFallbackMessage(input: {
 
 function redirectWithIntakeError(
   input: {
+    attribution: QuoteAttributionFormQuery;
     error: unknown;
     language: SupportedLanguage;
     slug: string;
@@ -171,13 +179,14 @@ function redirectWithIntakeError(
       language: input.language,
     }),
   });
-  const search = new URLSearchParams({ error: message });
-
-  if (input.language !== DEFAULT_LANGUAGE) {
-    search.set("language", input.language);
-  }
-
-  redirect(`/quote/${input.slug}?${search.toString()}`);
+  redirect(
+    buildQuoteRetryHref({
+      error: message,
+      language: input.language,
+      query: input.attribution,
+      slug: input.slug,
+    }),
+  );
 }
 
 export async function submitPublicIntakeAction(
@@ -187,6 +196,16 @@ export async function submitPublicIntakeAction(
   const language = readSupportedLanguage(
     readOptionalFormValue(formData, "language"),
   );
+  const attribution = buildQuoteAttributionFormQuery({
+    query: {
+      ref: readOptionalFormValue(formData, "referrer"),
+      source: readOptionalFormValue(formData, "sourceChannel"),
+      utm_campaign: readOptionalFormValue(formData, "utmCampaign"),
+      utm_medium: readOptionalFormValue(formData, "utmMedium"),
+      utm_source: readOptionalFormValue(formData, "utmSource"),
+    },
+    slug,
+  });
 
   try {
     const fieldKeys = formData
@@ -213,16 +232,16 @@ export async function submitPublicIntakeAction(
       language,
       slug,
       source: {
-        referrer: readOptionalFormValue(formData, "referrer"),
-        sourceChannel: readOptionalFormValue(formData, "sourceChannel"),
-        sourceUrl: readOptionalFormValue(formData, "sourceUrl"),
-        utmCampaign: readOptionalFormValue(formData, "utmCampaign"),
-        utmMedium: readOptionalFormValue(formData, "utmMedium"),
-        utmSource: readOptionalFormValue(formData, "utmSource"),
+        referrer: attribution.ref,
+        sourceChannel: attribution.source,
+        sourceUrl: attribution.sourceUrl,
+        utmCampaign: attribution.utm_campaign,
+        utmMedium: attribution.utm_medium,
+        utmSource: attribution.utm_source,
       },
     });
   } catch (error) {
-    redirectWithIntakeError({ error, language, slug });
+    redirectWithIntakeError({ attribution, error, language, slug });
   }
 
   redirect(`/quote/${slug}/success${quoteLanguageSuffix(language)}`);

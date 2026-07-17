@@ -11,8 +11,9 @@
  * - app/error.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Required the public form to render the exact persisted active consent version.
  * - 2026-07-15: Required direct EN/fr-CA public smoke coverage for all auth pages and unavailable quote states.
  * - 2026-06-20: Added 11D shell alignment contracts for auth, quote, and dashboard setup shells.
  * - 2026-06-21: Locked quote honeypot hiding and single consent review notice rendering.
@@ -207,9 +208,9 @@ describe("final shell polish source contracts", () => {
       "Company website honeypot must stay display-hidden, assistive-tech hidden, and out of tab order.",
     );
     assert.equal(
-      quoteWizard.includes("consentNotice={copy.quoteForm.consentNoticeDefault}"),
+      quoteWizard.includes("consentNotice={page.consentVersion.consent_notice}"),
       true,
-      "Visible quote consent copy should use the final localized notice.",
+      "Visible quote consent copy should use the persisted active notice.",
     );
   });
 

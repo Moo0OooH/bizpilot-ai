@@ -10,8 +10,9 @@
  * - docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md
  * Author: MoOoH
  * Created: 2026-07-15
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the protected bilingual Reports route and source-reporting evidence boundary.
  * - 2026-07-15: Created the exhaustive EN/fr-CA route, state, and end-to-end workflow audit.
  * ============================================================
  -->
@@ -45,6 +46,7 @@
 | Owner | `/dashboard` | SOURCE PASS | Authenticated visual/data flow GATED | Overview and next action |
 | Owner | `/dashboard/leads` | SOURCE PASS | Authenticated visual/data flow GATED | Search/filter/sort/pagination |
 | Owner | `/dashboard/leads/[leadId]` | SOURCE PASS | Authenticated edit/copy/status flow GATED | Owner-reviewed manual workflow |
+| Owner | `/dashboard/reports` | SOURCE PASS | Authenticated visual/data flow GATED | Tenant-scoped submitted-request source, campaign, status, and manual-outcome report; no click/revenue claim |
 | Owner | `/dashboard/configuration` | SOURCE PASS | Authenticated save/refresh flow GATED | Canonical Quote Setup |
 | Owner | `/dashboard/business-profile` | SOURCE PASS | Authenticated save flow GATED | Identity/contact only |
 | Owner | `/dashboard/settings` | SOURCE PASS | Authenticated persistence flow GATED | Account/language/theme/history/lifecycle |

@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.6 setup, Guide, source-reporting, tracked-link, and branding finalization candidate.
  * - 2026-07-16: Recorded V4.5 source publication and Production public read-only evidence.
  * - 2026-07-16: Added the V4.5 complete sidebar and founder-admin access repair candidate.
  * - 2026-07-16: Closed V4.4 on main with successful Vercel and Production public read-only evidence.
@@ -28,6 +29,39 @@
  -->
 
 # Dashboard V4 Changelog
+
+## 2026-07-16 — V4.6 setup-to-reporting finalization
+
+### Owner setup and guidance
+
+- Added six ordered readiness-backed stages from business identity through services, questions, branding, knowledge/privacy, preview, and tracked sharing.
+- Kept safe starter content available while leaving new-workspace readiness unconfirmed until the owner reviews and saves it.
+- Scoped Business Profile and Quote Setup confirmation separately so one save cannot complete untouched steps, and returned save errors/success to the owning route.
+- Made setup deep links open the correct mounted panel and added standard arrow/Home/End keyboard behavior to the task tabs.
+- Split Guide into explicit Setup and optimization and Workflow and reporting sections, with live workspace readiness and the first incomplete task.
+
+### Source reporting
+
+- Added privacy-safe tracked quote-link variants for website, Google Business Profile, social, messaging, email, saved replies, and custom placements.
+- Rebuilds source metadata from the allowlisted placement fields on the server and preserves those safe tags when a failed submission returns the customer to the quote form.
+- Added protected Owner Reports with period filters, tracked coverage, source mix, campaign tags, manual workflow outcomes, and contact-free recent activity.
+- Batched owner source-metadata reads at 200 lead IDs beneath the explicit 1,000-request report bound.
+- Added the same bounded source/campaign/outcome overview to Founder Admin while preserving the existing detailed inbox.
+- Kept reporting claims honest: requests are counted at submission; Direct and Unknown remain visible; clicks, profile views, revenue, and automatic conversions are not inferred.
+
+### Public quote and branding
+
+- Replaced preview-only color behavior with one shared public brand palette used by setup preview, quote intake, and success state.
+- Derived readable foreground, hover, text, and focus colors using WCAG contrast calculations without overwriting semantic success colors.
+- Clarified exactly where primary/accent colors apply and that dashboard theme colors remain independent.
+- Added a visible three-section quote rail, correct bilingual field grouping, and the exact persisted consent notice.
+
+### Candidate verification
+
+- ESLint and TypeScript pass; all `272/272` unit/source tests pass on the final tree merged with the latest public-site `main` baseline; Next.js 16.2.4 production build passes.
+- Local production public routes pass `46/46`, bilingual responsive routes pass `20/20`, and the final UI matrix reports zero failures.
+- No migration, Production data mutation, customer submission, direct social integration, automatic send, booking, or payment behavior was added.
+- Protected visual acceptance remains gated until an approved authenticated QA target is available.
 
 ## 2026-07-16 — V4.5 complete workspace navigation
 

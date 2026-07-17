@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added V4.6 ordered setup, two-part Guide, owner/founder source reporting, public-brand parity, and 272/272 merged-tree candidate evidence.
  * - 2026-07-16: Recorded V4.5 main publication and successful Production public read-only acceptance; deployment-status evidence remains unavailable.
  * - 2026-07-16: Added the V4.5 grouped sidebar, explicit founder entry, resilient admin reads, and 257/257 candidate record.
  * - 2026-07-16: Closed V4.4 on main with successful Vercel rollout and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
@@ -59,6 +60,14 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | V4.5 source publication | DONE | Exact source tree published directly to `main` as `5fdcf929`; no migration, data mutation, extra branch, or PR. |
 | P0 | V4.5 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; inactive Quote GET 2/2 EN/fr-CA. |
 | P0 | V4.5 protected deployment confirmation | GATED | GitHub returned no deployment status for the release commit; authenticated owner check is required before claiming the protected Vercel rollout. |
+| P0 | V4.6 ordered owner setup | DONE | Six EN/fr-CA stages cover all eight readiness checks, name Complete/Current/Upcoming states, deep-link to the first open task, and scope Business Profile versus Quote Setup confirmation without false completion. |
+| P0 | V4.6 Guide and reporting IA | DONE | Guide is split into Setup and optimization plus Workflow and reporting; Reports is visible in authorized desktop/compact navigation without displacing the five mobile tasks. |
+| P0 | V4.6 tracked links and owner reports | DONE | Existing attribution fields power privacy-safe placement links plus tenant-scoped 7/30/90/all-time source, campaign, workflow, and manual-outcome reports bounded at 1,000 requests with 200-ID source batches. |
+| P0 | V4.6 Founder source oversight | DONE | Founder Leads retains the detailed inbox and adds a bounded cross-workspace source/campaign/outcome aggregate with business-aware recent activity and honest metric definitions. |
+| P0 | V4.6 public brand and quote parity | DONE | Setup preview, public quote, and success page share safe logo rules and WCAG-derived palette tokens; persisted consent and bilingual section grouping are rendered accurately. |
+| P0 | V4.6 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit/source: 272/272; Next.js 16.2.4 production build: PASS. |
+| P0 | V4.6 local public acceptance | DONE | Local production server: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; no submission or data mutation. |
+| P0 | V4.6 authenticated visual acceptance | GATED | Requires an approved local/synthetic authenticated session or owner-run no-secret check; source/build/public GET evidence does not prove protected visual state. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
 | P0 | Branding and local logo workflow | DONE | Bounded PNG/JPG/WebP browser resize, HTTPS alternative, remove/reset actions, live preview, server validation, and public Quote logo/color application implemented. |
@@ -91,6 +100,16 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 
 This section is updated only with commands actually run on the final working tree.
 
+- V4.6 TypeScript: PASS.
+- V4.6 ESLint: PASS, zero warnings.
+- V4.6 full unit/source suite: PASS, 272/272 on the final tree merged with the latest public-site `main` baseline.
+- V4.6 Next.js 16.2.4 production build: PASS; protected `/dashboard/reports` route is present in the optimized route manifest.
+- V4.6 local production public route smoke: PASS, 46/46.
+- V4.6 local bilingual responsive smoke: PASS, 20/20.
+- V4.6 local final UI matrix: PASS, zero failures.
+- V4.6 active Quote fixture: NOT RUN because no approved active synthetic slug was supplied; no form submission was attempted.
+- V4.6 authenticated owner/admin visual smoke: GATED because no approved authenticated target/session is present.
+- V4.6 migration/data mutation: NOT RUN; existing attribution schema is reused and Production data remains unchanged.
 - TypeScript: PASS.
 - V4.4 Quote Setup serialization regression contract: PASS.
 - V4.4 single desktop navigation and segment-retry contracts: PASS.
@@ -144,4 +163,4 @@ This section is updated only with commands actually run on the final working tre
 
 ## Ideal completion definition
 
-The Dashboard V4.5 source release and public read-only acceptance are complete. Protected deployment and authenticated visual confirmation remain separately gated until their exact evidence is recorded. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
+The Dashboard V4.6 candidate is source-verified and passes local public read-only acceptance. Publication/deployment evidence and protected authenticated visual confirmation remain separate until their exact evidence is recorded. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.

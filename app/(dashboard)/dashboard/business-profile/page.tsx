@@ -12,6 +12,7 @@
  * Created: 2026-05-18
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Scoped saves to business-profile review so identity confirmation cannot complete untouched Quote Setup steps.
  * - 2026-07-16: Removed the duplicate logo editor, displayed the full customer-ready link, and added owner-aware quote preview recovery.
  * - 2026-07-05: Reframed collapsed future profile fields as gated storage decisions.
  * - 2026-05-18: Split Business Profile from Quote Setup.
@@ -211,6 +212,7 @@ export default async function BusinessProfilePage({
       >
         {/* Hidden fields preserve every required input across saves. */}
         <input name="businessId" type="hidden" value={activeBusiness.id} />
+        <input name="reviewScope" type="hidden" value="business_profile" />
         <input
           name="templateId"
           type="hidden"

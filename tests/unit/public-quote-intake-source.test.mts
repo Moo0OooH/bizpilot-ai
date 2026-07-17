@@ -14,8 +14,9 @@
  * - server/services/public-intake.service.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Guarded validated source attribution across failed-submission retries.
  * - 2026-07-15: Guarded public quote reads against provider/configuration failures with a safe unavailable fallback.
  * - 2026-07-11: Added guards for bilingual custom-field override resolution on public quote reads.
  * - 2026-07-04: Added active-language default field localization guards.
@@ -115,7 +116,6 @@ describe("public quote intake source contracts", () => {
     for (const actionField of [
       'readOptionalFormValue(formData, "referrer")',
       'readOptionalFormValue(formData, "sourceChannel")',
-      'readOptionalFormValue(formData, "sourceUrl")',
       'readOptionalFormValue(formData, "utmCampaign")',
       'readOptionalFormValue(formData, "utmMedium")',
       'readOptionalFormValue(formData, "utmSource")',
@@ -127,6 +127,20 @@ describe("public quote intake source contracts", () => {
         `Public intake action should read ${actionField}.`,
       );
     }
+
+    assert.equal(
+      publicAction.includes("buildQuoteAttributionFormQuery"),
+      true,
+    );
+    assert.equal(publicAction.includes("buildQuoteRetryHref"), true);
+    assert.equal(
+      publicAction.includes("sourceUrl: attribution.sourceUrl"),
+      true,
+    );
+    assert.equal(
+      publicAction.includes('readOptionalFormValue(formData, "sourceUrl")'),
+      false,
+    );
   });
 
   it("keeps server validation for required, custom, date, number, and choice fields", () => {

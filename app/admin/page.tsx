@@ -12,6 +12,7 @@
  * Created: 2026-05-22
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added bilingual founder lead-source, campaign, tracked-coverage, and manual-outcome reporting above the detailed inbox.
  * - 2026-07-16: Localized founder access and health fallback labels while preserving the complete six-panel admin navigation.
  * - 2026-07-16: Reduced Business Operations density with progressive disclosures, removed duplicated actions and activity, and hardened protected admin navigation.
  * - 2026-07-14: Simplified the founder overview, removed redundant charts, localized remaining summary labels, and retained guarded manual controls in dedicated tabs.
@@ -3097,6 +3098,8 @@ function FounderUsersSection({
 function FounderInboxSection({
   copy,
   items,
+  reportsCopy,
+  sourceReport,
 }: Readonly<{
   copy: AdminCopy;
   items: ReadonlyArray<{
@@ -3111,9 +3114,34 @@ function FounderInboxSection({
     sourceReferrer: string | null;
     status: string;
   }>;
+  reportsCopy: DashboardCopy["reports"];
+  sourceReport: FounderAdminOverview["sourceReport"];
 }>) {
   const inboxCopy = copy.overview.leadInboxSection;
   const statusLabels = inboxCopy.statusLabels;
+  const analytics = sourceReport.analytics;
+  const manualOutcomeCount = analytics.manualOutcomes.byManualOutcome.reduce(
+    (total, outcome) => total + outcome.count,
+    0,
+  );
+  const trackedCoverage = analytics.summary.attributionRate;
+  const topSource = analytics.summary.topSource;
+
+  function sourceLabel(
+    source: (typeof analytics.sources)[number],
+  ): string {
+    return source.key === "custom"
+      ? source.label
+      : reportsCopy.sourceLabels[source.key];
+  }
+
+  function workflowLabel(key: string, fallback: string): string {
+    if (hasOwnKey(reportsCopy.workflowLabels, key)) {
+      return reportsCopy.workflowLabels[key];
+    }
+
+    return hasOwnKey(statusLabels, key) ? statusLabels[key] : fallback;
+  }
 
   return (
     <DashboardCard className="space-y-4 p-4 sm:p-5" variant="priority">
@@ -3123,6 +3151,218 @@ function FounderInboxSection({
         eyebrow={copy.topbar.badge}
         title={copy.topbar.panelTitles.leads}
       />
+
+      <section className="grid gap-3 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:p-4">
+        <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-primary-strong)]">
+          {reportsCopy.header.eyebrow}
+        </p>
+        <SectionHeader
+          action={<StatusBadge tone="blue">{reportsCopy.filters.all}</StatusBadge>}
+          description={reportsCopy.header.description}
+          title={reportsCopy.header.title}
+        />
+
+        <div className="grid min-w-0 gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          <MetricCard
+            detail={reportsCopy.metrics.totalRequests.detail}
+            label={reportsCopy.metrics.totalRequests.label}
+            tone="blue"
+            value={analytics.summary.totalLeads}
+          />
+          <MetricCard
+            detail={reportsCopy.metrics.attributed.detail}
+            label={reportsCopy.metrics.attributed.label}
+            tone={trackedCoverage > 0 ? "emerald" : "neutral"}
+            value={`${trackedCoverage}%`}
+          />
+          <MetricCard
+            detail={reportsCopy.metrics.topSource.detail}
+            label={reportsCopy.metrics.topSource.label}
+            tone={topSource ? "blue" : "neutral"}
+            value={
+              topSource
+                ? sourceLabel(topSource)
+                : copy.overview.activityMeta.emptyValue
+            }
+          />
+          <MetricCard
+            detail={reportsCopy.metrics.manualOutcomes.detail}
+            label={reportsCopy.metrics.manualOutcomes.label}
+            tone={manualOutcomeCount > 0 ? "emerald" : "neutral"}
+            value={manualOutcomeCount}
+          />
+        </div>
+
+        <div className="grid min-w-0 gap-3 xl:grid-cols-3">
+          <section className="grid content-start gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
+            <div>
+              <h3 className="text-sm font-black text-[var(--dash-text)]">
+                {reportsCopy.sourceMix.title}
+              </h3>
+              <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                {reportsCopy.sourceMix.description}
+              </p>
+            </div>
+            {analytics.sources.length > 0 ? (
+              <div className="grid gap-3">
+                {analytics.sources.slice(0, 8).map((source) => (
+                  <div className="grid gap-1.5" key={`${source.key}-${source.value}`}>
+                    <div className="flex min-w-0 items-center justify-between gap-3 text-[12px]">
+                      <span className="truncate font-black text-[var(--dash-text)]">
+                        {sourceLabel(source)}
+                      </span>
+                      <span className="shrink-0 font-bold text-[var(--dash-text-secondary)]">
+                        {reportsCopy.sourceMix.requestCount(source.count)} · {source.sharePercent}%
+                      </span>
+                    </div>
+                    <div className="h-2 overflow-hidden rounded-full bg-[var(--dash-border)]">
+                      <div
+                        aria-hidden="true"
+                        className="h-full rounded-full bg-[var(--dash-primary)]"
+                        style={{ width: `${Math.max(source.sharePercent, 1)}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                {reportsCopy.sourceMix.empty}
+              </p>
+            )}
+          </section>
+
+          <section className="grid content-start gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
+            <div>
+              <h3 className="text-sm font-black text-[var(--dash-text)]">
+                {reportsCopy.campaigns.title}
+              </h3>
+              <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                {reportsCopy.campaigns.description}
+              </p>
+            </div>
+            {analytics.campaigns.length > 0 ? (
+              <div className="grid gap-2">
+                {analytics.campaigns.slice(0, 8).map((campaign) => (
+                  <div
+                    className="flex min-w-0 items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px]"
+                    key={campaign.key}
+                  >
+                    <span className="truncate font-black text-[var(--dash-text)]">
+                      {campaign.label}
+                    </span>
+                    <span className="shrink-0 font-bold text-[var(--dash-text-secondary)]">
+                      {reportsCopy.sourceMix.requestCount(campaign.count)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                {reportsCopy.campaigns.empty}
+              </p>
+            )}
+          </section>
+
+          <section className="grid content-start gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
+            <div>
+              <h3 className="text-sm font-black text-[var(--dash-text)]">
+                {reportsCopy.outcomes.title}
+              </h3>
+              <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                {reportsCopy.outcomes.description}
+              </p>
+            </div>
+            {analytics.manualOutcomes.effective.length > 0 ? (
+              <div className="grid gap-2">
+                {analytics.manualOutcomes.effective.slice(0, 8).map((outcome) => (
+                  <div
+                    className="flex min-w-0 items-center justify-between gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px]"
+                    key={outcome.key}
+                  >
+                    <span className="truncate font-black text-[var(--dash-text)]">
+                      {workflowLabel(outcome.key, outcome.label)}
+                    </span>
+                    <span className="shrink-0 font-bold text-[var(--dash-text-secondary)]">
+                      {reportsCopy.sourceMix.requestCount(outcome.count)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                {reportsCopy.outcomes.empty}
+              </p>
+            )}
+          </section>
+        </div>
+
+        <section className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3">
+          <div>
+            <h3 className="text-sm font-black text-[var(--dash-text)]">
+              {reportsCopy.recent.title}
+            </h3>
+            <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+              {reportsCopy.recent.description}
+            </p>
+          </div>
+          {analytics.recentActivity.length > 0 ? (
+            <div className="grid gap-2 lg:grid-cols-2">
+              {analytics.recentActivity.map((activity) => (
+                <article
+                  className="grid min-w-0 gap-1 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2.5 text-[12px]"
+                  key={activity.leadId}
+                >
+                  <div className="flex min-w-0 items-center justify-between gap-3">
+                    <p className="truncate font-black text-[var(--dash-text)]">
+                      {activity.businessName ?? copy.overview.activityMeta.emptyValue}
+                    </p>
+                    <time
+                      className="shrink-0 font-bold text-[var(--dash-text-muted)]"
+                      dateTime={activity.createdAt}
+                    >
+                      {formatDateTime(copy, activity.createdAt)}
+                    </time>
+                  </div>
+                  <p className="break-words text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
+                    {reportsCopy.recent.source}: {activity.source.key === "custom"
+                      ? activity.source.label
+                      : reportsCopy.sourceLabels[activity.source.key]}
+                    {activity.campaign
+                      ? ` · ${reportsCopy.recent.campaign}: ${activity.campaign}`
+                      : ""}
+                  </p>
+                  <p className="text-[var(--dash-text-secondary)]">
+                    {reportsCopy.recent.status}: {workflowLabel(
+                      activity.manualOutcome ?? activity.status ?? "unknown",
+                      activity.manualOutcome ?? activity.status ?? reportsCopy.workflowLabels.unknown,
+                    )}
+                  </p>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <p className="text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+              {reportsCopy.recent.empty}
+            </p>
+          )}
+        </section>
+
+        <div className="grid gap-2">
+          <p className="rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-3 py-2 text-[12px] leading-5 text-[var(--dash-primary-strong)]">
+            {reportsCopy.notices.trackedDefinition}
+          </p>
+          <p className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] px-3 py-2 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            {reportsCopy.notices.privacy}
+          </p>
+          {sourceReport.isTruncated ? (
+            <p className="rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-warning-strong)]">
+              {reportsCopy.notices.truncated}
+            </p>
+          ) : null}
+        </div>
+      </section>
+
       <div className="space-y-3">
         {items.length > 0 ? (
           items.slice(0, 30).map((item) => (
@@ -4150,7 +4390,12 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             ) : null}
 
             {activePanel === "leads" ? (
-              <FounderInboxSection copy={adminCopy} items={overview.leadInbox} />
+              <FounderInboxSection
+                copy={adminCopy}
+                items={overview.leadInbox}
+                reportsCopy={dashboardCopy.reports}
+                sourceReport={overview.sourceReport}
+              />
             ) : null}
 
             {activePanel === "activity" ? (

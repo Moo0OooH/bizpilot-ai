@@ -9,8 +9,9 @@
  * - docs/dashboard-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-05-26
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Marked tenant-safe lead-source reports and tracked quote links as an enabled core owner capability.
  * - 2026-07-14: Reclassified the registry as internal planning data after removing repeated roadmap documentation from Settings.
  * - 2026-06-16: Aligned AI, auth email, and backup states with Phase 23/24 readiness truth.
  * ============================================================
@@ -170,11 +171,11 @@ export const featureRegistry = [
   },
   {
     category: "data",
-    guideStatus: "required",
+    guideStatus: "ready",
     key: "lead_source_attribution_analytics",
-    level: "premium",
-    ownerAuthority: "founder",
-    state: "planned",
+    level: "core",
+    ownerAuthority: "owner",
+    state: "enabled",
   },
   {
     category: "communication",

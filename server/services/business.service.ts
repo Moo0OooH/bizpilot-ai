@@ -12,6 +12,7 @@
  * Created: 2026-05-04
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Kept safe quote starters available while leaving onboarding tasks unconfirmed until the owner reviews and saves setup.
  * - 2026-07-16: Memoized workspace reads by user per server render to remove duplicate protected-route tenant queries.
  * - 2026-07-16: Seeded five language-aware owner-approved FAQ examples for new cleaning workspaces.
  * - 2026-05-13: Enforced the server-only runtime boundary.
@@ -218,14 +219,14 @@ async function bootstrapDefaultQuoteConfiguration(input: {
     businessId: input.business.id,
     supabase: input.supabase,
     tasks: [
-      { complete: true, label: "Business profile confirmed", taskKey: "business_profile" },
-      { complete: true, label: "Branding configured", taskKey: "branding" },
-      { complete: true, label: "At least one service added", taskKey: "services" },
-      { complete: true, label: "At least one service area added", taskKey: "service_areas" },
-      { complete: true, label: "At least one FAQ added", taskKey: "faqs" },
-      { complete: true, label: "Privacy mode selected", taskKey: "privacy" },
-      { complete: true, label: "Consent notice configured", taskKey: "consent" },
-      { complete: true, label: "Cleaning template activated", taskKey: "cleaning_template" },
+      { complete: false, label: "Business profile confirmed", taskKey: "business_profile" },
+      { complete: false, label: "Branding configured", taskKey: "branding" },
+      { complete: false, label: "At least one service added", taskKey: "services" },
+      { complete: false, label: "At least one service area added", taskKey: "service_areas" },
+      { complete: false, label: "At least one FAQ added", taskKey: "faqs" },
+      { complete: false, label: "Privacy mode selected", taskKey: "privacy" },
+      { complete: false, label: "Consent notice configured", taskKey: "consent" },
+      { complete: false, label: "Cleaning template activated", taskKey: "cleaning_template" },
     ],
   });
 }

@@ -11,8 +11,9 @@
  * - server/actions/public-intake.actions.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Preserved validated attribution parameters across failed quote-submission retries.
  * - 2026-07-05: Added complete BizPilot source header metadata for quote attribution helpers.
  * - 2026-07-04: Created safe public quote attribution helpers.
  * ============================================================
@@ -229,4 +230,29 @@ export function buildQuoteLanguageHref(input: {
   const path = quotePathForSlug(input.slug);
 
   return queryString.length > 0 ? `${path}?${queryString}` : path;
+}
+
+export function buildQuoteRetryHref(input: {
+  error: string;
+  language: SupportedLanguage;
+  query?: QuoteAttributionSearchParams | undefined;
+  slug: string;
+}): string {
+  const attribution = getCleanQuoteAttribution(input.query);
+
+  if (input.language === DEFAULT_LANGUAGE) {
+    delete attribution.language;
+  } else {
+    attribution.language = input.language;
+  }
+
+  const params = new URLSearchParams({ error: input.error });
+
+  appendQuoteAttributionParams({
+    attribution,
+    includeDefaultLanguage: false,
+    params,
+  });
+
+  return `${quotePathForSlug(input.slug)}?${params.toString()}`;
 }

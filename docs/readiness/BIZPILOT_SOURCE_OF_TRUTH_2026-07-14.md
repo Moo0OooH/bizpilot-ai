@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added Dashboard V4.6 ordered setup, two-part Guide, tracked placement reports, Admin aggregates, and brand/runtime parity evidence.
  * - 2026-07-16: Recorded the final Website V4 typography, hierarchy, CTA, legal-shell, CI, Vercel, and managed-browser release evidence.
  * - 2026-07-15: Recorded the pre-existing remote legacy-branch inventory and least-destructive owner-authenticated retirement gate.
  * - 2026-07-15: Closed the V2.1 push, CI, Vercel, HTTPS, and Production public read-only release with exact evidence.
@@ -28,7 +29,7 @@
 
 ## Executive status
 
-BizPilot is implemented as a bilingual, manual-first Smart Intake and reply-preparation product for service businesses, with cleaning as the first complete pilot vertical. Website V4 explains the problem and workflow; Dashboard V4 supports configuration, triage, missing-information review, draft edit/copy, and manual follow-up. Documentation V2.1 now provides one phase/dependency plan and one complete EN/fr-CA route/workflow audit.
+BizPilot is implemented as a bilingual, manual-first Smart Intake and reply-preparation product for service businesses, with cleaning as the first complete pilot vertical. Website V4 explains the problem and workflow; Dashboard V4.6 supports ordered setup, public quote branding, triage, missing-information review, draft edit/copy, manual follow-up, and submitted-request reporting by privacy-safe tracked placement. Documentation V2.1 provides one phase/dependency plan and one complete EN/fr-CA route/workflow audit.
 
 This code release does **not** approve real customer data, a paid pilot, Google login as live, remote migration changes, or Production data mutation. Those remain separately gated even when lint, tests, and build pass.
 
@@ -41,6 +42,7 @@ This code release does **not** approve real customer data, a paid pilot, Google 
 - Owner lead queue with search, filters, sorting, pagination, scoring, missing-information and SLA cues.
 - Rule/AI-assisted summaries and drafts with explicit owner review/edit/copy/manual-send workflow.
 - Quote Setup, business profile, language/theme/account settings, audit/history, and lifecycle surfaces.
+- Privacy-safe tracked quote-link variants and owner/founder reports for submitted requests by source, campaign tag, workflow status, and manually recorded outcome.
 - Founder-only user/workspace/lead/health/activity oversight with guarded manual controls and cleanup dry runs.
 - Email/password auth and application-side Google login path with login-only scopes.
 
@@ -54,25 +56,29 @@ This code release does **not** approve real customer data, a paid pilot, Google 
 
 ## Current application routes
 
-No route was added by Dashboard V4.
+Dashboard V4.6 adds one protected owner route, `/dashboard/reports`; it adds no public route.
 
 | Surface | Canonical routes |
 | --- | --- |
 | Public | `/`, `/features`, `/demo`, `/pricing`, `/pilot`, `/faq`, `/trust`, `/privacy`, `/security`, `/terms`; unmatched URLs use the shared bilingual 404 state |
 | Intake | `/quote`, `/quote/[slug]`, `/quote/[slug]/success` |
 | Auth | `/auth/sign-in`, `/auth/sign-up`, `/auth/check-email`, `/auth/forgot-password`, `/auth/reset-password`, `/auth/callback` |
-| Owner | `/dashboard`, `/dashboard/leads`, `/dashboard/leads/[leadId]`, `/dashboard/configuration`, `/dashboard/business-profile`, `/dashboard/settings`, `/dashboard/guide` |
+| Owner | `/dashboard`, `/dashboard/leads`, `/dashboard/leads/[leadId]`, `/dashboard/reports`, `/dashboard/configuration`, `/dashboard/business-profile`, `/dashboard/settings`, `/dashboard/guide` |
 | Compatibility | `/dashboard/quote-setup` redirects to Quote Setup |
 | Internal | `/founder` performs authorization then redirects to `/admin`; `/admin` is founder-only |
 
-## Dashboard V4 result
+## Dashboard V4.6 result
 
-- Five primary owner destinations; Settings is no longer hidden on mobile.
+- Five primary mobile owner destinations; the grouped desktop and compact-action navigation still expose every authorized owner route, including Reports.
 - Repeated topbar titles, route guide rail, display-preference framework, and low-signal charts removed.
 - Overview reduced to a next action, readiness, priorities, metrics, and short queue.
 - Leads and Lead Detail reduced without removing search, pagination, attribution, routing, manual workflow, draft generation, or status controls.
 - Draft Edit now changes the local draft used by Copy; non-persisted owner notes were removed.
-- Quote Setup reduced from ten tabs to six coherent sections without changing save semantics or adding a migration.
+- Quote Setup exposes six ordered readiness stages and seven coherent mounted panels, including Public Link, without changing save semantics or adding a migration.
+- Public Link builds channel/campaign variants using the existing attribution allowlist; no direct social integration or customer identifier is added.
+- Reports summarizes submitted requests only, with 7/30/90/all-time owner filters and a bounded founder aggregate. Direct and Unknown remain visible; views, clicks, revenue, and automatic conversions are not invented.
+- Guide is explicitly divided into Setup and optimization and Workflow and reporting, with live tenant readiness and direct route actions.
+- Branding preview, public intake, and success states share validated logos and WCAG-derived color/contrast rules; semantic success colors stay independent.
 - Settings reduced to essentials plus guardrail/history/lifecycle disclosures.
 - Founder overview localized and simplified; detailed guarded operations remain in their tabs.
 - Canadian French protected copy and field-builder examples polished.
@@ -83,15 +89,17 @@ Full detail: `docs/dashboard-v4/CURRENT.md` and `docs/dashboard-v4/CHANGELOG.md`
 
 The final verification ledger is maintained in `docs/dashboard-v4/PHASE_PROGRESS.md` and updated only with commands actually run on the final tree.
 
-Current public release commit `c78596b1f1530ff3586b9b076702822b0b711802` is on `main` with the exact locally verified tree. GitHub CI run `29517118330` completed successfully, and Vercel reported success at deployment target `CbDDUpqxCVMoG3L8hTgGRoymvi5m`.
+The V4.6 candidate passes ESLint with zero warnings, TypeScript, `272/272` unit/source tests, the Next.js 16.2.4 production build, local public route smoke `46/46`, bilingual responsive smoke `20/20`, and the final UI matrix with zero failures on the tree merged with the latest public-site `main` baseline. The active Quote fixture and authenticated owner/admin visual smoke remain gated because no approved synthetic slug or authenticated target was supplied. No submission, migration, or Production data mutation was performed.
 
-The release passed ESLint with zero warnings, TypeScript, `249/249` unit tests, Next.js 16.2.4 production build, local and Production public route `46/46`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive dynamic Quote GET `2/2` in EN/fr-CA. The Production route set directly covers every Auth page, base/dynamic unavailable Quote states, invalid Quote-success recovery, bilingual 404, localized global error source contract, redirects, metadata, sitemap, robots, locale-preserving links, and light/dark contracts. HTTPS responded successfully with CSP, HSTS, frame, content-type, referrer, and permissions controls present.
+The latest published Website V4 / Documentation V2.1 release commit is `c78596b1f1530ff3586b9b076702822b0b711802`. GitHub CI run `29517118330` completed successfully, and Vercel reported success at deployment target `CbDDUpqxCVMoG3L8hTgGRoymvi5m`. Dashboard V4.6 publication evidence remains separate until its exact commit is recorded.
+
+That published public release passed ESLint with zero warnings, TypeScript, `249/249` unit tests, Next.js 16.2.4 production build, local and Production public route `46/46`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive dynamic Quote GET `2/2` in EN/fr-CA. The Production route set directly covers every Auth page, base/dynamic unavailable Quote states, invalid Quote-success recovery, bilingual 404, localized global error source contract, redirects, metadata, sitemap, robots, locale-preserving links, and light/dark contracts. HTTPS responded successfully with CSP, HSTS, frame, content-type, referrer, and permissions controls present.
 
 Environment fact: the local workspace does not currently contain `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, or `DATABASE_URL`. The safe classifier explicitly blocked Dashboard/Auth and RLS-required tests. Chrome/Chromium is absent, so the repository's standalone local browser runner remains gated; the public Production site was instead verified read-only through the managed browser across all ten routes in EN/fr-CA, with no authenticated or data-writing action. These are honest environment gates, not permission to use managed Production for synthetic writes.
 
 No Production database change, migration, cleanup, user deletion, or test-data insertion was performed in this release.
 
-Repository hygiene fact: local Git has one clean `main` branch and one worktree synchronized `0/0` with `origin/main`. GitHub still contains 15 pre-existing legacy branches. Eleven are ancestors of current `main`; four contain unmerged commits and therefore require explicit superseded/archival classification before deletion. The current connector cannot delete remote refs, so Prompt 00 in the external-action pack is the exact owner-authenticated retirement procedure. No new branch was created in this release.
+Repository hygiene fact for the latest recorded published baseline: local Git had one clean `main` branch and one worktree synchronized `0/0` with `origin/main`. Dashboard V4.6 publication evidence is still pending in this candidate record. GitHub still contains 15 pre-existing legacy branches. Eleven are ancestors of the recorded `main`; four contain unmerged commits and therefore require explicit superseded/archival classification before deletion. The current connector cannot delete remote refs, so Prompt 00 in the external-action pack is the exact owner-authenticated retirement procedure. No new branch was created in this release candidate.
 
 ## Gate sequence and current state
 

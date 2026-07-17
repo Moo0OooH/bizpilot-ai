@@ -14,6 +14,7 @@
  * Created: 2026-05-06
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Unified preview/runtime brand tokens, added accessible brand contrast, and stopped overriding semantic success colors.
  * - 2026-07-16: Applied saved business logo and colors to the public quote experience and added owner-aware preview recovery.
  * - 2026-05-06: Created public quote page with dynamic form rendering.
  * - 2026-05-19: Replaced inline single-page form with grouped quote sections for higher completion rate per UX research.
@@ -45,9 +46,12 @@ import {
   buildQuoteAttributionFormQuery,
   buildQuoteLanguageHref,
 } from "@/lib/quote-attribution";
+import {
+  getPublicBrandStyle,
+  isSafePublicLogoSource,
+} from "@/lib/public-brand-theme";
 import { buildNoIndexMetadata } from "@/lib/seo";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
-import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -69,52 +73,8 @@ type QuotePageProps = Readonly<{
 }>;
 
 const appTimeZone = "America/New_York";
-const safeHexColorPattern = /^#[0-9a-fA-F]{6}$/;
-const safeLogoDataPattern = /^data:image\/(?:jpeg|png|webp);base64,[a-zA-Z0-9+/=]+$/;
-
 function readSingleQueryValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
-}
-
-function isSafeLogoSource(value: string | null | undefined): value is string {
-  if (!value) return false;
-  if (value.length <= 360_000 && safeLogoDataPattern.test(value)) return true;
-
-  try {
-    return value.length <= 2_048 && new URL(value).protocol === "https:";
-  } catch {
-    return false;
-  }
-}
-
-function contrastColor(hexColor: string): "#ffffff" | "#0f172a" {
-  const red = Number.parseInt(hexColor.slice(1, 3), 16);
-  const green = Number.parseInt(hexColor.slice(3, 5), 16);
-  const blue = Number.parseInt(hexColor.slice(5, 7), 16);
-  const perceivedBrightness = (red * 299 + green * 587 + blue * 114) / 1000;
-  return perceivedBrightness >= 160 ? "#0f172a" : "#ffffff";
-}
-
-type PublicBranding = NonNullable<
-  Awaited<ReturnType<typeof getPublicIntakePage>>
->["branding"];
-
-function getBrandStyle(branding: PublicBranding): CSSProperties {
-  const primary = safeHexColorPattern.test(branding?.primary_color ?? "")
-    ? branding?.primary_color ?? "#3f5cff"
-    : "#3f5cff";
-  const accent = safeHexColorPattern.test(branding?.accent_color ?? "")
-    ? branding?.accent_color ?? "#0f8f83"
-    : "#0f8f83";
-
-  return {
-    "--focus-ring": accent,
-    "--link": primary,
-    "--primary": primary,
-    "--primary-contrast": contrastColor(primary),
-    "--primary-hover": primary,
-    "--success": accent,
-  } as CSSProperties;
 }
 
 function readQuoteLanguage(query: Awaited<QuotePageProps["searchParams"]>) {
@@ -181,14 +141,14 @@ export default async function QuotePage({
   }
 
   const todayDate = todayDateString();
-  const logoUrl = isSafeLogoSource(page.branding?.logo_url)
+  const logoUrl = isSafePublicLogoSource(page.branding?.logo_url)
     ? page.branding.logo_url
     : null;
 
   return (
     <main
       className="bp-page public-site min-h-svh bg-[var(--canvas)] text-[var(--text-strong)]"
-      style={getBrandStyle(page.branding)}
+      style={getPublicBrandStyle(page.branding)}
     >
       <section className="border-b border-[var(--border-default)] px-4 py-5 sm:px-8 sm:py-6">
         <div className="mx-auto w-full max-w-[780px]">
@@ -209,7 +169,7 @@ export default async function QuotePage({
                   {page.publicLink.display_name.slice(0, 2).toUpperCase()}
                 </span>
               )}
-              <p className="truncate text-[13px] font-black uppercase tracking-[0.12em] text-[var(--primary)]">
+              <p className="truncate text-[13px] font-black uppercase tracking-[0.12em] text-[var(--brand-primary-text)]">
                 {page.publicLink.display_name}
               </p>
             </div>
