@@ -93,6 +93,9 @@ describe("quote form builder UI source contracts", () => {
     assert.equal(wizard.includes("page.formLayout.sections"), true);
     assert.equal(wizard.includes("field.section_key"), true);
     assert.equal(wizard.includes("QuoteFormFlow"), true);
+    assert.equal(wizard.includes("stepProgressLabels: sections.map"), true);
+    assert.equal(wizard.includes("stepProgress: copy.quoteForm.stepProgress"), false);
+    assert.equal(flow.includes("stepProgressLabels: readonly string[]"), true);
     assert.equal(quotePage.includes("page.formLayout.header.title"), true);
     assert.equal(quotePage.includes("page.formLayout.header.subtitle"), true);
   });

@@ -42,7 +42,7 @@ type FlowCopy = Readonly<{
   emptySection: string;
   guardrail: string;
   sectionNavigationLabel: string;
-  stepProgress: (index: number, total: number, label: string) => string;
+  stepProgressLabels: readonly string[];
   submitButton: string;
 }>;
 
@@ -288,7 +288,7 @@ export function QuoteFormFlow({
           >
             <header className="mb-5 space-y-2">
               <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[var(--text-muted)]">
-                {copy.stepProgress(index + 1, sections.length, section.navLabel)}
+                {copy.stepProgressLabels[index] ?? section.navLabel}
               </p>
               <div
                 aria-hidden

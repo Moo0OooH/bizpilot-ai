@@ -410,7 +410,13 @@ export function QuoteFormWizard({
         emptySection: copy.quoteForm.emptySection,
         guardrail: copy.quoteForm.guardrail,
         sectionNavigationLabel: copy.quoteForm.sectionNavigationLabel,
-        stepProgress: copy.quoteForm.stepProgress,
+        stepProgressLabels: sections.map((section, index) =>
+          copy.quoteForm.stepProgress(
+            index + 1,
+            sections.length,
+            section.navLabel,
+          ),
+        ),
         submitButton: copy.quoteForm.submitButton,
       }}
       displayMode={page.formLayout.displayMode}
