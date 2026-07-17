@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Recorded Dashboard V4.6 main publication, successful Vercel rollout, and Production public read-only acceptance.
  * - 2026-07-16: Added Dashboard V4.6 ordered setup, two-part Guide, tracked placement reports, Admin aggregates, and brand/runtime parity evidence.
  * - 2026-07-16: Recorded the final Website V4 typography, hierarchy, CTA, legal-shell, CI, Vercel, and managed-browser release evidence.
  * - 2026-07-15: Recorded the pre-existing remote legacy-branch inventory and least-destructive owner-authenticated retirement gate.
@@ -89,9 +90,9 @@ Full detail: `docs/dashboard-v4/CURRENT.md` and `docs/dashboard-v4/CHANGELOG.md`
 
 The final verification ledger is maintained in `docs/dashboard-v4/PHASE_PROGRESS.md` and updated only with commands actually run on the final tree.
 
-The V4.6 candidate passes ESLint with zero warnings, TypeScript, `272/272` unit/source tests, the Next.js 16.2.4 production build, local public route smoke `46/46`, bilingual responsive smoke `20/20`, and the final UI matrix with zero failures on the tree merged with the latest public-site `main` baseline. The active Quote fixture and authenticated owner/admin visual smoke remain gated because no approved synthetic slug or authenticated target was supplied. No submission, migration, or Production data mutation was performed.
+The published V4.6 release passes ESLint with zero warnings, TypeScript, `272/272` unit/source tests, the Next.js 16.2.4 production build, local public route smoke `46/46`, bilingual responsive smoke `20/20`, and the final UI matrix with zero failures on the tree merged with the latest public-site `main` baseline. Production public routes pass `46/46`, bilingual responsive routes pass `20/20`, the final UI matrix passes `621/621`, and inactive Quote GET passes `2/2` in EN/fr-CA. The active Quote fixture and authenticated owner/admin visual smoke remain gated because no approved synthetic slug or authenticated target was supplied. No submission, migration, or Production data mutation was performed.
 
-The latest published Website V4 / Documentation V2.1 release commit is `c78596b1f1530ff3586b9b076702822b0b711802`. GitHub CI run `29517118330` completed successfully, and Vercel reported success at deployment target `CbDDUpqxCVMoG3L8hTgGRoymvi5m`. Dashboard V4.6 publication evidence remains separate until its exact commit is recorded.
+Dashboard V4.6 is published directly on `main` at `b2ca255ec45b4ebf015603017728b0a5e5ce8c15`, exact tree `43ced7bc8e1914a72366bb1b8581ae4afcc02846`; Vercel reported success at deployment target `BhNUwzTNx2RmLnwXKrjbVZioAxU9`. No Dashboard V4.6 GitHub Actions run number is claimed. Commit `c78596b1f1530ff3586b9b076702822b0b711802`, CI run `29517118330`, and Vercel target `CbDDUpqxCVMoG3L8hTgGRoymvi5m` remain historical Website V4 / Documentation V2.1 evidence only.
 
 That published public release passed ESLint with zero warnings, TypeScript, `249/249` unit tests, Next.js 16.2.4 production build, local and Production public route `46/46`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive dynamic Quote GET `2/2` in EN/fr-CA. The Production route set directly covers every Auth page, base/dynamic unavailable Quote states, invalid Quote-success recovery, bilingual 404, localized global error source contract, redirects, metadata, sitemap, robots, locale-preserving links, and light/dark contracts. HTTPS responded successfully with CSP, HSTS, frame, content-type, referrer, and permissions controls present.
 
@@ -99,11 +100,11 @@ Environment fact: the local workspace does not currently contain `NEXT_PUBLIC_AP
 
 No Production database change, migration, cleanup, user deletion, or test-data insertion was performed in this release.
 
-Repository hygiene fact for the latest recorded published baseline: local Git had one clean `main` branch and one worktree synchronized `0/0` with `origin/main`. Dashboard V4.6 publication evidence is still pending in this candidate record. GitHub still contains 15 pre-existing legacy branches. Eleven are ancestors of the recorded `main`; four contain unmerged commits and therefore require explicit superseded/archival classification before deletion. The current connector cannot delete remote refs, so Prompt 00 in the external-action pack is the exact owner-authenticated retirement procedure. No new branch was created in this release candidate.
+Repository hygiene fact: the verified V4.6 functional tree is published directly on remote `main`; no remote feature branch or PR was added. The previously recorded GitHub inventory contains 15 legacy branches. Eleven were ancestors of the recorded `main`; four contained unmerged commits and therefore require explicit superseded/archival classification before deletion. The current connector cannot delete remote refs, so Prompt 00 in the external-action pack is the exact owner-authenticated retirement procedure.
 
 ## Gate sequence and current state
 
-1. **V2.1 code and public release gate — CLOSED:** lint, typecheck, full unit suite, build, documentation links, safe local HTTP smokes, `main` push, CI, Vercel mapping, HTTPS/security headers, and final Production read-only smokes passed.
+1. **V2.1 and Dashboard V4.6 code/public release gate — CLOSED:** lint, typecheck, full unit suite, build, documentation links, safe local HTTP smokes, exact `main` publication, Vercel mapping, HTTPS/security headers, and final Production read-only smokes passed; historical Website CI evidence is kept separate from V4.6.
 2. **Remote branch hygiene:** owner-authenticated Prompt 00 retires revalidated merged refs and classifies/archives four unmerged refs before any deletion.
 3. **Safe authenticated QA target:** owner supplies/authorizes a local or disposable synthetic auth target; run desktop/mobile EN/fr-CA dashboard smoke.
 4. **External OAuth decision:** keep Google unavailable or configure Google/Supabase provider and complete owner QA.

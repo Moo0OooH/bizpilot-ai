@@ -11,7 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
- * - 2026-07-16: Added the V4.6 setup, Guide, source-reporting, tracked-link, and branding finalization candidate.
+ * - 2026-07-16: Published V4.6 setup, Guide, source-reporting, tracked-link, and branding finalization with Vercel and Production evidence.
  * - 2026-07-16: Recorded V4.5 source publication and Production public read-only evidence.
  * - 2026-07-16: Added the V4.5 complete sidebar and founder-admin access repair candidate.
  * - 2026-07-16: Closed V4.4 on main with successful Vercel and Production public read-only evidence.
@@ -56,10 +56,12 @@
 - Clarified exactly where primary/accent colors apply and that dashboard theme colors remain independent.
 - Added a visible three-section quote rail, correct bilingual field grouping, and the exact persisted consent notice.
 
-### Candidate verification
+### Release verification
 
 - ESLint and TypeScript pass; all `272/272` unit/source tests pass on the final tree merged with the latest public-site `main` baseline; Next.js 16.2.4 production build passes.
 - Local production public routes pass `46/46`, bilingual responsive routes pass `20/20`, and the final UI matrix reports zero failures.
+- Exact tree `43ced7bc8e1914a72366bb1b8581ae4afcc02846` was published directly to `main` as `b2ca255ec45b4ebf015603017728b0a5e5ce8c15`; Vercel target `BhNUwzTNx2RmLnwXKrjbVZioAxU9` succeeded.
+- Production public routes pass `46/46`, bilingual responsive routes pass `20/20`, the final UI matrix passes `621/621`, and inactive Quote GET passes `2/2` in EN/fr-CA.
 - No migration, Production data mutation, customer submission, direct social integration, automatic send, booking, or payment behavior was added.
 - Protected visual acceptance remains gated until an approved authenticated QA target is available.
 

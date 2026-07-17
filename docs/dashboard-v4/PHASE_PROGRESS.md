@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed V4.6 on main with successful Vercel rollout and Production 46/46, 20/20, UI 621/621, and Quote 2/2 evidence.
  * - 2026-07-16: Added V4.6 ordered setup, two-part Guide, owner/founder source reporting, public-brand parity, and 272/272 merged-tree candidate evidence.
  * - 2026-07-16: Recorded V4.5 main publication and successful Production public read-only acceptance; deployment-status evidence remains unavailable.
  * - 2026-07-16: Added the V4.5 grouped sidebar, explicit founder entry, resilient admin reads, and 257/257 candidate record.
@@ -42,8 +43,8 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | Overview decision hierarchy | DONE | One recommended action, compact readiness, three daily priorities, four metrics, five-row queue; redundant charts/rails removed. |
 | P0 | Lead queue and detail workflow | DONE | Focus guidance only when requested; no repeated rules rail; real editable draft; non-persisted scratchpad and duplicate identity card removed. |
 | P0 | Quote Setup and Settings scope | DONE | Quote Setup uses seven progressive owner tasks including an explicit Public Link task; duplicate identity/notification/readiness rails remain removed; Settings remains focused on preferences plus advanced disclosures. |
-| P0 | Dashboard menu placement | DONE | Wide-screen owner routes are centered; compact Actions stays right-aligned and viewport-bounded on tablet/mobile. |
-| P0 | Protected navigation and recovery hardening | DONE | Complete owner navigation is centered on wide screens and compact below that; native route transitions and error recovery prevent client-router traps. |
+| P0 | Dashboard menu placement | DONE | Wide screens use the fixed grouped sidebar with complete authorized routes; the topbar owns utilities, while compact Actions stays right-aligned and viewport-bounded on tablet/mobile. |
+| P0 | Protected navigation and recovery hardening | DONE | Complete owner navigation is grouped on wide screens and compact below that; native route transitions and error recovery prevent client-router traps. |
 | P0 | V4.3 protected runtime regression repair | DONE | Centered wide-screen route bar; compact tablet/mobile menu; native topbar/sidebar/mobile transitions; current-user and workspace reads shared per server render. |
 | P0 | V4.3 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit: 256/256; Next.js 16.2.4 production build: PASS. |
 | P0 | V4.3 main push, CI, and Vercel rollout | DONE | Exact source published directly to `main` as `bcf0370`; GitHub CI run `29538671150` success; Vercel target `FTVpVmQT8j8ST74YvpzF6Q47vdDq` success; no extra branch or PR. |
@@ -67,6 +68,8 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | V4.6 public brand and quote parity | DONE | Setup preview, public quote, and success page share safe logo rules and WCAG-derived palette tokens; persisted consent and bilingual section grouping are rendered accurately. |
 | P0 | V4.6 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit/source: 272/272; Next.js 16.2.4 production build: PASS. |
 | P0 | V4.6 local public acceptance | DONE | Local production server: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; no submission or data mutation. |
+| P0 | V4.6 source publication and Vercel rollout | DONE | Exact tree `43ced7bc8e1914a72366bb1b8581ae4afcc02846` published directly to `main` as `b2ca255ec45b4ebf015603017728b0a5e5ce8c15`; Vercel target `BhNUwzTNx2RmLnwXKrjbVZioAxU9` succeeded; no migration, data mutation, remote feature branch, or PR. |
+| P0 | V4.6 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix 621/621; inactive `bizpilot0wner` Quote GET 2/2 EN/fr-CA; no submission or data mutation. |
 | P0 | V4.6 authenticated visual acceptance | GATED | Requires an approved local/synthetic authenticated session or owner-run no-secret check; source/build/public GET evidence does not prove protected visual state. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
@@ -107,6 +110,13 @@ This section is updated only with commands actually run on the final working tre
 - V4.6 local production public route smoke: PASS, 46/46.
 - V4.6 local bilingual responsive smoke: PASS, 20/20.
 - V4.6 local final UI matrix: PASS, zero failures.
+- V4.6 main publication: PASS at release SHA `b2ca255ec45b4ebf015603017728b0a5e5ce8c15`, tree `43ced7bc8e1914a72366bb1b8581ae4afcc02846`.
+- V4.6 Vercel commit deployment: SUCCESS at target `BhNUwzTNx2RmLnwXKrjbVZioAxU9`.
+- V4.6 Production public route smoke: PASS, 46/46.
+- V4.6 Production bilingual responsive smoke: PASS, 20/20.
+- V4.6 Production final UI matrix: PASS, 621/621.
+- V4.6 Production inactive Quote GET: PASS, 2/2 EN/fr-CA; no submission or data mutation.
+- V4.6 GitHub Actions push-run number: NOT RECORDED; no run is inferred from historical release CI evidence.
 - V4.6 active Quote fixture: NOT RUN because no approved active synthetic slug was supplied; no form submission was attempted.
 - V4.6 authenticated owner/admin visual smoke: GATED because no approved authenticated target/session is present.
 - V4.6 migration/data mutation: NOT RUN; existing attribution schema is reused and Production data remains unchanged.
@@ -163,4 +173,4 @@ This section is updated only with commands actually run on the final working tre
 
 ## Ideal completion definition
 
-The Dashboard V4.6 candidate is source-verified and passes local public read-only acceptance. Publication/deployment evidence and protected authenticated visual confirmation remain separate until their exact evidence is recorded. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
+Dashboard V4.6 is source-verified, published on `main`, successfully deployed by Vercel, and passes local plus Production public read-only acceptance. Protected authenticated visual confirmation remains separately gated until an approved safe session or disposable target exists. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.

@@ -11,7 +11,7 @@
  * Created: 2026-05-02
  * Last Updated: 2026-07-16
  * Change Log:
- * - 2026-07-16: Added Dashboard V4.6 Reports and the finalized setup-to-reporting route posture.
+ * - 2026-07-16: Published Dashboard V4.6 Reports and the finalized setup-to-reporting route posture.
  * - 2026-07-15: Updated the repository entry point for Documentation V2.1 and the exhaustive project audit.
  * ============================================================
  -->
@@ -25,10 +25,10 @@ Cleaning is the first complete pilot vertical. Direct social inbox integrations,
 ## Current release posture
 
 - Public Website V4: current production-facing marketing and legal experience.
-- Dashboard V4.6: ordered setup, source-aware reporting, and task-first protected owner/admin workflows are implemented in the verified release candidate.
+- Dashboard V4.6: ordered setup, source-aware reporting, and task-first protected owner/admin workflows are published on `main` at `b2ca255ec45b4ebf015603017728b0a5e5ce8c15` and verified on Production.
 - Real customer data and paid pilot: still gated.
 - Google OAuth: application path exists; external provider configuration and owner QA remain unverified.
-- Production database: no migration or data mutation is part of the Dashboard V4.6 release candidate.
+- Production database: no migration or data mutation is part of the Dashboard V4.6 release.
 
 Read these before planning or changing the project:
 

@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Recorded the V4.6 main publication, successful Vercel rollout, and Production public read-only acceptance.
  * - 2026-07-16: Added the V4.6 ordered setup journey, two-part Guide, owner/founder source reports, tracked-link builder, and accurate public-brand preview contract.
  * - 2026-07-16: Closed the V4.5 source publication and Production public read-only acceptance record.
  * - 2026-07-16: Added the V4.5 complete navigation restoration and founder-admin access resilience contract.
@@ -105,7 +106,7 @@ Dashboard V4.6 uses the existing `leads.source_channel` and `lead_source_metadat
 
 ## Verification status
 
-The V4.6 candidate passes all `272/272` unit/source tests, ESLint with zero warnings, TypeScript, and the Next.js 16.2.4 production build. A local production server passes public routes `46/46`, bilingual responsive routes `20/20`, and the final UI matrix with zero failures. No active synthetic Quote slug was supplied, so no new active-form submission or Quote fixture result is claimed.
+The published V4.6 release passes all `272/272` unit/source tests, ESLint with zero warnings, TypeScript, and the Next.js 16.2.4 production build. The exact verified tree `43ced7bc8e1914a72366bb1b8581ae4afcc02846` is on `main` at `b2ca255ec45b4ebf015603017728b0a5e5ce8c15`; Vercel reported success at target `BhNUwzTNx2RmLnwXKrjbVZioAxU9`. Local and Production public routes pass `46/46`, bilingual responsive routes pass `20/20`, the Production UI matrix passes `621/621`, and inactive Quote GET passes `2/2` in EN/fr-CA without a submission or data mutation. No active synthetic Quote slug was supplied, so no active-form submission result is claimed.
 
 Authenticated browser smoke still requires an approved local/synthetic auth target. Source, type, build, and public GET evidence do not substitute for owner-authenticated visual confirmation of protected screens.
 
