@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed the V4.5 source publication and Production public read-only acceptance record.
  * - 2026-07-16: Added the V4.5 complete navigation restoration and founder-admin access resilience contract.
  * - 2026-07-16: Closed V4.4 on main with successful Vercel and Production public read-only acceptance evidence.
  * - 2026-07-16: Added the V4.4 Quote Setup render repair, single-navigation shell, and accurate segment-retry recovery contract.
@@ -96,7 +97,7 @@ Dashboard V4.5 applies protected shell, localization, and read-resilience change
 
 ## Verification status
 
-Dashboard V4.5 is a verified release candidate. Publication SHA, Vercel target, and Production read-only evidence are recorded after rollout.
+Dashboard V4.5 source release SHA `5fdcf929d5b1393178a2fcf7e9e06192b00cbb5b` is on `main`. Production read-only acceptance passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA. GitHub returned no deployment status record for this commit, so no Vercel target or deployment success is invented; authenticated owner confirmation remains required to prove the protected rollout.
 
 The exact release tree passes the Quote Setup serialization regression contract, all `257/257` unit/source tests, ESLint, TypeScript, and the Next.js 16.2.4 production build. The available GitHub connector does not expose push-triggered Actions runs, so a GitHub CI run number is not invented. Authenticated browser smoke still requires an approved local/synthetic auth target; absence of that target is not silently presented as a passed authenticated test.
 

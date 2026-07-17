@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Recorded V4.5 source publication and Production public read-only evidence.
  * - 2026-07-16: Added the V4.5 complete sidebar and founder-admin access repair candidate.
  * - 2026-07-16: Closed V4.4 on main with successful Vercel and Production public read-only evidence.
  * - 2026-07-16: Added the V4.4 Quote Setup serialization repair, single desktop navigation, and accurate route recovery candidate.
@@ -46,6 +47,9 @@
 
 - ESLint, TypeScript, all `257/257` unit/source tests, and the Next.js 16.2.4 production build pass.
 - No database migration, tenant mutation, synthetic customer write, or Production authenticated automation was performed.
+- Exact source was published directly to `main` as `5fdcf929d5b1393178a2fcf7e9e06192b00cbb5b`.
+- Production passed public routes `46/46`, bilingual responsive routes `20/20`, the UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA.
+- GitHub exposed no deployment status for the release commit, so no Vercel target or protected deployment success is claimed.
 
 ## 2026-07-16 — V4.4 Quote Setup render and shell repair
 

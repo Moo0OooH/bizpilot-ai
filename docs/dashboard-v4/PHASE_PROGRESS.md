@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Recorded V4.5 main publication and successful Production public read-only acceptance; deployment-status evidence remains unavailable.
  * - 2026-07-16: Added the V4.5 grouped sidebar, explicit founder entry, resilient admin reads, and 257/257 candidate record.
  * - 2026-07-16: Closed V4.4 on main with successful Vercel rollout and Production 46/46, 20/20, UI-zero, and Quote 2/2 evidence.
  * - 2026-07-16: Added the V4.4 authenticated Quote Setup render repair, single desktop navigation, segment retry, and 257/257 candidate record.
@@ -55,7 +56,9 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | V4.5 complete desktop navigation | DONE | Restored a fixed grouped sidebar with all owner routes, Guide, workspace/user context, and role-gated Founder Admin; topbar now owns utilities only and mobile retains five primary tasks. |
 | P0 | V4.5 Founder Admin availability | DONE | Authorized Admin is explicit on desktop; known access failures are localized; optional linked-user fallback failures are contained and logged instead of hiding the console. |
 | P0 | V4.5 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit/source: 257/257; Next.js 16.2.4 production build: PASS. |
-| P0 | V4.5 publication and Production acceptance | GATED | Candidate is source-verified; exact main SHA, Vercel target, and Production read-only evidence are pending rollout. |
+| P0 | V4.5 source publication | DONE | Exact source tree published directly to `main` as `5fdcf929`; no migration, data mutation, extra branch, or PR. |
+| P0 | V4.5 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; inactive Quote GET 2/2 EN/fr-CA. |
+| P0 | V4.5 protected deployment confirmation | GATED | GitHub returned no deployment status for the release commit; authenticated owner check is required before claiming the protected Vercel rollout. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
 | P0 | Branding and local logo workflow | DONE | Bounded PNG/JPG/WebP browser resize, HTTPS alternative, remove/reset actions, live preview, server validation, and public Quote logo/color application implemented. |
@@ -141,4 +144,4 @@ This section is updated only with commands actually run on the final working tre
 
 ## Ideal completion definition
 
-The Dashboard V4.5 source candidate is complete. Publication and authenticated visual confirmation remain separately gated until their exact evidence is recorded. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
+The Dashboard V4.5 source release and public read-only acceptance are complete. Protected deployment and authenticated visual confirmation remain separately gated until their exact evidence is recorded. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
