@@ -12,7 +12,8 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-17
  * Change Log:
- * - 2026-07-17: Added V4.7 configurable form structure, responsive shell, optional navigation, OAuth hardening, and 294/294 local candidate evidence.
+ * - 2026-07-17: Closed the runtime-hardened V4.7 tree on main with successful CI/Vercel and Production 46/46, 20/20, UI 621/621, and active/inactive Quote 4/4 evidence.
+ * - 2026-07-17: Added V4.7 configurable form structure, responsive shell, optional navigation, OAuth hardening, and 295/295 exact-tree evidence.
  * - 2026-07-16: Closed V4.6 on main with successful Vercel rollout and Production 46/46, 20/20, UI 621/621, and Quote 2/2 evidence.
  * - 2026-07-16: Added V4.6 ordered setup, two-part Guide, owner/founder source reporting, public-brand parity, and 272/272 merged-tree candidate evidence.
  * - 2026-07-16: Recorded V4.5 main publication and successful Production public read-only acceptance; deployment-status evidence remains unavailable.
@@ -76,10 +77,10 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | V4.7 responsive shell and navigation | DONE | Sticky configuration tabs are bounded, fixed save actions reserve content space and clear mobile safe areas, and duplicate desktop Guide/Admin utilities are removed while compact Actions remains complete. |
 | P0 | V4.7 optional surface visibility | DONE | Settings controls Reports and Guide visibility with a secure same-site cookie; core routes and authorized Founder Admin are intentionally not hideable, and direct access remains authorized normally. |
 | P0 | V4.7 Google OAuth workspace safety | DONE | Provider detection is server-side; Google/unknown recovery cannot create a workspace, safe exact callbacks are enforced, and existing approved memberships can still be repaired. |
-| P0 | V4.7 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit/source: 294/294; Next.js 16.2.4 production build: PASS. |
-| P0 | V4.7 local responsive acceptance | DONE | Local production responsive smoke: 20/20; final EN/fr-CA light/dark UI matrix: zero failures across 11 recorded viewports; no submission or data mutation. |
-| P0 | V4.7 source publication and Production read-only acceptance | GATED | Updated only after the exact main commit and observed Production checks are available; no deployment status is inferred. |
-| P0 | V4.7 founder environment activation | GATED | Production must set server-only `BIZPILOT_FOUNDER_EMAILS` to the approved founder address and redeploy; the email is intentionally absent from source and client output. |
+| P0 | V4.7 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit/source: 295/295; Next.js 16.2.4 production build: PASS. |
+| P0 | V4.7 local public and responsive acceptance | DONE | Local production public routes: 46/46; responsive smoke: 20/20; final EN/fr-CA light/dark UI matrix: zero failures across 11 recorded viewports; no submission or data mutation. |
+| P0 | V4.7 source publication and Production read-only acceptance | DONE | Exact tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d` published directly to `main` as `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`; CI run `29558683869` and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeeded; Production public 46/46, responsive 20/20, UI 621/621, and active/inactive Quote 4/4 passed without mutation. |
+| P0 | V4.7 founder environment activation | DONE / OWNER EVIDENCE | The authenticated owner screenshot renders the server-role-gated Founder Admin entry, confirming allowlist activation without storing the address in source. Opening every protected Admin panel remains part of the authenticated visual gate. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
 | P0 | Branding and local logo workflow | DONE | Bounded PNG/JPG/WebP browser resize, HTTPS alternative, remove/reset actions, live preview, server validation, and public Quote logo/color application implemented. |
@@ -114,10 +115,19 @@ This section is updated only with commands actually run on the final working tre
 
 - V4.7 TypeScript: PASS.
 - V4.7 ESLint: PASS, zero warnings.
-- V4.7 full unit/source suite: PASS, 294/294.
+- V4.7 full unit/source suite: PASS, 295/295.
 - V4.7 Next.js 16.2.4 production build: PASS.
+- V4.7 local production public route smoke: PASS, 46/46.
 - V4.7 local bilingual responsive smoke: PASS, 20/20.
 - V4.7 local EN/fr-CA light/dark UI matrix: PASS with zero failures across 11 viewports.
+- V4.7 main publication: PASS at release SHA `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`, tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`.
+- V4.7 GitHub Actions: SUCCESS, CI run `29558683869` (`CI` run 443, push to `main`).
+- V4.7 Vercel commit deployment: SUCCESS at target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR`; GitHub Production deployment `5484816130` status `15596534668` succeeded.
+- V4.7 Production public route smoke: PASS, 46/46.
+- V4.7 Production bilingual responsive smoke: PASS, 20/20.
+- V4.7 Production final UI matrix: PASS, 621/621.
+- V4.7 Production active and inactive Quote GET: PASS, 4/4 EN/fr-CA with HTTP 200; no submission or data mutation.
+- V4.7 serialization prevention: PASS; Quote Setup/public-flow function props are precomputed into serializable data, recursive copy guards exist, and authenticated smoke now includes Reports plus the exact RSC error marker.
 - V4.7 standalone real-Chrome interaction: GATED because this environment contains no Chrome/Chromium binary.
 - V4.7 authenticated owner/admin visual smoke: GATED because no approved authenticated target/session is present.
 - V4.7 database migration and Production mutation: NOT RUN; existing JSON storage is reused and Production data remains unchanged.
@@ -191,4 +201,4 @@ This section is updated only with commands actually run on the final working tre
 
 ## Ideal completion definition
 
-Dashboard V4.6 is source-verified, published on `main`, successfully deployed by Vercel, and passes local plus Production public read-only acceptance. Protected authenticated visual confirmation remains separately gated until an approved safe session or disposable target exists. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.
+Dashboard V4.7 is source-verified, published on `main`, successful in CI and Vercel, and passes Production public read-only acceptance including the active persisted Quote configuration in both languages. Protected authenticated visual confirmation remains separately gated until an approved safe session or disposable target exists. The product is not “paid-pilot ready” until every gated item above has separate evidence. These states must never be conflated.

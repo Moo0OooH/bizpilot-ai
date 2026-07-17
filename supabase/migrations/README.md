@@ -3,7 +3,7 @@
 **Version:** v1.0
 **Status:** Active
 **Owner:** MoOoH
-**Last Updated:** 2026-07-04
+**Last Updated:** 2026-07-17
 **Related:**
 - `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`
 - `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
@@ -53,7 +53,7 @@ The original `0003` migration was removed from the repository because keeping it
 
 ## Rules for new migrations
 
-1. **Preserve numbering.** New files must use the next available integer prefix (currently `0024`). Never rename or re-number an existing migration.
+1. **Preserve numbering.** New files must use the next available integer prefix (currently `0025`; `0024` already exists). Never rename or re-number an existing migration.
 2. **One concern per file.** A migration adds, alters, or removes a focused set of related tables, functions, policies, or grants. Cross-cutting changes go in separate files.
 3. **File header is mandatory.** Use the BizPilot SQL header format (path, project, description, role, related, author, created/updated, change log) as shown in the existing files.
 4. **Tables created here must include:**
@@ -65,6 +65,7 @@ The original `0003` migration was removed from the repository because keeping it
 5. **Do not rely on Supabase public-schema default grants.** Supabase's 2026 Data API default change means new public tables must opt in with explicit grants before client-library/Data API access works. Keep the grant contract in the same migration that creates or exposes the object.
 6. **No dashboard-driven schema changes.** Any production schema change made via the Supabase dashboard must be backfilled into a migration in the same working session.
 7. **Tests live separately.** Add an RLS test under `tests/rls/<feature>.test.sql` for every new tenant or public-facing table created by the migration.
+8. **Restore evidence is a strict real-data gate.** Historical Phase 24C.0 DB-level export/restore evidence is partial only. Before real customer data or a new Production migration, restore a current export to a disposable target and pass the complete app/dashboard/intake/RLS and tenant-isolation proof described in the operations runbook.
 
 ---
 

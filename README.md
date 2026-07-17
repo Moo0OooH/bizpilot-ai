@@ -9,8 +9,9 @@
  * - docs/CURRENT_CANONICAL_DOCS_v2.1.md
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Recorded Dashboard V4.7 configurable intake, resilient client-boundary contracts, responsive shell, navigation controls, OAuth hardening, CI/deployment success, and Production read-only acceptance.
  * - 2026-07-16: Published Dashboard V4.6 Reports and the finalized setup-to-reporting route posture.
  * - 2026-07-15: Updated the repository entry point for Documentation V2.1 and the exhaustive project audit.
  * ============================================================
@@ -24,11 +25,11 @@ Cleaning is the first complete pilot vertical. Direct social inbox integrations,
 
 ## Current release posture
 
-- Public Website V4: current production-facing marketing and legal experience.
-- Dashboard V4.6: ordered setup, source-aware reporting, and task-first protected owner/admin workflows are published on `main` at `b2ca255ec45b4ebf015603017728b0a5e5ce8c15` and verified on Production.
+- Dashboard V4.7: configurable quote-form title, sections, and list/tab/step layouts; source-aware reporting; optional Reports/Guide navigation; a responsive protected shell; Google login hardening; and serializable Server/Client Component boundaries are published on `main` at `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` (tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`). Local lint, typecheck, `295/295` tests, and production build passed. GitHub CI run `29558683869` (`CI #443`), Production deployment `5484816130` / status `15596534668`, and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeeded. Production read-only acceptance passed public `46/46`, responsive `20/20`, UI matrix `621/621`, and active/inactive Quote EN/fr-CA `4/4` with no submission or mutation.
+- Website V4: remains the current production-facing marketing and legal experience. Commit `c78596b1f1530ff3586b9b076702822b0b711802`, CI run `29517118330`, and Vercel target `CbDDUpqxCVMoG3L8hTgGRoymvi5m` are historical Website V4 / Documentation V2.1 evidence, not Dashboard V4.7 evidence.
 - Real customer data and paid pilot: still gated.
-- Google OAuth: application path exists; external provider configuration and owner QA remain unverified.
-- Production database: no migration or data mutation is part of the Dashboard V4.6 release.
+- Google OAuth: the application path no longer silently creates a workspace; live callback/provider behavior still requires owner QA.
+- Production database: no migration or data mutation is part of the Dashboard V4.7 release.
 
 Read these before planning or changing the project:
 
@@ -54,7 +55,7 @@ Read these before planning or changing the project:
 | Owner | `/dashboard`, `/dashboard/leads`, `/dashboard/leads/[leadId]`, `/dashboard/reports`, `/dashboard/configuration`, `/dashboard/business-profile`, `/dashboard/settings`, `/dashboard/guide` |
 | Internal | `/founder` (guarded redirect), `/admin` |
 
-`/dashboard/quote-setup` remains a compatibility redirect to the canonical Quote Setup route. Dashboard V4.6 adds the protected `/dashboard/reports` route and no public route.
+`/dashboard/quote-setup` remains a compatibility redirect to the canonical Quote Setup route. Dashboard V4.7 retains the protected `/dashboard/reports` route and adds no public route. Reports and Guide may be hidden from owner navigation through display preferences without changing route authorization; core owner routes and founder authorization are not hidden by that preference.
 
 ## Local verification
 

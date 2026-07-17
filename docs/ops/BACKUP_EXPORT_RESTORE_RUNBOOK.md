@@ -1,9 +1,9 @@
 # BizPilot Backup, Export, and Restore Runbook
 
 **Phase:** 20B - Production DB Safety Gate
-**Status:** Not yet pilot-complete  
+**Status:** Procedure documented; strict restored-target acceptance not passed
 **Owner:** MoOoH  
-**Last updated:** 2026-07-15
+**Last updated:** 2026-07-17
 **Scope:** Minimum data safety process before real cleaning-business pilot data
 
 ## 1. Current Environment
@@ -24,9 +24,11 @@ Do not infer the production Supabase plan from code, domain, or public URL. The 
 The current accepted posture is:
 
 ```text
-Synthetic founder demos are allowed.
-Real customer data and paid pilot execution are blocked until backup/export/restore
-is upgraded or drilled and recorded.
+Production demonstrations and QA are read-only.
+Synthetic write-capable QA runs only on an approved disposable target.
+Real customer data and paid pilot execution are blocked until a current export
+passes the strict restored app/dashboard/intake/RLS/isolation exercise and the
+other real-data gates are recorded.
 ```
 
 Current official-reference basis:
@@ -41,20 +43,22 @@ The active decision matrix is now:
 Do not store exports in the repo. Do not print dump contents. Do not run a
 production data export until encrypted storage and access are recorded.
 
-## 1B. Phase 24C Selected Proof Path
+## 1B. Phase 24C Historical Proof and Current Strict Path
 
-Phase 24C uses this path:
+Phase 24C.0 historically used this path:
 
 ```text
-Manual Supabase CLI logical export + restore drill to a disposable
-non-production Supabase project.
+Manual Supabase CLI logical export + DB-level restore to a disposable local
+Docker Postgres database.
 ```
 
-Real external customer data remains blocked until the restore drill is
-completed and documented.
+That historical exercise proved the DB-level subset only. Real external
+customer data remains blocked until a current export is restored to a
+disposable target and app, dashboard, intake, the complete RLS suite, tenant
+isolation, and founder denial all pass.
 
-This phase is preparation only unless the owner separately approves the actual
-export/restore run. Use placeholders in docs and command examples:
+A new strict exercise requires separately approved source/target identity and
+must use placeholders in docs and command examples:
 
 - `[PROD_DB_URL]`
 - `[RESTORE_DB_URL]`
@@ -113,7 +117,7 @@ If production contains real or possible-real data and no backup/PITR/export safe
 | Export storage location | Encrypted location outside git | Open |
 | Export access list | Named people only | Open |
 | Restore target | Local, staging, or disposable Supabase project | Open |
-| First restore drill date | Calendar date before pilot data or explicit risk acceptance | Open |
+| Strict restore exercise date | Calendar date before any real customer data | Open |
 | Privacy incident owner | Named owner | Open |
 
 Until these are recorded, backup/export/restore readiness is not complete for real customer data.
@@ -353,9 +357,10 @@ messages, private inbox addresses, or raw row data.
 | Remaining blockers | `short sanitized note` |
 
 Strict Phase 24C full-pass acceptance requires the restore drill plus
-app/RLS/dashboard and lead-visibility smokes to be documented as pass, or an
-owner-approved written reason for any skipped item. A DB-level restore proof may
-be recorded separately as PASS without claiming strict full pass.
+app/dashboard/intake/RLS, tenant-isolation, founder-denial, and lead-visibility
+smokes to be documented as PASS. A skipped or failed item cannot be waived for
+real customer data. A DB-level restore proof may be recorded separately as
+historical partial evidence without claiming strict full pass.
 
 ## 9B. Phase 24C Owner Checklist
 
@@ -390,15 +395,15 @@ Owner/operator checklist for the actual drill:
 Phase 24C export and restore proof was completed at DB level for the current
 synthetic-only stage.
 
-Acceptance standard:
+Historical evidence classification:
 
-- DB-level logical export and local Docker Postgres restore are sufficient for
-  a DB-level restore proof because no real external customer data exists yet.
+- DB-level logical export and local Docker Postgres restore are sufficient only
+  for historical DB-level partial proof.
 - App/dashboard/RLS smoke against the restored target was not run, so strict
   Phase 24C full pass is not claimed.
-- Owner decision: strict restored app/dashboard/RLS smoke is not required for
-  the first limited pilot. It is deferred to P1 before paid pilot, before
-  production migrations, or before destructive/bulk data work.
+- Strict restored app/dashboard/intake/RLS/isolation proof is required before
+  any real customer data, paid pilot, production migration, or destructive/bulk
+  data work.
 
 Sanitized evidence:
 
@@ -422,7 +427,7 @@ Sanitized evidence:
 | Lead visibility smoke status | DB-count check passed for approved synthetic target; UI smoke NOT RUN |
 | Sensitive output check | Pass; no DB URLs, passwords, tokens, dump contents, or customer row content printed |
 | Final decision | Phase 24C.0 DB-level restore proof PASS; Phase 24C.1 restored app/RLS smoke NOT PASSED; strict full pass NOT CLAIMED |
-| Remaining blockers | OpenAI operating posture and final owner real-data approval |
+| Remaining blockers | Current protected export; strict restored app/dashboard/intake/RLS/isolation and founder-denial proof; Auth/OpenAI/privacy/operations gates; final owner real-data approval |
 
 Sanitized table-count checks:
 
@@ -452,10 +457,9 @@ Restored DB RLS follow-up checks:
 | Leads page loaded from restored target | Not run |
 | Cross-tenant app smoke on restored target | Not run |
 
-Real external customer data remains blocked until OpenAI operating posture and
-final owner real-data approval are recorded. Strict restored app/dashboard/RLS
-smoke is deferred to P1 before paid pilot, before production migrations, or
-before destructive/bulk data work.
+Real external customer data remains blocked until a current export passes strict
+restored app/dashboard/intake/RLS/isolation and founder-denial proof, together
+with the remaining Auth/OpenAI/privacy/operations gates and final owner approval.
 
 ## 10. Restored Data Verification
 
@@ -587,7 +591,7 @@ Phase 19B is complete only when:
 - Access list is named.
 - `pg_dump` and `psql` are installed or an equivalent safe export method is approved.
 - A schema-only backup has been created and verified without committing it.
-- A restore drill has been performed to local or staging, or owner explicitly accepts the risk before pilot.
+- A current restore to local or disposable staging has passed strict app/dashboard/intake/RLS/isolation and founder-denial proof.
 - Customer deletion/export request handling is documented.
 - Privacy incident process is documented.
 - Pilot readiness checklist reflects the current status.

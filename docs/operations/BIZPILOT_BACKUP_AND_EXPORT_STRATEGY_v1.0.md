@@ -1,10 +1,10 @@
 # BizPilot AI — Backup and Export Strategy (Pilot Baseline)
 
 **Version:** v1.0
-**Status:** Pilot-readiness skeleton
+**Status:** Active procedure; strict restored-target acceptance not passed
 **Owner:** MoOoH
-**Scope:** Database backup awareness, manual export procedure, restore placeholder, auth migration risk
-**Last Updated:** 2026-07-15
+**Scope:** Database backup awareness, manual export and restore procedure, strict recovery evidence gate, auth migration risk
+**Last Updated:** 2026-07-17
 **Source standard:** `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`, Sections 14, 15
 **Related:**
 - `docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md`
@@ -13,7 +13,7 @@
 
 ---
 
-## Current Status Override - 2026-06-01
+## Current Status Override - 2026-07-17
 
 Phase 24C.0 DB-level backup/export/restore proof passed: Supabase CLI logical
 export, local Docker Postgres restore, sanitized count checks, `MrTester`
@@ -22,9 +22,10 @@ exclusion proof were recorded.
 
 Strict Phase 24C full pass is not claimed. Phase 24C.1 restored app/dashboard
 smoke was not run, and the existing RLS suite against the restored database did
-not pass. Owner decision: strict restored app/dashboard/RLS proof is deferred to
-P1 and is required before paid pilot, production migrations, destructive
-cleanup, bulk work, or broader real-data scale.
+not pass. Strict restored app/dashboard/intake/RLS and tenant-isolation proof is
+required before any real customer data, paid pilot, production migration,
+destructive cleanup, or bulk work. It cannot be replaced by risk acceptance or
+the earlier DB-level subset.
 
 For current status, use:
 
@@ -41,10 +42,10 @@ This document satisfies the pilot-readiness portion of the Vendor Independence S
 - a list of critical tables that must survive any provider migration;
 - the current Supabase backup posture and what it does and does not cover;
 - a manual `pg_dump` based export procedure that any operator can run from a workstation;
-- a restore procedure placeholder so the first time anyone needs it, the steps already exist;
+- a documented restore procedure and the evidence required to accept an exercise;
 - a documented auth-migration risk so the team knows exactly which dependency is hardest to move.
 
-Operational hardening — automated backups, encrypted off-site storage, regular restore drills — is deferred to the paid-launch phase (Section 14.2). This document is intentionally documentation-only.
+Operational hardening — automated backups, encrypted off-site storage, and a regular drill cadence — remains future work. The manual procedure has historical DB-level exercise evidence, but strict application and RLS acceptance is still open.
 
 ---
 
@@ -61,9 +62,10 @@ The Standard, Section 14.1, requires the following to exist before pilot. Status
 | Confirm how to export consent/privacy settings | Outlined | 6 |
 | Confirm whether storage files exist | Not applicable today | 7 |
 | Document auth/user migration risk | Complete | 8 |
-| Document restore procedure placeholder | Placeholder only | 9 |
+| Document restore procedure | Complete | 9 |
+| Pass strict restored app/dashboard/intake/RLS/isolation exercise | Not passed; required before real customer data | 9 |
 
-When all rows read "Complete" or "Outlined" the document moves from "skeleton" to "active baseline" and the Vendor Independence Standard's pilot gate is closed for this dimension.
+Documentation completeness does not close recovery readiness. This dimension closes only after the strict restored-target exercise passes with current, sanitized evidence.
 
 ---
 
@@ -79,7 +81,7 @@ Out of scope today:
 
 - Automated nightly backups outside Supabase's managed point-in-time recovery.
 - Encrypted off-site backup storage.
-- Restore drills against a non-production project.
+- Automated recurring restore drills after the first strict manual exercise passes.
 - Customer-facing data portability self-serve flow.
 - Storage exports — `Supabase Storage` is not yet used in the MVP.
 
@@ -110,8 +112,9 @@ The reference class is documented for completeness but does not need to ride alo
 
 Phase 21P update, 2026-05-25: the active production target is recorded as
 `bizpilot-production` / `qfqendrqimqvkoojpjao`. The current Free/no-PITR posture
-is acceptable only for founder-controlled synthetic demos. Real customer data is
-blocked until the backup/export/restore decision matrix is closed:
+is acceptable only for read-only Production demos; write-capable synthetic QA
+belongs on an approved disposable target. Real customer data is blocked until
+the backup/export/restore decision matrix is closed:
 `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md`.
 
 Managed Supabase projects may provide provider-managed backups and, depending on the exact plan/settings, point-in-time recovery. For BizPilot production, the current verified status is:
@@ -123,8 +126,8 @@ Managed Supabase projects may provide provider-managed backups and, depending on
 | Production plan tier | Free/current low-cost posture; upgrade decision required before real data |
 | PITR supported | Not enabled for the current posture |
 | PITR retention window | Not available/recorded for current posture |
-| First schema-only export | Not performed |
-| First restore drill | Not performed |
+| Historical logical export | Phase 24C.0 completed at DB level; freshness for recovery is not current/established |
+| Historical restore drill | DB-level disposable restore completed; strict app/dashboard/intake/RLS/isolation acceptance not passed |
 
 Potential provider coverage, after owner verification:
 
@@ -144,9 +147,9 @@ What this does **not** cover:
 - Off-site, project-independent copies of customer data.
 - Encrypted, customer-portable archives.
 
-Action item: before pilot, either upgrade and record the Supabase backup/PITR
-posture, or perform a manual logical export plus restore drill to a disposable
-non-production target. Use `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` and
+Action item: before real customer data, record the Supabase backup/PITR posture
+and perform a current manual logical export plus strict restore exercise on a
+disposable non-production target. Use `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md` and
 `docs/operations/BIZPILOT_BACKUP_EXPORT_RESTORE_DECISION_MATRIX_v1.0.md` as the
 operational source of truth.
 
@@ -156,9 +159,10 @@ to a disposable local Docker Postgres database.
 Phase 24C.0 DB-level restore proof is complete and documented. Phase 24C.1
 restored app/RLS smoke is not passed: the existing RLS suite against the
 restored DB failed, and app/dashboard smoke against the restored target was not
-run. Real external customer data remains blocked until OpenAI operating posture
-and final owner approval are recorded; if strict restore acceptance is required,
-it also remains blocked until restored app/dashboard/RLS smoke passes.
+run. Real external customer data remains blocked until a current export is
+restored and the strict app/dashboard/intake/RLS/isolation exercise passes,
+together with the remaining Auth, OpenAI, privacy/operations, and final
+owner-approval gates.
 
 ---
 
@@ -261,11 +265,11 @@ For the pilot, the accepted risk is: BizPilot will remain on Supabase Auth and w
 
 ---
 
-## 9. Restore procedure (placeholder)
+## 9. Restore procedure and strict acceptance
 
 Phase 24C.0 restore drill target used: disposable local Docker Postgres
 database. A disposable Supabase cloud project remains the cleaner target for a
-future strict app/dashboard/RLS restore smoke.
+future strict app/dashboard/intake/RLS/isolation exercise.
 Use placeholders only in docs:
 
 ```bash
@@ -281,7 +285,7 @@ If role restore is blocked by managed-provider permissions, stop and record the
 sanitized error class without printing connection strings or file contents.
 Do not restore into production for a drill.
 
-A real restore procedure does not exist yet. The placeholder steps for the first time it is exercised:
+The documented restore procedure is:
 
 1. Confirm the export file is complete and matches a known good production state.
 2. Provision a fresh Supabase project on a non-production plan.
@@ -289,19 +293,20 @@ A real restore procedure does not exist yet. The placeholder steps for the first
 4. Apply the export file with `psql --file=bizpilot-<YYYYMMDD>-full.sql`.
 5. Recreate `auth.users` rows. For a pilot-stage drill, manually create the small number of test accounts; this is acceptable while the user count is in the tens.
 6. Verify RLS by running every `tests/rls/*.test.sql` file against the restored database.
-7. Verify the application boots end-to-end against the restored database by pointing a local `next dev` instance at the restored project credentials.
-8. Record the date, duration, and any anomalies in a new dated section of `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`.
+7. Verify the application boots end-to-end against the restored database by pointing a local application instance at the restored project credentials.
+8. Use synthetic identities to verify intake, owner dashboard, tenant isolation, and founder denial without printing record content.
+9. Record the date, duration, results, and anomalies in a new dated section of `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`.
 
-The Phase 24C.0 DB-level drill is validated. The strict app/dashboard/RLS
-restore procedure is not yet validated because the restored-target RLS suite
-failed and app/dashboard smoke was not run.
+The Phase 24C.0 DB-level drill is validated only as historical partial evidence.
+The strict app/dashboard/intake/RLS/isolation exercise is not validated because
+the restored-target RLS suite failed and application/dashboard smoke was not run.
 
 ---
 
 ## 10. Open items
 
 - Decide the Supabase plan tier and document its point-in-time recovery window inside Section 5.
-- Decide whether the first pilot week should include a backup/restore drill against a disposable project, or whether the drill is deferred to the paid-launch readiness phase.
+- Run and pass the strict restored-target exercise before onboarding the first real customer; it is not deferrable to a later paid-launch phase.
 - Decide whether exported SQL files are stored on a single operator workstation or in a shared encrypted location.
 - Decide whether the pilot customer's data export should be made available to the customer on request, and document that decision in the privacy settings.
 
@@ -311,6 +316,9 @@ These should be answered before the first pilot customer is onboarded, and the a
 
 ## 11. Definition of Done
 
-This document moves from "skeleton" to "active baseline" when every row in Section 2 reads "Complete" or "Outlined", every Open item in Section 10 has a recorded decision, and the document has been referenced from `docs/README.md` and `MANIFEST.json` (already done for the parent Vendor Independence Standard).
+This document is an active procedure. Recovery readiness passes only when every
+documentation decision is recorded and a current disposable restore passes the
+strict app/dashboard/intake/RLS/isolation acceptance in Section 9.
 
-It is replaced by `v1.1` when an actual export has been performed and a restore drill has been completed.
+Replace it with `v1.1` when that strict exercise passes and a repeatable cadence,
+encrypted storage location, named access list, and evidence-retention policy are recorded.

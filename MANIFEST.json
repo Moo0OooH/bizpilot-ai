@@ -1,9 +1,9 @@
 {
   "project": "BizPilot AI",
   "version": "v2.1",
-  "lastUpdated": "2026-07-16",
+  "lastUpdated": "2026-07-17",
   "branch": "main",
-  "status": "Website V4 final design polish, Dashboard V4, bilingual system states, and Documentation V2.1 implemented; authenticated synthetic proof, real customer data, and paid pilot remain gated.",
+  "status": "Website V4, Dashboard V4.7 configurable intake and resilient protected/public runtime, bilingual system states, and Documentation V2.1 implemented and released; full authenticated protected-route proof, live Google callback, restored RLS proof, real customer data, and paid pilot remain evidence-gated.",
   "productBoundary": "Bilingual Smart Intake and owner-reviewed reply preparation for service businesses; cleaning is the first complete pilot vertical; no autonomous send, booking, pricing, payment, direct inbox integration, or full CRM claim.",
   "sourceOfTruth": [
     "docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md",
@@ -19,10 +19,13 @@
     "docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md"
   ],
   "currentReadiness": {
-    "codeRelease": "Current public release SHA c78596b passed lint, typecheck, 249/249 unit tests, Next.js 16.2.4 production build, GitHub CI run 29517118330, Vercel target CbDDUpqxCVMoG3L8hTgGRoymvi5m, Production public 46/46, responsive 20/20, final UI matrix, managed-browser EN/fr-CA design audit, and inactive Quote GET 2/2",
-    "repositoryHygiene": "local main is clean with one worktree; Prompt 00 covers 11 merged and 4 unmerged pre-existing remote legacy branches that require owner-authenticated retirement",
-    "authenticatedDashboardQA": "blocked until an approved local/disposable synthetic auth target is available",
-    "productionDatabase": "unchanged by Dashboard V4",
+    "codeRelease": "Dashboard V4.7 SHA d9e25bbf50ccf42de2da4d70aa235ab7d289dc91, tree 17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d, is on main and passed local lint, typecheck, 295/295 tests, and the Next.js production build; GitHub CI run 29558683869 (CI #443), Production deployment 5484816130 with status record 15596534668, and Vercel target 4zpXiTSDYdZjKkwG3ukyaVFj2VwR succeeded; Production read-only acceptance passed public 46/46, responsive 20/20, UI matrix 621/621, and active/inactive Quote EN/fr-CA 4/4 with no submission or mutation.",
+    "websiteHistoricalRelease": "Website V4 / Documentation V2.1 commit c78596b1f1530ff3586b9b076702822b0b711802, CI run 29517118330, and Vercel target CbDDUpqxCVMoG3L8hTgGRoymvi5m remain historical public-site evidence, not Dashboard V4.7 evidence.",
+    "dashboardCapabilities": "Configurable quote-form title, section grouping, list/tab/step layouts, source-aware Reports, optional Reports/Guide navigation, responsive protected shell, Google login without silent workspace bootstrap, and regression coverage for serializable Server/Client Component props.",
+    "repositoryHygiene": "Dashboard V4.7 functional tree is published on remote main; Prompt 00 covers the previously inventoried 11 merged and 4 unmerged legacy branches that require owner-authenticated revalidation and retirement/classification.",
+    "authenticatedDashboardQA": "The owner-provided authenticated screenshot renders the role-gated Founder Admin entry, proving the founder allowlist is active; full protected/admin route visual and normal-owner denial acceptance remain gated.",
+    "googleOAuth": "Application flow is implemented without silent workspace creation; live provider callback behavior remains owner/external-console QA.",
+    "productionDatabase": "unchanged by Dashboard V4.7; no migration or Production data mutation was performed",
     "realCustomerData": "blocked pending restored-target application/dashboard/RLS proof and explicit owner approval",
     "paidPilot": "blocked pending real-data approval and payment/support/refund/rollback readiness",
     "firstPilotMode": "cleaning-first, manual owner review, manual copy/send"

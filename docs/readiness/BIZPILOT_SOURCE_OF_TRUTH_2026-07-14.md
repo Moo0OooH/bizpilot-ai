@@ -12,8 +12,9 @@
  * - docs/project-v2/CURRENT.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Recorded Dashboard V4.7 configurable quote structure, responsive shell, navigation controls, OAuth hardening, runtime-boundary fixes, functional main publication, CI/deployment success, and Production read-only acceptance.
  * - 2026-07-16: Recorded Dashboard V4.6 main publication, successful Vercel rollout, and Production public read-only acceptance.
  * - 2026-07-16: Added Dashboard V4.6 ordered setup, two-part Guide, tracked placement reports, Admin aggregates, and brand/runtime parity evidence.
  * - 2026-07-16: Recorded the final Website V4 typography, hierarchy, CTA, legal-shell, CI, Vercel, and managed-browser release evidence.
@@ -26,11 +27,11 @@
  * ============================================================
  -->
 
-# BizPilot AI Source of Truth — Updated 2026-07-16
+# BizPilot AI Source of Truth — Updated 2026-07-17
 
 ## Executive status
 
-BizPilot is implemented as a bilingual, manual-first Smart Intake and reply-preparation product for service businesses, with cleaning as the first complete pilot vertical. Website V4 explains the problem and workflow; Dashboard V4.6 supports ordered setup, public quote branding, triage, missing-information review, draft edit/copy, manual follow-up, and submitted-request reporting by privacy-safe tracked placement. Documentation V2.1 provides one phase/dependency plan and one complete EN/fr-CA route/workflow audit.
+BizPilot is implemented as a bilingual, manual-first Smart Intake and reply-preparation product for service businesses, with cleaning as the first complete pilot vertical. Website V4 explains the problem and workflow. Dashboard V4.7 supports ordered setup, configurable public-form title and section structure, list/tab/step presentation, public quote branding, triage, missing-information review, draft edit/copy, manual follow-up, and submitted-request reporting by privacy-safe tracked placement. Documentation V2.1 provides one phase/dependency plan and one complete EN/fr-CA route/workflow audit.
 
 This code release does **not** approve real customer data, a paid pilot, Google login as live, remote migration changes, or Production data mutation. Those remain separately gated even when lint, tests, and build pass.
 
@@ -57,7 +58,7 @@ This code release does **not** approve real customer data, a paid pilot, Google 
 
 ## Current application routes
 
-Dashboard V4.6 adds one protected owner route, `/dashboard/reports`; it adds no public route.
+Dashboard V4.7 retains the protected owner route `/dashboard/reports` introduced in V4.6 and adds no public route.
 
 | Surface | Canonical routes |
 | --- | --- |
@@ -68,14 +69,16 @@ Dashboard V4.6 adds one protected owner route, `/dashboard/reports`; it adds no 
 | Compatibility | `/dashboard/quote-setup` redirects to Quote Setup |
 | Internal | `/founder` performs authorization then redirects to `/admin`; `/admin` is founder-only |
 
-## Dashboard V4.6 result
+## Dashboard V4.7 result
 
-- Five primary mobile owner destinations; the grouped desktop and compact-action navigation still expose every authorized owner route, including Reports.
-- Repeated topbar titles, route guide rail, display-preference framework, and low-signal charts removed.
+- The grouped desktop and compact-action navigation expose every authorized owner route. Reports and Guide can be hidden from owner navigation through display preferences without changing route authorization; core owner routes and founder access are never hidden by that setting.
+- The protected shell, tab rows, fixed action areas, and public quote layout are responsive across narrow and wide viewports without duplicate Founder/Admin or Guide entry points.
+- Repeated topbar titles, the route guide rail, and low-signal charts were removed; display preferences are limited to optional Reports/Guide owner-navigation visibility.
 - Overview reduced to a next action, readiness, priorities, metrics, and short queue.
 - Leads and Lead Detail reduced without removing search, pagination, attribution, routing, manual workflow, draft generation, or status controls.
 - Draft Edit now changes the local draft used by Copy; non-persisted owner notes were removed.
-- Quote Setup exposes six ordered readiness stages and seven coherent mounted panels, including Public Link, without changing save semantics or adding a migration.
+- Quote Setup exposes six ordered readiness stages and seven coherent mounted panels, including Public Link, without adding a migration.
+- Form Questions now controls the public form title/supporting copy, ordered section grouping, and list/tab/step presentation. Existing unstructured tenant values remain compatible, and the public quote flow consumes the saved structure.
 - Public Link builds channel/campaign variants using the existing attribution allowlist; no direct social integration or customer identifier is added.
 - Reports summarizes submitted requests only, with 7/30/90/all-time owner filters and a bounded founder aggregate. Direct and Unknown remain visible; views, clicks, revenue, and automatic conversions are not invented.
 - Guide is explicitly divided into Setup and optimization and Workflow and reporting, with live tenant readiness and direct route actions.
@@ -83,6 +86,8 @@ Dashboard V4.6 adds one protected owner route, `/dashboard/reports`; it adds no 
 - Settings reduced to essentials plus guardrail/history/lifecycle disclosures.
 - Founder overview localized and simplified; detailed guarded operations remain in their tabs.
 - Canadian French protected copy and field-builder examples polished.
+- Google login no longer silently bootstraps a missing workspace; provider/callback success remains an external live-QA gate.
+- Server-to-client copy contracts are serializable. Regression coverage prevents callable translation helpers from crossing Client Component boundaries, which directly guards the Quote Setup and active public Quote runtime failures repaired in V4.7.
 
 Full detail: `docs/dashboard-v4/CURRENT.md` and `docs/dashboard-v4/CHANGELOG.md`.
 
@@ -90,37 +95,40 @@ Full detail: `docs/dashboard-v4/CURRENT.md` and `docs/dashboard-v4/CHANGELOG.md`
 
 The final verification ledger is maintained in `docs/dashboard-v4/PHASE_PROGRESS.md` and updated only with commands actually run on the final tree.
 
-The published V4.6 release passes ESLint with zero warnings, TypeScript, `272/272` unit/source tests, the Next.js 16.2.4 production build, local public route smoke `46/46`, bilingual responsive smoke `20/20`, and the final UI matrix with zero failures on the tree merged with the latest public-site `main` baseline. Production public routes pass `46/46`, bilingual responsive routes pass `20/20`, the final UI matrix passes `621/621`, and inactive Quote GET passes `2/2` in EN/fr-CA. The active Quote fixture and authenticated owner/admin visual smoke remain gated because no approved synthetic slug or authenticated target was supplied. No submission, migration, or Production data mutation was performed.
+The Dashboard V4.7 functional release passes local ESLint with zero warnings, TypeScript, `295/295` unit/source tests, and the Next.js production build. It is published directly on `main` at `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`, exact tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`.
 
-Dashboard V4.6 is published directly on `main` at `b2ca255ec45b4ebf015603017728b0a5e5ce8c15`, exact tree `43ced7bc8e1914a72366bb1b8581ae4afcc02846`; Vercel reported success at deployment target `BhNUwzTNx2RmLnwXKrjbVZioAxU9`. No Dashboard V4.6 GitHub Actions run number is claimed. Commit `c78596b1f1530ff3586b9b076702822b0b711802`, CI run `29517118330`, and Vercel target `CbDDUpqxCVMoG3L8hTgGRoymvi5m` remain historical Website V4 / Documentation V2.1 evidence only.
+GitHub CI run `29558683869` (`CI #443`) completed successfully. GitHub Production deployment `5484816130` with status record `15596534668` and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeeded. Production read-only acceptance at `https://bizpilo.com` passed public `46/46`, responsive `20/20`, UI matrix `621/621` with zero failures, and active/inactive Quote EN/fr-CA `4/4` HTTP 200. No submission, migration, or Production data mutation was performed.
 
-That published public release passed ESLint with zero warnings, TypeScript, `249/249` unit tests, Next.js 16.2.4 production build, local and Production public route `46/46`, bilingual responsive `20/20`, final UI matrix with zero failures, and inactive dynamic Quote GET `2/2` in EN/fr-CA. The Production route set directly covers every Auth page, base/dynamic unavailable Quote states, invalid Quote-success recovery, bilingual 404, localized global error source contract, redirects, metadata, sitemap, robots, locale-preserving links, and light/dark contracts. HTTPS responded successfully with CSP, HSTS, frame, content-type, referrer, and permissions controls present.
+The owner-provided authenticated screenshot renders the role-gated Founder Admin entry, proving the founder allowlist is active. Full protected/admin route visual acceptance and normal-owner denial remain gated.
 
-Environment fact: the local workspace does not currently contain `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_SUPABASE_URL`, or `DATABASE_URL`. The safe classifier explicitly blocked Dashboard/Auth and RLS-required tests. Chrome/Chromium is absent, so the repository's standalone local browser runner remains gated; the public Production site was instead verified read-only through the managed browser across all ten routes in EN/fr-CA, with no authenticated or data-writing action. These are honest environment gates, not permission to use managed Production for synthetic writes.
+Commit `c78596b1f1530ff3586b9b076702822b0b711802`, CI run `29517118330`, and Vercel target `CbDDUpqxCVMoG3L8hTgGRoymvi5m` remain historical Website V4 / Documentation V2.1 evidence only. That public-site release passed ESLint with zero warnings, TypeScript, `249/249` unit tests, the Next.js production build, local and Production public route `46/46`, bilingual responsive `20/20`, the final UI matrix with zero failures, and inactive dynamic Quote GET `2/2` in EN/fr-CA. This historical evidence must not be relabeled as Dashboard V4.7 acceptance.
+
+Authenticated dashboard, live Google callback, and RLS-required acceptance still require an owner-approved local or disposable synthetic target and the appropriate external configuration. These are evidence gates, not permission to use managed Production for synthetic writes.
 
 No Production database change, migration, cleanup, user deletion, or test-data insertion was performed in this release.
 
-Repository hygiene fact: the verified V4.6 functional tree is published directly on remote `main`; no remote feature branch or PR was added. The previously recorded GitHub inventory contains 15 legacy branches. Eleven were ancestors of the recorded `main`; four contained unmerged commits and therefore require explicit superseded/archival classification before deletion. The current connector cannot delete remote refs, so Prompt 00 in the external-action pack is the exact owner-authenticated retirement procedure.
+Repository hygiene fact: the V4.7 functional tree is published directly on remote `main`; no remote feature branch or PR was added for this release. The previously recorded GitHub inventory contains 15 legacy branches. Eleven were ancestors of the recorded `main`; four contained unmerged commits and therefore require explicit superseded/archival classification before deletion. Prompt 00 in the external-action pack remains the owner-authenticated revalidation and retirement procedure.
 
 ## Gate sequence and current state
 
-1. **V2.1 and Dashboard V4.6 code/public release gate — CLOSED:** lint, typecheck, full unit suite, build, documentation links, safe local HTTP smokes, exact `main` publication, Vercel mapping, HTTPS/security headers, and final Production read-only smokes passed; historical Website CI evidence is kept separate from V4.6.
-2. **Remote branch hygiene:** owner-authenticated Prompt 00 retires revalidated merged refs and classifies/archives four unmerged refs before any deletion.
-3. **Safe authenticated QA target:** owner supplies/authorizes a local or disposable synthetic auth target; run desktop/mobile EN/fr-CA dashboard smoke.
-4. **External OAuth decision:** keep Google unavailable or configure Google/Supabase provider and complete owner QA.
-5. **Managed database reconciliation:** read-only migration/status audit, backup confirmation, explicit change plan, then separately authorized apply if needed.
-6. **Production authenticated read-only acceptance:** protected dashboard visual QA requires an owner-approved no-secret session procedure.
-7. **Real customer data:** explicit owner approval only after restored-target app/dashboard/RLS proof.
-8. **Paid pilot:** support, payment/manual billing, refund, incident, backup, and rollback rehearsal after the real-data gate.
+1. **Dashboard V4.7 code/publication gate — CLOSED:** lint, typecheck, `295/295` tests, build, and exact `main` publication passed on the functional tree.
+2. **Dashboard V4.7 deployment/Production read-only acceptance — CLOSED:** CI `29558683869`, GitHub deployment `5484816130` / status `15596534668`, Vercel `4zpXiTSDYdZjKkwG3ukyaVFj2VwR`, public `46/46`, responsive `20/20`, UI `621/621`, and active/inactive Quote EN/fr-CA `4/4` passed. Historical Website evidence remains separate.
+3. **Remote branch hygiene:** owner-authenticated Prompt 00 retires revalidated merged refs and classifies/archives four unmerged refs before any deletion.
+4. **Safe authenticated QA target:** owner supplies/authorizes a local or disposable synthetic auth target; run desktop/mobile EN/fr-CA dashboard smoke and verify founder/normal-owner authorization boundaries.
+5. **External OAuth acceptance:** confirm Google/Supabase provider configuration and complete one live owner callback QA; the app must not silently create a workspace.
+6. **Managed database reconciliation:** read-only migration/status audit, backup confirmation, disposable restore, restored RLS proof, explicit change plan, then separately authorized apply if needed.
+7. **Production authenticated read-only acceptance:** protected dashboard visual QA requires an owner-approved no-secret session procedure.
+8. **Real customer data:** explicit owner approval only after restored-target app/dashboard/RLS proof.
+9. **Paid pilot:** support, payment/manual billing, refund, incident, backup, and rollback rehearsal after the real-data gate.
 
 The copy-ready, least-privilege prompts for all external gates are in `prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md`.
 
 ## Owner decisions still required
 
 - Run Prompt 00 with owner-authenticated GitHub access; classify or approve archival for the four unmerged legacy branches.
-- Choose whether Google login remains unavailable or proceeds to external configuration/QA.
+- Complete one live Google login/callback QA after confirming the external provider configuration; do not share credentials.
 - Authorize and provide access for a safe authenticated QA target.
-- Approve any managed Supabase inspection or later change after a read-only plan.
+- Approve any managed Supabase inspection or later change only after a read-only plan, backup confirmation, disposable restore, and restored RLS evidence.
 - Approve real-data and paid-pilot gates only after their prerequisites have evidence.
 
 The dependency order, ideal expectations, Codex work, owner work, and stop rules are maintained in `docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md`.

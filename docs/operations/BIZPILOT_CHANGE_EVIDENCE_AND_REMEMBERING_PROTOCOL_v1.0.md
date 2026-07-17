@@ -18,18 +18,18 @@ For every requested or completed work item, the team must:
 
 ### 1) Identity
 - Scope name:
-- Branch:
+- Working branch (if any; discover at runtime):
 - Commit range or SHAs:
 - Current branch HEAD:
-- Remote baseline:
+- Remote baseline discovered immediately before the change:
 - Source -> Target branch (if PR candidate):
 
 ### 2) Safety guardrails in this phase
 - No merge (if not explicitly approved).
 - No deploy (unless explicitly approved).
 - No production SQL (unless explicitly approved).
-- No `0010`? no `0018` blind re-apply.
-- No `0020` unless explicitly approved.
+- No blind re-apply of any migration, including `0010`, `0018`, or `0020`.
+- Repository migrations currently end at `0024`; the next new prefix is `0025`.
 - No real customer data.
 - No cleanup execution.
 - RLS must not be weakened.
@@ -38,9 +38,12 @@ For every requested or completed work item, the team must:
   - `bizpilo.com`
   - canonical production Supabase `qfqendrqimqvkoojpjao`
   - any managed/non-local Supabase host
-- Synthetic production smoke must only use owner-approved synthetic payloads and retain/cleanup decisions in this protocol.
+- Production readiness smoke is read-only and must not use or submit synthetic payloads.
 - Production readiness smoke must not create dashboard test artifacts (businesses, links, users, forms, leads, auth artifacts).
-- Synthetic production smoke and synthetic login/setup paths require explicit owner approval plus a documented keep/cleanup decision.
+- Production QA is read-only: no signup, quote submission, setup save, lead/status edit, user creation, provider-driven workspace setup, or database mutation.
+- Google authentication must never create a workspace silently; runtime callback/setup proof stays gated to an approved synthetic target.
+- Synthetic login/setup and all write-capable smoke paths belong only on an explicitly approved disposable target, with a documented cleanup decision.
+- Phase 24C.0 is historical DB-level partial evidence only. Real customer data remains blocked until a current disposable restore passes app/dashboard/intake/RLS, tenant-isolation, and founder-denial proof.
 
 ### 3) What exactly changed
 - File list (path + change type).
@@ -72,7 +75,7 @@ For every requested or completed work item, the team must:
 
 ### 7) Explicit next approval
 - What owner approval is required next, written as one action:
-  - example: “Approve running synthetic production quote security smoke”.
+  - example: “Approve running the strict restored-target acceptance on the named disposable database”.
 
 ## Mandatory minimum fields for every merge candidate package
 - PR title
@@ -109,23 +112,20 @@ Before starting the next change phase:
 3. Never archive required evidence in a chat message only.
 4. Never mark a step complete without command-backed evidence.
 
-## Current project status note
+## Current project status note — 2026-07-17
 
-As of the latest completed merge-readiness closure, the current evidence updates are:
+Current functional source identity:
 
-- `57a5256 docs(readiness): add phase 21v synthesis status report`
-- `81daca1 docs(readiness): record merge-readiness evidence closure`
+- remote commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`;
+- tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`;
+- local lint, typecheck, build, and 295/295 tests PASS;
+- GitHub CI run `29558683869` (CI #443), deployment `5484816130` / status `15596534668`, and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` PASS;
+- Production read-only smoke PASS: public 46/46, responsive 20/20, UI 621/621, and active + inactive Quote EN/fr-CA 4/4 HTTP 200 with no submission/mutation;
+- owner screenshot visibly renders the role-gated Founder Admin entry; full protected/Admin route acceptance remains GATED.
 
-with verified baseline:
+Dashboard V4.7 includes Reports, owner-configurable quote sections with list/tabs/steps presentation, optional Reports/Guide navigation visibility, and one guarded Admin shell entry. Google provider handling does not silently create a workspace; authenticated callback proof remains gated.
 
-- `pnpm verify` PASS
-- production public smoke PASS `9/9` against `https://bizpilo.com`
-- unit tests PASS `63/63`
-- RLS tests blocked by missing local `DATABASE_URL` (environmental blocker)
-
-Do not treat this as production-readiness complete for real customer data.
-The remaining blockers are still active (quote security smoke, fr-CA smoke, horizontal access smoke,
-live founder-admin visual QA, SMTP/provider checks, OpenAI quota block, backup/export drill, and `0020` owner approval).
+This closes the public read-only Production-release gate only. Do not treat it as authenticated-acceptance, restore, or real-data readiness. Phase 24C.0 remains historical partial DB-level evidence; the documented restore procedure still needs a strict passing exercise across restored app/dashboard/intake/RLS, tenant isolation, and founder denial before real customer data.
 
 ## Enforcement
 

@@ -11,7 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-17
  * Change Log:
- * - 2026-07-17: Added the V4.7 form-structure builder, responsive shell repair, optional navigation visibility, and OAuth workspace hardening candidate.
+ * - 2026-07-17: Published and runtime-hardened the V4.7 form builder, responsive shell, optional navigation, source reporting, and OAuth-safe workspace flow.
  * - 2026-07-16: Published V4.6 setup, Guide, source-reporting, tracked-link, and branding finalization with Vercel and Production evidence.
  * - 2026-07-16: Recorded V4.5 source publication and Production public read-only evidence.
  * - 2026-07-16: Added the V4.5 complete sidebar and founder-admin access repair candidate.
@@ -51,8 +51,12 @@
 
 - Made auth provider detection explicit. Email recovery may create the intended first workspace; Google or unknown-provider recovery can repair an existing membership but cannot silently create a tenant.
 - Restricted auth callbacks to exact safe routes, including exact `/admin`, and replaced provider-specific callback messaging with accurate neutral copy.
-- ESLint, TypeScript, all `294/294` unit/source tests, and the Next.js 16.2.4 production build pass.
-- Local production responsive smoke passes `20/20`; the EN/fr-CA light/dark UI matrix passes all recorded checks across 11 viewports. No customer submission or Production data mutation was performed.
+- Removed function-valued localization props from every affected Server-to-Client boundary in Quote Setup and the active public Quote flow; regression tests now reject non-serializable configuration copy and authenticated smoke includes Reports.
+- Localized persisted default consent at render time for EN/fr-CA without overwriting custom owner-authored consent.
+- ESLint, TypeScript, all `295/295` unit/source tests, and the Next.js 16.2.4 production build pass.
+- Exact tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d` was published directly to `main` as `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`; GitHub Actions run `29558683869` and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeeded.
+- Production public routes pass `46/46`, bilingual responsive routes pass `20/20`, the final UI matrix passes `621/621`, and active plus inactive Quote GET passes `4/4` in EN/fr-CA.
+- No Quote submission, customer-data write, database migration, or Production mutation was performed. Full protected visual acceptance still requires an approved authenticated session.
 
 ## 2026-07-16 — V4.6 setup-to-reporting finalization
 

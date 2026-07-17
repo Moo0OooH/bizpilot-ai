@@ -10,8 +10,9 @@
  * - docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md
  * Author: MoOoH
  * Created: 2026-07-15
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Removed obsolete branch baselines and aligned V4.7 QA, migration, restore, Reports/form-layout, Admin, and Google workspace-safety gates.
  * - 2026-07-15: Added the owner-authenticated remote legacy-branch retirement procedure with merged and unmerged safeguards.
  * - 2026-07-15: Replaced V2.0 with complete Auth, OAuth, Supabase, Production, SEO, analytics, real-data, and paid-pilot prompts.
  * ============================================================
@@ -28,16 +29,12 @@ Work in the existing BizPilot AI repository. Do not create a branch, PR, tag, ro
 
 Goal: retire pre-existing remote legacy branches while preserving main and any unmerged work that has not been explicitly classified.
 
-Current audited baseline:
-- main release/evidence head: e43aa831cb14e52fb20a2aa151e283a8ffdb67c0
-- local branches/worktrees: main only, one worktree, clean and synchronized
-- fully merged legacy candidates: backup/pre-dashboard-redesign-20260525-194012, backup/pre-dashboard-redesign-synced-20260525-194041, backup/status-snapshot-20260527-094538, codex/public-site-hero-redesign, phase-19-readiness-findings, phase-20-pilot-gate, phase-21-production-alignment, phase-21q-dashboard-redesign, review/p11-premium-home-admin-foundation, review/p12-dashboard-professionalization-gates, review/p13-founder-admin-console-professionalization
-- unmerged legacy candidates: backup/dashboard-redesign-pre-rebase-20260525-202820, backup/phase21q-pre-dashboard-fix-20260525-205945, founder-admin-user-list, review/public-site-clarity-and-breathing-room
+Do not rely on a hard-coded branch or SHA baseline from this prompt. Discover and record current `origin/main`, local HEAD, worktrees, branch tips, open PRs, protection rules, and divergence read-only before classifying anything.
 
 Procedure:
-1. Fetch/prune and reconfirm origin/main, branch tips, commit dates, open PRs, protection rules, and merged/no-merged classification. Stop if main moved unexpectedly.
-2. For every fully merged candidate, compare its tip to main and delete the remote branch only when Git proves it is an ancestor of current origin/main and no open PR or protection blocks deletion.
-3. For each unmerged candidate, produce a compact unique-commit and diff-stat table. Do not merge it into main. Do not delete it unless the owner explicitly classifies it as superseded or approves a named archival artifact first.
+1. Fetch/prune and record origin/main, branch tips, commit dates, open PRs, protection rules, and merged/not-merged classification. Stop if identity or authority is ambiguous.
+2. For every fully merged candidate discovered at runtime, compare its tip to main and delete the remote branch only when Git proves it is an ancestor of current origin/main and no open PR or protection blocks deletion.
+3. For each unmerged candidate discovered at runtime, produce a compact unique-commit and diff-stat table. Do not merge it into main. Do not delete it unless the owner explicitly classifies it as superseded or approves a named archival artifact first.
 4. If archival is approved, create the approved local bundle or protected archival reference outside the active branch list, verify it can resolve the tip, then delete only the specifically approved remote branch.
 5. Prune remote refs and verify the final exact branch list, main SHA, one local main branch, one worktree, clean status, and 0/0 main divergence.
 6. Report deleted, retained, blocked, and archived branches separately. Do not change application files, Production, Vercel, Supabase, data, environments, or documentation unless separately instructed.
@@ -57,7 +54,8 @@ Rules:
 - Cover EN and fr-CA, light/dark, keyboard, 390x844, 768x1024, 1366x768, and 1440x900.
 - Test sign-up, confirmation/callback as available, sign-in, sign-out, reset, redirects, errors, and language persistence.
 - Test active quote submission and success in both languages, consent/validation, one created lead, and no booking/price/availability promise.
-- Test Overview, Leads, filters/sort/pagination, Lead Detail source/missing info/edit/copy/manual status, Quote Setup six sections/save/refresh, Business Profile, Settings, and Guide.
+- Test Overview, Leads, Reports, filters/sort/pagination, Lead Detail source/missing info/edit/copy/manual status, Quote Setup seven tasks/save/refresh, configurable section title/description/order and list/tabs/steps presentation, Business Profile, Settings, and Guide.
+- Verify optional Reports/Guide visibility changes only those secondary entries, all routes remain authorized correctly, and the founder sees exactly one Admin shell entry.
 - Use two synthetic owners for cross-tenant negative checks.
 - Use a separately allowlisted synthetic founder for /founder and /admin; confirm a normal owner is denied.
 - Record exact commands, pass/fail counts, sanitized screenshots, defects fixed, and cleanup decision.
@@ -68,11 +66,11 @@ Rules:
 ## 02 — Google OAuth decision and verification
 
 ```text
-Audit BizPilot Google login without exposing secrets. The owner chooses exactly one state: KEEP OFF or CONFIGURE.
+Audit BizPilot Google login without exposing secrets. The owner chooses exactly one state: KEEP OFF or CONFIGURE. In either state, source and runtime behavior must never silently create a workspace after provider login.
 
 KEEP OFF: verify every Auth surface communicates unavailability honestly and no CTA implies Google login is live. Make only required copy/UI/test changes.
 
-CONFIGURE: have the authenticated operator use official Google Cloud and Supabase consoles. Verify exact local/Preview/Production origins and callback URLs, login-only identity scopes, existing-account behavior, cancel/error states, and EN/fr-CA UI. Do not request Gmail scopes and do not bootstrap a workspace from Google login.
+CONFIGURE: have the authenticated operator use official Google Cloud and Supabase consoles. Verify exact local/Preview/Production origins and callback URLs, login-only identity scopes, existing-account behavior, explicit no-membership setup routing, cancel/error states, and EN/fr-CA UI. Do not request Gmail scopes and do not bootstrap a workspace from Google login.
 
 Return a redacted evidence table and disable/rollback instructions. Do not claim live approval before owner browser QA passes. Do not paste client secrets or change unrelated provider settings.
 ```
@@ -88,7 +86,7 @@ Perform a no-secret BizPilot Auth email readiness audit through official Supabas
 ```text
 Perform a read-only-first BizPilot managed Supabase reconciliation. Read current migration, RLS, grant, backup, restore, privacy, and production-data standards first.
 
-Authenticate through official tooling without printing secrets. Confirm the exact project/environment and stop on ambiguity. Inspect migration history 0001-0024, schema, grants, RLS, functions/search_path, Auth settings, backup/export posture, and drift. Do not run SQL writes, migrations, cleanup, policy changes, user deletion, or test-data insertion.
+Authenticate through official tooling without printing secrets. Confirm the exact project/environment and stop on ambiguity. Inspect migration history 0001-0024, confirm the next repository prefix is 0025, and inspect schema, grants, RLS, functions/search_path, Auth settings, backup/export posture, and drift. Do not run SQL writes, migrations, cleanup, policy changes, user deletion, or test-data insertion.
 
 Produce a redacted drift map with PASS/FAIL/UNKNOWN/OWNER ACTION and a bounded backup-aware apply/rollback plan for separate approval.
 ```
@@ -98,7 +96,7 @@ Produce a redacted drift map with PASS/FAIL/UNKNOWN/OWNER ACTION and a bounded b
 ```text
 Execute only the exact owner-approved BizPilot reconciliation plan from the read-only report. Reconfirm project identity, current backup, statements, maintenance impact, verification, and rollback before any write. Apply one bounded step at a time and stop on unexpected output. Never insert synthetic customer data into managed Production.
 
-Restore a current backup/export to a disposable target. Run the complete RLS suite plus authenticated Owner/Admin/Intake smoke against that restored target. Publish redacted evidence for migration alignment, tenant isolation, public-slug access, founder denial, restore success, app compatibility, and rollback. Do not expand scope.
+Restore a current backup/export to a disposable target using the documented procedure. Run the complete RLS suite plus authenticated Owner/Admin/Intake smoke against that restored target. Publish redacted evidence for migration alignment, tenant isolation, public-slug access, founder denial, restore success, app compatibility, and rollback. Historical Phase 24C.0 DB-level evidence is partial only and cannot be reused as this strict pass. Do not expand scope.
 ```
 
 ## 06 — Final GitHub, Vercel, domain, and authenticated read-only acceptance
@@ -106,7 +104,7 @@ Restore a current backup/export to a disposable target. Run the complete RLS sui
 ```text
 Verify the final pushed BizPilot main commit using read-only checks. Confirm local main equals origin/main, GitHub CI succeeds, the Vercel Production deployment maps to the exact commit, bizpilo.com HTTPS/security headers are healthy, and environment keys are complete without showing values.
 
-Run all public EN/fr-CA route, responsive, UI-matrix, 404, Auth GET, and inactive Quote GET smokes. With owner-approved no-secret session handling, perform authenticated read-only Owner/Admin visual acceptance without creating/editing customer records. Do not submit Production quotes, change environment values, run migrations, or create test users/leads. Report exact SHA, CI run, deployment ID, pass/fail totals, blocked checks, and database actions (normally none).
+Run all public EN/fr-CA route, responsive, UI-matrix, 404, Auth GET, and active/inactive Quote GET smokes. With owner-approved no-secret session handling, perform authenticated read-only Owner/Admin visual acceptance without creating/editing customer records. Verify Reports, Quote Setup rendering, optional Reports/Guide visibility, and one Admin entry visually without saving. Do not sign up, invoke write-capable Google callback setup, submit Production quotes, change environment values, run migrations, or create test users/leads. Report exact SHA/tree, CI run, deployment ID, pass/fail totals, blocked checks, and database actions (normally none).
 ```
 
 ## 07 — Search Console and Core Web Vitals

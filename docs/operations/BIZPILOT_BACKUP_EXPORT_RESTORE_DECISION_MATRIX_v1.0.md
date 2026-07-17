@@ -4,7 +4,7 @@
 **Document Type:** Production data-safety decision matrix
 **Status:** Active real-data gate; synthetic demos allowed, real customer data blocked
 **Owner:** MoOoH
-**Last Updated:** 2026-07-15
+**Last Updated:** 2026-07-17
 **Related:**
 
 - `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`
@@ -16,15 +16,16 @@
 
 ## 1. Current Decision
 
-BizPilot can continue founder-controlled synthetic demos on the current
-production stack, but it cannot accept real customer data or a paid pilot until
-OpenAI operating posture and final owner approval are recorded.
+BizPilot can continue public read-only Production demonstrations and
+write-capable synthetic QA on an explicitly approved disposable target. It
+cannot accept real customer data or start a paid pilot until the strict restored
+app/dashboard/intake/RLS and tenant-isolation proof, the other real-data gates,
+and final owner approval are recorded.
 
-Owner decision: strict restored app/dashboard/RLS smoke is not required for the
-first limited pilot. DB-level restore proof is sufficient for the current
-limited pilot gate, provided the hard safety guardrails below remain in force.
-Strict restored app/dashboard/RLS smoke is deferred to P1 before paid pilot,
-before production migrations, or before destructive/bulk data work.
+Phase 24C.0 is historical partial evidence: it proved a logical export and a
+DB-level disposable restore at that time. The restore procedure now exists, but
+Phase 24C.1 did not pass because app/dashboard smoke was not run and the restored
+RLS suite failed. DB-level proof alone cannot close the real-customer-data gate.
 
 Current production posture:
 
@@ -32,10 +33,10 @@ Current production posture:
 | --- | --- |
 | App URL | `https://bizpilo.com` |
 | Supabase project | `bizpilot-production` / `qfqendrqimqvkoojpjao` |
-| Data scope allowed now | Synthetic founder demos only |
+| Data scope allowed now | Read-only Production demos; synthetic writes only on an approved disposable target |
 | Scheduled backup/PITR posture | Not enough for real customer data |
-| Manual export | Completed for Phase 24C.0 DB-level proof |
-| Restore drill | DB-level restore completed; strict app/RLS restore smoke not passed |
+| Manual export | Historical Phase 24C.0 proof; current backup freshness not established |
+| Restore drill | Historical DB-level restore completed; strict app/dashboard/intake/RLS/isolation exercise not passed |
 | Production SQL requiring data safety | Blocked unless separately approved with exact query/migration and backup posture |
 
 ## 2. Official Supabase References
@@ -59,11 +60,11 @@ Operational notes from those docs, summarized for BizPilot:
 
 | Situation | Allowed now | Required before action |
 | --- | --- | --- |
-| Public route smoke, homepage demo, trust pages | Yes | No real data, no secrets, no production SQL |
-| Synthetic signup/quote smoke | Yes, with safe inbox and fake payload | Disposable account, no real customer content, sanitized evidence only |
-| Production `0020` for fake/test auth deletion | Not until safety is recorded | Exact migration approval plus backup/export posture or explicit risk acceptance for synthetic-only cleanup |
-| Real customer quote submissions | No | OpenAI operating posture accepted, SMTP posture stable, production smokes pass, and final owner approval recorded |
-| Paid pilot | No | Same as real customer data plus payment process evidence |
+| Public route smoke, homepage demo, trust pages | Yes, GET/read-only in Production | No real data, no secrets, no production SQL or record/configuration mutation |
+| Synthetic signup/quote smoke | No in Production; yes on approved disposable target | Proven non-Production target, disposable account, no real customer content, sanitized evidence only |
+| Production `0020` for fake/test auth deletion | Not until safety is recorded | Exact migration approval, current protected export, strict restored-target proof, rollback, and target confirmation; no QA-based bypass |
+| Real customer quote submissions | No | Current protected export plus strict restored app/dashboard/intake/RLS/isolation proof, Auth/SMTP/OpenAI/privacy gates, read-only Production acceptance, and final owner approval |
+| Paid pilot | No | Same as real customer data plus payment, commercial, support, rollback, and offboarding evidence |
 | Destructive cleanup/purge | No | Separate exact owner approval, verified backup/export, and scoped synthetic target |
 
 ## 4. Recommended Path Before Real Customer Data
@@ -80,7 +81,7 @@ logical export and restore it outside production without relying only on
 provider-managed backups. It does not require production SQL, migrations,
 deletes, purges, or data mutation.
 
-Current Phase 24C status:
+Historical Phase 24C status (partial evidence only):
 
 1. Owner provided secrets only through local shell/session variables or an
    approved password manager, never in docs:
@@ -102,8 +103,9 @@ Current Phase 24C status:
 8. Operator recorded sanitized evidence in
    `docs/ops/BACKUP_EXPORT_RESTORE_RUNBOOK.md`.
 
-Real external customer data remains blocked until OpenAI operating posture and
-final owner approval are recorded.
+Real external customer data remains blocked until a current export is restored
+and the strict app/dashboard/intake/RLS/isolation exercise passes, in addition
+to the remaining Auth, OpenAI, privacy/operations, and owner-approval gates.
 
 Alternative production-ready path:
 
@@ -121,13 +123,15 @@ Lower-cost pre-pilot alternative:
 
 1. Keep Supabase Free for synthetic demos only.
 2. Do not collect real customer data.
-3. Use the completed Phase 24C.0 Supabase CLI logical export and local Docker
-   DB-level restore proof as the current low-cost evidence.
-4. Perform restored app/dashboard/RLS smoke before paid pilot, before
-   production migrations, or before destructive/bulk data work.
+3. Keep Phase 24C.0 only as historical evidence that the logical procedure was
+   exercised at DB level; do not treat its export as a current recovery point.
+4. Perform and pass the strict restored app/dashboard/intake/RLS/isolation
+   exercise before any real customer data, and repeat it before production
+   migrations or destructive/bulk data work when the evidence is no longer current.
 
-The lower-cost path has exercised export and DB-level restore, but it does not
-claim strict app/RLS restore proof.
+The lower-cost path has historical export and DB-level restore evidence, but it
+does not claim strict app/dashboard/intake/RLS/isolation proof and therefore
+does not permit real customer data.
 
 Hard guardrails while using the lower-cost path:
 
@@ -138,6 +142,7 @@ Hard guardrails while using the lower-cost path:
 - no bulk data mutation,
 - no automation,
 - no AI auto-send,
+- no Production QA writes,
 - manual owner review only.
 
 ## 5. Export Storage Rules
@@ -171,8 +176,9 @@ A restore drill is complete only when all are true:
 - no secrets or real customer rows are printed,
 - pass/fail result and date are recorded in the runbook.
 
-Phase 24C.0 satisfies the DB-level subset of this definition. Phase 24C.1 does
-not satisfy strict restored app/RLS acceptance yet.
+Phase 24C.0 satisfies only the historical DB-level subset of this definition.
+Phase 24C.1 does not satisfy strict restored app/dashboard/intake/RLS/isolation
+acceptance yet, so the real-data gate remains closed.
 
 ## 7. Phase 21P Decision
 
