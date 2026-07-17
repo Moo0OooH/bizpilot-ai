@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed V4.4 on main with successful Vercel and Production public read-only evidence.
  * - 2026-07-16: Added the V4.4 Quote Setup serialization repair, single desktop navigation, and accurate route recovery candidate.
  * - 2026-07-16: Closed V4.3 on main with successful CI, Vercel, and Production public read-only evidence.
  * - 2026-07-16: Added the V4.3 protected dashboard runtime and centered-navigation repair candidate.
@@ -45,6 +46,9 @@
 - ESLint, TypeScript, all `257/257` unit/source tests, and the Next.js 16.2.4 production build pass.
 - No route, migration, schema, submission, tenant record, or Production database state was added or changed.
 - Authenticated browser confirmation remains gated until an approved local/synthetic session or an owner-run deployed check is available.
+- Exact source was published directly to `main` as `0d9ec227244feae27d912e8ff3f2c3c84087f961`; Vercel target `Etoe7P45rEUvT3VEdTAuwayFyvMs` succeeded.
+- Production passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA.
+- The available connector does not expose push-triggered GitHub Actions runs, so no CI run number is claimed for this release.
 
 ## 2026-07-16 — V4.3 protected runtime recovery
 

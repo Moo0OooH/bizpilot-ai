@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Closed V4.4 on main with successful Vercel and Production public read-only acceptance evidence.
  * - 2026-07-16: Added the V4.4 Quote Setup render repair, single-navigation shell, and accurate segment-retry recovery contract.
  * - 2026-07-16: Closed V4.3 on main with successful CI/Vercel and Production public read-only acceptance evidence.
  * - 2026-07-16: Added the V4.3 centered native navigation and request-scoped protected data-read contract.
@@ -93,8 +94,8 @@ Dashboard V4.4 applies protected rendering, navigation, and recovery changes onl
 
 ## Verification status
 
-Dashboard V4.4 is source-complete on the local candidate tree. The Quote Setup serialization regression test and all `257/257` unit/source tests pass. ESLint, TypeScript, and the Next.js 16.2.4 production build pass. No Production data or schema was changed.
+Dashboard V4.4 release SHA `0d9ec227244feae27d912e8ff3f2c3c84087f961` is on `main`. Vercel target `Etoe7P45rEUvT3VEdTAuwayFyvMs` succeeded. Production read-only acceptance passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA.
 
-The prior V4.3 release SHA `bcf037090717935a2cd97bcdccb08a525795c246`, GitHub CI run `29538671150`, Vercel target `FTVpVmQT8j8ST74YvpzF6Q47vdDq`, and public read-only acceptance evidence remain the latest published evidence until this candidate is released. Authenticated browser smoke still requires an approved local/synthetic auth target; absence of that target is not silently presented as a passed authenticated test.
+The exact release tree passes the Quote Setup serialization regression contract, all `257/257` unit/source tests, ESLint, TypeScript, and the Next.js 16.2.4 production build. The available GitHub connector does not expose push-triggered Actions runs, so a GitHub CI run number is not invented. Authenticated browser smoke still requires an approved local/synthetic auth target; absence of that target is not silently presented as a passed authenticated test.
 
 See `PHASE_PROGRESS.md` for exact completion evidence and remaining gates.
