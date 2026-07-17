@@ -10,8 +10,9 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Rebalanced the desktop hero columns and softened headline and section-heading weights for clearer responsive rhythm.
  * - 2026-07-16: Widened the hero display measure and reduced its weight to prevent excessive headline wrapping on laptops and tablets.
  * - 2026-07-16: Consolidated the page to five sections, softened display weights, and raised product-scene microcopy to a 14px floor.
  * ============================================================
@@ -71,7 +72,7 @@
   margin-block-start: 1.25rem;
   color: var(--text-strong);
   font-size: var(--v3-type-display);
-  font-weight: 740;
+  font-weight: 680;
   letter-spacing: -0.045em;
   line-height: var(--v3-leading-display);
   text-wrap: balance;
@@ -413,7 +414,7 @@
 .finalPanel h2 {
   margin-block-start: 0.8rem;
   font-size: var(--v3-type-section);
-  font-weight: 780;
+  font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1.08;
   text-wrap: balance;
@@ -681,7 +682,7 @@
 }
 
 @media (min-width: 1180px) {
-  .heroGrid { grid-template-columns: minmax(0, 0.86fr) minmax(34rem, 1.14fr); }
+  .heroGrid { grid-template-columns: minmax(0, 1fr) minmax(32rem, 1fr); }
   .problemGrid,
   .outcomesGrid { grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr); }
   .workflowList { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
@@ -694,7 +695,7 @@
 @media (min-width: 1180px) and (max-height: 900px) {
   .heroSection { padding-block: 2rem 3.5rem; }
   .heroGrid { align-items: start; gap: clamp(2.25rem, 3.5vw, 3.5rem); }
-  .heroTitle { max-inline-size: 100%; margin-block-start: 1rem; line-height: 1.02; }
+  .heroTitle { max-inline-size: 19ch; margin-block-start: 1rem; line-height: 1.07; }
   .heroBody { margin-block-start: 1.05rem; font-size: 1.0625rem; line-height: 1.55; }
   .heroActions { margin-block-start: 1.35rem; }
   .heroAssurances { margin-block-start: 1rem; }
@@ -723,7 +724,7 @@
 
 @media (max-width: 719px) {
   .heroSection { padding-block: 2.4rem 4.5rem; }
-  .heroTitle { font-size: clamp(2.65rem, 10.5vw, 3.125rem); letter-spacing: -0.04em; }
+  .heroTitle { max-inline-size: 18ch; font-size: clamp(2.35rem, 9.5vw, 2.9rem); letter-spacing: -0.035em; }
   .heroActions > * { inline-size: 100%; }
   .heroAssurances span:nth-child(n + 3) { display: none; }
   .requestSummary { grid-template-columns: 1fr; }

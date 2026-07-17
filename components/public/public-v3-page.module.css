@@ -10,8 +10,9 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Rebalanced shared page hero sizing, column proportions, and heading weights for more consistent wrapping across viewport classes.
  * - 2026-07-16: Widened supporting-page hero measures and reduced their display weight to retain a calm hierarchy on laptop viewports.
  * - 2026-07-16: Unified route accents and breakpoints, raised microcopy, softened display weights, and added distinct feature, pricing, FAQ, and trust hierarchies.
  * - 2026-07-14: Balanced desktop card grids and improved card icon and text clarity.
@@ -69,7 +70,7 @@
   max-inline-size: 20ch;
   margin-block: 1.2rem 0;
   font-size: var(--v3-type-display);
-  font-weight: 740;
+  font-weight: 680;
   line-height: var(--v3-leading-display);
   letter-spacing: -0.045em;
   text-wrap: balance;
@@ -438,7 +439,7 @@
   margin-block: 1rem 0;
   color: var(--text-strong);
   font-size: var(--v3-type-card);
-  font-weight: 780;
+  font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.025em;
   text-wrap: balance;
@@ -649,7 +650,7 @@
 }
 
 @media (min-width: 1180px) {
-  .heroGrid { grid-template-columns: minmax(0, 0.96fr) minmax(27rem, 0.84fr); }
+  .heroGrid { grid-template-columns: minmax(0, 1.05fr) minmax(27rem, 0.95fr); }
   .featureGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .featureCardFeatured { grid-column: span 2; }
   .featureCardControl { grid-column: 1 / -1; }
@@ -670,7 +671,7 @@
 @media (min-width: 1180px) and (max-height: 900px) {
   .hero { padding-block: 2rem 3.5rem; }
   .heroGrid { align-items: start; gap: clamp(2.25rem, 4vw, 4rem); }
-  .heroTitle { max-inline-size: 100%; margin-block-start: 1rem; line-height: 1.03; }
+  .heroTitle { max-inline-size: 19ch; margin-block-start: 1rem; line-height: 1.07; }
   .heroBody { margin-block-start: 1.05rem; font-size: 1.0625rem; line-height: 1.55; }
   .actions { margin-block-start: 1.35rem; }
   .visualChrome { min-block-size: 2.75rem; }
@@ -695,7 +696,7 @@
 
 @media (max-width: 719px) {
   .hero { padding-block-start: 2.5rem; }
-  .heroTitle { font-size: clamp(2.65rem, 10.5vw, 3.125rem); }
+  .heroTitle { max-inline-size: 18ch; font-size: clamp(2.35rem, 9.5vw, 2.9rem); }
   .actions > * { inline-size: 100%; }
   .workspaceVisual { grid-template-columns: 1fr; }
   .workspaceRail { grid-template-columns: repeat(3, minmax(0, 1fr)); border-inline-end: 0; border-block-end: 1px solid var(--border-default); }
