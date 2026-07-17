@@ -11,8 +11,9 @@
  * - docs/operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Updated the owner/admin acceptance matrix for Dashboard V4.5 navigation and seven Quote Setup tasks.
  * - 2026-07-15: Recorded the complete V2.1 automated candidate gate and explicit browser/auth/RLS environment gates.
  * - 2026-07-15: Added the complete route/flow audit as the current bilingual acceptance matrix.
  * - 2026-07-14: Replaced the stale phase-specific checklist with the V2 route, language, workflow, and safety acceptance gate.
@@ -42,7 +43,7 @@ Record the exact result of each command. Missing environment variables are `GATE
 | --- | --- | --- |
 | `pnpm lint` or direct ESLint binary | Zero errors and warnings | PASS, zero warnings |
 | `pnpm typecheck` or `tsc --noEmit` | PASS | PASS |
-| `pnpm test:unit` | All current tests pass | PASS, 249/249 |
+| `pnpm test:unit` | All current tests pass | PASS, 257/257 |
 | `pnpm build` | Next.js production build passes | PASS, Next.js 16.2.4 |
 | Local safe HTTP smokes | Public/locale/responsive/UI/Quote contracts pass | PASS: public 46/46; responsive 20/20; UI matrix zero failures; inactive Quote 2/2 |
 | Local target classifier | Explicitly local/synthetic for authenticated or write smoke | GATED: App/Supabase/DB target variables missing; no authenticated/write smoke authorized |
@@ -63,11 +64,11 @@ Test English and Canadian French at 390, 768, 1280, and 1440 CSS pixels plus key
 ## Owner dashboard
 
 - [ ] Signed-out dashboard access redirects safely to sign-in.
-- [ ] Desktop and mobile navigation expose exactly the essential destinations: Overview, Leads, Quote Setup, Business Profile, and Settings.
+- [ ] Desktop sidebar exposes grouped Overview, Leads, Quote Setup, Business Profile, Settings, and Guide routes; mobile keeps the five primary tasks without overflow.
 - [ ] Overview shows one clear primary action, compact readiness, honest metrics, current priorities, and a short lead queue.
 - [ ] Leads filters, empty states, pagination, status badges, urgency, and deep links remain usable in both languages.
 - [ ] Lead detail exposes source answers and missing information, lets the owner edit and copy a draft, and never sends automatically.
-- [ ] Quote Setup uses the six current sections; save, refresh, validation, success, and error states work on an approved synthetic target.
+- [ ] Quote Setup uses seven tasks (Overview, Public Link, Services, Form Questions, Branding, AI Instructions, Privacy); save, refresh, validation, success, and error states work on an approved synthetic target.
 - [ ] Business Profile and Settings avoid duplicate configuration; language and theme persist as designed.
 - [ ] Long names, email addresses, URLs, French labels, and customer answers wrap without overlap or horizontal scroll.
 - [ ] Loading, empty, partial-data, provider-fallback, and permission-error states remain calm and actionable.
@@ -76,6 +77,7 @@ Test English and Canadian French at 390, 768, 1280, and 1440 CSS pixels plus key
 
 - [ ] Signed-out users redirect to sign-in and normal owners cannot view founder data.
 - [ ] `/founder` resolves to the authorized destination without bypassing founder checks.
+- [ ] Authorized founders see a direct Founder Admin entry on desktop; unauthorized owners never see it and cannot open `/admin` directly.
 - [ ] Overview uses localized, honest account/health data and does not present decorative revenue or conversion claims.
 - [ ] Search, tabs, pagination, status controls, audit history, and guarded actions work for a founder-approved synthetic account.
 - [ ] Any destructive, access, lifecycle, or production-data control requires its documented confirmation and evidence procedure.

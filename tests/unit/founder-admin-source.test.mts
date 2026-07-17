@@ -12,6 +12,7 @@
  * Created: 2026-05-26
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Guarded linked-user fallback failures so partial Auth reads cannot hide the entire Founder Admin console.
  * - 2026-07-16: Guarded progressive Business Operations disclosures and protected-route navigation hardening.
  * - 2026-07-14: Updated overview guards for localized compact metrics and direct founder-to-admin routing.
  * - 2026-07-11: Added guards for localized founder inbox, safety rail, and admin activity metadata hooks.
@@ -45,6 +46,8 @@ describe("Founder admin source safety", () => {
     assert.equal(source.includes('readName: "profiles"'), true);
     assert.equal(source.includes("founder_admin.auth_rest_unavailable"), true);
     assert.equal(source.includes("buildFounderLinkedUsersPage"), true);
+    assert.equal(source.includes('readName: "linked_auth_users_fallback"'), true);
+    assert.equal(source.includes("return initialUsersResult;"), true);
     assert.equal(source.includes("supabase.auth.admin.getUserById(userId)"), true);
   });
 

@@ -12,6 +12,7 @@
  * Created: 2026-05-22
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Localized founder access and health fallback labels while preserving the complete six-panel admin navigation.
  * - 2026-07-16: Reduced Business Operations density with progressive disclosures, removed duplicated actions and activity, and hardened protected admin navigation.
  * - 2026-07-14: Simplified the founder overview, removed redundant charts, localized remaining summary labels, and retained guarded manual controls in dedicated tabs.
  * - 2026-07-11: Localized founder inbox, recent admin-change, cleanup-safety, activity-filter, and action-label helpers.
@@ -1071,20 +1072,24 @@ function isProductionHealthUnhealthy(
   ].some((ok) => !ok);
 }
 
-function getFounderAccessMessage(error: unknown): string {
+function getFounderAccessMessage(error: unknown, copy: AdminCopy): string {
   const message =
     error instanceof Error && error.message.trim().length > 0
       ? error.message.trim()
       : "";
-  const allowed = new Set([
-    "Founder admin requires sign-in.",
-    "Founder admin is not configured.",
-    "Founder admin access required.",
-  ]);
+  if (message === "Founder admin requires sign-in.") {
+    return copy.accessBlocked.signIn;
+  }
 
-  return allowed.has(message)
-    ? message
-    : "Founder admin is not available right now.";
+  if (message === "Founder admin is not configured.") {
+    return copy.accessBlocked.help;
+  }
+
+  if (message === "Founder admin access required.") {
+    return copy.accessBlocked.description;
+  }
+
+  return copy.accessBlocked.title;
 }
 
 function FounderAccessBlocked({
@@ -3934,7 +3939,11 @@ function AdminTabsBar({
                             {item.count}
                           </span>
                         ) : null}
-                        {showCheck ? <StatusBadge tone="red">Check</StatusBadge> : null}
+                        {showCheck ? (
+                          <StatusBadge tone="red">
+                            {copy.overview.healthSection.needsAttention}
+                          </StatusBadge>
+                        ) : null}
                       </span>
                     </span>
                     <span className="truncate text-[11.5px] font-bold text-[var(--dash-text-muted)]">
@@ -4027,7 +4036,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     return (
       <FounderAccessBlocked
         copy={adminCopy}
-        message={getFounderAccessMessage(error)}
+        message={getFounderAccessMessage(error, adminCopy)}
       />
     );
   }

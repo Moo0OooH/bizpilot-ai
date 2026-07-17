@@ -9,8 +9,9 @@
  * - server/repositories/founder-admin.repository.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Kept the founder console available when the linked-user fallback read is unavailable.
  * - 2026-05-26: Sent a server user agent on Auth Admin REST fallback to avoid browser-agent secret-key rejection.
  * - 2026-06-17: Read Supabase admin credentials through the shared secret-key-compatible config.
  * - 2026-06-27: Defaulted founder user review to a stable 10-row page for the admin console.
@@ -879,6 +880,12 @@ export async function getFounderAdminOverview(input: {
       pageSize: usersPageSize,
       query: usersQuery,
       supabase,
+    }).catch((error) => {
+      logFounderAdminReadUnavailable({
+        error,
+        readName: "linked_auth_users_fallback",
+      });
+      return initialUsersResult;
     });
   }
 
@@ -1065,7 +1072,7 @@ export async function getFounderAdminOverview(input: {
     leadInbox: leadInbox.map((lead) => ({
       businessId: lead.business_id,
       businessName:
-        businessById.get(lead.business_id)?.name ?? "Unknown workspace",
+        businessById.get(lead.business_id)?.name ?? "—",
       cityOrServiceArea: lead.city_or_service_area,
       createdAt: lead.created_at,
       customerContact: lead.customer_contact,

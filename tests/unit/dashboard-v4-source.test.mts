@@ -15,6 +15,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Guarded complete grouped desktop navigation, authorized Founder Admin access, and focused mobile tasks.
  * - 2026-07-16: Guarded the single centered desktop navigation and mobile-only bottom bar.
  * - 2026-07-14: Replaced superseded Dashboard V3/P12 guards with the current task-first V4 acceptance contract.
  * ============================================================
@@ -25,7 +26,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
 describe("Dashboard V4 source contracts", () => {
-  it("keeps five task destinations visible in centered desktop and mobile navigation", () => {
+  it("keeps complete grouped desktop navigation and five focused mobile tasks", () => {
     const sidebar = readFileSync(
       "components/dashboard/dashboard-sidebar.tsx",
       "utf8",
@@ -43,18 +44,17 @@ describe("Dashboard V4 source contracts", () => {
       "/dashboard/settings",
     ]) {
       assert.equal(sidebar.includes(`href: "${href}"`), true, `Missing ${href}.`);
-      assert.equal(
-        topbar.includes(`href: "${href}"`),
-        true,
-        `Missing desktop ${href}.`,
-      );
+      assert.equal(topbar.includes(`href: "${href}"`), true, `Missing compact ${href}.`);
     }
 
-    assert.equal(sidebar.includes("dashboard-sidebar sticky"), false);
+    assert.equal(sidebar.includes("dashboard-sidebar sticky"), true);
     assert.equal(sidebar.includes("dashboard-mobile-nav fixed"), true);
-    assert.equal(topbar.includes("primaryRoutes.map"), true);
+    assert.equal(topbar.includes("primaryRoutes.map"), false);
     assert.equal(topbar.includes('href="/dashboard/guide"'), true);
-    assert.equal(sidebar.includes('href: "/dashboard/guide"'), false);
+    assert.equal(sidebar.includes('href: "/dashboard/guide"'), true);
+    assert.equal(sidebar.includes('href="/admin"'), true);
+    assert.equal(sidebar.includes("showFounderAdmin ?"), true);
+    assert.equal(topbar.includes('href="/admin"'), true);
     assert.equal(sidebar.includes('href: "/dashboard/founder"'), false);
   });
 

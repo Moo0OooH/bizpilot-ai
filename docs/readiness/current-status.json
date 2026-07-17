@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-16T12:53:00-04:00",
+  "generated_at": "2026-07-16T15:30:00-04:00",
   "repository": "Moo0OooH/bizpilot-ai",
   "branch": "main",
   "release_version": "2.1.0",
@@ -7,8 +7,8 @@
   "repository_hygiene": "local main is clean and synchronized with one worktree; 15 pre-existing remote legacy branches remain: 11 merged candidates and 4 unmerged candidates; owner-authenticated retirement is Prompt 00",
   "product_status": "manual_first_smart_intake_and_owner_reviewed_reply_preparation_implemented; real_customer_data_and_paid_pilot_blocked",
   "public_site": "Website V4 final design polish and V2.1 bilingual system-state hardening are live; Production passed every public/Auth/Quote/404 GET contract, responsive route contract, UI matrix, and managed-browser EN/fr-CA design audit",
-  "dashboard": "Dashboard V4 task-first simplification remains implemented; authenticated browser proof requires an approved safe target",
-  "founder_admin": "guarded founder oversight implemented; overview simplified and localized; production-sensitive operations remain gated",
+  "dashboard": "Dashboard V4.5 complete grouped desktop navigation is source-verified; all owner routes and Guide are restored while mobile retains five focused tasks; authenticated browser proof requires an approved safe target",
+  "founder_admin": "guarded founder oversight implemented; authorized desktop entry restored; optional Auth fallback failures are contained and logged; production-sensitive operations remain gated",
   "quote_intake": "implemented with business-specific links, validation, consent, abuse safeguards, inactive-link handling, safe read-failure fallback, localized invalid-success recovery, and manual-first success boundaries",
   "ai_draft": "owner-reviewed editable draft assistance only; no auto-send, booking, price or availability promise, or autonomous action",
   "email_password_auth": "implemented",
@@ -24,7 +24,7 @@
   "code_verification": {
     "typecheck": "pass",
     "dashboard_v4_source_contracts": "pass",
-    "unit": "pass: 249/249",
+    "unit": "pass: 257/257",
     "lint": "pass: zero warnings",
     "build": "pass: Next.js 16.2.4 production build",
     "documentation_links": "pass: 54 Markdown files including root README; zero broken local Markdown links",

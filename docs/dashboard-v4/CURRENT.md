@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.5 complete navigation restoration and founder-admin access resilience contract.
  * - 2026-07-16: Closed V4.4 on main with successful Vercel and Production public read-only acceptance evidence.
  * - 2026-07-16: Added the V4.4 Quote Setup render repair, single-navigation shell, and accurate segment-retry recovery contract.
  * - 2026-07-16: Closed V4.3 on main with successful CI/Vercel and Production public read-only acceptance evidence.
@@ -30,7 +31,7 @@
 
 ## Outcome
 
-Dashboard V4.4 repairs the authenticated Quote Setup render failure reported after V4.3. It removes the non-serializable formatter that crossed the Server/Client Component boundary, keeps one centered desktop route map instead of duplicating the same destinations in a fixed sidebar, and replaces the misleading whole-dashboard reload action with a route-segment retry that preserves saved workspace data.
+Dashboard V4.5 restores a complete, professional desktop workspace after V4.4 made essential destinations too easy to lose. A fixed grouped sidebar exposes every owner route, Guide, workspace identity, and the authorized Founder Admin entry; the topbar is reserved for language, theme, account, and compact-screen actions. Founder data reads now degrade panel-by-panel instead of hiding the entire Admin console when an optional Auth fallback fails.
 
 ## Jobs to be done
 
@@ -47,7 +48,7 @@ Dashboard V4.4 repairs the authenticated Quote Setup render failure reported aft
 
 ## Information architecture
 
-Primary owner navigation is exactly five destinations: Overview, Leads, Quote Setup, Business Profile, and Settings. The Operating Guide is a secondary link. The `/dashboard/quote-setup` compatibility alias may redirect to the canonical `/dashboard/configuration` route; it must not create a duplicate UI.
+Desktop owner navigation is grouped by job: Command (Overview, Leads), Setup (Quote Setup, Business Profile), and Control (Settings, Guide). The authorized Founder Admin entry is explicit and role-gated. Mobile keeps five focused primary tasks in the bottom bar, with Guide and Admin available through compact utilities. The `/dashboard/quote-setup` compatibility alias may redirect to the canonical `/dashboard/configuration` route; it must not create a duplicate UI.
 
 No new application route was added in this release. `/founder` now performs guarded role checks and sends an authorized founder directly to `/admin`.
 
@@ -60,7 +61,8 @@ Quote Setup uses one horizontal task bar with seven mounted panels: Overview, Pu
 - Contextual help appears only when needed or inside a disclosure.
 - Mobile navigation includes Settings and respects safe-area padding.
 - Menus stay within the viewport; pages avoid nested-scroll cards.
-- Wide screens expose the complete owner route bar in the center of the topbar; tablet and mobile keep a compact Actions disclosure.
+- Wide screens expose the complete grouped route map in a fixed left sidebar; the topbar contains utilities only. Tablet and mobile keep a viewport-bounded Actions disclosure and five-task bottom bar.
+- Founder Admin is visible on wide screens in both the sidebar and utility area only when the signed-in email passes the existing founder authorization check.
 - Protected topbar and mobile destinations use native full-page transitions. A stale client router or failed React Server Component transition must not trap the owner.
 - Current-user and business-workspace reads are memoized per server render so layout and page do not repeat the same authenticated queries.
 - A caught dashboard route error explains that saved workspace data is unchanged, retries the failed route segment, and offers native links to Overview, Quote Setup, and Guide.
@@ -90,11 +92,11 @@ English and Canadian French use the central `getBizPilotCopy` dictionary. Route/
 
 ## Data and security posture
 
-Dashboard V4.4 applies protected rendering, navigation, and recovery changes only. It adds no migration, external upload service, autonomous integration, real-customer-data access, or paid-pilot approval. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
+Dashboard V4.5 applies protected shell, localization, and read-resilience changes only. It adds no migration, external upload service, autonomous integration, real-customer-data access, or paid-pilot approval. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
 
 ## Verification status
 
-Dashboard V4.4 release SHA `0d9ec227244feae27d912e8ff3f2c3c84087f961` is on `main`. Vercel target `Etoe7P45rEUvT3VEdTAuwayFyvMs` succeeded. Production read-only acceptance passed public routes `46/46`, bilingual responsive routes `20/20`, the final UI matrix with zero failures, and inactive Quote GET `2/2` in EN/fr-CA.
+Dashboard V4.5 is a verified release candidate. Publication SHA, Vercel target, and Production read-only evidence are recorded after rollout.
 
 The exact release tree passes the Quote Setup serialization regression contract, all `257/257` unit/source tests, ESLint, TypeScript, and the Next.js 16.2.4 production build. The available GitHub connector does not expose push-triggered Actions runs, so a GitHub CI run number is not invented. Authenticated browser smoke still requires an approved local/synthetic auth target; absence of that target is not silently presented as a passed authenticated test.
 

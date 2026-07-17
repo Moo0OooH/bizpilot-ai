@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Added the V4.5 complete sidebar and founder-admin access repair candidate.
  * - 2026-07-16: Closed V4.4 on main with successful Vercel and Production public read-only evidence.
  * - 2026-07-16: Added the V4.4 Quote Setup serialization repair, single desktop navigation, and accurate route recovery candidate.
  * - 2026-07-16: Closed V4.3 on main with successful CI, Vercel, and Production public read-only evidence.
@@ -26,6 +27,25 @@
  -->
 
 # Dashboard V4 Changelog
+
+## 2026-07-16 — V4.5 complete workspace navigation
+
+### Owner shell
+
+- Restored a fixed, grouped desktop sidebar with Overview, Leads, Quote Setup, Business Profile, Settings, and Guide; retained the five-task mobile bar.
+- Moved desktop route ownership out of the topbar so language, theme, account, sign-out, and compact-screen actions remain clear and non-duplicative.
+- Added workspace and signed-in user context to the sidebar without exposing customer content.
+
+### Founder access and resilience
+
+- Made the authorized Founder Admin destination explicit on desktop instead of placing it only inside a compact-screen disclosure.
+- Localized known Admin access failures and removed remaining hardcoded visible status text.
+- Contained and logged optional linked-user fallback failures so one Auth read cannot replace the whole Admin console with a generic blocked state.
+
+### Candidate verification
+
+- ESLint, TypeScript, all `257/257` unit/source tests, and the Next.js 16.2.4 production build pass.
+- No database migration, tenant mutation, synthetic customer write, or Production authenticated automation was performed.
 
 ## 2026-07-16 — V4.4 Quote Setup render and shell repair
 

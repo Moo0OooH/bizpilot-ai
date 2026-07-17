@@ -13,6 +13,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Restored the compact desktop sidebar column as the single wide-screen route navigation.
  * - 2026-07-16: Removed the obsolete fixed desktop sidebar column so the centered navigation owns the full protected viewport.
  * - 2026-07-04: Added default dashboard display data attributes for density, guides, and insights.
  * - 2026-07-14: Removed obsolete local density, guide, and insight attributes after dashboard simplification.
@@ -129,7 +130,7 @@ export function DashboardThemeFrame({
   return (
     <ThemeContext.Provider value={value}>
       <main
-        className={`${themeClass} dashboard-frame h-svh min-w-0 overflow-hidden transition-colors`}
+        className={`${themeClass} dashboard-frame h-svh min-w-0 overflow-hidden transition-colors lg:grid lg:grid-cols-[240px_minmax(0,1fr)]`}
       >
         {children}
       </main>

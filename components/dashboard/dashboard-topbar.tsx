@@ -5,7 +5,7 @@
  * File: components/dashboard/dashboard-topbar.tsx
  * Project: BizPilot AI
  * Description: Renders the protected workspace topbar.
- * Role: Provides centered, resilient workspace navigation plus compact quote-link, language, theme, account, and founder utilities.
+ * Role: Provides compact quote-link, language, theme, account, and founder utilities while the sidebar owns desktop route navigation.
  * Related:
  * - components/dashboard/dashboard-shell.tsx
  * - server/actions/auth.actions.ts
@@ -13,6 +13,7 @@
  * Created: 2026-05-10
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Removed duplicated desktop route links, kept complete compact navigation, and made founder access visible at every responsive tier.
  * - 2026-07-16: Made the centered five-route bar the single desktop navigation and moved Guide to secondary help.
  * - 2026-07-16: Replaced the fragile client-managed desktop disclosure with centered native route navigation and full-page protected-route transitions.
  * - 2026-07-16: Moved desktop utilities to the right, restored the complete owner route menu, closed it after navigation, and disabled protected-route prefetch pressure.
@@ -107,8 +108,8 @@ export function DashboardTopbar({
 
   return (
     <header className="dashboard-topbar sticky top-0 z-20 shrink-0 border-b backdrop-blur">
-      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-3 py-2 sm:min-h-[56px] sm:gap-3 sm:px-5 md:px-6 lg:px-5 xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
-        <a className="flex min-w-0 items-center gap-2" href="/dashboard">
+      <div className="flex min-w-0 items-center gap-2 px-3 py-2 sm:min-h-[56px] sm:gap-3 sm:px-5 md:px-6 lg:px-5">
+        <a className="flex min-w-0 items-center gap-2 lg:hidden" href="/dashboard">
           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--dash-primary)] text-sm font-black text-white">
             B
           </span>
@@ -122,32 +123,8 @@ export function DashboardTopbar({
           </span>
         </a>
 
-        <nav
-          aria-label={copy.nav.groupCommand}
-          className="hidden min-w-0 items-center justify-center gap-1 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 xl:flex"
-        >
-          {primaryRoutes.map((route) => {
-            const isActive = isActiveRoute(route.href);
-
-            return (
-              <a
-                aria-current={isActive ? "page" : undefined}
-                className={
-                  isActive
-                    ? "inline-flex min-h-9 items-center justify-center whitespace-nowrap rounded-lg bg-[var(--dash-primary-soft)] px-2.5 text-[12px] font-black text-[var(--dash-primary-strong)]"
-                    : "inline-flex min-h-9 items-center justify-center whitespace-nowrap rounded-lg px-2.5 text-[12px] font-bold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
-                }
-                href={route.href}
-                key={route.href}
-              >
-                {route.label}
-              </a>
-            );
-          })}
-        </nav>
-
         <div className="ml-auto flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
-          <details className="group relative xl:hidden">
+          <details className="group relative lg:hidden">
             <summary
               aria-label={copy.actions.moreActions}
               className={`${buttonClass} list-none cursor-pointer [&::-webkit-details-marker]:hidden`}
@@ -215,11 +192,19 @@ export function DashboardTopbar({
             <DashboardThemeSelector />
           </div>
           <a
-            className={`${ghostButtonClass} hidden min-h-10 items-center justify-center px-2.5 xl:inline-flex`}
+            className={`${ghostButtonClass} hidden min-h-10 items-center justify-center px-2.5 lg:inline-flex`}
             href="/dashboard/guide"
           >
             {copy.nav.guide}
           </a>
+          {showFounderAdmin ? (
+            <a
+              className={`${ghostButtonClass} hidden min-h-10 items-center justify-center border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-2.5 text-[var(--dash-primary-strong)] lg:inline-flex`}
+              href="/admin"
+            >
+              {copy.pages.founder.title}
+            </a>
+          ) : null}
           <form action={signOutAction}>
             <button
               className="biz-button-secondary inline-flex h-9 max-w-[5.5rem] items-center justify-center rounded-lg border px-2.5 text-[11px] font-bold shadow-sm sm:h-10 sm:max-w-[8rem] sm:px-3 sm:text-[13px]"
