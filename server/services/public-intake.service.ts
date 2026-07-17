@@ -27,6 +27,7 @@ import "server-only";
 
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
+import { getPublicQuoteFieldChoices } from "@/lib/quote-form-layout";
 import { createSupabasePublicServerClient } from "@/lib/supabase/server";
 import { safeLogger } from "@/server/logging/safe-logger";
 import {
@@ -145,11 +146,7 @@ function readFieldValue(input: {
     input.fieldType === "select" ||
     input.fieldType === "time_window"
   ) {
-    const options = Array.isArray(input.fieldOptions)
-      ? input.fieldOptions.filter(
-          (item): item is string => typeof item === "string",
-        )
-      : [];
+    const options = getPublicQuoteFieldChoices(input.fieldOptions);
 
     if (trimmed.length === 0) {
       return null;

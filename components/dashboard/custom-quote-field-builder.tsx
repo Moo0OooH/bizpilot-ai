@@ -20,12 +20,16 @@
  * ============================================================
  */
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type {
   FieldBuilderCopy,
   QuoteFieldType,
 } from "@/components/dashboard/quote-field-type-control";
+import {
+  QUOTE_FORM_SECTIONS_EVENT,
+  type QuoteFormBuilderSectionOption,
+} from "@/components/dashboard/quote-form-structure-builder";
 
 type FieldPlaceholder = Readonly<{
   fieldKey: string;
@@ -54,6 +58,7 @@ type CustomFieldBuilderCopy = FieldBuilderCopy &
     recommendedQuestions: string;
     removeField: string;
     required: string;
+    section: string;
     showOnPublicForm: string;
   }>;
 
@@ -62,6 +67,7 @@ type DraftField = Readonly<{
   id: string;
   label: string;
   options: string;
+  sectionKey: string;
   type: QuoteFieldType;
 }>;
 
@@ -246,6 +252,7 @@ const frenchFallbackPlaceholders: typeof fallbackPlaceholders = {
 function createDraftField(
   index: number,
   type: QuoteFieldType,
+  sectionKey: string,
   placeholder?: FieldPlaceholder,
 ): DraftField {
   return {
@@ -253,14 +260,17 @@ function createDraftField(
     id: `custom_${index}`,
     label: placeholder?.label ?? "",
     options: placeholder?.options ?? "",
+    sectionKey,
     type,
   };
 }
 
 export function CustomQuoteFieldBuilder({
   copy,
+  initialSections,
 }: Readonly<{
   copy: CustomFieldBuilderCopy;
+  initialSections: readonly QuoteFormBuilderSectionOption[];
 }>) {
   const fallbackCopy =
     copy.typeLabels.email.toLowerCase().includes("courriel")
@@ -268,12 +278,41 @@ export function CustomQuoteFieldBuilder({
       : fallbackPlaceholders;
   const nextIndex = useRef(1);
   const [fields, setFields] = useState<readonly DraftField[]>([]);
+  const [sectionOptions, setSectionOptions] =
+    useState<readonly QuoteFormBuilderSectionOption[]>(initialSections);
+
+  useEffect(() => {
+    function handleSections(event: Event) {
+      const customEvent = event as CustomEvent<{
+        sections?: readonly QuoteFormBuilderSectionOption[];
+      }>;
+      const nextSections = customEvent.detail?.sections?.filter(
+        (section) => section.key && section.label,
+      );
+      if (!nextSections || nextSections.length === 0) return;
+      const allowedKeys = new Set(nextSections.map((section) => section.key));
+      const fallbackKey = nextSections[0]?.key ?? "service";
+      setSectionOptions(nextSections);
+      setFields((current) =>
+        current.map((field) =>
+          allowedKeys.has(field.sectionKey)
+            ? field
+            : { ...field, sectionKey: fallbackKey },
+        ),
+      );
+    }
+
+    window.addEventListener(QUOTE_FORM_SECTIONS_EVENT, handleSections);
+    return () =>
+      window.removeEventListener(QUOTE_FORM_SECTIONS_EVENT, handleSections);
+  }, []);
 
   function addField(type: QuoteFieldType, useStarter: boolean) {
     const placeholder = copy.placeholders?.[type] ?? fallbackCopy[type];
     const field = createDraftField(
       nextIndex.current,
       type,
+      sectionOptions[0]?.key ?? "service",
       useStarter ? placeholder : undefined,
     );
     nextIndex.current += 1;
@@ -376,7 +415,7 @@ export function CustomQuoteFieldBuilder({
 
               <div className="mt-3 grid gap-3 xl:grid-cols-[minmax(0,1fr)_18rem]">
                 <div className="min-w-0">
-                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_13rem]">
+                  <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_13rem_13rem]">
                     <label className="grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
                       {copy.newFieldName}
                       <input
@@ -406,6 +445,25 @@ export function CustomQuoteFieldBuilder({
                         {configurableFieldTypes.map((type) => (
                           <option key={type} value={type}>
                             {copy.typeLabels[type]}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label className="grid gap-1 text-[12px] font-bold text-[var(--dash-text)]">
+                      {copy.section}
+                      <select
+                        className={fieldInputClass}
+                        name={`newFieldSection:${field.id}`}
+                        onChange={(event) =>
+                          updateField(field.id, {
+                            sectionKey: event.currentTarget.value,
+                          })
+                        }
+                        value={field.sectionKey}
+                      >
+                        {sectionOptions.map((section) => (
+                          <option key={section.key} value={section.key}>
+                            {section.label}
                           </option>
                         ))}
                       </select>

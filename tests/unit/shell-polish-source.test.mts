@@ -146,14 +146,16 @@ describe("final shell polish source contracts", () => {
 
   it("keeps quote shell mobile-first with locale switching and no theme control", () => {
     const quotePage = source("app/(public)/quote/[slug]/page.tsx");
+    const quoteFlow = source("components/public/quote-form-flow.tsx");
     const quoteWizard = source("components/public/quote-form-wizard.tsx");
     const quoteUnavailable = source("components/public/quote-unavailable.tsx");
+    const quoteFormSource = `${quoteWizard}\n${quoteFlow}`;
 
     assert.equal(quotePage.includes("buildQuoteLanguageHref"), true);
     assert.equal(quotePage.includes("buildQuoteAttributionFormQuery"), true);
     assert.equal(quotePage.includes("languageShortLabels"), true);
     assert.equal(quotePage.includes("ThemePreferenceControl"), false);
-    assert.equal(quoteWizard.includes("max-w-[780px]"), true);
+    assert.equal(quoteFlow.includes("max-w-[780px]"), true);
     for (const required of [
       "quote-form-shell",
       "quote-step-card",
@@ -170,12 +172,12 @@ describe("final shell polish source contracts", () => {
       "sm:space-y-6",
     ]) {
       assert.equal(
-        quoteWizard.includes(required),
+        quoteFormSource.includes(required),
         true,
         `Quote form mobile polish missing ${required}.`,
       );
     }
-    assert.equal(quoteWizard.includes("overflow-y-auto"), false);
+    assert.equal(quoteFormSource.includes("overflow-y-auto"), false);
     assert.equal(quoteUnavailable.includes("<main"), false);
     assert.equal(quoteUnavailable.includes("var(--biz-primary)"), false);
     assert.equal(quoteUnavailable.includes("var(--primary)"), true);

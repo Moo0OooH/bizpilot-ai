@@ -11,8 +11,9 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added bilingual server-saved optional dashboard section visibility guidance.
  * - 2026-07-16: Added bilingual Reports, tracked-source links, branding clarity, public quote navigation, and an ordered Quote Setup journey.
  * - 2026-07-16: Added serializable FAQ count labels and clearer dashboard recovery copy in both supported languages.
  * - 2026-07-16: Expanded the bilingual first-run owner guide with a first-session path, daily routine, and practical troubleshooting.
@@ -300,6 +301,33 @@ type DashboardConfigurationCopy = Readonly<{
     emptyTitle: string;
     fieldKey: string;
     fieldKeyHelp: string;
+    formStructure: Readonly<{
+      addSection: string;
+      assignmentDescription: string;
+      assignmentTitle: string;
+      description: string;
+      displayMode: string;
+      displayModeHelp: Readonly<Record<"list" | "steps" | "tabs", string>>;
+      displayModeLabels: Readonly<Record<"list" | "steps" | "tabs", string>>;
+      formHeader: string;
+      formSubtitle: string;
+      formTitle: string;
+      hiddenSection: string;
+      languageNotice: string;
+      livePreview: string;
+      moveDown: string;
+      moveUp: string;
+      newSectionName: (index: number) => string;
+      question: string;
+      removeSection: string;
+      sectionDescription: string;
+      sectionNavigationLabel: string;
+      sectionTitle: string;
+      sections: string;
+      showSection: string;
+      title: string;
+      visibleSection: string;
+    }>;
     helperText: string;
     hidden: string;
     newFieldName: string;
@@ -323,6 +351,7 @@ type DashboardConfigurationCopy = Readonly<{
     recommendedQuestions: string;
     removeField: string;
     required: string;
+    section: string;
     showOnPublicForm: string;
     title: string;
     type: string;
@@ -1015,6 +1044,8 @@ type DashboardWorkspaceAccessCopy = Readonly<{
   deletionRequestedBody: string;
   deletionRequestedTitle: string;
   eyebrow: string;
+  externalLoginBody: string;
+  externalLoginTitle: string;
   pausedBody: string;
   pausedTitle: string;
   recoverWorkspace: string;
@@ -1912,6 +1943,17 @@ type DashboardCopy = Readonly<{
       typeBusinessName: string;
     }>;
     manualBilling: string;
+    navigationSections: Readonly<{
+      alwaysVisible: string;
+      description: string;
+      displayOnly: string;
+      guideDescription: string;
+      guideLabel: string;
+      reportsDescription: string;
+      reportsLabel: string;
+      save: string;
+      title: string;
+    }>;
     notInMvp: string;
     plan: string;
     quickLinks: string;
@@ -1951,7 +1993,9 @@ export type BizPilotCopy = Readonly<{
   quoteFields: Record<string, QuoteFieldCopy>;
   quoteForm: Readonly<{
     aiDisclosure: string;
+    backButton: string;
     consentNoticeDefault: string;
+    continueButton: string;
     emptySection: string;
     guardrail: string;
     sectionNavigationLabel: string;
@@ -3099,6 +3143,44 @@ const englishCopy: BizPilotCopy = {
         fieldKey: "Field key",
         fieldKeyHelp:
           "Optional. Lowercase letters, numbers, and underscores. Leave blank to generate from the label.",
+        formStructure: {
+          addSection: "Add section",
+          assignmentDescription:
+            "Choose the section where each saved question appears. New questions also include a section selector below.",
+          assignmentTitle: "Question placement",
+          description:
+            "Control the public form heading, section order, question placement, and whether customers see one page, tabs, or a guided multi-step flow.",
+          displayMode: "Customer display",
+          displayModeHelp: {
+            list: "Shows every section in one scrollable form.",
+            steps: "Guides customers through one validated section at a time.",
+            tabs: "Shows one section at a time with accessible tabs.",
+          },
+          displayModeLabels: {
+            list: "Full list",
+            steps: "Multi-step",
+            tabs: "Tabs",
+          },
+          formHeader: "Public form heading",
+          formSubtitle: "Form introduction",
+          formTitle: "Form title",
+          hiddenSection: "Hidden",
+          languageNotice:
+            "Text edits are saved for the active dashboard language; switch EN/FR to maintain both versions.",
+          livePreview: "Structure preview",
+          moveDown: "Move section down",
+          moveUp: "Move section up",
+          newSectionName: (index) => `Section ${index}`,
+          question: "Question",
+          removeSection: "Remove",
+          sectionDescription: "Section description",
+          sectionNavigationLabel: "Short navigation label",
+          sectionTitle: "Section title",
+          sections: "Form sections",
+          showSection: "Show this section and its questions on the public form",
+          title: "Form structure",
+          visibleSection: "Visible",
+        },
         helperText: "Helper text",
         hidden: "Not visible",
         newFieldName: "New customer question",
@@ -3183,6 +3265,7 @@ const englishCopy: BizPilotCopy = {
         recommendedQuestions: "Recommended for cleaning quotes",
         removeField: "Remove field",
         required: "Required",
+        section: "Section",
         showOnPublicForm: "Show on public form",
         title: "Form Questions",
         type: "Type",
@@ -4661,6 +4744,22 @@ const englishCopy: BizPilotCopy = {
         typeBusinessName: "Type your business name to confirm",
       },
       manualBilling: "Manual billing during production readiness.",
+      navigationSections: {
+        alwaysVisible:
+          "Overview, Leads, Quote Setup, Business Profile, Settings, and authorized Founder Admin access always stay visible.",
+        description:
+          "Choose which optional destinations appear in dashboard navigation on this browser.",
+        displayOnly:
+          "This changes navigation display only. Hidden pages remain available by direct URL, and permissions do not change.",
+        guideDescription:
+          "First-run setup, daily workflow, reporting guidance, and troubleshooting.",
+        guideLabel: "Guide",
+        reportsDescription:
+          "Lead sources, campaigns, tracked placements, and manual outcomes.",
+        reportsLabel: "Reports",
+        save: "Save navigation",
+        title: "Dashboard sections",
+      },
       notInMvp: "Not in MVP",
       plan: "Plan",
       quickLinks: "Quick links",
@@ -4694,6 +4793,9 @@ const englishCopy: BizPilotCopy = {
         "This business workspace is locked while the deletion request is reviewed. Your login account is not deleted automatically.",
       deletionRequestedTitle: "Workspace deletion has been requested.",
       eyebrow: "Workspace access",
+      externalLoginBody:
+        "Google sign-in connects an existing approved BizPilot workspace. Sign out and use the original owner email, or ask the Founder Admin to approve and repair this account.",
+      externalLoginTitle: "An approved workspace is required for Google sign-in.",
       pausedBody:
         "Your dashboard is currently blocked because no active business membership is available. Your data is retained; contact BizPilot support if this looks unexpected.",
       pausedTitle: "This workspace is paused or unavailable.",
@@ -4914,8 +5016,10 @@ const englishCopy: BizPilotCopy = {
   quoteForm: {
     aiDisclosure:
       "BizPilot may help prepare an internal draft, but the business reviews every message before sending it.",
+    backButton: "Back",
     consentNoticeDefault:
       "By sending this request, you agree to share your information with this business so they can respond to your quote request. BizPilot may help prepare an internal draft, but the business reviews every message before sending it.",
+    continueButton: "Continue",
     emptySection: "Nothing to fill on this section.",
     guardrail:
       "Submitting this form does not confirm pricing, availability, or booking.",
@@ -6102,6 +6206,44 @@ const frenchCopy: BizPilotCopy = {
         fieldKey: "Clé du champ",
         fieldKeyHelp:
           "Optionnel. Lettres minuscules, chiffres et traits de soulignement. Laissez vide pour générer depuis le libellé.",
+        formStructure: {
+          addSection: "Ajouter une section",
+          assignmentDescription:
+            "Choisissez la section de chaque question enregistrée. Les nouvelles questions offrent aussi un choix de section ci-dessous.",
+          assignmentTitle: "Placement des questions",
+          description:
+            "Gérez le titre public, l'ordre des sections, le placement des questions et l'affichage en liste, en onglets ou en parcours guidé.",
+          displayMode: "Affichage client",
+          displayModeHelp: {
+            list: "Affiche toutes les sections dans un seul formulaire déroulant.",
+            steps: "Guide le client dans une section validée à la fois.",
+            tabs: "Affiche une section à la fois avec des onglets accessibles.",
+          },
+          displayModeLabels: {
+            list: "Liste complète",
+            steps: "Plusieurs étapes",
+            tabs: "Onglets",
+          },
+          formHeader: "En-tête du formulaire public",
+          formSubtitle: "Introduction du formulaire",
+          formTitle: "Titre du formulaire",
+          hiddenSection: "Masquée",
+          languageNotice:
+            "Les textes sont enregistrés dans la langue active du tableau de bord; passez de EN à FR pour maintenir les deux versions.",
+          livePreview: "Aperçu de la structure",
+          moveDown: "Descendre la section",
+          moveUp: "Monter la section",
+          newSectionName: (index) => `Section ${index}`,
+          question: "Question",
+          removeSection: "Retirer",
+          sectionDescription: "Description de la section",
+          sectionNavigationLabel: "Libellé court de navigation",
+          sectionTitle: "Titre de la section",
+          sections: "Sections du formulaire",
+          showSection: "Afficher cette section et ses questions sur le formulaire public",
+          title: "Structure du formulaire",
+          visibleSection: "Visible",
+        },
         helperText: "Texte d'aide",
         hidden: "Non visible",
         newFieldName: "Nouvelle question client",
@@ -6190,6 +6332,7 @@ const frenchCopy: BizPilotCopy = {
         recommendedQuestions: "Recommandées pour les soumissions de nettoyage",
         removeField: "Retirer le champ",
         required: "Requis",
+        section: "Section",
         showOnPublicForm: "Afficher sur le formulaire public",
         title: "Questions du formulaire",
         type: "Type",
@@ -7684,6 +7827,22 @@ const frenchCopy: BizPilotCopy = {
         typeBusinessName: "Tapez le nom de l'entreprise pour confirmer",
       },
       manualBilling: "Facturation manuelle pendant la préparation production.",
+      navigationSections: {
+        alwaysVisible:
+          "Vue d'ensemble, Prospects, Configuration, Profil d'entreprise, Réglages et l'accès Admin fondateur autorisé restent toujours visibles.",
+        description:
+          "Choisissez les destinations facultatives affichées dans la navigation du tableau de bord sur ce navigateur.",
+        displayOnly:
+          "Ce réglage modifie seulement l'affichage de la navigation. Les pages masquées restent accessibles par URL directe et les autorisations ne changent pas.",
+        guideDescription:
+          "Configuration initiale, travail quotidien, rapports et dépannage.",
+        guideLabel: "Guide",
+        reportsDescription:
+          "Sources de prospects, campagnes, emplacements suivis et résultats manuels.",
+        reportsLabel: "Rapports",
+        save: "Enregistrer la navigation",
+        title: "Sections du tableau de bord",
+      },
       notInMvp: "Hors MVP",
       plan: "Forfait",
       quickLinks: "Liens rapides",
@@ -7717,6 +7876,10 @@ const frenchCopy: BizPilotCopy = {
         "Cet espace d'entreprise est verrouillé pendant la révision de la demande de suppression. Votre compte de connexion n'est pas supprimé automatiquement.",
       deletionRequestedTitle: "La suppression de l'espace a été demandée.",
       eyebrow: "Accès à l'espace",
+      externalLoginBody:
+        "La connexion Google relie un espace BizPilot existant et approuvé. Déconnectez-vous et utilisez le courriel propriétaire initial, ou demandez au Founder Admin d'approuver et de réparer ce compte.",
+      externalLoginTitle:
+        "Un espace approuvé est requis pour la connexion Google.",
       pausedBody:
         "Votre tableau de bord est bloqué, car aucune adhésion active à une entreprise n'est disponible. Vos données sont conservées; contactez le support BizPilot si cela semble inattendu.",
       pausedTitle: "Cet espace est suspendu ou indisponible.",
@@ -7946,8 +8109,10 @@ const frenchCopy: BizPilotCopy = {
   quoteForm: {
     aiDisclosure:
       "BizPilot peut aider à préparer un brouillon interne, mais l’entreprise révise chaque message avant de l’envoyer.",
+    backButton: "Retour",
     consentNoticeDefault:
       "En envoyant cette demande, vous acceptez que vos renseignements soient partagés avec cette entreprise afin qu’elle puisse répondre à votre demande de soumission. BizPilot peut aider à préparer un brouillon interne, mais l’entreprise révise chaque message avant de l’envoyer.",
+    continueButton: "Continuer",
     emptySection: "Rien à remplir dans cette section.",
     guardrail:
       "L’envoi de ce formulaire ne confirme ni prix, ni disponibilité, ni réservation.",

@@ -26,6 +26,14 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { localizeDefaultQuoteField } from "@/lib/i18n/bizpilot-copy";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 import {
+  decodePublicQuoteFieldOptions,
+  encodePublicQuoteFieldOptions,
+  getDefaultQuoteFormLayout,
+  localizeQuoteFormLayout,
+  resolveQuoteFieldSectionKey,
+  type QuoteFormLayout,
+} from "@/lib/quote-form-layout";
+import {
   getBusinessTemplateFieldOverrides,
   resolveLocalizedTemplateFieldCopy,
   type CleaningTemplateFieldRecord,
@@ -37,6 +45,8 @@ export type IntakeFormRecord =
   Database["public"]["Tables"]["intake_forms"]["Row"];
 export type IntakeFormFieldRecord =
   Database["public"]["Tables"]["intake_form_fields"]["Row"];
+export type PublicIntakeFormFieldRecord = IntakeFormFieldRecord &
+  Readonly<{ section_key: string }>;
 export type ConsentVersionRecord =
   Database["public"]["Tables"]["consent_versions"]["Row"];
 export type PublicLinkVariantRecord =
@@ -47,8 +57,9 @@ export type BusinessBrandingRecord =
 export type PublicIntakePageRecord = Readonly<{
   branding: BusinessBrandingRecord | null;
   consentVersion: ConsentVersionRecord;
-  fields: IntakeFormFieldRecord[];
+  fields: PublicIntakeFormFieldRecord[];
   form: IntakeFormRecord;
+  formLayout: QuoteFormLayout;
   publicLink: PublicLinkVariantRecord;
 }>;
 
@@ -152,6 +163,7 @@ export async function upsertConsentVersion(input: {
 export async function upsertIntakeFormFromTemplate(input: {
   businessId: string;
   fields: CleaningTemplateFieldRecord[];
+  formLayout?: QuoteFormLayout;
   formName: string;
   privacyMode: "minimal" | "standard";
   supabase: SupabaseClient<Database>;
@@ -189,6 +201,8 @@ export async function upsertIntakeFormFromTemplate(input: {
     return;
   }
 
+  const formLayout = input.formLayout ?? getDefaultQuoteFormLayout();
+
   const { error } = await input.supabase.from("intake_form_fields").insert(
     input.fields.map((field) => ({
       business_id: input.businessId,
@@ -199,7 +213,11 @@ export async function upsertIntakeFormFromTemplate(input: {
       is_hidden: field.is_hidden,
       is_required: field.is_required,
       label: field.label,
-      options: field.options,
+      options: encodePublicQuoteFieldOptions({
+        choices: field.options,
+        formLayout,
+        sectionKey: field.section_key,
+      }),
       sort_order: field.sort_order,
       template_field_id: field.template_field_id,
     })),
@@ -267,11 +285,31 @@ export async function getPublicIntakePageBySlug(input: {
     .from("intake_form_fields")
     .select("*")
     .eq("intake_form_id", form.data.id)
-    .eq("is_hidden", false)
     .order("sort_order", { ascending: true });
 
   await throwIfError(fieldsError);
-  const localizedFields = (fields ?? []).map((field) => {
+  const decodedFields = (fields ?? []).map((field) => ({
+    field,
+    metadata: decodePublicQuoteFieldOptions(field.options),
+  }));
+  const storedLayout = decodedFields.find(
+    (item) => item.metadata.formLayout,
+  )?.metadata.formLayout;
+  const formLayout = localizeQuoteFormLayout({
+    language: input.language ?? publicLink.preferred_language,
+    layout: storedLayout ?? getDefaultQuoteFormLayout(),
+  });
+  const localizedFields = decodedFields.flatMap(({ field, metadata }) => {
+    const sectionKey = resolveQuoteFieldSectionKey({
+      fieldKey: field.field_key,
+      formLayout,
+      sectionKey: metadata.sectionKey,
+    });
+    const sectionHidden =
+      formLayout.sections.find((section) => section.key === sectionKey)
+        ?.isHidden === true;
+    if (field.is_hidden || sectionHidden) return [];
+
     const fieldOverride =
       overrides?.fields?.[field.field_key] ?? overrides?.customFields?.[field.field_key];
     const localized = fieldOverride
@@ -293,6 +331,8 @@ export async function getPublicIntakePageBySlug(input: {
       ...field,
       help_text: localized.helpText,
       label: localized.label,
+      options: metadata.choices,
+      section_key: sectionKey,
     };
   });
 
@@ -301,6 +341,7 @@ export async function getPublicIntakePageBySlug(input: {
     consentVersion: consentVersion.data,
     fields: localizedFields,
     form: form.data,
+    formLayout,
     publicLink,
   };
 }

@@ -10,8 +10,9 @@
  * - components/dashboard/dashboard-topbar.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Passed server-validated optional section visibility to desktop and compact navigation.
  * - 2026-07-16: Restored the complete grouped desktop sidebar and founder entry without duplicating route navigation in the topbar.
  * - 2026-07-16: Removed the duplicated desktop sidebar while retaining the five-destination mobile action bar.
  * - 2026-07-16: Passed the absolute business quote URL into the shell so copy actions share a complete customer-ready link.
@@ -26,6 +27,7 @@
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { DashboardThemeFrame } from "./dashboard-theme";
 import { DashboardTopbar } from "./dashboard-topbar";
+import type { OptionalDashboardSection } from "@/lib/dashboard-section-visibility";
 import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import type { ThemePreference } from "@/lib/theme";
 
@@ -48,6 +50,7 @@ type DashboardShellProps = Readonly<{
   copy: DashboardShellCopy;
   showFounderAdmin?: boolean;
   userLabel: string;
+  visibleOptionalSections: readonly OptionalDashboardSection[];
 }>;
 
 export function DashboardShell({
@@ -61,6 +64,7 @@ export function DashboardShell({
   initialTheme = "light",
   showFounderAdmin = false,
   userLabel,
+  visibleOptionalSections,
 }: DashboardShellProps) {
   return (
     <DashboardThemeFrame initialTheme={initialTheme} labels={copy.theme}>
@@ -69,6 +73,7 @@ export function DashboardShell({
         copy={copy}
         showFounderAdmin={showFounderAdmin}
         userLabel={userLabel}
+        visibleOptionalSections={visibleOptionalSections}
       />
       <section className="flex h-svh min-w-0 flex-col overflow-hidden pb-20 lg:pb-0">
         <DashboardTopbar
@@ -80,6 +85,7 @@ export function DashboardShell({
           copy={copy}
           showFounderAdmin={showFounderAdmin}
           userLabel={userLabel}
+          visibleOptionalSections={visibleOptionalSections}
         />
         <div className="min-h-0 flex-1 overflow-y-auto px-3 py-3 pb-8 sm:px-5 md:px-6 lg:px-6 2xl:px-8">
           <div className="dashboard-container min-w-0">

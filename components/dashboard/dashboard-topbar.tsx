@@ -11,8 +11,9 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Filtered optional compact destinations and removed duplicate desktop Guide and Founder Admin buttons.
  * - 2026-07-16: Added Reports to compact navigation without duplicating desktop sidebar routes.
  * - 2026-07-16: Removed duplicated desktop route links, kept complete compact navigation, and made founder access visible at every responsive tier.
  * - 2026-07-16: Made the centered five-route bar the single desktop navigation and moved Guide to secondary help.
@@ -33,6 +34,7 @@
  */
 
 import type { DashboardShellCopy } from "./dashboard-shell";
+import type { OptionalDashboardSection } from "@/lib/dashboard-section-visibility";
 import { languageShortLabels, supportedLanguages } from "@/lib/i18n/language";
 import { usePathname } from "next/navigation";
 
@@ -52,6 +54,7 @@ type DashboardTopbarProps = Readonly<{
   copy: DashboardShellCopy;
   showFounderAdmin?: boolean;
   userLabel: string;
+  visibleOptionalSections: readonly OptionalDashboardSection[];
 }>;
 
 function MoreIcon() {
@@ -81,6 +84,7 @@ export function DashboardTopbar({
   copy,
   showFounderAdmin = false,
   userLabel,
+  visibleOptionalSections,
 }: DashboardTopbarProps) {
   const quotePath = `/quote/${businessSlug}`;
   const quotePreviewPath = `${quotePath}?preview=dashboard${
@@ -96,8 +100,12 @@ export function DashboardTopbar({
   ] as const;
   const menuRoutes = [
     ...primaryRoutes,
-    { href: "/dashboard/reports", label: copy.nav.reports },
-    { href: "/dashboard/guide", label: copy.nav.guide },
+    ...(visibleOptionalSections.includes("reports")
+      ? [{ href: "/dashboard/reports", label: copy.nav.reports }]
+      : []),
+    ...(visibleOptionalSections.includes("guide")
+      ? [{ href: "/dashboard/guide", label: copy.nav.guide }]
+      : []),
   ] as const;
 
   function isActiveRoute(href: string): boolean {
@@ -193,20 +201,6 @@ export function DashboardTopbar({
           <div className="hidden sm:block">
             <DashboardThemeSelector />
           </div>
-          <a
-            className={`${ghostButtonClass} hidden min-h-10 items-center justify-center px-2.5 lg:inline-flex`}
-            href="/dashboard/guide"
-          >
-            {copy.nav.guide}
-          </a>
-          {showFounderAdmin ? (
-            <a
-              className={`${ghostButtonClass} hidden min-h-10 items-center justify-center border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] px-2.5 text-[var(--dash-primary-strong)] lg:inline-flex`}
-              href="/admin"
-            >
-              {copy.pages.founder.title}
-            </a>
-          ) : null}
           <form action={signOutAction}>
             <button
               className="biz-button-secondary inline-flex h-9 max-w-[5.5rem] items-center justify-center rounded-lg border px-2.5 text-[11px] font-bold shadow-sm sm:h-10 sm:max-w-[8rem] sm:px-3 sm:text-[13px]"

@@ -9,8 +9,9 @@
  * - server/repositories/founder-admin.repository.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Kept explicit founder-approved workspace repair compatible with the provider-aware creation boundary.
  * - 2026-07-16: Separated the detailed inbox from a minimal-column reporting sample so aggregate reads do not load customer contact fields.
  * - 2026-07-16: Added a bounded, business-aware founder lead-source report with campaign, attribution, and manual-outcome summaries.
  * - 2026-07-16: Kept the founder console available when the linked-user fallback read is unavailable.
@@ -1374,6 +1375,7 @@ export async function repairFounderUserWorkspace(input: {
 
   try {
     const business = await recoverWorkspaceAccess({
+      allowWorkspaceCreation: true,
       businessName,
       userId: input.targetUserId,
     });

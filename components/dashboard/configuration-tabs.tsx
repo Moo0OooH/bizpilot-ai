@@ -11,8 +11,9 @@
  * - server/actions/business-configuration.actions.ts
  * Author: MoOoH
  * Created: 2026-05-16
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Aligned the sticky tab rail with the dashboard scrollport and contained touch scrolling on narrow viewports.
  * - 2026-07-16: Made setup deep links hash-aware and added complete tab/tabpanel keyboard semantics.
  * - 2026-07-16: Replaced the nested desktop sidebar with one compact horizontal task bar to reduce dashboard navigation density.
  * - 2026-07-05: Added pressed state and panel controls to Quote Setup section tabs.
@@ -92,12 +93,12 @@ export function ConfigurationTabs({ ariaLabel, children, sections }: Props) {
   return (
     <div className="grid min-w-0 gap-3">
       <nav
-        className="sticky top-[66px] z-10 min-w-0 max-w-full overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)]/95 p-1.5 shadow-sm backdrop-blur"
+        className="sticky top-2 z-10 min-w-0 max-w-full overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)]/95 p-1.5 shadow-sm backdrop-blur"
       >
         <div
           aria-label={ariaLabel}
           aria-orientation="horizontal"
-          className="flex min-w-0 gap-1 overflow-x-auto pb-0.5"
+          className="flex min-w-0 gap-1 overflow-x-auto overscroll-x-contain max-w-full scroll-px-2 touch-pan-x pb-0.5 [scrollbar-width:thin]"
           role="tablist"
         >
           {sections.map((section) => (

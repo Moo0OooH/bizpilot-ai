@@ -10,8 +10,9 @@
  * - prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added V4.7 configurable form structure, responsive shell, optional navigation, OAuth hardening, and 294/294 local candidate evidence.
  * - 2026-07-16: Closed V4.6 on main with successful Vercel rollout and Production 46/46, 20/20, UI 621/621, and Quote 2/2 evidence.
  * - 2026-07-16: Added V4.6 ordered setup, two-part Guide, owner/founder source reporting, public-brand parity, and 272/272 merged-tree candidate evidence.
  * - 2026-07-16: Recorded V4.5 main publication and successful Production public read-only acceptance; deployment-status evidence remains unavailable.
@@ -71,6 +72,14 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 | P0 | V4.6 source publication and Vercel rollout | DONE | Exact tree `43ced7bc8e1914a72366bb1b8581ae4afcc02846` published directly to `main` as `b2ca255ec45b4ebf015603017728b0a5e5ce8c15`; Vercel target `BhNUwzTNx2RmLnwXKrjbVZioAxU9` succeeded; no migration, data mutation, remote feature branch, or PR. |
 | P0 | V4.6 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix 621/621; inactive `bizpilot0wner` Quote GET 2/2 EN/fr-CA; no submission or data mutation. |
 | P0 | V4.6 authenticated visual acceptance | GATED | Requires an approved local/synthetic authenticated session or owner-run no-secret check; source/build/public GET evidence does not prove protected visual state. |
+| P0 | V4.7 configurable public form | DONE | Versioned title, supporting copy, up to eight ordered sections, question assignment, safe visibility, and list/tab/step modes persist through existing JSON storage and render in EN/fr-CA without a migration. |
+| P0 | V4.7 responsive shell and navigation | DONE | Sticky configuration tabs are bounded, fixed save actions reserve content space and clear mobile safe areas, and duplicate desktop Guide/Admin utilities are removed while compact Actions remains complete. |
+| P0 | V4.7 optional surface visibility | DONE | Settings controls Reports and Guide visibility with a secure same-site cookie; core routes and authorized Founder Admin are intentionally not hideable, and direct access remains authorized normally. |
+| P0 | V4.7 Google OAuth workspace safety | DONE | Provider detection is server-side; Google/unknown recovery cannot create a workspace, safe exact callbacks are enforced, and existing approved memberships can still be repaired. |
+| P0 | V4.7 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit/source: 294/294; Next.js 16.2.4 production build: PASS. |
+| P0 | V4.7 local responsive acceptance | DONE | Local production responsive smoke: 20/20; final EN/fr-CA light/dark UI matrix: zero failures across 11 recorded viewports; no submission or data mutation. |
+| P0 | V4.7 source publication and Production read-only acceptance | GATED | Updated only after the exact main commit and observed Production checks are available; no deployment status is inferred. |
+| P0 | V4.7 founder environment activation | GATED | Production must set server-only `BIZPILOT_FOUNDER_EMAILS` to the approved founder address and redeploy; the email is intentionally absent from source and client output. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
 | P0 | Branding and local logo workflow | DONE | Bounded PNG/JPG/WebP browser resize, HTTPS alternative, remove/reset actions, live preview, server validation, and public Quote logo/color application implemented. |
@@ -103,6 +112,15 @@ Status vocabulary: `DONE` means implemented and source-verified; `GATED` means b
 
 This section is updated only with commands actually run on the final working tree.
 
+- V4.7 TypeScript: PASS.
+- V4.7 ESLint: PASS, zero warnings.
+- V4.7 full unit/source suite: PASS, 294/294.
+- V4.7 Next.js 16.2.4 production build: PASS.
+- V4.7 local bilingual responsive smoke: PASS, 20/20.
+- V4.7 local EN/fr-CA light/dark UI matrix: PASS with zero failures across 11 viewports.
+- V4.7 standalone real-Chrome interaction: GATED because this environment contains no Chrome/Chromium binary.
+- V4.7 authenticated owner/admin visual smoke: GATED because no approved authenticated target/session is present.
+- V4.7 database migration and Production mutation: NOT RUN; existing JSON storage is reused and Production data remains unchanged.
 - V4.6 TypeScript: PASS.
 - V4.6 ESLint: PASS, zero warnings.
 - V4.6 full unit/source suite: PASS, 272/272 on the final tree merged with the latest public-site `main` baseline.

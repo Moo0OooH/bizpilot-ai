@@ -10,8 +10,9 @@
  * - app/auth/callback/route.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Allowed only the exact guarded Admin destination after authentication while retaining dashboard-only path safety.
  * - 2026-07-05: Completed source header metadata for auth callback routing helpers.
  * - 2026-05-23: Created pure Supabase auth callback routing helpers.
  * ============================================================
@@ -78,6 +79,10 @@ export function getRootAuthCallbackTargetPath(
 export function getSafeAuthCallbackNextPath(value: string | null): string {
   if (!value?.startsWith("/") || value.startsWith("//")) {
     return "/dashboard";
+  }
+
+  if (value === "/admin") {
+    return value;
   }
 
   return value === "/dashboard" || value.startsWith("/dashboard/")

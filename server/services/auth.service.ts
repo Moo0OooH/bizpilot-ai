@@ -9,8 +9,9 @@
  * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Normalized the verified Auth provider for server-side workspace-creation policy checks.
  * - 2026-07-16: Memoized the current-user read per server render so protected layouts and pages share one verified session lookup.
  * - 2026-07-05: Added login-only Google OAuth redirect support without tenant bootstrap.
  * - 2026-05-13: Enforced the server-only runtime boundary.
@@ -26,7 +27,10 @@ import { cache } from "react";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
+export type AuthProvider = "email" | "google" | "unknown";
+
 export type AuthUser = Readonly<{
+  authProvider: AuthProvider;
   businessName?: string;
   displayName?: string;
   email?: string;
@@ -82,12 +86,24 @@ function readMetadataText(
     : undefined;
 }
 
+function readAuthProvider(
+  metadata: Record<string, unknown> | undefined,
+): AuthProvider {
+  const provider = readMetadataText(metadata, "provider")?.toLowerCase();
+
+  return provider === "email" || provider === "google"
+    ? provider
+    : "unknown";
+}
+
 function toAuthUser(response: {
+  app_metadata?: Record<string, unknown>;
   email?: string;
   id: string;
   user_metadata?: Record<string, unknown>;
 }): AuthUser {
   const user: AuthUser = {
+    authProvider: readAuthProvider(response.app_metadata),
     id: response.id,
   };
   const businessName = readMetadataText(response.user_metadata, "business_name");

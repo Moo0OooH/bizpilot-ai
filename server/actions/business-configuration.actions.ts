@@ -39,6 +39,19 @@ import {
   readSupportedLanguageOrThrow,
   type SupportedLanguage,
 } from "@/lib/i18n/language";
+import {
+  MAX_QUOTE_FORM_COPY_LENGTH,
+  MAX_QUOTE_FORM_HEADER_TITLE_LENGTH,
+  MAX_QUOTE_FORM_NAV_LABEL_LENGTH,
+  MAX_QUOTE_FORM_SECTIONS,
+  MAX_QUOTE_FORM_SECTION_TITLE_LENGTH,
+  QUOTE_FORM_LAYOUT_VERSION,
+  isQuoteFormSectionKey,
+  serializeQuoteFormLayout,
+  type QuoteFormDisplayMode,
+  type QuoteFormLayout,
+  type QuoteFormSection,
+} from "@/lib/quote-form-layout";
 import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { safeLogger } from "@/server/logging/safe-logger";
 import { getCurrentUser } from "@/server/services/auth.service";
@@ -67,6 +80,7 @@ type TemplateFieldSettings = {
   isRequired: boolean;
   label?: string;
   options?: string[];
+  sectionKey?: string;
   sortOrder?: number;
   translations?: Partial<
     Record<
@@ -220,6 +234,140 @@ function readFieldSortOrder(value: string | undefined): number | undefined {
   return sortOrder;
 }
 
+function readBoundedConfigurationText(input: {
+  label: string;
+  maximum: number;
+  required?: boolean;
+  value: string | undefined;
+}): string | undefined {
+  const value = input.value?.trim();
+
+  if (!value) {
+    if (input.required) {
+      throw new Error(`${input.label} is required.`);
+    }
+    return undefined;
+  }
+
+  if (value.length > input.maximum) {
+    throw new Error(`${input.label} is too long.`);
+  }
+
+  return value;
+}
+
+function readQuoteFormDisplayMode(
+  value: string | undefined,
+): QuoteFormDisplayMode {
+  if (value === "list" || value === "tabs" || value === "steps") {
+    return value;
+  }
+
+  throw new Error("Invalid quote form display mode.");
+}
+
+function readQuoteFormLayout(
+  formData: FormData,
+  language: SupportedLanguage,
+): QuoteFormLayout | undefined {
+  const rawDisplayMode = readOptionalFormValue(formData, "formDisplayMode");
+  const sectionKeys = formData
+    .getAll("formSectionKeys")
+    .filter((value): value is string => typeof value === "string")
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  if (!rawDisplayMode && sectionKeys.length === 0) {
+    return undefined;
+  }
+
+  if (sectionKeys.length < 1 || sectionKeys.length > MAX_QUOTE_FORM_SECTIONS) {
+    throw new Error(
+      `Quote forms need between 1 and ${MAX_QUOTE_FORM_SECTIONS} sections.`,
+    );
+  }
+
+  const uniqueKeys = new Set(sectionKeys);
+  if (
+    uniqueKeys.size !== sectionKeys.length ||
+    sectionKeys.some((key) => !isQuoteFormSectionKey(key))
+  ) {
+    throw new Error("Quote form section keys must be unique and valid.");
+  }
+
+  const title = readBoundedConfigurationText({
+    label: "Quote form title",
+    maximum: MAX_QUOTE_FORM_HEADER_TITLE_LENGTH,
+    required: true,
+    value: readOptionalFormValue(formData, "formTitle"),
+  });
+  const subtitle = readBoundedConfigurationText({
+    label: "Quote form subtitle",
+    maximum: MAX_QUOTE_FORM_COPY_LENGTH,
+    value: readOptionalFormValue(formData, "formSubtitle"),
+  });
+  const sections: QuoteFormSection[] = sectionKeys.map((key, index) => {
+    const navLabel = readBoundedConfigurationText({
+      label: "Section navigation label",
+      maximum: MAX_QUOTE_FORM_NAV_LABEL_LENGTH,
+      required: true,
+      value: readOptionalFormValue(formData, `sectionLabel:${key}`),
+    });
+    const sectionTitle = readBoundedConfigurationText({
+      label: "Section title",
+      maximum: MAX_QUOTE_FORM_SECTION_TITLE_LENGTH,
+      required: true,
+      value: readOptionalFormValue(formData, `sectionTitle:${key}`),
+    });
+    const description = readBoundedConfigurationText({
+      label: "Section description",
+      maximum: MAX_QUOTE_FORM_COPY_LENGTH,
+      value: readOptionalFormValue(formData, `sectionDescription:${key}`),
+    });
+    const sortOrder =
+      readFieldSortOrder(
+        readOptionalFormValue(formData, `sectionSort:${key}`),
+      ) ??
+      (index + 1) * 10;
+
+    return {
+      ...(description ? { description } : {}),
+      isHidden: formData.get(`sectionVisible:${key}`) !== "on",
+      key,
+      navLabel: navLabel!,
+      sortOrder,
+      title: sectionTitle!,
+      translations: {
+        [language]: {
+          ...(description ? { description } : {}),
+          navLabel: navLabel!,
+          title: sectionTitle!,
+        },
+      },
+    };
+  });
+
+  if (sections.every((section) => section.isHidden)) {
+    throw new Error("At least one quote form section must be visible.");
+  }
+
+  return {
+    displayMode: readQuoteFormDisplayMode(rawDisplayMode),
+    header: {
+      ...(subtitle ? { subtitle } : {}),
+      title: title!,
+      translations: {
+        [language]: {
+          ...(subtitle ? { subtitle } : {}),
+          title: title!,
+        },
+      },
+    },
+    sections,
+    version: QUOTE_FORM_LAYOUT_VERSION,
+  };
+}
+
 function readChoiceOptions(input: {
   fieldType: QuoteFieldType;
   optionsText: string | undefined;
@@ -294,6 +442,14 @@ function redirectWithConfigurationError(
       value === "Invalid field type." ||
       value === "Invalid privacy mode." ||
       value === "Invalid preferred language." ||
+      value === "Invalid quote form display mode." ||
+      value === "Invalid quote form section assignment." ||
+      value === "At least one quote form section must be visible." ||
+      value === "Quote form fields must use an existing section." ||
+      value === "Quote form section keys must be unique and valid." ||
+      value ===
+        `Quote forms need between 1 and ${MAX_QUOTE_FORM_SECTIONS} sections.` ||
+      value.endsWith(" is too long.") ||
       value === "Lead retention must be between 1 and 3650 days." ||
       value ===
         "Logo must be a secure HTTPS URL or a PNG, JPG, or WebP upload under 2 MB." ||
@@ -349,10 +505,31 @@ function buildFieldTranslations(input: {
   };
 }
 
+function readFieldSectionAssignment(input: {
+  formLayout: QuoteFormLayout | undefined;
+  value: string | undefined;
+}): string | undefined {
+  if (!input.value) return undefined;
+
+  if (!isQuoteFormSectionKey(input.value)) {
+    throw new Error("Invalid quote form section assignment.");
+  }
+
+  if (
+    input.formLayout &&
+    !input.formLayout.sections.some((section) => section.key === input.value)
+  ) {
+    throw new Error("Quote form fields must use an existing section.");
+  }
+
+  return input.value;
+}
+
 function readTemplateFieldOverrides(
   formData: FormData,
   language: SupportedLanguage,
 ): Json {
+  const formLayout = readQuoteFormLayout(formData, language);
   const templateFieldKeys = formData
     .getAll("templateFieldKeys")
     .filter((value): value is string => typeof value === "string");
@@ -387,6 +564,10 @@ function readTemplateFieldOverrides(
       const sortOrder = readFieldSortOrder(
         readOptionalFormValue(formData, `fieldSort:${fieldKey}`),
       );
+      const sectionKey = readFieldSectionAssignment({
+        formLayout,
+        value: readOptionalFormValue(formData, `fieldSection:${fieldKey}`),
+      });
       const customLabel = isCustomLabel || isCustomField ? label : undefined;
       const customHelpText =
         isCustomHelpText || (isCustomField && helpText) ? helpText : undefined;
@@ -402,6 +583,7 @@ function readTemplateFieldOverrides(
         ...(customLabel ? { label: customLabel } : {}),
         ...(customHelpText ? { helpText: customHelpText } : {}),
         ...(options ? { options } : {}),
+        ...(sectionKey ? { sectionKey } : {}),
         ...(sortOrder !== undefined ? { sortOrder } : {}),
         ...(translations ? { translations } : {}),
       };
@@ -449,6 +631,10 @@ function readTemplateFieldOverrides(
     const sortOrder = readFieldSortOrder(
       readOptionalFormValue(formData, `newFieldSort:${slot}`),
     );
+    const sectionKey = readFieldSectionAssignment({
+      formLayout,
+      value: readOptionalFormValue(formData, `newFieldSection:${slot}`),
+    });
 
     const helpText = readOptionalFormValue(formData, `newFieldHelp:${slot}`);
     const translations = buildFieldTranslations({
@@ -463,6 +649,7 @@ function readTemplateFieldOverrides(
       label,
       ...(helpText ? { helpText } : {}),
       ...(options ? { options } : {}),
+      ...(sectionKey ? { sectionKey } : {}),
       ...(sortOrder !== undefined ? { sortOrder } : {}),
       ...(translations ? { translations } : {}),
     };
@@ -473,7 +660,13 @@ function readTemplateFieldOverrides(
     throw new Error("Custom field limit is 12.");
   }
 
-  return { customFields, fields };
+  return {
+    customFields,
+    fields,
+    ...(formLayout
+      ? { formLayout: serializeQuoteFormLayout(formLayout) }
+      : {}),
+  };
 }
 
 export async function saveBusinessConfigurationAction(
@@ -523,7 +716,11 @@ export async function saveBusinessConfigurationAction(
         value: readOptionalFormValue(formData, "consentNotice"),
       }),
       faqs,
-      fieldOverrides: readTemplateFieldOverrides(formData, preferredLanguage),
+      ...(reviewScope === "quote_setup"
+        ? {
+            fieldOverrides: readTemplateFieldOverrides(formData, preferredLanguage),
+          }
+        : {}),
       primaryColor: readRequiredFormValue(formData, "primaryColor"),
       privacyMode: readPrivacyMode(
         readRequiredFormValue(formData, "privacyMode"),

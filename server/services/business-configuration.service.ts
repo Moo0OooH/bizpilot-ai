@@ -90,7 +90,7 @@ export type BusinessConfigurationInput = Readonly<{
   consentNotice: string;
   customTemplateName?: string;
   faqs: ReadonlyArray<{ answer: string; question: string }>;
-  fieldOverrides: Json;
+  fieldOverrides?: Json;
   logoUrl?: string;
   primaryColor: string;
   privacyContactEmail?: string;
@@ -424,20 +424,25 @@ export async function saveBusinessConfiguration(
   const logoUrl = normalizeLogoUrl(input.logoUrl);
   const privacyContactEmail = cleanOptionalText(input.privacyContactEmail);
   const customTemplateName = cleanOptionalText(input.customTemplateName);
-  const existingFieldOverrides = await getBusinessTemplateFieldOverrides({
-    businessId: input.businessId,
-    supabase,
-    templateId: input.templateId,
-  });
+  const existingFieldOverrides = input.fieldOverrides
+    ? await getBusinessTemplateFieldOverrides({
+        businessId: input.businessId,
+        supabase,
+        templateId: input.templateId,
+      })
+    : undefined;
   const currentOnboardingReviews = await listBusinessOnboardingTaskReviews({
     businessId: input.businessId,
     supabase,
   });
-  const mergedFieldOverrides = mergeTemplateFieldOverridesForLanguage({
-    currentLanguage: input.preferredLanguage,
-    existing: existingFieldOverrides,
-    incoming: input.fieldOverrides,
-  });
+  const mergedFieldOverrides =
+    input.fieldOverrides && existingFieldOverrides
+      ? mergeTemplateFieldOverridesForLanguage({
+          currentLanguage: input.preferredLanguage,
+          existing: existingFieldOverrides,
+          incoming: input.fieldOverrides,
+        })
+      : undefined;
 
   const updatedBusiness = await updateBusinessProfile({
     businessId: input.businessId,
@@ -447,7 +452,7 @@ export async function saveBusinessConfiguration(
     supabase,
   });
 
-  await Promise.all([
+  const configurationWrites: Promise<void>[] = [
     upsertBusinessBranding({
       accentColor: input.accentColor,
       businessId: input.businessId,
@@ -483,14 +488,21 @@ export async function saveBusinessConfiguration(
       supabase,
       ...(privacyContactEmail ? { privacyContactEmail } : {}),
     }),
-    upsertTemplateSettings({
-      businessId: input.businessId,
-      fieldOverrides: mergedFieldOverrides,
-      supabase,
-      templateId: input.templateId,
-      ...(customTemplateName ? { customName: customTemplateName } : {}),
-    }),
-  ]);
+  ];
+
+  if (mergedFieldOverrides) {
+    configurationWrites.push(
+      upsertTemplateSettings({
+        businessId: input.businessId,
+        fieldOverrides: mergedFieldOverrides,
+        supabase,
+        templateId: input.templateId,
+        ...(customTemplateName ? { customName: customTemplateName } : {}),
+      }),
+    );
+  }
+
+  await Promise.all(configurationWrites);
 
   const cleaningTemplate = await getCleaningTemplate({
     businessId: input.businessId,
@@ -518,6 +530,7 @@ export async function saveBusinessConfiguration(
     upsertIntakeFormFromTemplate({
       businessId: input.businessId,
       fields: cleaningTemplate.fields,
+      formLayout: cleaningTemplate.formLayout,
       formName: publicTemplateName,
       privacyMode: getPublicIntakePrivacyMode(input.privacyMode),
       supabase,

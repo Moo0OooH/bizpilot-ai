@@ -51,6 +51,7 @@ import { CustomQuoteFieldBuilder } from "@/components/dashboard/custom-quote-fie
 import { FaqKnowledgeEditor } from "@/components/dashboard/faq-knowledge-editor";
 import { FlashMessage } from "@/components/dashboard/flash-message";
 import { QuoteFieldTypeControl } from "@/components/dashboard/quote-field-type-control";
+import { QuoteFormStructureBuilder } from "@/components/dashboard/quote-form-structure-builder";
 import { TrackedQuoteLinkBuilder } from "@/components/dashboard/tracked-quote-link-builder";
 import {
   buttonClass,
@@ -346,7 +347,7 @@ export default async function DashboardPage({
 
   return (
     <>
-      <main className="space-y-4">
+      <main className="space-y-4 pb-44 sm:pb-28 lg:pb-20">
         <PageHeader
           description={configCopy.headerDescription(activeBusiness.name)}
           eyebrow={dashboardCopy.settings.workspace}
@@ -819,6 +820,15 @@ export default async function DashboardPage({
               )}
               title={configCopy.fields.title}
             >
+              <QuoteFormStructureBuilder
+                copy={configCopy.fields.formStructure}
+                fields={cleaningTemplate.fields.map((field) => ({
+                  fieldKey: field.field_key,
+                  label: field.label,
+                  sectionKey: field.section_key,
+                }))}
+                initialLayout={cleaningTemplate.formLayout}
+              />
               <div className="overflow-hidden rounded-md border border-[var(--dash-border)]">
                 <div className="hidden grid-cols-[minmax(0,1fr)_7rem_5rem_7rem_4rem_6rem] items-center gap-2 border-b border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-1.5 text-xs font-medium uppercase tracking-normal text-[var(--dash-text-muted)] lg:grid">
                   <span>{configCopy.fields.customerQuestion}</span>
@@ -960,7 +970,15 @@ export default async function DashboardPage({
                   </details>
                 ))}
               </div>
-              <CustomQuoteFieldBuilder copy={configCopy.fields} />
+              <CustomQuoteFieldBuilder
+                copy={configCopy.fields}
+                initialSections={cleaningTemplate.formLayout.sections.map(
+                  (section) => ({
+                    key: section.key,
+                    label: section.navLabel,
+                  }),
+                )}
+              />
             </ConfigurationPanel>
 
             <ConfigurationPanel
@@ -1071,8 +1089,8 @@ export default async function DashboardPage({
 
         </form>
       </main>
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-4 py-2 shadow-[0_-10px_28px_rgba(0,0,0,0.14)] backdrop-blur">
-        <div className="mx-auto flex max-w-[1500px] flex-col gap-1.5 sm:h-10 sm:flex-row sm:items-center sm:justify-between lg:pl-[224px]">
+      <div className="dashboard-configuration-actions fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom))] left-0 right-0 z-20 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-3 py-2 shadow-[0_-10px_28px_rgba(0,0,0,0.14)] backdrop-blur sm:px-4 lg:bottom-0 lg:left-[240px]">
+        <div className="dashboard-container flex flex-col gap-1.5 sm:min-h-10 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-[var(--dash-text-secondary)]">
             {configCopy.bottomBar.text}
           </p>

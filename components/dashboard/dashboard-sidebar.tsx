@@ -13,8 +13,9 @@
  * - app/admin/page.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Filtered only the allowlisted Reports and Guide destinations from server-validated display preferences.
  * - 2026-07-16: Added the role-safe owner Reports destination while retaining five focused mobile tasks.
  * - 2026-07-16: Restored the professional grouped desktop sidebar and added an explicit authorized Founder Admin destination.
  * - 2026-07-16: Kept resilient native navigation and a focused five-task mobile bar.
@@ -24,12 +25,14 @@
 import { usePathname } from "next/navigation";
 
 import type { DashboardShellCopy } from "./dashboard-shell";
+import type { OptionalDashboardSection } from "@/lib/dashboard-section-visibility";
 
 type DashboardSidebarProps = Readonly<{
   activeBusinessName: string;
   copy: DashboardShellCopy;
   showFounderAdmin?: boolean;
   userLabel: string;
+  visibleOptionalSections: readonly OptionalDashboardSection[];
 }>;
 
 type DashboardNavIconName =
@@ -47,6 +50,7 @@ type NavigationItem = Readonly<{
   icon: DashboardNavIconName;
   label: string;
   match: (pathname: string) => boolean;
+  optionalSection?: OptionalDashboardSection;
 }>;
 
 type NavigationGroup = Readonly<{
@@ -54,8 +58,11 @@ type NavigationGroup = Readonly<{
   label: string;
 }>;
 
-function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
-  return [
+function getOwnerNavigation(
+  copy: DashboardShellCopy,
+  visibleOptionalSections: readonly OptionalDashboardSection[],
+): NavigationGroup[] {
+  const groups: NavigationGroup[] = [
     {
       label: copy.nav.groupCommand,
       items: [
@@ -76,6 +83,7 @@ function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
           icon: "reports",
           label: copy.nav.reports,
           match: (pathname) => pathname === "/dashboard/reports",
+          optionalSection: "reports",
         },
       ],
     },
@@ -112,10 +120,20 @@ function getOwnerNavigation(copy: DashboardShellCopy): NavigationGroup[] {
           icon: "guide",
           label: copy.nav.guide,
           match: (pathname) => pathname === "/dashboard/guide",
+          optionalSection: "guide",
         },
       ],
     },
   ];
+
+  return groups.map((group) => ({
+    ...group,
+    items: group.items.filter(
+      (item) =>
+        !item.optionalSection ||
+        visibleOptionalSections.includes(item.optionalSection),
+    ),
+  }));
 }
 
 function DashboardNavIcon({ name }: Readonly<{ name: DashboardNavIconName }>) {
@@ -240,9 +258,10 @@ export function DashboardSidebar({
   copy,
   showFounderAdmin = false,
   userLabel,
+  visibleOptionalSections,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
-  const navigation = getOwnerNavigation(copy);
+  const navigation = getOwnerNavigation(copy, visibleOptionalSections);
   const mobileNavigation = navigation
     .flatMap((group) => group.items)
     .filter(

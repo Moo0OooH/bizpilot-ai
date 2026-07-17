@@ -13,8 +13,9 @@
  * - app/admin/page.tsx
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Guarded one role-safe Founder entry per viewport and compact optional Guide navigation.
  * - 2026-07-16: Guarded complete grouped desktop navigation, authorized Founder Admin access, and focused mobile tasks.
  * - 2026-07-16: Guarded the single centered desktop navigation and mobile-only bottom bar.
  * - 2026-07-14: Replaced superseded Dashboard V3/P12 guards with the current task-first V4 acceptance contract.
@@ -50,11 +51,13 @@ describe("Dashboard V4 source contracts", () => {
     assert.equal(sidebar.includes("dashboard-sidebar sticky"), true);
     assert.equal(sidebar.includes("dashboard-mobile-nav fixed"), true);
     assert.equal(topbar.includes("primaryRoutes.map"), false);
-    assert.equal(topbar.includes('href="/dashboard/guide"'), true);
+    assert.equal(topbar.includes('href: "/dashboard/guide"'), true);
     assert.equal(sidebar.includes('href: "/dashboard/guide"'), true);
     assert.equal(sidebar.includes('href="/admin"'), true);
     assert.equal(sidebar.includes("showFounderAdmin ?"), true);
     assert.equal(topbar.includes('href="/admin"'), true);
+    assert.equal(topbar.match(/href="\/admin"/g)?.length, 1);
+    assert.equal(topbar.includes('href="/dashboard/guide"'), false);
     assert.equal(sidebar.includes('href: "/dashboard/founder"'), false);
   });
 

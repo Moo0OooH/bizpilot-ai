@@ -11,8 +11,9 @@
  * - app/auth/reset-password/page.tsx
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Made successful callback feedback provider-neutral for email and Google sign-in.
  * - 2026-07-05: Softened callback success notice and completed source header metadata.
  * - 2026-05-23: Created non-recovery Supabase auth callback handling.
  * ============================================================
@@ -30,7 +31,7 @@ import {
 import { safeLogger } from "@/server/logging/safe-logger";
 import { exchangeAuthCodeForSession } from "@/server/services/auth.service";
 
-const AUTH_CALLBACK_NOTICE = "Email confirmed. Continue to your workspace.";
+const AUTH_CALLBACK_NOTICE = "Sign-in complete. Continue to your workspace.";
 
 function buildSignInUrl(
   request: NextRequest,

@@ -205,11 +205,11 @@ export default async function QuotePage({
               })}
             </nav>
           </div>
-          <h1 className="mt-3 text-[32px] font-black leading-[1.06] sm:text-[40px]">
-            {copy.title}
+          <h1 className="mt-3 break-words text-[32px] font-black leading-[1.06] sm:text-[40px]">
+            {page.formLayout.header.title}
           </h1>
           <p className="mt-4 max-w-[620px] text-[16px] leading-7 text-[var(--text-default)]">
-            {copy.subtitle}
+            {page.formLayout.header.subtitle ?? copy.subtitle}
           </p>
           <p className="mt-4 rounded-[16px] border p-4 text-[14px] leading-6" style={{
             backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",

@@ -30,6 +30,15 @@ import {
   supportedLanguages,
   type SupportedLanguage,
 } from "@/lib/i18n/language";
+import {
+  getDefaultQuoteFormLayout,
+  localizeQuoteFormLayout,
+  mergeQuoteFormLayoutsForLanguage,
+  parseQuoteFormLayout,
+  resolveQuoteFieldSectionKey,
+  serializeQuoteFormLayout,
+  type QuoteFormLayout,
+} from "@/lib/quote-form-layout";
 import type { Database, Json } from "@/types/database";
 
 export type BusinessBrandingRecord =
@@ -57,11 +66,13 @@ type QuoteFieldType = IndustryTemplateFieldRecord["field_type"];
 export type CleaningTemplateFieldRecord = IndustryTemplateFieldRecord & {
   is_custom?: boolean;
   is_hidden: boolean;
+  section_key: string;
   template_field_id: string | null;
 };
 
 export type CleaningTemplateRecord = Readonly<{
   fields: CleaningTemplateFieldRecord[];
+  formLayout: QuoteFormLayout;
   template: IndustryTemplateRecord;
 }>;
 
@@ -92,6 +103,7 @@ export type TemplateFieldOverride = Readonly<{
   isRequired?: boolean;
   label?: string;
   options?: Json;
+  sectionKey?: string;
   sortOrder?: number;
   translations?: TemplateFieldTranslations;
 }>;
@@ -105,6 +117,7 @@ export type TemplateFieldOverrides = Readonly<{
   customFields?: Record<string, CustomTemplateFieldOverride>;
   disabledFields?: string[];
   fields?: Record<string, TemplateFieldOverride>;
+  formLayout?: QuoteFormLayout;
   labels?: Record<string, string>;
   optionalFields?: string[];
   requiredFields?: string[];
@@ -220,6 +233,9 @@ function readTemplateFieldOverride(
       : {}),
     ...(typeof value.label === "string" ? { label: value.label } : {}),
     ...(value.options !== undefined ? { options: value.options } : {}),
+    ...(typeof value.sectionKey === "string"
+      ? { sectionKey: value.sectionKey }
+      : {}),
     ...(typeof value.sortOrder === "number"
       ? { sortOrder: value.sortOrder }
       : {}),
@@ -231,6 +247,8 @@ export function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides 
   if (!isRecord(value)) {
     return {};
   }
+
+  const formLayout = parseQuoteFormLayout(value.formLayout);
 
   const fields = isRecord(value.fields)
     ? Object.fromEntries(
@@ -279,6 +297,7 @@ export function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides 
     customFields,
     disabledFields: readStringList(value.disabledFields),
     fields,
+    ...(formLayout ? { formLayout } : {}),
     labels: readStringMap(value.labels),
     optionalFields: readStringList(value.optionalFields),
     requiredFields: readStringList(value.requiredFields),
@@ -336,6 +355,9 @@ function serializeTemplateFieldOverride(
       : {}),
     ...(override.label !== undefined ? { label: override.label } : {}),
     ...(override.options !== undefined ? { options: override.options } : {}),
+    ...(override.sectionKey !== undefined
+      ? { sectionKey: override.sectionKey }
+      : {}),
     ...(override.sortOrder !== undefined
       ? { sortOrder: override.sortOrder }
       : {}),
@@ -367,6 +389,9 @@ export function serializeTemplateFieldOverrides(
             ]),
           ),
         }
+      : {}),
+    ...(overrides.formLayout
+      ? { formLayout: serializeQuoteFormLayout(overrides.formLayout) }
       : {}),
     ...(overrides.labels ? { labels: overrides.labels } : {}),
     ...(overrides.optionalFields ? { optionalFields: overrides.optionalFields } : {}),
@@ -414,6 +439,9 @@ function mergeTemplateFieldOverride<T extends TemplateFieldOverride>(input: {
 
   return {
     ...input.incoming,
+    ...(input.incoming.sectionKey ?? input.existing?.sectionKey
+      ? { sectionKey: input.incoming.sectionKey ?? input.existing?.sectionKey }
+      : {}),
     ...(translations ? { translations } : {}),
   } as T;
 }
@@ -446,11 +474,19 @@ export function mergeTemplateFieldOverridesForLanguage(input: {
       }),
     ]),
   );
+  const formLayout = incoming.formLayout
+    ? mergeQuoteFormLayoutsForLanguage({
+        currentLanguage: input.currentLanguage,
+        existing: existing.formLayout ?? getDefaultQuoteFormLayout(),
+        incoming: incoming.formLayout,
+      })
+    : existing.formLayout;
 
   return serializeTemplateFieldOverrides({
     ...incoming,
     customFields,
     fields,
+    ...(formLayout ? { formLayout } : {}),
   });
 }
 
@@ -522,6 +558,10 @@ export async function getCleaningTemplate(input: {
     supabase: input.supabase,
     templateId: template.id,
   });
+  const formLayout = localizeQuoteFormLayout({
+    language: input.preferredLanguage,
+    layout: overrides.formLayout ?? getDefaultQuoteFormLayout(),
+  });
   const mergedFields = (fields ?? [])
     .map((field): CleaningTemplateFieldRecord => {
       const fieldOverride = overrides.fields?.[field.field_key];
@@ -548,6 +588,11 @@ export async function getCleaningTemplate(input: {
         language: input.preferredLanguage,
         translations: fieldOverride?.translations,
       });
+      const sectionKey = resolveQuoteFieldSectionKey({
+        fieldKey: field.field_key,
+        formLayout,
+        sectionKey: fieldOverride?.sectionKey,
+      });
 
       return {
         ...field,
@@ -557,6 +602,7 @@ export async function getCleaningTemplate(input: {
         label: localized.label,
         field_type: fieldOverride?.fieldType ?? field.field_type,
         options: fieldOverride?.options ?? field.options,
+        section_key: sectionKey,
         sort_order: fieldOverride?.sortOrder ?? field.sort_order,
         template_field_id: field.id,
       };
@@ -569,6 +615,11 @@ export async function getCleaningTemplate(input: {
         label: field.label,
         language: input.preferredLanguage,
         translations: field.translations,
+      });
+      const sectionKey = resolveQuoteFieldSectionKey({
+        fieldKey,
+        formLayout,
+        sectionKey: field.sectionKey,
       });
 
       return {
@@ -583,6 +634,7 @@ export async function getCleaningTemplate(input: {
         is_required: field.isRequired ?? false,
         label: localized.label,
         options: field.options ?? [],
+        section_key: sectionKey,
         sort_order: field.sortOrder ?? 500,
         template_field_id: null,
         template_id: template.id,
@@ -595,6 +647,7 @@ export async function getCleaningTemplate(input: {
 
   return {
     fields: allFields,
+    formLayout,
     template,
   };
 }

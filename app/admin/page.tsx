@@ -10,8 +10,9 @@
  * - docs/dashboard-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Kept localized founder topbar utilities wrapping through tablet widths to prevent 640px clipping.
  * - 2026-07-16: Added bilingual founder lead-source, campaign, tracked-coverage, and manual-outcome reporting above the detailed inbox.
  * - 2026-07-16: Localized founder access and health fallback labels while preserving the complete six-panel admin navigation.
  * - 2026-07-16: Reduced Business Operations density with progressive disclosures, removed duplicated actions and activity, and hardened protected admin navigation.
@@ -3981,7 +3982,7 @@ function AdminTopBar({
         WebkitBackdropFilter: "blur(16px) saturate(140%)",
       }}
     >
-      <div className="flex min-h-14 flex-wrap items-center justify-between gap-2 py-2 sm:flex-nowrap sm:gap-4 sm:py-0">
+      <div className="flex min-h-14 flex-wrap items-center justify-between gap-2 py-2 md:flex-nowrap md:gap-4 md:py-0">
         <div className="min-w-0">
           <p className="truncate text-[15px] font-black text-[var(--dash-text)]">
             {adminPanelTitle(copy, activePanel)}
@@ -3997,7 +3998,7 @@ function AdminTopBar({
             {copy.topbar.badge}
           </span>
         </div>
-        <div className="flex min-w-0 basis-full flex-wrap items-center gap-2 sm:basis-auto sm:flex-nowrap sm:justify-end">
+        <div className="flex min-w-0 basis-full flex-wrap items-center gap-2 sm:justify-end md:basis-auto md:flex-nowrap">
           <span
             className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11.5px] font-bold"
             style={{

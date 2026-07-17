@@ -12,8 +12,9 @@
  * - docs/dashboard-v4/PHASE_PROGRESS.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added the V4.7 responsive shell, configurable public-form structure, optional navigation visibility, and Google OAuth workspace-safety contract.
  * - 2026-07-16: Recorded the V4.6 main publication, successful Vercel rollout, and Production public read-only acceptance.
  * - 2026-07-16: Added the V4.6 ordered setup journey, two-part Guide, owner/founder source reports, tracked-link builder, and accurate public-brand preview contract.
  * - 2026-07-16: Closed the V4.5 source publication and Production public read-only acceptance record.
@@ -34,7 +35,7 @@
 
 ## Outcome
 
-Dashboard V4.6 completes the owner operating path from first setup through source-aware reporting. Quote Setup now presents six ordered, readiness-backed stages; Guide separates setup/optimization from workflow/reporting; and the new Reports route summarizes submitted requests by safe tracked source, campaign, and manually recorded outcome. The fixed grouped sidebar still exposes every authorized route, while public branding preview and runtime now share the same accessible color rules.
+Dashboard V4.7 completes the owner-controlled intake experience without adding a database migration. Quote Setup now lets an owner name and describe the public form, create and order sections, assign each question to a section, hide optional sections safely, and choose list, tab, or guided multi-step presentation. The protected shell keeps authorized destinations in one predictable place, prevents fixed controls from covering content, and lets each signed-in owner show or hide optional Reports and Guide navigation. Google sign-in can repair an existing approved workspace but cannot silently create a new tenant through the recovery path.
 
 ## Jobs to be done
 
@@ -56,7 +57,7 @@ Desktop owner navigation is grouped by job: Command (Overview, Leads, Reports), 
 
 `/dashboard/reports` is a protected owner route. It reads only the active workspace through existing RLS-scoped tables and applies a 1,000-request safety bound. `/founder` continues to perform guarded role checks and sends an authorized founder directly to `/admin`.
 
-Quote Setup uses a six-stage journey backed by the existing eight readiness checks, followed by one horizontal task bar with seven mounted panels: Overview, Services, Form Questions, Branding, AI Instructions, Privacy, and Public Link. Deep links open the correct panel, tabs support standard keyboard movement, and every required form value stays mounted while only one task is visible.
+Quote Setup uses a six-stage journey backed by the existing eight readiness checks, followed by one horizontal task bar with seven mounted panels: Overview, Services, Form Questions, Branding, AI Instructions, Privacy, and Public Link. Deep links open the correct panel, tabs support standard keyboard movement, and every required form value stays mounted while only one task is visible. Form Questions includes the versioned public-form structure editor; its layout and question-to-section assignments persist inside the existing template-settings and intake-field metadata envelopes for backward compatibility.
 
 ## Interaction rules
 
@@ -64,14 +65,18 @@ Quote Setup uses a six-stage journey backed by the existing eight readiness chec
 - One primary action per decision area.
 - Contextual help appears only when needed or inside a disclosure.
 - Mobile navigation includes Settings and respects safe-area padding.
+- Sticky tabs and fixed save controls stay inside the viewport, reserve enough content space, and remain above the mobile navigation without covering fields or actions.
 - Menus stay within the viewport; pages avoid nested-scroll cards.
 - Wide screens expose the complete grouped route map in a fixed left sidebar; the topbar contains utilities only. Tablet and mobile keep a viewport-bounded Actions disclosure and five-task bottom bar.
-- Founder Admin is visible on wide screens in both the sidebar and utility area only when the signed-in email passes the existing founder authorization check.
+- Founder Admin is visible once in the wide-screen sidebar and once inside compact Actions only when the signed-in email passes the server-only founder authorization check.
+- Settings can hide or restore the optional Reports and Guide destinations for the current browser; core operating routes and authorized Founder Admin can never be hidden by this preference.
 - Protected topbar and mobile destinations use native full-page transitions. A stale client router or failed React Server Component transition must not trap the owner.
 - Current-user and business-workspace reads are memoized per server render so layout and page do not repeat the same authenticated queries.
 - A caught dashboard route error explains that saved workspace data is unchanged, retries the failed route segment, and offers native links to Overview, Quote Setup, and Guide.
 - Server-rendered dashboard pages pass only serializable values into Client Components; dictionary formatter functions remain on the server side.
 - Add Field starts empty, offers cleaning-specific starters, previews customer-facing output, and hides priority/key controls under Advanced settings.
+- Public form structure owns the customer-facing heading that previously appeared as the fixed “What kind of cleaning?” copy. Owners can create up to eight ordered bilingual-ready sections, label their navigation, add descriptions, assign questions, and choose list, tabs, or guided steps.
+- A hidden section cannot strand required inputs: its questions are excluded from the synchronized public intake, and at least one visible section is always retained.
 - Branding accepts a bounded PNG/JPG/WebP selected from the owner device or a secure HTTPS URL, provides a live preview, and applies the saved logo/colors to the public quote page.
 - Branding states exactly where primary and accent colors appear, notes that protected dashboard colors are unaffected, uses WCAG-derived foreground/focus colors, and carries the saved identity through the public success page.
 - The full unique business URL is visible and copyable. `Save & preview` first saves owner choices and synchronizes the derived public link, consent version, and intake form.
@@ -102,11 +107,11 @@ English and Canadian French use the central `getBizPilotCopy` dictionary. Route/
 
 ## Data and security posture
 
-Dashboard V4.6 uses the existing `leads.source_channel` and `lead_source_metadata` schema and adds no migration. Owner reporting remains tenant-scoped through RLS; founder aggregation remains founder-gated and bounded. It adds no external upload service, direct social integration, autonomous action, real-customer-data approval, or paid-pilot approval. Founder cleanup and lifecycle controls retain their confirmation and authorization guards.
+Dashboard V4.7 uses the existing `leads.source_channel`, `lead_source_metadata`, `business_template_settings.field_overrides`, and `intake_form_fields.options` storage and adds no migration. Owner reporting remains tenant-scoped through RLS; founder aggregation remains founder-gated and bounded. Founder authorization stays in the server-only `BIZPILOT_FOUNDER_EMAILS` environment value and is never embedded in client source. Google OAuth keeps login-only scopes, accepts only exact safe callback destinations, and cannot create a new workspace through the generic recovery action. The release adds no external upload service, direct social integration, autonomous action, real-customer-data approval, or paid-pilot approval.
 
 ## Verification status
 
-The published V4.6 release passes all `272/272` unit/source tests, ESLint with zero warnings, TypeScript, and the Next.js 16.2.4 production build. The exact verified tree `43ced7bc8e1914a72366bb1b8581ae4afcc02846` is on `main` at `b2ca255ec45b4ebf015603017728b0a5e5ce8c15`; Vercel reported success at target `BhNUwzTNx2RmLnwXKrjbVZioAxU9`. Local and Production public routes pass `46/46`, bilingual responsive routes pass `20/20`, the Production UI matrix passes `621/621`, and inactive Quote GET passes `2/2` in EN/fr-CA without a submission or data mutation. No active synthetic Quote slug was supplied, so no active-form submission result is claimed.
+The V4.7 candidate passes all `294/294` unit/source tests, ESLint with zero warnings, TypeScript, and the Next.js 16.2.4 production build. Local production responsive smoke passes `20/20`, and the recorded EN/fr-CA light/dark UI matrix has zero failures across 11 viewports. The standalone real-Chrome runner remains unavailable in this container because no Chrome/Chromium binary is installed; this is an environment gate, not a detected product failure. Publication and Production read-only evidence are recorded in `PHASE_PROGRESS.md` after they are observed and are never inferred.
 
 Authenticated browser smoke still requires an approved local/synthetic auth target. Source, type, build, and public GET evidence do not substitute for owner-authenticated visual confirmation of protected screens.
 

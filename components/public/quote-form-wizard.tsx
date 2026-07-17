@@ -2,33 +2,23 @@
  * ============================================================
  * File: components/public/quote-form-wizard.tsx
  * Project: BizPilot AI
- * Description: Grouped public cleaning-quote form.
- * Role: Renders Service, When & where, and Contact sections with direct submit safety and shared semantic theme tokens.
+ * Description: Configurable public cleaning-quote form renderer.
+ * Role: Maps persisted fields into owner-authored sections and delegates accessible list, tab, or step behavior.
  * Related:
+ * - components/public/quote-form-flow.tsx
  * - app/(public)/quote/[slug]/page.tsx
+ * - lib/quote-form-layout.ts
  * - server/actions/public-intake.actions.ts
- * - docs/product/BIZPILOT_MULTILINGUAL_RESPONSIVE_UI_STANDARD_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-19
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
- * - 2026-07-16: Added a real branded section rail, aligned selected controls to saved accent, improved bilingual grouping, and rendered the persisted consent version.
- * - 2026-07-15: Repointed form UI authority to the current multilingual responsive standard.
- * - 2026-05-19: Created 3-step grouped public quote form.
- * - 2026-05-22: Removed client-side step navigation dependency so public submissions cannot get stuck before submit.
- * - 2026-06-19: Mapped quote form visual styling to shared System/Light/Dark tokens.
- * - 2026-06-21: Hid the honeypot from all normal users and kept the review notice single.
- * - 2026-06-21: Tightened mobile quote-card spacing while preserving 48px controls and safe submit behavior.
- * - 2026-06-25: Polished quote field/helper spacing for final public rhythm.
- * - 2026-06-25: Improved final quote form field groups, helper spacing, consent rhythm, and submit spacing.
- * - 2026-07-04: Submitted safe quote-link source URL attribution instead of an empty hidden value.
- * - 2026-07-05: Improved public field semantics, helper associations, and required boolean enforcement.
+ * - 2026-07-17: Replaced heuristic fixed steps with persisted titles, sections, assignments, and display modes.
+ * - 2026-07-16: Added branded section progress and persisted consent copy.
+ * - 2026-07-05: Improved field semantics, attribution, and required boolean enforcement.
  * ============================================================
  */
 
-import { submitPublicIntakeAction } from "@/server/actions/public-intake.actions";
-import type { getPublicIntakePage } from "@/server/services/public-intake.service";
-import type { Json } from "@/types/database";
 import {
   getBizPilotCopy,
   getDefaultBizPilotCopy,
@@ -36,6 +26,10 @@ import {
   type QuoteStepCopy,
 } from "@/lib/i18n/bizpilot-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
+import { submitPublicIntakeAction } from "@/server/actions/public-intake.actions";
+import type { getPublicIntakePage } from "@/server/services/public-intake.service";
+import type { Json } from "@/types/database";
+import { QuoteFormFlow } from "./quote-form-flow";
 import { SubmitAgeInput } from "./submit-age-input";
 
 type IntakePage = NonNullable<Awaited<ReturnType<typeof getPublicIntakePage>>>;
@@ -55,75 +49,6 @@ type StepId = QuoteStepCopy["id"];
 
 const FIELD_INPUT =
   "quote-field-control h-12 w-full rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 text-[15px] text-[var(--text-strong)] outline-none transition placeholder:text-[var(--text-muted)] focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--focus-ring)]";
-
-function groupForField(field: FieldRecord): StepId {
-  const key = field.field_key.toLowerCase();
-
-  if (
-    key.includes("contact") ||
-    key.includes("customer_name") ||
-    key.includes("email") ||
-    key.includes("courriel") ||
-    key.includes("message") ||
-    key.includes("name") ||
-    key.includes("nom") ||
-    key.includes("note") ||
-    key.includes("phone") ||
-    key.includes("telephone")
-  ) {
-    return "contact";
-  }
-
-  if (
-    key.includes("service_type") ||
-    key.includes("cleaning_type") ||
-    key.includes("type_nettoyage") ||
-    key.includes("property") ||
-    key.includes("propriete") ||
-    key.includes("bedroom") ||
-    key.includes("chambre") ||
-    key.includes("bathroom") ||
-    key.includes("salle_bain") ||
-    key.includes("square") ||
-    key.includes("superficie") ||
-    key.includes("size") ||
-    key.includes("pet") ||
-    key.includes("animaux")
-  ) {
-    return "service";
-  }
-
-  if (
-    key.includes("date") ||
-    key.includes("time") ||
-    key.includes("schedule") ||
-    key.includes("horaire") ||
-    key.includes("city") ||
-    key.includes("ville") ||
-    key.includes("area") ||
-    key.includes("secteur") ||
-    key.includes("location") ||
-    key.includes("emplacement") ||
-    key.includes("address") ||
-    key.includes("adresse") ||
-    key.includes("postal")
-  ) {
-    return "when_where";
-  }
-
-  return "contact";
-}
-
-function groupFields(fields: ReadonlyArray<FieldRecord>): Record<StepId, FieldRecord[]> {
-  const buckets: Record<StepId, FieldRecord[]> = {
-    contact: [],
-    service: [],
-    when_where: [],
-  };
-
-  fields.forEach((field) => buckets[groupForField(field)].push(field));
-  return buckets;
-}
 
 function inputTypeForField(fieldType: FieldRecord["field_type"]): string {
   if (fieldType === "phone") return "tel";
@@ -147,7 +72,12 @@ function toOptionLabel(value: string): string {
 }
 
 function toSafeDomIdPart(value: string): string {
-  return value.toLowerCase().replace(/[^a-z0-9_-]+/g, "-").replace(/^-+|-+$/g, "") || "option";
+  return (
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "option"
+  );
 }
 
 function getInputMinimum(input: {
@@ -220,21 +150,21 @@ function FieldInput({
           const optionId = `${controlId}-${index}-${toSafeDomIdPart(option)}`;
 
           return (
-          <label
-            className="quote-radio-option flex min-h-12 items-center gap-2.5 rounded-[12px] border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-[14px] font-semibold text-[var(--text-strong)]"
-            htmlFor={optionId}
-            key={option}
-          >
-            <input
-              className="h-4 w-4 shrink-0 accent-[var(--accent)]"
-              id={optionId}
-              name={`field:${field.field_key}`}
-              required={required}
-              type="radio"
-              value={option}
-            />
-            {copy.optionLabels[option] ?? toOptionLabel(option)}
-          </label>
+            <label
+              className="quote-radio-option flex min-h-12 items-center gap-2.5 rounded-[12px] border border-[var(--border-strong)] bg-[var(--surface)] px-3.5 py-2.5 text-[14px] font-semibold text-[var(--text-strong)]"
+              htmlFor={optionId}
+              key={option}
+            >
+              <input
+                className="h-4 w-4 shrink-0 accent-[var(--accent)]"
+                id={optionId}
+                name={`field:${field.field_key}`}
+                required={required}
+                type="radio"
+                value={option}
+              />
+              {copy.optionLabels[option] ?? toOptionLabel(option)}
+            </label>
           );
         })}
       </div>
@@ -251,14 +181,9 @@ function FieldInput({
         name={`field:${field.field_key}`}
         required={required}
       >
-        <option value="">
-          {copy.quoteForm.selectPlaceholder}
-        </option>
+        <option value="">{copy.quoteForm.selectPlaceholder}</option>
         {getOptions(field.options).map((option) => (
-          <option
-            key={option}
-            value={option}
-          >
+          <option key={option} value={option}>
             {copy.optionLabels[option] ?? toOptionLabel(option)}
           </option>
         ))}
@@ -388,11 +313,7 @@ function FieldRow({
   );
 }
 
-function ConsentBlock({
-  consentNotice,
-}: Readonly<{
-  consentNotice: string;
-}>) {
+function ConsentBlock({ consentNotice }: Readonly<{ consentNotice: string }>) {
   return (
     <label className="quote-consent-block mt-5 flex items-start gap-3 rounded-[14px] border border-[var(--border-strong)] bg-[var(--surface)] p-4 text-[13px] leading-6 text-[var(--text-default)] sm:p-5">
       <input
@@ -401,9 +322,7 @@ function ConsentBlock({
         required
         type="checkbox"
       />
-      <span>
-        {consentNotice}
-      </span>
+      <span>{consentNotice}</span>
     </label>
   );
 }
@@ -422,14 +341,28 @@ export function QuoteFormWizard({
   todayDate: string;
 }>) {
   const copy = getBizPilotCopy(language);
-  const groups = groupFields(page.fields);
-  const steps = copy.quoteForm.steps;
+  const configuredSections = page.formLayout.sections.filter(
+    (section) => !section.isHidden,
+  );
+  const sections =
+    configuredSections.length > 0
+      ? configuredSections
+      : page.formLayout.sections.slice(0, 1);
+  const fallbackSectionKey = sections[0]?.key ?? "contact";
+  const availableSectionKeys = new Set(sections.map((section) => section.key));
+  const fieldsBySection = new Map<string, FieldRecord[]>(
+    sections.map((section) => [section.key, []]),
+  );
 
-  return (
-    <form
-      action={submitPublicIntakeAction}
-      className="quote-form-shell mx-auto w-full max-w-[780px] space-y-5 px-4 py-6 pb-10 sm:space-y-6 sm:px-8 sm:py-8 sm:pb-12"
-    >
+  page.fields.forEach((field) => {
+    const sectionKey = availableSectionKeys.has(field.section_key)
+      ? field.section_key
+      : fallbackSectionKey;
+    fieldsBySection.get(sectionKey)?.push(field);
+  });
+
+  const hiddenFields = (
+    <>
       <input name="businessSlug" type="hidden" value={slug} />
       <input name="language" type="hidden" value={language} />
       <input name="intakeFormId" type="hidden" value={page.form.id} />
@@ -457,7 +390,6 @@ export function QuoteFormWizard({
         tabIndex={-1}
         type="text"
       />
-
       {page.fields.map((field) => (
         <input
           key={field.id}
@@ -466,112 +398,59 @@ export function QuoteFormWizard({
           value={field.field_key}
         />
       ))}
+    </>
+  );
 
-      <nav
-        aria-label={copy.quoteForm.sectionNavigationLabel}
-        className="rounded-[16px] border border-[var(--border-default)] bg-[var(--surface)] p-3 shadow-[var(--shadow-sm)]"
-      >
-        <ol className="grid grid-cols-3 gap-2">
-          {steps.map((step, index) => (
-            <li key={step.id}>
-              <a
-                className="group grid gap-2 rounded-[11px] px-2 py-2 text-center focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
-                href={`#quote-step-${index}`}
-              >
-                <span
-                  aria-hidden
-                  className="h-1.5 rounded-full bg-[var(--brand-accent)] transition group-hover:opacity-80"
+  return (
+    <QuoteFormFlow
+      action={submitPublicIntakeAction}
+      copy={{
+        backButton: copy.quoteForm.backButton,
+        continueButton: copy.quoteForm.continueButton,
+        emptySection: copy.quoteForm.emptySection,
+        guardrail: copy.quoteForm.guardrail,
+        sectionNavigationLabel: copy.quoteForm.sectionNavigationLabel,
+        stepProgress: copy.quoteForm.stepProgress,
+        submitButton: copy.quoteForm.submitButton,
+      }}
+      displayMode={page.formLayout.displayMode}
+      hiddenFields={hiddenFields}
+      sections={sections.map((section, index) => {
+        const fields = fieldsBySection.get(section.key) ?? [];
+
+        return {
+          content: (
+            <>
+              {fields.length > 0 ? (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {fields.map((field) => (
+                    <FieldRow
+                      copy={copy}
+                      field={field}
+                      key={field.id}
+                      todayDate={todayDate}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <p className="rounded-[14px] border border-[var(--border-default)] bg-[var(--canvas-subtle)] p-3 text-[13px] text-[var(--text-muted)]">
+                  {copy.quoteForm.emptySection}
+                </p>
+              )}
+              {index === sections.length - 1 ? (
+                <ConsentBlock
+                  consentNotice={page.consentVersion.consent_notice}
                 />
-                <span className="truncate text-[11px] font-extrabold text-[var(--text-strong)] sm:text-[12px]">
-                  {index + 1}. {step.label}
-                </span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      </nav>
-
-      {steps.map((step, index) => {
-        const fields = groups[step.id];
-
-        return (
-          <section
-            className="quote-step-card rounded-[20px] border border-[var(--border-default)] bg-[var(--surface)] p-4 shadow-[var(--shadow-sm)] sm:rounded-[24px] sm:p-6"
-            id={`quote-step-${index}`}
-            key={step.id}
-          >
-            <header className="mb-5 space-y-2">
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.14em] text-[var(--text-muted)]">
-                {copy.quoteForm.stepProgress(index + 1, steps.length, step.label)}
-              </p>
-              <div
-                aria-hidden
-                className="h-1.5 overflow-hidden rounded-full bg-[var(--canvas-subtle)]"
-              >
-                <div
-                  className="h-full rounded-full bg-[var(--brand-accent)]"
-                  style={{ width: `${((index + 1) / steps.length) * 100}%` }}
-                />
-              </div>
-              <h2 className="text-[22px] font-extrabold leading-tight text-[var(--text-strong)]">
-                {step.title}
-              </h2>
-              <p className="text-[14px] leading-6 text-[var(--text-default)]">
-                {step.description}
-              </p>
-            </header>
-
-            {fields.length > 0 ? (
-              <div className="grid gap-4 md:grid-cols-2">
-                {fields.map((field) => (
-                  <FieldRow
-                    copy={copy}
-                    field={field}
-                    key={field.id}
-                    todayDate={todayDate}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="rounded-[14px] border border-[var(--border-default)] bg-[var(--canvas-subtle)] p-3 text-[13px] text-[var(--text-muted)]">
-                {copy.quoteForm.emptySection}
-              </p>
-            )}
-
-            {index === steps.length - 1 ? (
-              <ConsentBlock
-                consentNotice={page.consentVersion.consent_notice}
-              />
-            ) : null}
-          </section>
-        );
+              ) : null}
+            </>
+          ),
+          description: section.description,
+          key: section.key,
+          navLabel: section.navLabel,
+          title: section.title,
+        };
       })}
-
-      <p
-        className="quote-submit-guardrail rounded-[14px] border p-4 text-[13px] leading-6 sm:p-5"
-        style={{
-          backgroundColor: "color-mix(in srgb, var(--warning) 12%, var(--surface))",
-          borderColor: "color-mix(in srgb, var(--warning) 34%, var(--border-default))",
-          color: "var(--text-strong)",
-        }}
-      >
-        {copy.quoteForm.guardrail}
-      </p>
-
-      <div className="quote-submit-row flex justify-end pt-2">
-        <button
-          className="quote-submit-button inline-flex min-h-12 w-full items-center justify-center rounded-[14px] px-5 text-[15px] font-extrabold transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-[var(--focus-ring)] sm:w-auto sm:min-w-[220px]"
-          style={{
-            background: "linear-gradient(135deg, var(--primary), var(--primary-hover))",
-            boxShadow: "0 14px 30px color-mix(in srgb, var(--primary) 22%, transparent)",
-            color: "var(--primary-contrast)",
-          }}
-          type="submit"
-        >
-          {copy.quoteForm.submitButton}
-        </button>
-      </div>
-    </form>
+    />
   );
 }
 

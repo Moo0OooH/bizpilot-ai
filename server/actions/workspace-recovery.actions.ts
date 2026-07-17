@@ -10,8 +10,9 @@
  * - server/services/auth.service.ts
  * Author: MoOoH
  * Created: 2026-07-05
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Restricted new-workspace recovery to verified email identities while retaining existing-workspace repair for every provider.
  * - 2026-07-05: Completed BizPilot source header metadata for workspace recovery action.
  * ============================================================
  */
@@ -25,7 +26,10 @@ import { redirect } from "next/navigation";
 import { WORKSPACE_RECOVERY_ERROR_COOKIE } from "@/lib/workspace-recovery/constants";
 import { safeLogger } from "@/server/logging/safe-logger";
 import { getCurrentUser } from "@/server/services/auth.service";
-import { recoverWorkspaceAccess } from "@/server/services/business.service";
+import {
+  EXISTING_WORKSPACE_REQUIRED_ERROR,
+  recoverWorkspaceAccess,
+} from "@/server/services/business.service";
 
 function readBusinessName(formData: FormData): string {
   const value = formData.get("businessName");
@@ -52,6 +56,7 @@ export async function recoverWorkspaceAccessAction(
 
   try {
     await recoverWorkspaceAccess({
+      allowWorkspaceCreation: user.authProvider === "email",
       businessName: readBusinessName(formData),
       userId: user.id,
     });
@@ -63,6 +68,8 @@ export async function recoverWorkspaceAccessAction(
           : error.message ===
               "This account already has a workspace record that needs founder review."
             ? "existing_workspace_state"
+            : error.message === EXISTING_WORKSPACE_REQUIRED_ERROR
+              ? "existing_workspace_required"
             : "workspace_recovery_failed"
         : "workspace_recovery_failed";
 
@@ -76,7 +83,8 @@ export async function recoverWorkspaceAccessAction(
       error instanceof Error &&
       (error.message === "Business name is required." ||
         error.message ===
-          "This account already has a workspace record that needs founder review.")
+          "This account already has a workspace record that needs founder review." ||
+        error.message === EXISTING_WORKSPACE_REQUIRED_ERROR)
         ? error.message
         : "We couldn't recover this workspace automatically. Founder review is needed.";
 

@@ -10,8 +10,9 @@
  * - server/policies/business-membership.policy.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Blocked non-email identities from creating a workspace through self-service recovery while preserving existing-workspace repair.
  * - 2026-07-16: Kept safe quote starters available while leaving onboarding tasks unconfirmed until the owner reviews and saves setup.
  * - 2026-07-16: Memoized workspace reads by user per server render to remove duplicate protected-route tenant queries.
  * - 2026-07-16: Seeded five language-aware owner-approved FAQ examples for new cleaning workspaces.
@@ -71,6 +72,9 @@ export type WorkspaceAccessSummary = Readonly<{
   lifecycleStatus: BusinessRecord["lifecycle_status"];
   status: BusinessRecord["status"];
 }> | null;
+
+export const EXISTING_WORKSPACE_REQUIRED_ERROR =
+  "This sign-in method requires an existing approved workspace.";
 
 function toSlug(value: string): string {
   const slug = value
@@ -341,6 +345,7 @@ function hasAnyMembership(input: {
 }
 
 export async function recoverWorkspaceAccess(input: {
+  allowWorkspaceCreation: boolean;
   businessName: string;
   userId: string;
 }): Promise<BusinessRecord> {
@@ -437,6 +442,13 @@ export async function recoverWorkspaceAccess(input: {
     throw new Error(
       "This account already has a workspace record that needs founder review.",
     );
+  }
+
+  if (!input.allowWorkspaceCreation) {
+    safeLogger.warn("workspace_recovery.workspace_creation_blocked", {
+      userId: input.userId,
+    });
+    throw new Error(EXISTING_WORKSPACE_REQUIRED_ERROR);
   }
 
   const business = await createFoundingBusiness({

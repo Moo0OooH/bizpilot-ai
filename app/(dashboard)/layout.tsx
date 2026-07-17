@@ -10,8 +10,9 @@
  * - server/services/auth.service.ts
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Read allowlisted optional navigation visibility from the server cookie and passed it into the dashboard shell.
  * - 2026-07-16: Supplied a complete customer-ready quote URL to dashboard copy controls.
  * - 2026-06-19: Resolved theme preference from cookies for hydration-safe dashboard rendering.
  * - 2026-06-20: Made the workspace-access recovery shell short-height safe with svh and natural overflow.
@@ -33,6 +34,10 @@ import {
   inputClass,
   primaryButtonClass,
 } from "@/components/dashboard/dashboard-ui";
+import {
+  DASHBOARD_SECTION_VISIBILITY_COOKIE,
+  parseVisibleDashboardSections,
+} from "@/lib/dashboard-section-visibility";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
   INTERFACE_LANGUAGE_COOKIE,
@@ -71,6 +76,8 @@ export default async function DashboardLayout({
     });
     const copy = getBizPilotCopy(activeLanguage).dashboard;
     const accessCopy = copy.workspaceAccess;
+    const isExternalLoginWithoutWorkspace =
+      !accessSummary && user.authProvider !== "email";
     const recoveryError = readSafeRouteFlashMessage(
       cookieStore.get(WORKSPACE_RECOVERY_ERROR_COOKIE)?.value,
       copy.routeMessages.genericError,
@@ -85,12 +92,16 @@ export default async function DashboardLayout({
           <h1 className="mt-2 text-2xl font-black tracking-[-0.03em]">
             {isDeletionRequested
               ? accessCopy.deletionRequestedTitle
-              : accessCopy.pausedTitle}
+              : isExternalLoginWithoutWorkspace
+                ? accessCopy.externalLoginTitle
+                : accessCopy.pausedTitle}
           </h1>
           <p className="mt-3 text-sm leading-6 text-[var(--dash-text-secondary)]">
             {isDeletionRequested
               ? accessCopy.deletionRequestedBody
-              : accessCopy.pausedBody}
+              : isExternalLoginWithoutWorkspace
+                ? accessCopy.externalLoginBody
+                : accessCopy.pausedBody}
           </p>
           {accessSummary ? (
             <p className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-sm font-bold text-[var(--dash-text)]">
@@ -102,7 +113,7 @@ export default async function DashboardLayout({
               {recoveryError}
             </p>
           ) : null}
-          {!accessSummary ? (
+          {!accessSummary && !isExternalLoginWithoutWorkspace ? (
             <form
               action={recoverWorkspaceAccessAction}
               className="mt-5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4"
@@ -152,6 +163,9 @@ export default async function DashboardLayout({
     cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
   });
   const initialTheme = readThemePreference(themeCookie);
+  const visibleOptionalSections = parseVisibleDashboardSections(
+    cookieStore.get(DASHBOARD_SECTION_VISIBILITY_COOKIE)?.value,
+  );
   const copy = getBizPilotCopy(activeLanguage).dashboard;
   const shellCopy = {
     actions: copy.actions,
@@ -179,6 +193,7 @@ export default async function DashboardLayout({
       initialTheme={initialTheme}
       showFounderAdmin={isFounderUser(user)}
       userLabel={user.email ?? user.id}
+      visibleOptionalSections={visibleOptionalSections}
     >
       {children}
     </DashboardShell>

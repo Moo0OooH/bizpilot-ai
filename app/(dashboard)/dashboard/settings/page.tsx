@@ -10,8 +10,9 @@
  * - docs/dashboard-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-05-18
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added server-saved Reports and Guide navigation visibility without changing route access.
  * - 2026-07-04: Added collapsed feature guide details without enabling blocked feature states.
  * - 2026-07-04: Added local display preferences for dashboard density, optional guides, and insight panels.
  * - 2026-05-18: Created Settings shell.
@@ -37,6 +38,10 @@ import {
   primaryButtonClass,
   SectionHeader,
 } from "@/components/dashboard/dashboard-ui";
+import {
+  DASHBOARD_SECTION_VISIBILITY_COOKIE,
+  parseVisibleDashboardSections,
+} from "@/lib/dashboard-section-visibility";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import { canUserRequestWorkspaceDeletion } from "@/lib/business-deletion/owner-eligibility";
@@ -48,6 +53,7 @@ import {
 } from "@/lib/i18n/language";
 import { signOutAction } from "@/server/actions/auth.actions";
 import { updateWorkspaceLanguageAction } from "@/server/actions/business-configuration.actions";
+import { updateDashboardSectionVisibilityAction } from "@/server/actions/dashboard-display.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 import {
@@ -142,6 +148,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
   const workspace = await getBusinessWorkspace({ userId: user.id });
   const activeBusiness = workspace.businesses[0];
   if (!activeBusiness) redirect("/dashboard");
+  const cookieStore = await cookies();
   const lifecycleStatus = activeBusiness.lifecycle_status ?? "active";
   const businessStatus = activeBusiness.status ?? "active";
   const canRequestWorkspaceDeletion = canUserRequestWorkspaceDeletion({
@@ -160,8 +167,11 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
   });
   const activeLanguage = resolveWorkspaceInterfaceLanguage({
     businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
   });
+  const visibleOptionalSections = parseVisibleDashboardSections(
+    cookieStore.get(DASHBOARD_SECTION_VISIBILITY_COOKIE)?.value,
+  );
   const copy = getBizPilotCopy(activeLanguage).dashboard;
   const settingsCopy = copy.settings;
   const routeNotice = readSafeRouteFlashMessage(
@@ -288,6 +298,69 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                   {settingsCopy.sessionPolicy.managedByFounder}
                 </p>
               </div>
+            </DashboardCard>
+
+            <DashboardCard className="p-4 md:col-span-2">
+              <SectionHeader
+                description={settingsCopy.navigationSections.description}
+                title={settingsCopy.navigationSections.title}
+              />
+              <div className="my-3 h-px bg-[var(--dash-border)]" />
+              <form
+                action={updateDashboardSectionVisibilityAction}
+                className="grid gap-3"
+              >
+                <fieldset className="grid gap-3 sm:grid-cols-2">
+                  <legend className="sr-only">
+                    {settingsCopy.navigationSections.title}
+                  </legend>
+                  <label className="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                    <input
+                      className="mt-0.5 h-4 w-4 accent-[var(--dash-primary)]"
+                      defaultChecked={visibleOptionalSections.includes("reports")}
+                      name="visibleDashboardSection"
+                      type="checkbox"
+                      value="reports"
+                    />
+                    <span className="min-w-0">
+                      <span className="block text-sm font-extrabold text-[var(--dash-text)]">
+                        {settingsCopy.navigationSections.reportsLabel}
+                      </span>
+                      <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                        {settingsCopy.navigationSections.reportsDescription}
+                      </span>
+                    </span>
+                  </label>
+                  <label className="grid grid-cols-[1.25rem_minmax(0,1fr)] gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                    <input
+                      className="mt-0.5 h-4 w-4 accent-[var(--dash-primary)]"
+                      defaultChecked={visibleOptionalSections.includes("guide")}
+                      name="visibleDashboardSection"
+                      type="checkbox"
+                      value="guide"
+                    />
+                    <span className="min-w-0">
+                      <span className="block text-sm font-extrabold text-[var(--dash-text)]">
+                        {settingsCopy.navigationSections.guideLabel}
+                      </span>
+                      <span className="mt-1 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                        {settingsCopy.navigationSections.guideDescription}
+                      </span>
+                    </span>
+                  </label>
+                </fieldset>
+                <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                  <p className="font-bold text-[var(--dash-text)]">
+                    {settingsCopy.navigationSections.alwaysVisible}
+                  </p>
+                  <p className="mt-1">
+                    {settingsCopy.navigationSections.displayOnly}
+                  </p>
+                </div>
+                <button className={`${primaryButtonClass} sm:justify-self-start`} type="submit">
+                  {settingsCopy.navigationSections.save}
+                </button>
+              </form>
             </DashboardCard>
 
           </section>

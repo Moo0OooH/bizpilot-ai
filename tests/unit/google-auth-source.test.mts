@@ -12,8 +12,9 @@
  * - app/auth/sign-up/page.tsx
  * Author: MoOoH
  * Created: 2026-07-05
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Guarded provider-normalized recovery so Google login cannot create a new workspace.
  * - 2026-07-05: Created Google login source guards for Phase 27B.
  * ============================================================
  */
@@ -68,6 +69,61 @@ describe("Google auth source safety", () => {
     assert.equal(googleActionSource.includes("signUpWithPassword"), false);
     assert.equal(callbackSource.includes("createFoundingBusiness"), false);
     assert.equal(callbackSource.includes("signUpWithPassword"), false);
+  });
+
+  it("allows existing-workspace repair but blocks new workspace creation for Google identities", () => {
+    const authServiceSource = readSource("server/services/auth.service.ts");
+    const businessServiceSource = readSource("server/services/business.service.ts");
+    const recoveryActionSource = readSource(
+      "server/actions/workspace-recovery.actions.ts",
+    );
+    const founderServiceSource = readSource(
+      "server/services/founder-admin.service.ts",
+    );
+    const creationPolicyIndex = businessServiceSource.indexOf(
+      "if (!input.allowWorkspaceCreation)",
+    );
+    const existingRepairReturnIndex = businessServiceSource.indexOf(
+      "return recoverableOwnedBusiness;",
+    );
+    const createWorkspaceIndex = businessServiceSource.indexOf(
+      "const business = await createFoundingBusiness({",
+      creationPolicyIndex,
+    );
+
+    assert.equal(authServiceSource.includes('authProvider: AuthProvider'), true);
+    assert.equal(
+      authServiceSource.includes("readAuthProvider(response.app_metadata)"),
+      true,
+    );
+    assert.equal(
+      recoveryActionSource.includes(
+        'allowWorkspaceCreation: user.authProvider === "email"',
+      ),
+      true,
+    );
+    assert.ok(existingRepairReturnIndex > -1);
+    assert.ok(creationPolicyIndex > existingRepairReturnIndex);
+    assert.ok(creationPolicyIndex > -1);
+    assert.ok(createWorkspaceIndex > creationPolicyIndex);
+    assert.equal(
+      founderServiceSource.includes("allowWorkspaceCreation: true"),
+      true,
+    );
+  });
+
+  it("keeps callback completion copy provider-neutral and exact Admin redirects safe", () => {
+    const callbackSource = readSource("app/auth/callback/route.ts");
+    const routingSource = readSource("lib/auth/auth-callback-routing.ts");
+
+    assert.equal(
+      callbackSource.includes(
+        'const AUTH_CALLBACK_NOTICE = "Sign-in complete. Continue to your workspace."',
+      ),
+      true,
+    );
+    assert.equal(callbackSource.includes("Email confirmed. Continue"), false);
+    assert.equal(routingSource.includes('if (value === "/admin")'), true);
   });
 
   it("adds Google entry points without removing email/password auth", () => {

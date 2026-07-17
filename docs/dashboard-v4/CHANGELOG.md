@@ -9,8 +9,9 @@
  * - docs/dashboard-v4/PHASE_PROGRESS.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added the V4.7 form-structure builder, responsive shell repair, optional navigation visibility, and OAuth workspace hardening candidate.
  * - 2026-07-16: Published V4.6 setup, Guide, source-reporting, tracked-link, and branding finalization with Vercel and Production evidence.
  * - 2026-07-16: Recorded V4.5 source publication and Production public read-only evidence.
  * - 2026-07-16: Added the V4.5 complete sidebar and founder-admin access repair candidate.
@@ -29,6 +30,29 @@
  -->
 
 # Dashboard V4 Changelog
+
+## 2026-07-17 — V4.7 configurable intake and shell finalization
+
+### Public form control
+
+- Added a persistent form-structure editor for the public heading, supporting copy, ordered sections, section navigation labels, descriptions, visibility, and per-question assignment.
+- Added three accessible presentation modes: one-page list, keyboard-operable tabs, and guided multi-step flow with Back/Continue controls and invalid-field recovery.
+- Removed the fixed “What kind of cleaning?” ownership gap: the displayed title and supporting copy now come from the saved localized form layout.
+- Kept existing businesses backward-compatible by normalizing legacy choice arrays and storing the versioned layout inside existing JSON metadata; no database migration is required.
+
+### Dashboard shell and settings
+
+- Corrected wide and compact sizing, bounded sticky task tabs, reserved space above fixed save controls, and lifted mobile actions above the safe-area navigation bar.
+- Removed duplicate desktop Guide and Founder Admin utilities; wide screens use the sidebar, while compact screens retain the Actions menu.
+- Added Settings controls that show or hide the optional Reports and Guide destinations for the current browser without hiding core routes or changing authorization.
+- Kept founder authorization server-only so the provided founder email is configured through `BIZPILOT_FOUNDER_EMAILS`, never bundled into the application.
+
+### Authentication and release verification
+
+- Made auth provider detection explicit. Email recovery may create the intended first workspace; Google or unknown-provider recovery can repair an existing membership but cannot silently create a tenant.
+- Restricted auth callbacks to exact safe routes, including exact `/admin`, and replaced provider-specific callback messaging with accurate neutral copy.
+- ESLint, TypeScript, all `294/294` unit/source tests, and the Next.js 16.2.4 production build pass.
+- Local production responsive smoke passes `20/20`; the EN/fr-CA light/dark UI matrix passes all recorded checks across 11 viewports. No customer submission or Production data mutation was performed.
 
 ## 2026-07-16 — V4.6 setup-to-reporting finalization
 

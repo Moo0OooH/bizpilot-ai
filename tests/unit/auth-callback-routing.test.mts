@@ -72,14 +72,15 @@ describe("Auth callback routing", () => {
     assert.equal(target.searchParams.has("access_token"), false);
   });
 
-  it("keeps post-confirm redirects constrained to dashboard paths", () => {
+  it("keeps post-auth redirects constrained to dashboard paths or exact admin", () => {
     assert.equal(getSafeAuthCallbackNextPath(null), "/dashboard");
     assert.equal(getSafeAuthCallbackNextPath("/dashboard"), "/dashboard");
     assert.equal(
       getSafeAuthCallbackNextPath("/dashboard/leads"),
       "/dashboard/leads",
     );
-    assert.equal(getSafeAuthCallbackNextPath("/admin"), "/dashboard");
+    assert.equal(getSafeAuthCallbackNextPath("/admin"), "/admin");
+    assert.equal(getSafeAuthCallbackNextPath("/admin/users"), "/dashboard");
     assert.equal(getSafeAuthCallbackNextPath("//evil.example"), "/dashboard");
   });
 
