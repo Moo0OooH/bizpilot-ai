@@ -13,6 +13,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added bilingual proof-point rails to every route introduction so section space explains value instead of remaining decorative.
  * - 2026-07-17: Rebuilt all six retained marketing routes with bilingual editorial introductions, route-specific compositions, numbered capability systems, and clearer content hierarchy.
  * - 2026-07-16: Gave Features, Pricing, FAQ, and Trust distinct visual jobs and aligned pricing conversion with the copy-only pilot request.
  * - 2026-07-13: Created the consolidated V3 renderer for six retained marketing routes.
@@ -79,7 +80,17 @@ function RouteSectionIntro({
     <div className={styles.sectionIntro}>
       <p className={styles.sectionEyebrow}>{copy.eyebrow}</p>
       <h2>{copy.title}</h2>
-      <p>{copy.body}</p>
+      <div className={styles.sectionNarrative}>
+        <p className={styles.sectionBody}>{copy.body}</p>
+        <dl className={styles.sectionHighlights}>
+          {copy.highlights.map((item) => (
+            <div key={item.label}>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
     </div>
   );
 }

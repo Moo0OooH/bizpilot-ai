@@ -56,6 +56,12 @@ use an indexed reading shell instead of imitating marketing cards or hiding poli
   distinct content composition: Product uses a numbered capability map, Demo uses an
   interactive stage navigator, Pricing uses staged cohort cards, Pilot uses a fit path
   and application console, FAQ uses a category index, and Trust uses a control chain.
+- Uses every product-route introduction as a conversion surface: one route-specific
+  explanation is paired with three compact proof points in both languages. This removes
+  decorative empty space without enlarging titles or compressing the content cards.
+- Gives the Demo's first stage a plain-language explanation of what is still unknown in
+  the incoming message. Pilot fit criteria use a wide reading rhythm on desktop so each
+  qualification point remains complete instead of wrapping through narrow card columns.
 - Made the first Product capability the flagship benefit and separated human control
   from the repeated capability-card rhythm. Pricing keeps one active founder-cohort CTA
   with calmer future tiers and no repeated tier actions.
@@ -97,7 +103,7 @@ trail.
 ## Verification evidence
 
 - TypeScript and ESLint: PASS
-- Unit tests: 259/259 PASS
+- Unit tests: 272/272 PASS
 - Next.js 16.2.4 production build: PASS; 23 static/dynamic routes generated
 - Public route smoke: 46/46 PASS
 - Local responsive bilingual route smoke: 20/20 PASS

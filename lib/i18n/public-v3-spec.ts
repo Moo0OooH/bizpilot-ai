@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added bilingual proof-point rails and first-stage Demo context so every major section explains product value and conversion logic.
  * - 2026-07-17: Rewrote the bilingual public hierarchy with shorter, clearer headlines and concise outcome-led supporting copy.
  * - 2026-07-16: Made pilot CTAs truthfully describe the copy-only request flow and grouped the bilingual FAQ for faster scanning.
  * - 2026-07-15: Added synchronized EN/fr-CA copy for the shared not-found state.
@@ -62,6 +63,7 @@ type RouteCopy = Readonly<{
   section?: Readonly<{
     body: string;
     eyebrow: string;
+    highlights: readonly LabelValueCopy[];
     title: string;
   }>;
 }>;
@@ -107,6 +109,7 @@ type PricingTierCopy = Readonly<{
 export type PublicV3Spec = Readonly<{
   demo: Readonly<{
     incoming: string;
+    incomingContext: string;
     questions: readonly LabelValueCopy[];
     result: readonly LabelValueCopy[];
     reviewActions: readonly string[];
@@ -216,7 +219,7 @@ const englishSpec: PublicV3Spec = {
         eyebrow: "SMART INTAKE · HUMAN REVIEW",
         title: "Turn scattered messages into clear requests.",
         body:
-          "Share one smart link. BizPilot gathers the missing service details, organizes the request, and drafts a reply for your team to review and send.",
+          "Share one link wherever customers reach you. BizPilot asks the right service questions, flags missing details, and prepares a clear reply your team reviews and sends.",
         primary: { href: "/#how-it-works", label: "See how it works" },
         secondary: { href: "/pilot#application", label: "Prepare a pilot request" },
       },
@@ -231,7 +234,7 @@ const englishSpec: PublicV3Spec = {
         eyebrow: "ONE FOCUSED WORKSPACE",
         title: "From vague message to a reply worth reviewing.",
         body:
-          "Collect the right details, see what is missing, and prepare the next response without giving up human control.",
+          "Give every customer one clear path to provide service, scope, timing, location, and access details—then review the next response in the same workspace.",
         primary: { href: "/demo", label: "Walk through the demo" },
         secondary: { href: "/pilot#application", label: "Prepare a pilot request" },
       },
@@ -239,7 +242,12 @@ const englishSpec: PublicV3Spec = {
         eyebrow: "BUILT AROUND THE REQUEST",
         title: "Six capabilities. One controlled workflow.",
         body:
-          "Each part removes a specific source of friction while keeping the final customer response with your team.",
+          "Replace vague back-and-forth with complete details, visible gaps, and a response your team can confidently review.",
+        highlights: [
+          { label: "Capture", value: "One link wherever customers already reach you" },
+          { label: "Clarify", value: "Service-specific questions expose what is missing" },
+          { label: "Prepare", value: "A careful draft your team reviews, edits, and sends" },
+        ],
       },
     },
     "/demo": {
@@ -260,7 +268,12 @@ const englishSpec: PublicV3Spec = {
         eyebrow: "INTERACTIVE WALKTHROUGH",
         title: "Inspect every step, from message to draft.",
         body:
-          "Move through the example at your own pace. The details stay concrete, and every safety boundary stays visible.",
+          "See exactly what BizPilot asks, what it refuses to assume, and what your team receives before replying.",
+        highlights: [
+          { label: "Start", value: "One vague move-out cleaning message" },
+          { label: "Ask", value: "Four service details collected before a responsible reply" },
+          { label: "Finish", value: "One organized request and an editable draft" },
+        ],
       },
     },
     "/pricing": {
@@ -281,7 +294,12 @@ const englishSpec: PublicV3Spec = {
         eyebrow: "THREE STAGED OPTIONS",
         title: "Start with proof. Add cost only when the workflow earns it.",
         body:
-          "The first cohort is feedback-led. Later tiers stay founder-approved, manually billed, and clear about what is included.",
+          "Compare the feedback cohort with paid pilot options. Every tier makes the cost, review control, and founder support clear before billing begins.",
+        highlights: [
+          { label: "Fit first", value: "Founder review before any setup or billing" },
+          { label: "Clear cost", value: "Setup and monthly price shown before approval" },
+          { label: "Human control", value: "Review, copy, and manual send in every tier" },
+        ],
       },
     },
     "/pilot": {
@@ -302,7 +320,12 @@ const englishSpec: PublicV3Spec = {
         eyebrow: "WHO THIS IS FOR",
         title: "A focused pilot, not a software rollout.",
         body:
-          "Start with one cleaning request path, one small team, and direct feedback on whether the workflow saves real effort.",
+          "Use this fit check to test one cleaning workflow safely—without replacing your inbox, booking, or payment systems.",
+        highlights: [
+          { label: "One workflow", value: "Cleaning intake and reply preparation" },
+          { label: "Small team", value: "Owner-led review and manual sending" },
+          { label: "Useful proof", value: "Structured feedback at 30 and 60 days" },
+        ],
       },
     },
     "/faq": {
@@ -323,7 +346,12 @@ const englishSpec: PublicV3Spec = {
         eyebrow: "THE DETAILS",
         title: "Find the boundary before it becomes a surprise.",
         body:
-          "Questions are grouped by channel, human control, and pilot setup so you can scan the part that matters to you.",
+          "Get direct answers about where the link works, how AI assists, what data is used, and what still happens manually.",
+        highlights: [
+          { label: "Channels", value: "Where the Smart Intake Link can be shared" },
+          { label: "AI", value: "What it prepares—and what it never decides" },
+          { label: "Pilot", value: "Setup, data, pricing, and scope before approval" },
+        ],
       },
     },
     "/trust": {
@@ -344,7 +372,12 @@ const englishSpec: PublicV3Spec = {
         eyebrow: "CONTROL AT EVERY HANDOFF",
         title: "Trust should be visible in the workflow.",
         body:
-          "Follow the request from explicit customer input to human review, then inspect the operating boundaries behind it.",
+          "Keep the source, missing facts, AI draft, and final human decision visible so the team can move faster without giving up control.",
+        highlights: [
+          { label: "Explicit", value: "Customer-provided facts remain the source" },
+          { label: "Visible", value: "Missing details stay marked instead of invented" },
+          { label: "Human", value: "A person reviews every response before sending" },
+        ],
       },
     },
     "/privacy": {
@@ -400,7 +433,7 @@ const englishSpec: PublicV3Spec = {
         eyebrow: "SMART INTAKE · HUMAN REVIEW",
         title: "Turn scattered messages into clear requests.",
         body:
-          "Show the audience, pain, one-link mechanism, organized result, and human approval in the first viewport.",
+          "Share one link wherever customers reach you. Ask the right questions, organize the request, and prepare the next reply for human review.",
       },
       {
         key: "problem",
@@ -549,6 +582,8 @@ const englishSpec: PublicV3Spec = {
   ],
   demo: {
     incoming: "How much for a move-out cleaning this Friday?",
+    incomingContext:
+      "This is the entire request the team received. Property size, exact scope, access, and a responsible price are still unknown.",
     questions: [
       { label: "Property size", value: "How large is the home?" },
       { label: "Cleaning scope", value: "Should appliances be cleaned inside?" },
@@ -813,7 +848,7 @@ const frenchSpec: PublicV3Spec = {
         eyebrow: "COLLECTE INTELLIGENTE · VALIDATION HUMAINE",
         title: "Transformez chaque message en demande claire.",
         body:
-          "Partagez un seul lien. BizPilot recueille les détails manquants, organise la demande et prépare une réponse que votre équipe valide et envoie.",
+          "Partagez un seul lien là où vos clients vous écrivent. BizPilot pose les bonnes questions, signale les détails manquants et prépare une réponse que votre équipe valide et envoie.",
         primary: { href: "/#how-it-works", label: "Voir le fonctionnement" },
         secondary: { href: "/pilot#application", label: "Préparer une demande pilote" },
       },
@@ -828,7 +863,7 @@ const frenchSpec: PublicV3Spec = {
         eyebrow: "UN ESPACE DE TRAVAIL CIBLÉ",
         title: "Du message vague à la réponse prête à valider.",
         body:
-          "Recueillez les bons détails, voyez ce qui manque et préparez la prochaine réponse sans perdre le contrôle humain.",
+          "Offrez un parcours clair pour recueillir le service, la portée, l'horaire, le lieu et l'accès, puis validez la prochaine réponse dans le même espace.",
         primary: { href: "/demo", label: "Parcourir la démo" },
         secondary: { href: "/pilot#application", label: "Préparer une demande" },
       },
@@ -836,7 +871,12 @@ const frenchSpec: PublicV3Spec = {
         eyebrow: "CONÇU AUTOUR DE LA DEMANDE",
         title: "Six fonctions. Un seul flux contrôlé.",
         body:
-          "Chaque élément retire une friction précise tout en laissant la réponse finale entre les mains de votre équipe.",
+          "Remplacez les échanges vagues par des détails complets, des lacunes visibles et une réponse que votre équipe peut valider avec confiance.",
+        highlights: [
+          { label: "Recueillir", value: "Un seul lien là où vos clients vous écrivent déjà" },
+          { label: "Clarifier", value: "Des questions adaptées montrent ce qui manque" },
+          { label: "Préparer", value: "Un brouillon que votre équipe valide, modifie et envoie" },
+        ],
       },
     },
     "/demo": {
@@ -857,7 +897,12 @@ const frenchSpec: PublicV3Spec = {
         eyebrow: "PARCOURS INTERACTIF",
         title: "Examinez chaque étape, du message au brouillon.",
         body:
-          "Avancez dans l'exemple à votre rythme. Les détails restent concrets et chaque limite de sécurité demeure visible.",
+          "Voyez exactement ce que BizPilot demande, ce qu'il refuse de supposer et ce que votre équipe reçoit avant de répondre.",
+        highlights: [
+          { label: "Départ", value: "Un message vague sur un nettoyage après déménagement" },
+          { label: "Préciser", value: "Quatre détails recueillis avant une réponse responsable" },
+          { label: "Résultat", value: "Une demande organisée et un brouillon modifiable" },
+        ],
       },
     },
     "/pricing": {
@@ -878,7 +923,12 @@ const frenchSpec: PublicV3Spec = {
         eyebrow: "TROIS OPTIONS PAR ÉTAPES",
         title: "Commencez par la preuve. Ajoutez un coût seulement si le flux le mérite.",
         body:
-          "La première cohorte mise sur la rétroaction. Les offres suivantes restent approuvées par le fondateur, facturées manuellement et clairement définies.",
+          "Comparez la cohorte de rétroaction aux options payantes. Chaque offre précise le coût, la validation humaine et l'accompagnement avant toute facturation.",
+        highlights: [
+          { label: "Compatibilité", value: "Vérification avec le fondateur avant toute configuration" },
+          { label: "Coût clair", value: "Configuration et prix mensuel affichés avant l'accord" },
+          { label: "Contrôle humain", value: "Validation, copie et envoi manuels dans chaque offre" },
+        ],
       },
     },
     "/pilot": {
@@ -899,7 +949,12 @@ const frenchSpec: PublicV3Spec = {
         eyebrow: "À QUI S'ADRESSE LE PILOTE",
         title: "Un pilote ciblé, pas un déploiement logiciel.",
         body:
-          "Commencez par un parcours d'entretien, une petite équipe et une rétroaction directe sur le temps réellement économisé.",
+          "Vérifiez un seul flux d'entretien en toute sécurité, sans remplacer votre boîte de réception, vos réservations ni vos paiements.",
+        highlights: [
+          { label: "Un flux", value: "Collecte et préparation des réponses d'entretien" },
+          { label: "Petite équipe", value: "Validation par le propriétaire et envoi manuel" },
+          { label: "Preuve utile", value: "Rétroaction structurée à 30 et 60 jours" },
+        ],
       },
     },
     "/faq": {
@@ -920,7 +975,12 @@ const frenchSpec: PublicV3Spec = {
         eyebrow: "LES DÉTAILS",
         title: "Trouvez la limite avant qu'elle ne devienne une surprise.",
         body:
-          "Les questions sont regroupées par canal, contrôle humain et configuration du pilote pour trouver rapidement l'information utile.",
+          "Obtenez des réponses directes sur le lien, le rôle de l'IA, les données utilisées et les actions qui restent manuelles.",
+        highlights: [
+          { label: "Canaux", value: "Où partager le lien de collecte" },
+          { label: "IA", value: "Ce qu'elle prépare et ce qu'elle ne décide jamais" },
+          { label: "Pilote", value: "Configuration, données, tarifs et portée avant approbation" },
+        ],
       },
     },
     "/trust": {
@@ -941,7 +1001,12 @@ const frenchSpec: PublicV3Spec = {
         eyebrow: "CONTRÔLE À CHAQUE PASSAGE",
         title: "La confiance doit être visible dans le flux.",
         body:
-          "Suivez la demande, des renseignements fournis à la validation humaine, puis examinez les limites opérationnelles qui l'encadrent.",
+          "Gardez la source, les faits manquants, le brouillon IA et la décision humaine visibles pour avancer plus vite sans perdre le contrôle.",
+        highlights: [
+          { label: "Explicite", value: "Les faits fournis par le client restent la source" },
+          { label: "Visible", value: "Les détails manquants sont signalés, jamais inventés" },
+          { label: "Humain", value: "Une personne valide chaque réponse avant l'envoi" },
+        ],
       },
     },
     "/privacy": {
@@ -997,7 +1062,7 @@ const frenchSpec: PublicV3Spec = {
         eyebrow: "COLLECTE INTELLIGENTE · VALIDATION HUMAINE",
         title: "Transformez chaque message en demande claire.",
         body:
-          "Présenter le public, le problème, le lien unique, la demande organisée et la validation humaine dès le premier écran.",
+          "Partagez un lien là où vos clients vous écrivent, recueillez les bons détails et préparez la prochaine réponse pour validation humaine.",
       },
       {
         key: "problem",
@@ -1146,6 +1211,8 @@ const frenchSpec: PublicV3Spec = {
   ],
   demo: {
     incoming: "Combien pour un nettoyage après déménagement ce vendredi?",
+    incomingContext:
+      "C'est toute la demande reçue par l'équipe. La taille du logement, la portée exacte, l'accès et un prix responsable restent inconnus.",
     questions: [
       { label: "Superficie", value: "Quelle est la taille du logement?" },
       { label: "Portée", value: "Faut-il nettoyer l'intérieur des électroménagers?" },

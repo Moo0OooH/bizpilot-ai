@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Required three bilingual proof points per product-route introduction and explanatory first-stage Demo context.
  * - 2026-07-17: Added bilingual editorial-introduction and French pilot-term quality guards for the full public redesign.
  * - 2026-07-16: Clarified that seven bilingual copy modules feed the focused five-section homepage renderer.
  * - 2026-07-15: Repointed the bilingual contract to the current Website V4 authority.
@@ -126,6 +127,16 @@ describe("Website V3 bilingual content contract", () => {
         assert.ok(section?.eyebrow.trim(), `${language} ${route} eyebrow`);
         assert.ok(section?.title.trim(), `${language} ${route} title`);
         assert.ok(section?.body.trim(), `${language} ${route} body`);
+        assert.equal(
+          section?.highlights.length,
+          3,
+          `${language} ${route} proof-point count`,
+        );
+
+        for (const highlight of section?.highlights ?? []) {
+          assert.ok(highlight.label.trim(), `${language} ${route} proof label`);
+          assert.ok(highlight.value.trim(), `${language} ${route} proof value`);
+        }
       }
     }
   });
@@ -149,6 +160,7 @@ describe("Website V3 bilingual content contract", () => {
           "human-control",
         ],
       );
+      assert.ok(spec.demo.incomingContext.trim());
       assert.match(spec.home.visual.placementNote, /not direct|pas des intégrations/i);
       assert.match(spec.demo.reviewBoundary, /no message|aucun message/i);
       assert.match(spec.pilot.submissionBoundary, /does not submit|n'envoie/i);

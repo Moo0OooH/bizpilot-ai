@@ -12,6 +12,8 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Turned the Demo's empty first-stage canvas into an explanatory message scene and widened the Pilot fit list for desktop readability.
+ * - 2026-07-17: Converted empty section-intro space into responsive proof-point rails while preserving the established display and card scale.
  * - 2026-07-17: Gave every retained route a distinct responsive composition, editorial section introduction, restrained type scale, and route-specific content system.
  * - 2026-07-17: Rebuilt the shared page hierarchy with calmer weights, natural word wrapping, editorial cards, and more spacious route visuals.
  * - 2026-07-16: Widened supporting-page hero measures and reduced their display weight to retain a calm hierarchy on laptop viewports.
@@ -401,9 +403,9 @@
 
 .sectionIntro {
   display: grid;
-  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
-  gap: 0.8rem clamp(2rem, 6vw, 6rem);
-  align-items: end;
+  grid-template-columns: 1fr;
+  gap: 0.9rem clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
   margin-block-end: clamp(2rem, 4vw, 3.5rem);
   padding-block-end: clamp(1.5rem, 3vw, 2.25rem);
   border-block-end: 1px solid color-mix(in srgb, var(--route-accent) 22%, var(--border-default));
@@ -430,12 +432,56 @@
   text-wrap: balance;
 }
 
-.sectionIntro > p:last-child {
+.sectionNarrative {
+  display: grid;
+  min-inline-size: 0;
+  align-content: start;
+  gap: 1.35rem;
+}
+
+.sectionBody {
   max-inline-size: 58ch;
   margin: 0;
   color: var(--text-default);
   font-size: clamp(1rem, 1.3vw, 1.15rem);
   line-height: 1.75;
+  text-wrap: pretty;
+}
+
+.sectionHighlights {
+  display: grid;
+  min-inline-size: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--route-accent) 20%, var(--border-default));
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface) 86%, var(--route-soft));
+  box-shadow: var(--shadow-sm);
+}
+
+.sectionHighlights > div {
+  min-inline-size: 0;
+  padding: 1rem;
+  border-block-end: 1px solid var(--border-default);
+}
+
+.sectionHighlights > div:last-child { border-block-end: 0; }
+
+.sectionHighlights dt {
+  margin: 0;
+  color: var(--route-accent);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sectionHighlights dd {
+  margin: 0.48rem 0 0;
+  color: var(--text-strong);
+  font-size: 0.92rem;
+  font-weight: 640;
+  line-height: 1.5;
   text-wrap: pretty;
 }
 
@@ -769,7 +815,7 @@
 .template:focus-visible,
 .copyButton:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 
-.demoContent { min-block-size: 27rem; padding: clamp(1.2rem, 4vw, 2rem); border-radius: 1.25rem; box-shadow: var(--v3-shadow-float); }
+.demoContent { min-block-size: 24rem; padding: clamp(1.2rem, 4vw, 2rem); border-radius: 1.25rem; box-shadow: var(--v3-shadow-float); }
 
 .demoContentHeader {
   display: grid;
@@ -786,13 +832,29 @@
 
 .incomingScene {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: end;
-  gap: 0.85rem;
-  min-block-size: 14rem;
+  gap: 1rem;
+  min-block-size: 12rem;
+  align-content: center;
 }
 
-.incomingScene > span {
+.incomingContext {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 0.8rem;
+  max-inline-size: 37rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--route-accent) 22%, var(--border-default));
+  border-radius: 0.9rem;
+  background: var(--route-soft);
+  color: var(--text-default);
+  line-height: 1.65;
+}
+
+.incomingContext p { margin: 0; }
+
+.incomingContext > span,
+.incomingMessage > span {
   display: grid;
   inline-size: 2.75rem;
   block-size: 2.75rem;
@@ -800,6 +862,13 @@
   border-radius: 999px;
   background: var(--route-soft);
   color: var(--route-accent);
+}
+
+.incomingMessage {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  gap: 0.85rem;
 }
 
 .messageBubble {
@@ -846,11 +915,15 @@
   .trustSequence { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .trustSequence li:nth-child(odd) { border-inline-end: 1px solid var(--border-default); }
   .trustSequence li:nth-last-child(-n + 2) { border-block-end: 0; }
+  .sectionHighlights { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sectionHighlights > div { border-block-end: 0; border-inline-end: 1px solid var(--border-default); }
+  .sectionHighlights > div:last-child { border-inline-end: 0; }
 }
 
 @media (min-width: 980px) {
   .heroGrid { grid-template-columns: minmax(0, 0.94fr) minmax(26rem, 1.06fr); }
   .heroCopy { padding-block: 0.75rem; }
+  .sectionIntro { grid-template-columns: minmax(0, 0.76fr) minmax(0, 1.24fr); }
 }
 
 @media (min-width: 1180px) {
@@ -864,6 +937,7 @@
   .trustSequence li > span:first-child { grid-column: 1 / -1; justify-self: start; }
   .trustSequence li:last-child { border-inline-end: 0; }
   .pilotGrid { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
+  .pilotGrid .fitGrid { grid-template-columns: 1fr; }
   .demoPanel { grid-template-columns: minmax(12rem, 0.3fr) minmax(0, 0.7fr); }
   .demoTabs { grid-template-columns: 1fr; align-content: start; }
   .pricingGrid { grid-template-columns: minmax(0, 1.15fr) repeat(2, minmax(0, 0.925fr)); }

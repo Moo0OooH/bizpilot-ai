@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Used the first-stage canvas to explain why the vague message is not yet safe to answer instead of leaving decorative empty space.
  * - 2026-07-17: Reworked the walkthrough into a numbered, high-context stage navigator with a clearer active work surface.
  * - 2026-07-13: Added roving focus and arrow, Home, and End keyboard behavior for the accessible tab pattern.
  * - 2026-07-13: Created the safe three-stage V3 cleaning walkthrough.
@@ -111,8 +112,14 @@ export function PublicV3Demo({
           </div>
           {activeStage === 0 ? (
             <div className={styles.incomingScene}>
-              <span><MarketingIcon name="message" /></span>
-              <p className={styles.messageBubble}>{copy.incoming}</p>
+              <div className={styles.incomingContext}>
+                <span><MarketingIcon name="search" /></span>
+                <p>{copy.incomingContext}</p>
+              </div>
+              <div className={styles.incomingMessage}>
+                <span><MarketingIcon name="message" /></span>
+                <p className={styles.messageBubble}>{copy.incoming}</p>
+              </div>
             </div>
           ) : null}
 
