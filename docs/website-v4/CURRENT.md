@@ -1,8 +1,8 @@
 # BizPilot Website V4 — Current Report
 
-Date: 2026-07-16
+Date: 2026-07-17
 
-Status: PASS / LIVE for the final Website V4 design-polish release
+Status: PASS / READY FOR PRODUCTION for the Website V4 editorial redesign
 
 Scope: public marketing, Auth GET states, Quote read/recovery states, and system 404/error surfaces; production data unchanged
 
@@ -34,13 +34,21 @@ same bilingual shell without imitating marketing layouts.
 
 ## Final V4 design decisions
 
-- Standardized the public scale around a 14px visible-microcopy floor, 17–18px body
-  copy, 56–64px display titles, and a softer 780 display weight. Decorative symbols are
-  not treated as copy.
-- Consolidated the public responsive system to 720px and 1180px layout thresholds,
-  with only short-viewport density refinements at the desktop threshold.
-- Compressed the route palette back to disciplined primary, accent, success, warning,
-  and semantic surfaces instead of giving every page an unrelated mini-brand.
+- Replaced the long first-fold promise with a concise outcome: scattered messages become
+  requests the team can answer. Supporting copy now uses shorter sentences and one clear
+  idea per paragraph in both English and Canadian French.
+- Standardized the public scale around a 13–14px microcopy floor, 16–19px body copy,
+  35–58px responsive display titles, 650–700 heading weights, and natural word wrapping.
+- Introduced a warm off-white canvas, deep navy product surface, electric blue primary,
+  teal control accent, and restrained coral/lime signals. Cards use quiet borders and
+  shallow editorial shadows instead of generic pastel blocks.
+- Rebuilt the logo lockup as a compact BizPilot AI wordmark with a signal-dot brand mark
+  and the short supporting line “Smart requests. Human review.”
+- Rebuilt the homepage product scene as a two-part message-to-request workspace. It keeps
+  source messages readable, gives organized request fields enough width, and presents the
+  review draft as the visual payoff instead of forcing content into three narrow columns.
+- Uses 720px for card progression, 1024px for the homepage hero split, and 1180px for the
+  full navigation and shared route layouts, with short-viewport refinements where needed.
 - Reduced the homepage renderer from seven repeated chapters to five: hero, problem,
   workflow plus outcomes, cleaning walkthrough, and a final control/pilot CTA.
 - Made the first Product capability the flagship benefit and separated human control
@@ -80,38 +88,21 @@ trail.
 
 ## Verification evidence
 
-- Final release SHA: `c78596b1f1530ff3586b9b076702822b0b711802` on `main`
 - TypeScript and ESLint: PASS
-- Unit tests: 249/249 PASS
-- Next.js 16.2.4 Production build: PASS; 23 static/dynamic routes generated
-- Local public route smoke: 46/46 PASS
+- Unit tests: 257/257 PASS
+- Next.js 16.2.4 production build: PASS; 23 static/dynamic routes generated
 - Local responsive bilingual route smoke: 20/20 PASS
-- Local final UI matrix: zero failures
-- EN/fr-CA structural parity and manual-first claim guards: PASS
-- Light/dark token contrast guard: PASS
-- GitHub CI: PASS (run `29517118330`)
-- Vercel Production: SUCCESS (target `CbDDUpqxCVMoG3L8hTgGRoymvi5m`)
-- Production public-route smoke: 46/46 PASS
-- Production responsive bilingual smoke: 20/20 PASS
-- Production final UI matrix: zero failures across EN/fr-CA, light/dark, metadata,
-  auth boundaries, sitemap, robots, and 11 recorded viewport targets
-- Managed-browser Production audit: PASS for all ten routes in EN/fr-CA at the desktop
-  verification viewport; H1 is 64px/780, Home renders five sections, retained routes
-  have zero horizontal overflow, Pricing exposes one tier CTA, FAQ has three groups,
-  Trust has four control stages, Legal uses the focused shell, and Footer has no Sign-in
-- Managed-browser microcopy audit: PASS; Home and Legal have no visible content label
-  below 14px after excluding decorative `aria-hidden` symbols
-- Local and Production inactive Quote GET: 2/2 PASS in EN/fr-CA, including safe missing-environment fallback
-- V2.1 documentation link audit: zero broken local Markdown links
-- Production HTTPS/security headers: PASS for CSP, HSTS, frame, content-type, referrer, and permissions controls
-- The repository's standalone Chrome interaction runner remains environment-gated
-  because this container has no local Chrome/Chromium binary; public managed-browser
-  verification passed and no authenticated or data-writing browser action was attempted
+- Local final UI matrix: zero failures across ten public routes, EN/fr-CA, light/dark,
+  metadata, auth boundaries, sitemap, robots, and eleven recorded viewport targets from
+  320×568 through 1920×1080
+- Managed-browser visual review: PASS for the homepage and Pricing desktop first folds;
+  the homepage product scene has readable fields, natural word wrapping, and no horizontal
+  overflow. A 390×844 emulated mobile audit also reports zero horizontal overflow.
+- EN/fr-CA structural parity, manual-first claim guards, and current pricing values: PASS
 
 ## Production and data safety
 
 No Supabase migration, production database write, seed data, auth setting, billing flow,
-or environment variable change is part of Website V4/V2.1. Release SHA `c78596b` was
-published directly to `main` without an extra branch or PR. The public Production release
-at `https://bizpilo.com` passed the final URL, bilingual responsive, UI-matrix, Quote
-fallback, and security-header acceptance checks.
+or environment variable change is part of this Website V4 redesign. Production deployment
+is verified after the tested release commit reaches `main`; no customer or workspace data
+is opened or changed by the website validation workflow.

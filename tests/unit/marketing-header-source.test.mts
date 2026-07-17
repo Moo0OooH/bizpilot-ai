@@ -10,8 +10,9 @@
  * - components/public/marketing-compact-menu.tsx
  * Author: MoOoH
  * Created: 2026-06-19
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Updated brand-lockup guards for the concise responsive tagline and dedicated CSS visibility contract.
  * - 2026-07-16: Locked both header pilot actions to the truthful copy-only application anchor.
  * - 2026-07-14: Moved the desktop threshold to 1180px after simplifying the retained navigation.
  * - 2026-07-13: Locked deterministic locale links, the measured 1440px desktop threshold, and the compact final navigation architecture.
@@ -55,8 +56,8 @@ describe("public marketing header source contract", () => {
 
   it("uses content-fit header behavior without truncating the brand tagline", () => {
     assert.match(marketingUiSource, /min-\[1180px\]:flex/);
-    assert.match(marketingUiSource, /min-\[1440px\]:block/);
-    assert.match(marketingUiSource, /Smart customer intake and reply workspace/);
+    assert.match(marketingUiSource, /v3-brand-subtitle/);
+    assert.match(marketingUiSource, /Smart requests\. Human review\./);
     assert.equal(marketingUiSource.includes("truncate"), false);
   });
 

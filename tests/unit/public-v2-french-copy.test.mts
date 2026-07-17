@@ -10,8 +10,9 @@
  * - app/privacy/page.tsx
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Updated the retained fallback-brand assertion for the concise Website V4 tagline.
  * - 2026-07-13: Migrated retained-route navigation guards from the retired V2 source to the V3 contract.
  * ============================================================
  */
@@ -157,7 +158,7 @@ describe("public V2 Canadian French copy", () => {
     );
     assert.equal(seo.includes("lead recovery workspace preview"), false);
     assert.equal(
-      marketingUi.includes("Smart customer intake and reply workspace"),
+      marketingUi.includes("Smart requests. Human review."),
       true,
     );
     assert.equal(

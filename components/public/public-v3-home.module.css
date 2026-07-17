@@ -12,7 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-17
  * Change Log:
- * - 2026-07-17: Rebalanced the desktop hero columns and softened headline and section-heading weights for clearer responsive rhythm.
+ * - 2026-07-17: Rebuilt the hero as a spacious message-to-request workspace, removed narrow text columns, and established the new editorial visual rhythm.
  * - 2026-07-16: Widened the hero display measure and reduced its weight to prevent excessive headline wrapping on laptops and tablets.
  * - 2026-07-16: Consolidated the page to five sections, softened display weights, and raised product-scene microcopy to a 14px floor.
  * ============================================================
@@ -68,11 +68,11 @@
 }
 
 .heroTitle {
-  max-inline-size: 21ch;
+  max-inline-size: 17ch;
   margin-block-start: 1.25rem;
   color: var(--text-strong);
   font-size: var(--v3-type-display);
-  font-weight: 680;
+  font-weight: 660;
   letter-spacing: -0.045em;
   line-height: var(--v3-leading-display);
   text-wrap: balance;
@@ -103,7 +103,7 @@
   margin-block-start: 1.5rem;
   color: var(--text-default);
   font-size: 0.9375rem;
-  font-weight: 760;
+  font-weight: 650;
 }
 
 .heroAssurances span {
@@ -376,6 +376,245 @@
 
 .placementNote svg { flex: 0 0 auto; color: var(--accent); }
 
+.productChrome {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.85rem;
+  padding-inline: 1.2rem;
+}
+
+.productChrome > div {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+}
+
+.productChrome > div span {
+  inline-size: 0.62rem;
+  block-size: 0.62rem;
+}
+
+.productChrome strong {
+  margin-inline-start: 0;
+  overflow: hidden;
+  color: var(--text-default);
+  font-size: 0.8125rem;
+  font-weight: 680;
+  letter-spacing: 0.02em;
+  text-overflow: ellipsis;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.productChrome small {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 720;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.heroWorkspace {
+  display: grid;
+  min-inline-size: 0;
+  background: var(--surface);
+}
+
+.messageRail {
+  display: grid;
+  min-inline-size: 0;
+  align-content: start;
+  gap: 1rem;
+  padding: clamp(1rem, 2vw, 1.35rem);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(111, 126, 255, 0.28), transparent 42%),
+    var(--marketing-ink);
+}
+
+.messageRail .stageHeader strong {
+  color: var(--marketing-on-ink);
+  font-size: 0.875rem;
+  font-weight: 680;
+}
+
+.messageRail .messageBubble {
+  margin-inline-start: 0;
+  border: 0;
+  border-radius: 0.9rem;
+  padding: 0.8rem 0.85rem;
+  box-shadow: 0 12px 28px rgba(5, 10, 28, 0.2);
+}
+
+.messageRail .messageBubble:nth-child(2) {
+  margin-inline-start: 0.75rem;
+}
+
+.messageRail .messageBubble > span {
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+}
+
+.messageRail .messageBubble strong {
+  font-size: 0.9rem;
+  font-weight: 680;
+}
+
+.railLink {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+  gap: 0.6rem;
+  margin-block-start: 0.25rem;
+  padding: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--marketing-on-ink);
+  font-size: 0.8125rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.railLink svg {
+  flex: 0 0 auto;
+  color: var(--brand-lime);
+}
+
+.requestWorkspace {
+  display: grid;
+  min-inline-size: 0;
+  align-content: start;
+  gap: 1rem;
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--primary) 5%, var(--surface)), var(--surface) 42%);
+}
+
+.requestHeader,
+.requestHeader > div,
+.replyPreview > div:first-child {
+  display: flex;
+  min-inline-size: 0;
+  align-items: center;
+}
+
+.requestHeader {
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.requestHeader > div,
+.replyPreview > div:first-child {
+  gap: 0.7rem;
+}
+
+.requestHeader > div > span,
+.replyIcon {
+  display: grid;
+  inline-size: 2.35rem;
+  block-size: 2.35rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.8rem;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--primary) 20%, transparent);
+}
+
+.requestHeader small,
+.replyPreview small,
+.requestSummary p {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.requestHeader strong,
+.replyPreview strong {
+  display: block;
+  margin-block-start: 0.12rem;
+  color: var(--text-strong);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.requestHeader :global(.v3-state-chip) {
+  max-inline-size: 10.5rem;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  text-align: end;
+}
+
+.requestSummary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.requestSummary > div {
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  gap: 0.12rem 0.6rem;
+  padding: 0.8rem;
+  border-color: color-mix(in srgb, var(--item-accent) 20%, var(--border-default));
+  border-radius: 0.85rem;
+  box-shadow: 0 8px 18px rgba(18, 27, 54, 0.045);
+}
+
+.requestSummary > div > span {
+  grid-row: 1 / 3;
+  align-self: center;
+}
+
+.requestSummary strong {
+  min-inline-size: 0;
+  overflow-wrap: normal;
+  font-size: 0.8125rem;
+  font-weight: 680;
+  line-height: 1.4;
+  word-break: normal;
+}
+
+.replyPreview {
+  display: grid;
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border-default));
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+}
+
+.replyIcon {
+  background: var(--accent);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.replyPreview > p {
+  color: var(--text-default);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.reviewActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.reviewActions span {
+  padding: 0.36rem 0.62rem;
+  border: 1px solid var(--border-default);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-default);
+  font-size: 0.75rem;
+  font-weight: 650;
+}
+
 .problemSection,
 .workflowSection,
 .demoSection,
@@ -404,7 +643,7 @@
 .sectionHeading > p:first-child {
   color: var(--accent);
   font-size: 0.875rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.12em;
   line-height: 1.35;
   text-transform: uppercase;
@@ -467,7 +706,7 @@
 .problemMessages small {
   color: var(--marketing-on-ink-muted);
   font-size: 0.875rem;
-  font-weight: 800;
+  font-weight: 650;
 }
 
 .problemMessages strong {
@@ -506,7 +745,7 @@
 .workflowList li > span {
   color: var(--primary);
   font-size: 0.875rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .workflowList h3,
@@ -514,7 +753,7 @@
 .demoFlow h3 {
   color: var(--text-strong);
   font-size: clamp(1.18rem, 1.4vw, 1.5rem);
-  font-weight: 780;
+  font-weight: 700;
   line-height: 1.2;
 }
 
@@ -550,7 +789,7 @@
 .outcomeRecordHeader > div span {
   color: var(--text-muted);
   font-size: 0.875rem;
-  font-weight: 780;
+  font-weight: 650;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -603,7 +842,7 @@
 .demoIncoming > p {
   color: var(--text-muted);
   font-size: 0.875rem;
-  font-weight: 780;
+  font-weight: 650;
   text-transform: uppercase;
 }
 
@@ -612,7 +851,7 @@
   border-inline-start: 3px solid var(--brand-coral);
   color: var(--text-strong);
   font-size: clamp(1.2rem, 2vw, 1.65rem);
-  font-weight: 780;
+  font-weight: 680;
   line-height: 1.4;
 }
 
@@ -668,12 +907,12 @@
   background: color-mix(in srgb, var(--primary-contrast) 8%, transparent);
   color: var(--primary-contrast);
   font-size: 0.875rem;
-  font-weight: 760;
+  font-weight: 650;
 }
 
 @media (min-width: 720px) {
   .problemMessages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .heroStages { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
+  .heroWorkspace { grid-template-columns: minmax(12rem, 0.72fr) minmax(0, 1.28fr); }
   .workflowList { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 2rem; }
   .workflowList li:nth-child(2) { border-block-start: 1px solid var(--border-default); }
   .workflowList li:nth-last-child(2) { border-block-end: 1px solid var(--border-default); }
@@ -681,8 +920,15 @@
   .finalActions { max-inline-size: 18rem; justify-content: flex-end; }
 }
 
+@media (min-width: 1024px) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(31rem, 1.1fr);
+    gap: clamp(2rem, 3.5vw, 3.25rem);
+  }
+}
+
 @media (min-width: 1180px) {
-  .heroGrid { grid-template-columns: minmax(0, 1fr) minmax(32rem, 1fr); }
+  .heroGrid { grid-template-columns: minmax(0, 0.92fr) minmax(36rem, 1.08fr); }
   .problemGrid,
   .outcomesGrid { grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr); }
   .workflowList { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
@@ -695,7 +941,7 @@
 @media (min-width: 1180px) and (max-height: 900px) {
   .heroSection { padding-block: 2rem 3.5rem; }
   .heroGrid { align-items: start; gap: clamp(2.25rem, 3.5vw, 3.5rem); }
-  .heroTitle { max-inline-size: 19ch; margin-block-start: 1rem; line-height: 1.07; }
+  .heroTitle { max-inline-size: 17ch; margin-block-start: 1rem; line-height: 1.08; }
   .heroBody { margin-block-start: 1.05rem; font-size: 1.0625rem; line-height: 1.55; }
   .heroActions { margin-block-start: 1.35rem; }
   .heroAssurances { margin-block-start: 1rem; }
@@ -724,9 +970,13 @@
 
 @media (max-width: 719px) {
   .heroSection { padding-block: 2.4rem 4.5rem; }
-  .heroTitle { max-inline-size: 18ch; font-size: clamp(2.35rem, 9.5vw, 2.9rem); letter-spacing: -0.035em; }
+  .heroTitle { max-inline-size: 17ch; font-size: clamp(2.2rem, 9vw, 2.75rem); letter-spacing: -0.035em; }
   .heroActions > * { inline-size: 100%; }
   .heroAssurances span:nth-child(n + 3) { display: none; }
+  .productChrome strong { display: none; }
+}
+
+@media (max-width: 359px) {
   .requestSummary { grid-template-columns: 1fr; }
 }
 

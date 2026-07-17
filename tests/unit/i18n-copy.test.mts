@@ -9,8 +9,9 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Updated public-copy guards for the concise bilingual Website V4 editorial hierarchy.
  * - 2026-07-16: Aligned dashboard recovery assertions with segment retry instead of a misleading full reload.
  * - 2026-07-15: Added the bilingual global error copy namespace to the explicit dictionary contract.
  * - 2026-07-16: Aligned CTA-truth, grouped-FAQ, and focused-home assertions with the final public polish.
@@ -758,7 +759,7 @@ describe("BizPilot language copy", () => {
     assert.equal(frenchSpec.nav.privacy, "Confidentialité");
     assert.equal(frenchSpec.nav.security, "Sécurité");
     assert.equal(frenchSpec.nav.startShort, "Préparer");
-    assert.match(frenchSpec.routes["/demo"].hero.title, /réponse prête à valider/i);
+    assert.match(frenchSpec.routes["/demo"].hero.title, /demande vague.*claire/i);
 
     for (const forbidden of [
       "Confidentialite",
@@ -1032,7 +1033,7 @@ describe("BizPilot language copy", () => {
   it("keeps the universal homepage honest while cleaning remains the complete launch vertical", () => {
     const english = getPublicV3Spec("en");
 
-    assert.match(english.routes["/"].hero.eyebrow, /service teams/i);
+    assert.match(english.routes["/"].hero.eyebrow, /smart intake.*human review/i);
     assert.match(english.routes["/demo"].hero.eyebrow, /cleaning/i);
     assert.match(english.routes["/pilot"].hero.eyebrow, /cleaning/i);
     assert.match(english.faqItems.at(-1)?.answer ?? "", /only complete pilot template/i);

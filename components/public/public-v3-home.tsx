@@ -11,8 +11,9 @@
  * - components/public/marketing-ui.tsx
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Rebuilt the first-fold product scene as a spacious message-to-request workspace and refined the homepage content hierarchy.
  * - 2026-07-16: Consolidated outcomes into the workflow and trust assurances into the final CTA for a shorter five-section homepage.
  * - 2026-07-13: Created the approved seven-section V3 homepage and three-stage product story.
  * ============================================================
@@ -27,7 +28,6 @@ import {
   type MarketingIconName,
   type MarketingNavCopy,
   MarketingProductFrame,
-  MarketingProductStage,
   MarketingShell,
   MarketingStateChip,
 } from "@/components/public/marketing-ui";
@@ -44,7 +44,6 @@ const problemSourceIcons: readonly MarketingIconName[] = [
   "globe",
   "inbox",
 ];
-const heroStageIcons: readonly MarketingIconName[] = ["message", "link", "briefcase"];
 const requestFieldIcons: readonly MarketingIconName[] = [
   "briefcase",
   "user",
@@ -106,19 +105,22 @@ function HeroProductStory({
       label={labels.join(" → ")}
     >
       <div className={styles.productChrome} aria-hidden="true">
-        <span />
-        <span />
-        <span />
-        <strong>BizPilot AI</strong>
+        <div>
+          <span />
+          <span />
+          <span />
+        </div>
+        <strong>{labels[1]}</strong>
+        <small>BizPilot AI</small>
       </div>
-      <div className={styles.heroStages}>
-        <MarketingProductStage className={styles.storyStage ?? ""}>
+      <div className={styles.heroWorkspace}>
+        <aside className={styles.messageRail}>
           <div className={styles.stageHeader}>
-            <span aria-hidden="true"><MarketingIcon name={heroStageIcons[0] ?? "message"} /></span>
+            <span aria-hidden="true"><MarketingIcon name="message" /></span>
             <strong>{labels[0]}</strong>
           </div>
           <div className={styles.messageStack}>
-            {spec.home.problemMessages.map((message, index) => (
+            {spec.home.problemMessages.slice(0, 3).map((message, index) => (
               <div className={styles.messageBubble} key={message.label}>
                 <span>
                   <MarketingIcon name={problemSourceIcons[index % problemSourceIcons.length] ?? "message"} />
@@ -128,56 +130,55 @@ function HeroProductStory({
               </div>
             ))}
           </div>
-        </MarketingProductStage>
-
-        <div className={styles.storyConnector} aria-hidden="true">
-          <span>→</span>
-        </div>
-
-        <MarketingProductStage className={`${styles.storyStage} ${styles.linkStage}`}>
-          <div className={styles.stageHeader}>
-            <span aria-hidden="true"><MarketingIcon name={heroStageIcons[1] ?? "link"} /></span>
-            <strong>{labels[1]}</strong>
+          <div className={styles.railLink}>
+            <MarketingIcon name="link" />
+            <span>{labels[1]}</span>
           </div>
-          <div className={styles.intakeLinkCard}>
-            <span className={styles.linkIcon}>
-              <MarketingIcon name="link" />
-            </span>
-            <strong>{spec.home.visual.linkCardTitle}</strong>
-            <p>{spec.home.visual.linkCardBody}</p>
-            <span className={styles.linkButton} aria-hidden="true">
-              {spec.nav.howItWorks} →
-            </span>
-          </div>
-        </MarketingProductStage>
+        </aside>
 
-        <div className={styles.storyConnector} aria-hidden="true">
-          <span>→</span>
-        </div>
-
-        <MarketingProductStage className={`${styles.storyStage} ${styles.readyStage}`}>
-          <div className={styles.stageHeader}>
-            <span aria-hidden="true"><MarketingIcon name={heroStageIcons[2] ?? "briefcase"} /></span>
-            <strong>{labels[2]}</strong>
+        <section className={styles.requestWorkspace}>
+          <div className={styles.requestHeader}>
+            <div>
+              <span aria-hidden="true"><MarketingIcon name="briefcase" /></span>
+              <div>
+                <small>{labels[2]}</small>
+                <strong>{spec.home.outcomeCards[0]?.title}</strong>
+              </div>
+            </div>
+            <MarketingStateChip>
+              <MarketingIcon name="check" />
+              {spec.home.outcomeCards[1]?.title}
+            </MarketingStateChip>
           </div>
+
           <div className={styles.requestSummary}>
             {spec.demo.result.slice(0, 4).map((item, index) => (
               <div key={item.label}>
-                <span aria-label={item.label} role="img" title={item.label}>
+                <span aria-hidden="true">
                   <MarketingIcon name={requestFieldIcons[index % requestFieldIcons.length] ?? "check"} />
                 </span>
+                <p>{item.label}</p>
                 <strong>{item.value}</strong>
               </div>
             ))}
           </div>
-          <div className={styles.draftCard}>
-            <span>
-              <MarketingIcon name="spark" />
-              {spec.home.outcomeCards[2]?.title}
-            </span>
+
+          <div className={styles.replyPreview}>
+            <div>
+              <span className={styles.replyIcon}><MarketingIcon name="spark" /></span>
+              <div>
+                <small>{spec.features[4]?.title}</small>
+                <strong>{spec.home.outcomeCards[2]?.title}</strong>
+              </div>
+            </div>
             <p>{spec.home.visual.replyDraft}</p>
+            <div className={styles.reviewActions}>
+              {spec.demo.reviewActions.map((action) => (
+                <span key={action}>{action}</span>
+              ))}
+            </div>
           </div>
-        </MarketingProductStage>
+        </section>
       </div>
       <figcaption className={styles.placementNote}>
         <MarketingIcon name="shield" />

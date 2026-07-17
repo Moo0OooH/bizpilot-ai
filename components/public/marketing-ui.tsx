@@ -10,8 +10,9 @@
  * - lib/i18n/home-copy.ts
  * Author: MoOoH
  * Created: 2026-06-18
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Rebuilt the public brand lockup and softened navigation, badge, button, and section-title typography for the new visual system.
  * - 2026-07-16: Added a focused legal shell, enforced the 14px public microcopy floor, and aligned every pilot link with the copy-only request anchor.
  * - 2026-07-13: Removed unused V2 hero and next-step primitives after the final V3 route migration.
  * - 2026-07-13: Darkened blue badge text in light mode while preserving the dark-theme token for WCAG AA contrast.
@@ -92,7 +93,7 @@ export type MarketingNavCopy = Readonly<{
 }>;
 
 const defaultMarketingNavCopy: MarketingNavCopy = {
-  brandSubtitle: "Smart customer intake and reply workspace",
+  brandSubtitle: "Smart requests. Human review.",
   copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
   demo: "Demo",
   faq: "FAQ",
@@ -352,7 +353,7 @@ export function MarketingBadge({
 
   return (
     <span
-      className="bp-copy-eyebrow inline-flex min-w-0 max-w-full flex-wrap items-center gap-2 rounded-full border px-3 py-1.5 text-[14px] font-extrabold uppercase leading-tight"
+      className="bp-copy-eyebrow inline-flex min-w-0 max-w-full flex-wrap items-center gap-2 rounded-full border px-3 py-1.5 text-[13px] font-bold uppercase leading-tight tracking-[0.07em]"
       style={{
         backgroundColor: selected.bg,
         borderColor: selected.border,
@@ -424,23 +425,14 @@ export function MarketingBrand({
   subtitle = defaultMarketingNavCopy.brandSubtitle,
 }: Readonly<{ language?: SupportedLanguage | undefined; subtitle?: string }>) {
   return (
-    <Link className="inline-flex min-h-11 min-w-0 items-center gap-3" href={publicHref("/", language)}>
-      <span
-        aria-hidden
-        className="v3-brand-mark text-[17px] font-black"
-      >
-        B
+    <Link className="v3-brand-lockup" href={publicHref("/", language)}>
+      <span aria-hidden className="v3-brand-mark">
+        <span>B</span>
+        <i />
       </span>
-      <span className="hidden min-w-0 leading-tight min-[340px]:block">
-        <span className="block text-[17px] font-black tracking-[-0.02em]" style={{ color: marketingTone.text }}>
-          BizPilot AI
-        </span>
-        <span
-          className="bp-copy-nav hidden max-w-[15rem] whitespace-normal break-words text-[14px] font-bold uppercase leading-[1.3] min-[1440px]:block"
-          style={{ color: marketingTone.muted, maxWidth: "14rem", whiteSpace: "normal" }}
-        >
-          {subtitle}
-        </span>
+      <span className="v3-brand-copy">
+        <span className="v3-brand-name">BizPilot <b>AI</b></span>
+        <span className="v3-brand-subtitle">{subtitle}</span>
       </span>
     </Link>
   );
@@ -533,7 +525,7 @@ export function MarketingHeader({
             return (
               <Link
                 aria-current={selected ? "page" : undefined}
-                className="bp-copy-nav inline-flex min-h-12 items-center rounded-[12px] px-3 py-2 text-[14px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                className="bp-copy-nav inline-flex min-h-12 items-center rounded-[12px] px-3 py-2 text-[14px] font-semibold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                 href={publicHref(item.href, language)}
                 key={item.href}
                 style={{
@@ -553,7 +545,7 @@ export function MarketingHeader({
             return (
               <details className="group relative" key={group.label}>
                 <summary
-                  className="bp-copy-nav inline-flex min-h-12 cursor-pointer list-none items-center gap-1 rounded-[12px] px-3 py-2 text-[14px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                  className="bp-copy-nav inline-flex min-h-12 cursor-pointer list-none items-center gap-1 rounded-[12px] px-3 py-2 text-[14px] font-semibold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                   style={{
                     backgroundColor: selected ? "var(--surface-interactive)" : "transparent",
                     color: selected ? marketingTone.text : marketingTone.soft,
@@ -569,7 +561,7 @@ export function MarketingHeader({
                   {group.items.map((item) => (
                     <Link
                       aria-current={isActiveItem(item) ? "page" : undefined}
-                      className="bp-copy-nav min-h-12 rounded-[10px] px-3 py-3 text-[14px] font-bold hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                      className="bp-copy-nav min-h-12 rounded-[10px] px-3 py-3 text-[14px] font-semibold hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                       href={publicHref(item.href, language)}
                       key={`${group.label}-${item.label}`}
                       style={{ color: marketingTone.text }}
@@ -586,7 +578,7 @@ export function MarketingHeader({
           {renderLanguageMenu()}
           <ThemePreferenceControl language={language ?? "en"} />
           <Link
-            className="bp-copy-nav inline-flex min-h-12 items-center justify-center rounded-[12px] px-3 text-[14px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+            className="bp-copy-nav inline-flex min-h-12 items-center justify-center rounded-[12px] px-3 text-[14px] font-semibold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
             href={publicHref("/auth/sign-in", language)}
             style={{ color: marketingTone.soft }}
           >
@@ -605,7 +597,7 @@ export function MarketingHeader({
                 return (
                   <Link
                     aria-current={selected ? "page" : undefined}
-                    className="bp-copy-nav min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                    className="bp-copy-nav min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-semibold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                     href={publicHref(item.href, language)}
                     key={item.href}
                     style={{
@@ -621,13 +613,13 @@ export function MarketingHeader({
               })}
               {navGroups.map((group) => (
                 <div className="mt-2 grid gap-1 border-t pt-3" key={group.label} style={{ borderColor: marketingTone.border }}>
-                  <p className="px-3 text-[14px] font-black uppercase tracking-[0.1em]" style={{ color: marketingTone.muted }}>
+                  <p className="px-3 text-[13px] font-bold uppercase tracking-[0.1em]" style={{ color: marketingTone.muted }}>
                     {group.label}
                   </p>
                   {group.items.map((item) => (
                     <Link
                       aria-current={isActiveItem(item) ? "page" : undefined}
-                      className="bp-copy-nav min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-black transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                      className="bp-copy-nav min-h-11 rounded-[12px] px-3 py-3 text-[14px] font-semibold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                       href={publicHref(item.href, language)}
                       key={`${group.label}-${item.label}`}
                       style={{ color: marketingTone.text }}
@@ -642,7 +634,7 @@ export function MarketingHeader({
               {renderLanguageMenu(true)}
               <ThemePreferenceControl className="w-full justify-center" language={language ?? "en"} />
               <Link
-                className="bp-copy-nav inline-flex min-h-12 items-center justify-center rounded-[12px] border px-4 text-[14px] font-bold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
+                className="bp-copy-nav inline-flex min-h-12 items-center justify-center rounded-[12px] border px-4 text-[14px] font-semibold transition hover:bg-[var(--surface-interactive)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--focus-ring)]"
                 href={publicHref("/auth/sign-in", language)}
                 style={{ borderColor: marketingTone.borderStrong, color: marketingTone.soft }}
               >
@@ -803,11 +795,11 @@ export function MarketingSectionTitle({
   return (
     <div className={align === "center" ? "mx-auto max-w-[980px] text-center" : "max-w-[760px]"}>
       {eyebrow ? (
-        <p className="text-[14px] font-black uppercase" style={{ color: marketingTone.teal }}>
+        <p className="text-[13px] font-bold uppercase tracking-[0.08em]" style={{ color: marketingTone.teal }}>
           {eyebrow}
         </p>
       ) : null}
-      <h2 className="mt-3 text-[32px] font-black leading-[1.12] sm:text-[40px]" style={{ color: marketingTone.text }}>
+      <h2 className="mt-3 text-[32px] font-bold leading-[1.12] tracking-[-0.03em] sm:text-[40px]" style={{ color: marketingTone.text }}>
         {title}
       </h2>
       {lead ? (

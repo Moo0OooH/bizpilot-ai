@@ -10,8 +10,9 @@
  * - tests/unit/public-v3-spec.test.mts
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Rewrote the bilingual public hierarchy with shorter, clearer headlines and concise outcome-led supporting copy.
  * - 2026-07-16: Made pilot CTAs truthfully describe the copy-only request flow and grouped the bilingual FAQ for faster scanning.
  * - 2026-07-15: Added synchronized EN/fr-CA copy for the shared not-found state.
  * - 2026-07-13: Added localized status copy for the safe copy-only founder-pilot request.
@@ -171,7 +172,7 @@ export type PublicV3Spec = Readonly<{
 
 const englishSpec: PublicV3Spec = {
   nav: {
-    brandSubtitle: "Smart intake and reply workspace",
+    brandSubtitle: "Smart requests. Human review.",
     copyright: "Copyright 2026 BizPilot AI. All rights reserved.",
     product: "Product",
     howItWorks: "How it works",
@@ -207,11 +208,11 @@ const englishSpec: PublicV3Spec = {
           "Turn scattered customer messages into complete service requests and human-approved reply drafts with one shareable Smart Intake Link.",
       },
       hero: {
-        eyebrow: "SMART INTAKE FOR BUSY SERVICE TEAMS",
+        eyebrow: "SMART INTAKE · HUMAN REVIEW",
         title:
-          "Turn scattered customer messages into complete requests—and replies ready to review.",
+          "Turn scattered messages into requests your team can answer.",
         body:
-          "Share one smart intake link anywhere customers reach you. BizPilot asks the right service questions, organizes every request, flags what is missing, and prepares a reply your team approves before sending.",
+          "Share one smart link. BizPilot gathers the missing service details, organizes the request, and drafts a reply for your team to review and send.",
         primary: { href: "/#how-it-works", label: "See how it works" },
         secondary: { href: "/pilot#application", label: "Prepare a pilot request" },
       },
@@ -223,10 +224,10 @@ const englishSpec: PublicV3Spec = {
           "See how BizPilot collects service details, organizes requests, flags missing information, and prepares owner-reviewed reply drafts.",
       },
       hero: {
-        eyebrow: "PRODUCT",
-        title: "Everything between a vague message and a useful reply.",
+        eyebrow: "ONE FOCUSED WORKSPACE",
+        title: "From vague message to a reply worth reviewing.",
         body:
-          "Give customers one clear request path, give your team the details that matter, and keep every reply under human control.",
+          "Collect the right details, see what is missing, and prepare the next response without giving up human control.",
         primary: { href: "/demo", label: "Walk through the demo" },
         secondary: { href: "/pilot#application", label: "Prepare a pilot request" },
       },
@@ -238,10 +239,10 @@ const englishSpec: PublicV3Spec = {
           "Follow one vague cleaning question through a Smart Intake Link, organized request, missing-detail check, and reply ready for owner review.",
       },
       hero: {
-        eyebrow: "INTERACTIVE CLEANING PILOT",
-        title: "Follow one “How much?” message to a reply ready to review.",
+        eyebrow: "CLEANING WORKFLOW DEMO",
+        title: "See one vague request become clear, step by step.",
         body:
-          "This safe walkthrough shows the current cleaning workflow without submitting data, inventing a quote, booking a job, or sending a message.",
+          "Follow a real cleaning example from the first short message to organized details and a careful draft. Nothing is submitted or sent.",
         primary: { href: "/demo#demo", label: "Start the walkthrough" },
         secondary: { href: "/features", label: "Explore the product" },
       },
@@ -253,10 +254,10 @@ const englishSpec: PublicV3Spec = {
           "Review staged, founder-led pilot pricing for BizPilot's cleaning intake and human-reviewed reply workflow, with no self-serve checkout.",
       },
       hero: {
-        eyebrow: "FOUNDER-PILOT PRICING",
-        title: "Start with fit, scope, and a price you approve before setup.",
+        eyebrow: "CLEAR PILOT PRICING",
+        title: "Know the fit, scope, and price before setup.",
         body:
-          "The first cohort is feedback-led. Later Starter and Pro pilots use manual billing only after the workflow, support, cancellation, and payment terms are confirmed.",
+          "Start with a founder review. Billing begins only after the workflow, support, cancellation, and payment terms are clear.",
         primary: { href: "/pilot#application", label: "Prepare a pilot request" },
         secondary: { href: "/faq", label: "Read common questions" },
       },
@@ -268,10 +269,10 @@ const englishSpec: PublicV3Spec = {
           "Apply for a founder-led BizPilot cleaning pilot built around one Smart Intake Link and a controlled, human-reviewed reply workflow.",
       },
       hero: {
-        eyebrow: "CLEANING BUSINESSES FIRST",
-        title: "Test one customer-request workflow with the founder beside you.",
+        eyebrow: "FOUNDER-LED · CLEANING FIRST",
+        title: "Test one request workflow with the founder beside you.",
         body:
-          "The first pilot is for cleaning teams receiving incomplete requests and willing to improve a focused, manual-first workflow through structured feedback.",
+          "For cleaning teams that receive incomplete requests and want to improve one focused, manual-first workflow through direct feedback.",
         primary: { href: "/pilot#application", label: "Prepare my pilot request" },
         secondary: { href: "/pricing", label: "Review pilot pricing" },
       },
@@ -284,9 +285,9 @@ const englishSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "STRAIGHT ANSWERS",
-        title: "Know what BizPilot does—and what stays in your hands.",
+        title: "Clear answers before you try BizPilot.",
         body:
-          "Start with the practical questions about channels, the intake link, AI, setup, data, pricing, and manual sending.",
+          "Understand the link, AI boundaries, setup, data, pricing, and manual sending without searching through product jargon.",
         primary: { href: "/demo", label: "See the workflow" },
         secondary: { href: "/pilot#application", label: "Prepare a pilot request" },
       },
@@ -299,9 +300,9 @@ const englishSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "TRUST BY DESIGN",
-        title: "AI prepares the work. Your team keeps the decision.",
+        title: "AI prepares. Your team decides.",
         body:
-          "BizPilot is designed around explicit inputs, visible gaps, bounded drafts, and a human review step before any customer receives a reply.",
+          "Customer inputs stay explicit, missing details stay visible, and a person reviews every draft before it leaves the business.",
         primary: { href: "/security", label: "Review security" },
         secondary: { href: "/privacy", label: "Read privacy details" },
       },
@@ -314,7 +315,7 @@ const englishSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "PRIVACY",
-        title: "A readable explanation of how request data is handled.",
+        title: "How BizPilot handles request data.",
         body:
           "This policy explains collection, use, access, retention, and choices without hiding the practical summary behind legal language.",
         primary: { href: "/trust", label: "View trust overview" },
@@ -329,7 +330,7 @@ const englishSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "SECURITY",
-        title: "Practical safeguards for a controlled, manual-first workflow.",
+        title: "Practical safeguards. Clear boundaries.",
         body:
           "See the current access, isolation, logging, and operational boundaries without unsupported compliance claims.",
         primary: { href: "/trust", label: "View trust overview" },
@@ -344,7 +345,7 @@ const englishSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "TERMS",
-        title: "The practical rules for using the site and joining a pilot.",
+        title: "The rules for using BizPilot and joining a pilot.",
         body:
           "These terms describe the current service boundary, responsibilities, and approval steps before any paid pilot or production use.",
         primary: { href: "/pricing", label: "Review pilot pricing" },
@@ -356,37 +357,37 @@ const englishSpec: PublicV3Spec = {
     sections: [
       {
         key: "hero",
-        eyebrow: "SMART INTAKE FOR BUSY SERVICE TEAMS",
+        eyebrow: "SMART INTAKE · HUMAN REVIEW",
         title:
-          "Turn scattered customer messages into complete requests—and replies ready to review.",
+          "Turn scattered messages into requests your team can answer.",
         body:
           "Show the audience, pain, one-link mechanism, organized result, and human approval in the first viewport.",
       },
       {
         key: "problem",
-        eyebrow: "THE GAP BEFORE EVERY GOOD REPLY",
-        title: "The message arrives. The details you need do not.",
+        eyebrow: "THE REAL DELAY",
+        title: "A short message creates a long follow-up.",
         body:
-          "Owners, sales managers, and support teams lose time decoding different questions, asking the same follow-ups, and rebuilding context while customers wait.",
+          "Your team decodes vague questions, repeats the same follow-ups, and rebuilds context while the customer waits.",
       },
       {
         key: "workflow",
         eyebrow: "ONE CLEAR PATH",
-        title: "Share. Ask. Organize. Review.",
+        title: "One link. Four clear steps.",
         body:
-          "Place one link where customers already reach you. BizPilot gathers the service details, organizes the request, and prepares the next response for your approval.",
+          "Share the link where customers already reach you. BizPilot gathers the details and prepares the request for review.",
       },
       {
         key: "outcomes",
         eyebrow: "READY FOR THE TEAM",
-        title: "See the complete request, the gaps, and the next reply together.",
+        title: "Everything your team needs, in one view.",
         body:
           "Your team starts from a clear record instead of reconstructing a conversation from memory or asking every question again.",
       },
       {
         key: "cleaning-demo",
         eyebrow: "CLEANING PILOT EXAMPLE",
-        title: "From “How much for Friday?” to a request you can answer responsibly.",
+        title: "Watch a vague cleaning question become answerable.",
         body:
           "Use one real, readable cleaning example to show the vague question, adaptive intake, organized details, and owner-reviewed draft.",
       },
@@ -400,7 +401,7 @@ const englishSpec: PublicV3Spec = {
       {
         key: "final-cta",
         eyebrow: "START WITH ONE WORKFLOW",
-        title: "Make the next customer request easier to answer.",
+        title: "Make the next request easier to answer.",
         body:
           "Walk through the cleaning demo, then apply for a founder-led pilot if the workflow fits your team.",
       },
@@ -734,7 +735,7 @@ const englishSpec: PublicV3Spec = {
 
 const frenchSpec: PublicV3Spec = {
   nav: {
-    brandSubtitle: "Collecte et réponses intelligentes",
+    brandSubtitle: "Demandes claires. Validation humaine.",
     copyright: "Copyright 2026 BizPilot AI. Tous droits réservés.",
     product: "Produit",
     howItWorks: "Fonctionnement",
@@ -770,11 +771,11 @@ const frenchSpec: PublicV3Spec = {
           "Transformez les messages dispersés en demandes de service complètes et en réponses prêtes à valider grâce à un seul lien de collecte.",
       },
       hero: {
-        eyebrow: "COLLECTE INTELLIGENTE POUR ÉQUIPES DE SERVICES",
+        eyebrow: "COLLECTE INTELLIGENTE · VALIDATION HUMAINE",
         title:
-          "Transformez les messages dispersés en demandes complètes et en réponses prêtes à valider.",
+          "Transformez les messages dispersés en demandes auxquelles répondre.",
         body:
-          "Partagez un seul lien de collecte partout où vos clients vous écrivent. BizPilot pose les bonnes questions, organise chaque demande, signale les renseignements manquants et prépare une réponse que votre équipe valide avant de l'envoyer.",
+          "Partagez un seul lien. BizPilot recueille les détails manquants, organise la demande et prépare une réponse que votre équipe valide et envoie.",
         primary: { href: "/#how-it-works", label: "Voir le fonctionnement" },
         secondary: { href: "/pilot#application", label: "Préparer une demande pilote" },
       },
@@ -786,10 +787,10 @@ const frenchSpec: PublicV3Spec = {
           "Voyez comment BizPilot recueille les détails du service, organise les demandes, signale ce qui manque et prépare des brouillons à valider.",
       },
       hero: {
-        eyebrow: "PRODUIT",
-        title: "Tout ce qu'il faut entre un message vague et une réponse utile.",
+        eyebrow: "UN ESPACE DE TRAVAIL CIBLÉ",
+        title: "D'un message vague à une réponse qui mérite validation.",
         body:
-          "Offrez aux clients un parcours clair, donnez à votre équipe les détails importants et gardez chaque réponse sous contrôle humain.",
+          "Recueillez les bons détails, voyez ce qui manque et préparez la prochaine réponse sans perdre le contrôle humain.",
         primary: { href: "/demo", label: "Parcourir la démo" },
         secondary: { href: "/pilot#application", label: "Préparer une demande" },
       },
@@ -801,10 +802,10 @@ const frenchSpec: PublicV3Spec = {
           "Suivez une demande vague jusqu'au lien de collecte, à la fiche organisée, aux détails manquants et au brouillon prêt à valider.",
       },
       hero: {
-        eyebrow: "DÉMO INTERACTIVE DU PILOTE ENTRETIEN",
-        title: "Suivez un message « Combien? » jusqu'à une réponse prête à valider.",
+        eyebrow: "DÉMO DU FLUX ENTRETIEN",
+        title: "Voyez une demande vague devenir claire, étape par étape.",
         body:
-          "Cette démonstration sûre présente le flux actuel sans envoyer de données, inventer un prix, réserver un service ni transmettre un message.",
+          "Suivez un exemple d'entretien, du premier message aux détails organisés et au brouillon prudent. Rien n'est transmis ni envoyé.",
         primary: { href: "/demo#demo", label: "Commencer la démo" },
         secondary: { href: "/features", label: "Explorer le produit" },
       },
@@ -816,10 +817,10 @@ const frenchSpec: PublicV3Spec = {
           "Consultez les tarifs par étapes du pilote entretien, avec configuration guidée, réponses validées et aucun paiement libre-service.",
       },
       hero: {
-        eyebrow: "TARIFS DU PILOTE FONDATEUR",
-        title: "Commencez par la compatibilité, la portée et un prix approuvé avant la configuration.",
+        eyebrow: "TARIFS DU PILOTE EN TOUTE CLARTÉ",
+        title: "Connaissez la compatibilité, la portée et le prix avant la configuration.",
         body:
-          "La première cohorte mise sur la rétroaction. Les pilotes Démarrage et Pro sont facturés manuellement seulement après confirmation du flux, du soutien, de l'annulation et du paiement.",
+          "Commencez par une vérification avec le fondateur. La facturation débute seulement lorsque le flux et les conditions sont clairs.",
         primary: { href: "/pilot#application", label: "Préparer une demande pilote" },
         secondary: { href: "/faq", label: "Lire les questions fréquentes" },
       },
@@ -831,10 +832,10 @@ const frenchSpec: PublicV3Spec = {
           "Demandez l'accès à un pilote BizPilot guidé autour d'un lien de collecte et d'un flux de réponse validé par une personne.",
       },
       hero: {
-        eyebrow: "ENTREPRISES D'ENTRETIEN D'ABORD",
-        title: "Testez un seul flux de demandes avec le fondateur à vos côtés.",
+        eyebrow: "GUIDÉ PAR LE FONDATEUR · ENTRETIEN D'ABORD",
+        title: "Testez un flux de demandes avec le fondateur à vos côtés.",
         body:
-          "Le premier pilote s'adresse aux équipes d'entretien qui reçoivent des demandes incomplètes et veulent améliorer un flux ciblé, manuel et contrôlé.",
+          "Pour les équipes d'entretien qui reçoivent des demandes incomplètes et veulent améliorer un flux ciblé et manuel par rétroaction directe.",
         primary: { href: "/pilot#application", label: "Préparer ma demande" },
         secondary: { href: "/pricing", label: "Voir les tarifs" },
       },
@@ -847,9 +848,9 @@ const frenchSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "RÉPONSES CLAIRES",
-        title: "Sachez ce que BizPilot fait et ce qui reste entre vos mains.",
+        title: "Des réponses claires avant d'essayer BizPilot.",
         body:
-          "Commencez par les questions pratiques sur les canaux, le lien, l'IA, la configuration, les données, les tarifs et l'envoi manuel.",
+          "Comprenez le lien, les limites de l'IA, la configuration, les données, les tarifs et l'envoi manuel sans jargon produit.",
         primary: { href: "/demo", label: "Voir le flux" },
         secondary: { href: "/pilot#application", label: "Préparer une demande" },
       },
@@ -862,9 +863,9 @@ const frenchSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "CONFIANCE INTÉGRÉE",
-        title: "L'IA prépare le travail. Votre équipe garde la décision.",
+        title: "L'IA prépare. Votre équipe décide.",
         body:
-          "BizPilot repose sur des réponses explicites, des renseignements manquants visibles, des brouillons encadrés et une validation humaine avant tout envoi.",
+          "Les réponses restent explicites, les détails manquants restent visibles et une personne valide chaque brouillon avant son envoi.",
         primary: { href: "/security", label: "Voir la sécurité" },
         secondary: { href: "/privacy", label: "Lire la confidentialité" },
       },
@@ -877,7 +878,7 @@ const frenchSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "CONFIDENTIALITÉ",
-        title: "Une explication lisible de la gestion des données de demandes.",
+        title: "Comment BizPilot traite les données de demandes.",
         body:
           "Cette politique explique la collecte, l'utilisation, l'accès, la conservation et vos choix sans cacher le résumé pratique derrière le jargon juridique.",
         primary: { href: "/trust", label: "Voir l'aperçu de confiance" },
@@ -892,7 +893,7 @@ const frenchSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "SÉCURITÉ",
-        title: "Des mesures pratiques pour un flux contrôlé et manuel.",
+        title: "Des mesures pratiques. Des limites claires.",
         body:
           "Voyez les limites actuelles d'accès, d'isolation, de journalisation et d'exploitation, sans allégation de conformité non vérifiée.",
         primary: { href: "/trust", label: "Voir l'aperçu de confiance" },
@@ -907,7 +908,7 @@ const frenchSpec: PublicV3Spec = {
       },
       hero: {
         eyebrow: "CONDITIONS",
-        title: "Les règles pratiques du site et du pilote.",
+        title: "Les règles d'utilisation de BizPilot et du pilote.",
         body:
           "Ces conditions décrivent le service actuel, les responsabilités et les approbations requises avant tout pilote payant ou usage en production.",
         primary: { href: "/pricing", label: "Voir les tarifs" },
@@ -919,37 +920,37 @@ const frenchSpec: PublicV3Spec = {
     sections: [
       {
         key: "hero",
-        eyebrow: "COLLECTE INTELLIGENTE POUR ÉQUIPES DE SERVICES",
+        eyebrow: "COLLECTE INTELLIGENTE · VALIDATION HUMAINE",
         title:
-          "Transformez les messages dispersés en demandes complètes et en réponses prêtes à valider.",
+          "Transformez les messages dispersés en demandes auxquelles répondre.",
         body:
           "Présenter le public, le problème, le lien unique, la demande organisée et la validation humaine dès le premier écran.",
       },
       {
         key: "problem",
-        eyebrow: "CE QUI MANQUE AVANT UNE BONNE RÉPONSE",
-        title: "Le message arrive. Les détails nécessaires, non.",
+        eyebrow: "LE VRAI DÉLAI",
+        title: "Un message court entraîne un long suivi.",
         body:
-          "Les propriétaires, responsables des ventes et équipes de soutien perdent du temps à décoder des questions différentes, répéter les mêmes suivis et reconstruire le contexte.",
+          "Votre équipe décode des questions vagues, répète les mêmes suivis et reconstruit le contexte pendant que le client attend.",
       },
       {
         key: "workflow",
         eyebrow: "UN PARCOURS CLAIR",
-        title: "Partager. Demander. Organiser. Valider.",
+        title: "Un lien. Quatre étapes claires.",
         body:
-          "Placez un seul lien là où vos clients vous écrivent déjà. BizPilot recueille les détails, organise la demande et prépare la prochaine réponse pour votre validation.",
+          "Partagez le lien là où vos clients vous écrivent déjà. BizPilot recueille les détails et prépare la demande pour validation.",
       },
       {
         key: "outcomes",
         eyebrow: "PRÊT POUR L'ÉQUIPE",
-        title: "Voyez la demande complète, les lacunes et la prochaine réponse ensemble.",
+        title: "Tout ce qu'il faut à votre équipe, dans une seule vue.",
         body:
           "Votre équipe part d'une fiche claire au lieu de reconstruire la conversation de mémoire ou de répéter chaque question.",
       },
       {
         key: "cleaning-demo",
         eyebrow: "EXEMPLE DU PILOTE ENTRETIEN",
-        title: "De « Combien pour vendredi? » à une demande à laquelle répondre correctement.",
+        title: "Voyez une question d'entretien vague devenir traitable.",
         body:
           "Un exemple d'entretien lisible montre la question vague, la collecte adaptée, les détails organisés et le brouillon validé par le propriétaire.",
       },
