@@ -10,8 +10,9 @@
  * - lib/i18n/public-v3-spec.ts
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Upgraded the copy-only request into a clearer application console with a strong action header and preserved manual boundary.
  * - 2026-07-13: Created the V3 copy-only pilot request mechanism and removed the recipient-free email dead end.
  * ============================================================
  */
@@ -20,7 +21,7 @@
 
 import { useMemo, useRef, useState } from "react";
 
-import { MarketingCard } from "@/components/public/marketing-ui";
+import { MarketingCard, MarketingIcon } from "@/components/public/marketing-ui";
 import type { PublicV3Spec } from "@/lib/i18n/public-v3-spec";
 import { trackPublicEvent } from "@/lib/public-events";
 
@@ -67,13 +68,17 @@ export function PublicV3PilotRequest({
 
   return (
     <MarketingCard className={styles.applicationCard} id="application">
-      <p className={styles.eyebrow}>{copy.applicationAction}</p>
+      <div className={styles.applicationHeader}>
+        <span><MarketingIcon name="pen" /></span>
+        <p className={styles.eyebrow}>{copy.applicationAction}</p>
+      </div>
       <pre className={styles.template} ref={templateRef} tabIndex={0}>
         {template}
       </pre>
       <div className={styles.copyRow}>
         <button className={styles.copyButton} onClick={handleCopy} type="button">
           {copy.applicationAction}
+          <MarketingIcon name="copy" />
         </button>
         <span aria-live="polite" className={styles.copyStatus}>
           {status}

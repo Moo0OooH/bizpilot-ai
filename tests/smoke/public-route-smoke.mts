@@ -9,8 +9,9 @@
  * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Read the final homepage headline from the synchronized V3 dictionary instead of a retired literal.
  * - 2026-07-15: Added safe EN/fr-CA missing-success coverage for the dynamic quote success boundary.
  * - 2026-07-15: Added direct EN/fr-CA coverage for every auth page and the base quote-unavailable route.
  * - 2026-07-13: Replaced retired V2 page checks with ten retained V3 routes and exact 308 redirect-location coverage.
@@ -62,7 +63,7 @@ const frenchQuote = getBizPilotCopy("fr-CA").quotePage;
 const smokeTargets: readonly SmokeTarget[] = [
   {
     expectedText: [
-      "Turn scattered customer messages into complete requests—and replies ready to review.",
+      englishV3.routes["/"].hero.title,
       "One Smart Intake Link",
       "Read, edit, and copy the AI-assisted draft, then send it manually through the real customer channel.",
     ],

@@ -11,8 +11,9 @@
  * - proxy.ts
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Measure actual compact-menu overflow instead of rejecting the non-scrolling auto-overflow safety fallback.
  * - 2026-07-13: Added the 640px reflow checkpoint as a practical 200% zoom proxy alongside the 320px 400% proxy.
  * - 2026-07-13: Added primary-CTA and mobile-menu response timing to the real interaction evidence.
  * - 2026-07-13: Added keyboard coverage for skip navigation, Demo tabs, Pilot copy, and mobile-menu focus return.
@@ -732,7 +733,6 @@ async function runBrowserChecks(client: CdpClient, baseUrl: URL): Promise<void> 
 
   assert.ok(menu.bottom <= menu.viewportHeight - 8, `Mobile menu extends below the viewport: ${JSON.stringify(menu)}`);
   assert.ok(menu.scrollHeight <= menu.clientHeight + 1, `Mobile menu has nested scrolling: ${JSON.stringify(menu)}`);
-  assert.notEqual(menu.overflowY, "auto");
   assert.notEqual(menu.overflowY, "scroll");
   await pressKey(client, "Escape");
   await waitFor(

@@ -10,8 +10,9 @@
  * - lib/i18n/public-v3-spec.ts
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Reworked the walkthrough into a numbered, high-context stage navigator with a clearer active work surface.
  * - 2026-07-13: Added roving focus and arrow, Home, and End keyboard behavior for the accessible tab pattern.
  * - 2026-07-13: Created the safe three-stage V3 cleaning walkthrough.
  * ============================================================
@@ -21,7 +22,11 @@
 
 import { useRef, useState } from "react";
 
-import { MarketingCard } from "@/components/public/marketing-ui";
+import {
+  MarketingCard,
+  MarketingIcon,
+  MarketingStateChip,
+} from "@/components/public/marketing-ui";
 import type { PublicV3Spec } from "@/lib/i18n/public-v3-spec";
 
 import styles from "./public-v3-page.module.css";
@@ -85,7 +90,9 @@ export function PublicV3Demo({
             tabIndex={activeStage === index ? 0 : -1}
             type="button"
           >
-            {index + 1}. {label}
+            <span className={styles.demoTabNumber}>{String(index + 1).padStart(2, "0")}</span>
+            <span className={styles.demoTabLabel}>{label}</span>
+            <span className={styles.demoTabState} aria-hidden="true" />
           </button>
         ))}
       </div>
@@ -97,8 +104,16 @@ export function PublicV3Demo({
           role="tabpanel"
           tabIndex={0}
         >
+          <div className={styles.demoContentHeader}>
+            <MarketingStateChip>{String(activeStage + 1).padStart(2, "0")}</MarketingStateChip>
+            <strong>{labels[activeStage]}</strong>
+            <MarketingIcon name={activeStage === 2 ? "check" : activeStage === 1 ? "search" : "message"} />
+          </div>
           {activeStage === 0 ? (
-            <p className={styles.messageBubble}>{copy.incoming}</p>
+            <div className={styles.incomingScene}>
+              <span><MarketingIcon name="message" /></span>
+              <p className={styles.messageBubble}>{copy.incoming}</p>
+            </div>
           ) : null}
 
           {activeStage === 1 ? (

@@ -11,8 +11,9 @@
  * - tests/smoke/public-browser-interaction-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added guards for open indexed policy documents and their responsive editorial stylesheet.
  * - 2026-07-16: Replaced the seven-section guard with the focused five-section home contract.
  * - 2026-07-14: Added final-polish guards for balanced desktop grids and legible card icons.
  * - 2026-07-13: Accepted an animation-free homepage while retaining explicit reduced-motion handling on shared pages.
@@ -46,6 +47,8 @@ const publicSources = [
   source("components/public/public-v3-page.module.css"),
   source("components/public/public-v3-demo.tsx"),
   source("components/public/public-v3-pilot-request.tsx"),
+  source("components/public/policy-page.tsx"),
+  source("components/public/policy-page.module.css"),
   ...retainedMarketingRoutes.map(source),
   ...["privacy", "security", "terms"].map((route) => source(`app/${route}/page.tsx`)),
 ].join("\n");
@@ -137,6 +140,18 @@ describe("Website V3 visual stability source contracts", () => {
     ]) {
       assert.equal(sharedPage.includes(required), true, required);
     }
+  });
+
+  it("keeps every policy section visible in an indexed reading layout", () => {
+    const policyPage = source("components/public/policy-page.tsx");
+    const policyCss = source("components/public/policy-page.module.css");
+
+    assert.equal(policyPage.includes("copy.sections.map"), true);
+    assert.equal(policyPage.includes("policy-section-${index + 1}"), true);
+    assert.equal(policyPage.includes("<details"), false);
+    assert.equal(policyCss.includes(".readingLayout"), true);
+    assert.equal(policyCss.includes(".contentsCard"), true);
+    assert.equal(policyCss.includes(".policySections"), true);
   });
 
   it("keeps the pilot conversion copy-only and non-submitting", () => {

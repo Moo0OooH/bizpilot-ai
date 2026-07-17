@@ -1,0 +1,299 @@
+/**
+ * ============================================================
+ * File: components/public/policy-page.module.css
+ * Project: BizPilot AI
+ * Description: Responsive editorial layout for public privacy, security, and pilot-terms pages.
+ * Role: Keeps policy summaries, indexed sections, evidence links, and operating boundaries readable in both supported languages.
+ * Related:
+ * - components/public/policy-page.tsx
+ * - lib/i18n/policy-copy.ts
+ * - components/public/marketing-ui.tsx
+ * Author: MoOoH
+ * Created: 2026-07-17
+ * Last Updated: 2026-07-17
+ * Change Log:
+ * - 2026-07-17: Created the open, indexed bilingual policy reading system for all three legal routes.
+ * ============================================================
+ */
+
+.page {
+  --policy-accent: var(--accent);
+  --policy-soft: color-mix(in srgb, var(--accent) 9%, var(--surface));
+  min-block-size: 100svh;
+  overflow: clip;
+  background: var(--marketing-background);
+  color: var(--text-strong);
+}
+
+.page[data-policy-route="/security"] {
+  --policy-accent: var(--primary);
+  --policy-soft: color-mix(in srgb, var(--primary) 9%, var(--surface));
+}
+
+.page[data-policy-route="/terms"] {
+  --policy-accent: var(--brand-coral);
+  --policy-soft: color-mix(in srgb, var(--brand-coral) 10%, var(--surface));
+}
+
+.hero {
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+  border-block-end: 1px solid var(--border-default);
+  background:
+    radial-gradient(circle at 85% 14%, color-mix(in srgb, var(--policy-accent) 14%, transparent), transparent 34%),
+    var(--marketing-background);
+}
+
+.heroGrid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+}
+
+.heroCopy { min-inline-size: 0; }
+
+.heroTitle {
+  max-inline-size: 15ch;
+  margin-block: 1.2rem 0;
+  font-size: clamp(2.7rem, 5vw, 4.8rem);
+  font-weight: 620;
+  line-height: 1.03;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+
+.heroBody {
+  max-inline-size: 60ch;
+  margin-block: 1.25rem 0;
+  color: var(--text-default);
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.75;
+  text-wrap: pretty;
+}
+
+.effectiveDate {
+  margin-block: 1.5rem 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 720;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.summaryCard {
+  position: relative;
+  min-inline-size: 0;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--policy-accent) 35%, var(--border-default));
+  border-radius: 1.6rem;
+  background: color-mix(in srgb, var(--policy-soft) 62%, var(--surface));
+  box-shadow: var(--v3-shadow-float);
+}
+
+.summaryCard::after {
+  position: absolute;
+  inset: auto -3rem -4rem auto;
+  inline-size: 10rem;
+  block-size: 10rem;
+  border: 1.5rem solid color-mix(in srgb, var(--policy-accent) 8%, transparent);
+  border-radius: 999px;
+  content: "";
+}
+
+.summaryIcon {
+  display: grid;
+  inline-size: 3rem;
+  block-size: 3rem;
+  place-items: center;
+  border-radius: 0.9rem;
+  background: var(--policy-accent);
+  color: var(--surface);
+}
+
+.summaryLabel {
+  margin-block: 1.5rem 0;
+  color: var(--policy-accent);
+  font-size: 0.8rem;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.summaryBody {
+  position: relative;
+  z-index: 1;
+  max-inline-size: 40ch;
+  margin-block: 0.7rem 0;
+  color: var(--text-strong);
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 620;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.readingSection {
+  padding-block: var(--v3-section-space);
+  background: color-mix(in srgb, var(--policy-soft) 24%, var(--canvas));
+}
+
+.readingLayout {
+  display: grid;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+}
+
+.contentsCard {
+  min-inline-size: 0;
+  padding: 1rem;
+  border: 1px solid var(--border-default);
+  border-radius: 1.2rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.contentsCard > p {
+  margin: 0;
+  padding: 0.6rem 0.7rem 1rem;
+  border-block-end: 1px solid var(--border-default);
+  color: var(--text-strong);
+  font-size: 0.92rem;
+  font-weight: 720;
+  line-height: 1.45;
+}
+
+.contentsCard ol {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0.65rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contentsCard a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.7rem;
+  padding: 0.72rem;
+  border-radius: 0.7rem;
+  color: var(--text-default);
+  font-size: 0.88rem;
+  font-weight: 620;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.contentsCard a:hover { background: var(--policy-soft); color: var(--text-strong); }
+.contentsCard a:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.contentsCard a span { color: var(--policy-accent); font-size: 0.72rem; font-weight: 760; letter-spacing: 0.08em; }
+
+.document { min-inline-size: 0; }
+
+.documentHeader {
+  padding-block-end: clamp(1.75rem, 3vw, 2.5rem);
+  border-block-end: 1px solid color-mix(in srgb, var(--policy-accent) 24%, var(--border-default));
+}
+
+.documentHeader > p:first-child,
+.references > p {
+  margin: 0;
+  color: var(--policy-accent);
+  font-size: 0.78rem;
+  font-weight: 760;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.documentHeader h2,
+.references h2 {
+  max-inline-size: 21ch;
+  margin-block: 0.75rem 0;
+  color: var(--text-strong);
+  font-size: clamp(2rem, 3.4vw, 3.2rem);
+  font-weight: 620;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.documentHeader > p:last-child {
+  max-inline-size: 65ch;
+  margin-block: 1rem 0;
+  color: var(--text-default);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.policySections { display: grid; }
+
+.policySections article {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 1.75rem);
+  padding-block: clamp(1.75rem, 4vw, 2.5rem);
+  scroll-margin-top: calc(var(--v3-header-height) + 1rem);
+  border-block-end: 1px solid var(--border-default);
+}
+
+.policySections article > span {
+  display: grid;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--policy-soft);
+  color: var(--policy-accent);
+  font-size: 0.75rem;
+  font-weight: 760;
+  letter-spacing: 0.06em;
+}
+
+.policySections h3 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  font-weight: 680;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.policySections p {
+  max-inline-size: 68ch;
+  margin-block: 0.7rem 0;
+  color: var(--text-default);
+  font-size: 1rem;
+  line-height: 1.78;
+  text-wrap: pretty;
+}
+
+.references { padding-block: clamp(2.5rem, 5vw, 4rem); }
+.references > div { display: grid; gap: 0.85rem; margin-block-start: 1.5rem; }
+
+.policyFooter {
+  display: grid;
+  gap: 1.25rem;
+  align-items: center;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid color-mix(in srgb, var(--policy-accent) 30%, var(--border-default));
+  border-radius: 1.2rem;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.policyFooter p { margin: 0; color: var(--text-default); line-height: 1.7; }
+
+@media (min-width: 760px) {
+  .references > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .policyFooter { grid-template-columns: minmax(0, 1fr) auto; }
+}
+
+@media (min-width: 980px) {
+  .heroGrid { grid-template-columns: minmax(0, 1.05fr) minmax(24rem, 0.95fr); }
+  .readingLayout { grid-template-columns: minmax(14rem, 0.28fr) minmax(0, 0.72fr); }
+  .contentsCard { position: sticky; inset-block-start: calc(var(--v3-header-height) + 1.5rem); }
+}
+
+@media (max-width: 560px) {
+  .heroTitle { font-size: clamp(2.45rem, 11vw, 3.1rem); }
+  .policySections article { grid-template-columns: 1fr; }
+}

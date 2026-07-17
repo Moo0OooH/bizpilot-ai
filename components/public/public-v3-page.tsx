@@ -11,8 +11,9 @@
  * - components/public/public-v3-pilot-request.tsx
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Rebuilt all six retained marketing routes with bilingual editorial introductions, route-specific compositions, numbered capability systems, and clearer content hierarchy.
  * - 2026-07-16: Gave Features, Pricing, FAQ, and Trust distinct visual jobs and aligned pricing conversion with the copy-only pilot request.
  * - 2026-07-13: Created the consolidated V3 renderer for six retained marketing routes.
  * ============================================================
@@ -63,6 +64,25 @@ const routeIcons: Readonly<Record<PublicV3MarketingRoute, readonly MarketingIcon
 const visualStageIcons: readonly MarketingIconName[] = ["message", "link", "check"];
 const visualSourceIcons: readonly MarketingIconName[] = ["camera", "phone", "globe"];
 const visualPlanIcons: readonly MarketingIconName[] = ["target", "briefcase", "spark"];
+
+function RouteSectionIntro({
+  path,
+  spec,
+}: Readonly<{ path: PublicV3MarketingRoute; spec: PublicV3Spec }>) {
+  const copy = spec.routes[path].section;
+
+  if (!copy) {
+    return null;
+  }
+
+  return (
+    <div className={styles.sectionIntro}>
+      <p className={styles.sectionEyebrow}>{copy.eyebrow}</p>
+      <h2>{copy.title}</h2>
+      <p>{copy.body}</p>
+    </div>
+  );
+}
 
 function RouteVisual({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; spec: PublicV3Spec }>) {
   const route = spec.routes[path];
@@ -176,6 +196,7 @@ function FeaturesContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
   return (
     <section className={styles.section}>
       <div className="v3-container">
+        <RouteSectionIntro path="/features" spec={spec} />
         <div className={styles.featureGrid}>
           {spec.features.map((feature, index) => (
             <MarketingCard
@@ -183,11 +204,14 @@ function FeaturesContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
               id={feature.key}
               key={feature.key}
             >
-              <span className={styles.cardIcon}>
-                <MarketingIcon name={routeIcons["/features"][index % 3] ?? "check"} />
-              </span>
+              <div className={styles.cardMeta}>
+                <span className={styles.cardIcon}>
+                  <MarketingIcon name={routeIcons["/features"][index % 3] ?? "check"} />
+                </span>
+                <span className={styles.cardNumber}>{String(index + 1).padStart(2, "0")}</span>
+              </div>
               <div>
-                <h2 className={styles.cardTitle}>{feature.title}</h2>
+                <h3 className={styles.cardTitle}>{feature.title}</h3>
                 <p className={styles.cardBody}>{feature.body}</p>
               </div>
             </MarketingCard>
@@ -210,6 +234,7 @@ function DemoContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
   return (
     <section className={styles.section}>
       <div className="v3-container">
+        <RouteSectionIntro path="/demo" spec={spec} />
         <PublicV3Demo copy={spec.demo} draft={spec.home.visual.replyDraft} labels={labels} />
       </div>
     </section>
@@ -223,6 +248,7 @@ function PricingContent({
   return (
     <section className={styles.section}>
       <div className="v3-container">
+        <RouteSectionIntro path="/pricing" spec={spec} />
         <div className={styles.pricingGrid}>
           {spec.pricing.tiers.map((tier, index) => (
             <MarketingCard
@@ -232,7 +258,7 @@ function PricingContent({
               <MarketingBadge toneName={index === 0 ? "teal" : "neutral"}>
                 {tier.badge}
               </MarketingBadge>
-              <h2 className={styles.cardTitle}>{tier.name}</h2>
+              <h3 className={styles.cardTitle}>{tier.name}</h3>
               <p className={styles.price}>{tier.price}</p>
               <p className={styles.cardBody}>{tier.body}</p>
               <ul className={styles.pointList}>
@@ -266,13 +292,12 @@ function PilotContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
   return (
     <section className={styles.section}>
       <div className="v3-container">
+        <RouteSectionIntro path="/pilot" spec={spec} />
         <div className={styles.pilotGrid}>
           <div className={styles.fitGrid}>
-            {spec.pilot.fit.map((item) => (
+            {spec.pilot.fit.map((item, index) => (
               <MarketingCard className={styles.fitCard} key={item}>
-                <span className={styles.cardIcon}>
-                  <MarketingIcon name="check" />
-                </span>
+                <span className={styles.fitNumber}>{String(index + 1).padStart(2, "0")}</span>
                 <p className={styles.cardBody}>{item}</p>
               </MarketingCard>
             ))}
@@ -283,7 +308,7 @@ function PilotContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
           {spec.pilot.nextSteps.map((step, index) => (
             <MarketingCard className={styles.stepCard} key={step.key}>
               <MarketingStateChip>{index + 1}</MarketingStateChip>
-              <h2 className={styles.cardTitle}>{step.title}</h2>
+              <h3 className={styles.cardTitle}>{step.title}</h3>
               <p className={styles.cardBody}>{step.body}</p>
             </MarketingCard>
           ))}
@@ -297,8 +322,19 @@ function FaqContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
   return (
     <section className={styles.section}>
       <div className="v3-container">
-        <div className={styles.faqGroups}>
-          {spec.faqGroups.map((group, groupIndex) => (
+        <RouteSectionIntro path="/faq" spec={spec} />
+        <div className={styles.faqShell}>
+          <aside className={styles.faqIndex} aria-hidden="true">
+            {spec.faqGroups.map((group, groupIndex) => (
+              <div key={group.key}>
+                <span>{String(groupIndex + 1).padStart(2, "0")}</span>
+                <strong>{group.title}</strong>
+                <small>{group.itemKeys.length}</small>
+              </div>
+            ))}
+          </aside>
+          <div className={styles.faqGroups}>
+            {spec.faqGroups.map((group, groupIndex) => (
             <section className={styles.faqGroup} key={group.key}>
               <div className={styles.faqGroupHeading}>
                 <MarketingStateChip>{String(groupIndex + 1).padStart(2, "0")}</MarketingStateChip>
@@ -317,7 +353,8 @@ function FaqContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
                 })}
               </div>
             </section>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -334,6 +371,7 @@ function TrustContent({
   return (
     <section className={styles.section}>
       <div className="v3-container">
+        <RouteSectionIntro path="/trust" spec={spec} />
         <ol className={styles.trustSequence}>
           {controlFlow.map((item, index) => (
             <li key={item.key}>
@@ -342,7 +380,7 @@ function TrustContent({
                 <MarketingIcon name={routeIcons["/trust"][index % 3] ?? "shield"} />
               </span>
               <div>
-                <h2 className={styles.cardTitle}>{item.title}</h2>
+                <h3 className={styles.cardTitle}>{item.title}</h3>
                 <p className={styles.cardBody}>{item.body}</p>
               </div>
             </li>
@@ -354,7 +392,7 @@ function TrustContent({
               <span className={styles.cardIcon}>
                 <MarketingIcon name={routeIcons["/trust"][index % 3] ?? "shield"} />
               </span>
-              <h2 className={styles.cardTitle}>{item.title}</h2>
+              <h3 className={styles.cardTitle}>{item.title}</h3>
               <p className={styles.cardBody}>{item.body}</p>
             </MarketingCard>
           ))}
@@ -427,7 +465,7 @@ export function PublicV3Page({
       ) : null}
       <MarketingHeader copy={spec.nav} language={language} redirectPath={path} />
       <main id="main-content">
-        <section className={styles.hero}>
+        <section className={styles.hero} data-route-hero={path}>
           <div className={`v3-container ${styles.heroGrid}`}>
             <div className={styles.heroCopy}>
               <MarketingBadge>{route.hero.eyebrow}</MarketingBadge>

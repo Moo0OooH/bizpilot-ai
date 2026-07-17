@@ -12,6 +12,7 @@
  * Created: 2026-07-13
  * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Delayed the internal hero-workspace split until wide desktop and stacked request facts on narrow phones so Canadian French labels remain fully readable.
  * - 2026-07-17: Rebuilt the hero as a spacious message-to-request workspace, removed narrow text columns, and established the new editorial visual rhythm.
  * - 2026-07-16: Widened the hero display measure and reduced its weight to prevent excessive headline wrapping on laptops and tablets.
  * - 2026-07-16: Consolidated the page to five sections, softened display weights, and raised product-scene microcopy to a 14px floor.
@@ -912,7 +913,6 @@
 
 @media (min-width: 720px) {
   .problemMessages { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .heroWorkspace { grid-template-columns: minmax(12rem, 0.72fr) minmax(0, 1.28fr); }
   .workflowList { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 2rem; }
   .workflowList li:nth-child(2) { border-block-start: 1px solid var(--border-default); }
   .workflowList li:nth-last-child(2) { border-block-end: 1px solid var(--border-default); }
@@ -927,8 +927,16 @@
   }
 }
 
+@media (min-width: 980px) and (max-width: 1179px) {
+  .heroWorkspace { grid-template-columns: minmax(11.5rem, 0.72fr) minmax(0, 1.28fr); }
+  .requestHeader :global(.v3-state-chip) { display: none; }
+  .requestSummary { grid-template-columns: 1fr; }
+  .requestSummary > div:nth-child(n + 3) { display: none; }
+}
+
 @media (min-width: 1180px) {
   .heroGrid { grid-template-columns: minmax(0, 0.92fr) minmax(36rem, 1.08fr); }
+  .heroWorkspace { grid-template-columns: minmax(12rem, 0.72fr) minmax(0, 1.28fr); }
   .problemGrid,
   .outcomesGrid { grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr); }
   .workflowList { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
@@ -974,6 +982,10 @@
   .heroActions > * { inline-size: 100%; }
   .heroAssurances span:nth-child(n + 3) { display: none; }
   .productChrome strong { display: none; }
+}
+
+@media (max-width: 520px) {
+  .requestSummary { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 359px) {

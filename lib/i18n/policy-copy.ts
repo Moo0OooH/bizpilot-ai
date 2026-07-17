@@ -11,8 +11,9 @@
  * - components/public/policy-page.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Polished bilingual policy wording, localized French pilot prices, and refreshed the visible policy date for the redesigned reading experience.
  * - 2026-06-16: Updated public trust copy to reflect Phase 23/24 synthetic proof and remaining real-data gates.
  * - 2026-06-18: Reframed public policy copy around owner-friendly summaries and approved staged pilot pricing.
  * - 2026-06-21: Restored fr-CA accents and cleaner localized wording for public legal pages.
@@ -74,7 +75,7 @@ const englishPolicyCopy: PolicyCopy = {
     boundaryTitle: "Plain-language summary",
     body:
       "This notice explains the practical privacy rules for BizPilot quote recovery: collect less, show consent, and keep customer communication under business control.",
-    effectiveDate: "Last updated: June 16, 2026",
+    effectiveDate: "Last updated: July 17, 2026",
     externalNewTabLabel: "Opens in a new tab",
     footerNote:
       "Before any real customer pilot, BizPilot stays manual-only and requires explicit pilot approval.",
@@ -126,7 +127,7 @@ const englishPolicyCopy: PolicyCopy = {
         title: "Access, correction, and deletion",
       },
     ],
-    technicalNotesTitle: "Technical notes and operating boundaries",
+    technicalNotesTitle: "Privacy sections and operating boundaries",
     title: "Privacy rules for careful quote recovery.",
   },
   security: {
@@ -136,7 +137,7 @@ const englishPolicyCopy: PolicyCopy = {
     boundaryTitle: "Plain-language summary",
     body:
       "BizPilot treats public quote intake as a sensitive surface. The workflow is designed to keep access scoped, secrets out of source, and final customer messages under business control.",
-    effectiveDate: "Last updated: June 16, 2026",
+    effectiveDate: "Last updated: July 17, 2026",
     externalNewTabLabel: "Opens in a new tab",
     footerNote:
       "This page is a product security summary. It does not replace a formal security review, incident response policy, or production backup drill.",
@@ -193,7 +194,7 @@ const englishPolicyCopy: PolicyCopy = {
         title: "Backup and restore gate",
       },
     ],
-    technicalNotesTitle: "Technical notes and operating boundaries",
+    technicalNotesTitle: "Security controls and operating boundaries",
     title: "Security boundaries before real pilot data.",
   },
   terms: {
@@ -203,7 +204,7 @@ const englishPolicyCopy: PolicyCopy = {
     boundaryTitle: "Plain-language summary",
     body:
       "These pilot-stage terms keep the offer clear while BizPilot is still founder-led and manual-billing only.",
-    effectiveDate: "Last updated: June 16, 2026",
+    effectiveDate: "Last updated: July 17, 2026",
     externalNewTabLabel: "Opens in a new tab",
     footerNote:
       "Any paid pilot must still have a written offer or invoice/payment-link record before money is collected.",
@@ -239,7 +240,7 @@ const englishPolicyCopy: PolicyCopy = {
         title: "No guarantees",
       },
     ],
-    technicalNotesTitle: "Technical notes and operating boundaries",
+    technicalNotesTitle: "Pilot terms and responsibilities",
     title: "Clear founder-pilot terms, no hidden automation.",
   },
 };
@@ -252,7 +253,7 @@ const frenchPolicyCopy: PolicyCopy = {
     boundaryTitle: "Résumé simple",
     body:
       "Cet avis explique les règles pratiques de confidentialité pour BizPilot : collecter moins, afficher le consentement et laisser l'entreprise contrôler les messages aux clients.",
-    effectiveDate: "Dernière mise à jour : 16 juin 2026",
+    effectiveDate: "Dernière mise à jour : 17 juillet 2026",
     externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
       "Avant toute utilisation avec de vraies données clients, BizPilot reste manuel et exige une approbation explicite du projet pilote.",
@@ -304,7 +305,7 @@ const frenchPolicyCopy: PolicyCopy = {
         title: "Accès, correction et suppression",
       },
     ],
-    technicalNotesTitle: "Notes techniques et limites opérationnelles",
+    technicalNotesTitle: "Sections de confidentialité et limites opérationnelles",
     title: "Règles de confidentialité pour la récupération des soumissions.",
   },
   security: {
@@ -314,7 +315,7 @@ const frenchPolicyCopy: PolicyCopy = {
     boundaryTitle: "Résumé simple",
     body:
       "BizPilot traite les demandes publiques comme une surface sensible. Le flux garde l'accès limité, les secrets hors du code et les messages finaux sous le contrôle de l'entreprise.",
-    effectiveDate: "Dernière mise à jour : 16 juin 2026",
+    effectiveDate: "Dernière mise à jour : 17 juillet 2026",
     externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
       "Cette page résume la sécurité produit. Elle ne remplace pas un audit formel, une politique d'incident ou un exercice de restauration.",
@@ -371,7 +372,7 @@ const frenchPolicyCopy: PolicyCopy = {
         title: "Approbation sauvegarde et restauration",
       },
     ],
-    technicalNotesTitle: "Notes techniques et limites opérationnelles",
+    technicalNotesTitle: "Contrôles de sécurité et limites opérationnelles",
     title: "Frontières de sécurité avant les données réelles.",
   },
   terms: {
@@ -381,7 +382,7 @@ const frenchPolicyCopy: PolicyCopy = {
     boundaryTitle: "Résumé simple",
     body:
       "Ces conditions de pilote gardent l'offre claire pendant que BizPilot reste guidé par le fondateur avec facturation manuelle.",
-    effectiveDate: "Dernière mise à jour : 16 juin 2026",
+    effectiveDate: "Dernière mise à jour : 17 juillet 2026",
     externalNewTabLabel: "Ouvre dans un nouvel onglet",
     footerNote:
       "Tout pilote payant doit avoir une offre écrite, facture ou lien de paiement séparé avant toute collecte d'argent.",
@@ -398,7 +399,7 @@ const frenchPolicyCopy: PolicyCopy = {
       },
       {
         body:
-          "BizPilot utilise des conditions pilote par étapes : les 1 à 5 premières entreprises de nettoyage peuvent rejoindre le projet pilote à $0 setup avec un engagement de commentaires à 30 et 60 jours; les clients 6 à 20 utilisent le pilote de départ à $149 setup et $49/month; après preuve ou après les 20 premiers clients, le pilote Pro est à $199 setup et $79/month.",
+          "BizPilot utilise des conditions pilote par étapes : les 1 à 5 premières entreprises d'entretien peuvent rejoindre le pilote de rétroaction sans frais de configuration, avec un engagement de rétroaction à 30 et 60 jours; les clients 6 à 20 utilisent le pilote Démarrage à 149 $ de configuration et 49 $ par mois; après validation ou après les 20 premiers clients, le pilote Pro est offert à 199 $ de configuration et 79 $ par mois.",
         title: "Tarifs pilote",
       },
       {
@@ -417,7 +418,7 @@ const frenchPolicyCopy: PolicyCopy = {
         title: "Aucune garantie",
       },
     ],
-    technicalNotesTitle: "Notes techniques et limites opérationnelles",
+    technicalNotesTitle: "Conditions du pilote et responsabilités",
     title: "Conditions claires, sans automatisation cachée.",
   },
 };

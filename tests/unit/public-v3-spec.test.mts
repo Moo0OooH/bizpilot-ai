@@ -10,8 +10,9 @@
  * - docs/website-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Added bilingual editorial-introduction and French pilot-term quality guards for the full public redesign.
  * - 2026-07-16: Clarified that seven bilingual copy modules feed the focused five-section homepage renderer.
  * - 2026-07-15: Repointed the bilingual contract to the current Website V4 authority.
  * - 2026-07-13: Added Phase 2 parity, route, section, pricing, and product-boundary checks.
@@ -108,6 +109,27 @@ describe("Website V3 bilingual content contract", () => {
     }
   });
 
+  it("gives every retained product route a synchronized editorial introduction", () => {
+    const productRoutes = [
+      "/features",
+      "/demo",
+      "/pricing",
+      "/pilot",
+      "/faq",
+      "/trust",
+    ] as const;
+
+    for (const language of supportedLanguages) {
+      for (const route of productRoutes) {
+        const section = getPublicV3Spec(language).routes[route].section;
+
+        assert.ok(section?.eyebrow.trim(), `${language} ${route} eyebrow`);
+        assert.ok(section?.title.trim(), `${language} ${route} title`);
+        assert.ok(section?.body.trim(), `${language} ${route} body`);
+      }
+    }
+  });
+
   it("preserves the approved workflow, capability, and control boundaries", () => {
     for (const language of supportedLanguages) {
       const spec = getPublicV3Spec(language);
@@ -148,6 +170,10 @@ describe("Website V3 bilingual content contract", () => {
     );
     assert.match(englishPricing.notice, /No checkout/i);
     assert.match(frenchPricing.notice, /Aucun paiement/i);
+    assert.doesNotMatch(
+      JSON.stringify(frenchPricing),
+      /\bsetup\b|\/month\b/i,
+    );
   });
 
   it("keeps FAQ and trust coverage complete in both languages", () => {

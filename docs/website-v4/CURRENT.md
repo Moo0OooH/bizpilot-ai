@@ -29,8 +29,9 @@ The retained public routes remain intentionally small:
 `/`, `/features`, `/demo`, `/pricing`, `/pilot`, `/faq`, `/trust`, `/privacy`,
 `/security`, and `/terms`.
 
-No retired duplicate landing page was restored. Legal pages remain simple and use the
-same bilingual shell without imitating marketing layouts.
+No retired duplicate landing page was restored. The six supporting product routes now
+share one implementation foundation but use separate editorial compositions. Legal pages
+use an indexed reading shell instead of imitating marketing cards or hiding policy text.
 
 ## Final V4 design decisions
 
@@ -47,21 +48,28 @@ same bilingual shell without imitating marketing layouts.
 - Rebuilt the homepage product scene as a two-part message-to-request workspace. It keeps
   source messages readable, gives organized request fields enough width, and presents the
   review draft as the visual payoff instead of forcing content into three narrow columns.
-- Uses 720px for card progression, 1024px for the homepage hero split, and 1180px for the
-  full navigation and shared route layouts, with short-viewport refinements where needed.
+- Uses 720px for card progression, 980–1024px for laptop hero splits, and 1180px for the
+  full navigation and wide editorial grids, with short-viewport refinements where needed.
 - Reduced the homepage renderer from seven repeated chapters to five: hero, problem,
   workflow plus outcomes, cleaning walkthrough, and a final control/pilot CTA.
+- Gave every retained product route a visible bilingual editorial introduction and a
+  distinct content composition: Product uses a numbered capability map, Demo uses an
+  interactive stage navigator, Pricing uses staged cohort cards, Pilot uses a fit path
+  and application console, FAQ uses a category index, and Trust uses a control chain.
 - Made the first Product capability the flagship benefit and separated human control
-  from the repeated capability-card rhythm.
-- Kept Demo scene-led, gave Pricing one active founder-cohort CTA with calmer future
-  tiers, and removed repeated tier actions.
+  from the repeated capability-card rhythm. Pricing keeps one active founder-cohort CTA
+  with calmer future tiers and no repeated tier actions.
 - Aligned every public pilot CTA with `/pilot#application` and truthful copy that says
   the visitor is preparing/copying a request rather than submitting a hidden form.
 - Grouped ten FAQ questions into three decision-oriented sections and rebuilt Trust as
   a four-stage control sequence followed by explicit operational boundaries and direct
   policy links.
-- Gave Privacy, Security, and Terms a focused legal shell: brand, language, theme,
-  document content, legal links, and no marketing conversion CTA.
+- Rebuilt Privacy, Security, and Terms as open policy documents with a plain-language
+  summary, sticky section index, visible numbered sections, evidence links, and localized
+  dates. No policy content is hidden inside a generic accordion.
+- Shortened long Canadian French hero lines and localized the remaining mixed-language
+  pilot-price wording. The French homepage workspace stays stacked or selectively compact
+  until enough width exists for a safe two-column scene.
 - Kept the footer task-based and free of a redundant Sign-in link. No retired landing
   page or duplicate route was restored.
 - Kept motion optional under `prefers-reduced-motion` and every layout free of nested
@@ -89,15 +97,20 @@ trail.
 ## Verification evidence
 
 - TypeScript and ESLint: PASS
-- Unit tests: 257/257 PASS
+- Unit tests: 259/259 PASS
 - Next.js 16.2.4 production build: PASS; 23 static/dynamic routes generated
+- Public route smoke: 46/46 PASS
 - Local responsive bilingual route smoke: 20/20 PASS
 - Local final UI matrix: zero failures across ten public routes, EN/fr-CA, light/dark,
   metadata, auth boundaries, sitemap, robots, and eleven recorded viewport targets from
   320×568 through 1920×1080
-- Managed-browser visual review: PASS for the homepage and Pricing desktop first folds;
-  the homepage product scene has readable fields, natural word wrapping, and no horizontal
-  overflow. A 390×844 emulated mobile audit also reports zero horizontal overflow.
+- Browser interaction smoke: PASS across 54 retained-page states, ten responsive widths
+  per language, keyboard navigation, Demo tabs, Pilot copy, compact-menu focus return,
+  and zero application runtime errors.
+- Managed-browser visual review: PASS for all ten routes in EN and fr-CA at 390×844,
+  1024×768, and 1440×900. Product, Demo, Pricing, Pilot, FAQ, Trust, Privacy, Security,
+  and Terms content sections were also inspected directly; no horizontal overflow or
+  clipped visible text remained.
 - EN/fr-CA structural parity, manual-first claim guards, and current pricing values: PASS
 
 ## Production and data safety
