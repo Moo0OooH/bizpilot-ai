@@ -1,10 +1,20 @@
 /**
+ * ============================================================
  * File: components/public/public-v3-home.module.css
  * Project: BizPilot AI
  * Description: Responsive visual system for the focused Website V4 homepage.
+ * Role: Controls the homepage hierarchy, product story, and viewport-safe typography.
+ * Related:
+ * - components/public/public-v3-home.tsx
+ * - components/public/marketing-ui.tsx
+ * - app/globals.css
+ * Author: MoOoH
+ * Created: 2026-07-13
  * Last Updated: 2026-07-16
  * Change Log:
+ * - 2026-07-16: Widened the hero display measure and reduced its weight to prevent excessive headline wrapping on laptops and tablets.
  * - 2026-07-16: Consolidated the page to five sections, softened display weights, and raised product-scene microcopy to a 14px floor.
+ * ============================================================
  */
 
 .page {
@@ -57,11 +67,11 @@
 }
 
 .heroTitle {
-  max-inline-size: 14ch;
+  max-inline-size: 21ch;
   margin-block-start: 1.25rem;
   color: var(--text-strong);
   font-size: var(--v3-type-display);
-  font-weight: 780;
+  font-weight: 740;
   letter-spacing: -0.045em;
   line-height: var(--v3-leading-display);
   text-wrap: balance;
