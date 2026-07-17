@@ -10,8 +10,9 @@
  * - docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-17
  * Change Log:
+ * - 2026-07-17: Advanced the migration-index contract after 0024 and kept 0023 retention coverage explicit.
  * - 2026-07-15: Replaced Phase 25 report guards with current register and master-gate guards.
  * - 2026-07-04: Added Phase 25O security/runtime operations guards.
  * - 2026-07-04: Synced migration index guard after Supabase readiness hardening migration.
@@ -69,7 +70,10 @@ describe("security and runtime operations source contracts", () => {
       migrationIndex.includes("0023_public_submission_abuse_log_retention.sql"),
       true,
     );
-    assert.equal(migrationIndex.includes("currently `0024`"), true);
+    assert.equal(
+      migrationIndex.includes("currently `0025`; `0024` already exists"),
+      true,
+    );
   });
 
   it("keeps RLS coverage for abuse retention cleanup without running production DB", () => {
