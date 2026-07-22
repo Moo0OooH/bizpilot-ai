@@ -9,9 +9,10 @@ Related:
 - docs/engineering/BIZPILOT_DATABASE_RLS_POLICY_BASELINE_v1.0.md
 Author: MoOoH
 Created: 2026-05-04
-Last Updated: 2026-05-04
+Last Updated: 2026-07-22
 Change Log:
 - 2026-05-04: Created Phase 2 RLS baseline tests.
+- 2026-07-22: Scoped restored-target assertions to deterministic synthetic fixture ids so unrelated production rows cannot cause false failures.
 ============================================================
 */
 
@@ -64,8 +65,15 @@ select set_config('request.jwt.claim.role', 'authenticated', true);
 
 do $$
 begin
-  if (select count(*) from public.profiles) <> 1 then
-    raise exception 'Owner should only read their own profile.';
+  if (
+    select count(*)
+    from public.profiles
+    where user_id in (
+      '10000000-0000-0000-0000-000000000001',
+      '10000000-0000-0000-0000-000000000002'
+    )
+  ) <> 1 then
+    raise exception 'Owner should read their synthetic profile and not the synthetic outsider profile.';
   end if;
 end;
 $$;
@@ -87,11 +95,20 @@ values (
 
 do $$
 begin
-  if (select count(*) from public.businesses) <> 1 then
+  if (
+    select count(*)
+    from public.businesses
+    where id = '20000000-0000-0000-0000-000000000001'
+  ) <> 1 then
     raise exception 'Owner should read their own business after membership exists.';
   end if;
 
-  if (select count(*) from public.business_members) <> 1 then
+  if (
+    select count(*)
+    from public.business_members
+    where business_id = '20000000-0000-0000-0000-000000000001'
+      and user_id = '10000000-0000-0000-0000-000000000001'
+  ) <> 1 then
     raise exception 'Owner should read their own membership.';
   end if;
 end;
@@ -101,11 +118,19 @@ select set_config('request.jwt.claim.sub', '10000000-0000-0000-0000-000000000002
 
 do $$
 begin
-  if (select count(*) from public.businesses) <> 0 then
+  if (
+    select count(*)
+    from public.businesses
+    where id = '20000000-0000-0000-0000-000000000001'
+  ) <> 0 then
     raise exception 'Outsider must not read another tenant business.';
   end if;
 
-  if (select count(*) from public.business_members) <> 0 then
+  if (
+    select count(*)
+    from public.business_members
+    where business_id = '20000000-0000-0000-0000-000000000001'
+  ) <> 0 then
     raise exception 'Outsider must not read another tenant membership.';
   end if;
 end;
@@ -117,11 +142,22 @@ select set_config('request.jwt.claim.role', 'anon', true);
 
 do $$
 begin
-  if (select count(*) from public.businesses) <> 0 then
+  if (
+    select count(*)
+    from public.businesses
+    where id = '20000000-0000-0000-0000-000000000001'
+  ) <> 0 then
     raise exception 'Anonymous users must not read private business data.';
   end if;
 
-  if (select count(*) from public.profiles) <> 0 then
+  if (
+    select count(*)
+    from public.profiles
+    where user_id in (
+      '10000000-0000-0000-0000-000000000001',
+      '10000000-0000-0000-0000-000000000002'
+    )
+  ) <> 0 then
     raise exception 'Anonymous users must not read profiles.';
   end if;
 end;

@@ -11,7 +11,7 @@ Related:
 - tests/rls/premium-operations-addons.test.sql
 Author: MoOoH
 Created: 2026-07-21
-Last Updated: 2026-07-21
+Last Updated: 2026-07-22
 Change Log:
 - 2026-07-21: Created manual add-on entitlements, priority rules, internal time blocks, and owner-reviewed bulk draft records.
 - 2026-07-21: Added standard updated-at triggers for every mutable Premium Operations parent record.
@@ -19,6 +19,7 @@ Change Log:
 - 2026-07-21: Applied the same tenant-safe lead reference to internal service time blocks.
 - 2026-07-21: Moved cross-table RLS ownership tests into explicit, non-leaking tenant helper functions.
 - 2026-07-21: Enforced each paid add-on and review/copy state transition at the database boundary.
+- 2026-07-22: Revoked Supabase default Data API execute grants before applying each explicit Premium Operations function grant.
 ============================================================
 */
 
@@ -94,7 +95,7 @@ as $$
 $$;
 
 revoke all on function public.premium_operations_addon_is_active(uuid, text)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.premium_operations_addon_is_active(uuid, text)
   to authenticated, service_role;
 
@@ -188,7 +189,7 @@ as $$
 $$;
 
 revoke all on function public.premium_operations_lead_belongs_to_business(uuid, uuid)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.premium_operations_lead_belongs_to_business(uuid, uuid)
   to authenticated, service_role;
 
@@ -327,7 +328,7 @@ as $$
 $$;
 
 revoke all on function public.premium_operations_draft_belongs_to_business(uuid, uuid)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.premium_operations_draft_belongs_to_business(uuid, uuid)
   to authenticated, service_role;
 
@@ -363,7 +364,7 @@ as $$
 $$;
 
 revoke all on function public.premium_operations_can_access_draft(uuid, uuid)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.premium_operations_can_access_draft(uuid, uuid)
   to authenticated, service_role;
 
@@ -542,7 +543,8 @@ begin
 end;
 $$;
 
-revoke all on function public.initialize_premium_operations_creator() from public;
+revoke all on function public.initialize_premium_operations_creator()
+  from public, anon, authenticated, service_role;
 
 create or replace function public.enforce_premium_operations_record_identity()
 returns trigger
@@ -561,7 +563,8 @@ begin
 end;
 $$;
 
-revoke all on function public.enforce_premium_operations_record_identity() from public;
+revoke all on function public.enforce_premium_operations_record_identity()
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists lead_priority_rules_initialize_creator
   on public.lead_priority_rules;
@@ -606,7 +609,7 @@ end;
 $$;
 
 revoke all on function public.enforce_premium_operations_priority_rule_limit()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists lead_priority_rules_enforce_limit
   on public.lead_priority_rules;
@@ -716,7 +719,8 @@ begin
 end;
 $$;
 
-revoke all on function public.initialize_premium_operations_draft() from public;
+revoke all on function public.initialize_premium_operations_draft()
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists bulk_reply_drafts_initialize_review_state
   on public.bulk_reply_drafts;
@@ -758,7 +762,8 @@ begin
 end;
 $$;
 
-revoke all on function public.enforce_premium_operations_draft_review() from public;
+revoke all on function public.enforce_premium_operations_draft_review()
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists bulk_reply_drafts_enforce_review_transition
   on public.bulk_reply_drafts;
@@ -834,7 +839,7 @@ end;
 $$;
 
 revoke all on function public.enforce_premium_operations_recipient_insert()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists bulk_reply_draft_recipients_enforce_insert
   on public.bulk_reply_draft_recipients;
@@ -891,7 +896,8 @@ begin
 end;
 $$;
 
-revoke all on function public.enforce_premium_operations_recipient_copy() from public;
+revoke all on function public.enforce_premium_operations_recipient_copy()
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists bulk_reply_draft_recipients_enforce_copy_transition
   on public.bulk_reply_draft_recipients;

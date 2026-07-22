@@ -1,6 +1,6 @@
 # BizPilot AI - Production Deployment Runbook v1.0
 
-Updated: 2026-07-22 — corrected historical local Git identity and recorded the ordered Premium Operations `0025` + `0026` release gate.
+Updated: 2026-07-22 — recorded the current Production reconciliation/export/restore proof and the release-ready `0023`, `0025`, `0026` apply sequence.
 
 ## Purpose
 
@@ -19,14 +19,14 @@ Use this table as the active deployment truth. Historical phase evidence does no
 | Major Item | Status | Current Evidence |
 | --- | --- | --- |
 | Historical V4.7 source identity | Local Git fact | Commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present locally with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. These local facts do not independently revalidate historical external evidence. |
-| Exact-commit CI and deployment | Gated / re-verify | No current remote ref, CI, deployment, or Production acceptance is claimed from this worktree. Re-fetch the target ref and record release-specific evidence before closing this row. |
+| Exact-commit CI and deployment | Gated / re-verify | Local exact-runtime verification is complete. Publish the hardened candidate, link its fresh CI and Preview deployment, then close this row only after the final `main` deployment acceptance. |
 | Production QA mode | Read-only only | Public GET, locale, responsive, security-header, and owner-approved authenticated visual checks may run. Do not sign up, submit quotes, edit settings, create leads/users, or mutate Production for QA. |
 | Production auth | Gated | Signup confirmation, reset, Google callback, and session behavior require an approved synthetic non-Production target or a separately controlled no-write authenticated acceptance path. Google login must not create a workspace silently. |
 | Supabase/Vercel target | Owner confirmation required | Confirm the exact project and deployment target immediately before any external action. Do not rely on historical identifiers or pull secret values into this environment. |
-| Migration/schema state | Reconciliation required before writes | Source includes `0025_premium_operations_addons.sql` followed by additive `0026_premium_operations_schedule_integrity.sql`. Apply both, in order, only to an approved local/disposable target first; then complete RLS/tenant-isolation/lifecycle/concurrency proof and a read-only target drift inspection. Never replay a migration blindly. |
+| Migration/schema state | Reconciled / Production apply pending | The 2026-07-22 read-only export matches `origin/main` through `0024` except that the service-role retention helper from `0023` is absent; Premium Operations tables/functions from `0025` and `0026` are absent. Apply the idempotent `0023` helper first, repair verified history `0001`–`0024`, then dry-run and apply only `0025` and `0026` in order. |
 | Production read-only smoke | Historical / re-verify | Older public-read figures are not a release proof for the current candidate. Run no-write smoke only after source publication and target confirmation; submission and success-flow proof stays on an approved disposable target. |
 | Founder shell activation | Historical / protected acceptance gated | A historical screenshot is not a substitute for current protected/Admin route acceptance or normal-owner denial proof. |
-| Backup/export/restore | Blocked for real customer data | Phase 24C.0 proves only a historical logical export and DB-level disposable restore. The procedure exists, but complete restored app/dashboard/intake/RLS and isolation proof has not passed. |
+| Backup/export/restore | PASS for code release; real-data policy separate | A current roles/schema/public-data export was created outside git and restored without printing row content. After the reconciled `0023`, `0025`, and `0026` sequence plus the cross-schema auth trigger, the disposable target passed RLS `14/14`, authenticated dashboard/Admin `17/17`, active quote GET `2/2`, and independent EN/fr-CA submissions. |
 | OpenAI model-backed demo | Blocked | A real-key synthetic dry run returned HTTP `429`; no model output was generated or quality-checked. |
 | First real pilot data | Blocked | Do not collect real customer/pilot data until strict restored-target proof, auth/provider acceptance, privacy/operations gates, final read-only Production acceptance, and explicit owner approval all pass. |
 

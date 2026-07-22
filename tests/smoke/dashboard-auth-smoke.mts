@@ -9,8 +9,10 @@
  * - app/(dashboard)/layout.tsx
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added the protected Premium Operations route to restored-target and authenticated release smoke coverage.
+ * - 2026-07-22: Matched the founder compatibility route to its intentional temporary redirect into the guarded Admin surface.
  * - 2026-07-17: Added the protected Reports route to the authenticated owner smoke matrix.
  * - 2026-07-15: Repointed authenticated smoke authority to the current bilingual route/flow audit.
  * - 2026-07-04: Added opt-in founder/admin route smoke support with explicit synthetic founder email gating.
@@ -123,6 +125,7 @@ const DEFAULT_TIMEOUT_MS = 20_000;
 const dashboardTargets: readonly DashboardSmokeTarget[] = [
   { path: "/dashboard" },
   { path: "/dashboard/leads" },
+  { path: "/dashboard/operations" },
   { path: "/dashboard/reports" },
   { path: "/dashboard/configuration" },
   { path: "/dashboard/business-profile" },
@@ -136,7 +139,7 @@ const dashboardTargets: readonly DashboardSmokeTarget[] = [
 ];
 
 const founderAdminTargets: readonly DashboardSmokeTarget[] = [
-  { path: "/founder" },
+  { path: "/founder", redirectLocation: "/admin", status: 307 },
   { path: "/admin?adminPanel=overview" },
   { path: "/admin?adminPanel=users" },
   { path: "/admin?adminPanel=businesses" },

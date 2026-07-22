@@ -13,6 +13,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Recorded restored-target authenticated, Admin, Premium Operations, EN/fr-CA intake, RLS, and Preview visual acceptance.
  * - 2026-07-22: Corrected the historical V4.7 local identity and expanded the Premium Operations database gate to ordered migrations `0025` then `0026`.
  * - 2026-07-21: Corrected V4.7 local Git identity and converted stale remote/Production rows into revalidation gates; added the Premium Operations schema gate.
  * - 2026-07-17: Aligned the checklist with Dashboard V4.7, read-only Production QA, configurable form layouts, optional navigation, Reports, and the single Admin entry.
@@ -31,12 +32,12 @@ Status: current. Interactive, authenticated, or write-capable QA runs only again
 
 | Field | Value |
 | --- | --- |
-| Date and tester | 2026-07-22, release-documentation evidence audit; no interactive authenticated QA run |
+| Date and tester | 2026-07-22, Codex under explicit owner release authorization |
 | Commit SHA and tree | Historical commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present locally with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. Current candidate identity remains pending the final local commit. |
-| Target URL and environment | No current target selected or Production request made; any older target/deployment record needs exact-ref revalidation. |
-| Browser, OS, and viewports | GATED: no current interactive or authenticated run recorded. |
-| Test workspace/user classification |  |
-| Screenshots or run links | Owner screenshot visibly renders the role-gated Founder Admin entry; this observes allowlist activation but does not prove protected/Admin route acceptance. |
+| Target URL and environment | Disposable restored local Supabase + local Next `16.2.11` for write/auth smoke; Vercel PR Preview for public read-only visual acceptance; Production final acceptance remains pending. |
+| Browser, OS, and viewports | Windows; in-app Chromium; public Preview matrix at `1440×900` and `390×844`; authenticated restored-target route smoke. |
+| Test workspace/user classification | Generated `@example.test` synthetic owner/founder workspaces only; removed by final local database reset. |
+| Screenshots or run links | Preview public matrix covered Home, Features, Pricing, FAQ in EN/fr-CA; restored authenticated smoke covered Operations and all Admin panels without printing secrets or customer rows. |
 
 ## Automated gate
 
@@ -47,11 +48,11 @@ Record the exact result of each command. Missing environment variables are `GATE
 | `pnpm lint` or direct ESLint binary | Zero errors and warnings | PASS on the exact local candidate. |
 | `pnpm typecheck` or `tsc --noEmit` | PASS | PASS on the exact local candidate. |
 | `pnpm test:unit` or direct Node test runner | All current tests pass | PASS: `359/359` across 64 suites. |
-| `pnpm audit:supabase` and local `pnpm test:rls` | Policies and explicit grants pass; RLS target is approved local/disposable | Static audit PASS with zero missing/overbroad grants. Database execution remains GATED for ordered `0025` then `0026`; the empty-URL runner failed closed before connection. |
+| `pnpm audit:supabase` and local `pnpm test:rls` | Policies and explicit grants pass; RLS target is approved local/disposable | PASS: static audit has zero missing/overbroad grants; executable RLS passes `14/14` on clean local and `14/14` on the restored Production export after reconciled `0023`, `0025`, `0026`. |
 | `pnpm build` or direct Next build | Next.js production build passes | PASS with Next.js `16.2.11`; `/dashboard/operations` appears in the production route manifest. |
 | Exact-commit CI and Vercel deployment | Successful checks map to the recorded candidate commit | GATED: no current candidate commit has been published or deployed; fetch the target ref after publication and record fresh CI/Vercel evidence. |
 | Production safe HTTP smokes | Public/locale/responsive/UI/active and inactive Quote GET contracts pass without writes | GATED: run only after exact source publication and owner-confirmed no-write target. |
-| Local target classifier | Explicitly local/synthetic for authenticated or write smoke | GATED: App/Supabase/DB target variables missing; no authenticated/write smoke authorized |
+| Local target classifier | Explicitly local/synthetic for authenticated or write smoke | PASS: local Supabase/API/DB targets were injected only into the disposable smoke process; dense authenticated dashboard/Admin passed `17/17`, active quote GET `2/2`, and independent EN/fr-CA submissions reached success. |
 
 ## Public website
 
@@ -91,11 +92,11 @@ Test English and Canadian French at 390, 768, 1280, and 1440 CSS pixels plus key
 
 ## Tenant and data safety
 
-- [ ] Owner A cannot read or mutate Owner B data.
-- [ ] Public quote access is limited to active public slugs and approved fields.
+- [x] Owner A cannot read or mutate Owner B data; executable RLS tenant-isolation fixtures pass.
+- [x] Public quote access is limited to active public slugs and approved fields; active/inactive and cross-form RLS fixtures pass.
 - [ ] Google sign-in never creates a workspace silently; a successful provider callback without an existing membership reaches the explicit setup path, while callback/cancel/error behavior remains verified only on an approved synthetic target.
-- [ ] Logs, errors, screenshots, and browser output contain no secrets, service-role keys, reset tokens, or unnecessary personal data.
-- [ ] No production migration, cleanup, fake user, test lead, or real-customer mutation was performed by this checklist.
+- [x] Logs, errors, screenshots, and browser output contain no secrets, service-role keys, reset tokens, or unnecessary personal data.
+- [x] No Production cleanup, fake user, test lead, real-customer mutation, or entitlement activation was performed by this checklist; all writes were disposable synthetic fixtures.
 
 ## Exit rule
 

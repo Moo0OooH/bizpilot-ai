@@ -9,8 +9,9 @@
  * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Allowed owner-configured consent copy in active EN/fr-CA smoke while retaining the no-booking boundary and single-review-copy guards.
  * - 2026-07-15: Added GET-only fr-CA coverage for inactive/unavailable quote links.
  * - 2026-06-21: Added GET-only quote honeypot and single-review-notice guards.
  * ============================================================
@@ -296,7 +297,6 @@ function buildChecks(): QuoteSmokeCheck[] {
       expectedText: [
         "What kind of cleaning?",
         "Send quote request",
-        "By sending this request, you agree to share your information with this business so they can respond to your quote request. BizPilot may help prepare an internal draft, but the business reviews every message before sending it.",
         "Submitting this form does not confirm pricing, availability, or booking.",
       ],
       maxOccurrences: [
@@ -337,7 +337,6 @@ function buildChecks(): QuoteSmokeCheck[] {
       expectedText: [
         "Quel type de nettoyage?",
         "Envoyer la demande",
-        "En envoyant cette demande, vous acceptez que vos renseignements soient partagés avec cette entreprise afin qu’elle puisse répondre à votre demande de soumission. BizPilot peut aider à préparer un brouillon interne, mais l’entreprise révise chaque message avant de l’envoyer.",
         "L’envoi de ce formulaire ne confirme ni prix, ni disponibilité, ni réservation.",
       ],
       maxOccurrences: [

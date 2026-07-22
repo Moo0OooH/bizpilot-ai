@@ -15,6 +15,8 @@
  * - 2026-07-22: Added source contracts for migration 0026.
  * - 2026-07-22: Added release-blocker guards for grants, earliest openings, lifecycle locks, and recipient currentness.
  * - 2026-07-22: Guarded parent-safe exact-time cascades and deadlock-free stale-draft retention.
+ * - 2026-07-22: Guarded pre-generated atomic draft IDs against same-statement RLS visibility regressions.
+ * - 2026-07-22: Guarded the founder entitlement upsert against output-column conflict-target ambiguity.
  * ============================================================
  */
 
@@ -186,6 +188,11 @@ describe("Premium Operations schedule-integrity SQL", () => {
     );
     assert.match(migration, /insert into public\.bulk_reply_drafts/);
     assert.match(migration, /insert into public\.bulk_reply_draft_recipients/);
+    assert.equal(
+      (migration.match(/created_draft_id uuid := gen_random_uuid\(\);/g) ?? []).length,
+      2,
+    );
+    assert.doesNotMatch(migration, /returning id into created_draft_id/);
     assert.doesNotMatch(
       availabilityCreateRpc,
       /delete from public\.bulk_reply_drafts/,
@@ -267,6 +274,10 @@ describe("Premium Operations schedule-integrity SQL", () => {
       /create or replace function public\.founder_upsert_premium_addon_entitlement\([\s\S]*?security definer/,
     );
     assert.match(migration, /previous_values := coalesce/);
+    assert.match(
+      migration,
+      /on conflict on constraint business_addon_entitlements_pkey do update/,
+    );
     assert.match(migration, /'status_changed'/);
     assert.match(migration, /'operation', 'premium_addon_entitlement_updated'/);
     assert.match(

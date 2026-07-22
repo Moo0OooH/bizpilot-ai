@@ -1,9 +1,9 @@
 # BizPilot Backup, Export, and Restore Runbook
 
 **Phase:** 20B - Production DB Safety Gate
-**Status:** Procedure documented; strict restored-target acceptance not passed
+**Status:** 2026-07-22 strict restored-target code-release acceptance passed; real-data operational policy remains gated
 **Owner:** MoOoH  
-**Last updated:** 2026-07-17
+**Last updated:** 2026-07-22
 **Scope:** Minimum data safety process before real cleaning-business pilot data
 
 ## 1. Current Environment
@@ -460,6 +460,34 @@ Restored DB RLS follow-up checks:
 Real external customer data remains blocked until a current export passes strict
 restored app/dashboard/intake/RLS/isolation and founder-denial proof, together
 with the remaining Auth/OpenAI/privacy/operations gates and final owner approval.
+
+## 9D. Current Export and Strict Restore Evidence — 2026-07-22
+
+The owner authorized the complete Premium Operations release procedure. The
+exercise used the canonical Production project `bizpilot-production` /
+`qfqendrqimqvkoojpjao`, a current logical export stored outside git in the
+operator's temporary user-controlled directory, and disposable local Supabase.
+No dump contents, connection strings, tokens, customer messages, or row values
+were printed.
+
+| Field | Sanitized result |
+| --- | --- |
+| Source reconciliation | PASS: schema matches `origin/main` through `0024` except the absent `0023` retention helper; the five Premium Operations tables and related `0025`/`0026` functions are absent as expected. |
+| Files generated | PASS: non-empty `roles.sql`, `schema.sql`, and `data.sql`; all remained outside the repository and invisible to git. |
+| Schema/data restore | PASS: current Production public schema and public data restored to disposable local Supabase; `31` public tables existed before the candidate migrations. |
+| Cross-schema compatibility | PASS after recreating the documented `auth.users` → `public.handle_new_auth_user()` trigger omitted by a public-schema-only logical dump. |
+| Reconciled migrations | PASS: idempotent `0023` helper, then `0025`, then `0026`; `36` public tables and all five Premium Operations tables present. |
+| RLS and tenant isolation | PASS: `14/14` on the restored target and `14/14` again after final clean reset. |
+| Concurrency | PASS: seven manual two-session lock pairs covered cancellation, block/lead/recipient deletes, parent cascades, and create-versus-review without a deadlock. |
+| Authenticated app/dashboard | PASS: dense synthetic owner/founder smoke `17/17`, including `/dashboard/operations`, `/founder` redirect, lead detail, and all guarded Admin panels. |
+| Public intake | PASS: active synthetic quote GET `2/2` for EN/fr-CA and independent browser submissions reached both localized success states after respecting the 2.5-second minimum-submit-age control. |
+| Runtime | PASS: frozen `pnpm 10.34.5`, Next.js `16.2.11`, React/React DOM `19.2.7`. |
+| Cleanup | PASS: app server stopped, local database reset through `0026`, and synthetic Auth user count returned to zero. |
+| Production mutation | Not part of this restore exercise; no entitlement was enabled. Production apply and final deployment evidence are recorded separately. |
+
+This closes the strict restored-target requirement for the code-release gate. It
+does not decide retention, incident ownership, subprocessors, support terms,
+paid-pilot terms, or authorization to collect new real customer data.
 
 ## 10. Restored Data Verification
 

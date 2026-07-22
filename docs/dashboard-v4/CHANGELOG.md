@@ -11,6 +11,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Recorded Premium Operations database hardening and strict restored-target release proof.
  * - 2026-07-22: Corrected the historical V4.7 local object identity and retained fresh external-evidence gates for the current candidate.
  * - 2026-07-21: Corrected the V4.7 source identity to the locally resolvable commit and marked external release evidence as requiring revalidation.
  * - 2026-07-17: Published and runtime-hardened the V4.7 form builder, responsive shell, optional navigation, source reporting, and OAuth-safe workspace flow.
@@ -32,6 +33,15 @@
  -->
 
 # Dashboard V4 Changelog
+
+## 2026-07-22 — Premium Operations database release proof
+
+- Hardened function ACLs against Supabase default role grants, made review-draft IDs atomic under RLS, and made the founder entitlement upsert target unambiguous.
+- Corrected executable RLS fixtures and made the runner recover cleanly after a failed transaction so every file reports independently.
+- Reconciled Production read-only against repository migrations, exported roles/schema/public data outside git, restored it to disposable local Supabase, and identified the absent `0023` retention helper before any Production write.
+- Passed RLS `14/14` on clean local and restored targets, seven two-session concurrency pairs, authenticated dashboard/Admin `17/17`, active quote GET `2/2`, and independent EN/fr-CA submissions.
+- Rebuilt with the frozen dependency graph: pnpm `10.34.5`, Next.js `16.2.11`, React/React DOM `19.2.7`; `359/359` unit/source tests, lint, typecheck, static RLS/grant audit, production build, and zero-vulnerability audit pass.
+- Removed all restored/synthetic local data by final database reset. No Production entitlement, auto-send, booking, payment, or real-customer workflow was activated.
 
 ## 2026-07-17 — V4.7 configurable intake and shell finalization
 

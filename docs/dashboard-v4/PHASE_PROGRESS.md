@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Closed clean-local and restored-target Premium Operations database/RLS/concurrency/authenticated/intake gates; retained exact-commit and live Production release gates.
  * - 2026-07-22: Added exhaustive Persian owner-route map coverage and exact protected-value evidence.
  * - 2026-07-22: Added reviewed Arabic owner-route map coverage and exact protected fallback evidence.
  * - 2026-07-22: Added the current Premium Operations hardening, founder activation, exact-time intake, public catalog, dependency baseline, ordered `0025` + `0026` proof gate, and pending exact-tree/external evidence.
@@ -84,14 +85,14 @@ Status vocabulary: `DONE` means implemented and source-verified; `IN PROGRESS` m
 | P0 | V4.7 lint, typecheck, unit, build | DONE | ESLint: zero warnings; TypeScript: PASS; unit/source: 295/295; Next.js 16.2.4 production build: PASS. |
 | P0 | V4.7 local public and responsive acceptance | DONE | Local production public routes: 46/46; responsive smoke: 20/20; final EN/fr-CA light/dark UI matrix: zero failures across 11 recorded viewports; no submission or data mutation. |
 | P0 | V4.7 remote publication and Production acceptance | GATED / RE-VERIFY | Local Git contains commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. Fresh remote-ref, exact-commit CI/deployment, and no-write acceptance evidence are required before this can be `DONE`. |
-| P0 | Premium Operations hardening candidate | DONE in source/local gates | Priority filtering, visible-only bulk selection, atomic manager-review drafts, clipboard-success copy recording, fixed `America/Toronto` availability interpretation, non-overlapping internal blocks, stale-draft revalidation, complete paginated reads, cascade safety, and deadlock-safe lock ordering pass exact-tree source verification; database execution remains separately gated. |
-| P0 | Canonical exact-time intake | DONE in source/local gates | Availability Coordination provisions template-linked `preferred_time` with database field type `time`, paired with canonical `preferred_date`; UTC storage, daylight-saving gap/fold rejection, parent-aware cascade behavior, and source regressions pass; disposable-DB proof remains gated. |
-| P0 | Founder add-on entitlement control | DONE in source/local gates | Guarded Founder Admin can list and explicitly enable/disable supported workspace add-ons through validated service-role orchestration with audit logging; source verification passes and authenticated panel acceptance remains gated. |
-| P0 | Premium Operations `0025` + `0026` local proof | GATED | Apply `0025_premium_operations_addons.sql` followed by additive `0026_premium_operations_schedule_integrity.sql` only to an approved local/disposable target; pass grants, entitlement, RLS, tenant isolation, atomic lifecycle, overlap, provenance/currentness, and founder-audit evidence before a separately approved Production plan. |
+| P0 | Premium Operations hardening candidate | DONE in source/local gates | Priority filtering, visible-only bulk selection, atomic manager-review drafts, clipboard-success copy recording, fixed `America/Toronto` availability interpretation, non-overlapping internal blocks, stale-draft revalidation, complete paginated reads, cascade safety, and deadlock-safe lock ordering pass source and database execution. |
+| P0 | Canonical exact-time intake | DONE in source/local gates | Availability Coordination provisions template-linked `preferred_time` with database field type `time`, paired with canonical `preferred_date`; UTC storage, daylight-saving gap/fold rejection, parent-aware cascade behavior, RLS, and independent EN/fr-CA submissions pass on disposable restore. |
+| P0 | Founder add-on entitlement control | DONE in source/local gates | Guarded Founder Admin can list and explicitly enable/disable supported workspace add-ons through validated service-role orchestration with audit logging; authenticated synthetic Admin panel acceptance passes without activating Production entitlements. |
+| P0 | Premium Operations `0025` + `0026` local proof | DONE | Ordered clean-local and restored-export application pass grants, entitlement, RLS `14/14`, tenant isolation, atomic lifecycle, overlap, provenance/currentness, founder audit, and seven two-session concurrency pairs. |
 | P0 | Premium Operations public catalog | DONE in source/local gates | Product, Pricing, and FAQ describe the three optional add-ons in EN/fr-CA, keep separate pricing unquoted, and preserve manager review/manual copy/no-booking boundaries; exact-tree public tests and production-server smokes pass. |
 | P0 | Current dependency and exact-tree verification | DONE | Frozen pnpm `10.34.5` install; zero full/Production audit vulnerabilities; lint/typecheck; `359/359` unit/source; static RLS/grant audit; Next.js `16.2.11` build; public `46/46`; responsive `20/20`; UI zero; Quote `2/2`; image optimizer HTTP 200. Chrome browser, authenticated, and database-backed gates remain explicit. |
 | P0 | Current publication, CI, Vercel, and Production acceptance | GATED | No current-candidate commit hash, fresh GitHub CI run, Vercel preview/Production deployment, live-site acceptance, authenticated dashboard acceptance, or Production database operation is claimed. Each requires exact-ref evidence and the applicable owner gate. |
-| P0 | V4.7 founder environment activation | DONE / OWNER EVIDENCE | The authenticated owner screenshot renders the server-role-gated Founder Admin entry, confirming allowlist activation without storing the address in source. Opening every protected Admin panel remains part of the authenticated visual gate. |
+| P0 | V4.7 founder environment activation | DONE / OWNER + SYNTHETIC EVIDENCE | The authenticated owner screenshot renders the server-role-gated Founder Admin entry; restored-target founder smoke opens every guarded Admin panel without storing the real address in source. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
 | P0 | Branding and local logo workflow | DONE | Bounded PNG/JPG/WebP browser resize, HTTPS alternative, remove/reset actions, live preview, server validation, and public Quote logo/color application implemented. |
@@ -115,10 +116,10 @@ Status vocabulary: `DONE` means implemented and source-verified; `IN PROGRESS` m
 | P0 | Documentation V2.1 cleanup and link audit | DONE | Current inventory: 57 active documentation artifacts; 55 Markdown files including root README audited with zero broken local Markdown links; obsolete snapshots remain in Git history. |
 | P0 | V2.1 main push, CI, and Vercel rollout | DONE | Release SHA `e922485`; GitHub CI run `29390428140` success; Vercel target `FMTLX7SnzUMBsPLsf1iKgeNbPyvi` success; one `main` branch/worktree synchronized with `origin/main`. |
 | P0 | V2.1 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; inactive Quote GET 2/2 EN/fr-CA; HTTPS/security headers present. |
-| P1 | Real Chrome public interaction smoke | GATED | The runner is available, but this execution environment has no Chrome/Chromium binary. |
-| P0 | Authenticated local/synthetic browser smoke | GATED | Local dashboard/auth target variables are unavailable; Production synthetic writes are prohibited. |
+| P1 | Real browser public interaction smoke | DONE for Preview | In-app Chromium covered Home, Features, Pricing, and FAQ in EN/fr-CA at desktop/mobile with no overflow, broken images, H1, locale, or first-viewport scroll failures. |
+| P0 | Authenticated local/synthetic browser smoke | DONE | Restored-target dense owner/founder smoke passes `17/17`, Premium Operations is included, and all synthetic data was removed by final reset. |
 | P0 | Production authenticated read-only visual QA | GATED | Requires owner-approved credentials/session and no-secret QA procedure. |
-| P0 | Managed Supabase migration/restore reconciliation | GATED | Requires a separately approved, backup-aware, read-only-first procedure. |
+| P0 | Managed Supabase migration/restore reconciliation | DONE read-only / apply pending | Current export matches repository schema through `0024` except the absent `0023` retention helper; current roles/schema/data restore and strict app/RLS proof pass; Production `0023`/`0025`/`0026` apply remains in the release sequence. |
 | P0 | Google OAuth live enablement | GATED | Application path exists; external provider/configuration and owner QA are unverified. |
 | P0 | Real customer data / paid pilot | GATED | Requires explicit owner approval after restored-target, support, payment/refund, and rollback gates. |
 
@@ -129,9 +130,9 @@ This section is updated only with commands actually run on the final working tre
 Current Premium Operations hardening candidate:
 
 - Runtime manifest: Node `>=24 <25`, pnpm `10.34.5`, Next.js `16.2.11`, React / React DOM `19.2.7`.
-- Database-backed Premium Operations RLS proof: GATED; no classifier-approved local/disposable `DATABASE_URL` is available. Managed Supabase and Production are prohibited test targets.
+- Database-backed Premium Operations RLS proof: PASS `14/14` on clean local and `14/14` on the restored Production export after reconciled `0023`, `0025`, and `0026`.
 - GitHub CI and Vercel: GATED until the exact candidate commit is published and the exact-ref checks/deployment are linked.
-- Production website/dashboard acceptance and database migration: NOT RUN and not authorized by local source verification.
+- Production website/dashboard acceptance and database migration: explicitly authorized for this release but not yet run at this evidence checkpoint.
 
 - Current Premium Operations exact-tree frozen install: PASS with pnpm `10.34.5`; Next resolves Sharp `0.35.3`.
 - Current full and Production dependency audits: PASS with zero vulnerabilities at every severity.
@@ -140,8 +141,10 @@ Current Premium Operations hardening candidate:
 - Current static Supabase RLS/grant audit: PASS; zero missing RLS, missing policy grants, or overbroad anonymous grants.
 - Current Next.js `16.2.11` production build: PASS; `/dashboard/operations` is present.
 - Current local production public route smoke: PASS, `46/46`; responsive smoke: PASS, `20/20`; UI matrix: zero failures; inactive Quote GET: PASS, `2/2`; image optimizer: HTTP 200.
-- Current standalone Chrome interaction smoke: GATED because no Chrome/Chromium binary is installed.
-- Current database-backed RLS and two-session concurrency proof: GATED because no approved local/disposable `DATABASE_URL` is available; the runner failed closed before connection and no database was contacted.
+- Current browser interaction: PASS for the 16-state Vercel Preview public matrix; final exact-commit Preview and Production checks remain release steps.
+- Current database-backed RLS and two-session concurrency proof: PASS; `14/14` RLS on clean/restored targets and all seven two-session lock pairs passed without deadlock.
+- Current authenticated restored-target smoke: PASS `17/17`, including `/dashboard/operations`, `/founder` redirect, and every guarded Admin panel.
+- Current active quote proof: PASS `2/2` EN/fr-CA GET plus independent localized submissions after respecting the anti-bot minimum age.
 
 - V4.7 TypeScript: PASS.
 - V4.7 ESLint: PASS, zero warnings.
@@ -155,7 +158,7 @@ Current Premium Operations hardening candidate:
 - V4.7 serialization prevention: PASS; Quote Setup/public-flow function props are precomputed into serializable data, recursive copy guards exist, and authenticated smoke now includes Reports plus the exact RSC error marker.
 - V4.7 standalone real-Chrome interaction: GATED because this environment contains no Chrome/Chromium binary.
 - V4.7 authenticated owner/admin visual smoke: GATED because no approved authenticated target/session is present.
-- V4.7 historical intake migration: NOT RUN; that scope reused existing JSON storage. Premium Operations has a distinct ordered source sequence, `0025` then additive `0026`, and remains GATED pending approved local/disposable RLS proof and a separately approved Production plan.
+- V4.7 historical intake migration: NOT RUN; that scope reused existing JSON storage. Premium Operations has a distinct ordered source sequence, `0025` then additive `0026`; local/restore RLS proof passes and the reconciled Production apply remains a pending release step.
 - V4.6 TypeScript: PASS.
 - V4.6 ESLint: PASS, zero warnings.
 - V4.6 full unit/source suite: PASS, 272/272 on the final tree merged with the latest public-site `main` baseline.

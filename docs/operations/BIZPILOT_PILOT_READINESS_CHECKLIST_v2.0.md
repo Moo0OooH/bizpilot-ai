@@ -13,6 +13,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Closed the ordered local/restore Premium Operations proof and current backup/schema/rollback preparation while preserving live release, real-data, and paid-pilot gates.
  * - 2026-07-22: Corrected the historical V4.7 local object identity and recorded the ordered `0025` + `0026` non-Production proof gate.
  * - 2026-07-21: Corrected the V4.7 Git identity, reopened unverified remote/Production evidence, and added the Premium Operations `0025` proof gate.
  * - 2026-07-17: Rebased the gate on Dashboard V4.7 and restored the strict restored-app/dashboard/RLS requirement before any real customer data.
@@ -33,8 +34,8 @@
 | Historical V4.7 source identity | Local Git fact | Commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. These local facts do not independently revalidate historical external evidence. |
 | Local source/build and public smoke | PASS | Exact-tree frozen install, zero-vulnerability audits, lint, typecheck, `359/359` unit/source, static RLS/grant audit, build, local public `46/46`, responsive `20/20`, UI zero, Quote `2/2`, and image optimizer HTTP 200 are recorded. |
 | Publication, CI, Vercel, and Production read-only release | GATED / RE-VERIFY | Publish an exact commit only after destination authorization, then link fresh CI/preview evidence and run owner-approved no-write Production acceptance. Historical results do not close this gate. |
-| Premium Operations schema proof | GATED | Apply `0025_premium_operations_addons.sql` and then additive `0026_premium_operations_schedule_integrity.sql`, in order, only on an approved local/disposable target; pass RLS, tenant-isolation, lifecycle, priority, overlap, provenance/currentness, and concurrency checks before any Production plan. |
-| Authenticated synthetic QA | GATED | Requires an explicitly approved local/Preview synthetic target and credentials. |
+| Premium Operations schema proof | PASS on local/restore | Ordered `0025` + `0026`, RLS `14/14`, tenant/lifecycle/provenance checks, seven concurrency pairs, authenticated Operations/Admin, and EN/fr-CA active intake passed on disposable local Supabase. |
+| Authenticated synthetic QA | PASS for release candidate | Restored-target dense owner/founder route smoke passed `17/17`; no Production writes or entitlement activation were used. |
 | Real customer data | NOT APPROVED | Requires all real-data gates below and explicit owner approval. |
 | Paid pilot | NOT APPROVED | Requires real-data readiness plus commercial, payment, support, backup, and rollback evidence. |
 
@@ -51,7 +52,7 @@ The first pilot remains cleaning-focused, manual-first, and owner-reviewed. BizP
 - [x] Local Git contains historical V4.7 commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. This is local-object evidence only.
 - [ ] Exact candidate commit is published to a freshly verified remote ref and its CI/deployment results are linked to that commit.
 - [ ] Exact-release Production read-only smoke is re-run after target confirmation; no Production mutation occurs.
-- [ ] Premium Operations migrations `0025` then `0026` pass approved local/disposable migration, RLS, tenant-isolation, lifecycle, concurrency, and UI proof before a separately approved Production migration plan.
+- [x] Premium Operations migrations `0025` then `0026` pass approved local/disposable migration, RLS, tenant-isolation, lifecycle, seven-pair concurrency, authenticated UI, and active EN/fr-CA quote proof before the Production migration plan.
 
 ## Gate B — authenticated synthetic acceptance
 
@@ -66,12 +67,12 @@ The first pilot remains cleaning-focused, manual-first, and owner-reviewed. BizP
 
 ## Gate C — backup, schema, and rollback
 
-- [ ] Production schema and migration history are reconciled read-only against repository migrations.
-- [ ] A current logical backup/export exists in approved protected storage. The historical Phase 24C.0 export is partial evidence, not proof of current recoverability.
-- [ ] Restore to a disposable local or non-production target succeeds using the documented procedure.
-- [ ] The complete RLS suite plus authenticated app, dashboard, intake, tenant-isolation, and founder-denial smoke pass against that restored target. Phase 24C.1 has not passed this strict gate.
-- [ ] Rollback ownership, steps, timing, and evidence location are named.
-- [ ] Any production migration has a separately approved plan, dry run, backup, rollback, and owner confirmation.
+- [x] Production schema and migration history are reconciled read-only: schema matches `origin/main` through `0024` except the absent `0023` retention helper; Premium Operations is absent.
+- [x] A current roles/schema/public-data logical export exists temporarily outside git for this release drill; contents and secrets were not printed.
+- [x] Restore to disposable local Supabase succeeds using the documented procedure.
+- [x] The complete RLS suite plus authenticated app, dashboard, intake, tenant-isolation, and founder-denial smoke pass against that restored target.
+- [x] Rollback source is the verified pre-migration export; operator is MoOoH/Codex, execution is immediate on failed migration or smoke, and sanitized evidence is recorded in the backup runbook.
+- [x] The owner explicitly authorized this release's Production migration plan, dry run, backup, rollback, merge, and deployment; actual Production apply remains part of the release sequence.
 - [ ] `BIZPILOT_IP_HASH_SALT` is configured as a Production secret before public-submission abuse logging is enabled; its value is never exposed in evidence.
 
 ## Gate D — real customer data

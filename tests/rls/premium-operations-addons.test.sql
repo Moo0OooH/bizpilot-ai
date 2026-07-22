@@ -17,6 +17,8 @@ Change Log:
 - 2026-07-21: Added paid-entitlement, review-transition, immutable-copy, and database-limit RLS coverage.
 - 2026-07-22: Added exact-time provenance, earliest-opening, NULL-shape, helper-grant, historical-cancellation, and schedule-integrity regressions.
 - 2026-07-22: Added direct exact-date deletion and submission/business cascade regressions.
+- 2026-07-22: Corrected the cross-tenant recipient-update assertion block so the executable RLS suite reaches every Premium Operations regression.
+- 2026-07-22: Corrected denial fixtures and authenticated tenant context exposed by the first full local execution of the Premium Operations suite.
 ============================================================
 */
 
@@ -552,7 +554,7 @@ begin
 
   if recipient_update_denied is not true then
     raise exception 'T3 FAIL: manager must not retarget a recipient to another workspace draft or lead.';
-  end;
+  end if;
 end;
 $$;
 
@@ -640,15 +642,20 @@ do $$
 declare
   denied boolean;
 begin
+  denied := false;
   begin
     insert into public.lead_priority_rules (business_id, name, priority_rank)
     values ('f2600000-0000-0000-0000-000000000001', 'Member write attempt', 2);
-    raise exception 'T4 FAIL: plain member must not insert a priority rule.';
   exception
-    when insufficient_privilege then
-      null;
+    when insufficient_privilege or raise_exception then
+      denied := true;
   end;
 
+  if denied is not true then
+    raise exception 'T4 FAIL: plain member must not insert a priority rule.';
+  end if;
+
+  denied := false;
   begin
     insert into public.service_time_blocks (
       business_id,
@@ -664,12 +671,16 @@ begin
       statement_timestamp() + interval '23 days',
       statement_timestamp() + interval '23 days 1 hour'
     );
-    raise exception 'T4 FAIL: plain member must not insert an internal time block.';
   exception
-    when insufficient_privilege then
-      null;
+    when insufficient_privilege or raise_exception then
+      denied := true;
   end;
 
+  if denied is not true then
+    raise exception 'T4 FAIL: plain member must not insert an internal time block.';
+  end if;
+
+  denied := false;
   begin
     insert into public.bulk_reply_drafts (
       business_id,
@@ -681,11 +692,14 @@ begin
       'Member write attempt',
       'This must stay a review-only draft.'
     );
-    raise exception 'T4 FAIL: plain member must not insert a review draft.';
   exception
-    when insufficient_privilege then
-      null;
+    when insufficient_privilege or raise_exception then
+      denied := true;
   end;
+
+  if denied is not true then
+    raise exception 'T4 FAIL: plain member must not insert a review draft.';
+  end if;
 
   begin
     denied := false;
@@ -839,7 +853,10 @@ end;
 $$;
 
 do $$
+declare
+  denied boolean;
 begin
+  denied := false;
   begin
     insert into public.service_time_blocks (
       business_id,
@@ -855,12 +872,16 @@ begin
       statement_timestamp() + interval '24 days',
       statement_timestamp() + interval '24 days 1 hour'
     );
-    raise exception 'T5 FAIL: unavailable Availability Coordination must deny writes.';
   exception
-    when insufficient_privilege then
-      null;
+    when insufficient_privilege or raise_exception then
+      denied := true;
   end;
 
+  if denied is not true then
+    raise exception 'T5 FAIL: unavailable Availability Coordination must deny writes.';
+  end if;
+
+  denied := false;
   begin
     insert into public.bulk_reply_drafts (
       business_id,
@@ -872,11 +893,14 @@ begin
       'Unentitled bulk attempt',
       'This must remain unavailable until Bulk Reply Review is active.'
     );
-    raise exception 'T5 FAIL: unavailable Bulk Reply Review must deny writes.';
   exception
-    when insufficient_privilege then
-      null;
+    when insufficient_privilege or raise_exception then
+      denied := true;
   end;
+
+  if denied is not true then
+    raise exception 'T5 FAIL: unavailable Bulk Reply Review must deny writes.';
+  end if;
 end;
 $$;
 
@@ -1984,6 +2008,10 @@ values (
 alter table public.intake_submission_values
   enable trigger intake_submission_values_enforce_preferred_time_date_pair;
 
+set local role authenticated;
+select set_config('request.jwt.claim.sub', 'f2500000-0000-0000-0000-000000000003', true);
+select set_config('request.jwt.claim.role', 'authenticated', true);
+
 do $$
 begin
   if public.public_can_insert_submission_value(
@@ -2013,7 +2041,13 @@ begin
   ) then
     raise exception 'T7d FAIL: exact-time provenance must not cross tenant membership.';
   end if;
+end;
+$$;
 
+reset role;
+
+do $$
+begin
   if public.premium_operations_local_time_is_unique(
     date '2027-03-14',
     time '02:30'
@@ -2067,6 +2101,8 @@ $$;
 -- ============================================================
 
 reset role;
+select set_config('request.jwt.claim.sub', '', true);
+select set_config('request.jwt.claim.role', 'service_role', true);
 
 insert into public.intake_submissions (
   id,

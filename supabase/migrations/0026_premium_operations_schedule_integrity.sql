@@ -17,6 +17,9 @@ Change Log:
 - 2026-07-22: Enforced least-privilege helper grants, derived earliest openings, NULL-safe metadata, future starts, and cancellation/delete serialization.
 - 2026-07-22: Revalidated durable recipient counts and non-terminal leads at generic review/copy, including lead/recipient deletion races and clean parent cascades.
 - 2026-07-22: Kept direct exact-date deletion fail-closed while allowing submission/business cascades, and retained stale drafts to remove create-versus-review lock inversion.
+- 2026-07-22: Pre-generated atomic draft IDs so authenticated invoker RPCs do not require INSERT RETURNING to pass a same-statement RLS visibility check.
+- 2026-07-22: Cleared Supabase default role ACLs before every explicit function grant so internal helpers are not directly executable by anonymous clients.
+- 2026-07-22: Targeted the entitlement primary-key constraint explicitly to avoid PL/pgSQL output-column ambiguity in the founder upsert RPC.
 ============================================================
 */
 
@@ -37,7 +40,7 @@ as $$
 $$;
 
 revoke all on function public.premium_operations_operating_time_zone()
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.premium_operations_operating_time_zone()
   to anon, authenticated, service_role;
 
@@ -89,7 +92,7 @@ as $$
 $$;
 
 revoke all on function public.premium_operations_workspace_is_writable(uuid)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.premium_operations_workspace_is_writable(uuid)
   to authenticated, service_role;
 
@@ -121,7 +124,7 @@ as $$
 $$;
 
 revoke all on function public.premium_operations_entitlement_record_is_active(uuid, text)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.premium_operations_entitlement_record_is_active(uuid, text)
   to service_role;
 
@@ -156,7 +159,7 @@ end;
 $$;
 
 revoke all on function public.enforce_business_operating_schedule_entitlement()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists businesses_enforce_operating_schedule_entitlement
   on public.businesses;
@@ -341,7 +344,7 @@ end;
 $$;
 
 revoke all on function public.sync_availability_preferred_time_field()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists business_addon_entitlements_sync_preferred_time
   on public.business_addon_entitlements;
@@ -457,7 +460,7 @@ as $$
 $$;
 
 revoke all on function public.can_public_read_intake_field(uuid, uuid, uuid, boolean)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.can_public_read_intake_field(uuid, uuid, uuid, boolean)
   to anon, authenticated, service_role;
 
@@ -519,7 +522,7 @@ as $$
 $$;
 
 revoke all on function public.public_can_insert_submission_value(uuid, uuid, text)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.public_can_insert_submission_value(uuid, uuid, text)
   to anon, authenticated, service_role;
 
@@ -563,8 +566,10 @@ exception
 end;
 $$;
 
-revoke all on function public.premium_operations_safe_date(text) from public;
-revoke all on function public.premium_operations_safe_time(text) from public;
+revoke all on function public.premium_operations_safe_date(text)
+  from public, anon, authenticated, service_role;
+revoke all on function public.premium_operations_safe_time(text)
+  from public, anon, authenticated, service_role;
 
 create or replace function public.premium_operations_local_time_is_unique(
   target_date date,
@@ -612,7 +617,7 @@ end;
 $$;
 
 revoke all on function public.premium_operations_local_time_is_unique(date, time without time zone)
-  from public;
+  from public, anon, authenticated, service_role;
 
 create or replace function public.premium_operations_exact_request_window(
   target_business_id uuid,
@@ -712,7 +717,7 @@ end;
 $$;
 
 revoke all on function public.premium_operations_exact_request_window(uuid, uuid)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.premium_operations_exact_request_window(uuid, uuid)
   to authenticated, service_role;
 
@@ -838,7 +843,7 @@ end;
 $$;
 
 revoke all on function public.enforce_submission_preferred_time_date_pair()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists intake_submission_values_enforce_preferred_time_date_pair
   on public.intake_submission_values;
@@ -875,7 +880,7 @@ as $$
 $$;
 
 revoke all on function public.public_intake_operating_time_zone(uuid, uuid)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.public_intake_operating_time_zone(uuid, uuid)
   to anon, authenticated, service_role;
 
@@ -912,7 +917,7 @@ end;
 $$;
 
 revoke all on function public.enforce_premium_operations_workspace_writable()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists lead_priority_rules_enforce_workspace_writable
   on public.lead_priority_rules;
@@ -976,7 +981,7 @@ end;
 $$;
 
 revoke all on function public.serialize_premium_operations_entitlement_change()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists business_addon_entitlements_serialize_change
   on public.business_addon_entitlements;
@@ -1038,7 +1043,7 @@ end;
 $$;
 
 revoke all on function public.enforce_service_time_block_no_overlap()
-  from public;
+  from public, anon, authenticated, service_role;
 
 do $$
 begin
@@ -1104,7 +1109,7 @@ end;
 $$;
 
 revoke all on function public.serialize_availability_lead_provenance_change()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists leads_serialize_availability_provenance_change
   on public.leads;
@@ -1229,7 +1234,7 @@ revoke all on function public.premium_operations_first_internal_opening(
   uuid,
   timestamptz,
   timestamptz
-) from public;
+) from public, anon, authenticated, service_role;
 
 create or replace function public.premium_operations_availability_draft_is_current(
   target_business_id uuid,
@@ -1421,7 +1426,7 @@ end;
 $$;
 
 revoke all on function public.premium_operations_availability_draft_is_current(uuid, jsonb)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.premium_operations_availability_draft_is_current(uuid, jsonb)
   to authenticated, service_role;
 
@@ -1501,7 +1506,7 @@ $$;
 revoke all on function public.premium_operations_draft_recipients_are_current(
   uuid,
   uuid
-) from public;
+) from public, anon, authenticated, service_role;
 
 -- Replace the earlier shape-only insert check with a persisted provenance and
 -- currentness check. Availability rows cannot be manufactured from a named
@@ -1543,7 +1548,7 @@ end;
 $$;
 
 revoke all on function public.initialize_premium_operations_draft()
-  from public;
+  from public, anon, authenticated, service_role;
 
 create or replace function public.enforce_availability_draft_current_on_review()
 returns trigger
@@ -1580,7 +1585,7 @@ end;
 $$;
 
 revoke all on function public.enforce_availability_draft_current_on_review()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists bulk_reply_drafts_enforce_availability_current
   on public.bulk_reply_drafts;
@@ -1667,7 +1672,7 @@ end;
 $$;
 
 revoke all on function public.enforce_availability_recipient_current()
-  from public;
+  from public, anon, authenticated, service_role;
 
 drop trigger if exists bulk_reply_draft_recipients_enforce_availability_current
   on public.bulk_reply_draft_recipients;
@@ -1694,7 +1699,7 @@ security invoker
 set search_path = public
 as $$
 declare
-  created_draft_id uuid;
+  created_draft_id uuid := gen_random_uuid();
   canonical_submission_id uuid;
   canonical_requested_starts_at timestamptz;
   canonical_requested_ends_at timestamptz;
@@ -1791,18 +1796,19 @@ begin
   -- separate operation with draft-before-business lock ordering.
 
   insert into public.bulk_reply_drafts (
+    id,
     business_id,
     title,
     audience_summary,
     message_template
   )
   values (
+    created_draft_id,
     target_business_id,
     target_title,
     audience_summary,
     target_message_template
-  )
-  returning id into created_draft_id;
+  );
 
   insert into public.bulk_reply_draft_recipients (
     business_id,
@@ -1831,7 +1837,7 @@ revoke all on function public.create_availability_review_draft(
   timestamptz,
   timestamptz,
   jsonb
-) from public;
+) from public, anon, authenticated, service_role;
 grant execute on function public.create_availability_review_draft(
   uuid,
   uuid,
@@ -1857,7 +1863,7 @@ security invoker
 set search_path = public
 as $$
 declare
-  created_draft_id uuid;
+  created_draft_id uuid := gen_random_uuid();
   recipient jsonb;
   recipient_count integer;
   distinct_recipient_count integer;
@@ -1941,18 +1947,19 @@ begin
   for update;
 
   insert into public.bulk_reply_drafts (
+    id,
     business_id,
     title,
     message_template,
     audience_summary
   )
   values (
+    created_draft_id,
     target_business_id,
     target_title,
     target_message_template,
     target_audience_summary
-  )
-  returning id into created_draft_id;
+  );
 
   for recipient in
     select value
@@ -1982,7 +1989,7 @@ end;
 $$;
 
 revoke all on function public.create_premium_reply_draft(uuid, text, text, jsonb, jsonb)
-  from public;
+  from public, anon, authenticated, service_role;
 grant execute on function public.create_premium_reply_draft(uuid, text, text, jsonb, jsonb)
   to authenticated, service_role;
 
@@ -2085,7 +2092,7 @@ begin
     target_expires_at,
     target_actor_user_id
   )
-  on conflict (business_id, addon_key) do update
+  on conflict on constraint business_addon_entitlements_pkey do update
   set
     status = excluded.status,
     activated_at = excluded.activated_at,

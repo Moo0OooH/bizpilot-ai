@@ -16,6 +16,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Closed the ordered disposable/restore database, RLS, concurrency, authenticated Operations/Admin, and EN/fr-CA intake gates ahead of exact-commit publication.
  * - 2026-07-22: Recorded exhaustive Persian owner-route coverage, its checked-in `1,000`-value map, and exact protected-value inventory.
  * - 2026-07-22: Recorded complete reviewed Arabic owner-route coverage and the exact protected fallback inventory.
  * - 2026-07-22: Added the hardened Premium Operations candidate, canonical exact-time/Toronto contract, founder entitlement controls, public-catalog boundary, current runtime, and ordered `0025` + `0026` release gates.
@@ -43,7 +44,7 @@
 
 The historical Dashboard V4.7 intake work completes the owner-controlled intake experience without a database migration. Quote Setup lets an owner name and describe the public form, create and order sections, assign each question to a section, hide optional sections safely, and choose list, tab, or guided multi-step presentation. The protected shell keeps authorized destinations in one predictable place, prevents fixed controls from covering content, and lets each signed-in owner show or hide optional Reports and Guide navigation. Google sign-in can repair an existing approved workspace but cannot silently create a new tenant through the recovery path.
 
-Premium Operations is a later, separately gated source candidate. It requires `0025_premium_operations_addons.sql` followed by additive hardening migration `0026_premium_operations_schedule_integrity.sql`; it is not covered by the historical V4.7 no-migration claim. Exact-tree local verification passes, but the source must not be treated as deployed until approved local/disposable migration and RLS/concurrency proof, exact-commit CI, Vercel verification, and any separately approved Production steps have passed.
+Premium Operations is a later, separately gated release candidate. It requires `0025_premium_operations_addons.sql` followed by additive hardening migration `0026_premium_operations_schedule_integrity.sql`; it is not covered by the historical V4.7 no-migration claim. Ordered disposable and current-export restore proof now passes RLS `14/14`, seven concurrency pairs, authenticated dashboard/Admin `17/17`, active EN/fr-CA quote GET `2/2`, and independent localized submissions. The source must not be treated as deployed until the hardened exact commit passes fresh CI/Preview, the reconciled Production migrations are applied without entitlement activation, PR #11 is merged, and final Production read-only acceptance passes.
 
 ## Jobs to be done
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T06:55:00-04:00",
+  "generated_at": "2026-07-22T13:02:00-04:00",
   "repository": "Moo0OooH/bizpilot-ai",
   "candidate_branch": "agent/premium-operations-release (local worktree)",
   "candidate_commit": "the immutable local SHA is recorded after this non-self-referential evidence snapshot; use git rev-parse HEAD",
@@ -7,7 +7,7 @@
   "historical_dashboard_v47_tree": "17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d",
   "historical_dashboard_v47_local_identity": "d9e25bbf50ccf42de2da4d70aa235ab7d289dc91 is present with the recorded tree; a82af72bf8960b2bce1583e6446abca706c2a2bc is absent; local object identity does not independently revalidate historical external evidence",
   "historical_release_evidence": "preserved as historical records only and not independently revalidated in this candidate; it is not evidence for the current Premium Operations candidate",
-  "premium_operations_migration_sequence": "source candidate contains 0025_premium_operations_addons.sql followed by additive 0026_premium_operations_schedule_integrity.sql; both require ordered application and RLS/tenant-isolation proof on an approved local/disposable target before any separately approved Production plan",
+  "premium_operations_migration_sequence": "0025_premium_operations_addons.sql followed by additive 0026_premium_operations_schedule_integrity.sql passed ordered application, full RLS/tenant-isolation, seven concurrency pairs, restored application, authenticated dashboard/Admin, and EN/fr-CA intake proof on disposable local Supabase; Production remains pending exact-commit CI and the recorded apply sequence",
   "runtime": {
     "node": ">=24 <25",
     "pnpm": "10.34.5",
@@ -18,21 +18,21 @@
   "documentation_version": "v2.1",
   "package_version": "0.2.2",
   "product_status": "manual-first configurable Smart Intake and owner-reviewed reply preparation are implemented; Premium Operations hardening and its public catalog are current source candidates; real customer data and paid pilot remain blocked",
-  "public_site": "EN/fr-CA Product, Pricing, and FAQ describe the three optional separately priced Premium Operations add-ons without quoting an add-on amount; local exact-tree build and public smoke pass, while publication, Vercel deployment, and live acceptance remain pending",
-  "dashboard": "the protected /dashboard/operations source implements priority search/filtering, manager-reviewed group drafts with manual copy, and internal availability coordination; local source verification passes and authenticated visual acceptance remains gated",
+  "public_site": "EN/fr-CA Product, Pricing, and FAQ describe the three optional separately priced Premium Operations add-ons without quoting an add-on amount; local exact-tree build, public Preview matrix, and restored-target active quote GET/submission proof pass, while the refreshed commit publication and final live acceptance remain pending",
+  "dashboard": "the protected /dashboard/operations source implements priority search/filtering, manager-reviewed group drafts with manual copy, and internal availability coordination; restored-target authenticated dashboard/Admin smoke passes 17/17 and final Production read-only acceptance remains pending",
   "dashboard_interface_languages": "English, Canadian French, Persian, Arabic, and Spanish are isolated from public/customer/AI language; Persian and Arabic are RTL while numeric, date, time, phone, and structured inputs remain Latin LTR; final editorial-fallback status follows docs/dashboard-v4/CURRENT.md",
-  "founder_admin": "guarded founder source lists add-on state and explicitly enables or disables supported entitlements through the service-role path with audit logging; no customer self-activation or self-serve billing exists; local source verification passes and authenticated panel acceptance remains gated",
+  "founder_admin": "guarded founder source lists add-on state and explicitly enables or disables supported entitlements through the service-role path with audit logging; no customer self-activation or self-serve billing exists; restored-target authenticated Admin smoke passes every guarded panel and no Production entitlement was enabled",
   "quote_intake": "the source candidate adds canonical template-linked preferred_time with database field type time when Availability Coordination is active; preferred_date plus preferred_time use the fixed America/Toronto contract, UTC storage, and fail-closed daylight-saving validation",
   "availability_contract": "internal blocks and conflict suggestions are coordination only; availability drafts revalidate lead/submission provenance, current conflicts, suggestion, entitlement, and workspace state before review/copy; no public calendar, booking confirmation, or availability promise exists",
   "ai_draft": "owner-reviewed editable draft assistance only; no automatic send, booking, price or availability promise, or autonomous action",
   "payments": "manual commercial agreement only; base plan and add-on pricing remain separate, no add-on amount is quoted, and there is no checkout, capture, invoice system, or automated activation",
   "google_auth": "application path is implemented with login-only scopes, exact safe callbacks, and protection against silent workspace creation; live provider callback and owner sign-in QA remain unverified",
-  "supabase": "the documented migration set through 0026 is present in source, with the intentional retired 0003 gap; 0025 then 0026 must first be applied and proven on an approved local/disposable target; no managed Supabase or Production audit/apply/data mutation is authorized or claimed",
-  "rls": "static source contracts exist; actual Premium Operations database execution remains gated because no classifier-approved local/disposable DATABASE_URL is available",
+  "supabase": "the documented migration set through 0026 is present in source, with the intentional retired 0003 gap; read-only Production reconciliation proves schema parity through 0024 except the absent 0023 retention helper, while 0025 and 0026 are absent and passed ordered disposable-target proof; Production apply is pending",
+  "rls": "PASS: 14/14 executable RLS files pass on both a clean local reset and the current Production export restored to disposable local Supabase after applying the missing 0023 helper and ordered 0025/0026",
   "github_ci": "unverified for the current candidate until the exact commit is published and a fresh run is linked",
   "vercel": "unverified for the current candidate; a local build does not prove preview or Production deployment",
-  "production": "no current Premium Operations website deployment, authenticated dashboard acceptance, Supabase migration, data mutation, or live smoke is claimed",
-  "backup_restore": "historical database-level evidence exists; strict restored application/dashboard/RLS proof remains gated",
+  "production": "read-only Supabase reconciliation and current logical export are complete; no Premium entitlement was activated and the candidate website, migrations, merge, and final live smoke remain pending",
+  "backup_restore": "PASS for the 2026-07-22 code-release gate: current roles/schema/public-data exports were excluded from git, restored to disposable local Supabase without exposing row content, upgraded through 0023/0025/0026, and passed 14/14 RLS, 17/17 authenticated dashboard/Admin, 2/2 active quote GET, and independent EN/fr-CA submissions; real-data operations policy remains separately gated",
   "real_customer_data": "blocked pending safe-target proof and explicit owner approval",
   "paid_pilot": "blocked pending real-data approval and payment, support, refund, incident, backup, and rollback readiness",
   "code_verification": {
@@ -49,33 +49,24 @@
     "ui_matrix": "PASS: zero failures across the local EN/fr-CA light/dark route, metadata, sitemap, robots, and viewport contract matrix",
     "quote_smoke": "PASS: 2/2 inactive/unavailable EN/fr-CA local GET checks; no submission or data write",
     "image_optimizer_smoke": "PASS: HTTP 200 image/png through the Next image optimizer using the production build",
-    "browser_interaction": "gated: no Chrome/Chromium binary is installed; server health passed before the runner reported the environment gate",
-    "authenticated_dashboard_smoke": "gated: no approved no-secret authenticated session or disposable synthetic dashboard target is available",
-    "rls_execution": "gated: no classifier-approved local/disposable DATABASE_URL is available; managed Supabase and Production are prohibited test targets",
+    "browser_interaction": "PASS: Vercel Preview public matrix covered Home, Features, Pricing, and FAQ in EN/fr-CA at desktop and mobile with no H1, overflow, broken-image, or locale failure; restored-target browser submissions reached EN and fr-CA success states",
+    "authenticated_dashboard_smoke": "PASS: restored-target dense synthetic owner/founder smoke passed 17/17 including /dashboard/operations, /founder redirect, and every guarded Admin panel",
+    "rls_execution": "PASS: 14/14 on a clean local reset and 14/14 on the current Production export restored to disposable local Supabase after the reconciled migration sequence",
     "github_ci": "gated: publish the exact candidate and link a fresh exact-commit run",
     "vercel_preview": "gated: verify an exact-commit preview only after publication",
     "production_public_acceptance": "gated: run only after exact source publication, confirmed deployment target, and owner-approved read-only procedure",
-    "production_database": "not run and not authorized"
+    "production_database": "read-only reconciliation and logical export complete; write/apply pending the exact-commit release gate"
   },
   "blockers": [
-    "approved local/disposable target for ordered Premium Operations migrations 0025 and 0026 plus RLS/tenant-isolation proof",
     "exact-commit publication and fresh GitHub CI evidence",
-    "verified Vercel preview before any Production deployment claim",
-    "approved safe authenticated dashboard QA target",
     "live Google provider callback and owner sign-in QA",
-    "read-only-first managed Supabase reconciliation and separately approved Production apply plan",
     "owner-approved no-secret Production read-only acceptance procedure after deployment",
-    "restored-target application/dashboard/RLS proof",
     "explicit owner approval for real customer data",
     "paid-pilot payment/support/refund/incident/rollback rehearsal"
   ],
   "owner_actions": [
-    "after local verification, explicitly authorize the exact repository, branch, and commit destination before push",
-    "authorize a classifier-approved local/disposable database target for ordered migration 0025 then 0026 and RLS execution",
-    "after a passing exact-commit CI and Vercel preview, separately approve any Production database migration plan",
     "complete one live Google sign-in and callback check without sharing credentials",
-    "authorize a disposable local/synthetic authenticated QA target or perform the documented no-secret owner check",
     "approve real-data and paid-pilot gates only after their evidence prerequisites"
   ],
-  "next_gate": "record the final local commit, obtain exact-destination authorization for publication, and obtain a safe disposable database for ordered 0025 + 0026 RLS/concurrency proof before any separately approved Production work"
+  "next_gate": "publish the hardened candidate, pass fresh exact-commit CI and Preview acceptance, apply the reconciled 0023/0025/0026 Production sequence without enabling entitlements, merge PR #11, and complete final Vercel/Production read-only acceptance"
 }
