@@ -12,6 +12,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Closed PR #11 merge, main CI, Vercel Production, public matrix, Owner/Operations/Admin, and RTL structured-input acceptance.
  * - 2026-07-22: Recorded candidate CI/Preview success and completed Production migration/schema parity through `0026` with zero Premium rows.
  * - 2026-07-22: Closed clean-local and restored-target Premium Operations database/RLS/concurrency/authenticated/intake gates; retained exact-commit and live Production release gates.
  * - 2026-07-22: Added exhaustive Persian owner-route map coverage and exact protected-value evidence.
@@ -92,7 +93,7 @@ Status vocabulary: `DONE` means implemented and source-verified; `IN PROGRESS` m
 | P0 | Premium Operations `0025` + `0026` local proof | DONE | Ordered clean-local and restored-export application pass grants, entitlement, RLS `14/14`, tenant isolation, atomic lifecycle, overlap, provenance/currentness, founder audit, and seven two-session concurrency pairs. |
 | P0 | Premium Operations public catalog | DONE in source/local gates | Product, Pricing, and FAQ describe the three optional add-ons in EN/fr-CA, keep separate pricing unquoted, and preserve manager review/manual copy/no-booking boundaries; exact-tree public tests and production-server smokes pass. |
 | P0 | Current dependency and exact-tree verification | DONE | Frozen pnpm `10.34.5` install; zero full/Production audit vulnerabilities; lint/typecheck; `359/359` unit/source; static RLS/grant audit; Next.js `16.2.11` build; public `46/46`; responsive `20/20`; UI zero; Quote `2/2`; image optimizer HTTP 200. Chrome browser, authenticated, and database-backed gates remain explicit. |
-| P0 | Current publication, CI, Vercel, and Production acceptance | IN PROGRESS | Candidate `9ae149c` passed GitHub App validation run `29939791308`, Vercel Preview `9Akuehj14QYGPpAM4pFYBT3JySih`, and public Preview `16/16`; Production database matches through `0026`. Merge, Production deployment, and final live acceptance remain. |
+| P0 | Current publication, CI, Vercel, and Production acceptance | DONE | PR #11 merged as `6fd1f96`; main CI `29940488561`, Vercel Production `GtnfSgbNT3u2tSgjiVnmKxVXgpAY`, public Production `16/16`, Owner Overview, locked Operations, Founder Admin, and Persian/Arabic RTL structured-input acceptance pass. |
 | P0 | V4.7 founder environment activation | DONE / OWNER + SYNTHETIC EVIDENCE | The authenticated owner screenshot renders the server-role-gated Founder Admin entry; restored-target founder smoke opens every guarded Admin panel without storing the real address in source. |
 | P0 | First-session and daily Guide | DONE | EN/fr-CA four-step first visit, daily routine, full route map, pre-share checklist, manual boundaries, and practical troubleshooting implemented. |
 | P0 | Progressive Add Field workflow | DONE | Empty-first builder, five recommended cleaning starters, live customer preview, and collapsed priority/key controls implemented in EN/fr-CA. |
@@ -119,7 +120,7 @@ Status vocabulary: `DONE` means implemented and source-verified; `IN PROGRESS` m
 | P0 | V2.1 Production public read-only acceptance | DONE | `bizpilo.com`: public 46/46; bilingual responsive 20/20; final UI matrix zero failures; inactive Quote GET 2/2 EN/fr-CA; HTTPS/security headers present. |
 | P1 | Real browser public interaction smoke | DONE for Preview | In-app Chromium covered Home, Features, Pricing, and FAQ in EN/fr-CA at desktop/mobile with no overflow, broken images, H1, locale, or first-viewport scroll failures. |
 | P0 | Authenticated local/synthetic browser smoke | DONE | Restored-target dense owner/founder smoke passes `17/17`, Premium Operations is included, and all synthetic data was removed by final reset. |
-| P0 | Production authenticated read-only visual QA | GATED | Requires owner-approved credentials/session and no-secret QA procedure. |
+| P0 | Production authenticated read-only visual QA | DONE for authorized founder session | Existing no-secret Owner session loaded Overview, Premium Operations, and Founder Admin read-only; no entitlement, setting, lead, user, or business action was invoked. |
 | P0 | Managed Supabase migration/restore reconciliation | DONE | Current export/restore proof passes; verified history is complete through `0026`; idempotent drift migrations `0020`/`0021`/`0023`/`0024` and ordered Premium Operations `0025`/`0026` are applied; semantic schema parity and zero Premium rows are verified. |
 | P0 | Google OAuth live enablement | GATED | Application path exists; external provider/configuration and owner QA are unverified. |
 | P0 | Real customer data / paid pilot | GATED | Requires explicit owner approval after restored-target, support, payment/refund, and rollback gates. |
@@ -146,6 +147,8 @@ Current Premium Operations hardening candidate:
 - Current database-backed RLS and two-session concurrency proof: PASS; `14/14` RLS on clean/restored targets and all seven two-session lock pairs passed without deadlock.
 - Current authenticated restored-target smoke: PASS `17/17`, including `/dashboard/operations`, `/founder` redirect, and every guarded Admin panel.
 - Current active quote proof: PASS `2/2` EN/fr-CA GET plus independent localized submissions after respecting the anti-bot minimum age.
+- Current application release: PASS at merge SHA `6fd1f96`; main CI `29940488561` and Vercel Production `GtnfSgbNT3u2tSgjiVnmKxVXgpAY` succeeded.
+- Current Production acceptance: PASS public `16/16`; authorized Owner Overview, locked Premium Operations, Founder Admin, Persian/Arabic RTL, and `19/19` structured LTR inputs passed without mutations.
 
 - V4.7 TypeScript: PASS.
 - V4.7 ESLint: PASS, zero warnings.

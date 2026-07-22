@@ -13,6 +13,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Closed PR #11 merge, main CI/Vercel Production, public 16-state, and authorized Owner/Operations/Admin read-only acceptance.
  * - 2026-07-22: Recorded the completed Production migration history repair, drift replay, Premium Operations apply, and zero-entitlement verification.
  * - 2026-07-22: Closed the ordered local/restore Premium Operations proof and current backup/schema/rollback preparation while preserving live release, real-data, and paid-pilot gates.
  * - 2026-07-22: Corrected the historical V4.7 local object identity and recorded the ordered `0025` + `0026` non-Production proof gate.
@@ -51,8 +52,8 @@ The first pilot remains cleaning-focused, manual-first, and owner-reviewed. BizP
 - [x] V4.7 includes tenant-scoped Reports; configurable list/tabs/steps quote-form sections; optional Reports/Guide visibility; and one guarded Founder Admin shell entry.
 - [x] Google provider handling does not silently create a workspace; live callback evidence remains Gate B work.
 - [x] Local Git contains historical V4.7 commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. This is local-object evidence only.
-- [ ] Exact candidate commit is published to a freshly verified remote ref and its CI/deployment results are linked to that commit.
-- [ ] Exact-release Production read-only smoke is re-run after target confirmation; no Production mutation occurs.
+- [x] Exact application release is merged to `main` as `6fd1f96`; main CI `29940488561` and Vercel Production `GtnfSgbNT3u2tSgjiVnmKxVXgpAY` pass.
+- [x] Exact-release Production read-only smoke passes public `16/16` plus authorized Owner Overview, locked Premium Operations, and Founder Admin without action mutations.
 - [x] Premium Operations migrations `0025` then `0026` pass approved local/disposable migration, RLS, tenant-isolation, lifecycle, seven-pair concurrency, authenticated UI, and active EN/fr-CA quote proof before the Production migration plan.
 
 ## Gate B — authenticated synthetic acceptance

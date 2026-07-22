@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-07-22T13:20:00-04:00",
+  "generated_at": "2026-07-22T13:35:00-04:00",
   "repository": "Moo0OooH/bizpilot-ai",
-  "candidate_branch": "agent/premium-operations-release (local worktree)",
-  "candidate_commit": "the immutable local SHA is recorded after this non-self-referential evidence snapshot; use git rev-parse HEAD",
+  "candidate_branch": "main",
+  "candidate_commit": "6fd1f96a11df4d21a6b7f423e88746b08d2b0fc6 (PR #11 merge and application release SHA); the later documentation-attestation commit is non-self-referential and resolved with git rev-parse HEAD",
   "historical_dashboard_v47_commit": "d9e25bbf50ccf42de2da4d70aa235ab7d289dc91",
   "historical_dashboard_v47_tree": "17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d",
   "historical_dashboard_v47_local_identity": "d9e25bbf50ccf42de2da4d70aa235ab7d289dc91 is present with the recorded tree; a82af72bf8960b2bce1583e6446abca706c2a2bc is absent; local object identity does not independently revalidate historical external evidence",
   "historical_release_evidence": "preserved as historical records only and not independently revalidated in this candidate; it is not evidence for the current Premium Operations candidate",
-  "premium_operations_migration_sequence": "0025_premium_operations_addons.sql followed by additive 0026_premium_operations_schedule_integrity.sql passed ordered application, full RLS/tenant-isolation, seven concurrency pairs, restored application, authenticated dashboard/Admin, and EN/fr-CA intake proof on disposable local Supabase; Production remains pending exact-commit CI and the recorded apply sequence",
+  "premium_operations_migration_sequence": "0025_premium_operations_addons.sql followed by additive 0026_premium_operations_schedule_integrity.sql passed ordered local/restore proof and is applied in Production after idempotent drift repair; all five new Production tables remain empty",
   "runtime": {
     "node": ">=24 <25",
     "pnpm": "10.34.5",
@@ -17,9 +17,9 @@
   },
   "documentation_version": "v2.1",
   "package_version": "0.2.2",
-  "product_status": "manual-first configurable Smart Intake and owner-reviewed reply preparation are implemented; Premium Operations hardening and its public catalog are current source candidates; real customer data and paid pilot remain blocked",
-  "public_site": "EN/fr-CA Product, Pricing, and FAQ describe the three optional separately priced Premium Operations add-ons without quoting an add-on amount; local exact-tree build, public Preview matrix, and restored-target active quote GET/submission proof pass, while the refreshed commit publication and final live acceptance remain pending",
-  "dashboard": "the protected /dashboard/operations source implements priority search/filtering, manager-reviewed group drafts with manual copy, and internal availability coordination; restored-target authenticated dashboard/Admin smoke passes 17/17 and final Production read-only acceptance remains pending",
+  "product_status": "manual-first configurable Smart Intake and owner-reviewed reply preparation are implemented; Premium Operations hardening and its public catalog are released on main; real customer data and paid pilot remain blocked",
+  "public_site": "EN/fr-CA Product, Pricing, and FAQ describe the three optional separately priced Premium Operations add-ons without quoting an add-on amount; local, Preview, and Production public acceptance pass",
+  "dashboard": "the protected /dashboard/operations release implements priority search/filtering, manager-reviewed group drafts with manual copy, and internal availability coordination; restored-target 17/17 and Production Owner/Operations/Admin read-only acceptance pass",
   "dashboard_interface_languages": "English, Canadian French, Persian, Arabic, and Spanish are isolated from public/customer/AI language; Persian and Arabic are RTL while numeric, date, time, phone, and structured inputs remain Latin LTR; final editorial-fallback status follows docs/dashboard-v4/CURRENT.md",
   "founder_admin": "guarded founder source lists add-on state and explicitly enables or disables supported entitlements through the service-role path with audit logging; no customer self-activation or self-serve billing exists; restored-target authenticated Admin smoke passes every guarded panel and no Production entitlement was enabled",
   "quote_intake": "the source candidate adds canonical template-linked preferred_time with database field type time when Availability Coordination is active; preferred_date plus preferred_time use the fixed America/Toronto contract, UTC storage, and fail-closed daylight-saving validation",
@@ -29,9 +29,9 @@
   "google_auth": "application path is implemented with login-only scopes, exact safe callbacks, and protection against silent workspace creation; live provider callback and owner sign-in QA remain unverified",
   "supabase": "PASS through 0026 on bizpilot-production: verified history repaired, idempotent drift migrations 0020/0021/0023/0024 replayed, ordered 0025/0026 applied, and final semantic schema parity verified; no Premium entitlement or synthetic Production row was created",
   "rls": "PASS: 14/14 executable RLS files pass on both a clean local reset and the current Production export restored to disposable local Supabase after applying the missing 0023 helper and ordered 0025/0026",
-  "github_ci": "PASS for release candidate 9ae149c57135849b399f175c2eadf2f23d69eddd: GitHub App validation run 29939791308 completed successfully",
-  "vercel": "PASS for release candidate 9ae149c: Vercel Preview deployment 9Akuehj14QYGPpAM4pFYBT3JySih is Ready and its 16-state public visual matrix has zero failures; Production deployment remains pending merge",
-  "production": "Supabase migrations and semantic schema parity through 0026 are complete; Premium Operations tables are empty and no entitlement was activated; PR merge, Vercel Production deployment, and final live smoke remain pending",
+  "github_ci": "PASS: PR #11 merged as 6fd1f96a11df4d21a6b7f423e88746b08d2b0fc6 and main CI run 29940488561 completed successfully",
+  "vercel": "PASS: Production deployment GtnfSgbNT3u2tSgjiVnmKxVXgpAY is Ready for merge SHA 6fd1f96; candidate Preview deployments also passed",
+  "production": "PASS for the Premium Operations code release: Supabase matches through 0026 with empty Premium tables, main deployment is Ready, public 16/16 and authenticated Owner/Operations/Admin read-only acceptance pass; real customer data and paid-pilot approval remain separate",
   "backup_restore": "PASS for the 2026-07-22 code-release gate: current roles/schema/public-data exports were excluded from git, restored to disposable local Supabase without exposing row content, upgraded through 0023/0025/0026, and passed 14/14 RLS, 17/17 authenticated dashboard/Admin, 2/2 active quote GET, and independent EN/fr-CA submissions; real-data operations policy remains separately gated",
   "real_customer_data": "blocked pending safe-target proof and explicit owner approval",
   "paid_pilot": "blocked pending real-data approval and payment, support, refund, incident, backup, and rollback readiness",
@@ -52,14 +52,13 @@
     "browser_interaction": "PASS: Vercel Preview public matrix covered Home, Features, Pricing, and FAQ in EN/fr-CA at desktop and mobile with no H1, overflow, broken-image, or locale failure; restored-target browser submissions reached EN and fr-CA success states",
     "authenticated_dashboard_smoke": "PASS: restored-target dense synthetic owner/founder smoke passed 17/17 including /dashboard/operations, /founder redirect, and every guarded Admin panel",
     "rls_execution": "PASS: 14/14 on a clean local reset and 14/14 on the current Production export restored to disposable local Supabase after the reconciled migration sequence",
-    "github_ci": "PASS: App validation run 29939791308 succeeded for candidate 9ae149c",
-    "vercel_preview": "PASS: deployment 9Akuehj14QYGPpAM4pFYBT3JySih Ready; 16/16 EN/fr-CA desktop/mobile public states passed",
-    "production_public_acceptance": "gated: run only after exact source publication, confirmed deployment target, and owner-approved read-only procedure",
+    "github_ci": "PASS: candidate runs 29939791308 and 29940379497 plus main run 29940488561 succeeded",
+    "vercel_preview": "PASS: candidate Preview 9Akuehj14QYGPpAM4pFYBT3JySih and Production GtnfSgbNT3u2tSgjiVnmKxVXgpAY are Ready; Preview and Production public matrices passed 16/16",
+    "production_public_acceptance": "PASS: bizpilo.com returned zero failures across 16 EN/fr-CA desktop/mobile public states; authenticated Owner Overview, locked Premium Operations, and Founder Admin loaded without runtime/schema errors; Persian/Arabic RTL and 19/19 structured LTR inputs passed",
     "production_database": "PASS for release schema: repaired verified history, replayed idempotent drift migrations 0020/0021/0023/0024, applied 0025/0026, matched all 36 tables, 54 functions, 65 indexes, and 87 policies with only harmless column-order dump variance; all five Premium Operations tables contain zero rows"
   },
   "blockers": [
     "live Google provider callback and owner sign-in QA",
-    "owner-approved no-secret Production read-only acceptance procedure after deployment",
     "explicit owner approval for real customer data",
     "paid-pilot payment/support/refund/incident/rollback rehearsal"
   ],
@@ -67,5 +66,5 @@
     "complete one live Google sign-in and callback check without sharing credentials",
     "approve real-data and paid-pilot gates only after their evidence prerequisites"
   ],
-  "next_gate": "record the completed Production schema migration evidence in the candidate, pass the docs-only CI refresh, merge PR #11, and complete final Vercel/Production public plus authenticated read-only acceptance"
+  "next_gate": "publish this final documentation attestation; branch and temporary-export cleanup are complete, while real customer data and paid-pilot work remain blocked until their separate privacy, support, payment, incident, Google callback, and owner-decision gates are closed"
 }

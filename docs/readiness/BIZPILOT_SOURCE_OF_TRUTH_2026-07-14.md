@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Closed PR #11 merge, main CI/Vercel Production, public matrix, authorized protected, and RTL input acceptance for application release `6fd1f96`.
  * - 2026-07-22: Recorded candidate CI/Preview success and completed Production migration/schema parity through `0026` without enabling entitlements.
  * - 2026-07-22: Closed Premium Operations local/restore/RLS/concurrency/authenticated/intake proof and recorded the current Production reconciliation/export state.
  * - 2026-07-22: Corrected the historical V4.7 local object identity while keeping external evidence and the current candidate independently gated.
@@ -37,7 +38,7 @@
 
 BizPilot is implemented as a bilingual, manual-first Smart Intake and reply-preparation product for service businesses, with cleaning as the first complete pilot vertical. Website V4 explains the problem and workflow. Dashboard V4.7 supports ordered setup, configurable public-form title and section structure, list/tab/step presentation, public quote branding, triage, missing-information review, draft edit/copy, manual follow-up, and submitted-request reporting by privacy-safe tracked placement. Documentation V2.1 provides one phase/dependency plan and one complete EN/fr-CA route/workflow audit.
 
-Premium Operations is a separately sold add-on release candidate for priority work, reviewed bulk-reply drafts, and internal availability coordination. It adds ordered migrations `0025_premium_operations_addons.sql` then additive `0026_premium_operations_schedule_integrity.sql`; its local and strict restored-target gates pass, but it is not yet a live Production claim. It does not turn BizPilot into a CRM, booking system, or automatic messaging system.
+Premium Operations is a separately sold add-on release for priority work, reviewed bulk-reply drafts, and internal availability coordination. It adds ordered migrations `0025_premium_operations_addons.sql` then additive `0026_premium_operations_schedule_integrity.sql`; its local, restored-target, Production schema, deployment, and read-only acceptance gates pass. It does not turn BizPilot into a CRM, booking system, or automatic messaging system.
 
 This code release does **not** approve real customer data, a paid pilot, Google login as live, remote migration changes, or Production data mutation. Those remain separately gated even when lint, tests, and build pass.
 
@@ -64,14 +65,14 @@ This code release does **not** approve real customer data, a paid pilot, Google 
 
 ## Current application routes
 
-The historical V4.7 intake work retains the protected owner route `/dashboard/reports` introduced in V4.6 and adds no public route. Premium Operations adds the protected, entitlement-gated source route `/dashboard/operations`; ordered `0025` and additive `0026` now pass the required non-Production database proof, while exact-commit publication and live Production release remain pending.
+The historical V4.7 intake work retains the protected owner route `/dashboard/reports` introduced in V4.6 and adds no public route. Premium Operations adds the protected, entitlement-gated route `/dashboard/operations`; ordered `0025` and additive `0026`, exact-commit publication, and live Production release acceptance now pass.
 
 | Surface | Canonical routes |
 | --- | --- |
 | Public | `/`, `/features`, `/demo`, `/pricing`, `/pilot`, `/faq`, `/trust`, `/privacy`, `/security`, `/terms`; unmatched URLs use the shared bilingual 404 state |
 | Intake | `/quote`, `/quote/[slug]`, `/quote/[slug]/success` |
 | Auth | `/auth/sign-in`, `/auth/sign-up`, `/auth/check-email`, `/auth/forgot-password`, `/auth/reset-password`, `/auth/callback` |
-| Owner | `/dashboard`, `/dashboard/leads`, `/dashboard/leads/[leadId]`, `/dashboard/reports`, `/dashboard/configuration`, `/dashboard/business-profile`, `/dashboard/settings`, `/dashboard/guide`; source candidate `/dashboard/operations` (entitlement-gated, not yet release-evidenced) |
+| Owner | `/dashboard`, `/dashboard/leads`, `/dashboard/leads/[leadId]`, `/dashboard/operations` (entitlement-gated), `/dashboard/reports`, `/dashboard/configuration`, `/dashboard/business-profile`, `/dashboard/settings`, `/dashboard/guide` |
 | Compatibility | `/dashboard/quote-setup` redirects to Quote Setup |
 | Internal | `/founder` performs authorization then redirects to `/admin`; `/admin` is founder-only |
 
@@ -103,7 +104,7 @@ The final verification ledger is maintained in `docs/dashboard-v4/PHASE_PROGRESS
 
 Local Git verifies that historical V4.7 commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent from this checkout. These local object facts do not independently revalidate a remote publication, CI run, Vercel deployment, or Production acceptance and are not evidence for the current Premium Operations candidate.
 
-The current Premium Operations exact-tree local gate passes: frozen pnpm `10.34.5` install; zero-vulnerability full and Production dependency audits; lint; typecheck; `359/359` unit/source tests; static Supabase RLS/grant audit; Next.js `16.2.11` production build; public `46/46`; responsive `20/20`; UI matrix with zero failures; inactive Quote `2/2`; and image optimizer HTTP 200. Database-backed RLS passes `14/14` on clean local and restored targets, all seven two-session concurrency pairs pass, authenticated dashboard/Admin passes `17/17`, and active EN/fr-CA GET and independent submissions pass. Fresh exact-commit GitHub CI, Vercel, and Production remain release gates.
+The current Premium Operations release gate passes: frozen pnpm `10.34.5`; zero-vulnerability audits; lint; typecheck; `359/359` unit/source tests; static Supabase audit; Next.js `16.2.11` build; RLS `14/14` on clean/restored targets; seven concurrency pairs; restored dashboard/Admin `17/17`; active EN/fr-CA GET and submissions; application merge `6fd1f96`; main CI `29940488561`; Vercel Production `GtnfSgbNT3u2tSgjiVnmKxVXgpAY`; public Production `16/16`; and authorized Owner/Operations/Admin plus RTL structured-input acceptance.
 
 Premium Operations has a distinct release record: current roles/schema/public-data export and disposable restore pass; verified Production migration history is complete through `0026`; idempotent drift migrations `0020`, `0021`, `0023`, and `0024` were replayed before ordered `0025`/`0026`; semantic schema parity passes and all five Premium tables are empty. The owner authorized merge, deployment, and read-only acceptance for this release. No entitlement activation or real-customer test write is included.
 
@@ -111,7 +112,7 @@ The owner-provided authenticated screenshot renders the role-gated Founder Admin
 
 Commit `c78596b1f1530ff3586b9b076702822b0b711802`, CI run `29517118330`, and Vercel target `CbDDUpqxCVMoG3L8hTgGRoymvi5m` remain historical Website V4 / Documentation V2.1 evidence only. That public-site release passed ESLint with zero warnings, TypeScript, `249/249` unit tests, the Next.js production build, local and Production public route `46/46`, bilingual responsive `20/20`, the final UI matrix with zero failures, and inactive dynamic Quote GET `2/2` in EN/fr-CA. This historical evidence must not be relabeled as Dashboard V4.7 acceptance.
 
-Live Google callback and final Production protected acceptance still require the appropriate external configuration/session. RLS and authenticated restored-target acceptance are complete. Managed Production remains prohibited for synthetic writes.
+Live Google callback still requires its external provider configuration/session. RLS, authenticated restored-target, and authorized Production protected read-only acceptance are complete. Managed Production remains prohibited for synthetic writes.
 
 This record authorizes only the owner-requested reconciled release migrations and deployment. It does not authorize Production cleanup, user deletion, test-data insertion, entitlement activation, or real-customer workflow mutation.
 
@@ -120,13 +121,13 @@ Repository hygiene requires a fresh remote fetch before making publication or br
 ## Gate sequence and current state
 
 1. **Dashboard V4.7 local Git identity — RECORDED:** commit `d9e25bbf…` is present with tree `17d6…`; the previously documented `a82af72…` object is absent from this checkout.
-2. **Dashboard V4.7 remote publication/deployment/Production acceptance — GATED / RE-VERIFY:** fetch the target ref and map fresh CI, deployment, and no-write evidence to an exact commit.
+2. **Dashboard/Premium Operations remote publication and Production acceptance — PASS:** PR #11 merged as `6fd1f96`; main CI, Vercel Production, public `16/16`, and authorized protected read-only acceptance pass.
 3. **Premium Operations `0025` + `0026` local proof — PASS:** ordered clean/restored migration, RLS/tenant isolation, lifecycle, priority, availability conflict, provenance/currentness, seven concurrency pairs, authenticated UI, and active bilingual intake pass.
-4. **Remote branch hygiene:** owner-authenticated Prompt 00 retires revalidated merged refs and classifies/archives unmerged refs before any deletion.
+4. **Remote branch hygiene — PASS:** merged `agent/premium-operations-release`, superseded `agent/dashboard-v47-form-layout`, and merged local `codex/website-v3-rebuild` refs were retired; only `main` remains locally and remotely.
 5. **Safe authenticated QA target — PASS for release candidate:** disposable restored local Supabase passed owner/founder route smoke; normal-owner Admin denial remains a separate final authorization check.
 6. **External OAuth acceptance:** confirm Google/Supabase provider configuration and complete one live owner callback QA; the app must not silently create a workspace.
 7. **Managed database reconciliation and apply — PASS:** read-only audit, current export, disposable restore, restored RLS/app proof, rollback source, history repair, idempotent drift replay, ordered `0025`/`0026`, semantic schema parity, and zero Premium rows all pass.
-8. **Production authenticated read-only acceptance:** protected dashboard visual QA requires an owner-approved no-secret session procedure.
+8. **Production authenticated read-only acceptance — PASS:** existing authorized no-secret session loaded Owner Overview, locked Premium Operations, and Founder Admin without invoking any mutation.
 9. **Real customer data:** explicit owner approval only after restored-target app/dashboard/RLS proof.
 10. **Paid pilot:** support, payment/manual billing, refund, incident, backup, and rollback rehearsal after the real-data gate.
 
@@ -134,10 +135,7 @@ The copy-ready, least-privilege prompts for all external gates are in `prompts/B
 
 ## Owner decisions still required
 
-- Run Prompt 00 with owner-authenticated GitHub access; classify or approve archival for the four unmerged legacy branches.
 - Complete one live Google login/callback QA after confirming the external provider configuration; do not share credentials.
-- Authorize and provide access for a safe authenticated QA target.
-- Approve an explicit local/disposable target for ordered migrations `0025` then `0026` before any database test, then approve any managed Supabase inspection or later change only after a read-only plan, backup confirmation, disposable restore, and restored RLS evidence.
 - Ensure `BIZPILOT_IP_HASH_SALT` is stored as a Production secret before enabling public-submission abuse logging; never disclose its value.
 - Approve real-data and paid-pilot gates only after their prerequisites have evidence.
 

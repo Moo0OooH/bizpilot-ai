@@ -45,6 +45,9 @@
 - Candidate `9ae149c` passed GitHub App validation run `29939791308`, Vercel Preview `9Akuehj14QYGPpAM4pFYBT3JySih`, and all `16` EN/fr-CA desktop/mobile public Preview states.
 - Repaired verified Production migration history and replayed the idempotent `0020`, `0021`, `0023`, and `0024` drift migrations before applying `0025` and `0026`; final Production schema matches `36` tables, `54` functions, `65` indexes, and `87` policies.
 - Verified all five new Premium Operations Production tables contain zero rows, so no workspace entitlement or operational record was activated by the migration.
+- Marked PR #11 ready and merged it to `main` as application release `6fd1f96`; main CI run `29940488561` and Vercel Production `GtnfSgbNT3u2tSgjiVnmKxVXgpAY` succeeded.
+- Production passed the `16/16` EN/fr-CA desktop/mobile public matrix and authorized read-only Owner Overview, locked Premium Operations, Founder Admin, Persian/Arabic RTL, and all `19` structured LTR input checks.
+- Retired both remote feature branches and the merged local Website V3 branch so only `main` remains; permanently removed the temporary release export and schema-comparison directories after restore and Production acceptance passed.
 
 ## 2026-07-17 — V4.7 configurable intake and shell finalization
 
