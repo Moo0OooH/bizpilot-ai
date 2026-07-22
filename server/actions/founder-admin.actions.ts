@@ -9,8 +9,9 @@
  * - server/services/founder-admin.service.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added the founder-only Premium Operations entitlement update action with strict add-on and status validation.
  * - 2026-07-05: Added complete source header changelog for founder admin actions.
  * - 2026-05-22: Created founder-only admin server actions.
  * ============================================================
@@ -25,6 +26,8 @@ import { getSafeUserErrorMessage } from "@/server/errors/safe-error";
 import { getCurrentUser } from "@/server/services/auth.service";
 import {
   readFounderBusinessStatus,
+  readFounderAddonKey,
+  readFounderAddonStatus,
   readFounderPlanSlug,
   readFounderSessionTimeoutMinutes,
   readFounderSessionTimeoutMode,
@@ -34,6 +37,7 @@ import {
   requestFounderUserPasswordReset,
   setFounderUserTemporaryPassword,
   updateFounderInternalNote,
+  updateFounderAddonEntitlement,
   updateFounderPlan,
   updateFounderQuoteLink,
   updateFounderSessionPolicy,
@@ -76,6 +80,9 @@ function redirectWithFounderAdminError(error: unknown): never {
       value === "Founder admin is not configured." ||
       value === "Founder admin access required." ||
       value === "Invalid plan." ||
+      value === "Invalid Premium add-on." ||
+      value === "Invalid Premium add-on status." ||
+      value === "Use 240 characters or fewer for the Premium add-on note." ||
       value === "Invalid business status." ||
       value === "Invalid workspace kind." ||
       value === "Hard cleanup is blocked for production workspaces." ||
@@ -249,6 +256,39 @@ export async function updateFounderPlanAction(formData: FormData): Promise<never
 
   revalidatePath("/admin");
   redirect("/admin?notice=Plan%20updated.");
+}
+
+export async function updateFounderAddonEntitlementAction(
+  formData: FormData,
+): Promise<never> {
+  let businessId = "";
+  try {
+    const note = readOptionalFormValue(formData, "note");
+    const user = await getCurrentUser();
+    businessId = readRequiredFormValue(formData, "businessId");
+
+    await updateFounderAddonEntitlement({
+      addonKey: readFounderAddonKey(
+        readRequiredFormValue(formData, "addonKey"),
+      ),
+      businessId,
+      status: readFounderAddonStatus(
+        readRequiredFormValue(formData, "addonStatus"),
+      ),
+      user,
+      ...(note ? { note } : {}),
+    });
+  } catch (error) {
+    redirectWithFounderAdminError(error);
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/dashboard/operations");
+  redirect(
+    `/admin?adminPanel=businesses&businessId=${encodeURIComponent(
+      businessId,
+    )}&notice=Premium%20add-on%20updated.`,
+  );
 }
 
 export async function updateFounderStatusAction(formData: FormData): Promise<never> {

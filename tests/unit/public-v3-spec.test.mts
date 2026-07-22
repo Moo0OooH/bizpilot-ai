@@ -10,8 +10,9 @@
  * - docs/website-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added bilingual Premium Operations commercial, manual-review, no-auto-send, and internal-availability boundary guards.
  * - 2026-07-17: Required three bilingual proof points per product-route introduction and explanatory first-stage Demo context.
  * - 2026-07-17: Added bilingual editorial-introduction and French pilot-term quality guards for the full public redesign.
  * - 2026-07-16: Clarified that seven bilingual copy modules feed the focused five-section homepage renderer.
@@ -185,6 +186,60 @@ describe("Website V3 bilingual content contract", () => {
     assert.doesNotMatch(
       JSON.stringify(frenchPricing),
       /\bsetup\b|\/month\b/i,
+    );
+  });
+
+  it("presents Premium Operations as separate manual-first add-ons without invented prices", () => {
+    const english = getPublicV3Spec("en");
+    const french = getPublicV3Spec("fr-CA");
+    const expectedKeys = [
+      "priority-workbench",
+      "bulk-reply-review",
+      "availability-coordination",
+    ];
+
+    for (const spec of [english, french]) {
+      assert.deepEqual(
+        spec.premiumOperations.cards.map((card) => card.key),
+        expectedKeys,
+      );
+      assert.equal(spec.premiumOperations.cards.length, 3);
+      assert.doesNotMatch(
+        JSON.stringify(spec.premiumOperations),
+        /\$\s*\d|\d+\s*\$/u,
+        "Premium add-on copy must not invent a dollar price.",
+      );
+    }
+
+    assert.match(english.premiumOperations.body, /separately enabled, paid add-ons/i);
+    assert.match(english.premiumOperations.pricingNote, /not included in the base pilot tiers/i);
+    assert.match(english.premiumOperations.boundary, /reviewed and copied manually/i);
+    assert.match(
+      english.premiumOperations.cards[1]?.boundary ?? "",
+      /no campaign delivery.*automatic send/i,
+    );
+    assert.match(
+      english.premiumOperations.cards[2]?.boundary ?? "",
+      /internal coordination only.*booking confirmation/i,
+    );
+    assert.match(
+      english.faqItems.find((item) => item.key === "pricing")?.answer ?? "",
+      /paid add-ons.*confirmed separately/i,
+    );
+
+    assert.match(
+      french.premiumOperations.body,
+      /modules complémentaires payants, activés séparément/i,
+    );
+    assert.match(french.premiumOperations.pricingNote, /pas incluses dans les tarifs de base/i);
+    assert.match(french.premiumOperations.boundary, /copiées manuellement/i);
+    assert.match(
+      french.premiumOperations.cards[1]?.boundary ?? "",
+      /aucune campagne.*envoi automatique/i,
+    );
+    assert.match(
+      french.premiumOperations.cards[2]?.boundary ?? "",
+      /coordination interne seulement.*confirmation de réservation/i,
     );
   });
 

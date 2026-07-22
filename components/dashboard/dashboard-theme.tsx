@@ -11,12 +11,14 @@
  * - lib/theme.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-21
  * Change Log:
  * - 2026-07-16: Restored the compact desktop sidebar column as the single wide-screen route navigation.
  * - 2026-07-16: Removed the obsolete fixed desktop sidebar column so the centered navigation owns the full protected viewport.
  * - 2026-07-04: Added default dashboard display data attributes for density, guides, and insights.
  * - 2026-07-14: Removed obsolete local density, guide, and insight attributes after dashboard simplification.
+ * - 2026-07-21: Applied dashboard-only language direction and normalized structured inputs to Latin LTR values.
+ * - 2026-07-21: Normalized dynamically inserted structured inputs even when the input node itself is added directly.
  * ============================================================
  */
 
@@ -33,9 +35,14 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
+import type {
+  DashboardInterfaceLanguage,
+  DashboardInterfaceTextDirection,
+} from "@/lib/i18n/dashboard-interface";
 
 type ThemeContextValue = Readonly<{
   labels: {
@@ -75,7 +82,9 @@ function persistTheme(nextTheme: ThemePreference): ResolvedTheme {
 
 export function DashboardThemeFrame({
   children,
+  direction = "ltr",
   initialTheme = "light",
+  language = "en",
   labels = {
     dark: "Dark",
     label: "Dashboard theme",
@@ -84,11 +93,14 @@ export function DashboardThemeFrame({
   },
 }: Readonly<{
   children: ReactNode;
+  direction?: DashboardInterfaceTextDirection;
   initialTheme?: ThemePreference;
+  language?: DashboardInterfaceLanguage;
   labels?: ThemeContextValue["labels"];
 }>) {
   const [theme, setThemeState] = useState<ThemePreference>(initialTheme);
   const [systemTheme, setSystemTheme] = useState<ResolvedTheme>("light");
+  const frameRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     persistTheme(initialTheme);
@@ -108,6 +120,46 @@ export function DashboardThemeFrame({
       media.removeEventListener("change", updateSystemTheme);
     };
   }, []);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return;
+
+    const selector = [
+      'input[type="date"]',
+      'input[type="datetime-local"]',
+      'input[type="email"]',
+      'input[type="number"]',
+      'input[type="tel"]',
+      'input[type="time"]',
+      'input[type="url"]',
+    ].join(",");
+    const normalizeInput = (input: HTMLInputElement): void => {
+      input.dir = "ltr";
+      input.lang = "en-CA";
+      input.dataset.dashboardStructured = "true";
+    };
+    const normalize = (root: ParentNode): void => {
+      if (root instanceof HTMLInputElement && root.matches(selector)) {
+        normalizeInput(root);
+      }
+      root
+        .querySelectorAll<HTMLInputElement>(selector)
+        .forEach(normalizeInput);
+    };
+
+    normalize(frame);
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        mutation.addedNodes.forEach((node) => {
+          if (node instanceof Element) normalize(node);
+        });
+      }
+    });
+    observer.observe(frame, { childList: true, subtree: true });
+
+    return () => observer.disconnect();
+  }, [direction, language]);
 
   const effectiveTheme = theme === "system" ? systemTheme : theme;
 
@@ -130,7 +182,13 @@ export function DashboardThemeFrame({
   return (
     <ThemeContext.Provider value={value}>
       <main
-        className={`${themeClass} dashboard-frame h-svh min-w-0 overflow-hidden transition-colors lg:grid lg:grid-cols-[240px_minmax(0,1fr)]`}
+        className={`${themeClass} dashboard-frame h-svh min-w-0 overflow-hidden transition-colors lg:grid lg:grid-cols-[240px_minmax(0,1fr)] ${
+          direction === "rtl" ? "dashboard-frame--rtl" : ""
+        }`}
+        data-dashboard-frame
+        dir={direction}
+        lang={language}
+        ref={frameRef}
       >
         {children}
       </main>
@@ -154,7 +212,7 @@ export function DashboardThemeSelector() {
       role="group"
     >
       {(["system", "light", "dark"] as const).map((option) => (
-          <button
+        <button
             aria-pressed={theme === option}
             className={
               theme === option
@@ -163,8 +221,8 @@ export function DashboardThemeSelector() {
             }
             key={option}
             onClick={() => setTheme(option)}
-          type="button"
-        >
+            type="button"
+          >
           {option === "system"
             ? labels.system
             : option === "light"

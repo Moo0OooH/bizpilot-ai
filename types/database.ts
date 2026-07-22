@@ -9,13 +9,17 @@
  * - lib/supabase/server.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-05-04
+ * Last Updated: 2026-07-22
  * Change Log:
  * - 2026-05-04: Created Phase 2 database types for Supabase SDK clients.
  * - 2026-05-05: Added Phase 3 business and Cleaning template configuration tables.
  * - 2026-05-05: Aligned template field edits with business_template_settings.
  * - 2026-05-06: Added Phase 4 public intake, submission, lead, consent, and source tables.
  * - 2026-05-07: Added Phase 5 lead conversion desk tables and lead workflow fields.
+ * - 2026-07-21: Added Premium Operations entitlement, priority, internal time-block, and review-draft table types.
+ * - 2026-07-22: Added the transactional founder Premium entitlement RPC type.
+ * - 2026-07-22: Added the exact-time quote field type used by the canonical preferred_time intake field.
+ * - 2026-07-22: Added operating-hour columns and transactional Premium reply-draft RPC types.
  * ============================================================
  */
 
@@ -339,6 +343,8 @@ export type Database = {
           lifecycle_status: BusinessLifecycleStatus;
           lifecycle_updated_at: Timestamp;
           name: string;
+          operating_day_end: string;
+          operating_day_start: string;
           owner_user_id: string;
           plan_expires_at: Timestamp | null;
           plan_slug: "founder_pilot" | "paused" | "pro" | "starter";
@@ -360,6 +366,8 @@ export type Database = {
           lifecycle_status?: BusinessLifecycleStatus;
           lifecycle_updated_at?: Timestamp;
           name: string;
+          operating_day_end?: string;
+          operating_day_start?: string;
           owner_user_id: string;
           plan_expires_at?: Timestamp | null;
           plan_slug?: "founder_pilot" | "paused" | "pro" | "starter";
@@ -381,6 +389,8 @@ export type Database = {
           lifecycle_status?: BusinessLifecycleStatus;
           lifecycle_updated_at?: Timestamp;
           name?: string;
+          operating_day_end?: string;
+          operating_day_start?: string;
           owner_user_id?: string;
           plan_expires_at?: Timestamp | null;
           plan_slug?: "founder_pilot" | "paused" | "pro" | "starter";
@@ -392,6 +402,48 @@ export type Database = {
           status?: "active" | "cancelled" | "onboarding" | "suspended";
           updated_at?: Timestamp;
           workspace_kind?: WorkspaceKind;
+        };
+        Relationships: [];
+      };
+      business_addon_entitlements: {
+        Row: {
+          activated_at: Timestamp | null;
+          addon_key:
+            | "availability_coordination"
+            | "bulk_reply_review"
+            | "priority_workbench";
+          business_id: string;
+          created_at: Timestamp;
+          expires_at: Timestamp | null;
+          managed_by_user_id: string | null;
+          status: "disabled" | "enabled" | "expired" | "trial";
+          updated_at: Timestamp;
+        };
+        Insert: {
+          activated_at?: Timestamp | null;
+          addon_key:
+            | "availability_coordination"
+            | "bulk_reply_review"
+            | "priority_workbench";
+          business_id: string;
+          created_at?: Timestamp;
+          expires_at?: Timestamp | null;
+          managed_by_user_id?: string | null;
+          status?: "disabled" | "enabled" | "expired" | "trial";
+          updated_at?: Timestamp;
+        };
+        Update: {
+          activated_at?: Timestamp | null;
+          addon_key?:
+            | "availability_coordination"
+            | "bulk_reply_review"
+            | "priority_workbench";
+          business_id?: string;
+          created_at?: Timestamp;
+          expires_at?: Timestamp | null;
+          managed_by_user_id?: string | null;
+          status?: "disabled" | "enabled" | "expired" | "trial";
+          updated_at?: Timestamp;
         };
         Relationships: [];
       };
@@ -622,6 +674,7 @@ export type Database = {
             | "select"
             | "text"
             | "textarea"
+            | "time"
             | "time_window";
           help_text: string | null;
           id: string;
@@ -646,6 +699,7 @@ export type Database = {
             | "select"
             | "text"
             | "textarea"
+            | "time"
             | "time_window";
           help_text?: string | null;
           id?: string;
@@ -670,6 +724,7 @@ export type Database = {
             | "select"
             | "text"
             | "textarea"
+            | "time"
             | "time_window";
           help_text?: string | null;
           id?: string;
@@ -731,6 +786,7 @@ export type Database = {
             | "select"
             | "text"
             | "textarea"
+            | "time"
             | "time_window";
           help_text: string | null;
           id: string;
@@ -757,6 +813,7 @@ export type Database = {
             | "select"
             | "text"
             | "textarea"
+            | "time"
             | "time_window";
           help_text?: string | null;
           id?: string;
@@ -783,6 +840,7 @@ export type Database = {
             | "select"
             | "text"
             | "textarea"
+            | "time"
             | "time_window";
           help_text?: string | null;
           id?: string;
@@ -1094,6 +1152,48 @@ export type Database = {
         };
         Relationships: [];
       };
+      lead_priority_rules: {
+        Row: {
+          area_terms: string[];
+          business_id: string;
+          created_at: Timestamp;
+          created_by_user_id: string | null;
+          description: string | null;
+          id: string;
+          is_active: boolean;
+          name: string;
+          priority_rank: number;
+          service_terms: string[];
+          updated_at: Timestamp;
+        };
+        Insert: {
+          area_terms?: string[];
+          business_id: string;
+          created_at?: Timestamp;
+          created_by_user_id?: string | null;
+          description?: string | null;
+          id?: string;
+          is_active?: boolean;
+          name: string;
+          priority_rank?: number;
+          service_terms?: string[];
+          updated_at?: Timestamp;
+        };
+        Update: {
+          area_terms?: string[];
+          business_id?: string;
+          created_at?: Timestamp;
+          created_by_user_id?: string | null;
+          description?: string | null;
+          id?: string;
+          is_active?: boolean;
+          name?: string;
+          priority_rank?: number;
+          service_terms?: string[];
+          updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
       lead_quality_scores: {
         Row: {
           business_id: string;
@@ -1280,6 +1380,129 @@ export type Database = {
         };
         Relationships: [];
       };
+      service_time_blocks: {
+        Row: {
+          business_id: string;
+          client_name: string;
+          company_name: string | null;
+          created_at: Timestamp;
+          created_by_user_id: string | null;
+          ends_at: Timestamp;
+          id: string;
+          lead_id: string | null;
+          notes: string | null;
+          service_label: string;
+          starts_at: Timestamp;
+          status: "cancelled" | "reserved" | "tentative";
+          updated_at: Timestamp;
+        };
+        Insert: {
+          business_id: string;
+          client_name: string;
+          company_name?: string | null;
+          created_at?: Timestamp;
+          created_by_user_id?: string | null;
+          ends_at: Timestamp;
+          id?: string;
+          lead_id?: string | null;
+          notes?: string | null;
+          service_label: string;
+          starts_at: Timestamp;
+          status?: "cancelled" | "reserved" | "tentative";
+          updated_at?: Timestamp;
+        };
+        Update: {
+          business_id?: string;
+          client_name?: string;
+          company_name?: string | null;
+          created_at?: Timestamp;
+          created_by_user_id?: string | null;
+          ends_at?: Timestamp;
+          id?: string;
+          lead_id?: string | null;
+          notes?: string | null;
+          service_label?: string;
+          starts_at?: Timestamp;
+          status?: "cancelled" | "reserved" | "tentative";
+          updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
+      bulk_reply_drafts: {
+        Row: {
+          audience_summary: Json;
+          business_id: string;
+          created_at: Timestamp;
+          created_by_user_id: string | null;
+          id: string;
+          message_template: string;
+          reviewed_at: Timestamp | null;
+          reviewed_by_user_id: string | null;
+          status: "draft" | "reviewed";
+          title: string;
+          updated_at: Timestamp;
+        };
+        Insert: {
+          audience_summary?: Json;
+          business_id: string;
+          created_at?: Timestamp;
+          created_by_user_id?: string | null;
+          id?: string;
+          message_template: string;
+          reviewed_at?: Timestamp | null;
+          reviewed_by_user_id?: string | null;
+          status?: "draft" | "reviewed";
+          title: string;
+          updated_at?: Timestamp;
+        };
+        Update: {
+          audience_summary?: Json;
+          business_id?: string;
+          created_at?: Timestamp;
+          created_by_user_id?: string | null;
+          id?: string;
+          message_template?: string;
+          reviewed_at?: Timestamp | null;
+          reviewed_by_user_id?: string | null;
+          status?: "draft" | "reviewed";
+          title?: string;
+          updated_at?: Timestamp;
+        };
+        Relationships: [];
+      };
+      bulk_reply_draft_recipients: {
+        Row: {
+          business_id: string;
+          copied_at: Timestamp | null;
+          copied_by_user_id: string | null;
+          created_at: Timestamp;
+          draft_id: string;
+          id: string;
+          lead_id: string;
+          rendered_message: string;
+        };
+        Insert: {
+          business_id: string;
+          copied_at?: Timestamp | null;
+          copied_by_user_id?: string | null;
+          created_at?: Timestamp;
+          draft_id: string;
+          id?: string;
+          lead_id: string;
+          rendered_message: string;
+        };
+        Update: {
+          business_id?: string;
+          copied_at?: Timestamp | null;
+          copied_by_user_id?: string | null;
+          created_at?: Timestamp;
+          draft_id?: string;
+          id?: string;
+          lead_id?: string;
+          rendered_message?: string;
+        };
+        Relationships: [];
+      };
       usage_events: {
         Row: {
           business_id: string;
@@ -1427,6 +1650,30 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      create_availability_review_draft: {
+        Args: {
+          target_business_id: string;
+          target_conflict_block_ids: Json;
+          target_lead_id: string;
+          target_message_template: string;
+          target_requested_ends_at: Timestamp;
+          target_requested_starts_at: Timestamp;
+          target_suggested_ends_at: Timestamp | null;
+          target_suggested_starts_at: Timestamp | null;
+          target_title: string;
+        };
+        Returns: string;
+      };
+      create_premium_reply_draft: {
+        Args: {
+          target_audience_summary: Json;
+          target_business_id: string;
+          target_message_template: string;
+          target_recipients: Json;
+          target_title: string;
+        };
+        Returns: string;
+      };
       can_manage_business: {
         Args: { target_business_id: string };
         Returns: boolean;
@@ -1446,6 +1693,26 @@ export type Database = {
           target_window_minutes: number;
         };
         Returns: number;
+      };
+      founder_upsert_premium_addon_entitlement: {
+        Args: {
+          target_activated_at: Timestamp | null;
+          target_actor_user_id: string;
+          target_addon_key: string;
+          target_business_id: string;
+          target_expires_at: Timestamp | null;
+          target_note: string | null;
+          target_status: string;
+        };
+        Returns: Array<{
+          activated_at: Timestamp | null;
+          addon_key: string;
+          business_id: string;
+          expires_at: Timestamp | null;
+          managed_by_user_id: string | null;
+          status: string;
+          updated_at: Timestamp;
+        }>;
       };
       is_business_member: {
         Args: { target_business_id: string };

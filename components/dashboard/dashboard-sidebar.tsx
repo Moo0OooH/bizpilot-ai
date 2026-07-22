@@ -13,12 +13,13 @@
  * - app/admin/page.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-21
  * Change Log:
  * - 2026-07-17: Filtered only the allowlisted Reports and Guide destinations from server-validated display preferences.
  * - 2026-07-16: Added the role-safe owner Reports destination while retaining five focused mobile tasks.
  * - 2026-07-16: Restored the professional grouped desktop sidebar and added an explicit authorized Founder Admin destination.
  * - 2026-07-16: Kept resilient native navigation and a focused five-task mobile bar.
+ * - 2026-07-21: Added the Premium Operations route and logical RTL sidebar placement.
  * ============================================================
  */
 
@@ -40,6 +41,7 @@ type DashboardNavIconName =
   | "business"
   | "guide"
   | "leads"
+  | "operations"
   | "overview"
   | "quote"
   | "reports"
@@ -77,6 +79,12 @@ function getOwnerNavigation(
           icon: "leads",
           label: copy.nav.leads,
           match: (pathname) => pathname.startsWith("/dashboard/leads"),
+        },
+        {
+          href: "/dashboard/operations",
+          icon: "operations",
+          label: copy.nav.premiumOperations,
+          match: (pathname) => pathname === "/dashboard/operations",
         },
         {
           href: "/dashboard/reports",
@@ -166,6 +174,12 @@ function DashboardNavIcon({ name }: Readonly<{ name: DashboardNavIconName }>) {
       <>
         <path d="M4 13h6V4H4zM14 20h6V4h-6z" />
         <path d="M4 20h6v-3H4z" />
+      </>
+    ),
+    operations: (
+      <>
+        <path d="M5 5h14v14H5z" />
+        <path d="M8 9h8M8 13h5M8 17h3" />
       </>
     ),
     quote: (
@@ -267,12 +281,13 @@ export function DashboardSidebar({
     .filter(
       (item) =>
         item.href !== "/dashboard/guide" &&
-        item.href !== "/dashboard/reports",
+        item.href !== "/dashboard/reports" &&
+        item.href !== "/dashboard/operations",
     );
 
   return (
     <>
-      <aside className="dashboard-sidebar sticky top-0 hidden h-svh w-[240px] border-r px-3.5 py-4 lg:flex lg:flex-col">
+      <aside className="dashboard-sidebar sticky top-0 hidden h-svh w-[240px] border-e px-3.5 py-4 lg:flex lg:flex-col">
         <a
           className="flex items-center gap-3 border-b border-[var(--dash-border)] px-2 pb-4"
           href="/dashboard"
@@ -290,7 +305,7 @@ export function DashboardSidebar({
           </span>
         </a>
 
-        <nav className="mt-4 min-h-0 flex-1 space-y-4 overflow-y-auto pr-1 text-[13px]">
+        <nav className="mt-4 min-h-0 flex-1 space-y-4 overflow-y-auto pe-1 text-[13px]">
           {navigation.map((group) => (
             <section key={group.label}>
               <p className="mx-2.5 mb-2 text-[11px] font-black uppercase tracking-[0.08em] text-[var(--dash-text-muted)]">

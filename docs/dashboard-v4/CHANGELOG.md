@@ -9,8 +9,11 @@
  * - docs/dashboard-v4/PHASE_PROGRESS.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Recorded Premium Operations database hardening and strict restored-target release proof.
+ * - 2026-07-22: Corrected the historical V4.7 local object identity and retained fresh external-evidence gates for the current candidate.
+ * - 2026-07-21: Corrected the V4.7 source identity to the locally resolvable commit and marked external release evidence as requiring revalidation.
  * - 2026-07-17: Published and runtime-hardened the V4.7 form builder, responsive shell, optional navigation, source reporting, and OAuth-safe workspace flow.
  * - 2026-07-16: Published V4.6 setup, Guide, source-reporting, tracked-link, and branding finalization with Vercel and Production evidence.
  * - 2026-07-16: Recorded V4.5 source publication and Production public read-only evidence.
@@ -30,6 +33,18 @@
  -->
 
 # Dashboard V4 Changelog
+
+## 2026-07-22 — Premium Operations database release proof
+
+- Hardened function ACLs against Supabase default role grants, made review-draft IDs atomic under RLS, and made the founder entitlement upsert target unambiguous.
+- Corrected executable RLS fixtures and made the runner recover cleanly after a failed transaction so every file reports independently.
+- Reconciled Production read-only against repository migrations, exported roles/schema/public data outside git, restored it to disposable local Supabase, and identified the absent `0023` retention helper before any Production write.
+- Passed RLS `14/14` on clean local and restored targets, seven two-session concurrency pairs, authenticated dashboard/Admin `17/17`, active quote GET `2/2`, and independent EN/fr-CA submissions.
+- Rebuilt with the frozen dependency graph: pnpm `10.34.5`, Next.js `16.2.11`, React/React DOM `19.2.7`; `359/359` unit/source tests, lint, typecheck, static RLS/grant audit, production build, and zero-vulnerability audit pass.
+- Removed all restored/synthetic local data by final database reset. No Production entitlement, auto-send, booking, payment, or real-customer workflow was activated.
+- Candidate `9ae149c` passed GitHub App validation run `29939791308`, Vercel Preview `9Akuehj14QYGPpAM4pFYBT3JySih`, and all `16` EN/fr-CA desktop/mobile public Preview states.
+- Repaired verified Production migration history and replayed the idempotent `0020`, `0021`, `0023`, and `0024` drift migrations before applying `0025` and `0026`; final Production schema matches `36` tables, `54` functions, `65` indexes, and `87` policies.
+- Verified all five new Premium Operations Production tables contain zero rows, so no workspace entitlement or operational record was activated by the migration.
 
 ## 2026-07-17 — V4.7 configurable intake and shell finalization
 
@@ -54,9 +69,9 @@
 - Removed function-valued localization props from every affected Server-to-Client boundary in Quote Setup and the active public Quote flow; regression tests now reject non-serializable configuration copy and authenticated smoke includes Reports.
 - Localized persisted default consent at render time for EN/fr-CA without overwriting custom owner-authored consent.
 - ESLint, TypeScript, all `295/295` unit/source tests, and the Next.js 16.2.4 production build pass.
-- Exact tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d` was published directly to `main` as `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`; GitHub Actions run `29558683869` and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeeded.
-- Production public routes pass `46/46`, bilingual responsive routes pass `20/20`, the final UI matrix passes `621/621`, and active plus inactive Quote GET passes `4/4` in EN/fr-CA.
-- No Quote submission, customer-data write, database migration, or Production mutation was performed. Full protected visual acceptance still requires an approved authenticated session.
+- Local Git contains historical commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`. The previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent; these local facts do not independently revalidate external evidence.
+- The earlier CI, Vercel, and Production figures are historical records, not current release proof: no matching remote ref, deployment, or Production result is claimed until independently revalidated.
+- Full protected visual acceptance, any Production migration, and the later ordered Premium Operations `0025` + `0026` release remain separately gated.
 
 ## 2026-07-16 — V4.6 setup-to-reporting finalization
 

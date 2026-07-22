@@ -65,6 +65,21 @@ data retained
 owner message shown
 ```
 
+## Premium operational add-ons
+
+Premium Operations add-ons are sold separately from every base plan. They are not implicitly included in Founder Pilot, Starter, or Pro, and they do not create a billing engine or self-serve checkout.
+
+| Add-on | Entitlement key | Access rule |
+| --- | --- | --- |
+| Priority Workbench | `priority_workbench` | Explicitly activate for owner-defined priority rules and ranked lead search. |
+| Bulk Reply Review | `bulk_reply_review` | Explicitly activate for manager-reviewed group reply drafts and manual copy records. |
+| Availability Coordination | `availability_coordination` | Explicitly activate for internal time blocks, conflict alerts, and review-only availability drafts. |
+
+- An internal operator controls the entitlement record with `enabled`, `trial`, `disabled`, or `expired` status; an expired trial is not active.
+- Every add-on remains manual-first: no automatic delivery, public scheduling, booking confirmation, invoice, or payment is introduced.
+- Pricing, invoicing, and any Stripe Payment Link remain separate operational processes until a later billing project is explicitly approved.
+- The full product and QA contract lives in `docs/product/BIZPILOT_PREMIUM_OPERATIONS_ADDONS_v1.0.md`.
+
 ## Manual Billing Standard
 
 - No automated billing dependency before validation.
@@ -90,3 +105,4 @@ owner message shown
 - No invoice generation inside BizPilot.
 - No usage-based billing automation.
 - No autonomous AI operator behavior.
+- No automatic Premium Operations add-on activation, customer self-serve purchase, or public booking/calendar workflow.

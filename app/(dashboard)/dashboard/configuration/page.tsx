@@ -10,8 +10,10 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Kept persisted custom-field starter content in the business language instead of the dashboard-interface language.
+ * - 2026-07-21: Replaced physical dashboard alignment with logical equivalents and pinned numeric/email values to Latin LTR inputs.
  * - 2026-07-16: Scoped full Quote Setup saves to setup tasks while preserving separate Business Profile confirmation.
  * - 2026-07-16: Added a first-to-last setup journey, reordered tasks for launch logic, and added privacy-safe tracked channel links.
  * - 2026-07-16: Kept FAQ editor props fully serializable so Quote Setup renders in authenticated production requests.
@@ -61,11 +63,12 @@ import {
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
-import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
-  resolveWorkspaceInterfaceLanguage,
-} from "@/lib/i18n/language";
+  DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+  resolveDashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import { getDashboardInterfaceLegacyCopy } from "@/lib/i18n/dashboard-legacy-interface";
+import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import { getPublicSiteOrigin } from "@/lib/seo";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
@@ -234,16 +237,17 @@ export default async function DashboardPage({
   }
 
   const cookieStore = await cookies();
+  const interfaceLanguage = resolveDashboardInterfaceLanguage({
+    cookieValue: cookieStore.get(DASHBOARD_INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
+  const interfaceCopy = getDashboardInterfaceLegacyCopy(interfaceLanguage);
   const workspace = await getBusinessWorkspace({
     userId: user.id,
   });
   const activeBusiness = workspace.businesses[0];
 
   if (!activeBusiness) {
-    const fallbackLanguage = resolveWorkspaceInterfaceLanguage({
-      cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
-    });
-    const fallbackCopy = getBizPilotCopy(fallbackLanguage).dashboard;
+    const fallbackCopy = interfaceCopy.dashboard;
 
     return (
       <main className="mx-auto flex min-h-svh w-full max-w-5xl flex-col px-4 py-8 sm:px-6 sm:py-12">
@@ -262,19 +266,15 @@ export default async function DashboardPage({
     );
   }
 
-  const activeLanguage = resolveWorkspaceInterfaceLanguage({
-    businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
-  });
   const configurationWorkspace = await getBusinessConfigurationWorkspace({
-    business: { ...activeBusiness, preferred_language: activeLanguage },
+    business: activeBusiness,
   });
   const { cleaningTemplate, configuration, readiness } =
     configurationWorkspace;
   const primaryColor = configuration.branding?.primary_color ?? "#18181b";
   const accentColor = configuration.branding?.accent_color ?? "#0f766e";
-  const copy = getBizPilotCopy(activeLanguage);
-  const dashboardCopy = copy.dashboard;
+  const publicBusinessCopy = getBizPilotCopy(activeBusiness.preferred_language);
+  const dashboardCopy = interfaceCopy.dashboard;
   const configurationTabs = dashboardCopy.configuration.tabs;
   const configCopy = dashboardCopy.configuration;
   const routeNotice = readSafeRouteFlashMessage(
@@ -415,7 +415,7 @@ export default async function DashboardPage({
                 {configCopy.setupJourney.title}
               </h2>
             </div>
-            <p className="text-[13px] leading-5 text-[var(--dash-text-secondary)] md:text-right">
+            <p className="text-[13px] leading-5 text-[var(--dash-text-secondary)] md:text-end">
               {configCopy.setupJourney.description}
             </p>
           </div>
@@ -518,7 +518,11 @@ export default async function DashboardPage({
               cleaningTemplate.template.name
             }
           />
-          <input name="preferredLanguage" type="hidden" value={activeLanguage} />
+          <input
+            name="preferredLanguage"
+            type="hidden"
+            value={activeBusiness.preferred_language}
+          />
 
           <section>
             <div className="min-w-0">
@@ -587,7 +591,7 @@ export default async function DashboardPage({
                           {readinessPercent}%
                         </p>
                       </div>
-                      <p className="text-right text-xs font-medium text-[var(--dash-text-muted)]">
+                      <p className="text-end text-xs font-medium text-[var(--dash-text-muted)]">
                         {configCopy.overview.complete(readiness.completed, readiness.total)}
                       </p>
                     </div>
@@ -836,7 +840,7 @@ export default async function DashboardPage({
                   <span>{configCopy.fields.required}</span>
                   <span>{configCopy.fields.visibleOnForm}</span>
                   <span>{configCopy.fields.position}</span>
-                  <span className="text-right">{configCopy.fields.customize}</span>
+                  <span className="text-end">{configCopy.fields.customize}</span>
                 </div>
                 {cleaningTemplate.fields.map((field) => (
                   <details
@@ -886,7 +890,7 @@ export default async function DashboardPage({
                           : configCopy.fields.visible}
                       </span>
                       <span className="text-[var(--dash-text-secondary)]">{field.sort_order}</span>
-                      <span className="text-left text-[var(--dash-text)] lg:text-right">
+                      <span className="text-start text-[var(--dash-text)] lg:text-end">
                         <span className="inline-flex h-7 items-center rounded-md border border-[var(--dash-border-strong)] bg-[var(--dash-surface)] px-2.5 text-xs font-medium group-open:hidden">
                           {configCopy.fields.customize}
                         </span>
@@ -927,7 +931,10 @@ export default async function DashboardPage({
                           {configCopy.fields.priority}
                           <input
                             className={fieldInputClass}
+                            data-dashboard-ltr-value="true"
                             defaultValue={field.sort_order}
+                            dir="ltr"
+                            lang="en-CA"
                             max={999}
                             min={1}
                             name={`fieldSort:${field.field_key}`}
@@ -971,6 +978,10 @@ export default async function DashboardPage({
                 ))}
               </div>
               <CustomQuoteFieldBuilder
+                contentLanguage={activeBusiness.preferred_language}
+                contentPlaceholders={
+                  publicBusinessCopy.dashboard.configuration.fields.placeholders
+                }
                 copy={configCopy.fields}
                 initialSections={cleaningTemplate.formLayout.sections.map(
                   (section) => ({
@@ -1033,9 +1044,12 @@ export default async function DashboardPage({
                   {configCopy.privacy.leadRetentionDays}
                   <input
                     className={inputClass}
+                    data-dashboard-ltr-value="true"
                     defaultValue={
                       configuration.privacySettings?.retain_leads_days ?? 365
                     }
+                    dir="ltr"
+                    lang="en-CA"
                     min={1}
                     name="retainLeadsDays"
                     type="number"
@@ -1045,10 +1059,13 @@ export default async function DashboardPage({
                   {configCopy.privacy.privacyContactEmail}
                   <input
                     className={inputClass}
+                    data-dashboard-ltr-value="true"
                     defaultValue={
                       configuration.consentSettings?.privacy_contact_email ??
                       ""
                     }
+                    dir="ltr"
+                    lang="en-CA"
                     name="privacyContactEmail"
                     type="email"
                   />
@@ -1059,7 +1076,7 @@ export default async function DashboardPage({
                     className={`${inputClass} h-20 min-h-20 py-2`}
                     defaultValue={
                       configuration.consentSettings?.consent_notice ??
-                      copy.quoteForm.consentNoticeDefault
+                      publicBusinessCopy.quoteForm.consentNoticeDefault
                     }
                     minLength={20}
                     name="consentNotice"
@@ -1089,7 +1106,7 @@ export default async function DashboardPage({
 
         </form>
       </main>
-      <div className="dashboard-configuration-actions fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom))] left-0 right-0 z-20 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-3 py-2 shadow-[0_-10px_28px_rgba(0,0,0,0.14)] backdrop-blur sm:px-4 lg:bottom-0 lg:left-[240px]">
+      <div className="dashboard-configuration-actions fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom))] start-0 end-0 z-20 border-t border-[var(--dash-border)] bg-[var(--dash-bg)]/95 px-3 py-2 shadow-[0_-10px_28px_rgba(0,0,0,0.14)] backdrop-blur sm:px-4 lg:bottom-0 lg:start-[240px]">
         <div className="dashboard-container flex flex-col gap-1.5 sm:min-h-10 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-[var(--dash-text-secondary)]">
             {configCopy.bottomBar.text}

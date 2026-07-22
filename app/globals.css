@@ -10,9 +10,10 @@
  * - components/public/marketing-language-menu.tsx
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-21
  * Change Log:
  * - 2026-07-17: Introduced the new warm editorial palette, compact brand lockup, calmer type scale, and refined public surface/button system.
+ * - 2026-07-21: Kept dashboard structured date, time, and numeric values Latin LTR in RTL interfaces.
  * - 2026-07-17: Rebalanced public display typography for calmer weight, cleaner wrapping, and consistent scaling across desktop, laptop, and mobile viewports.
  * - 2026-07-16: Softened public display/button weights, raised footer microcopy, consolidated shell breakpoints, and added the focused legal footer layout.
  * - 2026-07-14: Tightened the protected dashboard content measure and removed obsolete density/route-guide presentation rules.
@@ -1373,6 +1374,25 @@ select {
 .dashboard-frame {
   background: var(--dash-bg);
   color: var(--dash-text);
+}
+
+/*
+ * Dashboard interface languages may be RTL, but technical values must retain
+ * Latin digit order. The frame also sets these attributes at runtime so
+ * client-rendered forms receive the same contract.
+ */
+[data-dashboard-frame] input[data-dashboard-structured="true"] {
+  direction: ltr;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  unicode-bidi: plaintext;
+}
+
+.dashboard-frame--rtl [data-dashboard-ltr-value] {
+  direction: ltr;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  unicode-bidi: plaintext;
 }
 
 .biz-card,

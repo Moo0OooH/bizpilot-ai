@@ -11,7 +11,7 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-21
  * Change Log:
  * - 2026-07-17: Filtered optional compact destinations and removed duplicate desktop Guide and Founder Admin buttons.
  * - 2026-07-16: Added Reports to compact navigation without duplicating desktop sidebar routes.
@@ -30,16 +30,23 @@
  * - 2026-07-04: Added the core owner route map to Actions so every dashboard function is reachable from the topbar.
  * - 2026-07-04: Added the owner operating guide route to page context and Actions.
  * - 2026-07-14: Removed duplicate route title/subtitle chrome and reduced the More menu to genuinely secondary actions.
+ * - 2026-07-21: Moved the dashboard-only language picker to an accessible five-language menu without changing public business language.
+ * - 2026-07-21: Made the dashboard-interface language picker available inside the compact mobile More menu.
  * ============================================================
  */
 
 import type { DashboardShellCopy } from "./dashboard-shell";
 import type { OptionalDashboardSection } from "@/lib/dashboard-section-visibility";
-import { languageShortLabels, supportedLanguages } from "@/lib/i18n/language";
+import {
+  dashboardInterfaceLanguageNativeLabels,
+  dashboardInterfaceLanguages,
+  getDashboardInterfaceCopy,
+  type DashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
 import { usePathname } from "next/navigation";
 
 import { signOutAction } from "@/server/actions/auth.actions";
-import { updateWorkspaceLanguageAction } from "@/server/actions/business-configuration.actions";
+import { updateDashboardInterfaceLanguageAction } from "@/server/actions/premium-operations.actions";
 
 import { CopyButton } from "./copy-button";
 import { DashboardThemeSelector } from "./dashboard-theme";
@@ -47,8 +54,8 @@ import { buttonClass, ghostButtonClass } from "./dashboard-ui";
 
 type DashboardTopbarProps = Readonly<{
   activeBusinessName: string;
-  activeLanguage: string;
-  businessId: string;
+  activeLanguage: DashboardInterfaceLanguage;
+  businessLanguage: string;
   businessSlug: string;
   quoteUrl: string;
   copy: DashboardShellCopy;
@@ -78,7 +85,7 @@ function MoreIcon() {
 export function DashboardTopbar({
   activeBusinessName,
   activeLanguage,
-  businessId,
+  businessLanguage,
   businessSlug,
   quoteUrl,
   copy,
@@ -86,9 +93,10 @@ export function DashboardTopbar({
   userLabel,
   visibleOptionalSections,
 }: DashboardTopbarProps) {
+  const interfaceCopy = getDashboardInterfaceCopy(activeLanguage);
   const quotePath = `/quote/${businessSlug}`;
   const quotePreviewPath = `${quotePath}?preview=dashboard${
-    activeLanguage === "fr-CA" ? "&language=fr-CA" : ""
+    businessLanguage === "fr-CA" ? "&language=fr-CA" : ""
   }`;
   const pathname = usePathname();
   const primaryRoutes = [
@@ -100,6 +108,7 @@ export function DashboardTopbar({
   ] as const;
   const menuRoutes = [
     ...primaryRoutes,
+    { href: "/dashboard/operations", label: copy.nav.premiumOperations },
     ...(visibleOptionalSections.includes("reports")
       ? [{ href: "/dashboard/reports", label: copy.nav.reports }]
       : []),
@@ -133,30 +142,56 @@ export function DashboardTopbar({
           </span>
         </a>
 
-        <div className="ml-auto flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
+        <div className="ms-auto flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
           <details className="group relative lg:hidden">
             <summary
-              aria-label={copy.actions.moreActions}
+              aria-label={interfaceCopy.shell.moreActions}
               className={`${buttonClass} list-none cursor-pointer [&::-webkit-details-marker]:hidden`}
-              title={copy.actions.moreActions}
+              title={interfaceCopy.shell.moreActions}
             >
               <MoreIcon />
-              <span className="hidden md:inline">{copy.actions.moreActions}</span>
+              <span className="hidden md:inline">{interfaceCopy.shell.moreActions}</span>
             </summary>
-            <div className="absolute right-0 top-11 z-30 grid w-[min(240px,calc(100vw-1.5rem))] gap-1.5 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2.5 shadow-[0_18px_48px_rgba(2,6,23,0.18)]">
+            <div className="absolute end-0 top-11 z-30 grid w-[min(240px,calc(100vw-1.5rem))] gap-1.5 rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-2.5 shadow-[0_18px_48px_rgba(2,6,23,0.18)]">
               <CopyButton
                 className="!w-full !justify-start"
-                failedLabel={copy.actions.copyFailed}
-                label={copy.actions.copyQuoteLink}
-                successLabel={copy.actions.copySuccess}
+                failedLabel={interfaceCopy.shell.copyFailed}
+                label={interfaceCopy.shell.copyQuoteLink}
+                successLabel={interfaceCopy.shell.copySuccess}
                 value={quoteUrl}
               />
               <a
                 className={`${buttonClass} w-full justify-start`}
                 href={quotePreviewPath}
               >
-                {copy.actions.previewQuotePage}
+                {interfaceCopy.shell.previewQuotePage}
               </a>
+              <form
+                action={updateDashboardInterfaceLanguageAction}
+                className="grid gap-1.5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-2 sm:hidden"
+              >
+                <input name="redirectTo" type="hidden" value={pathname} />
+                <label
+                  className="text-[11px] font-black text-[var(--dash-text-secondary)]"
+                  htmlFor="dashboard-interface-language-mobile"
+                >
+                  {interfaceCopy.shell.dashboardLanguage}
+                </label>
+                <select
+                  aria-label={interfaceCopy.shell.selectDashboardLanguage}
+                  className="min-h-9 w-full rounded-md border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-2 text-[12px] font-black text-[var(--dash-text)] outline-none"
+                  defaultValue={activeLanguage}
+                  id="dashboard-interface-language-mobile"
+                  name="language"
+                  onChange={(event) => event.currentTarget.form?.requestSubmit()}
+                >
+                  {dashboardInterfaceLanguages.map((language) => (
+                    <option key={language} value={language}>
+                      {dashboardInterfaceLanguageNativeLabels[language]}
+                    </option>
+                  ))}
+                </select>
+              </form>
               <div className="my-0.5 border-t border-[var(--dash-border)]" />
               {menuRoutes.map((route) => (
                 <a
@@ -176,27 +211,27 @@ export function DashboardTopbar({
             </div>
           </details>
           <form
-            action={updateWorkspaceLanguageAction}
-            className="hidden h-9 max-w-[11rem] items-center overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-1 sm:flex sm:h-10"
+            action={updateDashboardInterfaceLanguageAction}
+            className="hidden h-9 items-center rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] px-2 sm:flex sm:h-10"
           >
-            <input name="businessId" type="hidden" value={businessId} />
             <input name="redirectTo" type="hidden" value={pathname} />
-            {supportedLanguages.map((language) => (
-              <button
-                aria-pressed={activeLanguage === language}
-                className={
-                  activeLanguage === language
-                    ? "h-8 whitespace-nowrap rounded-md bg-[var(--dash-primary)] px-2.5 text-[12px] font-black text-white shadow-sm"
-                    : "h-8 whitespace-nowrap rounded-md px-2.5 text-[12px] font-bold text-[var(--dash-text-secondary)] transition hover:bg-[var(--dash-surface-muted)] hover:text-[var(--dash-text)]"
-                }
-                key={language}
-                name="language"
-                type="submit"
-                value={language}
-              >
-                {languageShortLabels[language]}
-              </button>
-            ))}
+            <label className="sr-only" htmlFor="dashboard-interface-language">
+              {interfaceCopy.shell.selectDashboardLanguage}
+            </label>
+            <select
+              aria-label={interfaceCopy.shell.selectDashboardLanguage}
+              className="h-8 max-w-[10rem] bg-transparent px-1 text-[12px] font-black text-[var(--dash-text)] outline-none sm:h-9"
+              defaultValue={activeLanguage}
+              id="dashboard-interface-language"
+              name="language"
+              onChange={(event) => event.currentTarget.form?.requestSubmit()}
+            >
+              {dashboardInterfaceLanguages.map((language) => (
+                <option key={language} value={language}>
+                  {dashboardInterfaceLanguageNativeLabels[language]}
+                </option>
+              ))}
+            </select>
           </form>
           <div className="hidden sm:block">
             <DashboardThemeSelector />
@@ -207,7 +242,7 @@ export function DashboardTopbar({
               title={userLabel}
               type="submit"
             >
-              <span className="truncate whitespace-nowrap">{copy.actions.signOut}</span>
+              <span className="truncate whitespace-nowrap">{interfaceCopy.shell.signOut}</span>
             </button>
           </form>
         </div>

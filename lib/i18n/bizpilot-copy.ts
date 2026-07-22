@@ -11,8 +11,9 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added bilingual exact-time field setup, public labels, and safe HH:MM validation copy.
  * - 2026-07-17: Added bilingual server-saved optional dashboard section visibility guidance.
  * - 2026-07-16: Added bilingual Reports, tracked-source links, branding clarity, public quote navigation, and an ordered Quote Setup journey.
  * - 2026-07-16: Added serializable FAQ count labels and clearer dashboard recovery copy in both supported languages.
@@ -84,6 +85,7 @@ type QuoteFieldTypeLabelKey =
   | "select"
   | "text"
   | "textarea"
+  | "time"
   | "time_window";
 
 type MetaCopy = Readonly<{
@@ -118,6 +120,7 @@ type IntakeErrorCopy = Readonly<{
   nonNegativeNumber: (label: string) => string;
   validDate: (label: string) => string;
   validNumber: (label: string) => string;
+  validTime: (label: string) => string;
   notPastDate: (label: string) => string;
 }>;
 
@@ -3252,6 +3255,14 @@ const englishCopy: BizPilotCopy = {
             options: "",
             preview: "Customer writes a longer note.",
           },
+          time: {
+            fieldKey: "arrival_time",
+            helper:
+              "Collect an exact preferred time without confirming availability or a booking.",
+            label: "Exact preferred time",
+            options: "",
+            preview: "Customer chooses a 24-hour time.",
+          },
           time_window: {
             fieldKey: "arrival_window",
             helper: "Use when scheduling windows matter.",
@@ -3279,6 +3290,7 @@ const englishCopy: BizPilotCopy = {
           select: "Select",
           text: "Text",
           textarea: "Long text",
+          time: "Exact time",
           time_window: "Time window",
         },
         visible: "Visible",
@@ -4902,6 +4914,7 @@ const englishCopy: BizPilotCopy = {
       "We couldn't submit this quote request right now. Please contact the business directly or try again later.",
     validDate: (label) => `${label} must be a valid date.`,
     validNumber: (label) => `${label} must be a valid number.`,
+    validTime: (label) => `${label} must use a valid 24-hour time (HH:MM).`,
   },
   leadRules: {
     actionAskInfo: "Ask for missing quote details",
@@ -4999,6 +5012,11 @@ const englishCopy: BizPilotCopy = {
     preferred_date: {
       helpText: "Customer preferred service date.",
       label: "Preferred date",
+    },
+    preferred_time: {
+      helpText:
+        "Customer preferred exact time. The business still reviews availability before confirming.",
+      label: "Preferred exact time",
     },
     preferred_time_window: {
       helpText: "Customer preferred time window.",
@@ -6319,6 +6337,14 @@ const frenchCopy: BizPilotCopy = {
             options: "",
             preview: "Le client écrit une note plus longue.",
           },
+          time: {
+            fieldKey: "heure_arrivee",
+            helper:
+              "Recueille une heure exacte souhaitée sans confirmer la disponibilité ni une réservation.",
+            label: "Heure exacte souhaitée",
+            options: "",
+            preview: "Le client choisit une heure au format 24 heures.",
+          },
           time_window: {
             fieldKey: "plage_arrivee_souhaitee",
             helper: "Les plages horaires facilitent la planification.",
@@ -6346,6 +6372,7 @@ const frenchCopy: BizPilotCopy = {
           select: "Liste déroulante",
           text: "Texte",
           textarea: "Texte long",
+          time: "Heure exacte",
           time_window: "Plage horaire",
         },
         visible: "Visible",
@@ -7995,6 +8022,8 @@ const frenchCopy: BizPilotCopy = {
       "Nous ne pouvons pas envoyer cette demande pour le moment. Veuillez contacter l'entreprise directement ou réessayer plus tard.",
     validDate: (label) => `${label} doit être une date valide.`,
     validNumber: (label) => `${label} doit être un nombre valide.`,
+    validTime: (label) =>
+      `${label} doit utiliser une heure valide au format 24 heures (HH:MM).`,
   },
   leadRules: {
     actionAskInfo: "Demander les détails manquants",
@@ -8092,6 +8121,11 @@ const frenchCopy: BizPilotCopy = {
     preferred_date: {
       helpText: "Date de service souhaitée.",
       label: "Date souhaitée",
+    },
+    preferred_time: {
+      helpText:
+        "Heure exacte souhaitée. L'entreprise vérifie toujours la disponibilité avant de confirmer.",
+      label: "Heure exacte souhaitée",
     },
     preferred_time_window: {
       helpText: "Plage horaire souhaitée.",
@@ -8205,6 +8239,13 @@ export function getDefaultBizPilotCopy(): BizPilotCopy {
 }
 
 const legacyDefaultQuoteFieldCopies: Record<string, readonly QuoteFieldCopy[]> = {
+  preferred_time: [
+    {
+      helpText:
+        "Optional exact local time. Availability is still confirmed manually.",
+      label: "Exact preferred time",
+    },
+  ],
   customer_contact: [
     {
       helpText: "Email or phone for owner follow-up.",
@@ -8388,6 +8429,7 @@ export function isSafePublicIntakeMessage(message: string): boolean {
     " must be a valid number.",
     " cannot be negative.",
     " must be a valid date.",
+    " must use a valid 24-hour time (HH:MM).",
     " cannot be in the past.",
     " has an unavailable option.",
     " contient une option indisponible.",
@@ -8395,6 +8437,7 @@ export function isSafePublicIntakeMessage(message: string): boolean {
     " doit être un nombre valide.",
     " ne peut pas être négatif.",
     " doit être une date valide.",
+    " doit utiliser une heure valide au format 24 heures (HH:MM).",
     " ne peut pas être dans le passé.",
   ];
 

@@ -13,10 +13,11 @@
  * - docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md
  * Author: MoOoH
  * Created: 2026-05-15
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-22
  * Change Log:
  * - 2026-05-15: Created Phase 10D runner. Local-only by design; refuses non-local DATABASE_URL.
  * - 2026-07-04: Loaded DATABASE_URL from local env files before local-only RLS tests without printing secrets.
+ * - 2026-07-22: Roll back a failed test transaction so later files report independent results instead of cascading aborted-transaction failures.
  * ============================================================
  */
 
@@ -122,6 +123,13 @@ async function runTestFile(client: pg.Client, fileName: string): Promise<TestRes
       pass: true,
     };
   } catch (error) {
+    try {
+      await client.query("rollback");
+    } catch {
+      // Preserve the original test failure; a lost connection will surface again
+      // when the runner attempts the next file.
+    }
+
     const message =
       error instanceof Error ? `${error.name}: ${error.message}` : String(error);
     return {

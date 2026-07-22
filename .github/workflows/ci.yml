@@ -8,8 +8,9 @@
 # - tests/unit/ci-workflow-source.test.mts
 # Author: MoOoH
 # Created: 2026-05-04
-# Last Updated: 2026-07-13
+# Last Updated: 2026-07-22
 # Change Log:
+# - 2026-07-22: Pinned CI to the security-reviewed pnpm 10.34.5 release used by the repository.
 # - 2026-07-13: Restored the final read-only workflow after completing the universal V2 and full fr-CA migration.
 # - 2026-07-13: Retains the complete verify log only when validation fails.
 # - 2026-07-12: Isolated CI from managed Supabase and consolidated validation through pnpm verify.
@@ -49,7 +50,7 @@ jobs:
       - name: Set up pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 10.18.3
+          version: 10.34.5
           run_install: false
 
       - name: Set up Node

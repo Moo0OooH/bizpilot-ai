@@ -1,7 +1,27 @@
+<!--
+ * ============================================================
+ * File: docs/security/BIZPILOT_SECURITY_OPERATIONS_REGISTER_2026-07-04.md
+ * Project: BizPilot AI
+ * Description: Security, privacy, credential, runtime, and release-gate operating register.
+ * Role: Keeps non-secret operational evidence templates and current security boundaries in one controlled document.
+ * Related:
+ * - next.config.ts
+ * - package.json
+ * - supabase/migrations/0023_public_submission_abuse_log_retention.sql
+ * - supabase/migrations/0025_premium_operations_addons.sql
+ * - supabase/migrations/0026_premium_operations_schedule_integrity.sql
+ * Author: MoOoH
+ * Created: 2026-07-04
+ * Last Updated: 2026-07-22
+ * Change Log:
+ * - 2026-07-22: Updated the runtime baseline and added Premium Operations migration, entitlement, exact-time, and release-safety controls.
+ * ============================================================
+ -->
+
 # BizPilot Security Operations Register
 
 Created: 2026-07-04
-Last updated: 2026-07-15
+Last updated: 2026-07-22
 Status: Current operating template
 Owner: MoOoH
 
@@ -115,13 +135,23 @@ marketing embeds without a separate owner-approved CSP review.
 | Item | Current value |
 | --- | --- |
 | Node engine | `>=24 <25` |
-| Package manager | `pnpm@10.18.3` |
-| Next.js | `16.2.4` |
-| React | `19.2.4` |
-| Verification | `pnpm lint`, `pnpm typecheck`, `pnpm test:unit`, `pnpm build` |
+| Package manager | `pnpm@10.34.5` |
+| Next.js | `16.2.11` |
+| React / React DOM | `19.2.7` |
+| Candidate verification | Exact-tree local PASS: full/Production audits report zero vulnerabilities; lint/typecheck; `359/359` unit/source; static RLS/grant audit; build; public `46/46`; responsive `20/20`; UI zero failures; inactive Quote `2/2`; image optimizer HTTP 200. Chrome, database-backed RLS/concurrency, authenticated QA, and external release remain gated. |
 
 Runtime changes require a separate phase, changelog, rollback note, and full
 verification.
+
+## Premium Operations Security Posture
+
+- Migration `0025_premium_operations_addons.sql` establishes tenant-scoped add-on entitlements, priority rules, internal time blocks, review drafts, recipients, RLS, grants, and immutable review/copy transitions.
+- Additive migration `0026_premium_operations_schedule_integrity.sql` must follow `0025`. It adds canonical exact-time intake, the fixed `America/Toronto` operating-time contract, overlap serialization, atomic draft creation, availability provenance/currentness checks, and founder entitlement auditing.
+- The canonical `preferred_time` question uses the database field type `time` and is exposed only for an active Availability Coordination entitlement. A canonical preferred date remains required for an exact-time request.
+- Founder activation is explicit and server-gated. The internal Admin console may enable or disable a supported add-on through the service-role path and records an audit event; it is not a customer self-serve billing control.
+- Premium reply and availability drafts remain manager-reviewed and manual-copy-only. No database function or UI control sends a customer message, creates a booking, takes payment, or acts as a full CRM.
+- The `0025` + `0026` sequence and RLS suite remain gated until a classifier-approved local/disposable database is available. No managed Supabase or Production execution is represented by this source candidate.
+- GitHub CI, Vercel preview/Production deployment, and Production database state are separate external evidence gates. A local build or smoke result cannot satisfy them.
 
 ## Owner Gates Preserved
 

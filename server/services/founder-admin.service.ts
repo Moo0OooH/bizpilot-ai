@@ -9,8 +9,9 @@
  * - server/repositories/founder-admin.repository.ts
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added founder-only Premium Operations entitlement listing, validation, explicit enable/disable updates, and audit logging.
  * - 2026-07-17: Kept explicit founder-approved workspace repair compatible with the provider-aware creation boundary.
  * - 2026-07-16: Separated the detailed inbox from a minimal-column reporting sample so aggregate reads do not load customer contact fields.
  * - 2026-07-16: Added a bounded, business-aware founder lead-source report with campaign, attribution, and manual-outcome summaries.
@@ -47,6 +48,7 @@ import {
   getFounderBusiness,
   getFounderLeadById,
   insertFounderAdminAction,
+  listFounderAddonEntitlements,
   listFounderAdminLog,
   listFounderBusinesses,
   listFounderBusinessMembers,
@@ -62,7 +64,12 @@ import {
   deleteFounderLeadThread,
   setFounderPublicLinksActive,
   updateFounderLeadStatus,
+  upsertFounderAddonEntitlement,
   updateFounderBusinessControls,
+  type FounderAddonEntitlementRecord,
+  type FounderAddonKey,
+  type FounderAddonStatus,
+  type FounderManagedAddonStatus,
   type FounderAdminActionType,
   type FounderBusinessRecord,
   type FounderAdminLogRecord,
@@ -84,8 +91,20 @@ export type FounderAdminActionSummary = Readonly<{
   previousValues: FounderAdminLogRecord["previous_values"];
 }>;
 
+export type FounderAdminAddonEntitlement = Readonly<{
+  activatedAt: string | null;
+  addonKey: FounderAddonKey;
+  expiresAt: string | null;
+  isActive: boolean;
+  managedByUserId: string | null;
+  recorded: boolean;
+  status: FounderAddonStatus;
+}>;
+
 export type FounderAdminBusiness = Readonly<{
   actionLog: FounderAdminActionSummary[];
+  addonEntitlements: FounderAdminAddonEntitlement[];
+  addonEntitlementsAvailable: boolean;
   businessId: string;
   createdAt: string;
   internalNote: string | null;
@@ -157,6 +176,7 @@ export type FounderAdminOverview = Readonly<{
     actorUserId: string | null;
     businessId: string | null;
     createdAt: string;
+    newValues: FounderAdminLogRecord["new_values"];
     note: string | null;
   }>;
   totals: {
@@ -179,6 +199,16 @@ const planSlugs = new Set<FounderPlanSlug>([
   "starter",
   "pro",
   "paused",
+]);
+export const founderAddonKeys = [
+  "priority_workbench",
+  "bulk_reply_review",
+  "availability_coordination",
+] as const satisfies ReadonlyArray<FounderAddonKey>;
+const founderAddonKeySet = new Set<FounderAddonKey>(founderAddonKeys);
+const founderManagedAddonStatuses = new Set<FounderManagedAddonStatus>([
+  "disabled",
+  "enabled",
 ]);
 const businessStatuses = new Set<FounderBusinessStatus>([
   "onboarding",
@@ -541,6 +571,22 @@ export function readFounderPlanSlug(value: string): FounderPlanSlug {
   throw new Error("Invalid plan.");
 }
 
+export function readFounderAddonKey(value: string): FounderAddonKey {
+  if (founderAddonKeySet.has(value as FounderAddonKey)) {
+    return value as FounderAddonKey;
+  }
+
+  throw new Error("Invalid Premium add-on.");
+}
+
+export function readFounderAddonStatus(value: string): FounderManagedAddonStatus {
+  if (founderManagedAddonStatuses.has(value as FounderManagedAddonStatus)) {
+    return value as FounderManagedAddonStatus;
+  }
+
+  throw new Error("Invalid Premium add-on status.");
+}
+
 export function readFounderBusinessStatus(value: string): FounderBusinessStatus {
   if (businessStatuses.has(value as FounderBusinessStatus)) {
     return value as FounderBusinessStatus;
@@ -837,6 +883,7 @@ export async function getFounderAdminOverview(input: {
   const usersQuery = normalizeFounderSearch(input.userQuery);
   const [
     businesses,
+    addonEntitlementsResult,
     members,
     links,
     leads,
@@ -851,6 +898,21 @@ export async function getFounderAdminOverview(input: {
       logFounderAdminReadUnavailable({ error, readName: "businesses" });
       return [];
     }),
+    listFounderAddonEntitlements({ supabase })
+      .then((entitlements) => ({
+        available: true as const,
+        entitlements,
+      }))
+      .catch((error) => {
+        logFounderAdminReadUnavailable({
+          error,
+          readName: "business_addon_entitlements",
+        });
+        return {
+          available: false as const,
+          entitlements: [] as FounderAddonEntitlementRecord[],
+        };
+      }),
     listFounderBusinessMembers({ supabase }).catch((error) => {
       logFounderAdminReadUnavailable({ error, readName: "business_members" });
       return [];
@@ -965,6 +1027,15 @@ export async function getFounderAdminOverview(input: {
   const latestLeadByBusiness = latestByBusiness(leads);
   const latestUsageByBusiness = latestByBusiness(usageEvents);
   const actionLogByBusiness = new Map<string, FounderAdminActionSummary[]>();
+  const addonEntitlementByBusinessAndKey = new Map<
+    string,
+    FounderAddonEntitlementRecord
+  >(
+    addonEntitlementsResult.entitlements.map((entitlement) => [
+      `${entitlement.business_id}:${entitlement.addon_key}`,
+      entitlement,
+    ]),
+  );
   const deletionRequestByBusiness = new Map(
     deletionRequests.map((request) => [request.business_id, request]),
   );
@@ -1043,6 +1114,27 @@ export async function getFounderAdminOverview(input: {
 
     return {
       actionLog: actionLogByBusiness.get(business.id)?.slice(0, 12) ?? [],
+      addonEntitlements: founderAddonKeys.map((addonKey) => {
+        const entitlement = addonEntitlementByBusinessAndKey.get(
+          `${business.id}:${addonKey}`,
+        );
+        const expiresAt = entitlement?.expires_at ?? null;
+        const status = entitlement?.status ?? "disabled";
+        const isActive =
+          (status === "enabled" || status === "trial") &&
+          (!expiresAt || Date.parse(expiresAt) > Date.now());
+
+        return {
+          activatedAt: entitlement?.activated_at ?? null,
+          addonKey,
+          expiresAt,
+          isActive,
+          managedByUserId: entitlement?.managed_by_user_id ?? null,
+          recorded: Boolean(entitlement),
+          status,
+        };
+      }),
+      addonEntitlementsAvailable: addonEntitlementsResult.available,
       businessId: business.id,
       createdAt: business.created_at,
       internalNote: business.internal_note,
@@ -1168,6 +1260,7 @@ export async function getFounderAdminOverview(input: {
       actorUserId: action.actor_user_id,
       businessId: action.business_id,
       createdAt: action.created_at,
+      newValues: action.new_values,
       note: action.note,
     })),
     totals: {
@@ -1476,6 +1569,34 @@ export async function setFounderUserTemporaryPassword(input: {
     });
     throw error;
   }
+}
+
+export async function updateFounderAddonEntitlement(input: {
+  addonKey: string;
+  businessId: string;
+  note?: string;
+  status: string;
+  user: AuthUser | null;
+}): Promise<void> {
+  const actor = assertFounderUser(input.user);
+  const addonKey = readFounderAddonKey(input.addonKey);
+  const status = readFounderAddonStatus(input.status);
+  const note = input.note?.trim() || null;
+  if (note && note.length > 240) {
+    throw new Error("Use 240 characters or fewer for the Premium add-on note.");
+  }
+  const supabase = createSupabaseServiceRoleClient();
+
+  await getFounderBusiness({ businessId: input.businessId, supabase });
+  await upsertFounderAddonEntitlement({
+    activatedAt: status === "enabled" ? new Date().toISOString() : null,
+    addonKey,
+    actorUserId: actor.id,
+    businessId: input.businessId,
+    note,
+    status,
+    supabase,
+  });
 }
 
 export async function updateFounderPlan(input: {

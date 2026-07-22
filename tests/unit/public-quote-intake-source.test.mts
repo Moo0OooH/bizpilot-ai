@@ -14,8 +14,9 @@
  * - server/services/public-intake.service.ts
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Guarded canonical template-linked exact-time rendering and HH:MM validation.
  * - 2026-07-16: Guarded validated source attribution across failed-submission retries.
  * - 2026-07-15: Guarded public quote reads against provider/configuration failures with a safe unavailable fallback.
  * - 2026-07-11: Added guards for bilingual custom-field override resolution on public quote reads.
@@ -143,8 +144,9 @@ describe("public quote intake source contracts", () => {
     );
   });
 
-  it("keeps server validation for required, custom, date, number, and choice fields", () => {
+  it("keeps server validation for required, custom, date, time, number, and choice fields", () => {
     const service = source("server/services/public-intake.service.ts");
+    const exactTimePattern = /^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/;
 
     for (const required of [
       "field.field_key",
@@ -156,6 +158,9 @@ describe("public quote intake source contracts", () => {
       'input.fieldType === "date"',
       "isValidDateOnly(trimmed)",
       "trimmed < todayDateString()",
+      'input.fieldType === "time"',
+      "isValidTimeOnly(trimmed)",
+      "validTime(input.fieldLabel)",
       'input.fieldType === "radio"',
       'input.fieldType === "select"',
       'input.fieldType === "time_window"',
@@ -165,6 +170,32 @@ describe("public quote intake source contracts", () => {
     ]) {
       assert.equal(service.includes(required), true, `Missing validation guard ${required}`);
     }
+
+    assert.match(
+      service,
+      /field\.field_key === canonicalExactTimeFieldKey[\s\S]*field\.field_type !== "time"[\s\S]*!field\.template_field_id/,
+    );
+    assert.equal(service.includes(exactTimePattern.toString()), true);
+    for (const valid of ["00:00", "09:05", "18:30", "23:59"]) {
+      assert.equal(exactTimePattern.test(valid), true, `${valid} should be valid`);
+    }
+    for (const invalid of ["9:05", "24:00", "12:60", "۱۲:۳۰", "12:30:00"]) {
+      assert.equal(exactTimePattern.test(invalid), false, `${invalid} should be invalid`);
+    }
+    assert.equal(service.includes("BUSINESS_OPERATING_TIME_ZONE"), true);
+    assert.equal(service.includes("assertCanonicalExactTimeIsFuture"), true);
+    assert.match(service, /parseZonedLocalDateTime\(/);
+    assert.match(service, /new Date\(parsed\.instant\)\.getTime\(\) <= Date\.now\(\)/);
+  });
+
+  it("renders exact time as a Latin, left-to-right 24-hour native input", () => {
+    const quoteWizard = source("components/public/quote-form-wizard.tsx");
+
+    assert.equal(quoteWizard.includes('fieldType === "time"'), true);
+    assert.equal(quoteWizard.includes('data-public-ltr-value'), true);
+    assert.equal(quoteWizard.includes('? "ltr" : undefined'), true);
+    assert.equal(quoteWizard.includes('? "en-CA" : undefined'), true);
+    assert.equal(quoteWizard.includes('? 60 : undefined'), true);
   });
 
   it("keeps abuse, consent, stale-form, and privacy-mode gates in the submit path", () => {

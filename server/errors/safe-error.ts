@@ -10,9 +10,10 @@
  * - server/actions/public-intake.actions.ts
  * Author: MoOoH
  * Created: 2026-05-13
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-07-21
  * Change Log:
  * - 2026-05-13: Created lightweight safe error message mapper.
+ * - 2026-07-21: Added the Premium Operations error category for entitlement-gated dashboard actions.
  * ============================================================
  */
 
@@ -22,6 +23,7 @@ export type SafeErrorCode =
   | "AI_ASSISTANT_ERROR"
   | "CONFIGURATION_ERROR"
   | "LEAD_WORKFLOW_ERROR"
+  | "PREMIUM_OPERATIONS_ERROR"
   | "PUBLIC_INTAKE_ERROR"
   | "UNKNOWN_ERROR";
 

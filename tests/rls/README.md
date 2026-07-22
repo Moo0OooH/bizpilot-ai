@@ -1,9 +1,28 @@
+<!--
+ * ============================================================
+ * File: tests/rls/README.md
+ * Project: BizPilot AI
+ * Description: Safety and execution guide for the local-only row-level security test runner.
+ * Role: Documents prerequisites, target classification, migration order, and non-Production boundaries for database tests.
+ * Related:
+ * - tests/rls/run-rls-tests.mts
+ * - supabase/migrations/README.md
+ * - supabase/migrations/0025_premium_operations_addons.sql
+ * - supabase/migrations/0026_premium_operations_schedule_integrity.sql
+ * Author: MoOoH
+ * Created: 2026-05-16
+ * Last Updated: 2026-07-22
+ * Change Log:
+ * - 2026-07-22: Updated pnpm and documented the ordered Premium Operations `0025` + `0026` local proof gate.
+ * ============================================================
+ -->
+
 # BizPilot AI - RLS Test Runner
 
 **Phase:** 10D+
 **Status:** Active
 **Owner:** MoOoH
-**Last Updated:** 2026-06-17
+**Last Updated:** 2026-07-22
 **Related:**
 - `docs/security/BIZPILOT_SUPABASE_EXPLICIT_GRANTS_AUDIT_v1.0.md`
 - `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
@@ -28,12 +47,12 @@ The runner is local-only by design. It refuses any `DATABASE_URL` whose host is 
 
 ## Prerequisites
 
-1. Node.js 24 and pnpm 10.18.3. Use `.nvmrc` or another local runtime manager to match the repository runtime.
+1. Node.js 24 and pnpm 10.34.5. Use `.nvmrc` or another local runtime manager to match the repository runtime.
 2. `pnpm install` has been run so `pg` is available.
 3. A local Postgres instance is running. Two supported paths:
    - Local Supabase: `npx supabase start` produces a Postgres on `localhost:54322` with the `auth` schema preinstalled.
    - Standalone Postgres: any Postgres 15+ with the migrations from `supabase/migrations/` applied in order, plus the `auth` schema and roles (`anon`, `authenticated`, `service_role`) created by Supabase tooling. The easier path is local Supabase.
-4. The migrations in `supabase/migrations/` have been applied against that database in order.
+4. The migrations in `supabase/migrations/` have been applied against that database in order. Premium Operations requires `0025_premium_operations_addons.sql` followed by additive `0026_premium_operations_schedule_integrity.sql`; never skip directly to `0026`.
 5. `DATABASE_URL` points to a local database only. `.env.example` includes the local Supabase example URL.
 
 ---
@@ -85,7 +104,7 @@ The runner refuses to start when:
 - The host is not in the local allow-list.
 - The host ends with `.supabase.co` or `.supabase.in`.
 
-These checks exist because every test file inserts directly into `auth.users` and switches between Postgres roles. Running against production would mutate the `auth` schema. The runner is not a substitute for production verification.
+These checks exist because every test file inserts directly into `auth.users` and switches between Postgres roles. Running against production would mutate the `auth` schema. The runner is not a substitute for Production verification, and a passing static RLS/grant source audit is not a substitute for this disposable-database execution.
 
 ---
 

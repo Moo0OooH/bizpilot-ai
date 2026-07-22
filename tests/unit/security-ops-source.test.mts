@@ -10,8 +10,10 @@
  * - docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Advanced the migration-index contract after schedule-integrity hardening.
+ * - 2026-07-21: Advanced the migration-index contract after the Premium Operations migration.
  * - 2026-07-17: Advanced the migration-index contract after 0024 and kept 0023 retention coverage explicit.
  * - 2026-07-15: Replaced Phase 25 report guards with current register and master-gate guards.
  * - 2026-07-04: Added Phase 25O security/runtime operations guards.
@@ -71,7 +73,15 @@ describe("security and runtime operations source contracts", () => {
       true,
     );
     assert.equal(
-      migrationIndex.includes("currently `0025`; `0024` already exists"),
+      migrationIndex.includes("0025_premium_operations_addons.sql"),
+      true,
+    );
+    assert.equal(
+      migrationIndex.includes("0026_premium_operations_schedule_integrity.sql"),
+      true,
+    );
+    assert.equal(
+      migrationIndex.includes("currently `0027`; `0026` already exists"),
       true,
     );
   });
@@ -122,10 +132,10 @@ describe("security and runtime operations source contracts", () => {
     }
 
     for (const required of [
-      "\"packageManager\": \"pnpm@10.18.3\"",
+      "\"packageManager\": \"pnpm@10.34.5\"",
       "\"node\": \">=24 <25\"",
-      "\"next\": \"16.2.4\"",
-      "\"react\": \"19.2.4\"",
+      "\"next\": \"16.2.11\"",
+      "\"react\": \"19.2.7\"",
     ]) {
       assert.equal(packageJson.includes(required), true, `Missing ${required}.`);
     }

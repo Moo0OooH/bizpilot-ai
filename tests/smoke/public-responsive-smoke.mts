@@ -10,8 +10,9 @@
  * - tests/smoke/public-browser-interaction-smoke.mts
  * Author: MoOoH
  * Created: 2026-06-20
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Required the bilingual Premium Operations catalog and separate-pricing clarification on their public routes.
  * - 2026-07-16: Updated the homepage smoke contract for the focused five-section story.
  * - 2026-07-13: Replaced retired V2 and merged-route checks with all ten retained V3 routes in EN and fr-CA.
  * ============================================================
@@ -92,10 +93,18 @@ function routeSpecificErrors(
     errors.push("homepage must render exactly five focused V3 sections");
   }
   if (path === "/features") {
-    for (const anchor of ["share-anywhere", "reply-drafts", "focused-by-design"]) {
+    for (const anchor of [
+      "share-anywhere",
+      "reply-drafts",
+      "focused-by-design",
+      "premium-operations",
+    ]) {
       if (!html.includes(`id="${anchor}"`)) {
         errors.push(`missing consolidation anchor ${anchor}`);
       }
+    }
+    if (!html.includes(spec.premiumOperations.title)) {
+      errors.push("features missing localized Premium Operations catalog");
     }
   }
   if (path === "/demo" && !html.includes('role="tablist"')) {
@@ -106,6 +115,12 @@ function routeSpecificErrors(
       if (!html.includes(value)) {
         errors.push(`pricing missing ${value}`);
       }
+    }
+    if (
+      !html.includes('id="premium-operations"') ||
+      !html.includes(spec.premiumOperations.title)
+    ) {
+      errors.push("pricing missing localized Premium Operations clarification");
     }
   }
   if (path === "/pilot") {

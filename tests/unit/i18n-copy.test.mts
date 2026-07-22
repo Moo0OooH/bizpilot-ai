@@ -9,8 +9,10 @@
  * - lib/i18n/language.ts
  * Author: MoOoH
  * Created: 2026-05-23
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added bilingual canonical exact-time labels and safe validation-message coverage.
+ * - 2026-07-21: Updated the protected-dashboard language-switch source contract for the isolated five-language interface cookie and action.
  * - 2026-07-17: Updated public-copy guards for the concise bilingual Website V4 editorial hierarchy.
  * - 2026-07-16: Aligned dashboard recovery assertions with segment retry instead of a misleading full reload.
  * - 2026-07-15: Added the bilingual global error copy namespace to the explicit dictionary contract.
@@ -202,13 +204,41 @@ describe("BizPilot language copy", () => {
       "components/dashboard/dashboard-topbar.tsx",
       "utf8",
     );
+    const dashboardInterface = readFileSync(
+      "lib/i18n/dashboard-interface.ts",
+      "utf8",
+    );
+    const dashboardAction = readFileSync(
+      "server/actions/premium-operations.actions.ts",
+      "utf8",
+    );
+    const dashboardLayout = readFileSync("app/(dashboard)/layout.tsx", "utf8");
     const queue = readFileSync(
       "components/dashboard/lead-workspace-queue.tsx",
       "utf8",
     );
 
-    assert.equal(topbar.includes("updateWorkspaceLanguageAction"), true);
+    assert.equal(topbar.includes("updateDashboardInterfaceLanguageAction"), true);
+    assert.equal(topbar.includes("dashboardInterfaceLanguages.map"), true);
+    assert.equal(topbar.includes("supportedLanguages"), false);
+    assert.equal(topbar.includes("updateWorkspaceLanguageAction"), false);
     assert.equal(topbar.includes("setInterfaceLanguageAction"), false);
+    assert.equal(
+      dashboardInterface.includes("DASHBOARD_INTERFACE_LANGUAGE_COOKIE"),
+      true,
+    );
+    assert.equal(
+      dashboardAction.includes("cookieStore.set(DASHBOARD_INTERFACE_LANGUAGE_COOKIE"),
+      true,
+    );
+    assert.equal(
+      dashboardLayout.includes("resolveDashboardInterfaceLanguage"),
+      true,
+    );
+    assert.equal(
+      dashboardLayout.includes("getDashboardInterfaceLegacyCopy(activeLanguage)"),
+      true,
+    );
     assert.equal(queue.includes("copy.demo.sampleLeads"), true);
     assert.equal(queue.includes("const sampleLeads = ["), false);
   });
@@ -453,7 +483,9 @@ describe("BizPilot language copy", () => {
       "utf8",
     );
     assert.equal(
-      dashboardErrorSource.includes("getBizPilotCopy(language).dashboard.errorBoundary"),
+      dashboardErrorSource.includes(
+        "getDashboardInterfaceLegacyCopy(language).dashboard",
+      ),
       true,
       "Dashboard error boundary should read visible labels from the dictionary.",
     );
@@ -1345,6 +1377,32 @@ describe("BizPilot language copy", () => {
       "Envoyer la demande",
     );
     assert.equal(
+      getBizPilotCopy("en").dashboard.configuration.fields.typeLabels.time,
+      "Exact time",
+    );
+    assert.equal(
+      getBizPilotCopy("fr-CA").dashboard.configuration.fields.typeLabels.time,
+      "Heure exacte",
+    );
+    assert.equal(
+      getBizPilotCopy("fr-CA").quoteFields.preferred_time?.label,
+      "Heure exacte souhaitée",
+    );
+    assert.deepEqual(
+      localizeDefaultQuoteField({
+        fieldKey: "preferred_time",
+        helpText:
+          "Optional exact local time. Availability is still confirmed manually.",
+        label: "Exact preferred time",
+        language: "fr-CA",
+      }),
+      {
+        helpText:
+          "Heure exacte souhaitée. L'entreprise vérifie toujours la disponibilité avant de confirmer.",
+        label: "Heure exacte souhaitée",
+      },
+    );
+    assert.equal(
       isSafePublicIntakeMessage("Salles de bain doit être rempli."),
       true,
     );
@@ -1357,6 +1415,20 @@ describe("BizPilot language copy", () => {
     assert.equal(
       isSafePublicIntakeMessage(
         getBizPilotCopy("fr-CA").intakeErrors.invalidChoice("Service"),
+      ),
+      true,
+    );
+    assert.equal(
+      isSafePublicIntakeMessage(
+        getBizPilotCopy("en").intakeErrors.validTime("Preferred exact time"),
+      ),
+      true,
+    );
+    assert.equal(
+      isSafePublicIntakeMessage(
+        getBizPilotCopy("fr-CA").intakeErrors.validTime(
+          "Heure exacte souhaitée",
+        ),
       ),
       true,
     );

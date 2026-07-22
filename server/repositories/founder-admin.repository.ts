@@ -9,8 +9,9 @@
  * - supabase/migrations/0015_business_access_plan_and_admin_log.sql
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added service-role reads and a transactionally audited RPC upsert for founder-managed Premium Operations entitlements.
  * - 2026-07-16: Added a minimal-column bounded lead sample for founder source reporting without loading customer contact fields.
  * - 2026-07-05: Added complete source header changelog for founder admin repository.
  * - 2026-05-22: Created service-role founder admin repository.
@@ -41,6 +42,25 @@ export type FounderProfileRecord =
 
 export type FounderBusinessMemberRecord =
   Database["public"]["Tables"]["business_members"]["Row"];
+
+export type FounderAddonEntitlementRecord =
+  Database["public"]["Tables"]["business_addon_entitlements"]["Row"];
+export type FounderAddonEntitlementMutationRecord = Pick<
+  FounderAddonEntitlementRecord,
+  | "activated_at"
+  | "addon_key"
+  | "business_id"
+  | "expires_at"
+  | "managed_by_user_id"
+  | "status"
+  | "updated_at"
+>;
+export type FounderAddonKey = FounderAddonEntitlementRecord["addon_key"];
+export type FounderAddonStatus = FounderAddonEntitlementRecord["status"];
+export type FounderManagedAddonStatus = Extract<
+  FounderAddonStatus,
+  "disabled" | "enabled"
+>;
 
 export type FounderPublicLinkRecord =
   Database["public"]["Tables"]["public_link_variants"]["Row"];
@@ -87,6 +107,63 @@ export async function listFounderBusinessMembers(input: {
   throwIfError(error);
 
   return data ?? [];
+}
+
+export async function listFounderAddonEntitlements(input: {
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderAddonEntitlementRecord[]> {
+  const { data, error } = await input.supabase
+    .from("business_addon_entitlements")
+    .select("*")
+    .order("business_id", { ascending: true })
+    .order("addon_key", { ascending: true });
+
+  throwIfError(error);
+
+  return data ?? [];
+}
+
+export async function upsertFounderAddonEntitlement(input: {
+  activatedAt: string | null;
+  addonKey: FounderAddonKey;
+  actorUserId: string;
+  businessId: string;
+  note: string | null;
+  status: FounderManagedAddonStatus;
+  supabase: SupabaseClient<Database>;
+}): Promise<FounderAddonEntitlementMutationRecord> {
+  const { data, error } = await input.supabase
+    .rpc("founder_upsert_premium_addon_entitlement", {
+      target_activated_at: input.activatedAt,
+      target_actor_user_id: input.actorUserId,
+      target_addon_key: input.addonKey,
+      target_business_id: input.businessId,
+      target_expires_at: null,
+      target_note: input.note,
+      target_status: input.status,
+    });
+
+  throwIfError(error);
+
+  const entitlement = data?.[0];
+  if (
+    !entitlement ||
+    entitlement.addon_key !== input.addonKey ||
+    entitlement.business_id !== input.businessId ||
+    entitlement.status !== input.status
+  ) {
+    throw new Error("Premium add-on entitlement update failed.");
+  }
+
+  return {
+    activated_at: entitlement.activated_at,
+    addon_key: input.addonKey,
+    business_id: input.businessId,
+    expires_at: entitlement.expires_at,
+    managed_by_user_id: entitlement.managed_by_user_id,
+    status: input.status,
+    updated_at: entitlement.updated_at,
+  };
 }
 
 export async function listFounderPublicLinks(input: {

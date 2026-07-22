@@ -32,11 +32,11 @@ import {
   SectionHeader,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
-import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
-  resolveWorkspaceInterfaceLanguage,
-} from "@/lib/i18n/language";
+  DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+  resolveDashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import { getDashboardInterfaceLegacyCopy } from "@/lib/i18n/dashboard-legacy-interface";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
@@ -167,14 +167,15 @@ export default async function DashboardOverviewPage() {
   }
 
   const cookieStore = await cookies();
+  const interfaceLanguage = resolveDashboardInterfaceLanguage({
+    cookieValue: cookieStore.get(DASHBOARD_INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
+  const interfaceCopy = getDashboardInterfaceLegacyCopy(interfaceLanguage);
   const workspace = await getBusinessWorkspace({ userId: user.id });
   const activeBusiness = workspace.businesses[0];
 
   if (!activeBusiness) {
-    const fallbackLanguage = resolveWorkspaceInterfaceLanguage({
-      cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
-    });
-    const overviewCopy = getBizPilotCopy(fallbackLanguage).dashboard.overview;
+    const overviewCopy = interfaceCopy.dashboard.overview;
 
     return (
       <main>
@@ -185,26 +186,20 @@ export default async function DashboardOverviewPage() {
     );
   }
 
-  const activeLanguage = resolveWorkspaceInterfaceLanguage({
-    businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
-  });
-  const dashboardCopy = getBizPilotCopy(activeLanguage).dashboard;
+  const dashboardCopy = interfaceCopy.dashboard;
   const overviewCopy = dashboardCopy.overview;
   const visualCopy = overviewCopy.visualDashboard;
-  const localizedBusiness = {
-    ...activeBusiness,
-    preferred_language: activeLanguage,
-  };
   const [configurationWorkspace, desk] = await Promise.all([
-    getBusinessConfigurationWorkspace({ business: localizedBusiness }),
-    getLeadConversionDesk({ actorUserId: user.id, business: localizedBusiness }),
+    getBusinessConfigurationWorkspace({ business: activeBusiness }),
+    getLeadConversionDesk({ actorUserId: user.id, business: activeBusiness }),
   ]);
 
   const { readiness } = configurationWorkspace;
   const quotePath = `/quote/${activeBusiness.slug}`;
   const quotePreviewPath = `${quotePath}?preview=dashboard${
-    activeLanguage === "en" ? "" : `&language=${encodeURIComponent(activeLanguage)}`
+    activeBusiness.preferred_language === "en"
+      ? ""
+      : `&language=${encodeURIComponent(activeBusiness.preferred_language)}`
   }`;
   const leadQueueHref = "/dashboard/leads";
   const needsReplyHref = "/dashboard/leads?focus=needs_reply";
@@ -492,7 +487,7 @@ export default async function DashboardOverviewPage() {
         />
         <LeadWorkspaceQueue
           compact
-          language={activeLanguage}
+          language={interfaceLanguage}
           leads={desk.leads}
           limit={5}
           quotePath={quotePath}

@@ -10,8 +10,9 @@
  * - components/dashboard/lead-workspace-queue.tsx
  * Author: MoOoH
  * Created: 2026-06-27
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-21
  * Change Log:
+ * - 2026-07-21: Updated the mobile-menu anchor contract to use logical inline-end positioning for RTL dashboard interface languages.
  * - 2026-07-16: Aligned the heading guard with the utility-focused topbar and sidebar-owned desktop navigation.
  * - 2026-07-16: Aligned the heading guard with the centered resilient dashboard topbar role.
  * - 2026-07-16: Aligned the mobile menu containment guard with the expanded owner Actions menu.
@@ -72,7 +73,8 @@ describe("dashboard heading hierarchy", () => {
       topbarSource.includes("w-[min(240px,calc(100vw-1.5rem))]"),
       true,
     );
-    assert.equal(topbarSource.includes("absolute right-0 top-11"), true);
+    assert.equal(topbarSource.includes("absolute end-0 top-11"), true);
+    assert.equal(topbarSource.includes("absolute right-0 top-11"), false);
     assert.equal(tabsSource.includes("grid min-w-0 gap-3"), true);
     assert.equal(tabsSource.includes("min-w-0 max-w-full overflow-hidden"), true);
     assert.equal(tabsSource.includes("flex min-w-0 gap-1 overflow-x-auto"), true);

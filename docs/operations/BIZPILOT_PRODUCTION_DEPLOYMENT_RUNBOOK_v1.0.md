@@ -1,5 +1,7 @@
 # BizPilot AI - Production Deployment Runbook v1.0
 
+Updated: 2026-07-22 — recorded the completed Production drift repair and Premium Operations migration through `0026`.
+
 ## Purpose
 
 Define the production path for moving BizPilot to a real pilot environment without expanding product scope.
@@ -10,21 +12,21 @@ Define the production path for moving BizPilot to a real pilot environment witho
 bizpilo.com
 ```
 
-## Current Deployment Status — Dashboard V4.7
+## Current Release Status — Dashboard V4.7 and Premium Operations
 
 Use this table as the active deployment truth. Historical phase evidence does not prove a later commit.
 
 | Major Item | Status | Current Evidence |
 | --- | --- | --- |
-| Functional source commit | Local gate pass | Remote commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`, tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; lint, typecheck, build, and 295/295 tests pass locally. |
-| Exact-commit CI and deployment | Pass | GitHub CI run `29558683869` (CI #443), deployment `5484816130` / status `15596534668`, and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeeded for the V4.7 release. |
+| Historical V4.7 source identity | Local Git fact | Commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present locally with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. These local facts do not independently revalidate historical external evidence. |
+| Exact-commit CI and deployment | Candidate PASS / Production pending | Candidate `9ae149c` passed GitHub App validation run `29939791308`, Vercel Preview `9Akuehj14QYGPpAM4pFYBT3JySih`, and the 16-state Preview public matrix. Final `main` deployment acceptance remains pending. |
 | Production QA mode | Read-only only | Public GET, locale, responsive, security-header, and owner-approved authenticated visual checks may run. Do not sign up, submit quotes, edit settings, create leads/users, or mutate Production for QA. |
 | Production auth | Gated | Signup confirmation, reset, Google callback, and session behavior require an approved synthetic non-Production target or a separately controlled no-write authenticated acceptance path. Google login must not create a workspace silently. |
-| Supabase production target | Confirmed | Corrected project is `bizpilot-production` / `qfqendrqimqvkoojpjao`; Vercel project `moo0ooohs-projects/bizpilot-ai` has a Ready production deployment with aliases including `bizpilo.com`. Required env variable names exist encrypted for Production/Preview; values were not pulled or revealed. |
-| Migration/schema state | Reconciliation required before writes | Repository migrations run through `0024`; next prefix is `0025`. Historical object checks cannot replace current read-only drift inspection. Never replay a migration blindly. |
-| Production read-only smoke | Pass | Public 46/46, responsive 20/20, UI 621/621, and active + inactive Quote EN/fr-CA 4/4 returned HTTP 200 without submission or mutation. Submission and success-flow proof must run on the approved disposable target. |
-| Founder shell activation | Observed, protected acceptance gated | Owner screenshot visibly renders the role-gated Founder Admin entry. Full protected/Admin route acceptance and normal-owner denial remain gated. |
-| Backup/export/restore | Blocked for real customer data | Phase 24C.0 proves only a historical logical export and DB-level disposable restore. The procedure exists, but complete restored app/dashboard/intake/RLS and isolation proof has not passed. |
+| Supabase/Vercel target | Owner confirmation required | Confirm the exact project and deployment target immediately before any external action. Do not rely on historical identifiers or pull secret values into this environment. |
+| Migration/schema state | PASS through `0026` | Repaired verified migration history, replayed idempotent drift migrations `0020`, `0021`, `0023`, and `0024`, then applied `0025` and `0026`. Final schema matches all `36` tables, `54` functions, `65` indexes, and `87` policies; the only dump difference is harmless physical column order. |
+| Production read-only smoke | Historical / re-verify | Older public-read figures are not a release proof for the current candidate. Run no-write smoke only after source publication and target confirmation; submission and success-flow proof stays on an approved disposable target. |
+| Founder shell activation | Historical / protected acceptance gated | A historical screenshot is not a substitute for current protected/Admin route acceptance or normal-owner denial proof. |
+| Backup/export/restore | PASS for code release; real-data policy separate | A current roles/schema/public-data export was created outside git and restored without printing row content. After the reconciled `0023`, `0025`, and `0026` sequence plus the cross-schema auth trigger, the disposable target passed RLS `14/14`, authenticated dashboard/Admin `17/17`, active quote GET `2/2`, and independent EN/fr-CA submissions. |
 | OpenAI model-backed demo | Blocked | A real-key synthetic dry run returned HTTP `429`; no model output was generated or quality-checked. |
 | First real pilot data | Blocked | Do not collect real customer/pilot data until strict restored-target proof, auth/provider acceptance, privacy/operations gates, final read-only Production acceptance, and explicit owner approval all pass. |
 
@@ -36,6 +38,7 @@ Before production deployment:
 pnpm lint
 pnpm typecheck
 pnpm test:unit
+pnpm audit:supabase
 pnpm build
 secret scan
 manual browser QA
@@ -57,12 +60,12 @@ Required migration verification:
 0017_business_preferred_language.sql applied
 0018_business_lifecycle_deletion_foundation.sql object/RLS/function state verified, do not blindly replay
 0019_lifecycle_helper_execute_grant_hardening.sql applied and verified
-0020_founder_test_auth_user_cleanup.sql pending production approval/apply if admin auth-user deletion is deployed
-0021_session_policy_and_owner_audit.sql reconciled before any write
+0020_founder_test_auth_user_cleanup.sql applied/replayed idempotently and verified
+0021_session_policy_and_owner_audit.sql applied/replayed idempotently and verified
 0022_custom_quote_field_builder.sql reconciled before any write
-0023_public_submission_abuse_log_retention.sql reconciled before any write
-0024_supabase_status_and_rls_performance_hardening.sql reconciled before any write
-next migration prefix: 0025
+0023_public_submission_abuse_log_retention.sql applied and verified
+0024_supabase_status_and_rls_performance_hardening.sql applied/replayed idempotently and verified
+0025_premium_operations_addons.sql followed by 0026_premium_operations_schedule_integrity.sql applied and verified in Production after passing ordered local/restore proof
 RLS helper functions current
 explicit grants reviewed
 Security Advisor reviewed
@@ -78,12 +81,15 @@ NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 SUPABASE_SECRET_KEY
 BIZPILOT_FOUNDER_EMAILS
+BIZPILOT_IP_HASH_SALT
 OPENAI_API_KEY
 ```
 
 `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY` are legacy fallbacks during migration only.
 
 `OPENAI_API_KEY` is required for model-backed AI demos. The app must still fail safely when it is absent.
+
+`BIZPILOT_IP_HASH_SALT` is required in Production for public-submission abuse-log hashing; Production fails closed when it is missing. Use a unique secret value and never disclose it in docs, screenshots, logs, or chat.
 
 Do not set real secrets in `.env.example`, docs, screenshots, or chat.
 
@@ -96,10 +102,11 @@ During the Vercel-domain transition, keep the current Vercel production URL in S
 3. Query migration history. If `supabase_migrations.schema_migrations` is missing, treat the database as schema-without-standard-migration-history/manual drift.
 4. Apply only missing existing repo migrations in numeric order after object verification and owner approval. Do not rename, skip, or replay verified migrations blindly.
 5. Do not create ad-hoc columns or guessed compatibility aliases such as `leads.source`; the repo schema uses `leads.source_channel`.
-6. Verify `0014` through `0024` by direct read-only SQL object/function/grant/policy checks in the target project; record absent, present, and drifted objects separately.
-7. Run the complete RLS suite plus authenticated app/dashboard/intake/isolation proof against a disposable restored target. Do not run `pnpm test:rls` against the managed production database.
-8. Treat Phase 24C.0 as historical DB-level partial evidence only; it does not satisfy Step 7.
-9. Review Supabase Security Advisor and Performance Advisor before sharing the live quote link.
+6. Verify `0014` through `0026` by direct read-only SQL object/function/grant/policy checks in the target project; record absent, present, and drifted objects separately.
+7. Before proposing Premium Operations for Production, apply `0025` and then `0026` on an approved local/disposable target and pass entitlement, RLS, tenant-isolation, review/copy lifecycle, overlap, provenance/currentness, and concurrency checks.
+8. Run the complete RLS suite plus authenticated app/dashboard/intake/isolation proof against a disposable restored target. Do not run `pnpm test:rls` against the managed production database.
+9. Treat Phase 24C.0 as historical DB-level partial evidence only; it does not satisfy Step 8.
+10. Review Supabase Security Advisor and Performance Advisor before sharing the live quote link.
 
 ## Vercel Deployment
 

@@ -45,12 +45,15 @@ import {
   textareaClass,
 } from "@/components/dashboard/dashboard-ui";
 import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import {
+  DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+  resolveDashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import { getDashboardInterfaceLegacyCopy } from "@/lib/i18n/dashboard-legacy-interface";
 import { getPublicSiteOrigin } from "@/lib/seo";
 import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
   languageLabels,
-  resolveWorkspaceInterfaceLanguage,
   supportedLanguages,
 } from "@/lib/i18n/language";
 import { saveBusinessConfigurationAction } from "@/server/actions/business-configuration.actions";
@@ -113,23 +116,26 @@ export default async function BusinessProfilePage({
     redirect("/dashboard");
   }
 
-  const activeLanguage = resolveWorkspaceInterfaceLanguage({
-    businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  const interfaceLanguage = resolveDashboardInterfaceLanguage({
+    cookieValue: (await cookies()).get(
+      DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+    )?.value,
   });
   const configurationWorkspace = await getBusinessConfigurationWorkspace({
-    business: { ...activeBusiness, preferred_language: activeLanguage },
+    business: activeBusiness,
   });
   const { cleaningTemplate, configuration } = configurationWorkspace;
   const quotePath = `/quote/${activeBusiness.slug}`;
   const quoteUrl = new URL(quotePath, getPublicSiteOrigin()).toString();
   const quotePreviewPath = `${quotePath}?preview=dashboard${
-    activeLanguage === "en" ? "" : `&language=${encodeURIComponent(activeLanguage)}`
+    activeBusiness.preferred_language === "en"
+      ? ""
+      : `&language=${encodeURIComponent(activeBusiness.preferred_language)}`
   }`;
   const primaryColor = configuration.branding?.primary_color ?? "#18181b";
   const accentColor = configuration.branding?.accent_color ?? "#0f766e";
-  const copy = getBizPilotCopy(activeLanguage);
-  const dashboardCopy = copy.dashboard;
+  const publicBusinessCopy = getBizPilotCopy(activeBusiness.preferred_language);
+  const dashboardCopy = getDashboardInterfaceLegacyCopy(interfaceLanguage).dashboard;
   const text = dashboardCopy.businessProfile;
   const routeNotice = readSafeRouteFlashMessage(
     params?.notice,
@@ -141,7 +147,7 @@ export default async function BusinessProfilePage({
   );
   const consentNotice =
     configuration.consentSettings?.consent_notice ??
-    copy.quoteForm.consentNoticeDefault;
+    publicBusinessCopy.quoteForm.consentNoticeDefault;
   const privacyMode = configuration.privacySettings?.privacy_mode ?? "standard";
   const retainLeadsDays =
     configuration.privacySettings?.retain_leads_days ?? 365;
@@ -188,7 +194,7 @@ export default async function BusinessProfilePage({
       >
         {[
           [text.publicQuoteLink, quotePath],
-          [text.preferredLanguage, languageLabels[activeLanguage]],
+          [text.preferredLanguage, languageLabels[activeBusiness.preferred_language]],
           [text.businessType, text.cleaning],
         ].map(([title, value]) => (
           <div
@@ -336,7 +342,7 @@ export default async function BusinessProfilePage({
                 {text.preferredLanguage}
                 <select
                   className={inputClass}
-                  defaultValue={activeLanguage}
+                  defaultValue={activeBusiness.preferred_language}
                   name="preferredLanguage"
                   required
                 >

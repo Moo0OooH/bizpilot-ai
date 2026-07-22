@@ -10,8 +10,9 @@
  * - server/services/business-configuration.service.ts
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added exact-time quote fields and reserved preferred_time for the seeded template-linked field.
  * - 2026-07-16: Passed an explicit review scope so each surface confirms its own tasks and returns success or errors to its safe owning route.
  * - 2026-07-16: Added save-and-preview intent so owner previews synchronize and repair the public quote page before navigation.
  * - 2026-07-13: Removed the obsolete public locale Server Action after public switching moved to deterministic locale URLs.
@@ -70,6 +71,7 @@ const quoteFieldTypes = [
   "select",
   "text",
   "textarea",
+  "time",
   "time_window",
 ] as const;
 type QuoteFieldType = (typeof quoteFieldTypes)[number];
@@ -98,6 +100,7 @@ const choiceFieldTypes = new Set<QuoteFieldType>([
   "time_window",
 ]);
 const customFieldKeyPattern = /^[a-z][a-z0-9_]*$/;
+const canonicalExactTimeFieldKey = "preferred_time";
 
 function readRequiredFormValue(formData: FormData, key: string): string {
   const value = formData.get(key);
@@ -221,6 +224,26 @@ function normalizeCustomFieldKey(value: string): string {
     .replace(/^_+|_+$/g, "")
     .replace(/_+/g, "_")
     .slice(0, 48);
+}
+
+function assertCanonicalExactTimeField(input: {
+  fieldKey: string;
+  fieldType: QuoteFieldType;
+  isCustom: boolean;
+}): void {
+  if (input.fieldKey !== canonicalExactTimeFieldKey) {
+    return;
+  }
+
+  if (input.isCustom) {
+    throw new Error(
+      "The preferred_time key is reserved for the template's exact-time field.",
+    );
+  }
+
+  if (input.fieldType !== "time") {
+    throw new Error("The preferred_time field must use the exact-time type.");
+  }
 }
 
 function readFieldSortOrder(value: string | undefined): number | undefined {
@@ -444,6 +467,9 @@ function redirectWithConfigurationError(
       value === "Invalid preferred language." ||
       value === "Invalid quote form display mode." ||
       value === "Invalid quote form section assignment." ||
+      value === "The preferred_time field must use the exact-time type." ||
+      value ===
+        "The preferred_time key is reserved for the template's exact-time field." ||
       value === "At least one quote form section must be visible." ||
       value === "Quote form fields must use an existing section." ||
       value === "Quote form section keys must be unique and valid." ||
@@ -552,6 +578,11 @@ function readTemplateFieldOverrides(
       const fieldType = readQuoteFieldType(
         readOptionalFormValue(formData, `fieldType:${fieldKey}`),
       );
+      assertCanonicalExactTimeField({
+        fieldKey,
+        fieldType,
+        isCustom: isCustomField,
+      });
       const isCustomHelpText =
         helpText !== undefined &&
         !isDefaultQuoteFieldHelpText({ fieldKey, helpText });
@@ -623,6 +654,11 @@ function readTemplateFieldOverrides(
     const fieldType = readQuoteFieldType(
       readOptionalFormValue(formData, `newFieldType:${slot}`),
     );
+    assertCanonicalExactTimeField({
+      fieldKey,
+      fieldType,
+      isCustom: true,
+    });
     const options = readChoiceOptions({
       fieldType,
       optionsText: readOptionalFormValue(formData, `newFieldOptions:${slot}`),

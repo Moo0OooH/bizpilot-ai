@@ -34,11 +34,11 @@ import {
   SectionHeader,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
-import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
-  resolveWorkspaceInterfaceLanguage,
-} from "@/lib/i18n/language";
+  DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+  resolveDashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import { getDashboardInterfaceLegacyCopy } from "@/lib/i18n/dashboard-legacy-interface";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessConfigurationWorkspace } from "@/server/services/business-configuration.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
@@ -53,14 +53,15 @@ export default async function DashboardGuidePage() {
   }
 
   const cookieStore = await cookies();
+  const interfaceLanguage = resolveDashboardInterfaceLanguage({
+    cookieValue: cookieStore.get(DASHBOARD_INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
+  const interfaceCopy = getDashboardInterfaceLegacyCopy(interfaceLanguage);
   const workspace = await getBusinessWorkspace({ userId: user.id });
   const activeBusiness = workspace.businesses[0];
 
   if (!activeBusiness) {
-    const fallbackLanguage = resolveWorkspaceInterfaceLanguage({
-      cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
-    });
-    const overviewCopy = getBizPilotCopy(fallbackLanguage).dashboard.overview;
+    const overviewCopy = interfaceCopy.dashboard.overview;
 
     return (
       <main>
@@ -71,16 +72,12 @@ export default async function DashboardGuidePage() {
     );
   }
 
-  const activeLanguage = resolveWorkspaceInterfaceLanguage({
-    businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
-  });
-  const dashboardCopy = getBizPilotCopy(activeLanguage).dashboard;
+  const dashboardCopy = interfaceCopy.dashboard;
   const guideCopy = dashboardCopy.guide;
   const reportsCopy = dashboardCopy.reports;
   const configurationCopy = dashboardCopy.configuration;
   const configurationWorkspace = await getBusinessConfigurationWorkspace({
-    business: { ...activeBusiness, preferred_language: activeLanguage },
+    business: activeBusiness,
   });
   const readiness = configurationWorkspace.readiness;
   const readinessPercent = Math.min(

@@ -9,8 +9,9 @@
  * - app/(dashboard)/dashboard/page.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-21
  * Change Log:
+ * - 2026-07-21: Replaced physical text and margin utilities with logical inline equivalents for RTL dashboard shells.
  * - 2026-05-19: Rebuilt primitives to follow the approved index.html Quote Recovery Command Center visual system.
  * - 2026-06-27: Added owner-safe lead text fallback for synthetic/internal seed labels.
  * - 2026-07-05: Improved header action wrapping and status badge fit for launch-readiness responsive polish.
@@ -446,7 +447,7 @@ export function QuickActionTile({
   title?: string;
 }>) {
   const className =
-    "flex min-h-14 items-center gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-3 text-left transition";
+    "flex min-h-14 items-center gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-3 text-start transition";
 
   const content = title ? (
     <>
@@ -463,7 +464,7 @@ export function QuickActionTile({
           </span>
         ) : null}
       </span>
-      {children ? <span className="ml-auto shrink-0">{children}</span> : null}
+      {children ? <span className="ms-auto shrink-0">{children}</span> : null}
     </>
   ) : (
     children

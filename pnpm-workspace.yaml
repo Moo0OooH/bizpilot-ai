@@ -1,6 +1,31 @@
 allowBuilds:
   sharp: true
   unrs-resolver: true
-ignoredBuiltDependencies:
-  - sharp
-  - unrs-resolver
+
+# Hold newly published packages for one day by default. The exact Next.js
+# 16.2.11 security-release family is temporarily exempt so the known fixes can
+# ship immediately; remove these entries after the normal age window elapses.
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - '@babel/core@7.29.6'
+  - '@next/env@16.2.11'
+  - '@next/eslint-plugin-next@16.2.11'
+  - '@next/swc-darwin-arm64@16.2.11'
+  - '@next/swc-darwin-x64@16.2.11'
+  - '@next/swc-linux-arm64-gnu@16.2.11'
+  - '@next/swc-linux-arm64-musl@16.2.11'
+  - '@next/swc-linux-x64-gnu@16.2.11'
+  - '@next/swc-linux-x64-musl@16.2.11'
+  - '@next/swc-win32-arm64-msvc@16.2.11'
+  - '@next/swc-win32-x64-msvc@16.2.11'
+  - 'eslint-config-next@16.2.11'
+  - 'next@16.2.11'
+  - 'brace-expansion@5.0.7'
+
+overrides:
+  'brace-expansion@<1.1.16': 1.1.16
+  'brace-expansion@>=5 <5.0.7': 5.0.7
+  '@babel/core@<=7.29.0': 7.29.6
+  'js-yaml@>=4 <4.3.0': 4.3.0
+  'next@16.2.11>postcss': 8.5.10
+  'next@16.2.11>sharp': 0.35.3

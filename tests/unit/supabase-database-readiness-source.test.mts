@@ -10,8 +10,9 @@
  * - package.json
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-04
+ * Last Updated: 2026-07-21
  * Change Log:
+ * - 2026-07-21: Kept the credential-free Supabase audit in the standard verification gate.
  * - 2026-07-04: Created source guards for Supabase status-aware database readiness.
  * ============================================================
  */
@@ -29,6 +30,11 @@ describe("Supabase database readiness source guards", () => {
     assert.equal(
       packageJson.scripts["audit:supabase"],
       "pnpm check:targets && node --experimental-strip-types scripts/supabase-explicit-grant-audit.mts",
+    );
+    assert.equal(
+      packageJson.scripts.verify?.includes("pnpm audit:supabase") ?? false,
+      true,
+      "The static Supabase grant audit must run in the standard verify/CI path.",
     );
   });
 

@@ -11,8 +11,9 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-07-16
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-21
  * Change Log:
+ * - 2026-07-21: Updated navigation contracts for the dashboard-only language picker, logical RTL menu anchoring, and Premium Operations menu route.
  * - 2026-07-16: Guarded scoped setup confirmation so profile-only saves cannot complete untouched Quote Setup tasks.
  * - 2026-07-16: Guarded shared accessible brand tokens across setup preview and the public quote runtime.
  * - 2026-07-16: Guarded restored grouped desktop navigation and visible authorized Founder Admin access.
@@ -37,11 +38,14 @@ describe("dashboard quote setup finalization", () => {
     const authService = source("server/services/auth.service.ts");
     const businessService = source("server/services/business.service.ts");
 
-    assert.equal(topbar.includes("ml-auto"), true);
-    assert.equal(topbar.includes("absolute right-0 top-11"), true);
+    assert.equal(topbar.includes("ms-auto"), true);
+    assert.equal(topbar.includes("ml-auto"), false);
+    assert.equal(topbar.includes("absolute end-0 top-11"), true);
+    assert.equal(topbar.includes("absolute right-0 top-11"), false);
     assert.equal(topbar.includes("lg:left-0 lg:right-auto"), false);
     assert.equal(topbar.includes("primaryRoutes.map"), false);
     assert.equal(topbar.includes('{ href: "/dashboard/guide"'), true);
+    assert.equal(topbar.includes('{ href: "/dashboard/operations"'), true);
     assert.equal(topbar.includes('import Link from "next/link"'), false);
     assert.equal(topbar.includes("useEffect"), false);
     assert.equal(topbar.includes("useRef"), false);
@@ -49,6 +53,7 @@ describe("dashboard quote setup finalization", () => {
     assert.equal(sidebar.includes("dashboard-mobile-nav fixed"), true);
     assert.equal(sidebar.includes('href="/admin"'), true);
     assert.equal(sidebar.includes("showFounderAdmin ?"), true);
+    assert.equal(sidebar.includes('href: "/dashboard/operations"'), true);
     assert.equal(authService.includes("export const getCurrentUser = cache("), true);
     assert.equal(businessService.includes("const getBusinessWorkspaceByUserId = cache("), true);
     assert.equal(topbar.includes("value={quoteUrl}"), true);

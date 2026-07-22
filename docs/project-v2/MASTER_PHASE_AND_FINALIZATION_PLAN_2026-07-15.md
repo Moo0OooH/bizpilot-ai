@@ -10,8 +10,10 @@
  * - prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md
  * Author: MoOoH
  * Created: 2026-07-15
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Corrected the historical V4.7 local object identity without promoting it to external release evidence.
+ * - 2026-07-21: Reopened the unverified V4.7 publication/deployment assertion and added the Premium Operations proof sequence.
  * - 2026-07-17: Recorded Dashboard V4.7 functional publication, configurable intake/runtime hardening, successful CI/deployment/Production read-only acceptance, and the remaining authenticated, OAuth, restored-RLS, real-data, and pilot gates.
  * - 2026-07-15: Added the pre-existing remote legacy-branch retirement gate and exact safe external procedure.
  * - 2026-07-15: Closed the V2.1 public release phase with exact main, CI, Vercel, HTTPS, and Production smoke evidence.
@@ -37,12 +39,13 @@ The current product does not claim direct social inbox integration, autonomous s
 | 2 | EN/fr-CA public, Auth, Intake, 404, error, metadata, nav, footer | DONE | Structural parity, correct document language, locale-preserving links, no mixed copy, public 46/46, responsive 20/20, UI zero failures | Codex |
 | 3 | Email/password Auth foundation | DONE in source | Sign-up/sign-in/reset/callback tests plus safe synthetic browser proof | Codex + approved synthetic target |
 | 4 | Google OAuth | HARDENED in source; live callback GATED | Provider configured with approved origins/callbacks; login never silently bootstraps a workspace; owner browser QA passes | Owner/external console, then Codex QA |
-| 5 | Smart Intake and public quote flow | DONE in V4.7 source/read-only Production acceptance; submitted synthetic flow GATED | Configurable title/sections/list-tabs-steps; active/inactive EN/fr-CA GET `4/4`; consent/validation; abuse safeguards; success boundary; no Production test writes | Codex + approved synthetic target |
+| 5 | Smart Intake and public quote flow | DONE in V4.7 source/local evidence; current read-only Production acceptance and submitted synthetic flow GATED | Configurable title/sections/list-tabs-steps; local active/inactive EN/fr-CA GET contract; consent/validation; abuse safeguards; success boundary; no Production test writes | Codex + approved synthetic target |
 | 6 | Owner Dashboard V4.7 | DONE in source/local gates; authenticated visual proof GATED | Overview, Leads, Lead Detail, Reports, Quote Setup, Business Profile, Settings, Guide; optional Reports/Guide nav; responsive mobile/desktop EN/fr-CA; edit/copy/manual-send | Codex + approved synthetic target |
 | 7 | Founder/Admin controls | DONE in source; screenshot visibility observed; live authorization proof GATED | Founder-only access, normal-owner denial, guarded actions, dry runs, audit evidence, no decorative business claims | Codex + approved synthetic target |
 | 8 | AI summary/draft boundary | DONE in source | Structured output and fallback tests, no content logging, owner review, provider failure path, cost/budget monitoring | Codex; monitoring configuration may require owner |
 | 9 | Tenant isolation, RLS, schema, backup, restore | GATED for current managed/restored evidence | Read-only drift map, current backup, disposable restore, RLS suite, authenticated restored-app smoke, rollback proof | Owner authorizes target; Codex executes bounded plan |
-| 10 | GitHub, CI, Vercel, domain, HTTPS, read-only Production release | DONE for Dashboard V4.7 | SHA `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`, tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; local lint/typecheck/295 tests/build; CI `29558683869` (`#443`); deployment `5484816130` / status `15596534668`; Vercel `4zpXiTSDYdZjKkwG3ukyaVFj2VwR`; Production public `46/46`, responsive `20/20`, UI `621/621`, Quote `4/4` | Codex |
+| 10 | GitHub, CI, Vercel, domain, HTTPS, read-only Production release | GATED / RE-VERIFY | Local Git contains V4.7 commit `d9e25bbf…` with tree `17d6b65…`; the previously documented `a82af72…` object is absent. Fresh exact-commit CI/deployment and no-write acceptance evidence are required before closure. | Codex after remote/owner access |
+| 10A | Premium Operations schema/release proof | GATED | Apply `0025_premium_operations_addons.sql` then additive `0026_premium_operations_schedule_integrity.sql`, in order, to an approved local/disposable target; prove entitlement/RLS/tenant isolation, lifecycle/review/copy, overlap, provenance/currentness, and concurrency controls; re-run source verification; then obtain a separately approved Production reconciliation/apply plan. | Codex for local proof; owner for target/Production approval |
 | 11 | Search discovery and non-PII measurement | PARTIAL / GATED | Sitemap submitted, indexing inspected, field CWV reviewed, analytics sink separately approved or intentionally off | Owner external access; Codex audit |
 | 12 | Real customer data | NOT APPROVED | Privacy/consent/retention/deletion/incident/support evidence plus restored-target proof and explicit owner approval | Owner decision after Codex packet |
 | 13 | Paid pilot | NOT APPROVED | Real-data gate passed; offer, taxes, manual billing, refund/cancellation, support, onboarding, offboarding, rollback and metrics approved | Owner/commercial action after Codex packet |
@@ -86,10 +89,10 @@ The current product does not claim direct social inbox integration, autonomous s
 
 ## Current priority queue
 
-1. `P0 — DONE`: Dashboard V4.7 exact-tree local gates, `main` publication, CI, GitHub/Vercel deployment, and final read-only Production smokes are recorded without relabeling historical Website evidence.
-2. `P0 — Codex`: finish V4.7 authority/documentation synchronization.
-3. `P0 — Owner → Codex`: provide/authorize a disposable authenticated target; then run Owner/Admin/Auth/active-Intake browser workflows and prove founder/normal-owner authorization boundaries.
-4. `P0 — Owner → Codex`: authorize read-only managed Supabase reconciliation, backup confirmation, disposable restore, restored-application smoke, and RLS proof.
+1. `P0 — GATED / RE-VERIFY`: publish the exact current candidate and map fresh CI, deployment, and no-write acceptance evidence to that commit; historical V4.7 local object identity is not current release evidence.
+2. `P0 — DONE locally`: current-candidate source verification and documentation synchronization pass with the exact results recorded in the Dashboard phase ledger.
+3. `P0 — Owner → Codex`: provide/authorize a disposable target for ordered Premium Operations migrations `0025` then `0026`; then run migration/RLS/tenant-isolation/lifecycle/concurrency proof and authenticated Owner/Admin/Auth/active-Intake workflows.
+4. `P0 — Owner → Codex`: authorize read-only managed Supabase reconciliation, backup confirmation, disposable restore, restored-application smoke, and RLS proof; any Production `0025` + `0026` apply remains separate.
 5. `P1 — Owner → Codex`: complete one live Google OAuth callback test after confirming approved provider origins/callbacks; do not share credentials.
 6. `P1 — Owner → Codex`: complete Search Console/CWV external checks; keep analytics disabled unless a no-PII sink is explicitly approved.
 7. `P1 — Owner`: review and explicitly decide the real-data gate only after restored-target proof.

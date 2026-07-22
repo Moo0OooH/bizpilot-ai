@@ -12,7 +12,7 @@
  * - supabase/migrations/0005_public_intake_and_leads.sql
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-22
  * Change Log:
  * - 2026-07-16: Unified preview/runtime brand tokens, added accessible brand contrast, and stopped overriding semantic success colors.
  * - 2026-07-16: Applied saved business logo and colors to the public quote experience and added owner-aware preview recovery.
@@ -26,6 +26,7 @@
  * - 2026-07-04: Preserved safe quote-link attribution across source URL capture and language switches.
  * - 2026-07-04: Loaded default quote-field labels from the active quote language to prevent EN/FR mixing.
  * - 2026-07-11: Localized the quote language-switch aria label through the public copy dictionary.
+ * - 2026-07-22: Reused the canonical Toronto operating timezone for public date boundaries.
  * ============================================================
  */
 
@@ -51,6 +52,7 @@ import {
   isSafePublicLogoSource,
 } from "@/lib/public-brand-theme";
 import { buildNoIndexMetadata } from "@/lib/seo";
+import { BUSINESS_OPERATING_TIME_ZONE } from "@/lib/time/business-operating-time-zone";
 import { getPublicIntakePage } from "@/server/services/public-intake.service";
 import type { Metadata } from "next";
 
@@ -72,7 +74,6 @@ type QuotePageProps = Readonly<{
   }>;
 }>;
 
-const appTimeZone = "America/New_York";
 function readSingleQueryValue(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
@@ -100,7 +101,7 @@ function todayDateString(): string {
   const parts = new Intl.DateTimeFormat("en", {
     day: "2-digit",
     month: "2-digit",
-    timeZone: appTimeZone,
+    timeZone: BUSINESS_OPERATING_TIME_ZONE,
     year: "numeric",
   }).formatToParts(new Date());
   const valueByType = Object.fromEntries(

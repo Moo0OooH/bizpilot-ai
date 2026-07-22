@@ -10,8 +10,9 @@
  * - tests/unit/public-v3-spec.test.mts
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added synchronized EN/fr-CA public copy for separately enabled Premium Operations add-ons, their manual-review boundaries, and pricing clarification.
  * - 2026-07-17: Added bilingual proof-point rails and first-stage Demo context so every major section explains product value and conversion logic.
  * - 2026-07-17: Rewrote the bilingual public hierarchy with shorter, clearer headlines and concise outcome-led supporting copy.
  * - 2026-07-16: Made pilot CTAs truthfully describe the copy-only request flow and grouped the bilingual FAQ for faster scanning.
@@ -83,6 +84,23 @@ type LabelValueCopy = Readonly<{
 type FeatureCopy = Readonly<{
   body: string;
   key: string;
+  title: string;
+}>;
+
+type PremiumOperationsAddonCopy = Readonly<{
+  body: string;
+  boundary: string;
+  key: string;
+  title: string;
+}>;
+
+type PremiumOperationsCopy = Readonly<{
+  badge: string;
+  body: string;
+  boundary: string;
+  cards: readonly PremiumOperationsAddonCopy[];
+  eyebrow: string;
+  pricingNote: string;
   title: string;
 }>;
 
@@ -170,6 +188,7 @@ export type PublicV3Spec = Readonly<{
     nextSteps: readonly FeatureCopy[];
     submissionBoundary: string;
   }>;
+  premiumOperations: PremiumOperationsCopy;
   pricing: Readonly<{
     notice: string;
     tiers: readonly PricingTierCopy[];
@@ -228,7 +247,7 @@ const englishSpec: PublicV3Spec = {
       meta: {
         title: "Smart Intake and Reply Features | BizPilot AI",
         description:
-          "See how BizPilot collects service details, organizes requests, flags missing information, and prepares owner-reviewed reply drafts.",
+          "See how BizPilot organizes requests and prepares human-reviewed reply drafts, with optional Premium Operations add-ons for higher-volume teams.",
       },
       hero: {
         eyebrow: "ONE FOCUSED WORKSPACE",
@@ -280,7 +299,7 @@ const englishSpec: PublicV3Spec = {
       meta: {
         title: "Founder Pilot Pricing | BizPilot AI",
         description:
-          "Review staged, founder-led pilot pricing for BizPilot's cleaning intake and human-reviewed reply workflow, with no self-serve checkout.",
+          "Review staged founder-pilot pricing and how separately enabled Premium Operations add-ons are scoped, with no self-serve checkout.",
       },
       hero: {
         eyebrow: "CLEAR PILOT PRICING",
@@ -649,6 +668,43 @@ const englishSpec: PublicV3Spec = {
     notice:
       "No checkout happens on this page. Scope, support, cancellation, refund handling, payment method, and the exact start date are confirmed before any paid pilot.",
   },
+  premiumOperations: {
+    eyebrow: "OPTIONAL PREMIUM OPERATIONS",
+    title: "Add operational control only when the volume calls for it.",
+    body:
+      "Three separately enabled, paid add-ons extend the owner workspace without turning BizPilot into an automated inbox, campaign tool, or booking system.",
+    badge: "Separate add-on",
+    pricingNote:
+      "Premium Operations is not included in the base pilot tiers. Fit, scope, price, and workspace enablement are confirmed separately with the founder; there is no self-serve purchase or automatic activation.",
+    boundary:
+      "Every add-on stays manual-first: the owner or manager makes the decision, customer replies are reviewed and copied manually, and availability stays internal until the business confirms it through its own channel.",
+    cards: [
+      {
+        key: "priority-workbench",
+        title: "Priority Workbench",
+        body:
+          "Use owner-defined service and area rules to search and rank the request list while every unmatched request stays visible.",
+        boundary:
+          "Queue guidance only—no automatic routing, rejection, or customer contact.",
+      },
+      {
+        key: "bulk-reply-review",
+        title: "Bulk Reply Review",
+        body:
+          "Select eligible requests and prepare personalized replies as one review set. A manager reviews the set, then copies one approved reply at a time.",
+        boundary:
+          "No campaign delivery, connected inbox, or automatic send.",
+      },
+      {
+        key: "availability-coordination",
+        title: "Availability Coordination",
+        body:
+          "Add internal service time blocks, see request conflicts, and prepare an alternative-time draft for manager review.",
+        boundary:
+          "Internal coordination only—no public calendar, availability promise, or booking confirmation.",
+      },
+    ],
+  },
   pilot: {
     fit: [
       "A cleaning business already receiving online or message-based requests",
@@ -745,9 +801,9 @@ const englishSpec: PublicV3Spec = {
     },
     {
       key: "pricing",
-      question: "Is there self-serve checkout?",
+      question: "How are pilot plans and Premium Operations add-ons priced?",
       answer:
-        "No. Pilot fit, scope, support, cancellation, refund handling, and payment method are confirmed before any paid setup or billing.",
+        "The base pilot prices are shown on the Pricing page. Priority Workbench, Bulk Reply Review, and Availability Coordination are paid add-ons with fit, scope, price, and enablement confirmed separately. There is no self-serve checkout, automatic activation, or automatic send; availability coordination never confirms a customer booking.",
     },
     {
       key: "verticals",
@@ -857,7 +913,7 @@ const frenchSpec: PublicV3Spec = {
       meta: {
         title: "Fonctions de collecte et de réponse | BizPilot AI",
         description:
-          "Voyez comment BizPilot recueille les détails du service, organise les demandes, signale ce qui manque et prépare des brouillons à valider.",
+          "Voyez comment BizPilot organise les demandes et prépare des brouillons à valider, avec des modules Opérations Premium optionnels pour les équipes à plus fort volume.",
       },
       hero: {
         eyebrow: "UN ESPACE DE TRAVAIL CIBLÉ",
@@ -909,7 +965,7 @@ const frenchSpec: PublicV3Spec = {
       meta: {
         title: "Tarifs du pilote fondateur | BizPilot AI",
         description:
-          "Consultez les tarifs par étapes du pilote entretien, avec configuration guidée, réponses validées et aucun paiement libre-service.",
+          "Consultez les tarifs du projet pilote et la portée distincte des modules Opérations Premium, sans paiement libre-service.",
       },
       hero: {
         eyebrow: "TARIFS DU PILOTE EN TOUTE CLARTÉ",
@@ -1278,6 +1334,43 @@ const frenchSpec: PublicV3Spec = {
     notice:
       "Aucun paiement n'est effectué sur cette page. La portée, le soutien, l'annulation, les remboursements, le mode de paiement et la date de début sont confirmés avant tout pilote payant.",
   },
+  premiumOperations: {
+    eyebrow: "OPÉRATIONS PREMIUM OPTIONNELLES",
+    title: "Ajoutez du contrôle seulement quand le volume le justifie.",
+    body:
+      "Trois modules complémentaires payants, activés séparément, prolongent l'espace de travail sans transformer BizPilot en boîte de réception automatisée, en outil de campagne ou en système de réservation.",
+    badge: "Module distinct",
+    pricingNote:
+      "Les Opérations Premium ne sont pas incluses dans les tarifs de base du pilote. La compatibilité, la portée, le prix et l'activation sont confirmés séparément avec le fondateur. Aucun achat autonome ni activation automatique.",
+    boundary:
+      "Chaque module reste sous contrôle humain : le responsable décide, les réponses sont validées puis copiées manuellement, et les disponibilités demeurent internes jusqu'à leur confirmation par l'entreprise dans son propre canal.",
+    cards: [
+      {
+        key: "priority-workbench",
+        title: "Priorisation des demandes",
+        body:
+          "Utilisez des règles définies par le responsable selon le service et le secteur pour rechercher et classer les demandes, sans masquer celles qui ne correspondent à aucune règle.",
+        boundary:
+          "Aide au classement seulement : aucun acheminement, refus ou contact client automatique.",
+      },
+      {
+        key: "bulk-reply-review",
+        title: "Validation de réponses groupées",
+        body:
+          "Sélectionnez les demandes admissibles et préparez des réponses personnalisées dans un même lot. Un responsable valide le lot, puis copie chaque réponse approuvée individuellement.",
+        boundary:
+          "Aucune campagne, connexion à une boîte de réception ni envoi automatique.",
+      },
+      {
+        key: "availability-coordination",
+        title: "Coordination des disponibilités",
+        body:
+          "Ajoutez des plages de service internes, repérez les conflits et préparez un brouillon proposant une autre plage, à valider.",
+        boundary:
+          "Coordination interne seulement : aucun calendrier public, promesse de disponibilité ni confirmation de réservation.",
+      },
+    ],
+  },
   pilot: {
     fit: [
       "Une entreprise d'entretien qui reçoit déjà des demandes en ligne ou par message",
@@ -1375,9 +1468,9 @@ const frenchSpec: PublicV3Spec = {
     },
     {
       key: "pricing",
-      question: "Y a-t-il un paiement libre-service?",
+      question: "Comment fonctionnent les tarifs du pilote et des modules Opérations Premium?",
       answer:
-        "Non. La compatibilité, la portée, le soutien, l'annulation, les remboursements et le mode de paiement sont confirmés avant toute configuration ou facturation payante.",
+        "Les tarifs de base du pilote sont affichés à la page Prix. La priorisation, la validation de réponses groupées et la coordination des disponibilités sont des modules payants dont la compatibilité, la portée, le prix et l'activation sont confirmés séparément. Aucun paiement libre-service, aucune activation automatique et aucun envoi automatique. La coordination interne ne confirme jamais une réservation client.",
     },
     {
       key: "verticals",
