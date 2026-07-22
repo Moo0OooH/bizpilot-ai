@@ -14,6 +14,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Recorded candidate CI/Preview success and completed Production migration/schema parity through `0026` without enabling entitlements.
  * - 2026-07-22: Closed Premium Operations local/restore/RLS/concurrency/authenticated/intake proof and recorded the current Production reconciliation/export state.
  * - 2026-07-22: Corrected the historical V4.7 local object identity while keeping external evidence and the current candidate independently gated.
  * - 2026-07-21: Reopened remote/deployment/Production evidence for revalidation and added the Premium Operations proof gate.
@@ -104,7 +105,7 @@ Local Git verifies that historical V4.7 commit `d9e25bbf50ccf42de2da4d70aa235ab7
 
 The current Premium Operations exact-tree local gate passes: frozen pnpm `10.34.5` install; zero-vulnerability full and Production dependency audits; lint; typecheck; `359/359` unit/source tests; static Supabase RLS/grant audit; Next.js `16.2.11` production build; public `46/46`; responsive `20/20`; UI matrix with zero failures; inactive Quote `2/2`; and image optimizer HTTP 200. Database-backed RLS passes `14/14` on clean local and restored targets, all seven two-session concurrency pairs pass, authenticated dashboard/Admin passes `17/17`, and active EN/fr-CA GET and independent submissions pass. Fresh exact-commit GitHub CI, Vercel, and Production remain release gates.
 
-Premium Operations has a distinct release record: current roles/schema/public-data export and disposable restore pass; Production matches repository schema through `0024` except the absent `0023` retention helper; `0025`/`0026` objects are absent. The owner explicitly authorized the reconciled `0023`, `0025`, `0026` apply, merge, deployment, and read-only acceptance for this release. No entitlement activation or real-customer test write is included.
+Premium Operations has a distinct release record: current roles/schema/public-data export and disposable restore pass; verified Production migration history is complete through `0026`; idempotent drift migrations `0020`, `0021`, `0023`, and `0024` were replayed before ordered `0025`/`0026`; semantic schema parity passes and all five Premium tables are empty. The owner authorized merge, deployment, and read-only acceptance for this release. No entitlement activation or real-customer test write is included.
 
 The owner-provided authenticated screenshot renders the role-gated Founder Admin entry, and the restored-target founder session passes every guarded Admin panel plus the intentional `/founder` redirect. Final Production protected read-only acceptance and a separate normal-owner denial check remain gated.
 
@@ -124,7 +125,7 @@ Repository hygiene requires a fresh remote fetch before making publication or br
 4. **Remote branch hygiene:** owner-authenticated Prompt 00 retires revalidated merged refs and classifies/archives unmerged refs before any deletion.
 5. **Safe authenticated QA target — PASS for release candidate:** disposable restored local Supabase passed owner/founder route smoke; normal-owner Admin denial remains a separate final authorization check.
 6. **External OAuth acceptance:** confirm Google/Supabase provider configuration and complete one live owner callback QA; the app must not silently create a workspace.
-7. **Managed database reconciliation — PASS / APPLY PENDING:** read-only audit, current export, disposable restore, restored RLS/app proof, rollback source, and explicit change plan pass; apply the reconciled release sequence next.
+7. **Managed database reconciliation and apply — PASS:** read-only audit, current export, disposable restore, restored RLS/app proof, rollback source, history repair, idempotent drift replay, ordered `0025`/`0026`, semantic schema parity, and zero Premium rows all pass.
 8. **Production authenticated read-only acceptance:** protected dashboard visual QA requires an owner-approved no-secret session procedure.
 9. **Real customer data:** explicit owner approval only after restored-target app/dashboard/RLS proof.
 10. **Paid pilot:** support, payment/manual billing, refund, incident, backup, and rollback rehearsal after the real-data gate.

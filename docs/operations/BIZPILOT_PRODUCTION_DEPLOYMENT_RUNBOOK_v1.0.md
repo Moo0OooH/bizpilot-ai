@@ -1,6 +1,6 @@
 # BizPilot AI - Production Deployment Runbook v1.0
 
-Updated: 2026-07-22 — recorded the current Production reconciliation/export/restore proof and the release-ready `0023`, `0025`, `0026` apply sequence.
+Updated: 2026-07-22 — recorded the completed Production drift repair and Premium Operations migration through `0026`.
 
 ## Purpose
 
@@ -19,11 +19,11 @@ Use this table as the active deployment truth. Historical phase evidence does no
 | Major Item | Status | Current Evidence |
 | --- | --- | --- |
 | Historical V4.7 source identity | Local Git fact | Commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present locally with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. These local facts do not independently revalidate historical external evidence. |
-| Exact-commit CI and deployment | Gated / re-verify | Local exact-runtime verification is complete. Publish the hardened candidate, link its fresh CI and Preview deployment, then close this row only after the final `main` deployment acceptance. |
+| Exact-commit CI and deployment | Candidate PASS / Production pending | Candidate `9ae149c` passed GitHub App validation run `29939791308`, Vercel Preview `9Akuehj14QYGPpAM4pFYBT3JySih`, and the 16-state Preview public matrix. Final `main` deployment acceptance remains pending. |
 | Production QA mode | Read-only only | Public GET, locale, responsive, security-header, and owner-approved authenticated visual checks may run. Do not sign up, submit quotes, edit settings, create leads/users, or mutate Production for QA. |
 | Production auth | Gated | Signup confirmation, reset, Google callback, and session behavior require an approved synthetic non-Production target or a separately controlled no-write authenticated acceptance path. Google login must not create a workspace silently. |
 | Supabase/Vercel target | Owner confirmation required | Confirm the exact project and deployment target immediately before any external action. Do not rely on historical identifiers or pull secret values into this environment. |
-| Migration/schema state | Reconciled / Production apply pending | The 2026-07-22 read-only export matches `origin/main` through `0024` except that the service-role retention helper from `0023` is absent; Premium Operations tables/functions from `0025` and `0026` are absent. Apply the idempotent `0023` helper first, repair verified history `0001`–`0024`, then dry-run and apply only `0025` and `0026` in order. |
+| Migration/schema state | PASS through `0026` | Repaired verified migration history, replayed idempotent drift migrations `0020`, `0021`, `0023`, and `0024`, then applied `0025` and `0026`. Final schema matches all `36` tables, `54` functions, `65` indexes, and `87` policies; the only dump difference is harmless physical column order. |
 | Production read-only smoke | Historical / re-verify | Older public-read figures are not a release proof for the current candidate. Run no-write smoke only after source publication and target confirmation; submission and success-flow proof stays on an approved disposable target. |
 | Founder shell activation | Historical / protected acceptance gated | A historical screenshot is not a substitute for current protected/Admin route acceptance or normal-owner denial proof. |
 | Backup/export/restore | PASS for code release; real-data policy separate | A current roles/schema/public-data export was created outside git and restored without printing row content. After the reconciled `0023`, `0025`, and `0026` sequence plus the cross-schema auth trigger, the disposable target passed RLS `14/14`, authenticated dashboard/Admin `17/17`, active quote GET `2/2`, and independent EN/fr-CA submissions. |
@@ -60,12 +60,12 @@ Required migration verification:
 0017_business_preferred_language.sql applied
 0018_business_lifecycle_deletion_foundation.sql object/RLS/function state verified, do not blindly replay
 0019_lifecycle_helper_execute_grant_hardening.sql applied and verified
-0020_founder_test_auth_user_cleanup.sql pending production approval/apply if admin auth-user deletion is deployed
-0021_session_policy_and_owner_audit.sql reconciled before any write
+0020_founder_test_auth_user_cleanup.sql applied/replayed idempotently and verified
+0021_session_policy_and_owner_audit.sql applied/replayed idempotently and verified
 0022_custom_quote_field_builder.sql reconciled before any write
-0023_public_submission_abuse_log_retention.sql reconciled before any write
-0024_supabase_status_and_rls_performance_hardening.sql reconciled before any write
-0025_premium_operations_addons.sql followed by 0026_premium_operations_schedule_integrity.sql, applied and verified in order on an approved local/disposable target first; Production apply is separately gated
+0023_public_submission_abuse_log_retention.sql applied and verified
+0024_supabase_status_and_rls_performance_hardening.sql applied/replayed idempotently and verified
+0025_premium_operations_addons.sql followed by 0026_premium_operations_schedule_integrity.sql applied and verified in Production after passing ordered local/restore proof
 RLS helper functions current
 explicit grants reviewed
 Security Advisor reviewed

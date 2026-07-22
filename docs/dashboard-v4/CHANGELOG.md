@@ -42,6 +42,9 @@
 - Passed RLS `14/14` on clean local and restored targets, seven two-session concurrency pairs, authenticated dashboard/Admin `17/17`, active quote GET `2/2`, and independent EN/fr-CA submissions.
 - Rebuilt with the frozen dependency graph: pnpm `10.34.5`, Next.js `16.2.11`, React/React DOM `19.2.7`; `359/359` unit/source tests, lint, typecheck, static RLS/grant audit, production build, and zero-vulnerability audit pass.
 - Removed all restored/synthetic local data by final database reset. No Production entitlement, auto-send, booking, payment, or real-customer workflow was activated.
+- Candidate `9ae149c` passed GitHub App validation run `29939791308`, Vercel Preview `9Akuehj14QYGPpAM4pFYBT3JySih`, and all `16` EN/fr-CA desktop/mobile public Preview states.
+- Repaired verified Production migration history and replayed the idempotent `0020`, `0021`, `0023`, and `0024` drift migrations before applying `0025` and `0026`; final Production schema matches `36` tables, `54` functions, `65` indexes, and `87` policies.
+- Verified all five new Premium Operations Production tables contain zero rows, so no workspace entitlement or operational record was activated by the migration.
 
 ## 2026-07-17 — V4.7 configurable intake and shell finalization
 

@@ -13,6 +13,7 @@
  * Created: 2026-07-14
  * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Recorded the completed Production migration history repair, drift replay, Premium Operations apply, and zero-entitlement verification.
  * - 2026-07-22: Closed the ordered local/restore Premium Operations proof and current backup/schema/rollback preparation while preserving live release, real-data, and paid-pilot gates.
  * - 2026-07-22: Corrected the historical V4.7 local object identity and recorded the ordered `0025` + `0026` non-Production proof gate.
  * - 2026-07-21: Corrected the V4.7 Git identity, reopened unverified remote/Production evidence, and added the Premium Operations `0025` proof gate.
@@ -72,7 +73,7 @@ The first pilot remains cleaning-focused, manual-first, and owner-reviewed. BizP
 - [x] Restore to disposable local Supabase succeeds using the documented procedure.
 - [x] The complete RLS suite plus authenticated app, dashboard, intake, tenant-isolation, and founder-denial smoke pass against that restored target.
 - [x] Rollback source is the verified pre-migration export; operator is MoOoH/Codex, execution is immediate on failed migration or smoke, and sanitized evidence is recorded in the backup runbook.
-- [x] The owner explicitly authorized this release's Production migration plan, dry run, backup, rollback, merge, and deployment; actual Production apply remains part of the release sequence.
+- [x] The owner explicitly authorized this release's Production migration plan, dry run, backup, rollback, merge, and deployment; verified history repair, idempotent `0020`/`0021`/`0023`/`0024` drift replay, and ordered `0025`/`0026` apply completed successfully.
 - [ ] `BIZPILOT_IP_HASH_SALT` is configured as a Production secret before public-submission abuse logging is enabled; its value is never exposed in evidence.
 
 ## Gate D — real customer data

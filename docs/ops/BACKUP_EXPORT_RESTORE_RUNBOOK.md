@@ -483,7 +483,7 @@ were printed.
 | Public intake | PASS: active synthetic quote GET `2/2` for EN/fr-CA and independent browser submissions reached both localized success states after respecting the 2.5-second minimum-submit-age control. |
 | Runtime | PASS: frozen `pnpm 10.34.5`, Next.js `16.2.11`, React/React DOM `19.2.7`. |
 | Cleanup | PASS: app server stopped, local database reset through `0026`, and synthetic Auth user count returned to zero. |
-| Production mutation | Not part of this restore exercise; no entitlement was enabled. Production apply and final deployment evidence are recorded separately. |
+| Production mutation | Completed separately after the restore gate: verified history repair plus idempotent `0020`/`0021`/`0023`/`0024` replay and ordered `0025`/`0026`; all five Premium tables remain empty and no entitlement was enabled. |
 
 This closes the strict restored-target requirement for the code-release gate. It
 does not decide retention, incident ownership, subprocessors, support terms,

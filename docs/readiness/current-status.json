@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-22T13:02:00-04:00",
+  "generated_at": "2026-07-22T13:20:00-04:00",
   "repository": "Moo0OooH/bizpilot-ai",
   "candidate_branch": "agent/premium-operations-release (local worktree)",
   "candidate_commit": "the immutable local SHA is recorded after this non-self-referential evidence snapshot; use git rev-parse HEAD",
@@ -27,11 +27,11 @@
   "ai_draft": "owner-reviewed editable draft assistance only; no automatic send, booking, price or availability promise, or autonomous action",
   "payments": "manual commercial agreement only; base plan and add-on pricing remain separate, no add-on amount is quoted, and there is no checkout, capture, invoice system, or automated activation",
   "google_auth": "application path is implemented with login-only scopes, exact safe callbacks, and protection against silent workspace creation; live provider callback and owner sign-in QA remain unverified",
-  "supabase": "the documented migration set through 0026 is present in source, with the intentional retired 0003 gap; read-only Production reconciliation proves schema parity through 0024 except the absent 0023 retention helper, while 0025 and 0026 are absent and passed ordered disposable-target proof; Production apply is pending",
+  "supabase": "PASS through 0026 on bizpilot-production: verified history repaired, idempotent drift migrations 0020/0021/0023/0024 replayed, ordered 0025/0026 applied, and final semantic schema parity verified; no Premium entitlement or synthetic Production row was created",
   "rls": "PASS: 14/14 executable RLS files pass on both a clean local reset and the current Production export restored to disposable local Supabase after applying the missing 0023 helper and ordered 0025/0026",
-  "github_ci": "unverified for the current candidate until the exact commit is published and a fresh run is linked",
-  "vercel": "unverified for the current candidate; a local build does not prove preview or Production deployment",
-  "production": "read-only Supabase reconciliation and current logical export are complete; no Premium entitlement was activated and the candidate website, migrations, merge, and final live smoke remain pending",
+  "github_ci": "PASS for release candidate 9ae149c57135849b399f175c2eadf2f23d69eddd: GitHub App validation run 29939791308 completed successfully",
+  "vercel": "PASS for release candidate 9ae149c: Vercel Preview deployment 9Akuehj14QYGPpAM4pFYBT3JySih is Ready and its 16-state public visual matrix has zero failures; Production deployment remains pending merge",
+  "production": "Supabase migrations and semantic schema parity through 0026 are complete; Premium Operations tables are empty and no entitlement was activated; PR merge, Vercel Production deployment, and final live smoke remain pending",
   "backup_restore": "PASS for the 2026-07-22 code-release gate: current roles/schema/public-data exports were excluded from git, restored to disposable local Supabase without exposing row content, upgraded through 0023/0025/0026, and passed 14/14 RLS, 17/17 authenticated dashboard/Admin, 2/2 active quote GET, and independent EN/fr-CA submissions; real-data operations policy remains separately gated",
   "real_customer_data": "blocked pending safe-target proof and explicit owner approval",
   "paid_pilot": "blocked pending real-data approval and payment, support, refund, incident, backup, and rollback readiness",
@@ -52,13 +52,12 @@
     "browser_interaction": "PASS: Vercel Preview public matrix covered Home, Features, Pricing, and FAQ in EN/fr-CA at desktop and mobile with no H1, overflow, broken-image, or locale failure; restored-target browser submissions reached EN and fr-CA success states",
     "authenticated_dashboard_smoke": "PASS: restored-target dense synthetic owner/founder smoke passed 17/17 including /dashboard/operations, /founder redirect, and every guarded Admin panel",
     "rls_execution": "PASS: 14/14 on a clean local reset and 14/14 on the current Production export restored to disposable local Supabase after the reconciled migration sequence",
-    "github_ci": "gated: publish the exact candidate and link a fresh exact-commit run",
-    "vercel_preview": "gated: verify an exact-commit preview only after publication",
+    "github_ci": "PASS: App validation run 29939791308 succeeded for candidate 9ae149c",
+    "vercel_preview": "PASS: deployment 9Akuehj14QYGPpAM4pFYBT3JySih Ready; 16/16 EN/fr-CA desktop/mobile public states passed",
     "production_public_acceptance": "gated: run only after exact source publication, confirmed deployment target, and owner-approved read-only procedure",
-    "production_database": "read-only reconciliation and logical export complete; write/apply pending the exact-commit release gate"
+    "production_database": "PASS for release schema: repaired verified history, replayed idempotent drift migrations 0020/0021/0023/0024, applied 0025/0026, matched all 36 tables, 54 functions, 65 indexes, and 87 policies with only harmless column-order dump variance; all five Premium Operations tables contain zero rows"
   },
   "blockers": [
-    "exact-commit publication and fresh GitHub CI evidence",
     "live Google provider callback and owner sign-in QA",
     "owner-approved no-secret Production read-only acceptance procedure after deployment",
     "explicit owner approval for real customer data",
@@ -68,5 +67,5 @@
     "complete one live Google sign-in and callback check without sharing credentials",
     "approve real-data and paid-pilot gates only after their evidence prerequisites"
   ],
-  "next_gate": "publish the hardened candidate, pass fresh exact-commit CI and Preview acceptance, apply the reconciled 0023/0025/0026 Production sequence without enabling entitlements, merge PR #11, and complete final Vercel/Production read-only acceptance"
+  "next_gate": "record the completed Production schema migration evidence in the candidate, pass the docs-only CI refresh, merge PR #11, and complete final Vercel/Production public plus authenticated read-only acceptance"
 }
