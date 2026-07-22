@@ -10,7 +10,7 @@
  * - server/services/auth.service.ts
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-21
  * Change Log:
  * - 2026-07-17: Read allowlisted optional navigation visibility from the server cookie and passed it into the dashboard shell.
  * - 2026-07-16: Supplied a complete customer-ready quote URL to dashboard copy controls.
@@ -20,6 +20,7 @@
  * - 2026-06-27: Tokenized workspace recovery error styling for Dashboard V3.
  * - 2026-07-05: Passed bilingual route-guide copy into the protected dashboard shell.
  * - 2026-07-14: Removed obsolete route-guide copy from the compact owner shell contract.
+ * - 2026-07-21: Separated dashboard interface language from customer-facing business language and added RTL shell direction.
  * ============================================================
  */
 
@@ -38,11 +39,13 @@ import {
   DASHBOARD_SECTION_VISIBILITY_COOKIE,
   parseVisibleDashboardSections,
 } from "@/lib/dashboard-section-visibility";
-import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
-  resolveWorkspaceInterfaceLanguage,
-} from "@/lib/i18n/language";
+  DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+  getDashboardInterfaceCopy,
+  getDashboardInterfaceTextDirection,
+  resolveDashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import { getDashboardInterfaceLegacyCopy } from "@/lib/i18n/dashboard-legacy-interface";
 import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import { readThemePreference } from "@/lib/theme";
 import { getPublicSiteOrigin } from "@/lib/seo";
@@ -71,10 +74,10 @@ export default async function DashboardLayout({
     const accessSummary = await getWorkspaceAccessSummary({ userId: user.id });
     const isDeletionRequested =
       accessSummary?.lifecycleStatus === "deletion_requested";
-    const activeLanguage = resolveWorkspaceInterfaceLanguage({
-      cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+    const activeLanguage = resolveDashboardInterfaceLanguage({
+      cookieValue: cookieStore.get(DASHBOARD_INTERFACE_LANGUAGE_COOKIE)?.value,
     });
-    const copy = getBizPilotCopy(activeLanguage).dashboard;
+    const copy = getDashboardInterfaceLegacyCopy(activeLanguage).dashboard;
     const accessCopy = copy.workspaceAccess;
     const isExternalLoginWithoutWorkspace =
       !accessSummary && user.authProvider !== "email";
@@ -84,7 +87,11 @@ export default async function DashboardLayout({
     );
 
     return (
-      <main className="flex min-h-svh min-w-0 items-start justify-center bg-[var(--dash-bg)] px-4 py-8 text-[var(--dash-text)] sm:items-center">
+      <main
+        className="flex min-h-svh min-w-0 items-start justify-center bg-[var(--dash-bg)] px-4 py-8 text-[var(--dash-text)] sm:items-center"
+        dir={getDashboardInterfaceTextDirection(activeLanguage)}
+        lang={activeLanguage}
+      >
         <DashboardCard className="w-full max-w-xl p-6 sm:p-8" variant="priority">
           <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
             {accessCopy.eyebrow}
@@ -158,24 +165,38 @@ export default async function DashboardLayout({
   }
 
   const themeCookie = cookieStore.get(DASHBOARD_THEME_COOKIE)?.value;
-  const activeLanguage = resolveWorkspaceInterfaceLanguage({
-    businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  const activeLanguage = resolveDashboardInterfaceLanguage({
+    cookieValue: cookieStore.get(DASHBOARD_INTERFACE_LANGUAGE_COOKIE)?.value,
   });
   const initialTheme = readThemePreference(themeCookie);
   const visibleOptionalSections = parseVisibleDashboardSections(
     cookieStore.get(DASHBOARD_SECTION_VISIBILITY_COOKIE)?.value,
   );
-  const copy = getBizPilotCopy(activeLanguage).dashboard;
+  const copy = getDashboardInterfaceLegacyCopy(activeLanguage).dashboard;
+  const interfaceCopy = getDashboardInterfaceCopy(activeLanguage);
   const shellCopy = {
     actions: copy.actions,
-    nav: copy.nav,
+    nav: {
+      ...copy.nav,
+      businessProfile: interfaceCopy.nav.businessProfile,
+      guide: interfaceCopy.nav.guide,
+      groupCommand: interfaceCopy.nav.groupCommand,
+      groupControl: interfaceCopy.nav.groupControl,
+      groupSetup: interfaceCopy.nav.groupSetup,
+      leads: interfaceCopy.nav.leads,
+      overview: interfaceCopy.nav.overview,
+      premiumOperations: interfaceCopy.nav.premiumOperations,
+      quoteSetup: interfaceCopy.nav.quoteSetup,
+      reports: interfaceCopy.nav.reports,
+      settings: interfaceCopy.nav.settings,
+      workspaceSubtitle: interfaceCopy.nav.workspaceSubtitle,
+    },
     pages: copy.pages,
     settings: {
       plan: copy.settings.plan,
     },
     status: copy.status,
-    theme: copy.theme,
+    theme: interfaceCopy.shell.theme,
   };
   const quoteUrl = new URL(
     `/quote/${activeBusiness.slug}`,
@@ -186,12 +207,13 @@ export default async function DashboardLayout({
     <DashboardShell
       activeBusinessName={activeBusiness.name}
       activeLanguage={activeLanguage}
-      businessId={activeBusiness.id}
+      businessLanguage={activeBusiness.preferred_language}
       businessSlug={activeBusiness.slug}
       quoteUrl={quoteUrl}
       copy={shellCopy}
       initialTheme={initialTheme}
       showFounderAdmin={isFounderUser(user)}
+      textDirection={getDashboardInterfaceTextDirection(activeLanguage)}
       userLabel={user.email ?? user.id}
       visibleOptionalSections={visibleOptionalSections}
     >

@@ -12,8 +12,9 @@
  * - server/actions/business-configuration.actions.ts
  * Author: MoOoH
  * Created: 2026-06-27
- * Last Updated: 2026-07-05
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added exact 24-hour time as a non-choice public quote field type.
  * - 2026-07-05: Added complete BizPilot source header metadata for field type controls.
  * ============================================================
  */
@@ -32,6 +33,7 @@ type QuoteFieldType =
   | "select"
   | "text"
   | "textarea"
+  | "time"
   | "time_window";
 
 type FieldBuilderCopy = Readonly<{
@@ -44,6 +46,7 @@ type FieldBuilderCopy = Readonly<{
 const configurableFieldTypes: readonly QuoteFieldType[] = [
   "text",
   "textarea",
+  "time",
   "email",
   "phone",
   "number",

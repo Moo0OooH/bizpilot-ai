@@ -11,8 +11,10 @@
  * - prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Corrected the historical V4.7 local object identity and recorded the ordered `0025` + `0026` non-Production proof gate.
+ * - 2026-07-21: Corrected the V4.7 Git identity, reopened unverified remote/Production evidence, and added the Premium Operations `0025` proof gate.
  * - 2026-07-17: Rebased the gate on Dashboard V4.7 and restored the strict restored-app/dashboard/RLS requirement before any real customer data.
  * - 2026-07-15: Closed the V2.1 public read-only release gate at SHA e922485 while preserving authenticated, real-data, and paid-pilot gates.
  * - 2026-07-15: Recorded the V2.1 local candidate gate while keeping release, authenticated, real-data, and paid-pilot evidence separate.
@@ -24,12 +26,14 @@
 
 # BizPilot AI Pilot Readiness Checklist V2.0
 
-## Current posture — 2026-07-17
+## Current posture — 2026-07-22
 
 | Level | Status | Meaning |
 | --- | --- | --- |
-| Source/build | PASS | Dashboard V4.7 functional commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` (tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`) passes local lint, typecheck, build, and 295/295 tests. |
-| Public read-only release | PASS | GitHub CI run `29558683869` (CI #443), deployment `5484816130` / status `15596534668`, and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeeded. Production read-only: public 46/46, responsive 20/20, UI 621/621, and active + inactive Quote EN/fr-CA 4/4 HTTP 200 with no submission/mutation. |
+| Historical V4.7 source identity | Local Git fact | Commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. These local facts do not independently revalidate historical external evidence. |
+| Local source/build and public smoke | PASS | Exact-tree frozen install, zero-vulnerability audits, lint, typecheck, `359/359` unit/source, static RLS/grant audit, build, local public `46/46`, responsive `20/20`, UI zero, Quote `2/2`, and image optimizer HTTP 200 are recorded. |
+| Publication, CI, Vercel, and Production read-only release | GATED / RE-VERIFY | Publish an exact commit only after destination authorization, then link fresh CI/preview evidence and run owner-approved no-write Production acceptance. Historical results do not close this gate. |
+| Premium Operations schema proof | GATED | Apply `0025_premium_operations_addons.sql` and then additive `0026_premium_operations_schedule_integrity.sql`, in order, only on an approved local/disposable target; pass RLS, tenant-isolation, lifecycle, priority, overlap, provenance/currentness, and concurrency checks before any Production plan. |
 | Authenticated synthetic QA | GATED | Requires an explicitly approved local/Preview synthetic target and credentials. |
 | Real customer data | NOT APPROVED | Requires all real-data gates below and explicit owner approval. |
 | Paid pilot | NOT APPROVED | Requires real-data readiness plus commercial, payment, support, backup, and rollback evidence. |
@@ -40,14 +44,14 @@ The first pilot remains cleaning-focused, manual-first, and owner-reviewed. BizP
 
 - [x] Current product/dashboard/source-of-truth documents exist.
 - [x] Obsolete current-status and dashboard standards are removed from the active documentation set.
-- [x] Lint, typecheck, unit tests, and production build pass on the release tree.
+- [x] Fresh frozen install, zero-vulnerability audits, lint, typecheck, `359/359` unit/source tests, static RLS/grant audit, and production build pass on the exact local candidate tree.
 - [x] Navigation and route contracts add no unapproved route.
 - [x] V4.7 includes tenant-scoped Reports; configurable list/tabs/steps quote-form sections; optional Reports/Guide visibility; and one guarded Founder Admin shell entry.
 - [x] Google provider handling does not silently create a workspace; live callback evidence remains Gate B work.
-- [x] No production DB mutation or real/test customer data was created during the release.
-- [x] Functional commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d` is recorded.
-- [x] GitHub CI run `29558683869` (CI #443) succeeds for the exact functional release commit.
-- [x] Deployment `5484816130` / status `15596534668` and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeed; exact-release Production read-only smoke passes at public 46/46, responsive 20/20, UI 621/621, and active/inactive Quote EN/fr-CA 4/4.
+- [x] Local Git contains historical V4.7 commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. This is local-object evidence only.
+- [ ] Exact candidate commit is published to a freshly verified remote ref and its CI/deployment results are linked to that commit.
+- [ ] Exact-release Production read-only smoke is re-run after target confirmation; no Production mutation occurs.
+- [ ] Premium Operations migrations `0025` then `0026` pass approved local/disposable migration, RLS, tenant-isolation, lifecycle, concurrency, and UI proof before a separately approved Production migration plan.
 
 ## Gate B — authenticated synthetic acceptance
 
@@ -68,6 +72,7 @@ The first pilot remains cleaning-focused, manual-first, and owner-reviewed. BizP
 - [ ] The complete RLS suite plus authenticated app, dashboard, intake, tenant-isolation, and founder-denial smoke pass against that restored target. Phase 24C.1 has not passed this strict gate.
 - [ ] Rollback ownership, steps, timing, and evidence location are named.
 - [ ] Any production migration has a separately approved plan, dry run, backup, rollback, and owner confirmation.
+- [ ] `BIZPILOT_IP_HASH_SALT` is configured as a Production secret before public-submission abuse logging is enabled; its value is never exposed in evidence.
 
 ## Gate D — real customer data
 

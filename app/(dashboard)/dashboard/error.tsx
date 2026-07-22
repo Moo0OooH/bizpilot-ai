@@ -21,26 +21,33 @@
 
 import { useEffect, useSyncExternalStore } from "react";
 
-import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
-  readSupportedLanguage,
-  type SupportedLanguage,
-} from "@/lib/i18n/language";
+  isDashboardInterfaceLanguage,
+  parseDashboardInterfaceLanguageCookie,
+  type DashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import { getDashboardInterfaceLegacyCopy } from "@/lib/i18n/dashboard-legacy-interface";
 
 type DashboardErrorProps = Readonly<{
   error: Error & { digest?: string };
   reset: () => void;
 }>;
 
-function readDashboardErrorLanguage(): SupportedLanguage {
+function readDashboardErrorLanguage(): DashboardInterfaceLanguage {
   if (typeof document === "undefined") {
     return "en";
   }
 
-  return readSupportedLanguage(document.documentElement.lang);
+  const frameLanguage = document
+    .querySelector("[data-dashboard-frame]")
+    ?.getAttribute("lang");
+
+  return isDashboardInterfaceLanguage(frameLanguage)
+    ? frameLanguage
+    : (parseDashboardInterfaceLanguageCookie(document.cookie) ?? "en");
 }
 
-function readServerDashboardErrorLanguage(): SupportedLanguage {
+function readServerDashboardErrorLanguage(): DashboardInterfaceLanguage {
   return "en";
 }
 
@@ -61,8 +68,9 @@ export default function DashboardError({ error, reset }: DashboardErrorProps) {
     readDashboardErrorLanguage,
     readServerDashboardErrorLanguage,
   );
-  const errorCopy = getBizPilotCopy(language).dashboard.errorBoundary;
-  const navCopy = getBizPilotCopy(language).dashboard.nav;
+  const dashboardCopy = getDashboardInterfaceLegacyCopy(language).dashboard;
+  const errorCopy = dashboardCopy.errorBoundary;
+  const navCopy = dashboardCopy.nav;
 
   return (
     <main className="flex min-h-[70vh] items-center justify-center px-4 py-8">

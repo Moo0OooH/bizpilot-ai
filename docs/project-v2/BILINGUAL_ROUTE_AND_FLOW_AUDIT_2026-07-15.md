@@ -10,8 +10,10 @@
  * - docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md
  * Author: MoOoH
  * Created: 2026-07-15
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Corrected the historical V4.7 local object identity while preserving the current non-Production and external-evidence gates.
+ * - 2026-07-21: Marked V4.7 publication/deployment evidence for revalidation and added the Premium Operations non-Production gate.
  * - 2026-07-17: Added Dashboard V4.7 form layouts, Reports/navigation controls, single Admin entry, Google callback safety, and exact-release evidence boundaries.
  * - 2026-07-16: Added the protected bilingual Reports route and source-reporting evidence boundary.
  * - 2026-07-15: Created the exhaustive EN/fr-CA route, state, and end-to-end workflow audit.
@@ -27,7 +29,7 @@
 - `GATED`: the workflow needs an approved authenticated or write-capable synthetic target.
 - `NOT APPLICABLE`: internal callback/redirect has no standalone content page.
 
-Current V4.7 baseline: functional remote commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`, tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; local lint, typecheck, build, and 295/295 tests pass. GitHub CI run `29558683869` (CI #443), deployment `5484816130` / status `15596534668`, and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeeded. Production read-only smoke passed at public 46/46, responsive 20/20, UI 621/621, and active + inactive Quote EN/fr-CA 4/4 HTTP 200 without submission or mutation.
+Current V4.7 source identity: local Git contains commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. Those local facts do not independently validate historical CI, Vercel, or Production evidence. Premium Operations additionally requires ordered migrations `0025` then `0026` and its RLS/tenant-isolation suite on an approved local/disposable target before any route or add-on behavior can be treated as release-ready.
 
 ## Route inventory
 
@@ -72,7 +74,7 @@ Current V4.7 baseline: functional remote commit `d9e25bbf50ccf42de2da4d70aa235ab
 | Internal links | PASS in source/smoke | fr-CA persistence checked across public routes |
 | Metadata/hreflang/canonical | PASS in source/UI matrix | Ten canonical routes; `en-CA`, `fr-CA`, `x-default` |
 | Sitemap/robots/noindex | PASS in source/UI matrix | Auth, dashboard, founder, admin, and quote intake excluded/blocked appropriately |
-| Responsive containment | PUBLIC PASS | Exact-release Production responsive matrix 20/20; no write behavior involved |
+| Responsive containment | PASS in current local smoke | Current exact-tree local responsive matrix passes `20/20`; current-candidate Production acceptance remains gated |
 | Keyboard/reduced motion/landmarks | PASS in source contracts | Skip link, focus rings, correct main/header/footer landmarks |
 
 ## End-to-end workflow control

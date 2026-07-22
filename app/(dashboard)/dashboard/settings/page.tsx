@@ -42,15 +42,20 @@ import {
   DASHBOARD_SECTION_VISIBILITY_COOKIE,
   parseVisibleDashboardSections,
 } from "@/lib/dashboard-section-visibility";
-import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import { canUserRequestWorkspaceDeletion } from "@/lib/business-deletion/owner-eligibility";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
   languageLabels,
-  resolveWorkspaceInterfaceLanguage,
   supportedLanguages,
 } from "@/lib/i18n/language";
+import {
+  DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+  resolveDashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import {
+  getDashboardInterfaceFormattingLocale,
+  getDashboardInterfaceLegacyCopy,
+} from "@/lib/i18n/dashboard-legacy-interface";
 import { signOutAction } from "@/server/actions/auth.actions";
 import { updateWorkspaceLanguageAction } from "@/server/actions/business-configuration.actions";
 import { updateDashboardSectionVisibilityAction } from "@/server/actions/dashboard-display.actions";
@@ -165,14 +170,13 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
     })),
     userId: user.id,
   });
-  const activeLanguage = resolveWorkspaceInterfaceLanguage({
-    businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  const interfaceLanguage = resolveDashboardInterfaceLanguage({
+    cookieValue: cookieStore.get(DASHBOARD_INTERFACE_LANGUAGE_COOKIE)?.value,
   });
   const visibleOptionalSections = parseVisibleDashboardSections(
     cookieStore.get(DASHBOARD_SECTION_VISIBILITY_COOKIE)?.value,
   );
-  const copy = getBizPilotCopy(activeLanguage).dashboard;
+  const copy = getDashboardInterfaceLegacyCopy(interfaceLanguage).dashboard;
   const settingsCopy = copy.settings;
   const routeNotice = readSafeRouteFlashMessage(
     query?.notice,
@@ -248,7 +252,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                   {settingsCopy.language}
                   <select
                     className={inputClass}
-                    defaultValue={activeLanguage}
+                    defaultValue={activeBusiness.preferred_language}
                     name="language"
                   >
                     {supportedLanguages.map((language) => (
@@ -404,7 +408,10 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                           settingsCopy.systemHistory.changeFallback}
                       </p>
                       <p className="mt-1 font-semibold text-[var(--dash-text-muted)]">
-                        {formatSettingsDate(action.createdAt, activeLanguage)}
+                        {formatSettingsDate(
+                          action.createdAt,
+                          getDashboardInterfaceFormattingLocale(interfaceLanguage),
+                        )}
                       </p>
                     </div>
                     <div className="min-w-0">

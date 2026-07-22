@@ -13,8 +13,9 @@
  * - app/admin/page.tsx
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-21
  * Change Log:
+ * - 2026-07-21: Added Premium Operations desktop-route and RTL logical-shell coverage while retaining five focused mobile tasks.
  * - 2026-07-17: Guarded one role-safe Founder entry per viewport and compact optional Guide navigation.
  * - 2026-07-16: Guarded complete grouped desktop navigation, authorized Founder Admin access, and focused mobile tasks.
  * - 2026-07-16: Guarded the single centered desktop navigation and mobile-only bottom bar.
@@ -27,7 +28,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
 describe("Dashboard V4 source contracts", () => {
-  it("keeps complete grouped desktop navigation and five focused mobile tasks", () => {
+  it("keeps complete grouped desktop navigation, Premium Operations, and five focused mobile tasks", () => {
     const sidebar = readFileSync(
       "components/dashboard/dashboard-sidebar.tsx",
       "utf8",
@@ -47,6 +48,17 @@ describe("Dashboard V4 source contracts", () => {
       assert.equal(sidebar.includes(`href: "${href}"`), true, `Missing ${href}.`);
       assert.equal(topbar.includes(`href: "${href}"`), true, `Missing compact ${href}.`);
     }
+
+    assert.equal(sidebar.includes('href: "/dashboard/operations"'), true);
+    assert.equal(topbar.includes('href: "/dashboard/operations"'), true);
+    assert.equal(
+      sidebar.includes('item.href !== "/dashboard/operations"'),
+      true,
+    );
+    assert.equal(
+      existsSync("app/(dashboard)/dashboard/operations/page.tsx"),
+      true,
+    );
 
     assert.equal(sidebar.includes("dashboard-sidebar sticky"), true);
     assert.equal(sidebar.includes("dashboard-mobile-nav fixed"), true);
@@ -70,9 +82,13 @@ describe("Dashboard V4 source contracts", () => {
     assert.equal(shell.includes("DashboardRouteGuideRail"), false);
     assert.equal(shell.includes("DashboardDisplayPreferencesFrame"), false);
     assert.equal(topbar.includes("<h1"), false);
-    assert.equal(topbar.includes("right-0 top-11"), true);
+    assert.equal(topbar.includes("end-0 top-11"), true);
+    assert.equal(topbar.includes("right-0 top-11"), false);
     assert.equal(topbar.includes("calc(100vw-1.5rem)"), true);
     assert.equal(theme.includes("dashboard-frame h-svh"), true);
+    assert.equal(theme.includes("dir={direction}"), true);
+    assert.equal(theme.includes('input[type="datetime-local"]'), true);
+    assert.equal(theme.includes('input.dir = "ltr"'), true);
     assert.equal(globals.includes("--dashboard-max: 90rem;"), true);
     assert.equal(globals.includes(".dashboard-route-guide"), false);
     assert.equal(

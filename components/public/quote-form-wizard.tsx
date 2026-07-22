@@ -11,8 +11,9 @@
  * - server/actions/public-intake.actions.ts
  * Author: MoOoH
  * Created: 2026-05-19
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Rendered exact-time fields as 24-hour, Latin-digit, left-to-right customer inputs.
  * - 2026-07-17: Replaced heuristic fixed steps with persisted titles, sections, assignments, and display modes.
  * - 2026-07-16: Added branded section progress and persisted consent copy.
  * - 2026-07-05: Improved field semantics, attribution, and required boolean enforcement.
@@ -53,7 +54,12 @@ const FIELD_INPUT =
 
 function inputTypeForField(fieldType: FieldRecord["field_type"]): string {
   if (fieldType === "phone") return "tel";
-  if (fieldType === "number" || fieldType === "date" || fieldType === "email") {
+  if (
+    fieldType === "number" ||
+    fieldType === "date" ||
+    fieldType === "email" ||
+    fieldType === "time"
+  ) {
     return fieldType;
   }
   return "text";
@@ -195,11 +201,19 @@ function FieldInput({
   return (
     <input
       aria-describedby={ariaDescribedBy}
-      className={FIELD_INPUT}
+      className={`${FIELD_INPUT}${
+        field.field_type === "time"
+          ? " text-left tabular-nums [direction:ltr] [unicode-bidi:plaintext]"
+          : ""
+      }`}
+      data-public-ltr-value={field.field_type === "time" ? "true" : undefined}
+      dir={field.field_type === "time" ? "ltr" : undefined}
       id={controlId}
+      lang={field.field_type === "time" ? "en-CA" : undefined}
       min={getInputMinimum({ field, todayDate })}
       name={`field:${field.field_key}`}
       required={required}
+      step={field.field_type === "time" ? 60 : undefined}
       type={inputTypeForField(field.field_type)}
     />
   );

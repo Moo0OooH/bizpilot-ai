@@ -1,7 +1,18 @@
 /**
+ * ============================================================
  * File: tests/unit/quote-form-builder-ui-source.test.mts
  * Project: BizPilot AI
  * Description: Source contracts for the configurable quote-form editor and public interaction modes.
+ * Role: Prevents Quote Setup structure and responsive action-bar regressions.
+ * Related:
+ * - app/(dashboard)/dashboard/configuration/page.tsx
+ * - components/dashboard/custom-quote-field-builder.tsx
+ * Author: MoOoH
+ * Created: 2026-06-27
+ * Last Updated: 2026-07-21
+ * Change Log:
+ * - 2026-07-21: Updated the fixed action-bar contract to use RTL-safe logical sidebar clearance.
+ * ============================================================
  */
 
 import assert from "node:assert/strict";
@@ -110,7 +121,8 @@ describe("quote form builder UI source contracts", () => {
       ),
       true,
     );
-    assert.equal(page.includes("lg:bottom-0 lg:left-[240px]"), true);
+    assert.equal(page.includes("lg:bottom-0 lg:start-[240px]"), true);
+    assert.equal(page.includes("lg:bottom-0 lg:left-[240px]"), false);
     assert.equal(page.includes("space-y-4 pb-44 sm:pb-28 lg:pb-20"), true);
     assert.equal(page.includes("lg:pl-[224px]"), false);
   });

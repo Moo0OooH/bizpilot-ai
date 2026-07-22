@@ -11,8 +11,9 @@
  * - server/logging/safe-logger.ts
  * Author: MoOoH
  * Created: 2026-05-06
- * Last Updated: 2026-07-15
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added fail-closed canonical exact-time validation with 24-hour Latin HH:MM storage.
  * - 2026-07-15: Made public quote reads fail closed to the unavailable state with sanitized operational logging.
  * - 2026-07-04: Passed the selected public quote language into intake reads and submit validation.
  * - 2026-05-13: Enforced the server-only runtime boundary.
@@ -29,6 +30,7 @@ import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import type { SupportedLanguage } from "@/lib/i18n/language";
 import { getPublicQuoteFieldChoices } from "@/lib/quote-form-layout";
 import { createSupabasePublicServerClient } from "@/lib/supabase/server";
+import { BUSINESS_OPERATING_TIME_ZONE } from "@/lib/time/business-operating-time-zone";
 import { safeLogger } from "@/server/logging/safe-logger";
 import {
   enforceSubmissionRateLimit,
@@ -44,9 +46,10 @@ import {
   type LeadSourceInput,
   type PublicIntakePageRecord,
 } from "@/server/repositories/public-intake.repository";
+import { parseZonedLocalDateTime } from "@/server/services/premium-operations-rules.service";
 import type { Json } from "@/types/database";
 
-const appTimeZone = "America/New_York";
+const canonicalExactTimeFieldKey = "preferred_time";
 
 export type PublicIntakeSubmissionInput = Readonly<{
   consentAccepted: boolean;
@@ -74,7 +77,7 @@ function todayDateString(): string {
   const parts = new Intl.DateTimeFormat("en", {
     day: "2-digit",
     month: "2-digit",
-    timeZone: appTimeZone,
+    timeZone: BUSINESS_OPERATING_TIME_ZONE,
     year: "numeric",
   }).formatToParts(new Date());
   const valueByType = Object.fromEntries(
@@ -92,6 +95,10 @@ function isValidDateOnly(value: string): boolean {
   const parsed = new Date(`${value}T00:00:00.000Z`);
 
   return parsed.toISOString().slice(0, 10) === value;
+}
+
+function isValidTimeOnly(value: string): boolean {
+  return /^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/.test(value);
 }
 
 function readFieldValue(input: {
@@ -136,6 +143,18 @@ function readFieldValue(input: {
 
     if (trimmed < todayDateString()) {
       throw new Error(input.copy.intakeErrors.notPastDate(input.fieldLabel));
+    }
+
+    return trimmed;
+  }
+
+  if (input.fieldType === "time") {
+    if (trimmed.length === 0) {
+      return null;
+    }
+
+    if (!isValidTimeOnly(trimmed)) {
+      throw new Error(input.copy.intakeErrors.validTime(input.fieldLabel));
     }
 
     return trimmed;
@@ -200,6 +219,13 @@ function getSubmissionValues(input: {
   page: PublicIntakePageRecord;
 }): IntakeSubmissionValueInput[] {
   return input.page.fields.map((field) => {
+    if (
+      field.field_key === canonicalExactTimeFieldKey &&
+      (field.field_type !== "time" || !field.template_field_id)
+    ) {
+      throw new Error(input.copy.intakeErrors.formChanged);
+    }
+
     const value = readFieldValue({
       copy: input.copy,
       fieldLabel: field.label,
@@ -218,6 +244,47 @@ function getSubmissionValues(input: {
       value,
     };
   });
+}
+
+function assertCanonicalExactTimeIsFuture(input: {
+  copy: ReturnType<typeof getBizPilotCopy>;
+  page: PublicIntakePageRecord;
+  values: readonly IntakeSubmissionValueInput[];
+}): void {
+  const timeField = input.page.fields.find(
+    (field) => field.field_key === canonicalExactTimeFieldKey,
+  );
+  const timeValue = input.values.find(
+    (value) => value.fieldKey === canonicalExactTimeFieldKey,
+  )?.value;
+  if (typeof timeValue !== "string" || timeValue.length === 0) return;
+
+  const dateField = input.page.fields.find(
+    (field) =>
+      field.field_key === "preferred_date" &&
+      field.field_type === "date" &&
+      Boolean(field.template_field_id),
+  );
+  const dateValue = input.values.find(
+    (value) => value.fieldKey === "preferred_date",
+  )?.value;
+  if (!timeField || !dateField) {
+    throw new Error(input.copy.intakeErrors.formChanged);
+  }
+  if (typeof dateValue !== "string" || dateValue.length === 0) {
+    throw new Error(input.copy.intakeErrors.fieldRequired(dateField.label));
+  }
+
+  const parsed = parseZonedLocalDateTime({
+    timeZone: BUSINESS_OPERATING_TIME_ZONE,
+    value: `${dateValue}T${timeValue}`,
+  });
+  if (parsed.status !== "valid") {
+    throw new Error(input.copy.intakeErrors.validTime(timeField.label));
+  }
+  if (new Date(parsed.instant).getTime() <= Date.now()) {
+    throw new Error(input.copy.intakeErrors.notPastDate(timeField.label));
+  }
 }
 
 export async function getPublicIntakePage(input: {
@@ -333,6 +400,7 @@ export async function submitPublicIntake(
       fieldValues: input.fieldValues,
       page,
     });
+    assertCanonicalExactTimeIsFuture({ copy, page, values });
   } catch (error) {
     await recordPublicSubmissionAttempt({
       businessId,

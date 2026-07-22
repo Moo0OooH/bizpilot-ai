@@ -11,8 +11,9 @@
  * - components/public/public-v3-pilot-request.tsx
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added a polished Premium Operations catalog to Product and a separate-add-on clarification to Pricing without changing either route hero.
  * - 2026-07-17: Added bilingual proof-point rails to every route introduction so section space explains value instead of remaining decorative.
  * - 2026-07-17: Rebuilt all six retained marketing routes with bilingual editorial introductions, route-specific compositions, numbered capability systems, and clearer content hierarchy.
  * - 2026-07-16: Gave Features, Pricing, FAQ, and Trust distinct visual jobs and aligned pricing conversion with the copy-only pilot request.
@@ -65,6 +66,7 @@ const routeIcons: Readonly<Record<PublicV3MarketingRoute, readonly MarketingIcon
 const visualStageIcons: readonly MarketingIconName[] = ["message", "link", "check"];
 const visualSourceIcons: readonly MarketingIconName[] = ["camera", "phone", "globe"];
 const visualPlanIcons: readonly MarketingIconName[] = ["target", "briefcase", "spark"];
+const premiumOperationIcons: readonly MarketingIconName[] = ["radar", "copy", "calendar"];
 
 function RouteSectionIntro({
   path,
@@ -201,6 +203,80 @@ function RouteVisual({ path, spec }: Readonly<{ path: PublicV3MarketingRoute; sp
   );
 }
 
+function PremiumOperationsCatalog({ spec }: Readonly<{ spec: PublicV3Spec }>) {
+  const copy = spec.premiumOperations;
+
+  return (
+    <section
+      aria-labelledby="premium-operations-title"
+      className={styles.addOnSection}
+      id="premium-operations"
+    >
+      <div className={styles.addOnHeader}>
+        <div>
+          <p className={styles.addOnEyebrow}>{copy.eyebrow}</p>
+          <h2 id="premium-operations-title">{copy.title}</h2>
+          <p className={styles.addOnBody}>{copy.body}</p>
+        </div>
+        <p className={styles.addOnCommercialNote}>{copy.pricingNote}</p>
+      </div>
+      <div className={styles.addOnGrid}>
+        {copy.cards.map((addOn, index) => (
+          <MarketingCard className={styles.addOnCard} key={addOn.key}>
+            <div className={styles.addOnCardMeta}>
+              <span className={styles.addOnIcon} aria-hidden="true">
+                <MarketingIcon
+                  name={premiumOperationIcons[index % premiumOperationIcons.length] ?? "spark"}
+                />
+              </span>
+              <span className={styles.addOnBadge}>{copy.badge}</span>
+            </div>
+            <h3>{addOn.title}</h3>
+            <p>{addOn.body}</p>
+            <p className={styles.addOnCardBoundary}>
+              <MarketingIcon name="shield" />
+              <span>{addOn.boundary}</span>
+            </p>
+          </MarketingCard>
+        ))}
+      </div>
+      <p className={styles.addOnBoundary}>
+        <MarketingIcon name="check" />
+        <span>{copy.boundary}</span>
+      </p>
+    </section>
+  );
+}
+
+function PremiumOperationsPricingSummary({ spec }: Readonly<{ spec: PublicV3Spec }>) {
+  const copy = spec.premiumOperations;
+
+  return (
+    <MarketingCard className={styles.pricingAddOnCard} id="premium-operations">
+      <div className={styles.pricingAddOnHeading}>
+        <span className={styles.addOnBadge}>{copy.badge}</span>
+        <p>{copy.eyebrow}</p>
+        <h2>{copy.title}</h2>
+      </div>
+      <p className={styles.pricingAddOnNote}>{copy.pricingNote}</p>
+      <ul className={styles.pricingAddOnList}>
+        {copy.cards.map((addOn, index) => (
+          <li key={addOn.key}>
+            <MarketingIcon
+              name={premiumOperationIcons[index % premiumOperationIcons.length] ?? "spark"}
+            />
+            <span>{addOn.title}</span>
+          </li>
+        ))}
+      </ul>
+      <p className={styles.pricingAddOnBoundary}>
+        <MarketingIcon name="shield" />
+        <span>{copy.boundary}</span>
+      </p>
+    </MarketingCard>
+  );
+}
+
 function FeaturesContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
   const scope = spec.faqItems.find((item) => item.key === "direct-integrations") ?? spec.faqItems[0];
 
@@ -234,6 +310,7 @@ function FeaturesContent({ spec }: Readonly<{ spec: PublicV3Spec }>) {
             <p>{scope.answer}</p>
           </MarketingCard>
         ) : null}
+        <PremiumOperationsCatalog spec={spec} />
       </div>
     </section>
   );
@@ -294,6 +371,7 @@ function PricingContent({
           ))}
         </div>
         <p className={styles.notice}>{spec.pricing.notice}</p>
+        <PremiumOperationsPricingSummary spec={spec} />
       </div>
     </section>
   );

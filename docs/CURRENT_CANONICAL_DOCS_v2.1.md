@@ -10,8 +10,10 @@
  * - docs/readiness/current-status.json
  * Author: MoOoH
  * Created: 2026-07-15
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Corrected the historical V4.7 local identity and recorded the ordered Premium Operations `0025` + `0026` proof gate.
+ * - 2026-07-21: Replaced the non-resolving V4.7 release reference with local Git facts and made `0025` non-Production validation a current release gate.
  * - 2026-07-17: Updated the authority map for Dashboard V4.7 and separated current release, remaining external gates, and historical Website evidence.
  * - 2026-07-16: Confirmed the Website V4 authority now contains the final public design-polish release evidence.
  * - 2026-07-15: Replaced V2.0 with the consolidated whole-project V2.1 authority hierarchy.
@@ -62,8 +64,8 @@ Standards constrain work; they do not prove a gate passed.
 
 ## Current evidence boundary
 
-- Dashboard V4.7 SHA `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`, tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`, is on `main` and passed local lint, typecheck, `295/295` tests, and production build. GitHub CI run `29558683869` (`CI #443`), Production deployment `5484816130` / status `15596534668`, and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` succeeded.
-- Production read-only acceptance passed public `46/46`, responsive `20/20`, UI matrix `621/621`, and active/inactive Quote EN/fr-CA `4/4` HTTP 200 with no submission or mutation. Full protected/admin route visual acceptance, normal-owner denial, live Google callback, and restored-target RLS proof are not `DONE` until separately observed.
+- Local Git contains historical Dashboard V4.7 commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. Do not claim matching remote publication, CI, deployment, or Production acceptance until a freshly fetched remote ref and release-specific evidence independently verify them.
+- Premium Operations introduces ordered source migrations `0025_premium_operations_addons.sql` then additive `0026_premium_operations_schedule_integrity.sql`. They must first be applied and proven on an approved local/disposable target, including RLS, tenant isolation, lifecycle, and concurrency checks; any Production reconciliation and apply remain separately approved. Full protected/admin route visual acceptance, normal-owner denial, live Google callback, and restored-target RLS proof are likewise not `DONE` until separately observed.
 - Commit `c78596b1f1530ff3586b9b076702822b0b711802`, CI run `29517118330`, and Vercel target `CbDDUpqxCVMoG3L8hTgGRoymvi5m` are historical Website V4 / Documentation V2.1 evidence and cannot be reused as Dashboard V4.7 proof.
 
 ## Product truth

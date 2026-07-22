@@ -10,7 +10,7 @@
  * - components/dashboard/dashboard-topbar.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-21
  * Change Log:
  * - 2026-07-17: Passed server-validated optional section visibility to desktop and compact navigation.
  * - 2026-07-16: Restored the complete grouped desktop sidebar and founder entry without duplicating route navigation in the topbar.
@@ -21,6 +21,7 @@
  * - 2026-07-04: Added local display preference provider for density, guide, and insight controls.
  * - 2026-07-05: Added the route-aware guide rail across protected dashboard pages.
  * - 2026-07-14: Removed the repeated global guide rail and local density provider so each route owns one clear page priority.
+ * - 2026-07-21: Passed isolated dashboard language direction into the shell while keeping business language distinct.
  * ============================================================
  */
 
@@ -29,24 +30,35 @@ import { DashboardThemeFrame } from "./dashboard-theme";
 import { DashboardTopbar } from "./dashboard-topbar";
 import type { OptionalDashboardSection } from "@/lib/dashboard-section-visibility";
 import type { BizPilotCopy } from "@/lib/i18n/bizpilot-copy";
+import type {
+  DashboardInterfaceLanguage,
+  DashboardInterfaceTextDirection,
+} from "@/lib/i18n/dashboard-interface";
 import type { ThemePreference } from "@/lib/theme";
 
-export type DashboardShellCopy = Pick<
+export type DashboardShellCopy = Omit<
+  Pick<
   BizPilotCopy["dashboard"],
   "actions" | "nav" | "pages" | "status" | "theme"
+  >,
+  "nav"
 > &
   Readonly<{
+    nav: BizPilotCopy["dashboard"]["nav"] & {
+      premiumOperations: string;
+    };
     settings: Pick<BizPilotCopy["dashboard"]["settings"], "plan">;
   }>;
 
 type DashboardShellProps = Readonly<{
   activeBusinessName: string;
-  activeLanguage: string;
-  businessId: string;
+  activeLanguage: DashboardInterfaceLanguage;
+  businessLanguage: string;
   businessSlug: string;
   quoteUrl: string;
   children: React.ReactNode;
   initialTheme?: ThemePreference;
+  textDirection: DashboardInterfaceTextDirection;
   copy: DashboardShellCopy;
   showFounderAdmin?: boolean;
   userLabel: string;
@@ -56,18 +68,24 @@ type DashboardShellProps = Readonly<{
 export function DashboardShell({
   activeBusinessName,
   activeLanguage,
-  businessId,
+  businessLanguage,
   businessSlug,
   quoteUrl,
   children,
   copy,
   initialTheme = "light",
+  textDirection,
   showFounderAdmin = false,
   userLabel,
   visibleOptionalSections,
 }: DashboardShellProps) {
   return (
-    <DashboardThemeFrame initialTheme={initialTheme} labels={copy.theme}>
+    <DashboardThemeFrame
+      direction={textDirection}
+      initialTheme={initialTheme}
+      labels={copy.theme}
+      language={activeLanguage}
+    >
       <DashboardSidebar
         activeBusinessName={activeBusinessName}
         copy={copy}
@@ -79,7 +97,7 @@ export function DashboardShell({
         <DashboardTopbar
           activeBusinessName={activeBusinessName}
           activeLanguage={activeLanguage}
-          businessId={businessId}
+          businessLanguage={businessLanguage}
           businessSlug={businessSlug}
           quoteUrl={quoteUrl}
           copy={copy}

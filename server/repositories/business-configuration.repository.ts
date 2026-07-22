@@ -9,8 +9,9 @@
  * - supabase/migrations/0002_business_template_configuration.sql
  * Author: MoOoH
  * Created: 2026-05-05
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Preserved exact-time quote field overrides and locked preferred_time to its seeded template definition.
  * - 2026-07-16: Added a minimal onboarding-review read so scoped saves preserve previously confirmed setup steps.
  * - 2026-07-11: Added bilingual custom quote-field override parsing, merge helpers, and localized field resolution.
  * - 2026-05-13: Enforced the server-only runtime boundary.
@@ -62,6 +63,7 @@ export type IndustryTemplateFieldRecord =
 export type IndustryTemplateRecord =
   Database["public"]["Tables"]["industry_templates"]["Row"];
 type QuoteFieldType = IndustryTemplateFieldRecord["field_type"];
+const canonicalExactTimeFieldKey = "preferred_time";
 
 export type CleaningTemplateFieldRecord = IndustryTemplateFieldRecord & {
   is_custom?: boolean;
@@ -162,6 +164,7 @@ function readFieldType(value: Json | undefined): QuoteFieldType | undefined {
     "select",
     "text",
     "textarea",
+    "time",
     "time_window",
   ];
 
@@ -256,17 +259,24 @@ export function readTemplateFieldOverrides(value: Json): TemplateFieldOverrides 
           .filter((entry): entry is [string, Record<string, Json>] =>
             isRecord(entry[1]),
           )
-          .map(([fieldKey, override]) => [
-            fieldKey,
-            readTemplateFieldOverride(override),
-          ]),
+          .map(([fieldKey, override]): [string, TemplateFieldOverride] => {
+            const field = readTemplateFieldOverride(override);
+
+            return [
+              fieldKey,
+              fieldKey === canonicalExactTimeFieldKey
+                ? { ...field, fieldType: "time" }
+                : field,
+            ];
+          }),
       )
     : {};
   const customFields = isRecord(value.customFields)
     ? Object.fromEntries(
         Object.entries(value.customFields)
-          .filter((entry): entry is [string, Record<string, Json>] =>
-            isRecord(entry[1]),
+          .filter(
+            (entry): entry is [string, Record<string, Json>] =>
+              entry[0] !== canonicalExactTimeFieldKey && isRecord(entry[1]),
           )
           .map(([fieldKey, override]) => {
             const fieldType = readFieldType(override.fieldType);

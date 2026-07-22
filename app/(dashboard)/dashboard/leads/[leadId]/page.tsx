@@ -46,12 +46,15 @@ import {
   shortCustomerName,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
-import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
-import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
-  resolveWorkspaceInterfaceLanguage,
-} from "@/lib/i18n/language";
+  DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+  resolveDashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import {
+  getDashboardInterfaceLegacyCopy,
+  type DashboardInterfaceLegacyCopy,
+} from "@/lib/i18n/dashboard-legacy-interface";
+import { readSafeRouteFlashMessage } from "@/lib/i18n/route-messages";
 import { generateLeadAiBundleAction } from "@/server/actions/ai-lead-assistant.actions";
 import {
   completeActionItemAction,
@@ -67,7 +70,7 @@ import type { Json } from "@/types/database";
 
 export const dynamic = "force-dynamic";
 
-type DashboardCopy = ReturnType<typeof getBizPilotCopy>["dashboard"];
+type DashboardCopy = DashboardInterfaceLegacyCopy["dashboard"];
 type LeadDetailCopy = DashboardCopy["leadDetail"];
 type LeadQueueCopy = DashboardCopy["leadQueue"];
 
@@ -201,12 +204,12 @@ export default async function LeadDetailPage({
     redirect("/dashboard");
   }
 
-  const activeLanguage = resolveWorkspaceInterfaceLanguage({
-    businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  const interfaceLanguage = resolveDashboardInterfaceLanguage({
+    cookieValue: cookieStore.get(DASHBOARD_INTERFACE_LANGUAGE_COOKIE)?.value,
   });
-  const dashboardCopy = getBizPilotCopy(activeLanguage).dashboard;
-  const missingInfoLabels = getBizPilotCopy(activeLanguage).missingInfoLabels;
+  const interfaceCopy = getDashboardInterfaceLegacyCopy(interfaceLanguage);
+  const dashboardCopy = interfaceCopy.dashboard;
+  const missingInfoLabels = interfaceCopy.missingInfoLabels;
   const detailCopy = dashboardCopy.leadDetail;
   const queueCopy = dashboardCopy.leadQueue;
   const routeNotice = readSafeRouteFlashMessage(
@@ -217,14 +220,9 @@ export default async function LeadDetailPage({
     query?.error,
     dashboardCopy.routeMessages.genericError,
   );
-  const localizedBusiness = {
-    ...activeBusiness,
-    preferred_language: activeLanguage,
-  };
-
   const detail = await getLeadDetail({
     actorUserId: user.id,
-    business: localizedBusiness,
+    business: activeBusiness,
     leadId,
   });
 
@@ -233,7 +231,7 @@ export default async function LeadDetailPage({
   }
 
   const aiOutput = await getLatestLeadAiOutput({
-    business: localizedBusiness,
+    business: activeBusiness,
     leadId,
   });
 

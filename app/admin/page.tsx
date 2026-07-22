@@ -10,8 +10,9 @@
  * - docs/dashboard-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added explicit founder controls for the three independently entitled Premium Operations add-ons without plan coupling or automated billing.
  * - 2026-07-17: Kept localized founder topbar utilities wrapping through tablet widths to prevent 640px clipping.
  * - 2026-07-16: Added bilingual founder lead-source, campaign, tracked-coverage, and manual-outcome reporting above the detailed inbox.
  * - 2026-07-16: Localized founder access and health fallback labels while preserving the complete six-panel admin navigation.
@@ -76,6 +77,7 @@ import {
   founderInboxLeadDeleteAction,
   founderInboxLeadStatusAction,
   founderPasswordResetAction,
+  updateFounderAddonEntitlementAction,
   updateFounderInternalNoteAction,
   updateFounderPlanAction,
   updateFounderQuoteLinkAction,
@@ -148,6 +150,7 @@ type ActivityFilter =
 type PlanSlug = FounderAdminBusiness["planSlug"];
 type BusinessStatus = FounderAdminBusiness["status"];
 type SessionTimeoutMode = FounderAdminBusiness["sessionTimeoutMode"];
+type FounderAddonEntitlement = FounderAdminBusiness["addonEntitlements"][number];
 
 const adminUserPageSizeOptions = [10, 25, 50] as const;
 
@@ -155,6 +158,82 @@ const controlPanelClass =
   "grid w-full min-w-0 max-w-full gap-3 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 sm:p-3.5 shadow-sm";
 const toolboxSectionClass =
   "grid w-full min-w-0 max-w-full gap-3 overflow-hidden rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3 sm:p-3.5";
+
+function getFounderAddonControlCopy(locale: string) {
+  const french = locale.toLowerCase().startsWith("fr");
+
+  return french
+    ? {
+        addonDescriptions: {
+          availability_coordination:
+            "Crée des plages de service internes, signale les conflits et prépare des propositions d'autre heure qui exigent une approbation.",
+          bulk_reply_review:
+            "Prépare un brouillon révisé pour un groupe choisi; le propriétaire doit toujours le copier et l'envoyer manuellement.",
+          priority_workbench:
+            "Recherche et classe les demandes selon les règles de service et de territoire définies par le propriétaire.",
+        } satisfies Record<FounderAddonEntitlement["addonKey"], string>,
+        addonLabels: {
+          availability_coordination: "Coordination des disponibilités",
+          bulk_reply_review: "Réponses groupées à réviser",
+          priority_workbench: "File de priorité",
+        } satisfies Record<FounderAddonEntitlement["addonKey"], string>,
+        availableBadge: "Contrôle fondateur",
+        description:
+          "Ces accès payants sont gérés séparément du forfait. Un changement de forfait ne les active jamais et aucun paiement n'est déclenché ici.",
+        disable: "Désactiver",
+        enable: "Activer",
+        enabledAt: "Activé le",
+        expiresAt: "Expire le",
+        noActivation: "Aucune activation enregistrée",
+        noteLabel: "Note d'audit facultative",
+        notePlaceholder: "Raison de ce changement d'accès",
+        readUnavailable:
+          "La table d'accès Premium n'est pas disponible. Appliquez et vérifiez la migration avant de modifier ces accès.",
+        statusLabels: {
+          disabled: "Désactivé",
+          enabled: "Activé",
+          expired: "Expiré",
+          trial: "Essai",
+        } satisfies Record<FounderAddonEntitlement["status"], string>,
+        title: "Modules Premium",
+        unavailableBadge: "Lecture indisponible",
+      }
+    : {
+        addonDescriptions: {
+          availability_coordination:
+            "Creates internal service blocks, flags conflicts, and prepares approval-only alternative-time drafts.",
+          bulk_reply_review:
+            "Prepares one reviewed draft for a selected group; the owner still copies and sends it manually.",
+          priority_workbench:
+            "Searches and ranks requests using owner-defined service and area rules.",
+        } satisfies Record<FounderAddonEntitlement["addonKey"], string>,
+        addonLabels: {
+          availability_coordination: "Availability coordination",
+          bulk_reply_review: "Reviewed group replies",
+          priority_workbench: "Priority workbench",
+        } satisfies Record<FounderAddonEntitlement["addonKey"], string>,
+        availableBadge: "Founder controlled",
+        description:
+          "These paid entitlements are managed independently from the plan. Plan changes never auto-enable them, and this control does not run billing.",
+        disable: "Disable",
+        enable: "Enable",
+        enabledAt: "Enabled at",
+        expiresAt: "Expires at",
+        noActivation: "No activation recorded",
+        noteLabel: "Optional audit note",
+        notePlaceholder: "Reason for this access change",
+        readUnavailable:
+          "The Premium entitlement table is unavailable. Apply and verify the migration before changing access.",
+        statusLabels: {
+          disabled: "Disabled",
+          enabled: "Enabled",
+          expired: "Expired",
+          trial: "Trial",
+        } satisfies Record<FounderAddonEntitlement["status"], string>,
+        title: "Premium add-ons",
+        unavailableBadge: "Read unavailable",
+      };
+}
 
 type UserPriorityOption = Readonly<{
   label: string;
@@ -351,6 +430,30 @@ function formatAdminJsonValue(copy: AdminCopy, value: unknown): string {
 function actionLabel(copy: AdminCopy, actionType: string): string {
   const labels = copy.overview.activityMeta.actionLabels;
   return hasOwnKey(labels, actionType) ? labels[actionType] : humanizeAdminKey(actionType);
+}
+
+function isFounderAddonEntitlementAction(
+  action: Readonly<{ newValues: FounderAdminActionSummary["newValues"] }>,
+): boolean {
+  return Boolean(
+    action.newValues &&
+      typeof action.newValues === "object" &&
+      !Array.isArray(action.newValues) &&
+      "operation" in action.newValues &&
+      action.newValues.operation === "premium_addon_entitlement_updated",
+  );
+}
+
+function founderBusinessActionLabel(
+  copy: AdminCopy,
+  action: Readonly<{
+    actionType: string;
+    newValues: FounderAdminActionSummary["newValues"];
+  }>,
+): string {
+  return isFounderAddonEntitlementAction(action)
+    ? getFounderAddonControlCopy(copy.locale).title
+    : actionLabel(copy, action.actionType);
 }
 
 function formatActionChange(
@@ -1224,7 +1327,7 @@ function FounderSystemChangeLog({
             >
               <div>
                 <p className="font-black text-[var(--dash-text)]">
-                  {actionLabel(copy, action.actionType)}
+                  {founderBusinessActionLabel(copy, action)}
                 </p>
                 <p className="mt-1 font-bold text-[var(--dash-text-muted)]">
                   {formatDateTime(copy, action.createdAt)}
@@ -1263,7 +1366,13 @@ function latestAction(
   actions: FounderAdminActionSummary[],
   actionTypes: ReadonlyArray<string>,
 ): FounderAdminActionSummary | null {
-  return actions.find((action) => actionTypes.includes(action.actionType)) ?? null;
+  return (
+    actions.find(
+      (action) =>
+        actionTypes.includes(action.actionType) &&
+        !isFounderAddonEntitlementAction(action),
+    ) ?? null
+  );
 }
 
 function controlAuditText(
@@ -1443,7 +1552,7 @@ function RecentAdminChangesPanel({
                 <div className="grid min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
                   <div className="min-w-0">
                     <p className="break-words font-black text-[var(--dash-text)] [overflow-wrap:anywhere]">
-                      {actionLabel(copy, action.actionType)}
+                      {founderBusinessActionLabel(copy, action)}
                     </p>
                     <p className="mt-1 break-words font-semibold text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]">
                       {formatActionChange(copy, action)}
@@ -1627,6 +1736,158 @@ function FounderBusinessMasterRail({
   );
 }
 
+function founderAddonTone(
+  entitlement: FounderAddonEntitlement,
+): "amber" | "blue" | "emerald" | "neutral" {
+  if (!entitlement.isActive) {
+    return entitlement.status === "disabled" ? "neutral" : "amber";
+  }
+
+  if (entitlement.status === "enabled") {
+    return "emerald";
+  }
+
+  if (entitlement.status === "trial") {
+    return "blue";
+  }
+
+  return "neutral";
+}
+
+function FounderAddonEntitlementControls({
+  business,
+  copy,
+}: Readonly<{ business: FounderAdminBusiness; copy: AdminCopy }>) {
+  const addonCopy = getFounderAddonControlCopy(copy.locale);
+
+  return (
+    <section
+      aria-labelledby={`premium-addons-${business.businessId}`}
+      className="w-full min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3 sm:p-4"
+      data-founder-addon-entitlements
+    >
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="max-w-3xl">
+          <p
+            className="text-sm font-black text-[var(--dash-text)]"
+            id={`premium-addons-${business.businessId}`}
+          >
+            {addonCopy.title}
+          </p>
+          <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+            {addonCopy.description}
+          </p>
+        </div>
+        <StatusBadge
+          tone={business.addonEntitlementsAvailable ? "blue" : "amber"}
+        >
+          {business.addonEntitlementsAvailable
+            ? addonCopy.availableBadge
+            : addonCopy.unavailableBadge}
+        </StatusBadge>
+      </div>
+
+      {!business.addonEntitlementsAvailable ? (
+        <p className="mt-3 rounded-lg border border-[var(--dash-warning-border)] bg-[var(--dash-warning-soft)] px-3 py-2 text-[12px] font-bold leading-5 text-[var(--dash-warning-strong)]">
+          {addonCopy.readUnavailable}
+        </p>
+      ) : null}
+
+      <div className="mt-3 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-3 lg:grid-cols-3">
+        {business.addonEntitlements.map((entitlement) => {
+          const controlsAvailable = business.addonEntitlementsAvailable;
+
+          return (
+            <form
+              action={updateFounderAddonEntitlementAction}
+              className="grid min-w-0 gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3 shadow-sm"
+              data-addon-key={entitlement.addonKey}
+              key={entitlement.addonKey}
+            >
+              <input name="businessId" type="hidden" value={business.businessId} />
+              <input name="addonKey" type="hidden" value={entitlement.addonKey} />
+              <div className="flex min-w-0 items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-sm font-black text-[var(--dash-text)]">
+                    {addonCopy.addonLabels[entitlement.addonKey]}
+                  </p>
+                  <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                    {addonCopy.addonDescriptions[entitlement.addonKey]}
+                  </p>
+                </div>
+                <StatusBadge tone={founderAddonTone(entitlement)}>
+                  {addonCopy.statusLabels[
+                    entitlement.isActive || entitlement.status === "disabled"
+                      ? entitlement.status
+                      : "expired"
+                  ]}
+                </StatusBadge>
+              </div>
+              <div className="grid gap-1 text-[11px] font-bold text-[var(--dash-text-muted)]">
+                <p>
+                  {entitlement.activatedAt
+                    ? `${addonCopy.enabledAt}: ${formatDateTime(
+                        copy,
+                        entitlement.activatedAt,
+                      )}`
+                    : addonCopy.noActivation}
+                </p>
+                {entitlement.expiresAt ? (
+                  <p>
+                    {addonCopy.expiresAt}: {formatDateTime(copy, entitlement.expiresAt)}
+                  </p>
+                ) : null}
+              </div>
+              <label className="grid gap-1.5 text-[12px] font-black text-[var(--dash-text)]">
+                {addonCopy.noteLabel}
+                <input
+                  autoComplete="off"
+                  className={inputClass}
+                  maxLength={240}
+                  name="note"
+                  placeholder={addonCopy.notePlaceholder}
+                />
+              </label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  className={
+                    !controlsAvailable ||
+                    (entitlement.status === "enabled" && entitlement.isActive)
+                      ? disabledButtonClass
+                      : primaryButtonClass
+                  }
+                  disabled={
+                    !controlsAvailable ||
+                    (entitlement.status === "enabled" && entitlement.isActive)
+                  }
+                  name="addonStatus"
+                  type="submit"
+                  value="enabled"
+                >
+                  {addonCopy.enable}
+                </button>
+                <button
+                  className={
+                    !controlsAvailable || entitlement.status === "disabled"
+                      ? disabledButtonClass
+                      : buttonClass
+                  }
+                  disabled={!controlsAvailable || entitlement.status === "disabled"}
+                  name="addonStatus"
+                  type="submit"
+                  value="disabled"
+                >
+                  {addonCopy.disable}
+                </button>
+              </div>
+            </form>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 function BusinessControlCard({
   business,
   copy,
@@ -1678,16 +1939,18 @@ function BusinessControlCard({
     "quote_link_enabled",
   ]);
   const recommendation = recommendedPriorityAction(business, copy);
-  const recentPriorityActions = business.actionLog.filter((action) =>
-    [
-      "status_changed",
-      "business_reactivated",
-      "business_suspended",
-      "business_cancelled",
-      "plan_changed",
-      "quote_link_disabled",
-      "quote_link_enabled",
-    ].includes(action.actionType),
+  const recentPriorityActions = business.actionLog.filter(
+    (action) =>
+      !isFounderAddonEntitlementAction(action) &&
+      [
+        "status_changed",
+        "business_reactivated",
+        "business_suspended",
+        "business_cancelled",
+        "plan_changed",
+        "quote_link_disabled",
+        "quote_link_enabled",
+      ].includes(action.actionType),
   );
   const latestAdminChange = business.actionLog[0]
     ? formatDateTime(copy, business.actionLog[0].createdAt)
@@ -1794,6 +2057,8 @@ function BusinessControlCard({
           />
         </div>
       </section>
+
+      <FounderAddonEntitlementControls business={business} copy={copy} />
 
       <details
         className="w-full min-w-0 max-w-full overflow-hidden rounded-xl border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]"
@@ -1996,7 +2261,7 @@ function BusinessControlCard({
                     className="break-words rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] px-3 py-2 text-[12px] font-bold text-[var(--dash-text-secondary)] [overflow-wrap:anywhere]"
                   key={action.id}
                 >
-                  {actionLabel(copy, action.actionType)}
+                  {founderBusinessActionLabel(copy, action)}
                 </p>
               ))
               ) : (
@@ -3645,7 +3910,7 @@ function FounderAdminNewsroom({
               >
                 <div className="min-w-0">
                   <p className="truncate text-[13px] font-black text-[var(--dash-text)]">
-                    {actionLabel(copy, action.actionType)}
+                    {founderBusinessActionLabel(copy, action)}
                   </p>
                   <p className="mt-1 truncate text-[12px] font-bold text-[var(--dash-text-secondary)]">
                     {action.note ?? overviewCopy.newsroom.noNoteRecorded}
@@ -3842,12 +4107,7 @@ function FounderRecentActionsPanel({
   actions,
   copy,
 }: Readonly<{
-  actions: ReadonlyArray<{
-    actionType: string;
-    businessId: string | null;
-    createdAt: string;
-    note: string | null;
-  }>;
+  actions: FounderAdminOverview["recentActions"];
   copy: AdminCopy;
 }>) {
   const overviewCopy = copy.overview;
@@ -3873,7 +4133,7 @@ function FounderRecentActionsPanel({
               key={`${action.createdAt}-${action.actionType}-${action.businessId ?? "none"}`}
             >
               <span className="font-black text-[var(--dash-text)]">
-                {actionLabel(copy, action.actionType)}
+                {founderBusinessActionLabel(copy, action)}
               </span>
               <span className="truncate text-[var(--dash-text-secondary)]">
                 {action.note ?? action.businessId ?? overviewCopy.recentActionsPanel.noNote}

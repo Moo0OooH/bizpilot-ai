@@ -9,8 +9,9 @@
  * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-05-25
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added public Product and Pricing markers for the separately enabled Premium Operations offer.
  * - 2026-07-17: Read the final homepage headline from the synchronized V3 dictionary instead of a retired literal.
  * - 2026-07-15: Added safe EN/fr-CA missing-success coverage for the dynamic quote success boundary.
  * - 2026-07-15: Added direct EN/fr-CA coverage for every auth page and the base quote-unavailable route.
@@ -82,6 +83,7 @@ const smokeTargets: readonly SmokeTarget[] = [
     expectedText: [
       englishV3.routes["/features"].hero.title,
       englishV3.features[0]?.title ?? "",
+      englishV3.premiumOperations.title,
     ],
     path: "/features",
     status: 200,
@@ -103,7 +105,11 @@ const smokeTargets: readonly SmokeTarget[] = [
     status: 200,
   },
   {
-    expectedText: [englishV3.routes["/pricing"].hero.title, "$149 setup + $49/month"],
+    expectedText: [
+      englishV3.routes["/pricing"].hero.title,
+      "$149 setup + $49/month",
+      englishV3.premiumOperations.pricingNote,
+    ],
     path: "/pricing",
     status: 200,
   },

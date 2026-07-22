@@ -6,11 +6,13 @@ Description: Defines SQL checks for Phase 4 public intake and lead RLS behavior.
 Role: Verifies public-safe reads, scoped public inserts, and private data denial.
 Related:
 - supabase/migrations/0005_public_intake_and_leads.sql
+- supabase/migrations/0026_premium_operations_schedule_integrity.sql
 - docs/engineering/BIZPILOT_DATABASE_RLS_POLICY_BASELINE_v1.0.md
 Author: MoOoH
 Created: 2026-05-06
-Last Updated: 2026-05-07
+Last Updated: 2026-07-22
 Change Log:
+- 2026-07-22: Updated public field-helper coverage for the canonical field-id-bound signature.
 - 2026-05-07: Synced intake field helper checks with hardened business_id + form_id signature.
 - 2026-05-06: Created Phase 4 public intake RLS baseline tests.
 - 2026-05-06: Added no-public-link fixture to prevent broad public config reads.
@@ -109,6 +111,7 @@ values (
 );
 
 insert into public.intake_form_fields (
+  id,
   business_id,
   intake_form_id,
   field_key,
@@ -119,6 +122,7 @@ insert into public.intake_form_fields (
 )
 values
   (
+    '62100000-0000-0000-0000-000000000001',
     '60000000-0000-0000-0000-000000000001',
     '62000000-0000-0000-0000-000000000001',
     'customer_name',
@@ -128,6 +132,7 @@ values
     10
   ),
   (
+    '62100000-0000-0000-0000-000000000002',
     '60000000-0000-0000-0000-000000000001',
     '62000000-0000-0000-0000-000000000001',
     'customer_contact',
@@ -237,6 +242,7 @@ values (
 );
 
 insert into public.intake_form_fields (
+  id,
   business_id,
   intake_form_id,
   field_key,
@@ -245,15 +251,27 @@ insert into public.intake_form_fields (
   is_required,
   sort_order
 )
-values (
-  '60000000-0000-0000-0000-000000000002',
-  '62000000-0000-0000-0000-000000000002',
-  'customer_name',
-  'Customer name',
-  'text',
-  true,
-  10
-);
+values
+  (
+    '62100000-0000-0000-0000-000000000003',
+    '60000000-0000-0000-0000-000000000002',
+    '62000000-0000-0000-0000-000000000002',
+    'customer_name',
+    'Customer name',
+    'text',
+    true,
+    10
+  ),
+  (
+    '62100000-0000-0000-0000-000000000004',
+    '60000000-0000-0000-0000-000000000003',
+    '62000000-0000-0000-0000-000000000003',
+    'customer_name',
+    'Customer name',
+    'text',
+    true,
+    10
+  );
 
 insert into public.consent_versions (
   id,
@@ -319,6 +337,7 @@ begin
   if not public.can_public_read_intake_field(
     '60000000-0000-0000-0000-000000000001',
     '62000000-0000-0000-0000-000000000001',
+    '62100000-0000-0000-0000-000000000001',
     false
   ) then
     raise exception 'Public fixture should resolve visible intake fields through the helper.';
@@ -327,6 +346,7 @@ begin
   if public.can_public_read_intake_field(
     '60000000-0000-0000-0000-000000000002',
     '62000000-0000-0000-0000-000000000002',
+    '62100000-0000-0000-0000-000000000003',
     false
   ) then
     raise exception 'Public fixture must not resolve fields without an active public link.';
@@ -335,6 +355,7 @@ begin
   if public.can_public_read_intake_field(
     '60000000-0000-0000-0000-000000000001',
     '62000000-0000-0000-0000-000000000001',
+    '62100000-0000-0000-0000-000000000001',
     true
   ) then
     raise exception 'Public fixture must not resolve hidden intake fields.';
@@ -343,6 +364,7 @@ begin
   if public.can_public_read_intake_field(
     '60000000-0000-0000-0000-000000000003',
     '62000000-0000-0000-0000-000000000003',
+    '62100000-0000-0000-0000-000000000004',
     false
   ) then
     raise exception 'Public fixture must not resolve fields for inactive intake forms.';

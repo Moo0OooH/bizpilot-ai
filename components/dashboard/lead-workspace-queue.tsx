@@ -12,8 +12,9 @@
  * - components/dashboard/dashboard-ui.tsx
  * Author: MoOoH
  * Created: 2026-05-11
- * Last Updated: 2026-07-14
+ * Last Updated: 2026-07-21
  * Change Log:
+ * - 2026-07-21: Made queue spacing and selected demo cards direction-aware, while keeping page-size values Latin LTR.
  * - 2026-07-14: Pointed empty-state setup guidance at the canonical Quote Setup route.
  * - 2026-07-05: Added explicit accessible labels for lead queue row links.
  * - 2026-07-04: Added URL-driven initial filters so overview links open the queue in the requested focus state.
@@ -40,11 +41,14 @@ import {
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
 import { CopyButton } from "@/components/dashboard/copy-button";
-import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
-import type { SupportedLanguage } from "@/lib/i18n/language";
+import {
+  getDashboardInterfaceLegacyCopy,
+  type DashboardInterfaceLegacyCopy,
+} from "@/lib/i18n/dashboard-legacy-interface";
+import type { DashboardInterfaceLanguage } from "@/lib/i18n/dashboard-interface";
 import type { LeadDeskItem } from "@/server/services/lead-conversion.service";
 
-type LeadQueueCopy = ReturnType<typeof getBizPilotCopy>["dashboard"]["leadQueue"];
+type LeadQueueCopy = DashboardInterfaceLegacyCopy["dashboard"]["leadQueue"];
 
 export type LeadQueueInitialFilter =
   | "all"
@@ -67,7 +71,8 @@ type LeadWorkspaceQueueProps = Readonly<{
   compact?: boolean;
   /** Initial queue filter, usually read from /dashboard/leads?focus=... */
   initialFilter?: LeadQueueInitialFilter;
-  language?: SupportedLanguage | undefined;
+  /** Dashboard-only locale; never the business/public or AI language. */
+  language: DashboardInterfaceLanguage;
   leads: LeadDeskItem[];
   /** Hard cap on rendered rows — used by dashboard overview (5). */
   limit?: number;
@@ -454,7 +459,7 @@ function QueuePagination({
           className="min-w-0 text-[12px] font-bold leading-5 text-[var(--dash-text-secondary)]"
         >
           <span>{copy.pagination.pageRange(pageStart, pageEnd, totalCount)}</span>
-          <span className="ml-2 text-[var(--dash-text-muted)]">
+          <span className="ms-2 text-[var(--dash-text-muted)]">
             {copy.pagination.pageStatus(currentPage, pageCount)}
           </span>
         </p>
@@ -464,6 +469,9 @@ function QueuePagination({
             <select
               aria-label={copy.pagination.pageSizeAriaLabel}
               className={`${inputClass} w-[136px] text-[13px]`}
+              data-dashboard-ltr-value="true"
+              dir="ltr"
+              lang="en-CA"
               onChange={(event) => onPageSizeChange(toLeadPageSize(event.target.value))}
               value={pageSize}
             >
@@ -520,8 +528,8 @@ function QueuePagination({
 function SampleLeadEmptyState({
   language,
   quotePath,
-}: Readonly<{ language?: SupportedLanguage | undefined; quotePath: string }>) {
-  const copy = getBizPilotCopy(language);
+}: Readonly<{ language: DashboardInterfaceLanguage; quotePath: string }>) {
+  const copy = getDashboardInterfaceLegacyCopy(language);
   const sampleLeads = copy.demo.sampleLeads;
   const [selectedLeadIndex, setSelectedLeadIndex] = useState(0);
   const fallbackLead = {
@@ -574,8 +582,8 @@ function SampleLeadEmptyState({
             aria-pressed={selectedLeadIndex === index}
             className={
               selectedLeadIndex === index
-                ? "grid gap-2 rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-3 text-left transition"
-                : "grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-left transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
+                ? "grid gap-2 rounded-lg border border-[var(--dash-primary)] bg-[var(--dash-primary-soft)] p-3 text-start transition"
+                : "grid gap-2 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-elevated)] p-3 text-start transition hover:border-[var(--dash-primary)] hover:bg-[var(--dash-primary-soft)]"
             }
             key={lead.customer}
             onClick={() => setSelectedLeadIndex(index)}
@@ -655,8 +663,8 @@ function SampleLeadEmptyState({
 function LeadQueueEmptyStarter({
   language,
   quotePath,
-}: Readonly<{ language?: SupportedLanguage | undefined; quotePath: string }>) {
-  const copy = getBizPilotCopy(language);
+}: Readonly<{ language: DashboardInterfaceLanguage; quotePath: string }>) {
+  const copy = getDashboardInterfaceLegacyCopy(language);
   const queueCopy = copy.dashboard.leadQueue;
 
   return (
@@ -678,7 +686,7 @@ function LeadQueueEmptyStarter({
       <details className="rounded-lg border border-dashed border-[var(--dash-primary)] bg-[var(--dash-primary-soft)]">
         <summary className="cursor-pointer list-none px-4 py-3 text-sm font-black text-[var(--dash-text)]">
           {copy.demo.sampleDemoState}
-          <span className="ml-2 text-[12px] font-bold text-[var(--dash-text-muted)]">
+          <span className="ms-2 text-[12px] font-bold text-[var(--dash-text-muted)]">
             {copy.demo.notStored}
           </span>
         </summary>
@@ -698,7 +706,7 @@ export function LeadWorkspaceQueue({
   limit,
   quotePath,
 }: LeadWorkspaceQueueProps) {
-  const copy = getBizPilotCopy(language);
+  const copy = getDashboardInterfaceLegacyCopy(language);
   const queueCopy = copy.dashboard.leadQueue;
   const [activeFilter, setActiveFilter] = useState<LeadFilter>(initialFilter);
   const [currentPage, setCurrentPage] = useState(1);
@@ -855,7 +863,7 @@ export function LeadWorkspaceQueue({
         ) : (
           <div className="p-4">
             {leads.length === 0 ? (
-              <LeadQueueEmptyStarter language={language} quotePath={quotePath} />
+          <LeadQueueEmptyStarter language={language} quotePath={quotePath} />
             ) : hasActiveFilter ? (
               <EmptyState
                 action={

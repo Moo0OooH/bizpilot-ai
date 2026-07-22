@@ -30,11 +30,14 @@ import {
   SectionHeader,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
-import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
-  resolveWorkspaceInterfaceLanguage,
-} from "@/lib/i18n/language";
+  DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+  resolveDashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import {
+  getDashboardInterfaceFormattingLocale,
+  getDashboardInterfaceLegacyCopy,
+} from "@/lib/i18n/dashboard-legacy-interface";
 import type { LeadSourceKey } from "@/lib/lead-source-analytics";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
@@ -60,14 +63,15 @@ export default async function DashboardReportsPage({
   if (!user) redirect("/auth/sign-in");
 
   const cookieStore = await cookies();
+  const interfaceLanguage = resolveDashboardInterfaceLanguage({
+    cookieValue: cookieStore.get(DASHBOARD_INTERFACE_LANGUAGE_COOKIE)?.value,
+  });
+  const interfaceCopy = getDashboardInterfaceLegacyCopy(interfaceLanguage);
   const workspace = await getBusinessWorkspace({ userId: user.id });
   const activeBusiness = workspace.businesses[0];
 
   if (!activeBusiness) {
-    const language = resolveWorkspaceInterfaceLanguage({
-      cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
-    });
-    const overviewCopy = getBizPilotCopy(language).dashboard.overview;
+    const overviewCopy = interfaceCopy.dashboard.overview;
     return (
       <main>
         <EmptyState title={overviewCopy.noWorkspaceTitle}>
@@ -77,20 +81,19 @@ export default async function DashboardReportsPage({
     );
   }
 
-  const activeLanguage = resolveWorkspaceInterfaceLanguage({
-    businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: cookieStore.get(INTERFACE_LANGUAGE_COOKIE)?.value,
-  });
-  const dashboardCopy = getBizPilotCopy(activeLanguage).dashboard;
+  const dashboardCopy = interfaceCopy.dashboard;
   const copy = dashboardCopy.reports;
   const range = readLeadSourceAnalyticsRange(params?.range);
   const { analytics, isTruncated } = await getOwnerLeadSourceReport({
     businessId: activeBusiness.id,
     range,
   });
-  const dateFormatter = new Intl.DateTimeFormat(activeLanguage, {
+  const dateFormatter = new Intl.DateTimeFormat(
+    getDashboardInterfaceFormattingLocale(interfaceLanguage),
+    {
     dateStyle: "medium",
-  });
+    },
+  );
   const sourceLabel = (key: LeadSourceKey, fallback: string) =>
     copy.sourceLabels[key] ?? fallback;
   const manualOutcomeCount = analytics.manualOutcomes.byManualOutcome.reduce(
@@ -125,7 +128,7 @@ export default async function DashboardReportsPage({
 
       <DashboardCard className="p-3">
         <nav aria-label={copy.filters.label} className="flex flex-wrap items-center gap-2">
-          <span className="mr-1 text-[12px] font-black text-[var(--dash-text-secondary)]">
+          <span className="me-1 text-[12px] font-black text-[var(--dash-text-secondary)]">
             {copy.filters.label}
           </span>
           {filterItems.map(([value, hrefValue, label]) => (

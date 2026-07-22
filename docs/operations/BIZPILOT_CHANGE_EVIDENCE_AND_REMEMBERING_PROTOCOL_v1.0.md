@@ -1,5 +1,7 @@
 # BizPilot Change Evidence and Memory Protocol v1.0
 
+Updated: 2026-07-22 — corrected the historical local Git identity and recorded the ordered Premium Operations `0025` + `0026` proof gate.
+
 ## Purpose
 
 This protocol is mandatory for every future change request, no matter how small.
@@ -29,7 +31,7 @@ For every requested or completed work item, the team must:
 - No deploy (unless explicitly approved).
 - No production SQL (unless explicitly approved).
 - No blind re-apply of any migration, including `0010`, `0018`, or `0020`.
-- Repository migrations currently end at `0024`; the next new prefix is `0025`.
+- Repository source includes ordered Premium Operations migrations `0025_premium_operations_addons.sql` then additive `0026_premium_operations_schedule_integrity.sql`. They are a gated candidate: run both, in order, only on an approved local/disposable target first; prove RLS, tenant isolation, lifecycle, and concurrency; and never treat source presence as Production authorization.
 - No real customer data.
 - No cleanup execution.
 - RLS must not be weakened.
@@ -112,20 +114,20 @@ Before starting the next change phase:
 3. Never archive required evidence in a chat message only.
 4. Never mark a step complete without command-backed evidence.
 
-## Current project status note — 2026-07-17
+## Current project status note — 2026-07-22
 
 Current functional source identity:
 
-- remote commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`;
+- historical local commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`;
 - tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`;
-- local lint, typecheck, build, and 295/295 tests PASS;
-- GitHub CI run `29558683869` (CI #443), deployment `5484816130` / status `15596534668`, and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` PASS;
-- Production read-only smoke PASS: public 46/46, responsive 20/20, UI 621/621, and active + inactive Quote EN/fr-CA 4/4 HTTP 200 with no submission/mutation;
-- owner screenshot visibly renders the role-gated Founder Admin entry; full protected/Admin route acceptance remains GATED.
+- the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent from the current checkout;
+- remote ref, CI, deployment, and Production smoke are `GATED` pending a fresh evidence revalidation; historical external IDs are not a substitute;
+- ordered migrations `0025_premium_operations_addons.sql` then `0026_premium_operations_schedule_integrity.sql` require approved local/disposable execution plus RLS, tenant-isolation, lifecycle, and concurrency proof before a separately approved Production plan;
+- owner screenshot evidence is historical only; full protected/Admin route acceptance remains GATED.
 
 Dashboard V4.7 includes Reports, owner-configurable quote sections with list/tabs/steps presentation, optional Reports/Guide navigation visibility, and one guarded Admin shell entry. Google provider handling does not silently create a workspace; authenticated callback proof remains gated.
 
-This closes the public read-only Production-release gate only. Do not treat it as authenticated-acceptance, restore, or real-data readiness. Phase 24C.0 remains historical partial DB-level evidence; the documented restore procedure still needs a strict passing exercise across restored app/dashboard/intake/RLS, tenant isolation, and founder denial before real customer data.
+No remote publication or Production-release gate is closed from this local record. Do not treat historical evidence as authenticated-acceptance, restore, or real-data readiness. Phase 24C.0 remains historical partial DB-level evidence; the documented restore procedure still needs a strict passing exercise across restored app/dashboard/intake/RLS, tenant isolation, and founder denial before real customer data.
 
 ## Enforcement
 

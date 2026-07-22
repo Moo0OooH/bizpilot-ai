@@ -35,11 +35,11 @@ import {
   shortCustomerName,
   StatusBadge,
 } from "@/components/dashboard/dashboard-ui";
-import { getBizPilotCopy } from "@/lib/i18n/bizpilot-copy";
 import {
-  INTERFACE_LANGUAGE_COOKIE,
-  resolveWorkspaceInterfaceLanguage,
-} from "@/lib/i18n/language";
+  DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+  resolveDashboardInterfaceLanguage,
+} from "@/lib/i18n/dashboard-interface";
+import { getDashboardInterfaceLegacyCopy } from "@/lib/i18n/dashboard-legacy-interface";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
 import {
@@ -153,21 +153,24 @@ export default async function LeadConversionDeskPage({
   const activeBusiness = workspace.businesses[0];
   if (!activeBusiness) redirect("/dashboard");
 
-  const activeLanguage = resolveWorkspaceInterfaceLanguage({
-    businessLanguage: activeBusiness.preferred_language,
-    cookieLanguage: (await cookies()).get(INTERFACE_LANGUAGE_COOKIE)?.value,
+  const interfaceLanguage = resolveDashboardInterfaceLanguage({
+    cookieValue: (await cookies()).get(
+      DASHBOARD_INTERFACE_LANGUAGE_COOKIE,
+    )?.value,
   });
-  const copy = getBizPilotCopy(activeLanguage).dashboard;
+  const copy = getDashboardInterfaceLegacyCopy(interfaceLanguage).dashboard;
   const leadsCopy = copy.leadsPage;
   const queueCopy = copy.leadQueue;
   const initialFilter = readLeadQueueFocus(query?.focus);
   const desk = await getLeadConversionDesk({
     actorUserId: user.id,
-    business: { ...activeBusiness, preferred_language: activeLanguage },
+    business: activeBusiness,
   });
   const quotePath = `/quote/${activeBusiness.slug}`;
   const quotePreviewPath = `${quotePath}?preview=dashboard${
-    activeLanguage === "en" ? "" : `&language=${encodeURIComponent(activeLanguage)}`
+    activeBusiness.preferred_language === "en"
+      ? ""
+      : `&language=${encodeURIComponent(activeBusiness.preferred_language)}`
   }`;
   const focusedLeads = desk.leads.filter((item) =>
     leadMatchesQueueFocus(item, initialFilter),
@@ -260,7 +263,7 @@ export default async function LeadConversionDeskPage({
       <LeadWorkspaceQueue
         initialFilter={initialFilter}
         key={initialFilter}
-        language={activeLanguage}
+        language={interfaceLanguage}
         leads={desk.leads}
         quotePath={quotePath}
       />

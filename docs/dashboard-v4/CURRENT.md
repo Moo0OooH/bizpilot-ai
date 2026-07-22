@@ -8,12 +8,18 @@
  * - app/(dashboard)/dashboard/page.tsx
  * - app/(dashboard)/dashboard/leads/page.tsx
  * - app/(dashboard)/dashboard/leads/[leadId]/page.tsx
+ * - app/(dashboard)/dashboard/operations/page.tsx
  * - app/admin/page.tsx
+ * - supabase/migrations/0026_premium_operations_schedule_integrity.sql
  * - docs/dashboard-v4/PHASE_PROGRESS.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Recorded exhaustive Persian owner-route coverage, its checked-in `1,000`-value map, and exact protected-value inventory.
+ * - 2026-07-22: Recorded complete reviewed Arabic owner-route coverage and the exact protected fallback inventory.
+ * - 2026-07-22: Added the hardened Premium Operations candidate, canonical exact-time/Toronto contract, founder entitlement controls, public-catalog boundary, current runtime, and ordered `0025` + `0026` release gates.
+ * - 2026-07-21: Added the separately sold Premium Operations route, five-language protected interface scope, RTL/numeric-input contract, and manual-review-only coordination boundary; separated V4.7 local-Git evidence from unverified remote/deployment claims and recorded the `0025` release gate.
  * - 2026-07-17: Added the V4.7 responsive shell, configurable public-form structure, optional navigation visibility, and Google OAuth workspace-safety contract.
  * - 2026-07-16: Recorded the V4.6 main publication, successful Vercel rollout, and Production public read-only acceptance.
  * - 2026-07-16: Added the V4.6 ordered setup journey, two-part Guide, owner/founder source reports, tracked-link builder, and accurate public-brand preview contract.
@@ -35,7 +41,9 @@
 
 ## Outcome
 
-Dashboard V4.7 completes the owner-controlled intake experience without adding a database migration. Quote Setup now lets an owner name and describe the public form, create and order sections, assign each question to a section, hide optional sections safely, and choose list, tab, or guided multi-step presentation. The protected shell keeps authorized destinations in one predictable place, prevents fixed controls from covering content, and lets each signed-in owner show or hide optional Reports and Guide navigation. Google sign-in can repair an existing approved workspace but cannot silently create a new tenant through the recovery path.
+The historical Dashboard V4.7 intake work completes the owner-controlled intake experience without a database migration. Quote Setup lets an owner name and describe the public form, create and order sections, assign each question to a section, hide optional sections safely, and choose list, tab, or guided multi-step presentation. The protected shell keeps authorized destinations in one predictable place, prevents fixed controls from covering content, and lets each signed-in owner show or hide optional Reports and Guide navigation. Google sign-in can repair an existing approved workspace but cannot silently create a new tenant through the recovery path.
+
+Premium Operations is a later, separately gated source candidate. It requires `0025_premium_operations_addons.sql` followed by additive hardening migration `0026_premium_operations_schedule_integrity.sql`; it is not covered by the historical V4.7 no-migration claim. Exact-tree local verification passes, but the source must not be treated as deployed until approved local/disposable migration and RLS/concurrency proof, exact-commit CI, Vercel verification, and any separately approved Production steps have passed.
 
 ## Jobs to be done
 
@@ -44,6 +52,7 @@ Dashboard V4.7 completes the owner-controlled intake experience without adding a
 | Overview | Tell the owner what to do next and show the shortest path to the lead queue. |
 | Leads | Search, filter, prioritize, and open customer requests. |
 | Lead Detail | Understand the request, fill information gaps, review/edit a draft, and record manual progress. |
+| Premium Operations | Use separately entitled priority filters, manager-reviewed group drafts, and internal availability coordination without automatic delivery or booking. |
 | Reports | Compare submitted quote requests by tracked placement, campaign tag, workflow status, and manual outcome without claiming views, clicks, revenue, or automatic conversion. |
 | Quote Setup | Configure services, questions, branding, approved FAQ knowledge, privacy, and the unique customer link through progressive tasks. |
 | Business Profile | Maintain business identity and contact context. |
@@ -55,7 +64,7 @@ Dashboard V4.7 completes the owner-controlled intake experience without adding a
 
 Desktop owner navigation is grouped by job: Command (Overview, Leads, Reports), Setup (Quote Setup, Business Profile), and Control (Settings, Guide). The authorized Founder Admin entry is explicit and role-gated. Mobile keeps five focused primary tasks in the bottom bar, with Reports, Guide, and Admin available through compact utilities. The `/dashboard/quote-setup` compatibility alias may redirect to the canonical `/dashboard/configuration` route; it must not create a duplicate UI.
 
-`/dashboard/reports` is a protected owner route. It reads only the active workspace through existing RLS-scoped tables and applies a 1,000-request safety bound. `/founder` continues to perform guarded role checks and sends an authorized founder directly to `/admin`.
+`/dashboard/reports` is a protected owner route. It reads only the active workspace through existing RLS-scoped tables and applies a 1,000-request safety bound. `/dashboard/operations` is protected and presents only the modules entitled for that workspace. `/founder` continues to perform guarded role checks and sends an authorized founder directly to `/admin`, where an authorized founder can explicitly enable or disable supported add-ons through the audited service-role path.
 
 Quote Setup uses a six-stage journey backed by the existing eight readiness checks, followed by one horizontal task bar with seven mounted panels: Overview, Services, Form Questions, Branding, AI Instructions, Privacy, and Public Link. Deep links open the correct panel, tabs support standard keyboard movement, and every required form value stays mounted while only one task is visible. Form Questions includes the versioned public-form structure editor; its layout and question-to-section assignments persist inside the existing template-settings and intake-field metadata envelopes for backward compatibility.
 
@@ -93,6 +102,16 @@ Quote Setup uses a six-stage journey backed by the existing eight readiness chec
 - Founder Business Operations keeps the workspace snapshot and recommended priority visible while access/plan/quote controls, workspace tools, and sensitive tools open on demand. No guarded capability is removed.
 - AI is bounded draft assistance. No automatic send, booking, price, availability, or autonomous decision is implied.
 
+## Premium Operations add-ons
+
+`/dashboard/operations` is a protected, separately sold Premium Operations route. It has three independently entitled modules: Priority Workbench for owner-defined priority search, Bulk Reply Review for manager-reviewed group drafts, and Availability Coordination for internal time blocks and exact-time conflict drafts. None is included automatically in a base plan.
+
+Priority Workbench keeps every lead visible while ordering rule matches first, and supports explicit search, service, area, status, and requested-date narrowing. Selection for a bulk draft is limited to the visible eligible audience so a filter change cannot silently submit hidden recipients. Bulk Reply Review creates its parent draft and recipient snapshots atomically, limits a batch to `50` non-terminal leads, requires manager review, and records manual copy only after clipboard success.
+
+Availability Coordination uses the canonical template-linked `preferred_time` field with the real database type `time` when the add-on is active. It combines that time with `preferred_date`, interprets all local schedule values in the fixed `America/Toronto` operating timezone, stores instants in UTC, and rejects nonexistent or ambiguous daylight-saving values. Active internal time blocks cannot overlap. An availability draft captures request/submission/conflict/suggestion provenance and must still be current at manager review and manual copy; a changed lead, request, entitlement, conflict, opening, or workspace lifecycle fails closed.
+
+The route remains manual-first. A group reply is never delivered by BizPilot, and an availability response stays an editable manager-reviewed draft until a user copies it into an external channel. Internal time blocks are coordination records only; they do not expose a public calendar, create a booking, confirm an appointment, take payment, or replace a CRM. Public Product/Pricing copy may identify these as optional separately priced add-ons, but no add-on amount is quoted and founder activation remains a separate deliberate action.
+
 ## Visual system
 
 - Protected content measure: `90rem` maximum.
@@ -103,16 +122,20 @@ Quote Setup uses a six-stage journey backed by the existing eight readiness chec
 
 ## Localization
 
-English and Canadian French use the central `getBizPilotCopy` dictionary. Route/component language branches and visible admin literals are prohibited. French owner/admin copy must keep natural accents and equivalent manual-first claims. Language changes persist through the existing workspace action and preserve the current route.
+English and Canadian French public/business content use the central `getBizPilotCopy` dictionary. The protected shell and Premium Operations route use the isolated `dashboard-interface.ts` contract, while the legacy protected route hierarchy uses `dashboard-legacy-interface.ts`, for English, Canadian French, Persian, Arabic, and Spanish. Persian and Arabic each have a checked-in reviewed map of `1,000` exact owner-interface values. Each exhaustive regression permits exactly `119` unchanged unique values (`162` rendered occurrences), all limited to routes, machine identifiers, Latin numeric fixtures, sample identities, or customer/business-language and AI draft content that the dashboard locale must not rewrite. Spanish has the same no-unexpected-fallback contract. The dashboard preference must not change public quote content or AI/business language.
+
+Persian and Arabic render dashboard layout and interface text RTL. Date/time, numeric, phone, and other structured technical inputs remain English/Latin LTR so values such as `09:30` retain their hour/minute order. Customer-provided text remains unaltered. Route/component language branches and visible admin literals are prohibited; dictionary changes must preserve equivalent manual-first claims.
 
 ## Data and security posture
 
-Dashboard V4.7 uses the existing `leads.source_channel`, `lead_source_metadata`, `business_template_settings.field_overrides`, and `intake_form_fields.options` storage and adds no migration. Owner reporting remains tenant-scoped through RLS; founder aggregation remains founder-gated and bounded. Founder authorization stays in the server-only `BIZPILOT_FOUNDER_EMAILS` environment value and is never embedded in client source. Google OAuth keeps login-only scopes, accepts only exact safe callback destinations, and cannot create a new workspace through the generic recovery action. The release adds no external upload service, direct social integration, autonomous action, real-customer-data approval, or paid-pilot approval.
+The historical V4.7 intake work uses the existing `leads.source_channel`, `lead_source_metadata`, `business_template_settings.field_overrides`, and `intake_form_fields.options` storage and adds no migration. Premium Operations instead has the ordered source-only sequence `0025_premium_operations_addons.sql` then additive `0026_premium_operations_schedule_integrity.sql`; target state must be read-only reconciled before any separately approved apply. The pair provides tenant-scoped entitlements and records, explicit grants/RLS, lifecycle checks, immutable review/copy transitions, transactional draft creation, exact-time provenance, conflict serialization, and audited founder entitlement changes. Owner reporting remains tenant-scoped through RLS; founder aggregation remains founder-gated and bounded. Founder authorization stays in the server-only `BIZPILOT_FOUNDER_EMAILS` environment value and is never embedded in client source. Google OAuth keeps login-only scopes, accepts only exact safe callback destinations, and cannot create a new workspace through the generic recovery action. Neither source change approves an external upload service, direct social integration, autonomous action, real-customer-data handling, paid-pilot activation, or a Production database operation.
 
 ## Verification status
 
-The published V4.7 release passes all `295/295` unit/source tests, ESLint with zero warnings, TypeScript, and the Next.js 16.2.4 production build. The exact verified tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d` is on `main` at `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91`; GitHub Actions run `29558683869` and Vercel target `4zpXiTSDYdZjKkwG3ukyaVFj2VwR` both succeeded. Production public routes pass `46/46`, responsive routes pass `20/20`, the UI matrix passes `621/621`, and active plus inactive Quote GET passes `4/4` in EN/fr-CA without a submission or data mutation. The active Quote checks exercise the persisted owner configuration that exposed the Server-to-Client serialization failure; default consent now resolves to the requested language while owner-authored consent remains unchanged. The standalone real-Chrome runner remains unavailable in this container because no Chrome/Chromium binary is installed; this is an environment gate, not a detected product failure.
+Local Git verifies that historical V4.7 commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. This document therefore does not infer a matching remote publication, GitHub CI run, Vercel deployment, or Production acceptance from local object identity. Any older external identifiers are historical references only until revalidated from a freshly fetched remote ref and a release-specific evidence record.
 
-Authenticated browser smoke still requires an approved local/synthetic auth target. Source, type, build, and public GET evidence do not substitute for owner-authenticated visual confirmation of protected screens.
+The current Premium Operations candidate targets Node `>=24 <25`, pnpm `10.34.5`, Next.js `16.2.11`, and React / React DOM `19.2.7`. Exact-tree local evidence passes: frozen install; full and Production dependency audits with zero vulnerabilities; lint; typecheck; `359/359` unit/source tests; static RLS/grant audit with zero missing or overbroad grants; production build; public `46/46`; responsive `20/20`; UI matrix with zero failures; inactive Quote `2/2`; and image optimizer HTTP 200. Standalone browser interaction remains environment-gated because Chrome/Chromium is unavailable. Database-backed RLS proof requires `0025` then `0026` on an approved local/disposable target; the runner failed closed before connection when `DATABASE_URL` was absent, and no managed Supabase or Production database was contacted. GitHub CI, Vercel preview/Production deployment, live public acceptance, and authenticated dashboard acceptance remain independent gates.
+
+Authenticated browser smoke still requires an approved local/synthetic auth target and a compatible browser runner. Source, type, build, and public GET evidence do not substitute for owner-authenticated visual confirmation of protected screens.
 
 See `PHASE_PROGRESS.md` for exact completion evidence and remaining gates.

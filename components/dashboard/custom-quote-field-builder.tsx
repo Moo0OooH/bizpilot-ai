@@ -12,8 +12,11 @@
  * - server/actions/business-configuration.actions.ts
  * Author: MoOoH
  * Created: 2026-06-27
- * Last Updated: 2026-07-16
+ * Last Updated: 2026-07-22
  * Change Log:
+ * - 2026-07-22: Added exact-time custom-field editing while reserving the canonical preferred_time field for its seeded template definition.
+ * - 2026-07-22: Separated dashboard-interface labels from business-language starter content persisted to the public form.
+ * - 2026-07-21: Made starter-card text direction-aware and preserved advanced numeric priority values in Latin LTR.
  * - 2026-07-16: Removed the always-open blank field, added recommended starters and live previews, and moved priority/key into progressive advanced settings.
  * - 2026-07-14: Corrected the built-in French field examples so accents and owner-facing phrasing remain production quality.
  * - 2026-07-05: Added complete BizPilot source header metadata for the custom quote field builder.
@@ -30,6 +33,7 @@ import {
   QUOTE_FORM_SECTIONS_EVENT,
   type QuoteFormBuilderSectionOption,
 } from "@/components/dashboard/quote-form-structure-builder";
+import type { SupportedLanguage } from "@/lib/i18n/language";
 
 type FieldPlaceholder = Readonly<{
   fieldKey: string;
@@ -74,6 +78,7 @@ type DraftField = Readonly<{
 const configurableFieldTypes: readonly QuoteFieldType[] = [
   "text",
   "textarea",
+  "time",
   "email",
   "phone",
   "number",
@@ -167,6 +172,14 @@ const fallbackPlaceholders: Record<QuoteFieldType, FieldPlaceholder> = {
     options: "",
     preview: "Customer writes a longer note.",
   },
+  time: {
+    fieldKey: "arrival_time",
+    helper:
+      "Collect an exact preferred time without confirming availability or a booking.",
+    label: "Exact preferred time",
+    options: "",
+    preview: "Customer chooses a 24-hour time.",
+  },
   time_window: {
     fieldKey: "arrival_window",
     helper: "Collect a preferred window without confirming availability.",
@@ -240,6 +253,14 @@ const frenchFallbackPlaceholders: typeof fallbackPlaceholders = {
     options: "",
     preview: "Le client écrit une note plus longue.",
   },
+  time: {
+    fieldKey: "heure_arrivee",
+    helper:
+      "Recueille une heure exacte souhaitée sans confirmer la disponibilité ni une réservation.",
+    label: "Heure exacte souhaitée",
+    options: "",
+    preview: "Le client choisit une heure au format 24 heures.",
+  },
   time_window: {
     fieldKey: "plage_arrivee_souhaitee",
     helper: "Recueille une préférence sans confirmer la disponibilité.",
@@ -266,16 +287,21 @@ function createDraftField(
 }
 
 export function CustomQuoteFieldBuilder({
+  contentLanguage,
+  contentPlaceholders,
   copy,
   initialSections,
 }: Readonly<{
+  contentLanguage: SupportedLanguage;
+  contentPlaceholders: Readonly<Record<QuoteFieldType, FieldPlaceholder>> | undefined;
   copy: CustomFieldBuilderCopy;
   initialSections: readonly QuoteFormBuilderSectionOption[];
 }>) {
   const fallbackCopy =
-    copy.typeLabels.email.toLowerCase().includes("courriel")
+    contentLanguage === "fr-CA"
       ? frenchFallbackPlaceholders
       : fallbackPlaceholders;
+  const persistedPlaceholders = contentPlaceholders ?? fallbackCopy;
   const nextIndex = useRef(1);
   const [fields, setFields] = useState<readonly DraftField[]>([]);
   const [sectionOptions, setSectionOptions] =
@@ -308,7 +334,7 @@ export function CustomQuoteFieldBuilder({
   }, []);
 
   function addField(type: QuoteFieldType, useStarter: boolean) {
-    const placeholder = copy.placeholders?.[type] ?? fallbackCopy[type];
+    const placeholder = persistedPlaceholders[type];
     const field = createDraftField(
       nextIndex.current,
       type,
@@ -357,10 +383,10 @@ export function CustomQuoteFieldBuilder({
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
             {starterTypes.map((type) => {
-              const placeholder = copy.placeholders?.[type] ?? fallbackCopy[type];
+              const placeholder = persistedPlaceholders[type];
               return (
                 <button
-                  className="biz-button-secondary inline-flex min-h-9 items-center justify-center rounded-lg border px-3 text-left text-[12px] font-bold"
+                  className="biz-button-secondary inline-flex min-h-9 items-center justify-center rounded-lg border px-3 text-start text-[12px] font-bold"
                   key={type}
                   onClick={() => addField(type, true)}
                   type="button"
@@ -387,7 +413,7 @@ export function CustomQuoteFieldBuilder({
       <div className="mt-3 grid gap-3">
         {fields.map((field, index) => {
           const isChoiceField = choiceFieldTypes.has(field.type);
-          const placeholder = copy.placeholders?.[field.type] ?? fallbackCopy[field.type];
+          const placeholder = persistedPlaceholders[field.type];
           const previewLabel = field.label.trim() || placeholder.label;
           const previewHelper = field.helper.trim() || placeholder.helper;
           const previewOptions = field.options.trim() || placeholder.options;
@@ -518,7 +544,10 @@ export function CustomQuoteFieldBuilder({
                         {copy.priority}
                         <input
                           className={fieldInputClass}
+                          data-dashboard-ltr-value="true"
                           defaultValue={(index + 13) * 10}
+                          dir="ltr"
+                          lang="en-CA"
                           max={999}
                           min={1}
                           name={`newFieldSort:${field.id}`}

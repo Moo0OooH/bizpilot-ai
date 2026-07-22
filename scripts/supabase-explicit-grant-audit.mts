@@ -10,8 +10,9 @@
  * - tests/rls/data-api-access-audit.test.sql
  * Author: MoOoH
  * Created: 2026-05-27
- * Last Updated: 2026-05-27
+ * Last Updated: 2026-07-21
  * Change Log:
+ * - 2026-07-21: Recognize both quoted and standard unquoted CREATE POLICY identifiers without relaxing policy/grant checks.
  * - 2026-05-27: Added migration audit script for explicit GRANT + RLS posture checks.
  * ============================================================
  */
@@ -33,8 +34,14 @@ const CREATE_TABLE_PATTERN =
   /^\s*create\s+table(?:\s+if\s+not\s+exists)?\s+public\.([a-zA-Z0-9_]+)/gim;
 const RLS_PATTERN =
   /^\s*alter\s+table\s+public\.([a-zA-Z0-9_]+)\s+enable\s+row\s+level\s+security;/gim;
-const POLICY_PATTERN =
-  /create\s+policy\s+"[^"]+"\s+on\s+public\.([a-zA-Z0-9_]+)\s+for\s+(all|select|insert|update|delete)\s+to\s+([a-zA-Z0-9_,\s]+?)\s+(?:using|with)\s+/gim;
+// PostgreSQL accepts either a quoted identifier (including escaped double quotes)
+// or a standard unquoted identifier for a policy name. The remainder stays
+// deliberately strict so malformed statements cannot satisfy grant checks.
+const POLICY_NAME_PATTERN = '(?:"(?:[^"]|"")*"|[a-zA-Z_][a-zA-Z0-9_$]*)';
+const POLICY_PATTERN = new RegExp(
+  `create\\s+policy\\s+${POLICY_NAME_PATTERN}\\s+on\\s+public\\.([a-zA-Z0-9_]+)\\s+for\\s+(all|select|insert|update|delete)\\s+to\\s+([a-zA-Z0-9_,\\s]+?)\\s+(?:using|with)\\s+`,
+  "gim",
+);
 
 const tableBySource = new Map<string, string>();
 const tableHasRls = new Set<string>();

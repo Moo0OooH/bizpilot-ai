@@ -5,13 +5,18 @@
  * Description: Handles Phase 5 Lead Conversion Desk data access.
  * Role: Owns tenant-scoped lead, score, action item, and timeline operations through Supabase RLS.
  * Related:
+ * - lib/supabase/range-pagination.ts
  * - server/services/lead-conversion.service.ts
  * - supabase/migrations/0007_lead_conversion_desk.sql
  * Author: MoOoH
  * Created: 2026-05-07
- * Last Updated: 2026-05-13
+ * Last Updated: 2026-07-22
  * Change Log:
  * - 2026-05-13: Enforced the server-only runtime boundary.
+ * - 2026-07-21: Added a bounded batch reader for entitlement-gated availability conflict checks.
+ * - 2026-07-22: Added complete paged lead and read-only Operations enrichment queries.
+ * - 2026-07-22: Added bounded actionable Operations reads and direct tenant-scoped lead-ID validation.
+ * - 2026-07-22: Restricted exact-time enrichment to canonical template-linked form fields.
  * - 2026-05-07: Created Phase 5 lead conversion repository.
  * ============================================================
  */
@@ -20,6 +25,10 @@ import "server-only";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
 
+import {
+  chunkSupabaseFilterValues,
+  collectSupabaseRangePages,
+} from "@/lib/supabase/range-pagination";
 import type { Database, Json } from "@/types/database";
 
 export type LeadRecord = Database["public"]["Tables"]["leads"]["Row"];
@@ -51,6 +60,24 @@ export type LeadEventType = LeadEventRecord["event_type"];
 export type LeadManualOutcome = NonNullable<LeadRecord["manual_outcome"]>;
 export type LeadStatus = LeadRecord["status"];
 
+export const OPERATIONS_LEAD_READ_LIMIT = 250;
+
+export type ActionableOperationsLeadRead = Readonly<{
+  hasMore: boolean;
+  leads: readonly LeadRecord[];
+}>;
+
+const SUBMISSION_VALUE_BATCH_LIMIT = 250;
+const SUBMISSION_VALUE_FILTER_CHUNK_SIZE = 40;
+const CANONICAL_SUBMISSION_FILTER_CHUNK_SIZE = 40;
+const DIRECT_LEAD_ID_READ_LIMIT = 50;
+const actionableLeadStatuses = [
+  "follow_up_needed",
+  "new",
+  "replied",
+  "reviewed",
+] as const satisfies readonly LeadStatus[];
+
 async function throwIfError(error: { message: string } | null): Promise<void> {
   if (error) {
     throw new Error(error.message);
@@ -61,14 +88,74 @@ export async function listLeadsForBusiness(input: {
   businessId: string;
   supabase: SupabaseClient<Database>;
 }): Promise<LeadRecord[]> {
+  const leads = await collectSupabaseRangePages({
+    fetchPage: async ({ from, to }) => {
+      const { data, error } = await input.supabase
+        .from("leads")
+        .select("*")
+        .eq("business_id", input.businessId)
+        .order("created_at", { ascending: true })
+        .order("id", { ascending: true })
+        .range(from, to);
+      await throwIfError(error);
+      return data ?? [];
+    },
+  });
+
+  return leads.reverse();
+}
+
+/**
+ * Operations is an active-work surface, not a historical export. Read one
+ * extra stable row so callers can disclose when more actionable leads exist
+ * without loading the tenant's full lead history or customer-value payloads.
+ */
+export async function listActionableOperationsLeads(input: {
+  businessId: string;
+  supabase: SupabaseClient<Database>;
+}): Promise<ActionableOperationsLeadRead> {
   const { data, error } = await input.supabase
     .from("leads")
     .select("*")
     .eq("business_id", input.businessId)
-    .order("created_at", { ascending: false });
+    .in("status", [...actionableLeadStatuses])
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false })
+    .limit(OPERATIONS_LEAD_READ_LIMIT + 1);
 
   await throwIfError(error);
+  const rows = data ?? [];
 
+  return {
+    hasMore: rows.length > OPERATIONS_LEAD_READ_LIMIT,
+    leads: rows.slice(0, OPERATIONS_LEAD_READ_LIMIT),
+  };
+}
+
+/**
+ * Validates a small user-selected audience without scanning unrelated tenant
+ * leads. Business scoping remains explicit even though RLS is also active.
+ */
+export async function listLeadsByIds(input: {
+  businessId: string;
+  leadIds: readonly string[];
+  supabase: SupabaseClient<Database>;
+}): Promise<LeadRecord[]> {
+  const leadIds = [...new Set(input.leadIds.filter(Boolean))];
+  if (leadIds.length === 0) return [];
+  if (leadIds.length > DIRECT_LEAD_ID_READ_LIMIT) {
+    throw new Error("Too many leads were requested for one direct read.");
+  }
+
+  const { data, error } = await input.supabase
+    .from("leads")
+    .select("*")
+    .eq("business_id", input.businessId)
+    .in("id", leadIds)
+    .order("created_at", { ascending: false })
+    .order("id", { ascending: false });
+
+  await throwIfError(error);
   return data ?? [];
 }
 
@@ -104,6 +191,117 @@ export async function listSubmissionValuesForLead(input: {
   await throwIfError(error);
 
   return data ?? [];
+}
+
+/**
+ * Reads a bounded dashboard batch through URL-safe filters and complete stable
+ * range pages. Callers retain the lead-to-submission mapping and must not
+ * expose raw rows to an anonymous route.
+ */
+export async function listSubmissionValuesForSubmissions(input: {
+  businessId: string;
+  submissionIds: string[];
+  supabase: SupabaseClient<Database>;
+}): Promise<IntakeSubmissionValueRecord[]> {
+  const submissionIds = [...new Set(input.submissionIds.filter(Boolean))];
+  if (submissionIds.length === 0) return [];
+  if (submissionIds.length > SUBMISSION_VALUE_BATCH_LIMIT) {
+    throw new Error("Too many submissions were requested for one value batch.");
+  }
+
+  const rows: IntakeSubmissionValueRecord[] = [];
+  const submissionIdChunks = chunkSupabaseFilterValues({
+    chunkSize: SUBMISSION_VALUE_FILTER_CHUNK_SIZE,
+    values: submissionIds,
+  });
+  for (const submissionIdChunk of submissionIdChunks) {
+    const chunkRows = await collectSupabaseRangePages({
+      fetchPage: async ({ from, to }) => {
+        const { data, error } = await input.supabase
+          .from("intake_submission_values")
+          .select("*")
+          .eq("business_id", input.businessId)
+          .in("submission_id", submissionIdChunk)
+          .order("created_at", { ascending: true })
+          .order("id", { ascending: true })
+          .range(from, to);
+        await throwIfError(error);
+        return data ?? [];
+      },
+    });
+    rows.push(...chunkRows);
+  }
+
+  return rows.sort((left, right) => {
+    if (left.created_at !== right.created_at) {
+      return left.created_at < right.created_at ? -1 : 1;
+    }
+    if (left.id === right.id) return 0;
+    return left.id < right.id ? -1 : 1;
+  });
+}
+
+/**
+ * A custom field that merely reuses `preferred_time` is not the paid exact-time
+ * contract. Only submissions from a visible, template-linked time field count.
+ */
+export async function listCanonicalExactTimeSubmissionIds(input: {
+  businessId: string;
+  submissionIds: readonly string[];
+  supabase: SupabaseClient<Database>;
+}): Promise<string[]> {
+  const requestedSubmissionIds = new Set(input.submissionIds.filter(Boolean));
+  if (requestedSubmissionIds.size === 0) return [];
+
+  const possibleCanonicalFields = await collectSupabaseRangePages({
+    fetchPage: async ({ from, to }) => {
+      const { data, error } = await input.supabase
+        .from("intake_form_fields")
+        .select("field_type,id,intake_form_id")
+        .eq("business_id", input.businessId)
+        .eq("field_key", "preferred_time")
+        .eq("is_hidden", false)
+        .not("template_field_id", "is", null)
+        .order("id", { ascending: true })
+        .range(from, to);
+      await throwIfError(error);
+      return data ?? [];
+    },
+  });
+  const canonicalFormIds = new Set(
+    possibleCanonicalFields
+      .filter((field) => (field.field_type as string) === "time")
+      .map((field) => field.intake_form_id),
+  );
+  if (canonicalFormIds.size === 0) return [];
+
+  const canonicalSubmissionIds: string[] = [];
+  const submissionIdChunks = chunkSupabaseFilterValues({
+    chunkSize: CANONICAL_SUBMISSION_FILTER_CHUNK_SIZE,
+    values: [...requestedSubmissionIds],
+  });
+  for (const submissionIdChunk of submissionIdChunks) {
+    const submissions = await collectSupabaseRangePages({
+      fetchPage: async ({ from, to }) => {
+        const { data, error } = await input.supabase
+          .from("intake_submissions")
+          .select("id,intake_form_id")
+          .eq("business_id", input.businessId)
+          .in("id", submissionIdChunk)
+          .order("id", { ascending: true })
+          .range(from, to);
+        await throwIfError(error);
+        return data ?? [];
+      },
+    });
+    for (const submission of submissions) {
+      if (canonicalFormIds.has(submission.intake_form_id)) {
+        canonicalSubmissionIds.push(submission.id);
+      }
+    }
+  }
+
+  return canonicalSubmissionIds;
 }
 
 export async function getSourceMetadataForLead(input: {
