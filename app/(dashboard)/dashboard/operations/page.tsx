@@ -10,8 +10,9 @@
  * - server/actions/premium-operations.actions.ts
  * Author: MoOoH
  * Created: 2026-07-21
- * Last Updated: 2026-07-21
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Linked authorized founders from locked modules to the selected workspace Premium entitlement controls.
  * - 2026-07-21: Created the protected Premium Operations dashboard route.
  * - 2026-07-21: Localized Premium Operations route feedback from the dashboard interface locale.
  * ============================================================
@@ -31,6 +32,7 @@ import {
 } from "@/lib/i18n/dashboard-interface";
 import { getCurrentUser } from "@/server/services/auth.service";
 import { getBusinessWorkspace } from "@/server/services/business.service";
+import { isFounderUser } from "@/server/services/founder-admin.service";
 import { getPremiumOperationsWorkspace } from "@/server/services/premium-operations.service";
 
 type PremiumOperationsPageProps = Readonly<{
@@ -86,6 +88,13 @@ export default async function PremiumOperationsPage({
       {notice ? <FlashMessage tone="notice">{notice}</FlashMessage> : null}
       {error ? <FlashMessage tone="error">{error}</FlashMessage> : null}
       <PremiumOperationsWorkspace
+        {...(isFounderUser(user)
+          ? {
+              adminControlHref: `/admin?adminPanel=businesses&businessId=${encodeURIComponent(
+                business.id,
+              )}#premium-addons-${encodeURIComponent(business.id)}`,
+            }
+          : {})}
         businessLanguage={business.preferred_language}
         canManage={canManage}
         language={language}

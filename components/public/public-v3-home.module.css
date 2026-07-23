@@ -10,8 +10,9 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-17
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Aligned the homepage mobile headline with the calmer global display scale.
  * - 2026-07-17: Delayed the internal hero-workspace split until wide desktop and stacked request facts on narrow phones so Canadian French labels remain fully readable.
  * - 2026-07-17: Rebuilt the hero as a spacious message-to-request workspace, removed narrow text columns, and established the new editorial visual rhythm.
  * - 2026-07-16: Widened the hero display measure and reduced its weight to prevent excessive headline wrapping on laptops and tablets.
@@ -978,7 +979,7 @@
 
 @media (max-width: 719px) {
   .heroSection { padding-block: 2.4rem 4.5rem; }
-  .heroTitle { max-inline-size: 17ch; font-size: clamp(2.2rem, 9vw, 2.75rem); letter-spacing: -0.035em; }
+  .heroTitle { max-inline-size: 17ch; font-size: clamp(2.05rem, 8vw, 2.5rem); letter-spacing: -0.035em; }
   .heroActions > * { inline-size: 100%; }
   .heroAssurances span:nth-child(n + 3) { display: none; }
   .productChrome strong { display: none; }

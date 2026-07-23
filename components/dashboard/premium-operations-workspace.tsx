@@ -12,8 +12,9 @@
  * - lib/i18n/dashboard-interface.ts
  * Author: MoOoH
  * Created: 2026-07-21
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Added a founder-only direct path from locked modules to the exact workspace entitlement controls.
  * - 2026-07-21: Created the Premium Operations dashboard workspace with manual-review safety rails.
  * - 2026-07-21: Localized all Premium Operations controls and blocked manual copying until review is recorded.
  * - 2026-07-21: Kept customer-facing bulk-reply defaults in the business language rather than the dashboard interface language.
@@ -55,6 +56,7 @@ import type { PremiumOperationsWorkspace } from "@/server/services/premium-opera
 type PremiumTab = "availability" | "bulkReply" | "prioritySearch";
 
 type PremiumOperationsWorkspaceProps = Readonly<{
+  adminControlHref?: string;
   businessLanguage: SupportedLanguage;
   canManage: boolean;
   language: DashboardInterfaceLanguage;
@@ -79,7 +81,10 @@ function latinDateTime(value: string | null): string {
   }).format(date);
 }
 
-function addonLocked(copy: ReturnType<typeof getDashboardInterfaceCopy>): React.ReactNode {
+function addonLocked(
+  copy: ReturnType<typeof getDashboardInterfaceCopy>,
+  adminControlHref?: string,
+): React.ReactNode {
   return (
     <DashboardCard className="border-dashed p-4" variant="muted">
       <StatusBadge tone="neutral">{copy.common.premiumAddOn}</StatusBadge>
@@ -89,6 +94,11 @@ function addonLocked(copy: ReturnType<typeof getDashboardInterfaceCopy>): React.
       <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
         {copy.premiumOperations.lockedDescription}
       </p>
+      {adminControlHref ? (
+        <a className={`${primaryButtonClass} mt-3`} href={adminControlHref}>
+          {copy.premiumOperations.manageAccess}
+        </a>
+      ) : null}
     </DashboardCard>
   );
 }
@@ -108,6 +118,7 @@ function sortedUnique(values: Array<string | null>): string[] {
 }
 
 export function PremiumOperationsWorkspace({
+  adminControlHref,
   businessLanguage,
   canManage,
   language,
@@ -516,7 +527,7 @@ export function PremiumOperationsWorkspace({
                 </div>
               </>
             ) : (
-              addonLocked(copy)
+              addonLocked(copy, adminControlHref)
             )}
           </DashboardCard>
 
@@ -721,7 +732,7 @@ export function PremiumOperationsWorkspace({
                 )}
               </>
             ) : (
-              addonLocked(copy)
+              addonLocked(copy, adminControlHref)
             )}
           </DashboardCard>
           <DashboardCard className="p-4" variant="muted">
@@ -909,7 +920,7 @@ export function PremiumOperationsWorkspace({
                 </div>
               </>
             ) : (
-              addonLocked(copy)
+              addonLocked(copy, adminControlHref)
             )}
           </DashboardCard>
           <DashboardCard className="p-4" variant="priority">

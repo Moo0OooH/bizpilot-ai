@@ -10,8 +10,9 @@
  * - docs/website-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Guarded single-form tracked channel links, honest source reporting, richer tier value, and compact price typography.
  * - 2026-07-22: Added bilingual Premium Operations commercial, manual-review, no-auto-send, and internal-availability boundary guards.
  * - 2026-07-17: Required three bilingual proof points per product-route introduction and explanatory first-stage Demo context.
  * - 2026-07-17: Added bilingual editorial-introduction and French pilot-term quality guards for the full public redesign.
@@ -22,6 +23,7 @@
  */
 
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import {
@@ -165,6 +167,19 @@ describe("Website V3 bilingual content contract", () => {
       assert.match(spec.home.visual.placementNote, /not direct|pas des intégrations/i);
       assert.match(spec.demo.reviewBoundary, /no message|aucun message/i);
       assert.match(spec.pilot.submissionBoundary, /does not submit|n'envoie/i);
+      assert.match(
+        spec.home.sections.find((section) => section.key === "workflow")?.body ??
+          "",
+        /tracked link|lien suivi/i,
+      );
+      assert.match(
+        spec.home.workflowSteps[0]?.body ?? "",
+        /same Smart Intake form|même formulaire de collecte/i,
+      );
+      assert.match(
+        spec.home.workflowSteps[2]?.body ?? "",
+        /campaign tag|étiquette de campagne/i,
+      );
     }
   });
 
@@ -186,6 +201,27 @@ describe("Website V3 bilingual content contract", () => {
     assert.doesNotMatch(
       JSON.stringify(frenchPricing),
       /\bsetup\b|\/month\b/i,
+    );
+  });
+
+  it("uses a responsive price scale and keeps desktop plan prices on one line", () => {
+    const styles = readFileSync(
+      "components/public/public-v3-page.module.css",
+      "utf8",
+    );
+
+    assert.equal(
+      styles.includes(
+        "font-size: clamp(1.6rem, 1.35rem + 0.65vw, 2rem);",
+      ),
+      true,
+    );
+    assert.equal(styles.includes(".price { white-space: nowrap; }"), true);
+    assert.equal(
+      getPublicV3Spec("en").pricing.tiers.every(
+        (tier) => tier.body.length >= 140,
+      ),
+      true,
     );
   });
 

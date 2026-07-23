@@ -11,8 +11,9 @@
  * - server/services/ai/lead-conversion-assistant.service.ts
  * Author: MoOoH
  * Created: 2026-07-16
- * Last Updated: 2026-07-21
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Guarded task navigation above readiness content, compact journey disclosure, and contained Founder Admin rail treatment.
  * - 2026-07-21: Updated navigation contracts for the dashboard-only language picker, logical RTL menu anchoring, and Premium Operations menu route.
  * - 2026-07-16: Guarded scoped setup confirmation so profile-only saves cannot complete untouched Quote Setup tasks.
  * - 2026-07-16: Guarded shared accessible brand tokens across setup preview and the public quote runtime.
@@ -141,6 +142,27 @@ describe("dashboard quote setup finalization", () => {
     assert.equal(action.includes("?preview=dashboard"), true);
     assert.equal(unavailable.includes('href={ownerPreview ? "/dashboard/configuration" : "/"}'), true);
     assert.equal(unavailable.includes("ownerUnavailableTitle"), true);
+  });
+
+  it("keeps Quote Setup task navigation above secondary readiness guidance", () => {
+    const setup = source(
+      "app/(dashboard)/dashboard/configuration/page.tsx",
+    );
+    const sidebar = source("components/dashboard/dashboard-sidebar.tsx");
+
+    assert.ok(
+      setup.indexOf("<ConfigurationTabs") <
+        setup.indexOf("data-dashboard-quote-readiness-command"),
+    );
+    assert.equal(
+      setup.includes(
+        'className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]"\n                data-dashboard-setup-journey',
+      ),
+      true,
+    );
+    assert.equal(setup.includes('id="setup-readiness-checklist"'), true);
+    assert.equal(sidebar.includes("min-w-0 overflow-hidden px-2.5"), true);
+    assert.equal(sidebar.includes("copy.pages.founder.subtitle"), false);
   });
 
   it("does not mistake safe starter content for owner-confirmed setup", () => {

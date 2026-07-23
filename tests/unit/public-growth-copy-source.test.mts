@@ -10,8 +10,9 @@
  * - components/public/public-v3-pilot-request.tsx
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-13
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Updated the workflow contract for one shared form with placement-specific tracked links.
  * - 2026-07-13: Replaced retired V2 route guards with retained Website V3 conversion contracts.
  * ============================================================
  */
@@ -31,10 +32,16 @@ function source(path: string): string {
 }
 
 test("features copy follows the current smart-intake workflow", () => {
+  const workflowSection = english.home.sections.find(
+    (section) => section.key === "workflow",
+  );
+
   assert.deepEqual(
     english.home.workflowSteps.map((step) => step.title),
-    ["Share", "Ask", "Organize", "Review"],
+    ["Share tracked links", "Ask", "Organize", "Review"],
   );
+  assert.match(workflowSection?.body ?? "", /one customer intake form/i);
+  assert.match(workflowSection?.body ?? "", /source and optional campaign tag/i);
   assert.equal(english.features.length, 6);
   assert.match(english.features[0]?.title ?? "", /One link/i);
   assert.match(english.features[4]?.title ?? "", /AI-assisted reply drafts/i);

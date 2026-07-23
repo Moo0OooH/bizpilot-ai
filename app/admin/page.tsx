@@ -10,8 +10,9 @@
  * - docs/dashboard-v4/CURRENT.md
  * Author: MoOoH
  * Created: 2026-05-22
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Added a direct Overview shortcut to the selected workspace Premium controls and kept entitlement activation above secondary workspace disclosures.
  * - 2026-07-22: Added explicit founder controls for the three independently entitled Premium Operations add-ons without plan coupling or automated billing.
  * - 2026-07-17: Kept localized founder topbar utilities wrapping through tablet widths to prevent 640px clipping.
  * - 2026-07-16: Added bilingual founder lead-source, campaign, tracked-coverage, and manual-outcome reporting above the detailed inbox.
@@ -3965,6 +3966,8 @@ function FounderAdminOverviewSection({
   params: AdminSearchParams;
 }>) {
   const overviewCopy = copy.overview;
+  const addonCopy = getFounderAddonControlCopy(copy.locale);
+  const premiumBusiness = overview.businesses[0] ?? null;
   const totalLeads = overview.businesses.reduce(
     (sum, business) => sum + business.leadCount,
     0,
@@ -4012,6 +4015,18 @@ function FounderAdminOverviewSection({
         <PageHeader
           actions={
             <>
+              {premiumBusiness ? (
+                <Link
+                  className={primaryButtonClass}
+                  href={`/admin?adminPanel=businesses&businessId=${encodeURIComponent(
+                    premiumBusiness.businessId,
+                  )}#premium-addons-${encodeURIComponent(
+                    premiumBusiness.businessId,
+                  )}`}
+                >
+                  {addonCopy.title}
+                </Link>
+              ) : null}
               <Link className={buttonClass} href="/admin?adminPanel=businesses">
                 {overviewCopy.page.actions.allWorkspaces}
               </Link>
