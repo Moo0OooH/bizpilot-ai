@@ -11,10 +11,12 @@
  * - server/services/premium-operations-rules.service.ts
  * - server/services/founder-admin.service.ts
  * - docs/product/BIZPILOT_PLAN_ENTITLEMENTS_AND_MANUAL_BILLING_SPEC_v1.0.md
+ * - docs/product/BIZPILOT_CAPABILITY_SURFACE_AUDIT_2026-07-23.md
  * Author: MoOoH
  * Created: 2026-07-21
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Required direct founder-only discovery paths to exact workspace entitlement controls while preserving guarded mutation.
  * - 2026-07-22: Clarified cascade-safe exact-time cleanup and durable stale-draft replacement semantics.
  * - 2026-07-22: Added the exact-time/Toronto schedule contract, founder-controlled activation, atomic review lifecycle, public-catalog boundary, and ordered `0025` + `0026` release gates.
  * - 2026-07-21: Established the separately sold Premium Operations add-on contract and manual-first boundaries.
@@ -28,6 +30,11 @@
 Premium Operations is an owner-facing, separately sold add-on family. It helps a business prioritize suitable quote requests, prepare a manager-reviewed reply for a selected group, and coordinate internal service time blocks. It does not change the base plan, public quote flow, or the manual-first product promise.
 
 No base plan includes these capabilities automatically. Founder Pilot, Starter, and Pro continue to use their existing plan access. An authorized founder must activate or disable each add-on deliberately from the guarded internal Admin console after the commercial arrangement is agreed outside the product. That action is validated server-side, performed through the service-role path, and written to the founder audit trail. The owner dashboard cannot self-activate an add-on.
+
+Admin Overview and an authorized founder viewing a locked Premium Operations module must
+provide a direct path to the selected workspace's exact entitlement controls. The path
+improves discoverability only: the control remains inside guarded Business Operations,
+and a non-founder owner sees the locked explanation without receiving an Admin link.
 
 The public Product and Pricing pages may describe this optional catalog in English and Canadian French. They must not invent an add-on amount or imply that base-plan pricing includes it: scope, price, and activation remain a separate founder-managed agreement.
 

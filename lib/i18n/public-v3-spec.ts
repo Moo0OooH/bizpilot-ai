@@ -10,8 +10,9 @@
  * - tests/unit/public-v3-spec.test.mts
  * Author: MoOoH
  * Created: 2026-07-13
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Clarified the single-form/channel-tracked-link model, source reporting boundary, and value of each pilot tier.
  * - 2026-07-22: Added synchronized EN/fr-CA public copy for separately enabled Premium Operations add-ons, their manual-review boundaries, and pricing clarification.
  * - 2026-07-17: Added bilingual proof-point rails and first-stage Demo context so every major section explains product value and conversion logic.
  * - 2026-07-17: Rewrote the bilingual public hierarchy with shorter, clearer headlines and concise outcome-led supporting copy.
@@ -464,9 +465,9 @@ const englishSpec: PublicV3Spec = {
       {
         key: "workflow",
         eyebrow: "ONE CLEAR PATH",
-        title: "One link. Four clear steps.",
+        title: "One form. Tracked links for every channel.",
         body:
-          "Share the link where customers already reach you. BizPilot gathers the details and prepares the request for review.",
+          "BizPilot keeps one customer intake form, then gives you a tracked link for each placement. Every submitted request keeps its source and optional campaign tag so Reports can group real requests by channel—without claiming views or clicks.",
       },
       {
         key: "outcomes",
@@ -506,8 +507,8 @@ const englishSpec: PublicV3Spec = {
     workflowSteps: [
       {
         key: "share",
-        title: "Share",
-        body: "Place one Smart Intake Link in your bio, website, saved reply, email signature, Google profile, QR code, or direct message.",
+        title: "Share tracked links",
+        body: "Copy the channel-specific variant for your website, Google Business Profile, Instagram, Facebook, TikTok, LinkedIn, YouTube, WhatsApp saved reply, email signature, QR code, or direct message. Every variant opens the same Smart Intake form.",
       },
       {
         key: "ask",
@@ -517,7 +518,7 @@ const englishSpec: PublicV3Spec = {
       {
         key: "organize",
         title: "Organize",
-        body: "Turn the answers into one clear request and make any remaining gaps visible.",
+        body: "Turn the answers into one clear request, preserve the submitted source and campaign tag, and make any remaining gaps visible.",
       },
       {
         key: "review",
@@ -627,7 +628,7 @@ const englishSpec: PublicV3Spec = {
         name: "Founder Feedback Pilot",
         price: "$0 setup",
         body:
-          "For a small number of cleaning businesses willing to test one workflow and provide structured 30- and 60-day feedback.",
+          "A founder-guided launch for a small approved cleaning cohort. We configure one complete intake-to-review workflow, help your team use it in real operations, and improve the product from structured 30- and 60-day feedback.",
         points: [
           "Cleaning request link",
           "Organized owner workspace",
@@ -641,7 +642,7 @@ const englishSpec: PublicV3Spec = {
         name: "Starter Pilot",
         price: "$149 setup + $49/month",
         body:
-          "A focused branded intake and reply-preparation workflow with manual billing after approval.",
+          "A ready-to-use branded intake and reply-preparation workspace that replaces scattered follow-up with complete requests, visible gaps, channel attribution, and owner-reviewed drafts. Manual billing starts only after scope approval.",
         points: [
           "Branded Smart Intake Link",
           "Organized request workspace",
@@ -655,7 +656,7 @@ const englishSpec: PublicV3Spec = {
         name: "Pro Pilot",
         price: "$199 setup + $79/month",
         body:
-          "The controlled Starter workflow with stronger branding, reply-style tuning, and priority onboarding.",
+          "Everything in Starter, refined around how your business answers customers: stronger public branding, approved FAQ and reply-style tuning, improved follow-up drafts, and priority founder onboarding.",
         points: [
           "Everything in Starter",
           "Stronger intake-page branding",
@@ -1130,9 +1131,9 @@ const frenchSpec: PublicV3Spec = {
       {
         key: "workflow",
         eyebrow: "UN PARCOURS CLAIR",
-        title: "Un lien. Quatre étapes claires.",
+        title: "Un seul formulaire. Un lien suivi pour chaque canal.",
         body:
-          "Partagez le lien là où vos clients vous écrivent déjà. BizPilot recueille les détails et prépare la demande pour validation.",
+          "BizPilot conserve un seul formulaire client, puis fournit un lien suivi pour chaque emplacement. Chaque demande envoyée garde sa source et son étiquette de campagne afin que les Rapports regroupent les vraies demandes par canal, sans prétendre compter les vues ni les clics.",
       },
       {
         key: "outcomes",
@@ -1172,8 +1173,8 @@ const frenchSpec: PublicV3Spec = {
     workflowSteps: [
       {
         key: "share",
-        title: "Partager",
-        body: "Placez le lien dans votre bio, votre site, vos réponses enregistrées, votre fiche Google, votre signature, un code QR ou un message direct.",
+        title: "Partager des liens suivis",
+        body: "Copiez la variante propre à votre site, votre fiche d’établissement Google, Instagram, Facebook, TikTok, LinkedIn, YouTube, une réponse enregistrée WhatsApp, votre signature, un code QR ou un message direct. Chaque variante ouvre le même formulaire de collecte.",
       },
       {
         key: "ask",
@@ -1183,7 +1184,7 @@ const frenchSpec: PublicV3Spec = {
       {
         key: "organize",
         title: "Organiser",
-        body: "Transformez les réponses en une fiche claire et rendez visibles les renseignements qui manquent encore.",
+        body: "Transformez les réponses en une fiche claire, conservez la source et l’étiquette de campagne envoyées, puis rendez visibles les renseignements qui manquent encore.",
       },
       {
         key: "review",
@@ -1293,7 +1294,7 @@ const frenchSpec: PublicV3Spec = {
         name: "Pilote de rétroaction fondateur",
         price: "Configuration à 0 $",
         body:
-          "Pour un petit nombre d'entreprises d'entretien prêtes à tester un flux et à fournir une rétroaction structurée après 30 et 60 jours.",
+          "Un lancement guidé par le fondateur pour une petite cohorte d’entreprises d’entretien approuvées. Nous configurons un flux complet, de la collecte à la validation, accompagnons son utilisation réelle et améliorons le produit grâce à une rétroaction structurée après 30 et 60 jours.",
         points: [
           "Lien de demande d'entretien",
           "Espace organisé pour le propriétaire",
@@ -1307,7 +1308,7 @@ const frenchSpec: PublicV3Spec = {
         name: "Pilote Démarrage",
         price: "149 $ de configuration + 49 $/mois",
         body:
-          "Un flux ciblé et personnalisé de collecte et de préparation des réponses, avec facturation manuelle après approbation.",
+          "Un espace personnalisé, prêt à l’emploi, qui remplace les suivis dispersés par des demandes complètes, des renseignements manquants visibles, l’attribution par canal et des brouillons validés par le propriétaire. La facturation manuelle commence seulement après l’approbation de la portée.",
         points: [
           "Lien de collecte personnalisé",
           "Espace de demandes organisé",
@@ -1321,7 +1322,7 @@ const frenchSpec: PublicV3Spec = {
         name: "Pilote Pro",
         price: "199 $ de configuration + 79 $/mois",
         body:
-          "Le flux contrôlé Démarrage avec une image de marque renforcée, l'ajustement du ton et un accompagnement prioritaire.",
+          "Tout le contenu de Démarrage, adapté à la manière dont votre entreprise répond : image publique renforcée, ajustement de la FAQ approuvée et du ton, meilleurs brouillons de suivi et accompagnement fondateur prioritaire.",
         points: [
           "Tout le contenu de Démarrage",
           "Image de marque renforcée",

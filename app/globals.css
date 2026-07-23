@@ -10,8 +10,9 @@
  * - components/public/marketing-language-menu.tsx
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-21
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Reduced public display and section scales plus vertical rhythm for denser, more consistent laptop and mobile compositions.
  * - 2026-07-17: Introduced the new warm editorial palette, compact brand lockup, calmer type scale, and refined public surface/button system.
  * - 2026-07-21: Kept dashboard structured date, time, and numeric values Latin LTR in RTL interfaces.
  * - 2026-07-17: Rebalanced public display typography for calmer weight, cleaner wrapping, and consistent scaling across desktop, laptop, and mobile viewports.
@@ -75,8 +76,8 @@
   --v3-content-max: 78rem;
   --v3-reading-max: 66ch;
   --v3-gutter: clamp(1.125rem, 2.5vw, 2rem);
-  --v3-section-space: clamp(4rem, 6.5vw, 6rem);
-  --v3-section-space-compact: clamp(3rem, 5vw, 4.5rem);
+  --v3-section-space: clamp(3.5rem, 5.25vw, 5rem);
+  --v3-section-space-compact: clamp(2.75rem, 4.25vw, 3.75rem);
   --v3-space-1: 0.25rem;
   --v3-space-2: 0.5rem;
   --v3-space-3: 0.75rem;
@@ -90,9 +91,9 @@
   --v3-border: 1px solid var(--border-default);
   --v3-shadow-card: 0 10px 30px rgba(22, 32, 58, 0.07);
   --v3-shadow-float: 0 24px 64px rgba(22, 32, 58, 0.12);
-  --v3-type-display: clamp(2.45rem, 2.05rem + 1.75vw, 3.6rem);
-  --v3-type-page: clamp(2.4rem, 2rem + 1.8vw, 3.55rem);
-  --v3-type-section: clamp(1.9rem, 1.65rem + 1.15vw, 2.85rem);
+  --v3-type-display: clamp(2.25rem, 1.95rem + 1.35vw, 3.25rem);
+  --v3-type-page: clamp(2.2rem, 1.9rem + 1.4vw, 3.2rem);
+  --v3-type-section: clamp(1.7rem, 1.5rem + 0.9vw, 2.5rem);
   --v3-type-card: clamp(1.25rem, 1.12rem + 0.42vw, 1.5rem);
   --v3-type-lead: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
   --v3-type-body: 1.0625rem;
@@ -200,11 +201,11 @@
 /* Keep public marketing pages composed on short laptop viewports and scaled displays. */
 @media (min-width: 1180px) and (max-height: 900px) {
   :root {
-    --v3-type-display: clamp(2.75rem, 2.45rem + 0.5vw, 3.15rem);
-    --v3-type-page: clamp(2.75rem, 2.45rem + 0.6vw, 3.35rem);
-    --v3-type-section: clamp(1.9rem, 1.65rem + 0.75vw, 2.75rem);
-    --v3-section-space: clamp(3.25rem, 5vw, 4.75rem);
-    --v3-section-space-compact: clamp(2.75rem, 4vw, 3.75rem);
+    --v3-type-display: clamp(2.4rem, 2.2rem + 0.4vw, 2.8rem);
+    --v3-type-page: clamp(2.4rem, 2.2rem + 0.45vw, 2.9rem);
+    --v3-type-section: clamp(1.7rem, 1.55rem + 0.55vw, 2.35rem);
+    --v3-section-space: clamp(3rem, 4vw, 4rem);
+    --v3-section-space-compact: clamp(2.5rem, 3.5vw, 3.25rem);
     --v3-header-height: 3.75rem;
   }
 }

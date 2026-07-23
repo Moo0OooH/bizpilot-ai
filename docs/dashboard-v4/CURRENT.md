@@ -12,10 +12,12 @@
  * - app/admin/page.tsx
  * - supabase/migrations/0026_premium_operations_schedule_integrity.sql
  * - docs/dashboard-v4/PHASE_PROGRESS.md
+ * - docs/product/BIZPILOT_CAPABILITY_SURFACE_AUDIT_2026-07-23.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Promoted task navigation above setup guidance, added compact progressive disclosure, and established direct founder-only Premium access paths.
  * - 2026-07-22: Recorded the merged `6fd1f96` Premium Operations release, Production schema/deployment, and final read-only acceptance.
  * - 2026-07-22: Closed the ordered disposable/restore database, RLS, concurrency, authenticated Operations/Admin, and EN/fr-CA intake gates ahead of exact-commit publication.
  * - 2026-07-22: Recorded exhaustive Persian owner-route coverage, its checked-in `1,000`-value map, and exact protected-value inventory.
@@ -68,7 +70,7 @@ Desktop owner navigation is grouped by job: Command (Overview, Leads, Reports), 
 
 `/dashboard/reports` is a protected owner route. It reads only the active workspace through existing RLS-scoped tables and applies a 1,000-request safety bound. `/dashboard/operations` is protected and presents only the modules entitled for that workspace. `/founder` continues to perform guarded role checks and sends an authorized founder directly to `/admin`, where an authorized founder can explicitly enable or disable supported add-ons through the audited service-role path.
 
-Quote Setup uses a six-stage journey backed by the existing eight readiness checks, followed by one horizontal task bar with seven mounted panels: Overview, Services, Form Questions, Branding, AI Instructions, Privacy, and Public Link. Deep links open the correct panel, tabs support standard keyboard movement, and every required form value stays mounted while only one task is visible. Form Questions includes the versioned public-form structure editor; its layout and question-to-section assignments persist inside the existing template-settings and intake-field metadata envelopes for backward compatibility.
+Quote Setup places one horizontal task bar directly after the route heading, with seven mounted panels: Overview, Services, Form Questions, Branding, AI Instructions, Privacy, and Public Link. The Overview panel owns the next setup action, readiness evidence, and a collapsed six-stage journey backed by the existing eight checks. The journey explains progression but no longer pushes task navigation below the first viewport. Deep links open the correct panel, tabs support standard keyboard movement, and every required form value stays mounted while only one task is visible. Form Questions includes the versioned public-form structure editor; its layout and question-to-section assignments persist inside the existing template-settings and intake-field metadata envelopes for backward compatibility.
 
 ## Interaction rules
 
@@ -80,6 +82,7 @@ Quote Setup uses a six-stage journey backed by the existing eight readiness chec
 - Menus stay within the viewport; pages avoid nested-scroll cards.
 - Wide screens expose the complete grouped route map in a fixed left sidebar; the topbar contains utilities only. Tablet and mobile keep a viewport-bounded Actions disclosure and five-task bottom bar.
 - Founder Admin is visible once in the wide-screen sidebar and once inside compact Actions only when the signed-in email passes the server-only founder authorization check.
+- The wide-screen Founder Admin destination stays inside the sidebar measure with one compact label; its fuller purpose remains available through accessible labeling instead of overflowing the rail.
 - Settings can hide or restore the optional Reports and Guide destinations for the current browser; core operating routes and authorized Founder Admin can never be hidden by this preference.
 - Protected topbar and mobile destinations use native full-page transitions. A stale client router or failed React Server Component transition must not trap the owner.
 - Current-user and business-workspace reads are memoized per server render so layout and page do not repeat the same authenticated queries.
@@ -95,6 +98,7 @@ Quote Setup uses a six-stage journey backed by the existing eight readiness chec
 - Saved FAQs, services, and service areas are the only approved business-knowledge inputs added to AI draft context. Missing facts stay missing and every draft remains owner-reviewed.
 - Owner-facing controls either work or are absent. Editing the AI draft is real local editing; non-persisted owner scratchpads are removed.
 - The Public Link panel builds privacy-safe variants for website, Google Business Profile, social, messaging, email, saved replies, and custom placements using the existing attribution allowlist.
+- Every tracked variant opens the same business quote form. A completed submission, not a view or click, preserves the approved source and optional campaign tag for Reports.
 - Public submission rebuilds attribution from that same allowlist and keeps safe placement tags through validation retries; arbitrary posted source URLs are not trusted.
 - Safe starter services, FAQs, colors, and consent remain editable examples; new workspaces do not mark those tasks complete until the owner reviews and saves setup.
 - Business Profile confirms only its identity readiness responsibility; Quote Setup confirms only its seven setup responsibilities, while invalid saved data can still reopen a previously completed task. Save outcomes return to the owning route.
@@ -102,6 +106,7 @@ Quote Setup uses a six-stage journey backed by the existing eight readiness chec
 - Owner Reports supports 7-, 30-, 90-day, and all-time filters; source metadata reads are batched in groups of 200 below the 1,000-request bound. Founder Admin receives a bounded cross-workspace aggregate while retaining the detailed inbox.
 - Guide has two explicit bilingual parts: Setup and optimization, then Workflow and reporting. It shows live readiness, first-session actions, launch checks, tracked-source guidance, daily routine, route map, boundaries, and troubleshooting.
 - Founder Business Operations keeps the workspace snapshot and recommended priority visible while access/plan/quote controls, workspace tools, and sensitive tools open on demand. No guarded capability is removed.
+- Admin Overview and a founder viewing a locked Premium Operations module link directly to that workspace's exact entitlement controls. The mutation remains inside guarded Business Operations; a normal owner receives explanation only.
 - AI is bounded draft assistance. No automatic send, booking, price, availability, or autonomous decision is implied.
 
 ## Premium Operations add-ons
@@ -120,6 +125,7 @@ The route remains manual-first. A group reply is never delivered by BizPilot, an
 - Native UI font stack; no route-wide webfont request or text-LCP swap.
 - Semantic light/dark tokens, visible focus, minimum practical control sizes, concise cards, and responsive grids.
 - Typography hierarchy favors 20–32px route/section headings, 13–16px operational body text, and 11–12px metadata only.
+- Public display typography is separately bounded by the Website V4 contract so headings remain subordinate to product proof on common mobile and laptop viewports.
 - Color communicates priority but is never the sole status signal.
 
 ## Localization
@@ -134,10 +140,23 @@ The historical V4.7 intake work uses the existing `leads.source_channel`, `lead_
 
 ## Verification status
 
-Local Git verifies that historical V4.7 commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. This document therefore does not infer a matching remote publication, GitHub CI run, Vercel deployment, or Production acceptance from local object identity. Any older external identifiers are historical references only until revalidated from a freshly fetched remote ref and a release-specific evidence record.
+The merged Premium Operations release remains recorded at application merge
+`6fd1f96a11df4d21a6b7f423e88746b08d2b0fc6` with final documentation commit
+`c5deb4dec440c96bd48221716386f86588bdb3b0`. The July 23 dashboard-experience
+candidate is a later source-only refinement and receives its own commit, CI, deployment,
+and live acceptance evidence; this document does not infer those results before release.
 
-The current Premium Operations candidate targets Node `>=24 <25`, pnpm `10.34.5`, Next.js `16.2.11`, and React / React DOM `19.2.7`. Exact-tree local evidence passes: frozen install; full and Production dependency audits with zero vulnerabilities; lint; typecheck; `359/359` unit/source tests; static RLS/grant audit with zero missing or overbroad grants; production build; public `46/46`; responsive `20/20`; UI matrix with zero failures; inactive Quote `2/2`; and image optimizer HTTP 200. Standalone browser interaction remains environment-gated because Chrome/Chromium is unavailable. Database-backed RLS proof requires `0025` then `0026` on an approved local/disposable target; the runner failed closed before connection when `DATABASE_URL` was absent, and no managed Supabase or Production database was contacted. GitHub CI, Vercel preview/Production deployment, live public acceptance, and authenticated dashboard acceptance remain independent gates.
+The current candidate targets Node `>=24 <25`, pnpm `10.34.5`, Next.js `16.2.11`,
+React / React DOM `19.2.7`, and forces Next's transitive PostCSS to patched `8.5.13`.
+Exact-tree local evidence passes: frozen-lock validation; full dependency audit with zero
+known vulnerabilities; lint; typecheck; `362/362` unit/source tests; static RLS/grant
+audit with zero missing or overbroad grants; production build with `24/24` generated
+pages; public `46/46`; responsive `20/20`; UI matrix with zero failures; and inactive
+Quote `2/2`. No managed Supabase or Production data was contacted or changed.
 
-Authenticated browser smoke still requires an approved local/synthetic auth target and a compatible browser runner. Source, type, build, and public GET evidence do not substitute for owner-authenticated visual confirmation of protected screens.
+Authenticated browser acceptance remains an independent post-deployment check because a
+compatible signed-in browser session is not available in this runtime. Source, type,
+build, and public GET evidence do not substitute for owner-authenticated visual
+confirmation of protected screens.
 
 See `PHASE_PROGRESS.md` for exact completion evidence and remaining gates.

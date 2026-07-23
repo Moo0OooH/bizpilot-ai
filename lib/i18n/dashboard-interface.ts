@@ -13,8 +13,9 @@
  * - server/services/premium-operations.service.ts
  * Author: MoOoH
  * Created: 2026-07-21
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Added localized founder access-management copy for locked Premium Operations modules.
  * - 2026-07-21: Created the isolated five-language dashboard interface contract with safe cookie resolution and Premium Operations copy.
  * - 2026-07-21: Kept Premium Operations replies strictly draft-only and manually copied after approval.
  * - 2026-07-21: Completed localized Premium Operations labels for all protected interface languages.
@@ -279,6 +280,7 @@ export type DashboardInterfaceCopy = Readonly<{
     badge: string;
     description: string;
     lockedDescription: string;
+    manageAccess: string;
     title: string;
     tabs: Readonly<{
       availability: string;
@@ -449,6 +451,7 @@ export const dashboardInterfaceCopy = {
         "Advanced workflow tools for finding the right requests, preparing group replies, and protecting your availability. Every message remains a draft until a manager approves a manual copy.",
       lockedDescription:
         "This separately priced add-on is not active for this workspace. It remains outside the standard plan until founder support enables it.",
+      manageAccess: "Manage Premium access",
       title: "Premium Operations",
       tabs: {
         availability: "Availability",
@@ -627,6 +630,7 @@ export const dashboardInterfaceCopy = {
         "Des outils avancés pour trouver les bonnes demandes, préparer des réponses groupées et protéger vos disponibilités. Chaque message reste un brouillon jusqu’à l’approbation d’une copie manuelle par un gestionnaire.",
       lockedDescription:
         "Ce supplément facturé séparément n’est pas actif pour cet espace de travail. Il demeure hors du forfait standard jusqu’à son activation par le soutien fondateur.",
+      manageAccess: "Gérer l’accès Premium",
       title: "Opérations Premium",
       tabs: {
         availability: "Disponibilités",
@@ -806,6 +810,7 @@ export const dashboardInterfaceCopy = {
         "ابزارهای پیشرفته برای یافتن درخواست‌های مناسب، آماده‌کردن پاسخ‌های گروهی و مدیریت ظرفیت. هر پیام تا تأیید مدیر برای کپی دستی فقط پیش‌نویس باقی می‌ماند.",
       lockedDescription:
         "این افزونه با هزینهٔ جداگانه برای این فضای کاری فعال نیست و تا فعال‌سازی توسط پشتیبانی بنیان‌گذار خارج از طرح استاندارد می‌ماند.",
+      manageAccess: "مدیریت دسترسی ویژه",
       title: "عملیات ویژه",
       tabs: {
         availability: "زمان‌بندی و ظرفیت",
@@ -983,6 +988,7 @@ export const dashboardInterfaceCopy = {
         "أدوات متقدمة للعثور على الطلبات المناسبة، وإعداد ردود جماعية، وحماية مواعيدك المتاحة. تبقى كل رسالة مسودة حتى يوافق المدير على النسخ اليدوي.",
       lockedDescription:
         "هذه الإضافة ذات السعر المنفصل غير مفعّلة لمساحة العمل هذه، وتبقى خارج الباقة القياسية إلى أن يفعّلها دعم المؤسس.",
+      manageAccess: "إدارة الوصول المميز",
       title: "العمليات المميزة",
       tabs: {
         availability: "التوفر والمواعيد",
@@ -1160,6 +1166,7 @@ export const dashboardInterfaceCopy = {
         "Herramientas avanzadas para encontrar las solicitudes adecuadas, preparar respuestas grupales y proteger tu disponibilidad. Cada mensaje sigue siendo un borrador hasta que un gerente apruebe su copia manual.",
       lockedDescription:
         "Este complemento con precio independiente no está activo para este espacio de trabajo. Permanece fuera del plan estándar hasta que el soporte del fundador lo habilite.",
+      manageAccess: "Gestionar acceso Premium",
       title: "Operaciones Premium",
       tabs: {
         availability: "Disponibilidad",

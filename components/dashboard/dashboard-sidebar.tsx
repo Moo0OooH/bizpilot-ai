@@ -13,8 +13,9 @@
  * - app/admin/page.tsx
  * Author: MoOoH
  * Created: 2026-05-10
- * Last Updated: 2026-07-21
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Compacted and contained the Founder Admin destination so long localized labels cannot overflow the desktop rail.
  * - 2026-07-17: Filtered only the allowlisted Reports and Guide destinations from server-validated display preferences.
  * - 2026-07-16: Added the role-safe owner Reports destination while retaining five focused mobile tasks.
  * - 2026-07-16: Restored the professional grouped desktop sidebar and added an explicit authorized Founder Admin destination.
@@ -333,13 +334,18 @@ export function DashboardSidebar({
 
         <div className="mt-3 grid gap-3">
           {showFounderAdmin ? (
-            <a className={navClass(false, true)} href="/admin">
+            <a
+              aria-label={copy.pages.founder.title}
+              className={`${navClass(false, true)} min-w-0 overflow-hidden px-2.5`}
+              href="/admin"
+              title={copy.pages.founder.title}
+            >
               <NavIcon active name="admin" />
-              <span className="min-w-0">
-                <span className="block truncate">{copy.pages.founder.title}</span>
-                <span className="mt-0.5 block truncate text-[10px] font-bold text-[var(--dash-text-muted)]">
-                  {copy.pages.founder.subtitle}
-                </span>
+              <span className="min-w-0 flex-1 truncate text-[12px]">
+                {copy.pages.founder.title}
+              </span>
+              <span aria-hidden="true" className="shrink-0 text-[13px]">
+                →
               </span>
             </a>
           ) : null}

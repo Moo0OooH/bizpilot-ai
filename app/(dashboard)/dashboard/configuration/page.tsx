@@ -10,8 +10,9 @@
  * - server/actions/auth.actions.ts
  * Author: MoOoH
  * Created: 2026-05-04
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Moved task navigation directly below the route header and collapsed the secondary six-stage journey into the Overview panel.
  * - 2026-07-22: Kept persisted custom-field starter content in the business language instead of the dashboard-interface language.
  * - 2026-07-21: Replaced physical dashboard alignment with logical equivalents and pinned numeric/email values to Latin LTR inputs.
  * - 2026-07-16: Scoped full Quote Setup saves to setup tasks while preserving separate Business Profile confirmation.
@@ -366,136 +367,6 @@ export default async function DashboardPage({
           </FlashMessage>
         ) : null}
 
-        <section
-          className="grid gap-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
-          data-dashboard-quote-readiness-command
-        >
-          <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-text-muted)]">
-              {configCopy.readiness.manualOnly}
-            </p>
-            <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h2 className="text-[20px] font-extrabold text-[var(--dash-text)]">
-                {readinessCommandTitle}
-              </h2>
-              <span className="text-sm font-semibold text-[var(--dash-text-secondary)]">
-                {configCopy.overview.complete(readiness.completed, readiness.total)}
-              </span>
-            </div>
-            <p className="mt-1 text-sm text-[var(--dash-text-secondary)]">
-              {readinessCommandBody}
-            </p>
-          </div>
-          <div className="flex flex-col gap-2 sm:flex-row md:justify-end">
-            <Link className={buttonClass} href="#configuration-overview">
-              {configCopy.readiness.reviewChecklist}
-            </Link>
-            <button
-              className={buttonClass}
-              form="business-configuration-form"
-              name="submitIntent"
-              type="submit"
-              value="preview"
-            >
-              {configCopy.overview.previewPublicQuote}
-            </button>
-          </div>
-        </section>
-
-        <section
-          className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface)] p-3.5 shadow-sm sm:p-4"
-          data-dashboard-setup-journey
-        >
-          <div className="grid gap-1 md:grid-cols-[minmax(0,1fr)_minmax(16rem,30rem)] md:items-end md:gap-6">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-text-muted)]">
-                {configCopy.readiness.title}
-              </p>
-              <h2 className="mt-1 text-[20px] font-extrabold text-[var(--dash-text)]">
-                {configCopy.setupJourney.title}
-              </h2>
-            </div>
-            <p className="text-[13px] leading-5 text-[var(--dash-text-secondary)] md:text-end">
-              {configCopy.setupJourney.description}
-            </p>
-          </div>
-
-          <ol
-            aria-label={configCopy.setupJourney.ariaLabel}
-            className="mt-4 grid gap-2.5 sm:grid-cols-2 2xl:grid-cols-3"
-          >
-            {setupJourneyStages.map((stage, index) => {
-              const status = setupJourneyStatus(stage.isComplete, index);
-              const statusLabel =
-                status === "complete"
-                  ? configCopy.setupJourney.complete
-                  : status === "current"
-                    ? configCopy.setupJourney.current
-                    : configCopy.setupJourney.upcoming;
-              const statusClass =
-                status === "complete"
-                  ? "border-[var(--dash-success-border)] bg-[var(--dash-success-soft)] text-[var(--dash-success-strong)]"
-                  : status === "current"
-                    ? "border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] text-[var(--dash-primary-strong)]"
-                    : "border-[var(--dash-border)] bg-[var(--dash-surface-muted)] text-[var(--dash-text-muted)]";
-
-              return (
-                <li key={stage.title}>
-                  <Link
-                    aria-current={status === "current" ? "step" : undefined}
-                    className={`group grid h-full min-h-36 grid-rows-[auto_1fr_auto] rounded-lg border p-3.5 outline-none transition hover:border-[var(--dash-primary-border)] hover:bg-[var(--dash-primary-soft)] focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--dash-surface)] ${
-                      status === "current"
-                        ? "border-[var(--dash-primary)] bg-[var(--dash-primary-soft)]"
-                        : "border-[var(--dash-border)] bg-[var(--dash-surface)]"
-                    }`}
-                    href={stage.href}
-                  >
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-[11px] font-bold uppercase tracking-wide text-[var(--dash-text-muted)]">
-                        {configCopy.setupJourney.stepLabel(
-                          index + 1,
-                          setupJourneyStages.length,
-                        )}
-                      </span>
-                      <span
-                        className={`rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide ${statusClass}`}
-                      >
-                        {statusLabel}
-                      </span>
-                    </div>
-                    <div className="mt-3 grid grid-cols-[2rem_minmax(0,1fr)] gap-2.5">
-                      <span
-                        aria-hidden="true"
-                        className={`flex h-8 w-8 items-center justify-center rounded-full border text-xs font-extrabold ${
-                          status === "current"
-                            ? "border-[var(--dash-primary)] bg-[var(--dash-primary)] text-white"
-                            : "border-[var(--dash-border)] bg-[var(--dash-surface-muted)] text-[var(--dash-text-secondary)]"
-                        }`}
-                      >
-                        {index + 1}
-                      </span>
-                      <div className="min-w-0">
-                        <h3 className="text-sm font-extrabold text-[var(--dash-text)] group-hover:text-[var(--dash-primary-strong)]">
-                          {stage.title}
-                        </h3>
-                        <p className="mt-1 text-xs leading-[1.15rem] text-[var(--dash-text-secondary)]">
-                          {stage.description}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="mt-3 border-t border-[var(--dash-border)] pt-2 text-[11px] font-semibold text-[var(--dash-text-muted)]">
-                      {configCopy.setupJourney.tasksReady(
-                        stage.completedTaskCount,
-                        stage.taskCount,
-                      )}
-                    </p>
-                  </Link>
-                </li>
-              );
-            })}
-          </ol>
-        </section>
-
         <form
           action={saveBusinessConfigurationAction}
           className="space-y-3"
@@ -544,6 +415,114 @@ export default async function DashboardPage({
               summary={configCopy.overview.summary(readiness.completed, readiness.total)}
               title={configCopy.overview.title}
             >
+              <section
+                className="grid gap-3 rounded-lg border border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] p-3.5 md:grid-cols-[minmax(0,1fr)_auto] md:items-center"
+                data-dashboard-quote-readiness-command
+              >
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[var(--dash-primary-strong)]">
+                    {configCopy.readiness.manualOnly}
+                  </p>
+                  <div className="mt-1 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <h3 className="text-[18px] font-extrabold text-[var(--dash-text)]">
+                      {readinessCommandTitle}
+                    </h3>
+                    <span className="text-sm font-semibold text-[var(--dash-text-secondary)]">
+                      {configCopy.overview.complete(readiness.completed, readiness.total)}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[13px] leading-5 text-[var(--dash-text-secondary)]">
+                    {readinessCommandBody}
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 sm:flex-row md:justify-end">
+                  <Link className={buttonClass} href="#setup-readiness-checklist">
+                    {configCopy.readiness.reviewChecklist}
+                  </Link>
+                  <button
+                    className={buttonClass}
+                    name="submitIntent"
+                    type="submit"
+                    value="preview"
+                  >
+                    {configCopy.overview.previewPublicQuote}
+                  </button>
+                </div>
+              </section>
+
+              <details
+                className="mt-3 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)]"
+                data-dashboard-setup-journey
+              >
+                <summary className="flex cursor-pointer list-none flex-wrap items-center justify-between gap-3 px-3.5 py-3 [&::-webkit-details-marker]:hidden">
+                  <span className="min-w-0">
+                    <span className="block text-[13px] font-extrabold text-[var(--dash-text)]">
+                      {configCopy.setupJourney.title}
+                    </span>
+                    <span className="mt-0.5 block text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                      {configCopy.setupJourney.description}
+                    </span>
+                  </span>
+                  <span className="rounded-full border border-[var(--dash-border)] bg-[var(--dash-surface)] px-2.5 py-1 text-[11px] font-bold text-[var(--dash-text-secondary)]">
+                    {configCopy.overview.complete(readiness.completed, readiness.total)}
+                  </span>
+                </summary>
+                <ol
+                  aria-label={configCopy.setupJourney.ariaLabel}
+                  className="grid gap-2 border-t border-[var(--dash-border)] p-3 sm:grid-cols-2 2xl:grid-cols-3"
+                >
+                  {setupJourneyStages.map((stage, index) => {
+                    const status = setupJourneyStatus(stage.isComplete, index);
+                    const statusLabel =
+                      status === "complete"
+                        ? configCopy.setupJourney.complete
+                        : status === "current"
+                          ? configCopy.setupJourney.current
+                          : configCopy.setupJourney.upcoming;
+                    const statusClass =
+                      status === "complete"
+                        ? "border-[var(--dash-success-border)] bg-[var(--dash-success-soft)] text-[var(--dash-success-strong)]"
+                        : status === "current"
+                          ? "border-[var(--dash-primary-border)] bg-[var(--dash-primary-soft)] text-[var(--dash-primary-strong)]"
+                          : "border-[var(--dash-border)] bg-[var(--dash-surface)] text-[var(--dash-text-muted)]";
+
+                    return (
+                      <li key={stage.title}>
+                        <Link
+                          aria-current={status === "current" ? "step" : undefined}
+                          className={`group grid h-full min-h-28 rounded-lg border p-3 outline-none transition hover:border-[var(--dash-primary-border)] hover:bg-[var(--dash-primary-soft)] focus-visible:ring-2 focus-visible:ring-[var(--dash-primary)] ${
+                            status === "current"
+                              ? "border-[var(--dash-primary)] bg-[var(--dash-primary-soft)]"
+                              : "border-[var(--dash-border)] bg-[var(--dash-surface)]"
+                          }`}
+                          href={stage.href}
+                        >
+                          <div className="flex items-center justify-between gap-3">
+                            <span className="text-[11px] font-bold uppercase tracking-wide text-[var(--dash-text-muted)]">
+                              {configCopy.setupJourney.stepLabel(
+                                index + 1,
+                                setupJourneyStages.length,
+                              )}
+                            </span>
+                            <span
+                              className={`rounded-full border px-2 py-1 text-[10px] font-bold uppercase tracking-wide ${statusClass}`}
+                            >
+                              {statusLabel}
+                            </span>
+                          </div>
+                          <h4 className="mt-2 text-sm font-extrabold text-[var(--dash-text)] group-hover:text-[var(--dash-primary-strong)]">
+                            {stage.title}
+                          </h4>
+                          <p className="mt-1 text-xs leading-[1.15rem] text-[var(--dash-text-secondary)]">
+                            {stage.description}
+                          </p>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </details>
+
               <div className="grid gap-3.5 2xl:grid-cols-[minmax(0,1fr)_20rem]">
                 <div className="grid gap-3.5 xl:grid-cols-[17rem_minmax(0,1fr)]">
                   <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
@@ -651,7 +630,10 @@ export default async function DashboardPage({
                   </div>
                 </div>
 
-                <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5">
+                <div
+                  className="scroll-mt-24 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3.5"
+                  id="setup-readiness-checklist"
+                >
                   <p className="text-[18px] font-extrabold text-[var(--dash-text)]">
                     {configCopy.overview.setupReport}
                   </p>

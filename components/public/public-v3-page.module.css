@@ -10,8 +10,9 @@
  * - app/globals.css
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Reduced oversized supporting-page headings and stabilized desktop price lines without sacrificing mobile reflow.
  * - 2026-07-22: Added responsive Premium Operations catalog and pricing-summary treatments with restrained premium contrast and clear manual-control boundaries.
  * - 2026-07-17: Turned the Demo's empty first-stage canvas into an explanatory message scene and widened the Pilot fit list for desktop readability.
  * - 2026-07-17: Converted empty section-intro space into responsive proof-point rails while preserving the established display and card scale.
@@ -105,7 +106,7 @@
 .heroTitle {
   max-inline-size: 16ch;
   margin-block: 1.2rem 0;
-  font-size: clamp(2.7rem, 4.4vw, 4.65rem);
+  font-size: clamp(2.25rem, 3.35vw, 3.7rem);
   font-weight: 620;
   line-height: 1.02;
   letter-spacing: -0.05em;
@@ -426,7 +427,7 @@
   max-inline-size: 18ch;
   margin: 0;
   color: var(--text-strong);
-  font-size: clamp(2rem, 3.5vw, 3.5rem);
+  font-size: clamp(1.7rem, 2.5vw, 2.65rem);
   font-weight: 620;
   line-height: 1.06;
   letter-spacing: -0.045em;
@@ -818,10 +819,11 @@
 .price {
   margin-block: 1rem 0;
   color: var(--text-strong);
-  font-size: clamp(2rem, 1.7rem + 1.15vw, 2.75rem);
+  font-size: clamp(1.6rem, 1.35rem + 0.65vw, 2rem);
   font-weight: 760;
-  line-height: 1.05;
-  letter-spacing: -0.05em;
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
 }
 
 .pointList,
@@ -1179,6 +1181,7 @@
   .demoPanel { grid-template-columns: minmax(12rem, 0.3fr) minmax(0, 0.7fr); }
   .demoTabs { grid-template-columns: 1fr; align-content: start; }
   .pricingGrid { grid-template-columns: minmax(0, 1.15fr) repeat(2, minmax(0, 0.925fr)); }
+  .price { white-space: nowrap; }
   .priceCardFeatured { grid-column: auto; }
   .faqShell { grid-template-columns: minmax(15rem, 0.28fr) minmax(0, 0.72fr); }
   .faqIndex { position: sticky; inset-block-start: calc(var(--v3-header-height) + 1.5rem); display: grid; gap: 0.55rem; padding: 0.75rem; border: 1px solid var(--border-default); border-radius: 1.2rem; background: var(--surface); box-shadow: var(--shadow-sm); }
@@ -1219,7 +1222,7 @@
 
 @media (max-width: 719px) {
   .hero { padding-block-start: 2.5rem; }
-  .heroTitle { max-inline-size: 17ch; font-size: clamp(2.2rem, 9vw, 2.75rem); }
+  .heroTitle { max-inline-size: 17ch; font-size: clamp(2.05rem, 8vw, 2.55rem); }
   .actions > * { inline-size: 100%; }
   .workspaceVisual { grid-template-columns: 1fr; }
   .workspaceRail { grid-template-columns: repeat(3, minmax(0, 1fr)); border-inline-end: 0; border-block-end: 1px solid var(--border-default); }
@@ -1232,7 +1235,7 @@
 }
 
 @media (max-width: 520px) {
-  .heroTitle { font-size: clamp(2.5rem, 10.5vw, 2.9rem); }
+  .heroTitle { font-size: clamp(2rem, 9vw, 2.4rem); }
   .workspaceRail > span { padding-inline: 0.35rem; font-size: 0.875rem; }
   .miniPlan { grid-template-columns: 1fr; }
   .miniPlan > span { grid-row: auto; }

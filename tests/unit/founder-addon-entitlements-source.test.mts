@@ -12,8 +12,9 @@
  * - supabase/migrations/0026_premium_operations_schedule_integrity.sql
  * Author: MoOoH
  * Created: 2026-07-22
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Guarded direct founder paths from Admin Overview and locked Operations modules to the selected workspace controls.
  * - 2026-07-22: Added founder entitlement activation-path source guardrails.
  * ============================================================
  */
@@ -35,6 +36,14 @@ const actionSource = readFileSync(
   "utf8",
 );
 const pageSource = readFileSync("app/admin/page.tsx", "utf8");
+const operationsPageSource = readFileSync(
+  "app/(dashboard)/dashboard/operations/page.tsx",
+  "utf8",
+);
+const operationsWorkspaceSource = readFileSync(
+  "components/dashboard/premium-operations-workspace.tsx",
+  "utf8",
+);
 const migrationSource = readFileSync(
   "supabase/migrations/0026_premium_operations_schedule_integrity.sql",
   "utf8",
@@ -187,5 +196,28 @@ describe("Founder Premium add-on entitlements", () => {
       true,
     );
     assert.equal(pageSource.includes("does not run billing"), true);
+  });
+
+  it("makes Premium activation discoverable to an authorized founder", () => {
+    assert.equal(
+      pageSource.includes(
+        "#premium-addons-${encodeURIComponent(\n                    premiumBusiness.businessId",
+      ),
+      true,
+    );
+    assert.equal(operationsPageSource.includes("isFounderUser(user)"), true);
+    assert.equal(operationsPageSource.includes("adminControlHref:"), true);
+    assert.equal(
+      operationsWorkspaceSource.includes(
+        "addonLocked(copy, adminControlHref)",
+      ),
+      true,
+    );
+    assert.equal(
+      operationsWorkspaceSource.includes(
+        "{copy.premiumOperations.manageAccess}",
+      ),
+      true,
+    );
   });
 });

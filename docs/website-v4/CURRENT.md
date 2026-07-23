@@ -9,21 +9,23 @@
  * - components/public/public-v3-page.module.css
  * - lib/i18n/public-v3-spec.ts
  * - docs/product/BIZPILOT_PREMIUM_OPERATIONS_ADDONS_v1.0.md
+ * - docs/product/BIZPILOT_CAPABILITY_SURFACE_AUDIT_2026-07-23.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-07-23
  * Change Log:
+ * - 2026-07-23: Clarified one-form tracked-link attribution, reduced oversized responsive headings, and expanded pricing value explanations.
  * - 2026-07-22: Recorded the optional Premium Operations catalog, unquoted add-on pricing boundary, current runtime, and exact-candidate release gates.
  * ============================================================
  -->
 
 # BizPilot Website V4 — Current Report
 
-Date: 2026-07-22
+Date: 2026-07-23
 
-Status: Historical Website V4 base evidence remains recorded; the Premium Operations public extension is implemented and exact-tree verified locally, while publication, Vercel, and live acceptance remain gated
+Status: Premium Operations is released; the July 23 editorial, typography, pricing-value, and dashboard-discoverability refinement is exact-tree verified locally while its own CI, deployment, and live acceptance remain gated
 
-Scope: public marketing, Auth GET states, Quote read/recovery states, and system 404/error surfaces; production data unchanged and no deployment performed by this update
+Scope: public marketing, protected navigation/discoverability, Auth GET states, Quote read/recovery states, and system 404/error surfaces; Production data unchanged
 
 ## Product truth and approved bilingual message
 
@@ -31,7 +33,8 @@ The English and Canadian French copy is approved for the current product boundar
 Both languages communicate the same customer problem and solution:
 
 - service-business owners, sales managers, and support teams receive vague questions through multiple customer touchpoints;
-- BizPilot provides one Smart Intake Link that can be shared in those places;
+- BizPilot maintains one business quote form and creates a tracked link variant for each approved placement;
+- every variant opens the same form, while a completed submission preserves the approved source and optional campaign tag for Reports;
 - the link collects service-specific details and creates an organized request;
 - AI prepares a cautious draft or follow-up question;
 - a human reviews, edits, copies, and manually sends the response;
@@ -45,8 +48,10 @@ suggestions remain internal coordination only; they do not create a public calen
 promise availability, or confirm a customer booking.
 
 Cleaning remains the first complete pilot workflow. The homepage may show Instagram,
-WhatsApp, website, email, Google profile, QR code, or direct message as places to share
-the link, never as connected inbox integrations.
+Facebook, TikTok, LinkedIn, YouTube, WhatsApp, website, email, Google Business Profile,
+QR code, or direct message as tracked placements for the same form, never as connected
+inbox integrations. Reporting describes submitted requests by source/campaign; it does
+not claim views, clicks, revenue attribution, or automatic conversion.
 
 ## Information architecture
 
@@ -65,7 +70,9 @@ use an indexed reading shell instead of imitating marketing cards or hiding poli
   requests the team can answer. Supporting copy now uses shorter sentences and one clear
   idea per paragraph in both English and Canadian French.
 - Standardized the public scale around a 13–14px microcopy floor, 16–19px body copy,
-  35–58px responsive display titles, 650–700 heading weights, and natural word wrapping.
+  approximately 32–52px responsive display titles, 650–700 heading weights, and natural
+  word wrapping. Supporting-page titles and section headings use the lower end of this
+  scale so product proof remains visible on common laptop and mobile viewports.
 - Introduced a warm off-white canvas, deep navy product surface, electric blue primary,
   teal control accent, and restrained coral/lime signals. Cards use quiet borders and
   shallow editorial shadows instead of generic pastel blocks.
@@ -90,7 +97,9 @@ use an indexed reading shell instead of imitating marketing cards or hiding poli
   qualification point remains complete instead of wrapping through narrow card columns.
 - Made the first Product capability the flagship benefit and separated human control
   from the repeated capability-card rhythm. Pricing keeps one active founder-cohort CTA
-  with calmer future tiers and no repeated tier actions.
+  with calmer future tiers, no repeated tier actions, stable desktop price lines, and
+  outcome-oriented descriptions that explain intake quality, attribution, review control,
+  and onboarding differences.
 - Added a distinct Premium Operations catalog below the core Product capabilities and a
   compact clarification below the base Pricing tiers. Both surfaces identify the three
   add-ons, state that pricing and enablement are separate, and keep manual review,
@@ -144,21 +153,23 @@ trail.
 
 ## Verification evidence
 
-### Premium Operations extension candidate
+### July 23 experience candidate
 
-- Source scope is implemented for the Product catalog, Pricing clarification, and existing
-  FAQ in English and Canadian French.
+- Source scope clarifies one shared form with placement-specific tracked links, expands
+  Pricing value explanations, reduces public heading scale, raises Quote Setup tasks, and
+  adds direct founder-only Premium access paths.
 - Runtime target is Node `>=24 <25`, pnpm `10.34.5`, Next.js `16.2.11`, and React /
   React DOM `19.2.7`.
 - Current exact-tree ESLint and TypeScript pass; the full unit/source suite passes
-  `359/359`; the Next.js `16.2.11` production build passes; public routes pass `46/46`;
+  `362/362`; the Next.js `16.2.11` production build passes with `24/24` generated pages;
+  public routes pass `46/46`;
   responsive routes pass `20/20`; the UI matrix has zero failures; inactive Quote GET
-  passes `2/2`; and the image optimizer returns HTTP 200. Standalone Chrome interaction
-  remains environment-gated because no Chrome/Chromium binary is installed.
+  passes `2/2`; and full dependency audit reports zero known vulnerabilities. Next's
+  transitive PostCSS is pinned to patched `8.5.13`.
 - Assertions must continue to prove separate-paid-add-on wording, no invented add-on
   amount, founder-managed activation, manager review, manual copy, no automatic send,
   and internal-only availability.
-- GitHub CI is unverified until the exact candidate is published and its run is linked.
+- GitHub CI is unverified until this exact candidate is published and its run is linked.
 - Vercel preview/Production deployment and live-site acceptance are unverified; no
   deployment is inferred from a local build.
 
