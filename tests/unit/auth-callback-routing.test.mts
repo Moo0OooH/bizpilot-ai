@@ -48,6 +48,18 @@ describe("Auth callback routing", () => {
     assert.equal(getRootAuthCallbackTargetPath(url), "/auth/callback");
   });
 
+  it("classifies Google login and identity-link callbacks explicitly", () => {
+    const loginUrl = new URL(
+      "https://bizpilo.com/auth/callback?code=google-code&authFlow=google-login",
+    );
+    const linkUrl = new URL(
+      "https://bizpilo.com/auth/callback?code=google-code&authFlow=google-link",
+    );
+
+    assert.equal(getAuthCallbackKind(loginUrl), "google_login");
+    assert.equal(getAuthCallbackKind(linkUrl), "google_link");
+  });
+
   it("routes explicit recovery callbacks to the reset password page", () => {
     const url = new URL(
       "https://bizpilo.com/?code=recovery-code&type=recovery",
@@ -128,6 +140,29 @@ describe("Auth callback routing", () => {
       {
         key: "error",
         message: AUTH_CALLBACK_INVALID_ERROR,
+      },
+    );
+  });
+
+  it("surfaces Google callback failures as errors instead of confirmation notices", () => {
+    assert.deepEqual(
+      getAuthCallbackFailureRedirect({
+        callbackKind: "google_login",
+        failureStage: "provider_error",
+      }),
+      {
+        key: "error",
+        message: "We couldn't complete Google authentication. Please try again.",
+      },
+    );
+    assert.deepEqual(
+      getAuthCallbackFailureRedirect({
+        callbackKind: "google_link",
+        failureStage: "exchange_failed",
+      }),
+      {
+        key: "error",
+        message: "We couldn't complete Google authentication. Please try again.",
       },
     );
   });

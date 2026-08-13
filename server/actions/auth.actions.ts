@@ -28,12 +28,15 @@
 
 "use server";
 
+import { randomUUID } from "node:crypto";
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 
 import { getSafeAuthCallbackNextPath } from "@/lib/auth/auth-callback-routing";
 import {
   getPasswordResetFlowErrorContext,
+  getCurrentUser,
+  linkGoogleIdentity,
   sendPasswordResetEmail,
   signInWithGoogleOAuth,
   signInWithPassword,
@@ -46,6 +49,8 @@ import { safeLogger } from "@/server/logging/safe-logger";
 
 const PASSWORD_RESET_NOTICE =
   "If an account exists, we'll send reset instructions.";
+const PASSWORD_RESET_DELIVERY_MESSAGE =
+  "We couldn't send reset instructions right now. No email was sent. Please wait a few minutes and try again.";
 const PASSWORD_RESET_RATE_LIMIT_MESSAGE =
   "Too many reset requests. Please wait a few minutes and try again.";
 const PASSWORD_REUSE_MESSAGE =
@@ -210,9 +215,14 @@ async function getConfiguredPasswordResetRedirectTo(): Promise<string> {
 
 async function getConfiguredAuthCallbackRedirectTo(
   nextPath?: string,
+  authFlow?: "google-link" | "google-login",
 ): Promise<string> {
   const callbackUrl = new URL("/auth/callback", await getAuthRedirectOrigin());
   const safeNextPath = getSafeAuthCallbackNextPath(nextPath ?? null);
+
+  if (authFlow) {
+    callbackUrl.searchParams.set("authFlow", authFlow);
+  }
 
   if (safeNextPath !== "/dashboard") {
     callbackUrl.searchParams.set("next", safeNextPath);
@@ -566,7 +576,10 @@ export async function signInWithGoogleAction(
   formData: FormData,
 ): Promise<never> {
   const redirectTo = readPostAuthRedirect(formData);
-  const callbackRedirectTo = await getConfiguredAuthCallbackRedirectTo(redirectTo);
+  const callbackRedirectTo = await getConfiguredAuthCallbackRedirectTo(
+    redirectTo,
+    "google-login",
+  );
   const safeNextPath = getSafeAuthCallbackNextPath(redirectTo);
   let googleAuthUrl: string;
 
@@ -590,6 +603,40 @@ export async function signInWithGoogleAction(
   redirect(googleAuthUrl);
 }
 
+export async function connectGoogleIdentityAction(): Promise<never> {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/auth/sign-in");
+  }
+
+  if (user.authProviders.includes("google")) {
+    redirect("/dashboard/settings?notice=Google%20is%20already%20connected.");
+  }
+
+  const callbackRedirectTo = await getConfiguredAuthCallbackRedirectTo(
+    "/dashboard/settings",
+    "google-link",
+  );
+  let googleAuthUrl: string;
+
+  try {
+    googleAuthUrl = await linkGoogleIdentity({
+      redirectTo: callbackRedirectTo,
+    });
+  } catch (error) {
+    safeLogger.warn("auth.google_link.start_failed", {
+      userId: user.id,
+      ...getAuthErrorLogMetadata(error),
+    });
+    redirect(
+      "/dashboard/settings?error=We%20couldn't%20connect%20Google.%20Please%20try%20again.",
+    );
+  }
+
+  redirect(googleAuthUrl);
+}
+
 export async function requestPasswordResetAction(
   formData: FormData,
 ): Promise<never> {
@@ -598,11 +645,13 @@ export async function requestPasswordResetAction(
   const emailDomain = getEmailDomain(email);
   const redirectTo = await getConfiguredPasswordResetRedirectTo();
   const configuredRedirectTo = redirectTo;
+  const requestId = randomUUID();
 
   safeLogger.info("auth.password_reset.request_received", {
     domain: emailDomain,
     fallbackRedirectTo: configuredRedirectTo,
     primaryRedirectTo: redirectTo,
+    requestId,
   });
 
   try {
@@ -613,12 +662,14 @@ export async function requestPasswordResetAction(
     safeLogger.info("auth.password_reset.primary_succeeded", {
       domain: emailDomain,
       primaryRedirectTo: redirectTo,
+      requestId,
     });
   } catch (error) {
     safeLogger.error("auth.password_reset.primary_failed", {
       domain: emailDomain,
       ...getAuthErrorLogMetadata(error),
       redirectTo,
+      requestId,
     });
 
     if (isPasswordResetRateLimitError(error)) {
@@ -632,6 +683,7 @@ export async function requestPasswordResetAction(
       safeLogger.info("auth.password_reset.fallback_started", {
         domain: emailDomain,
         fallbackRedirectTo: configuredRedirectTo,
+        requestId,
       });
 
       try {
@@ -642,12 +694,14 @@ export async function requestPasswordResetAction(
         safeLogger.info("auth.password_reset.fallback_succeeded", {
           domain: emailDomain,
           fallbackRedirectTo: configuredRedirectTo,
+          requestId,
         });
       } catch (fallbackError) {
         safeLogger.error("auth.password_reset.fallback_failed", {
           domain: emailDomain,
           ...getAuthErrorLogMetadata(fallbackError),
           fallbackRedirectTo: configuredRedirectTo,
+          requestId,
         });
       }
     } else {
@@ -659,11 +713,11 @@ export async function requestPasswordResetAction(
           redirectTo === configuredRedirectTo
             ? "primary and fallback redirects match"
             : "primary error was not redirect allowlist style",
+        requestId,
       });
     }
 
-    // Keep password reset non-enumerating. The user sees the same safe message
-    // whether the account exists, the provider throttles, or delivery fails.
+    redirectWithForgotPasswordError(PASSWORD_RESET_DELIVERY_MESSAGE);
   }
 
   redirect(

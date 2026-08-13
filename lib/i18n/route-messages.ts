@@ -36,6 +36,7 @@ const authErrorMessageKeys = new Map<RegExp, keyof AuthRouteMessages>([
   [/^Enter your new password\.$/, "newPasswordRequired"],
   [/^Enter your password\.$/, "passwordRequired"],
   [/^Google sign-in is not ready yet\. Use email and password or ask the founder to enable it\.$/, "googleUnavailable"],
+  [/^We couldn't complete Google authentication\. Please try again\.$/, "googleAuthFailed"],
   [/^Passwords do not match\.$/, "passwordMismatch"],
   [/^Reload the (reset|sign-up) page and try again\.$/, "reload"],
   [/^This confirmation link is invalid or expired\. Sign in or create a new account\.$/, "resetInvalid"],
@@ -45,6 +46,7 @@ const authErrorMessageKeys = new Map<RegExp, keyof AuthRouteMessages>([
   [/^Use at least 8 characters for your password\.$/, "strongPassword"],
   [/^We couldn't create your account\. Please try again\.$/, "signUpFailed"],
   [/^We couldn't send the confirmation email\. Please wait a few minutes and try again\.$/, "emailDelivery"],
+  [/^We couldn't send reset instructions right now\. No email was sent\. Please wait a few minutes and try again\.$/, "resetDelivery"],
   [/^We couldn't sign you in\. Please try again\.$/, "signInFailed"],
   [/^You can't reuse your previous password\. Choose a new password you have not used for this account\.$/, "passwordReuse"],
 ]);
@@ -53,6 +55,7 @@ const authNoticeMessageKeys = new Map<RegExp, keyof AuthRouteMessages>([
   [/^Email confirmed\. Please sign in to continue\.$/, "checkEmail"],
   [/^Email confirmed\. Continue to your workspace\.$/, "emailConfirmed"],
   [/^If an account exists, we'll send reset instructions\.$/, "resetInstructions"],
+  [/^Google sign-in repaired\. Check your email to set a password, then sign in and connect Google from Settings\.$/, "googleRepaired"],
   [/^Password updated\. Sign in with your new password\.$/, "passwordUpdated"],
 ]);
 
