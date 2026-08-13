@@ -19,6 +19,7 @@
  */
 
 export const AUTH_CALLBACK_KEYS = [
+  "authFlow",
   "code",
   "error",
   "error_code",
@@ -27,7 +28,12 @@ export const AUTH_CALLBACK_KEYS = [
   "type",
 ] as const;
 
-export type AuthCallbackKind = "email_confirmation" | "recovery" | "signup";
+export type AuthCallbackKind =
+  | "email_confirmation"
+  | "google_link"
+  | "google_login"
+  | "recovery"
+  | "signup";
 export type AuthCallbackFailureStage =
   | "exchange_failed"
   | "missing_code"
@@ -65,6 +71,14 @@ export function getAuthCallbackKind(url: URL): AuthCallbackKind {
     return "recovery";
   }
 
+  if (url.searchParams.get("authFlow") === "google-link") {
+    return "google_link";
+  }
+
+  if (url.searchParams.get("authFlow") === "google-login") {
+    return "google_login";
+  }
+
   return url.searchParams.get("type") === "signup"
     ? "signup"
     : "email_confirmation";
@@ -94,6 +108,16 @@ export function getAuthCallbackFailureRedirect(input: {
   callbackKind: AuthCallbackKind;
   failureStage: AuthCallbackFailureStage;
 }): { key: "error" | "notice"; message: string } {
+  if (
+    input.callbackKind === "google_link" ||
+    input.callbackKind === "google_login"
+  ) {
+    return {
+      key: "error",
+      message: "We couldn't complete Google authentication. Please try again.",
+    };
+  }
+
   if (
     input.callbackKind !== "recovery" &&
     input.failureStage !== "missing_code"

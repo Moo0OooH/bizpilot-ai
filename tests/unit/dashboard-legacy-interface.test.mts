@@ -307,8 +307,8 @@ describe("legacy protected-dashboard interface locales", () => {
 
     const englishValues = new Set<string>();
     collectStaticValues(english, englishValues);
-    assert.equal(englishValues.size, 1119);
-    assert.equal(Object.keys(arabicTranslationMap).length, 1000);
+    assert.equal(englishValues.size, 1126);
+    assert.equal(Object.keys(arabicTranslationMap).length, 1007);
     assert.equal(
       [...englishValues].filter(
         (value) => !Object.hasOwn(arabicTranslationMap, value),
@@ -349,8 +349,8 @@ describe("legacy protected-dashboard interface locales", () => {
 
     const englishValues = new Set<string>();
     collectStaticValues(english, englishValues);
-    assert.equal(englishValues.size, 1119);
-    assert.equal(Object.keys(persianTranslationMap).length, 1000);
+    assert.equal(englishValues.size, 1126);
+    assert.equal(Object.keys(persianTranslationMap).length, 1007);
     assert.equal(
       [...englishValues].filter(
         (value) => !Object.hasOwn(persianTranslationMap, value),

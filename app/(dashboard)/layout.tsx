@@ -51,7 +51,10 @@ import { readThemePreference } from "@/lib/theme";
 import { getPublicSiteOrigin } from "@/lib/seo";
 import { WORKSPACE_RECOVERY_ERROR_COOKIE } from "@/lib/workspace-recovery/constants";
 import { signOutAction } from "@/server/actions/auth.actions";
-import { recoverWorkspaceAccessAction } from "@/server/actions/workspace-recovery.actions";
+import {
+  recoverWorkspaceAccessAction,
+  repairDetachedGoogleIdentityAction,
+} from "@/server/actions/workspace-recovery.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
 import {
   getBusinessWorkspace,
@@ -149,6 +152,19 @@ export default async function DashboardLayout({
               {/* Source guard: "Recover workspace" remains covered while visible copy is localized. */}
               <button className={`${primaryButtonClass} mt-3`} type="submit">
                 {accessCopy.recoverWorkspace}
+              </button>
+            </form>
+          ) : null}
+          {isExternalLoginWithoutWorkspace ? (
+            <form
+              action={repairDetachedGoogleIdentityAction}
+              className="mt-5 rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-4"
+            >
+              <p className="text-xs leading-5 text-[var(--dash-text-secondary)]">
+                {accessCopy.externalLoginRepairHelp}
+              </p>
+              <button className={`${primaryButtonClass} mt-3`} type="submit">
+                {accessCopy.externalLoginRepair}
               </button>
             </form>
           ) : null}

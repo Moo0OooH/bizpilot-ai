@@ -24,8 +24,13 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { WORKSPACE_RECOVERY_ERROR_COOKIE } from "@/lib/workspace-recovery/constants";
+import { getServerEnv } from "@/lib/env/server-env";
 import { safeLogger } from "@/server/logging/safe-logger";
-import { getCurrentUser } from "@/server/services/auth.service";
+import {
+  getCurrentUser,
+  signOut,
+} from "@/server/services/auth.service";
+import { repairDetachedGoogleIdentity } from "@/server/services/auth-identity-recovery.service";
 import {
   EXISTING_WORKSPACE_REQUIRED_ERROR,
   recoverWorkspaceAccess,
@@ -101,4 +106,60 @@ export async function recoverWorkspaceAccessAction(
 
   revalidatePath("/dashboard");
   redirect("/dashboard?notice=Workspace%20recovered.");
+}
+
+export async function repairDetachedGoogleIdentityAction(): Promise<never> {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    redirect("/auth/sign-in");
+  }
+
+  let result: Awaited<ReturnType<typeof repairDetachedGoogleIdentity>>;
+
+  try {
+    result = await repairDetachedGoogleIdentity({
+      currentUser: user,
+      resetRedirectTo: new URL(
+        "/auth/reset-password",
+        getServerEnv().NEXT_PUBLIC_APP_URL,
+      ).toString(),
+    });
+  } catch (error) {
+    safeLogger.warn("auth.identity_repair.action_failed", {
+      errorName: error instanceof Error ? error.name : "unknown",
+      userId: user.id,
+    });
+
+    (await cookies()).set(
+      WORKSPACE_RECOVERY_ERROR_COOKIE,
+      "We couldn't safely reconcile these login identities automatically. Founder review is required.",
+      {
+        httpOnly: true,
+        maxAge: 60,
+        path: "/dashboard",
+        sameSite: "lax",
+        secure: true,
+      },
+    );
+    redirect("/dashboard");
+  }
+
+  try {
+    await signOut();
+  } catch {
+    safeLogger.warn("auth.identity_repair.sign_out_skipped", {
+      traceId: result.traceId,
+    });
+  }
+
+  if (!result.resetEmailSent) {
+    redirect(
+      "/auth/forgot-password?error=We%20couldn't%20send%20reset%20instructions%20right%20now.%20No%20email%20was%20sent.%20Please%20wait%20a%20few%20minutes%20and%20try%20again.",
+    );
+  }
+
+  redirect(
+    "/auth/sign-in?notice=Google%20sign-in%20repaired.%20Check%20your%20email%20to%20set%20a%20password%2C%20then%20sign%20in%20and%20connect%20Google%20from%20Settings.",
+  );
 }

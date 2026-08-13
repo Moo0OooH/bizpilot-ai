@@ -32,13 +32,20 @@ import { safeLogger } from "@/server/logging/safe-logger";
 import { exchangeAuthCodeForSession } from "@/server/services/auth.service";
 
 const AUTH_CALLBACK_NOTICE = "Sign-in complete. Continue to your workspace.";
+const GOOGLE_LINK_NOTICE = "Google connected to this owner account.";
 
-function buildSignInUrl(
+function buildAuthFeedbackUrl(
   request: NextRequest,
+  callbackKind: ReturnType<typeof getAuthCallbackKind>,
   key: "error" | "notice",
   value: string,
 ): URL {
-  const url = new URL("/auth/sign-in", request.url);
+  const url = new URL(
+    callbackKind === "google_link"
+      ? "/dashboard/settings"
+      : "/auth/sign-in",
+    request.url,
+  );
   url.searchParams.set(key, value);
 
   return url;
@@ -131,7 +138,12 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.redirect(
-      buildSignInUrl(request, redirect.key, redirect.message),
+      buildAuthFeedbackUrl(
+        request,
+        callbackKind,
+        redirect.key,
+        redirect.message,
+      ),
     );
   }
 
@@ -151,12 +163,24 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.redirect(
-      buildSignInUrl(request, redirect.key, redirect.message),
+      buildAuthFeedbackUrl(
+        request,
+        callbackKind,
+        redirect.key,
+        redirect.message,
+      ),
     );
   }
 
   try {
-    await exchangeAuthCodeForSession(code);
+    const user = await exchangeAuthCodeForSession(code);
+
+    if (
+      callbackKind === "google_link" &&
+      !user.authProviders.includes("google")
+    ) {
+      throw new Error("Google identity was not linked to the current user.");
+    }
   } catch (error) {
     safeLogger.warn("auth.callback.exchange_failed", {
       callbackKind,
@@ -171,7 +195,12 @@ export async function GET(request: NextRequest) {
     });
 
     return NextResponse.redirect(
-      buildSignInUrl(request, redirect.key, redirect.message),
+      buildAuthFeedbackUrl(
+        request,
+        callbackKind,
+        redirect.key,
+        redirect.message,
+      ),
     );
   }
 
@@ -179,7 +208,12 @@ export async function GET(request: NextRequest) {
     getSafeAuthCallbackNextPath(request.nextUrl.searchParams.get("next")),
     request.url,
   );
-  redirectUrl.searchParams.set("notice", AUTH_CALLBACK_NOTICE);
+  redirectUrl.searchParams.set(
+    "notice",
+    callbackKind === "google_link"
+      ? GOOGLE_LINK_NOTICE
+      : AUTH_CALLBACK_NOTICE,
+  );
 
   return NextResponse.redirect(redirectUrl);
 }

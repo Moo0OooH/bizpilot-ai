@@ -1048,6 +1048,8 @@ type DashboardWorkspaceAccessCopy = Readonly<{
   deletionRequestedTitle: string;
   eyebrow: string;
   externalLoginBody: string;
+  externalLoginRepair: string;
+  externalLoginRepairHelp: string;
   externalLoginTitle: string;
   pausedBody: string;
   pausedTitle: string;
@@ -1775,6 +1777,8 @@ type AuthCopy = Readonly<{
     emailRequired: string;
     genericError: string;
     genericNotice: string;
+    googleAuthFailed: string;
+    googleRepaired: string;
     googleUnavailable: string;
     nameRequired: string;
     newPasswordRequired: string;
@@ -1786,6 +1790,7 @@ type AuthCopy = Readonly<{
     rateLimit: string;
     reload: string;
     resetInvalid: string;
+    resetDelivery: string;
     resetInstructions: string;
     signInFailed: string;
     signUpFailed: string;
@@ -1906,6 +1911,13 @@ type DashboardCopy = Readonly<{
     guardrails: string;
     guardrailsDescription: string;
     guardrailItems: readonly string[];
+    googleConnection: Readonly<{
+      connect: string;
+      connected: string;
+      description: string;
+      notConnected: string;
+      title: string;
+    }>;
     integrations: string;
     language: string;
     languageDescription: string;
@@ -2130,6 +2142,10 @@ const englishCopy: BizPilotCopy = {
       emailRequired: "Enter your email address.",
       genericError: "We couldn't complete that request. Check the form and try again.",
       genericNotice: "Your account update was received.",
+      googleAuthFailed:
+        "We couldn't complete Google authentication. Please try again.",
+      googleRepaired:
+        "Google sign-in repaired. Check your email to set a password, then sign in and connect Google from Settings.",
       googleUnavailable:
         "Google sign-in is not ready yet. Use email and password or ask the founder to enable it.",
       nameRequired: "Enter your name.",
@@ -2144,6 +2160,8 @@ const englishCopy: BizPilotCopy = {
       reload: "Reload the page and try again.",
       resetInvalid:
         "This reset link is invalid or expired. Request a new password reset.",
+      resetDelivery:
+        "We couldn't send reset instructions right now. No email was sent. Please wait a few minutes and try again.",
       resetInstructions:
         "If an account exists, we'll send reset instructions.",
       signInFailed: "We couldn't sign you in. Please try again.",
@@ -4684,6 +4702,14 @@ const englishCopy: BizPilotCopy = {
         "Every new feature needs a visual guide, text guide, owner guide, and Settings state.",
         "External blockers stay visible until API, account, DNS, provider, or payment setup is complete.",
       ],
+      googleConnection: {
+        connect: "Connect Google",
+        connected: "Connected",
+        description:
+          "Connect Google to this owner UUID so future Google sign-ins open the same workspace.",
+        notConnected: "Not connected",
+        title: "Google sign-in",
+      },
       integrations: "Integrations",
       language: "Workspace language",
       languageDescription:
@@ -4806,7 +4832,10 @@ const englishCopy: BizPilotCopy = {
       deletionRequestedTitle: "Workspace deletion has been requested.",
       eyebrow: "Workspace access",
       externalLoginBody:
-        "Google sign-in connects an existing approved BizPilot workspace. Sign out and use the original owner email, or ask the Founder Admin to approve and repair this account.",
+        "This Google login is separate from the existing owner account. The safe repair keeps the original workspace and removes only this workspace-free Google duplicate.",
+      externalLoginRepair: "Repair login and email reset link",
+      externalLoginRepairHelp:
+        "Use this only for your existing owner email. After the reset, sign in with email and connect Google from Settings.",
       externalLoginTitle: "An approved workspace is required for Google sign-in.",
       pausedBody:
         "Your dashboard is currently blocked because no active business membership is available. Your data is retained; contact BizPilot support if this looks unexpected.",
@@ -5196,6 +5225,10 @@ const frenchCopy: BizPilotCopy = {
       genericError:
         "Nous n'avons pas pu compléter cette demande. Vérifiez le formulaire et réessayez.",
       genericNotice: "La mise à jour du compte a été reçue.",
+      googleAuthFailed:
+        "Nous n'avons pas pu terminer l'authentification Google. Réessayez.",
+      googleRepaired:
+        "La connexion Google est réparée. Consultez votre courriel pour définir un mot de passe, puis connectez-vous et reliez Google dans Paramètres.",
       googleUnavailable:
         "La connexion Google n'est pas encore prête. Utilisez le courriel et le mot de passe ou demandez au fondateur de l'activer.",
       nameRequired: "Entrez votre nom.",
@@ -5212,6 +5245,8 @@ const frenchCopy: BizPilotCopy = {
       reload: "Rechargez la page et réessayez.",
       resetInvalid:
         "Ce lien de réinitialisation est invalide ou expiré. Demandez un nouveau lien.",
+      resetDelivery:
+        "Nous n'avons pas pu envoyer les instructions de réinitialisation. Aucun courriel n'a été envoyé. Attendez quelques minutes, puis réessayez.",
       resetInstructions:
         "Si un compte existe, nous enverrons les instructions de réinitialisation.",
       signInFailed: "Nous n'avons pas pu vous connecter. Réessayez.",
@@ -7781,6 +7816,14 @@ const frenchCopy: BizPilotCopy = {
         "Chaque nouvelle fonction exige guide visuel, guide texte, guide responsable et état dans Réglages.",
         "Les blocages externes restent visibles jusqu'à la fin de la configuration API, compte, DNS, fournisseur ou paiement.",
       ],
+      googleConnection: {
+        connect: "Relier Google",
+        connected: "Relié",
+        description:
+          "Reliez Google à cet identifiant propriétaire afin que les prochaines connexions Google ouvrent le même espace.",
+        notConnected: "Non relié",
+        title: "Connexion Google",
+      },
       integrations: "Intégrations",
       language: "Langue de l'espace",
       languageDescription:
@@ -7904,7 +7947,10 @@ const frenchCopy: BizPilotCopy = {
       deletionRequestedTitle: "La suppression de l'espace a été demandée.",
       eyebrow: "Accès à l'espace",
       externalLoginBody:
-        "La connexion Google relie un espace BizPilot existant et approuvé. Déconnectez-vous et utilisez le courriel propriétaire initial, ou demandez au Founder Admin d'approuver et de réparer ce compte.",
+        "Cette connexion Google est séparée du compte propriétaire existant. La réparation sécurisée conserve l'espace initial et supprime uniquement ce doublon Google sans espace.",
+      externalLoginRepair: "Réparer la connexion et envoyer le lien",
+      externalLoginRepairHelp:
+        "Utilisez ceci seulement pour votre courriel propriétaire existant. Après la réinitialisation, connectez-vous par courriel et reliez Google dans Paramètres.",
       externalLoginTitle:
         "Un espace approuvé est requis pour la connexion Google.",
       pausedBody:

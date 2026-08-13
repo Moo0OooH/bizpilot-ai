@@ -56,7 +56,10 @@ import {
   getDashboardInterfaceFormattingLocale,
   getDashboardInterfaceLegacyCopy,
 } from "@/lib/i18n/dashboard-legacy-interface";
-import { signOutAction } from "@/server/actions/auth.actions";
+import {
+  connectGoogleIdentityAction,
+  signOutAction,
+} from "@/server/actions/auth.actions";
 import { updateWorkspaceLanguageAction } from "@/server/actions/business-configuration.actions";
 import { updateDashboardSectionVisibilityAction } from "@/server/actions/dashboard-display.actions";
 import { getCurrentUser } from "@/server/services/auth.service";
@@ -230,6 +233,30 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
                   <p className="mt-1 break-all text-sm font-extrabold text-[var(--dash-text)]">
                     {user.email ?? user.id}
                   </p>
+                </div>
+                <div className="rounded-lg border border-[var(--dash-border)] bg-[var(--dash-surface-muted)] p-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[var(--dash-text-muted)]">
+                        {settingsCopy.googleConnection.title}
+                      </p>
+                      <p className="mt-1 text-[12px] leading-5 text-[var(--dash-text-secondary)]">
+                        {settingsCopy.googleConnection.description}
+                      </p>
+                    </div>
+                    <span className="rounded-full border border-[var(--dash-border)] px-2 py-1 text-[10px] font-black text-[var(--dash-text)]">
+                      {user.authProviders.includes("google")
+                        ? settingsCopy.googleConnection.connected
+                        : settingsCopy.googleConnection.notConnected}
+                    </span>
+                  </div>
+                  {!user.authProviders.includes("google") ? (
+                    <form action={connectGoogleIdentityAction} className="mt-3">
+                      <button className={`${primaryButtonClass} w-full`} type="submit">
+                        {settingsCopy.googleConnection.connect}
+                      </button>
+                    </form>
+                  ) : null}
                 </div>
                 <form action={signOutAction}>
                   <button className={`${buttonClass} w-full`} type="submit">

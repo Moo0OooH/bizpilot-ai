@@ -31,6 +31,7 @@ export type AuthProvider = "email" | "google" | "unknown";
 
 export type AuthUser = Readonly<{
   authProvider: AuthProvider;
+  authProviders: readonly AuthProvider[];
   businessName?: string;
   displayName?: string;
   email?: string;
@@ -96,6 +97,29 @@ function readAuthProvider(
     : "unknown";
 }
 
+function readAuthProviders(
+  metadata: Record<string, unknown> | undefined,
+): readonly AuthProvider[] {
+  const providers = metadata?.providers;
+  const normalized = Array.isArray(providers)
+    ? providers
+        .filter((provider): provider is string => typeof provider === "string")
+        .map((provider) => provider.toLowerCase())
+        .filter(
+          (provider): provider is "email" | "google" =>
+            provider === "email" || provider === "google",
+        )
+    : [];
+  const primaryProvider = readAuthProvider(metadata);
+
+  return Array.from(
+    new Set<AuthProvider>([
+      ...normalized,
+      ...(primaryProvider !== "unknown" ? [primaryProvider] : []),
+    ]),
+  );
+}
+
 function toAuthUser(response: {
   app_metadata?: Record<string, unknown>;
   email?: string;
@@ -104,6 +128,7 @@ function toAuthUser(response: {
 }): AuthUser {
   const user: AuthUser = {
     authProvider: readAuthProvider(response.app_metadata),
+    authProviders: readAuthProviders(response.app_metadata),
     id: response.id,
   };
   const businessName = readMetadataText(response.user_metadata, "business_name");
@@ -156,6 +181,29 @@ export async function signInWithGoogleOAuth(input: {
 
   if (!data.url) {
     throw new Error("Supabase did not return a Google OAuth redirect URL.");
+  }
+
+  return data.url;
+}
+
+export async function linkGoogleIdentity(input: {
+  redirectTo: string;
+}): Promise<string> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.auth.linkIdentity({
+    provider: "google",
+    options: {
+      redirectTo: input.redirectTo,
+      scopes: GOOGLE_AUTH_LOGIN_SCOPES,
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  if (!data.url) {
+    throw new Error("Supabase did not return a Google identity-link URL.");
   }
 
   return data.url;
@@ -217,9 +265,9 @@ export async function sendPasswordResetEmail(input: {
   }
 }
 
-export async function exchangeAuthCodeForSession(code: string): Promise<void> {
+export async function exchangeAuthCodeForSession(code: string): Promise<AuthUser> {
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
 
   if (error) {
     throw new PasswordResetFlowError(error.message, {
@@ -227,6 +275,18 @@ export async function exchangeAuthCodeForSession(code: string): Promise<void> {
       stage: "exchange",
     });
   }
+
+  if (!data.user) {
+    throw new PasswordResetFlowError(
+      "Supabase did not return a user for the auth callback.",
+      {
+        recoveryCodeExchanged: false,
+        stage: "exchange",
+      },
+    );
+  }
+
+  return toAuthUser(data.user);
 }
 
 export async function updatePasswordFromReset(input: {
