@@ -5,6 +5,7 @@
  * Description: Evidence-bounded whole-project source of truth for Website V4, Dashboard V4, and Documentation V2.1.
  * Role: Controls release claims, product boundaries, current gaps, next actions, and production/data gates.
  * Related:
+ * - docs/readiness/FINAL_SYNC_2026-11-19.md
  * - docs/readiness/current-status.json
  * - docs/dashboard-v4/CURRENT.md
  * - docs/website-v4/CURRENT.md
@@ -12,8 +13,9 @@
  * - docs/project-v2/CURRENT.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-11-19
  * Change Log:
+ * - 2026-11-19: Preserved this product-boundary authority while directing current release evidence to the final synchronization report.
  * - 2026-07-22: Closed PR #11 merge, main CI/Vercel Production, public matrix, authorized protected, and RTL input acceptance for application release `6fd1f96`.
  * - 2026-07-22: Recorded candidate CI/Preview success and completed Production migration/schema parity through `0026` without enabling entitlements.
  * - 2026-07-22: Closed Premium Operations local/restore/RLS/concurrency/authenticated/intake proof and recorded the current Production reconciliation/export state.
@@ -33,6 +35,8 @@
  -->
 
 # BizPilot AI Source of Truth — Updated 2026-07-22
+
+> Product boundaries in this document remain controlling. Its dated release receipts are historical; use [FINAL_SYNC_2026-11-19.md](FINAL_SYNC_2026-11-19.md) and `current-status.json` for current GitHub, Supabase, Vercel, acceptance, weakness, and remaining-phase state.
 
 ## Executive status
 
