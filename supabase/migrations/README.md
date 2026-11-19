@@ -3,7 +3,7 @@
 **Version:** v1.0
 **Status:** Active
 **Owner:** MoOoH
-**Last Updated:** 2026-07-22
+**Last Updated:** 2026-11-19
 **Related:**
 - `docs/architecture/BIZPILOT_VENDOR_INDEPENDENCE_AND_PORTABILITY_STANDARD_v1.0.md`
 - `docs/engineering/BIZPILOT_BACKEND_DATABASE_RLS_STANDARD_v1.5.md`
@@ -40,6 +40,7 @@
 | `0024_supabase_status_and_rls_performance_hardening.sql` | Adds non-destructive RLS performance hardening: policy-supporting indexes plus initPlan-friendly `(select auth.uid())` helper/policy rewrites. No data deletion, restart, resize, or remote upgrade. |
 | `0025_premium_operations_addons.sql` | Adds separately entitled Premium Operations records for priority rules, manager-reviewed bulk reply drafts, internal service time blocks, and tenant RLS/grants. No public booking, automated messaging, billing provider, or self-serve purchase. |
 | `0026_premium_operations_schedule_integrity.sql` | Adds exact preferred-time intake, Toronto-local schedule provenance, operating-hour and no-overlap invariants, current availability review/copy checks, transactional draft creation, and a service-role-only founder entitlement audit RPC. No public booking or automated send. |
+| `0027_premium_operations_safe_parser_volatility.sql` | Marks the internal safe date/time parser helpers `STABLE` to match PostgreSQL cast semantics and clear managed-database lint warnings. No data, RLS, grant, or behavior change. |
 
 ---
 
@@ -55,7 +56,7 @@ The original `0003` migration was removed from the repository because keeping it
 
 ## Rules for new migrations
 
-1. **Preserve numbering.** New files must use the next available integer prefix (currently `0027`; `0026` already exists). Never rename or re-number an existing migration.
+1. **Preserve numbering.** New files must use the next available integer prefix (currently `0028`; `0027` already exists). Never rename or re-number an existing migration.
 2. **One concern per file.** A migration adds, alters, or removes a focused set of related tables, functions, policies, or grants. Cross-cutting changes go in separate files.
 3. **File header is mandatory.** Use the BizPilot SQL header format (path, project, description, role, related, author, created/updated, change log) as shown in the existing files.
 4. **Tables created here must include:**

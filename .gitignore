@@ -47,6 +47,7 @@ bizpilot-*.json
 *-backup.backup
 artifacts/
 backups/
+/graphify-out/
 browser-profile/
 playwright-profile/
 restore-drills/
