@@ -3,15 +3,17 @@
  * File: README.md
  * Project: BizPilot AI
  * Description: Repository entry point for product scope, canonical routes, runtime, documentation, and release verification.
- * Role: Directs contributors to the current V2.1 authority set, Premium Operations candidate, and safe execution rules.
+ * Role: Directs contributors to the current GitHub verification baseline, V2.1 authority set, and safe execution rules.
  * Related:
  * - docs/project-v2/CURRENT.md
  * - docs/CURRENT_CANONICAL_DOCS_v2.1.md
  * - docs/product/BIZPILOT_PREMIUM_OPERATIONS_ADDONS_v1.0.md
+ * - docs/readiness/GITHUB_BASELINE_2026-11-19.md
  * Author: MoOoH
  * Created: 2026-05-02
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-11-19
  * Change Log:
+ * - 2026-11-19: Pointed to the current GitHub baseline and audited Next.js 16.4.6 dependency update; kept July release receipts historical.
  * - 2026-07-22: Recorded the hardened Premium Operations/public-catalog candidate, ordered `0025` + `0026` migration gate, current runtime versions, and separation of local, CI, Vercel, and Production evidence.
  * - 2026-07-22: Corrected the historical V4.7 local object identity without treating it as current CI, Vercel, or Production evidence.
  * - 2026-07-21: Separated local Git facts from remote, deployment, and Production gates; recorded the Premium Operations migration gate.
@@ -38,7 +40,7 @@ Cleaning is the first complete pilot vertical. Direct social inbox integrations,
 - Google OAuth: the application path no longer silently creates a workspace; live callback/provider behavior still requires owner QA.
 - Production database: no migration or data mutation is authorized by this repository state. The historical V4.7 intake work reused existing storage; Premium Operations introduces the ordered `0025` + `0026` source sequence and needs its own non-Production proof and explicit Production approval.
 
-Current candidate runtime: Node `>=24 <25` (verified on `24.14.0`), pnpm `10.34.5`, Next.js `16.2.11`, and React / React DOM `19.2.7`. Local exact-tree evidence: zero dependency-audit vulnerabilities, lint and typecheck PASS, `359/359` unit/source tests, static Supabase RLS/grant audit PASS, production build PASS, public `46/46`, responsive `20/20`, UI matrix zero failures, inactive Quote `2/2`, and image optimizer HTTP 200. Browser interaction is environment-gated without Chrome; database-backed RLS and authenticated QA require an approved local/disposable target.
+Current source candidate: Node `>=24 <25`, pnpm `10.34.5`, Next.js `16.4.6`, and React / React DOM `19.2.7`. See [the November GitHub baseline](docs/readiness/GITHUB_BASELINE_2026-11-19.md) for checks on this dependency tree and its remaining gates. The July release receipts in `docs/readiness/current-status.json` describe the earlier Premium Operations release and do not validate this candidate's deployment, live authentication, or database state. Database-backed RLS and authenticated QA require an approved local/disposable target.
 
 Read these before planning or changing the project:
 

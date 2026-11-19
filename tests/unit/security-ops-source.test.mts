@@ -6,12 +6,15 @@
  * Role: Keeps abuse retention, CSP, registers, runtime, and credential hygiene documented.
  * Related:
  * - supabase/migrations/0023_public_submission_abuse_log_retention.sql
+ * - supabase/migrations/0027_premium_operations_safe_parser_volatility.sql
  * - docs/security/BIZPILOT_SECURITY_OPERATIONS_REGISTER_2026-07-04.md
  * - docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-11-19
  * Change Log:
+ * - 2026-11-19: Added a source contract for the managed-database parser-volatility lint fix.
+ * - 2026-11-19: Raised the pinned Next.js runtime assertion to the audited 16.4.6 security update.
  * - 2026-07-22: Advanced the migration-index contract after schedule-integrity hardening.
  * - 2026-07-21: Advanced the migration-index contract after the Premium Operations migration.
  * - 2026-07-17: Advanced the migration-index contract after 0024 and kept 0023 retention coverage explicit.
@@ -34,6 +37,9 @@ describe("security and runtime operations source contracts", () => {
     "supabase/migrations/0023_public_submission_abuse_log_retention.sql",
   );
   const migrationIndex = source("supabase/migrations/README.md");
+  const parserVolatilityMigration = source(
+    "supabase/migrations/0027_premium_operations_safe_parser_volatility.sql",
+  );
   const rlsTest = source("tests/rls/public-submission-abuse-log.test.sql");
   const register = source(
     "docs/security/BIZPILOT_SECURITY_OPERATIONS_REGISTER_2026-07-04.md",
@@ -81,7 +87,27 @@ describe("security and runtime operations source contracts", () => {
       true,
     );
     assert.equal(
-      migrationIndex.includes("currently `0027`; `0026` already exists"),
+      migrationIndex.includes("currently `0028`; `0027` already exists"),
+      true,
+    );
+  });
+
+  it("keeps safe parser volatility aligned with managed Postgres lint", () => {
+    for (const required of [
+      "alter function public.premium_operations_safe_date(text) stable",
+      "alter function public.premium_operations_safe_time(text) stable",
+    ]) {
+      assert.equal(
+        parserVolatilityMigration.includes(required),
+        true,
+        `Missing ${required}.`,
+      );
+    }
+
+    assert.equal(
+      migrationIndex.includes(
+        "0027_premium_operations_safe_parser_volatility.sql",
+      ),
       true,
     );
   });
@@ -134,7 +160,7 @@ describe("security and runtime operations source contracts", () => {
     for (const required of [
       "\"packageManager\": \"pnpm@10.34.5\"",
       "\"node\": \">=24 <25\"",
-      "\"next\": \"16.2.11\"",
+      "\"next\": \"16.4.6\"",
       "\"react\": \"19.2.7\"",
     ]) {
       assert.equal(packageJson.includes(required), true, `Missing ${required}.`);
