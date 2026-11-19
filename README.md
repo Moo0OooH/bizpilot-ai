@@ -9,10 +9,12 @@
  * - docs/CURRENT_CANONICAL_DOCS_v2.1.md
  * - docs/product/BIZPILOT_PREMIUM_OPERATIONS_ADDONS_v1.0.md
  * - docs/readiness/GITHUB_BASELINE_2026-11-19.md
+ * - docs/readiness/FINAL_SYNC_2026-11-19.md
  * Author: MoOoH
  * Created: 2026-05-02
  * Last Updated: 2026-11-19
  * Change Log:
+ * - 2026-11-19: Replaced stale candidate gates with the completed GitHub/Supabase/Vercel synchronization and final release authority.
  * - 2026-11-19: Pointed to the current GitHub baseline and audited Next.js 16.4.6 dependency update; kept July release receipts historical.
  * - 2026-07-22: Recorded the hardened Premium Operations/public-catalog candidate, ordered `0025` + `0026` migration gate, current runtime versions, and separation of local, CI, Vercel, and Production evidence.
  * - 2026-07-22: Corrected the historical V4.7 local object identity without treating it as current CI, Vercel, or Production evidence.
@@ -31,19 +33,18 @@ Cleaning is the first complete pilot vertical. Direct social inbox integrations,
 
 ## Current release posture
 
-- Dashboard V4.7: configurable quote-form title, sections, and list/tab/step layouts; source-aware reporting; optional Reports/Guide navigation; a responsive protected shell; Google login hardening; and serializable Server/Client Component boundaries. Local Git verifies that commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` is present with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent from this checkout. These local object facts do not independently revalidate historical CI, Vercel, or Production evidence and are not evidence for the current Premium Operations candidate.
-- Premium Operations hardening candidate: the separately sold Priority Workbench, Bulk Reply Review, and Availability Coordination are implemented on `/dashboard/operations`. Availability uses a canonical `preferred_time` field of type `time`, fixed `America/Toronto` interpretation, atomic review-draft creation, conflict/currentness revalidation, and manager-reviewed manual copy. An authorized founder explicitly enables or disables each add-on from the guarded Admin console; no base plan receives it automatically.
-- Premium Operations database: apply `0025_premium_operations_addons.sql` and then additive `0026_premium_operations_schedule_integrity.sql`, in order, only on an approved local/disposable target first. RLS/tenant isolation remains unexecuted in this worktree without that target. A separate explicit plan is required before any Production migration.
-- Public website extension: Product, Pricing, and FAQ describe the three optional add-ons in EN/fr-CA without inventing add-on prices or implying automatic send or booking. Local exact-tree build and public smoke pass; CI publication, Vercel deployment, and live-site acceptance remain separate gates.
-- Website V4: remains the current production-facing marketing and legal experience. Commit `c78596b1f1530ff3586b9b076702822b0b711802`, CI run `29517118330`, and Vercel target `CbDDUpqxCVMoG3L8hTgGRoymvi5m` are historical Website V4 / Documentation V2.1 evidence, not Dashboard V4.7 evidence.
-- Real customer data and paid pilot: still gated.
-- Google OAuth: the application path no longer silently creates a workspace; live callback/provider behavior still requires owner QA.
-- Production database: no migration or data mutation is authorized by this repository state. The historical V4.7 intake work reused existing storage; Premium Operations introduces the ordered `0025` + `0026` source sequence and needs its own non-Production proof and explicit Production approval.
+- Application release: PR #14 is merged to `main` as `c4257025f65f434b1abefadb5bf7f02878f1d9b6`; main CI and Vercel Production passed.
+- Runtime: Node `>=24 <25`, pnpm `10.34.5`, Next.js `16.4.6`, and React/React DOM `19.2.7`; dependency audit reports no known vulnerabilities.
+- Database: local and linked Supabase histories match through `0027`; linked lint has no schema errors; executable local RLS passes `14/14`.
+- Functional acceptance: local and Production public suites pass, and the local dense synthetic Owner/Founder/Admin suite passes `17/17`.
+- Data boundary: all 36 public Production tables report an estimated row count of zero. Real customer data and paid-pilot activation remain gated.
+- Remaining gates: live Google OAuth, owner-controlled Production authenticated acceptance, secret-inventory confirmation, restore drill on the final backup, and real-data/commercial approval.
 
-Current source candidate: Node `>=24 <25`, pnpm `10.34.5`, Next.js `16.4.6`, and React / React DOM `19.2.7`. See [the November GitHub baseline](docs/readiness/GITHUB_BASELINE_2026-11-19.md) for checks on this dependency tree and its remaining gates. The July release receipts in `docs/readiness/current-status.json` describe the earlier Premium Operations release and do not validate this candidate's deployment, live authentication, or database state. Database-backed RLS and authenticated QA require an approved local/disposable target.
+See the [final synchronization report](docs/readiness/FINAL_SYNC_2026-11-19.md) for exact receipts, weaknesses, and remaining phases. Older July release evidence is historical where it conflicts with the November status.
 
 Read these before planning or changing the project:
 
+- [Final synchronization and remaining phases](docs/readiness/FINAL_SYNC_2026-11-19.md)
 - [Project source of truth](docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md)
 - [Machine-readable status](docs/readiness/current-status.json)
 - [Project V2.1 current entry](docs/project-v2/CURRENT.md)

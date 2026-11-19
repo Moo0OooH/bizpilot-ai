@@ -10,10 +10,12 @@
  * - lib/i18n/public-v3-spec.ts
  * - docs/product/BIZPILOT_PREMIUM_OPERATIONS_ADDONS_v1.0.md
  * - docs/product/BIZPILOT_CAPABILITY_SURFACE_AUDIT_2026-07-23.md
+ * - docs/readiness/FINAL_SYNC_2026-11-19.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-23
+ * Last Updated: 2026-11-19
  * Change Log:
+ * - 2026-11-19: Reconciled the public-site release with the completed November CI, Vercel Production, and live public acceptance evidence.
  * - 2026-07-23: Clarified one-form tracked-link attribution, reduced oversized responsive headings, and expanded pricing value explanations.
  * - 2026-07-22: Recorded the optional Premium Operations catalog, unquoted add-on pricing boundary, current runtime, and exact-candidate release gates.
  * ============================================================
@@ -21,9 +23,9 @@
 
 # BizPilot Website V4 — Current Report
 
-Date: 2026-07-23
+Date: 2026-11-19
 
-Status: Premium Operations is released; the July 23 editorial, typography, pricing-value, and dashboard-discoverability refinement is exact-tree verified locally while its own CI, deployment, and live acceptance remain gated
+Status: Released on `main` at application merge `c4257025`; main CI, Vercel Production, and `bizpilo.com` public route/responsive/Quote/UI/browser acceptance pass. See `docs/readiness/FINAL_SYNC_2026-11-19.md` for exact receipts and remaining non-public gates.
 
 Scope: public marketing, protected navigation/discoverability, Auth GET states, Quote read/recovery states, and system 404/error surfaces; Production data unchanged
 

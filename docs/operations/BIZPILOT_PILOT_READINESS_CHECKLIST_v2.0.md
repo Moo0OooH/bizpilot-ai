@@ -5,14 +5,16 @@
  * Description: Current evidence-based gate for synthetic demos, real customer data, and paid pilots.
  * Role: Prevents code readiness from being mistaken for operational or commercial readiness.
  * Related:
+ * - docs/readiness/FINAL_SYNC_2026-11-19.md
  * - docs/readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md
  * - docs/operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md
  * - docs/business/PILOT_TERMS_DECISION_GATE.md
  * - prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md
  * Author: MoOoH
  * Created: 2026-07-14
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-11-19
  * Change Log:
+ * - 2026-11-19: Reconciled code, Supabase, GitHub, Vercel, local authenticated, and Production public gates; preserved live identity, restore, real-data, and paid-pilot blockers.
  * - 2026-07-22: Closed PR #11 merge, main CI/Vercel Production, public 16-state, and authorized Owner/Operations/Admin read-only acceptance.
  * - 2026-07-22: Recorded the completed Production migration history repair, drift replay, Premium Operations apply, and zero-entitlement verification.
  * - 2026-07-22: Closed the ordered local/restore Premium Operations proof and current backup/schema/rollback preparation while preserving live release, real-data, and paid-pilot gates.
@@ -29,7 +31,23 @@
 
 # BizPilot AI Pilot Readiness Checklist V2.0
 
-## Current posture — 2026-07-22
+## Current posture — 2026-11-19
+
+| Level | Status | Meaning |
+| --- | --- | --- |
+| Application release | PASS | PR #14 merged to `main` as `c4257025`; main CI run `44547096497` and Vercel Production deployment `7916448238` pass. |
+| Source/build/security | PASS | `pnpm verify` passes with no known dependency vulnerabilities, 368/368 unit/source tests, static RLS/grant audit, and Next.js 16.4.6 build. |
+| Database | PASS for synchronized empty schema | Local/linked migrations match through `0027`; linked lint has no schema errors; local RLS passes `14/14`; all 36 public Production tables report an estimated row count of zero. |
+| Public acceptance | PASS | Local and `bizpilo.com` route `46/46`, responsive `20/20`, Quote `2/2`, UI matrix, and browser interaction pass. |
+| Authenticated synthetic acceptance | PASS locally | Dense synthetic Owner/Operations/Founder/Admin routes pass `17/17` on local Supabase; fixtures were removed by database reset. |
+| Live identity acceptance | OPEN | Google OAuth and Production authenticated real-account read-only acceptance require owner-controlled completion. |
+| Final restore evidence | OPEN | The final dated backup must be restored to a disposable target before recoverability is claimed for this release. |
+| Real customer data | NOT APPROVED | Requires live identity, secret inventory, restored-target, privacy, retention, support, incident, rollback, and fresh owner approval. |
+| Paid pilot | NOT APPROVED | Requires real-data readiness plus commercial terms, payment/refund, support, incident, and full synthetic rehearsal. |
+
+The exact current receipts, weaknesses, and R1–R4 phase order are in `docs/readiness/FINAL_SYNC_2026-11-19.md`. The table below is retained as historical July evidence and does not override the current posture.
+
+## Historical posture — 2026-07-22
 
 | Level | Status | Meaning |
 | --- | --- | --- |

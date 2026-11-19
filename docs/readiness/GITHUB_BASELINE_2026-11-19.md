@@ -5,6 +5,7 @@
  * Description: Current source and GitHub verification baseline for the security dependency update.
  * Role: Records what was verified on the current candidate and which external gates remain open.
  * Related:
+ * - docs/readiness/FINAL_SYNC_2026-11-19.md
  * - README.md
  * - package.json
  * - pnpm-workspace.yaml
@@ -14,11 +15,14 @@
  * Created: 2026-11-19
  * Last Updated: 2026-11-19
  * Change Log:
+ * - 2026-11-19: Marked this candidate baseline superseded by the completed final synchronization and release evidence.
  * - 2026-11-19: Recorded the latest merged GitHub base, security update, local verification, and remaining functional gates.
  * ============================================================
  -->
 
 # GitHub baseline — 2026-11-19
+
+> This file records the pre-release candidate baseline. The candidate was subsequently merged, deployed, database-verified, and acceptance-tested. Use [FINAL_SYNC_2026-11-19.md](FINAL_SYNC_2026-11-19.md) for current status.
 
 ## Scope and source position
 

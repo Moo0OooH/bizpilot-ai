@@ -5,13 +5,15 @@
  * Description: Compact entry point for the whole-project V2.1 documentation set.
  * Role: Directs contributors to the current phase plan, bilingual route audit, and discovery checklist.
  * Related:
+ * - docs/readiness/FINAL_SYNC_2026-11-19.md
  * - docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md
  * - docs/project-v2/BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md
  * - docs/CURRENT_CANONICAL_DOCS_v2.1.md
  * Author: MoOoH
  * Created: 2026-07-15
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-11-19
  * Change Log:
+ * - 2026-11-19: Replaced stale source-candidate gates with the synchronized GitHub, Supabase, Vercel, and acceptance posture.
  * - 2026-07-22: Corrected the historical V4.7 local object identity while keeping the current candidate's external gates separate.
  * - 2026-07-21: Separated the later Premium Operations migration from any remote or Production claim.
  * - 2026-07-17: Recorded Dashboard V4.7 functional publication, configurable intake/runtime hardening, successful CI/deployment/Production read-only acceptance, and remaining authenticated/data gates.
@@ -24,28 +26,27 @@
 
 # BizPilot Project V2.1 — Current
 
-BizPilot is a bilingual, manual-first Smart Intake and owner-reviewed reply-preparation product for service businesses. Cleaning is the first complete pilot vertical. The public site, configurable public quote intake, owner dashboard, source-aware Reports, and guarded founder console are implemented in source; real customer data and paid pilot activation remain separate approval gates.
+BizPilot is a bilingual, manual-first Smart Intake and owner-reviewed reply-preparation product for service businesses. Cleaning is the first complete pilot vertical. The public site, configurable public quote intake, owner dashboard, source-aware Reports, Premium Operations, and guarded founder console are implemented and released; real customer data and paid pilot activation remain separate approval gates.
 
-Local Git contains Dashboard V4.7 commit `d9e25bbf50ccf42de2da4d70aa235ab7d289dc91` with tree `17d6b65cc9fb196c8d0d4ccaa46f5fd6f736076d`; the previously documented `a82af72bf8960b2bce1583e6446abca706c2a2bc` object is absent. These local facts do not independently revalidate historical CI, Vercel, or Production evidence, and they are not evidence for the current Premium Operations candidate.
+PR #14 merged to `main` as `c4257025f65f434b1abefadb5bf7f02878f1d9b6`. Main CI and Vercel Production pass. Supabase local and linked migration histories match through `0027`, linked lint reports no schema errors, local RLS passes `14/14`, and read-only Production statistics report zero estimated rows in every public table.
 
-Premium Operations is a separately sold source candidate with ordered migrations `0025_premium_operations_addons.sql` then additive `0026_premium_operations_schedule_integrity.sql`. Exact-tree local source verification passes. Its remaining release order requires local/disposable migration plus RLS/lifecycle/concurrency proof, exact-commit publication/CI/preview evidence, then an explicitly approved Production reconciliation/apply plan. It does not authorize a Production schema change, real-customer activation, automatic send, or booking.
+Local public, responsive, Quote, UI-matrix, and browser interaction checks pass. The dense synthetic authenticated Owner/Operations/Founder/Admin suite passes `17/17` on local Supabase and its fixtures were removed by reset. The same public acceptance suites pass on `bizpilo.com`.
 
-V4.7 adds configurable public-form title/section structure, list/tab/step layouts, optional Reports/Guide owner navigation, responsive protected/public layouts, Google login without silent workspace bootstrap, and regression coverage that prevents callable translation helpers from crossing Server/Client Component boundaries. The owner-provided authenticated screenshot renders the role-gated Founder Admin entry, proving the founder allowlist is active; full protected/admin route visual acceptance and normal-owner denial remain gated.
-
-Website V4 / Documentation V2.1 identifiers remain historical public-site evidence only. No Production database or customer-data mutation is authorized by the current source state.
+The live Google provider callback, Production authenticated real-account acceptance, final backup restore drill, real-data controls, and paid-pilot commercial/operations gates remain open. See the [final synchronization report](../readiness/FINAL_SYNC_2026-11-19.md) for exact receipts, weaknesses, and the R1–R4 remaining phases.
 
 ## Current control documents
 
-1. [Master phase and finalization plan](MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md)
-2. [Bilingual route and workflow audit](BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md)
-3. [SEO, analytics, and discovery checklist](SEO_ANALYTICS_AND_DISCOVERY_CHECKLIST_2026-07-15.md)
-4. [Whole-project source of truth](../readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md)
-5. [Machine-readable status](../readiness/current-status.json)
-6. [Dashboard V4 contract](../dashboard-v4/CURRENT.md)
-7. [Website V4 contract](../website-v4/CURRENT.md)
-8. [Manual QA V2](../operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md)
-9. [Pilot readiness V2](../operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md)
-10. [External action prompt pack V2.1](../../prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md)
+1. [Final synchronization and remaining phases](../readiness/FINAL_SYNC_2026-11-19.md)
+2. [Machine-readable status](../readiness/current-status.json)
+3. [Master phase and finalization plan](MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md)
+4. [Bilingual route and workflow audit](BILINGUAL_ROUTE_AND_FLOW_AUDIT_2026-07-15.md)
+5. [SEO, analytics, and discovery checklist](SEO_ANALYTICS_AND_DISCOVERY_CHECKLIST_2026-07-15.md)
+6. [Whole-project source of truth](../readiness/BIZPILOT_SOURCE_OF_TRUTH_2026-07-14.md)
+7. [Dashboard V4 contract](../dashboard-v4/CURRENT.md)
+8. [Website V4 contract](../website-v4/CURRENT.md)
+9. [Manual QA V2](../operations/BIZPILOT_MANUAL_QA_CHECKLIST_v2.0.md)
+10. [Pilot readiness V2](../operations/BIZPILOT_PILOT_READINESS_CHECKLIST_v2.0.md)
+11. [External action prompt pack V2.1](../../prompts/BIZPILOT_EXTERNAL_ACTION_PROMPT_PACK_v2.1.md)
 
 ## Status vocabulary
 
