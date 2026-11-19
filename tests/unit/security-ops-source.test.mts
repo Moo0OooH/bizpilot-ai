@@ -10,8 +10,9 @@
  * - docs/project-v2/MASTER_PHASE_AND_FINALIZATION_PLAN_2026-07-15.md
  * Author: MoOoH
  * Created: 2026-07-04
- * Last Updated: 2026-07-22
+ * Last Updated: 2026-11-19
  * Change Log:
+ * - 2026-11-19: Raised the pinned Next.js runtime assertion to the audited 16.4.6 security update.
  * - 2026-07-22: Advanced the migration-index contract after schedule-integrity hardening.
  * - 2026-07-21: Advanced the migration-index contract after the Premium Operations migration.
  * - 2026-07-17: Advanced the migration-index contract after 0024 and kept 0023 retention coverage explicit.
@@ -134,7 +135,7 @@ describe("security and runtime operations source contracts", () => {
     for (const required of [
       "\"packageManager\": \"pnpm@10.34.5\"",
       "\"node\": \">=24 <25\"",
-      "\"next\": \"16.2.11\"",
+      "\"next\": \"16.4.6\"",
       "\"react\": \"19.2.7\"",
     ]) {
       assert.equal(packageJson.includes(required), true, `Missing ${required}.`);
